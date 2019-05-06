@@ -1,0 +1,23 @@
+{
+  "name": "@wso2is/theme",
+  "version": "0.1.0-SNAPSHOT",
+  "description": "Theme for web components of WSO2 Identity Server Webapps.",
+  "keywords": [
+    "WSO2",
+    "WSO2-IS",
+    "WSO2-Identity-Server",
+    "theme"
+  ],
+  "main": "src/index.js",
+  "scripts": {
+    "build": "node scripts/build-theme.js",
+    "test": "echo \"Error: no test specified\"",
+    "test-coverage": "echo \"Error: no test coverage specified\"",
+    "watch": "watch \"npm run build\" src"
+  },
+  "author": "WSO2",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "watch": "^1.0.2"
+  }
+}
