@@ -7,8 +7,9 @@
     "main": "index.js",
     "scripts": {
         "server": "node server",
-        "start": "webpack-dev-server  --mode development --inline --hot --open",
-        "build": "webpack  --mode development",
+        "start": "npm run lint && webpack-dev-server  --mode development --inline --hot --open",
+        "lint": "tslint -t stylish --project .",
+        "build": "npm run lint && webpack  --mode development",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "devDependencies": {
@@ -29,6 +30,7 @@
         "mini-css-extract-plugin": "^0.4.3",
         "style-loader": "^0.23.1",
         "ts-loader": "^5.4.5",
+        "tslint": "^5.16.0",
         "typescript": "^3.1.1",
         "url-loader": "^1.1.1",
         "webpack": "^4.20.2",
