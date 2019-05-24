@@ -118,8 +118,15 @@ const copyAssets = () => {
     fs.copy(path.join(semanticUILessModuleDir, 'themes', 'default', 'assets'), path.join(libDir, 'assets'))
         .then(() => {
             console.error('semantic-ui-less assets copied.');
-            fs.removeSync(buildDir);
-            console.error('Done.');
+            fs.copy(path.join(themesDir, 'default', 'assets'), path.join(libDir, 'assets'))
+                .then(() => {
+                    console.error('default theme assets copied.');
+                    fs.removeSync(buildDir);
+                    console.error('Done.');
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         })
         .catch((error) => {
             console.error(error);
