@@ -65,3 +65,4 @@ typings/
 
 # project build folders
 modules/theme/lib/
+apps/user-portal/build/

@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-
-<!--
+/**
  * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -16,15 +14,25 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- -->
+ */
 
-<html>
-    <head>
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-        <title><%= htmlWebpackPlugin.options.title %></title>
-    </head>
-    <body>
-        <div id="root"></div>
-    </body>
-</html>
+import * as React from "react";
+
+interface Props {
+    classes?: any;
+    message: string;
+    show: boolean;
+    onClose: () => void;
+};
+
+const NotificationComponentInner = (props: Props) => {
+    const { classes, message, onClose } = props;
+
+    return (
+        <div>
+            <span id="message-id">{message}</span>
+        </div>
+    );
+};
+
+export const NotificationComponent = ( NotificationComponentInner );

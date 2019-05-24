@@ -18,10 +18,10 @@
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-
-import LoginForm from './components/login';
+import App from './app';
+import '@wso2is/theme/lib/wso2-default.css';
 
 ReactDOM.render(
-  <LoginForm />,
-  document.getElementById('root')
+    <App />,
+    document.getElementById('root')
 );

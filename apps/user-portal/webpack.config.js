@@ -4,6 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const distFolder = path.resolve(__dirname, 'build');
+const faviconImage = path.resolve(__dirname, 'node_modules', '@wso2is/theme/lib/assets/images/favicon.ico');
+const titleText = 'WSO2 Identity Server';
 
 module.exports = {
     entry: [
@@ -58,6 +60,8 @@ module.exports = {
             filename: path.join(distFolder, 'index.html'),
             template: path.resolve(__dirname, 'src', 'index.html'),
             hash: true,
+            favicon: faviconImage,
+            title: titleText
         }),
     ],
     devtool: 'source-map',
