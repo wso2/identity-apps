@@ -1,1 +1,1 @@
-require('../lib/ballerina-default.min.css');
+require('../lib/wso2-default.min.css');

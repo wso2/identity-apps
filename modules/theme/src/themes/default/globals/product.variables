@@ -17,7 +17,9 @@
  *
  */
 
-& { @import "./globals/product.less"; }
+/*-------------------
+     Body Styles
+--------------------*/
 
-& { @import "./views/login.less"; }
-& { @import "./views/user-portal.less"; }
+@bodyBorderWidth: 3px;
+@bodyBorderColor: @primaryColor;
