@@ -17,15 +17,15 @@
  */
 
 type LogoImageType = string;
-type customCSSType = {
+type TitleTextType = string;
+interface CustomCSSType {
     light: object;
     dark: object;
-};
-type TitleTextType = string;
+}
 
-export const LogoImage:LogoImageType = require("@wso2is/theme/lib/assets/images/logo.svg");
-export const TitleText:TitleTextType = "Identity Server";
-export const customCSS:customCSSType = {
-    light: {},
-    dark: {}
+export const LogoImage: LogoImageType = require("@wso2is/theme/lib/assets/images/logo.svg");
+export const TitleText: TitleTextType = "Identity Server";
+export const customCSS: CustomCSSType = {
+    dark: {},
+    light: {}
 };

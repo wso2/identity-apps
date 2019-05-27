@@ -33,6 +33,13 @@ module.exports = {
                 exclude: /(node_modules|diagram)/
             },
             {
+                test: /\.ts$/,
+                enforce: 'pre',
+                use: [{
+                    loader: 'tslint-loader'
+                }]
+            },
+            {
                 test: /\.js$/,
                 use: ["source-map-loader"],
                 enforce: "pre"
@@ -49,8 +56,7 @@ module.exports = {
         contentBase: distFolder,
         inline: true,
         host: 'localhost',
-        port: 9000,
-        stats: 'errors-only'
+        port: 9000
     },
     plugins: [
         new CopyWebpackPlugin([
@@ -62,7 +68,7 @@ module.exports = {
             hash: true,
             favicon: faviconImage,
             title: titleText
-        }),
+        })
     ],
     devtool: 'source-map',
     optimization: {

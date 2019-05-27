@@ -16,5 +16,5 @@
  * under the License.
  */
 
-export * from './ui';
-export * from './notification';
+export * from "./ui";
+export * from "./notification";

@@ -17,27 +17,27 @@
  */
 
 import axios from "axios";
-import { LoginEntity } from "../models/login";
 import { ServiceResources } from "../../configs/app";
+import { LoginEntity } from "../models/login";
 
-export const isValidLogin = async (loginInfo:LoginEntity) : Promise<boolean> => {
-    const authUrl:string = ServiceResources.login;
-    const payload:object = {
-        username: loginInfo.username,
-        password: loginInfo.password
+export const isValidLogin = async (loginInfo: LoginEntity): Promise<boolean> => {
+    let authUrl: string = ServiceResources.login;
+    const payload: object = {
+        password: loginInfo.password,
+        username: loginInfo.username
     };
 
-    let valid:boolean = false;
-    
+    let valid: boolean = false;
+
     await axios.post(authUrl, payload)
         .then((response) => {
-            if (response.status == 200 && response.data.valid == true) {
+            if (response.status === 200 && response.data.valid === true) {
                 valid = true;
             }
         })
         .catch((error) => {
-            console.warn(error);
+            console.log(error);
         });
 
     return valid;
-}
+};

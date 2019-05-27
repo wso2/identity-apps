@@ -17,15 +17,15 @@
  */
 
 type ServiceEndpointType = string;
-type ServiceResourcesType = {
+interface ServiceResourcesType {
     login: string;
     user: string;
     users: string;
-};
+}
 
-export const ServiceEndpoint:ServiceEndpointType = 'http://localhost:3001';
-export const ServiceResources:ServiceResourcesType = {
+export const ServiceEndpoint: ServiceEndpointType = "http://localhost:3001";
+export const ServiceResources: ServiceResourcesType = {
     login: `${ServiceEndpoint}/auth`,
-    users: `${ServiceEndpoint}/users`,
-    user: `${ServiceEndpoint}/user`
+    user: `${ServiceEndpoint}/user`,
+    users: `${ServiceEndpoint}/users`
 };

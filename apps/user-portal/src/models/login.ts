@@ -17,11 +17,11 @@
  */
 
 export interface LoginEntity {
-    username: string;
     password: string;
+    username: string;
 }
 
 export const createEmptyLogin = (): LoginEntity => ({
-    username: "",
-    password: ""
+    password: "",
+    username: ""
 });
