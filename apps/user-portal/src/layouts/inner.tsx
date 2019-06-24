@@ -16,28 +16,22 @@
  * under the License.
  */
 
-import axios from "axios";
-import { ServiceResources } from "../../configs/app";
-import { LoginEntity } from "../models/login";
+import * as React from "react";
+import { Container, Header } from "semantic-ui-react";
+import { Header as AppHeader } from "../components";
 
-export const isValidLogin = async (loginInfo: LoginEntity): Promise<boolean> => {
-    let authUrl: string = ServiceResources.login;
-    const payload: object = {
-        password: loginInfo.password,
-        username: loginInfo.username
-    };
+interface Props extends React.ComponentProps<any> {
+    pageTitle?: string;
+}
 
-    let valid: boolean = false;
-
-    await axios.post(authUrl, payload)
-        .then((response) => {
-            if (response.status === 200 && response.data.valid === true) {
-                valid = true;
+export const InnerPageLayout = (props: Props) => (
+    <>
+        <AppHeader />
+        <Container style={{ marginTop: "7em" }}>
+            { props.pageTitle &&
+                <Header as="h1" style={{ marginTop: "5em" }}>{ props.pageTitle }</Header>
             }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-
-    return valid;
-};
+            { props.children }
+        </Container>
+    </>
+);

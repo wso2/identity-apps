@@ -17,4 +17,7 @@
  */
 
 export * from "./ui";
+export * from "./header";
 export * from "./notification";
+export * from "./auth-context";
+export * from "./protected-route";

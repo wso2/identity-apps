@@ -16,12 +16,16 @@
  * under the License.
  */
 
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import App from './app';
-import '@wso2is/theme/lib/wso2-default.css';
+// TODO: Fix theme load logic and enable this
+// import "@wso2is/theme/lib/wso2-default.css";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
+import App from "./app";
 
 ReactDOM.render(
-    <App />,
-    document.getElementById('root')
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>,
+    document.getElementById("root")
 );

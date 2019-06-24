@@ -29,7 +29,10 @@ server.post('/auth', (request, response) => {
             message: 'Valid credentials'
         });
     } else if (request.body.username === '' || request.body.password === '') {
-        response.status(204);
+        response.status(204).send({
+            valid: false,
+            message: 'Empty credentials'
+        });
     } else {
         response.status(200).send({
             valid: false,

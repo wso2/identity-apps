@@ -13,7 +13,8 @@ module.exports = {
     ],
     output: {
         path: distFolder,
-        filename: '[name].js'
+        filename: '[name].js',
+        publicPath: '/'
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.json']
@@ -22,6 +23,10 @@ module.exports = {
         rules: [{
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.less$/,
+                use: ['style-loader', 'css-loader', 'less-loader']
             },
             {
                 test: /\.(png|jpg|svg|cur|gif|eot|svg|ttf|woff|woff2)$/,
@@ -56,11 +61,28 @@ module.exports = {
         contentBase: distFolder,
         inline: true,
         host: 'localhost',
-        port: 9000
+        port: 9000,
+        historyApiFallback: true
+    },
+    node: {
+        fs: 'empty'
     },
     plugins: [
-        new CopyWebpackPlugin([
-            { context: path.resolve(__dirname, 'node_modules', '@wso2is', 'theme'), from: 'lib', to: 'themes' }
+        new CopyWebpackPlugin([{
+                context: path.resolve(__dirname, 'node_modules', '@wso2is', 'theme'),
+                from: 'lib',
+                to: 'libs/styles/css'
+            },
+            {
+                context: path.resolve(__dirname, 'node_modules', '@wso2is', 'theme'),
+                from: 'src',
+                to: 'libs/styles/less/theme-module'
+            },
+            {
+                context: path.resolve(__dirname, 'node_modules'),
+                from: 'semantic-ui-less',
+                to: 'libs/styles/less/semantic-ui-less'
+            }
         ]),
         new HtmlWebpackPlugin({
             filename: path.join(distFolder, 'index.html'),

@@ -16,23 +16,24 @@
  * under the License.
  */
 
+import classNames from "classnames";
 import * as React from "react";
 
 interface Props {
-    classes?: any;
+    className?: string;
     message: string;
-    show: boolean;
-    onClose: () => void;
-};
+    type: string;
+    onClose?: () => void;
+}
 
 const NotificationComponentInner = (props: Props) => {
-    const { classes, message, onClose } = props;
+    const { className, type, message } = props;
 
     return (
-        <div>
+        <div className={classNames(className, type)}>
             <span id="message-id">{message}</span>
         </div>
     );
 };
 
-export const NotificationComponent = ( NotificationComponentInner );
+export const NotificationComponent = (NotificationComponentInner);

@@ -16,41 +16,52 @@
  * under the License.
  */
 
-import * as React from "react";
 import classNames from "classnames";
+import * as React from "react";
 import { Image } from "semantic-ui-react";
-import { LogoImage, TitleText } from "../../configs/ui";
+import { LogoImage, TitleText, UserImage } from "../../configs/ui";
 
-interface LogoProps {
+interface ImageProps {
     classes?: any;
     size?: any;
     style?: any;
-};
+}
 
 interface TitleProps {
     classes?: any;
     style?: any;
     children?: any;
-};
+}
 
-const Logo = (props: LogoProps) => {
+export const Logo = (props: ImageProps) => {
     const { classes, size, style } = props;
 
     return (
-        <Image className={classNames(classes, "product-logo")} size={size} style={style} src={LogoImage} />
+        <Image className={classNames(classes, "product-logo")} size={size} style={style} src={LogoImage} inline />
     );
 };
 
-const Title = (props: TitleProps) => {
+export const Title = (props: TitleProps) => {
     const { classes, style, children } = props;
 
     return (
         <div className={classNames(classes, "product-title")} style={style}>
-            <LogoComponent /> {TitleText}
+            <Logo /> <h1 className={classNames(classes, "product-title-text")} style={style}>{TitleText}</h1>
             {children}
         </div>
     );
 };
 
-export const LogoComponent = ( Logo );
-export const TitleComponent = ( Title );
+export const User = (props: ImageProps) => {
+    const { classes, size, style } = props;
+
+    return (
+        <Image
+            className={classNames(classes, "user-image")}
+            src={UserImage}
+            size={size}
+            circular
+            centered
+        />
+    );
+};

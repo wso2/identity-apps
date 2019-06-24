@@ -14,27 +14,13 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
- 
-.product-title {
-    .product-logo {
-        width: 60px;
-        vertical-align: sub;
-        margin-right: 5px;
-    }
-    .product-title-text {
-        text-transform: uppercase;
-        font-weight: 400;
-        font-size: 1.8rem;
-        display: inline-block;
-    }
-    .user-image {
-        width: 100px !important;
-    }
-} 
 
-h1, h2, h3 {
-    font-weight: 400 !important;
-}
- 
+import * as React from "react";
+import { InnerPageLayout } from "../layouts";
+
+export const ThemeBuilderPage = () => (
+    <>
+        <InnerPageLayout pageTitle="Change Theme"></InnerPageLayout>
+    </>
+);

@@ -17,45 +17,68 @@
  *
  */
 
+const less = require('less');
 const path = require('path');
 const fs = require('fs-extra');
 const rimraf = require('rimraf');
-const CleanCSS = require('clean-css');
-const Theme = require("../src/theme");
 
-const libDir = path.join(__dirname, "..", "lib");
-const buildDir = path.join(__dirname, "..", "build");
-const themesDir = path.join(__dirname, "..", "src", "themes");
-const lessNpmModuleDir = path.dirname(require.resolve("less"));
-const semanticUILessModuleDir = path.join(lessNpmModuleDir, "..", "semantic-ui-less");
+const CleanCSS = require('clean-css');
+const RewriteImportPlugin = require("less-plugin-rewrite-import");
+const NpmImportPlugin = require('less-plugin-npm-import');
+
+const libDir = path.join(__dirname, '..', 'lib');
+const buildDir = path.join(__dirname, '..', 'build');
+const themesDir = path.join(__dirname, '..', 'src', 'themes');
+
+const lessNpmModuleDir = path.dirname(require.resolve('less'));
+const semanticUILessModuleDir = path.join(lessNpmModuleDir, '..', 'semantic-ui-less');
 
 const generateThemes = () => {
     const themes = fs.readdirSync(themesDir);
 
-    const fileWritePromises = themes.map((theme) => {
-        const filePath = path.join(themesDir, theme, "index.less");
+    let fileWritePromises = themes.map(theme => {
+        const filePath = path.join(themesDir, theme, 'index.less');
 
         if (!fs.existsSync(filePath)) {
             return;
         }
 
-        return Theme.compile(filePath, path.join(themesDir, theme), {}).then((output) => {
+        const options = {
+            ieCompat: true,
+            compress: false,
+            sourceMap: true,
+            javascriptEnabled: true,
+            filename: path.resolve(filePath),
+            plugins: [
+                new NpmImportPlugin({ prefix: '~' }),
+                new RewriteImportPlugin({
+                    paths: {
+                        "../../theme.config": path.join(themesDir, theme, 'semantic-ui.config'),
+                        "../../wso2.config": path.join(themesDir, theme, 'wso2.config')
+                    }
+                })
+            ]
+        };
+
+        const src = fs.readFileSync(filePath, 'utf8');
+
+        return less.render(src, options).then(function(output) {
             const minifiedOutput = new CleanCSS().minify(output.css);
             const files = {
-                ".css": output.css,
-                ".css.map": output.map,
-                ".min.css": minifiedOutput.styles
+                '.css': output.css,
+                '.css.map': output.map,
+                '.min.css': minifiedOutput.styles
             };
 
-            Object.keys(files).map((key) => writeFile(theme, key, files[key]));
+            Object.keys(files).map(key => writeFile(theme, key, files[key]));
         }, (error) => {
             console.error(error);
         });
     });
 
-    Promise.all(fileWritePromises).then((buffers) => {
+    Promise.all(fileWritePromises).then(function(buffers) {
         copyFiles();
-    }).catch((error) => {
+    }).catch(function(error) {
         console.error(error);
     });
 };
@@ -74,7 +97,7 @@ const copyFiles = () => {
         fs.mkdirSync(libDir);
         copyCSS();
     } else {
-        rimraf(libDir + "/*", () => {
+        rimraf(libDir + '/*', () => {
             copyCSS();
         });
     }
@@ -83,7 +106,7 @@ const copyFiles = () => {
 const copyCSS = () => {
     fs.copy(buildDir, libDir)
         .then(() => {
-            console.error("generated css files copied.");
+            console.error('generated css files copied.');
             copyAssets();
         })
         .catch((error) => {
@@ -92,15 +115,14 @@ const copyCSS = () => {
 };
 
 const copyAssets = () => {
-    fs.copy(path.join(semanticUILessModuleDir, "themes", "default", "assets"), path.join(libDir, "assets"))
+    fs.copy(path.join(semanticUILessModuleDir, 'themes', 'default', 'assets'), path.join(libDir, 'assets'))
         .then(() => {
-            console.error("semantic-ui-less assets copied.");
-
-            fs.copy(path.join(themesDir, "default", "assets"), path.join(libDir, "assets"))
+            console.error('semantic-ui-less assets copied.');
+            fs.copy(path.join(themesDir, 'default', 'assets'), path.join(libDir, 'assets'))
                 .then(() => {
-                    console.error("default theme assets copied.");
+                    console.error('default theme assets copied.');
                     fs.removeSync(buildDir);
-                    console.error("Done.");
+                    console.error('Done.');
                 })
                 .catch((error) => {
                     console.error(error);
@@ -115,7 +137,7 @@ if (!fs.existsSync(buildDir)) {
     fs.mkdirSync(buildDir);
     generateThemes();
 } else {
-    rimraf(buildDir + "/*", () => {
+    rimraf(buildDir + '/*', () => {
         generateThemes();
     });
 }

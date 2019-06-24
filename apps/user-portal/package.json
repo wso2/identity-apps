@@ -19,6 +19,7 @@
         "@babel/preset-env": "^7.1.0",
         "@types/react": "^16.4.16",
         "@types/react-dom": "^16.0.9",
+        "@types/react-router": "^5.0.2",
         "@types/react-router-dom": "^4.3.0",
         "awesome-typescript-loader": "^5.2.1",
         "axios": "^0.18.0",
@@ -27,6 +28,8 @@
         "css-loader": "^1.0.0",
         "file-loader": "^2.0.0",
         "html-webpack-plugin": "^3.2.0",
+        "less-loader": "^5.0.0",
+        "log": "^6.0.0",
         "mini-css-extract-plugin": "^0.4.3",
         "style-loader": "^0.23.1",
         "ts-loader": "^5.4.5",
@@ -39,9 +42,11 @@
         "webpack-dev-server": "^3.1.9"
     },
     "dependencies": {
+        "@types/history": "4.6.2",
         "@wso2is/theme": "^0.1.0-SNAPSHOT",
         "cors": "^2.8.5",
         "express-session": "^1.16.1",
+        "history": "^4.9.0",
         "react": "^16.5.2",
         "react-dom": "^16.5.2",
         "react-router-dom": "^4.3.1",

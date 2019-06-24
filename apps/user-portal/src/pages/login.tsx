@@ -16,75 +16,60 @@
  * under the License.
  */
 
-import * as React from 'react';
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
+import * as React from "react";
+import { RouteComponentProps } from "react-router-dom";
+import { Button, Form, Grid, Header, Message, Segment } from "semantic-ui-react";
+import { AuthConsumer, NotificationComponent, Title, User } from "../components";
 import { createEmptyLogin, LoginEntity } from "../models/login";
-import { isValidLogin } from "../api/login";
-import { TitleComponent, NotificationComponent } from "../components";
 
-interface Props extends RouteComponentProps {}
+interface Props extends RouteComponentProps<any, any> {}
 
 const LoginPageInner = (props: Props) => {
-  const [loginInfo, setLoginInfo] = React.useState<LoginEntity>(
-    createEmptyLogin()
-  );
-  const [showLoginFailedMsg, setShowLoginFailedMsg] = React.useState(false);
-  //const { classes } = props;
+    const [loginInfo, setLoginInfo] = React.useState<LoginEntity>(
+        createEmptyLogin()
+    );
 
-  const onLogin = () => {
-    isValidLogin(loginInfo)
-        .then((res:boolean) => {
-            if(res == true) {
-                props.history.push("/app-listing");
-            } else {
-                setShowLoginFailedMsg(true);
-            }
-            
+    const { location } = props;
+
+    const onUpdateLoginField = (name, value) => {
+        setLoginInfo({
+            ...loginInfo,
+            [name]: value
         });
-  };
-
-  const onUpdateLoginField = (name, value) => {
-    setLoginInfo({
-      ...loginInfo,
-      [name]: value
-    });
-  };
-
-  return (
-    <>
-        {/* <NotificationComponent
-            message="Invalid login or password, please type again"
-            show={showLoginFailedMsg}
-            onClose={() => setShowLoginFailedMsg(false)}
-        /> */}
-        <LoginForm
-            onLogin={onLogin}
-            onUpdateField={onUpdateLoginField}
-            loginInfo={loginInfo}
-        />
-    </>
-  );
-};
-
-export const LoginPage = (withRouter<Props>(LoginPageInner));
-
-interface PropsForm {
-  onLogin: () => void;
-  onUpdateField: (name: string, value: any) => void;
-  loginInfo: LoginEntity;
-}
-
-const LoginForm = (props: PropsForm) => {
-    const { onLogin, onUpdateField, loginInfo } = props;
-
-    // TODO: Enhacement move this outside the stateless component discuss why is a good idea
-    const onTexFieldChange = fieldId => e => {
-        onUpdateField(fieldId, e.target.value);
     };
 
     return (
-      <div className='login-form'>
+        <>
+            <LoginForm
+                locationHistory={location}
+                onUpdateField={onUpdateLoginField}
+                loginInfo={loginInfo}
+            />
+        </>
+    );
+};
+
+interface PropsForm {
+    locationHistory: {
+        state: {
+            details: string;
+        };
+    };
+    onUpdateField: (name: string, value: any) => void;
+    loginInfo: LoginEntity;
+}
+
+const LoginForm = (props: PropsForm) => {
+    const { locationHistory, onUpdateField, loginInfo } = props;
+
+    const onTexFieldChange = (fieldId: string) => (e) => {
+        onUpdateField(fieldId, e.target.value);
+    };
+
+    const location = (locationHistory.state !== undefined) ? locationHistory.state.details : "/app-listing";
+
+    return (
+      <div className="login-form">
             <style>
                 {`
                     body > div,
@@ -94,49 +79,79 @@ const LoginForm = (props: PropsForm) => {
                     }
                 `}
             </style>
-            <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
+            <Grid textAlign="center" style={{ height: "100%" }} verticalAlign="middle">
                 <Grid.Column style={{ maxWidth: 450 }}>
-                    <Form size='large'>
-                        <Segment>
-                            <TitleComponent />
-                            <Header as='h2' color='orange' textAlign='center'>
-                                Sign In
-                        </Header>
-                        </Segment>
-                        <Segment stacked>
-                            <Form.Input
-                                fluid
-                                icon='user'
-                                iconPosition='left'
-                                placeholder='E-mail address'
-                                value={loginInfo.username}
-                                onChange={onTexFieldChange("username")}
-                            />
-                            <Form.Input
-                                fluid
-                                icon='lock'
-                                iconPosition='left'
-                                placeholder='Password'
-                                type='password'
-                                value={loginInfo.password}
-                                onChange={onTexFieldChange("password")}
-                            />
+                    <AuthConsumer>
+                        {({ isAuth, login, logout, error }) => (
+                            !isAuth ? (
+                                <>
+                                    <Form size="large">
+                                        <Segment>
+                                            <Title />
+                                            <Header as="h3" textAlign="center">
+                                                Sign In
+                                            </Header>
+                                            <User size="small" />
+                                            {error && (
+                                                <NotificationComponent
+                                                    message="Invalid login or password, please type again"
+                                                    type="error"
+                                                />
+                                            )}
+                                            <Form.Input
+                                                fluid
+                                                icon="user"
+                                                iconPosition="left"
+                                                placeholder="E-mail address"
+                                                value={loginInfo.username}
+                                                onChange={onTexFieldChange("username")}
+                                            />
+                                            <Form.Input
+                                                fluid
+                                                icon="lock"
+                                                iconPosition="left"
+                                                placeholder="Password"
+                                                type="password"
+                                                value={loginInfo.password}
+                                                onChange={onTexFieldChange("password")}
+                                            />
 
-                            <Button
-                                color='orange'
-                                fluid
-                                size='large'
-                                onClick={onLogin}
-                            >
-                                Login
-                            </Button>
-                        </Segment>
-                    </Form>
-                    <Message>
-                        New to us? <a href='#'>Sign Up</a>
-                    </Message>
+                                            <Button
+                                                color="orange"
+                                                fluid
+                                                size="large"
+                                                onClick={() => login(loginInfo, location)}
+                                            >
+                                                Login
+                                            </Button>
+                                        </Segment>
+                                    </Form>
+                                    <Message>
+                                        New to us? <a href="#">Sign Up</a>
+                                    </Message>
+                                </>
+                            ) : (
+                                <>
+                                    <Form size="large">
+                                        <Segment>
+                                            <Button
+                                                color="orange"
+                                                fluid
+                                                size="large"
+                                                onClick={logout}
+                                            >
+                                                Logout
+                                            </Button>
+                                        </Segment>
+                                    </Form>
+                                </>
+                            )
+                        )}
+                    </AuthConsumer>
                 </Grid.Column>
             </Grid>
         </div>
     );
 };
+
+export const LoginPage = (LoginPageInner);

@@ -16,16 +16,30 @@
  * under the License.
  */
 
-type LogoImageType = string;
+import { DummyUser, Logo } from "@wso2is/theme";
+
+type ImageType = string;
 type TitleTextType = string;
-interface CustomCSSType {
-    light: object;
-    dark: object;
+
+interface StylesType {
+    appPrimaryColor?: string;
+    appBackgroundColor?: string;
 }
 
-export const LogoImage: LogoImageType = require("@wso2is/theme/lib/assets/images/logo.svg");
+interface CustomCSSType {
+    dark?: StylesType;
+    light?: StylesType;
+}
+
+export const LogoImage: ImageType = Logo;
+export const UserImage: ImageType = DummyUser;
+
 export const TitleText: TitleTextType = "Identity Server";
 export const customCSS: CustomCSSType = {
-    dark: {},
-    light: {}
+    dark: {
+        appPrimaryColor: "#ff5000"
+    },
+    light: {
+        appPrimaryColor: "#ff5000"
+    }
 };

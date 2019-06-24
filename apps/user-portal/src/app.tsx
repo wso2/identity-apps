@@ -16,22 +16,64 @@
  * under the License.
  */
 
+// import { DefaultTheme, Logo, Theme, } from "@wso2is/theme";
 import * as React from "react";
-import { HashRouter, Switch, Route } from "react-router-dom";
-import { LoginPage } from "./pages/login";
-import { AppListingPage } from "./pages/app-listing";
+import { Redirect, Route, Router, Switch } from "react-router-dom";
+import history from "./actions/history";
+import { AuthConsumer, AuthProvider } from "./components/auth-context";
+import ProtectedRoute from "./components/protected-route";
+import {
+    AppListingPage,
+    LoginPage,
+    PageNotFound,
+    ThemeBuilderPage,
+    UserListingPage
+} from "./pages";
 
-const App = () => {
+const LogoutPage = () => {
+    // TODO: Need to handle logout using path
+    React.useEffect(() => {
+        // this.props.logout();
+        // console.log(this);
+        // this.context.store.dispatch(logout());
+    });
+
     return (
-        <HashRouter>
-            <div className="container-fluid">
-                <Switch>
-                    <Route exact path="/" component={LoginPage} />
-                    <Route path="/app-listing" component={AppListingPage} />
-                </Switch>
-            </div>
-        </HashRouter>
-     );
+        <AuthConsumer>
+            {({ logout }) => (
+                <Route
+                    render={() =>
+                        <Redirect to={{
+                            logout: { logout },
+                            pathname: "/login"
+                        }} />
+                    }
+                />
+            )}
+        </AuthConsumer>
+    );
 };
+
+class App extends React.Component {
+    public render() {
+        return (
+            <Router history={history}>
+                <div className="container-fluid">
+                    <AuthProvider history={history}>
+                        <Switch>
+                            <Redirect exact path="/" to="/login" />
+                            <Route path="/login" component={LoginPage} />
+                            <Route path="/logout" component={LogoutPage} />
+                            <ProtectedRoute path="/app-listing" component={AppListingPage} />
+                            <ProtectedRoute path="/user-listing" component={UserListingPage} />
+                            <ProtectedRoute path="/theme" component={ThemeBuilderPage} />
+                            <Route component={PageNotFound} />
+                        </Switch>
+                    </AuthProvider>
+                </div>
+            </Router>
+        );
+    }
+}
 
 export default App;

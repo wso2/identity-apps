@@ -1,1 +1,0 @@
-require('../lib/wso2-default.min.css');

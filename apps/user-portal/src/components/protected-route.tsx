@@ -17,10 +17,24 @@
  */
 
 import * as React from "react";
-import { InnerPageLayout } from "../layouts";
+import { Redirect, Route } from "react-router-dom";
+import history from "../actions/history";
+import { AuthConsumer } from "./auth-context";
 
-export const AppListingPage = () => (
-    <>
-        <InnerPageLayout pageTitle="App Listing"></InnerPageLayout>
-    </>
+const ProtectedRoute = ({ component: Component, ...rest }) => (
+    <AuthConsumer>
+        {({ isAuth }) => (
+            <Route
+                render={(props) =>
+                    isAuth ? <Component {...props} /> : <Redirect to={{
+                        pathname: "/login",
+                        state: { details: history.location.pathname }
+                      }} />
+                }
+                {...rest}
+            />
+        )}
+    </AuthConsumer>
 );
+
+export default ProtectedRoute;

@@ -1,0 +1,31 @@
+{
+    "name": "less-plugin-variable-rewrite",
+    "version": "0.0.1",
+    "description": "Variable rewrite plugin for less.js",
+    "homepage": "https://github.com/jeradrutnam/less-plugin-variable-rewrite/",
+    "author": {
+        "name": "Jerad Rutnam"
+    },
+    "bugs": {
+        "url": "https://github.com/jeradrutnam/less-plugin-variable-rewrite/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jeradrutnam/less-plugin-variable-rewrite.git"
+    },
+    "license": "Apache-2.0",
+    "main": "lib/index.js",
+    "engines": {
+        "node": ">=0.4.2"
+    },
+    "dependencies": {
+
+    },
+    "devDependencies": {
+    },
+    "keywords": [
+        "less plugins",
+        "variable-rewrite",
+        "less prefixes"
+    ]
+}

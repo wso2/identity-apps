@@ -16,25 +16,28 @@
  * under the License.
  *
  */
- 
-.product-title {
-    .product-logo {
-        width: 60px;
-        vertical-align: sub;
-        margin-right: 5px;
-    }
-    .product-title-text {
-        text-transform: uppercase;
-        font-weight: 400;
-        font-size: 1.8rem;
-        display: inline-block;
-    }
-    .user-image {
-        width: 100px !important;
-    }
-} 
 
-h1, h2, h3 {
-    font-weight: 400 !important;
+var getPreProcessor = require("./processor"),
+    usage = require("./usage"),
+    parseOptions = require("./parse-options");
+
+
+function LessPluginRewriteVariable(options) {
+    this.options = options;
 }
- 
+
+LessPluginRewriteVariable.prototype = {
+    install: function(less, pluginManager) {
+        var PreProcessor = getPreProcessor(less);
+        pluginManager.addPreProcessor(new PreProcessor(this.options));
+    },
+    printUsage: function() {
+        usage.printUsage();
+    },
+    setOptions: function(options) {
+        this.options = parseOptions(options);
+    },
+    minVersion: [2, 1, 1]
+};
+
+module.exports = LessPluginRewriteVariable;
