@@ -11,7 +11,11 @@ End-user apps in WSO2 Identity Server
 
 #### Run sepearate apps in development mode
 
-3. Execute `cd apps/<app> && npm start` command. E.g. `cd apps/user-portal && npm start`.
+Execute `cd apps/<app> && npm start` command. E.g. `cd apps/user-portal && npm start`.
+
+#### Build sepearate modules
+
+Execute `cd modules/<module> && npm run build` command. E.g. `cd module/theme && npm run build`.
 
 #### Build project
 
