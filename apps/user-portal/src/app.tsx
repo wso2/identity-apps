@@ -19,9 +19,9 @@
 // import { DefaultTheme, Logo, Theme, } from "@wso2is/theme";
 import * as React from "react";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
-import history from "./actions/history";
 import { AuthConsumer, AuthProvider } from "./components/auth-context";
 import ProtectedRoute from "./components/protected-route";
+import history from "./helpers/history";
 import {
     AppListingPage,
     LoginPage,

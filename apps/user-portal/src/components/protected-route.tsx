@@ -18,7 +18,7 @@
 
 import * as React from "react";
 import { Redirect, Route } from "react-router-dom";
-import history from "../actions/history";
+import history from "../helpers/history";
 import { AuthConsumer } from "./auth-context";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => (
