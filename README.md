@@ -11,16 +11,16 @@ End-user apps in WSO2 Identity Server
 
 #### Run sepearate apps in development mode
 
-Execute `cd apps/<app> && npm start` command. E.g. `cd apps/user-portal && npm start`.
+- Execute `cd apps/<app> && npm start` command. E.g. `cd apps/user-portal && npm start`.
 
 #### Build sepearate modules
 
-Execute `cd modules/<module> && npm run build` command. E.g. `cd module/theme && npm run build`.
+- Execute `cd modules/<module> && npm run build` command. E.g. `cd module/theme && npm run build`.
 
 #### Build project
 
-Execute `npm run build` (in this folder). You can find the final distribution at dist/wso2is-webapps-$version.zip
+- Execute `npm run build`. And you will get the built distribution in `dist/wso2is-webapps-$version.zip` upon build complete.
 
-### License
+## License
 
 Licenses this source under the Apache License, Version 2.0 ([LICENSE](LICENSE)), You may not use this file except in compliance with the License.
