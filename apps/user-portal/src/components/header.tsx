@@ -18,8 +18,8 @@
 
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { Button, Container, Menu } from "semantic-ui-react";
-import { AuthConsumer, Title } from "../components";
+import { Container, Menu } from "semantic-ui-react";
+import { Title } from "../components";
 
 export const Header = () => (
     <Menu fixed="top">
@@ -30,11 +30,7 @@ export const Header = () => (
             <Menu.Item><Link to="/app-listing">Apps</Link></Menu.Item>
             <Menu.Item><Link to="/user-listing">Users</Link></Menu.Item>
             <Menu.Item><Link to="/theme">Theme</Link></Menu.Item>
-            <AuthConsumer>
-                {({ logout }) => (
-                    <Menu.Item><Button as="a" onClick={logout}>Logout</Button></Menu.Item>
-                )}
-            </AuthConsumer>
+            <Menu.Item><Link to="/logout">Logout</Link></Menu.Item>
         </Container>
     </Menu>
 );

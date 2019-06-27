@@ -30,28 +30,9 @@ import {
     UserListingPage
 } from "./pages";
 
-const LogoutPage = () => {
-    // TODO: Need to handle logout using path
-    React.useEffect(() => {
-        // this.props.logout();
-        // console.log(this);
-        // this.context.store.dispatch(logout());
-    });
-
-    return (
-        <AuthConsumer>
-            {({ logout }) => (
-                <Route
-                    render={() =>
-                        <Redirect to={{
-                            logout: { logout },
-                            pathname: "/login"
-                        }} />
-                    }
-                />
-            )}
-        </AuthConsumer>
-    );
+const LogoutPage = (props) => {
+    props.logoutFuntion();
+    return null;
 };
 
 class App extends React.Component {
@@ -60,15 +41,21 @@ class App extends React.Component {
             <Router history={history}>
                 <div className="container-fluid">
                     <AuthProvider history={history}>
-                        <Switch>
-                            <Redirect exact path="/" to="/login" />
-                            <Route path="/login" component={LoginPage} />
-                            <Route path="/logout" component={LogoutPage} />
-                            <ProtectedRoute path="/app-listing" component={AppListingPage} />
-                            <ProtectedRoute path="/user-listing" component={UserListingPage} />
-                            <ProtectedRoute path="/theme" component={ThemeBuilderPage} />
-                            <Route component={PageNotFound} />
-                        </Switch>
+                        <AuthConsumer>
+                            {({ logout }) => (
+                                <Switch>
+                                    <Redirect exact path="/" to="/login" />
+                                    <Route path="/login" component={LoginPage} />
+                                    <Route path="/logout" render={(props) => (
+                                        <LogoutPage logoutFuntion={logout} {...props}/>
+                                    )} />
+                                    <Route component={PageNotFound} />
+                                    <ProtectedRoute path="/app-listing" component={AppListingPage} />
+                                    <ProtectedRoute path="/user-listing" component={UserListingPage} />
+                                    <ProtectedRoute path="/theme" component={ThemeBuilderPage} />
+                                </Switch>
+                            )}
+                        </AuthConsumer>
                     </AuthProvider>
                 </div>
             </Router>
