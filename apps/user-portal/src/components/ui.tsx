@@ -19,7 +19,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { Image } from "semantic-ui-react";
-import { LogoImage, TitleText, UserImage } from "../../configs/ui";
+import { LogoImage, TitleText, UserImage } from "../configs/ui";
 
 interface ImageProps {
     classes?: any;

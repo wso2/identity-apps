@@ -18,29 +18,46 @@
 
 import axios from "axios";
 import log from "log";
-import { ServiceResources } from "../../configs/app";
-import { LoginEntity } from "../models/login";
+import { ServiceResources } from "../configs/app";
+import { LoginEntity, LoginStatusEntity } from "../models/login";
 
-export const isValidLogin = async (loginInfo: LoginEntity): Promise<boolean> => {
+export const isValidLogin = async (loginInfo: LoginEntity): Promise<object> => {
     const authUrl: string = ServiceResources.login;
-    const payload: object = {
-        password: loginInfo.password,
-        username: loginInfo.username
+    const loginStatus: LoginStatusEntity = {
+        errorDiscription: "",
+        errorMessage: "",
+        valid: false
     };
 
-    let valid: boolean = false;
+    if (loginInfo.username === "") {
+        loginStatus.errorMessage = "We're sorry we couldn't get you logged in";
+        loginStatus.errorDiscription = "Username cannot be empty";
+    } else if (loginInfo.password === "") {
+        loginStatus.errorMessage = "We're sorry we couldn't get you logged in";
+        loginStatus.errorDiscription = "Password cannot be empty";
+    } else {
+        const payload: object = {
+            password: loginInfo.password,
+            username: loginInfo.username
+        };
 
-    await axios.post(authUrl, payload)
-        .then((response) => {
-            if (response.status === 200 && response.data.valid === true) {
-                valid = true;
-            }
-        })
-        .catch((error) => {
-            log.error(error);
-        });
+        await axios.post(authUrl, payload)
+            .then((response) => {
+                if (response.status === 200 && response.data.status === 200) {
+                    loginStatus.valid = true;
+                    loginStatus.errorMessage = "";
+                    loginStatus.errorMessage = "";
+                } else if (response.status === 200 && response.data.status === 401) {
+                    loginStatus.errorMessage = "We're sorry we couldn't get you logged in";
+                    loginStatus.errorDiscription = "Invalid login or password, please type again";
+                }
+            })
+            .catch((error) => {
+                log.error(error);
+            });
+    }
 
-    return valid;
+    return loginStatus;
 };
 
 export const isLoggedIn = () => {

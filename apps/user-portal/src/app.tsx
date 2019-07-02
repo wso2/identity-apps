@@ -49,10 +49,10 @@ class App extends React.Component {
                                     <Route path="/logout" render={(props) => (
                                         <LogoutPage logoutFuntion={logout} {...props}/>
                                     )} />
-                                    <Route component={PageNotFound} />
                                     <ProtectedRoute path="/app-listing" component={AppListingPage} />
                                     <ProtectedRoute path="/user-listing" component={UserListingPage} />
                                     <ProtectedRoute path="/theme" component={ThemeBuilderPage} />
+                                    <Route component={PageNotFound} />
                                 </Switch>
                             )}
                         </AuthConsumer>

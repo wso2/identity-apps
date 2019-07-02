@@ -18,6 +18,7 @@
 
 import * as React from "react";
 import { isValidLogin } from "../actions/login";
+import { LoginStatusEntity } from "../models/login";
 
 interface AuthProviderInterface {
     history: any;
@@ -25,8 +26,10 @@ interface AuthProviderInterface {
 
 interface AppContextInterface {
     children?: any;
-    isAuth: boolean;
     error: boolean;
+    errorDiscription: string;
+    errorMessage: string;
+    isAuth: boolean;
     login: (loginInfo: object, location: string) => void;
     logout: () => void;
 }
@@ -38,6 +41,8 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
         super(props);
         this.state = {
             error: false,
+            errorDiscription: "",
+            errorMessage: "",
             isAuth: false
         };
         this.login = this.login.bind(this);
@@ -49,6 +54,8 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
             <AuthContext.Provider
                 value={{
                     error: this.state.error,
+                    errorDiscription: this.state.errorDiscription,
+                    errorMessage: this.state.errorMessage,
                     isAuth: this.state.isAuth,
                     login: this.login,
                     logout: this.logout
@@ -61,16 +68,20 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
 
     private login(loginInfo, location) {
         isValidLogin(loginInfo)
-            .then((response: boolean) => {
-                if (response) {
+            .then((response: LoginStatusEntity) => {
+                if (response.valid) {
                     this.setState({
                         error: false,
+                        errorDiscription: response.errorDiscription,
+                        errorMessage: response.errorMessage,
                         isAuth: true
                     });
                     this.props.history.push(location);
                 } else {
                     this.setState({
                         error: true,
+                        errorDiscription: response.errorDiscription,
+                        errorMessage: response.errorMessage,
                         isAuth: false
                     });
                 }
@@ -80,6 +91,8 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
     private logout() {
         this.setState({
             error: false,
+            errorDiscription: "",
+            errorMessage: "",
             isAuth: false
         });
         this.props.history.push("/login");

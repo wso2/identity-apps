@@ -14,18 +14,14 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
 
-export interface UserEntity {
-    user: string;
-    domain: string;
-    displayName: string;
-    telephone: string;
-}
-
-export const createEmptyUser = (): UserEntity => ({
-    displayName: "",
-    domain: "",
-    telephone: "",
-    user: ""
-});
+export const Theme = require("./theme");
+// TODO: Revist default theme loading
+// export const DefaultTheme = Theme.compile(
+//     "./libs/styles/less/theme-module/themes/default/index.less",
+//     "./libs/styles/less/theme-module/themes/default", {}
+// );
+export const Logo = require("../lib/assets/images/logo.svg");
+export const DummyUser = require("../lib/assets/images/user.png");

@@ -21,6 +21,12 @@ export interface LoginEntity {
     username: string;
 }
 
+export interface LoginStatusEntity {
+    errorMessage: string;
+    errorDiscription: string;
+    valid: boolean;
+}
+
 export const createEmptyLogin = (): LoginEntity => ({
     password: "",
     username: ""

@@ -82,7 +82,7 @@ const LoginForm = (props: PropsForm) => {
             <Grid textAlign="center" style={{ height: "100%" }} verticalAlign="middle">
                 <Grid.Column style={{ maxWidth: 450 }}>
                     <AuthConsumer>
-                        {({ isAuth, login, logout, error }) => (
+                        {({ isAuth, login, logout, error, errorMessage, errorDiscription }) => (
                             !isAuth ? (
                                 <>
                                     <Form size="large">
@@ -94,8 +94,9 @@ const LoginForm = (props: PropsForm) => {
                                             <User size="small" />
                                             {error && (
                                                 <NotificationComponent
-                                                    message="Invalid login or password, please type again"
-                                                    type="error"
+                                                    message={errorMessage}
+                                                    description={errorDiscription}
+                                                    negative
                                                 />
                                             )}
                                             <Form.Input

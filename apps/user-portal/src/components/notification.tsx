@@ -16,23 +16,24 @@
  * under the License.
  */
 
-import classNames from "classnames";
 import * as React from "react";
+import { Message } from "semantic-ui-react";
 
-interface Props {
-    className?: string;
+interface NotificationProps  {
+    description: string;
     message: string;
-    type: string;
     onClose?: () => void;
+    [x: string]: any;
 }
 
-const NotificationComponentInner = (props: Props) => {
-    const { className, type, message } = props;
+const NotificationComponentInner = (props: NotificationProps) => {
+    const { description, message, ...otherProps } = props;
 
     return (
-        <div className={classNames(className, type)}>
-            <span id="message-id">{message}</span>
-        </div>
+        <Message {...otherProps}>
+            <Message.Header>{message}</Message.Header>
+            <p>{description}</p>
+        </Message>
     );
 };
 
