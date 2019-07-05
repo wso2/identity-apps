@@ -18,8 +18,9 @@
 
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { Container, Menu } from "semantic-ui-react";
+import { Container, Dropdown, Menu } from "semantic-ui-react";
 import { Title } from "../components";
+import { AuthConsumer } from "./auth-context";
 
 export const Header = () => (
     <Menu fixed="top">
@@ -29,8 +30,22 @@ export const Header = () => (
             </Menu.Item>
             <Menu.Item><Link to="/app-listing">Apps</Link></Menu.Item>
             <Menu.Item><Link to="/user-listing">Users</Link></Menu.Item>
-            <Menu.Item><Link to="/theme">Theme</Link></Menu.Item>
-            <Menu.Item><Link to="/logout">Logout</Link></Menu.Item>
+            <AuthConsumer>
+                {({ displayName, emails, username }) => (
+                    <Menu.Menu position="right">
+                        <Dropdown item floating text={displayName}>
+                            <Dropdown.Menu>
+                                <Dropdown.Header>{username} ({emails[0]})</Dropdown.Header>
+                                <Dropdown.Divider />
+                                <Dropdown.Item icon="setting" text="Settings" as={Link} to="/settings" />
+                                <Dropdown.Item icon="theme" text="Change Theme" as={Link} to="/theme" />
+                                <Dropdown.Divider />
+                                <Dropdown.Item as={Link} to="/logout" text="Logout" />
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Menu.Menu>
+                )}
+            </AuthConsumer>
         </Container>
     </Menu>
 );

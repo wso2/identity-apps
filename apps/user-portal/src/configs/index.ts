@@ -16,7 +16,6 @@
  * under the License.
  */
 
- declare module "*.svg" {
-    const content: any;
-    export default content;
-}
+export * from "./app";
+export * from "./text";
+export * from "./ui";

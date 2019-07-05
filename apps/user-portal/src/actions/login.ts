@@ -19,37 +19,41 @@
 import axios from "axios";
 import log from "log";
 import { ServiceResources } from "../configs/app";
-import { LoginEntity, LoginStatusEntity } from "../models/login";
+import { Messages } from "../configs/text";
+import { createEmptyLoginStatus, LoginEntity, LoginStatusEntity } from "../models/login";
 
 export const isValidLogin = async (loginInfo: LoginEntity): Promise<object> => {
     const authUrl: string = ServiceResources.login;
-    const loginStatus: LoginStatusEntity = {
-        errorDiscription: "",
-        errorMessage: "",
-        valid: false
-    };
+    const loginStatus = createEmptyLoginStatus();
 
     if (loginInfo.username === "") {
-        loginStatus.errorMessage = "We're sorry we couldn't get you logged in";
-        loginStatus.errorDiscription = "Username cannot be empty";
+        loginStatus.errorMessage = Messages.errors.login.loginFailed;
+        loginStatus.errorDiscription = Messages.errors.login.emptyUsername;
     } else if (loginInfo.password === "") {
-        loginStatus.errorMessage = "We're sorry we couldn't get you logged in";
-        loginStatus.errorDiscription = "Password cannot be empty";
+        loginStatus.errorMessage = Messages.errors.login.loginFailed;
+        loginStatus.errorDiscription = Messages.errors.login.emptyPassword;
     } else {
-        const payload: object = {
-            password: loginInfo.password,
-            username: loginInfo.username
+        const header = {
+            auth: {
+                password: loginInfo.password,
+                username: loginInfo.username
+            },
+            headers: {
+                "Accept": "application/json",
+                "Access-Control-Allow-Origin": "http://localhost:9000",
+                "Content-Type": "application/scim+json"
+            }
         };
 
-        await axios.post(authUrl, payload)
-            .then((response) => {
-                if (response.status === 200 && response.data.status === 200) {
+        await axios.get(authUrl, header)
+            .then((endpointResponse) => {
+                if (endpointResponse.status === 200) {
                     loginStatus.valid = true;
+                    loginStatus.displayName = endpointResponse.data.name.givenName || "";
+                    loginStatus.emails = endpointResponse.data.emails || [];
                     loginStatus.errorMessage = "";
                     loginStatus.errorMessage = "";
-                } else if (response.status === 200 && response.data.status === 401) {
-                    loginStatus.errorMessage = "We're sorry we couldn't get you logged in";
-                    loginStatus.errorDiscription = "Invalid login or password, please type again";
+                    loginStatus.username = endpointResponse.data.userName || "";
                 }
             })
             .catch((error) => {

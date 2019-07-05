@@ -16,7 +16,19 @@
  * under the License.
  */
 
- declare module "*.svg" {
-    const content: any;
-    export default content;
+import * as data from "../locales/en.json";
+
+interface ErrorMessagesType {
+    login: {
+        emptyPassword: string;
+        emptyUsername: string;
+        invalidCredentials: string;
+        loginFailed: string
+    };
 }
+
+interface MessagesType {
+    errors: ErrorMessagesType;
+}
+
+export const Messages: MessagesType = (data as any).default;

@@ -23,9 +23,9 @@ interface ServiceResourcesType {
     users: string;
 }
 
-export const ServiceEndpoint: ServiceEndpointType = "http://localhost:3001";
+export const ServiceEndpoint: ServiceEndpointType = "https://localhost:9443";
 export const ServiceResources: ServiceResourcesType = {
-    login: `${ServiceEndpoint}/auth`,
+    login: `${ServiceEndpoint}/scim2/Me`,
     user: `${ServiceEndpoint}/user`,
     users: `${ServiceEndpoint}/users`
 };

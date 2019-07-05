@@ -16,7 +16,24 @@
  * under the License.
  */
 
- declare module "*.svg" {
-    const content: any;
-    export default content;
+import { createEmptyLoginStatus, LoginStatusEntity } from "./login";
+
+export interface AuthProviderInterface {
+    history: any;
 }
+
+export interface AppContextInterface extends LoginStatusEntity {
+    children?: any;
+    error: boolean;
+    isAuth: boolean;
+    login: (loginInfo: object, location: string) => void;
+    logout: () => void;
+}
+
+export const createEmptyAppContextInterface = (): AppContextInterface => ({
+    error: false,
+    isAuth: false,
+    login: () => null,
+    logout: () => null,
+    ...createEmptyLoginStatus()
+});

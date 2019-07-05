@@ -22,12 +22,24 @@ export interface LoginEntity {
 }
 
 export interface LoginStatusEntity {
-    errorMessage: string;
+    displayName: string;
+    emails: string[];
     errorDiscription: string;
+    errorMessage: string;
     valid: boolean;
+    username: string;
 }
 
 export const createEmptyLogin = (): LoginEntity => ({
     password: "",
     username: ""
+});
+
+export const createEmptyLoginStatus = (): LoginStatusEntity => ({
+    displayName: "",
+    emails: [],
+    errorDiscription: "",
+    errorMessage: "",
+    username: "",
+    valid: false
 });

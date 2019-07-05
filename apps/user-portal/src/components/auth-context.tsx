@@ -18,33 +18,15 @@
 
 import * as React from "react";
 import { isValidLogin } from "../actions/login";
+import { AppContextInterface, AuthProviderInterface, createEmptyAppContextInterface } from "../models/auth";
 import { LoginStatusEntity } from "../models/login";
-
-interface AuthProviderInterface {
-    history: any;
-}
-
-interface AppContextInterface {
-    children?: any;
-    error: boolean;
-    errorDiscription: string;
-    errorMessage: string;
-    isAuth: boolean;
-    login: (loginInfo: object, location: string) => void;
-    logout: () => void;
-}
 
 const AuthContext = React.createContext<AppContextInterface | null>(null);
 
 class AuthProvider extends React.Component<AuthProviderInterface, any> {
     constructor(props) {
         super(props);
-        this.state = {
-            error: false,
-            errorDiscription: "",
-            errorMessage: "",
-            isAuth: false
-        };
+        this.state = createEmptyAppContextInterface();
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
     }
@@ -53,12 +35,16 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
         return (
             <AuthContext.Provider
                 value={{
+                    displayName: this.state.displayName,
+                    emails: this.state.emails,
                     error: this.state.error,
                     errorDiscription: this.state.errorDiscription,
                     errorMessage: this.state.errorMessage,
                     isAuth: this.state.isAuth,
                     login: this.login,
-                    logout: this.logout
+                    logout: this.logout,
+                    username: this.state.username,
+                    valid: this.state.valid
                 }}
             >
                 {this.props.children}
@@ -71,10 +57,13 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
             .then((response: LoginStatusEntity) => {
                 if (response.valid) {
                     this.setState({
+                        displayName: response.displayName,
+                        emails: response.emails,
                         error: false,
                         errorDiscription: response.errorDiscription,
                         errorMessage: response.errorMessage,
-                        isAuth: true
+                        isAuth: true,
+                        username: response.username,
                     });
                     this.props.history.push(location);
                 } else {
