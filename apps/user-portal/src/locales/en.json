@@ -1,0 +1,10 @@
+{
+    "errors": {
+        "login": {
+            "emptyPassword": "Password cannot be empty",
+            "emptyUsername": "Username cannot be empty",
+            "invalidCredentials": "Invalid username or password, please type again",
+            "loginFailed": "We're sorry we couldn't get you logged in"
+        }
+    }
+}
