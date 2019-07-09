@@ -1,1 +1,1 @@
-Theme and font for web components of Ballerina Tools.
+Theme and fonts for WSO2 Identity Server Web Apps
