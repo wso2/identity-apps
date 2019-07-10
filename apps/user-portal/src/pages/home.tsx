@@ -16,6 +16,11 @@
  * under the License.
  */
 
-declare const APP_BASENAME: string;
-declare const APP_PRODUCTION: string;
-declare const APP_HOME_PATH: string;
+import * as React from "react";
+import { InnerPageLayout } from "../layouts";
+
+export const HomePage = () => (
+    <InnerPageLayout pageTitle="You are successfully logged !">
+        This a temporally landing page to demostrate the basic authentication.
+    </InnerPageLayout>
+);

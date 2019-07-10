@@ -18,6 +18,7 @@
 
 export * from "./errors/404";
 export * from "./app-listing";
+export * from "./home";
 export * from "./login";
 export * from "./theme";
 export * from "./user-listing";

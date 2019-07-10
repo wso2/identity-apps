@@ -20,7 +20,5 @@ import * as React from "react";
 import { InnerPageLayout } from "../layouts";
 
 export const ThemeBuilderPage = () => (
-    <>
-        <InnerPageLayout pageTitle="Change Theme"></InnerPageLayout>
-    </>
+    <InnerPageLayout pageTitle="Change Theme"></InnerPageLayout>
 );

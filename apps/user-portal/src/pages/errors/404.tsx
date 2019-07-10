@@ -20,7 +20,5 @@ import * as React from "react";
 import { InnerPageLayout } from "../../layouts";
 
 export const PageNotFound = () => (
-    <>
-        <InnerPageLayout pageTitle="Page not found."></InnerPageLayout>
-    </>
+    <InnerPageLayout pageTitle="Page not found."></InnerPageLayout>
 );

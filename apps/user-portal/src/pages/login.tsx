@@ -66,7 +66,7 @@ const LoginForm = (props: PropsForm) => {
         onUpdateField(fieldId, e.target.value);
     };
 
-    const location = (locationHistory.state !== undefined) ? locationHistory.state.details : "/app-listing";
+    const location = (locationHistory.state !== undefined) ? locationHistory.state.details : APP_HOME_PATH;
 
     return (
       <div className="login-form">
@@ -127,9 +127,6 @@ const LoginForm = (props: PropsForm) => {
                                             </Button>
                                         </Segment>
                                     </Form>
-                                    <Message>
-                                        New to us? <a href="#">Sign Up</a>
-                                    </Message>
                                 </>
                             ) : (
                                 <>

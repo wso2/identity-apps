@@ -24,6 +24,8 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const production = true;
 const basename = 'user-portal';
+const homePagePath = '/home';
+
 const distFolder = path.resolve(__dirname, 'build', basename);
 const faviconImage = path.resolve(__dirname, 'node_modules', '@wso2is/theme/lib/assets/images/favicon.ico');
 const titleText = 'WSO2 Identity Server';
@@ -114,7 +116,12 @@ module.exports = {
         }),
         new webpack.DefinePlugin({
             APP_BASENAME: JSON.stringify(basename),
-            APP_PRODUCTION: JSON.stringify(production)
+            APP_PRODUCTION: JSON.stringify(production),
+            APP_HOME_PATH: JSON.stringify(homePagePath),
+            'typeof window': JSON.stringify('object'),
+            'process.env': {
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+            }
         })
     ],
     devtool: 'source-map',
@@ -127,4 +134,4 @@ module.exports = {
             })
         ]
     }
-}
+};
