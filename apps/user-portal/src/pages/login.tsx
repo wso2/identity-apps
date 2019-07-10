@@ -17,9 +17,10 @@
  */
 
 import * as React from "react";
-import { RouteComponentProps } from "react-router-dom";
-import { Button, Form, Grid, Header, Message, Segment } from "semantic-ui-react";
-import { AuthConsumer, NotificationComponent, Title, User } from "../components";
+import { Link, RouteComponentProps } from "react-router-dom";
+import { Button, Form } from "semantic-ui-react";
+import { AuthConsumer, NotificationComponent, User } from "../components";
+import { LoginPageLayout } from "../layouts";
 import { createEmptyLogin, LoginEntity } from "../models/login";
 
 interface Props extends RouteComponentProps<any, any> {}
@@ -69,86 +70,60 @@ const LoginForm = (props: PropsForm) => {
     const location = (locationHistory.state !== undefined) ? locationHistory.state.details : APP_HOME_PATH;
 
     return (
-      <div className="login-form">
-            <style>
-                {`
-                    body > div,
-                    body > div > div,
-                    body > div > div > div.login-form {
-                        height: 100%;
-                    }
-                `}
-            </style>
-            <Grid textAlign="center" style={{ height: "100%" }} verticalAlign="middle">
-                <Grid.Column style={{ maxWidth: 450 }}>
-                    <AuthConsumer>
-                        {({ isAuth, login, logout, error, errorMessage, errorDiscription }) => (
-                            !isAuth ? (
-                                <>
-                                    <Form size="large">
-                                        <Segment>
-                                            <Title />
-                                            <Header as="h3" textAlign="center">
-                                                Sign In
-                                            </Header>
-                                            <User size="small" />
-                                            {error && (
-                                                <NotificationComponent
-                                                    message={errorMessage}
-                                                    description={errorDiscription}
-                                                    negative
-                                                />
-                                            )}
-                                            <Form.Input
-                                                fluid
-                                                icon="user"
-                                                iconPosition="left"
-                                                placeholder="E-mail address"
-                                                value={loginInfo.username}
-                                                onChange={onTexFieldChange("username")}
-                                            />
-                                            <Form.Input
-                                                fluid
-                                                icon="lock"
-                                                iconPosition="left"
-                                                placeholder="Password"
-                                                type="password"
-                                                value={loginInfo.password}
-                                                onChange={onTexFieldChange("password")}
-                                            />
+        <LoginPageLayout pageTitle="Sign In">
+            <AuthConsumer>
+                {({ isAuth, login, logout, error, errorMessage, errorDiscription }) => (
+                    !isAuth ? (
+                        <>
+                            <User size="small" />
+                            {error && (
+                                <NotificationComponent
+                                    message={errorMessage}
+                                    description={errorDiscription}
+                                    negative
+                                />
+                            )}
+                            <Form.Input
+                                fluid
+                                icon="user"
+                                iconPosition="left"
+                                placeholder="E-mail address"
+                                value={loginInfo.username}
+                                onChange={onTexFieldChange("username")}
+                            />
+                            <Form.Input
+                                fluid
+                                icon="lock"
+                                iconPosition="left"
+                                placeholder="Password"
+                                type="password"
+                                value={loginInfo.password}
+                                onChange={onTexFieldChange("password")}
+                            />
 
-                                            <Button
-                                                color="orange"
-                                                fluid
-                                                size="large"
-                                                onClick={() => login(loginInfo, location)}
-                                            >
-                                                Login
-                                            </Button>
-                                        </Segment>
-                                    </Form>
-                                </>
-                            ) : (
-                                <>
-                                    <Form size="large">
-                                        <Segment>
-                                            <Button
-                                                color="orange"
-                                                fluid
-                                                size="large"
-                                                onClick={logout}
-                                            >
-                                                Logout
-                                            </Button>
-                                        </Segment>
-                                    </Form>
-                                </>
-                            )
-                        )}
-                    </AuthConsumer>
-                </Grid.Column>
-            </Grid>
-        </div>
+                            <div className="login-buttons">
+                                <Button
+                                    size="large"
+                                    color="orange"
+                                    onClick={() => login(loginInfo, location)}
+                                >
+                                    Continue
+                                </Button>
+                            </div>
+                        </>
+                    ) : (
+                        <Button
+                            color="orange"
+                            fluid
+                            size="large"
+                            onClick={logout}
+                        >
+                            Logout
+                        </Button>
+                    )
+                )}
+            </AuthConsumer>
+        </LoginPageLayout>
     );
 };
 
