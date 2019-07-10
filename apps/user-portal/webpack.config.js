@@ -105,6 +105,11 @@ module.exports = {
                 context: path.resolve(__dirname, 'node_modules'),
                 from: 'semantic-ui-less',
                 to: 'libs/styles/less/semantic-ui-less'
+            },
+            {
+                context: path.resolve(__dirname, 'src'),
+                from: 'public',
+                to: '.'
             }
         ]),
         new HtmlWebpackPlugin({

@@ -87,6 +87,10 @@ typings/
 # next.js build output
 .next
 
-# project build folders
+# project build folders & files
+.project
 modules/theme/lib/
 apps/user-portal/build/
+target/
+npm/
+src/

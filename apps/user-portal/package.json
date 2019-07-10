@@ -1,13 +1,13 @@
 {
     "name": "@wso2is/user-portal",
-    "version": "0.1.0-SNAPSHOT",
+    "version": "0.1.0",
     "description": "WSO2 Identity Server User Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
     "main": "index.js",
     "scripts": {
         "server": "node server",
-        "start": "webpack-dev-server  --mode development --inline --hot --open",
+        "start": "webpack-dev-server --mode development --inline --hot --open",
         "lint": "tslint -t stylish --project .",
         "build": "webpack  --mode development",
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -45,7 +45,7 @@
     },
     "dependencies": {
         "@types/history": "4.6.2",
-        "@wso2is/theme": "^0.1.0-SNAPSHOT",
+        "@wso2is/theme": "0.1.0",
         "cors": "^2.8.5",
         "express-session": "^1.16.1",
         "history": "^4.9.0",
