@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-
-<!--
+/**
  * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -16,17 +14,7 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- -->
+ */
 
-<html>
-    <head>
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-        <link href="libs/styles/css/wso2-default.css" rel="stylesheet" type="text/css"/>
-        
-        <title><%= htmlWebpackPlugin.options.title %></title>
-    </head>
-    <body>
-        <div id="root"></div>
-    </body>
-</html>
+declare const APP_BASENAME: string;
+declare const APP_PRODUCTION: string;

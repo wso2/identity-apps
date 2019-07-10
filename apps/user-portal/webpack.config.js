@@ -16,12 +16,15 @@
  * under the License.
  */
 
+const webpack = require('webpack');
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-const distFolder = path.resolve(__dirname, 'build');
+const production = true;
+const basename = 'user-portal';
+const distFolder = path.resolve(__dirname, 'build', basename);
 const faviconImage = path.resolve(__dirname, 'node_modules', '@wso2is/theme/lib/assets/images/favicon.ico');
 const titleText = 'WSO2 Identity Server';
 
@@ -32,7 +35,7 @@ module.exports = {
     output: {
         path: distFolder,
         filename: '[name].js',
-        publicPath: '/'
+        publicPath: `/${basename}/`
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.json']
@@ -108,6 +111,10 @@ module.exports = {
             hash: true,
             favicon: faviconImage,
             title: titleText
+        }),
+        new webpack.DefinePlugin({
+            APP_BASENAME: JSON.stringify(basename),
+            APP_PRODUCTION: JSON.stringify(production)
         })
     ],
     devtool: 'source-map',
