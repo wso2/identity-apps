@@ -2,6 +2,10 @@
 
 End-user apps in WSO2 Identity Server
 
+|  Branch | Build Status |
+| :------------ |:------------- 
+| master      | [![Build Status](https://wso2.org/jenkins/view/Dashboard/job/platform-builds/job/identity-apps/badge/icon)](https://wso2.org/jenkins/view/Dashboard/job/platform-builds/job/identity-apps/) |
+
 ## How to start
 
 1. Download or clone the project source code from [https://github.com/wso2/identity-apps](https://github.com/wso2/identity-apps)

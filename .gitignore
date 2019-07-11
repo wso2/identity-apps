@@ -97,3 +97,10 @@ apps/user-portal/build/
 target/
 npm/
 apps/user-portal/src/main/
+
+.classpath
+.settings
+*.iml
+*.iws
+*.ipr
+.DS_Store
