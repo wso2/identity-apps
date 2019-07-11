@@ -21,7 +21,7 @@ import { Container, Header } from "semantic-ui-react";
 import { Header as AppHeader } from "../components";
 
 interface Props extends React.ComponentProps<any> {
-    pageTitle?: string;
+    pageTitle: string;
 }
 
 export const InnerPageLayout = (props: Props) => (

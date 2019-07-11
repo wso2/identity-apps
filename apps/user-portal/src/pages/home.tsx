@@ -17,8 +17,10 @@
  */
 
 import * as React from "react";
-import { InnerPageLayout } from "../../layouts";
+import { InnerPageLayout } from "../layouts";
 
-export const PageNotFound = () => (
-    <InnerPageLayout pageTitle="Page not found."></InnerPageLayout>
+export const HomePage = () => (
+    <InnerPageLayout pageTitle="You are successfully logged !">
+        This a temporally landing page to demostrate the basic authentication.
+    </InnerPageLayout>
 );

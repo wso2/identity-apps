@@ -22,11 +22,9 @@ import { AuthConsumer, AuthProvider } from "./components/auth-context";
 import ProtectedRoute from "./components/protected-route";
 import history from "./helpers/history";
 import {
-    AppListingPage,
+    HomePage,
     LoginPage,
-    PageNotFound,
-    ThemeBuilderPage,
-    UserListingPage
+    PageNotFound
 } from "./pages";
 
 const LogoutPage = (props) => {
@@ -48,10 +46,8 @@ class App extends React.Component {
                                     <Route path="/logout" render={(props) => (
                                         <LogoutPage logoutFuntion={logout} {...props}/>
                                     )} />
-                                    <ProtectedRoute path="/app-listing" component={AppListingPage} />
-                                    <ProtectedRoute path="/user-listing" component={UserListingPage} />
-                                    <ProtectedRoute path="/theme" component={ThemeBuilderPage} />
-                                    <Route component={PageNotFound} />
+                                    <ProtectedRoute path="/home" component={HomePage} />
+                                    <ProtectedRoute component={PageNotFound} />
                                 </Switch>
                             )}
                         </AuthConsumer>

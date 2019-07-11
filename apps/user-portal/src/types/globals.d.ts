@@ -16,9 +16,6 @@
  * under the License.
  */
 
-import * as React from "react";
-import { InnerPageLayout } from "../../layouts";
-
-export const PageNotFound = () => (
-    <InnerPageLayout pageTitle="Page not found."></InnerPageLayout>
-);
+declare const APP_BASENAME: string;
+declare const APP_PRODUCTION: string;
+declare const APP_HOME_PATH: string;

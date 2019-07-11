@@ -20,7 +20,5 @@ import * as React from "react";
 import { InnerPageLayout } from "../layouts";
 
 export const AppListingPage = () => (
-    <>
-        <InnerPageLayout pageTitle="App Listing"></InnerPageLayout>
-    </>
+    <InnerPageLayout pageTitle="App Listing"></InnerPageLayout>
 );
