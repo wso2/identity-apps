@@ -14,7 +14,8 @@
         "test": "echo \"Error: no test specified\"",
         "lint": "tslint -t stylish --project .",
         "test-coverage": "echo \"Error: no test coverage specified\"",
-        "watch": "watch \"npm run build\" src"
+        "watch": "watch \"npm run build\" src",
+        "clean": "rm -rf node_modules lib npm"
     },
     "author": "WSO2",
     "license": "Apache-2.0",

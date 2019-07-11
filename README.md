@@ -1,4 +1,4 @@
-# WSO2 Identity Server Web Apps Library
+# WSO2 Identity Server Web Apps
 
 End-user apps in WSO2 Identity Server
 
