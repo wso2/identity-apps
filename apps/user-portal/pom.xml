@@ -29,7 +29,6 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <groupId>org.wso2.identity.apps</groupId>
     <artifactId>user-portal</artifactId>
     <name>WSO2 Identity Server - User Portal App</name>
     <modelVersion>4.0.0</modelVersion>

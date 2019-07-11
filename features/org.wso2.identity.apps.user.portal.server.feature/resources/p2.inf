@@ -1,0 +1,2 @@
+instructions.configure = \
+org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/../features/org.wso2.identity.apps.user.portal.server_${feature.version}/user-portal.war,target:${installFolder}/../../deployment/server/webapps/user-portal.war,overwrite:true);\
