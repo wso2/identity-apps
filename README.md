@@ -4,11 +4,23 @@ End-user apps in WSO2 Identity Server
 
 ## How to start
 
-1. Install NodeJS and NPM from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
-2. Download or clone the project source code from [https://github.com/jeradrutnam/wso2is-webapps](https://github.com/jeradrutnam/wso2is-webapps)
-3. Install all required npm packages by running `npm install` from the command line in the project root folder (where the package.json is located).
-4. And then run `npm run build` to build all the packages with local dependancies.
-5. Add below code to `WSO2 Identity Server/repository/deployment/server/webapps/scim2/WEB-INF/web.xml` allow CORS for dev servers.
+1. Download or clone the project source code from [https://github.com/wso2/identity-apps](https://github.com/wso2/identity-apps)
+2. Install NodeJS from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
+
+If you are building the project for [product-is](https://github.com/wso2/product-is) build, do this step.
+
+3.  Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi).
+
+## Build
+
+1. Run `mvn clean install` from the command line in the project root directory (where the root `pom.xml` is located). And the built dependency will install to your local `.m2` repository.
+2. Then build [WSO2 Identiy Server](https://github.com/wso2/product-is). _(Follow the guide there)_
+
+## Run (Dev Mode)
+
+1. Run `npm run build` from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependancies.
+2. Download a [WSO2 Identity Server](https://wso2.com/identity-and-access-management/) distrubution.
+3. Add below code to `WSO2 Identity Server/repository/deployment/server/webapps/scim2/WEB-INF/web.xml` allow CORS for dev servers. _(If you are running the app in Webpack dev server)_
 
 ```xml
     <filter>
@@ -19,24 +31,13 @@ End-user apps in WSO2 Identity Server
             <param-value>http://localhost:9000</param-value>
         </init-param>
     </filter>
-
-
     <filter-mapping>
         <filter-name>CORS</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 ```
 
-6. Start,
-
-   - Run sepearate apps in development mode   
-     Execute `cd apps/<app> && npm start` command. E.g. `cd apps/user-portal && npm start`.
-
-   - Build sepearate modules   
-     Execute `cd modules/<module> && npm run build` command. E.g. `cd module/theme && npm run build`.
-
-   - Build project   
-     Execute `npm run build`. And you will get the built distribution in `dist/wso2is-webapps-$version.zip` upon build complete.
+4. Start in development mode, Execute `cd apps/<app> && npm start` command. E.g. `cd apps/user-portal && npm start`.
 
 ## License
 
