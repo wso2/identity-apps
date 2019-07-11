@@ -1,4 +1,4 @@
-# WSO2 Identity Server Web Apps Library
+# WSO2 Identity Server Web Apps
 
 End-user apps in WSO2 Identity Server
 
@@ -20,7 +20,7 @@ If you are building the project for [product-is](https://github.com/wso2/product
 
 1. Run `npm run build` from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependancies.
 2. Download a [WSO2 Identity Server](https://wso2.com/identity-and-access-management/) distrubution.
-3. Add below code to `WSO2 Identity Server/repository/deployment/server/webapps/scim2/WEB-INF/web.xml` allow CORS for dev servers. _(If you are running the app in Webpack dev server)_
+3. Add below code to `WSO2 Identity Server/repository/deployment/server/webapps/scim2/WEB-INF/web.xml` to allow CORS for webpack dev servers. _(If you are running the app in webpack dev server as in the 4th step)_
 
 ```xml
     <filter>
