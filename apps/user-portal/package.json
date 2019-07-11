@@ -9,7 +9,7 @@
         "server": "node server",
         "start": "webpack-dev-server --mode development --inline --hot --open",
         "lint": "tslint -t stylish --project .",
-        "build": "webpack  --mode development",
+        "build": "webpack --mode development",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "devDependencies": {
@@ -47,7 +47,7 @@
     },
     "dependencies": {
         "@types/history": "4.6.2",
-        "@wso2is/theme": "0.1.0",
+        "@wso2is/theme": "^0.1.0",
         "cors": "^2.8.5",
         "express-session": "^1.16.1",
         "history": "^4.9.0",
