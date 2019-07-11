@@ -1,4 +1,4 @@
-# WSO2 Identity Server Web Apps
+# WSO2 Identity Server Apps
 
 End-user apps in WSO2 Identity Server
 
