@@ -1,7 +1,7 @@
 {
     "private": false,
     "name": "@wso2is/webapps",
-    "version": "0.1.0-SNAPSHOT",
+    "version": "0.1.0",
     "description": "WSO2 Identity Server Web Applications",
     "scripts": {
         "prebuild": "npm i && lerna bootstrap",

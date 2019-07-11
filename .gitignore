@@ -93,4 +93,4 @@ modules/theme/lib/
 apps/user-portal/build/
 target/
 npm/
-src/
+apps/user-portal/src/main/

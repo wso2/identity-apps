@@ -1,0 +1,6 @@
+cache:
+  directories:
+  - .autoconf
+  - $HOME/.m2
+  timeout: 600
+script: mvn clean install
