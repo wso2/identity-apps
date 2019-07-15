@@ -19,7 +19,7 @@
 import * as React from "react";
 import { isValidLogin } from "../actions/login";
 import { AppContextInterface, AuthProviderInterface, createEmptyAppContextInterface } from "../models/auth";
-import { LoginStatusEntity } from "../models/login";
+import { LoginEntity, LoginStatusEntity } from "../models/login";
 
 const AuthContext = React.createContext<AppContextInterface | null>(null);
 
@@ -52,7 +52,7 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
         );
     }
 
-    private login(loginInfo, location) {
+    private login(loginInfo: LoginEntity, location) {
         isValidLogin(loginInfo)
             .then((response: LoginStatusEntity) => {
                 if (response.valid) {
@@ -65,6 +65,7 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
                         isAuth: true,
                         username: response.username,
                     });
+                    sessionStorage.setItem("isAuth", "true");
                     this.props.history.push(location);
                 } else {
                     this.setState({
@@ -73,6 +74,7 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
                         errorMessage: response.errorMessage,
                         isAuth: false
                     });
+                    sessionStorage.setItem("isAuth", "false");
                 }
             });
     }
@@ -84,6 +86,7 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
             errorMessage: "",
             isAuth: false
         });
+        sessionStorage.setItem("isAuth", "false");
         this.props.history.push("/login");
     }
 }

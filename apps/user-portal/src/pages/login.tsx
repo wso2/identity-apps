@@ -17,7 +17,7 @@
  */
 
 import * as React from "react";
-import { Link, RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 import { Button, Form } from "semantic-ui-react";
 import { AuthConsumer, NotificationComponent, User } from "../components";
 import { LoginPageLayout } from "../layouts";

@@ -18,7 +18,8 @@
 
 import * as React from "react";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
-import { AuthConsumer, AuthProvider } from "./components/auth-context";
+import { isLoggedIn } from "./actions/login";
+import { AuthConsumer, AuthProvider, } from "./components/auth-context";
 import ProtectedRoute from "./components/protected-route";
 import history from "./helpers/history";
 import {
@@ -33,6 +34,28 @@ const LogoutPage = (props) => {
 };
 
 class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isAuth: false
+        };
+    }
+
+    public componentWillMount() {
+        if (isLoggedIn()) {
+            this.setState({ isAuth: true });
+
+            const loginInfo = {
+                password: sessionStorage.getItem("loginPassword") || "",
+                username: sessionStorage.getItem("loginUsername") || ""
+            };
+            // TODO: Stop login redirection by checking the session
+            // const value = this.context;
+            // console.log(value);
+            // AuthProvider.login(loginInfo, history.location.pathname);
+        }
+    }
+
     public render() {
         return (
             <Router history={history}>

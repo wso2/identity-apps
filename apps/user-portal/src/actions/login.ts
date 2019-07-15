@@ -20,7 +20,7 @@ import axios from "axios";
 import log from "log";
 import { ServiceResources } from "../configs/app";
 import { Messages } from "../configs/text";
-import { createEmptyLoginStatus, LoginEntity, LoginStatusEntity } from "../models/login";
+import { createEmptyLoginStatus, LoginEntity } from "../models/login";
 
 export const isValidLogin = async (loginInfo: LoginEntity): Promise<object> => {
     const authUrl: string = ServiceResources.login;
@@ -44,6 +44,8 @@ export const isValidLogin = async (loginInfo: LoginEntity): Promise<object> => {
                 "Content-Type": "application/scim+json"
             }
         };
+        sessionStorage.setItem("loginPassword", loginInfo.password);
+        sessionStorage.setItem("loginUsername", loginInfo.username);
 
         await axios.get(authUrl, header)
             .then((endpointResponse) => {
@@ -65,5 +67,9 @@ export const isValidLogin = async (loginInfo: LoginEntity): Promise<object> => {
 };
 
 export const isLoggedIn = () => {
-    return false;
+    if (sessionStorage.getItem("isAuth") === "false") {
+        return false;
+    } else {
+        return true;
+    }
 };
