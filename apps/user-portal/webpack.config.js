@@ -26,7 +26,8 @@ const production = true;
 const basename = 'user-portal';
 const loginPagePath = '/login';
 const homePagePath = '/home';
-const clientHost = 'http://localhost:9000';
+const serverHost = 'http://localhost:9443';
+const clientHost = serverHost;
 const externalLogin = true;
 const externalLoginClientID = 'h5T9VzzP0hhVIZI27Yyf0Tb7w4sa';
 const externalLoginCallbackURL = `${clientHost}/user-portal/login`;
@@ -133,6 +134,7 @@ module.exports = {
             CLIENT_ID: JSON.stringify(externalLoginClientID),
             CLIENT_HOST: JSON.stringify(clientHost),
             EXTERNAL_LOGIN: JSON.stringify(externalLogin),
+            SERVER_HOST: JSON.stringify(serverHost),
             'typeof window': JSON.stringify('object'),
             'process.env': {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV)

@@ -24,3 +24,4 @@ declare const CALLBACK_URL: string;
 declare const CLIENT_ID: string;
 declare const CLIENT_HOST: string;
 declare const EXTERNAL_LOGIN: string;
+declare const SERVER_HOST: string;

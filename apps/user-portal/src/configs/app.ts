@@ -25,7 +25,7 @@ interface ServiceResourcesType {
     users: string;
 }
 
-export const ServiceEndpoint: ServiceEndpointURLType = "https://localhost:9443";
+export const ServiceEndpoint: ServiceEndpointURLType = SERVER_HOST;
 export const ServiceResourcesEndpoint: ServiceResourcesType = {
     authorize: `${ServiceEndpoint}/oauth2/authorize?response_type=code&client_id=` +
         `${CLIENT_ID}&redirect_uri=${CALLBACK_URL}&scope=openid`,
