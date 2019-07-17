@@ -16,16 +16,21 @@
  * under the License.
  */
 
-type ServiceEndpointType = string;
+type ServiceEndpointURLType = string;
 interface ServiceResourcesType {
+    authorize: string;
     login: string;
+    token: string;
     user: string;
     users: string;
 }
 
-export const ServiceEndpoint: ServiceEndpointType = "https://localhost:9443";
-export const ServiceResources: ServiceResourcesType = {
+export const ServiceEndpoint: ServiceEndpointURLType = SERVER_HOST;
+export const ServiceResourcesEndpoint: ServiceResourcesType = {
+    authorize: `${ServiceEndpoint}/oauth2/authorize?response_type=code&client_id=` +
+        `${CLIENT_ID}&redirect_uri=${CALLBACK_URL}&scope=openid`,
     login: `${ServiceEndpoint}/scim2/Me`,
+    token: `${ServiceEndpoint}/oauth2/token`,
     user: `${ServiceEndpoint}/user`,
     users: `${ServiceEndpoint}/users`
 };

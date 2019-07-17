@@ -16,30 +16,16 @@
  * under the License.
  */
 
-export interface LoginEntity {
-    password: string;
-    username: string;
+export interface LoginStatusInterface {
+    access_token: string;
+    authenticated_user: string;
+    login_status: string;
+    refresh_token: string;
 }
 
-export interface LoginStatusEntity {
-    displayName: string;
-    emails: string[];
-    errorDiscription: string;
-    errorMessage: string;
-    valid: boolean;
-    username: string;
-}
-
-export const createEmptyLogin = (): LoginEntity => ({
-    password: "",
-    username: ""
-});
-
-export const createEmptyLoginStatus = (): LoginStatusEntity => ({
-    displayName: "",
-    emails: [],
-    errorDiscription: "",
-    errorMessage: "",
-    username: "",
-    valid: false
+export const createEmptyLoginStatus = (): LoginStatusInterface => ({
+    access_token: "",
+    authenticated_user: "",
+    login_status: "",
+    refresh_token: ""
 });

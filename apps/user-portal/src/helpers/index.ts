@@ -16,27 +16,4 @@
  * under the License.
  */
 
-import * as React from "react";
-import { Link } from "react-router-dom";
-import { Button } from "semantic-ui-react";
-import { LoginPageLayout } from "../layouts";
-
-export const SignUpPage = () => (
-    <LoginPageLayout pageTitle="Create Account">
-        <div className="">
-            <Button
-                size="large"
-                as={Link}
-                to="/login"
-            >
-                Sign in instead
-            </Button>
-            <Button
-                size="large"
-                color="orange"
-            >
-                Next
-            </Button>
-        </div>
-    </LoginPageLayout>
-);
+export * from "./history";

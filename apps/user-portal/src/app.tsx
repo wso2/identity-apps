@@ -18,12 +18,11 @@
 
 import * as React from "react";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
-import { AuthConsumer, AuthProvider } from "./components/auth-context";
+import { AuthConsumer, AuthProvider, } from "./components/auth-context";
 import ProtectedRoute from "./components/protected-route";
 import history from "./helpers/history";
 import {
     HomePage,
-    LoginPage,
     PageNotFound
 } from "./pages";
 
@@ -32,17 +31,24 @@ const LogoutPage = (props) => {
     return null;
 };
 
-class App extends React.Component {
+const ExternalLoginPage = (props) => {
+    props.loginFuntion(history.location.pathname);
+    return null;
+};
+
+class App extends React.Component<any, any> {
     public render() {
         return (
             <Router history={history}>
                 <div className="container-fluid">
                     <AuthProvider history={history}>
                         <AuthConsumer>
-                            {({ logout }) => (
+                            {({ login, logout }) => (
                                 <Switch>
                                     <Redirect exact path="/" to="/login" />
-                                    <Route path="/login" component={LoginPage} />
+                                    <Route path="/login" render={(props) => (
+                                        <ExternalLoginPage loginFuntion={login} {...props}/>
+                                    )} />
                                     <Route path="/logout" render={(props) => (
                                         <LogoutPage logoutFuntion={logout} {...props}/>
                                     )} />

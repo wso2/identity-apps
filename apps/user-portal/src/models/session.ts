@@ -16,8 +16,8 @@
  * under the License.
  */
 
-export * from "./errors/404";
-export * from "./app-listing";
-export * from "./home";
-export * from "./theme";
-export * from "./user-listing";
+import { LoginStatusInterface } from "./login";
+
+export interface SessionInterface extends LoginStatusInterface {
+    validity?: number;
+}

@@ -16,16 +16,14 @@
  * under the License.
  */
 
-export interface UserEntity {
-    user: string;
-    domain: string;
+export interface BasicUserInterface {
     displayName: string;
-    telephone: string;
+    emails: string[];
+    username: string;
 }
 
-export const createEmptyUser = (): UserEntity => ({
+export const createEmptyBasicUser = (): BasicUserInterface => ({
     displayName: "",
-    domain: "",
-    telephone: "",
-    user: ""
+    emails: [],
+    username: "",
 });

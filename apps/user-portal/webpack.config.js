@@ -24,7 +24,13 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const production = true;
 const basename = 'user-portal';
+const loginPagePath = '/login';
 const homePagePath = '/home';
+const serverHost = 'https://localhost:9443';
+const clientHost = serverHost;
+const externalLogin = true;
+const externalLoginClientID = 'h5T9VzzP0hhVIZI27Yyf0Tb7w4sa';
+const externalLoginCallbackURL = `${clientHost}/user-portal/login`;
 
 const distFolder = path.resolve(__dirname, 'build', basename);
 const faviconImage = path.resolve(__dirname, 'node_modules', '@wso2is/theme/lib/assets/images/favicon.ico');
@@ -81,6 +87,7 @@ module.exports = {
         ]
     },
     devServer: {
+        https: true,
         contentBase: distFolder,
         inline: true,
         host: 'localhost',
@@ -123,6 +130,12 @@ module.exports = {
             APP_BASENAME: JSON.stringify(basename),
             APP_PRODUCTION: JSON.stringify(production),
             APP_HOME_PATH: JSON.stringify(homePagePath),
+            APP_LOGIN_PATH: JSON.stringify(loginPagePath),
+            CALLBACK_URL: JSON.stringify(externalLoginCallbackURL),
+            CLIENT_ID: JSON.stringify(externalLoginClientID),
+            CLIENT_HOST: JSON.stringify(clientHost),
+            EXTERNAL_LOGIN: JSON.stringify(externalLogin),
+            SERVER_HOST: JSON.stringify(serverHost),
             'typeof window': JSON.stringify('object'),
             'process.env': {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV)

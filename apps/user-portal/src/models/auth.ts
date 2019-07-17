@@ -16,24 +16,24 @@
  * under the License.
  */
 
-import { createEmptyLoginStatus, LoginStatusEntity } from "./login";
+import { BasicUserInterface, createEmptyBasicUser } from "./user";
 
 export interface AuthProviderInterface {
     history: any;
 }
 
-export interface AppContextInterface extends LoginStatusEntity {
+export interface AuthContextInterface extends BasicUserInterface {
     children?: any;
-    error: boolean;
     isAuth: boolean;
     login: (loginInfo: object, location: string) => void;
+    loginInit: boolean;
     logout: () => void;
 }
 
-export const createEmptyAppContextInterface = (): AppContextInterface => ({
-    error: false,
+export const createEmptyAuthContext = (): AuthContextInterface => ({
     isAuth: false,
     login: () => null,
+    loginInit: false,
     logout: () => null,
-    ...createEmptyLoginStatus()
+    ...createEmptyBasicUser()
 });
