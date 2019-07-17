@@ -18,58 +18,53 @@
 
 import axios from "axios";
 import log from "log";
-import { ServiceResources } from "../configs/app";
-import { Messages } from "../configs/text";
-import { createEmptyLoginStatus, LoginEntity } from "../models/login";
+import { ServiceResourcesEndpoint } from "../configs/app";
+import { createEmptyLoginStatus } from "../models/login";
+import { clearLoginSession, isLoggedSession, updateLoginSession } from "./session";
 
-export const isValidLogin = async (loginInfo: LoginEntity): Promise<object> => {
-    const authUrl: string = ServiceResources.login;
+export const dispatchLogin = async () => {
+    const code = new URL(window.location.href).searchParams.get("code");
     const loginStatus = createEmptyLoginStatus();
 
-    if (loginInfo.username === "") {
-        loginStatus.errorMessage = Messages.errors.login.loginFailed;
-        loginStatus.errorDiscription = Messages.errors.login.emptyUsername;
-    } else if (loginInfo.password === "") {
-        loginStatus.errorMessage = Messages.errors.login.loginFailed;
-        loginStatus.errorDiscription = Messages.errors.login.emptyPassword;
+    if (!code) {
+        clearLoginSession();
+        window.location.href = ServiceResourcesEndpoint.authorize;
     } else {
-        const header = {
-            auth: {
-                password: loginInfo.password,
-                username: loginInfo.username
-            },
-            headers: {
-                "Accept": "application/json",
-                "Access-Control-Allow-Origin": "http://localhost:9000",
-                "Content-Type": "application/scim+json"
-            }
-        };
-        sessionStorage.setItem("loginPassword", loginInfo.password);
-        sessionStorage.setItem("loginUsername", loginInfo.username);
-
-        await axios.get(authUrl, header)
-            .then((endpointResponse) => {
-                if (endpointResponse.status === 200) {
-                    loginStatus.valid = true;
-                    loginStatus.displayName = endpointResponse.data.name.givenName || "";
-                    loginStatus.emails = endpointResponse.data.emails || [];
-                    loginStatus.errorMessage = "";
-                    loginStatus.errorMessage = "";
-                    loginStatus.username = endpointResponse.data.userName || "";
+        if (!isLoggedSession()) {
+            const header = {
+                headers: {
+                    "Accept": "application/json",
+                    "Access-Control-Allow-Origin": CLIENT_HOST,
+                    "Content-Type": "application/x-www-form-urlencoded"
                 }
-            })
-            .catch((error) => {
-                log.error(error);
-            });
+            };
+            const body = [];
+
+            body.push(`client_id=${CLIENT_ID}`);
+            body.push(`code=${code}`);
+            body.push("grant_type=authorization_code");
+            body.push(`redirect_uri=${CALLBACK_URL}`);
+
+            await axios.post(ServiceResourcesEndpoint.token, body.join("&"), header)
+                .then((endpointResponse) => {
+                    if (endpointResponse.status === 200) {
+                        const idToken = JSON.parse(atob(endpointResponse.data.id_token.split(".")[1]));
+                        const authenticatedUser = idToken.sub;
+
+                        updateLoginSession({
+                            access_token: endpointResponse.data.access_token,
+                            authenticated_user: authenticatedUser,
+                            login_status: "valid",
+                            refresh_token: endpointResponse.data.refresh_token
+                        });
+                    }
+                })
+                .catch((error) => {
+                    log.error(error);
+                });
+        }
+
     }
 
     return loginStatus;
-};
-
-export const isLoggedIn = () => {
-    if (sessionStorage.getItem("isAuth") === "false") {
-        return false;
-    } else {
-        return true;
-    }
 };

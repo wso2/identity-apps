@@ -18,13 +18,11 @@
 
 import * as React from "react";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
-import { isLoggedIn } from "./actions/login";
 import { AuthConsumer, AuthProvider, } from "./components/auth-context";
 import ProtectedRoute from "./components/protected-route";
 import history from "./helpers/history";
 import {
     HomePage,
-    LoginPage,
     PageNotFound
 } from "./pages";
 
@@ -33,39 +31,24 @@ const LogoutPage = (props) => {
     return null;
 };
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isAuth: false
-        };
-    }
+const ExternalLoginPage = (props) => {
+    props.loginFuntion(history.location.pathname);
+    return null;
+};
 
-    public componentWillMount() {
-        if (isLoggedIn()) {
-            this.setState({ isAuth: true });
-
-            const loginInfo = {
-                password: sessionStorage.getItem("loginPassword") || "",
-                username: sessionStorage.getItem("loginUsername") || ""
-            };
-            // TODO: Stop login redirection by checking the session
-            // const value = this.context;
-            // console.log(value);
-            // AuthProvider.login(loginInfo, history.location.pathname);
-        }
-    }
-
+class App extends React.Component<any, any> {
     public render() {
         return (
             <Router history={history}>
                 <div className="container-fluid">
                     <AuthProvider history={history}>
                         <AuthConsumer>
-                            {({ logout }) => (
+                            {({ login, logout }) => (
                                 <Switch>
                                     <Redirect exact path="/" to="/login" />
-                                    <Route path="/login" component={LoginPage} />
+                                    <Route path="/login" render={(props) => (
+                                        <ExternalLoginPage loginFuntion={login} {...props}/>
+                                    )} />
                                     <Route path="/logout" render={(props) => (
                                         <LogoutPage logoutFuntion={logout} {...props}/>
                                     )} />
