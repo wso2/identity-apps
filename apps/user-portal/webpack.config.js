@@ -26,7 +26,7 @@ const production = true;
 const basename = 'user-portal';
 const loginPagePath = '/login';
 const homePagePath = '/home';
-const serverHost = 'http://localhost:9443';
+const serverHost = 'https://localhost:9443';
 const clientHost = serverHost;
 const externalLogin = true;
 const externalLoginClientID = 'h5T9VzzP0hhVIZI27Yyf0Tb7w4sa';
@@ -87,6 +87,7 @@ module.exports = {
         ]
     },
     devServer: {
+        https: true,
         contentBase: distFolder,
         inline: true,
         host: 'localhost',
