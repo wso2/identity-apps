@@ -20,7 +20,7 @@ import axios from "axios";
 import log from "log";
 import { ServiceResourcesEndpoint } from "../configs/app";
 import { createEmptyLoginStatus } from "../models/login";
-import { clearLoginSession, isLoggedSession, updateLoginSession } from "./session";
+import { clearLoginSession, getLoginSession, isLoggedSession, updateLoginSession } from "./session";
 
 export const dispatchLogin = async () => {
     const code = new URL(window.location.href).searchParams.get("code");
@@ -43,7 +43,7 @@ export const dispatchLogin = async () => {
             body.push(`client_id=${CLIENT_ID}`);
             body.push(`code=${code}`);
             body.push("grant_type=authorization_code");
-            body.push(`redirect_uri=${CALLBACK_URL}`);
+            body.push(`redirect_uri=${LOGIN_CALLBACK_URL}`);
 
             await axios.post(ServiceResourcesEndpoint.token, body.join("&"), header)
                 .then((endpointResponse) => {
@@ -54,6 +54,7 @@ export const dispatchLogin = async () => {
                         updateLoginSession({
                             access_token: endpointResponse.data.access_token,
                             authenticated_user: authenticatedUser,
+                            id_token: endpointResponse.data.id_token,
                             login_status: "valid",
                             refresh_token: endpointResponse.data.refresh_token
                         });
@@ -67,4 +68,13 @@ export const dispatchLogin = async () => {
     }
 
     return loginStatus;
+};
+
+export const dispatchLogout = async () => {
+    if (isLoggedSession()) {
+        window.location.href = `${ServiceResourcesEndpoint.logout}?id_token_hint=${getLoginSession("id_token")}` +
+            `&post_logout_redirect_uri=${LOGIN_CALLBACK_URL}`;
+    }
+
+    return;
 };

@@ -17,7 +17,7 @@
  */
 
 import * as React from "react";
-import { clearLoginSession, dispatchLogin, getUserInfo } from "../actions";
+import { clearLoginSession, dispatchLogin, dispatchLogout, getUserInfo } from "../actions";
 import { AuthContextInterface, AuthProviderInterface, createEmptyAuthContext } from "../models/auth";
 
 const AuthContext = React.createContext<AuthContextInterface | null>(null);
@@ -40,6 +40,7 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
                     login: this.login,
                     loginInit: this.state.loginInit,
                     logout: this.logout,
+                    logoutInit: this.state.logoutInit,
                     username: this.state.username,
                 }}
             >
@@ -49,34 +50,40 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
     }
 
     private setLoginDetails(response, location) {
-        if (!this.state.loginInit) {
-            this.setState({
-                displayName: response.displayName,
-                emails: response.emails,
-                isAuth: true,
-                loginInit: true,
-                username: response.username,
-            });
-        }
-
-        location = (location === APP_LOGIN_PATH) ? APP_HOME_PATH : location;
-        this.props.history.push(location);
+        this.setState({
+            displayName: response.displayName,
+            emails: response.emails,
+            isAuth: true,
+            loginInit: true,
+            logoutInit: false,
+            username: response.username,
+        });
     }
 
     private login(location) {
-        dispatchLogin()
-            .then(() => {
-                getUserInfo()
-                    .then((response) => {
-                        this.setLoginDetails(response, location);
-                    });
-            });
+        if (!this.state.loginInit) {
+            dispatchLogin()
+                .then(() => {
+                    getUserInfo()
+                        .then((response) => {
+                            this.setLoginDetails(response, location);
+                            location = (location === APP_LOGIN_PATH) ? APP_HOME_PATH : location;
+                            this.props.history.push(location);
+                        });
+                });
+        }
     }
 
     private logout() {
-        this.setState(createEmptyAuthContext());
-        clearLoginSession();
-        this.props.history.push(APP_LOGIN_PATH);
+        if (!this.state.logoutInit) {
+            dispatchLogout()
+                .then(() => {
+                    this.setState({
+                        logoutInit: true
+                    });
+                    clearLoginSession();
+                });
+        }
     }
 }
 

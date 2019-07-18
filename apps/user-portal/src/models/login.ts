@@ -19,6 +19,7 @@
 export interface LoginStatusInterface {
     access_token: string;
     authenticated_user: string;
+    id_token: string;
     login_status: string;
     refresh_token: string;
 }
@@ -26,6 +27,7 @@ export interface LoginStatusInterface {
 export const createEmptyLoginStatus = (): LoginStatusInterface => ({
     access_token: "",
     authenticated_user: "",
+    id_token: "",
     login_status: "",
     refresh_token: ""
 });

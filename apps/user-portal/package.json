@@ -7,9 +7,10 @@
     "main": "index.js",
     "scripts": {
         "server": "node server",
-        "start": "webpack-dev-server --mode development --inline --hot --open",
+        "start": "webpack-dev-server --env.NODE_ENV=local --mode development --inline --hot --open",
         "lint": "tslint -t stylish --project .",
-        "build": "webpack --mode development",
+        "build-prod": "webpack --env.NODE_ENV=prod",
+        "build": "webpack --env.NODE_ENV=prod --mode development",
         "test": "echo \"Error: no test specified\" && exit 1",
         "clean": "rm -rf node_modules build npm"
     },

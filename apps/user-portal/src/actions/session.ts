@@ -26,9 +26,10 @@ export const getLoginAllSessions = () => {
     const session = {};
 
     session[`access_token`] = sessionStorage.getItem("access_token");
-    session[`authenticated_user`] = sessionStorage.getItem("access_token");
-    session[`login_status`] = sessionStorage.getItem("access_token");
-    session[`refresh_token`] = sessionStorage.getItem("access_token");
+    session[`authenticated_user`] = sessionStorage.getItem("authenticated_user");
+    session[`id_token`] = sessionStorage.getItem("id_token");
+    session[`login_status`] = sessionStorage.getItem("login_status");
+    session[`refresh_token`] = sessionStorage.getItem("refresh_token");
 
     return session;
 };
@@ -36,6 +37,7 @@ export const getLoginAllSessions = () => {
 export const updateLoginSession = (data: SessionInterface) => {
     sessionStorage.setItem("access_token", data.access_token);
     sessionStorage.setItem("authenticated_user", data.authenticated_user);
+    sessionStorage.setItem("id_token", data.id_token);
     sessionStorage.setItem("login_status", data.login_status);
     sessionStorage.setItem("refresh_token", data.refresh_token);
 };
@@ -43,6 +45,7 @@ export const updateLoginSession = (data: SessionInterface) => {
 export const clearLoginSession = () => {
     sessionStorage.removeItem("access_token");
     sessionStorage.removeItem("authenticated_user");
+    sessionStorage.removeItem("id_token");
     sessionStorage.removeItem("login_status");
     sessionStorage.removeItem("refresh_token");
 };

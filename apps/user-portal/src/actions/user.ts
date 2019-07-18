@@ -26,7 +26,7 @@ export const getUserInfo = async () => {
     const userDetails = createEmptyBasicUser();
 
     if (isLoggedSession()) {
-        const authUrl = ServiceResourcesEndpoint.login;
+        const authUrl = ServiceResourcesEndpoint.me;
         const token = getLoginSession("access_token");
         const header = {
             headers: {
