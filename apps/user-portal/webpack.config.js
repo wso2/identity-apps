@@ -29,7 +29,7 @@ const homePagePath = '/home';
 const serverHost = 'https://localhost:9443';
 const clientHost = serverHost;
 const externalLogin = true;
-const externalLoginClientID = 'h5T9VzzP0hhVIZI27Yyf0Tb7w4sa';
+const externalLoginClientID = 'USER_PORTAL';
 const externalLoginCallbackURL = `${clientHost}/user-portal/login`;
 
 const distFolder = path.resolve(__dirname, 'build', basename);
