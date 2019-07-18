@@ -19,18 +19,16 @@
 type ServiceEndpointURLType = string;
 interface ServiceResourcesType {
     authorize: string;
-    login: string;
+    logout: string;
+    me: string;
     token: string;
-    user: string;
-    users: string;
 }
 
 export const ServiceEndpoint: ServiceEndpointURLType = SERVER_HOST;
 export const ServiceResourcesEndpoint: ServiceResourcesType = {
     authorize: `${ServiceEndpoint}/oauth2/authorize?response_type=code&client_id=` +
-        `${CLIENT_ID}&redirect_uri=${CALLBACK_URL}&scope=openid`,
-    login: `${ServiceEndpoint}/scim2/Me`,
-    token: `${ServiceEndpoint}/oauth2/token`,
-    user: `${ServiceEndpoint}/user`,
-    users: `${ServiceEndpoint}/users`
+            `${CLIENT_ID}&redirect_uri=${LOGIN_CALLBACK_URL}&scope=openid`,
+    logout: `${ServiceEndpoint}/oidc/logout`,
+    me: `${ServiceEndpoint}/scim2/Me`,
+    token: `${ServiceEndpoint}/oauth2/token`
 };

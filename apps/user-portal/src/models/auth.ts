@@ -28,6 +28,7 @@ export interface AuthContextInterface extends BasicUserInterface {
     login: (loginInfo: object, location: string) => void;
     loginInit: boolean;
     logout: () => void;
+    logoutInit: boolean;
 }
 
 export const createEmptyAuthContext = (): AuthContextInterface => ({
@@ -35,5 +36,6 @@ export const createEmptyAuthContext = (): AuthContextInterface => ({
     login: () => null,
     loginInit: false,
     logout: () => null,
+    logoutInit: false,
     ...createEmptyBasicUser()
 });
