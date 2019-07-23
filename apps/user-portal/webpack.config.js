@@ -23,17 +23,23 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = env => {
-    const production = true;
     const basename = 'user-portal';
+    const devServerPort = 9000;
+
+    /**
+     * Runtime configurations
+     */
     const loginPagePath = '/login';
     const homePagePath = '/home';
     const serverHost = 'https://localhost:9443';
-    const clientHost = (env.NODE_ENV === 'prod') ? serverHost : 'https://localhost:9000';
-    const externalLogin = true;
+    const clientHost = (env.NODE_ENV === 'prod') ? serverHost : `https://localhost:${devServerPort}`;
     const externalLoginClientID = (env.NODE_ENV === 'prod') ? 'USER_PORTAL' : 'USER_PORTAL';
     const externalLoginCallbackURL = `${clientHost}/user-portal/login`;
     const externalLogoutCallbackURL = `${clientHost}/user-portal/logout`;
 
+    /**
+     * Build configurations
+     */
     const distFolder = path.resolve(__dirname, 'build', basename);
     const faviconImage = path.resolve(__dirname, 'node_modules', '@wso2is/theme/lib/assets/images/favicon.ico');
     const titleText = 'WSO2 Identity Server';
@@ -93,7 +99,7 @@ module.exports = env => {
             contentBase: distFolder,
             inline: true,
             host: 'localhost',
-            port: 9000,
+            port: devServerPort,
             historyApiFallback: true
         },
         node: {
@@ -110,11 +116,12 @@ module.exports = env => {
                     from: 'src',
                     to: 'libs/styles/less/theme-module'
                 },
-                {
-                    context: path.resolve(__dirname, 'node_modules'),
-                    from: 'semantic-ui-less',
-                    to: 'libs/styles/less/semantic-ui-less'
-                },
+                // TODO: Removed temporally. Currently we don't use it in runtime
+                // {
+                //     context: path.resolve(__dirname, 'node_modules'),
+                //     from: 'semantic-ui-less',
+                //     to: 'libs/styles/less/semantic-ui-less'
+                // },
                 {
                     context: path.resolve(__dirname, 'src'),
                     from: 'public',
@@ -130,12 +137,10 @@ module.exports = env => {
             }),
             new webpack.DefinePlugin({
                 APP_BASENAME: JSON.stringify(basename),
-                APP_PRODUCTION: JSON.stringify(production),
                 APP_HOME_PATH: JSON.stringify(homePagePath),
                 APP_LOGIN_PATH: JSON.stringify(loginPagePath),
                 CLIENT_ID: JSON.stringify(externalLoginClientID),
                 CLIENT_HOST: JSON.stringify(clientHost),
-                EXTERNAL_LOGIN: JSON.stringify(externalLogin),
                 LOGIN_CALLBACK_URL: JSON.stringify(externalLoginCallbackURL),
                 LOGOUT_CALLBACK_URL: JSON.stringify(externalLogoutCallbackURL),
                 SERVER_HOST: JSON.stringify(serverHost),

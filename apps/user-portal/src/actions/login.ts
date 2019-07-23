@@ -17,10 +17,11 @@
  */
 
 import axios from "axios";
-import log from "log";
 import { ServiceResourcesEndpoint } from "../configs/app";
 import { createEmptyLoginStatus } from "../models/login";
-import { clearLoginSession, getLoginSession, isLoggedSession, updateLoginSession } from "./session";
+import { BasicUserInterface } from "../models/user";
+import { clearLoginSession, getLoginSession, initLoginSession, isLoggedSession } from "./session";
+import { getUserInfo } from "./user";
 
 export const dispatchLogin = async () => {
     const code = new URL(window.location.href).searchParams.get("code");
@@ -45,29 +46,39 @@ export const dispatchLogin = async () => {
             body.push("grant_type=authorization_code");
             body.push(`redirect_uri=${LOGIN_CALLBACK_URL}`);
 
-            await axios.post(ServiceResourcesEndpoint.token, body.join("&"), header)
-                .then((endpointResponse) => {
-                    if (endpointResponse.status === 200) {
-                        const idToken = JSON.parse(atob(endpointResponse.data.id_token.split(".")[1]));
-                        const authenticatedUser = idToken.sub;
+            return new Promise((resolve, reject) => {
+                axios.post(ServiceResourcesEndpoint.token, body.join("&"), header)
+                    .then((endpointResponse) => {
+                        if (endpointResponse.status === 200) {
+                            const idToken = JSON.parse(atob(endpointResponse.data.id_token.split(".")[1]));
+                            const authenticatedUser = idToken.sub;
 
-                        updateLoginSession({
-                            access_token: endpointResponse.data.access_token,
-                            authenticated_user: authenticatedUser,
-                            id_token: endpointResponse.data.id_token,
-                            login_status: "valid",
-                            refresh_token: endpointResponse.data.refresh_token
-                        });
-                    }
-                })
-                .catch((error) => {
-                    log.error(error);
-                });
+                            getUserInfo(endpointResponse.data.access_token)
+                                .then((response: BasicUserInterface) => {
+                                    Object.assign(loginStatus, {
+                                        access_token: endpointResponse.data.access_token,
+                                        authenticated_user: authenticatedUser,
+                                        display_name: response.displayName,
+                                        emails: JSON.stringify(response.emails),
+                                        id_token: endpointResponse.data.id_token,
+                                        login_status: "valid",
+                                        refresh_token: endpointResponse.data.refresh_token,
+                                        username: response.username,
+                                    });
+                                    initLoginSession(loginStatus);
+                                    resolve(loginStatus);
+                                });
+                        }
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
         }
 
     }
 
-    return loginStatus;
+    return;
 };
 
 export const dispatchLogout = async () => {

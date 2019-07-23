@@ -18,7 +18,22 @@
 
 import { SessionInterface } from "../models/session";
 
-export const getLoginSession = (key) => {
+export const initLoginSession = (data: SessionInterface) => {
+    sessionStorage.setItem("access_token", data.access_token);
+    sessionStorage.setItem("authenticated_user", data.authenticated_user);
+    sessionStorage.setItem("display_name", data.display_name);
+    sessionStorage.setItem("emails", data.emails);
+    sessionStorage.setItem("id_token", data.id_token);
+    sessionStorage.setItem("login_status", data.login_status);
+    sessionStorage.setItem("refresh_token", data.refresh_token);
+    sessionStorage.setItem("username", data.username);
+};
+
+export const setLoginSession = (key: string, value: string) => {
+    return sessionStorage.setItem(key, value);
+};
+
+export const getLoginSession = (key: string) => {
     return sessionStorage.getItem(key);
 };
 
@@ -27,27 +42,25 @@ export const getLoginAllSessions = () => {
 
     session[`access_token`] = sessionStorage.getItem("access_token");
     session[`authenticated_user`] = sessionStorage.getItem("authenticated_user");
+    session[`display_name`] = sessionStorage.getItem("display_name");
+    session[`emails`] = sessionStorage.getItem("emails");
     session[`id_token`] = sessionStorage.getItem("id_token");
     session[`login_status`] = sessionStorage.getItem("login_status");
     session[`refresh_token`] = sessionStorage.getItem("refresh_token");
+    session[`username`] = sessionStorage.getItem("username");
 
     return session;
-};
-
-export const updateLoginSession = (data: SessionInterface) => {
-    sessionStorage.setItem("access_token", data.access_token);
-    sessionStorage.setItem("authenticated_user", data.authenticated_user);
-    sessionStorage.setItem("id_token", data.id_token);
-    sessionStorage.setItem("login_status", data.login_status);
-    sessionStorage.setItem("refresh_token", data.refresh_token);
 };
 
 export const clearLoginSession = () => {
     sessionStorage.removeItem("access_token");
     sessionStorage.removeItem("authenticated_user");
+    sessionStorage.removeItem("display_name");
+    sessionStorage.removeItem("emails");
     sessionStorage.removeItem("id_token");
     sessionStorage.removeItem("login_status");
     sessionStorage.removeItem("refresh_token");
+    sessionStorage.removeItem("username");
 };
 
 export const isLoggedSession = () => {

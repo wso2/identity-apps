@@ -19,15 +19,21 @@
 export interface LoginStatusInterface {
     access_token: string;
     authenticated_user: string;
+    display_name: string;
+    emails: string;
     id_token: string;
     login_status: string;
     refresh_token: string;
+    username: string;
 }
 
 export const createEmptyLoginStatus = (): LoginStatusInterface => ({
     access_token: "",
     authenticated_user: "",
+    display_name: "",
+    emails: "",
     id_token: "",
     login_status: "",
-    refresh_token: ""
+    refresh_token: "",
+    username: ""
 });

@@ -17,38 +17,37 @@
  */
 
 import axios from "axios";
-import log from "log";
 import { ServiceResourcesEndpoint } from "../configs/app";
 import { createEmptyBasicUser } from "../models/user";
-import { getLoginSession, isLoggedSession } from "./session";
 
-export const getUserInfo = async () => {
+/**
+ * Method to get logged in user's basic informations (Display Name, Emails, Username)
+ */
+export const getUserInfo = (accessToken) => {
     const userDetails = createEmptyBasicUser();
+    const authUrl = ServiceResourcesEndpoint.me;
+    const token = accessToken;
+    const header = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/scim+json"
+        }
+    };
 
-    if (isLoggedSession()) {
-        const authUrl = ServiceResourcesEndpoint.me;
-        const token = getLoginSession("access_token");
-        const header = {
-            headers: {
-                "Accept": "application/json",
-                "Access-Control-Allow-Origin": CLIENT_HOST,
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/scim+json"
-            }
-        };
-
-        await axios.get(authUrl, header)
+    return new Promise((resolve, reject) => {
+        axios.get(authUrl, header)
             .then((endpointResponse) => {
                 if (endpointResponse.status === 200) {
                     userDetails.displayName = endpointResponse.data.name.givenName || "";
                     userDetails.emails = endpointResponse.data.emails || [];
                     userDetails.username = endpointResponse.data.userName || "";
                 }
+                resolve(userDetails);
             })
             .catch((error) => {
-                log.error(error);
+                reject(error);
             });
-    }
-
-    return userDetails;
+    });
 };
