@@ -26,13 +26,13 @@ import {
     PageNotFound
 } from "./pages";
 
-const LogoutPage = (props) => {
-    props.logoutFuntion();
+const LoginPage = (props) => {
+    props.loginFuntion(history.location.pathname);
     return null;
 };
 
-const ExternalLoginPage = (props) => {
-    props.loginFuntion(history.location.pathname);
+const LogoutPage = (props) => {
+    props.logoutFuntion();
     return null;
 };
 
@@ -47,7 +47,7 @@ class App extends React.Component<any, any> {
                                 <Switch>
                                     <Redirect exact path="/" to="/login" />
                                     <Route path="/login" render={(props) => (
-                                        <ExternalLoginPage loginFuntion={login} {...props}/>
+                                        <LoginPage loginFuntion={login} {...props}/>
                                     )} />
                                     <Route path="/logout" render={(props) => (
                                         <LogoutPage logoutFuntion={logout} {...props}/>

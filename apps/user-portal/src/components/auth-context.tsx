@@ -18,6 +18,7 @@
 
 import * as React from "react";
 import { clearLoginSession, dispatchLogin, dispatchLogout, getUserInfo } from "../actions";
+import { getLoginSession, isLoggedSession } from "../actions/session";
 import { AuthContextInterface, AuthProviderInterface, createEmptyAuthContext } from "../models/auth";
 
 const AuthContext = React.createContext<AuthContextInterface | null>(null);
@@ -28,6 +29,12 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
         this.state = createEmptyAuthContext();
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
+    }
+
+    public componentWillMount() {
+        if (!this.state.isAuth) {
+            this.updateState();
+        }
     }
 
     public render() {
@@ -49,28 +56,37 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
         );
     }
 
-    private setLoginDetails(response, location) {
-        this.setState({
-            displayName: response.displayName,
-            emails: response.emails,
-            isAuth: true,
-            loginInit: true,
-            logoutInit: false,
-            username: response.username,
-        });
+    private updateState() {
+        if (isLoggedSession()) {
+            this.setState({
+                displayName: getLoginSession("display_name"),
+                emails: JSON.parse(getLoginSession("emails")),
+                isAuth: true,
+                loginInit: true,
+                logoutInit: false,
+                username: getLoginSession("username"),
+            });
+        }
+    }
+
+    private loginSuccessRedirect(location) {
+        location = (location === APP_LOGIN_PATH) ? APP_HOME_PATH : location;
+        this.props.history.push(location);
     }
 
     private login(location) {
-        if (!this.state.loginInit) {
-            dispatchLogin()
-                .then(() => {
-                    getUserInfo()
-                        .then((response) => {
-                            this.setLoginDetails(response, location);
-                            location = (location === APP_LOGIN_PATH) ? APP_HOME_PATH : location;
-                            this.props.history.push(location);
-                        });
-                });
+        if (isLoggedSession()) {
+            this.loginSuccessRedirect(location);
+        } else {
+            if (!this.state.loginInit) {
+                dispatchLogin()
+                    .then(() => {
+                        if (isLoggedSession()) {
+                            this.updateState();
+                            this.loginSuccessRedirect(location);
+                        }
+                    });
+            }
         }
     }
 

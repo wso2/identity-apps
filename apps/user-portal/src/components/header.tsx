@@ -35,7 +35,6 @@ export const Header = () => (
                             <Dropdown.Menu>
                                 <Dropdown.Header>{username} ({emails[0]})</Dropdown.Header>
                                 <Dropdown.Divider />
-                                <Dropdown.Divider />
                                 <Dropdown.Item as={Link} to="/logout" text="Logout" />
                             </Dropdown.Menu>
                         </Dropdown>
