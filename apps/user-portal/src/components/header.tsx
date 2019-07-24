@@ -49,8 +49,6 @@ export const Header = () => (
                                     </Item>
                                 </Item.Group>
                                 <Dropdown.Divider />
-                                <Dropdown.Item as={Link} to="/profile" text="Profile" />
-                                <Dropdown.Divider />
                                 <Dropdown.Item as={Link} to="/logout" text="Logout" />
                             </Dropdown.Menu>
                         </Dropdown>
