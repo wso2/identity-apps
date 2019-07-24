@@ -52,8 +52,8 @@ export const Title = (props: TitleProps) => {
     );
 };
 
-export const User = (props: ImageProps) => {
-    const { classes, size, style } = props;
+export const UserImagePlaceHolder = (props: ImageProps) => {
+    const { classes, size } = props;
 
     return (
         <Image
@@ -65,3 +65,5 @@ export const User = (props: ImageProps) => {
         />
     );
 };
+
+export const UserImageDummy = UserImage;

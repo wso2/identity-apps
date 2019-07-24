@@ -29,13 +29,14 @@
 @fontName          : -apple-system, BlinkMacSystemFont, Segoe WPC, Segoe UI, HelveticaNeue-Light, Ubuntu, Droid Sans, sans-serif, @iconFont;
 @googleFontName    : 'Lato';
 
+@bold              : 400;
 
 /*-------------------
     Border Radius
 --------------------*/
 
-@relativeBorderRadius: 0;
-@absoluteBorderRadius: 0;
+@relativeBorderRadius: 3px;
+@absoluteBorderRadius: 3px;
 
 @defaultBorderRadius: @absoluteBorderRadius;
 

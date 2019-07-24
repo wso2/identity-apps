@@ -23,9 +23,41 @@
 @import (multiple) '../../wso2.config';
 
 body {
-    border-top-style: solid;
-    border-top-width: @bodyBorderWidth;
-    border-top-color: @bodyBorderColor;
+    border-top-style: @bodyTopBorderStyle;
+    border-top-width: @bodyTopBorderWidth;
+    border-top-color: @bodyTopBorderColor;
+
+    .ui.fixed.menu,
+    .ui[class*="top fixed"].menu {
+        top: @bodyTopBorderWidth;
+    }
+
+    .ui.menu .ui.dropdown.item.user-dropdown .menu .item.header {
+        &, &:not(.filtered) {
+            display: flex;
+            padding: @relativeMini @relativeLarge;
+        }
+        .ui.divider {
+            margin: 0.5rem 0rem;
+        }
+    }
+
+    .product-title {
+        .product-logo {
+            width: 60px;
+            vertical-align: sub;
+            margin-right: 5px;
+        }
+        .product-title-text {
+            text-transform: uppercase;
+            font-weight: 400;
+            font-size: 1.8rem;
+            display: inline-block;
+        }
+        .user-image {
+            width: 100px !important;
+        }
+    }
 }
 
 .loadUIOverrides();
