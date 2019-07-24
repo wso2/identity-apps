@@ -16,9 +16,23 @@
  * under the License.
  */
 
-export * from "./errors/404";
-export * from "./app-listing";
-export * from "./home";
-export * from "./theme";
-export * from "./user-listing";
-export * from "./user-profile";
+import {BasicUserInterface} from "./user";
+
+export interface BasicProfileInterface extends BasicUserInterface {
+    lastName: string;
+    phoneNumbers: number[];
+    organisation: string;
+    roles: string[];
+    proUrl: string;
+}
+
+export const createEmptyProfile = (): BasicProfileInterface => ({
+    displayName: "",
+    emails: [],
+    username: "",
+    lastName: "",
+    phoneNumbers: [],
+    organisation: "",
+    roles: [],
+    proUrl: ""
+});

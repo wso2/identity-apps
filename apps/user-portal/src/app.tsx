@@ -23,16 +23,17 @@ import ProtectedRoute from "./components/protected-route";
 import history from "./helpers/history";
 import {
     HomePage,
-    PageNotFound
+    PageNotFound,
+    UserProfilePage
 } from "./pages";
 
 const LoginPage = (props) => {
-    props.loginFuntion(history.location.pathname);
+    props.loginFunction(history.location.pathname);
     return null;
 };
 
 const LogoutPage = (props) => {
-    props.logoutFuntion();
+    props.logoutFunction();
     return null;
 };
 
@@ -47,12 +48,13 @@ class App extends React.Component<any, any> {
                                 <Switch>
                                     <Redirect exact path="/" to="/login" />
                                     <Route path="/login" render={(props) => (
-                                        <LoginPage loginFuntion={login} {...props}/>
+                                        <LoginPage loginFunction={login} {...props}/>
                                     )} />
                                     <Route path="/logout" render={(props) => (
-                                        <LogoutPage logoutFuntion={logout} {...props}/>
+                                        <LogoutPage logoutFunction={logout} {...props}/>
                                     )} />
                                     <ProtectedRoute path="/home" component={HomePage} />
+                                    <ProtectedRoute component={UserProfilePage} path="/profile"/>
                                     <ProtectedRoute component={PageNotFound} />
                                 </Switch>
                             )}
