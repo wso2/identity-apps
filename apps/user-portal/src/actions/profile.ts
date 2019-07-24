@@ -23,7 +23,6 @@ import { getLoginSession, isLoggedSession } from "./session";
 import { createEmptyProfile } from "../models/profile";
 
 export const getProfileInfo = async () => {
-
     const profileDetails = createEmptyProfile();
 
     if (isLoggedSession()) {
