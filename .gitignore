@@ -94,6 +94,7 @@ typings/
 .project
 modules/theme/lib/
 apps/user-portal/build/
+apps/login-portal/build/
 target/
 npm/
 apps/user-portal/src/main/
