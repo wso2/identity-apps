@@ -17,14 +17,13 @@
  */
 
 import * as React from "react";
-import {Container, Form, Grid, Header} from "semantic-ui-react";
-import {InnerPageLayout} from "../layouts";
-import {User} from "../components";
-import {getProfileInfo} from "../actions/profile";
-import {createEmptyProfile} from "../models/profile";
+import { Container, Form, Grid, Header } from "semantic-ui-react";
+import { InnerPageLayout } from "../layouts";
+import { User } from "../components";
+import { getProfileInfo } from "../actions/profile";
+import { createEmptyProfile } from "../models/profile";
 
-export class UserProfilePage extends React.Component <any, any> {
-
+export class UserProfilePage extends React.Component<any, any> {
     constructor(props) {
         super(props);
         this.state = createEmptyProfile();
@@ -44,7 +43,7 @@ export class UserProfilePage extends React.Component <any, any> {
     }
 
     public componentWillMount() {
-        getProfileInfo()
+            getProfileInfo()
             .then((response) => {
                     this.setProfileDetails(response)
                 }
@@ -60,11 +59,10 @@ export class UserProfilePage extends React.Component <any, any> {
                             <p>Manage information about you, your sub profiles and your account in general</p>
                         </div>
                         <br/><br/>
-                        <Grid divided='vertically'>
+                        <Grid>
                             <Grid.Row columns={2}>
                                 <Grid.Column width={3}>
-                                    <User/><br/>
-                                    <Header as='h3'>Personal Information</Header>
+                                    <User size="small"/><br/>
                                 </Grid.Column>
                                 <Grid.Column>
                                     Name<br/>
@@ -75,25 +73,11 @@ export class UserProfilePage extends React.Component <any, any> {
                                     {this.state.username}<br/><br/>
                                 </Grid.Column>
                             </Grid.Row>
-
-                            <Grid.Row columns={2}>
-                                <Grid.Column width={3}>
-                                    Telephone Number<br/>
-                                    +940112345678<br/><br/>
-                                    <Header as='h3'>Aliases</Header>
-                                </Grid.Column>
+                            <Header dividing={true} as='h3'>Personal Information</Header>
+                            <Grid.Row columns={1}>
                                 <Grid.Column>
                                     Organisation<br/>
                                     {this.state.organisation}<br/><br/>
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row columns={2}>
-                                <Grid.Column width={1}>
-                                    <User/>
-                                </Grid.Column>
-                                <Grid.Column>
-                                    A.J Doe<br/>
-                                    {this.state.emails[0]}<br/>
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>

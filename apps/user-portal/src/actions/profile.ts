@@ -18,9 +18,9 @@
 
 import axios from "axios";
 import log from "log";
-import {ServiceResourcesEndpoint} from "../configs";
-import {getLoginSession, isLoggedSession} from "./session";
-import {createEmptyProfile} from "../models/profile";
+import { ServiceResourcesEndpoint } from "../configs";
+import { getLoginSession, isLoggedSession } from "./session";
+import { createEmptyProfile } from "../models/profile";
 
 export const getProfileInfo = async () => {
 
@@ -57,4 +57,4 @@ export const getProfileInfo = async () => {
     }
 
     return profileDetails;
-}
+};

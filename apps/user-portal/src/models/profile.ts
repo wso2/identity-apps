@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import {BasicUserInterface} from "./user";
+import { BasicUserInterface } from "./user";
 
 export interface BasicProfileInterface extends BasicUserInterface {
     lastName: string;
