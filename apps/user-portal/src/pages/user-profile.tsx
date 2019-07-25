@@ -18,9 +18,9 @@
 
 import * as React from "react";
 import { Container, Form, Grid, Header } from "semantic-ui-react";
-import { InnerPageLayout } from "../layouts";
-import { User } from "../components";
 import { getProfileInfo } from "../actions/profile";
+import { UserImagePlaceHolder } from "../components";
+import { InnerPageLayout } from "../layouts";
 import { createEmptyProfile } from "../models/profile";
 
 export class UserProfilePage extends React.Component<any, any> {
@@ -29,25 +29,12 @@ export class UserProfilePage extends React.Component<any, any> {
         this.state = createEmptyProfile();
     }
 
-    private setProfileDetails(response) {
-        this.setState({
-            displayName: response.displayName,
-            username: response.username,
-            emails: response.emails,
-            lastName: response.lastName,
-            phoneNumbers: response.phoneNumbers,
-            organisation: response.organisation,
-            roles: response.roles,
-            proUrl: response.proUrl,
-        });
-    }
-
     public componentWillMount() {
-            getProfileInfo()
-            .then((response) => {
-                    this.setProfileDetails(response)
-                }
-            );
+        getProfileInfo()
+        .then((response) => {
+                this.setProfileDetails(response)
+            }
+        );
     }
 
     public render() {
@@ -62,7 +49,7 @@ export class UserProfilePage extends React.Component<any, any> {
                         <Grid>
                             <Grid.Row columns={2}>
                                 <Grid.Column width={3}>
-                                    <User size="small"/><br/>
+                                    <UserImagePlaceHolder size="small"/><br/>
                                 </Grid.Column>
                                 <Grid.Column>
                                     Name<br/>
@@ -73,7 +60,7 @@ export class UserProfilePage extends React.Component<any, any> {
                                     {this.state.username}<br/><br/>
                                 </Grid.Column>
                             </Grid.Row>
-                            <Header dividing={true} as='h3'>Personal Information</Header>
+                            <Header dividing={true} as="h3">Personal Information</Header>
                             <Grid.Row columns={1}>
                                 <Grid.Column>
                                     Organisation<br/>
@@ -85,5 +72,18 @@ export class UserProfilePage extends React.Component<any, any> {
                 </Container>
             </InnerPageLayout>
         );
+    }
+
+    private setProfileDetails(response) {
+        this.setState({
+            displayName: response.displayName,
+            emails: response.emails,
+            lastName: response.lastName,
+            organisation: response.organisation,
+            phoneNumbers: response.phoneNumbers,
+            proUrl: response.proUrl,
+            roles: response.roles,
+            username: response.username
+        });
     }
 }

@@ -21,5 +21,6 @@
      Body Styles
 --------------------*/
 
-@bodyBorderWidth: 3px;
-@bodyBorderColor: @primaryColor;
+@bodyTopBorderWidth: 3px;
+@bodyTopBorderColor: @primaryColor;
+@bodyTopBorderStyle: solid;

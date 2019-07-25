@@ -18,6 +18,7 @@
 
 import * as React from "react";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
+import { Dimmer, Loader } from "semantic-ui-react";
 import { AuthConsumer, AuthProvider, } from "./components/auth-context";
 import ProtectedRoute from "./components/protected-route";
 import history from "./helpers/history";
@@ -44,19 +45,26 @@ class App extends React.Component<any, any> {
                 <div className="container-fluid">
                     <AuthProvider history={history}>
                         <AuthConsumer>
-                            {({ login, logout }) => (
-                                <Switch>
-                                    <Redirect exact path="/" to="/login" />
-                                    <Route path="/login" render={(props) => (
-                                        <LoginPage loginFunction={login} {...props}/>
-                                    )} />
-                                    <Route path="/logout" render={(props) => (
-                                        <LogoutPage logoutFunction={logout} {...props}/>
-                                    )} />
-                                    <ProtectedRoute path="/home" component={HomePage} />
-                                    <ProtectedRoute component={UserProfilePage} path="/profile"/>
-                                    <ProtectedRoute component={PageNotFound} />
-                                </Switch>
+                            {({ login, logout, isAuth }) => (
+                                <>
+                                    {(!isAuth) &&
+                                        <Dimmer active inverted>
+                                            <Loader>Loading</Loader>
+                                        </Dimmer>
+                                    }
+                                    <Switch>
+                                        <Redirect exact path="/" to="/login" />
+                                        <Route path="/login" render={(props) => (
+                                            <LoginPage loginFunction={login} {...props}/>
+                                        )} />
+                                        <Route path="/logout" render={(props) => (
+                                            <LogoutPage logoutFunction={logout} {...props}/>
+                                        )} />
+                                        <ProtectedRoute path="/home" component={HomePage} />
+                                        <ProtectedRoute component={UserProfilePage} path="/profile"/>
+                                        <ProtectedRoute component={PageNotFound} />
+                                    </Switch>
+                                </>
                             )}
                         </AuthConsumer>
                     </AuthProvider>

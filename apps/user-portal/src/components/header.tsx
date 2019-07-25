@@ -18,12 +18,13 @@
 
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { Container, Dropdown, Menu } from "semantic-ui-react";
+import { Button, Container, Divider, Dropdown, Item, Menu } from "semantic-ui-react";
 import { Title } from "../components";
 import { AuthConsumer } from "./auth-context";
+import { UserImageDummy } from "./ui";
 
 export const Header = () => (
-    <Menu fixed="top">
+    <Menu fixed="top" borderless>
         <Container>
             <Menu.Item as="a" header>
                 <Title style={{marginTop: 0}} />
@@ -31,11 +32,22 @@ export const Header = () => (
             <AuthConsumer>
                 {({ displayName, emails, username }) => (
                     <Menu.Menu position="right">
-                        <Dropdown item floating text={displayName}>
+                        <Dropdown item floating text={displayName} className="user-dropdown">
                             <Dropdown.Menu>
-                                <Dropdown.Header>{username} ({emails[0]})</Dropdown.Header>
-                                <Dropdown.Divider />
-                                <Dropdown.Item as={Link} to="/profile" text="Profile" />
+                                <Item.Group>
+                                    <Item className="header">
+                                        <Item.Image size="tiny" circular src={UserImageDummy} />
+
+                                        <Item.Content verticalAlign="middle">
+                                            <Item.Description>
+                                                <div>{username}</div>
+                                                <div>{emails[0]}</div>
+                                                <Divider hidden />
+                                                <Button as={Link} to="/profile" size="tiny" primary>Profile</Button>
+                                            </Item.Description>
+                                        </Item.Content>
+                                    </Item>
+                                </Item.Group>
                                 <Dropdown.Divider />
                                 <Dropdown.Item as={Link} to="/logout" text="Logout" />
                             </Dropdown.Menu>

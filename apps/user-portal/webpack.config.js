@@ -111,12 +111,12 @@ module.exports = env => {
                     from: 'lib',
                     to: 'libs/styles/css'
                 },
-                {
-                    context: path.resolve(__dirname, 'node_modules', '@wso2is', 'theme'),
-                    from: 'src',
-                    to: 'libs/styles/less/theme-module'
-                },
                 // TODO: Removed temporally. Currently we don't use it in runtime
+                // {
+                //     context: path.resolve(__dirname, 'node_modules', '@wso2is', 'theme'),
+                //     from: 'src',
+                //     to: 'libs/styles/less/theme-module'
+                // },
                 // {
                 //     context: path.resolve(__dirname, 'node_modules'),
                 //     from: 'semantic-ui-less',
