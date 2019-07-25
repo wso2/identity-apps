@@ -22,6 +22,12 @@
 
 @import (multiple) '../../wso2.config';
 
+each(range(4), {
+    .ui.divider.hidden.@{value}x {
+        margin: (@value * 1rem) 0rem;
+    }
+});
+
 body {
     border-top-style: @bodyTopBorderStyle;
     border-top-width: @bodyTopBorderWidth;

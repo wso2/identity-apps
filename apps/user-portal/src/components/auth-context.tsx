@@ -99,6 +99,8 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
                     });
                     clearLoginSession();
                 });
+        } else {
+            this.props.history.push(APP_LOGIN_PATH);
         }
     }
 }
