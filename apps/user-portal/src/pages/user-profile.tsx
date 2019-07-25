@@ -17,7 +17,7 @@
  */
 
 import * as React from "react";
-import { Container, Form, Grid, Header } from "semantic-ui-react";
+import { Container, Divider, Form, Grid, Header } from "semantic-ui-react";
 import { getProfileInfo } from "../actions/profile";
 import { UserImagePlaceHolder } from "../components";
 import { InnerPageLayout } from "../layouts";
@@ -39,13 +39,12 @@ export class UserProfilePage extends React.Component<any, any> {
 
     public render() {
         return (
-            <InnerPageLayout pageTitle="Profile">
+            <InnerPageLayout
+                pageTitle="Profile"
+                pageDescription="Manage information about you, your sub profiles and your account in general."
+            >
                 <Container>
                     <Form>
-                        <div>
-                            <p>Manage information about you, your sub profiles and your account in general</p>
-                        </div>
-                        <br/><br/>
                         <Grid>
                             <Grid.Row columns={2}>
                                 <Grid.Column width={3}>
@@ -53,18 +52,23 @@ export class UserProfilePage extends React.Component<any, any> {
                                 </Grid.Column>
                                 <Grid.Column>
                                     Name<br/>
-                                    {this.state.displayName + " " + this.state.lastName}<br/><br/>
+                                    {this.state.displayName}
+                                    <Divider className="2x" hidden />
                                     Email<br/>
-                                    {this.state.emails[0]}<br/><br/>
+                                    {this.state.emails[0]}
+                                    <Divider className="2x" hidden />
                                     Username<br/>
-                                    {this.state.username}<br/><br/>
+                                    {this.state.username}
                                 </Grid.Column>
                             </Grid.Row>
-                            <Header dividing={true} as="h3">Personal Information</Header>
+                        </Grid>
+                        <Header dividing={true} as="h3">Personal Information</Header>
+                        <Divider className="2x" hidden />
+                        <Grid>
                             <Grid.Row columns={1}>
                                 <Grid.Column>
                                     Organisation<br/>
-                                    {this.state.organisation}<br/><br/>
+                                    {this.state.organisation}
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>

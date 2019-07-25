@@ -17,7 +17,7 @@
  */
 
 import * as React from "react";
-import { Container, Header } from "semantic-ui-react";
+import { Container, Divider, Header } from "semantic-ui-react";
 import { Header as AppHeader } from "../components";
 
 interface Props extends React.ComponentProps<any> {
@@ -28,8 +28,18 @@ export const InnerPageLayout = (props: Props) => (
     <>
         <AppHeader />
         <Container style={{ marginTop: "7em" }}>
-            { props.pageTitle &&
-                <Header as="h1" style={{ marginTop: "5em" }}>{ props.pageTitle }</Header>
+            { (props.pageTitle || props.pageDescription) &&
+                <>
+                    <Header as="h1">
+                        { props.pageTitle &&
+                            <>{ props.pageTitle }</>
+                        }
+                        { props.pageDescription &&
+                            <Header.Subheader>{ props.pageDescription }</Header.Subheader>
+                        }
+                    </Header>
+                    <Divider className="2x" hidden />
+                </>
             }
             { props.children }
         </Container>
