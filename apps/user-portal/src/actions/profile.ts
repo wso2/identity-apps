@@ -28,6 +28,7 @@ export const getProfileInfo = async () => {
     if (isLoggedSession()) {
         const authUrl = ServiceResourcesEndpoint.me;
         const token = getLoginSession("access_token");
+        const orgKey = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
         const header = {
             headers: {
                 "Accept": "application/json",
@@ -45,7 +46,7 @@ export const getProfileInfo = async () => {
                     profileDetails.emails = endpointResponse.data.emails || [];
                     profileDetails.lastName = endpointResponse.data.name.familyName || "";
                     profileDetails.phoneNumbers = endpointResponse.data.phoneNumbers || [];
-                    profileDetails.organisation = endpointResponse.data.EnterpriseUser.organization || "";
+                    profileDetails.organisation = endpointResponse.data[orgKey].organization || "";
                     profileDetails.roles = endpointResponse.data.roles || [];
                     profileDetails.proUrl = endpointResponse.data.profileUrl || "";
                 }
