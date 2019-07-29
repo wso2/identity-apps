@@ -53,17 +53,17 @@ export class UserProfilePage extends React.Component<any, any> {
                                 <Grid.Column>
                                     Name<br/>
                                     {this.state.displayName}
-                                    <Divider className="2x" hidden />
+                                    <Divider hidden />
                                     Email<br/>
                                     {this.state.emails[0]}
-                                    <Divider className="2x" hidden />
+                                    <Divider hidden />
                                     Username<br/>
                                     {this.state.username}
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
                         <Header dividing={true} as="h3">Personal Information</Header>
-                        <Divider className="2x" hidden />
+                        <Divider hidden />
                         <Grid>
                             <Grid.Row columns={1}>
                                 <Grid.Column>
