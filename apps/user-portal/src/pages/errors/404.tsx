@@ -17,8 +17,17 @@
  */
 
 import * as React from "react";
+import { Link } from "react-router-dom";
+import { Button, Container, Divider } from "semantic-ui-react";
 import { InnerPageLayout } from "../../layouts";
 
 export const PageNotFound = () => (
-    <InnerPageLayout pageTitle="Page not found."></InnerPageLayout>
+    <InnerPageLayout
+        pageTitle="It looks like you're lost. :("
+        pageTitleTextAlign="center"
+        pageDescription="The page you're looking for isn't here.">
+        <Container text textAlign="center">
+            <Button as={Link} to={APP_HOME_PATH} primary>Go back home</Button>
+        </Container>
+    </InnerPageLayout>
 );
