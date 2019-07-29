@@ -26,7 +26,7 @@ import { UserImageDummy } from "./ui";
 export const Header = () => (
     <Menu fixed="top" borderless>
         <Container>
-            <Menu.Item as="a" header>
+            <Menu.Item as={Link} to={APP_HOME_PATH} header>
                 <Title style={{marginTop: 0}} />
             </Menu.Item>
             <AuthConsumer>
@@ -48,6 +48,17 @@ export const Header = () => (
                                         </Item.Content>
                                     </Item>
                                 </Item.Group>
+                                <Dropdown.Divider />
+                                <Dropdown.Item
+                                    icon="lock"
+                                    as={Link}
+                                    to="/account-security"
+                                    text="Account Security" />
+                                <Dropdown.Item
+                                    icon="handshake outline"
+                                    as={Link}
+                                    to="/consent"
+                                    text="Consent Management" />
                                 <Dropdown.Divider />
                                 <Dropdown.Item as={Link} to="/logout" text="Logout" />
                             </Dropdown.Menu>
