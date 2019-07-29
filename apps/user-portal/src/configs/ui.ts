@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { DummyUser, Logo } from "@wso2is/theme";
+import { DummyUser, HomeTileIcons, Logo } from "@wso2is/theme";
 
 type ImageType = string;
 type TitleTextType = string;
@@ -33,6 +33,7 @@ interface CustomCSSType {
 
 export const LogoImage: ImageType = Logo;
 export const UserImage: ImageType = DummyUser;
+export const HomeTileIconImages = HomeTileIcons;
 
 export const TitleText: TitleTextType = "Identity Server";
 export const customCSS: CustomCSSType = {

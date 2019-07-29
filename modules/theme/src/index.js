@@ -25,3 +25,8 @@ export const Theme = require("./theme");
 // );
 export const Logo = require("../lib/assets/images/logo.svg");
 export const DummyUser = require("../lib/assets/images/user.png");
+export const HomeTileIcons = {
+    profile: require("../lib/assets/images/home_profile_mgt.png"),
+    security: require("../lib/assets/images/home_security_mgt.png"),
+    consent: require("../lib/assets/images/home_consent_mgt.png")
+};
