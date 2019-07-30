@@ -18,7 +18,8 @@
  * under the License.
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.wso2.identity.apps</groupId>
@@ -44,10 +45,13 @@
     </scm>
 
     <modules>
+        <module>components/org.wso2.identity.apps.common</module>
         <module>apps/user-portal</module>
         <module>apps/login-portal</module>
+        <module>features/org.wso2.identity.apps.common.server.feature</module>
         <module>features/org.wso2.identity.apps.user.portal.server.feature</module>
         <module>features/org.wso2.identity.apps.login.portal.server.feature</module>
+        <module>features/org.wso2.identity.apps.feature</module>
     </modules>
 
     <repositories>
@@ -142,6 +146,43 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.apache.felix.scr.ds-annotations</artifactId>
+                <version>${apache.felix.scr.ds.annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.eclipse.osgi</groupId>
+                <artifactId>org.eclipse.osgi.services</artifactId>
+                <version>${equinox.osgi.services.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.logging</artifactId>
+                <version>${carbon.kernel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.registry.core</artifactId>
+                <version>${carbon.kernel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.framework</groupId>
+                <artifactId>org.wso2.carbon.identity.application.mgt</artifactId>
+                <version>${carbon.identity.framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.inbound.auth.oauth2</groupId>
+                <artifactId>org.wso2.carbon.identity.oauth</artifactId>
+                <version>${carbon.identity.oauth.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.inbound.auth.oauth2</groupId>
+                <artifactId>org.wso2.carbon.identity.oauth.common</artifactId>
+                <version>${carbon.identity.oauth.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.wso2.identity.apps</groupId>
                 <artifactId>user-portal</artifactId>
                 <version>${project.version}</version>
@@ -152,6 +193,24 @@
                 <artifactId>login-portal</artifactId>
                 <version>${project.version}</version>
                 <type>war</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.identity.apps</groupId>
+                <artifactId>org.wso2.identity.apps.common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.wso2.identity.apps</groupId>
+                <artifactId>org.wso2.identity.apps.common.server.feature</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.identity.apps</groupId>
+                <artifactId>org.wso2.identity.apps.user.portal.server.feature</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -241,5 +300,24 @@
 
     <properties>
         <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
+
+        <equinox.osgi.services.version>3.5.100.v20160504-1419</equinox.osgi.services.version>
+        <apache.felix.scr.ds.annotations.version>1.2.4</apache.felix.scr.ds.annotations.version>
+        <osgi.framework.imp.pkg.version.range>[1.7.0, 2.0.0)</osgi.framework.imp.pkg.version.range>
+        <osgi.service.component.imp.pkg.version.range>[1.2.0, 2.0.0)</osgi.service.component.imp.pkg.version.range>
+
+        <commons-logging.imp.pkg.version.range>[1.2, 2.0)</commons-logging.imp.pkg.version.range>
+
+        <carbon.kernel.version>4.5.0-m1</carbon.kernel.version>
+        <carbon.kernel.imp.pkg.version.range>[4.5.0, 5.0.0)</carbon.kernel.imp.pkg.version.range>
+        <carbon.kernel.registry.imp.pkg.version.range>[1.0.1, 2.0.0)</carbon.kernel.registry.imp.pkg.version.range>
+        <carbon.user.api.imp.pkg.version.range>[1.0.1, 2.0.0)</carbon.user.api.imp.pkg.version.range>
+
+        <carbon.identity.framework.version>5.13.41</carbon.identity.framework.version>
+        <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 6.0.0)
+        </carbon.identity.framework.imp.pkg.version.range>
+        <carbon.identity.oauth.version>6.1.14</carbon.identity.oauth.version>
+        <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)
+        </carbon.identity.oauth.imp.pkg.version.range>
     </properties>
 </project>
