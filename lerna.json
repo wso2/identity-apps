@@ -1,9 +1,4 @@
 {
-    "command": {
-        "bootstrap": {
-            "ignore": "@wso2is/login-portal"
-        }
-    },
     "packages": [
         "modules/*",
         "apps/*"
