@@ -17,7 +17,7 @@
  */
 
 import * as React from "react";
-import { getConsents, getConsentReceipt, revokeConsent } from "../actions/consents";
+import { getConsents, getConsentReceipt } from "../actions/consents";
 import { InnerPageLayout } from "../layouts";
 import { ConsentState, ConsentInterface } from "../models/consents";
 import { Container, Tab, Button, Card, Image, MenuItem, Label, Modal, Divider, Checkbox, Grid } from 'semantic-ui-react'
