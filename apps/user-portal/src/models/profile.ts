@@ -24,6 +24,7 @@ export interface BasicProfileInterface extends BasicUserInterface {
     organisation: string;
     roles: string[];
     proUrl: string;
+    isSecurity: boolean;
 }
 
 export const createEmptyProfile = (): BasicProfileInterface => ({
@@ -35,4 +36,5 @@ export const createEmptyProfile = (): BasicProfileInterface => ({
     proUrl: "",
     roles: [],
     username: "",
+    isSecurity: false
 });

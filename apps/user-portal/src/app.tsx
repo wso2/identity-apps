@@ -25,7 +25,9 @@ import history from "./helpers/history";
 import {
     HomePage,
     PageNotFound,
-    UserProfilePage
+    SecurityQsPage,
+    UserProfilePage,
+    AccountRecoveryPage
 } from "./pages";
 
 const LoginPage = (props) => {
@@ -62,6 +64,8 @@ class App extends React.Component<any, any> {
                                         )} />
                                         <ProtectedRoute path="/home" component={HomePage} />
                                         <ProtectedRoute component={UserProfilePage} path="/profile"/>
+                                        <ProtectedRoute component={AccountRecoveryPage} path="/account-security" />
+                                        <ProtectedRoute component={SecurityQsPage} path="/security" />
                                         <ProtectedRoute component={PageNotFound} />
                                     </Switch>
                                 </>

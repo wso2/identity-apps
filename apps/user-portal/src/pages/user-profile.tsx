@@ -17,7 +17,8 @@
  */
 
 import * as React from "react";
-import { Container, Divider, Form, Grid, Header } from "semantic-ui-react";
+import { Link } from "react-router-dom";
+import { Button, Container, Divider, Form, Grid, Header } from "semantic-ui-react";
 import { getProfileInfo } from "../actions/profile";
 import { UserImagePlaceHolder } from "../components";
 import { InnerPageLayout } from "../layouts";
@@ -32,12 +33,13 @@ export class UserProfilePage extends React.Component<any, any> {
     public componentWillMount() {
         getProfileInfo()
         .then((response) => {
-                this.setProfileDetails(response)
+                this.setProfileDetails(response);
             }
         );
     }
 
     public render() {
+
         return (
             <InnerPageLayout
                 pageTitle="Profile"
