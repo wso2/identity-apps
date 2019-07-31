@@ -22,14 +22,14 @@
     <parent>
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps</artifactId>
-        <version>0.1.8-SNAPSHOT</version>
+        <version>0.1.13-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.wso2.identity.apps.authenticationendpoint.server.feature</artifactId>
     <packaging>pom</packaging>
-    <name>WSO2 Identity Server - authenticationendpoint Server Feature</name>
+    <name>WSO2 Identity Server Apps - Authentication Endpoint Server Feature</name>
     <url>http://wso2.org</url>
     <description>This feature contains the application authentication module</description>
 

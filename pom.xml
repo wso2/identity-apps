@@ -53,8 +53,8 @@
         <module>features/org.wso2.identity.apps.user.portal.server.feature</module>
         <!-- TODO: Removed Login Portal Temporally -->
         <!-- <module>features/org.wso2.identity.apps.login.portal.server.feature</module> -->
-        <module>features/org.wso2.identity.apps.feature</module>
         <module>features/org.wso2.identity.apps.authenticationendpoint.server.feature</module>
+        <module>features/org.wso2.identity.apps.feature</module>
     </modules>
 
     <repositories>
@@ -222,6 +222,19 @@
                 <version>${project.version}</version>
                 <type>zip</type>
             </dependency>
+            <!-- TODO: Removed Login Portal Temporally -->
+            <!--<dependency>
+                <groupId>org.wso2.identity.apps</groupId>
+                <artifactId>org.wso2.identity.apps.login.portal.server.feature</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>-->
+            <dependency>
+                <groupId>org.wso2.identity.apps</groupId>
+                <artifactId>org.wso2.identity.apps.authenticationendpoint.server.feature</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -232,6 +245,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <version>1.6.0</version>
                 <artifactId>exec-maven-plugin</artifactId>
+                <inherited>false</inherited>
                 <executions>
                     <execution>
                         <id>npm install (initialize)</id>
