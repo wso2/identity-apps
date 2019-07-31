@@ -25,7 +25,8 @@ import history from "./helpers/history";
 import {
     HomePage,
     PageNotFound,
-    UserProfilePage
+    UserProfilePage,
+    ConsentsPage
 } from "./pages";
 
 const LoginPage = (props) => {
@@ -55,13 +56,14 @@ class App extends React.Component<any, any> {
                                     <Switch>
                                         <Redirect exact path="/" to="/login" />
                                         <Route path="/login" render={(props) => (
-                                            <LoginPage loginFunction={login} {...props}/>
+                                            <LoginPage loginFunction={login} {...props} />
                                         )} />
                                         <Route path="/logout" render={(props) => (
-                                            <LogoutPage logoutFunction={logout} {...props}/>
+                                            <LogoutPage logoutFunction={logout} {...props} />
                                         )} />
                                         <ProtectedRoute path="/home" component={HomePage} />
-                                        <ProtectedRoute component={UserProfilePage} path="/profile"/>
+                                        <ProtectedRoute component={UserProfilePage} path="/profile" />
+                                        <ProtectedRoute component={ConsentsPage} path="/consent" />
                                         <ProtectedRoute component={PageNotFound} />
                                     </Switch>
                                 </>
