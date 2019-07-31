@@ -196,7 +196,7 @@
         <button
             type="submit"
             onclick="submitCredentials(event)"    
-            class="ui orange large button"
+            class="ui primary large button"
             role="button"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%></button>
     </div>
     <%

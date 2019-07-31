@@ -15,6 +15,7 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   --%>
+
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@include file="localize.jsp" %>
@@ -33,126 +34,79 @@
     }
 %>
 
+<!doctype html>
 <html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <jsp:include page="includes/head.jsp" />
+
     <title><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%></title>
-
-    <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-    <link href="libs/bootstrap_3.3.5/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/Roboto.css" rel="stylesheet">
-    <link href="css/custom-common.css" rel="stylesheet">
-
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
 </head>
-
 <body>
+    <script type="text/javascript">
+        function approved() {
+            document.getElementById('consent').value = "approve";
+            document.getElementById("oauth2_authz").submit();
+        }
+        function approvedAlways() {
+            document.getElementById('consent').value = "approveAlways";
+            document.getElementById("oauth2_authz").submit();
+        }
+        function deny() {
+            document.getElementById('consent').value = "deny";
+            document.getElementById("oauth2_authz").submit();
+        }
+    </script>
 
-<script type="text/javascript">
-    function approved() {
-        document.getElementById('consent').value = "approve";
-        document.getElementById("oauth2_authz").submit();
-    }
-    function approvedAlways() {
-        document.getElementById('consent').value = "approveAlways";
-        document.getElementById("oauth2_authz").submit();
-    }
-    function deny() {
-        document.getElementById('consent').value = "deny";
-        document.getElementById("oauth2_authz").submit();
-    }
-</script>
-
-<!-- header -->
-<header class="header header-default">
-    <div class="container-fluid"><br></div>
-    <div class="container-fluid">
-        <div class="pull-left brand float-remove-xs text-center-xs">
-            <a href="#">
-                <img src="images/logo-inverse.svg" alt="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "business.name")%>" title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "business.name")%>" class="logo">
-                <h1><em><%=AuthenticationEndpointUtil.i18n(resourceBundle, "identity.server")%> </em></h1>
-            </a>
-        </div>
-    </div>
-</header>
-
-<!-- page content -->
-<div class="container-fluid body-wrapper">
-
-    <div class="row">
-        <div class="col-md-12">
-
-            <!-- content -->
-            <div class="container col-xs-10 col-sm-6 col-md-6 col-lg-3 col-centered wr-content wr-login col-centered">
-                <div>
-                    <h2 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.request")%>
-                    </h2>
-                </div>
-
-                <div class="boarder-all ">
-                    <div class="clearfix"></div>
-                    <form action="<%=commonauthURL%>" method="post" id="oauth2_authz" name="oauth2_authz" class="form-horizontal" >
-                        <div class="padding-double login-form">
-                            <div id="workArea">
-                                <table>
-                                    <%
-                                        if (errorCode != null && errorMsg != null) {
-                                    %>
-                                    <tr>
-                                        <td><b><%=AuthenticationEndpointUtil.i18n(resourceBundle, errorCode)%>
-                                        </b></td>
-                                    </tr>
-                                    <tr>
-                                        <td><%=AuthenticationEndpointUtil.i18nBase64(resourceBundle, errorMsgContext)%><%=Encode.forHtml(errorMsgApp)%>
-                                        </td>
-                                    </tr>
-                                    <%
-                                    } else {
-                                    %>
-                                    <tr>
-                                        <td><%=AuthenticationEndpointUtil.i18n(resourceBundle,
-                                                "oauth.processing.error.msg")%></td>
-                                    </tr>
-                                    <%
-                                        }
-                                    %>
-                                </table>
-                            </div>
+<div class="container-fluid">
+        <div class="login-form">
+            <style>
+                body > div,
+                body > div > div,
+                body > div > div > div.login-form {
+                    height: 100%;
+                }
+            </style>
+            <div class="ui center aligned middle aligned grid" style="height: 100%;">
+                <div class="column" style="max-width: 450px;">
+                    <div class="ui segment">
+                        <div class="product-title">
+                            <img src="libs/theme/assets/images/logo.svg"
+                                alt="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "business.name")%>"
+                                title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "business.name")%>"
+                                class="ui inline image product-logo">
+                                <h1 class="product-title-text"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "identity.server")%></h1>
                         </div>
-                    </form>
-
+                        <h3 class="ui header">
+                            <%
+                                if (errorCode != null && errorMsg != null) {
+                            %>
+                                <%=AuthenticationEndpointUtil.i18nBase64(resourceBundle, errorMsgContext)%><%=Encode.forHtml(errorMsgApp)%>
+                            <% } else { %>
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle,"oauth.processing.error.msg")%></td>
+                            <% } %>
+                        </h3>
+                        <form  action="<%=commonauthURL%>" method="post" id="oauth2_authz" name="oauth2_authz">
+                            <div class="field"></div>
+                        </form>
+                    </div>
                 </div>
             </div>
-
-
         </div>
-        <!-- /content -->
-
     </div>
-</div>
-<!-- /content/body -->
 
-</div>
+    <!-- footer -->
+    <footer class="footer" style="display: none;">
+        <div class="container-fluid">
+            <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%> | &copy;
+                <script>document.write(new Date().getFullYear());</script>
+                <a href="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "business.homepage")%>" target="_blank"><i class="icon fw fw-wso2"></i>
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "inc")%>
+                </a>. <%=AuthenticationEndpointUtil.i18n(resourceBundle, "all.rights.reserved")%>
+            </p>
+        </div>
+    </footer>
 
-<!-- footer -->
-<footer class="footer">
-    <div class="container-fluid">
-        <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%> | &copy;
-            <script>document.write(new Date().getFullYear());</script>
-            <a href="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "business.homepage")%>" target="_blank"><i class="icon fw fw-wso2"></i>
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "inc")%>
-            </a>. <%=AuthenticationEndpointUtil.i18n(resourceBundle, "all.rights.reserved")%>
-        </p>
-    </div>
-</footer>
-
-<script src="libs/jquery_1.11.3/jquery-1.11.3.js"></script>
-<script src="libs/bootstrap_3.3.5/js/bootstrap.min.js"></script>
+    <script src="libs/jquery_1.11.3/jquery-1.11.3.js"></script>
+    <script src="libs/bootstrap_3.3.5/js/bootstrap.min.js"></script>
 </body>
 </html>
