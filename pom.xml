@@ -46,11 +46,15 @@
     <modules>
         <module>components/org.wso2.identity.apps.common</module>
         <module>apps/user-portal</module>
-        <module>apps/login-portal</module>
+        <!-- TODO: Removed Login Portal Temporally -->
+        <!-- <module>apps/login-portal</module> -->
+        <module>apps/authenticationendpoint</module>
         <module>features/org.wso2.identity.apps.common.server.feature</module>
         <module>features/org.wso2.identity.apps.user.portal.server.feature</module>
-        <module>features/org.wso2.identity.apps.login.portal.server.feature</module>
+        <!-- TODO: Removed Login Portal Temporally -->
+        <!-- <module>features/org.wso2.identity.apps.login.portal.server.feature</module> -->
         <module>features/org.wso2.identity.apps.feature</module>
+        <module>features/org.wso2.identity.apps.authenticationendpoint.server.feature</module>
     </modules>
 
     <repositories>
@@ -187,9 +191,16 @@
                 <version>${project.version}</version>
                 <type>war</type>
             </dependency>
-            <dependency>
+            <!-- TODO: Removed Login Portal Temporally -->
+            <!--<dependency>
                 <groupId>org.wso2.identity.apps</groupId>
                 <artifactId>login-portal</artifactId>
+                <version>${project.version}</version>
+                <type>war</type>
+            </dependency>-->
+            <dependency>
+                <groupId>org.wso2.identity.apps</groupId>
+                <artifactId>authenticationendpoint</artifactId>
                 <version>${project.version}</version>
                 <type>war</type>
             </dependency>
