@@ -22,6 +22,8 @@ interface ServiceResourcesType {
     logout: string;
     me: string;
     token: string;
+    consents: string;
+    receipts: string,
 }
 
 export const ServiceEndpoint: ServiceEndpointURLType = SERVER_HOST;
@@ -30,5 +32,7 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
             `${CLIENT_ID}&redirect_uri=${LOGIN_CALLBACK_URL}&scope=openid&code_challenge_method=S256`,
     logout: `${ServiceEndpoint}/oidc/logout`,
     me: `${ServiceEndpoint}/scim2/Me`,
-    token: `${ServiceEndpoint}/oauth2/token`
+    token: `${ServiceEndpoint}/oauth2/token`,
+    consents: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents`,
+    receipts: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents/receipts`
 };
