@@ -28,7 +28,7 @@
     </parent>
 
     <artifactId>user-portal</artifactId>
-    <name>WSO2 Identity Server - User Portal App</name>
+    <name>WSO2 Identity Server Apps - User Portal</name>
     <modelVersion>4.0.0</modelVersion>
     <packaging>war</packaging>
     <description>WSO2 Identity Server User Portal App</description>
