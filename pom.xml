@@ -25,7 +25,7 @@
     <artifactId>identity-apps</artifactId>
     <packaging>pom</packaging>
     <version>0.1.14-SNAPSHOT</version>
-    <name>WSO2 Identity Server - Apps</name>
+    <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
     <url>http://wso2.org</url>
