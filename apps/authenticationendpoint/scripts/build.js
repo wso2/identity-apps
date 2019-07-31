@@ -19,30 +19,14 @@
 
 const path = require('path');
 const fs = require('fs-extra');
-const rimraf = require('rimraf');
 
-const buildDir = path.join(__dirname, "..", "build");
 const srcDir = path.join(__dirname, "..", "src");
 const themeModuleDir = path.join(__dirname, "..", "node_modules", "@wso2is", "theme");
 
-console.log(themeModuleDir);
-console.log(srcDir);
-
-const copyFiles = () => {
-    fs.copy(path.join(themeModuleDir, "lib"), path.join(srcDir, "libs", "theme"))
-        .then(() => {
-            console.error("theme css files copied.");
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-};
-
-if (!fs.existsSync(buildDir)) {
-    fs.mkdirSync(buildDir);
-    copyFiles();
-} else {
-    rimraf(buildDir + "/*", () => {
-        copyFiles();
+fs.copy(path.join(themeModuleDir, "lib"), path.join(srcDir, "libs", "theme"))
+    .then(() => {
+        console.error("theme css files copied.");
+    })
+    .catch((error) => {
+        console.error(error);
     });
-}
