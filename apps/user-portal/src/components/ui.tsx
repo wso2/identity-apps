@@ -19,12 +19,18 @@
 import classNames from "classnames";
 import * as React from "react";
 import { Image } from "semantic-ui-react";
-import { LogoImage, TitleText, UserImage } from "../configs/ui";
+import { HomeTileIconImages, LogoImage, TitleText, UserImage } from "../configs/ui";
 
 interface ImageProps {
     classes?: any;
     size?: any;
     style?: any;
+}
+
+type HomeTileIconImagePropInputs = "Profile" | "Security" | "Consent";
+
+interface HomeTileIconImageProps extends ImageProps {
+    icon: HomeTileIconImagePropInputs;
 }
 
 interface TitleProps {
@@ -61,6 +67,35 @@ export const UserImagePlaceHolder = (props: ImageProps) => {
             src={UserImage}
             size={size}
             circular
+            centered
+        />
+    );
+};
+
+export const HomeTileIcon = (props: HomeTileIconImageProps) => {
+    const { classes, size, icon } = props;
+
+    const src = () => {
+        switch (icon) {
+            case "Profile": {
+                return HomeTileIconImages.profile;
+            }
+            case "Security": {
+                return HomeTileIconImages.security;
+            }
+            case "Consent": {
+                return HomeTileIconImages.consent;
+            }
+            default:
+                return "";
+        }
+    };
+
+    return (
+        <Image
+            className={classNames(classes, "home-tile-icon")}
+            src={src()}
+            size={size}
             centered
         />
     );

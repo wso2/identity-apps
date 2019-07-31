@@ -22,6 +22,7 @@ import { Header as AppHeader } from "../components";
 
 interface Props extends React.ComponentProps<any> {
     pageTitle: string;
+    pageTitleTextAlign?: "left" | "center" | "right" | "justified";
 }
 
 export const InnerPageLayout = (props: Props) => (
@@ -30,7 +31,8 @@ export const InnerPageLayout = (props: Props) => (
         <Container style={{ marginTop: "7em" }}>
             { (props.pageTitle || props.pageDescription) &&
                 <>
-                    <Header as="h1">
+                    <Divider className="x2" hidden />
+                    <Header as="h1" textAlign={props.pageTitleTextAlign}>
                         { props.pageTitle &&
                             <>{ props.pageTitle }</>
                         }
@@ -38,7 +40,7 @@ export const InnerPageLayout = (props: Props) => (
                             <Header.Subheader>{ props.pageDescription }</Header.Subheader>
                         }
                     </Header>
-                    <Divider className="2x" hidden />
+                    <Divider className="x2" hidden />
                 </>
             }
             { props.children }

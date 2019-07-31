@@ -22,9 +22,18 @@
 
 @import (multiple) '../../wso2.config';
 
-each(range(4), {
-    .ui.divider.hidden.@{value}x {
+each(range(5), {
+    .ui.divider.hidden.x@{value} {
         margin: (@value * 1rem) 0rem;
+    }
+
+    .ui.cards > .card.margin-x@{value} {
+        margin: (@value * 1rem);
+    }
+
+    .ui.cards > .card > .content.padding-x@{value},
+    .ui.card > .content.padding-x@{value} {
+        padding: (@value * 1rem);
     }
 });
 
