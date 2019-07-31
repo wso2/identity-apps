@@ -17,7 +17,7 @@
  */
 
 import * as React from "react";
-import { Container, Dropdown, Form, Grid, Header, Segment } from "semantic-ui-react";
+import { Container, Dropdown, Form, Grid, Header, Segment, Divider } from "semantic-ui-react";
 import { getSecurityQs } from "../actions/profile";
 import { InnerPageLayout } from "../layouts";
 import { createEmptyChallenge } from "../models/challenges";
@@ -43,7 +43,6 @@ export class SecurityQsPage extends React.Component<any, any> {
     }
 
     public render() {
-
         const options = [];
 
         this.state.questions.map((question) => {
@@ -60,7 +59,7 @@ export class SecurityQsPage extends React.Component<any, any> {
             if (this.state.answers && (this.state.answers.length > 0) && (!this.state.isEdit)) {
                 return this.state.answers.map((answer) => {
                     return <div>
-                        <br />
+                        <Divider hidden />
                         <Grid>
                             <Grid.Row>
                                 <Grid.Column width={3}>
@@ -73,13 +72,15 @@ export class SecurityQsPage extends React.Component<any, any> {
                                     <a onClick={this.handleEdit}><i className="edit"/>Edit</a>
                                 </Grid.Column>
                             </Grid.Row>
-                        </Grid><br /><br /></div>;
+                        </Grid>
+                        <Divider hidden />
+                        </div>;
                 });
             } else if (this.state.answers && (this.state.answers.length > 0) && (this.state.isEdit)) {
                 if (this.state.questions && (this.state.questions.length > 0)) {
                 return this.state.questions.map((question) => {
                     return <div>
-                        <br />
+                        <Divider hidden />
                         <Grid>
                             <Grid.Row>
                                 <Grid.Column width={3}>
@@ -97,7 +98,9 @@ export class SecurityQsPage extends React.Component<any, any> {
                                     <input />
                                 </Grid.Column>
                             </Grid.Row>
-                        </Grid><br /><br /></div>;
+                        </Grid>
+                        <Divider hidden />
+                        </div>;
 
                 });
             }
@@ -105,7 +108,7 @@ export class SecurityQsPage extends React.Component<any, any> {
             if (this.state.questions && (this.state.questions.length > 0)) {
             return this.state.questions.map((question) => {
                 return <div>
-                    <br />
+                    <Divider hidden />
                     <Grid>
                         <Grid.Row>
                             <Grid.Column width={3}>
@@ -123,7 +126,9 @@ export class SecurityQsPage extends React.Component<any, any> {
                                 <input />
                             </Grid.Column>
                         </Grid.Row>
-                    </Grid><br /><br /></div>;
+                    </Grid>
+                    <Divider hidden />
+                    </div>;
             });
         }
             } else {

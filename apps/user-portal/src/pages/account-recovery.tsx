@@ -23,8 +23,8 @@ import { InnerPageLayout } from "../layouts";
 
 export const AccountRecoveryPage = () => (
     <InnerPageLayout
-    pageTitle="Account Recovery"
-    pageDescription="Manage and Update Your Account Security"
+        pageTitle="Account Recovery"
+        pageDescription="Manage and Update Your Account Security"
     >
         <Card>
             <Card.Content>
