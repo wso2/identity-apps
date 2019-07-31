@@ -19,122 +19,82 @@
 <%@include file="localize.jsp" %>
 <%@include file="init-url.jsp" %>
 
+<!doctype html>
 <html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <jsp:include page="includes/head.jsp" />
+
     <title><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%></title>
-
-    <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-    <link href="libs/bootstrap_3.3.5/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/Roboto.css" rel="stylesheet">
-    <link href="css/custom-common.css" rel="stylesheet">
-
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
 </head>
-
 <body>
+    <script type="text/javascript">
+        function approved() {
+            document.getElementById('consent').value = "approve";
+            document.getElementById("oidc_logout_consent_form").submit();
+        }
 
-<script type="text/javascript">
-    function approved() {
-        document.getElementById('consent').value = "approve";
-        document.getElementById("oidc_logout_consent_form").submit();
-    }
+        function deny() {
+            document.getElementById('consent').value = "deny";
+            document.getElementById("oidc_logout_consent_form").submit();
+        }
+    </script>
 
-    function deny() {
-        document.getElementById('consent').value = "deny";
-        document.getElementById("oidc_logout_consent_form").submit();
-    }
-
-</script>
-
-<!-- header -->
-<header class="header header-default">
-    <div class="container-fluid"><br></div>
     <div class="container-fluid">
-        <div class="pull-left brand float-remove-xs text-center-xs">
-            <a href="#">
-                <img src="images/logo-inverse.svg" alt="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "business.name")%>" title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "business.name")%>" class="logo">
-
-                <h1><em><%=AuthenticationEndpointUtil.i18n(resourceBundle, "identity.server")%> </em></h1>
-            </a>
-        </div>
-    </div>
-</header>
-
-<!-- page content -->
-<div class="container-fluid body-wrapper">
-
-    <div class="row">
-        <div class="col-md-12">
-
-            <!-- content -->
-            <div class="container col-xs-10 col-sm-6 col-md-6 col-lg-3 col-centered wr-content wr-login col-centered">
-                <div>
-                    <h2 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "openid.connect.logout")%>
-                    </h2>
-                </div>
-
-                <div class="boarder-all ">
-                    <div class="clearfix"></div>
-                    <form action="<%=oidcLogoutURL%>" method="post" id="oidc_logout_consent_form"
-                          name="oidc_logout_consent_form"
-                          class="form-horizontal">
-                        <div class="padding-double login-form">
-                            <div class="form-group">
-                                <p><strong>
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "do.you.want.to.logout")%>
-                                    </strong>
-                                </p>
-                            </div>
-                            <table width="100%" class="styledLeft">
-                                <tbody>
-                                <tr>
-                                    <td class="buttonRow" colspan="2">
-                                        <div style="text-align:left;">
-                                            <input type="button" class="btn btn-primary" id="approve" name="approve"
-                                                   onclick="javascript: approved(); return false;"
-                                                   value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "yes")%>"/>
-                                            <input class="btn" type="reset"
-                                                   value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "no")%>"
-                                                   onclick="javascript: deny(); return false;"/>
-                                        </div>
-
-                                        <input type="hidden" name="consent" id="consent" value="deny"/>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+        <div class="login-form">
+            <style>
+                body > div,
+                body > div > div,
+                body > div > div > div.login-form {
+                    height: 100%;
+                }
+            </style>
+            <div class="ui center aligned middle aligned grid" style="height: 100%;">
+                <div class="column" style="max-width: 450px;">
+                    <div class="ui segment">
+                        <div class="product-title">
+                            <img src="libs/theme/assets/images/logo.svg"
+                                alt="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "business.name")%>"
+                                title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "business.name")%>"
+                                class="ui inline image product-logo">
+                                <h1 class="product-title-text"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "identity.server")%></h1>
                         </div>
-                    </form>
+                        <h3 class="ui header"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "do.you.want.to.logout")%></h3>
+                        <form action="<%=oidcLogoutURL%>" method="post" id="oidc_logout_consent_form"
+                            name="oidc_logout_consent_form">
+
+                            <div class="field">
+                                <button
+                                    type="submit"
+                                    onclick="javascript: deny(); return false;"   
+                                    class="ui large button"
+                                    role="button"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "no")%></button>
+                                <button
+                                    type="submit"
+                                    onclick="javascript: approved(); return false;"   
+                                    class="ui primary large button"
+                                    role="button"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "yes")%></button>
+                            </div>
+                            <input type="hidden" name="consent" id="consent" value="deny"/>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- /content -->
     </div>
-</div>
-<!-- /content/body -->
 
-</div>
+    <!-- footer -->
+    <footer class="footer" style="display: none;">
+        <div class="container-fluid">
+            <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%> | &copy;
+                <script>document.write(new Date().getFullYear());</script>
+                <a href="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "business.homepage")%>" target="_blank"><i class="icon fw fw-wso2"></i>
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "inc")%>
+                </a>. <%=AuthenticationEndpointUtil.i18n(resourceBundle, "all.rights.reserved")%>
+            </p>
+        </div>
+    </footer>
 
-<!-- footer -->
-<footer class="footer">
-    <div class="container-fluid">
-        <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%> | &copy;
-            <script>document.write(new Date().getFullYear());</script>
-            <a href="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "business.homepage")%>" target="_blank"><i class="icon fw fw-wso2"></i>
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "inc")%>
-            </a>. <%=AuthenticationEndpointUtil.i18n(resourceBundle, "all.rights.reserved")%>
-        </p>
-    </div>
-</footer>
-
-<script src="libs/jquery_1.11.3/jquery-1.11.3.js"></script>
-<script src="libs/bootstrap_3.3.5/js/bootstrap.min.js"></script>
+    <script src="libs/jquery_1.11.3/jquery-1.11.3.js"></script>
+    <script src="libs/bootstrap_3.3.5/js/bootstrap.min.js"></script>
 </body>
 </html>
