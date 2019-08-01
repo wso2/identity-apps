@@ -231,6 +231,7 @@ public class AppsCommonServiceComponent {
         oAuthConsumerAppDTO.setCallbackUrl(IdentityUtil.getServerURL(portalPath, false, true));
         oAuthConsumerAppDTO.setBypassClientCredentials(true);
         oAuthConsumerAppDTO.setGrantTypes(AUTHORIZATION_CODE + " " + REFRESH_TOKEN);
+        oAuthConsumerAppDTO.setPkceMandatory(true);
 
         try {
             PrivilegedCarbonContext.startTenantFlow();

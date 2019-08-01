@@ -17,10 +17,11 @@
  */
 
 export * from "./errors/404";
+export * from "./account-recovery";
 export * from "./app-listing";
+export * from "./consents";
 export * from "./home";
+export * from "./security-qs";
 export * from "./theme";
 export * from "./user-listing";
 export * from "./user-profile";
-export * from "./security-qs";
-export * from "./account-recovery";

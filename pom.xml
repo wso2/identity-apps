@@ -24,8 +24,8 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.14-SNAPSHOT</version>
-    <name>WSO2 Identity Server - Apps</name>
+    <version>0.1.17-SNAPSHOT</version>
+    <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
     <url>http://wso2.org</url>
@@ -46,10 +46,14 @@
     <modules>
         <module>components/org.wso2.identity.apps.common</module>
         <module>apps/user-portal</module>
-        <module>apps/login-portal</module>
+        <!-- TODO: Removed Login Portal Temporally -->
+        <!-- <module>apps/login-portal</module> -->
+        <module>apps/authenticationendpoint</module>
         <module>features/org.wso2.identity.apps.common.server.feature</module>
         <module>features/org.wso2.identity.apps.user.portal.server.feature</module>
-        <module>features/org.wso2.identity.apps.login.portal.server.feature</module>
+        <!-- TODO: Removed Login Portal Temporally -->
+        <!-- <module>features/org.wso2.identity.apps.login.portal.server.feature</module> -->
+        <module>features/org.wso2.identity.apps.authenticationendpoint.server.feature</module>
         <module>features/org.wso2.identity.apps.feature</module>
     </modules>
 
@@ -187,9 +191,16 @@
                 <version>${project.version}</version>
                 <type>war</type>
             </dependency>
-            <dependency>
+            <!-- TODO: Removed Login Portal Temporally -->
+            <!--<dependency>
                 <groupId>org.wso2.identity.apps</groupId>
                 <artifactId>login-portal</artifactId>
+                <version>${project.version}</version>
+                <type>war</type>
+            </dependency>-->
+            <dependency>
+                <groupId>org.wso2.identity.apps</groupId>
+                <artifactId>authenticationendpoint</artifactId>
                 <version>${project.version}</version>
                 <type>war</type>
             </dependency>
@@ -211,6 +222,19 @@
                 <version>${project.version}</version>
                 <type>zip</type>
             </dependency>
+            <!-- TODO: Removed Login Portal Temporally -->
+            <!--<dependency>
+                <groupId>org.wso2.identity.apps</groupId>
+                <artifactId>org.wso2.identity.apps.login.portal.server.feature</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>-->
+            <dependency>
+                <groupId>org.wso2.identity.apps</groupId>
+                <artifactId>org.wso2.identity.apps.authenticationendpoint.server.feature</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -221,6 +245,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <version>1.6.0</version>
                 <artifactId>exec-maven-plugin</artifactId>
+                <inherited>false</inherited>
                 <executions>
                     <execution>
                         <id>npm install (initialize)</id>

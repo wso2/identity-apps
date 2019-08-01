@@ -20,8 +20,17 @@ import axios from "axios";
 import { ServiceResourcesEndpoint } from "../configs/app";
 import { createEmptyLoginStatus } from "../models/login";
 import { BasicUserInterface } from "../models/user";
-import { clearLoginSession, getLoginSession, initLoginSession, isLoggedSession } from "./session";
+import {
+    clearCodeVerifier,
+    clearLoginSession,
+    getLoginSession,
+    initLoginSession,
+    isLoggedSession,
+    retrieveCodeVerifier,
+    storeCodeVerifier
+} from "./session";
 import { getUserInfo } from "./user";
+import {getCodeChallenge, getCodeVerifier} from "../helpers/crypto";
 
 export const dispatchLogin = async () => {
     const code = new URL(window.location.href).searchParams.get("code");
@@ -29,7 +38,13 @@ export const dispatchLogin = async () => {
 
     if (!code) {
         clearLoginSession();
-        window.location.href = ServiceResourcesEndpoint.authorize;
+
+        // Generate PKCE related parameters.
+        let codeVerifier = getCodeVerifier();
+        let codeChallenge = getCodeChallenge(codeVerifier);
+        storeCodeVerifier(codeVerifier);
+
+        window.location.href = ServiceResourcesEndpoint.authorize + `&code_challenge=` + codeChallenge;
     } else {
         if (!isLoggedSession()) {
             const header = {
@@ -45,6 +60,9 @@ export const dispatchLogin = async () => {
             body.push(`code=${code}`);
             body.push("grant_type=authorization_code");
             body.push(`redirect_uri=${LOGIN_CALLBACK_URL}`);
+            body.push(`code_verifier=${retrieveCodeVerifier()}`);
+            //Clear code verifier from session store.
+            clearCodeVerifier();
 
             return new Promise((resolve, reject) => {
                 axios.post(ServiceResourcesEndpoint.token, body.join("&"), header)

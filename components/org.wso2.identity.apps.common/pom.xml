@@ -22,14 +22,14 @@
     <parent>
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps</artifactId>
-        <version>0.1.14-SNAPSHOT</version>
+        <version>0.1.17-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.wso2.identity.apps.common</artifactId>
     <packaging>bundle</packaging>
-    <name>WSO2 Identity Server - App Portal Common Component</name>
+    <name>WSO2 Identity Server Apps - Portal Common Component</name>
     <url>http://wso2.org</url>
     <description>Common Bundle for Identity Apps</description>
 

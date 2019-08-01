@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { SessionInterface } from "../models/session";
+import {SessionInterface} from "../models/session";
 
 export const initLoginSession = (data: SessionInterface) => {
     sessionStorage.setItem("access_token", data.access_token);
@@ -72,3 +72,31 @@ export const isLoggedSession = () => {
 
     return false;
 };
+
+/**
+ * Set code verifier to the session storage.
+ *
+ * @param {string} verifier
+ */
+export const storeCodeVerifier = (verifier: string) => {
+
+    sessionStorage.setItem("pkce_code_verifier", verifier);
+}
+
+/**
+ * Get code verifier from the session storage.
+ *
+ * @returns {string | null}
+ */
+export const retrieveCodeVerifier = () => {
+
+    return sessionStorage.getItem("pkce_code_verifier");
+}
+
+/**
+ * Clear code verifier from the session storage.
+ */
+export const clearCodeVerifier = () => {
+
+    sessionStorage.removeItem("pkce_code_verifier");
+}

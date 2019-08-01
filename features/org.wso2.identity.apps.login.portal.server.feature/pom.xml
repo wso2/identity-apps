@@ -29,7 +29,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.wso2.identity.apps.login.portal.server.feature</artifactId>
     <packaging>pom</packaging>
-    <name>WSO2 Identity Server - Login Portal Server Feature</name>
+    <name>WSO2 Identity Server Apps - Login Portal Server Feature</name>
     <url>http://wso2.org</url>
     <description>This feature contains the login portal application</description>
 

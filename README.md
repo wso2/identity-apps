@@ -25,7 +25,7 @@ If you are building the project for [product-is](https://github.com/wso2/product
 1. Run `npm run build` from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependancies.
 2. Download a [WSO2 Identity Server](https://wso2.com/identity-and-access-management/) distrubution.
 3. Run the wso2server.sh or wso2server.bat file in the /bin directory
-4. Add below code to `WSO2 Identity Server/repository/deployment/server/webapps/scim2/WEB-INF/web.xml` to allow CORS for webpack dev servers. _(If you are running the app in webpack dev server as in the 4th step)_
+4. Add below code to `scim2/WEB-INF/web.xml` & `oauth2/WEB-INF/web.xml` & `api/WEB-INF/web.xml` in `WSO2 Identity Server/repository/deployment/server/webapps/` to allow CORS for webpack dev servers. _(If you are running the app in webpack dev server as in the 4th step)_
 
 ```xml
     <filter>

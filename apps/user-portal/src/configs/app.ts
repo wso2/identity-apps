@@ -21,20 +21,24 @@ import { string } from "prop-types";
 type ServiceEndpointURLType = string;
 interface ServiceResourcesType {
     authorize: string;
-    logout: string;
-    me: string;
-    token: string;
     challenges: string;
     challengeAnswers: string;
+    consents: string;
+    logout: string;
+    me: string;
+    receipts: string;
+    token: string;
 }
 
 export const ServiceEndpoint: ServiceEndpointURLType = SERVER_HOST;
 export const ServiceResourcesEndpoint: ServiceResourcesType = {
     authorize: `${ServiceEndpoint}/oauth2/authorize?response_type=code&client_id=` +
-            `${CLIENT_ID}&redirect_uri=${LOGIN_CALLBACK_URL}&scope=openid`,
+            `${CLIENT_ID}&redirect_uri=${LOGIN_CALLBACK_URL}&scope=openid&code_challenge_method=S256`,
     challengeAnswers: `${ServiceEndpoint}/api/users/v1/me/challenge-answers`,
     challenges: `${ServiceEndpoint}/api/users/v1/me/challenges`,
+    consents: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents`,
     logout: `${ServiceEndpoint}/oidc/logout`,
     me: `${ServiceEndpoint}/scim2/Me`,
-    token: `${ServiceEndpoint}/oauth2/token`
+    token: `${ServiceEndpoint}/oauth2/token`,
+    receipts: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents/receipts`
 };
