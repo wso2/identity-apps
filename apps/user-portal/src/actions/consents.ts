@@ -22,7 +22,7 @@ import { ServiceResourcesEndpoint } from "../configs";
 import { getLoginSession, isLoggedSession } from "./session";
 import { ConsentInterface, ConsentState, ConsentReceiptInterface } from '../models/consents';
 
-export const getConsents = async (state: ConsentState) => {
+export const getConsents = (state: ConsentState) => {
     if (isLoggedSession()) {
         const consentsUrl = ServiceResourcesEndpoint.consents;
         const token = getLoginSession("access_token");
@@ -38,17 +38,17 @@ export const getConsents = async (state: ConsentState) => {
             state: state
         };
 
-        try {
-            const response = await axios.get(consentsUrl, { params, headers });
-            return response.data as ConsentInterface[];
-        }
-        catch (error) {
-            log.error(error);
-        }
+        return axios.get(consentsUrl, { params, headers })
+            .then((response) => {
+                return response.data as ConsentInterface[];
+            })
+            .catch((error) => {
+                log.error(error);
+            })
     }
 };
 
-export const getConsentReceipt = async (id: string) => {
+export const getConsentReceipt = (id: string) => {
     if (isLoggedSession()) {
         const receiptsUrl = ServiceResourcesEndpoint.receipts + `/${id}`;
         const token = getLoginSession("access_token");
@@ -60,12 +60,12 @@ export const getConsentReceipt = async (id: string) => {
 
         };
 
-        try {
-            const response = await axios.get(receiptsUrl, { headers });
-            return response.data as ConsentReceiptInterface;
-        }
-        catch (error) {
-            log.error(error);
-        }
+        return axios.get(receiptsUrl, { headers })
+            .then((response) => {
+                return response.data as ConsentReceiptInterface;
+            })
+            .catch((error) => {
+                log.error(error);
+            })
     }
 }
