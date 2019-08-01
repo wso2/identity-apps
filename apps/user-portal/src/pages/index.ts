@@ -22,3 +22,4 @@ export * from "./home";
 export * from "./theme";
 export * from "./user-listing";
 export * from "./user-profile";
+export * from "./consents";
