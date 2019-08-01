@@ -19,6 +19,7 @@
 import axios from "axios";
 import log from "log";
 import { ServiceResourcesEndpoint } from "../configs";
+import { createEmptyChallenge } from "../models/challenges";
 import { createEmptyProfile } from "../models/profile";
 import { getLoginSession, isLoggedSession } from "./session";
 
@@ -57,4 +58,34 @@ export const getProfileInfo = async () => {
     }
 
     return profileDetails;
+};
+
+export const getSecurityQs = async () => {
+    const challengeQs = createEmptyChallenge();
+    const challengeUrl = ServiceResourcesEndpoint.challenges;
+    const answerUrl = ServiceResourcesEndpoint.challengeAnswers;
+    const token = getLoginSession("access_token");
+
+    const header = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Authorization": `Bearer ${token}`
+        }
+    };
+
+    const getQuestions = () => {
+        return axios.get(challengeUrl, header);
+    };
+
+    const getAnswers = () => {
+        return axios.get(answerUrl, header);
+    };
+
+    return axios.all ([getQuestions(), getAnswers()])
+        .then(axios.spread((questions, answers) => {
+            if (questions.status === 200 && answers.status === 200) {
+                return [questions.data, answers.data];
+            }
+          }));
 };

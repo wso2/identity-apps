@@ -23,10 +23,12 @@ import { AuthConsumer, AuthProvider, } from "./components/auth-context";
 import ProtectedRoute from "./components/protected-route";
 import history from "./helpers/history";
 import {
+    AccountRecoveryPage,
+    ConsentsPage,
     HomePage,
     PageNotFound,
+    SecurityQsPage,
     UserProfilePage,
-    ConsentsPage
 } from "./pages";
 
 const LoginPage = (props) => {
@@ -62,7 +64,9 @@ class App extends React.Component<any, any> {
                                             <LogoutPage logoutFunction={logout} {...props} />
                                         )} />
                                         <ProtectedRoute path="/home" component={HomePage} />
-                                        <ProtectedRoute component={UserProfilePage} path="/profile" />
+                                        <ProtectedRoute component={UserProfilePage} path="/profile"/>
+                                        <ProtectedRoute component={AccountRecoveryPage} path="/account-security" />
+                                        <ProtectedRoute component={SecurityQsPage} path="/security" />
                                         <ProtectedRoute component={ConsentsPage} path="/consent" />
                                         <ProtectedRoute component={PageNotFound} />
                                     </Switch>

@@ -1,3 +1,5 @@
+import { string } from "prop-types";
+
 /**
  * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
@@ -19,20 +21,24 @@
 type ServiceEndpointURLType = string;
 interface ServiceResourcesType {
     authorize: string;
+    challenges: string;
+    challengeAnswers: string;
+    consents: string;
     logout: string;
     me: string;
+    receipts: string;
     token: string;
-    consents: string;
-    receipts: string,
 }
 
 export const ServiceEndpoint: ServiceEndpointURLType = SERVER_HOST;
 export const ServiceResourcesEndpoint: ServiceResourcesType = {
     authorize: `${ServiceEndpoint}/oauth2/authorize?response_type=code&client_id=` +
             `${CLIENT_ID}&redirect_uri=${LOGIN_CALLBACK_URL}&scope=openid&code_challenge_method=S256`,
+    challengeAnswers: `${ServiceEndpoint}/api/users/v1/me/challenge-answers`,
+    challenges: `${ServiceEndpoint}/api/users/v1/me/challenges`,
+    consents: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents`,
     logout: `${ServiceEndpoint}/oidc/logout`,
     me: `${ServiceEndpoint}/scim2/Me`,
     token: `${ServiceEndpoint}/oauth2/token`,
-    consents: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents`,
     receipts: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents/receipts`
 };
