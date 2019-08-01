@@ -27,28 +27,28 @@ export interface ConsentInterface {
 }
 
 export interface ConsentReceiptInterface {
-    version: string;
     collectionMethod: string;
     services: ServiceInterface[];
+    version: string;
 }
 
 interface ServiceInterface {
-    service: string;
-    serviceDisplayName: string;
-    serviceDescription: string;
-    tenantDomain: string;
     purposes: PurposeInterface[];
+    service: string;
+    serviceDescription: string;
+    serviceDisplayName: string;
+    tenantDomain: string;
 }
 
 interface PurposeInterface {
-    purpose: string;
     piiCategory: PIICategory[];
+    purpose: string;
 }
 
 interface PIICategory {
-    piiCategoryName: string;
-    piiCategoryId: number;
     piiCategoryDisplayName: string;
+    piiCategoryId: number;
+    piiCategoryName: string;
 }
 
 export enum ConsentState {
@@ -67,26 +67,26 @@ export const createEmptyConsent = (): ConsentInterface => ({
 });
 
 export const createEmptyConsentReceipt = (): ConsentReceiptInterface => ({
-    version: "",
     collectionMethod: "",
     services: [
         {
-            service: "",
-            serviceDisplayName: "",
-            serviceDescription: "",
-            tenantDomain: "",
             purposes: [
                 {
-                    purpose: "",
                     piiCategory: [
                         {
-                            piiCategoryName: "",
+                            piiCategoryDisplayName: "",
                             piiCategoryId: 0,
-                            piiCategoryDisplayName: ""
+                            piiCategoryName: ""
                         }
-                    ]
+                    ],
+                    purpose: ""
                 }
-            ]
+            ],
+            service: "",
+            serviceDescription: "",
+            serviceDisplayName: "",
+            tenantDomain: ""
         }
-    ]
+    ],
+    version: ""
 });

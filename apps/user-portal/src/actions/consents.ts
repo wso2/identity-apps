@@ -19,8 +19,8 @@
 import axios from "axios";
 import log from "log";
 import { ServiceResourcesEndpoint } from "../configs";
+import { ConsentInterface, ConsentReceiptInterface, ConsentState } from "../models/consents";
 import { getLoginSession, isLoggedSession } from "./session";
-import { ConsentInterface, ConsentState, ConsentReceiptInterface } from '../models/consents';
 
 export const getConsents = (state: ConsentState) => {
     if (isLoggedSession()) {
@@ -31,20 +31,20 @@ export const getConsents = (state: ConsentState) => {
             "Access-Control-Allow-Origin": CLIENT_HOST,
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json"
-
         };
         const params = {
             piiPrincipalId: getLoginSession("authenticated_user"),
-            state: state
+            state
         };
 
-        return axios.get(consentsUrl, { params, headers })
+        return axios
+            .get(consentsUrl, { params, headers })
             .then((response) => {
                 return response.data as ConsentInterface[];
             })
             .catch((error) => {
                 log.error(error);
-            })
+            });
     }
 };
 
@@ -57,15 +57,15 @@ export const getConsentReceipt = (id: string) => {
             "Access-Control-Allow-Origin": CLIENT_HOST,
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json"
-
         };
 
-        return axios.get(receiptsUrl, { headers })
+        return axios
+            .get(receiptsUrl, { headers })
             .then((response) => {
                 return response.data as ConsentReceiptInterface;
             })
             .catch((error) => {
                 log.error(error);
-            })
+            });
     }
-}
+};
