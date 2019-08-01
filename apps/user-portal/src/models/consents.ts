@@ -55,3 +55,38 @@ export enum ConsentState {
     ACTIVE = "ACTIVE",
     REVOKED = "REVOKED"
 }
+
+export const createEmptyConsent = (): ConsentInterface => ({
+    consentReceiptID: "",
+    language: "",
+    piiPrincipalId: "",
+    spDescription: "",
+    spDisplayName: "",
+    state: ConsentState.ACTIVE,
+    tenantDomain: ""
+});
+
+export const createEmptyConsentReceipt = (): ConsentReceiptInterface => ({
+    version: "",
+    collectionMethod: "",
+    services: [
+        {
+            service: "",
+            serviceDisplayName: "",
+            serviceDescription: "",
+            tenantDomain: "",
+            purposes: [
+                {
+                    purpose: "",
+                    piiCategory: [
+                        {
+                            piiCategoryName: "",
+                            piiCategoryId: 0,
+                            piiCategoryDisplayName: ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+});
