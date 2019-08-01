@@ -27,7 +27,7 @@ interface ServiceResourcesType {
 export const ServiceEndpoint: ServiceEndpointURLType = SERVER_HOST;
 export const ServiceResourcesEndpoint: ServiceResourcesType = {
     authorize: `${ServiceEndpoint}/oauth2/authorize?response_type=code&client_id=` +
-            `${CLIENT_ID}&redirect_uri=${LOGIN_CALLBACK_URL}&scope=openid`,
+            `${CLIENT_ID}&redirect_uri=${LOGIN_CALLBACK_URL}&scope=openid&code_challenge_method=S256`,
     logout: `${ServiceEndpoint}/oidc/logout`,
     me: `${ServiceEndpoint}/scim2/Me`,
     token: `${ServiceEndpoint}/oauth2/token`
