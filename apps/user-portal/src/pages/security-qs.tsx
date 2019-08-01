@@ -33,21 +33,20 @@ export class SecurityQsPage extends React.Component<any, any> {
             getSecurityQs()
                 .then((response) => {
                     this.setSecurityDetails(response);
-                }
-            );
+                });
         }
     }
 
     public handleEdit = () => {
-        this.setState({isEdit: true});
+        this.setState({ isEdit: true });
     }
 
     public render() {
         const options = [];
 
         this.state.questions.map((question) => {
-        question.questions.map((ques) => {
-            options.push({
+            question.questions.map((ques) => {
+                options.push({
                     key: ques.question,
                     text: ques.question,
                     value: ques.question
@@ -58,79 +57,69 @@ export class SecurityQsPage extends React.Component<any, any> {
         const listItems = () => {
             if (this.state.answers && (this.state.answers.length > 0) && (!this.state.isEdit)) {
                 return this.state.answers.map((answer) => {
-                    return <div>
+                    return (<>
                         <Divider hidden />
                         <Grid>
                             <Grid.Row>
-                                <Grid.Column width={3}>
-                                    <label>Challenge Question</label>
-                                </Grid.Column>
                                 <Grid.Column width={10}>
                                     <label>{answer.question}</label>
                                 </Grid.Column>
                                 <Grid.Column>
-                                    <a onClick={this.handleEdit}><i className="edit"/>Edit</a>
+                                    <a onClick={this.handleEdit}><i className="edit" />Edit</a>
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
                         <Divider hidden />
-                        </div>;
+                    </>);
                 });
             } else if (this.state.answers && (this.state.answers.length > 0) && (this.state.isEdit)) {
                 if (this.state.questions && (this.state.questions.length > 0)) {
-                return this.state.questions.map((question) => {
-                    return <div>
-                        <Divider hidden />
-                        <Grid>
-                            <Grid.Row>
-                                <Grid.Column width={3}>
-                                    <label>Challenge Question</label>
-                                </Grid.Column>
-                                <Grid.Column width={10}>
-                                    <Dropdown selection fluid placeholder="Select a Question" options={options}/>
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row>
-                                <Grid.Column width={3}>
-                                    <label>Your Answer</label>
-                                </Grid.Column>
-                                <Grid.Column width={10}>
-                                    <input />
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                        <Divider hidden />
-                        </div>;
-
-                });
-            }
-        } else if ((this.state.answers && this.state.answers.length === 0)) {
-            if (this.state.questions && (this.state.questions.length > 0)) {
-            return this.state.questions.map((question) => {
-                return <div>
-                    <Divider hidden />
-                    <Grid>
-                        <Grid.Row>
-                            <Grid.Column width={3}>
-                                <label>Challenge Question</label>
-                            </Grid.Column>
-                            <Grid.Column width={10}>
-                                <Dropdown selection fluid placeholder="Select a Question" options={options}/>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column width={3}>
-                                <label>Your Answer</label>
-                            </Grid.Column>
-                            <Grid.Column width={10}>
-                                <input />
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                    <Divider hidden />
-                    </div>;
-            });
-        }
+                    return this.state.questions.map((question) => {
+                        return (<>
+                            <Divider hidden />
+                            <Grid>
+                                <Grid.Row>
+                                    <Grid.Column width={10}>
+                                        <Dropdown selection fluid placeholder="Select a Question" options={options} />
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Grid.Row>
+                                    <Grid.Column width={3}>
+                                        <label>Your Answer</label>
+                                    </Grid.Column>
+                                    <Grid.Column width={10}>
+                                        <input />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                            <Divider hidden />
+                        </>);
+                    });
+                }
+            } else if ((this.state.answers && this.state.answers.length === 0)) {
+                if (this.state.questions && (this.state.questions.length > 0)) {
+                    return this.state.questions.map((question) => {
+                        return (<>
+                            <Divider hidden />
+                            <Grid>
+                                <Grid.Row>
+                                    <Grid.Column width={10}>
+                                        <Dropdown selection fluid placeholder="Select a Question" options={options} />
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Grid.Row>
+                                    <Grid.Column width={3}>
+                                        <label>Your Answer</label>
+                                    </Grid.Column>
+                                    <Grid.Column width={10}>
+                                        <Form.Input />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                            <Divider hidden />
+                        </>);
+                    });
+                }
             } else {
                 return null;
             }
@@ -138,12 +127,11 @@ export class SecurityQsPage extends React.Component<any, any> {
 
         return (
             <InnerPageLayout
-            pageTitle="Security Questions"
-            pageDescription="Manage Your Account Recovery Challenge Questions"
-            >
+                pageTitle="Security Questions"
+                pageDescription="Manage Your Account Recovery Challenge Questions">
                 <Container>
                     <Segment>
-                    {listItems()}
+                        {listItems()}
                     </Segment>
                 </Container>
             </InnerPageLayout>
