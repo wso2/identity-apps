@@ -57,7 +57,8 @@ export class SecurityQsPage extends React.Component<any, any> {
         const listItems = () => {
             if (this.state.answers && (this.state.answers.length > 0) && (!this.state.isEdit)) {
                 return this.state.answers.map((answer) => {
-                    return (<>
+                    return (
+                    <>
                         <Divider hidden />
                         <Grid>
                             <Grid.Row>
@@ -75,10 +76,14 @@ export class SecurityQsPage extends React.Component<any, any> {
             } else if (this.state.answers && (this.state.answers.length > 0) && (this.state.isEdit)) {
                 if (this.state.questions && (this.state.questions.length > 0)) {
                     return this.state.questions.map((question) => {
-                        return (<>
+                        return (
+                        <>
                             <Divider hidden />
                             <Grid>
                                 <Grid.Row>
+                                <Grid.Column width={3}>
+                                        <label>Challenge Question</label>
+                                    </Grid.Column>
                                     <Grid.Column width={10}>
                                         <Dropdown selection fluid placeholder="Select a Question" options={options} />
                                     </Grid.Column>
@@ -87,8 +92,8 @@ export class SecurityQsPage extends React.Component<any, any> {
                                     <Grid.Column width={3}>
                                         <label>Your Answer</label>
                                     </Grid.Column>
-                                    <Grid.Column width={10}>
-                                        <input />
+                                    <Grid.Column>
+                                        <Form.Input width={10}/>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
@@ -99,10 +104,14 @@ export class SecurityQsPage extends React.Component<any, any> {
             } else if ((this.state.answers && this.state.answers.length === 0)) {
                 if (this.state.questions && (this.state.questions.length > 0)) {
                     return this.state.questions.map((question) => {
-                        return (<>
+                        return (
+                        <>
                             <Divider hidden />
                             <Grid>
                                 <Grid.Row>
+                                <Grid.Column width={3}>
+                                        <label>Challenge Question</label>
+                                    </Grid.Column>
                                     <Grid.Column width={10}>
                                         <Dropdown selection fluid placeholder="Select a Question" options={options} />
                                     </Grid.Column>
@@ -111,8 +120,8 @@ export class SecurityQsPage extends React.Component<any, any> {
                                     <Grid.Column width={3}>
                                         <label>Your Answer</label>
                                     </Grid.Column>
-                                    <Grid.Column width={10}>
-                                        <Form.Input />
+                                    <Grid.Column>
+                                        <Form.Input width={10}/>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
@@ -130,7 +139,7 @@ export class SecurityQsPage extends React.Component<any, any> {
                 pageTitle="Security Questions"
                 pageDescription="Manage Your Account Recovery Challenge Questions">
                 <Container>
-                    <Segment>
+                    <Segment padded="very">
                         {listItems()}
                     </Segment>
                 </Container>
