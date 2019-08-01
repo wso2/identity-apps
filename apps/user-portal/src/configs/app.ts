@@ -26,7 +26,6 @@ interface ServiceResourcesType {
     token: string;
     challenges: string;
     challengeAnswers: string;
-
 }
 
 export const ServiceEndpoint: ServiceEndpointURLType = SERVER_HOST;
