@@ -59,9 +59,11 @@ export class ConsentsPage extends React.Component<any, any> {
     }
 
     /**
-     * Handles the tab changes
+     * Handles the tab onclick event. The active tab index is also
+     * stored in the state and the list of consents is updated
+     * according to the selected tab.
      * @param e event
-     * @param activeIndex active tab index
+     * @param {any} activeIndex active tab index
      */
     public handleConsentTabChange = (e, { activeIndex }) => {
         this.setState({ activeIndex }, () => {
@@ -71,9 +73,8 @@ export class ConsentsPage extends React.Component<any, any> {
     }
 
     /**
-     * Fetches the consents list from the API and updates
-     * the state.
-     * @param state state ex: ACTIVE, REVOKED
+     * Fetches the consents list from the API and updates the state.
+     * @param {ConsentState} state consent state ex: ACTIVE, REVOKED
      */
     public updateConsents = (state: ConsentState) => {
         getConsents(state).then((response) => {
@@ -83,9 +84,8 @@ export class ConsentsPage extends React.Component<any, any> {
 
     /**
      * Retrieves the consent state corresponding to the active
-     * tab index.
-     * @param tabIndex active tab index
-     * @returns the corresponding consent state
+     * @param {number} tabIndex active tab index
+     * @return {ConsentState} consent state ex: ACTIVE, REVOKED
      */
     public getConsentState = (tabIndex: number) => {
         let consentState = ConsentState.ACTIVE;
@@ -101,11 +101,10 @@ export class ConsentsPage extends React.Component<any, any> {
     }
 
     /**
-     * Handles the consent edit button click.
-     * Retrieves the the receipt information and stores it in the
-     * state and sets the current consent object as the editing consent.
-     * And finally toggles the consent edit modal visibility.
-     * @param consent corresponding consent object
+     * Handles the consent edit button click. Retrieves the the receipt information
+     * and stores it in the state and sets the current consent object as the editing
+     * consent. And finally toggles the consent edit modal visibility.
+     * @param {ConsentInterface} consent corresponding consent object
      */
     public handleConsentEditClick = (consent: ConsentInterface) => {
         const { showConsentEditModal } = this.state;
@@ -119,10 +118,9 @@ export class ConsentsPage extends React.Component<any, any> {
     }
 
     /**
-     * Handles the consent revoke button click.
-     * Sets the current consent object as the editing consent and
-     * toggles the visibility of the consent revoke modal.
-     * @param consent
+     * Handles the consent revoke button click. Sets the current consent object as
+     * the editing consent and toggles the visibility of the consent revoke modal.
+     * @param {ConsentInterface} consent corresponding consent object
      */
     public handleConsentRevokeClick = (consent: ConsentInterface) => {
         const { showConsentRevokeModal } = this.state;

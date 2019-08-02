@@ -16,6 +16,9 @@
  * under the License.
  */
 
+/**
+ * Consent Model
+ */
 export interface ConsentInterface {
     consentReceiptID: string;
     language: string;
@@ -26,12 +29,18 @@ export interface ConsentInterface {
     tenantDomain: string;
 }
 
+/**
+ * ConsentReceipt Model
+ */
 export interface ConsentReceiptInterface {
     collectionMethod: string;
     services: ServiceInterface[];
     version: string;
 }
 
+/**
+ * Service Model
+ */
 interface ServiceInterface {
     purposes: PurposeInterface[];
     service: string;
@@ -40,21 +49,35 @@ interface ServiceInterface {
     tenantDomain: string;
 }
 
+/**
+ * Purpose Model
+ */
 interface PurposeInterface {
     piiCategory: PIICategory[];
     purpose: string;
 }
 
+/**
+ * PIICategory Model
+ */
 interface PIICategory {
     piiCategoryDisplayName: string;
     piiCategoryId: number;
     piiCategoryName: string;
 }
 
+/**
+ * Types of consent states.
+ */
 export enum ConsentState {
     ACTIVE = "ACTIVE"
 }
 
+/**
+ * Creates an empty consent object. This can be used to initialize
+ * a consent in the state.
+ * @return {ConsentInterface} an empty consent object.
+ */
 export const createEmptyConsent = (): ConsentInterface => ({
     consentReceiptID: "",
     language: "",
@@ -65,6 +88,11 @@ export const createEmptyConsent = (): ConsentInterface => ({
     tenantDomain: ""
 });
 
+/**
+ * Creates an empty consent receipt object. This can be used to initialize
+ * a consent receipt in the state.
+ * @return {ConsentReceiptInterface}  an empty consent receipt object.
+ */
 export const createEmptyConsentReceipt = (): ConsentReceiptInterface => ({
     collectionMethod: "",
     services: [

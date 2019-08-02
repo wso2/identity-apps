@@ -24,8 +24,8 @@ import { getLoginSession, isLoggedSession } from "./session";
 
 /**
  * Fetches the consents from the API.
- * @param state consent state ex: ACTIVE, REVOKED
- * @returns a promise containing the response
+ * @param {ConsentState} state consent state ex: ACTIVE, REVOKED
+ * @return {Promise<ConsentInterface[]>} a promise containing the response
  */
 export const getConsents = (state: ConsentState) => {
     if (isLoggedSession()) {
@@ -56,8 +56,8 @@ export const getConsents = (state: ConsentState) => {
 
 /**
  * Fetches the consent receipt when an ID is passed in.
- * @param id receipt ID
- * @return a promise containing the response
+ * @param {string} id receipt ID
+ * @return {Promise<ConsentReceiptInterface>} a promise containing the response
  */
 export const getConsentReceipt = (id: string) => {
     if (isLoggedSession()) {
@@ -83,10 +83,9 @@ export const getConsentReceipt = (id: string) => {
 };
 
 /**
- * Revokes the consent of an application when the receipt
- * ID is passed in.
- * @param id receipt ID
- * @returns a promise containing the response
+ * Revokes the consent of an application when the receipt.
+ * @param {string} id receipt ID
+ * @return {Promise<AxiosResponse<any>>} a promise containing the response
  */
 export const revokeConsent = (id: string) => {
     if (isLoggedSession()) {
