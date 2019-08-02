@@ -24,7 +24,7 @@ import { getLoginSession, isLoggedSession } from "./session";
 
 export const getConsents = (state: ConsentState) => {
     if (isLoggedSession()) {
-        const consentsUrl = ServiceResourcesEndpoint.consents;
+        const url = ServiceResourcesEndpoint.consents;
         const token = getLoginSession("access_token");
         const headers = {
             "Accept": "application/json",
@@ -38,19 +38,20 @@ export const getConsents = (state: ConsentState) => {
         };
 
         return axios
-            .get(consentsUrl, { params, headers })
+            .get(url, { params, headers })
             .then((response) => {
                 return response.data as ConsentInterface[];
             })
             .catch((error) => {
                 log.error(error);
+                return Promise.reject(error);
             });
     }
 };
 
 export const getConsentReceipt = (id: string) => {
     if (isLoggedSession()) {
-        const receiptsUrl = ServiceResourcesEndpoint.receipts + `/${id}`;
+        const url = ServiceResourcesEndpoint.receipts + `/${id}`;
         const token = getLoginSession("access_token");
         const headers = {
             "Accept": "application/json",
@@ -60,12 +61,34 @@ export const getConsentReceipt = (id: string) => {
         };
 
         return axios
-            .get(receiptsUrl, { headers })
+            .get(url, { headers })
             .then((response) => {
                 return response.data as ConsentReceiptInterface;
             })
             .catch((error) => {
                 log.error(error);
+                return Promise.reject(error);
+            });
+    }
+};
+
+export const revokeConsent = (id: string) => {
+    if (isLoggedSession()) {
+        const url = ServiceResourcesEndpoint.receipts + `/${id}`;
+        const token = getLoginSession("access_token");
+        const headers = {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`
+        };
+
+        return axios
+            .delete(url, { headers })
+            .then((response) => {
+                return response;
+            })
+            .catch((error) => {
+                log.error(error);
+                return Promise.reject(error);
             });
     }
 };

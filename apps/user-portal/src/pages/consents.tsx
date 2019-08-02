@@ -30,7 +30,7 @@ import {
     Modal,
     Tab
 } from "semantic-ui-react";
-import { getConsentReceipt, getConsents } from "../actions";
+import { getConsentReceipt, getConsents, revokeConsent } from "../actions";
 import { InnerPageLayout } from "../layouts";
 import { ConsentInterface, ConsentState, createEmptyConsent, createEmptyConsentReceipt } from "../models/consents";
 
@@ -90,6 +90,15 @@ export class ConsentsPage extends React.Component<any, any> {
         this.setState({
             editingConsent: consent,
             showConsentRevokeModal: !showConsentRevokeModal
+        });
+    }
+
+    public revokeConsent = () => {
+        const { editingConsent, showConsentRevokeModal } = this.state;
+        revokeConsent(editingConsent.consentReceiptID).then((response) => {
+            this.setState({
+                showConsentRevokeModal: false
+            });
         });
     }
 
@@ -224,7 +233,7 @@ export class ConsentsPage extends React.Component<any, any> {
                                                                 </div>
                                                             </Grid.Column>
                                                             <Grid.Column floated="right" width={3}>
-                                                                <Checkbox toggle checked={true} disabled />
+                                                                <Checkbox toggle />
                                                             </Grid.Column>
                                                         </Grid>
                                                     ))}
@@ -235,9 +244,7 @@ export class ConsentsPage extends React.Component<any, any> {
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button primary disabled>
-                        Update
-                    </Button>
+                    <Button primary>Update</Button>
                     <Button secondary onClick={this.handleConsentModalClose}>
                         Cancel
                     </Button>
@@ -260,7 +267,7 @@ export class ConsentsPage extends React.Component<any, any> {
                     <Button secondary onClick={this.handleConsentRevokeModalClose}>
                         Cancel
                     </Button>
-                    <Button primary disabled>
+                    <Button primary onClick={this.revokeConsent}>
                         Revoke
                     </Button>
                 </Modal.Actions>
