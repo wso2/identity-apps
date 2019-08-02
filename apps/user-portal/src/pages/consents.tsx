@@ -93,9 +93,6 @@ export class ConsentsPage extends React.Component<any, any> {
             case 0:
                 consentState = ConsentState.ACTIVE;
                 break;
-            case 1:
-                consentState = ConsentState.REVOKED;
-                break;
             default:
                 consentState = ConsentState.ACTIVE;
                 break;
@@ -219,19 +216,6 @@ export class ConsentsPage extends React.Component<any, any> {
                         Active
                         {activeIndex === 0 ? (
                             <Label circular color="green">
-                                {consents ? consents.length : 0}
-                            </Label>
-                        ) : null}
-                    </MenuItem>
-                ),
-                render: () => <Tab.Pane attached="bottom">{paneContent}</Tab.Pane>
-            },
-            {
-                menuItem: (
-                    <MenuItem>
-                        Revoked
-                        {activeIndex === 1 ? (
-                            <Label circular color="red">
                                 {consents ? consents.length : 0}
                             </Label>
                         ) : null}

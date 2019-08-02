@@ -52,8 +52,7 @@ interface PIICategory {
 }
 
 export enum ConsentState {
-    ACTIVE = "ACTIVE",
-    REVOKED = "REVOKED"
+    ACTIVE = "ACTIVE"
 }
 
 export const createEmptyConsent = (): ConsentInterface => ({
