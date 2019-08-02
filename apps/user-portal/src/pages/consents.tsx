@@ -100,8 +100,10 @@ export class ConsentsPage extends React.Component<any, any> {
     }
 
     public revokeConsent = () => {
-        const { editingConsent } = this.state;
+        const { editingConsent, activeIndex } = this.state;
         revokeConsent(editingConsent.consentReceiptID).then((response) => {
+            const consentState: ConsentState = this.getConsentState(activeIndex);
+            this.updateConsents(consentState);
             this.setState({
                 showConsentRevokeModal: false
             });
