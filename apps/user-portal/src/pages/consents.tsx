@@ -34,7 +34,14 @@ import { getConsentReceipt, getConsents, revokeConsent } from "../actions";
 import { InnerPageLayout } from "../layouts";
 import { ConsentInterface, ConsentState, createEmptyConsent, createEmptyConsentReceipt } from "../models/consents";
 
+/**
+ * This is the Consents Page of the User Portal.
+ */
 export class ConsentsPage extends React.Component<any, any> {
+    /**
+     * constructor
+     * @param props
+     */
     constructor(props) {
         super(props);
         this.state = {
@@ -51,6 +58,11 @@ export class ConsentsPage extends React.Component<any, any> {
         this.updateConsents(ConsentState.ACTIVE);
     }
 
+    /**
+     * Handles the tab changes
+     * @param e event
+     * @param activeIndex active tab index
+     */
     public handleConsentTabChange = (e, { activeIndex }) => {
         this.setState({ activeIndex }, () => {
             const consentState: ConsentState = this.getConsentState(activeIndex);
@@ -58,12 +70,23 @@ export class ConsentsPage extends React.Component<any, any> {
         });
     }
 
+    /**
+     * Fetches the consents list from the API and updates
+     * the state.
+     * @param state state ex: ACTIVE, REVOKED
+     */
     public updateConsents = (state: ConsentState) => {
         getConsents(state).then((response) => {
             this.setState({ consents: response });
         });
     }
 
+    /**
+     * Retrieves the consent state corresponding to the active
+     * tab index.
+     * @param tabIndex active tab index
+     * @returns the corresponding consent state
+     */
     public getConsentState = (tabIndex: number) => {
         let consentState = ConsentState.ACTIVE;
         switch (tabIndex) {
@@ -80,6 +103,13 @@ export class ConsentsPage extends React.Component<any, any> {
         return consentState;
     }
 
+    /**
+     * Handles the consent edit button click.
+     * Retrieves the the receipt information and stores it in the
+     * state and sets the current consent object as the editing consent.
+     * And finally toggles the consent edit modal visibility.
+     * @param consent corresponding consent object
+     */
     public handleConsentEditClick = (consent: ConsentInterface) => {
         const { showConsentEditModal } = this.state;
         getConsentReceipt(consent.consentReceiptID).then((response) => {
@@ -91,6 +121,12 @@ export class ConsentsPage extends React.Component<any, any> {
         });
     }
 
+    /**
+     * Handles the consent revoke button click.
+     * Sets the current consent object as the editing consent and
+     * toggles the visibility of the consent revoke modal.
+     * @param consent
+     */
     public handleConsentRevokeClick = (consent: ConsentInterface) => {
         const { showConsentRevokeModal } = this.state;
         this.setState({
@@ -99,6 +135,9 @@ export class ConsentsPage extends React.Component<any, any> {
         });
     }
 
+    /**
+     * Revokes the consent of an already consented application.
+     */
     public revokeConsent = () => {
         const { editingConsent, activeIndex } = this.state;
         revokeConsent(editingConsent.consentReceiptID).then((response) => {
@@ -110,10 +149,16 @@ export class ConsentsPage extends React.Component<any, any> {
         });
     }
 
+    /**
+     * Handles the consent modal close action.
+     */
     public handleConsentModalClose = () => {
         this.setState({ showConsentEditModal: false });
     }
 
+    /**
+     * Handles the consent revoke modal close action.
+     */
     public handleConsentRevokeModalClose = () => {
         this.setState({ showConsentRevokeModal: false });
     }

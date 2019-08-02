@@ -22,6 +22,11 @@ import { ServiceResourcesEndpoint } from "../configs";
 import { ConsentInterface, ConsentReceiptInterface, ConsentState } from "../models/consents";
 import { getLoginSession, isLoggedSession } from "./session";
 
+/**
+ * Fetches the consents from the API.
+ * @param state consent state ex: ACTIVE, REVOKED
+ * @returns a promise containing the response
+ */
 export const getConsents = (state: ConsentState) => {
     if (isLoggedSession()) {
         const url = ServiceResourcesEndpoint.consents;
@@ -49,6 +54,11 @@ export const getConsents = (state: ConsentState) => {
     }
 };
 
+/**
+ * Fetches the consent receipt when an ID is passed in.
+ * @param id receipt ID
+ * @return a promise containing the response
+ */
 export const getConsentReceipt = (id: string) => {
     if (isLoggedSession()) {
         const url = ServiceResourcesEndpoint.receipts + `/${id}`;
@@ -72,6 +82,12 @@ export const getConsentReceipt = (id: string) => {
     }
 };
 
+/**
+ * Revokes the consent of an application when the receipt
+ * ID is passed in.
+ * @param id receipt ID
+ * @returns a promise containing the response
+ */
 export const revokeConsent = (id: string) => {
     if (isLoggedSession()) {
         const url = ServiceResourcesEndpoint.receipts + `/${id}`;
