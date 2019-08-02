@@ -48,30 +48,36 @@ export class ConsentsPage extends React.Component<any, any> {
     }
 
     public componentWillMount() {
-        getConsents(ConsentState.ACTIVE).then((response) => {
-            this.setState({ consents: response });
-        });
+        this.updateConsents(ConsentState.ACTIVE);
     }
 
     public handleConsentTabChange = (e, { activeIndex }) => {
         this.setState({ activeIndex }, () => {
-            let consentState = ConsentState.ACTIVE;
-            switch (activeIndex) {
-                case 0:
-                    consentState = ConsentState.ACTIVE;
-                    break;
-                case 1:
-                    consentState = ConsentState.REVOKED;
-                    break;
-                default:
-                    consentState = ConsentState.ACTIVE;
-                    break;
-            }
-
-            getConsents(consentState).then((response) => {
-                this.setState({ consents: response });
-            });
+            const consentState: ConsentState = this.getConsentState(activeIndex);
+            this.updateConsents(consentState);
         });
+    }
+
+    public updateConsents = (state: ConsentState) => {
+        getConsents(state).then((response) => {
+            this.setState({ consents: response });
+        });
+    }
+
+    public getConsentState = (tabIndex: number) => {
+        let consentState = ConsentState.ACTIVE;
+        switch (tabIndex) {
+            case 0:
+                consentState = ConsentState.ACTIVE;
+                break;
+            case 1:
+                consentState = ConsentState.REVOKED;
+                break;
+            default:
+                consentState = ConsentState.ACTIVE;
+                break;
+        }
+        return consentState;
     }
 
     public handleConsentEditClick = (consent: ConsentInterface) => {
@@ -94,7 +100,7 @@ export class ConsentsPage extends React.Component<any, any> {
     }
 
     public revokeConsent = () => {
-        const { editingConsent, showConsentRevokeModal } = this.state;
+        const { editingConsent } = this.state;
         revokeConsent(editingConsent.consentReceiptID).then((response) => {
             this.setState({
                 showConsentRevokeModal: false
