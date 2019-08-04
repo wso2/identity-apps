@@ -30,7 +30,7 @@ import {
     Modal,
     Tab
 } from "semantic-ui-react";
-import { getConsentReceipt, getConsents, revokeConsent } from "../actions";
+import { getConsentReceipt, getConsents, revokeConsent, updateConsentedClaims } from "../actions";
 import { InnerPageLayout } from "../layouts";
 import { ConsentInterface, ConsentState, createEmptyConsent, createEmptyConsentReceipt } from "../models/consents";
 
@@ -50,7 +50,8 @@ export class ConsentsPage extends React.Component<any, any> {
             editingConsent: createEmptyConsent(),
             consentReceipt: createEmptyConsentReceipt(),
             showConsentEditModal: false,
-            showConsentRevokeModal: false
+            showConsentRevokeModal: false,
+            revokedClaimIds: []
         };
     }
 
@@ -142,6 +143,73 @@ export class ConsentsPage extends React.Component<any, any> {
                 showConsentRevokeModal: false
             });
         });
+    }
+
+    /**
+     * Handles the claims enable and disable toggles. If the toggle is checked and the
+     * claim id is in the `revokedClaimIds` array in state, the id is taken out of the
+     * `revokedClaimIds` array. And if the toggle is unchecked and the id is not in the
+     * `revokedClaimIds` array, it is appended.
+     * @param {any} target the event target
+     * @param {any} id claim id
+     */
+    public handleClaimsToggle = ({ target }, { id }) => {
+        const { revokedClaimIds } = this.state;
+
+        if (target.checked) {
+            if (revokedClaimIds.includes(id)) {
+                this.setState({ revokedClaimIds: revokedClaimIds.filter((claimId) => claimId !== id) });
+            }
+        } else {
+            if (!revokedClaimIds.includes(id)) {
+                this.setState({ revokedClaimIds: [...revokedClaimIds, id] });
+            }
+        }
+    }
+
+    /**
+     * Handles the claims update button click action event. The revoked claims are taken
+     * out of the existing receipt object and are passed on to the `updateConsentedClaims`
+     * which executes the API request and updates the consented claims.
+     */
+    public handleClaimsUpdateClick = () => {
+        const { consentReceipt, revokedClaimIds, activeIndex } = this.state;
+        const receipt = { ...consentReceipt };
+
+        let isPIIEmpty: boolean = false;
+
+        // If the `piiCategory` id is in the `revokedClaimIds`,
+        // then the category is removed from the list.
+        receipt.services.map((service) => {
+            service.purposes.map((purpose) => {
+                purpose.piiCategory = purpose.piiCategory.filter((category) => {
+                    if (!revokedClaimIds.includes(category.piiCategoryId)) {
+                        return category;
+                    }
+                });
+                // If consent to all the pii categories are revoked
+                // the application will have to be revoked.
+                if (purpose.piiCategory.length === 0) {
+                    isPIIEmpty = true;
+                }
+            });
+        });
+
+        // If the PII category list is empty, show the consent revoke modal.
+        // Else, perform the usual consented claims updating process.
+        if (isPIIEmpty) {
+            this.setState({ showConsentEditModal: false, showConsentRevokeModal: true });
+        } else {
+            const consentState: ConsentState = this.getConsentState(activeIndex);
+            // Update the claims.
+            updateConsentedClaims(receipt).then((response) => {
+                // Re-fetch the consents list and hide the consent edit modal.
+                this.updateConsents(consentState);
+                this.setState({
+                    showConsentEditModal: false
+                });
+            });
+        }
     }
 
     /**
@@ -266,7 +334,12 @@ export class ConsentsPage extends React.Component<any, any> {
                                                         purpose.piiCategory.map((category, key) => (
                                                             <List.Item>
                                                                 <List.Content floated="right">
-                                                                    <Checkbox toggle />
+                                                                    <Checkbox
+                                                                        id={category.piiCategoryId}
+                                                                        toggle
+                                                                        defaultChecked
+                                                                        onChange={this.handleClaimsToggle}
+                                                                    />
                                                                 </List.Content>
                                                                 <List.Content>
                                                                     {category.piiCategoryDisplayName}
@@ -281,9 +354,11 @@ export class ConsentsPage extends React.Component<any, any> {
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button primary>Update</Button>
                     <Button secondary onClick={this.handleConsentModalClose}>
                         Cancel
+                    </Button>
+                    <Button primary onClick={this.handleClaimsUpdateClick}>
+                        Update
                     </Button>
                 </Modal.Actions>
             </Modal>

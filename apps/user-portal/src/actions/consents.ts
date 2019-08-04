@@ -107,3 +107,55 @@ export const revokeConsent = (id: string) => {
             });
     }
 };
+
+/**
+ * Updates the already consented claims list.
+ * @param receipt receipt object
+ * @return {Promise<AxiosResponse<any>>} a promise containing the response
+ */
+export const updateConsentedClaims = (receipt) => {
+    if (isLoggedSession()) {
+        const url = ServiceResourcesEndpoint.consents;
+        const token = getLoginSession("access_token");
+        const headers = {
+            "Accept": "application/json",
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        };
+        const body = {
+            collectionMethod: "Web Form - User Portal",
+            jurisdiction: receipt.jurisdiction,
+            language: receipt.language,
+            policyURL: receipt.policyUrl,
+            services: receipt.services.map((service) => ({
+                purposes: service.purposes.map((purpose) => ({
+                    consentType: purpose.consentType,
+                    piiCategory: purpose.piiCategory.map((category) => ({
+                        piiCategoryId: category.piiCategoryId,
+                        validity: category.validity
+                    })),
+                    primaryPurpose: purpose.primaryPurpose,
+                    purposeCategoryId: [purpose.purposeId], // TODO: Check if this is valid
+                    purposeId: purpose.purposeId,
+                    termination: purpose.termination,
+                    thirdPartyDisclosure: purpose.thirdPartyDisclosure,
+                    thirdPartyName: purpose.thirdPartyName
+                })),
+                service: service.service,
+                serviceDisplayName: service.serviceDisplayName,
+                serviceDescription: service.serviceDescription,
+                tenantDomain: service.tenantDomain
+            }))
+        };
+
+        return axios
+            .post(url, body, { headers })
+            .then((response) => {
+                return response;
+            })
+            .catch((error) => {
+                log.error(error);
+                return Promise.reject(error);
+            });
+    }
+};
