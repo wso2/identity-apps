@@ -23,9 +23,9 @@ import {
     Checkbox,
     Container,
     Divider,
-    Grid,
     Image,
     Label,
+    List,
     MenuItem,
     Modal,
     Tab
@@ -227,7 +227,7 @@ export class ConsentsPage extends React.Component<any, any> {
             <Modal open={showConsentEditModal} onClose={this.handleConsentModalClose} size="tiny">
                 <Modal.Header>
                     <Image floated="left" size="mini" src="https://react.semantic-ui.com/images/wireframe/image.png" />
-                    {editingConsent.spDisplayName} ({editingConsent.state})
+                    {editingConsent.spDisplayName}
                 </Modal.Header>
                 <Modal.Content scrolling>
                     <Modal.Description>
@@ -246,8 +246,8 @@ export class ConsentsPage extends React.Component<any, any> {
                             {editingConsent.spDescription}
                         </div>
                         <Divider />
-                        <p style={{ textTransform: "uppercase", fontWeight: "bold" }}>
-                            Deselect consents that you wish to revoke
+                        <p style={{ textTransform: "uppercase", fontWeight: "bold", color: "#797979" }}>
+                            Information that you've shared with the application
                         </p>
                         {consentReceipt &&
                             consentReceipt.services &&
@@ -257,22 +257,24 @@ export class ConsentsPage extends React.Component<any, any> {
                                     service.purposes &&
                                     service.purposes.map((purpose) => {
                                         return (
-                                            <React.Fragment>
-                                                <div style={{ textDecoration: "underline" }}>{purpose.purpose}</div>
-                                                {purpose.piiCategory &&
-                                                    purpose.piiCategory.map((category, key) => (
-                                                        <Grid key={key}>
-                                                            <Grid.Column floated="left" width={5}>
-                                                                <div style={{ marginTop: "10px" }}>
+                                            <>
+                                                <strong style={{ textDecoration: "underline" }}>
+                                                    {purpose.purpose}
+                                                </strong>
+                                                <List verticalAlign="middle">
+                                                    {purpose.piiCategory &&
+                                                        purpose.piiCategory.map((category, key) => (
+                                                            <List.Item>
+                                                                <List.Content floated="right">
+                                                                    <Checkbox toggle />
+                                                                </List.Content>
+                                                                <List.Content>
                                                                     {category.piiCategoryDisplayName}
-                                                                </div>
-                                                            </Grid.Column>
-                                                            <Grid.Column floated="right" width={3}>
-                                                                <Checkbox toggle />
-                                                            </Grid.Column>
-                                                        </Grid>
-                                                    ))}
-                                            </React.Fragment>
+                                                                </List.Content>
+                                                            </List.Item>
+                                                        ))}
+                                                </List>
+                                            </>
                                         );
                                     })
                             )}
@@ -310,7 +312,10 @@ export class ConsentsPage extends React.Component<any, any> {
         );
 
         return (
-            <InnerPageLayout pageTitle="Consents" pageDescription="Manage consented applications">
+            <InnerPageLayout
+                pageTitle="Consent Management"
+                pageDescription="Manage consented applications and websites"
+            >
                 <Container>
                     <Tab
                         panes={tabPanes}
