@@ -23,11 +23,14 @@ import {
     Checkbox,
     Container,
     Divider,
+    Header,
+    Icon,
     Image,
     Label,
     List,
     MenuItem,
     Modal,
+    Segment,
     Tab
 } from "semantic-ui-react";
 import { getConsentReceipt, getConsents, revokeConsent, updateConsentedClaims } from "../actions";
@@ -84,7 +87,7 @@ export class ConsentsPage extends React.Component<any, any> {
     }
 
     /**
-     * Retrieves the consent state corresponding to the active
+     * Retrieves the consent state corresponding to the active tab.
      * @param {number} tabIndex active tab index
      * @return {ConsentState} consent state ex: ACTIVE, REVOKED
      */
@@ -237,42 +240,51 @@ export class ConsentsPage extends React.Component<any, any> {
         } = this.state;
 
         const paneContent = (
-            <Card.Group>
-                {consents
-                    ? consents.map((consent, key) => (
-                          <Card key={key}>
-                              <Card.Content>
-                                  <Image
-                                      floated="left"
-                                      size="tiny"
-                                      src="https://react.semantic-ui.com/images/wireframe/image.png"
-                                  />
-                                  <Card.Header>{consent.spDisplayName}</Card.Header>
-                              </Card.Content>
-                              {activeIndex === 0 ? (
-                                  <Card.Content extra>
-                                      <div className="ui two buttons">
-                                          <Button
-                                              basic
-                                              color="green"
-                                              onClick={() => this.handleConsentEditClick(consent)}
-                                          >
-                                              Edit
-                                          </Button>
-                                          <Button
-                                              basic
-                                              color="red"
-                                              onClick={() => this.handleConsentRevokeClick(consent)}
-                                          >
-                                              Revoke
-                                          </Button>
-                                      </div>
-                                  </Card.Content>
-                              ) : null}
-                          </Card>
-                      ))
-                    : null}
-            </Card.Group>
+            <>
+                {consents && consents.length > 0 ? (
+                    <Card.Group>
+                        {consents.map((consent, key) => (
+                            <Card key={key}>
+                                <Card.Content>
+                                    <Image
+                                        floated="left"
+                                        size="tiny"
+                                        src="https://react.semantic-ui.com/images/wireframe/image.png"
+                                    />
+                                    <Card.Header>{consent.spDisplayName}</Card.Header>
+                                </Card.Content>
+                                {activeIndex === 0 ? (
+                                    <Card.Content extra>
+                                        <div className="ui two buttons">
+                                            <Button
+                                                basic
+                                                color="green"
+                                                onClick={() => this.handleConsentEditClick(consent)}
+                                            >
+                                                Edit
+                                            </Button>
+                                            <Button
+                                                basic
+                                                color="red"
+                                                onClick={() => this.handleConsentRevokeClick(consent)}
+                                            >
+                                                Revoke
+                                            </Button>
+                                        </div>
+                                    </Card.Content>
+                                ) : null}
+                            </Card>
+                        ))}
+                    </Card.Group>
+                ) : (
+                    <Segment placeholder>
+                        <Header icon>
+                            <Icon name="folder open outline" />
+                            You don't have any {this.getConsentState(activeIndex).toLowerCase()} applications
+                        </Header>
+                    </Segment>
+                )}
+            </>
         );
 
         const tabPanes = [
