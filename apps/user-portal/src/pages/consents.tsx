@@ -37,7 +37,6 @@ import { getConsentReceipt, getConsents, revokeConsent, updateConsentedClaims } 
 import { InnerPageLayout } from "../layouts";
 import {
     ConsentInterface,
-    ConsentReceiptInterface,
     ConsentState,
     createEmptyConsent,
     createEmptyConsentReceipt,
