@@ -35,7 +35,14 @@ import {
 } from "semantic-ui-react";
 import { getConsentReceipt, getConsents, revokeConsent, updateConsentedClaims } from "../actions";
 import { InnerPageLayout } from "../layouts";
-import { ConsentInterface, ConsentState, createEmptyConsent, createEmptyConsentReceipt } from "../models/consents";
+import {
+    ConsentInterface,
+    ConsentReceiptInterface,
+    ConsentState,
+    createEmptyConsent,
+    createEmptyConsentReceipt,
+    ServiceInterface
+} from "../models/consents";
 
 /**
  * This is the Consents Page of the User Portal.
@@ -66,10 +73,13 @@ export class ConsentsPage extends React.Component<any, any> {
      * Handles the tab onclick event. The active tab index is also
      * stored in the state and the list of consents is updated
      * according to the selected tab.
-     * @param e event
-     * @param {any} activeIndex active tab index
+     * @param {React.MouseEvent<HTMLDivElement, MouseEvent>} e the tab change event
+     * @param {number} activeIndex active tab index
      */
-    public handleConsentTabChange = (e, { activeIndex }) => {
+    public handleConsentTabChange = (
+        e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+        { activeIndex }: { activeIndex: number }
+    ): void => {
         this.setState({ activeIndex }, () => {
             const consentState: ConsentState = this.getConsentState(activeIndex);
             this.updateConsents(consentState);
@@ -80,7 +90,7 @@ export class ConsentsPage extends React.Component<any, any> {
      * Fetches the consents list from the API and updates the state.
      * @param {ConsentState} state consent state ex: ACTIVE, REVOKED
      */
-    public updateConsents = (state: ConsentState) => {
+    public updateConsents = (state: ConsentState): void => {
         getConsents(state).then((response) => {
             this.setState({ consents: response });
         });
@@ -91,17 +101,9 @@ export class ConsentsPage extends React.Component<any, any> {
      * @param {number} tabIndex active tab index
      * @return {ConsentState} consent state ex: ACTIVE, REVOKED
      */
-    public getConsentState = (tabIndex: number) => {
-        let consentState = ConsentState.ACTIVE;
-        switch (tabIndex) {
-            case 0:
-                consentState = ConsentState.ACTIVE;
-                break;
-            default:
-                consentState = ConsentState.ACTIVE;
-                break;
-        }
-        return consentState;
+    public getConsentState = (tabIndex: number): ConsentState => {
+        // Currently only ACTIVE state apps are displayed.
+        return ConsentState.ACTIVE;
     }
 
     /**
@@ -110,7 +112,7 @@ export class ConsentsPage extends React.Component<any, any> {
      * consent. And finally toggles the consent edit modal visibility.
      * @param {ConsentInterface} consent corresponding consent object
      */
-    public handleConsentEditClick = (consent: ConsentInterface) => {
+    public handleConsentEditClick = (consent: ConsentInterface): void => {
         const { showConsentEditModal } = this.state;
         getConsentReceipt(consent.consentReceiptID).then((response) => {
             this.setState({
@@ -126,7 +128,7 @@ export class ConsentsPage extends React.Component<any, any> {
      * the editing consent and toggles the visibility of the consent revoke modal.
      * @param {ConsentInterface} consent corresponding consent object
      */
-    public handleConsentRevokeClick = (consent: ConsentInterface) => {
+    public handleConsentRevokeClick = (consent: ConsentInterface): void => {
         const { showConsentRevokeModal } = this.state;
         this.setState({
             editingConsent: consent,
@@ -137,7 +139,7 @@ export class ConsentsPage extends React.Component<any, any> {
     /**
      * Revokes the consent of an already consented application.
      */
-    public revokeConsent = () => {
+    public revokeConsent = (): void => {
         const { editingConsent, activeIndex } = this.state;
         revokeConsent(editingConsent.consentReceiptID).then((response) => {
             const consentState: ConsentState = this.getConsentState(activeIndex);
@@ -153,15 +155,16 @@ export class ConsentsPage extends React.Component<any, any> {
      * claim id is in the `revokedClaimIds` array in state, the id is taken out of the
      * `revokedClaimIds` array. And if the toggle is unchecked and the id is not in the
      * `revokedClaimIds` array, it is appended.
-     * @param {any} target the event target
-     * @param {any} id claim id
+     * @param {React.ChangeEvent<HTMLInputElement>} e the toggle event
+     * @param {number} id claim id
      */
-    public handleClaimsToggle = ({ target }, { id }) => {
+    public handleClaimsToggle = (e: React.ChangeEvent<HTMLInputElement>, { id }: { id: number }): void => {
         const { revokedClaimIds } = this.state;
+        const { checked } = e.target;
 
-        if (target.checked) {
+        if (checked) {
             if (revokedClaimIds.includes(id)) {
-                this.setState({ revokedClaimIds: revokedClaimIds.filter((claimId) => claimId !== id) });
+                this.setState({ revokedClaimIds: revokedClaimIds.filter((claimId: number) => claimId !== id) });
             }
         } else {
             if (!revokedClaimIds.includes(id)) {
@@ -175,7 +178,7 @@ export class ConsentsPage extends React.Component<any, any> {
      * out of the existing receipt object and are passed on to the `updateConsentedClaims`
      * which executes the API request and updates the consented claims.
      */
-    public handleClaimsUpdateClick = () => {
+    public handleClaimsUpdateClick = (): void => {
         const { consentReceipt, revokedClaimIds, activeIndex } = this.state;
         const receipt = { ...consentReceipt };
 
@@ -183,7 +186,7 @@ export class ConsentsPage extends React.Component<any, any> {
 
         // If the `piiCategory` id is in the `revokedClaimIds`,
         // then the category is removed from the list.
-        receipt.services.map((service) => {
+        receipt.services.map((service: ServiceInterface) => {
             service.purposes.map((purpose) => {
                 purpose.piiCategory = purpose.piiCategory.filter((category) => {
                     if (!revokedClaimIds.includes(category.piiCategoryId)) {
@@ -218,14 +221,14 @@ export class ConsentsPage extends React.Component<any, any> {
     /**
      * Handles the consent modal close action.
      */
-    public handleConsentModalClose = () => {
+    public handleConsentModalClose = (): void => {
         this.setState({ showConsentEditModal: false });
     }
 
     /**
      * Handles the consent revoke modal close action.
      */
-    public handleConsentRevokeModalClose = () => {
+    public handleConsentRevokeModalClose = (): void => {
         this.setState({ showConsentRevokeModal: false });
     }
 
@@ -243,8 +246,8 @@ export class ConsentsPage extends React.Component<any, any> {
             <>
                 {consents && consents.length > 0 ? (
                     <Card.Group>
-                        {consents.map((consent, key) => (
-                            <Card key={key}>
+                        {consents.map((consent: ConsentInterface) => (
+                            <Card key={consent.consentReceiptID}>
                                 <Card.Content>
                                     <Image
                                         floated="left"
@@ -290,7 +293,7 @@ export class ConsentsPage extends React.Component<any, any> {
         const tabPanes = [
             {
                 menuItem: (
-                    <MenuItem>
+                    <MenuItem key={0}>
                         Active
                         {activeIndex === 0 ? (
                             <Label circular color="green">
@@ -326,25 +329,23 @@ export class ConsentsPage extends React.Component<any, any> {
                             {editingConsent.spDescription}
                         </div>
                         <Divider />
-                        <p style={{ textTransform: "uppercase", fontWeight: "bold", color: "#797979" }}>
-                            Information that you've shared with the application
+                        <p>
+                            <strong>Information that you've shared with the application</strong>
                         </p>
                         {consentReceipt &&
                             consentReceipt.services &&
                             consentReceipt.services.map(
-                                (service) =>
+                                (service: ServiceInterface) =>
                                     service &&
                                     service.purposes &&
                                     service.purposes.map((purpose) => {
                                         return (
-                                            <>
-                                                <strong style={{ textDecoration: "underline" }}>
-                                                    {purpose.purpose}
-                                                </strong>
+                                            <div key={purpose.purposeId}>
+                                                <strong>{purpose.purpose}</strong>
                                                 <List verticalAlign="middle">
                                                     {purpose.piiCategory &&
-                                                        purpose.piiCategory.map((category, key) => (
-                                                            <List.Item>
+                                                        purpose.piiCategory.map((category) => (
+                                                            <List.Item key={category.piiCategoryId}>
                                                                 <List.Content floated="right">
                                                                     <Checkbox
                                                                         id={category.piiCategoryId}
@@ -359,7 +360,7 @@ export class ConsentsPage extends React.Component<any, any> {
                                                             </List.Item>
                                                         ))}
                                                 </List>
-                                            </>
+                                            </div>
                                         );
                                     })
                             )}
@@ -383,9 +384,7 @@ export class ConsentsPage extends React.Component<any, any> {
                         <h3>Revoke {editingConsent.spDisplayName}?</h3>
                     </Container>
                     <br />
-                    <p style={{ fontSize: "12px" }}>
-                        Are you sure you want to revoke this consent? This operation is not reversible.
-                    </p>
+                    <p>Are you sure you want to revoke this consent? This operation is not reversible.</p>
                 </Modal.Content>
                 <Modal.Actions>
                     <Button secondary onClick={this.handleConsentRevokeModalClose}>

@@ -142,8 +142,8 @@ export const updateConsentedClaims = (receipt) => {
                     thirdPartyName: purpose.thirdPartyName
                 })),
                 service: service.service,
-                serviceDisplayName: service.serviceDisplayName,
                 serviceDescription: service.serviceDescription,
+                serviceDisplayName: service.serviceDisplayName,
                 tenantDomain: service.tenantDomain
             }))
         };

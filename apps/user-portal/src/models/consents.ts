@@ -41,7 +41,7 @@ export interface ConsentReceiptInterface {
 /**
  * Service Model
  */
-interface ServiceInterface {
+export interface ServiceInterface {
     purposes: PurposeInterface[];
     service: string;
     serviceDescription: string;
@@ -53,8 +53,9 @@ interface ServiceInterface {
  * Purpose Model
  */
 interface PurposeInterface {
-    piiCategory: PIICategory[];
     purpose: string;
+    purposeId: number;
+    piiCategory: PIICategory[];
 }
 
 /**
@@ -106,7 +107,8 @@ export const createEmptyConsentReceipt = (): ConsentReceiptInterface => ({
                             piiCategoryName: ""
                         }
                     ],
-                    purpose: ""
+                    purpose: "",
+                    purposeId: 0
                 }
             ],
             service: "",
