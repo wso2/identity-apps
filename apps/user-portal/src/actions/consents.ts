@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import log from "log";
 import { ServiceResourcesEndpoint } from "../configs";
-import { ConsentInterface, ConsentReceiptInterface, ConsentState } from "../models/consents";
+import { ConsentInterface, ConsentReceiptInterface, ConsentState, UpdateReceiptInterface } from "../models/consents";
 import { getLoginSession, isLoggedSession } from "./session";
 
 /**
@@ -27,7 +27,7 @@ import { getLoginSession, isLoggedSession } from "./session";
  * @param {ConsentState} state consent state ex: ACTIVE, REVOKED
  * @return {Promise<ConsentInterface[]>} a promise containing the response
  */
-export const getConsents = (state: ConsentState) => {
+export const getConsents = (state: ConsentState): Promise<ConsentInterface[]> => {
     if (isLoggedSession()) {
         const url = ServiceResourcesEndpoint.consents;
         const token = getLoginSession("access_token");
@@ -59,7 +59,7 @@ export const getConsents = (state: ConsentState) => {
  * @param {string} id receipt ID
  * @return {Promise<ConsentReceiptInterface>} a promise containing the response
  */
-export const getConsentReceipt = (id: string) => {
+export const getConsentReceipt = (id: string): Promise<ConsentReceiptInterface> => {
     if (isLoggedSession()) {
         const url = ServiceResourcesEndpoint.receipts + `/${id}`;
         const token = getLoginSession("access_token");
@@ -87,7 +87,7 @@ export const getConsentReceipt = (id: string) => {
  * @param {string} id receipt ID
  * @return {Promise<AxiosResponse<any>>} a promise containing the response
  */
-export const revokeConsent = (id: string) => {
+export const revokeConsent = (id: string): Promise<AxiosResponse<any>> => {
     if (isLoggedSession()) {
         const url = ServiceResourcesEndpoint.receipts + `/${id}`;
         const token = getLoginSession("access_token");
@@ -113,7 +113,7 @@ export const revokeConsent = (id: string) => {
  * @param receipt receipt object
  * @return {Promise<AxiosResponse<any>>} a promise containing the response
  */
-export const updateConsentedClaims = (receipt) => {
+export const updateConsentedClaims = (receipt): Promise<AxiosResponse<any>> => {
     if (isLoggedSession()) {
         const url = ServiceResourcesEndpoint.consents;
         const token = getLoginSession("access_token");
@@ -122,7 +122,7 @@ export const updateConsentedClaims = (receipt) => {
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json"
         };
-        const body = {
+        const body: UpdateReceiptInterface = {
             collectionMethod: "Web Form - User Portal",
             jurisdiction: receipt.jurisdiction,
             language: receipt.language,
@@ -135,7 +135,7 @@ export const updateConsentedClaims = (receipt) => {
                         validity: category.validity
                     })),
                     primaryPurpose: purpose.primaryPurpose,
-                    purposeCategoryId: [purpose.purposeId], // TODO: Check if this is valid
+                    purposeCategoryId: [1],
                     purposeId: purpose.purposeId,
                     termination: purpose.termination,
                     thirdPartyDisclosure: purpose.thirdPartyDisclosure,

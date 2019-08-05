@@ -67,6 +67,38 @@ interface PIICategory {
     piiCategoryName: string;
 }
 
+export interface UpdateReceiptInterface {
+    collectionMethod: string;
+    jurisdiction: string;
+    language: string;
+    policyURL: string;
+    services: UpdateReceiptServiceInterface[];
+}
+
+interface UpdateReceiptServiceInterface {
+    purposes: UpdateReceiptPurposeInterface[];
+    service: string;
+    serviceDescription: string;
+    serviceDisplayName: string;
+    tenantDomain: string;
+}
+
+interface UpdateReceiptPurposeInterface {
+    consentType: string;
+    piiCategory: UpdateReceiptPIICategoryInterface[];
+    primaryPurpose: boolean;
+    purposeCategoryId: number[];
+    purposeId: number;
+    termination: string;
+    thirdPartyDisclosure: boolean;
+    thirdPartyName: string;
+}
+
+interface UpdateReceiptPIICategoryInterface {
+    piiCategoryId: number;
+    validity: string;
+}
+
 /**
  * Types of consent states.
  */
