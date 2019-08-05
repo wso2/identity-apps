@@ -67,6 +67,10 @@ interface PIICategory {
     piiCategoryName: string;
 }
 
+/**
+ * This model will be used map the payload of the
+ * receipt update API request.
+ */
 export interface UpdateReceiptInterface {
     collectionMethod: string;
     jurisdiction: string;
@@ -75,6 +79,9 @@ export interface UpdateReceiptInterface {
     services: UpdateReceiptServiceInterface[];
 }
 
+/**
+ * Service model to be used in the update receipt model.
+ */
 interface UpdateReceiptServiceInterface {
     purposes: UpdateReceiptPurposeInterface[];
     service: string;
@@ -83,6 +90,9 @@ interface UpdateReceiptServiceInterface {
     tenantDomain: string;
 }
 
+/**
+ * Purpose modal to be used in the update receipt model.
+ */
 interface UpdateReceiptPurposeInterface {
     consentType: string;
     piiCategory: UpdateReceiptPIICategoryInterface[];
@@ -94,6 +104,9 @@ interface UpdateReceiptPurposeInterface {
     thirdPartyName: string;
 }
 
+/**
+ * PII Category modal to be used in the update receipt model.
+ */
 interface UpdateReceiptPIICategoryInterface {
     piiCategoryId: number;
     validity: string;
