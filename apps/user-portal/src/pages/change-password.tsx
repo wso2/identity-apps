@@ -19,20 +19,34 @@
 import * as React from "react";
 import { Button, Container, Form } from "semantic-ui-react";
 import { updatePassword } from "../actions/profile";
+import { NotificationComponent } from "../components";
 import { InnerPageLayout } from "../layouts";
 
 interface State {
     currentPassword: string;
     newPassword: string;
-    confirmPassword: string
+    confirmPassword: string;
+    notification: NotifcationStateInterface;
 }
 interface Props {}
+interface NotifcationStateInterface {
+    visible: boolean;
+    message: string;
+    description: string;
+    otherProps: object;
+}
 
 export class ChangePasswordPage extends React.Component<Props, State> {
     public state = {
         currentPassword: "",
         newPassword: "",
-        confirmPassword: ""
+        confirmPassword: "",
+        notification: {
+            visible: false,
+            message: "",
+            description: "",
+            otherProps: {}
+        }
     };
 
     public handleInputChange = (
@@ -44,22 +58,82 @@ export class ChangePasswordPage extends React.Component<Props, State> {
     }
 
     public handleSubmit = () => {
-        const { currentPassword, newPassword } = this.state;
+        const { currentPassword, newPassword, notification } = this.state;
         updatePassword(currentPassword, newPassword)
             .then((response) => {
-                console.log("res", response);
+                if (response.status && response.status === 200) {
+                    this.setState(({
+                        notification: {
+                            ...notification,
+                            visible: true,
+                            message: "Password reset successful",
+                            description: "The password has been changed successfully",
+                            otherProps: {
+                                positive: true
+                            }
+                        }
+                    } as unknown) as Pick<State, "notification">);
+                }
             })
             .catch((error) => {
-                console.log("err", error);
-                console.log("err", error.response);
+                // Axios throws a generic `Network Error` for 401 status.
+                // As a temporary solution, a check to see if a response
+                // is available has be used.
+                if (!error.response || error.response.status === 401) {
+                    this.setState(({
+                        notification: {
+                            ...notification,
+                            visible: true,
+                            message: "Password reset error",
+                            description: "The current password you entered appears to be invalid. Please try again",
+                            otherProps: {
+                                negative: true
+                            }
+                        }
+                    } as unknown) as Pick<State, "notification">);
+                } else if (error.response && error.response.data && error.response.data.detail) {
+                    this.setState(({
+                        notification: {
+                            ...notification,
+                            visible: true,
+                            message: "Password reset error",
+                            description: error.response.data.detail,
+                            otherProps: {
+                                negative: true
+                            }
+                        }
+                    } as unknown) as Pick<State, "notification">);
+                } else {
+                    // Generic error message
+                    this.setState(({
+                        notification: {
+                            ...notification,
+                            visible: true,
+                            message: "Password reset error",
+                            description: "Something went wrong. Please try again.",
+                            otherProps: {
+                                negative: true
+                            }
+                        }
+                    } as unknown) as Pick<State, "notification">);
+                }
             });
     }
 
     public render() {
         const { handleSubmit, handleInputChange } = this;
+        const { notification } = this.state;
+        const { visible, message, description, otherProps } = notification;
         return (
             <InnerPageLayout pageTitle="Change Password" pageDescription="Change and modify the existing password">
                 <Container>
+                    {visible ? (
+                        <>
+                            <NotificationComponent message={message} description={description} {...otherProps} />
+                            <br />
+                        </>
+                    ) : null}
+
                     <Form onSubmit={handleSubmit}>
                         <Form.Input
                             name="currentPassword"
