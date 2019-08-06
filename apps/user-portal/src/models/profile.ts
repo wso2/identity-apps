@@ -19,22 +19,32 @@
 import { BasicUserInterface } from "./user";
 
 export interface BasicProfileInterface extends BasicUserInterface {
+    email: string;
     lastName: string;
     phoneNumbers: number[];
     organisation: string;
     roles: string[];
     proUrl: string;
     isSecurity: boolean;
+    firstNameEdit: boolean;
+    lastNameEdit: boolean;
+    emailEdit: boolean;
+    updateStatus: boolean;
 }
 
 export const createEmptyProfile = (): BasicProfileInterface => ({
     displayName: "",
+    email: "",
+    emailEdit: false,
     emails: [],
+    firstNameEdit: false,
+    isSecurity: false,
     lastName: "",
+    lastNameEdit: false,
     organisation: "",
     phoneNumbers: [],
     proUrl: "",
     roles: [],
-    username: "",
-    isSecurity: false
+    updateStatus: false,
+    username: ""
 });

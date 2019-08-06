@@ -60,8 +60,28 @@ export const getProfileInfo = async () => {
     return profileDetails;
 };
 
+export const updateProfileInfo = async (info: object) => {
+    debugger;
+    const url = ServiceResourcesEndpoint.me;
+    const token = getLoginSession("access_token");
+
+    const header = {
+        headers: {
+            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+        }
+    };
+
+    return axios.patch(url, info, header)
+        .then((response) => {
+            if (response.status === 200) {
+                return response.status;
+            }
+        });
+};
+
 export const getSecurityQs = async () => {
-    const challengeQs = createEmptyChallenge();
     const challengeUrl = ServiceResourcesEndpoint.challenges;
     const answerUrl = ServiceResourcesEndpoint.challengeAnswers;
     const token = getLoginSession("access_token");
@@ -82,10 +102,10 @@ export const getSecurityQs = async () => {
         return axios.get(answerUrl, header);
     };
 
-    return axios.all ([getQuestions(), getAnswers()])
+    return axios.all([getQuestions(), getAnswers()])
         .then(axios.spread((questions, answers) => {
             if (questions.status === 200 && answers.status === 200) {
                 return [questions.data, answers.data];
             }
-          }));
+        }));
 };
