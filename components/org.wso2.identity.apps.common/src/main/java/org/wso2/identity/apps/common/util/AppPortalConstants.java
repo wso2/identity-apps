@@ -25,6 +25,10 @@ public class AppPortalConstants {
 
     public static final String INBOUND_AUTH2_TYPE = "oauth2";
 
+    public static final String EMAIL_CLAIM_URI = "http://wso2.org/claims/emailaddress";
+
+    public static final String DISPLAY_NAME_CLAIM_URI = "http://wso2.org/claims/displayName";
+
     private AppPortalConstants() {
 
     }

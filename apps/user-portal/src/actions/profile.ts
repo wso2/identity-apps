@@ -44,7 +44,7 @@ export const getProfileInfo = async () => {
                 if (endpointResponse.status === 200) {
                     profileDetails.displayName = endpointResponse.data.name.givenName || "";
                     profileDetails.username = endpointResponse.data.userName || "";
-                    profileDetails.emails = endpointResponse.data.emails || [];
+                    profileDetails.emails = endpointResponse.data.emails || "";
                     profileDetails.lastName = endpointResponse.data.name.familyName || "";
                     profileDetails.phoneNumbers = endpointResponse.data.phoneNumbers || [];
                     profileDetails.organisation = endpointResponse.data[orgKey].organization || "";

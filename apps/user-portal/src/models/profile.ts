@@ -29,7 +29,7 @@ export interface BasicProfileInterface extends BasicUserInterface {
 
 export const createEmptyProfile = (): BasicProfileInterface => ({
     displayName: "",
-    emails: [],
+    emails: "",
     lastName: "",
     organisation: "",
     phoneNumbers: [],

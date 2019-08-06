@@ -54,7 +54,7 @@ export class UserProfilePage extends React.Component<any, any> {
                                     {this.state.displayName}
                                     <Divider hidden />
                                     Email<br/>
-                                    {this.state.emails[0]}
+                                    {this.state.emails}
                                     <Divider hidden />
                                     Username<br/>
                                     {this.state.username}
