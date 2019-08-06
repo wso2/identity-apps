@@ -58,7 +58,26 @@ export class ChangePasswordPage extends React.Component<Props, State> {
     }
 
     public handleSubmit = () => {
-        const { currentPassword, newPassword, notification } = this.state;
+        const { currentPassword, newPassword, confirmPassword, notification } = this.state;
+
+        // Check if the new password matches the conformation field.
+        // If there's a mismatch, return.
+        if (newPassword !== confirmPassword) {
+            this.setState(({
+                notification: {
+                    ...notification,
+                    visible: true,
+                    message: "Password reset error",
+                    description: "The password confirmation doesn't match the new password",
+                    otherProps: {
+                        negative: true
+                    }
+                }
+            } as unknown) as Pick<State, "notification">);
+
+            return;
+        }
+
         updatePassword(currentPassword, newPassword)
             .then((response) => {
                 if (response.status && response.status === 200) {
