@@ -17,7 +17,7 @@
  */
 
 import * as React from "react";
-import { Button, Container, Form } from "semantic-ui-react";
+import { Button, Container, Form, Transition } from "semantic-ui-react";
 import { updatePassword } from "../actions/profile";
 import { NotificationComponent } from "../components";
 import { InnerPageLayout } from "../layouts";
@@ -120,20 +120,32 @@ export class ChangePasswordPage extends React.Component<Props, State> {
             });
     }
 
+    public handleNotificationDismiss = () => {
+        const { notification } = this.state;
+        this.setState(({
+            notification: {
+                ...notification,
+                visible: false
+            }
+        } as unknown) as Pick<State, "notification">);
+    }
+
     public render() {
-        const { handleSubmit, handleInputChange } = this;
+        const { handleSubmit, handleInputChange, handleNotificationDismiss } = this;
         const { notification } = this.state;
         const { visible, message, description, otherProps } = notification;
         return (
             <InnerPageLayout pageTitle="Change Password" pageDescription="Change and modify the existing password">
                 <Container>
-                    {visible ? (
-                        <>
-                            <NotificationComponent message={message} description={description} {...otherProps} />
-                            <br />
-                        </>
-                    ) : null}
-
+                    <Transition visible={visible} animation="fade" duration={500}>
+                        <NotificationComponent
+                            message={message}
+                            description={description}
+                            onDismiss={handleNotificationDismiss}
+                            {...otherProps}
+                        />
+                    </Transition>
+                    <br />
                     <Form onSubmit={handleSubmit}>
                         <Form.Input
                             name="currentPassword"
