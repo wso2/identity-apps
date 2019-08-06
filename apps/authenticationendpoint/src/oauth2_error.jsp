@@ -57,7 +57,7 @@
         }
     </script>
 
-<div class="container-fluid">
+    <div class="container-fluid">
         <div class="login-form">
             <style>
                 body > div,
