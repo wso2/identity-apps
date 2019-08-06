@@ -17,9 +17,9 @@
  */
 
 import * as React from "react";
-import { clearLoginSession, dispatchLogin, dispatchLogout, getUserInfo } from "../actions";
-import { getLoginSession, isLoggedSession } from "../actions/session";
-import { AuthContextInterface, AuthProviderInterface, createEmptyAuthContext } from "../models/auth";
+import {clearLoginSession, dispatchLogin, dispatchLogout} from "../actions";
+import {getLoginSession, isLoggedSession} from "../actions/session";
+import {AuthContextInterface, AuthProviderInterface, createEmptyAuthContext} from "../models/auth";
 
 const AuthContext = React.createContext<AuthContextInterface | null>(null);
 
@@ -60,7 +60,7 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
         if (isLoggedSession()) {
             this.setState({
                 displayName: getLoginSession("display_name"),
-                emails: JSON.parse(getLoginSession("emails")),
+                emails: getLoginSession("emails"),
                 isAuth: true,
                 loginInit: true,
                 logoutInit: false,

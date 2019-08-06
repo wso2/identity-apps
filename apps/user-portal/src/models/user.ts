@@ -18,12 +18,12 @@
 
 export interface BasicUserInterface {
     displayName: string;
-    emails: string[];
+    emails: string;
     username: string;
 }
 
 export const createEmptyBasicUser = (): BasicUserInterface => ({
     displayName: "",
-    emails: [],
+    emails: "",
     username: "",
 });

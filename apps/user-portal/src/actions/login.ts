@@ -17,9 +17,8 @@
  */
 
 import axios from "axios";
-import { ServiceResourcesEndpoint } from "../configs/app";
-import { createEmptyLoginStatus } from "../models/login";
-import { BasicUserInterface } from "../models/user";
+import {ServiceResourcesEndpoint} from "../configs/app";
+import {createEmptyLoginStatus} from "../models/login";
 import {
     clearCodeVerifier,
     clearLoginSession,
@@ -29,8 +28,8 @@ import {
     retrieveCodeVerifier,
     storeCodeVerifier
 } from "./session";
-import { getUserInfo } from "./user";
-import {getCodeChallenge, getCodeVerifier} from "../helpers/crypto";
+import {getCodeChallenge, getCodeVerifier, getJWKForTheIdToken, verifyIdToken} from "../helpers/crypto";
+import {KEYUTIL, KJUR} from "jsrsasign"
 
 export const dispatchLogin = async () => {
     const code = new URL(window.location.href).searchParams.get("code");
@@ -68,24 +67,34 @@ export const dispatchLogin = async () => {
                 axios.post(ServiceResourcesEndpoint.token, body.join("&"), header)
                     .then((endpointResponse) => {
                         if (endpointResponse.status === 200) {
-                            const idToken = JSON.parse(atob(endpointResponse.data.id_token.split(".")[1]));
-                            const authenticatedUser = idToken.sub;
 
-                            getUserInfo(endpointResponse.data.access_token)
-                                .then((response: BasicUserInterface) => {
+                            axios.get(ServiceResourcesEndpoint.jwks).then((jwksResponse) => {
+                                if (jwksResponse.status == 200) {
+
+                                    let valid = verifyIdToken(endpointResponse.data.id_token, getJWKForTheIdToken(
+                                        endpointResponse.data.id_token.split(".")[0], jwksResponse.data.keys));
+                                    if(!valid) {
+                                        reject(new Error("Received id_token is invalid."));
+                                        return;
+                                    }
+
+                                    const payload = JSON.parse(atob(endpointResponse.data.id_token.split(".")[1]));
                                     Object.assign(loginStatus, {
                                         access_token: endpointResponse.data.access_token,
-                                        authenticated_user: authenticatedUser,
-                                        display_name: response.displayName,
-                                        emails: JSON.stringify(response.emails),
+                                        authenticated_user: payload.sub,
+                                        display_name: payload.preferred_username,
+                                        emails: payload.email,
                                         id_token: endpointResponse.data.id_token,
                                         login_status: "valid",
                                         refresh_token: endpointResponse.data.refresh_token,
-                                        username: response.username,
+                                        username: payload.sub,
                                     });
                                     initLoginSession(loginStatus);
                                     resolve(loginStatus);
-                                });
+                                }
+                            }).catch((error) => {
+                                reject(error);
+                            });
                         }
                     })
                     .catch((error) => {

@@ -41,7 +41,7 @@ export const Header = () => (
                                         <Item.Content verticalAlign="middle">
                                             <Item.Description>
                                                 <div>{username}</div>
-                                                <div>{emails[0]}</div>
+                                                <div>{emails}</div>
                                                 <Divider hidden />
                                                 <Button as={Link} to="/profile" size="tiny" primary>Profile</Button>
                                             </Item.Description>

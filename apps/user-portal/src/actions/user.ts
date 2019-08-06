@@ -41,7 +41,7 @@ export const getUserInfo = (accessToken) => {
             .then((endpointResponse) => {
                 if (endpointResponse.status === 200) {
                     userDetails.displayName = endpointResponse.data.name.givenName || "";
-                    userDetails.emails = endpointResponse.data.emails || [];
+                    userDetails.emails = endpointResponse.data.emails || "";
                     userDetails.username = endpointResponse.data.userName || "";
                 }
                 resolve(userDetails);
