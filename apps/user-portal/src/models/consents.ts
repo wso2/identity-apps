@@ -16,6 +16,9 @@
  * under the License.
  */
 
+/**
+ * Consent Model
+ */
 export interface ConsentInterface {
     consentReceiptID: string;
     language: string;
@@ -26,13 +29,19 @@ export interface ConsentInterface {
     tenantDomain: string;
 }
 
+/**
+ * ConsentReceipt Model
+ */
 export interface ConsentReceiptInterface {
     collectionMethod: string;
     services: ServiceInterface[];
     version: string;
 }
 
-interface ServiceInterface {
+/**
+ * Service Model
+ */
+export interface ServiceInterface {
     purposes: PurposeInterface[];
     service: string;
     serviceDescription: string;
@@ -40,22 +49,81 @@ interface ServiceInterface {
     tenantDomain: string;
 }
 
+/**
+ * Purpose Model
+ */
 interface PurposeInterface {
-    piiCategory: PIICategory[];
     purpose: string;
+    purposeId: number;
+    piiCategory: PIICategory[];
 }
 
+/**
+ * PIICategory Model
+ */
 interface PIICategory {
     piiCategoryDisplayName: string;
     piiCategoryId: number;
     piiCategoryName: string;
 }
 
-export enum ConsentState {
-    ACTIVE = "ACTIVE",
-    REVOKED = "REVOKED"
+/**
+ * This model will be used map the payload of the
+ * receipt update API request.
+ */
+export interface UpdateReceiptInterface {
+    collectionMethod: string;
+    jurisdiction: string;
+    language: string;
+    policyURL: string;
+    services: UpdateReceiptServiceInterface[];
 }
 
+/**
+ * Service model to be used in the update receipt model.
+ */
+interface UpdateReceiptServiceInterface {
+    purposes: UpdateReceiptPurposeInterface[];
+    service: string;
+    serviceDescription: string;
+    serviceDisplayName: string;
+    tenantDomain: string;
+}
+
+/**
+ * Purpose modal to be used in the update receipt model.
+ */
+interface UpdateReceiptPurposeInterface {
+    consentType: string;
+    piiCategory: UpdateReceiptPIICategoryInterface[];
+    primaryPurpose: boolean;
+    purposeCategoryId: number[];
+    purposeId: number;
+    termination: string;
+    thirdPartyDisclosure: boolean;
+    thirdPartyName: string;
+}
+
+/**
+ * PII Category modal to be used in the update receipt model.
+ */
+interface UpdateReceiptPIICategoryInterface {
+    piiCategoryId: number;
+    validity: string;
+}
+
+/**
+ * Types of consent states.
+ */
+export enum ConsentState {
+    ACTIVE = "ACTIVE"
+}
+
+/**
+ * Creates an empty consent object. This can be used to initialize
+ * a consent in the state.
+ * @return {ConsentInterface} an empty consent object.
+ */
 export const createEmptyConsent = (): ConsentInterface => ({
     consentReceiptID: "",
     language: "",
@@ -66,6 +134,11 @@ export const createEmptyConsent = (): ConsentInterface => ({
     tenantDomain: ""
 });
 
+/**
+ * Creates an empty consent receipt object. This can be used to initialize
+ * a consent receipt in the state.
+ * @return {ConsentReceiptInterface}  an empty consent receipt object.
+ */
 export const createEmptyConsentReceipt = (): ConsentReceiptInterface => ({
     collectionMethod: "",
     services: [
@@ -79,7 +152,8 @@ export const createEmptyConsentReceipt = (): ConsentReceiptInterface => ({
                             piiCategoryName: ""
                         }
                     ],
-                    purpose: ""
+                    purpose: "",
+                    purposeId: 0
                 }
             ],
             service: "",
