@@ -23,7 +23,14 @@ import { UserImagePlaceHolder } from "../components";
 import { InnerPageLayout } from "../layouts";
 import { createEmptyProfile } from "../models/profile";
 
+/**
+ * User Profile Page of the User Portal
+ */
 export class UserProfilePage extends React.Component<any, any> {
+    /**
+     * constructor
+     * @param props
+     */
     constructor(props) {
         super(props);
         this.state = createEmptyProfile();
@@ -40,6 +47,11 @@ export class UserProfilePage extends React.Component<any, any> {
             });
     }
 
+    /**
+     * The following method handles the change of state of the input fields.
+     * The id of the event target will be used to set the state.
+     * @param event
+     */
     public handleFieldChange = (event) => {
         this.setState({
             [event.target.id]: event.target.value
@@ -47,24 +59,36 @@ export class UserProfilePage extends React.Component<any, any> {
         event.preventDefault();
     }
 
+    /**
+     * The following method handles the onClick event of the edit button
+     * @param event
+     */
     public handleEdit = (event) => {
         this.setState({
             [event.target.id]: true
         });
     }
 
+    /**
+     * The following method handles the onClick event of the cancel button
+     * @param event
+     */
     public handleCancel = (event) => {
         this.setState({
             [event.target.id]: false
         });
     }
 
+    /**
+     * The following method handles the onClick event of the save button
+     * The update request will be sent depending on the id of the event target
+     * @param event
+     */
     public handleSave = (event) => {
         const data = {
             schemas: [
                 "urn:ietf:params:scim:api:messages:2.0:PatchOp"
             ],
-            // tslint:disable-next-line:object-literal-sort-keys
             Operations: [
                 {
                     op: "replace",
@@ -112,6 +136,15 @@ export class UserProfilePage extends React.Component<any, any> {
                 emailEdit: false
             });
         }
+    }
+
+    /**
+     * The following method handles the onClick event of the dismiss button
+     */
+    public handleDismiss = () => {
+        this.setState({
+            updateStatus: false
+        });
     }
 
     public render() {
@@ -208,15 +241,18 @@ export class UserProfilePage extends React.Component<any, any> {
                 pageTitle="Profile"
                 pageDescription="Manage information about you, your sub profiles and your account in general.">
                 <Container>
+                    {this.state.updateStatus ?
+                    <Message
+                        onDismiss={this.handleDismiss}
+                        size="small"
+                        success
+                        header="User Profile was successfully updated"
+                        content="The required user details were updated successfully."
+                    />
+                    : null
+                    }
+                    <Divider hidden/>
                     <Form>
-                        {this.state.updateStatus
-                            ? <Message
-                                success
-                                header="User Profile was successfully updated"
-                                content="You may now log-in with the username you have chosen"
-                            /> :
-                            null
-                        }
                         <Grid>
                             <Grid.Row columns={3}>
                                 <Grid.Column width={3}>
@@ -264,6 +300,10 @@ export class UserProfilePage extends React.Component<any, any> {
         );
     }
 
+    /**
+     * Set the fetched profile details to the state
+     * @param response
+     */
     private setProfileDetails(response) {
         this.setState({
             displayName: response.displayName,

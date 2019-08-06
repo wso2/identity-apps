@@ -60,8 +60,12 @@ export const getProfileInfo = async () => {
     return profileDetails;
 };
 
+/**
+ * Update the required details of the user profile
+ * @param {object} info
+ * @return {string} response status
+ */
 export const updateProfileInfo = async (info: object) => {
-    debugger;
     const url = ServiceResourcesEndpoint.me;
     const token = getLoginSession("access_token");
 
