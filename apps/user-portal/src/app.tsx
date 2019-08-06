@@ -19,7 +19,7 @@
 import * as React from "react";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { Dimmer, Loader } from "semantic-ui-react";
-import { AuthConsumer, AuthProvider, } from "./components/auth-context";
+import { AuthConsumer, AuthProvider } from "./components/auth-context";
 import ProtectedRoute from "./components/protected-route";
 import history from "./helpers/history";
 import {
@@ -27,8 +27,9 @@ import {
     ConsentsPage,
     HomePage,
     PageNotFound,
+    ChangePasswordPage,
     SecurityQsPage,
-    UserProfilePage,
+    UserProfilePage
 } from "./pages";
 
 const LoginPage = (props) => {
@@ -67,6 +68,7 @@ class App extends React.Component<any, any> {
                                         <ProtectedRoute component={UserProfilePage} path="/profile"/>
                                         <ProtectedRoute component={AccountRecoveryPage} path="/account-security" />
                                         <ProtectedRoute component={SecurityQsPage} path="/security" />
+                                        <ProtectedRoute component={ChangePasswordPage} path="/change-password" />
                                         <ProtectedRoute component={ConsentsPage} path="/consent" />
                                         <ProtectedRoute component={PageNotFound} />
                                     </Switch>
