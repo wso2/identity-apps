@@ -16,9 +16,12 @@
  * under the License.
  */
 
-import { BasicUserInterface } from "./user";
-
-export interface BasicProfileInterface extends BasicUserInterface {
+/**
+ * Profile Model
+ */
+export interface BasicProfileInterface {
+    displayName: string;
+    emails: string[];
     email: string;
     lastName: string;
     phoneNumbers: number[];
@@ -30,6 +33,7 @@ export interface BasicProfileInterface extends BasicUserInterface {
     lastNameEdit: boolean;
     emailEdit: boolean;
     updateStatus: boolean;
+    username: string;
 }
 
 export const createEmptyProfile = (): BasicProfileInterface => ({

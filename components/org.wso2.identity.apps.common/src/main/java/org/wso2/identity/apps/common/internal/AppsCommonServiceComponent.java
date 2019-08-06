@@ -26,6 +26,9 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
+import org.wso2.carbon.identity.application.common.model.Claim;
+import org.wso2.carbon.identity.application.common.model.ClaimConfig;
+import org.wso2.carbon.identity.application.common.model.ClaimMapping;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationConfig;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
 import org.wso2.carbon.identity.application.common.model.Property;
@@ -52,6 +55,8 @@ import static org.wso2.carbon.identity.oauth.common.OAuthConstants.GrantTypes.RE
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.OAuthVersions.VERSION_2;
 import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
 import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_ID;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.DISPLAY_NAME_CLAIM_URI;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
 
 /***
@@ -208,6 +213,11 @@ public class AppsCommonServiceComponent {
         inboundAuthenticationConfig.setInboundAuthenticationRequestConfigs(
                 inboundAuthenticationRequestConfigs.toArray(new InboundAuthenticationRequestConfig[0]));
 
+        // Set requested claim mappings for the SP.
+        ClaimConfig claimConfig = new ClaimConfig();
+        claimConfig.setClaimMappings(getRequestedClaimMappings());
+        serviceProvider.setClaimConfig(claimConfig);
+
         applicationMgtService.updateApplication(serviceProvider, SUPER_TENANT_DOMAIN_NAME, appOwner);
     }
 
@@ -243,5 +253,29 @@ public class AppsCommonServiceComponent {
         } finally {
             PrivilegedCarbonContext.endTenantFlow();
         }
+    }
+
+    /**
+     * Get requested claim mappings.
+     *
+     * @return array of claim mappings.
+     */
+    private ClaimMapping[] getRequestedClaimMappings() {
+
+        Claim emailClaim = new Claim();
+        emailClaim.setClaimUri(EMAIL_CLAIM_URI);
+        ClaimMapping emailClaimMapping = new ClaimMapping();
+        emailClaimMapping.setRequested(true);
+        emailClaimMapping.setLocalClaim(emailClaim);
+        emailClaimMapping.setRemoteClaim(emailClaim);
+
+        Claim roleClaim = new Claim();
+        roleClaim.setClaimUri(DISPLAY_NAME_CLAIM_URI);
+        ClaimMapping roleClaimMapping = new ClaimMapping();
+        roleClaimMapping.setRequested(true);
+        roleClaimMapping.setLocalClaim(roleClaim);
+        roleClaimMapping.setRemoteClaim(roleClaim);
+
+        return new ClaimMapping[] { emailClaimMapping, roleClaimMapping };
     }
 }
