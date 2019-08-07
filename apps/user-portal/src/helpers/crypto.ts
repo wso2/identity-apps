@@ -16,12 +16,9 @@
  * under the License.
  */
 
-import WordArray from "crypto-js/lib-typedarrays";
-import Base64 from 'crypto-js/enc-base64';
-import sha256 from "crypto-js/sha256";
-import {KEYUTIL, KJUR} from "jsrsasign"
-import {string} from "prop-types";
-import {ServiceResourcesEndpoint} from "../configs/app";
+import { Base64, sha256, WordArray } from "crypto-js";
+import { KEYUTIL, KJUR } from "jsrsasign";
+import { ServiceResourcesEndpoint } from "../configs/app";
 
 /**
  * Generate code verifier.
@@ -29,7 +26,6 @@ import {ServiceResourcesEndpoint} from "../configs/app";
  * @returns {string} code verifier.
  */
 export const getCodeVerifier = () => {
-
     return base64URLEncode(WordArray.random(32));
 };
 
@@ -40,7 +36,6 @@ export const getCodeVerifier = () => {
  * @returns {string} code challenge.
  */
 export const getCodeChallenge = (verifier: string) => {
-
     return base64URLEncode(sha256(verifier));
 };
 
@@ -51,11 +46,10 @@ export const getCodeChallenge = (verifier: string) => {
  * @returns {string} base 64 url encoded value.
  */
 export const base64URLEncode = (value: WordArray) => {
-
     return Base64.stringify(value)
-        .replace(/\+/g, '-')
-        .replace(/\//g, '_')
-        .replace(/=/g, '');
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_")
+        .replace(/=/g, "");
 };
 
 /**
@@ -64,8 +58,7 @@ export const base64URLEncode = (value: WordArray) => {
  * @returns {string[]} array of supported algorithms.
  */
 export const getSupportedSignatureAlgorithms = () => {
-
-    return ['RS256', 'RS512', 'RS384', 'PS256'];
+    return ["RS256", "RS512", "RS384", "PS256"];
 };
 
 /**
@@ -76,14 +69,14 @@ export const getSupportedSignatureAlgorithms = () => {
  * @returns {any} public key.
  */
 export const getJWKForTheIdToken = (jwtHeader: string, keys: Array<any>) => {
+    const headerJSON = JSON.parse(atob(jwtHeader));
 
-    let headerJSON = JSON.parse(atob(jwtHeader));
-
-    for (let i = 0; i < keys.length; i++) {
-        if (headerJSON.kid == keys[i].kid) {
-            return KEYUTIL.getKey({kty: keys[i].kty, e: keys[i].e, n: keys[i].n});
+    for (const key of keys) {
+        if (headerJSON.kid === key.kid) {
+            return KEYUTIL.getKey({kty: key.kty, e: key.e, n: key.n});
         }
     }
+
     throw new Error("Failed to find the public key specified in the id_token.");
 };
 
@@ -94,13 +87,11 @@ export const getJWKForTheIdToken = (jwtHeader: string, keys: Array<any>) => {
  * @param jwk public key used for signing.
  * @returns {any} whether the id_token is valid.
  */
-export const verifyIdToken = (id_token, jwk) => {
-
-    return KJUR.jws.JWS.verifyJWT(id_token, jwk, {
+export const verifyIdToken = (idToken, jwk) => {
+    return KJUR.jws.JWS.verifyJWT(idToken, jwk, {
         alg: getSupportedSignatureAlgorithms(),
-        iss: [ServiceResourcesEndpoint.token],
         aud: [CLIENT_ID],
-        gracePeriod: 3600
+        gracePeriod: 3600,
+        iss: [ServiceResourcesEndpoint.token]
     });
 };
-
