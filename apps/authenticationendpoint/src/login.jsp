@@ -47,8 +47,9 @@
     private static final String X509_CERTIFICATE_AUTHENTICATOR = "x509CertificateAuthenticator";
 %>
 <%
-    if(request.getSession().isNew() == false) {
-        request.getSession().invalidate();
+    if (request.isRequestedSessionIdValid()) {
+        // TODO: Re-visit   
+        // request.getSession().invalidate();
     }
     String queryString = request.getQueryString();
     Map<String, String> idpAuthenticatorMapping = null;
@@ -341,8 +342,6 @@
                 var h = $(document).height();
                 $('.overlay').css("width", w + "px").css("height", h + "px").show();
             });
-
-            $('[data-toggle="popover"]').popover();
             
             $('.overlay').click(function () {
                 $(this).hide();
@@ -393,16 +392,6 @@
                     "&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>" +
                     "<%=multiOptionURIParam%>";
         }
-
-        $('#popover').popover({
-            html: true,
-            title: function () {
-                return $("#popover-head").html();
-            },
-            content: function () {
-                return $("#popover-content").html();
-            }
-        });
 
         window.onunload = function(){};
 
