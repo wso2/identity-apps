@@ -16,24 +16,18 @@
  * under the License.
  */
 
-import {AuthenticatedUserInterface} from "./authenticated-user";
-import {TokenInterface} from "./tokens";
-
 /**
- * Interface of the user session.
+ * Get OAuth2 token request header.
+ *
+ * @returns {{headers: {Accept: string; "Access-Control-Allow-Origin": string; "Content-Type": string}}}
  */
-export interface SessionInterface extends AuthenticatedUserInterface, TokenInterface {
+export const getTokenRequestHeaders = () => {
 
-}
-
-export const createEmptySession = (): SessionInterface => ({
-
-    display_name: "",
-    email: "",
-    username: "",
-    access_token: "",
-    expires_in: "",
-    id_token: "",
-    issued_at: "",
-    refresh_token: ""
-});
+    return {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    }
+};

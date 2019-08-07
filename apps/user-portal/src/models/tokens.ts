@@ -16,24 +16,18 @@
  * under the License.
  */
 
-import {AuthenticatedUserInterface} from "./authenticated-user";
-import {TokenInterface} from "./tokens";
-
 /**
- * Interface of the user session.
+ * Interface of the OAuth2/OIDC tokens.
  */
-export interface SessionInterface extends AuthenticatedUserInterface, TokenInterface {
+export interface TokenInterface {
 
+    access_token: string;
+
+    expires_in: string;
+
+    id_token: string;
+
+    issued_at: string;
+
+    refresh_token: string;
 }
-
-export const createEmptySession = (): SessionInterface => ({
-
-    display_name: "",
-    email: "",
-    username: "",
-    access_token: "",
-    expires_in: "",
-    id_token: "",
-    issued_at: "",
-    refresh_token: ""
-});

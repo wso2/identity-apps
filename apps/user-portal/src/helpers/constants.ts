@@ -16,24 +16,18 @@
  * under the License.
  */
 
-import {AuthenticatedUserInterface} from "./authenticated-user";
-import {TokenInterface} from "./tokens";
+export const ACCESS_TOKEN = "access_token";
 
-/**
- * Interface of the user session.
- */
-export interface SessionInterface extends AuthenticatedUserInterface, TokenInterface {
+export const REFRESH_TOKEN = "refresh_token";
 
-}
+export const ID_TOKEN = "id_token";
 
-export const createEmptySession = (): SessionInterface => ({
+export const ACCESS_TOKEN_EXPIRE_IN = "expires_in";
 
-    display_name: "",
-    email: "",
-    username: "",
-    access_token: "",
-    expires_in: "",
-    id_token: "",
-    issued_at: "",
-    refresh_token: ""
-});
+export const ACCESS_TOKEN_ISSUED_AT = "issued_at";
+
+export const USERNAME = "username";
+
+export const EMAIL = "email";
+
+export const DISPLAY_NAME = "display_name";

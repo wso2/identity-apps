@@ -18,17 +18,16 @@
 
 import axios from "axios";
 import log from "log";
-import { ServiceResourcesEndpoint } from "../configs";
-import { createEmptyChallenge } from "../models/challenges";
-import { createEmptyProfile } from "../models/profile";
-import { getLoginSession, isLoggedSession } from "./session";
+import {ServiceResourcesEndpoint} from "../configs";
+import {createEmptyProfile} from "../models/profile";
+import {getAccessToken, isValidSession} from "./session";
 
 export const getProfileInfo = async () => {
     const profileDetails = createEmptyProfile();
 
-    if (isLoggedSession()) {
+    if (isValidSession()) {
         const authUrl = ServiceResourcesEndpoint.me;
-        const token = getLoginSession("access_token");
+        const token = getAccessToken();
         const orgKey = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
         const header = {
             headers: {
@@ -67,7 +66,7 @@ export const getProfileInfo = async () => {
  */
 export const updateProfileInfo = async (info: object) => {
     const url = ServiceResourcesEndpoint.me;
-    const token = getLoginSession("access_token");
+    const token = getAccessToken();
 
     const header = {
         headers: {
@@ -88,7 +87,7 @@ export const updateProfileInfo = async (info: object) => {
 export const getSecurityQs = async () => {
     const challengeUrl = ServiceResourcesEndpoint.challenges;
     const answerUrl = ServiceResourcesEndpoint.challengeAnswers;
-    const token = getLoginSession("access_token");
+    const token = getAccessToken();
 
     const header = {
         headers: {

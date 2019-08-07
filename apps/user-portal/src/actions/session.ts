@@ -17,60 +17,139 @@
  */
 
 import {SessionInterface} from "../models/session";
+import {
+    ACCESS_TOKEN,
+    ACCESS_TOKEN_EXPIRE_IN,
+    ACCESS_TOKEN_ISSUED_AT,
+    DISPLAY_NAME,
+    EMAIL,
+    ID_TOKEN,
+    REFRESH_TOKEN,
+    USERNAME
+} from "../helpers/constants";
+import {refreshSession} from "./login";
 
-export const initLoginSession = (data: SessionInterface) => {
-    sessionStorage.setItem("access_token", data.access_token);
-    sessionStorage.setItem("authenticated_user", data.authenticated_user);
-    sessionStorage.setItem("display_name", data.display_name);
-    sessionStorage.setItem("emails", data.emails);
-    sessionStorage.setItem("id_token", data.id_token);
-    sessionStorage.setItem("login_status", data.login_status);
-    sessionStorage.setItem("refresh_token", data.refresh_token);
-    sessionStorage.setItem("username", data.username);
+/**
+ * Initialize authenticated user session.
+ *
+ * @param {SessionInterface} data
+ */
+export const initAuthenticatedSession = (data: SessionInterface) => {
+
+    sessionStorage.setItem(DISPLAY_NAME, data.display_name);
+    sessionStorage.setItem(EMAIL, data.email);
+    sessionStorage.setItem(USERNAME, data.username);
+    sessionStorage.setItem(ACCESS_TOKEN, data.access_token);
+    sessionStorage.setItem(REFRESH_TOKEN, data.refresh_token);
+    sessionStorage.setItem(ID_TOKEN, data.id_token);
+    sessionStorage.setItem(ACCESS_TOKEN_EXPIRE_IN, data.expires_in);
+    sessionStorage.setItem(ACCESS_TOKEN_ISSUED_AT, data.issued_at);
 };
 
-export const setLoginSession = (key: string, value: string) => {
+/**
+ * Set parameter to session storage.
+ *
+ * @param {string} key
+ * @param {string} value
+ */
+export const setSessionParameter = (key: string, value: string) => {
+
     return sessionStorage.setItem(key, value);
 };
 
-export const getLoginSession = (key: string) => {
+/**
+ * Get parameter from session storage.
+ *
+ * @param {string} key
+ * @returns {string | null}
+ */
+export const getSessionParameter = (key: string) => {
+
     return sessionStorage.getItem(key);
 };
 
-export const getLoginAllSessions = () => {
+/**
+ * Get access token.
+ *
+ * @returns {string | null}
+ */
+export const getAccessToken = () => {
+
+    let access_token = sessionStorage.getItem(ACCESS_TOKEN);
+    let expires_in = sessionStorage.getItem(ACCESS_TOKEN_EXPIRE_IN);
+    let issued_at = sessionStorage.getItem(ACCESS_TOKEN_ISSUED_AT);
+
+    if (!access_token || access_token.length == 0 || !expires_in || expires_in.length == 0 || !issued_at
+        || issued_at.length == 0) {
+        throw new Error("Invalid user session.");
+    }
+
+    let validityPeriod = (parseInt(issued_at) + parseInt(expires_in)) - Math.floor(Date.now() / 1000);
+    if (validityPeriod <= 300) {
+        refreshSession(sessionStorage.getItem(REFRESH_TOKEN))
+            .then(() => {
+                    return sessionStorage.getItem(ACCESS_TOKEN);
+                }
+            )
+            .catch(e => {
+                resetAuthenticatedSession();
+                throw e;
+                }
+            );
+    }
+    return sessionStorage.getItem(ACCESS_TOKEN);
+};
+
+/**
+ * Get all session parameters.
+ *
+ * @returns {{}}
+ */
+export const getAllSessionParameters = () => {
+
     const session = {};
 
-    session[`access_token`] = sessionStorage.getItem("access_token");
-    session[`authenticated_user`] = sessionStorage.getItem("authenticated_user");
-    session[`display_name`] = sessionStorage.getItem("display_name");
-    session[`emails`] = sessionStorage.getItem("emails");
-    session[`id_token`] = sessionStorage.getItem("id_token");
-    session[`login_status`] = sessionStorage.getItem("login_status");
-    session[`refresh_token`] = sessionStorage.getItem("refresh_token");
-    session[`username`] = sessionStorage.getItem("username");
+    session[`${DISPLAY_NAME}`] = sessionStorage.getItem(DISPLAY_NAME);
+    session[`${EMAIL}`] = sessionStorage.getItem(EMAIL);
+    session[`${USERNAME}`] = sessionStorage.getItem(USERNAME);
+    session[`${ACCESS_TOKEN}`] = sessionStorage.getItem(ACCESS_TOKEN);
+    session[`${REFRESH_TOKEN}`] = sessionStorage.getItem(REFRESH_TOKEN);
+    session[`${ID_TOKEN}`] = sessionStorage.getItem(ID_TOKEN);
+    session[`${ACCESS_TOKEN_EXPIRE_IN}`] = sessionStorage.getItem(ACCESS_TOKEN_EXPIRE_IN);
+    session[`${ACCESS_TOKEN_ISSUED_AT}`] = sessionStorage.getItem(ACCESS_TOKEN_ISSUED_AT);
 
     return session;
 };
 
-export const clearLoginSession = () => {
-    sessionStorage.removeItem("access_token");
-    sessionStorage.removeItem("authenticated_user");
-    sessionStorage.removeItem("display_name");
-    sessionStorage.removeItem("emails");
-    sessionStorage.removeItem("id_token");
-    sessionStorage.removeItem("login_status");
-    sessionStorage.removeItem("refresh_token");
-    sessionStorage.removeItem("username");
+/**
+ * Reset authenticated session.
+ */
+export const resetAuthenticatedSession = () => {
+
+    sessionStorage.removeItem(DISPLAY_NAME);
+    sessionStorage.removeItem(EMAIL);
+    sessionStorage.removeItem(USERNAME);
+    sessionStorage.removeItem(ACCESS_TOKEN);
+    sessionStorage.removeItem(REFRESH_TOKEN);
+    sessionStorage.removeItem(ID_TOKEN);
+    sessionStorage.removeItem(ACCESS_TOKEN_EXPIRE_IN);
+    sessionStorage.removeItem(ACCESS_TOKEN_ISSUED_AT);
 };
 
-export const isLoggedSession = () => {
-    const status = sessionStorage.getItem("login_status");
+/**
+ * Returns whether session is valid.
+ *
+ * @returns {boolean}
+ */
+export const isValidSession = () => {
 
-    if (status && status === "valid") {
-        return true;
+    try {
+        getAccessToken();
+    } catch (e) {
+        return false;
     }
 
-    return false;
+    return true;
 };
 
 /**
@@ -81,7 +160,7 @@ export const isLoggedSession = () => {
 export const storeCodeVerifier = (verifier: string) => {
 
     sessionStorage.setItem("pkce_code_verifier", verifier);
-}
+};
 
 /**
  * Get code verifier from the session storage.
@@ -91,7 +170,7 @@ export const storeCodeVerifier = (verifier: string) => {
 export const retrieveCodeVerifier = () => {
 
     return sessionStorage.getItem("pkce_code_verifier");
-}
+};
 
 /**
  * Clear code verifier from the session storage.
@@ -99,4 +178,4 @@ export const retrieveCodeVerifier = () => {
 export const clearCodeVerifier = () => {
 
     sessionStorage.removeItem("pkce_code_verifier");
-}
+};

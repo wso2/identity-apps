@@ -17,9 +17,15 @@
  */
 
 import * as React from "react";
-import {clearLoginSession, dispatchLogin, dispatchLogout} from "../actions";
-import {getLoginSession, isLoggedSession} from "../actions/session";
+import {
+    dispatchLogin,
+    dispatchLogout,
+    getSessionParameter,
+    isValidSession,
+    resetAuthenticatedSession
+} from "../actions";
 import {AuthContextInterface, AuthProviderInterface, createEmptyAuthContext} from "../models/auth";
+import {DISPLAY_NAME, EMAIL, USERNAME} from "../helpers/constants";
 
 const AuthContext = React.createContext<AuthContextInterface | null>(null);
 
@@ -57,15 +63,17 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
     }
 
     private updateState() {
-        if (isLoggedSession()) {
+        if (isValidSession()) {
             this.setState({
-                displayName: getLoginSession("display_name"),
-                emails: getLoginSession("emails"),
+                displayName: getSessionParameter(DISPLAY_NAME),
+                emails: getSessionParameter(EMAIL),
                 isAuth: true,
                 loginInit: true,
                 logoutInit: false,
-                username: getLoginSession("username"),
+                username: getSessionParameter(USERNAME),
             });
+        } else {
+            this.setState({...createEmptyAuthContext()});
         }
     }
 
@@ -75,17 +83,20 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
     }
 
     private login(location) {
-        if (isLoggedSession()) {
+        if (isValidSession()) {
             this.loginSuccessRedirect(location);
         } else {
             if (!this.state.loginInit) {
                 dispatchLogin()
                     .then(() => {
-                        if (isLoggedSession()) {
+                        if (isValidSession()) {
                             this.updateState();
                             this.loginSuccessRedirect(location);
                         }
-                    });
+                    })
+                    .catch(
+                        //TODO show error page.
+                    );
             }
         }
     }
@@ -97,8 +108,11 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
                     this.setState({
                         logoutInit: true
                     });
-                    clearLoginSession();
-                });
+                    resetAuthenticatedSession();
+                })
+                .catch(
+                    //TODO show error page.
+                );
         } else {
             this.props.history.push(APP_LOGIN_PATH);
         }
@@ -107,4 +121,4 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
 
 const AuthConsumer = AuthContext.Consumer;
 
-export { AuthProvider, AuthConsumer };
+export {AuthProvider, AuthConsumer};
