@@ -26,6 +26,9 @@ interface State {
     currentPassword: string;
     newPassword: string;
     confirmPassword: string;
+    currentPasswordError: boolean;
+    newPasswordError: boolean;
+    confirmPasswordError: boolean;
     notification: NotifcationStateInterface;
 }
 interface Props {}
@@ -41,6 +44,9 @@ export class ChangePasswordPage extends React.Component<Props, State> {
         currentPassword: "",
         newPassword: "",
         confirmPassword: "",
+        currentPasswordError: false,
+        newPasswordError: false,
+        confirmPasswordError: false,
         notification: {
             visible: false,
             message: "",
@@ -60,8 +66,15 @@ export class ChangePasswordPage extends React.Component<Props, State> {
     public handleSubmit = () => {
         const { currentPassword, newPassword, confirmPassword, notification } = this.state;
 
-        // Check if the new password matches the conformation field.
-        // If there's a mismatch, return.
+        const hasErrors = this.validateInputs(currentPassword, newPassword, confirmPassword);
+
+        // If the form has errors, return from the function.
+        if (hasErrors) {
+            return;
+        }
+
+        // Check if the new password matches the confirmation field.
+        // If there's a mismatch, clears the text fields and return.
         if (newPassword !== confirmPassword) {
             this.setState(({
                 notification: {
@@ -72,7 +85,9 @@ export class ChangePasswordPage extends React.Component<Props, State> {
                     otherProps: {
                         negative: true
                     }
-                }
+                },
+                newPassword: "",
+                confirmPassword: ""
             } as unknown) as Pick<State, "notification">);
 
             return;
@@ -139,6 +154,33 @@ export class ChangePasswordPage extends React.Component<Props, State> {
             });
     }
 
+    public validateInputs = (currentPassword, newPassword, confirmPassword) => {
+        let hasErrors = false;
+
+        if (currentPassword === null || currentPassword === "") {
+            hasErrors = true;
+            this.setState({ currentPasswordError: true } as Pick<State, "currentPasswordError">);
+        } else {
+            this.setState({ currentPasswordError: false } as Pick<State, "currentPasswordError">);
+        }
+
+        if (newPassword === null || newPassword === "") {
+            hasErrors = true;
+            this.setState({ newPasswordError: true } as Pick<State, "newPasswordError">);
+        } else {
+            this.setState({ newPasswordError: false } as Pick<State, "newPasswordError">);
+        }
+
+        if (confirmPassword === null || confirmPassword === "") {
+            hasErrors = true;
+            this.setState({ confirmPasswordError: true } as Pick<State, "confirmPasswordError">);
+        } else {
+            this.setState({ confirmPasswordError: false } as Pick<State, "confirmPasswordError">);
+        }
+
+        return hasErrors;
+    }
+
     public handleNotificationDismiss = () => {
         const { notification } = this.state;
         this.setState(({
@@ -150,8 +192,15 @@ export class ChangePasswordPage extends React.Component<Props, State> {
     }
 
     public render() {
-        const { handleSubmit, handleInputChange, handleNotificationDismiss } = this;
-        const { notification } = this.state;
+        const {
+            currentPassword,
+            newPassword,
+            confirmPassword,
+            currentPasswordError,
+            newPasswordError,
+            confirmPasswordError,
+            notification
+        } = this.state;
         const { visible, message, description, otherProps } = notification;
         return (
             <InnerPageLayout pageTitle="Change Password" pageDescription="Change and modify the existing password">
@@ -160,35 +209,38 @@ export class ChangePasswordPage extends React.Component<Props, State> {
                         <NotificationComponent
                             message={message}
                             description={description}
-                            onDismiss={handleNotificationDismiss}
+                            onDismiss={this.handleNotificationDismiss}
                             {...otherProps}
                         />
                     </Transition>
-                    <br />
-                    <Form onSubmit={handleSubmit}>
+
+                    <Form onSubmit={this.handleSubmit}>
                         <Form.Input
                             name="currentPassword"
                             label="Current password"
                             placeholder="Current password"
                             type="password"
-                            onChange={handleInputChange}
-                            required
+                            value={currentPassword}
+                            onChange={this.handleInputChange}
+                            error={currentPasswordError ? { content: "Current pasword is required" } : false}
                         />
                         <Form.Input
                             name="newPassword"
                             label="New password"
                             placeholder="New password"
                             type="password"
-                            onChange={handleInputChange}
-                            required
+                            value={newPassword}
+                            onChange={this.handleInputChange}
+                            error={newPasswordError ? { content: "New pasword is required" } : false}
                         />
                         <Form.Input
                             name="confirmPassword"
                             label="Confirm new password"
                             placeholder="Confirm new password"
                             type="password"
-                            onChange={handleInputChange}
-                            required
+                            value={confirmPassword}
+                            onChange={this.handleInputChange}
+                            error={confirmPasswordError ? { content: "Confirm pasword is required" } : false}
                         />
                         <br />
                         <Button primary type="submit">
