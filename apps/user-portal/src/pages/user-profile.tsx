@@ -151,7 +151,7 @@ export class UserProfilePage extends React.Component<any, any> {
         const handleFNameChange = (value) => {
             if (this.state.firstNameEdit) {
                 return (<>
-                        <Segment padded={true}>
+                        <Segment padded>
                             First Name
                             <Form.Input id="displayName" value={value}
                                         onChange={this.handleFieldChange}/>
@@ -181,7 +181,7 @@ export class UserProfilePage extends React.Component<any, any> {
         const handleLNameChange = (value) => {
             if (this.state.lastNameEdit) {
                 return (<>
-                        <Segment padded={true}>
+                        <Segment padded>
                             Last Name
                             <Form.Input id="lastName" value={value} onChange={this.handleFieldChange}/>
                             <div className="ui two buttons">
@@ -210,7 +210,7 @@ export class UserProfilePage extends React.Component<any, any> {
         const handleEmailChange = (value) => {
             if (this.state.emailEdit) {
                 return (<>
-                        <Segment padded={true}>
+                        <Segment padded>
                             Email
                             <Form.Input id="email" value={value} onChange={this.handleFieldChange}/>
                             <div className="ui two buttons">
