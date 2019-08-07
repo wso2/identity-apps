@@ -21,8 +21,8 @@
 <%@ taglib prefix="template" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%@ include file="localize.jsp" %>
-<%@ include file="init-url.jsp" %>
+<%@ include file="includes/localize.jsp" %>
+<%@ include file="includes/init-url.jsp" %>
 
 <%
     String errorCode = request.getParameter("oauthErrorCode");
@@ -46,7 +46,7 @@
         <% } else { %>
             <%=AuthenticationEndpointUtil.i18n(resourceBundle,"oauth.processing.error.msg")%></td>
         <% } %>
-        </div>
+    </div>
     <form  action="<%=commonauthURL%>" method="post" id="oauth2_authz" name="oauth2_authz"></form>
 </c:set>
 

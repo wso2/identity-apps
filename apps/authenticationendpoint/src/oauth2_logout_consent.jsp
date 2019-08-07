@@ -20,8 +20,8 @@
 <%@ taglib prefix="template" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%@ include file="include/localize.jsp" %>
-<%@ include file="include/init-url.jsp" %>
+<%@ include file="includes/localize.jsp" %>
+<%@ include file="includes/init-url.jsp" %>
 
 <c:set var="body">
     <h3 class="ui header"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "do.you.want.to.logout")%></h3>

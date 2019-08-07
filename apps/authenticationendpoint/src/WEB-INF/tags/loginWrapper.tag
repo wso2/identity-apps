@@ -21,6 +21,7 @@
 <%@ attribute name="pageTitle" required="true" %>
 <%@ attribute name="businessName" required="true" %>
 <%@ attribute name="productTitle" required="true" %>
+<%@ attribute name="pageOnLoadFunction" required="false" %>
 <%@ attribute name="topIncludes" fragment="true" required="false" %>
 <%@ attribute name="bottomIncludes" fragment="true" required="false" %>
 
@@ -38,7 +39,7 @@
     
     <jsp:invoke fragment="topIncludes" />
 </head>
-<body>
+<body onload="${onLoadFunction}">
     <div class="container-fluid">
         <div class="login-form">
             <style>
