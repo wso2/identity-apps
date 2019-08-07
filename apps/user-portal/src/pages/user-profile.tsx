@@ -17,9 +17,9 @@
  */
 
 import * as React from "react";
-import { Button, Container, Divider, Form, Grid, Header, Icon, Message, Segment } from "semantic-ui-react";
+import { Button, Container, Divider, Form, Grid, Header, Icon, Message, Segment, Transition } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../actions/profile";
-import { UserImagePlaceHolder } from "../components";
+import { NotificationComponent, UserImagePlaceHolder } from "../components";
 import { InnerPageLayout } from "../layouts";
 import { createEmptyProfile } from "../models/profile";
 
@@ -241,16 +241,12 @@ export class UserProfilePage extends React.Component<any, any> {
                 pageTitle="Profile"
                 pageDescription="Manage information about you, your sub profiles and your account in general.">
                 <Container>
-                    {this.state.updateStatus ?
-                    <Message
-                        onDismiss={this.handleDismiss}
-                        size="small"
-                        success
-                        header="User Profile was successfully updated"
-                        content="The required user details were updated successfully."
-                    />
-                    : null
-                    }
+                    <Transition visible={this.state.updateStatus} duration={500}>
+                        <NotificationComponent onDismiss={this.handleDismiss} size="small"
+                                               description="The required user details were updated successfully."
+                                               success message="User Profile was successfully updated"
+                        />
+                    </Transition>
                     <Divider hidden/>
                     <Form>
                         <Grid>
