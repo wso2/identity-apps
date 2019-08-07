@@ -16,23 +16,14 @@
  * under the License.
  */
 
-import { AuthenticatedUserInterface } from "./authenticated-user";
-import { TokenInterface } from "./tokens";
-
 /**
- * Interface of the user session.
+ * JWK Model
  */
-export interface SessionInterface extends AuthenticatedUserInterface, TokenInterface {
-
+export interface JWKInterface {
+    kty: string;
+    e: string;
+    use: string;
+    kid: string;
+    alg: string;
+    n: string;
 }
-
-export const createEmptySession = (): SessionInterface => ({
-    access_token: "",
-    display_name: "",
-    email: "",
-    expires_in: "",
-    id_token: "",
-    issued_at: "",
-    refresh_token: "",
-    username: ""
-});

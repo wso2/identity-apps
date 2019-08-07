@@ -24,8 +24,8 @@ import {
     isValidSession,
     resetAuthenticatedSession
 } from "../actions";
-import {AuthContextInterface, AuthProviderInterface, createEmptyAuthContext} from "../models/auth";
-import {DISPLAY_NAME, EMAIL, USERNAME} from "../helpers/constants";
+import { DISPLAY_NAME, EMAIL, USERNAME } from "../helpers/constants";
+import { AuthContextInterface, AuthProviderInterface, createEmptyAuthContext } from "../models/auth";
 
 const AuthContext = React.createContext<AuthContextInterface | null>(null);
 
@@ -95,7 +95,7 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
                         }
                     })
                     .catch(
-                        //TODO show error page.
+                        // TODO show error page.
                     );
             }
         }
@@ -111,7 +111,7 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
                     resetAuthenticatedSession();
                 })
                 .catch(
-                    //TODO show error page.
+                    // TODO show error page.
                 );
         } else {
             this.props.history.push(APP_LOGIN_PATH);

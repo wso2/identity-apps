@@ -22,12 +22,11 @@
  * @returns {{headers: {Accept: string; "Access-Control-Allow-Origin": string; "Content-Type": string}}}
  */
 export const getTokenRequestHeaders = () => {
-
     return {
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": CLIENT_HOST,
             "Content-Type": "application/x-www-form-urlencoded"
         }
-    }
+    };
 };

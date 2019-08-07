@@ -19,6 +19,7 @@
 import { Base64, sha256, WordArray } from "crypto-js";
 import { KEYUTIL, KJUR } from "jsrsasign";
 import { ServiceResourcesEndpoint } from "../configs/app";
+import { JWKInterface } from "../models/crypto";
 
 /**
  * Generate code verifier.
@@ -65,10 +66,10 @@ export const getSupportedSignatureAlgorithms = () => {
  * Get JWK used for the id_token
  *
  * @param {string} jwtHeader header of the id_token.
- * @param {Array<any>} keys jwks response.
+ * @param {JWKInterface[]} keys jwks response.
  * @returns {any} public key.
  */
-export const getJWKForTheIdToken = (jwtHeader: string, keys: Array<any>) => {
+export const getJWKForTheIdToken = (jwtHeader: string, keys: JWKInterface[]) => {
     const headerJSON = JSON.parse(atob(jwtHeader));
 
     for (const key of keys) {

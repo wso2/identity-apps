@@ -18,10 +18,10 @@
 
 import axios, {AxiosResponse} from "axios";
 import log from "log";
-import {ServiceResourcesEndpoint} from "../configs";
-import {ConsentInterface, ConsentReceiptInterface, ConsentState, UpdateReceiptInterface} from "../models/consents";
-import {getAccessToken, getSessionParameter, isValidSession} from "./session";
-import {USERNAME} from "../helpers/constants";
+import { ServiceResourcesEndpoint } from "../configs";
+import { USERNAME } from "../helpers/constants";
+import { ConsentInterface, ConsentReceiptInterface, ConsentState, UpdateReceiptInterface } from "../models/consents";
+import { getAccessToken, getSessionParameter, isValidSession } from "./session";
 
 /**
  * Fetches the consents from the API.
@@ -43,8 +43,7 @@ export const getConsents = (state: ConsentState): Promise<ConsentInterface[]> =>
             state
         };
 
-        return axios
-            .get(url, {params, headers})
+        return axios.get(url, {params, headers})
             .then((response) => {
                 return response.data as ConsentInterface[];
             })
@@ -71,8 +70,7 @@ export const getConsentReceipt = (id: string): Promise<ConsentReceiptInterface> 
             "Content-Type": "application/json"
         };
 
-        return axios
-            .get(url, {headers})
+        return axios.get(url, {headers})
             .then((response) => {
                 return response.data as ConsentReceiptInterface;
             })
@@ -97,8 +95,7 @@ export const revokeConsent = (id: string): Promise<AxiosResponse<any>> => {
             Authorization: `Bearer ${token}`
         };
 
-        return axios
-            .delete(url, {headers})
+        return axios.delete(url, {headers})
             .then((response) => {
                 return response;
             })
@@ -149,8 +146,7 @@ export const updateConsentedClaims = (receipt): Promise<AxiosResponse<any>> => {
             }))
         };
 
-        return axios
-            .post(url, body, {headers})
+        return axios.post(url, body, {headers})
             .then((response) => {
                 return response;
             })

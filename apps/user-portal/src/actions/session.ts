@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import {SessionInterface} from "../models/session";
 import {
     ACCESS_TOKEN,
     ACCESS_TOKEN_EXPIRE_IN,
@@ -27,6 +26,7 @@ import {
     REFRESH_TOKEN,
     USERNAME
 } from "../helpers/constants";
+import {SessionInterface} from "../models/session";
 import {refreshSession} from "./login";
 
 /**
@@ -35,7 +35,6 @@ import {refreshSession} from "./login";
  * @param {SessionInterface} data
  */
 export const initAuthenticatedSession = (data: SessionInterface) => {
-
     sessionStorage.setItem(DISPLAY_NAME, data.display_name);
     sessionStorage.setItem(EMAIL, data.email);
     sessionStorage.setItem(USERNAME, data.username);
@@ -53,7 +52,6 @@ export const initAuthenticatedSession = (data: SessionInterface) => {
  * @param {string} value
  */
 export const setSessionParameter = (key: string, value: string) => {
-
     return sessionStorage.setItem(key, value);
 };
 
@@ -64,7 +62,6 @@ export const setSessionParameter = (key: string, value: string) => {
  * @returns {string | null}
  */
 export const getSessionParameter = (key: string) => {
-
     return sessionStorage.getItem(key);
 };
 
@@ -74,28 +71,28 @@ export const getSessionParameter = (key: string) => {
  * @returns {string | null}
  */
 export const getAccessToken = () => {
+    const accessToken = sessionStorage.getItem(ACCESS_TOKEN);
+    const expiresIn = sessionStorage.getItem(ACCESS_TOKEN_EXPIRE_IN);
+    const issuedAt = sessionStorage.getItem(ACCESS_TOKEN_ISSUED_AT);
 
-    let access_token = sessionStorage.getItem(ACCESS_TOKEN);
-    let expires_in = sessionStorage.getItem(ACCESS_TOKEN_EXPIRE_IN);
-    let issued_at = sessionStorage.getItem(ACCESS_TOKEN_ISSUED_AT);
-
-    if (!access_token || access_token.length == 0 || !expires_in || expires_in.length == 0 || !issued_at
-        || issued_at.length == 0) {
+    if (!accessToken || accessToken.length === 0 || !expiresIn || expiresIn.length === 0 || !issuedAt
+        || issuedAt.length === 0) {
         throw new Error("Invalid user session.");
     }
 
-    let validityPeriod = (parseInt(issued_at) + parseInt(expires_in)) - Math.floor(Date.now() / 1000);
+    const validityPeriod = (parseInt(issuedAt, 10) + parseInt(expiresIn, 10)) - Math.floor(Date.now() / 1000);
+
     if (validityPeriod <= 300) {
         refreshSession(sessionStorage.getItem(REFRESH_TOKEN))
             .then(() => {
                     return sessionStorage.getItem(ACCESS_TOKEN);
                 }
             )
-            .catch(e => {
+            .catch((e) => {
                 resetAuthenticatedSession();
                 throw e;
-                }
-            );
+            }
+        );
     }
     return sessionStorage.getItem(ACCESS_TOKEN);
 };
@@ -106,7 +103,6 @@ export const getAccessToken = () => {
  * @returns {{}}
  */
 export const getAllSessionParameters = () => {
-
     const session = {};
 
     session[`${DISPLAY_NAME}`] = sessionStorage.getItem(DISPLAY_NAME);
@@ -125,7 +121,6 @@ export const getAllSessionParameters = () => {
  * Reset authenticated session.
  */
 export const resetAuthenticatedSession = () => {
-
     sessionStorage.removeItem(DISPLAY_NAME);
     sessionStorage.removeItem(EMAIL);
     sessionStorage.removeItem(USERNAME);
@@ -142,7 +137,6 @@ export const resetAuthenticatedSession = () => {
  * @returns {boolean}
  */
 export const isValidSession = () => {
-
     try {
         getAccessToken();
     } catch (e) {
@@ -158,7 +152,6 @@ export const isValidSession = () => {
  * @param {string} verifier
  */
 export const storeCodeVerifier = (verifier: string) => {
-
     sessionStorage.setItem("pkce_code_verifier", verifier);
 };
 
@@ -168,7 +161,6 @@ export const storeCodeVerifier = (verifier: string) => {
  * @returns {string | null}
  */
 export const retrieveCodeVerifier = () => {
-
     return sessionStorage.getItem("pkce_code_verifier");
 };
 
@@ -176,6 +168,5 @@ export const retrieveCodeVerifier = () => {
  * Clear code verifier from the session storage.
  */
 export const clearCodeVerifier = () => {
-
     sessionStorage.removeItem("pkce_code_verifier");
 };
