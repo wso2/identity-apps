@@ -37,7 +37,7 @@ import {
  *
  * @returns {Promise<any>}
  */
-export const dispatchLogin = async () => {
+export const dispatchLogin = (): Promise<any> => {
     const code = new URL(window.location.href).searchParams.get("code");
 
     if (!code) {
@@ -50,7 +50,7 @@ export const dispatchLogin = async () => {
 
         window.location.href = ServiceResourcesEndpoint.authorize + `&code_challenge=` + codeChallenge;
 
-        return;
+        return null;
     }
 
     if (!isValidSession()) {
@@ -67,28 +67,26 @@ export const dispatchLogin = async () => {
         return axios.post(ServiceResourcesEndpoint.token, body.join("&"), getTokenRequestHeaders())
             .then((tokenResponse) => {
                     if (tokenResponse.status !== 200) {
-                        throw new Error("Token request failed.");
+                        return Promise.reject("Token request failed.");
                     }
 
                     if (isIdTokenValid(tokenResponse)) {
-                        initAuthenticatedSession(populateSessionObject(tokenResponse));
-                        return;
+                        return Promise.resolve(initAuthenticatedSession(populateSessionObject(tokenResponse)));
                     }
 
-                    throw new Error("Received id_token is invalid.");
+                    return Promise.reject("Received id_token is invalid.");
                 }
             )
             .catch((error) => {
-                    throw error;
-                }
-            );
+                return Promise.reject(error);
+            });
     }
 };
 
 /**
  * Handle user logout.
  *
- * @returns {Promise<void>}
+ * @returns {}
  */
 export const dispatchLogout = async () => {
     if (isValidSession()) {
@@ -125,9 +123,8 @@ export const refreshSession = (refreshToken: string) => {
             }
         )
         .catch((error) => {
-                throw error;
-            }
-        );
+            throw error;
+        });
 };
 
 /**
@@ -159,9 +156,9 @@ export const isIdTokenValid = (tokenResponse) => {
  * @returns {SessionInterface} user session.
  */
 export const populateSessionObject = (tokenResponse) => {
-
     const payload = JSON.parse(atob(tokenResponse.data.id_token.split(".")[1]));
     const session = createEmptySession();
+
     Object.assign(session, {
         access_token: tokenResponse.data.access_token,
         display_name: payload.preferred_username ? payload.preferred_username : payload.sub,
