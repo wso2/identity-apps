@@ -16,11 +16,12 @@
  * under the License.
  */
 
-import axios, { AxiosResponse } from "axios";
+import axios, {AxiosResponse} from "axios";
 import log from "log";
-import { ServiceResourcesEndpoint } from "../configs";
-import { ConsentInterface, ConsentReceiptInterface, ConsentState, UpdateReceiptInterface } from "../models/consents";
-import { getLoginSession, isLoggedSession } from "./session";
+import {ServiceResourcesEndpoint} from "../configs";
+import {ConsentInterface, ConsentReceiptInterface, ConsentState, UpdateReceiptInterface} from "../models/consents";
+import {getAccessToken, getSessionParameter, isValidSession} from "./session";
+import {USERNAME} from "../helpers/constants";
 
 /**
  * Fetches the consents from the API.
@@ -28,9 +29,9 @@ import { getLoginSession, isLoggedSession } from "./session";
  * @return {Promise<ConsentInterface[]>} a promise containing the response
  */
 export const getConsents = (state: ConsentState): Promise<ConsentInterface[]> => {
-    if (isLoggedSession()) {
+    if (isValidSession()) {
         const url = ServiceResourcesEndpoint.consents;
-        const token = getLoginSession("access_token");
+        const token = getAccessToken();
         const headers = {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": CLIENT_HOST,
@@ -38,12 +39,12 @@ export const getConsents = (state: ConsentState): Promise<ConsentInterface[]> =>
             "Content-Type": "application/json"
         };
         const params = {
-            piiPrincipalId: getLoginSession("authenticated_user"),
+            piiPrincipalId: getSessionParameter(USERNAME),
             state
         };
 
         return axios
-            .get(url, { params, headers })
+            .get(url, {params, headers})
             .then((response) => {
                 return response.data as ConsentInterface[];
             })
@@ -60,9 +61,9 @@ export const getConsents = (state: ConsentState): Promise<ConsentInterface[]> =>
  * @return {Promise<ConsentReceiptInterface>} a promise containing the response
  */
 export const getConsentReceipt = (id: string): Promise<ConsentReceiptInterface> => {
-    if (isLoggedSession()) {
+    if (isValidSession()) {
         const url = ServiceResourcesEndpoint.receipts + `/${id}`;
-        const token = getLoginSession("access_token");
+        const token = getAccessToken();
         const headers = {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": CLIENT_HOST,
@@ -71,7 +72,7 @@ export const getConsentReceipt = (id: string): Promise<ConsentReceiptInterface> 
         };
 
         return axios
-            .get(url, { headers })
+            .get(url, {headers})
             .then((response) => {
                 return response.data as ConsentReceiptInterface;
             })
@@ -88,16 +89,16 @@ export const getConsentReceipt = (id: string): Promise<ConsentReceiptInterface> 
  * @return {Promise<AxiosResponse<any>>} a promise containing the response
  */
 export const revokeConsent = (id: string): Promise<AxiosResponse<any>> => {
-    if (isLoggedSession()) {
+    if (isValidSession()) {
         const url = ServiceResourcesEndpoint.receipts + `/${id}`;
-        const token = getLoginSession("access_token");
+        const token = getAccessToken();
         const headers = {
             Accept: "application/json",
             Authorization: `Bearer ${token}`
         };
 
         return axios
-            .delete(url, { headers })
+            .delete(url, {headers})
             .then((response) => {
                 return response;
             })
@@ -114,9 +115,9 @@ export const revokeConsent = (id: string): Promise<AxiosResponse<any>> => {
  * @return {Promise<AxiosResponse<any>>} a promise containing the response
  */
 export const updateConsentedClaims = (receipt): Promise<AxiosResponse<any>> => {
-    if (isLoggedSession()) {
+    if (isValidSession()) {
         const url = ServiceResourcesEndpoint.consents;
-        const token = getLoginSession("access_token");
+        const token = getAccessToken();
         const headers = {
             "Accept": "application/json",
             "Authorization": `Bearer ${token}`,
@@ -149,7 +150,7 @@ export const updateConsentedClaims = (receipt): Promise<AxiosResponse<any>> => {
         };
 
         return axios
-            .post(url, body, { headers })
+            .post(url, body, {headers})
             .then((response) => {
                 return response;
             })
