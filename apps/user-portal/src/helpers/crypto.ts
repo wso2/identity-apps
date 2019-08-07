@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import { Base64, sha256, WordArray } from "crypto-js";
+// tslint:disable-next-line:no-submodule-imports
+import Base64 from "crypto-js/enc-base64";
+// tslint:disable-next-line:no-submodule-imports
+import WordArray from "crypto-js/lib-typedarrays";
+// tslint:disable-next-line:no-submodule-imports
+import sha256 from "crypto-js/sha256";
 import { KEYUTIL, KJUR } from "jsrsasign";
 import { ServiceResourcesEndpoint } from "../configs/app";
 import { JWKInterface } from "../models/crypto";
@@ -43,10 +48,10 @@ export const getCodeChallenge = (verifier: string) => {
 /**
  * Get URL encoded string.
  *
- * @param {WordArray} value.
+ * @param {CryptoJS.WordArray} value.
  * @returns {string} base 64 url encoded value.
  */
-export const base64URLEncode = (value: WordArray) => {
+export const base64URLEncode = (value: CryptoJS.WordArray) => {
     return Base64.stringify(value)
         .replace(/\+/g, "-")
         .replace(/\//g, "_")
