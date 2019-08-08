@@ -27,6 +27,7 @@ const libDir = path.join(__dirname, "..", "lib");
 const buildDir = path.join(__dirname, "..", "build");
 const themesDir = path.join(__dirname, "..", "src", "themes");
 const lessNpmModuleDir = path.dirname(require.resolve("less"));
+const semanticUIModuleDir = path.join(lessNpmModuleDir, "..", "semantic-ui");
 const semanticUILessModuleDir = path.join(lessNpmModuleDir, "..", "semantic-ui-less");
 
 const generateThemes = () => {
@@ -84,11 +85,24 @@ const copyCSS = () => {
     fs.copy(buildDir, libDir)
         .then(() => {
             console.error("generated css files copied.");
-            copyAssets();
+            copyJS();
         })
         .catch((error) => {
             console.error(error);
         });
+};
+
+const copyJS = () => {
+    ["semantic.js", "semantic.min.js"].map((fileName) => {
+        fs.copy(path.join(semanticUIModuleDir, "dist", fileName), path.join(libDir, fileName))
+            .then(() => {
+                console.error("semantic ui " + fileName + " file copied.");
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    });
+    copyAssets();
 };
 
 const copyAssets = () => {

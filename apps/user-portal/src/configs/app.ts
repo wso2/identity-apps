@@ -40,6 +40,6 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     jwks: `${ServiceEndpoint}/oauth2/jwks`,
     logout: `${ServiceEndpoint}/oidc/logout`,
     me: `${ServiceEndpoint}/scim2/Me`,
-    token: `${ServiceEndpoint}/oauth2/token`,
-    receipts: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents/receipts`
+    receipts: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents/receipts`,
+    token: `${ServiceEndpoint}/oauth2/token`
 };

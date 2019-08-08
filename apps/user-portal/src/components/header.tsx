@@ -32,7 +32,11 @@ export const Header = () => (
             <AuthConsumer>
                 {({ displayName, emails, username }) => (
                     <Menu.Menu position="right">
-                        <Dropdown item floating text={displayName} className="user-dropdown">
+                        <Dropdown
+                            item
+                            floating
+                            text={(displayName !== "undefined") ? displayName : username}
+                            className="user-dropdown">
                             <Dropdown.Menu>
                                 <Item.Group>
                                     <Item className="header">
@@ -41,7 +45,9 @@ export const Header = () => (
                                         <Item.Content verticalAlign="middle">
                                             <Item.Description>
                                                 <div>{username}</div>
-                                                <div>{emails}</div>
+                                                {(emails !== "undefined") &&
+                                                    <div>{emails}</div>
+                                                }
                                                 <Divider hidden />
                                                 <Button as={Link} to="/profile" size="tiny" primary>Profile</Button>
                                             </Item.Description>

@@ -100,13 +100,13 @@
         Response selfRegistrationResponse = selfUserRegistrationResource.regenerateCode(selfRegistrationRequest);
         if (selfRegistrationResponse != null &&  selfRegistrationResponse.getStatus() == HttpStatus.SC_CREATED) {
 %>
-<div class="alert alert-info">
+<div class="ui visible info message">
     <%=AuthenticationEndpointUtil.i18n(resourceBundle,Constants.ACCOUNT_RESEND_SUCCESS_RESOURCE)%>
 </div>
 <%
         } else {
 %>
-<div class="alert alert-danger">
+<div class="ui visible negative message">
     <%=AuthenticationEndpointUtil.i18n(resourceBundle,Constants.ACCOUNT_RESEND_FAIL_RESOURCE)%>
 </div>
 <%
@@ -124,9 +124,9 @@
     %>
 
     <% if (Boolean.parseBoolean(loginFailed)) { %>
-    <div class="alert alert-danger" id="error-msg"><%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %></div>
+    <div class="ui visible negative message" id="error-msg"><%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %></div>
     <% } else if ((Boolean.TRUE.toString()).equals(request.getParameter("authz_failure"))) { %>
-    <div class="alert alert-danger" id="error-msg">
+    <div class="ui visible negative message" id="error-msg">
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "unauthorized.to.login")%>
     </div>
     <% } %>
