@@ -43,9 +43,8 @@
     <div class="container-fluid">
         <div class="login-form">
             <style>
-                body > div,
-                body > div > div,
-                body > div > div > div.login-form {
+                body > div.container-fluid,
+                body > div.container-fluid > div.login-form {
                     height: 100%;
                 }
             </style>
@@ -67,6 +66,7 @@
     </div>
 
     <script src="libs/jquery_1.11.3/jquery-1.11.3.js"></script>
+    <script src="libs/theme/semantic.min.js"></script>
 
     <jsp:invoke fragment="bottomIncludes" />
 </body>

@@ -43,7 +43,7 @@
         <input type="hidden" name="consent" id="consent" value="deny"/>
     </form>
 </c:set>
-<c:set var="bottomIncludes">
+<c:set var="bottom">
     <script type="text/javascript">
         function approved() {
             document.getElementById('consent').value = "approve";
@@ -61,6 +61,6 @@
     pageTitle='<%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%>'
     productTitle='<%=AuthenticationEndpointUtil.i18n(resourceBundle, "identity.server")%>'
     businessName='<%=AuthenticationEndpointUtil.i18n(resourceBundle, "business.name")%>'>
-    <jsp:attribute name="bottomIncludes">${bottomIncludes}</jsp:attribute>
+    <jsp:attribute name="bottomIncludes">${bottom}</jsp:attribute>
     <jsp:body>${body}</jsp:body>    
 </template:loginWrapper>
