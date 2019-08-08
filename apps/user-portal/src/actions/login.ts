@@ -170,7 +170,7 @@ export const populateSessionObject = (tokenResponse) => {
     const payload = JSON.parse(atob(tokenResponse.data.id_token.split(".")[1]));
     let session = createEmptySession();
     Object.assign(session, {
-        display_name: payload.preferred_username,
+        display_name: payload.preferred_username ? payload.preferred_username : payload.sub,
         email: payload.email,
         username: payload.sub,
         access_token: tokenResponse.data.access_token,
