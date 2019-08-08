@@ -369,6 +369,7 @@ export class ChangePasswordPage extends React.Component<Props, State> {
                             label="Current password"
                             placeholder="Current password"
                             type={types.currentPassword}
+                            width={8}
                             icon={
                                 types.currentPassword === "password" ? (
                                     <Icon
@@ -395,6 +396,7 @@ export class ChangePasswordPage extends React.Component<Props, State> {
                             label="New password"
                             placeholder="New password"
                             type={types.newPassword}
+                            width={8}
                             icon={
                                 types.newPassword === "password" ? (
                                     <Icon name="eye" link onClick={() => this.toggleInputType("newPassword")} />
@@ -412,6 +414,7 @@ export class ChangePasswordPage extends React.Component<Props, State> {
                             label="Confirm new password"
                             placeholder="Confirm new password"
                             type={types.confirmPassword}
+                            width={8}
                             icon={
                                 types.confirmPassword === "password" ? (
                                     <Icon name="eye" link onClick={() => this.toggleInputType("confirmPassword")} />
