@@ -17,11 +17,12 @@
  */
 
 import * as React from "react";
-import { Button, Container, Form, Transition } from "semantic-ui-react";
+import { Button, Container, Form, Icon } from "semantic-ui-react";
 import { updatePassword } from "../actions/profile";
 import { NotificationComponent } from "../components";
 import { InnerPageLayout } from "../layouts";
 
+/** Component State types */
 interface State {
     currentPassword: string;
     newPassword: string;
@@ -30,10 +31,13 @@ interface State {
     touched: InputTouchedStateInterface;
     errors: InputErrorStateInterface;
     hasErrors: boolean;
+    types: InputTypesStateInterface;
 }
 
+/** Component Props types */
 interface Props {}
 
+/** Interface to map the notification state */
 interface NotifcationStateInterface {
     visible: boolean;
     message: string;
@@ -41,20 +45,32 @@ interface NotifcationStateInterface {
     otherProps: object;
 }
 
+/** Interface to map the input touched state */
 interface InputTouchedStateInterface {
     currentPassword: boolean;
     newPassword: boolean;
     confirmPassword: boolean;
 }
 
+/** Interface to map the input filed errors */
 interface InputErrorStateInterface {
     currentPassword: string;
     newPassword: string;
     confirmPassword: string;
 }
 
+/** Interface to map the input field types */
+interface InputTypesStateInterface {
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+}
+
+/**
+ * This is the Change Password page of the User Portal
+ */
 export class ChangePasswordPage extends React.Component<Props, State> {
-    public state = {
+    state = {
         currentPassword: "",
         newPassword: "",
         confirmPassword: "",
@@ -66,18 +82,35 @@ export class ChangePasswordPage extends React.Component<Props, State> {
         },
         touched: { currentPassword: false, newPassword: false, confirmPassword: false },
         errors: { currentPassword: "", newPassword: "", confirmPassword: "" },
-        hasErrors: true
+        hasErrors: true,
+        types: {
+            currentPassword: "password",
+            newPassword: "password",
+            confirmPassword: "password"
+        }
     };
 
+    /**
+     * ComponentDidUpdate lifecycle hook is triggered after an
+     * update occurs. The form errors are evaluated here and the
+     * `hasError` state is set based on the newly updated errors.
+     * @param {Readonly<P>} prevProps previous props
+     * @param {Readonly<S>} prevState previous state
+     */
     public componentDidUpdate(prevProps, prevState) {
         const { errors } = this.state;
         if (prevState && prevState.errors !== errors) {
             this.setState({
-                hasErrors: errors.currentPassword || errors.newPassword || errors.confirmPassword ? true : false
+                hasErrors: !!(errors.currentPassword || errors.newPassword || errors.confirmPassword)
             });
         }
     }
 
+    /**
+     * Handles the input onBlur event. The touched state is set
+     * based on the clicked input field.
+     * @param {React.ChangeEvent<HTMLInputElement>} e
+     */
     public handleInputBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { touched } = this.state;
         const { name } = e.target;
@@ -91,6 +124,13 @@ export class ChangePasswordPage extends React.Component<Props, State> {
         );
     }
 
+    /**
+     * Handles the input onChange event. The value of the changed input
+     * field is set to the corresponding state.
+     * @param {React.ChangeEvent<HTMLInputElement>} e input change event
+     * @param {string} name name attribute of the input element
+     * @param {string} value value attribute of the input element
+     */
     public handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement>,
         { name, value }: { name: string; value: string }
@@ -101,9 +141,13 @@ export class ChangePasswordPage extends React.Component<Props, State> {
         });
     }
 
+    /**
+     * Handles the form submit.
+     */
     public handleSubmit = () => {
         const { currentPassword, newPassword, confirmPassword, notification, hasErrors, touched } = this.state;
 
+        // The touched state of the inputs are set to true when submitting the form.
         this.setState({
             touched: {
                 ...touched,
@@ -112,30 +156,12 @@ export class ChangePasswordPage extends React.Component<Props, State> {
                 confirmPassword: true
             }
         });
+
+        // Validate the form
         this.validate();
 
         // If the form has errors, return from the function.
         if (hasErrors) {
-            return;
-        }
-
-        // Check if the new password matches the confirmation field.
-        // If there's a mismatch, clears the text fields and return.
-        if (newPassword !== confirmPassword) {
-            this.setState(({
-                notification: {
-                    ...notification,
-                    visible: true,
-                    message: "Password reset error",
-                    description: "The password confirmation doesn't match the new password",
-                    otherProps: {
-                        negative: true
-                    }
-                },
-                newPassword: "",
-                confirmPassword: ""
-            } as unknown) as Pick<State, "notification">);
-
             return;
         }
 
@@ -154,7 +180,8 @@ export class ChangePasswordPage extends React.Component<Props, State> {
                         },
                         currentPassword: "",
                         newPassword: "",
-                        confirmPassword: ""
+                        confirmPassword: "",
+                        hasErrors: true
                     } as unknown) as Pick<State, "notification">);
                 }
             })
@@ -203,21 +230,25 @@ export class ChangePasswordPage extends React.Component<Props, State> {
             });
     }
 
+    /**
+     * Validates the form input fields and sets the corresponding error
+     * message for the input field.
+     */
     public validate = () => {
         const { currentPassword, newPassword, confirmPassword, errors, touched } = this.state;
 
         const formErrors = { currentPassword: "", newPassword: "", confirmPassword: "" };
 
         if (currentPassword === null || currentPassword === "") {
-            formErrors.currentPassword = "Current pasword is required";
+            formErrors.currentPassword = "Current password is required";
         }
         if (newPassword === null || newPassword === "") {
-            formErrors.newPassword = "New pasword is required";
+            formErrors.newPassword = "New password is required";
         }
         if (confirmPassword === null || confirmPassword === "") {
-            formErrors.confirmPassword = "Confirm pasword is required";
+            formErrors.confirmPassword = "Confirm password is required";
         }
-        if ((newPassword !== "" && confirmPassword !== "") && (newPassword !== confirmPassword)) {
+        if (newPassword !== "" && confirmPassword !== "" && newPassword !== confirmPassword) {
             this.setState({
                 touched: {
                     ...touched,
@@ -235,6 +266,9 @@ export class ChangePasswordPage extends React.Component<Props, State> {
         });
     }
 
+    /**
+     * Handles the notification bar close button click.
+     */
     public handleNotificationDismiss = () => {
         const { notification } = this.state;
         this.setState(({
@@ -245,8 +279,30 @@ export class ChangePasswordPage extends React.Component<Props, State> {
         } as unknown) as Pick<State, "notification">);
     }
 
+    /**
+     * Handles the password field eye icon click. Toggles the
+     * input field type between `password` and `text`.
+     * @param name name attribute registered in the input field
+     */
+    public toggleInputType = (name) => {
+        const { types } = this.state;
+
+        let type = "password";
+
+        if (types[name] === "password") {
+            type = "text";
+        }
+
+        this.setState({
+            types: {
+                ...types,
+                [name]: type
+            }
+        });
+    }
+
     public render() {
-        const { currentPassword, newPassword, confirmPassword, notification, errors, touched } = this.state;
+        const { currentPassword, newPassword, confirmPassword, notification, errors, touched, types } = this.state;
         const { visible, message, description, otherProps } = notification;
         return (
             <InnerPageLayout pageTitle="Change Password" pageDescription="Change and modify the existing password">
@@ -265,7 +321,23 @@ export class ChangePasswordPage extends React.Component<Props, State> {
                             name="currentPassword"
                             label="Current password"
                             placeholder="Current password"
-                            type="password"
+                            type={types.currentPassword}
+                            icon={
+                                types.currentPassword === "password" ? (
+                                    <Icon
+                                        id="currentPassword"
+                                        name="eye"
+                                        link
+                                        onClick={() => this.toggleInputType("currentPassword")}
+                                    />
+                                ) : (
+                                    <Icon
+                                        name="eye slash"
+                                        link
+                                        onClick={() => this.toggleInputType("currentPassword")}
+                                    />
+                                )
+                            }
                             value={currentPassword}
                             onChange={this.handleInputChange}
                             onBlur={this.handleInputBlur}
@@ -275,7 +347,14 @@ export class ChangePasswordPage extends React.Component<Props, State> {
                             name="newPassword"
                             label="New password"
                             placeholder="New password"
-                            type="password"
+                            type={types.newPassword}
+                            icon={
+                                types.newPassword === "password" ? (
+                                    <Icon name="eye" link onClick={() => this.toggleInputType("newPassword")} />
+                                ) : (
+                                    <Icon name="eye slash" link onClick={() => this.toggleInputType("newPassword")} />
+                                )
+                            }
                             value={newPassword}
                             onChange={this.handleInputChange}
                             onBlur={this.handleInputBlur}
@@ -285,7 +364,18 @@ export class ChangePasswordPage extends React.Component<Props, State> {
                             name="confirmPassword"
                             label="Confirm new password"
                             placeholder="Confirm new password"
-                            type="password"
+                            type={types.confirmPassword}
+                            icon={
+                                types.confirmPassword === "password" ? (
+                                    <Icon name="eye" link onClick={() => this.toggleInputType("confirmPassword")} />
+                                ) : (
+                                    <Icon
+                                        name="eye slash"
+                                        link
+                                        onClick={() => this.toggleInputType("confirmPassword")}
+                                    />
+                                )
+                            }
                             value={confirmPassword}
                             onChange={this.handleInputChange}
                             onBlur={this.handleInputBlur}
