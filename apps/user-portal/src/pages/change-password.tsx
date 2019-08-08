@@ -17,7 +17,7 @@
  */
 
 import * as React from "react";
-import { Button, Container, Form, Icon } from "semantic-ui-react";
+import { Button, Container, Form, Icon, Modal } from "semantic-ui-react";
 import { updatePassword } from "../actions/profile";
 import { NotificationComponent } from "../components";
 import { InnerPageLayout } from "../layouts";
@@ -32,6 +32,7 @@ interface State {
     errors: InputErrorStateInterface;
     hasErrors: boolean;
     types: InputTypesStateInterface;
+    showConfirmationModal: boolean;
 }
 
 /** Component Props types */
@@ -70,7 +71,7 @@ interface InputTypesStateInterface {
  * This is the Change Password page of the User Portal
  */
 export class ChangePasswordPage extends React.Component<Props, State> {
-    state = {
+    public state = {
         currentPassword: "",
         newPassword: "",
         confirmPassword: "",
@@ -87,7 +88,8 @@ export class ChangePasswordPage extends React.Component<Props, State> {
             currentPassword: "password",
             newPassword: "password",
             confirmPassword: "password"
-        }
+        },
+        showConfirmationModal: false
     };
 
     /**
@@ -114,14 +116,9 @@ export class ChangePasswordPage extends React.Component<Props, State> {
     public handleInputBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { touched } = this.state;
         const { name } = e.target;
-        this.setState(
-            {
-                touched: { ...touched, [name]: true }
-            } as Pick<State, "touched">,
-            () => {
-                this.validate();
-            }
-        );
+        this.setState({ touched: { ...touched, [name]: true } }, () => {
+            this.validate();
+        });
     }
 
     /**
@@ -145,7 +142,7 @@ export class ChangePasswordPage extends React.Component<Props, State> {
      * Handles the form submit.
      */
     public handleSubmit = () => {
-        const { currentPassword, newPassword, confirmPassword, notification, hasErrors, touched } = this.state;
+        const { hasErrors, touched } = this.state;
 
         // The touched state of the inputs are set to true when submitting the form.
         this.setState({
@@ -165,10 +162,20 @@ export class ChangePasswordPage extends React.Component<Props, State> {
             return;
         }
 
+        // Show the confirmation modal
+        this.setState({ showConfirmationModal: true });
+    }
+
+    /**
+     * Calls the API and updates the user password.
+     */
+    public changePassword = () => {
+        const { currentPassword, newPassword, notification } = this.state;
+
         updatePassword(currentPassword, newPassword)
             .then((response) => {
                 if (response.status && response.status === 200) {
-                    this.setState(({
+                    this.setState({
                         notification: {
                             ...notification,
                             visible: true,
@@ -182,7 +189,7 @@ export class ChangePasswordPage extends React.Component<Props, State> {
                         newPassword: "",
                         confirmPassword: "",
                         hasErrors: true
-                    } as unknown) as Pick<State, "notification">);
+                    });
                 }
             })
             .catch((error) => {
@@ -190,7 +197,7 @@ export class ChangePasswordPage extends React.Component<Props, State> {
                 // As a temporary solution, a check to see if a response
                 // is available has be used.
                 if (!error.response || error.response.status === 401) {
-                    this.setState(({
+                    this.setState({
                         notification: {
                             ...notification,
                             visible: true,
@@ -200,9 +207,9 @@ export class ChangePasswordPage extends React.Component<Props, State> {
                                 negative: true
                             }
                         }
-                    } as unknown) as Pick<State, "notification">);
+                    });
                 } else if (error.response && error.response.data && error.response.data.detail) {
-                    this.setState(({
+                    this.setState({
                         notification: {
                             ...notification,
                             visible: true,
@@ -212,10 +219,10 @@ export class ChangePasswordPage extends React.Component<Props, State> {
                                 negative: true
                             }
                         }
-                    } as unknown) as Pick<State, "notification">);
+                    });
                 } else {
                     // Generic error message
-                    this.setState(({
+                    this.setState({
                         notification: {
                             ...notification,
                             visible: true,
@@ -225,9 +232,12 @@ export class ChangePasswordPage extends React.Component<Props, State> {
                                 negative: true
                             }
                         }
-                    } as unknown) as Pick<State, "notification">);
+                    });
                 }
             });
+
+        // Close the modal
+        this.setState({ showConfirmationModal: false });
     }
 
     /**
@@ -271,12 +281,12 @@ export class ChangePasswordPage extends React.Component<Props, State> {
      */
     public handleNotificationDismiss = () => {
         const { notification } = this.state;
-        this.setState(({
+        this.setState({
             notification: {
                 ...notification,
                 visible: false
             }
-        } as unknown) as Pick<State, "notification">);
+        });
     }
 
     /**
@@ -301,9 +311,46 @@ export class ChangePasswordPage extends React.Component<Props, State> {
         });
     }
 
+    public handleConfirmationModalClose = (): void => {
+        this.setState({ showConfirmationModal: false });
+    }
+
     public render() {
-        const { currentPassword, newPassword, confirmPassword, notification, errors, touched, types } = this.state;
+        const {
+            currentPassword,
+            newPassword,
+            confirmPassword,
+            notification,
+            errors,
+            touched,
+            types,
+            showConfirmationModal
+        } = this.state;
         const { visible, message, description, otherProps } = notification;
+
+        const confirmationModal = (
+            <Modal size="mini" open={showConfirmationModal} onClose={this.handleConfirmationModalClose}>
+                <Modal.Content>
+                    <Container textAlign="center">
+                        <h3>Confirmation</h3>
+                    </Container>
+                    <br />
+                    <p>
+                        Changing the password will result in the termination of the current session. You will have to
+                        login with the newly changed password. Do you wish to continue?
+                    </p>
+                </Modal.Content>
+                <Modal.Actions>
+                    <Button secondary onClick={this.handleConfirmationModalClose}>
+                        Cancel
+                    </Button>
+                    <Button primary onClick={this.changePassword}>
+                        Continue
+                    </Button>
+                </Modal.Actions>
+            </Modal>
+        );
+
         return (
             <InnerPageLayout pageTitle="Change Password" pageDescription="Change and modify the existing password">
                 <Container>
@@ -386,6 +433,8 @@ export class ChangePasswordPage extends React.Component<Props, State> {
                             Submit
                         </Button>
                     </Form>
+
+                    {confirmationModal}
                 </Container>
             </InnerPageLayout>
         );
