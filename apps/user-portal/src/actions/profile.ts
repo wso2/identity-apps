@@ -16,11 +16,13 @@
  * under the License.
  */
 
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import log from "log";
-import {ServiceResourcesEndpoint} from "../configs";
-import {createEmptyProfile} from "../models/profile";
-import {getAccessToken, isValidSession} from "./session";
+import { ServiceResourcesEndpoint } from "../configs";
+import { USERNAME } from "../helpers/constants";
+import { createEmptyChallenge } from "../models/challenges";
+import { createEmptyProfile } from "../models/profile";
+import { getAccessToken, getSessionParameter, isValidSession } from "./session";
 
 export const getProfileInfo = async () => {
     const profileDetails = createEmptyProfile();
@@ -38,7 +40,8 @@ export const getProfileInfo = async () => {
             }
         };
 
-        await axios.get(authUrl, header)
+        await axios
+            .get(authUrl, header)
             .then((endpointResponse) => {
                 if (endpointResponse.status === 200) {
                     profileDetails.displayName = endpointResponse.data.name.givenName || "";
@@ -72,16 +75,15 @@ export const updateProfileInfo = async (info: object) => {
         headers: {
             "Access-Control-Allow-Origin": CLIENT_HOST,
             "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
         }
     };
 
-    return axios.patch(url, info, header)
-        .then((response) => {
-            if (response.status === 200) {
-                return response.status;
-            }
-        });
+    return axios.patch(url, info, header).then((response) => {
+        if (response.status === 200) {
+            return response.status;
+        }
+    });
 };
 
 export const getSecurityQs = async () => {
@@ -110,5 +112,45 @@ export const getSecurityQs = async () => {
             if (questions.status === 200 && answers.status === 200) {
                 return [questions.data, answers.data];
             }
-        }));
+        })
+    );
+};
+
+/**
+ * Updates the user's password.
+ * @param {string} currentPassword currently registered password
+ * @param {string} newPassword newly assigned password
+ * @return {Promise<AxiosResponse<any>>} a promise containing the response
+ */
+export const updatePassword = (currentPassword: string, newPassword: string): Promise<AxiosResponse<any>> => {
+    const url = ServiceResourcesEndpoint.me;
+    const username = getSessionParameter(USERNAME);
+    const auth = {
+        password: currentPassword,
+        username
+    };
+    const headers = {
+        "Content-Type": "application/json"
+    };
+    const body = {
+        schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
+        Operations: [
+            {
+                op: "add",
+                value: {
+                    password: newPassword
+                }
+            }
+        ]
+    };
+
+    return axios
+        .patch(url, body, { auth, headers })
+        .then((response) => {
+            return response;
+        })
+        .catch((error) => {
+            log.error(error);
+            return Promise.reject(error);
+        });
 };

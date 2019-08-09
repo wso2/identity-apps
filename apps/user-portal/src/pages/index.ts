@@ -25,3 +25,4 @@ export * from "./security-qs";
 export * from "./theme";
 export * from "./user-listing";
 export * from "./user-profile";
+export * from "./change-password";
