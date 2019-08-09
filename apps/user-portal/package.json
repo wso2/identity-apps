@@ -8,9 +8,6 @@
     "scripts": {
         "start": "webpack-dev-server --env.NODE_ENV=local --mode development --inline --hot --open",
         "lint": "tslint -t stylish --project .",
-        "add-theme": "npm add ../../modules/theme",
-        "local-install": "npm run add-theme && npm i",
-        "local-update": "npm run add-theme && npm update",
         "build-prod": "webpack --env.NODE_ENV=prod",
         "build": "webpack --env.NODE_ENV=prod --mode development",
         "test": "echo \"Error: no test specified\" && exit 1",
