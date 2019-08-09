@@ -28,7 +28,7 @@
         "rimraf": "^2.6.3",
         "tslint": "^5.18.0",
         "typescript": "^3.5.3",
-        "watch": "^1.0.2
+        "watch": "^1.0.2"
     },
     "dependencies": {
         "less": "^3.9.0",
