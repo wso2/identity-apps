@@ -22,7 +22,9 @@ import { updatePassword } from "../actions/profile";
 import { NotificationComponent } from "../components";
 import { InnerPageLayout } from "../layouts";
 
-/** Component State types */
+/**
+ * Component State types
+ */
 interface ComponentStateInterface {
     currentPassword: string;
     newPassword: string;
@@ -35,10 +37,14 @@ interface ComponentStateInterface {
     showConfirmationModal: boolean;
 }
 
-/** Component Props types */
+/**
+ * Component Props types
+ */
 interface ComponentPropsInterface {}
 
-/** Interface to map the notification state */
+/**
+ * Interface to map the notification state
+ */
 interface NotifcationStateInterface {
     visible: boolean;
     message: string;
@@ -46,21 +52,27 @@ interface NotifcationStateInterface {
     otherProps: object;
 }
 
-/** Interface to map the input touched state */
+/**
+ * Interface to map the input touched state
+ */
 interface InputTouchedStateInterface {
     currentPassword: boolean;
     newPassword: boolean;
     confirmPassword: boolean;
 }
 
-/** Interface to map the input filed errors */
+/**
+ * Interface to map the input filed errors
+ */
 interface InputErrorStateInterface {
     currentPassword: string;
     newPassword: string;
     confirmPassword: string;
 }
 
-/** Interface to map the input field types */
+/**
+ * Interface to map the input field types
+ */
 interface InputTypesStateInterface {
     currentPassword: string;
     newPassword: string;
@@ -133,9 +145,12 @@ export class ChangePasswordPage extends React.Component<ComponentPropsInterface,
         { name, value }: { name: string; value: string }
     ) => {
         // `as Pick<State, keyof State>` was used to silent the linter warning
-        this.setState({ [name]: value } as Pick<ComponentStateInterface, "currentPassword" | "newPassword" | "confirmPassword">, () => {
-            this.validate();
-        });
+        this.setState(
+            { [name]: value } as Pick<ComponentStateInterface, "currentPassword" | "newPassword" | "confirmPassword">,
+            () => {
+                this.validate();
+            }
+        );
     }
 
     /**
