@@ -147,9 +147,7 @@ export class ChangePasswordPage extends React.Component<ComponentPropsInterface,
         // `as Pick<State, keyof State>` was used to silent the linter warning
         this.setState(
             { [name]: value } as Pick<ComponentStateInterface, "currentPassword" | "newPassword" | "confirmPassword">,
-            () => {
-                this.validate();
-            }
+            () => this.validate()
         );
     }
 
