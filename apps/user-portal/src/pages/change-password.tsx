@@ -23,7 +23,7 @@ import { NotificationComponent } from "../components";
 import { InnerPageLayout } from "../layouts";
 
 /** Component State types */
-interface State {
+interface ComponentStateInterface {
     currentPassword: string;
     newPassword: string;
     confirmPassword: string;
@@ -36,7 +36,7 @@ interface State {
 }
 
 /** Component Props types */
-interface Props {}
+interface ComponentPropsInterface {}
 
 /** Interface to map the notification state */
 interface NotifcationStateInterface {
@@ -70,7 +70,7 @@ interface InputTypesStateInterface {
 /**
  * This is the Change Password page of the User Portal
  */
-export class ChangePasswordPage extends React.Component<Props, State> {
+export class ChangePasswordPage extends React.Component<ComponentPropsInterface, ComponentStateInterface> {
     public state = {
         currentPassword: "",
         newPassword: "",
@@ -99,7 +99,7 @@ export class ChangePasswordPage extends React.Component<Props, State> {
      * @param {Readonly<P>} prevProps previous props
      * @param {Readonly<S>} prevState previous state
      */
-    public componentDidUpdate(prevProps, prevState) {
+    public componentDidUpdate(prevProps: ComponentPropsInterface, prevState: ComponentStateInterface) {
         const { errors } = this.state;
         if (prevState && prevState.errors !== errors) {
             this.setState({
@@ -133,7 +133,7 @@ export class ChangePasswordPage extends React.Component<Props, State> {
         { name, value }: { name: string; value: string }
     ) => {
         // `as Pick<State, keyof State>` was used to silent the linter warning
-        this.setState({ [name]: value } as Pick<State, "currentPassword" | "newPassword" | "confirmPassword">, () => {
+        this.setState({ [name]: value } as Pick<ComponentStateInterface, "currentPassword" | "newPassword" | "confirmPassword">, () => {
             this.validate();
         });
     }
