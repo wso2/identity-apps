@@ -107,8 +107,8 @@ export const getSecurityQs = async () => {
         return axios.get(answerUrl, header);
     };
 
-    return axios.all([getQuestions(), getAnswers()]).then(
-        axios.spread((questions, answers) => {
+    return axios.all([getQuestions(), getAnswers()])
+        .then(axios.spread((questions, answers) => {
             if (questions.status === 200 && answers.status === 200) {
                 return [questions.data, answers.data];
             }
