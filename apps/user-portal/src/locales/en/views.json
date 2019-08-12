@@ -1,0 +1,82 @@
+{
+    "changePassword": {
+        "title": "Change Password",
+        "subTitle": "Change and modify the existing password",
+        "forms": {
+            "passwordResetForm": {
+                "inputs": {
+                    "currentPassword": {
+                        "label": "Current password",
+                        "placeholder": "Enter the current password",
+                        "validations": {
+                            "empty": "Current password is a required field"
+                        }
+                    },
+                    "newPassword": {
+                        "label": "New password",
+                        "placeholder": "Enter the new password",
+                        "validations": {
+                            "empty": "New password is a required field"
+                        }
+                    },
+                    "confirmPassword": {
+                        "label": "Confirm password",
+                        "placeholder": "Enter the new password",
+                        "validations": {
+                            "empty": "Confirm password is a required field",
+                            "mismatch": "The password confirmation doesn't match"
+                        }
+                    }
+                },
+                "validations": {
+                    "submitSuccess": {
+                        "message": "Password reset successful",
+                        "description": "The password has been changed successfully"
+                    },
+                    "submitError": {
+                        "message": "Password reset error",
+                        "description": "{{description}}"
+                    },
+                    "invalidCurrentPassword": {
+                        "message": "Password reset error",
+                        "description": "The current password you entered appears to be invalid. Please try again"
+                    },
+                    "genericError": {
+                        "message": "Password reset error",
+                        "description": "Something went wrong. Please try again."
+                    }
+                }
+            }
+        },
+        "modals": {
+            "confirmationModal": {
+                "heading": "Confirmation",
+                "message": "Changing the password will result in the termination of the current session. You will have to login with the newly changed password. Do you wish to continue?"
+            }
+        }
+    },
+    "consentManagement": {
+        "title": "Consent Management",
+        "subTitle": "Manage consented applications and websites",
+        "modals": {
+            "consentRevokeModal": {
+                "heading": "Revoke {{appName}}?",
+                "message": "Are you sure you want to revoke this consent? This operation is not reversible."
+            },
+            "EditConsentModal": {
+                "description": {
+                    "state": "State",
+                    "collectionMethod": "Collection Method",
+                    "version": "Version",
+                    "description": "Description",
+                    "subHeading1": "Information that you've shared with the application"
+                }
+            }
+        },
+        "placeholders": {
+            "emptyConsentList": {
+                "heading": "You don't have any {{state}} applications"
+            }
+        }
+    }
+}
