@@ -17,6 +17,7 @@
  */
 
 import * as React from "react";
+import { withTranslation } from "react-i18next";
 import {
     Button,
     Card,
@@ -44,9 +45,9 @@ import {
 } from "../models/consents";
 
 /**
- * This is the Consents Page of the User Portal.
+ * This is the Consents Management Component of the User Portal.
  */
-export class ConsentsPage extends React.Component<any, any> {
+class ConsentManagementComponent extends React.Component<any, any> {
     /**
      * constructor
      * @param props
@@ -241,6 +242,8 @@ export class ConsentsPage extends React.Component<any, any> {
             showConsentRevokeModal
         } = this.state;
 
+        const { t } = this.props;
+
         const paneContent = (
             <>
                 {consents && consents.length > 0 ? (
@@ -263,14 +266,14 @@ export class ConsentsPage extends React.Component<any, any> {
                                                 color="green"
                                                 onClick={() => this.handleConsentEditClick(consent)}
                                             >
-                                                Edit
+                                                {t("common:edit")}
                                             </Button>
                                             <Button
                                                 basic
                                                 color="red"
                                                 onClick={() => this.handleConsentRevokeClick(consent)}
                                             >
-                                                Revoke
+                                                {t("common:revoke")}
                                             </Button>
                                         </div>
                                     </Card.Content>
@@ -282,7 +285,12 @@ export class ConsentsPage extends React.Component<any, any> {
                     <Segment placeholder>
                         <Header icon>
                             <Icon name="folder open outline" />
-                            You don't have any {this.getConsentState(activeIndex).toLowerCase()} applications
+                            {
+                                t(
+                                    "views:consentManagement.placeholders.emptyConsentList.heading",
+                                    { state: this.getConsentState(activeIndex).toLowerCase() }
+                                )
+                            }
                         </Header>
                     </Segment>
                 )}
@@ -293,7 +301,7 @@ export class ConsentsPage extends React.Component<any, any> {
             {
                 menuItem: (
                     <MenuItem key={0}>
-                        Active
+                        {t("common:active")}
                         {activeIndex === 0 ? (
                             <Label circular color="green">
                                 {consents ? consents.length : 0}
@@ -314,63 +322,75 @@ export class ConsentsPage extends React.Component<any, any> {
                 <Modal.Content scrolling>
                     <Modal.Description>
                         <div>
-                            <strong>State:</strong> {editingConsent.state}
+                            <strong>
+                                {t("views:consentManagement.modals.EditConsentModal.description.state")}:
+                            </strong>
+                            {editingConsent.state}
                         </div>
                         <div>
-                            <strong>Collection Method:</strong> {consentReceipt.collectionMethod}
+                            <strong>
+                                {t("views:consentManagement.modals.EditConsentModal.description.collectionMethod")}:
+                            </strong>
+                            {consentReceipt.collectionMethod}
                         </div>
                         <div>
-                            <strong>Version: </strong>
+                            <strong>
+                                {t("views:consentManagement.modals.EditConsentModal.description.version")}:
+                            </strong>
                             {consentReceipt.version}
                         </div>
                         <div>
-                            <strong>Description: </strong>
+                            <strong>
+                                {t("views:consentManagement.modals.EditConsentModal.description.description")}:
+                            </strong>
                             {editingConsent.spDescription}
                         </div>
                         <Divider />
                         <p>
-                            <strong>Information that you've shared with the application</strong>
+                            <strong>
+                                {t("views:consentManagement.modals.EditConsentModal.description.subHeading1")}:
+                            </strong>
                         </p>
                         {consentReceipt &&
-                            consentReceipt.services &&
-                            consentReceipt.services.map(
-                                (service: ServiceInterface) =>
-                                    service &&
-                                    service.purposes &&
-                                    service.purposes.map((purpose) => {
-                                        return (
-                                            <div key={purpose.purposeId}>
-                                                <strong>{purpose.purpose}</strong>
-                                                <List verticalAlign="middle">
-                                                    {purpose.piiCategory &&
-                                                        purpose.piiCategory.map((category) => (
-                                                            <List.Item key={category.piiCategoryId}>
-                                                                <List.Content floated="right">
-                                                                    <Checkbox
-                                                                        id={category.piiCategoryId}
-                                                                        toggle
-                                                                        defaultChecked
-                                                                        onChange={this.handleClaimsToggle}
-                                                                    />
-                                                                </List.Content>
-                                                                <List.Content>
-                                                                    {category.piiCategoryDisplayName}
-                                                                </List.Content>
-                                                            </List.Item>
-                                                        ))}
-                                                </List>
-                                            </div>
-                                        );
-                                    })
-                            )}
+                        consentReceipt.services &&
+                        consentReceipt.services.map(
+                            (service: ServiceInterface) =>
+                                service &&
+                                service.purposes &&
+                                service.purposes.map((purpose) => {
+                                    return (
+                                        <div key={purpose.purposeId}>
+                                            <strong>{purpose.purpose}</strong>
+                                            <List verticalAlign="middle">
+                                                {purpose.piiCategory &&
+                                                purpose.piiCategory.map((category) => (
+                                                    <List.Item key={category.piiCategoryId}>
+                                                        <List.Content floated="right">
+                                                            <Checkbox
+                                                                id={category.piiCategoryId}
+                                                                toggle
+                                                                defaultChecked
+                                                                onChange={this.handleClaimsToggle}
+                                                            />
+                                                        </List.Content>
+                                                        <List.Content>
+                                                            {category.piiCategoryDisplayName}
+                                                        </List.Content>
+                                                    </List.Item>
+                                                ))}
+                                            </List>
+                                        </div>
+                                    );
+                                })
+                        )}
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
                     <Button secondary onClick={this.handleConsentModalClose}>
-                        Cancel
+                        {t("common:cancel")}
                     </Button>
                     <Button primary onClick={this.handleClaimsUpdateClick}>
-                        Update
+                        {t("common:update")}
                     </Button>
                 </Modal.Actions>
             </Modal>
@@ -380,17 +400,24 @@ export class ConsentsPage extends React.Component<any, any> {
             <Modal size="mini" open={showConsentRevokeModal} onClose={this.handleConsentRevokeModalClose}>
                 <Modal.Content>
                     <Container textAlign="center">
-                        <h3>Revoke {editingConsent.spDisplayName}?</h3>
+                        <h3>
+                            {
+                                t(
+                                    "views:consentManagement.modals.consentRevokeModal.heading",
+                                    { appName: editingConsent.spDisplayName }
+                                )
+                            }
+                        </h3>
                     </Container>
                     <br />
-                    <p>Are you sure you want to revoke this consent? This operation is not reversible.</p>
+                    <p>{t("views:consentManagement.modals.consentRevokeModal.message")}</p>
                 </Modal.Content>
                 <Modal.Actions>
                     <Button secondary onClick={this.handleConsentRevokeModalClose}>
-                        Cancel
+                        {t("common:cancel")}
                     </Button>
                     <Button primary onClick={this.revokeConsent}>
-                        Revoke
+                        {t("common:revoke")}
                     </Button>
                 </Modal.Actions>
             </Modal>
@@ -398,8 +425,8 @@ export class ConsentsPage extends React.Component<any, any> {
 
         return (
             <InnerPageLayout
-                pageTitle="Consent Management"
-                pageDescription="Manage consented applications and websites"
+                pageTitle={t("views:consentManagement.title")}
+                pageDescription={t("views:consentManagement.subTitle")}
             >
                 <Container>
                     <Tab
@@ -415,3 +442,5 @@ export class ConsentsPage extends React.Component<any, any> {
         );
     }
 }
+
+export default withTranslation()(ConsentManagementComponent);
