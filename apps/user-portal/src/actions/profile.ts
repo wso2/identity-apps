@@ -16,20 +16,18 @@
  * under the License.
  */
 
+import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
 import axios, { AxiosResponse } from "axios";
 import log from "log";
 import { ServiceResourcesEndpoint } from "../configs";
-import { USERNAME } from "../helpers/constants";
-import { createEmptyChallenge } from "../models/challenges";
 import { createEmptyProfile } from "../models/profile";
-import { getAccessToken, getSessionParameter, isValidSession } from "./session";
 
 export const getProfileInfo = async () => {
     const profileDetails = createEmptyProfile();
 
-    if (isValidSession()) {
+    if (AuthenticateSessionUtil.isValidSession(CLIENT_ID, CLIENT_HOST)) {
         const authUrl = ServiceResourcesEndpoint.me;
-        const token = getAccessToken();
+        const token = AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST);
         const orgKey = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
         const header = {
             headers: {
@@ -40,8 +38,7 @@ export const getProfileInfo = async () => {
             }
         };
 
-        await axios
-            .get(authUrl, header)
+        await axios.get(authUrl, header)
             .then((endpointResponse) => {
                 if (endpointResponse.status === 200) {
                     profileDetails.displayName = endpointResponse.data.name.givenName || "";
@@ -69,8 +66,7 @@ export const getProfileInfo = async () => {
  */
 export const updateProfileInfo = async (info: object) => {
     const url = ServiceResourcesEndpoint.me;
-    const token = getAccessToken();
-
+    const token = AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST);
     const header = {
         headers: {
             "Access-Control-Allow-Origin": CLIENT_HOST,
@@ -89,8 +85,7 @@ export const updateProfileInfo = async (info: object) => {
 export const getSecurityQs = async () => {
     const challengeUrl = ServiceResourcesEndpoint.challenges;
     const answerUrl = ServiceResourcesEndpoint.challengeAnswers;
-    const token = getAccessToken();
-
+    const token = AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST);
     const header = {
         headers: {
             "Accept": "application/json",
@@ -124,7 +119,7 @@ export const getSecurityQs = async () => {
  */
 export const updatePassword = (currentPassword: string, newPassword: string): Promise<AxiosResponse<any>> => {
     const url = ServiceResourcesEndpoint.me;
-    const username = getSessionParameter(USERNAME);
+    const username = AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME);
     const auth = {
         password: currentPassword,
         username
@@ -133,7 +128,6 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
         "Content-Type": "application/json"
     };
     const body = {
-        schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
         Operations: [
             {
                 op: "add",
@@ -141,11 +135,11 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
                     password: newPassword
                 }
             }
-        ]
+        ],
+        schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
     };
 
-    return axios
-        .patch(url, body, { auth, headers })
+    return axios.patch(url, body, { auth, headers })
         .then((response) => {
             return response;
         })

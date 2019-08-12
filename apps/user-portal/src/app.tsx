@@ -24,10 +24,10 @@ import ProtectedRoute from "./components/protected-route";
 import history from "./helpers/history";
 import {
     AccountRecoveryPage,
+    ChangePasswordPage,
     ConsentsPage,
     HomePage,
     PageNotFound,
-    ChangePasswordPage,
     SecurityQsPage,
     UserProfilePage
 } from "./pages";

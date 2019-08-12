@@ -16,13 +16,8 @@
  * under the License.
  */
 
-export * from "./account-recovery";
-export * from "./app-listing";
-export * from "./change-password";
-export * from "./consents";
-export * from "./errors/404";
-export * from "./home";
-export * from "./security-qs";
-export * from "./theme";
-export * from "./user-listing";
-export * from "./user-profile";
+export const ACCESS_TOKEN = "access_token";
+export const REFRESH_TOKEN = "refresh_token";
+export const ID_TOKEN = "id_token";
+export const ACCESS_TOKEN_EXPIRE_IN = "expires_in";
+export const ACCESS_TOKEN_ISSUED_AT = "issued_at";

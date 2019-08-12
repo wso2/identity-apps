@@ -86,15 +86,15 @@ export class UserProfilePage extends React.Component<any, any> {
      */
     public handleSave = (event) => {
         const data = {
-            schemas: [
-                "urn:ietf:params:scim:api:messages:2.0:PatchOp"
-            ],
             Operations: [
                 {
                     op: "replace",
                     value: {}
                 }
             ],
+            schemas: [
+                "urn:ietf:params:scim:api:messages:2.0:PatchOp"
+            ]
         };
 
         const emails = [];

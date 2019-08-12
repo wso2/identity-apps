@@ -16,12 +16,11 @@
  * under the License.
  */
 
+import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
 import axios, {AxiosResponse} from "axios";
 import log from "log";
 import { ServiceResourcesEndpoint } from "../configs";
-import { USERNAME } from "../helpers/constants";
 import { ConsentInterface, ConsentReceiptInterface, ConsentState, UpdateReceiptInterface } from "../models/consents";
-import { getAccessToken, getSessionParameter, isValidSession } from "./session";
 
 /**
  * Fetches the consents from the API.
@@ -29,9 +28,9 @@ import { getAccessToken, getSessionParameter, isValidSession } from "./session";
  * @return {Promise<ConsentInterface[]>} a promise containing the response
  */
 export const getConsents = (state: ConsentState): Promise<ConsentInterface[]> => {
-    if (isValidSession()) {
+    if (AuthenticateSessionUtil.isValidSession(CLIENT_ID, CLIENT_HOST)) {
         const url = ServiceResourcesEndpoint.consents;
-        const token = getAccessToken();
+        const token = AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST);
         const headers = {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": CLIENT_HOST,
@@ -39,7 +38,7 @@ export const getConsents = (state: ConsentState): Promise<ConsentInterface[]> =>
             "Content-Type": "application/json"
         };
         const params = {
-            piiPrincipalId: getSessionParameter(USERNAME),
+            piiPrincipalId: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME),
             state
         };
 
@@ -60,9 +59,9 @@ export const getConsents = (state: ConsentState): Promise<ConsentInterface[]> =>
  * @return {Promise<ConsentReceiptInterface>} a promise containing the response
  */
 export const getConsentReceipt = (id: string): Promise<ConsentReceiptInterface> => {
-    if (isValidSession()) {
+    if (AuthenticateSessionUtil.isValidSession(CLIENT_ID, CLIENT_HOST)) {
         const url = ServiceResourcesEndpoint.receipts + `/${id}`;
-        const token = getAccessToken();
+        const token = AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST);
         const headers = {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": CLIENT_HOST,
@@ -87,9 +86,9 @@ export const getConsentReceipt = (id: string): Promise<ConsentReceiptInterface> 
  * @return {Promise<AxiosResponse<any>>} a promise containing the response
  */
 export const revokeConsent = (id: string): Promise<AxiosResponse<any>> => {
-    if (isValidSession()) {
+    if (AuthenticateSessionUtil.isValidSession(CLIENT_ID, CLIENT_HOST)) {
         const url = ServiceResourcesEndpoint.receipts + `/${id}`;
-        const token = getAccessToken();
+        const token = AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST);
         const headers = {
             Accept: "application/json",
             Authorization: `Bearer ${token}`
@@ -112,9 +111,9 @@ export const revokeConsent = (id: string): Promise<AxiosResponse<any>> => {
  * @return {Promise<AxiosResponse<any>>} a promise containing the response
  */
 export const updateConsentedClaims = (receipt): Promise<AxiosResponse<any>> => {
-    if (isValidSession()) {
+    if (AuthenticateSessionUtil.isValidSession(CLIENT_ID, CLIENT_HOST)) {
         const url = ServiceResourcesEndpoint.consents;
-        const token = getAccessToken();
+        const token = AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST);
         const headers = {
             "Accept": "application/json",
             "Authorization": `Bearer ${token}`,

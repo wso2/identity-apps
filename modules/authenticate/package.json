@@ -1,0 +1,33 @@
+{
+    "name": "@wso2is/authenticate",
+    "version": "0.1.0",
+    "description": "Authenticate module for WSO2 Identity Server Webapps.",
+    "keywords": [
+        "WSO2",
+        "WSO2-IS",
+        "WSO2-Identity-Server",
+        "Authenticate"
+    ],
+    "main": "src/index.js",
+    "scripts": {
+        "lint": "tslint -t stylish --project ."
+    },
+    "author": "WSO2",
+    "license": "Apache-2.0",
+    "devDependencies": {
+        "@babel/cli": "^7.5.5",
+        "@babel/core": "^7.5.5",
+        "@babel/polyfill": "^7.0.0",
+        "@babel/preset-env": "^7.5.5",
+        "@types/crypto-js": "^3.1.43",
+        "axios": "^0.18.0",
+        "babel-loader": "^8.0.4",
+        "tslint": "^5.18.0",
+        "typescript": "^3.5.3",
+        "watch": "^1.0.2"
+    },
+    "dependencies": {
+        "crypto-js": "^3.1.9-1",
+        "jsrsasign": "^8.0.12"
+    }
+}

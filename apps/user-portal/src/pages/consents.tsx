@@ -55,12 +55,12 @@ export class ConsentsPage extends React.Component<any, any> {
         super(props);
         this.state = {
             activeIndex: 0,
+            consentReceipt: createEmptyConsentReceipt(),
             consents: [],
             editingConsent: createEmptyConsent(),
-            consentReceipt: createEmptyConsentReceipt(),
+            revokedClaimIds: [],
             showConsentEditModal: false,
-            showConsentRevokeModal: false,
-            revokedClaimIds: []
+            showConsentRevokeModal: false
         };
     }
 
