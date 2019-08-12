@@ -16,6 +16,6 @@
  * under the License.
  */
 
-export * from "./login";
-export * from "./session";
 export * from "./consents";
+export * from "./login";
+export * from "./profile";

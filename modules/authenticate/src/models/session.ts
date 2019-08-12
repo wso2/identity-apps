@@ -16,13 +16,23 @@
  * under the License.
  */
 
-export * from "./account-recovery";
-export * from "./app-listing";
-export * from "./change-password";
-export * from "./consents";
-export * from "./errors/404";
-export * from "./home";
-export * from "./security-qs";
-export * from "./theme";
-export * from "./user-listing";
-export * from "./user-profile";
+import { AuthenticatedUserInterface } from "./authenticated-user";
+import { TokenInterface } from "./token";
+
+/**
+ * Interface of the user session.
+ */
+export interface SessionInterface extends AuthenticatedUserInterface, TokenInterface {
+
+}
+
+export const createEmptySession = (): SessionInterface => ({
+    access_token: "",
+    display_name: "",
+    email: "",
+    expires_in: "",
+    id_token: "",
+    issued_at: "",
+    refresh_token: "",
+    username: ""
+});

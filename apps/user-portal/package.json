@@ -49,12 +49,9 @@
     },
     "dependencies": {
         "@types/history": "4.6.2",
+        "@wso2is/authenticate": "^0.1.0",
         "@wso2is/theme": "^0.1.0",
-        "cors": "^2.8.5",
-        "crypto-js": "^3.1.9-1",
-        "express-session": "^1.16.2",
         "history": "^4.9.0",
-        "jsrsasign": "^8.0.12",
         "react": "^16.9.0",
         "react-dom": "^16.9.0",
         "react-router-dom": "^4.3.1",

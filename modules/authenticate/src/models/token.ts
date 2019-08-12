@@ -16,13 +16,13 @@
  * under the License.
  */
 
-export * from "./account-recovery";
-export * from "./app-listing";
-export * from "./change-password";
-export * from "./consents";
-export * from "./errors/404";
-export * from "./home";
-export * from "./security-qs";
-export * from "./theme";
-export * from "./user-listing";
-export * from "./user-profile";
+/**
+ * Interface of the OAuth2/OIDC tokens.
+ */
+export interface TokenInterface {
+    access_token: string;
+    expires_in: string;
+    id_token: string;
+    issued_at: string;
+    refresh_token: string;
+}

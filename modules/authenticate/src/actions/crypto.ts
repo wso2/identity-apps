@@ -23,7 +23,7 @@ import WordArray from "crypto-js/lib-typedarrays";
 // tslint:disable-next-line:no-submodule-imports
 import sha256 from "crypto-js/sha256";
 import { KEYUTIL, KJUR } from "jsrsasign";
-import { ServiceResourcesEndpoint } from "../configs/app";
+import { SERVICE_RESOURCES } from "../constants";
 import { JWKInterface } from "../models/crypto";
 
 /**
@@ -91,13 +91,14 @@ export const getJWKForTheIdToken = (jwtHeader: string, keys: JWKInterface[]) => 
  *
  * @param id_token id_token received from the IdP.
  * @param jwk public key used for signing.
+ * @param {string} clientID app identification.
  * @returns {any} whether the id_token is valid.
  */
-export const verifyIdToken = (idToken, jwk) => {
+export const verifyIdToken = (idToken, jwk, clientID: string) => {
     return KJUR.jws.JWS.verifyJWT(idToken, jwk, {
         alg: getSupportedSignatureAlgorithms(),
-        aud: [CLIENT_ID],
+        aud: [clientID],
         gracePeriod: 3600,
-        iss: [ServiceResourcesEndpoint.token]
+        iss: [SERVICE_RESOURCES.token]
     });
 };

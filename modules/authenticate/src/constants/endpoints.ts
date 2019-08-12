@@ -16,13 +16,15 @@
  * under the License.
  */
 
-export * from "./account-recovery";
-export * from "./app-listing";
-export * from "./change-password";
-export * from "./consents";
-export * from "./errors/404";
-export * from "./home";
-export * from "./security-qs";
-export * from "./theme";
-export * from "./user-listing";
-export * from "./user-profile";
+type ServiceEndpointURLType = string;
+
+interface ServiceResourcesType {
+    jwks: string;
+    token: string;
+}
+
+export const SERVICE_ENDPOINT: ServiceEndpointURLType = "https://localhost:9443";
+export const SERVICE_RESOURCES: ServiceResourcesType = {
+    jwks: `${SERVICE_ENDPOINT}/oauth2/jwks`,
+    token: `${SERVICE_ENDPOINT}/oauth2/token`
+};

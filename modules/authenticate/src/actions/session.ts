@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import axios from "axios";
 import {
     ACCESS_TOKEN,
     ACCESS_TOKEN_EXPIRE_IN,
@@ -24,10 +25,27 @@ import {
     EMAIL,
     ID_TOKEN,
     REFRESH_TOKEN,
+    SERVICE_RESOURCES,
     USERNAME
-} from "../helpers/constants";
-import {SessionInterface} from "../models/session";
-import {refreshSession} from "./login";
+} from "../constants";
+import { createEmptySession, SessionInterface } from "../models/session";
+import { getJWKForTheIdToken, verifyIdToken } from "./crypto";
+
+/**
+ * Get OAuth2 token request header.
+ *
+ * @param {string} clientHost app host.
+ * @returns {{headers: {Accept: string; "Access-Control-Allow-Origin": string; "Content-Type": string}}}
+ */
+export const getTokenRequestHeaders = (clientHost: string) => {
+    return {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": clientHost,
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    };
+};
 
 /**
  * Initialize authenticated user session.
@@ -68,9 +86,11 @@ export const getSessionParameter = (key: string) => {
 /**
  * Get access token.
  *
+ * @param {string} clientID app identification.
+ * @param {string} clientHost app host.
  * @returns {string | null}
  */
-export const getAccessToken = () => {
+export const getAccessToken = (clientID: string, clientHost: string) => {
     const accessToken = sessionStorage.getItem(ACCESS_TOKEN);
     const expiresIn = sessionStorage.getItem(ACCESS_TOKEN_EXPIRE_IN);
     const issuedAt = sessionStorage.getItem(ACCESS_TOKEN_ISSUED_AT);
@@ -83,7 +103,7 @@ export const getAccessToken = () => {
     const validityPeriod = (parseInt(issuedAt, 10) + parseInt(expiresIn, 10)) - Math.floor(Date.now() / 1000);
 
     if (validityPeriod <= 300) {
-        refreshSession(sessionStorage.getItem(REFRESH_TOKEN))
+        refreshSession(sessionStorage.getItem(REFRESH_TOKEN), clientID, clientHost)
             .then(() => {
                     return sessionStorage.getItem(ACCESS_TOKEN);
                 }
@@ -134,11 +154,13 @@ export const resetAuthenticatedSession = () => {
 /**
  * Returns whether session is valid.
  *
+ * @param {string} clientID app identification.
+ * @param {string} clientHost app host.
  * @returns {boolean}
  */
-export const isValidSession = () => {
+export const isValidSession = (clientID: string, clientHost: string) => {
     try {
-        getAccessToken();
+        getAccessToken(clientID, clientHost);
     } catch (e) {
         return false;
     }
@@ -169,4 +191,85 @@ export const retrieveCodeVerifier = () => {
  */
 export const clearCodeVerifier = () => {
     sessionStorage.removeItem("pkce_code_verifier");
+};
+
+/**
+ * Refresh session attributes.
+ *
+ * @param {string} refreshToken
+ * @param {string} clientID app identification.
+ * @param {string} clientHost app host.
+ * @returns {Promise<SessionInterface | void>}
+ */
+export const refreshSession = (refreshToken: string, clientID, clientHost) => {
+    const body = [];
+    body.push(`client_id=${clientID}`);
+    body.push(`refresh_token=${refreshToken}`);
+    body.push("grant_type=refresh_token");
+
+    return axios.post(SERVICE_RESOURCES.token, body.join("&"), getTokenRequestHeaders(clientHost))
+        .then((refreshTokenResponse) => {
+                if (refreshTokenResponse.status !== 200) {
+                    throw new Error("Refresh token request failed.");
+                }
+
+                if (isIdTokenValid(refreshTokenResponse, clientID)) {
+                    initAuthenticatedSession(populateSessionObject(refreshTokenResponse));
+                    return;
+                }
+                throw new Error("Received id_token is invalid.");
+            }
+        )
+        .catch((error) => {
+            throw error;
+        });
+};
+
+/**
+ * Validate the id_token.
+ *
+ * @param tokenResponse token response.
+ * @param {string} clientID app identification.
+ */
+export const isIdTokenValid = (tokenResponse, clientID) => {
+    return axios.get(SERVICE_RESOURCES.jwks)
+        .then((jwksResponse) => {
+                if (jwksResponse.status !== 200) {
+                    throw new Error("Failed to get a response from the JWKS endpoint - " +
+                    SERVICE_RESOURCES.jwks);
+                }
+
+                return verifyIdToken(
+                    tokenResponse.data.id_token,
+                    getJWKForTheIdToken(tokenResponse.data.id_token.split(".")[0], jwksResponse.data.keys),
+                    clientID);
+            }
+        )
+        .catch((error) => {
+            throw error;
+        });
+};
+
+/**
+ * Populate session object from the token response.
+ *
+ * @param tokenResponse token response.
+ * @returns {SessionInterface} user session.
+ */
+export const populateSessionObject = (tokenResponse) => {
+    const payload = JSON.parse(atob(tokenResponse.data.id_token.split(".")[1]));
+    const session = createEmptySession();
+
+    Object.assign(session, {
+        access_token: tokenResponse.data.access_token,
+        display_name: payload.preferred_username ? payload.preferred_username : payload.sub,
+        email: payload.email,
+        expires_in: tokenResponse.data.expires_in,
+        id_token: tokenResponse.data.id_token,
+        issued_at: Date.now() / 1000,
+        refresh_token: tokenResponse.data.refresh_token,
+        username: payload.sub,
+    });
+
+    return session;
 };

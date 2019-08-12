@@ -16,15 +16,9 @@
  * under the License.
  */
 
+import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
 import * as React from "react";
-import {
-    dispatchLogin,
-    dispatchLogout,
-    getSessionParameter,
-    isValidSession,
-    resetAuthenticatedSession
-} from "../actions";
-import { DISPLAY_NAME, EMAIL, USERNAME } from "../helpers/constants";
+import { dispatchLogin, dispatchLogout } from "../actions";
 import { AuthContextInterface, AuthProviderInterface, createEmptyAuthContext } from "../models/auth";
 
 const AuthContext = React.createContext<AuthContextInterface | null>(null);
@@ -63,14 +57,14 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
     }
 
     private updateState() {
-        if (isValidSession()) {
+        if (AuthenticateSessionUtil.isValidSession(CLIENT_ID, CLIENT_HOST)) {
             this.setState({
-                displayName: getSessionParameter(DISPLAY_NAME),
-                emails: getSessionParameter(EMAIL),
+                displayName: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.DISPLAY_NAME),
+                emails: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.EMAIL),
                 isAuth: true,
                 loginInit: true,
                 logoutInit: false,
-                username: getSessionParameter(USERNAME),
+                username: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME),
             });
         } else {
             this.setState({...createEmptyAuthContext()});
@@ -83,13 +77,13 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
     }
 
     private login(location) {
-        if (isValidSession()) {
+        if (AuthenticateSessionUtil.isValidSession(CLIENT_ID, CLIENT_HOST)) {
             this.loginSuccessRedirect(location);
         } else {
             if (!this.state.loginInit) {
                 dispatchLogin()
                     .then(() => {
-                        if (isValidSession()) {
+                        if (AuthenticateSessionUtil.isValidSession(CLIENT_ID, CLIENT_HOST)) {
                             this.updateState();
                             this.loginSuccessRedirect(location);
                         }
@@ -108,7 +102,7 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
                     this.setState({
                         logoutInit: true
                     });
-                    resetAuthenticatedSession();
+                    AuthenticateSessionUtil.resetAuthenticatedSession();
                 })
                 .catch(
                     // TODO show error page.
