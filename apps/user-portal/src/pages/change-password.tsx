@@ -390,8 +390,8 @@ class ChangePasswordComponent extends React.Component<ComponentPropsInterface, C
 
         return (
             <Container>
-                <Header>Change Password</Header>
-                <Header.Subheader>Change and modify the existing password</Header.Subheader>
+                <Header>{t("views:changePassword.title")}</Header>
+                <Header.Subheader>{t("views:changePassword.subTitle")}</Header.Subheader>
                 <Divider hidden/>
                 {visible ? (
                     <NotificationComponent
