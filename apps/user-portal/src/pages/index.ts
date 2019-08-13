@@ -18,8 +18,8 @@
 
 export * from "./account-recovery";
 export * from "./app-listing";
-export * from "./change-password";
-export * from "./consents";
+export { default as ChangePasswordPage } from "./change-password";
+export { default as ConsentsPage } from "./consents";
 export * from "./errors/404";
 export * from "./home";
 export * from "./security-qs";

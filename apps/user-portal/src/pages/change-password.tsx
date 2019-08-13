@@ -17,6 +17,7 @@
  */
 
 import * as React from "react";
+import { withTranslation, WithTranslation } from "react-i18next";
 import { Button, Container, Form, Icon, Modal } from "semantic-ui-react";
 import { updatePassword } from "../actions/profile";
 import { NotificationComponent } from "../components";
@@ -40,7 +41,7 @@ interface ComponentStateInterface {
 /**
  * Component Props types
  */
-interface ComponentPropsInterface {}
+interface ComponentPropsInterface extends WithTranslation { }
 
 /**
  * Interface to map the notification state
@@ -80,28 +81,28 @@ interface InputTypesStateInterface {
 }
 
 /**
- * This is the Change Password page of the User Portal
+ * This is the Change Password component of the User Portal
  */
-export class ChangePasswordPage extends React.Component<ComponentPropsInterface, ComponentStateInterface> {
+export class ChangePasswordComponent extends React.Component<ComponentPropsInterface, ComponentStateInterface> {
     public state = {
-        currentPassword: "",
-        newPassword: "",
         confirmPassword: "",
-        notification: {
-            visible: false,
-            message: "",
-            description: "",
-            otherProps: {}
-        },
-        touched: { currentPassword: false, newPassword: false, confirmPassword: false },
+        currentPassword: "",
         errors: { currentPassword: "", newPassword: "", confirmPassword: "" },
         hasErrors: true,
-        types: {
-            currentPassword: "password",
-            newPassword: "password",
-            confirmPassword: "password"
+        newPassword: "",
+        notification: {
+            description: "",
+            message: "",
+            otherProps: {},
+            visible: false
         },
-        showConfirmationModal: false
+        showConfirmationModal: false,
+        touched: { currentPassword: false, newPassword: false, confirmPassword: false },
+        types: {
+            confirmPassword: "password",
+            currentPassword: "password",
+            newPassword: "password"
+        },
     };
 
     /**
@@ -161,9 +162,9 @@ export class ChangePasswordPage extends React.Component<ComponentPropsInterface,
         this.setState({
             touched: {
                 ...touched,
+                confirmPassword: true,
                 currentPassword: true,
                 newPassword: true,
-                confirmPassword: true
             }
         });
 
@@ -184,24 +185,29 @@ export class ChangePasswordPage extends React.Component<ComponentPropsInterface,
      */
     public changePassword = () => {
         const { currentPassword, newPassword, notification } = this.state;
+        const { t } = this.props;
 
         updatePassword(currentPassword, newPassword)
             .then((response) => {
                 if (response.status && response.status === 200) {
                     this.setState({
+                        confirmPassword: "",
+                        currentPassword: "",
+                        hasErrors: true,
+                        newPassword: "",
                         notification: {
                             ...notification,
-                            visible: true,
-                            message: "Password reset successful",
-                            description: "The password has been changed successfully",
+                            description: t(
+                                "views:changePassword.forms.passwordResetForm.validations.submitSuccess.description"
+                            ),
+                            message: t(
+                                "views:changePassword.forms.passwordResetForm.validations.submitSuccess.message"
+                            ),
                             otherProps: {
                                 positive: true
-                            }
-                        },
-                        currentPassword: "",
-                        newPassword: "",
-                        confirmPassword: "",
-                        hasErrors: true
+                            },
+                            visible: true
+                        }
                     });
                 }
             })
@@ -213,24 +219,33 @@ export class ChangePasswordPage extends React.Component<ComponentPropsInterface,
                     this.setState({
                         notification: {
                             ...notification,
-                            visible: true,
-                            message: "Password reset error",
-                            description: "The current password you entered appears to be invalid. Please try again",
+                            description: t(
+                                "views:changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
+                                "description"
+                            ),
+                            message: t(
+                                "views:changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
+                                "message"
+                            ),
                             otherProps: {
                                 negative: true
-                            }
+                            },
+                            visible: true
                         }
                     });
                 } else if (error.response && error.response.data && error.response.data.detail) {
                     this.setState({
                         notification: {
                             ...notification,
-                            visible: true,
-                            message: "Password reset error",
-                            description: error.response.data.detail,
+                            description: t(
+                                "views:changePassword.forms.passwordResetForm.validations.submitError.description",
+                                { description: error.response.data.detail }
+                            ),
+                            message: t("views:changePassword.forms.passwordResetForm.validations.submitError.message"),
                             otherProps: {
                                 negative: true
-                            }
+                            },
+                            visible: true
                         }
                     });
                 } else {
@@ -238,12 +253,14 @@ export class ChangePasswordPage extends React.Component<ComponentPropsInterface,
                     this.setState({
                         notification: {
                             ...notification,
-                            visible: true,
-                            message: "Password reset error",
-                            description: "Something went wrong. Please try again.",
+                            description: t(
+                                "views:changePassword.forms.passwordResetForm.validations.genericError.description"
+                            ),
+                            message: t("views:changePassword.forms.passwordResetForm.validations.genericError.message"),
                             otherProps: {
                                 negative: true
-                            }
+                            },
+                            visible: true
                         }
                     });
                 }
@@ -259,17 +276,24 @@ export class ChangePasswordPage extends React.Component<ComponentPropsInterface,
      */
     public validate = () => {
         const { currentPassword, newPassword, confirmPassword, errors, touched } = this.state;
+        const { t } = this.props;
 
         const formErrors = { currentPassword: "", newPassword: "", confirmPassword: "" };
 
         if (currentPassword === null || currentPassword === "") {
-            formErrors.currentPassword = "Current password is required";
+            formErrors.currentPassword = t(
+                "views:changePassword.forms.passwordResetForm.inputs.currentPassword.validations.empty"
+            );
         }
         if (newPassword === null || newPassword === "") {
-            formErrors.newPassword = "New password is required";
+            formErrors.newPassword = t(
+                "views:changePassword.forms.passwordResetForm.inputs.newPassword.validations.empty"
+            );
         }
         if (confirmPassword === null || confirmPassword === "") {
-            formErrors.confirmPassword = "Confirm password is required";
+            formErrors.confirmPassword = t(
+                "views:changePassword.forms.passwordResetForm.inputs.confirmPassword.validations.empty"
+            );
         }
         if (newPassword !== "" && confirmPassword !== "" && newPassword !== confirmPassword) {
             this.setState({
@@ -278,7 +302,9 @@ export class ChangePasswordPage extends React.Component<ComponentPropsInterface,
                     confirmPassword: true
                 }
             });
-            formErrors.confirmPassword = "The password confirmation doesn't match";
+            formErrors.confirmPassword = t(
+                "views:changePassword.forms.passwordResetForm.inputs.confirmPassword.validations.mismatch"
+            );
         }
 
         this.setState({
@@ -307,7 +333,7 @@ export class ChangePasswordPage extends React.Component<ComponentPropsInterface,
      * input field type between `password` and `text`.
      * @param name name attribute registered in the input field
      */
-    public toggleInputType = (name) => {
+    public toggleInputType = (name: string) => {
         const { types } = this.state;
 
         let type = "password";
@@ -339,33 +365,34 @@ export class ChangePasswordPage extends React.Component<ComponentPropsInterface,
             types,
             showConfirmationModal
         } = this.state;
+        const { t } = this.props;
         const { visible, message, description, otherProps } = notification;
 
         const confirmationModal = (
             <Modal size="mini" open={showConfirmationModal} onClose={this.handleConfirmationModalClose}>
                 <Modal.Content>
                     <Container textAlign="center">
-                        <h3>Confirmation</h3>
+                        <h3>{t("views:changePassword.modals.confirmationModal.heading")}</h3>
                     </Container>
                     <br />
-                    <p>
-                        Changing the password will result in the termination of the current session. You will have to
-                        login with the newly changed password. Do you wish to continue?
-                    </p>
+                    <p>{t("views:changePassword.modals.confirmationModal.message")}</p>
                 </Modal.Content>
                 <Modal.Actions>
                     <Button secondary onClick={this.handleConfirmationModalClose}>
-                        Cancel
+                        {t("common:cancel")}
                     </Button>
                     <Button primary onClick={this.changePassword}>
-                        Continue
+                        {t("common:continue")}
                     </Button>
                 </Modal.Actions>
             </Modal>
         );
 
         return (
-            <InnerPageLayout pageTitle="Change Password" pageDescription="Change and modify the existing password">
+            <InnerPageLayout
+                pageTitle={t("views:changePassword.title")}
+                pageDescription={t("views:changePassword.subTitle")}
+            >
                 <Container>
                     {visible ? (
                         <NotificationComponent
@@ -379,14 +406,17 @@ export class ChangePasswordPage extends React.Component<ComponentPropsInterface,
                     <Form onSubmit={this.handleSubmit}>
                         <Form.Input
                             name="currentPassword"
-                            label="Current password"
-                            placeholder="Current password"
+                            label={
+                                t("views:changePassword.forms.passwordResetForm.inputs.currentPassword.label")
+                            }
+                            placeholder={
+                                t("views:changePassword.forms.passwordResetForm.inputs.currentPassword.placeholder")
+                            }
                             type={types.currentPassword}
                             width={8}
                             icon={
                                 types.currentPassword === "password" ? (
                                     <Icon
-                                        id="currentPassword"
                                         name="eye"
                                         link
                                         onClick={() => this.toggleInputType("currentPassword")}
@@ -406,8 +436,12 @@ export class ChangePasswordPage extends React.Component<ComponentPropsInterface,
                         />
                         <Form.Input
                             name="newPassword"
-                            label="New password"
-                            placeholder="New password"
+                            label={
+                                t("views:changePassword.forms.passwordResetForm.inputs.newPassword.label")
+                            }
+                            placeholder={
+                                t("views:changePassword.forms.passwordResetForm.inputs.newPassword.placeholder")
+                            }
                             type={types.newPassword}
                             width={8}
                             icon={
@@ -424,8 +458,12 @@ export class ChangePasswordPage extends React.Component<ComponentPropsInterface,
                         />
                         <Form.Input
                             name="confirmPassword"
-                            label="Confirm new password"
-                            placeholder="Confirm new password"
+                            label={
+                                t("views:changePassword.forms.passwordResetForm.inputs.confirmPassword.label")
+                            }
+                            placeholder={
+                                t("views:changePassword.forms.passwordResetForm.inputs.confirmPassword.placeholder")
+                            }
                             type={types.confirmPassword}
                             width={8}
                             icon={
@@ -446,13 +484,14 @@ export class ChangePasswordPage extends React.Component<ComponentPropsInterface,
                         />
                         <br />
                         <Button primary type="submit">
-                            Submit
+                            {t("common:submit")}
                         </Button>
                     </Form>
-
                     {confirmationModal}
                 </Container>
             </InnerPageLayout>
         );
     }
 }
+
+export default withTranslation()(ChangePasswordComponent);

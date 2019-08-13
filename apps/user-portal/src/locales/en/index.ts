@@ -16,19 +16,5 @@
  * under the License.
  */
 
-import * as data from "../locales/en.json";
-
-interface ErrorMessagesType {
-    login: {
-        emptyPassword: string;
-        emptyUsername: string;
-        invalidCredentials: string;
-        loginFailed: string
-    };
-}
-
-interface MessagesType {
-    errors: ErrorMessagesType;
-}
-
-export const Messages: MessagesType = (data as any).default;
+export { default as common } from "./common.json";
+export { default as views } from "./views.json";

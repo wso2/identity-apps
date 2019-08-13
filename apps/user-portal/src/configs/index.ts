@@ -17,5 +17,4 @@
  */
 
 export * from "./app";
-export * from "./text";
 export * from "./ui";

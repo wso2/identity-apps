@@ -16,6 +16,6 @@
  * under the License.
  */
 
-export * from "./history";
-export * from "./http-headers";
-export { default as i18n } from "./i18n";
+import * as en from "./en";
+
+export { en };
