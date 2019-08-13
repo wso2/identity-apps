@@ -443,4 +443,4 @@ class ConsentManagementComponent extends React.Component<any, any> {
     }
 }
 
-export default withTranslation()(ConsentManagementComponent);
+export const ConsentsManagementPage = withTranslation()(ConsentManagementComponent);
