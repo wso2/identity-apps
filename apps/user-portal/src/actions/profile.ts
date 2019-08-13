@@ -119,7 +119,6 @@ export const getSecurityQs = (): Promise<any> => {
     const response = axios.all([getQuestions(), getAnswers()])
         .then(axios.spread((questions, answers) => {
             if (questions.status === 200 && answers.status === 200) {
-                // resolve(questions);
                 return Promise.resolve([questions.data, answers.data]);
             } else {
                 return Promise.reject(Error);
