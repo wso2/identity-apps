@@ -50,7 +50,8 @@ export const getProfileInfo = async () => {
                     profileDetails.emails = endpointResponse.data.emails || "";
                     profileDetails.lastName = endpointResponse.data.name.familyName || "";
                     profileDetails.phoneNumbers = endpointResponse.data.phoneNumbers || [];
-                    profileDetails.organisation = endpointResponse.data.orgKey.organization || "";
+                    profileDetails.organisation = (endpointResponse.data[orgKey]) ?
+                        endpointResponse.data[orgKey].organization : "";
                     profileDetails.roles = endpointResponse.data.roles || [];
                     profileDetails.proUrl = endpointResponse.data.profileUrl || "";
                 }
@@ -146,8 +147,8 @@ export const addSecurityQs = (data): Promise<any> => {
 
     const res = axios.post(answerUrl, data, header)
         .then((response) => {
-            if (response.status === 200) {
-                return response;
+            if (response.status === 201) {
+                return response.status;
             }
         })
         .catch((error) => {
@@ -184,8 +185,7 @@ export const updateSecurityQs = (data) => {
             log.error(error);
             return error;
         });
-    // return res;
-}
+};
 
 /**
  * Updates the user's password.
