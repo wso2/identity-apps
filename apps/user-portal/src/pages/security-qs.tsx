@@ -17,6 +17,7 @@
  */
 
 import * as React from "react";
+import { withTranslation, WithTranslation } from "react-i18next";
 import {
     Button,
     Container, Dimmer,
@@ -35,14 +36,19 @@ import { NotificationComponent } from "../components";
 import { createEmptyChallenge } from "../models/challenges";
 
 /**
+ * Component Props types
+ */
+interface IComponentProps extends WithTranslation { }
+
+/**
  * The security questions section of the user
  */
-export class SecurityQsPage extends React.Component<any, any> {
+class SecurityQsComponent extends React.Component<IComponentProps, any> {
     /**
      * constructor
      * @param props
      */
-    constructor(props: any) {
+    constructor(props) {
         super(props);
         this.state = {
             challengeQuestions: {
@@ -149,6 +155,7 @@ export class SecurityQsPage extends React.Component<any, any> {
      * on the status of the response
      */
     public handleSave = () => {
+        const { t } = this.props;
         const {challenges, notification} = this.state;
         const data = this.state.challengeQuestions;
 
@@ -156,12 +163,21 @@ export class SecurityQsPage extends React.Component<any, any> {
             updateSecurityQs(data)
                 .then((response) => {
                     if (response.status === 200) {
+                        getSecurityQs()
+                            .then((res) => {
+                                this.setSecurityDetails(res);
+                                this.initModel();
+                            });
                         this.setState({
                             isEdit: !this.state.isEdit,
                             notification: {
                                 ...notification,
-                                description: "The required security questions were updated successfully.",
-                                message: "Security Questions were successfully updated",
+                                description: t(
+                                    "views:securityQuestions.notification.updateQuestions.success.description"
+                                ),
+                                message: t(
+                                    "views:securityQuestions.notification.updateQuestions.success.message"
+                                ),
                                 other: {
                                     success: true
                                 }
@@ -172,8 +188,12 @@ export class SecurityQsPage extends React.Component<any, any> {
                         this.setState({
                             notification: {
                                 ...notification,
-                                description: "An error occurred !!!",
-                                message: "Error occurred while updating the security questions",
+                                description: t(
+                                    "views:securityQuestions.notification.updateQuestions.error.description"
+                                ),
+                                message: t(
+                                    "views:securityQuestions.notification.updateQuestions.error.message"
+                                ),
                                 other: {
                                     error: true
                                 }
@@ -184,14 +204,23 @@ export class SecurityQsPage extends React.Component<any, any> {
                 });
         } else {
             addSecurityQs(data)
-                .then((response) => {
-                    if (response.status === 200) {
+                .then((status) => {
+                    if (status === 201) {
+                        getSecurityQs()
+                            .then((response) => {
+                                this.setSecurityDetails(response);
+                                this.initModel();
+                            });
                         this.setState({
                             isEdit: !this.state.isEdit,
                             notification: {
                                 ...notification,
-                                description: "The required security questions were added successfully.",
-                                message: "Security Questions were successfully added.",
+                                description: t(
+                                    "views:securityQuestions.notification.addQuestions.success.description"
+                                ),
+                                message: t(
+                                    "views:securityQuestions.notification.addQuestions.success.message"
+                                ),
                                 other: {
                                     success: true
                                 }
@@ -202,8 +231,12 @@ export class SecurityQsPage extends React.Component<any, any> {
                         this.setState({
                             notification: {
                                 ...notification,
-                                description: "An error occurred !!!",
-                                message: "Error occurred while configuring the security questions",
+                                description: t(
+                                    "views:securityQuestions.notification.addQuestions.error.description"
+                                ),
+                                message: t(
+                                    "views:securityQuestions.notification.addQuestions.error.message"
+                                ),
                                 other: {
                                     error: true
                                 }
@@ -216,6 +249,7 @@ export class SecurityQsPage extends React.Component<any, any> {
     }
 
     public render() {
+        const { t } = this.props;
         const {challenges, notification} = this.state;
         const {description, message, other} = notification;
         const displayButton = () => {
@@ -223,16 +257,16 @@ export class SecurityQsPage extends React.Component<any, any> {
                 return (<div>
                     <Divider/>
                     <Button id="lastNameEdit" secondary floated="right" onClick={this.handleEdit}>
-                        Cancel
+                        {t("common:cancel")}
                     </Button>
                     <Button id="lastName" primary onClick={this.handleSave} floated="right">
-                        Save
+                        {t("common:save")}
                     </Button>
                 </div>);
             } else if (challenges.answers && (challenges.answers.length > 0) && (!this.state.isEdit)) {
                 return (<div>
                     <Button primary onClick={this.handleEdit} floated="left">
-                        Change
+                        {t("common:change")}
                     </Button>
                 </div>);
             } else {
@@ -316,9 +350,9 @@ export class SecurityQsPage extends React.Component<any, any> {
                         <Segment placeholder>
                             <Header icon>
                                 <Icon name="search" />
-                                No security questions configured for this user.
+                                {t("views:securityQuestions.noConfiguration")}
                             </Header>
-                            <Button primary onClick={this.handleEdit}>Configure</Button>
+                            <Button primary onClick={this.handleEdit}>{t("common:configure")}</Button>
                         </Segment>
                     </>
                 );
@@ -326,8 +360,9 @@ export class SecurityQsPage extends React.Component<any, any> {
         };
         return (
             <Container>
-                <Header>Security Questions</Header>
-                <Header.Subheader>Add and Update Account Recovery Challenge Questions</Header.Subheader>
+                <Header>{t("views:securityQuestions.title")}</Header>
+                <Header.Subheader>{t("views:securityQuestions.subTitle")}</Header.Subheader>
+                <Divider hidden/>
                 <Transition visible={this.state.updateStatus} duration={500}>
                     <NotificationComponent {...other} onDismiss={this.handleDismiss} size="small"
                                            description={description} message={message}
@@ -359,3 +394,5 @@ export class SecurityQsPage extends React.Component<any, any> {
         });
     }
 }
+
+export default withTranslation()(SecurityQsComponent);

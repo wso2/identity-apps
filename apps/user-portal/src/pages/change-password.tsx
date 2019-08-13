@@ -83,7 +83,7 @@ interface InputTypesStateInterface {
 /**
  * This is the Change Password component of the User Portal
  */
-export class ChangePasswordComponent extends React.Component<ComponentPropsInterface, ComponentStateInterface> {
+class ChangePasswordComponent extends React.Component<ComponentPropsInterface, ComponentStateInterface> {
     public state = {
         confirmPassword: "",
         currentPassword: "",
