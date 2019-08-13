@@ -19,3 +19,31 @@
 export const API = "API";
 export const API_REQUEST_START = "API_REQUEST_START";
 export const API_REQUEST_END = "API_REQUEST_END";
+
+export const CHANGE_PASSWORD = "CHANGE_PASSWORD";
+
+interface IChangePasswordPayload {
+    schemas: string[];
+    Operations: IOperation[];
+}
+
+interface IOperation {
+    op: string;
+    value: IValue;
+}
+
+interface IValue {
+    password: string;
+}
+
+interface ChangePasswordAction {
+    type: typeof CHANGE_PASSWORD;
+    payload: IChangePasswordPayload;
+}
+
+interface ApiRequestAction {
+    type: typeof API_REQUEST_START | typeof API_REQUEST_END;
+    payload: any;
+}
+
+export type AccountRecoveryActionTypes = ChangePasswordAction | ApiRequestAction;

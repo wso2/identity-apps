@@ -16,4 +16,5 @@
  * under the License.
  */
 
+export * from "./account-security";
 export * from "./api";
