@@ -22,6 +22,10 @@ import log from "log";
 import { ServiceResourcesEndpoint } from "../configs";
 import { createEmptyProfile } from "../models/profile";
 
+/**
+ * Retrieve the user profile details of the currently authenticated user.
+ * @return {object: BasicProfileInterface} an object containing the user profile details.
+ */
 export const getProfileInfo = async () => {
     const profileDetails = createEmptyProfile();
 
@@ -46,7 +50,7 @@ export const getProfileInfo = async () => {
                     profileDetails.emails = endpointResponse.data.emails || "";
                     profileDetails.lastName = endpointResponse.data.name.familyName || "";
                     profileDetails.phoneNumbers = endpointResponse.data.phoneNumbers || [];
-                    profileDetails.organisation = endpointResponse.data[orgKey].organization || "";
+                    profileDetails.organisation = endpointResponse.data.orgKey.organization || "";
                     profileDetails.roles = endpointResponse.data.roles || [];
                     profileDetails.proUrl = endpointResponse.data.profileUrl || "";
                 }
@@ -62,7 +66,7 @@ export const getProfileInfo = async () => {
 /**
  * Update the required details of the user profile
  * @param {object} info
- * @return {string} response status
+ * @return {{Promise<AxiosResponse<any>>} a promise containing the response
  */
 export const updateProfileInfo = async (info: object) => {
     const url = ServiceResourcesEndpoint.me;
@@ -75,14 +79,23 @@ export const updateProfileInfo = async (info: object) => {
         }
     };
 
-    return axios.patch(url, info, header).then((response) => {
-        if (response.status === 200) {
-            return response.status;
-        }
-    });
+    return axios.patch(url, info, header)
+        .then((response) => {
+            if (response.status === 200) {
+                return response;
+            }
+        })
+        .catch((error) => {
+            log.error(error);
+            return error;
+        });
 };
 
-export const getSecurityQs = async () => {
+/**
+ * Fetch the configured security questions of the user
+ * @return {Promise<AxiosResponse<any>>} a promise containing the response
+ */
+export const getSecurityQs = (): Promise<any> => {
     const challengeUrl = ServiceResourcesEndpoint.challenges;
     const answerUrl = ServiceResourcesEndpoint.challengeAnswers;
     const token = AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST);
@@ -102,14 +115,77 @@ export const getSecurityQs = async () => {
         return axios.get(answerUrl, header);
     };
 
-    return axios.all([getQuestions(), getAnswers()])
+    const response = axios.all([getQuestions(), getAnswers()])
         .then(axios.spread((questions, answers) => {
             if (questions.status === 200 && answers.status === 200) {
-                return [questions.data, answers.data];
+                // resolve(questions);
+                return Promise.resolve([questions.data, answers.data]);
+            } else {
+                return Promise.reject(Error);
+            }
+        }));
+    return response;
+};
+
+/**
+ * Add the user's security questions
+ * @param {object} data the new set of challenge questions and the answers
+ * @return {Promise<AxiosResponse<any>>} a promise containing the response
+ */
+export const addSecurityQs = (data): Promise<any> => {
+    const answerUrl = ServiceResourcesEndpoint.challengeAnswers;
+    const token = AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST);
+
+    const header = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Authorization": `Bearer ${token}`
+        }
+    };
+
+    const res = axios.post(answerUrl, data, header)
+        .then((response) => {
+            if (response.status === 200) {
+                return response;
             }
         })
-    );
+        .catch((error) => {
+            log.error(error);
+            return error;
+        });
+    return res;
 };
+
+/**
+ * Update the user's security questions
+ * @param {object} data the new set of challenge questions and the answers
+ * @return {Promise<AxiosResponse<any>>} a promise containing the response
+ */
+export const updateSecurityQs = (data) => {
+    const answerUrl = ServiceResourcesEndpoint.challengeAnswers;
+    const token = AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST);
+
+    const header = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Authorization": `Bearer ${token}`
+        }
+    };
+
+    return axios.put(answerUrl, data, header)
+        .then((response) => {
+            if (response.status === 200) {
+                return response;
+            }
+        })
+        .catch((error) => {
+            log.error(error);
+            return error;
+        });
+    // return res;
+}
 
 /**
  * Updates the user's password.
