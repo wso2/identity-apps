@@ -313,7 +313,7 @@ class ConsentManagementComponent extends React.Component<any, any> {
             }
         ];
 
-        const EditConsentModal = (
+        const editConsentModal = (
             <Modal open={showConsentEditModal} onClose={this.handleConsentModalClose} size="tiny">
                 <Modal.Header>
                     <Image floated="left" size="mini" src="https://react.semantic-ui.com/images/wireframe/image.png" />
@@ -323,32 +323,32 @@ class ConsentManagementComponent extends React.Component<any, any> {
                     <Modal.Description>
                         <div>
                             <strong>
-                                {t("views:consentManagement.modals.EditConsentModal.description.state")}:
+                                {t("views:consentManagement.modals.editConsentModal.description.state")}:
                             </strong>
                             {editingConsent.state}
                         </div>
                         <div>
                             <strong>
-                                {t("views:consentManagement.modals.EditConsentModal.description.collectionMethod")}:
+                                {t("views:consentManagement.modals.editConsentModal.description.collectionMethod")}:
                             </strong>
                             {consentReceipt.collectionMethod}
                         </div>
                         <div>
                             <strong>
-                                {t("views:consentManagement.modals.EditConsentModal.description.version")}:
+                                {t("views:consentManagement.modals.editConsentModal.description.version")}:
                             </strong>
                             {consentReceipt.version}
                         </div>
                         <div>
                             <strong>
-                                {t("views:consentManagement.modals.EditConsentModal.description.description")}:
+                                {t("views:consentManagement.modals.editConsentModal.description.description")}:
                             </strong>
                             {editingConsent.spDescription}
                         </div>
                         <Divider />
                         <p>
                             <strong>
-                                {t("views:consentManagement.modals.EditConsentModal.description.subHeading1")}:
+                                {t("views:consentManagement.modals.editConsentModal.description.piiCategoryHeading")}:
                             </strong>
                         </p>
                         {consentReceipt &&
@@ -435,7 +435,7 @@ class ConsentManagementComponent extends React.Component<any, any> {
                         onTabChange={this.handleConsentTabChange}
                         menu={{ attached: "top" }}
                     />
-                    {EditConsentModal}
+                    {editConsentModal}
                     {consentRevokeModal}
                 </Container>
             </InnerPageLayout>

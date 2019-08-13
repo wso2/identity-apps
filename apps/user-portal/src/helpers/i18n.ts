@@ -24,7 +24,7 @@ import * as locales from "../locales";
 // i18n initialization options
 const initOptions = {
     contextSeparator: "_",
-    debug: true, // TODO: Disable in Production
+    debug: false,
     defaultNS: "common",
     fallbackLng: "en",
     interpolation: {

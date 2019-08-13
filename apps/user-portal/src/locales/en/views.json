@@ -63,13 +63,13 @@
                 "heading": "Revoke {{appName}}?",
                 "message": "Are you sure you want to revoke this consent? This operation is not reversible."
             },
-            "EditConsentModal": {
+            "editConsentModal": {
                 "description": {
                     "state": "State",
                     "collectionMethod": "Collection Method",
                     "version": "Version",
                     "description": "Description",
-                    "subHeading1": "Information that you've shared with the application"
+                    "piiCategoryHeading": "Information that you've shared with the application"
                 }
             }
         },
