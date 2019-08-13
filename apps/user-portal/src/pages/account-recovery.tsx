@@ -17,35 +17,25 @@
  */
 
 import * as React from "react";
-import { Link } from "react-router-dom";
-import { Button, Card } from "semantic-ui-react";
+import { Container, Divider, Header } from "semantic-ui-react";
 import { InnerPageLayout } from "../layouts";
+import ChangePasswordComponent from "./change-password";
+import SecurityQsComponent from "./security-qs";
 
 export const AccountRecoveryPage = () => (
-    <InnerPageLayout pageTitle="Account Recovery" pageDescription="Manage and Update Your Account Security">
-        <Card.Group>
-            <Card>
-                <Card.Content>
-                    <Card.Header>Challenge Questions</Card.Header>
-                    <Card.Description>Add and Update Account Recovery Challenge Questions</Card.Description>
-                </Card.Content>
-                <Card.Content extra>
-                    <Button as={Link} to="/security">
-                        View Details
-                    </Button>
-                </Card.Content>
-            </Card>
-            <Card>
-                <Card.Content>
-                    <Card.Header>Change Password</Card.Header>
-                    <Card.Description>Change and modify the existing password</Card.Description>
-                </Card.Content>
-                <Card.Content extra>
-                    <Button as={Link} to="/change-password">
-                        View Details
-                    </Button>
-                </Card.Content>
-            </Card>
-        </Card.Group>
+    <InnerPageLayout
+        pageTitle="Account Security"
+        pageDescription="Manage and Update Your Account Security">
+        <Container>
+            <ChangePasswordComponent/>
+        </Container>
+        <Divider hidden/>
+        <Divider hidden/>
+        <Container width={100}>
+            <Header as="h2" dividing={true}>Account Recovery</Header>
+            <Divider hidden/>
+            <SecurityQsComponent/>
+            <Divider hidden/>
+        </Container>
     </InnerPageLayout>
 );

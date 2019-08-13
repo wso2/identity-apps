@@ -17,16 +17,22 @@
  */
 
 import * as React from "react";
-import { Button, Container, Divider, Form, Grid, Header, Icon, Message, Segment } from "semantic-ui-react";
-import { getProfileInfo, updateProfileInfo } from "../actions/profile";
-import { UserImagePlaceHolder } from "../components";
+import { withTranslation, WithTranslation } from "react-i18next";
+import { Button, Container, Divider, Form, Grid, Header, Icon, Message, Segment, Transition } from "semantic-ui-react";
+import { getProfileInfo, updateProfileInfo } from "../actions";
+import { NotificationComponent, UserImagePlaceHolder } from "../components";
 import { InnerPageLayout } from "../layouts";
 import { createEmptyProfile } from "../models/profile";
 
 /**
+ * Component Props types
+ */
+interface IComponentProps extends WithTranslation { }
+
+/**
  * User Profile Page of the User Portal
  */
-export class UserProfilePage extends React.Component<any, any> {
+class UserProfilePageComponent extends React.Component<IComponentProps, any> {
     /**
      * constructor
      * @param props
@@ -148,19 +154,20 @@ export class UserProfilePage extends React.Component<any, any> {
     }
 
     public render() {
+        const { t } = this.props;
         const handleFNameChange = (value) => {
             if (this.state.firstNameEdit) {
                 return (<>
                         <Segment padded>
-                            First Name
+                            {t("views:userProfile.inputFields.firstName")}
                             <Form.Input id="displayName" value={value}
                                         onChange={this.handleFieldChange}/>
                             <div className="ui two buttons">
                                 <Button id="displayName" positive onClick={this.handleSave}>
-                                    Save
+                                    {t("common:save")}
                                 </Button>
                                 <Button id="firstNameEdit" onClick={this.handleCancel}>
-                                    Cancel
+                                    {t("common:cancel")}
                                 </Button>
                             </div>
                         </Segment>
@@ -168,7 +175,7 @@ export class UserProfilePage extends React.Component<any, any> {
                 );
             } else {
                 return (<>
-                        First Name
+                        {t("views:userProfile.inputFields.firstName")}
                         <Button id="firstNameEdit" onClick={this.handleEdit} style={{marginLeft: "10px"}}
                                 circular size="mini" basic icon compact>
                             <Icon id="firstNameEdit" onClick={this.handleEdit} name="edit"/>
@@ -182,14 +189,14 @@ export class UserProfilePage extends React.Component<any, any> {
             if (this.state.lastNameEdit) {
                 return (<>
                         <Segment padded>
-                            Last Name
+                            {t("views:userProfile.inputFields.lastName")}
                             <Form.Input id="lastName" value={value} onChange={this.handleFieldChange}/>
                             <div className="ui two buttons">
                                 <Button id="lastName" positive onClick={this.handleSave}>
-                                    Save
+                                    {t("common:save")}
                                 </Button>
                                 <Button id="lastNameEdit" onClick={this.handleCancel}>
-                                    Cancel
+                                    {t("common:cancel")}
                                 </Button>
                             </div>
                         </Segment>
@@ -197,7 +204,7 @@ export class UserProfilePage extends React.Component<any, any> {
                 );
             } else {
                 return (<>
-                        Last Name
+                        {t("views:userProfile.inputFields.lastName")}
                         <Button id="lastNameEdit" onClick={this.handleEdit} style={{marginLeft: "10px"}}
                                 circular size="mini" basic icon compact>
                             <Icon id="lastNameEdit" onClick={this.handleEdit} name="edit"/>
@@ -211,14 +218,14 @@ export class UserProfilePage extends React.Component<any, any> {
             if (this.state.emailEdit) {
                 return (<>
                         <Segment padded>
-                            Email
+                            {t("views:userProfile.inputFields.email")}
                             <Form.Input id="email" value={value} onChange={this.handleFieldChange}/>
                             <div className="ui two buttons">
                                 <Button id="email" positive onClick={this.handleSave}>
-                                    Save
+                                    {t("common:save")}
                                 </Button>
                                 <Button id="emailEdit" onClick={this.handleCancel}>
-                                    Cancel
+                                    {t("common:cancel")}
                                 </Button>
                             </div>
                         </Segment>
@@ -226,7 +233,7 @@ export class UserProfilePage extends React.Component<any, any> {
                 );
             } else {
                 return (<>
-                        Email
+                        {t("views:userProfile.inputFields.email")}
                         <Button id="emailEdit" onClick={this.handleEdit} style={{marginLeft: "10px"}}
                                 circular size="mini" basic icon compact>
                             <Icon id="emailEdit" onClick={this.handleEdit} name="edit"/>
@@ -238,19 +245,15 @@ export class UserProfilePage extends React.Component<any, any> {
 
         return (
             <InnerPageLayout
-                pageTitle="Profile"
-                pageDescription="Manage information about you, your sub profiles and your account in general.">
+                pageTitle={t("views:userProfile.title")}
+                pageDescription={t("views:userProfile.subTitle")}>
                 <Container>
-                    {this.state.updateStatus ?
-                    <Message
-                        onDismiss={this.handleDismiss}
-                        size="small"
-                        success
-                        header="User Profile was successfully updated"
-                        content="The required user details were updated successfully."
-                    />
-                    : null
-                    }
+                    <Transition visible={this.state.updateStatus} duration={500}>
+                        <NotificationComponent onDismiss={this.handleDismiss} size="small"
+                                               description="The required user details were updated successfully."
+                                               success message="User Profile was successfully updated"
+                        />
+                    </Transition>
                     <Divider hidden/>
                     <Form>
                         <Grid>
@@ -272,7 +275,7 @@ export class UserProfilePage extends React.Component<any, any> {
                                     </Grid.Row>
                                     <Divider hidden/>
                                     <Grid.Row>
-                                        Username<br/>
+                                        {t("views:userProfile.inputFields.username")}<br/>
                                         {this.state.username}
                                     </Grid.Row>
                                 </Grid.Column>
@@ -283,11 +286,11 @@ export class UserProfilePage extends React.Component<any, any> {
                         <Grid>
                             <Grid.Row columns={2}>
                                 <Grid.Column width={3}>
-                                    Organisation<br/>
+                                    {t("views:userProfile.inputFields.organisation")}<br/>
                                     {this.state.organisation}
                                 </Grid.Column>
                                 <Grid.Column>
-                                    Mobile Number<br/>
+                                    {t("views:userProfile.inputFields.mobile")}<br/>
                                     {this.state.phoneNumbers.map((mobile) => {
                                         return (<div>{mobile.value}</div>);
                                     })}
@@ -318,3 +321,5 @@ export class UserProfilePage extends React.Component<any, any> {
         });
     }
 }
+
+export const UserProfilePage = withTranslation()(UserProfilePageComponent);

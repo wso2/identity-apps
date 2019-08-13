@@ -78,5 +78,48 @@
                 "heading": "You don't have any {{state}} applications"
             }
         }
+    },
+    "securityQuestions": {
+        "title": "Security Questions",
+        "subTitle": "Add and Update Account Recovery Challenge Questions",
+        "notification": {
+            "addQuestions": {
+                "success": {
+                    "description": "The required security questions were added successfully.",
+                    "message": "Security Questions were successfully added."
+                },
+                "error": {
+                    "description": "An error occurred !!!",
+                    "message": "Error occurred while configuring the security questions"
+                }
+            },
+            "updateQuestions": {
+                "success": {
+                    "description": "The required security questions were updated successfully.",
+                    "message": "Security Questions were successfully updated."
+                },
+                "error": {
+                    "description": "An error occurred !!!",
+                    "message": "Error occurred while updating the security questions"
+                }
+            }
+        },
+        "dropDown": {
+            "label": "Select a Question"
+        },
+        "noConfiguration" : "No security questions configured for this user"
+    },
+    "userProfile": {
+        "title": "Profile",
+        "subTitle": "Manage information about you, your sub profiles and your account in general.",
+        "inputFields": {
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "email": "Email",
+            "username": "Username",
+            "organisation": "Organisation",
+            "mobile": "Mobile Number"
+        }
     }
+
 }
