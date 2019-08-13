@@ -26,11 +26,9 @@ import { i18n } from "./helpers";
 import history from "./helpers/history";
 import {
     AccountRecoveryPage,
-    ChangePasswordPage,
     ConsentsPage,
     HomePage,
     PageNotFound,
-    SecurityQsPage,
     UserProfilePage
 } from "./pages";
 
@@ -70,8 +68,6 @@ class App extends React.Component<any, any> {
                                             <ProtectedRoute path="/home" component={HomePage} />
                                             <ProtectedRoute component={UserProfilePage} path="/profile"/>
                                             <ProtectedRoute component={AccountRecoveryPage} path="/account-security" />
-                                            <ProtectedRoute component={SecurityQsPage} path="/security" />
-                                            <ProtectedRoute component={ChangePasswordPage} path="/change-password" />
                                             <ProtectedRoute component={ConsentsPage} path="/consent" />
                                             <ProtectedRoute component={PageNotFound} />
                                         </Switch>
