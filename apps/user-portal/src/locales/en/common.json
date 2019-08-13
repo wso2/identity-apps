@@ -5,5 +5,8 @@
     "update": "Update",
     "revoke": "Revoke",
     "active": "Active",
-    "edit": "Edit"
+    "edit": "Edit",
+    "change": "Change",
+    "save": "Save",
+    "configure": "Configure"
 }
