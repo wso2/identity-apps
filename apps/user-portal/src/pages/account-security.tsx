@@ -18,23 +18,22 @@
 
 import * as React from "react";
 import { Container, Divider, Header } from "semantic-ui-react";
+import { ChangePasswordComponent, SecurityQsComponent } from "../components";
 import { InnerPageLayout } from "../layouts";
-import ChangePasswordComponent from "./change-password";
-import SecurityQsComponent from "./security-qs";
 
-export const AccountRecoveryPage = () => (
+export const AccountSecurityPage = () => (
     <InnerPageLayout
         pageTitle="Account Security"
         pageDescription="Manage and Update Your Account Security">
         <Container>
-            <ChangePasswordComponent/>
+            <ChangePasswordComponent />
         </Container>
         <Divider hidden/>
         <Divider hidden/>
         <Container width={100}>
             <Header as="h2" dividing={true}>Account Recovery</Header>
             <Divider hidden/>
-            <SecurityQsComponent/>
+            <SecurityQsComponent />
             <Divider hidden/>
         </Container>
     </InnerPageLayout>

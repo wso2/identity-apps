@@ -16,13 +16,11 @@
  * under the License.
  */
 
-export * from "./account-recovery";
+export * from "./account-security";
 export * from "./app-listing";
-export * from "./change-password";
 export * from "./consents";
 export * from "./errors/404";
 export * from "./home";
-export * from "./security-qs";
 export * from "./theme";
 export * from "./user-listing";
 export * from "./user-profile";

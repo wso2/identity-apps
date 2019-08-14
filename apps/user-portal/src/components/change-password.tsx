@@ -20,8 +20,7 @@ import * as React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 import { Button, Container, Divider, Form, Header, Icon, Modal } from "semantic-ui-react";
 import { updatePassword } from "../actions";
-import { NotificationComponent } from "../components";
-import { InnerPageLayout } from "../layouts";
+import { NotificationComponent } from "./notification";
 
 /**
  * Component State types
@@ -78,7 +77,7 @@ interface InputTypesStateInterface {
 /**
  * This is the Change Password component of the User Portal
  */
-class ChangePasswordComponent extends React.Component<WithTranslation, ComponentStateInterface> {
+class ChangePasswordComponentInner extends React.Component<WithTranslation, ComponentStateInterface> {
     public state = {
         confirmPassword: "",
         currentPassword: "",
@@ -487,4 +486,4 @@ class ChangePasswordComponent extends React.Component<WithTranslation, Component
     }
 }
 
-export const ChangePasswordPage = withTranslation()(ChangePasswordComponent);
+export const ChangePasswordComponent = withTranslation()(ChangePasswordComponentInner);

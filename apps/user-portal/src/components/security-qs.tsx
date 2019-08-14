@@ -32,18 +32,13 @@ import {
     Segment, Transition
 } from "semantic-ui-react";
 import { addSecurityQs, getSecurityQs, updateSecurityQs } from "../actions/profile";
-import { NotificationComponent } from "../components";
 import { createEmptyChallenge } from "../models/challenges";
-
-/**
- * Component Props types
- */
-interface IComponentProps extends WithTranslation { }
+import { NotificationComponent } from "./notification";
 
 /**
  * The security questions section of the user
  */
-class SecurityQsComponent extends React.Component<IComponentProps, any> {
+class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
     /**
      * constructor
      * @param props
@@ -395,4 +390,4 @@ class SecurityQsComponent extends React.Component<IComponentProps, any> {
     }
 }
 
-export default withTranslation()(SecurityQsComponent);
+export const SecurityQsComponent = withTranslation()(SecurityQsComponentInner);

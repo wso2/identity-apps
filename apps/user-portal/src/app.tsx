@@ -25,7 +25,7 @@ import ProtectedRoute from "./components/protected-route";
 import { i18n } from "./helpers";
 import history from "./helpers/history";
 import {
-    AccountRecoveryPage,
+    AccountSecurityPage,
     ConsentsManagementPage,
     HomePage,
     PageNotFound,
@@ -67,7 +67,7 @@ class App extends React.Component<any, any> {
                                             )} />
                                             <ProtectedRoute path="/home" component={HomePage} />
                                             <ProtectedRoute component={UserProfilePage} path="/profile"/>
-                                            <ProtectedRoute component={AccountRecoveryPage} path="/account-security" />
+                                            <ProtectedRoute component={AccountSecurityPage} path="/account-security" />
                                             <ProtectedRoute component={ConsentsManagementPage} path="/consent" />
                                             <ProtectedRoute component={PageNotFound} />
                                         </Switch>
