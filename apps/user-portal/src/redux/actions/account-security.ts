@@ -16,8 +16,101 @@
  * under the License.
  */
 
+import { HttpError, HttpResponse } from "../../models/api";
+
+/**
+ * Redux actions related to account security.
+ */
+
+/**
+ * Action type to handle the password change.
+ *
+ * @type {string}
+ */
 export const CHANGE_PASSWORD = "CHANGE_PASSWORD";
+
+/**
+ * Dispatches an action of type type `CHANGE_PASSWORD` with the current password and
+ * new password as the payload.
+ *
+ * @param {string} currentPassword
+ * @param {string} newPassword
+ * @return {{payload: {newPassword: string; currentPassword: string}; type: string}}
+ */
 export const changePassword = (currentPassword: string, newPassword: string) => ({
     payload: { currentPassword, newPassword },
     type: CHANGE_PASSWORD
+});
+
+/**
+ * Action type to handle password change `onSuccess` callback.
+ *
+ * @type {string}
+ */
+export const CHANGE_PASSWORD_SUCCESS = "CHANGE_PASSWORD_SUCCESS";
+
+/**
+ * Dispatches an action of type `CHANGE_PASSWORD_SUCCESS` with the data passed
+ * in by the `onSuccess` callback as the payload.
+ *
+ * @param data data passed in by the `onSuccess` callback.
+ * @return {{payload: HttpResponse; type: string}}
+ */
+export const onChangePasswordSuccess = (data: HttpResponse) => ({
+    payload: data,
+    type: CHANGE_PASSWORD_SUCCESS
+});
+
+/**
+ * Action type to handle password change `onError` callback.
+ *
+ * @type {string}
+ */
+export const CHANGE_PASSWORD_ERROR = "CHANGE_PASSWORD_ERROR";
+
+/**
+ * Dispatches an action of type `CHANGE_PASSWORD_ERROR` with the data passed
+ * in by the `onError` callback as the payload.
+ *
+ * @param data data passed in by the `onError` callback.
+ * @return {{payload: HttpError; type: string}}
+ */
+export const onChangePasswordError = (data: HttpError) => ({
+    payload: data,
+    type: CHANGE_PASSWORD_ERROR
+});
+
+/**
+ * Action type to show a notification for the change password form.
+ *
+ * @type {string}
+ */
+export const SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION = "SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION";
+
+/**
+ * Dispatches an action of type `SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION` with the notification
+ * details object as the payload.
+ *
+ * @param data
+ * @return {{payload: any; type: string}}
+ */
+export const showChangePasswordFormNotification = (data) => ({
+    payload: data,
+    type: SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION
+});
+
+/**
+ * Action type to hide the notification for the change password form.
+ *
+ * @type {string}
+ */
+export const HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION = "HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION";
+
+/**
+ * Dispatches an action of type `HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION`.
+ *
+ * @return {{type: string}}
+ */
+export const hideChangePasswordFormNotification = () => ({
+    type: HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION
 });
