@@ -16,12 +16,28 @@
  * under the License.
  */
 
-import { API_REQUEST_END, API_REQUEST_START, CHANGE_PASSWORD } from "../actions";
+import {
+  API_REQUEST_END,
+  API_REQUEST_START,
+  CHANGE_PASSWORD, HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION,
+  SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION
+} from "../actions";
 
+/**
+ * Initial state.
+ */
 const initialState = {
+  changePasswordFormNotification: {},
   isChangePasswordRequestLoading: false
 };
 
+/**
+ * Reducer to handle the state of account security related components.
+ *
+ * @param state - Previous state
+ * @param action - Action type
+ * @returns The new state
+ */
 export function accountRecoveryReducer(state = initialState, action: any) {
   switch (action.type) {
     case API_REQUEST_START:
@@ -38,6 +54,22 @@ export function accountRecoveryReducer(state = initialState, action: any) {
           isChangePasswordRequestLoading: false
         };
       }
+    case SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION:
+      return {
+        ...state,
+        changePasswordFormNotification: {
+          ...action.payload,
+          visible: true
+        }
+      };
+    case HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION:
+      return {
+        ...state,
+        changePasswordFormNotification: {
+          ...state.changePasswordFormNotification,
+          visible: false
+        }
+      };
     default:
       return state;
   }

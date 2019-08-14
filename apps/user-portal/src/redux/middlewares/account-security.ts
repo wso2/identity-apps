@@ -17,12 +17,30 @@
  */
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
+import { useTranslation } from "react-i18next";
 import { ServiceResourcesEndpoint } from "../../configs";
-import { apiRequest, CHANGE_PASSWORD } from "../actions";
+import {
+    apiRequest,
+    CHANGE_PASSWORD, CHANGE_PASSWORD_ERROR,
+    CHANGE_PASSWORD_SUCCESS,
+    onChangePasswordError,
+    onChangePasswordSuccess,
+    showChangePasswordFormNotification
+} from "../actions";
+
+/**
+ * Middleware to intercept and handle account security related actions.
+ */
 
 const SCHEMAS = ["urn:ietf:params:scim:api:messages:2.0:PatchOp"];
 
-const changePassword = ({dispatch}) => (next) => (action) => {
+/**
+ * Intercepts and handles actions of type `CHANGE_PASSWORD`.
+ *
+ * @param {any} dispatch - `dispatch` function from redux.
+ * @returns {(next) => (action) => any} Passes the action to the next middleware
+ */
+const handleChangePassword = ({ dispatch }) => (next) => (action) => {
     if (action.type !== CHANGE_PASSWORD) {
         return next(action);
     }
@@ -49,12 +67,109 @@ const changePassword = ({dispatch}) => (next) => (action) => {
             "Content-Type": "application/json"
         },
         method: "PATCH",
-        onError: (error) => console.log("middleware error", error),
-        onSuccess: (response) => console.log("middleware response", response),
+        onError: (error) => dispatch(onChangePasswordError(error)),
+        onSuccess: (response) => dispatch(onChangePasswordSuccess(response)),
         url: ServiceResourcesEndpoint.me
     };
 
+    // Dispatch an API request action.
     dispatch(apiRequest(requestConfig));
 };
 
-export const accountSecurityMiddleware = [changePassword];
+/**
+ * Intercepts and handles actions of type `CHANGE_PASSWORD_SUCCESS`.
+ *
+ * @param {any} dispatch - `dispatch` function from redux.
+ * @returns {(next) => (action) => any} Passes the action to the next middleware
+ */
+const handleOnChangePasswordSuccess = ({ dispatch }) => (next) => (action) => {
+    if (action.type !== CHANGE_PASSWORD_SUCCESS) {
+        return next(action);
+    }
+
+    const { t } = useTranslation();
+    const { response } = action.payload;
+
+    if (response.status && response.status === 200) {
+        const notification = {
+            description: t(
+                "views:changePassword.forms.passwordResetForm.validations.submitSuccess.description"
+            ),
+            message: t(
+                "views:changePassword.forms.passwordResetForm.validations.submitSuccess.message"
+            ),
+            otherProps: {
+                positive: true
+            }
+        };
+
+        // Dispatch an action to show the notification.
+        dispatch(showChangePasswordFormNotification(notification));
+    }
+};
+
+/**
+ * Intercepts and handles actions of type `CHANGE_PASSWORD_ERROR`.
+ *
+ * @param {any} dispatch - `dispatch` function from redux.
+ * @returns {(next) => (action) => any} Passes the action to the next middleware
+ */
+const handleOnChangePasswordError = ({ dispatch }) => (next) => (action) => {
+    if (action.type !== CHANGE_PASSWORD_ERROR) {
+        return next(action);
+    }
+
+    const { t } = useTranslation();
+    const { response } = action.payload;
+    let notification = {};
+
+    // Axios throws a generic `Network Error` for 401 status. As a temporary solution,
+    // a check to see if a response is available has be used. TODO: Find a better solution.
+    if (!response || response.status === 401) {
+        notification = {
+            description: t(
+                "views:changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
+                "description"
+            ),
+            message: t(
+                "views:changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
+                "message"
+            ),
+            otherProps: {
+                negative: true
+            }
+        };
+    } else if (response && response.data && response.data.detail) {
+
+        notification = {
+            description: t(
+                "views:changePassword.forms.passwordResetForm.validations.submitError.description",
+                {description: response.data.detail}
+            ),
+            message: t("views:changePassword.forms.passwordResetForm.validations.submitError.message"),
+            otherProps: {
+                negative: true
+            }
+        };
+    } else {
+        // Generic error message
+        notification = {
+            description: t(
+                "views:changePassword.forms.passwordResetForm.validations.genericError.description"
+            ),
+            message: t("views:changePassword.forms.passwordResetForm.validations.genericError.message"),
+            otherProps: {
+                negative: true
+            }
+        };
+    }
+
+    // Dispatch an action to show the notification.
+    dispatch(showChangePasswordFormNotification(notification));
+};
+
+export const accountSecurityMiddleware = [
+    handleChangePassword,
+    handleOnChangePasswordSuccess,
+    handleOnChangePasswordError
+];
