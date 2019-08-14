@@ -29,8 +29,8 @@ import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
  */
 export interface HttpRequestConfig extends AxiosRequestConfig {
     dispatcher?: any;
-    onSuccess?: (response: AxiosResponse) => void;
-    onError?: (error: AxiosError) => void;
+    onSuccess?: any;
+    onError?: any;
 }
 
 /**
