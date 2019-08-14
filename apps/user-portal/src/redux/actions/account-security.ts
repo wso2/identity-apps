@@ -33,9 +33,9 @@ export const CHANGE_PASSWORD = "CHANGE_PASSWORD";
  * Dispatches an action of type type `CHANGE_PASSWORD` with the current password and
  * new password as the payload.
  *
- * @param {string} currentPassword
- * @param {string} newPassword
- * @return {{payload: {newPassword: string; currentPassword: string}; type: string}}
+ * @param {string} currentPassword - Current password
+ * @param {string} newPassword - New password
+ * @returns An action of type `CHANGE_PASSWORD`
  */
 export const changePassword = (currentPassword: string, newPassword: string) => ({
     payload: { currentPassword, newPassword },
@@ -53,8 +53,8 @@ export const CHANGE_PASSWORD_SUCCESS = "CHANGE_PASSWORD_SUCCESS";
  * Dispatches an action of type `CHANGE_PASSWORD_SUCCESS` with the data passed
  * in by the `onSuccess` callback as the payload.
  *
- * @param data data passed in by the `onSuccess` callback.
- * @return {{payload: HttpResponse; type: string}}
+ * @param data - Data passed in by the `onSuccess` callback
+ * @returns An action of tye `CHANGE_PASSWORD_SUCCESS`
  */
 export const onChangePasswordSuccess = (data: HttpResponse) => ({
     payload: data,
@@ -73,7 +73,7 @@ export const CHANGE_PASSWORD_ERROR = "CHANGE_PASSWORD_ERROR";
  * in by the `onError` callback as the payload.
  *
  * @param data data passed in by the `onError` callback.
- * @return {{payload: HttpError; type: string}}
+ * @returns An action of type `CHANGE_PASSWORD_ERROR`
  */
 export const onChangePasswordError = (data: HttpError) => ({
     payload: data,
@@ -91,8 +91,8 @@ export const SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION = "SHOW_CHANGE_PASSWORD_FORM
  * Dispatches an action of type `SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION` with the notification
  * details object as the payload.
  *
- * @param data
- * @return {{payload: any; type: string}}
+ * @param data - Notification object
+ * @returns An action of type `SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION`
  */
 export const showChangePasswordFormNotification = (data) => ({
     payload: data,
@@ -109,7 +109,7 @@ export const HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION = "HIDE_CHANGE_PASSWORD_FORM
 /**
  * Dispatches an action of type `HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION`.
  *
- * @return {{type: string}}
+ * @returns An action of type `HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION`
  */
 export const hideChangePasswordFormNotification = () => ({
     type: HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION

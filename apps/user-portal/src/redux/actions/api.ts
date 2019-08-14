@@ -33,8 +33,8 @@ export const API_REQUEST_START = "API_REQUEST_START";
  * Dispatches an action of type `API_REQUEST_START` with the type
  * of dispatcher as the payload.
  *
- * @param actionType type of the dispatcher who initiated the request.
- * @return {{payload: any; type: string}}
+ * @param actionType - Type of the dispatcher who initiated the request.
+ * @returns An action of type `API_REQUEST_START`
  */
 export const apiRequestStart = (actionType) => ({
     payload: actionType,
@@ -52,8 +52,8 @@ export const API_REQUEST_END = "API_REQUEST_END";
  * Dispatches an action of type `API_REQUEST_END` with the type
  * of dispatcher as the payload.
  *
- * @param actionType type of the dispatcher who initiated the request.
- * @return {{payload: any; type: string}}
+ * @param actionType - Type of the dispatcher who initiated the request.
+ * @returns An action of type `API_REQUEST_END`
  */
 export const apiRequestEnd = (actionType) => ({
     payload: actionType,
@@ -71,10 +71,8 @@ export const API_REQUEST = "API_REQUEST";
  * Takes in an config of type `HttpRequestConfig` and dispatches and action of type
  * `API_REQUEST` with data as payload and other configs as meta.
  *
- * @param {HttpRequestConfig} config http request configuration.
- * @return {{payload: any; meta: {headers: any; onError: (error: AxiosError) => void; method: string;
- *     auth: AxiosBasicCredentials; dispatcher: any; url: string; onSuccess: (response: AxiosResponse) => void};
- *     type: string}}
+ * @param {HttpRequestConfig} config - Http request configuration
+ * @returns An action of type `API_REQUEST`
  */
 export const apiRequest = (config: HttpRequestConfig) => {
     const { auth, data, dispatcher, headers, method, onSuccess, onError, url  } = config;

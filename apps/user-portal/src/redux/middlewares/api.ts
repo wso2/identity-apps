@@ -20,6 +20,16 @@ import axios from "axios";
 import log from "log";
 import { API_REQUEST, apiRequestEnd, apiRequestStart } from "../actions";
 
+/**
+ * Middleware to intercept and handle all API requests happening in the app.
+ */
+
+/**
+ * Intercepts and handles actions of type `API_REQUEST`.
+ *
+ * @param {any} dispatch - `dispatch` function from redux
+ * @returns {(next) => (action) => any} Passes the action to the next middleware
+ */
 const api = ({ dispatch }) => (next) => (action) => {
     if (action.type !== API_REQUEST) {
         return next(action);
@@ -27,8 +37,12 @@ const api = ({ dispatch }) => (next) => (action) => {
 
     const { auth, dispatcher, headers, method, onSuccess, onError, url } = action.meta;
     const { data } = action.payload;
+
+    // `GET` requests and `DELETE` requests usually has params rather than data.
     const dataOrParams = ["GET", "DELETE"].includes(method) ? "params" : "data";
 
+    // `dispatcher` is the action which invoked the `API_REQUEST` action. This is
+    // useful to show placeholders specific to certain API requests.
     if (dispatcher) {
         dispatch(apiRequestStart(dispatcher));
     }
