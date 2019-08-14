@@ -18,11 +18,17 @@
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
 import { ServiceResourcesEndpoint } from "../../configs";
-import { apiRequestAction } from "./api";
-import { CHANGE_PASSWORD } from "./types";
+import { apiRequest, CHANGE_PASSWORD } from "../actions";
 
-export function changePassword(currentPassword: string, newPassword: string) {
-    const config = {
+const SCHEMAS = ["urn:ietf:params:scim:api:messages:2.0:PatchOp"];
+
+const changePassword = ({dispatch}) => (next) => (action) => {
+    if (action.type !== CHANGE_PASSWORD) {
+        return next(action);
+    }
+
+    const { currentPassword, newPassword } = action.payload;
+    const requestConfig = {
         auth: {
             password: currentPassword,
             username: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME)
@@ -36,8 +42,9 @@ export function changePassword(currentPassword: string, newPassword: string) {
                     }
                 }
             ],
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+            schemas: SCHEMAS
         },
+        dispatcher: CHANGE_PASSWORD,
         headers: {
             "Content-Type": "application/json"
         },
@@ -47,9 +54,7 @@ export function changePassword(currentPassword: string, newPassword: string) {
         url: ServiceResourcesEndpoint.me
     };
 
-    const meta = {
-        dispatcher: CHANGE_PASSWORD
-    };
+    dispatch(apiRequest(requestConfig));
+};
 
-    return apiRequestAction(config, meta);
-}
+export const accountSecurityMiddleware = [changePassword];

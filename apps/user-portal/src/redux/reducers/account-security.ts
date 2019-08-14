@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { AccountRecoveryActionTypes, API_REQUEST_END, API_REQUEST_START, CHANGE_PASSWORD } from "../actions/types";
+import { API_REQUEST_END, API_REQUEST_START, CHANGE_PASSWORD } from "../actions";
 
 const initialState = {
   isChangePasswordRequestLoading: false
 };
 
-export function accountRecoveryReducer(state = initialState, action: AccountRecoveryActionTypes) {
+export function accountRecoveryReducer(state = initialState, action: any) {
   switch (action.type) {
     case API_REQUEST_START:
       if (action.payload === CHANGE_PASSWORD) {

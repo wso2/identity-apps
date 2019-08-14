@@ -18,29 +18,29 @@
 
 import axios from "axios";
 import log from "log";
-import { apiRequestEnd, apiRequestStart } from "../actions";
-import { API } from "../actions/types";
+import { API_REQUEST, apiRequestEnd, apiRequestStart } from "../actions";
 
-export const apiMiddleware = ({ dispatch }) => (next) => (action) => {
-    if (action.type !== API) {
+const api = ({ dispatch }) => (next) => (action) => {
+    if (action.type !== API_REQUEST) {
         return next(action);
     }
 
-    const { auth, data, headers, method, onSuccess, onError, params, url } = action.payload;
-    const { dispatcher } = action.meta;
+    const { auth, dispatcher, headers, method, onSuccess, onError, url } = action.meta;
+    const { data } = action.payload;
+    const dataOrParams = ["GET", "DELETE"].includes(method) ? "params" : "data";
 
     if (dispatcher) {
         dispatch(apiRequestStart(dispatcher));
     }
 
-    axios({
-        auth,
-        data,
-        headers,
-        method,
-        params,
-        url
-    })
+    axios
+        .request({
+            auth,
+            [dataOrParams]: data,
+            headers,
+            method,
+            url
+        })
         .then((response) => {
             dispatch(onSuccess(response));
         })
@@ -54,3 +54,5 @@ export const apiMiddleware = ({ dispatch }) => (next) => (action) => {
             }
         });
 };
+
+export const apiMiddleware = [api];

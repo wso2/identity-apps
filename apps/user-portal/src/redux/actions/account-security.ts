@@ -16,4 +16,8 @@
  * under the License.
  */
 
-export * from "./api";
+export const CHANGE_PASSWORD = "CHANGE_PASSWORD";
+export const changePassword = (currentPassword: string, newPassword: string) => ({
+    payload: { currentPassword, newPassword },
+    type: CHANGE_PASSWORD
+});

@@ -19,8 +19,8 @@
 import { combineReducers } from "redux";
 import { accountRecoveryReducer } from "./account-security";
 
-const rootReducer = combineReducers({
+const reducers = combineReducers({
     accountRecovery: accountRecoveryReducer
 });
 
-export default rootReducer;
+export default reducers;

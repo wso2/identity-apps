@@ -16,34 +16,19 @@
  * under the License.
  */
 
-export const API = "API";
-export const API_REQUEST_START = "API_REQUEST_START";
-export const API_REQUEST_END = "API_REQUEST_END";
+import { applyMiddleware, createStore } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import { accountSecurityMiddleware, apiMiddleware } from "./middlewares";
+import reducers from "./reducers";
 
-export const CHANGE_PASSWORD = "CHANGE_PASSWORD";
+export type AppState = ReturnType<typeof reducers>;
 
-interface IChangePasswordPayload {
-    schemas: string[];
-    Operations: IOperation[];
+export default function configureStore() {
+    const middlewares = [...apiMiddleware, ...accountSecurityMiddleware];
+    const middleWareEnhancer = applyMiddleware(...middlewares);
+
+    return createStore(
+        reducers,
+        composeWithDevTools(middleWareEnhancer)
+    );
 }
-
-interface IOperation {
-    op: string;
-    value: IValue;
-}
-
-interface IValue {
-    password: string;
-}
-
-interface ChangePasswordAction {
-    type: typeof CHANGE_PASSWORD;
-    payload: IChangePasswordPayload;
-}
-
-interface ApiRequestAction {
-    type: typeof API_REQUEST_START | typeof API_REQUEST_END;
-    payload: any;
-}
-
-export type AccountRecoveryActionTypes = ChangePasswordAction | ApiRequestAction;

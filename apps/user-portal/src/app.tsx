@@ -32,7 +32,7 @@ import {
     PageNotFound,
     UserProfilePage
 } from "./pages";
-import configureStore from "./store";
+import configureStore from "./redux/store";
 
 const store = configureStore();
 

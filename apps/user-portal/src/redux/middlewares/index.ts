@@ -16,19 +16,5 @@
  * under the License.
  */
 
-import { applyMiddleware, createStore } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
-import { apiMiddleware } from "./middlewares";
-import rootReducer from "./reducers";
-
-export type AppState = ReturnType<typeof rootReducer>;
-
-export default function configureStore() {
-    const middlewares = [apiMiddleware];
-    const middleWareEnhancer = applyMiddleware(...middlewares);
-
-    return createStore(
-        rootReducer,
-        composeWithDevTools(middleWareEnhancer)
-    );
-}
+export * from "./api";
+export * from "./account-security";
