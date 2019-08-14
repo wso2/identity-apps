@@ -18,8 +18,31 @@
 
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
+/**
+ * A collection of interfaces which can be used to map HTTP request
+ * related payloads, responses, errors etc.
+ */
+
+/**
+ * Interface to map HTTP request configs. Extends `AxiosRequestConfig`
+ * interface from Axios library.
+ */
 export interface HttpRequestConfig extends AxiosRequestConfig {
     dispatcher?: any;
     onSuccess?: (response: AxiosResponse) => void;
     onError?: (error: AxiosError) => void;
 }
+
+/**
+ * Interface to handle HTTP responses. Extends `AxiosResponse` interface
+ * from Axios library.
+ */
+// tslint:disable-next-line:no-empty-interface
+export interface HttpResponse extends AxiosResponse {}
+
+/**
+ * Interface to handle HTTP errors. Extends `AxiosError` interface
+ * from Axios library.
+ */
+// tslint:disable-next-line:no-empty-interface
+export interface HttpError extends AxiosError {}
