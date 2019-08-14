@@ -30,9 +30,11 @@ import { API_REQUEST, apiRequestEnd, apiRequestStart } from "../actions";
  * @param {any} dispatch - `dispatch` function from redux
  * @returns {(next) => (action) => any} Passes the action to the next middleware
  */
-const api = ({ dispatch }) => (next) => (action) => {
+export const apiMiddleware = ({ dispatch }) => (next) => (action) => {
+    next(action);
+
     if (action.type !== API_REQUEST) {
-        return next(action);
+        return;
     }
 
     const { auth, dispatcher, headers, method, onSuccess, onError, url } = action.meta;
@@ -56,11 +58,11 @@ const api = ({ dispatch }) => (next) => (action) => {
             url
         })
         .then((response) => {
-            dispatch(onSuccess(response));
+            dispatch({ type: onSuccess, payload: response });
         })
         .catch((error) => {
             log.error(error);
-            dispatch(onError(error));
+            dispatch({ type: onError, payload: error });
         })
         .finally(() => {
             if (dispatcher) {
@@ -68,5 +70,3 @@ const api = ({ dispatch }) => (next) => (action) => {
             }
         });
 };
-
-export const apiMiddleware = [api];

@@ -24,7 +24,7 @@ import reducers from "./reducers";
 export type AppState = ReturnType<typeof reducers>;
 
 export default function configureStore() {
-    const middlewares = [...apiMiddleware, ...accountSecurityMiddleware];
+    const middlewares = [...accountSecurityMiddleware, apiMiddleware];
     const middleWareEnhancer = applyMiddleware(...middlewares);
 
     return createStore(

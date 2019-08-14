@@ -50,18 +50,6 @@ export const changePassword = (currentPassword: string, newPassword: string) => 
 export const CHANGE_PASSWORD_SUCCESS = "CHANGE_PASSWORD_SUCCESS";
 
 /**
- * Dispatches an action of type `CHANGE_PASSWORD_SUCCESS` with the data passed
- * in by the `onSuccess` callback as the payload.
- *
- * @param data - Data passed in by the `onSuccess` callback
- * @returns An action of tye `CHANGE_PASSWORD_SUCCESS`
- */
-export const onChangePasswordSuccess = (data: HttpResponse) => ({
-    payload: data,
-    type: CHANGE_PASSWORD_SUCCESS
-});
-
-/**
  * Action type to handle password change `onError` callback.
  *
  * @type {string}
