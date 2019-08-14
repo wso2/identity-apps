@@ -17,8 +17,8 @@
  */
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
-import { useTranslation } from "react-i18next";
 import { ServiceResourcesEndpoint } from "../../configs";
+import i18n from "../../helpers/i18n";
 import {
     apiRequest,
     CHANGE_PASSWORD, CHANGE_PASSWORD_ERROR,
@@ -87,15 +87,14 @@ const handleOnChangePasswordSuccess = ({ dispatch }) => (next) => (action) => {
         return next(action);
     }
 
-    const { t } = useTranslation();
     const { response } = action.payload;
 
     if (response.status && response.status === 200) {
         const notification = {
-            description: t(
+            description: i18n.t(
                 "views:changePassword.forms.passwordResetForm.validations.submitSuccess.description"
             ),
-            message: t(
+            message: i18n.t(
                 "views:changePassword.forms.passwordResetForm.validations.submitSuccess.message"
             ),
             otherProps: {
@@ -119,7 +118,6 @@ const handleOnChangePasswordError = ({ dispatch }) => (next) => (action) => {
         return next(action);
     }
 
-    const { t } = useTranslation();
     const { response } = action.payload;
     let notification = {};
 
@@ -127,11 +125,11 @@ const handleOnChangePasswordError = ({ dispatch }) => (next) => (action) => {
     // a check to see if a response is available has be used. TODO: Find a better solution.
     if (!response || response.status === 401) {
         notification = {
-            description: t(
+            description: i18n.t(
                 "views:changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
                 "description"
             ),
-            message: t(
+            message: i18n.t(
                 "views:changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
                 "message"
             ),
@@ -142,11 +140,11 @@ const handleOnChangePasswordError = ({ dispatch }) => (next) => (action) => {
     } else if (response && response.data && response.data.detail) {
 
         notification = {
-            description: t(
+            description: i18n.t(
                 "views:changePassword.forms.passwordResetForm.validations.submitError.description",
                 {description: response.data.detail}
             ),
-            message: t("views:changePassword.forms.passwordResetForm.validations.submitError.message"),
+            message: i18n.t("views:changePassword.forms.passwordResetForm.validations.submitError.message"),
             otherProps: {
                 negative: true
             }
@@ -154,10 +152,10 @@ const handleOnChangePasswordError = ({ dispatch }) => (next) => (action) => {
     } else {
         // Generic error message
         notification = {
-            description: t(
+            description: i18n.t(
                 "views:changePassword.forms.passwordResetForm.validations.genericError.description"
             ),
-            message: t("views:changePassword.forms.passwordResetForm.validations.genericError.message"),
+            message: i18n.t("views:changePassword.forms.passwordResetForm.validations.genericError.message"),
             otherProps: {
                 negative: true
             }
