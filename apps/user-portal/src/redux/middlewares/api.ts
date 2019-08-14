@@ -36,7 +36,7 @@ const api = ({ dispatch }) => (next) => (action) => {
     }
 
     const { auth, dispatcher, headers, method, onSuccess, onError, url } = action.meta;
-    const { data } = action.payload;
+    const data = action.payload;
 
     // `GET` requests and `DELETE` requests usually has params rather than data.
     const dataOrParams = ["GET", "DELETE"].includes(method) ? "params" : "data";
