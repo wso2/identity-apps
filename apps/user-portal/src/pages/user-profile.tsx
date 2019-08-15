@@ -265,17 +265,17 @@ class UserProfilePageComponent extends React.Component<IComponentProps, any> {
             if (this.state.pInfoEdit) {
                 return (<>
                         <Container>
-                            <Segment padded fluid>
+                            <Segment padded style={{width: "550px"}}>
                                 <Grid>
                                     <Grid.Row columns={2}>
-                                        <Grid.Column width={4}>
+                                        <Grid.Column >
                                             <Form.Field>
                                                 <label>{t("views:userProfile.inputFields.organisation")}</label>
                                                 <input required value={this.state.organisation} id="organisation"
                                                        onChange={this.handleFieldChange}/>
                                             </Form.Field>
                                         </Grid.Column>
-                                        <Grid.Column width={4}>
+                                        <Grid.Column >
                                             <Form.Field>
                                                 <label>{t("views:userProfile.inputFields.mobile")}</label>
                                                 <input required value={this.state.mobile} id="mobile"
