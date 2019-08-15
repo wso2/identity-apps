@@ -20,8 +20,7 @@ import * as React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 import { Button, Container, Divider, Form, Header, Icon, Modal } from "semantic-ui-react";
 import { updatePassword } from "../actions";
-import { NotificationComponent } from "../components";
-import { InnerPageLayout } from "../layouts";
+import { NotificationComponent } from "./notification";
 
 /**
  * Component State types
@@ -37,11 +36,6 @@ interface ComponentStateInterface {
     types: InputTypesStateInterface;
     showConfirmationModal: boolean;
 }
-
-/**
- * Component Props types
- */
-interface ComponentPropsInterface extends WithTranslation { }
 
 /**
  * Interface to map the notification state
@@ -83,7 +77,7 @@ interface InputTypesStateInterface {
 /**
  * This is the Change Password component of the User Portal
  */
-class ChangePasswordComponent extends React.Component<ComponentPropsInterface, ComponentStateInterface> {
+class ChangePasswordComponentInner extends React.Component<WithTranslation, ComponentStateInterface> {
     public state = {
         confirmPassword: "",
         currentPassword: "",
@@ -112,7 +106,7 @@ class ChangePasswordComponent extends React.Component<ComponentPropsInterface, C
      * @param {Readonly<P>} prevProps previous props
      * @param {Readonly<S>} prevState previous state
      */
-    public componentDidUpdate(prevProps: ComponentPropsInterface, prevState: ComponentStateInterface) {
+    public componentDidUpdate(prevProps: WithTranslation, prevState: ComponentStateInterface) {
         const { errors } = this.state;
         if (prevState && prevState.errors !== errors) {
             this.setState({
@@ -492,4 +486,4 @@ class ChangePasswordComponent extends React.Component<ComponentPropsInterface, C
     }
 }
 
-export default withTranslation()(ChangePasswordComponent);
+export const ChangePasswordComponent = withTranslation()(ChangePasswordComponentInner);
