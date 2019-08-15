@@ -22,12 +22,13 @@ import {
   CHANGE_PASSWORD, HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION,
   SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION
 } from "../actions";
+import { createEmptyNotificationActionPayload } from "../models/notifications";
 
 /**
  * Initial state.
  */
 const initialState = {
-  changePasswordFormNotification: {},
+  changePasswordFormNotification: createEmptyNotificationActionPayload(),
   isChangePasswordRequestLoading: false
 };
 
@@ -57,10 +58,7 @@ export function accountRecoveryReducer(state = initialState, action: any) {
     case SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION:
       return {
         ...state,
-        changePasswordFormNotification: {
-          ...action.payload,
-          visible: true
-        }
+        changePasswordFormNotification: action.payload
       };
     case HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION:
       return {
