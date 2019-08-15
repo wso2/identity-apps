@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { HttpError, HttpResponse } from "../../models/api";
+import { HttpError, HttpResponse } from "../models/api";
 
 /**
  * Redux actions related to account security.
@@ -55,18 +55,6 @@ export const CHANGE_PASSWORD_SUCCESS = "CHANGE_PASSWORD_SUCCESS";
  * @type {string}
  */
 export const CHANGE_PASSWORD_ERROR = "CHANGE_PASSWORD_ERROR";
-
-/**
- * Dispatches an action of type `CHANGE_PASSWORD_ERROR` with the data passed
- * in by the `onError` callback as the payload.
- *
- * @param data data passed in by the `onError` callback.
- * @returns An action of type `CHANGE_PASSWORD_ERROR`
- */
-export const onChangePasswordError = (data: HttpError) => ({
-    payload: data,
-    type: CHANGE_PASSWORD_ERROR
-});
 
 /**
  * Action type to show a notification for the change password form.

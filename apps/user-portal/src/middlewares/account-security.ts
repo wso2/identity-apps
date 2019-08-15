@@ -17,14 +17,14 @@
  */
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
-import { ServiceResourcesEndpoint } from "../../configs";
-import i18n from "../../helpers/i18n";
 import {
     apiRequest,
     CHANGE_PASSWORD, CHANGE_PASSWORD_ERROR,
     CHANGE_PASSWORD_SUCCESS,
     showChangePasswordFormNotification
 } from "../actions";
+import { ServiceResourcesEndpoint } from "../configs";
+import i18n from "../helpers/i18n";
 
 /**
  * Middleware to intercept and handle account security related actions.

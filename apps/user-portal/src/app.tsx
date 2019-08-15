@@ -25,6 +25,7 @@ import { AuthConsumer, AuthProvider } from "./components/auth-context";
 import ProtectedRoute from "./components/protected-route";
 import { i18n } from "./helpers";
 import history from "./helpers/history";
+import configureStore from "./helpers/store";
 import {
     AccountRecoveryPage,
     ConsentsPage,
@@ -32,7 +33,6 @@ import {
     PageNotFound,
     UserProfilePage
 } from "./pages";
-import configureStore from "./redux/store";
 
 const store = configureStore();
 

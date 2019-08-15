@@ -18,8 +18,8 @@
 
 import { applyMiddleware, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { accountSecurityMiddleware, apiMiddleware } from "./middlewares";
-import reducers from "./reducers";
+import { accountSecurityMiddleware, apiMiddleware } from "../middlewares";
+import reducers from "../reducers";
 
 export type AppState = ReturnType<typeof reducers>;
 

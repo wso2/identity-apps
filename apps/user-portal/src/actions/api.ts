@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { HttpRequestConfig } from "../../models/api";
+import { HttpRequestConfig } from "../models/api";
 
 /**
  * Redux actions related to API requests and responses.
