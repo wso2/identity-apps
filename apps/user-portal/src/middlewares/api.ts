@@ -19,10 +19,7 @@
 import axios from "axios";
 import log from "log";
 import { API_REQUEST, apiRequestEnd, apiRequestStart } from "../actions";
-
-/**
- * Middleware to intercept and handle all API requests happening in the app.
- */
+import { HttpRequestConfig } from "../models/api";
 
 /**
  * Intercepts and handles actions of type `API_REQUEST`.
@@ -37,11 +34,11 @@ export const apiMiddleware = ({ dispatch }) => (next) => (action) => {
         return;
     }
 
-    const { auth, dispatcher, headers, method, onSuccess, onError, url } = action.meta;
-    const data = action.payload;
+    const { auth, dispatcher, headers, method, onSuccess, onError, url }: HttpRequestConfig = action.meta;
+    const data: any = action.payload;
 
     // `GET` requests and `DELETE` requests usually has params rather than data.
-    const dataOrParams = ["GET", "DELETE"].includes(method) ? "params" : "data";
+    const dataOrParams: string = ["GET", "DELETE"].includes(method) ? "params" : "data";
 
     // `dispatcher` is the action which invoked the `API_REQUEST` action. This is
     // useful to show placeholders specific to certain API requests.
