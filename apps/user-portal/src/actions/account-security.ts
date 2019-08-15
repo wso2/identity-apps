@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { HttpError, HttpResponse } from "../models/api";
-
 /**
  * Redux actions related to account security.
  */
@@ -30,6 +28,22 @@ import { HttpError, HttpResponse } from "../models/api";
 export const CHANGE_PASSWORD = "CHANGE_PASSWORD";
 
 /**
+ * Change password action payload interface.
+ */
+interface ChangePasswordActionPayload {
+    currentPassword: string;
+    newPassword: string;
+}
+
+/**
+ * Change password action interface.
+ */
+interface ChangePasswordAction {
+    payload: ChangePasswordActionPayload;
+    type: typeof CHANGE_PASSWORD;
+}
+
+/**
  * Dispatches an action of type type `CHANGE_PASSWORD` with the current password and
  * new password as the payload.
  *
@@ -37,7 +51,7 @@ export const CHANGE_PASSWORD = "CHANGE_PASSWORD";
  * @param {string} newPassword - New password
  * @returns An action of type `CHANGE_PASSWORD`
  */
-export const changePassword = (currentPassword: string, newPassword: string) => ({
+export const changePassword = (currentPassword: string, newPassword: string): ChangePasswordAction => ({
     payload: { currentPassword, newPassword },
     type: CHANGE_PASSWORD
 });
@@ -64,13 +78,30 @@ export const CHANGE_PASSWORD_ERROR = "CHANGE_PASSWORD_ERROR";
 export const SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION = "SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION";
 
 /**
+ * Notification action payload interface.
+ */
+interface NotificationActionPayload {
+    description: string;
+    message: string;
+    otherProps: object;
+}
+
+/**
+ * Change password form notification action interface.
+ */
+interface ShowChangePasswordFormNotificationAction {
+    payload: NotificationActionPayload;
+    type: typeof SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION;
+}
+
+/**
  * Dispatches an action of type `SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION` with the notification
  * details object as the payload.
  *
  * @param data - Notification object
  * @returns An action of type `SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION`
  */
-export const showChangePasswordFormNotification = (data) => ({
+export const showChangePasswordFormNotification = (data): ShowChangePasswordFormNotificationAction => ({
     payload: data,
     type: SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION
 });
@@ -83,10 +114,21 @@ export const showChangePasswordFormNotification = (data) => ({
 export const HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION = "HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION";
 
 /**
+ * Change password form notification action interface.
+ */
+interface HideChangePasswordFormNotificationAction {
+    payload?: NotificationActionPayload;
+    type: typeof HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION;
+}
+
+/**
  * Dispatches an action of type `HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION`.
  *
  * @returns An action of type `HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION`
  */
-export const hideChangePasswordFormNotification = () => ({
+export const hideChangePasswordFormNotification = (): HideChangePasswordFormNotificationAction => ({
     type: HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION
 });
+
+export type AccountSecurityActionTypes = ChangePasswordAction | ShowChangePasswordFormNotificationAction |
+    HideChangePasswordFormNotificationAction;
