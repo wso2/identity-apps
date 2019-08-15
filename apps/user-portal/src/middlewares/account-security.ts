@@ -21,10 +21,13 @@ import {
     apiRequest,
     CHANGE_PASSWORD, CHANGE_PASSWORD_ERROR,
     CHANGE_PASSWORD_SUCCESS,
+    createEmptyNotificationActionPayload,
+    NotificationActionPayload,
     showChangePasswordFormNotification
 } from "../actions";
 import { ServiceResourcesEndpoint } from "../configs";
 import i18n from "../helpers/i18n";
+import { HttpRequestConfig } from "../models/api";
 
 /**
  * Middleware to intercept and handle account security related actions.
@@ -38,12 +41,17 @@ const SCHEMAS = ["urn:ietf:params:scim:api:messages:2.0:PatchOp"];
  * @param {any} dispatch - `dispatch` function from redux.
  * @returns {(next) => (action) => any} Passes the action to the next middleware
  */
-const handleChangePassword = ({ dispatch }) => (next) => (action) => {
+const handleChangePassword = ({dispatch}) => (next) => (action) => {
     next(action);
 
-    if (action.type === CHANGE_PASSWORD) {
-        const { currentPassword, newPassword } = action.payload;
-        const requestConfig = {
+    if (action.type !== CHANGE_PASSWORD) {
+        return;
+    }
+
+    // Check if the session is valid.
+    if (AuthenticateSessionUtil.isValidSession(CLIENT_ID, CLIENT_HOST)) {
+        const {currentPassword, newPassword} = action.payload;
+        const requestConfig: HttpRequestConfig = {
             auth: {
                 password: currentPassword,
                 username: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME)
@@ -80,28 +88,30 @@ const handleChangePassword = ({ dispatch }) => (next) => (action) => {
  * @param {any} dispatch - `dispatch` function from redux.
  * @returns {(next) => (action) => any} Passes the action to the next middleware
  */
-const handleOnChangePasswordSuccess = ({ dispatch }) => (next) => (action) => {
+const handleOnChangePasswordSuccess = ({dispatch}) => (next) => (action) => {
     next(action);
 
-    if (action.type === CHANGE_PASSWORD_SUCCESS) {
-        const response = action.payload;
+    if (action.type !== CHANGE_PASSWORD_SUCCESS) {
+        return;
+    }
 
-        if (response.status && response.status === 200) {
-            const notification = {
-                description: i18n.t(
-                    "views:changePassword.forms.passwordResetForm.validations.submitSuccess.description"
-                ),
-                message: i18n.t(
-                    "views:changePassword.forms.passwordResetForm.validations.submitSuccess.message"
-                ),
-                otherProps: {
-                    positive: true
-                }
-            };
+    const response = action.payload;
 
-            // Dispatch an action to show the notification.
-            dispatch(showChangePasswordFormNotification(notification));
-        }
+    if (response.status && response.status === 200) {
+        const notification: NotificationActionPayload = {
+            description: i18n.t(
+                "views:changePassword.forms.passwordResetForm.validations.submitSuccess.description"
+            ),
+            message: i18n.t(
+                "views:changePassword.forms.passwordResetForm.validations.submitSuccess.message"
+            ),
+            otherProps: {
+                positive: true
+            }
+        };
+
+        // Dispatch an action to show the notification.
+        dispatch(showChangePasswordFormNotification(notification));
     }
 };
 
@@ -111,57 +121,60 @@ const handleOnChangePasswordSuccess = ({ dispatch }) => (next) => (action) => {
  * @param {any} dispatch - `dispatch` function from redux.
  * @returns {(next) => (action) => any} Passes the action to the next middleware
  */
-const handleOnChangePasswordError = ({ dispatch }) => (next) => (action) => {
+const handleOnChangePasswordError = ({dispatch}) => (next) => (action) => {
     next(action);
 
-    if (action.type === CHANGE_PASSWORD_ERROR) {
-        const response = action.payload;
-        let notification = {};
-
-        // Axios throws a generic `Network Error` for 401 status. As a temporary solution,
-        // a check to see if a response is available has be used. TODO: Find a better solution.
-        if (!response || response.status === 401) {
-            notification = {
-                description: i18n.t(
-                    "views:changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
-                    "description"
-                ),
-                message: i18n.t(
-                    "views:changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
-                    "message"
-                ),
-                otherProps: {
-                    negative: true
-                }
-            };
-        } else if (response && response.data && response.data.detail) {
-
-            notification = {
-                description: i18n.t(
-                    "views:changePassword.forms.passwordResetForm.validations.submitError.description",
-                    {description: response.data.detail}
-                ),
-                message: i18n.t("views:changePassword.forms.passwordResetForm.validations.submitError.message"),
-                otherProps: {
-                    negative: true
-                }
-            };
-        } else {
-            // Generic error message
-            notification = {
-                description: i18n.t(
-                    "views:changePassword.forms.passwordResetForm.validations.genericError.description"
-                ),
-                message: i18n.t("views:changePassword.forms.passwordResetForm.validations.genericError.message"),
-                otherProps: {
-                    negative: true
-                }
-            };
-        }
-
-        // Dispatch an action to show the notification.
-        dispatch(showChangePasswordFormNotification(notification));
+    if (action.type !== CHANGE_PASSWORD_ERROR) {
+        return;
     }
+
+    const response = action.payload;
+    let notification: NotificationActionPayload = createEmptyNotificationActionPayload();
+
+    // Invalid current password error is caught here.
+    // Axios throws a generic `Network Error` for 401 status. As a temporary solution,
+    // a check to see if a response is available has be used.
+    if (!response || response.status === 401) {
+        notification = {
+            description: i18n.t(
+                "views:changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
+                "description"
+            ),
+            message: i18n.t(
+                "views:changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
+                "message"
+            ),
+            otherProps: {
+                negative: true
+            }
+        };
+    } else if (response && response.data && response.data.detail) {
+
+        notification = {
+            description: i18n.t(
+                "views:changePassword.forms.passwordResetForm.validations.submitError.description",
+                {description: response.data.detail}
+            ),
+            message: i18n.t("views:changePassword.forms.passwordResetForm.validations.submitError.message"),
+            otherProps: {
+                negative: true
+            }
+        };
+    } else {
+        // Generic error message
+        notification = {
+            description: i18n.t(
+                "views:changePassword.forms.passwordResetForm.validations.genericError.description"
+            ),
+            message: i18n.t("views:changePassword.forms.passwordResetForm.validations.genericError.message"),
+            otherProps: {
+                negative: true
+            }
+        };
+    }
+
+    // Dispatch an action to show the notification.
+    dispatch(showChangePasswordFormNotification(notification));
 };
 
 export const accountSecurityMiddleware = [
