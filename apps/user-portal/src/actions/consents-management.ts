@@ -160,7 +160,7 @@ interface UpdateConsentedClaimsAction {
  * @param {ConsentReceiptInterface} receipt - Receipt object
  * @returns An action of type `UPDATE_CONSENTED_CLAIMS`
  */
-export const updateConsentedClaims = (receipt: ConsentReceiptInterface): UpdateConsentedClaimsAction => ({
+export const updateConsentedClaim = (receipt: ConsentReceiptInterface): UpdateConsentedClaimsAction => ({
     payload: receipt,
     type: UPDATE_CONSENTED_CLAIMS
 });

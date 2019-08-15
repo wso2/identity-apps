@@ -18,6 +18,7 @@
 
 export * from "./account-security";
 export * from "./api";
+export * from "./consents";
 export * from "./consents-management";
 export * from "./login";
 export * from "./profile";
