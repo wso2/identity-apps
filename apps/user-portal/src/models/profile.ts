@@ -32,7 +32,7 @@ export interface BasicProfileInterface {
     nameEdit: boolean;
     mobile: string;
     emailEdit: boolean;
-    pInfoEdit: boolean;
+    personalInfoEdit: boolean;
     updateStatus: boolean;
     username: string;
 }
@@ -47,7 +47,7 @@ export const createEmptyProfile = (): BasicProfileInterface => ({
     mobile: "",
     nameEdit: false,
     organisation: "",
-    pInfoEdit: false,
+    personalInfoEdit: false,
     phoneNumbers: [],
     proUrl: "",
     roles: [],

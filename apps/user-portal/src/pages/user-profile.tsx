@@ -20,20 +20,14 @@ import * as React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 import { Button, Container, Divider, Form, Grid, Header, Icon, Segment, Transition } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../actions";
-import { NotificationComponent, UserImagePlaceHolder} from "../components";
+import { NotificationComponent, UserImagePlaceHolder } from "../components";
 import { InnerPageLayout } from "../layouts";
 import { createEmptyProfile } from "../models/profile";
 
 /**
- * Component Props types
- */
-interface IComponentProps extends WithTranslation {
-}
-
-/**
  * User Profile Page of the User Portal
  */
-class UserProfilePageComponent extends React.Component<IComponentProps, any> {
+class UserProfilePageComponent extends React.Component<WithTranslation, any> {
     /**
      * constructor
      * @param props
@@ -164,7 +158,7 @@ class UserProfilePageComponent extends React.Component<IComponentProps, any> {
             });
         } else {
             this.setState({
-                pInfoEdit: false
+                personalInfoEdit: false
             });
         }
     }
@@ -262,7 +256,7 @@ class UserProfilePageComponent extends React.Component<IComponentProps, any> {
         };
 
         const handlePInfoChange = () => {
-            if (this.state.pInfoEdit) {
+            if (this.state.personalInfoEdit) {
                 return (<>
                         <Container>
                             <Segment padded style={{width: "550px"}}>
@@ -288,7 +282,7 @@ class UserProfilePageComponent extends React.Component<IComponentProps, any> {
                                 <Button id="pInfo" primary onClick={this.handleSave}>
                                     {t("common:save")}
                                 </Button>
-                                <Button id="pInfoEdit" secondary onClick={this.handleCancel}>
+                                <Button id="personalInfoEdit" secondary onClick={this.handleCancel}>
                                     {t("common:cancel")}
                                 </Button>
                             </Segment>
@@ -355,9 +349,8 @@ class UserProfilePageComponent extends React.Component<IComponentProps, any> {
                         </Grid>
                         <Divider hidden/>
                         <Header dividing={true} as="h3">{t("views:userProfile.personalInfoTitle")}
-                            <Button basic id="pInfoEdit" onClick={this.handleEdit}
-                                    name="pencil alternate" size="small"
-                                    style={{marginLeft: "10px", padding: "6px"}}>Update</Button>
+                            <Button basic id="personalInfoEdit" onClick={this.handleEdit}
+                                    name="pencil alternate" size="small">Update</Button>
                         </Header>
                         <Divider hidden/>
                         {handlePInfoChange()}
@@ -372,16 +365,16 @@ class UserProfilePageComponent extends React.Component<IComponentProps, any> {
      * @param response
      */
     private setProfileDetails(response) {
-        let mNumber = "";
+        let mobileNumber = "";
         response.phoneNumbers.map((mobile) => {
-            mNumber = mobile.value;
+            mobileNumber = mobile.value;
         });
         this.setState({
             displayName: response.displayName,
             email: response.emails[0],
             emails: response.emails,
             lastName: response.lastName,
-            mobile: mNumber,
+            mobile: mobileNumber,
             organisation: response.organisation,
             phoneNumbers: response.phoneNumbers,
             proUrl: response.proUrl,
