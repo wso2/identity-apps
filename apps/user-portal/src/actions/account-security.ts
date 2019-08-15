@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { NotificationActionPayload } from "../models/notifications";
+import { createEmptyNotificationActionPayload, NotificationActionPayload } from "../models/notifications";
 
 /**
  * Action type to handle the password change.
@@ -76,11 +76,11 @@ export const CHANGE_PASSWORD_ERROR = "CHANGE_PASSWORD_ERROR";
 export const SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION = "SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION";
 
 /**
- * Change password form notification action interface.
+ * Generic interface to handle change password form notification action.
  */
-interface ShowChangePasswordFormNotificationAction {
+interface ChangePasswordFormNotificationAction {
     payload: NotificationActionPayload;
-    type: typeof SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION;
+    type: typeof SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION | typeof HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION;
 }
 
 /**
@@ -91,7 +91,8 @@ interface ShowChangePasswordFormNotificationAction {
  * @returns An action of type `SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION`
  */
 export const showChangePasswordFormNotification = (
-    data: NotificationActionPayload): ShowChangePasswordFormNotificationAction => ({
+    data: NotificationActionPayload
+): ChangePasswordFormNotificationAction => ({
     payload: data,
     type: SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION
 });
@@ -104,24 +105,18 @@ export const showChangePasswordFormNotification = (
 export const HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION = "HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION";
 
 /**
- * Change password form notification action interface.
- */
-interface HideChangePasswordFormNotificationAction {
-    payload?: NotificationActionPayload;
-    type: typeof HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION;
-}
-
-/**
  * Dispatches an action of type `HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION`.
  *
  * @returns An action of type `HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION`
  */
-export const hideChangePasswordFormNotification = (): HideChangePasswordFormNotificationAction => ({
+export const hideChangePasswordFormNotification = (
+    data: NotificationActionPayload = createEmptyNotificationActionPayload()
+): ChangePasswordFormNotificationAction => ({
+    payload: data,
     type: HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION
 });
 
 /**
  * Action type to specify account security actions.
  */
-export type AccountSecurityActionTypes = ChangePasswordAction | ShowChangePasswordFormNotificationAction |
-    HideChangePasswordFormNotificationAction;
+export type AccountSecurityActionTypes = ChangePasswordAction | ChangePasswordFormNotificationAction;

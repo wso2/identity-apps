@@ -17,9 +17,12 @@
  */
 
 import {
+  AccountSecurityActionTypes,
   API_REQUEST_END,
   API_REQUEST_START,
-  CHANGE_PASSWORD, HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION,
+  ApiActionTypes,
+  CHANGE_PASSWORD,
+  HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION,
   SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION
 } from "../actions";
 import { createEmptyNotificationActionPayload } from "../models/notifications";
@@ -39,7 +42,9 @@ const initialState = {
  * @param action - Action type
  * @returns The new state
  */
-export function accountRecoveryReducer(state = initialState, action: any) {
+export function accountRecoveryReducer(
+    state = initialState, action: AccountSecurityActionTypes | ApiActionTypes
+) {
   switch (action.type) {
     case API_REQUEST_START:
       if (action.payload === CHANGE_PASSWORD) {
@@ -63,10 +68,7 @@ export function accountRecoveryReducer(state = initialState, action: any) {
     case HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION:
       return {
         ...state,
-        changePasswordFormNotification: {
-          ...state.changePasswordFormNotification,
-          visible: false
-        }
+        changePasswordFormNotification: action.payload
       };
     default:
       return state;

@@ -19,13 +19,14 @@
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
 import {
     apiRequest,
-    CHANGE_PASSWORD, CHANGE_PASSWORD_ERROR,
+    CHANGE_PASSWORD,
+    CHANGE_PASSWORD_ERROR,
     CHANGE_PASSWORD_SUCCESS,
     showChangePasswordFormNotification
 } from "../actions";
 import { ServiceResourcesEndpoint } from "../configs";
 import i18n from "../helpers/i18n";
-import { HttpRequestConfig } from "../models/api";
+import { HttpError, HttpRequestConfig, HttpResponse } from "../models/api";
 import { createEmptyNotificationActionPayload, NotificationActionPayload } from "../models/notifications";
 
 const SCHEMAS = ["urn:ietf:params:scim:api:messages:2.0:PatchOp"];
@@ -36,45 +37,42 @@ const SCHEMAS = ["urn:ietf:params:scim:api:messages:2.0:PatchOp"];
  * @param {any} dispatch - `dispatch` function from redux.
  * @returns {(next) => (action) => any} Passes the action to the next middleware
  */
-const handleChangePassword = ({dispatch}) => (next) => (action) => {
+const handleChangePassword = ({ dispatch }) => (next) => (action) => {
     next(action);
 
     if (action.type !== CHANGE_PASSWORD) {
         return;
     }
 
-    // Check if the session is valid.
-    if (AuthenticateSessionUtil.isValidSession(CLIENT_ID, CLIENT_HOST)) {
-        const {currentPassword, newPassword} = action.payload;
-        const requestConfig: HttpRequestConfig = {
-            auth: {
-                password: currentPassword,
-                username: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME)
-            },
-            data: {
-                Operations: [
-                    {
-                        op: "add",
-                        value: {
-                            password: newPassword
-                        }
+    const { currentPassword, newPassword } = action.payload;
+    const requestConfig: HttpRequestConfig = {
+        auth: {
+            password: currentPassword,
+            username: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME)
+        },
+        data: {
+            Operations: [
+                {
+                    op: "add",
+                    value: {
+                        password: newPassword
                     }
-                ],
-                schemas: SCHEMAS
-            },
-            dispatcher: CHANGE_PASSWORD,
-            headers: {
-                "Content-Type": "application/json"
-            },
-            method: "patch",
-            onError: CHANGE_PASSWORD_ERROR,
-            onSuccess: CHANGE_PASSWORD_SUCCESS,
-            url: ServiceResourcesEndpoint.me
-        };
+                }
+            ],
+            schemas: SCHEMAS
+        },
+        dispatcher: CHANGE_PASSWORD,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: "patch",
+        onError: CHANGE_PASSWORD_ERROR,
+        onSuccess: CHANGE_PASSWORD_SUCCESS,
+        url: ServiceResourcesEndpoint.me
+    };
 
-        // Dispatch an API request action.
-        dispatch(apiRequest(requestConfig));
-    }
+    // Dispatch an API request action.
+    dispatch(apiRequest(requestConfig));
 };
 
 /**
@@ -83,14 +81,14 @@ const handleChangePassword = ({dispatch}) => (next) => (action) => {
  * @param {any} dispatch - `dispatch` function from redux.
  * @returns {(next) => (action) => any} Passes the action to the next middleware
  */
-const handleOnChangePasswordSuccess = ({dispatch}) => (next) => (action) => {
+const handleOnChangePasswordSuccess = ({ dispatch }) => (next) => (action) => {
     next(action);
 
     if (action.type !== CHANGE_PASSWORD_SUCCESS) {
         return;
     }
 
-    const response = action.payload;
+    const response: HttpResponse = action.payload;
 
     if (response.status && response.status === 200) {
         const notification: NotificationActionPayload = {
@@ -122,20 +120,20 @@ const handleOnChangePasswordSuccess = ({dispatch}) => (next) => (action) => {
  * @param {any} dispatch - `dispatch` function from redux.
  * @returns {(next) => (action) => any} Passes the action to the next middleware
  */
-const handleOnChangePasswordError = ({dispatch}) => (next) => (action) => {
+const handleOnChangePasswordError = ({ dispatch }) => (next) => (action) => {
     next(action);
 
     if (action.type !== CHANGE_PASSWORD_ERROR) {
         return;
     }
 
-    const response = action.payload;
+    const error: HttpError = action.payload;
     let notification: NotificationActionPayload = createEmptyNotificationActionPayload();
 
     // Invalid current password error is caught here.
     // Axios throws a generic `Network Error` for 401 status. As a temporary solution,
     // a check to see if a response is available has be used.
-    if (!response || response.status === 401) {
+    if (!error || !error.response || error.response.status === 401) {
         notification = {
             description: i18n.t(
                 "views:changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
@@ -150,12 +148,11 @@ const handleOnChangePasswordError = ({dispatch}) => (next) => (action) => {
             },
             visible: true
         };
-    } else if (response && response.data && response.data.detail) {
-
+    } else if (error.response && error.response.data && error.response.data.detail) {
         notification = {
             description: i18n.t(
                 "views:changePassword.forms.passwordResetForm.validations.submitError.description",
-                {description: response.data.detail}
+                { description: error.response.data.detail }
             ),
             message: i18n.t("views:changePassword.forms.passwordResetForm.validations.submitError.message"),
             otherProps: {
