@@ -118,6 +118,11 @@ const handleOnChangePasswordSuccess = ({dispatch}) => (next) => (action) => {
 /**
  * Intercepts and handles actions of type `CHANGE_PASSWORD_ERROR`.
  *
+ * @remarks
+ * The API currently doesn't validate the current password of the user.
+ * As a workaround change password API request is made with basic authorization.
+ * If the current password is invalid, the server responds with a `401` status.
+ *
  * @param {any} dispatch - `dispatch` function from redux.
  * @returns {(next) => (action) => any} Passes the action to the next middleware
  */
