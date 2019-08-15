@@ -16,9 +16,7 @@
  * under the License.
  */
 
-/**
- * Redux actions related to account security.
- */
+import { NotificationActionPayload } from "../models/notifications";
 
 /**
  * Action type to handle the password change.
@@ -78,15 +76,6 @@ export const CHANGE_PASSWORD_ERROR = "CHANGE_PASSWORD_ERROR";
 export const SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION = "SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION";
 
 /**
- * Notification action payload interface.
- */
-interface NotificationActionPayload {
-    description: string;
-    message: string;
-    otherProps: object;
-}
-
-/**
  * Change password form notification action interface.
  */
 interface ShowChangePasswordFormNotificationAction {
@@ -98,10 +87,11 @@ interface ShowChangePasswordFormNotificationAction {
  * Dispatches an action of type `SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION` with the notification
  * details object as the payload.
  *
- * @param data - Notification object
+ * @param {NotificationActionPayload} data - Notification object
  * @returns An action of type `SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION`
  */
-export const showChangePasswordFormNotification = (data): ShowChangePasswordFormNotificationAction => ({
+export const showChangePasswordFormNotification = (
+    data: NotificationActionPayload): ShowChangePasswordFormNotificationAction => ({
     payload: data,
     type: SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION
 });
@@ -130,5 +120,8 @@ export const hideChangePasswordFormNotification = (): HideChangePasswordFormNoti
     type: HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION
 });
 
+/**
+ * Action type to specify account security actions.
+ */
 export type AccountSecurityActionTypes = ChangePasswordAction | ShowChangePasswordFormNotificationAction |
     HideChangePasswordFormNotificationAction;
