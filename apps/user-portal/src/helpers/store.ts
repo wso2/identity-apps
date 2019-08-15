@@ -18,13 +18,23 @@
 
 import { applyMiddleware, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { accountSecurityMiddleware, apiMiddleware } from "../middlewares";
+import { accountSecurityMiddleware, apiMiddleware, consentManagementMiddleware } from "../middlewares";
 import reducers from "../reducers";
 
+/**
+ * Type of the Redux store.
+ */
 export type AppState = ReturnType<typeof reducers>;
 
+/**
+ * Enables the instantiation of a redux store which could be passed on
+ * to the `Provider` supplied by the `react-redux` library.
+ *
+ * @return {Store<any, AnyAction> & Store<S & {}, A> & {dispatch: any}} Redux Store
+ */
 export default function configureStore() {
-    const middlewares = [...accountSecurityMiddleware, apiMiddleware];
+    // Set of custom middlewares.
+    const middlewares = [...consentManagementMiddleware, ...accountSecurityMiddleware, apiMiddleware];
     const middleWareEnhancer = applyMiddleware(...middlewares);
 
     return createStore(

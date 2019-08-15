@@ -77,6 +77,48 @@
             "emptyConsentList": {
                 "heading": "You don't have any {{state}} applications"
             }
+        },
+        "notifications": {
+            "consentedAppsFetchGenericError": {
+                "message": "Something went wrong",
+                "description": "Couldn't load the list of consented applications."
+            },
+            "consentedAppsFetchError": {
+                "message": "Something went wrong",
+                "description": "{{description}}"
+            },
+            "consentReceiptFetchGenericError": {
+                "message": "Something went wrong",
+                "description": "Couldn't load information on the selected application."
+            },
+            "consentReceiptFetchError": {
+                "message": "Something went wrong",
+                "description": "{{description}}"
+            },
+            "revokeConsentedAppSuccess": {
+                "message": "Consent Revoke Success",
+                "description": "The consent has been successfully revoked for the application."
+            },
+            "revokeConsentedAppGenericError": {
+                "message": "Something went wrong",
+                "description": "Couldn't revoke consent for the application."
+            },
+            "revokeConsentedAppError": {
+                "message": "Consent Revoke Error",
+                "description": "{{description}}"
+            },
+            "updateConsentedClaimsSuccess": {
+                "message": "Consented claims updated successfully",
+                "description": "The consented claims have been successfully updated for the application."
+            },
+            "updateConsentedClaimsGenericError": {
+                "message": "Something went wrong",
+                "description": "The consented claims failed to update for the application."
+            },
+            "updateConsentedClaimsError": {
+                "message": "Something went wrong",
+                "description": "{{description}}"
+            }
         }
     },
     "securityQuestions": {

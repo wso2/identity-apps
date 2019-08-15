@@ -18,9 +18,16 @@
 
 import { combineReducers } from "redux";
 import { accountRecoveryReducer } from "./account-security";
+import { consentsManagementReducer } from "./consents-management";
 
+/**
+ * Combines all the reducers.
+ *
+ * @type {Reducer<any>} Root reducer to be used when creating the store.
+ */
 const reducers = combineReducers({
-    accountRecovery: accountRecoveryReducer
+    accountRecovery: accountRecoveryReducer,
+    consentsManagement: consentsManagementReducer
 });
 
 export default reducers;
