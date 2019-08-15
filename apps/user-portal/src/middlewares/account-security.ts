@@ -21,17 +21,12 @@ import {
     apiRequest,
     CHANGE_PASSWORD, CHANGE_PASSWORD_ERROR,
     CHANGE_PASSWORD_SUCCESS,
-    createEmptyNotificationActionPayload,
-    NotificationActionPayload,
     showChangePasswordFormNotification
 } from "../actions";
 import { ServiceResourcesEndpoint } from "../configs";
 import i18n from "../helpers/i18n";
 import { HttpRequestConfig } from "../models/api";
-
-/**
- * Middleware to intercept and handle account security related actions.
- */
+import { createEmptyNotificationActionPayload, NotificationActionPayload } from "../models/notifications";
 
 const SCHEMAS = ["urn:ietf:params:scim:api:messages:2.0:PatchOp"];
 
@@ -107,7 +102,8 @@ const handleOnChangePasswordSuccess = ({dispatch}) => (next) => (action) => {
             ),
             otherProps: {
                 positive: true
-            }
+            },
+            visible: true
         };
 
         // Dispatch an action to show the notification.
@@ -151,7 +147,8 @@ const handleOnChangePasswordError = ({dispatch}) => (next) => (action) => {
             ),
             otherProps: {
                 negative: true
-            }
+            },
+            visible: true
         };
     } else if (response && response.data && response.data.detail) {
 
@@ -163,7 +160,8 @@ const handleOnChangePasswordError = ({dispatch}) => (next) => (action) => {
             message: i18n.t("views:changePassword.forms.passwordResetForm.validations.submitError.message"),
             otherProps: {
                 negative: true
-            }
+            },
+            visible: true
         };
     } else {
         // Generic error message
@@ -174,7 +172,8 @@ const handleOnChangePasswordError = ({dispatch}) => (next) => (action) => {
             message: i18n.t("views:changePassword.forms.passwordResetForm.validations.genericError.message"),
             otherProps: {
                 negative: true
-            }
+            },
+            visible: true
         };
     }
 
