@@ -59,7 +59,6 @@ export const getProfileInfo = async () => {
             })
             .catch((error) => {
                 log.error(error);
-                return error;
             });
     }
 
