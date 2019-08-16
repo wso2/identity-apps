@@ -34,7 +34,21 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
      */
     constructor(props) {
         super(props);
-        this.state = createEmptyProfile();
+        this.state = {
+            emailEdit: false,
+            nameEdit: false,
+            notification: {
+                description: "",
+                message: "",
+                other: {
+                    error: false,
+                    success: false
+                }
+            },
+            personalInfoEdit: false,
+            profile: createEmptyProfile(),
+            updateStatus: false,
+        }
         this.handleSave = this.handleSave.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -54,8 +68,12 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
      * @param event
      */
     public handleFieldChange = (event) => {
+        const {profile} = this.state;
         this.setState({
-            [event.target.id]: event.target.value
+            profile : {
+                ...profile,
+                [event.target.id]: event.target.value
+            }
         });
         event.preventDefault();
     }
@@ -66,7 +84,7 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
      */
     public handleEdit = (event) => {
         this.setState({
-            [event.target.id]: true
+                [event.target.id]: true
         });
     }
 
@@ -86,6 +104,8 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
      * @param event
      */
     public handleSave = (event) => {
+        const {t} = this.props;
+        const {profile, notification} = this.state;
         const data = {
             Operations: [
                 {
@@ -100,18 +120,18 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
 
         const phoneNumbers = {
             type: "mobile",
-            value: this.state.mobile
+            value: profile.mobile
         }
-        this.state.phoneNumbers.push(phoneNumbers);
+        profile.phoneNumbers.push(phoneNumbers);
 
         const emails = [];
-        emails.push(this.state.email);
+        emails.push(profile.email);
         switch (event.target.id) {
             case "name" : {
                 data.Operations[0].value = {
                     name: {
-                        familyName: this.state.lastName,
-                        givenName: this.state.displayName
+                        familyName: profile.lastName,
+                        givenName: profile.displayName
                     }
                 };
                 break;
@@ -125,11 +145,11 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
                     "phoneNumbers": [
                         {
                             type: "mobile",
-                            value: this.state.mobile
+                            value: profile.mobile
                         }
                     ],
                     "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
-                        organization: this.state.organisation
+                        organization: profile.organisation
                     }
                 };
                 break;
@@ -138,13 +158,25 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
         updateProfileInfo(data)
             .then((response) => {
                 if (response.status === 200) {
+                    this.setState({
+                        notification: {
+                            ...notification,
+                            description: t(
+                                "views:userProfile.notification.updateProfileInfo.success.description"
+                            ),
+                            message: t(
+                                "views:userProfile.notification.updateProfileInfo.success.message"
+                            ),
+                            other: {
+                                success: true
+                            }
+                        },
+                        updateStatus: true
+                    })
                     getProfileInfo()
                         .then((res) => {
                             this.setProfileDetails(res);
                         });
-                    this.setState({
-                        updateStatus: true
-                    });
                 }
             });
 
@@ -174,6 +206,8 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
 
     public render() {
         const {t} = this.props;
+        const {profile, notification} = this.state;
+        const {description, message, other} = notification;
         const handleNameChange = () => {
             if (this.state.nameEdit) {
                 return (<>
@@ -184,7 +218,7 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
                                         <Form.Field>
                                             <label>{t("views:userProfile.inputFields.firstName")}</label>
                                             <input required id="displayName"
-                                                   value={this.state.displayName}
+                                                   value={profile.displayName}
                                                    onChange={this.handleFieldChange}/>
                                         </Form.Field>
                                     </Grid.Column>
@@ -192,7 +226,7 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
                                         <Form.Field>
                                             <label>{t("views:userProfile.inputFields.lastName")}</label>
                                             <input required id="lastName"
-                                                   value={this.state.lastName}
+                                                   value={profile.lastName}
                                                    onChange={this.handleFieldChange}/>
                                         </Form.Field>
                                     </Grid.Column>
@@ -212,7 +246,7 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
                 return (<>
                         <Form.Field>
                             <label>{t("views:userProfile.inputFields.name")}</label>
-                            <label>{this.state.displayName + " " + this.state.lastName}
+                            <label>{profile.displayName + " " + profile.lastName}
                             <Icon size="small" color="grey" id="nameEdit" onClick={this.handleEdit}
                                   style={{marginLeft: "10px"}}
                                   name="pencil alternate"/>
@@ -265,14 +299,14 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
                                         <Grid.Column >
                                             <Form.Field>
                                                 <label>{t("views:userProfile.inputFields.organisation")}</label>
-                                                <input required value={this.state.organisation} id="organisation"
+                                                <input required value={profile.organisation} id="organisation"
                                                        onChange={this.handleFieldChange}/>
                                             </Form.Field>
                                         </Grid.Column>
                                         <Grid.Column >
                                             <Form.Field>
                                                 <label>{t("views:userProfile.inputFields.mobile")}</label>
-                                                <input required value={this.state.mobile} id="mobile"
+                                                <input required value={profile.mobile} id="mobile"
                                                        onChange={this.handleFieldChange}/>
                                             </Form.Field>
                                         </Grid.Column>
@@ -296,13 +330,13 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
                             <Grid.Column width={3}>
                                 <Form.Field>
                                     <label>{t("views:userProfile.inputFields.organisation")}</label>
-                                    <label>{this.state.organisation}</label>
+                                    <label>{profile.organisation}</label>
                                 </Form.Field>
                             </Grid.Column>
                             <Grid.Column>
                                 <Form.Field>
                                     <label>{t("views:userProfile.inputFields.mobile")}</label>
-                                    <label>{this.state.mobile}</label>
+                                    <label>{profile.mobile}</label>
                                 </Form.Field>
                             </Grid.Column>
                         </Grid.Row>
@@ -317,9 +351,8 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
                 pageDescription={t("views:userProfile.subTitle")}>
                 <Container>
                     <Transition visible={this.state.updateStatus} duration={500}>
-                        <NotificationComponent onDismiss={this.handleDismiss} size="small"
-                                               description="The required user details were updated successfully."
-                                               success message="User Profile was successfully updated"
+                        <NotificationComponent {...other} onDismiss={this.handleDismiss} size="small"
+                                               description={description} message={message}
                         />
                     </Transition>
                     <Divider hidden/>
@@ -335,22 +368,22 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
                                     </Grid.Row>
                                     <Divider hidden/>
                                     <Grid.Row>
-                                        {handleEmailChange(this.state.email)}
+                                        {handleEmailChange(profile.email)}
                                     </Grid.Row>
                                     <Divider hidden/>
                                     <Grid.Row>
                                         <Form.Field>
                                             <label>{t("views:userProfile.inputFields.username")}</label>
-                                            <label>{this.state.username}</label>
+                                            <label>{profile.username}</label>
                                         </Form.Field>
                                     </Grid.Row>
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
                         <Divider hidden/>
-                        <Header dividing={true} as="h3">{t("views:userProfile.personalInfoTitle")}
-                            <Button basic id="personalInfoEdit" onClick={this.handleEdit}
-                                    name="pencil alternate" size="small">Update</Button>
+                        <Header dividing as="h3">{t("views:userProfile.personalInfoTitle")}
+                            <Button basic compact id="personalInfoEdit" onClick={this.handleEdit}
+                                    size="small">Update</Button>
                         </Header>
                         <Divider hidden/>
                         {handlePInfoChange()}
@@ -365,22 +398,45 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
      * @param response
      */
     private setProfileDetails(response) {
-        let mobileNumber = "";
-        response.phoneNumbers.map((mobile) => {
-            mobileNumber = mobile.value;
-        });
-        this.setState({
-            displayName: response.displayName,
-            email: response.emails[0],
-            emails: response.emails,
-            lastName: response.lastName,
-            mobile: mobileNumber,
-            organisation: response.organisation,
-            phoneNumbers: response.phoneNumbers,
-            proUrl: response.proUrl,
-            roles: response.roles,
-            username: response.username
-        });
+        const {t} = this.props;
+        const {profile, notification} = this.state;
+        if (response.responseStatus === 200) {
+            let mobileNumber = "";
+            response.phoneNumbers.map((mobile) => {
+                mobileNumber = mobile.value;
+            });
+            this.setState({
+                profile: {
+                    ...profile,
+                    displayName: response.displayName,
+                    email: response.emails[0],
+                    emails: response.emails,
+                    lastName: response.lastName,
+                    mobile: mobileNumber,
+                    organisation: response.organisation,
+                    phoneNumbers: response.phoneNumbers,
+                    proUrl: response.proUrl,
+                    roles: response.roles,
+                    username: response.username
+                }
+            });
+        } else {
+            this.setState({
+                notification: {
+                    ...notification,
+                    description: t(
+                        "views:userProfile.notification.getProfileInfo.error.description"
+                    ),
+                    message: t(
+                        "views:userProfile.notification.getProfileInfo.error.message"
+                    ),
+                    other: {
+                        error: true
+                    }
+                },
+                updateStatus: true
+            });
+        }
     }
 }
 
