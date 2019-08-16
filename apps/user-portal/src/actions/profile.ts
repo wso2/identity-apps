@@ -53,6 +53,7 @@ export const getProfileInfo = async () => {
                     profileDetails.organisation = (endpointResponse.data[orgKey]) ?
                         endpointResponse.data[orgKey].organization : "";
                     profileDetails.roles = endpointResponse.data.roles || [];
+                    profileDetails.responseStatus = endpointResponse.status || null;
                     profileDetails.proUrl = endpointResponse.data.profileUrl || "";
                 }
             })

@@ -121,6 +121,28 @@
             "username": "Username",
             "organisation": "Organisation",
             "mobile": "Mobile Number"
+        },
+        "notification": {
+            "getProfileInfo": {
+                "success": {
+                    "message": "User profile details fetched successfully.",
+                    "description": "The required user profile details are retrieved successfully."
+                },
+                "error": {
+                    "message": "An error occurred !!!",
+                    "description": "Error occurred while retrieving the profile details."
+                }
+            },
+            "updateProfileInfo": {
+                "success": {
+                    "message": "User profile updated successfully.",
+                    "description": "The required user profile details were successfully updated."
+                },
+                "error": {
+                    "message": "An error occurred !!!",
+                    "description": "Error occurred while updating the user profile details"
+                }
+            }
         }
     }
 
