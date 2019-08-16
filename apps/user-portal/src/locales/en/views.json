@@ -112,7 +112,9 @@
     "userProfile": {
         "title": "Profile",
         "subTitle": "Manage information about you, your sub profiles and your account in general.",
+        "personalInfoTitle": "Personal Information",
         "inputFields": {
+            "name": "Name",
             "firstName": "First Name",
             "lastName": "Last Name",
             "email": "Email",
