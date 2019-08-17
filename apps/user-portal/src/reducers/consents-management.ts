@@ -23,18 +23,32 @@ import {
     ConsentsManagementActionTypes,
     FETCH_CONSENT_RECEIPT,
     FETCH_CONSENTED_APPS,
+    HIDE_CONSENTS_EDIT_VIEW,
     HIDE_CONSENTS_MANAGEMENT_NOTIFICATION,
+    HIDE_CONSENTS_REVOKE_MODAL,
     REVOKE_CONSENTED_APP,
+    SET_CONSENT_RECEIPT,
+    SET_CONSENTED_APPS,
+    SET_EDITING_CONSENT,
+    SHOW_CONSENTS_EDIT_VIEW,
     SHOW_CONSENTS_MANAGEMENT_NOTIFICATION,
-    UPDATE_CONSENTED_CLAIMS
+    SHOW_CONSENTS_REVOKE_MODAL,
+    UPDATE_CONSENTED_CLAIMS,
+    UPDATE_REVOKED_CLAIM_IDS
 } from "../actions";
 import { createEmptyNotificationActionPayload } from "../models/notifications";
+import { createEmptyConsent, createEmptyConsentReceipt } from "../models/consents";
 
 /**
  * Initial state.
  */
 const initialState = {
     consentedApps: [],
+    consentReceipt: createEmptyConsentReceipt(),
+    editingConsent: createEmptyConsent(),
+    revokedClaimIds: [],
+    isConsentEditViewVisible: false,
+    isConsentRevokeModalVisible: false,
     consentsManagementNotification: createEmptyNotificationActionPayload(),
     isFetchConsentReceiptRequestLoading: false,
     isFetchConsentedAppsRequestLoading: false,
@@ -75,6 +89,7 @@ export function consentsManagementReducer(
                     isUpdateConsentedClaimsRequestLoading: true
                 };
             }
+            break;
         case API_REQUEST_END:
             if (action.payload === FETCH_CONSENTED_APPS) {
                 return {
@@ -97,6 +112,47 @@ export function consentsManagementReducer(
                     isUpdateConsentedClaimsRequestLoading: false
                 };
             }
+            break;
+        case SET_CONSENTED_APPS:
+            return {
+                ...state,
+                consentedApps: action.payload
+            };
+        case SET_EDITING_CONSENT:
+            return {
+                ...state,
+                editingConsent: action.payload
+            };
+        case SET_CONSENT_RECEIPT:
+            return {
+                ...state,
+                consentReceipt: action.payload
+            };
+        case UPDATE_REVOKED_CLAIM_IDS:
+            return {
+                ...state,
+                revokedClaimIds: action.payload
+            };
+        case SHOW_CONSENTS_EDIT_VIEW:
+            return {
+                ...state,
+                isConsentEditViewVisible: true
+            };
+        case HIDE_CONSENTS_EDIT_VIEW:
+            return {
+                ...state,
+                isConsentEditViewVisible: false
+            };
+        case SHOW_CONSENTS_REVOKE_MODAL:
+            return {
+                ...state,
+                isConsentRevokeModalVisible: true
+            };
+        case HIDE_CONSENTS_REVOKE_MODAL:
+            return {
+                ...state,
+                isConsentRevokeModalVisible: false
+            };
         case SHOW_CONSENTS_MANAGEMENT_NOTIFICATION:
             return {
                 ...state,
