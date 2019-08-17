@@ -28,6 +28,8 @@ import {
     REVOKE_CONSENTED_APP,
     REVOKE_CONSENTED_APP_ERROR,
     REVOKE_CONSENTED_APP_SUCCESS,
+    setConsentedApps,
+    setConsentReceipt,
     showChangePasswordFormNotification,
     UPDATE_CONSENTED_CLAIMS,
     UPDATE_CONSENTED_CLAIMS_ERROR,
@@ -65,7 +67,7 @@ const handleFetchConsentedApps = ({ dispatch }) => (next) => (action) => {
             "Authorization": `Bearer ${ AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST) }`,
             "Content-Type": "application/json"
         },
-        method: "get",
+        method: "GET",
         onError: FETCH_CONSENTED_APPS_ERROR,
         onSuccess: FETCH_CONSENTED_APPS_SUCCESS,
         url: ServiceResourcesEndpoint.consents
@@ -73,6 +75,27 @@ const handleFetchConsentedApps = ({ dispatch }) => (next) => (action) => {
 
     // Dispatch an API request action.
     dispatch(apiRequest(requestConfig));
+};
+
+/**
+ * Intercepts and handles actions of type `FETCH_CONSENTED_APPS_SUCCESS`.
+ *
+ * @param {any} dispatch - `dispatch` function from redux.
+ * @returns {(next) => (action) => any} Passes the action to the next middleware
+ */
+const handleFetchConsentedAppsSuccess = ({ dispatch }) => (next) => (action) => {
+    next(action);
+
+    if (action.type !== FETCH_CONSENTED_APPS_SUCCESS) {
+        return;
+    }
+
+    const response: HttpResponse = action.payload;
+
+    if (response.status && response.status === 200) {
+        // Dispatch an action to show the notification.
+        dispatch(setConsentedApps(response.data));
+    }
 };
 
 /**
@@ -151,6 +174,27 @@ const handleFetchConsentReceipt = ({ dispatch }) => (next) => (action) => {
 
     // Dispatch an API request action.
     dispatch(apiRequest(requestConfig));
+};
+
+/**
+ * Intercepts and handles actions of type `FETCH_CONSENT_RECEIPT_SUCCESS`.
+ *
+ * @param {any} dispatch - `dispatch` function from redux.
+ * @returns {(next) => (action) => any} Passes the action to the next middleware
+ */
+const handleFetchConsentReceiptSuccess = ({ dispatch }) => (next) => (action) => {
+    next(action);
+
+    if (action.type !== FETCH_CONSENT_RECEIPT_SUCCESS) {
+        return;
+    }
+
+    const response: HttpResponse = action.payload;
+
+    if (response.status && response.status === 200) {
+        // Dispatch an action to show the notification.
+        dispatch(setConsentReceipt(response.data));
+    }
 };
 
 /**
@@ -449,8 +493,10 @@ const handleUpdateConsentedClaimsError = ({ dispatch }) => (next) => (action) =>
 
 export const consentManagementMiddleware = [
     handleFetchConsentedApps,
+    handleFetchConsentedAppsSuccess,
     handleFetchConsentedAppsError,
     handleFetchConsentReceipt,
+    handleFetchConsentReceiptSuccess,
     handleFetchConsentReceiptError,
     handleRevokeConsentedApp,
     handleRevokeConsentedAppError,
