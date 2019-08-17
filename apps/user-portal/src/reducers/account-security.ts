@@ -53,7 +53,7 @@ export function accountRecoveryReducer(
           isChangePasswordRequestLoading: true
         };
       }
-      break;
+      return state;
     case API_REQUEST_END:
       if (action.payload === CHANGE_PASSWORD) {
         return {
@@ -61,7 +61,7 @@ export function accountRecoveryReducer(
           isChangePasswordRequestLoading: false
         };
       }
-      break;
+      return state;
     case SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION:
       return {
         ...state,
