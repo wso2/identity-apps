@@ -25,10 +25,11 @@ import {
     FETCH_CONSENTED_APPS,
     FETCH_CONSENTED_APPS_ERROR,
     FETCH_CONSENTED_APPS_SUCCESS,
+    fetchConsentedApps,
     REVOKE_CONSENTED_APP,
     REVOKE_CONSENTED_APP_ERROR,
     REVOKE_CONSENTED_APP_SUCCESS,
-    setConsentedApps,
+    updateConsentedApps,
     setConsentReceipt,
     showChangePasswordFormNotification,
     UPDATE_CONSENTED_CLAIMS,
@@ -45,16 +46,17 @@ import { createEmptyNotificationActionPayload, NotificationActionPayload } from 
  * Intercepts and handles actions of type `CHANGE_PASSWORD`.
  *
  * @param {any} dispatch - `dispatch` function from redux.
+ * @param {any} getState - Current  redux store state.
  * @returns {(next) => (action) => any} Passes the action to the next middleware
  */
-const handleFetchConsentedApps = ({ dispatch }) => (next) => (action) => {
+const handleFetchConsentedApps = ({ dispatch, getState }) => (next) => (action) => {
     next(action);
 
     if (action.type !== FETCH_CONSENTED_APPS) {
         return;
     }
 
-    const state: ConsentState = action.payload;
+    const state: ConsentState = getState().consentsManagement.consentState;
     const requestConfig: HttpRequestConfig = {
         data: {
             piiPrincipalId: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME),
@@ -94,7 +96,7 @@ const handleFetchConsentedAppsSuccess = ({ dispatch }) => (next) => (action) => 
 
     if (response.status && response.status === 200) {
         // Dispatch an action to show the notification.
-        dispatch(setConsentedApps(response.data));
+        dispatch(updateConsentedApps(response.data));
     }
 };
 
@@ -302,7 +304,9 @@ const handleRevokeConsentedAppSuccess = ({ dispatch }) => (next) => (action) => 
             visible: true
         };
 
-        // Dispatch an action to show the notification.
+        // Dispatch actions to re-fetch the consented apps list and
+        // to show a notification.
+        dispatch(fetchConsentedApps());
         dispatch(showChangePasswordFormNotification(notification));
     }
 };
@@ -440,7 +444,9 @@ const handleUpdateConsentedClaimsSuccess = ({ dispatch }) => (next) => (action) 
             visible: true
         };
 
-        // Dispatch an action to show the notification.
+        // Dispatch actions to re-fetch the consented apps list and
+        // to show a notification.
+        dispatch(fetchConsentedApps());
         dispatch(showChangePasswordFormNotification(notification));
     }
 };

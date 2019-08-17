@@ -20,6 +20,32 @@ import { ConsentInterface, ConsentReceiptInterface, ConsentState } from "../mode
 import { createEmptyNotificationActionPayload, NotificationActionPayload } from "../models/notifications";
 
 /**
+ * Action type to handle the consented applications state i.e ACTIVE, REVOKED etc.
+ *
+ * @type {string}
+ */
+export const SET_CONSENTED_APPS_STATE = "SET_CONSENTED_APPS_STATE";
+
+/**
+ * Fetch consented applications action interface.
+ */
+interface SetConsentedAppsStateAction {
+    payload: ConsentState;
+    type: typeof SET_CONSENTED_APPS_STATE;
+}
+
+/**
+ * Dispatches an action of type type `SET_CONSENTED_APPS_STATE`.
+ *
+ * @param {ConsentState} state - consent state ex: ACTIVE, REVOKED
+ * @returns An action of type `FETCH_CONSENTED_APPS`
+ */
+export const setConsentedAppsState = (state: ConsentState): SetConsentedAppsStateAction => ({
+    payload: state,
+    type: SET_CONSENTED_APPS_STATE
+});
+
+/**
  * Action type to handle the fetch consented applications action.
  *
  * @type {string}
@@ -30,18 +56,15 @@ export const FETCH_CONSENTED_APPS = "FETCH_CONSENTED_APPS";
  * Fetch consented applications action interface.
  */
 interface FetchConsentedAppsAction {
-    payload: ConsentState;
     type: typeof FETCH_CONSENTED_APPS;
 }
 
 /**
  * Dispatches an action of type type `FETCH_CONSENTED_APPS`.
  *
- * @param {ConsentState} state - consent state ex: ACTIVE, REVOKED
  * @returns An action of type `FETCH_CONSENTED_APPS`
  */
-export const fetchConsentedApps = (state: ConsentState): FetchConsentedAppsAction => ({
-    payload: state,
+export const fetchConsentedApps = (): FetchConsentedAppsAction => ({
     type: FETCH_CONSENTED_APPS
 });
 
@@ -64,25 +87,25 @@ export const FETCH_CONSENTED_APPS_ERROR = "FETCH_CONSENTED_APPS_ERROR";
  *
  * @type {string}
  */
-export const SET_CONSENTED_APPS = "SET_CONSENTED_APPS";
+export const UPDATE_CONSENTED_APPS = "UPDATE_CONSENTED_APPS";
 
 /**
  * Set consented applications action interface.
  */
-interface SetConsentedAppsAction {
+interface UpdateConsentedAppsAction {
     payload: ConsentInterface[];
-    type: typeof SET_CONSENTED_APPS;
+    type: typeof UPDATE_CONSENTED_APPS;
 }
 
 /**
- * Dispatches an action of type type `SET_CONSENTED_APPS`.
+ * Dispatches an action of type type `UPDATE_CONSENTED_APPS`.
  *
  * @param {ConsentInterface[]} consentsList - List of consented applications.
- * @return {SetConsentedAppsAction} - Set consented apps action.
+ * @return {UpdateConsentedAppsAction} - Set consented apps action.
  */
-export const setConsentedApps = (consentsList: ConsentInterface[]): SetConsentedAppsAction => ({
+export const updateConsentedApps = (consentsList: ConsentInterface[]): UpdateConsentedAppsAction => ({
     payload: consentsList,
-    type: SET_CONSENTED_APPS
+    type: UPDATE_CONSENTED_APPS
 });
 
 /**
@@ -130,7 +153,7 @@ interface SetConsentReceiptAction {
  * Dispatches an action of type type `SET_CONSENT_RECEIPT`.
  *
  * @param {ConsentReceiptInterface} receipt - The consent receipt object.
- * @return {SetConsentedAppsAction} - Set consent receipt action.
+ * @return {UpdateConsentedAppsAction} - Set consent receipt action.
  */
 export const setConsentReceipt = (receipt: ConsentReceiptInterface): SetConsentReceiptAction => ({
     payload: receipt,
@@ -238,7 +261,7 @@ interface UpdateConsentedClaimsAction {
  * @param {ConsentReceiptInterface} receipt - Receipt object
  * @returns An action of type `UPDATE_CONSENTED_CLAIMS`
  */
-export const updateConsentedClaims = (receipt: ConsentReceiptInterface): UpdateConsentedClaimsAction => ({
+export const updateConsentedClaim = (receipt: ConsentReceiptInterface): UpdateConsentedClaimsAction => ({
     payload: receipt,
     type: UPDATE_CONSENTED_CLAIMS
 });
@@ -414,5 +437,6 @@ export const hideConsentsManagementNotification = (
  */
 export type ConsentsManagementActionTypes = FetchConsentedAppsAction | FetchConsentReceiptAction |
     RevokeConsentedAppAction | UpdateConsentedClaimsAction | ConsentsManagementNotificationAction |
-    SetConsentedAppsAction | SetConsentReceiptAction | ToggleConsentsEditViewAction |
-    ToggleConsentsRevokeModalVisibilityAction | SetEditingConsentAction | UpdateRevokedClaimIdsAction;
+    UpdateConsentedAppsAction | SetConsentReceiptAction | ToggleConsentsEditViewAction |
+    ToggleConsentsRevokeModalVisibilityAction | SetEditingConsentAction | UpdateRevokedClaimIdsAction |
+    SetConsentedAppsStateAction;

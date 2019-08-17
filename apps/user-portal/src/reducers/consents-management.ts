@@ -28,16 +28,17 @@ import {
     HIDE_CONSENTS_REVOKE_MODAL,
     REVOKE_CONSENTED_APP,
     SET_CONSENT_RECEIPT,
-    SET_CONSENTED_APPS,
+    UPDATE_CONSENTED_APPS,
     SET_EDITING_CONSENT,
     SHOW_CONSENTS_EDIT_VIEW,
     SHOW_CONSENTS_MANAGEMENT_NOTIFICATION,
     SHOW_CONSENTS_REVOKE_MODAL,
     UPDATE_CONSENTED_CLAIMS,
-    UPDATE_REVOKED_CLAIM_IDS
+    UPDATE_REVOKED_CLAIM_IDS,
+    SET_CONSENTED_APPS_STATE
 } from "../actions";
 import { createEmptyNotificationActionPayload } from "../models/notifications";
-import { createEmptyConsent, createEmptyConsentReceipt } from "../models/consents";
+import { ConsentState, createEmptyConsent, createEmptyConsentReceipt } from "../models/consents";
 
 /**
  * Initial state.
@@ -45,6 +46,7 @@ import { createEmptyConsent, createEmptyConsentReceipt } from "../models/consent
 const initialState = {
     consentedApps: [],
     consentReceipt: createEmptyConsentReceipt(),
+    consentState: ConsentState.ACTIVE,
     editingConsent: createEmptyConsent(),
     revokedClaimIds: [],
     isConsentEditViewVisible: false,
@@ -89,7 +91,7 @@ export function consentsManagementReducer(
                     isUpdateConsentedClaimsRequestLoading: true
                 };
             }
-            break;
+            return state;
         case API_REQUEST_END:
             if (action.payload === FETCH_CONSENTED_APPS) {
                 return {
@@ -112,8 +114,13 @@ export function consentsManagementReducer(
                     isUpdateConsentedClaimsRequestLoading: false
                 };
             }
-            break;
-        case SET_CONSENTED_APPS:
+            return state;
+        case SET_CONSENTED_APPS_STATE:
+            return {
+                ...state,
+                consentState: action.payload
+            };
+        case UPDATE_CONSENTED_APPS:
             return {
                 ...state,
                 consentedApps: action.payload
