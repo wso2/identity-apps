@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ConsentReceiptInterface, ConsentState } from "../models/consents";
+import { ConsentInterface, ConsentReceiptInterface, ConsentState } from "../models/consents";
 import { createEmptyNotificationActionPayload, NotificationActionPayload } from "../models/notifications";
 
 /**
@@ -58,6 +58,84 @@ export const FETCH_CONSENTED_APPS_SUCCESS = "FETCH_CONSENTED_APPS_SUCCESS";
  * @type {string}
  */
 export const FETCH_CONSENTED_APPS_ERROR = "FETCH_CONSENTED_APPS_ERROR";
+
+/**
+ * Action type to set the list of consented apps after the request succeeds.
+ *
+ * @type {string}
+ */
+export const SET_CONSENTED_APPS = "SET_CONSENTED_APPS";
+
+/**
+ * Set consented applications action interface.
+ */
+interface SetConsentedAppsAction {
+    payload: ConsentInterface[];
+    type: typeof SET_CONSENTED_APPS;
+}
+
+/**
+ * Dispatches an action of type type `SET_CONSENTED_APPS`.
+ *
+ * @param {ConsentInterface[]} consentsList - List of consented applications.
+ * @return {SetConsentedAppsAction} - Set consented apps action.
+ */
+export const setConsentedApps = (consentsList: ConsentInterface[]): SetConsentedAppsAction => ({
+    payload: consentsList,
+    type: SET_CONSENTED_APPS
+});
+
+/**
+ * Action type to set the currently editing consented application.
+ *
+ * @type {string}
+ */
+export const SET_EDITING_CONSENT = "SET_EDITING_CONSENT";
+
+/**
+ * Set editing consent action interface.
+ */
+interface SetEditingConsentAction {
+    payload: ConsentInterface,
+    type: typeof SET_EDITING_CONSENT;
+}
+
+/**
+ * Dispatches an action of type type `SET_EDITING_CONSENT`.
+ *
+ * @param {ConsentInterface} consent - Currently editing consented application.
+ * @returns {SetEditingConsentAction}
+ */
+export const setEditingConsent = (consent: ConsentInterface): SetEditingConsentAction => ({
+    payload: consent,
+    type: SET_EDITING_CONSENT
+});
+
+/**
+ * Action type to set the selected consent receipt pulled from the API.
+ *
+ * @type {string}
+ */
+export const SET_CONSENT_RECEIPT = "SET_CONSENT_RECEIPT";
+
+/**
+ * Set consent receipt action interface.
+ */
+interface SetConsentReceiptAction {
+    payload: ConsentReceiptInterface,
+    type: typeof SET_CONSENT_RECEIPT;
+}
+
+/**
+ * Dispatches an action of type type `SET_CONSENT_RECEIPT`.
+ *
+ * @param {ConsentReceiptInterface} receipt - The consent receipt object.
+ * @return {SetConsentedAppsAction} - Set consent receipt action.
+ */
+export const setConsentReceipt = (receipt: ConsentReceiptInterface): SetConsentReceiptAction => ({
+    payload: receipt,
+    type: SET_CONSENT_RECEIPT
+});
 
 /**
  * Action type to handle the fetch consent receipt action.
@@ -160,7 +238,7 @@ interface UpdateConsentedClaimsAction {
  * @param {ConsentReceiptInterface} receipt - Receipt object
  * @returns An action of type `UPDATE_CONSENTED_CLAIMS`
  */
-export const updateConsentedClaim = (receipt: ConsentReceiptInterface): UpdateConsentedClaimsAction => ({
+export const updateConsentedClaims = (receipt: ConsentReceiptInterface): UpdateConsentedClaimsAction => ({
     payload: receipt,
     type: UPDATE_CONSENTED_CLAIMS
 });
@@ -178,6 +256,110 @@ export const UPDATE_CONSENTED_CLAIMS_SUCCESS = "UPDATE_CONSENTED_CLAIMS_SUCCESS"
  * @type {string}
  */
 export const UPDATE_CONSENTED_CLAIMS_ERROR = "UPDATE_CONSENTED_CLAIMS_ERROR";
+
+/**
+ * Action type to handle the consented claim toggles.
+ *
+ * @type {string}
+ */
+export const UPDATE_REVOKED_CLAIM_IDS = "UPDATE_REVOKED_CLAIM_IDS";
+
+/**
+ * Update revoked claim IDs action interface.
+ */
+interface UpdateRevokedClaimIdsAction {
+    payload: number[];
+    type: typeof UPDATE_REVOKED_CLAIM_IDS;
+}
+
+/**
+ * Dispatches an action of type `UPDATE_REVOKED_CLAIM_IDS`.
+ *
+ * @param {ConsentReceiptInterface} claimIds - List of all the revoked claim ids
+ * @returns {UpdateRevokedClaimIdsAction}
+ */
+export const updateRevokedClaimIds = (claimIds: number[]): UpdateRevokedClaimIdsAction => ({
+    payload: claimIds,
+    type: UPDATE_REVOKED_CLAIM_IDS
+});
+
+/**
+ * Action type to handle consent edit view visibility.
+ *
+ * @type {string}
+ */
+export const SHOW_CONSENTS_EDIT_VIEW = "SHOW_CONSENTS_EDIT_VIEW";
+
+/**
+ * Action type to handle consent edit view visibility.
+ *
+ * @type {string}
+ */
+export const HIDE_CONSENTS_EDIT_VIEW = "HIDE_CONSENTS_EDIT_VIEW";
+
+/**
+ * Generic interface to handle consent edit view visibility actions.
+ */
+interface ToggleConsentsEditViewAction {
+    type: typeof SHOW_CONSENTS_EDIT_VIEW | typeof HIDE_CONSENTS_EDIT_VIEW
+}
+
+/**
+ * Dispatches an action of type `SHOW_CONSENTS_EDIT_VIEW`.
+ *
+ * @returns {{type: string}} Returning action
+ */
+export const showConsentsEditView = (): ToggleConsentsEditViewAction => ({
+    type: SHOW_CONSENTS_EDIT_VIEW
+});
+
+/**
+ * Dispatches an action of type `HIDE_CONSENTS_EDIT_VIEW`.
+ *
+ * @return {{type: string}} Returning action
+ */
+export const hideConsentsEditView = (): ToggleConsentsEditViewAction => ({
+    type: HIDE_CONSENTS_EDIT_VIEW
+});
+
+/**
+ * Action type to show the consent revoke confirmation modal.
+ *
+ * @type {string}
+ */
+export const SHOW_CONSENTS_REVOKE_MODAL = "SHOW_CONSENTS_REVOKE_MODAL";
+
+/**
+ * Action type to hide the consent revoke confirmation modal.
+ *
+ * @type {string}
+ */
+export const HIDE_CONSENTS_REVOKE_MODAL = "HIDE_CONSENTS_REVOKE_MODAL";
+
+/**
+ * Generic interface to handle consent edit view visibility actions.
+ */
+interface ToggleConsentsRevokeModalVisibilityAction {
+    type: typeof SHOW_CONSENTS_REVOKE_MODAL | typeof HIDE_CONSENTS_REVOKE_MODAL
+}
+
+/**
+ * Dispatches an action of type `SHOW_CONSENTS_REVOKE_MODAL`.
+ *
+ * @returns {{type: string}} Returning action
+ */
+export const showConsentsRevokeModal = (): ToggleConsentsRevokeModalVisibilityAction => ({
+    type: SHOW_CONSENTS_REVOKE_MODAL
+});
+
+/**
+ * Dispatches an action of type `HIDE_CONSENTS_EDIT_VIEW`.
+ *
+ * @return {{type: string}} Returning action
+ */
+export const hideConsentsRevokeModal = (): ToggleConsentsRevokeModalVisibilityAction => ({
+    type: HIDE_CONSENTS_REVOKE_MODAL
+});
 
 /**
  * Action type to show a notification for the consents management component.
@@ -222,7 +404,7 @@ export const HIDE_CONSENTS_MANAGEMENT_NOTIFICATION = "HIDE_CONSENTS_MANAGEMENT_N
  */
 export const hideConsentsManagementNotification = (
     data: NotificationActionPayload = createEmptyNotificationActionPayload()
-) => ({
+): ConsentsManagementNotificationAction => ({
     payload: data,
     type: HIDE_CONSENTS_MANAGEMENT_NOTIFICATION
 });
@@ -231,4 +413,6 @@ export const hideConsentsManagementNotification = (
  * Action type to specify consents management actions.
  */
 export type ConsentsManagementActionTypes = FetchConsentedAppsAction | FetchConsentReceiptAction |
-    RevokeConsentedAppAction | UpdateConsentedClaimsAction | ConsentsManagementNotificationAction;
+    RevokeConsentedAppAction | UpdateConsentedClaimsAction | ConsentsManagementNotificationAction |
+    SetConsentedAppsAction | SetConsentReceiptAction | ToggleConsentsEditViewAction |
+    ToggleConsentsRevokeModalVisibilityAction | SetEditingConsentAction | UpdateRevokedClaimIdsAction;
