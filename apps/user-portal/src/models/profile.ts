@@ -26,29 +26,25 @@ export interface BasicProfileInterface {
     lastName: string;
     phoneNumbers: number[];
     organisation: string;
+    responseStatus: number;
     roles: string[];
     proUrl: string;
     isSecurity: boolean;
-    firstNameEdit: boolean;
-    lastNameEdit: boolean;
-    emailEdit: boolean;
-    updateStatus: boolean;
+    mobile: string;
     username: string;
 }
 
 export const createEmptyProfile = (): BasicProfileInterface => ({
     displayName: "",
     email: "",
-    emailEdit: false,
     emails: [],
-    firstNameEdit: false,
     isSecurity: false,
     lastName: "",
-    lastNameEdit: false,
+    mobile: "",
     organisation: "",
     phoneNumbers: [],
     proUrl: "",
+    responseStatus: null,
     roles: [],
-    updateStatus: false,
     username: ""
 });

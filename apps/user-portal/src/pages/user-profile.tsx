@@ -18,28 +18,37 @@
 
 import * as React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
-import { Button, Container, Divider, Form, Grid, Header, Icon, Message, Segment, Transition } from "semantic-ui-react";
+import { Button, Container, Divider, Form, Grid, Header, Icon, Segment, Transition } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../actions";
 import { NotificationComponent, UserImagePlaceHolder } from "../components";
 import { InnerPageLayout } from "../layouts";
 import { createEmptyProfile } from "../models/profile";
 
 /**
- * Component Props types
- */
-interface IComponentProps extends WithTranslation { }
-
-/**
  * User Profile Page of the User Portal
  */
-class UserProfilePageComponent extends React.Component<IComponentProps, any> {
+class UserProfilePageComponent extends React.Component<WithTranslation, any> {
     /**
      * constructor
      * @param props
      */
     constructor(props) {
         super(props);
-        this.state = createEmptyProfile();
+        this.state = {
+            emailEdit: false,
+            nameEdit: false,
+            notification: {
+                description: "",
+                message: "",
+                other: {
+                    error: false,
+                    success: false
+                }
+            },
+            personalInfoEdit: false,
+            profile: createEmptyProfile(),
+            updateStatus: false,
+        }
         this.handleSave = this.handleSave.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -59,8 +68,12 @@ class UserProfilePageComponent extends React.Component<IComponentProps, any> {
      * @param event
      */
     public handleFieldChange = (event) => {
+        const {profile} = this.state;
         this.setState({
-            [event.target.id]: event.target.value
+            profile : {
+                ...profile,
+                [event.target.id]: event.target.value
+            }
         });
         event.preventDefault();
     }
@@ -71,7 +84,7 @@ class UserProfilePageComponent extends React.Component<IComponentProps, any> {
      */
     public handleEdit = (event) => {
         this.setState({
-            [event.target.id]: true
+                [event.target.id]: true
         });
     }
 
@@ -91,6 +104,8 @@ class UserProfilePageComponent extends React.Component<IComponentProps, any> {
      * @param event
      */
     public handleSave = (event) => {
+        const {t} = this.props;
+        const {profile, notification} = this.state;
         const data = {
             Operations: [
                 {
@@ -103,43 +118,79 @@ class UserProfilePageComponent extends React.Component<IComponentProps, any> {
             ]
         };
 
+        const phoneNumbers = {
+            type: "mobile",
+            value: profile.mobile
+        }
+        profile.phoneNumbers.push(phoneNumbers);
+
         const emails = [];
-        emails.push(this.state.email);
+        emails.push(profile.email);
         switch (event.target.id) {
-            case "displayName" : {
-                data.Operations[0].value = {name: {givenName: this.state.displayName}};
-                break;
-            }
-            case "lastName" : {
-                data.Operations[0].value = {name: {familyName: this.state.lastName}};
+            case "name" : {
+                data.Operations[0].value = {
+                    name: {
+                        familyName: profile.lastName,
+                        givenName: profile.displayName
+                    }
+                };
                 break;
             }
             case "email" : {
                 data.Operations[0].value = {emails};
                 break;
             }
+            case "pInfo" : {
+                data.Operations[0].value = {
+                    "phoneNumbers": [
+                        {
+                            type: "mobile",
+                            value: profile.mobile
+                        }
+                    ],
+                    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+                        organization: profile.organisation
+                    }
+                };
+                break;
+            }
         }
-
         updateProfileInfo(data)
             .then((response) => {
-                if (response === 200) {
+                if (response.status === 200) {
                     this.setState({
+                        notification: {
+                            ...notification,
+                            description: t(
+                                "views:userProfile.notification.updateProfileInfo.success.description"
+                            ),
+                            message: t(
+                                "views:userProfile.notification.updateProfileInfo.success.message"
+                            ),
+                            other: {
+                                success: true
+                            }
+                        },
                         updateStatus: true
-                    });
+                    })
+                    getProfileInfo()
+                        .then((res) => {
+                            this.setProfileDetails(res);
+                        });
                 }
             });
 
-        if (event.target.id === "displayName") {
+        if (event.target.id === "name") {
             this.setState({
-                firstNameEdit: false
+                nameEdit: false
             });
-        } else if (event.target.id === "lastName") {
+        } else if (event.target.id === "email") {
             this.setState({
-                lastNameEdit: false
+                emailEdit: false
             });
         } else {
             this.setState({
-                emailEdit: false
+                personalInfoEdit: false
             });
         }
     }
@@ -154,62 +205,54 @@ class UserProfilePageComponent extends React.Component<IComponentProps, any> {
     }
 
     public render() {
-        const { t } = this.props;
-        const handleFNameChange = (value) => {
-            if (this.state.firstNameEdit) {
+        const {t} = this.props;
+        const {profile, notification} = this.state;
+        const {description, message, other} = notification;
+        const handleNameChange = () => {
+            if (this.state.nameEdit) {
                 return (<>
                         <Segment padded>
-                            {t("views:userProfile.inputFields.firstName")}
-                            <Form.Input id="displayName" value={value}
-                                        onChange={this.handleFieldChange}/>
-                            <div className="ui two buttons">
-                                <Button id="displayName" positive onClick={this.handleSave}>
-                                    {t("common:save")}
-                                </Button>
-                                <Button id="firstNameEdit" onClick={this.handleCancel}>
-                                    {t("common:cancel")}
-                                </Button>
-                            </div>
+                            <Grid>
+                                <Grid.Row columns={2}>
+                                    <Grid.Column>
+                                        <Form.Field>
+                                            <label>{t("views:userProfile.inputFields.firstName")}</label>
+                                            <input required id="displayName"
+                                                   value={profile.displayName}
+                                                   onChange={this.handleFieldChange}/>
+                                        </Form.Field>
+                                    </Grid.Column>
+                                    <Grid.Column>
+                                        <Form.Field>
+                                            <label>{t("views:userProfile.inputFields.lastName")}</label>
+                                            <input required id="lastName"
+                                                   value={profile.lastName}
+                                                   onChange={this.handleFieldChange}/>
+                                        </Form.Field>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                            <Divider hidden/>
+                            <Button id="name" primary onClick={this.handleSave}>
+                                {t("common:save")}
+                            </Button>
+                            <Button id="nameEdit" secondary onClick={this.handleCancel}>
+                                {t("common:cancel")}
+                            </Button>
                         </Segment>
                     </>
                 );
             } else {
                 return (<>
-                        {t("views:userProfile.inputFields.firstName")}
-                        <Button id="firstNameEdit" onClick={this.handleEdit} style={{marginLeft: "10px"}}
-                                circular size="mini" basic icon compact>
-                            <Icon id="firstNameEdit" onClick={this.handleEdit} name="edit"/>
-                        </Button>
-                        <Form.Field label={this.state.displayName}/></>
-                );
-            }
-        };
-
-        const handleLNameChange = (value) => {
-            if (this.state.lastNameEdit) {
-                return (<>
-                        <Segment padded>
-                            {t("views:userProfile.inputFields.lastName")}
-                            <Form.Input id="lastName" value={value} onChange={this.handleFieldChange}/>
-                            <div className="ui two buttons">
-                                <Button id="lastName" positive onClick={this.handleSave}>
-                                    {t("common:save")}
-                                </Button>
-                                <Button id="lastNameEdit" onClick={this.handleCancel}>
-                                    {t("common:cancel")}
-                                </Button>
-                            </div>
-                        </Segment>
+                        <Form.Field>
+                            <label>{t("views:userProfile.inputFields.name")}</label>
+                            <label>{profile.displayName + " " + profile.lastName}
+                            <Icon size="small" color="grey" id="nameEdit" onClick={this.handleEdit}
+                                  style={{marginLeft: "10px"}}
+                                  name="pencil alternate"/>
+                            </label>
+                        </Form.Field>
                     </>
-                );
-            } else {
-                return (<>
-                        {t("views:userProfile.inputFields.lastName")}
-                        <Button id="lastNameEdit" onClick={this.handleEdit} style={{marginLeft: "10px"}}
-                                circular size="mini" basic icon compact>
-                            <Icon id="lastNameEdit" onClick={this.handleEdit} name="edit"/>
-                        </Button>
-                        <Form.Field label={value}/></>
                 );
             }
         };
@@ -218,27 +261,86 @@ class UserProfilePageComponent extends React.Component<IComponentProps, any> {
             if (this.state.emailEdit) {
                 return (<>
                         <Segment padded>
-                            {t("views:userProfile.inputFields.email")}
-                            <Form.Input id="email" value={value} onChange={this.handleFieldChange}/>
-                            <div className="ui two buttons">
-                                <Button id="email" positive onClick={this.handleSave}>
-                                    {t("common:save")}
-                                </Button>
-                                <Button id="emailEdit" onClick={this.handleCancel}>
-                                    {t("common:cancel")}
-                                </Button>
-                            </div>
+                            <Form.Field>
+                                <label>{t("views:userProfile.inputFields.email")}</label>
+                                <input required id="email" value={value} onChange={this.handleFieldChange}/>
+                            </Form.Field>
+                            <Button id="email" primary onClick={this.handleSave}>
+                                {t("common:save")}
+                            </Button>
+                            <Button id="emailEdit" secondary onClick={this.handleCancel}>
+                                {t("common:cancel")}
+                            </Button>
                         </Segment>
                     </>
                 );
             } else {
                 return (<>
-                        {t("views:userProfile.inputFields.email")}
-                        <Button id="emailEdit" onClick={this.handleEdit} style={{marginLeft: "10px"}}
-                                circular size="mini" basic icon compact>
-                            <Icon id="emailEdit" onClick={this.handleEdit} name="edit"/>
-                        </Button>
-                        <Form.Field label={value}/></>
+                        <Form.Field>
+                            <label>{t("views:userProfile.inputFields.email")}</label>
+                        <label>{value}
+                            <Icon size="small" color="grey" id="emailEdit"
+                                  onClick={this.handleEdit} style={{marginLeft: "10px"}}
+                                  name="pencil alternate"/>
+                        </label>
+                        </Form.Field>
+                    </>
+                );
+            }
+        };
+
+        const handlePInfoChange = () => {
+            if (this.state.personalInfoEdit) {
+                return (<>
+                        <Container>
+                            <Segment padded style={{width: "550px"}}>
+                                <Grid>
+                                    <Grid.Row columns={2}>
+                                        <Grid.Column >
+                                            <Form.Field>
+                                                <label>{t("views:userProfile.inputFields.organisation")}</label>
+                                                <input required value={profile.organisation} id="organisation"
+                                                       onChange={this.handleFieldChange}/>
+                                            </Form.Field>
+                                        </Grid.Column>
+                                        <Grid.Column >
+                                            <Form.Field>
+                                                <label>{t("views:userProfile.inputFields.mobile")}</label>
+                                                <input required value={profile.mobile} id="mobile"
+                                                       onChange={this.handleFieldChange}/>
+                                            </Form.Field>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                                <Divider hidden/>
+                                <Button id="pInfo" primary onClick={this.handleSave}>
+                                    {t("common:save")}
+                                </Button>
+                                <Button id="personalInfoEdit" secondary onClick={this.handleCancel}>
+                                    {t("common:cancel")}
+                                </Button>
+                            </Segment>
+                        </Container>
+                    </>
+                );
+            } else {
+                return (
+                    <Grid>
+                        <Grid.Row columns={2}>
+                            <Grid.Column width={3}>
+                                <Form.Field>
+                                    <label>{t("views:userProfile.inputFields.organisation")}</label>
+                                    <label>{profile.organisation}</label>
+                                </Form.Field>
+                            </Grid.Column>
+                            <Grid.Column>
+                                <Form.Field>
+                                    <label>{t("views:userProfile.inputFields.mobile")}</label>
+                                    <label>{profile.mobile}</label>
+                                </Form.Field>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
                 );
             }
         };
@@ -249,9 +351,8 @@ class UserProfilePageComponent extends React.Component<IComponentProps, any> {
                 pageDescription={t("views:userProfile.subTitle")}>
                 <Container>
                     <Transition visible={this.state.updateStatus} duration={500}>
-                        <NotificationComponent onDismiss={this.handleDismiss} size="small"
-                                               description="The required user details were updated successfully."
-                                               success message="User Profile was successfully updated"
+                        <NotificationComponent {...other} onDismiss={this.handleDismiss} size="small"
+                                               description={description} message={message}
                         />
                     </Transition>
                     <Divider hidden/>
@@ -263,40 +364,29 @@ class UserProfilePageComponent extends React.Component<IComponentProps, any> {
                                 </Grid.Column>
                                 <Grid.Column>
                                     <Grid.Row>
-                                        {handleFNameChange(this.state.displayName)}
+                                        {handleNameChange()}
                                     </Grid.Row>
                                     <Divider hidden/>
                                     <Grid.Row>
-                                        {handleLNameChange(this.state.lastName)}
+                                        {handleEmailChange(profile.email)}
                                     </Grid.Row>
                                     <Divider hidden/>
                                     <Grid.Row>
-                                        {handleEmailChange(this.state.email)}
-                                    </Grid.Row>
-                                    <Divider hidden/>
-                                    <Grid.Row>
-                                        {t("views:userProfile.inputFields.username")}<br/>
-                                        {this.state.username}
+                                        <Form.Field>
+                                            <label>{t("views:userProfile.inputFields.username")}</label>
+                                            <label>{profile.username}</label>
+                                        </Form.Field>
                                     </Grid.Row>
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
-                        <Header dividing={true} as="h3">Personal Information</Header>
                         <Divider hidden/>
-                        <Grid>
-                            <Grid.Row columns={2}>
-                                <Grid.Column width={3}>
-                                    {t("views:userProfile.inputFields.organisation")}<br/>
-                                    {this.state.organisation}
-                                </Grid.Column>
-                                <Grid.Column>
-                                    {t("views:userProfile.inputFields.mobile")}<br/>
-                                    {this.state.phoneNumbers.map((mobile) => {
-                                        return (<div>{mobile.value}</div>);
-                                    })}
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
+                        <Header dividing as="h3">{t("views:userProfile.personalInfoTitle")}
+                            <Button basic compact id="personalInfoEdit" onClick={this.handleEdit}
+                                    size="small">Update</Button>
+                        </Header>
+                        <Divider hidden/>
+                        {handlePInfoChange()}
                     </Form>
                 </Container>
             </InnerPageLayout>
@@ -308,17 +398,45 @@ class UserProfilePageComponent extends React.Component<IComponentProps, any> {
      * @param response
      */
     private setProfileDetails(response) {
-        this.setState({
-            displayName: response.displayName,
-            email: response.emails[0],
-            emails: response.emails,
-            lastName: response.lastName,
-            organisation: response.organisation,
-            phoneNumbers: response.phoneNumbers,
-            proUrl: response.proUrl,
-            roles: response.roles,
-            username: response.username
-        });
+        const {t} = this.props;
+        const {profile, notification} = this.state;
+        if (response.responseStatus === 200) {
+            let mobileNumber = "";
+            response.phoneNumbers.map((mobile) => {
+                mobileNumber = mobile.value;
+            });
+            this.setState({
+                profile: {
+                    ...profile,
+                    displayName: response.displayName,
+                    email: response.emails[0],
+                    emails: response.emails,
+                    lastName: response.lastName,
+                    mobile: mobileNumber,
+                    organisation: response.organisation,
+                    phoneNumbers: response.phoneNumbers,
+                    proUrl: response.proUrl,
+                    roles: response.roles,
+                    username: response.username
+                }
+            });
+        } else {
+            this.setState({
+                notification: {
+                    ...notification,
+                    description: t(
+                        "views:userProfile.notification.getProfileInfo.error.description"
+                    ),
+                    message: t(
+                        "views:userProfile.notification.getProfileInfo.error.message"
+                    ),
+                    other: {
+                        error: true
+                    }
+                },
+                updateStatus: true
+            });
+        }
     }
 }
 

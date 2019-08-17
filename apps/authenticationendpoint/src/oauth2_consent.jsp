@@ -54,56 +54,6 @@
     boolean userClaimsConsentOnly = Boolean.parseBoolean(request.getParameter(Constants.USER_CLAIMS_CONSENT_ONLY));
 %>
 
-<c:set var="top">
-    <script type="text/javascript">
-        function approved() {
-            var mandatoryClaimCBs = $(".mandatory-claim");
-            var checkedMandatoryClaimCBs = $(".mandatory-claim:checked");
-            var scopeApproval = $("input[name='scope-approval']");
-    
-            // If scope approval radio button is rendered then we need to validate that it's checked
-            if (scopeApproval.length > 0) {
-                if (scopeApproval.is(":checked")) {
-                    var checkScopeConsent = $("input[name='scope-approval']:checked");
-                    $('#consent').val(checkScopeConsent.val());
-                } else {
-                    $("#modal_scope_validation").modal('show');
-                    return;
-                }
-            } else {
-                // Scope radio button was not rendered therefore set the consent to 'approve'
-                document.getElementById('consent').value = "approve";
-            }
-    
-            if (checkedMandatoryClaimCBs.length === mandatoryClaimCBs.length) {
-                document.getElementById("profile").submit();
-            } else {
-                $("#modal_claim_validation").modal('show');
-            }
-        }
-    
-        function approvedAlways() {
-            var mandatoryClaimCBs = $(".mandatory-claim");
-            var checkedMandatoryClaimCBs = $(".mandatory-claim:checked");
-    
-            if (checkedMandatoryClaimCBs.length === mandatoryClaimCBs.length) {
-                document.getElementById('consent').value = "approveAlways";
-                document.getElementById("profile").submit();
-            } else {
-                $("#modal_claim_validation").modal('show');
-            }
-        }
-    
-        function deny() {
-            document.getElementById('consent').value = "deny";
-            document.getElementById("profile").submit();
-        }
-
-        function hideModal(elem) {
-            $(elem).closest('.modal').modal('hide');
-        }
-    </script>
-</c:set>
 <c:set var="body">
     <h3 class="ui header">
         <strong><%=Encode.forHtml(request.getParameter("application"))%></strong>
@@ -130,8 +80,7 @@
                     <%
                         for (String scopeID : openIdScopes) {
                     %>
-                    <li><%=Encode.forHtml(scopeID)%>
-                    </li>
+                    <li><%=Encode.forHtml(scopeID)%></li>
                     <%
                         }
                     %>
@@ -223,6 +172,7 @@
             </div>
         </div>
         <% } %>
+        <div class="ui divider hidden"></div>
         <div class="feild">
             <div class="ui visible warning message" role="alert">
                 <div>
@@ -280,6 +230,53 @@
 </c:set>
 <c:set var="bottom">
     <script>
+        function approved() {
+            var mandatoryClaimCBs = $(".mandatory-claim");
+            var checkedMandatoryClaimCBs = $(".mandatory-claim:checked");
+            var scopeApproval = $("input[name='scope-approval']");
+    
+            // If scope approval radio button is rendered then we need to validate that it's checked
+            if (scopeApproval.length > 0) {
+                if (scopeApproval.is(":checked")) {
+                    var checkScopeConsent = $("input[name='scope-approval']:checked");
+                    $('#consent').val(checkScopeConsent.val());
+                } else {
+                    $("#modal_scope_validation").modal('show');
+                    return;
+                }
+            } else {
+                // Scope radio button was not rendered therefore set the consent to 'approve'
+                document.getElementById('consent').value = "approve";
+            }
+    
+            if (checkedMandatoryClaimCBs.length === mandatoryClaimCBs.length) {
+                document.getElementById("profile").submit();
+            } else {
+                $("#modal_claim_validation").modal('show');
+            }
+        }
+    
+        function approvedAlways() {
+            var mandatoryClaimCBs = $(".mandatory-claim");
+            var checkedMandatoryClaimCBs = $(".mandatory-claim:checked");
+    
+            if (checkedMandatoryClaimCBs.length === mandatoryClaimCBs.length) {
+                document.getElementById('consent').value = "approveAlways";
+                document.getElementById("profile").submit();
+            } else {
+                $("#modal_claim_validation").modal('show');
+            }
+        }
+    
+        function deny() {
+            document.getElementById('consent').value = "deny";
+            document.getElementById("profile").submit();
+        }
+
+        function hideModal(elem) {
+            $(elem).closest('.modal').modal('hide');
+        }
+
         $(document).ready(function () {
             $("#consent_select_all").click(function () {
                 if (this.checked) {
@@ -309,7 +306,6 @@
     pageTitle='<%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%>'
     productTitle='<%=AuthenticationEndpointUtil.i18n(resourceBundle, "identity.server")%>'
     businessName='<%=AuthenticationEndpointUtil.i18n(resourceBundle, "business.name")%>'>
-    <jsp:attribute name="topIncludes">${top}</jsp:attribute>
     <jsp:attribute name="bottomIncludes">${bottom}</jsp:attribute>
     <jsp:body>${body}</jsp:body>    
 </template:loginWrapper>
