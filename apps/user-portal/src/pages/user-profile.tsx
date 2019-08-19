@@ -22,7 +22,7 @@ import { Button, Container, Divider, Form, Grid, Header, Icon, Segment, Transiti
 import { getProfileInfo, updateProfileInfo } from "../actions";
 import { NotificationComponent, UserImagePlaceHolder } from "../components";
 import { InnerPageLayout } from "../layouts";
-import { createEmptyProfile } from "../models/profile";
+import {BasicProfileInterface, createEmptyProfile} from "../models/profile";
 
 /**
  * User Profile Page of the User Portal
@@ -48,7 +48,7 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
             personalInfoEdit: false,
             profile: createEmptyProfile(),
             updateStatus: false,
-        }
+        };
         this.handleSave = this.handleSave.bind(this);
         this.handleFieldChange = this.handleFieldChange.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -121,7 +121,7 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
         const phoneNumbers = {
             type: "mobile",
             value: profile.mobile
-        }
+        };
         profile.phoneNumbers.push(phoneNumbers);
 
         const emails = [];
@@ -172,7 +172,7 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
                             }
                         },
                         updateStatus: true
-                    })
+                    });
                     getProfileInfo()
                         .then((res) => {
                             this.setProfileDetails(res);
@@ -202,6 +202,65 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
         this.setState({
             updateStatus: false
         });
+    }
+
+    public downloadUserProfile = () => {
+        const {t} = this.props;
+        const {notification} = this.state;
+        let data = {};
+        getProfileInfo()
+            .then((response) => {
+                if (response.responseStatus === 200) {
+                    data = {
+                        emails: response.emails,
+                        firstName: response.displayName,
+                        lastName: response.lastName,
+                        organisation: response.organisation,
+                        phoneNumbers: response.phoneNumbers,
+                        username: response.username
+                    }
+                    const blob = new Blob([JSON.stringify(data)]);
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.style.display = "none";
+                    a.href = url;
+                    a.download = "user-profile.json";
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    this.setState({
+                        notification: {
+                            ...notification,
+                            description: t(
+                                "views:userProfile.notification.downloadProfileInfo.success.description"
+                            ),
+                            message: t(
+                                "views:userProfile.notification.downloadProfileInfo.success.message"
+                            ),
+                            other: {
+                                success: true
+                            }
+                        },
+                        updateStatus: true
+                    });
+                } else {
+                    this.setState({
+                        notification: {
+                            ...notification,
+                            description: t(
+                                "views:userProfile.notification.downloadProfileInfo.error.description"
+                            ),
+                            message: t(
+                                "views:userProfile.notification.downloadProfileInfo.error.message"
+                            ),
+                            other: {
+                                error: true
+                            }
+                        },
+                        updateStatus: true
+                    });
+                }
+            });
     }
 
     public render() {
@@ -377,6 +436,10 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
                                             <label>{profile.username}</label>
                                         </Form.Field>
                                     </Grid.Row>
+                                </Grid.Column>
+                                <Grid.Column>
+                                    <Button basic compact size="small" onClick={this.downloadUserProfile}>
+                                        <Icon name="download"/>Export</Button>
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
