@@ -19,7 +19,7 @@
 import * as React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 import { Button, Container, Divider, Form, Grid, Header, Icon, Segment, Transition } from "semantic-ui-react";
-import {getProfileInfo, getUserInfo, updateProfileInfo} from "../actions";
+import { getProfileInfo, getUserInfo, updateProfileInfo } from "../actions";
 import { NotificationComponent, UserImagePlaceHolder } from "../components";
 import { InnerPageLayout } from "../layouts";
 import { createEmptyProfile } from "../models/profile";
