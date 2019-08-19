@@ -58,3 +58,5 @@
 @black            : #464646;
 @green            : #6a9955;
 @orange           : #ff5000;
+@lightGray        : #f1f1f1;
+@darkGray         : #d9d9d9;
