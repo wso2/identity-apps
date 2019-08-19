@@ -22,7 +22,7 @@ import { Button, Container, Divider, Form, Grid, Header, Icon, Segment, Transiti
 import { getProfileInfo, updateProfileInfo } from "../actions";
 import { NotificationComponent, UserImagePlaceHolder } from "../components";
 import { InnerPageLayout } from "../layouts";
-import { createEmptyProfile } from "../models/profile";
+import {BasicProfileInterface, createEmptyProfile} from "../models/profile";
 
 /**
  * User Profile Page of the User Portal
