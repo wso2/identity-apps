@@ -19,7 +19,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { Image } from "semantic-ui-react";
-import { HomeTileIconImages, LogoImage, TitleText, UserImage } from "../configs/ui";
+import { GenericAppPlaceholderIcon, HomeTileIconImages, LogoImage, TitleText, UserImage } from "../configs/ui";
 
 interface ImageProps {
     classes?: any;
@@ -102,3 +102,29 @@ export const HomeTileIcon = (props: HomeTileIconImageProps) => {
 };
 
 export const UserImageDummy = UserImage;
+
+export const GenericAppIcon = (props) => {
+    const { size, height, width, verticalAlign, spaced } = props;
+
+    let marginRight = 0;
+    let marginLeft = 0;
+    if (spaced && spaced === "right") {
+        marginRight = 25;
+    } else if (spaced && spaced === "left") {
+        marginLeft = 25;
+    }
+
+    return (
+        <div
+            className="generic-app-icon"
+            style={{padding: `${parseInt(height)/10}px`, marginRight: marginRight, marginLeft: marginLeft}}
+        >
+            <Image
+                src={GenericAppPlaceholderIcon}
+                size={size}
+                style={{height: `${height}px`, width: `${width}px`}}
+                verticalAlign={verticalAlign}
+            />
+        </div>
+    );
+};
