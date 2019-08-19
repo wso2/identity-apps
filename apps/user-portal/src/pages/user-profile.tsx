@@ -19,7 +19,7 @@
 import * as React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 import { Button, Container, Divider, Form, Grid, Header, Icon, Segment, Transition } from "semantic-ui-react";
-import { getProfileInfo, updateProfileInfo } from "../actions";
+import { getProfileInfo, getUserInfo, updateProfileInfo } from "../actions";
 import { NotificationComponent, UserImagePlaceHolder } from "../components";
 import { InnerPageLayout } from "../layouts";
 import { createEmptyProfile } from "../models/profile";
@@ -207,19 +207,10 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
     public downloadUserProfile = () => {
         const {t} = this.props;
         const {notification} = this.state;
-        let data = {};
-        getProfileInfo()
+        getUserInfo()
             .then((response) => {
-                if (response.responseStatus === 200) {
-                    data = {
-                        emails: response.emails,
-                        firstName: response.displayName,
-                        lastName: response.lastName,
-                        organisation: response.organisation,
-                        phoneNumbers: response.phoneNumbers,
-                        username: response.username
-                    }
-                    const blob = new Blob([JSON.stringify(data)]);
+                if (response.status === 200) {
+                    const blob = new Blob([JSON.stringify(response.data, null, 2)], {type : "application/json"});
                     const url = window.URL.createObjectURL(blob);
                     const a = document.createElement("a");
                     a.style.display = "none";

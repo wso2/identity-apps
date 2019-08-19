@@ -23,6 +23,33 @@ import { ServiceResourcesEndpoint } from "../configs";
 import { createEmptyProfile } from "../models/profile";
 
 /**
+ * Retrieve the user information of the currently authenticated user.
+ * @return {{Promise<AxiosResponse<any>>} a promise containing the response
+ */
+export const getUserInfo = () => {
+    const url = ServiceResourcesEndpoint.user;
+    const token = AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST);
+    const header = {
+        headers: {
+            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        }
+    };
+
+    return axios.get(url, header)
+        .then((response) => {
+            if (response.status === 200) {
+                return response;
+            }
+        })
+        .catch((error) => {
+            log.error(error);
+            return error;
+        });
+}
+
+/**
  * Retrieve the user profile details of the currently authenticated user.
  * @return {object: BasicProfileInterface} an object containing the user profile details.
  */
