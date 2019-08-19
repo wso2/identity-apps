@@ -20,90 +20,51 @@ import * as React from "react";
 import { withTranslation } from "react-i18next";
 import {
     Button,
-    Card,
     Checkbox,
     Container,
     Divider,
-    Header,
-    Icon,
-    Image,
-    Label,
     List,
-    MenuItem,
     Modal,
-    Segment,
-    Tab
+    Placeholder,
 } from "semantic-ui-react";
-import { getConsentReceipt, getConsents, revokeConsent, updateConsentedClaims } from "../actions";
+import {
+    fetchConsentedApps,
+    fetchConsentReceipt,
+    hideConsentsEditView,
+    hideConsentsRevokeModal,
+    revokeConsentedApp,
+    setConsentedAppsState,
+    setEditingConsent,
+    showConsentsEditView,
+    showConsentsRevokeModal,
+    updateConsentedClaim,
+    updateRevokedClaimIds
+} from "../actions";
 import { InnerPageLayout } from "../layouts";
 import {
     ConsentInterface,
     ConsentState,
-    createEmptyConsent,
-    createEmptyConsentReceipt,
     ServiceInterface
 } from "../models/consents";
+import { AppState } from "../helpers/store";
+import { connect } from "react-redux";
+import { AnyAction, bindActionCreators, Dispatch } from "redux";
+import { GenericAppIcon } from "../components";
 
 /**
  * This is the Consents Management Component of the User Portal.
  */
 class ConsentManagementComponent extends React.Component<any, any> {
-    /**
-     * constructor
-     * @param props
-     */
-    constructor(props) {
-        super(props);
-        this.state = {
-            activeIndex: 0,
-            consentReceipt: createEmptyConsentReceipt(),
-            consents: [],
-            editingConsent: createEmptyConsent(),
-            revokedClaimIds: [],
-            showConsentEditModal: false,
-            showConsentRevokeModal: false
-        };
-    }
-
-    public componentWillMount() {
-        this.updateConsents(ConsentState.ACTIVE);
-    }
 
     /**
-     * Handles the tab onclick event. The active tab index is also
-     * stored in the state and the list of consents is updated
-     * according to the selected tab.
-     * @param {React.MouseEvent<HTMLDivElement, MouseEvent>} e the tab change event
-     * @param {number} activeIndex active tab index
+     * ComponentWillMount lifecycle method
      */
-    public handleConsentTabChange = (
-        e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-        { activeIndex }: { activeIndex: number }
-    ): void => {
-        this.setState({ activeIndex }, () => {
-            const consentState: ConsentState = this.getConsentState(activeIndex);
-            this.updateConsents(consentState);
-        });
-    }
-
-    /**
-     * Fetches the consents list from the API and updates the state.
-     * @param {ConsentState} state consent state ex: ACTIVE, REVOKED
-     */
-    public updateConsents = (state: ConsentState): void => {
-        getConsents(state).then((response) => {
-            this.setState({ consents: response });
-        });
-    }
-
-    /**
-     * Retrieves the consent state corresponding to the active tab.
-     * @param {number} tabIndex active tab index
-     * @return {ConsentState} consent state ex: ACTIVE, REVOKED
-     */
-    public getConsentState = (tabIndex: number): ConsentState => {
-        // Currently only ACTIVE state apps are displayed.
-        return ConsentState.ACTIVE;
+    componentWillMount() {
+        const { actions } = this.props;
+        // Set the default consent state which is `ACTIVE`.
+        setConsentedAppsState(ConsentState.ACTIVE);
+        // fetch the consents list from the API.
+        actions.consentsManagement.fetchConsentedApps();
     }
 
     /**
@@ -112,43 +73,33 @@ class ConsentManagementComponent extends React.Component<any, any> {
      * consent. And finally toggles the consent edit modal visibility.
      * @param {ConsentInterface} consent corresponding consent object
      */
-    public handleConsentEditClick = (consent: ConsentInterface): void => {
-        const { showConsentEditModal } = this.state;
-        getConsentReceipt(consent.consentReceiptID).then((response) => {
-            this.setState({
-                consentReceipt: response,
-                editingConsent: consent,
-                showConsentEditModal: !showConsentEditModal
-            });
-        });
-    }
+    handleConsentEditClick = (consent: ConsentInterface): void => {
+        const { actions } = this.props;
+        actions.consentsManagement.fetchConsentReceipt(consent.consentReceiptID);
+        actions.consentsManagement.setEditingConsent(consent);
+        actions.consentsManagement.showConsentsEditView();
+    };
 
     /**
      * Handles the consent revoke button click. Sets the current consent object as
      * the editing consent and toggles the visibility of the consent revoke modal.
      * @param {ConsentInterface} consent corresponding consent object
      */
-    public handleConsentRevokeClick = (consent: ConsentInterface): void => {
-        const { showConsentRevokeModal } = this.state;
-        this.setState({
-            editingConsent: consent,
-            showConsentRevokeModal: !showConsentRevokeModal
-        });
-    }
+    handleConsentRevokeClick = (consent: ConsentInterface): void => {
+        const { actions } = this.props;
+        actions.consentsManagement.setEditingConsent(consent);
+        actions.consentsManagement.showConsentsRevokeModal();
+    };
 
     /**
      * Revokes the consent of an already consented application.
      */
-    public revokeConsent = (): void => {
-        const { editingConsent, activeIndex } = this.state;
-        revokeConsent(editingConsent.consentReceiptID).then((response) => {
-            const consentState: ConsentState = this.getConsentState(activeIndex);
-            this.updateConsents(consentState);
-            this.setState({
-                showConsentRevokeModal: false
-            });
-        });
-    }
+    revokeConsent = (): void => {
+        const { actions, editingConsent } = this.props;
+        actions.consentsManagement.revokeConsentedApp(editingConsent.consentReceiptID);
+        actions.consentsManagement.hideConsentsRevokeModal();
+        actions.consentsManagement.fetchConsentedApps();
+    };
 
     /**
      * Handles the claims enable and disable toggles. If the toggle is checked and the
@@ -158,28 +109,32 @@ class ConsentManagementComponent extends React.Component<any, any> {
      * @param {React.ChangeEvent<HTMLInputElement>} e the toggle event
      * @param {number} id claim id
      */
-    public handleClaimsToggle = (e: React.ChangeEvent<HTMLInputElement>, { id }: { id: number }): void => {
-        const { revokedClaimIds } = this.state;
+    handleClaimsToggle = (e: React.ChangeEvent<HTMLInputElement>, { id }: { id: number }): void => {
+        const { actions, revokedClaimIds } = this.props;
         const { checked } = e.target;
+
+        let ids = [...revokedClaimIds];
 
         if (checked) {
             if (revokedClaimIds.includes(id)) {
-                this.setState({ revokedClaimIds: revokedClaimIds.filter((claimId: number) => claimId !== id) });
+                ids = revokedClaimIds.filter((claimId: number) => claimId !== id);
+                actions.consentsManagement.updateRevokedClaimIds(ids);
             }
         } else {
             if (!revokedClaimIds.includes(id)) {
-                this.setState({ revokedClaimIds: [...revokedClaimIds, id] });
+                ids = [...ids, id];
+                actions.consentsManagement.updateRevokedClaimIds(ids);
             }
         }
-    }
+    };
 
     /**
      * Handles the claims update button click action event. The revoked claims are taken
      * out of the existing receipt object and are passed on to the `updateConsentedClaims`
      * which executes the API request and updates the consented claims.
      */
-    public handleClaimsUpdateClick = (): void => {
-        const { consentReceipt, revokedClaimIds, activeIndex } = this.state;
+    handleClaimsUpdateClick = (): void => {
+        const { actions, consentReceipt, revokedClaimIds } = this.props;
         const receipt = { ...consentReceipt };
 
         let isPIIEmpty: boolean = false;
@@ -204,154 +159,116 @@ class ConsentManagementComponent extends React.Component<any, any> {
         // If the PII category list is empty, show the consent revoke modal.
         // Else, perform the usual consented claims updating process.
         if (isPIIEmpty) {
-            this.setState({ showConsentEditModal: false, showConsentRevokeModal: true });
+            actions.consentsManagement.hideConsentsEditView();
+            actions.consentsManagement.showConsentsRevokeModal();
         } else {
-            const consentState: ConsentState = this.getConsentState(activeIndex);
-            // Update the claims.
-            updateConsentedClaims(receipt).then((response) => {
-                // Re-fetch the consents list and hide the consent edit modal.
-                this.updateConsents(consentState);
-                this.setState({
-                    showConsentEditModal: false
-                });
-            });
+            actions.consentsManagement.updateConsentedClaim(receipt);
+            actions.consentsManagement.hideConsentsEditView();
+            actions.consentsManagement.fetchConsentedApps();
         }
-    }
+    };
 
     /**
      * Handles the consent modal close action.
      */
-    public handleConsentModalClose = (): void => {
-        this.setState({ showConsentEditModal: false });
-    }
+    handleConsentModalClose = (): void => {
+        const { actions } = this.props;
+        actions.consentsManagement.hideConsentsEditView();
+    };
 
     /**
      * Handles the consent revoke modal close action.
      */
-    public handleConsentRevokeModalClose = (): void => {
-        this.setState({ showConsentRevokeModal: false });
-    }
+    handleConsentRevokeModalClose = (): void => {
+        const { actions } = this.props;
+        actions.consentsManagement.hideConsentsRevokeModal();
+    };
 
-    public render() {
+    /**
+     * Generates an empty placeholder to be shown until the consented
+     * application list is fetched from the API.
+     *
+     * @return {JSX.Element[]}
+     */
+    createConsentedAppsListPlaceholder = (): JSX.Element[] => {
+        let placeholder = [];
+        for (let i = 0; i < 3; i++) {
+            placeholder.push(<List.Item key={ i }>
+                <List.Content floated="right">
+                    <Button size="mini" disabled>Configure</Button>
+                    <Button negative size="mini" disabled>Revoke</Button>
+                </List.Content>
+                <Placeholder>
+                    <Placeholder.Header image>
+                        <Placeholder.Line/>
+                        <Placeholder.Line/>
+                    </Placeholder.Header>
+                </Placeholder>
+            </List.Item>);
+        }
+        return placeholder;
+    };
+
+    render() {
         const {
-            consents,
-            activeIndex,
-            editingConsent,
+            consentedApps,
             consentReceipt,
-            showConsentEditModal,
-            showConsentRevokeModal
-        } = this.state;
-
-        const { t } = this.props;
-
-        const paneContent = (
-            <>
-                {consents && consents.length > 0 ? (
-                    <Card.Group>
-                        {consents.map((consent: ConsentInterface) => (
-                            <Card key={consent.consentReceiptID}>
-                                <Card.Content>
-                                    <Image
-                                        floated="left"
-                                        size="tiny"
-                                        src="https://react.semantic-ui.com/images/wireframe/image.png"
-                                    />
-                                    <Card.Header>{consent.spDisplayName}</Card.Header>
-                                </Card.Content>
-                                {activeIndex === 0 ? (
-                                    <Card.Content extra>
-                                        <div className="ui two buttons">
-                                            <Button
-                                                basic
-                                                color="green"
-                                                onClick={() => this.handleConsentEditClick(consent)}
-                                            >
-                                                {t("common:edit")}
-                                            </Button>
-                                            <Button
-                                                basic
-                                                color="red"
-                                                onClick={() => this.handleConsentRevokeClick(consent)}
-                                            >
-                                                {t("common:revoke")}
-                                            </Button>
-                                        </div>
-                                    </Card.Content>
-                                ) : null}
-                            </Card>
-                        ))}
-                    </Card.Group>
-                ) : (
-                    <Segment placeholder>
-                        <Header icon>
-                            <Icon name="folder open outline" />
-                            {
-                                t(
-                                    "views:consentManagement.placeholders.emptyConsentList.heading",
-                                    { state: this.getConsentState(activeIndex).toLowerCase() }
-                                )
-                            }
-                        </Header>
-                    </Segment>
-                )}
-            </>
-        );
-
-        const tabPanes = [
-            {
-                menuItem: (
-                    <MenuItem key={0}>
-                        {t("common:active")}
-                        {activeIndex === 0 ? (
-                            <Label circular color="green">
-                                {consents ? consents.length : 0}
-                            </Label>
-                        ) : null}
-                    </MenuItem>
-                ),
-                render: () => <Tab.Pane attached="bottom">{paneContent}</Tab.Pane>
-            }
-        ];
+            editingConsent,
+            isConsentEditViewVisible,
+            isConsentRevokeModalVisible,
+            isFetchConsentedAppsRequestLoading,
+            t
+        } = this.props;
 
         const editConsentModal = (
-            <Modal open={showConsentEditModal} onClose={this.handleConsentModalClose} size="tiny">
-                <Modal.Header>
-                    <Image floated="left" size="mini" src="https://react.semantic-ui.com/images/wireframe/image.png" />
-                    {editingConsent.spDisplayName}
-                </Modal.Header>
-                <Modal.Content scrolling>
+            <Modal open={ isConsentEditViewVisible } onClose={ this.handleConsentModalClose } size="tiny">
+                <Modal.Content image>
+                    <GenericAppIcon height="100" width="100" verticalAlign="middle" spaced="right" />
                     <Modal.Description>
-                        <div>
-                            <strong>
-                                {t("views:consentManagement.modals.editConsentModal.description.state")}:
-                            </strong>
-                            {editingConsent.state}
+                        <div className="consented-app-heading">
+                            <h2>{ editingConsent.spDisplayName }</h2>
+                            <div className="meta">
+                                <strong>
+                                    { t("views:consentManagement.modals.editConsentModal.description.state") }
+                                    :
+                                </strong>
+                                { " "}
+                                { editingConsent.state }
+                            </div>
+                            <div className="meta">
+                                <strong>
+                                    { t("views:consentManagement.modals.editConsentModal.description.version") }
+                                    :
+                                </strong>
+                                { " "}
+                                { consentReceipt.version }
+                            </div>
+                            <div className="meta">
+                                <strong>
+                                    { t("views:consentManagement.modals.editConsentModal.description.collectionMethod") }:
+                                </strong>
+                                { " "}
+                                { consentReceipt.collectionMethod }
+                            </div>
+                            <div className="meta">
+                                <strong>
+                                    { t("views:consentManagement.modals.editConsentModal.description.description") }:
+                                </strong>
+                                { " "}
+                                { editingConsent.spDescription }
+                            </div>
                         </div>
-                        <div>
-                            <strong>
-                                {t("views:consentManagement.modals.editConsentModal.description.collectionMethod")}:
-                            </strong>
-                            {consentReceipt.collectionMethod}
-                        </div>
-                        <div>
-                            <strong>
-                                {t("views:consentManagement.modals.editConsentModal.description.version")}:
-                            </strong>
-                            {consentReceipt.version}
-                        </div>
-                        <div>
-                            <strong>
-                                {t("views:consentManagement.modals.editConsentModal.description.description")}:
-                            </strong>
-                            {editingConsent.spDescription}
-                        </div>
-                        <Divider />
+                    </Modal.Description>
+                </Modal.Content>
+                <Divider fitted />
+                <Modal.Content>
+                    <Modal.Description>
                         <p>
                             <strong>
-                                {t("views:consentManagement.modals.editConsentModal.description.piiCategoryHeading")}:
+                                { t("views:consentManagement.modals.editConsentModal.description.piiCategoryHeading") }:
                             </strong>
                         </p>
-                        {consentReceipt &&
+                        { consentReceipt &&
                         consentReceipt.services &&
                         consentReceipt.services.map(
                             (service: ServiceInterface) =>
@@ -359,45 +276,45 @@ class ConsentManagementComponent extends React.Component<any, any> {
                                 service.purposes &&
                                 service.purposes.map((purpose) => {
                                     return (
-                                        <div key={purpose.purposeId}>
-                                            <strong>{purpose.purpose}</strong>
+                                        <div key={ purpose.purposeId }>
+                                            <strong>{ purpose.purpose }</strong>
                                             <List verticalAlign="middle">
-                                                {purpose.piiCategory &&
+                                                { purpose.piiCategory &&
                                                 purpose.piiCategory.map((category) => (
-                                                    <List.Item key={category.piiCategoryId}>
+                                                    <List.Item key={ category.piiCategoryId }>
                                                         <List.Content floated="right">
                                                             <Checkbox
-                                                                id={category.piiCategoryId}
+                                                                id={ category.piiCategoryId }
                                                                 toggle
                                                                 defaultChecked
-                                                                onChange={this.handleClaimsToggle}
+                                                                onChange={ this.handleClaimsToggle }
                                                             />
                                                         </List.Content>
                                                         <List.Content>
-                                                            {category.piiCategoryDisplayName}
+                                                            { category.piiCategoryDisplayName }
                                                         </List.Content>
                                                     </List.Item>
-                                                ))}
+                                                )) }
                                             </List>
                                         </div>
                                     );
                                 })
-                        )}
+                        ) }
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button secondary onClick={this.handleConsentModalClose}>
-                        {t("common:cancel")}
+                    <Button secondary onClick={ this.handleConsentModalClose }>
+                        { t("common:cancel") }
                     </Button>
-                    <Button primary onClick={this.handleClaimsUpdateClick}>
-                        {t("common:update")}
+                    <Button primary onClick={ this.handleClaimsUpdateClick }>
+                        { t("common:update") }
                     </Button>
                 </Modal.Actions>
             </Modal>
         );
 
         const consentRevokeModal = (
-            <Modal size="mini" open={showConsentRevokeModal} onClose={this.handleConsentRevokeModalClose}>
+            <Modal size="mini" open={ isConsentRevokeModalVisible } onClose={ this.handleConsentRevokeModalClose }>
                 <Modal.Content>
                     <Container textAlign="center">
                         <h3>
@@ -409,15 +326,15 @@ class ConsentManagementComponent extends React.Component<any, any> {
                             }
                         </h3>
                     </Container>
-                    <br />
-                    <p>{t("views:consentManagement.modals.consentRevokeModal.message")}</p>
+                    <br/>
+                    <p>{ t("views:consentManagement.modals.consentRevokeModal.message") }</p>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button secondary onClick={this.handleConsentRevokeModalClose}>
-                        {t("common:cancel")}
+                    <Button secondary onClick={ this.handleConsentRevokeModalClose }>
+                        { t("common:cancel") }
                     </Button>
-                    <Button primary onClick={this.revokeConsent}>
-                        {t("common:revoke")}
+                    <Button primary onClick={ this.revokeConsent }>
+                        { t("common:revoke") }
                     </Button>
                 </Modal.Actions>
             </Modal>
@@ -425,22 +342,100 @@ class ConsentManagementComponent extends React.Component<any, any> {
 
         return (
             <InnerPageLayout
-                pageTitle={t("views:consentManagement.title")}
-                pageDescription={t("views:consentManagement.subTitle")}
+                pageTitle={ t("views:consentManagement.title") }
+                pageDescription={ t("views:consentManagement.subTitle") }
             >
                 <Container>
-                    <Tab
-                        panes={tabPanes}
-                        activeIndex={activeIndex}
-                        onTabChange={this.handleConsentTabChange}
-                        menu={{ attached: "top" }}
-                    />
-                    {editConsentModal}
-                    {consentRevokeModal}
+                    <h2>Active Applications</h2>
+                    {
+                        isFetchConsentedAppsRequestLoading ?
+                            <Placeholder>
+                                <Placeholder.Line length="long" />
+                            </Placeholder>
+                            :
+                            <h4>You have granted consent for
+                                { " " }
+                                <strong>
+                                    { consentedApps && consentedApps.length ? consentedApps.length : 0 } applications
+                                </strong>
+                            </h4>
+                    }
+                    <Divider section/>
+                    <List divided verticalAlign="middle" size="big" relaxed="very">
+                        {
+                            isFetchConsentedAppsRequestLoading ?
+                                this.createConsentedAppsListPlaceholder()
+                                :
+                                consentedApps.map((consent: ConsentInterface) => (
+                                    <List.Item key={ consent.consentReceiptID }>
+                                        <List.Content floated="right">
+                                            <Button
+                                                size="mini"
+                                                onClick={ () => this.handleConsentEditClick(consent) }
+                                            >
+                                                Configure
+                                            </Button>
+                                            <Button
+                                                negative
+                                                size="mini"
+                                                onClick={ () => this.handleConsentRevokeClick(consent) }
+                                            >
+                                                Revoke
+                                            </Button>
+                                        </List.Content>
+                                        <List.Content floated="left">
+                                            <GenericAppIcon size="mini" />
+                                        </List.Content>
+                                        <List.Content>
+                                            <List.Header>{ consent.spDisplayName }</List.Header>
+                                            <List.Description>
+                                                <p style={ { fontSize: "10px" } }>{ consent.consentReceiptID }</p>
+                                            </List.Description>
+                                        </List.Content>
+                                    </List.Item>
+                                ))
+                        }
+                    </List>
+                    { editConsentModal }
+                    { consentRevokeModal }
                 </Container>
             </InnerPageLayout>
         );
     }
 }
 
-export const ConsentsManagementPage = withTranslation()(ConsentManagementComponent);
+const mapStateToProps = (state: AppState) => ({
+    consentedApps: state.consentsManagement.consentedApps,
+    consentReceipt: state.consentsManagement.consentReceipt,
+    editingConsent: state.consentsManagement.editingConsent,
+    revokedClaimIds: state.consentsManagement.revokedClaimIds,
+    isConsentEditViewVisible: state.consentsManagement.isConsentEditViewVisible,
+    isConsentRevokeModalVisible: state.consentsManagement.isConsentRevokeModalVisible,
+    consentsManagementNotification: state.consentsManagement.consentsManagementNotification,
+    isFetchConsentedAppsRequestLoading: state.consentsManagement.isFetchConsentedAppsRequestLoading
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => ({
+    actions: {
+        consentsManagement: (
+            bindActionCreators(
+                {
+                    fetchConsentedApps,
+                    fetchConsentReceipt,
+                    showConsentsEditView,
+                    hideConsentsEditView,
+                    setEditingConsent,
+                    showConsentsRevokeModal,
+                    hideConsentsRevokeModal,
+                    revokeConsentedApp,
+                    updateRevokedClaimIds,
+                    updateConsentedClaim
+                }, dispatch
+            )
+        )
+    }
+});
+
+export const ConsentsManagementPage = connect(
+    mapStateToProps, mapDispatchToProps
+)(withTranslation()(ConsentManagementComponent));
