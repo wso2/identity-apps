@@ -165,6 +165,16 @@
             "mobile": "Mobile Number"
         },
         "notification": {
+            "downloadProfileInfo": {
+                "success": {
+                    "message": "User profile details downloaded successfully.",
+                    "description": "The required user profile details are downloaded successfully."
+                },
+                "error": {
+                    "message": "An error occurred !!!",
+                    "description": "Error occurred while downloading the user profile details."
+                }
+            },
             "getProfileInfo": {
                 "success": {
                     "message": "User profile details fetched successfully.",
