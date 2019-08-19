@@ -18,12 +18,14 @@
 
 import * as React from "react";
 import { I18nextProvider } from "react-i18next";
+import { Provider } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { Dimmer, Loader } from "semantic-ui-react";
 import { AuthConsumer, AuthProvider } from "./components/auth-context";
 import ProtectedRoute from "./components/protected-route";
 import { i18n } from "./helpers";
 import history from "./helpers/history";
+import configureStore from "./helpers/store";
 import {
     AccountSecurityPage,
     ConsentsManagementPage,
@@ -31,6 +33,8 @@ import {
     PageNotFound,
     UserProfilePage
 } from "./pages";
+
+const store = configureStore();
 
 const LoginPage = (props) => {
     props.loginFunction(history.location.pathname);
@@ -48,33 +52,38 @@ class App extends React.Component<any, any> {
             <Router history={history}>
                 <div className="container-fluid">
                     <I18nextProvider i18n={i18n}>
-                        <AuthProvider history={history}>
-                            <AuthConsumer>
-                                {({ login, logout, isAuth }) => (
-                                    <>
-                                        {(!isAuth) &&
-                                            <Dimmer active inverted>
-                                                <Loader>Loading</Loader>
-                                            </Dimmer>
-                                        }
-                                        <Switch>
-                                            <Redirect exact path="/" to="/login" />
-                                            <Route path="/login" render={(props) => (
-                                                <LoginPage loginFunction={login} {...props} />
-                                            )} />
-                                            <Route path="/logout" render={(props) => (
-                                                <LogoutPage logoutFunction={logout} {...props} />
-                                            )} />
-                                            <ProtectedRoute path="/home" component={HomePage} />
-                                            <ProtectedRoute component={UserProfilePage} path="/profile"/>
-                                            <ProtectedRoute component={AccountSecurityPage} path="/account-security" />
-                                            <ProtectedRoute component={ConsentsManagementPage} path="/consent" />
-                                            <ProtectedRoute component={PageNotFound} />
-                                        </Switch>
-                                    </>
-                                )}
-                            </AuthConsumer>
-                        </AuthProvider>
+                        <Provider store={store}>
+                            <AuthProvider history={history}>
+                                <AuthConsumer>
+                                    {({ login, logout, isAuth }) => (
+                                        <>
+                                            {(!isAuth) &&
+                                                <Dimmer active inverted>
+                                                    <Loader>Loading</Loader>
+                                                </Dimmer>
+                                            }
+                                            <Switch>
+                                                <Redirect exact path="/" to="/login" />
+                                                <Route path="/login" render={(props) => (
+                                                    <LoginPage loginFunction={login} {...props} />
+                                                )} />
+                                                <Route path="/logout" render={(props) => (
+                                                    <LogoutPage logoutFunction={logout} {...props} />
+                                                )} />
+                                                <ProtectedRoute path="/home" component={HomePage} />
+                                                <ProtectedRoute component={UserProfilePage} path="/profile"/>
+                                                <ProtectedRoute
+                                                    component={AccountSecurityPage}
+                                                    path="/account-security"
+                                                />
+                                                <ProtectedRoute component={ConsentsManagementPage} path="/consent" />
+                                                <ProtectedRoute component={PageNotFound} />
+                                            </Switch>
+                                        </>
+                                    )}
+                                </AuthConsumer>
+                            </AuthProvider>
+                        </Provider>
                     </I18nextProvider>
                 </div>
             </Router>

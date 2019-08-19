@@ -16,9 +16,18 @@
  * under the License.
  */
 
-export * from "./account-security";
-export * from "./api";
-export * from "./consents";
-export * from "./consents-management";
-export * from "./login";
-export * from "./profile";
+import { combineReducers } from "redux";
+import { accountRecoveryReducer } from "./account-security";
+import { consentsManagementReducer } from "./consents-management";
+
+/**
+ * Combines all the reducers.
+ *
+ * @type {Reducer<any>} Root reducer to be used when creating the store.
+ */
+const reducers = combineReducers({
+    accountRecovery: accountRecoveryReducer,
+    consentsManagement: consentsManagementReducer
+});
+
+export default reducers;

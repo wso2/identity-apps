@@ -16,9 +16,6 @@
  * under the License.
  */
 
-export * from "./account-security";
 export * from "./api";
-export * from "./consents";
+export * from "./account-security";
 export * from "./consents-management";
-export * from "./login";
-export * from "./profile";

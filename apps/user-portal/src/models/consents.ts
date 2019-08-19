@@ -33,6 +33,9 @@ export interface ConsentInterface {
  * ConsentReceipt Model
  */
 export interface ConsentReceiptInterface {
+    jurisdiction: string;
+    language: string;
+    policyUrl: string;
     collectionMethod: string;
     services: ServiceInterface[];
     version: string;
@@ -53,9 +56,14 @@ export interface ServiceInterface {
  * Purpose Model
  */
 interface PurposeInterface {
+    consentType: string;
     purpose: string;
     purposeId: number;
     piiCategory: PIICategory[];
+    primaryPurpose: boolean;
+    termination: string;
+    thirdPartyDisclosure: boolean;
+    thirdPartyName: string;
 }
 
 /**
@@ -65,6 +73,7 @@ interface PIICategory {
     piiCategoryDisplayName: string;
     piiCategoryId: number;
     piiCategoryName: string;
+    validity: string;
 }
 
 /**
@@ -141,19 +150,28 @@ export const createEmptyConsent = (): ConsentInterface => ({
  */
 export const createEmptyConsentReceipt = (): ConsentReceiptInterface => ({
     collectionMethod: "",
+    jurisdiction: "",
+    language: "",
+    policyUrl: "",
     services: [
         {
             purposes: [
                 {
+                    consentType: "",
                     piiCategory: [
                         {
                             piiCategoryDisplayName: "",
                             piiCategoryId: 0,
-                            piiCategoryName: ""
+                            piiCategoryName: "",
+                            validity: ""
                         }
                     ],
+                    primaryPurpose: false,
                     purpose: "",
-                    purposeId: 0
+                    purposeId: 0,
+                    termination: "",
+                    thirdPartyDisclosure: false,
+                    thirdPartyName: "",
                 }
             ],
             service: "",

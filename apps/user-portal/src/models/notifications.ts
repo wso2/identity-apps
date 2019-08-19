@@ -16,9 +16,25 @@
  * under the License.
  */
 
-export * from "./account-security";
-export * from "./api";
-export * from "./consents";
-export * from "./consents-management";
-export * from "./login";
-export * from "./profile";
+/**
+ * Notification action payload interface.
+ */
+export interface NotificationActionPayload {
+    description: string;
+    message: string;
+    otherProps: object;
+    visible: boolean;
+}
+
+/**
+ * Creates an empty notification action payload object.
+ * This can be used to initializations.
+ *
+ * @returns {NotificationActionPayload} an empty notification action payload object.
+ */
+export const createEmptyNotificationActionPayload = (): NotificationActionPayload => ({
+    description: "",
+    message: "",
+    otherProps: {},
+    visible: false
+});
