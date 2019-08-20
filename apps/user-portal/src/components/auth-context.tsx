@@ -16,10 +16,17 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
+import {
+    AuthenticateSessionUtil,
+    AuthenticateTokenKeys,
+    AuthenticateUserKeys,
+    OPConfigurationUtil,
+    SignInUtil,
+    SignOutUtil
+} from "@wso2is/authenticate";
 import * as React from "react";
-import { dispatchLogin, dispatchLogout } from "../actions";
-import { AuthContextInterface, AuthProviderInterface, createEmptyAuthContext } from "../models/auth";
+import {AuthContextInterface, AuthProviderInterface, createEmptyAuthContext} from "../models/auth";
+import {ServiceResourcesEndpoint} from "../configs";
 
 const AuthContext = React.createContext<AuthContextInterface | null>(null);
 
@@ -57,7 +64,8 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
     }
 
     private updateState() {
-        if (AuthenticateSessionUtil.isValidSession(CLIENT_ID, CLIENT_HOST)) {
+        debugger;
+        if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
             this.setState({
                 displayName: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.DISPLAY_NAME),
                 emails: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.EMAIL),
@@ -77,36 +85,57 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
     }
 
     private login(location) {
-        if (AuthenticateSessionUtil.isValidSession(CLIENT_ID, CLIENT_HOST)) {
+        if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
             this.loginSuccessRedirect(location);
         } else {
-            if (!this.state.loginInit) {
-                dispatchLogin()
-                    .then(() => {
-                        if (AuthenticateSessionUtil.isValidSession(CLIENT_ID, CLIENT_HOST)) {
-                            this.updateState();
-                            this.loginSuccessRedirect(location);
-                        }
-                    })
-                    .catch(
-                        // TODO show error page.
-                    );
-            }
+            OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false).then((response) => {
+                this.doSignIn();
+            }).catch((error) => {
+                OPConfigurationUtil.setAuthorizeEndpoint(ServiceResourcesEndpoint.authorize);
+                OPConfigurationUtil.setTokenEndpoint(ServiceResourcesEndpoint.token);
+                OPConfigurationUtil.setRevokeTokenEndpoint(ServiceResourcesEndpoint.revoke);
+                OPConfigurationUtil.setEndSessionEndpoint(ServiceResourcesEndpoint.logout);
+                OPConfigurationUtil.setJwksUri(ServiceResourcesEndpoint.jwks);
+                OPConfigurationUtil.setOPConfigInitiated();
+                this.doSignIn();
+            });
+        }
+    }
+
+    private doSignIn() {
+        let requestParams = {
+            clientId: CLIENT_ID,
+            clientHost: CLIENT_HOST,
+            clientSecret: null,
+            enablePKCE: true,
+            redirectUri: LOGIN_CALLBACK_URL,
+            scope: null,
+        };
+        if (SignInUtil.hasAuthorizationCode()) {
+            SignInUtil.sendTokenRequest(requestParams).then((response) => {
+                AuthenticateSessionUtil.initUserSession(response,
+                    SignInUtil.getAuthenticatedUser(response.idToken));
+                this.updateState();
+                this.loginSuccessRedirect(location);
+            }).catch((error) => {
+                throw error;
+            });
+        } else {
+            SignInUtil.sendAuthorizationRequest(requestParams);
         }
     }
 
     private logout() {
         if (!this.state.logoutInit) {
-            dispatchLogout()
-                .then(() => {
-                    this.setState({
-                        logoutInit: true
-                    });
-                    AuthenticateSessionUtil.resetAuthenticatedSession();
-                })
-                .catch(
-                    // TODO show error page.
-                );
+            SignOutUtil.sendSignOutRequest(LOGIN_CALLBACK_URL).then(() => {
+                this.setState({
+                    logoutInit: true
+                });
+                AuthenticateSessionUtil.endAuthenticatedSession();
+                OPConfigurationUtil.resetOPConfiguration();
+            }).catch(
+                // TODO show error page.
+            );
         } else {
             this.props.history.push(APP_LOGIN_PATH);
         }

@@ -17,7 +17,13 @@
  */
 
 export const ACCESS_TOKEN = "access_token";
-export const REFRESH_TOKEN = "refresh_token";
-export const ID_TOKEN = "id_token";
 export const ACCESS_TOKEN_EXPIRE_IN = "expires_in";
 export const ACCESS_TOKEN_ISSUED_AT = "issued_at";
+export const AUTHORIZATION_CODE = "code";
+export const ID_TOKEN = "id_token";
+export const OIDC_SCOPE = "openid";
+export const PKCE_CODE_VERIFIER = "pkce_code_verifier";
+export const REFRESH_TOKEN = "refresh_token";
+export const SCOPE = "scope";
+export const TOKEN_TYPE = "token_type";
+export const REQUEST_PARAMS = "request_params";

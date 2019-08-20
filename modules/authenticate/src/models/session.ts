@@ -17,22 +17,11 @@
  */
 
 import { AuthenticatedUserInterface } from "./authenticated-user";
-import { TokenInterface } from "./token";
+import { TokenResponseInterface } from "./token-response";
 
 /**
  * Interface of the user session.
  */
-export interface SessionInterface extends AuthenticatedUserInterface, TokenInterface {
+export interface SessionInterface extends AuthenticatedUserInterface, TokenResponseInterface {
 
 }
-
-export const createEmptySession = (): SessionInterface => ({
-    access_token: "",
-    display_name: "",
-    email: "",
-    expires_in: "",
-    id_token: "",
-    issued_at: "",
-    refresh_token: "",
-    username: ""
-});
