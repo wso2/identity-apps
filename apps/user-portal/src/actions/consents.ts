@@ -16,21 +16,20 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
+import {AuthenticateSessionUtil, AuthenticateUserKeys} from "@wso2is/authenticate";
 import axios, {AxiosResponse} from "axios";
 import log from "log";
-import { ServiceResourcesEndpoint } from "../configs";
-import { ConsentInterface, ConsentReceiptInterface, ConsentState, UpdateReceiptInterface } from "../models/consents";
+import {ServiceResourcesEndpoint} from "../configs";
+import {ConsentInterface, ConsentReceiptInterface, ConsentState, UpdateReceiptInterface} from "../models/consents";
 
 /**
  * Fetches the consents from the API.
- * @param {ConsentState} state consent state ex: ACTIVE, REVOKED
- * @return {Promise<ConsentInterface[]>} a promise containing the response
+ *
+ * @param {ConsentState} state consent state ex: ACTIVE, REVOKED.
+ * @return {Promise<ConsentInterface[]>} a promise containing the response.
  */
 export const getConsents = (state: ConsentState): Promise<ConsentInterface[]> => {
-    if (AuthenticateSessionUtil.isValidSession(CLIENT_ID, CLIENT_HOST)) {
-        const url = ServiceResourcesEndpoint.consents;
-        const token = AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST);
+    return AuthenticateSessionUtil.getAccessToken().then((token) => {
         const headers = {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": CLIENT_HOST,
@@ -42,26 +41,29 @@ export const getConsents = (state: ConsentState): Promise<ConsentInterface[]> =>
             state
         };
 
-        return axios.get(url, {params, headers})
+        return axios.get(ServiceResourcesEndpoint.consents, {params, headers})
             .then((response) => {
-                return response.data as ConsentInterface[];
-            })
-            .catch((error) => {
-                log.error(error);
+                if (response.status !== 200) {
+                    return Promise.reject(new Error("Failed to get consents."));
+                }
+                return Promise.resolve(response.data as ConsentInterface[]);
+            }).catch((error) => {
                 return Promise.reject(error);
             });
-    }
+    }).catch((error) => {
+        return Promise.reject(error);
+    });
 };
 
 /**
  * Fetches the consent receipt when an ID is passed in.
- * @param {string} id receipt ID
- * @return {Promise<ConsentReceiptInterface>} a promise containing the response
+ *
+ * @param {string} id receipt ID.
+ * @return {Promise<ConsentReceiptInterface>} a promise containing the response.
  */
 export const getConsentReceipt = (id: string): Promise<ConsentReceiptInterface> => {
-    if (AuthenticateSessionUtil.isValidSession(CLIENT_ID, CLIENT_HOST)) {
+    return AuthenticateSessionUtil.getAccessToken().then((token) => {
         const url = ServiceResourcesEndpoint.receipts + `/${id}`;
-        const token = AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST);
         const headers = {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": CLIENT_HOST,
@@ -71,24 +73,27 @@ export const getConsentReceipt = (id: string): Promise<ConsentReceiptInterface> 
 
         return axios.get(url, {headers})
             .then((response) => {
-                return response.data as ConsentReceiptInterface;
-            })
-            .catch((error) => {
-                log.error(error);
+                if (response.status !== 200) {
+                    return Promise.reject(new Error("Failed to get consent receipt."));
+                }
+                return Promise.resolve(response.data as ConsentReceiptInterface);
+            }).catch((error) => {
                 return Promise.reject(error);
             });
-    }
+    }).catch((error) => {
+        return Promise.reject(error);
+    });
 };
 
 /**
  * Revokes the consent of an application when the receipt.
- * @param {string} id receipt ID
- * @return {Promise<AxiosResponse<any>>} a promise containing the response
+ *
+ * @param {string} id receipt ID.
+ * @return {Promise<any>} a promise containing the response.
  */
-export const revokeConsent = (id: string): Promise<AxiosResponse<any>> => {
-    if (AuthenticateSessionUtil.isValidSession(CLIENT_ID, CLIENT_HOST)) {
+export const revokeConsent = (id: string): Promise<any> => {
+    return AuthenticateSessionUtil.getAccessToken().then((token) => {
         const url = ServiceResourcesEndpoint.receipts + `/${id}`;
-        const token = AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST);
         const headers = {
             Accept: "application/json",
             Authorization: `Bearer ${token}`
@@ -96,24 +101,27 @@ export const revokeConsent = (id: string): Promise<AxiosResponse<any>> => {
 
         return axios.delete(url, {headers})
             .then((response) => {
-                return response;
+                if (response.status !== 200) {
+                    return Promise.reject(new Error("Failed to get consent receipt."));
+                }
+                return Promise.resolve(response);
             })
             .catch((error) => {
-                log.error(error);
                 return Promise.reject(error);
             });
-    }
+    }).catch((error) => {
+        return Promise.reject(error);
+    });
 };
 
 /**
  * Updates the already consented claims list.
- * @param receipt receipt object
- * @return {Promise<AxiosResponse<any>>} a promise containing the response
+ *
+ * @param receipt receipt object.
+ * @return {Promise<any>} a promise containing the response.
  */
-export const updateConsentedClaims = (receipt): Promise<AxiosResponse<any>> => {
-    if (AuthenticateSessionUtil.isValidSession(CLIENT_ID, CLIENT_HOST)) {
-        const url = ServiceResourcesEndpoint.consents;
-        const token = AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST);
+export const updateConsentedClaims = (receipt): Promise<any> => {
+    return AuthenticateSessionUtil.getAccessToken().then((token) => {
         const headers = {
             "Accept": "application/json",
             "Authorization": `Bearer ${token}`,
@@ -145,13 +153,17 @@ export const updateConsentedClaims = (receipt): Promise<AxiosResponse<any>> => {
             }))
         };
 
-        return axios.post(url, body, {headers})
+        return axios.post(ServiceResourcesEndpoint.consents, body, {headers})
             .then((response) => {
-                return response;
+                if (response.status !== 200) {
+                    return Promise.reject(new Error("Failed to get consent receipt."));
+                }
+                return Promise.resolve(response);
             })
             .catch((error) => {
-                log.error(error);
                 return Promise.reject(error);
             });
-    }
+    }).catch((error) => {
+        return Promise.reject(error);
+    });
 };

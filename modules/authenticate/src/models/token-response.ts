@@ -17,34 +17,13 @@
  */
 
 /**
- * Profile Model
+ * Interface of the OAuth2/OIDC tokens.
  */
-export interface BasicProfileInterface {
-    displayName: string;
-    emails: string[];
-    email?: string;
-    lastName: string;
-    phoneNumbers: number[];
-    organisation: string;
-    responseStatus: number;
-    roles?: string[];
-    proUrl: string;
-    isSecurity?: boolean;
-    mobile?: string;
-    username?: string;
+export interface TokenResponseInterface {
+    accessToken: string;
+    idToken: string;
+    expiresIn: string;
+    scope: string;
+    refreshToken: string;
+    tokenType: string;
 }
-
-export const createEmptyProfile = (): BasicProfileInterface => ({
-    displayName: "",
-    email: "",
-    emails: [],
-    isSecurity: false,
-    lastName: "",
-    mobile: "",
-    organisation: "",
-    phoneNumbers: [],
-    proUrl: "",
-    responseStatus: null,
-    roles: [],
-    username: ""
-});

@@ -29,12 +29,13 @@ interface ServiceResourcesType {
     receipts: string;
     token: string;
     user: string;
+    revoke: string;
+    wellKnown: string;
 }
 
 export const ServiceEndpoint: ServiceEndpointURLType = SERVER_HOST;
 export const ServiceResourcesEndpoint: ServiceResourcesType = {
-    authorize: `${ServiceEndpoint}/oauth2/authorize?response_type=code&client_id=` +
-        `${CLIENT_ID}&redirect_uri=${LOGIN_CALLBACK_URL}&scope=openid&code_challenge_method=S256`,
+    authorize: `${ServiceEndpoint}/oauth2/authorize`,
     challengeAnswers: `${ServiceEndpoint}/api/users/v1/me/challenge-answers`,
     challenges: `${ServiceEndpoint}/api/users/v1/me/challenges`,
     consents: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents`,
@@ -43,5 +44,7 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     me: `${ServiceEndpoint}/scim2/Me`,
     receipts: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents/receipts`,
     token: `${ServiceEndpoint}/oauth2/token`,
-    user: `${ServiceEndpoint}/api/identity/user/v1.0/me`
+    revoke: `${ServiceEndpoint}/oauth2/revoke`,
+    user: `${ServiceEndpoint}/api/identity/user/v1.0/me`,
+    wellKnown: `${ServiceEndpoint}/oauth2/oidcdiscovery/.well-known/openid-configuration`
 };

@@ -83,18 +83,19 @@ export const getJWKForTheIdToken = (jwtHeader: string, keys: JWKInterface[]) => 
         }
     }
 
-    throw new Error("Failed to find the public key specified in the id_token.");
+    throw new Error("Failed to find the 'kid' specified in the id_token. 'kid' found in the header : "
+        + headerJSON.kid + ", Expected values: " + keys.map(key => key.kid).join(", "));
 };
 
 /**
  * Verify id token.
  *
- * @param id_token id_token received from the IdP.
+ * @param idToken id_token received from the IdP.
  * @param jwk public key used for signing.
  * @param {string} clientID app identification.
  * @returns {any} whether the id_token is valid.
  */
-export const verifyIdToken = (idToken, jwk, clientID: string) => {
+export const isValidIdToken = (idToken, jwk, clientID: string) => {
     return KJUR.jws.JWS.verifyJWT(idToken, jwk, {
         alg: getSupportedSignatureAlgorithms(),
         aud: [clientID],

@@ -16,13 +16,11 @@
  * under the License.
  */
 
-/**
- * Interface of the OAuth2/OIDC tokens.
- */
-export interface TokenInterface {
-    access_token: string;
-    expires_in: string;
-    id_token: string;
-    issued_at: string;
-    refresh_token: string;
+export interface OIDCRequestParamsInterface {
+    clientId: string;
+    clientHost: string;
+    clientSecret?: string;
+    enablePKCE: boolean;
+    redirectUri: string;
+    scope?: string[];
 }

@@ -18,7 +18,10 @@
  */
 
 import * as actionCrypto from "./actions/crypto";
+import * as actionOPConfiguration from "./actions/op-config";
 import * as actionSession from "./actions/session";
+import * as actionSignIn from "./actions/sign-in";
+import * as actionSignOut from "./actions/sign-out";
 import * as constantToken from "./constants/token";
 import * as constantUser from "./constants/user";
 
@@ -27,5 +30,8 @@ import * as constantUser from "./constants/user";
  */
 export const AuthenticateSessionUtil = actionSession;
 export const AuthenticateCryptoUtil = actionCrypto;
+export const OPConfigurationUtil = actionOPConfiguration;
+export const SignInUtil = actionSignIn;
+export const SignOutUtil = actionSignOut;
 export const AuthenticateTokenKeys = constantToken;
 export const AuthenticateUserKeys = constantUser;
