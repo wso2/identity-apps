@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<!--
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="374px" height="374px" viewBox="0 0 374 374" enable-background="new 0 0 374 374" xml:space="preserve">
+	 width="14px" height="14px" viewBox="0 0 374 374" enable-background="new 0 0 374 374" xml:space="preserve">
 <g>
 	<path fill="#969696" d="M184.832,121.211c-17.401,0-31.56,14.157-31.56,31.561c0,5.243,1.285,10.191,3.557,14.546
 		c5.269,10.103,15.844,17.016,28.003,17.016c17.403,0,31.562-14.159,31.562-31.562C216.395,135.369,202.235,121.211,184.832,121.211
