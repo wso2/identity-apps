@@ -18,6 +18,8 @@
 
 import * as React from "react";
 import { withTranslation } from "react-i18next";
+import { connect } from "react-redux";
+import { AnyAction, bindActionCreators, Dispatch } from "redux";
 import {
     Button,
     Checkbox,
@@ -40,16 +42,15 @@ import {
     updateConsentedClaim,
     updateRevokedClaimIds
 } from "../actions";
+import { Icon } from "../components/icon";
+import { GenericAppIcon } from "../configs/ui";
+import { AppState } from "../helpers/store";
 import { InnerPageLayout } from "../layouts";
 import {
     ConsentInterface,
     ConsentState,
     ServiceInterface
 } from "../models/consents";
-import { AppState } from "../helpers/store";
-import { connect } from "react-redux";
-import { AnyAction, bindActionCreators, Dispatch } from "redux";
-import { GenericAppIcon } from "../components";
 
 /**
  * This is the Consents Management Component of the User Portal.
@@ -191,7 +192,7 @@ class ConsentManagementComponent extends React.Component<any, any> {
      * @return {JSX.Element[]}
      */
     createConsentedAppsListPlaceholder = (): JSX.Element[] => {
-        let placeholder = [];
+        const placeholder = [];
         for (let i = 0; i < 3; i++) {
             placeholder.push(<List.Item key={ i }>
                 <List.Content floated="right">
@@ -222,43 +223,58 @@ class ConsentManagementComponent extends React.Component<any, any> {
 
         const editConsentModal = (
             <Modal open={ isConsentEditViewVisible } onClose={ this.handleConsentModalClose } size="tiny">
-                <Modal.Content image>
-                    <GenericAppIcon height="100" width="100" verticalAlign="middle" spaced="right" />
-                    <Modal.Description>
-                        <div className="consented-app-heading">
-                            <h2>{ editingConsent.spDisplayName }</h2>
-                            <div className="meta">
-                                <strong>
-                                    { t("views:consentManagement.modals.editConsentModal.description.state") }
-                                    :
-                                </strong>
-                                { " "}
-                                { editingConsent.state }
-                            </div>
-                            <div className="meta">
-                                <strong>
-                                    { t("views:consentManagement.modals.editConsentModal.description.version") }
-                                    :
-                                </strong>
-                                { " "}
-                                { consentReceipt.version }
-                            </div>
-                            <div className="meta">
-                                <strong>
-                                    { t("views:consentManagement.modals.editConsentModal.description.collectionMethod") }:
-                                </strong>
-                                { " "}
-                                { consentReceipt.collectionMethod }
-                            </div>
-                            <div className="meta">
-                                <strong>
-                                    { t("views:consentManagement.modals.editConsentModal.description.description") }:
-                                </strong>
-                                { " "}
-                                { editingConsent.spDescription }
-                            </div>
-                        </div>
-                    </Modal.Description>
+                <Modal.Content>
+                    <List>
+                        <List.Item>
+                            <List.Content floated="left">
+                                <Icon
+                                    icon={GenericAppIcon}
+                                    size="tiny"
+                                    defaultIcon
+                                    bordered
+                                    rounded
+                                    relaxed
+                                />
+                            </List.Content>
+                            <List.Content>
+                                <List.Header><h2>{ editingConsent.spDisplayName }</h2></List.Header>
+                                <List.Description>
+                                    <div className="meta">
+                                        <strong>
+                                            { t("views:consentManagement.modals.editConsentModal.description.state") }
+                                            :
+                                        </strong>
+                                        { " "}
+                                        { editingConsent.state }
+                                    </div>
+                                    <div className="meta">
+                                        <strong>
+                                            { t("views:consentManagement.modals.editConsentModal.description.version") }
+                                            :
+                                        </strong>
+                                        { " "}
+                                        { consentReceipt.version }
+                                    </div>
+                                    <div className="meta">
+                                        <strong>
+                                            { t("views:consentManagement.modals.editConsentModal.description" +
+                                                ".collectionMethod") }:
+                                        </strong>
+                                        { " "}
+                                        { consentReceipt.collectionMethod }
+                                    </div>
+                                    <div className="meta">
+                                        <strong>
+                                            { t("views:consentManagement.modals.editConsentModal.description" +
+                                                ".description") }:
+                                        </strong>
+                                        { " "}
+                                        { editingConsent.spDescription }
+                                    </div>
+                                </List.Description>
+                            </List.Content>
+                        </List.Item>
+                    </List>
                 </Modal.Content>
                 <Divider fitted />
                 <Modal.Content>
@@ -384,7 +400,14 @@ class ConsentManagementComponent extends React.Component<any, any> {
                                             </Button>
                                         </List.Content>
                                         <List.Content floated="left">
-                                            <GenericAppIcon size="mini" />
+                                            <Icon
+                                                icon={GenericAppIcon}
+                                                size="mini"
+                                                defaultIcon
+                                                bordered
+                                                rounded
+                                                relaxed
+                                            />
                                         </List.Content>
                                         <List.Content>
                                             <List.Header>{ consent.spDisplayName }</List.Header>
@@ -405,14 +428,14 @@ class ConsentManagementComponent extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state: AppState) => ({
-    consentedApps: state.consentsManagement.consentedApps,
     consentReceipt: state.consentsManagement.consentReceipt,
+    consentedApps: state.consentsManagement.consentedApps,
+    consentsManagementNotification: state.consentsManagement.consentsManagementNotification,
     editingConsent: state.consentsManagement.editingConsent,
-    revokedClaimIds: state.consentsManagement.revokedClaimIds,
     isConsentEditViewVisible: state.consentsManagement.isConsentEditViewVisible,
     isConsentRevokeModalVisible: state.consentsManagement.isConsentRevokeModalVisible,
-    consentsManagementNotification: state.consentsManagement.consentsManagementNotification,
-    isFetchConsentedAppsRequestLoading: state.consentsManagement.isFetchConsentedAppsRequestLoading
+    isFetchConsentedAppsRequestLoading: state.consentsManagement.isFetchConsentedAppsRequestLoading,
+    revokedClaimIds: state.consentsManagement.revokedClaimIds
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => ({
@@ -420,16 +443,16 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => ({
         consentsManagement: (
             bindActionCreators(
                 {
-                    fetchConsentedApps,
                     fetchConsentReceipt,
-                    showConsentsEditView,
+                    fetchConsentedApps,
                     hideConsentsEditView,
-                    setEditingConsent,
-                    showConsentsRevokeModal,
                     hideConsentsRevokeModal,
                     revokeConsentedApp,
-                    updateRevokedClaimIds,
-                    updateConsentedClaim
+                    setEditingConsent,
+                    showConsentsEditView,
+                    showConsentsRevokeModal,
+                    updateConsentedClaim,
+                    updateRevokedClaimIds
                 }, dispatch
             )
         )
