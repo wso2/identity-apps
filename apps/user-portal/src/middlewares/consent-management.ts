@@ -56,27 +56,33 @@ const handleFetchConsentedApps = ({ dispatch, getState }) => (next) => (action) 
         return;
     }
 
-    const state: ConsentState = getState().consentManagement.consentState;
-    const requestConfig: HttpRequestConfig = {
-        data: {
-            piiPrincipalId: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME),
-            state
-        },
-        dispatcher: FETCH_CONSENTED_APPS,
-        headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${ AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST) }`,
-            "Content-Type": "application/json"
-        },
-        method: "GET",
-        onError: FETCH_CONSENTED_APPS_ERROR,
-        onSuccess: FETCH_CONSENTED_APPS_SUCCESS,
-        url: ServiceResourcesEndpoint.consents
-    };
+    AuthenticateSessionUtil.getAccessToken()
+        .then((token) => {
+            const state: ConsentState = getState().consentManagement.consentState;
+            const requestConfig: HttpRequestConfig = {
+                data: {
+                    piiPrincipalId: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME),
+                    state
+                },
+                dispatcher: FETCH_CONSENTED_APPS,
+                headers: {
+                    "Accept": "application/json",
+                    "Access-Control-Allow-Origin": CLIENT_HOST,
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                method: "GET",
+                onError: FETCH_CONSENTED_APPS_ERROR,
+                onSuccess: FETCH_CONSENTED_APPS_SUCCESS,
+                url: ServiceResourcesEndpoint.consents
+            };
 
-    // Dispatch an API request action.
-    dispatch(apiRequest(requestConfig));
+            // Dispatch an API request action.
+            dispatch(apiRequest(requestConfig));
+        })
+        .catch((error) => {
+            throw new Error(`Failed to retrieve the access token - ${error}`);
+        });
 };
 
 /**
@@ -159,23 +165,29 @@ const handleFetchConsentReceipt = ({ dispatch }) => (next) => (action) => {
         return;
     }
 
-    const id: string = action.payload;
-    const requestConfig: HttpRequestConfig = {
-        dispatcher: FETCH_CONSENT_RECEIPT,
-        headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${ AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST) }`,
-            "Content-Type": "application/json"
-        },
-        method: "get",
-        onError: FETCH_CONSENT_RECEIPT_ERROR,
-        onSuccess: FETCH_CONSENT_RECEIPT_SUCCESS,
-        url: ServiceResourcesEndpoint.receipts + `/${ id }`
-    };
+    AuthenticateSessionUtil.getAccessToken()
+        .then((token) => {
+            const id: string = action.payload;
+            const requestConfig: HttpRequestConfig = {
+                dispatcher: FETCH_CONSENT_RECEIPT,
+                headers: {
+                    "Accept": "application/json",
+                    "Access-Control-Allow-Origin": CLIENT_HOST,
+                    "Authorization": `Bearer ${ token }`,
+                    "Content-Type": "application/json"
+                },
+                method: "get",
+                onError: FETCH_CONSENT_RECEIPT_ERROR,
+                onSuccess: FETCH_CONSENT_RECEIPT_SUCCESS,
+                url: ServiceResourcesEndpoint.receipts + `/${ id }`
+            };
 
-    // Dispatch an API request action.
-    dispatch(apiRequest(requestConfig));
+            // Dispatch an API request action.
+            dispatch(apiRequest(requestConfig));
+        })
+        .catch((error) => {
+            throw new Error(`Failed to retrieve the access token - ${error}`);
+        });
 };
 
 /**
@@ -258,21 +270,27 @@ const handleRevokeConsentedApp = ({ dispatch }) => (next) => (action) => {
         return;
     }
 
-    const id: string = action.payload;
-    const requestConfig: HttpRequestConfig = {
-        dispatcher: REVOKE_CONSENTED_APP,
-        headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${ AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST) }`
-        },
-        method: "delete",
-        onError: REVOKE_CONSENTED_APP_ERROR,
-        onSuccess: REVOKE_CONSENTED_APP_SUCCESS,
-        url: ServiceResourcesEndpoint.receipts + `/${ id }`
-    };
+    AuthenticateSessionUtil.getAccessToken()
+        .then((token) => {
+            const id: string = action.payload;
+            const requestConfig: HttpRequestConfig = {
+                dispatcher: REVOKE_CONSENTED_APP,
+                headers: {
+                    Accept: "application/json",
+                    Authorization: `Bearer ${ token }`
+                },
+                method: "delete",
+                onError: REVOKE_CONSENTED_APP_ERROR,
+                onSuccess: REVOKE_CONSENTED_APP_SUCCESS,
+                url: ServiceResourcesEndpoint.receipts + `/${ id }`
+            };
 
-    // Dispatch an API request action.
-    dispatch(apiRequest(requestConfig));
+            // Dispatch an API request action.
+            dispatch(apiRequest(requestConfig));
+        })
+        .catch((error) => {
+            throw new Error(`Failed to retrieve the access token - ${error}`);
+        });
 };
 
 /**
@@ -370,49 +388,55 @@ const handleUpdateConsentedClaims = ({ dispatch }) => (next) => (action) => {
         return;
     }
 
-    const receipt: ConsentReceiptInterface = action.payload;
-    const body: UpdateReceiptInterface = {
-        collectionMethod: "Web Form - User Portal",
-        jurisdiction: receipt.jurisdiction,
-        language: receipt.language,
-        policyURL: receipt.policyUrl,
-        services: receipt.services.map((service) => ({
-            purposes: service.purposes.map((purpose) => ({
-                consentType: purpose.consentType,
-                piiCategory: purpose.piiCategory.map((category) => ({
-                    piiCategoryId: category.piiCategoryId,
-                    validity: category.validity
-                })),
-                primaryPurpose: purpose.primaryPurpose,
-                purposeCategoryId: [1],
-                purposeId: purpose.purposeId,
-                termination: purpose.termination,
-                thirdPartyDisclosure: purpose.thirdPartyDisclosure,
-                thirdPartyName: purpose.thirdPartyName
-            })),
-            service: service.service,
-            serviceDescription: service.serviceDescription,
-            serviceDisplayName: service.serviceDisplayName,
-            tenantDomain: service.tenantDomain
-        }))
-    };
+    AuthenticateSessionUtil.getAccessToken()
+        .then((token) => {
+            const receipt: ConsentReceiptInterface = action.payload;
+            const body: UpdateReceiptInterface = {
+                collectionMethod: "Web Form - User Portal",
+                jurisdiction: receipt.jurisdiction,
+                language: receipt.language,
+                policyURL: receipt.policyUrl,
+                services: receipt.services.map((service) => ({
+                    purposes: service.purposes.map((purpose) => ({
+                        consentType: purpose.consentType,
+                        piiCategory: purpose.piiCategory.map((category) => ({
+                            piiCategoryId: category.piiCategoryId,
+                            validity: category.validity
+                        })),
+                        primaryPurpose: purpose.primaryPurpose,
+                        purposeCategoryId: [1],
+                        purposeId: purpose.purposeId,
+                        termination: purpose.termination,
+                        thirdPartyDisclosure: purpose.thirdPartyDisclosure,
+                        thirdPartyName: purpose.thirdPartyName
+                    })),
+                    service: service.service,
+                    serviceDescription: service.serviceDescription,
+                    serviceDisplayName: service.serviceDisplayName,
+                    tenantDomain: service.tenantDomain
+                }))
+            };
 
-    const requestConfig: HttpRequestConfig = {
-        data: body,
-        dispatcher: UPDATE_CONSENTED_CLAIMS,
-        headers: {
-            "Accept": "application/json",
-            "Authorization": `Bearer ${ AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST) }`,
-            "Content-Type": "application/json"
-        },
-        method: "post",
-        onError: UPDATE_CONSENTED_CLAIMS_ERROR,
-        onSuccess: UPDATE_CONSENTED_CLAIMS_SUCCESS,
-        url: ServiceResourcesEndpoint.consents
-    };
+            const requestConfig: HttpRequestConfig = {
+                data: body,
+                dispatcher: UPDATE_CONSENTED_CLAIMS,
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": `Bearer ${ token }`,
+                    "Content-Type": "application/json"
+                },
+                method: "post",
+                onError: UPDATE_CONSENTED_CLAIMS_ERROR,
+                onSuccess: UPDATE_CONSENTED_CLAIMS_SUCCESS,
+                url: ServiceResourcesEndpoint.consents
+            };
 
-    // Dispatch an API request action.
-    dispatch(apiRequest(requestConfig));
+            // Dispatch an API request action.
+            dispatch(apiRequest(requestConfig));
+        })
+        .catch((error) => {
+            throw new Error(`Failed to retrieve the access token - ${error}`);
+        });
 };
 
 /**
