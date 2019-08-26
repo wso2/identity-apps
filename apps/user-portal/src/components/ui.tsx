@@ -19,7 +19,8 @@
 import classNames from "classnames";
 import * as React from "react";
 import { Image } from "semantic-ui-react";
-import { GenericAppPlaceholderIcon, HomeTileIconImages, LogoImage, TitleText, UserImage } from "../configs/ui";
+import { HomeTileIconImages, LogoImage, TitleText, UserImage } from "../configs/ui";
+import { Icon } from "./icon";
 
 interface ImageProps {
     classes?: any;
@@ -43,7 +44,14 @@ export const Logo = (props: ImageProps) => {
     const { classes, size, style } = props;
 
     return (
-        <Image className={classNames(classes, "product-logo")} size={size} style={style} src={LogoImage} inline />
+        <Icon
+            icon={LogoImage}
+            className={classNames(classes, "product-logo")}
+            size={size}
+            style={style}
+            transparent
+            inline
+        />
     );
 };
 
@@ -52,7 +60,8 @@ export const Title = (props: TitleProps) => {
 
     return (
         <div className={classNames(classes, "product-title")} style={style}>
-            <Logo /> <h1 className={classNames(classes, "product-title-text")} style={style}>{TitleText}</h1>
+            <Logo size="mini"/>
+            <h1 className={classNames(classes, "product-title-text")} style={style}>{TitleText}</h1>
             {children}
         </div>
     );
@@ -102,29 +111,3 @@ export const HomeTileIcon = (props: HomeTileIconImageProps) => {
 };
 
 export const UserImageDummy = UserImage;
-
-export const GenericAppIcon = (props) => {
-    const { size, height, width, verticalAlign, spaced } = props;
-
-    let marginRight = 0;
-    let marginLeft = 0;
-    if (spaced && spaced === "right") {
-        marginRight = 25;
-    } else if (spaced && spaced === "left") {
-        marginLeft = 25;
-    }
-
-    return (
-        <div
-            className="generic-app-icon"
-            style={{padding: `${parseInt(height)/10}px`, marginRight: marginRight, marginLeft: marginLeft}}
-        >
-            <Image
-                src={GenericAppPlaceholderIcon}
-                size={size}
-                style={{height: `${height}px`, width: `${width}px`}}
-                verticalAlign={verticalAlign}
-            />
-        </div>
-    );
-};
