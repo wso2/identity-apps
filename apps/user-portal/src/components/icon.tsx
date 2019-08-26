@@ -35,6 +35,7 @@ interface ComponentProps {
     twoTone?: boolean;
     size?: string;
     style?: object;
+    square?: boolean;
 }
 
 /**
@@ -45,7 +46,7 @@ interface ComponentProps {
  */
 export const Icon: React.FunctionComponent<ComponentProps> = (props): JSX.Element => {
     const {
-        icon, inline, className, transparent, relaxed, bordered, rounded, defaultIcon, twoTone, size, style
+        icon, inline, className, transparent, relaxed, bordered, rounded, defaultIcon, twoTone, size, style, square
     } = props;
     const relaxLevel = (relaxed && relaxed === true) ? "" : relaxed;
 
@@ -56,6 +57,7 @@ export const Icon: React.FunctionComponent<ComponentProps> = (props): JSX.Elemen
         "relaxed": relaxed,
         "rounded": rounded,
         [`${size}`]: size,
+        "square": square,
         "transparent": transparent,
         "two-tone": twoTone,
         [`${relaxLevel}`]: relaxLevel,
@@ -102,6 +104,7 @@ Icon.defaultProps = {
     relaxed: false,
     rounded: false,
     size: "mini",
+    square: false,
     style: {},
     transparent: false,
     twoTone: false,

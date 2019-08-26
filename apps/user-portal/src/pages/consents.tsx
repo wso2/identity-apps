@@ -231,6 +231,7 @@ class ConsentManagementComponent extends React.Component<any, any> {
                                     icon={GenericAppIcon}
                                     size="tiny"
                                     defaultIcon
+                                    square
                                     bordered
                                     rounded
                                     relaxed
@@ -404,6 +405,7 @@ class ConsentManagementComponent extends React.Component<any, any> {
                                                 icon={GenericAppIcon}
                                                 size="mini"
                                                 defaultIcon
+                                                square
                                                 bordered
                                                 rounded
                                                 relaxed
