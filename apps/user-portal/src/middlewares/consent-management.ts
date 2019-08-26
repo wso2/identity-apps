@@ -29,17 +29,17 @@ import {
     REVOKE_CONSENTED_APP,
     REVOKE_CONSENTED_APP_ERROR,
     REVOKE_CONSENTED_APP_SUCCESS,
-    updateConsentedApps,
     setConsentReceipt,
     showChangePasswordFormNotification,
     UPDATE_CONSENTED_CLAIMS,
     UPDATE_CONSENTED_CLAIMS_ERROR,
-    UPDATE_CONSENTED_CLAIMS_SUCCESS
+    UPDATE_CONSENTED_CLAIMS_SUCCESS,
+    updateConsentedApps
 } from "../actions";
 import { ServiceResourcesEndpoint } from "../configs";
 import i18n from "../helpers/i18n";
 import { HttpError, HttpRequestConfig, HttpResponse } from "../models/api";
-import { ConsentReceiptInterface, ConsentState, UpdateReceiptInterface } from "../models/consents";
+import { ConsentReceiptInterface, ConsentState, UpdateReceiptInterface } from "../models/consent-management";
 import { createEmptyNotificationActionPayload, NotificationActionPayload } from "../models/notifications";
 
 /**
@@ -56,7 +56,7 @@ const handleFetchConsentedApps = ({ dispatch, getState }) => (next) => (action) 
         return;
     }
 
-    const state: ConsentState = getState().consentsManagement.consentState;
+    const state: ConsentState = getState().consentManagement.consentState;
     const requestConfig: HttpRequestConfig = {
         data: {
             piiPrincipalId: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME),

@@ -32,13 +32,13 @@ import {
 import {
     fetchConsentedApps,
     fetchConsentReceipt,
-    hideConsentsEditView,
-    hideConsentsRevokeModal,
+    hideConsentEditView,
+    hideConsentRevokeModal,
     revokeConsentedApp,
     setConsentedAppsState,
     setEditingConsent,
-    showConsentsEditView,
-    showConsentsRevokeModal,
+    showConsentEditView,
+    showConsentRevokeModal,
     updateConsentedClaim,
     updateRevokedClaimIds
 } from "../actions";
@@ -50,10 +50,10 @@ import {
     ConsentInterface,
     ConsentState,
     ServiceInterface
-} from "../models/consents";
+} from "../models/consent-management";
 
 /**
- * This is the Consents Management Component of the User Portal.
+ * This is the Consent Management Component of the User Portal.
  */
 class ConsentManagementComponent extends React.Component<any, any> {
 
@@ -65,7 +65,7 @@ class ConsentManagementComponent extends React.Component<any, any> {
         // Set the default consent state which is `ACTIVE`.
         setConsentedAppsState(ConsentState.ACTIVE);
         // fetch the consents list from the API.
-        actions.consentsManagement.fetchConsentedApps();
+        actions.consentManagement.fetchConsentedApps();
     }
 
     /**
@@ -76,9 +76,9 @@ class ConsentManagementComponent extends React.Component<any, any> {
      */
     handleConsentEditClick = (consent: ConsentInterface): void => {
         const { actions } = this.props;
-        actions.consentsManagement.fetchConsentReceipt(consent.consentReceiptID);
-        actions.consentsManagement.setEditingConsent(consent);
-        actions.consentsManagement.showConsentsEditView();
+        actions.consentManagement.fetchConsentReceipt(consent.consentReceiptID);
+        actions.consentManagement.setEditingConsent(consent);
+        actions.consentManagement.showConsentEditView();
     };
 
     /**
@@ -88,8 +88,8 @@ class ConsentManagementComponent extends React.Component<any, any> {
      */
     handleConsentRevokeClick = (consent: ConsentInterface): void => {
         const { actions } = this.props;
-        actions.consentsManagement.setEditingConsent(consent);
-        actions.consentsManagement.showConsentsRevokeModal();
+        actions.consentManagement.setEditingConsent(consent);
+        actions.consentManagement.showConsentRevokeModal();
     };
 
     /**
@@ -97,9 +97,9 @@ class ConsentManagementComponent extends React.Component<any, any> {
      */
     revokeConsent = (): void => {
         const { actions, editingConsent } = this.props;
-        actions.consentsManagement.revokeConsentedApp(editingConsent.consentReceiptID);
-        actions.consentsManagement.hideConsentsRevokeModal();
-        actions.consentsManagement.fetchConsentedApps();
+        actions.consentManagement.revokeConsentedApp(editingConsent.consentReceiptID);
+        actions.consentManagement.hideConsentRevokeModal();
+        actions.consentManagement.fetchConsentedApps();
     };
 
     /**
@@ -119,12 +119,12 @@ class ConsentManagementComponent extends React.Component<any, any> {
         if (checked) {
             if (revokedClaimIds.includes(id)) {
                 ids = revokedClaimIds.filter((claimId: number) => claimId !== id);
-                actions.consentsManagement.updateRevokedClaimIds(ids);
+                actions.consentManagement.updateRevokedClaimIds(ids);
             }
         } else {
             if (!revokedClaimIds.includes(id)) {
                 ids = [...ids, id];
-                actions.consentsManagement.updateRevokedClaimIds(ids);
+                actions.consentManagement.updateRevokedClaimIds(ids);
             }
         }
     };
@@ -160,12 +160,12 @@ class ConsentManagementComponent extends React.Component<any, any> {
         // If the PII category list is empty, show the consent revoke modal.
         // Else, perform the usual consented claims updating process.
         if (isPIIEmpty) {
-            actions.consentsManagement.hideConsentsEditView();
-            actions.consentsManagement.showConsentsRevokeModal();
+            actions.consentManagement.hideConsentEditView();
+            actions.consentManagement.showConsentRevokeModal();
         } else {
-            actions.consentsManagement.updateConsentedClaim(receipt);
-            actions.consentsManagement.hideConsentsEditView();
-            actions.consentsManagement.fetchConsentedApps();
+            actions.consentManagement.updateConsentedClaim(receipt);
+            actions.consentManagement.hideConsentEditView();
+            actions.consentManagement.fetchConsentedApps();
         }
     };
 
@@ -174,7 +174,7 @@ class ConsentManagementComponent extends React.Component<any, any> {
      */
     handleConsentModalClose = (): void => {
         const { actions } = this.props;
-        actions.consentsManagement.hideConsentsEditView();
+        actions.consentManagement.hideConsentEditView();
     };
 
     /**
@@ -182,7 +182,7 @@ class ConsentManagementComponent extends React.Component<any, any> {
      */
     handleConsentRevokeModalClose = (): void => {
         const { actions } = this.props;
-        actions.consentsManagement.hideConsentsRevokeModal();
+        actions.consentManagement.hideConsentRevokeModal();
     };
 
     /**
@@ -430,29 +430,29 @@ class ConsentManagementComponent extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state: AppState) => ({
-    consentReceipt: state.consentsManagement.consentReceipt,
-    consentedApps: state.consentsManagement.consentedApps,
-    consentsManagementNotification: state.consentsManagement.consentsManagementNotification,
-    editingConsent: state.consentsManagement.editingConsent,
-    isConsentEditViewVisible: state.consentsManagement.isConsentEditViewVisible,
-    isConsentRevokeModalVisible: state.consentsManagement.isConsentRevokeModalVisible,
-    isFetchConsentedAppsRequestLoading: state.consentsManagement.isFetchConsentedAppsRequestLoading,
-    revokedClaimIds: state.consentsManagement.revokedClaimIds
+    consentManagementNotification: state.consentManagement.consentManagementNotification,
+    consentReceipt: state.consentManagement.consentReceipt,
+    consentedApps: state.consentManagement.consentedApps,
+    editingConsent: state.consentManagement.editingConsent,
+    isConsentEditViewVisible: state.consentManagement.isConsentEditViewVisible,
+    isConsentRevokeModalVisible: state.consentManagement.isConsentRevokeModalVisible,
+    isFetchConsentedAppsRequestLoading: state.consentManagement.isFetchConsentedAppsRequestLoading,
+    revokedClaimIds: state.consentManagement.revokedClaimIds
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => ({
     actions: {
-        consentsManagement: (
+        consentManagement: (
             bindActionCreators(
                 {
                     fetchConsentReceipt,
                     fetchConsentedApps,
-                    hideConsentsEditView,
-                    hideConsentsRevokeModal,
+                    hideConsentEditView,
+                    hideConsentRevokeModal,
                     revokeConsentedApp,
                     setEditingConsent,
-                    showConsentsEditView,
-                    showConsentsRevokeModal,
+                    showConsentEditView,
+                    showConsentRevokeModal,
                     updateConsentedClaim,
                     updateRevokedClaimIds
                 }, dispatch
@@ -461,6 +461,6 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => ({
     }
 });
 
-export const ConsentsManagementPage = connect(
+export const ConsentManagementPage = connect(
     mapStateToProps, mapDispatchToProps
 )(withTranslation()(ConsentManagementComponent));

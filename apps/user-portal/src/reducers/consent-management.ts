@@ -20,53 +20,53 @@ import {
     API_REQUEST_END,
     API_REQUEST_START,
     ApiActionTypes,
-    ConsentsManagementActionTypes,
+    ConsentManagementActionTypes,
     FETCH_CONSENT_RECEIPT,
     FETCH_CONSENTED_APPS,
-    HIDE_CONSENTS_EDIT_VIEW,
-    HIDE_CONSENTS_MANAGEMENT_NOTIFICATION,
-    HIDE_CONSENTS_REVOKE_MODAL,
+    HIDE_CONSENT_EDIT_VIEW,
+    HIDE_CONSENT_MANAGEMENT_NOTIFICATION,
+    HIDE_CONSENT_REVOKE_MODAL,
     REVOKE_CONSENTED_APP,
     SET_CONSENT_RECEIPT,
-    UPDATE_CONSENTED_APPS,
+    SET_CONSENTED_APPS_STATE,
     SET_EDITING_CONSENT,
-    SHOW_CONSENTS_EDIT_VIEW,
-    SHOW_CONSENTS_MANAGEMENT_NOTIFICATION,
-    SHOW_CONSENTS_REVOKE_MODAL,
+    SHOW_CONSENT_EDIT_VIEW,
+    SHOW_CONSENT_MANAGEMENT_NOTIFICATION,
+    SHOW_CONSENT_REVOKE_MODAL,
+    UPDATE_CONSENTED_APPS,
     UPDATE_CONSENTED_CLAIMS,
-    UPDATE_REVOKED_CLAIM_IDS,
-    SET_CONSENTED_APPS_STATE
+    UPDATE_REVOKED_CLAIM_IDS
 } from "../actions";
+import { ConsentState, createEmptyConsent, createEmptyConsentReceipt } from "../models/consent-management";
 import { createEmptyNotificationActionPayload } from "../models/notifications";
-import { ConsentState, createEmptyConsent, createEmptyConsentReceipt } from "../models/consents";
 
 /**
  * Initial state.
  */
 const initialState = {
-    consentedApps: [],
+    consentManagementNotification: createEmptyNotificationActionPayload(),
     consentReceipt: createEmptyConsentReceipt(),
     consentState: ConsentState.ACTIVE,
+    consentedApps: [],
     editingConsent: createEmptyConsent(),
-    revokedClaimIds: [],
     isConsentEditViewVisible: false,
     isConsentRevokeModalVisible: false,
-    consentsManagementNotification: createEmptyNotificationActionPayload(),
     isFetchConsentReceiptRequestLoading: false,
     isFetchConsentedAppsRequestLoading: false,
     isRevokeConsentedAppRequestLoading: false,
-    isUpdateConsentedClaimsRequestLoading: false
+    isUpdateConsentedClaimsRequestLoading: false,
+    revokedClaimIds: []
 };
 
 /**
- * Reducer to handle the state of consents management related components.
+ * Reducer to handle the state of consent management related components.
  *
  * @param state - Previous state
  * @param action - Action type
  * @returns The new state
  */
-export function consentsManagementReducer(
-    state = initialState, action: ConsentsManagementActionTypes | ApiActionTypes
+export function consentManagementReducer(
+    state = initialState, action: ConsentManagementActionTypes | ApiActionTypes
 ) {
     switch (action.type) {
         case API_REQUEST_START:
@@ -140,35 +140,35 @@ export function consentsManagementReducer(
                 ...state,
                 revokedClaimIds: action.payload
             };
-        case SHOW_CONSENTS_EDIT_VIEW:
+        case SHOW_CONSENT_EDIT_VIEW:
             return {
                 ...state,
                 isConsentEditViewVisible: true
             };
-        case HIDE_CONSENTS_EDIT_VIEW:
+        case HIDE_CONSENT_EDIT_VIEW:
             return {
                 ...state,
                 isConsentEditViewVisible: false
             };
-        case SHOW_CONSENTS_REVOKE_MODAL:
+        case SHOW_CONSENT_REVOKE_MODAL:
             return {
                 ...state,
                 isConsentRevokeModalVisible: true
             };
-        case HIDE_CONSENTS_REVOKE_MODAL:
+        case HIDE_CONSENT_REVOKE_MODAL:
             return {
                 ...state,
                 isConsentRevokeModalVisible: false
             };
-        case SHOW_CONSENTS_MANAGEMENT_NOTIFICATION:
+        case SHOW_CONSENT_MANAGEMENT_NOTIFICATION:
             return {
                 ...state,
-                consentsManagementNotification: action.payload
+                consentManagementNotification: action.payload
             };
-        case HIDE_CONSENTS_MANAGEMENT_NOTIFICATION:
+        case HIDE_CONSENT_MANAGEMENT_NOTIFICATION:
             return {
                 ...state,
-                consentsManagementNotification: action.payload
+                consentManagementNotification: action.payload
             };
         default:
             return state;

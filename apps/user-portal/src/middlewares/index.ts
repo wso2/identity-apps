@@ -18,4 +18,4 @@
 
 export * from "./api";
 export * from "./account-security";
-export * from "./consents-management";
+export * from "./consent-management";

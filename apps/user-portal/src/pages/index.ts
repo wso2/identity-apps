@@ -18,7 +18,7 @@
 
 export * from "./account-security";
 export * from "./app-listing";
-export * from "./consents";
+export * from "./consent-management";
 export * from "./errors/404";
 export * from "./home";
 export * from "./theme";

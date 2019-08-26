@@ -28,7 +28,7 @@ import history from "./helpers/history";
 import configureStore from "./helpers/store";
 import {
     AccountSecurityPage,
-    ConsentsManagementPage,
+    ConsentManagementPage,
     HomePage,
     PageNotFound,
     UserProfilePage
@@ -47,7 +47,7 @@ const LogoutPage = (props) => {
 };
 
 class App extends React.Component<any, any> {
-    public render() {
+    render() {
         return (
             <Router history={history}>
                 <div className="container-fluid">
@@ -76,7 +76,7 @@ class App extends React.Component<any, any> {
                                                     component={AccountSecurityPage}
                                                     path="/account-security"
                                                 />
-                                                <ProtectedRoute component={ConsentsManagementPage} path="/consent" />
+                                                <ProtectedRoute component={ConsentManagementPage} path="/consent" />
                                                 <ProtectedRoute component={PageNotFound} />
                                             </Switch>
                                         </>
