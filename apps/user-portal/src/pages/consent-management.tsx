@@ -320,7 +320,7 @@ class ConsentManagementComponent extends React.Component<any, any> {
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button secondary onClick={ this.handleConsentModalClose }>
+                    <Button onClick={ this.handleConsentModalClose }>
                         { t("common:cancel") }
                     </Button>
                     <Button primary onClick={ this.handleClaimsUpdateClick }>
@@ -347,7 +347,7 @@ class ConsentManagementComponent extends React.Component<any, any> {
                     <p>{ t("views:consentManagement.modals.consentRevokeModal.message") }</p>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button secondary onClick={ this.handleConsentRevokeModalClose }>
+                    <Button onClick={ this.handleConsentRevokeModalClose }>
                         { t("common:cancel") }
                     </Button>
                     <Button primary onClick={ this.revokeConsent }>
