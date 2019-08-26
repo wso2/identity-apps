@@ -66,8 +66,24 @@ module.exports = env => {
                     use: ['style-loader', 'css-loader', 'less-loader']
                 },
                 {
-                    test: /\.(png|jpg|svg|cur|gif|eot|svg|ttf|woff|woff2)$/,
+                    test: /\.(png|jpg|cur|gif|eot|ttf|woff|woff2)$/,
                     use: ['url-loader'],
+                },
+                {
+                    test: /\.svg$/,
+                    use: [
+                        {
+                            loader: '@svgr/webpack',
+                            options: {
+                                svgoConfig: {
+                                    plugins: [{ prefixIds: false }],
+                                }
+                            },
+                        },
+                        {
+                            loader: 'url-loader'
+                        }
+                    ],
                 },
                 {
                     test: /\.tsx?$/,
