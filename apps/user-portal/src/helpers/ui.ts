@@ -16,8 +16,13 @@
  * under the License.
  */
 
-export * from "./history";
-export * from "./http-headers";
-export { default as i18n } from "./i18n";
-export * from "./store";
-export * from "./ui";
+/**
+ * Extracts the mime-type from a base64encoded image.
+ *
+ * @param {string} encodedString - Encoded image.
+ * @return {string} - Mime-type as "image/png" | "image/svg+xml" etc.
+ */
+export const base64MimeType = (encodedString: string): string => {
+    const mime = encodedString.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
+    return mime && mime.length ? mime[1] : null;
+};
