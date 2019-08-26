@@ -13,7 +13,6 @@
               "esSpecCompliant": true
             }
         ],
-        "member-access": [true, "no-public"],
         "no-implicit-dependencies": {
             "severity": "error",
             "options": [
