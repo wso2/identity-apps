@@ -59,9 +59,11 @@ body {
 
     .product-title {
         .product-logo {
-            width: 60px;
-            vertical-align: sub;
-            margin-right: 5px;
+            svg {
+                width: 60px;
+                vertical-align: sub;
+                margin-right: 5px;
+            }
         }
         .product-title-text {
             text-transform: uppercase;
@@ -71,6 +73,100 @@ body {
         }
         .user-image {
             width: 100px !important;
+        }
+    }
+
+    .icon-wrapper {
+        background-color: @iconWrapperBgColor;
+        overflow: hidden;
+        display: flex;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        &.inline {
+            display: inline-block;
+        }
+        &.transparent {
+            background-color: transparent;
+        }
+        &.relaxed {
+            padding: @iconWrapperPadding;
+            &.very {
+                padding: @iconWrapperVeryPadding;
+            }
+        }
+        &.bordered {
+            border-width: @iconWrapperBorderWidth;
+            border-style: solid;
+            border-color: @iconWrapperBorderColor;
+        }
+        &.rounded {
+            border-radius: @defaultBorderRadius;
+        }
+        &.default {
+            svg.icon {
+                path {
+                    fill: @iconDefaultBgColor;
+                }
+            }
+        }
+        &.mini {
+            svg.icon {
+                width: 35px;
+                height: auto;
+            }
+        }
+        &.tiny {
+            svg.icon {
+                width: 80px;
+                height: auto;
+            }
+        }
+        &.small {
+            svg.icon {
+                width: 150px;
+                height: auto;
+            }
+        }
+        &.medium {
+             svg.icon {
+                 width: 300px;
+                 height: auto;
+             }
+        }
+        &.large {
+            svg.icon {
+                width: 450px;
+                height: auto;
+            }
+        }
+        &.big {
+            svg.icon {
+                width: 600px;
+                height: auto;
+            }
+        }
+        &.huge {
+            svg.icon {
+                width: 800px;
+                height: auto;
+            }
+        }
+        &.massive {
+            svg.icon {
+                width: 960px;
+                height: auto;
+            }
+        }
+        &.two-tone {
+            svg.icon {
+                path.primary {
+                    fill: @primaryColor;
+                }
+                path.secondary {
+                    fill: @lightGray;
+                }
+            }
         }
     }
 }
