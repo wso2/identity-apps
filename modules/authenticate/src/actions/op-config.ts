@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import {Error} from "tslint/lib/error";
+import { Error } from "tslint/lib/error";
 import axios from "axios";
-import {getSessionParameter, removeSessionParameter, setSessionParameter} from "./session";
+import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
 import {
     AUTHORIZATION_ENDPOINT,
     END_SESSION_ENDPOINT,
@@ -28,8 +28,14 @@ import {
     TOKEN_ENDPOINT
 } from "../constants";
 
+/**
+ * Initialize openid provider configuration.
+ *
+ * @param {string} wellKnownEndpoint openid provider configuration.
+ * @param {boolean} forceInit whether to initialize the configuration again.
+ * @returns {Promise<any>} promise.
+ */
 export const initOPConfiguration = (wellKnownEndpoint: string, forceInit: boolean): Promise<any> => {
-    debugger;
     if (!forceInit && isOPConfigInitiated()) {
         return Promise.resolve("success");
     }
@@ -44,7 +50,6 @@ export const initOPConfiguration = (wellKnownEndpoint: string, forceInit: boolea
                 return Promise.reject(new Error("Failed to load OpenID provider configuration from: "
                     + wellKnownEndpoint));
             }
-            debugger;
             setSessionParameter(AUTHORIZATION_ENDPOINT, response.data.authorization_endpoint);
             setSessionParameter(TOKEN_ENDPOINT, response.data.token_endpoint);
             setSessionParameter(END_SESSION_ENDPOINT, response.data.end_session_endpoint);
@@ -58,6 +63,9 @@ export const initOPConfiguration = (wellKnownEndpoint: string, forceInit: boolea
         });
 };
 
+/**
+ * Reset openid provider configuration.
+ */
 export const resetOPConfiguration = () => {
     removeSessionParameter(AUTHORIZATION_ENDPOINT);
     removeSessionParameter(TOKEN_ENDPOINT);
@@ -67,50 +75,108 @@ export const resetOPConfiguration = () => {
     removeSessionParameter(OP_CONFIG_INITIATED);
 };
 
+/**
+ * Get OAuth2 authorize endpoint.
+ *
+ * @returns {any}
+ */
 export const getAuthorizeEndpoint = () => {
     return getSessionParameter(AUTHORIZATION_ENDPOINT);
 };
 
+/**
+ * Set OAuth2 authorize endpoint.
+ *
+ * @param {string} authorizationEndpoint
+ */
 export const setAuthorizeEndpoint = (authorizationEndpoint: string) => {
     setSessionParameter(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
 };
 
+/**
+ * Get OAuth2 token endpoint.
+ *
+ * @returns {any}
+ */
 export const getTokenEndpoint = () => {
     return getSessionParameter(TOKEN_ENDPOINT);
 };
 
+/**
+ * Set OAuth2 token endpoint.
+ *
+ * @param {string} tokenEndpoint
+ */
 export const setTokenEndpoint = (tokenEndpoint: string) => {
     setSessionParameter(TOKEN_ENDPOINT, tokenEndpoint);
 };
 
+/**
+ * Get OAuth2 revoke token endpoint.
+ *
+ * @returns {any}
+ */
 export const getRevokeTokenEndpoint = () => {
     return getSessionParameter(REVOKE_TOKEN_ENDPOINT);
 };
 
+/**
+ * Set OAuth2 revoke token endpoint.
+ *
+ * @param {string} revokeTokenEndpoint
+ */
 export const setRevokeTokenEndpoint = (revokeTokenEndpoint: string) => {
     setSessionParameter(REVOKE_TOKEN_ENDPOINT, revokeTokenEndpoint);
 };
 
+/**
+ * Get OIDC end session endpoint.
+ *
+ * @returns {any}
+ */
 export const getEndSessionEndpoint = () => {
     return getSessionParameter(END_SESSION_ENDPOINT);
 };
 
+/**
+ * Set OIDC end session endpoint.
+ *
+ * @param {string} endSessionEndpoint
+ */
 export const setEndSessionEndpoint = (endSessionEndpoint: string) => {
     setSessionParameter(END_SESSION_ENDPOINT, endSessionEndpoint);
 };
 
+/**
+ * Get JWKS URI.
+ *
+ * @returns {any}
+ */
 export const getJwksUri = () => {
     return getSessionParameter(JWKS_ENDPOINT);
 };
 
+/**
+ * Set JWKS URI.
+ *
+ * @param jwksEndpoint
+ */
 export const setJwksUri = (jwksEndpoint) => {
     setSessionParameter(JWKS_ENDPOINT, jwksEndpoint);
 };
 
+/**
+ * Checks whether openid configuration initiated.
+ *
+ * @returns {boolean}
+ */
 export const isOPConfigInitiated = (): boolean => {
     return getSessionParameter(OP_CONFIG_INITIATED) && "true" === getSessionParameter(OP_CONFIG_INITIATED);
 };
 
+/**
+ * Set openid configuration initiated.
+ */
 export const setOPConfigInitiated = () => {
     setSessionParameter(OP_CONFIG_INITIATED, "true");
 };

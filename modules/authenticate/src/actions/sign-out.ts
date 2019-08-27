@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import {Error} from "tslint/lib/error";
-import {getEndSessionEndpoint} from "./op-config";
-import {getSessionParameter} from "./session";
-import {ID_TOKEN} from "../constants";
+import { Error } from "tslint/lib/error";
+import { getEndSessionEndpoint } from "./op-config";
+import { getSessionParameter } from "./session";
+import { ID_TOKEN } from "../constants";
 
 /**
  * Handle user sign out.

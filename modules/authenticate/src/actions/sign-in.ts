@@ -17,14 +17,14 @@
  */
 
 import axios from "axios";
-import {AUTHORIZATION_CODE, OIDC_SCOPE, PKCE_CODE_VERIFIER, REQUEST_PARAMS} from "../constants";
-import {getCodeChallenge, getCodeVerifier, getJWKForTheIdToken, isValidIdToken} from "./crypto";
-import {OIDCRequestParamsInterface} from "../models/oidc-request-params";
-import {getSessionParameter, removeSessionParameter, setSessionParameter} from "./session";
-import {AuthenticatedUserInterface} from "../models/authenticated-user";
-import {TokenResponseInterface} from "../models/token-response";
-import {Error} from "tslint/lib/error";
-import {getAuthorizeEndpoint, getJwksUri, getRevokeTokenEndpoint, getTokenEndpoint} from "./op-config";
+import { AUTHORIZATION_CODE, OIDC_SCOPE, PKCE_CODE_VERIFIER, REQUEST_PARAMS } from "../constants";
+import { getCodeChallenge, getCodeVerifier, getJWKForTheIdToken, isValidIdToken } from "./crypto";
+import { OIDCRequestParamsInterface } from "../models/oidc-request-params";
+import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
+import { AuthenticatedUserInterface } from "../models/authenticated-user";
+import { TokenResponseInterface } from "../models/token-response";
+import { Error} from "tslint/lib/error";
+import { getAuthorizeEndpoint, getJwksUri, getRevokeTokenEndpoint, getTokenEndpoint } from "./op-config";
 
 /**
  * Checks whether authorization code present in the request.
