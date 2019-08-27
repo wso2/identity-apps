@@ -60,7 +60,7 @@ export const Title = (props: TitleProps) => {
 
     return (
         <div className={classNames(classes, "product-title")} style={style}>
-            <Logo size="mini"/>
+            <Logo />
             <h1 className={classNames(classes, "product-title-text")} style={style}>{TitleText}</h1>
             {children}
         </div>
