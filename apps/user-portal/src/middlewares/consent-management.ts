@@ -178,7 +178,7 @@ const handleFetchConsentReceipt = ({ dispatch }) => (next) => (action) => {
                     "Authorization": `Bearer ${ token }`,
                     "Content-Type": "application/json"
                 },
-                method: "get",
+                method: "GET",
                 onError: FETCH_CONSENT_RECEIPT_ERROR,
                 onSuccess: FETCH_CONSENT_RECEIPT_SUCCESS,
                 url: ServiceResourcesEndpoint.receipts + `/${ id }`
@@ -281,7 +281,7 @@ const handleRevokeConsentedApp = ({ dispatch }) => (next) => (action) => {
                     Accept: "application/json",
                     Authorization: `Bearer ${ token }`
                 },
-                method: "delete",
+                method: "DELETE",
                 onError: REVOKE_CONSENTED_APP_ERROR,
                 onSuccess: REVOKE_CONSENTED_APP_SUCCESS,
                 url: ServiceResourcesEndpoint.receipts + `/${ id }`
@@ -427,7 +427,7 @@ const handleUpdateConsentedClaims = ({ dispatch }) => (next) => (action) => {
                     "Authorization": `Bearer ${ token }`,
                     "Content-Type": "application/json"
                 },
-                method: "post",
+                method: "POST",
                 onError: UPDATE_CONSENTED_CLAIMS_ERROR,
                 onSuccess: UPDATE_CONSENTED_CLAIMS_SUCCESS,
                 url: ServiceResourcesEndpoint.consents
