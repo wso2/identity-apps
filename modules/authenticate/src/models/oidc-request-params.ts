@@ -16,6 +16,9 @@
  * under the License.
  */
 
+/**
+ * OIDC request parameters.
+ */
 export interface OIDCRequestParamsInterface {
     clientId: string;
     clientHost: string;

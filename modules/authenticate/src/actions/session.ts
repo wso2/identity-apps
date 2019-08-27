@@ -29,11 +29,11 @@ import {
     TOKEN_TYPE,
     USERNAME
 } from "../constants";
-import {SessionInterface} from "../models/session";
-import {TokenResponseInterface} from "../models/token-response";
-import {AuthenticatedUserInterface} from "../models/authenticated-user";
-import {Error} from "tslint/lib/error";
-import {getAuthenticatedUser, sendRefreshTokenRequest} from "./sign-in";
+import { SessionInterface } from "../models/session";
+import { TokenResponseInterface } from "../models/token-response";
+import { AuthenticatedUserInterface } from "../models/authenticated-user";
+import { Error } from "tslint/lib/error";
+import { getAuthenticatedUser, sendRefreshTokenRequest } from "./sign-in";
 
 /**
  * Initialize authenticated user session.
@@ -118,11 +118,6 @@ export const getSessionParameter = (key: string) => {
  */
 export const removeSessionParameter = (key: string) => {
     sessionStorage.removeItem(key);
-};
-
-export const isValidSession = () => {
-
-    return sessionStorage.getItem(ACCESS_TOKEN) && sessionStorage.getItem(ACCESS_TOKEN).trim().length > 0;
 };
 
 /**
