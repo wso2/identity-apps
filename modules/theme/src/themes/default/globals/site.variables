@@ -61,3 +61,16 @@
 @lightGray        : #f1f1f1;
 @darkGray         : #d9d9d9;
 @nobel            : #969696;
+
+/*-------------------
+    Icon Sizes
+--------------------*/
+
+@iconMini: 35px;
+@iconTiny: 80px;
+@iconSmall: 150px;
+@iconMedium: 300px;
+@iconLarge: 450px;
+@iconBig: 600px;
+@iconHuge: 800px;
+@iconMassive: 960px;
