@@ -19,23 +19,25 @@
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
 import {
     apiRequest,
+    fetchConsentedApps,
+    setConsentReceipt,
+    showChangePasswordFormNotification,
+    updateConsentedApps
+} from "../actions";
+import {
     FETCH_CONSENT_RECEIPT,
     FETCH_CONSENT_RECEIPT_ERROR,
     FETCH_CONSENT_RECEIPT_SUCCESS,
     FETCH_CONSENTED_APPS,
     FETCH_CONSENTED_APPS_ERROR,
     FETCH_CONSENTED_APPS_SUCCESS,
-    fetchConsentedApps,
     REVOKE_CONSENTED_APP,
     REVOKE_CONSENTED_APP_ERROR,
     REVOKE_CONSENTED_APP_SUCCESS,
-    setConsentReceipt,
-    showChangePasswordFormNotification,
     UPDATE_CONSENTED_CLAIMS,
     UPDATE_CONSENTED_CLAIMS_ERROR,
     UPDATE_CONSENTED_CLAIMS_SUCCESS,
-    updateConsentedApps
-} from "../actions";
+} from "../actions/types";
 import { ServiceResourcesEndpoint } from "../configs";
 import i18n from "../helpers/i18n";
 import { HttpError, HttpRequestConfig, HttpResponse } from "../models/api";

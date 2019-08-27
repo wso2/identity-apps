@@ -36,7 +36,7 @@ import {
     UPDATE_CONSENTED_APPS,
     UPDATE_CONSENTED_CLAIMS,
     UPDATE_REVOKED_CLAIM_IDS
-} from "../actions";
+} from "../actions/types";
 import { ConsentState, createEmptyConsent, createEmptyConsentReceipt } from "../models/consents";
 import { createEmptyNotificationActionPayload } from "../models/notifications";
 

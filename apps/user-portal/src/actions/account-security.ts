@@ -17,29 +17,13 @@
  */
 
 import { createEmptyNotificationActionPayload, NotificationActionPayload } from "../models/notifications";
-
-/**
- * Action type to handle the password change.
- *
- * @type {string}
- */
-export const CHANGE_PASSWORD = "CHANGE_PASSWORD";
-
-/**
- * Change password action payload interface.
- */
-interface ChangePasswordActionPayload {
-    currentPassword: string;
-    newPassword: string;
-}
-
-/**
- * Change password action interface.
- */
-interface ChangePasswordAction {
-    payload: ChangePasswordActionPayload;
-    type: typeof CHANGE_PASSWORD;
-}
+import {
+    CHANGE_PASSWORD,
+    ChangePasswordAction,
+    ChangePasswordFormNotificationAction,
+    HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION,
+    SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION
+} from "./types";
 
 /**
  * Dispatches an action of type type `CHANGE_PASSWORD` with the current password and
@@ -53,35 +37,6 @@ export const changePassword = (currentPassword: string, newPassword: string): Ch
     payload: { currentPassword, newPassword },
     type: CHANGE_PASSWORD
 });
-
-/**
- * Action type to handle password change `onSuccess` callback.
- *
- * @type {string}
- */
-export const CHANGE_PASSWORD_SUCCESS = "CHANGE_PASSWORD_SUCCESS";
-
-/**
- * Action type to handle password change `onError` callback.
- *
- * @type {string}
- */
-export const CHANGE_PASSWORD_ERROR = "CHANGE_PASSWORD_ERROR";
-
-/**
- * Action type to show a notification for the change password form.
- *
- * @type {string}
- */
-export const SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION = "SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION";
-
-/**
- * Generic interface to handle change password form notification action.
- */
-interface ChangePasswordFormNotificationAction {
-    payload: NotificationActionPayload;
-    type: typeof SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION | typeof HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION;
-}
 
 /**
  * Dispatches an action of type `SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION` with the notification
@@ -98,13 +53,6 @@ export const showChangePasswordFormNotification = (
 });
 
 /**
- * Action type to hide the notification for the change password form.
- *
- * @type {string}
- */
-export const HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION = "HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION";
-
-/**
  * Dispatches an action of type `HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION`.
  *
  * @returns An action of type `HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION`
@@ -115,8 +63,3 @@ export const hideChangePasswordFormNotification = (
     payload: data,
     type: HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION
 });
-
-/**
- * Action type to specify account security actions.
- */
-export type AccountSecurityActionTypes = ChangePasswordAction | ChangePasswordFormNotificationAction;
