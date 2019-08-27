@@ -19,6 +19,7 @@
 type ServiceEndpointURLType = string;
 
 interface ServiceResourcesType {
+    associations: string;
     authorize: string;
     challenges: string;
     challengeAnswers: string;
@@ -35,6 +36,7 @@ interface ServiceResourcesType {
 
 export const ServiceEndpoint: ServiceEndpointURLType = SERVER_HOST;
 export const ServiceResourcesEndpoint: ServiceResourcesType = {
+    associations: `${ServiceEndpoint}/api/users/v1/me/associations`,
     authorize: `${ServiceEndpoint}/oauth2/authorize`,
     challengeAnswers: `${ServiceEndpoint}/api/users/v1/me/challenge-answers`,
     challenges: `${ServiceEndpoint}/api/users/v1/me/challenges`,
@@ -43,8 +45,8 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     logout: `${ServiceEndpoint}/oidc/logout`,
     me: `${ServiceEndpoint}/scim2/Me`,
     receipts: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents/receipts`,
-    token: `${ServiceEndpoint}/oauth2/token`,
     revoke: `${ServiceEndpoint}/oauth2/revoke`,
+    token: `${ServiceEndpoint}/oauth2/token`,
     user: `${ServiceEndpoint}/api/identity/user/v1.0/me`,
     wellKnown: `${ServiceEndpoint}/oauth2/oidcdiscovery/.well-known/openid-configuration`
 };
