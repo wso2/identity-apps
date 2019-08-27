@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import cx from "classnames";
+import classNames from "classnames";
 import * as React from "react";
 import { base64MimeType } from "../helpers";
 
@@ -50,7 +50,7 @@ export const Icon: React.FunctionComponent<ComponentProps> = (props): JSX.Elemen
     } = props;
     const relaxLevel = (relaxed && relaxed === true) ? "" : relaxed;
 
-    const classNames = cx({
+    const classes = classNames({
         "bordered": bordered,
         "default": defaultIcon,
         "inline": inline,
@@ -87,7 +87,7 @@ export const Icon: React.FunctionComponent<ComponentProps> = (props): JSX.Elemen
     };
 
     return (
-        <div className={ `icon-wrapper ${classNames}` } style={style}>
+        <div className={ `icon-wrapper ${classes}` } style={style}>
             { constructContent() }
         </div>
     );
