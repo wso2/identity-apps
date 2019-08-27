@@ -83,6 +83,7 @@ body {
         text-align: center;
         align-items: center;
         justify-content: center;
+
         &.inline {
             display: inline-block;
         }
@@ -91,6 +92,7 @@ body {
         }
         &.relaxed {
             padding: @iconWrapperPadding;
+
             &.very {
                 padding: @iconWrapperVeryPadding;
             }
@@ -112,99 +114,99 @@ body {
         }
         &.mini {
             svg.icon {
-                width: 35px;
+                width: @iconWrapperSizeMini;
                 height: auto;
             }
             &.square {
                 svg.icon {
-                    height: 35px;
+                    height: @iconWrapperSizeMini;
                 }
             }
         }
         &.tiny {
             svg.icon {
-                width: 80px;
+                width: @iconWrapperSizeTiny;
                 height: auto;
             }
             &.square {
                 svg.icon {
-                    height: 80px;
+                    height: @iconWrapperSizeTiny;
                 }
             }
         }
         &.small {
             svg.icon {
-                width: 150px;
+                width: @iconWrapperSizeSmall;
                 height: auto;
             }
             &.square {
                 svg.icon {
-                    height: 150px;
+                    height: @iconWrapperSizeSmall;
                 }
             }
         }
         &.medium {
              svg.icon {
-                 width: 300px;
+                 width: @iconWrapperSizeMedium;
                  height: auto;
              }
             &.square {
                 svg.icon {
-                    height: 300px;
+                    height: @iconWrapperSizeMedium;
                 }
             }
         }
         &.large {
             svg.icon {
-                width: 450px;
+                width: @iconWrapperSizeLarge;
                 height: auto;
             }
             &.square {
                 svg.icon {
-                    height: 450px;
+                    height: @iconWrapperSizeLarge;
                 }
             }
         }
         &.big {
             svg.icon {
-                width: 600px;
+                width: @iconWrapperSizeBig;
                 height: auto;
             }
             &.square {
                 svg.icon {
-                    height: 600px;
+                    height: @iconWrapperSizeBig;
                 }
             }
         }
         &.huge {
             svg.icon {
-                width: 800px;
+                width: @iconWrapperSizeHuge;
                 height: auto;
             }
             &.square {
                 svg.icon {
-                    height: 800px;
+                    height: @iconWrapperSizeHuge;
                 }
             }
         }
         &.massive {
             svg.icon {
-                width: 960px;
+                width: @iconWrapperSizeMassive;
                 height: auto;
             }
             &.square {
                 svg.icon {
-                    height: 960px;
+                    height: @iconWrapperSizeMassive;
                 }
             }
         }
         &.two-tone {
             svg.icon {
-                path.primary {
-                    fill: @primaryColor;
+                .primary {
+                    fill: @iconWrapperTwoTonePrimaryColor;
                 }
-                path.secondary {
-                    fill: @lightGray;
+                .secondary {
+                    fill: @iconWrapperTwoToneSecondaryColor;
                 }
             }
         }

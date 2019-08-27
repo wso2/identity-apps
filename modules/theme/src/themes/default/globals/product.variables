@@ -35,3 +35,13 @@
 @iconWrapperPadding: 5px;
 @iconWrapperVeryPadding: 10px;
 @iconDefaultBgColor: @nobel;
+@iconWrapperTwoTonePrimaryColor: @primaryColor;
+@iconWrapperTwoToneSecondaryColor: @nobel;
+@iconWrapperSizeMini: 35px;
+@iconWrapperSizeTiny: 80px;
+@iconWrapperSizeSmall: 150px;
+@iconWrapperSizeMedium: 300px;
+@iconWrapperSizeLarge: 450px;
+@iconWrapperSizeBig: 600px;
+@iconWrapperSizeHuge: 800px;
+@iconWrapperSizeMassive: 960px;
