@@ -20,7 +20,7 @@ import * as React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 import { Button, Container, Divider, Form, Grid, Header, Icon, Segment, Transition } from "semantic-ui-react";
 import { getProfileInfo, getUserInfo, updateProfileInfo } from "../actions";
-import { NotificationComponent, UserImagePlaceHolder } from "../components";
+import {AssociatedAccountsPage, NotificationComponent, UserImagePlaceHolder} from "../components";
 import { InnerPageLayout } from "../layouts";
 import { createEmptyProfile } from "../models/profile";
 
@@ -437,10 +437,13 @@ class UserProfilePageComponent extends React.Component<WithTranslation, any> {
                         <Divider hidden/>
                         <Header dividing as="h3">{t("views:userProfile.personalInfoTitle")}
                             <Button basic compact id="personalInfoEdit" onClick={this.handleEdit}
-                                    size="small">Update</Button>
+                                    size="mini">Update</Button>
                         </Header>
                         <Divider hidden/>
                         {handlePInfoChange()}
+                        <Divider hidden/>
+                        <Divider hidden/>
+                        <AssociatedAccountsPage/>
                     </Form>
                 </Container>
             </InnerPageLayout>
