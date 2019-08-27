@@ -39,7 +39,7 @@ import {
 import { ServiceResourcesEndpoint } from "../configs";
 import i18n from "../helpers/i18n";
 import { HttpError, HttpRequestConfig, HttpResponse } from "../models/api";
-import { ConsentReceiptInterface, ConsentState, UpdateReceiptInterface } from "../models/consent-management";
+import { ConsentReceiptInterface, ConsentState, UpdateReceiptInterface } from "../models/consents";
 import { createEmptyNotificationActionPayload, NotificationActionPayload } from "../models/notifications";
 
 /**

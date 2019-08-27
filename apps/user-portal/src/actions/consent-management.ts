@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ConsentInterface, ConsentReceiptInterface, ConsentState } from "../models/consent-management";
+import { ConsentInterface, ConsentReceiptInterface, ConsentState } from "../models/consents";
 import { createEmptyNotificationActionPayload, NotificationActionPayload } from "../models/notifications";
 
 /**

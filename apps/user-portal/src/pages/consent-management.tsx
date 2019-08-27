@@ -50,7 +50,7 @@ import {
     ConsentInterface,
     ConsentState,
     ServiceInterface
-} from "../models/consent-management";
+} from "../models/consents";
 
 /**
  * This is the Consent Management Component of the User Portal.
