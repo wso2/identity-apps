@@ -17,6 +17,7 @@
  */
 
 export * from "./auth-context";
+export * from "./associated-accounts";
 export * from "./page-header";
 export * from "./change-password";
 export * from "./header";
