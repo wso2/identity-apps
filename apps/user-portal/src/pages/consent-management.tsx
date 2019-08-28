@@ -58,9 +58,9 @@ import {
 class ConsentManagementComponent extends React.Component<any, any> {
 
     /**
-     * ComponentWillMount lifecycle method
+     * componentDidMount lifecycle method
      */
-    componentWillMount() {
+    componentDidMount() {
         const { actions } = this.props;
         // Set the default consent state which is `ACTIVE`.
         setConsentedAppsState(ConsentState.ACTIVE);
