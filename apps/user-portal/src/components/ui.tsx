@@ -20,6 +20,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { Image } from "semantic-ui-react";
 import { HomeTileIconImages, LogoImage, TitleText, UserImage } from "../configs/ui";
+import { Icon } from "./icon";
 
 interface ImageProps {
     classes?: any;
@@ -43,7 +44,14 @@ export const Logo = (props: ImageProps) => {
     const { classes, size, style } = props;
 
     return (
-        <Image className={classNames(classes, "product-logo")} size={size} style={style} src={LogoImage} inline />
+        <Icon
+            icon={LogoImage}
+            className={classNames(classes, "product-logo")}
+            size={size}
+            style={style}
+            transparent
+            inline
+        />
     );
 };
 
@@ -52,7 +60,8 @@ export const Title = (props: TitleProps) => {
 
     return (
         <div className={classNames(classes, "product-title")} style={style}>
-            <Logo /> <h1 className={classNames(classes, "product-title-text")} style={style}>{TitleText}</h1>
+            <Logo />
+            <h1 className={classNames(classes, "product-title-text")} style={style}>{TitleText}</h1>
             {children}
         </div>
     );

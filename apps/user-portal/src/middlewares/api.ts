@@ -18,7 +18,8 @@
 
 import axios from "axios";
 import log from "log";
-import { API_REQUEST, apiRequestEnd, apiRequestStart } from "../actions";
+import { apiRequestEnd, apiRequestStart } from "../actions";
+import { API_REQUEST } from "../actions/types";
 import { HttpRequestConfig } from "../models/api";
 
 /**

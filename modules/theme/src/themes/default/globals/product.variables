@@ -24,3 +24,16 @@
 @bodyTopBorderWidth: 3px;
 @bodyTopBorderColor: @primaryColor;
 @bodyTopBorderStyle: solid;
+
+/*-------------------
+    Icon Component
+--------------------*/
+
+@iconWrapperBgColor: @lightGray;
+@iconWrapperBorderColor: @darkGray;
+@iconWrapperBorderWidth: 1px;
+@iconWrapperPadding: 5px;
+@iconWrapperVeryPadding: 10px;
+@iconDefaultBgColor: @nobel;
+@iconWrapperTwoTonePrimaryColor: @primaryColor;
+@iconWrapperTwoToneSecondaryColor: @nobel;

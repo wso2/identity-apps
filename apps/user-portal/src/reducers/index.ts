@@ -18,7 +18,7 @@
 
 import { combineReducers } from "redux";
 import { accountRecoveryReducer } from "./account-security";
-import { consentsManagementReducer } from "./consents-management";
+import { consentManagementReducer } from "./consent-management";
 
 /**
  * Combines all the reducers.
@@ -27,7 +27,7 @@ import { consentsManagementReducer } from "./consents-management";
  */
 const reducers = combineReducers({
     accountRecovery: accountRecoveryReducer,
-    consentsManagement: consentsManagementReducer
+    consentManagement: consentManagementReducer
 });
 
 export default reducers;

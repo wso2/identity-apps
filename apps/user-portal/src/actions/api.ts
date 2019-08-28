@@ -17,21 +17,14 @@
  */
 
 import { HttpRequestConfig } from "../models/api";
-
-/**
- * Action type to handle starting state of an API request.
- *
- * @type {string}
- */
-export const API_REQUEST_START = "API_REQUEST_START";
-
-/**
- * Api request start action interface.
- */
-interface ApiRequestStartAction {
-    payload: string;
-    type: typeof API_REQUEST_START;
-}
+import {
+    API_REQUEST,
+    API_REQUEST_END,
+    API_REQUEST_START,
+    ApiRequestAction,
+    ApiRequestEndAction,
+    ApiRequestStartAction
+} from "./types";
 
 /**
  * Dispatches an action of type `API_REQUEST_START` with the type
@@ -46,21 +39,6 @@ export const apiRequestStart = (actionType: string): ApiRequestStartAction => ({
 });
 
 /**
- * Action type to handle termination of an API request.
- *
- * @type {string}
- */
-export const API_REQUEST_END = "API_REQUEST_END";
-
-/**
- * Api request end action interface.
- */
-interface ApiRequestEndAction {
-    payload: string;
-    type: typeof API_REQUEST_END;
-}
-
-/**
  * Dispatches an action of type `API_REQUEST_END` with the type
  * of dispatcher as the payload.
  *
@@ -71,22 +49,6 @@ export const apiRequestEnd = (actionType: string): ApiRequestEndAction => ({
     payload: actionType,
     type: API_REQUEST_END
 });
-
-/**
- * Action type to handle API requests.
- *
- * @type {string}
- */
-export const API_REQUEST = "API_REQUEST";
-
-/**
- * Api request action interface.
- */
-interface ApiRequestAction {
-    meta: object;
-    payload: any;
-    type: typeof API_REQUEST;
-}
 
 /**
  * Takes in an config of type `HttpRequestConfig` and dispatches and action of type
@@ -103,8 +65,3 @@ export const apiRequest = (config: HttpRequestConfig): ApiRequestAction => {
         type: API_REQUEST
     };
 };
-
-/**
- * Action type to specify API actions.
- */
-export type ApiActionTypes = ApiRequestAction | ApiRequestStartAction | ApiRequestEndAction;

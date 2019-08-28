@@ -50,6 +50,7 @@
         "webpack-dev-server": "^3.7.2"
     },
     "dependencies": {
+        "@svgr/webpack": "^4.3.2",
         "@types/history": "4.6.2",
         "@wso2is/authenticate": "^0.1.0",
         "@wso2is/theme": "^0.1.0",

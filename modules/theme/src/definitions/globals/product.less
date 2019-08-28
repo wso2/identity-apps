@@ -59,9 +59,11 @@ body {
 
     .product-title {
         .product-logo {
-            width: 60px;
-            vertical-align: sub;
-            margin-right: 5px;
+            svg {
+                width: 60px;
+                vertical-align: sub;
+                margin-right: 5px;
+            }
         }
         .product-title-text {
             text-transform: uppercase;
@@ -71,6 +73,142 @@ body {
         }
         .user-image {
             width: 100px !important;
+        }
+    }
+
+    .icon-wrapper {
+        background-color: @iconWrapperBgColor;
+        overflow: hidden;
+        display: flex;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+
+        &.inline {
+            display: inline-block;
+        }
+        &.transparent {
+            background-color: transparent;
+        }
+        &.relaxed {
+            padding: @iconWrapperPadding;
+
+            &.very {
+                padding: @iconWrapperVeryPadding;
+            }
+        }
+        &.bordered {
+            border-width: @iconWrapperBorderWidth;
+            border-style: solid;
+            border-color: @iconWrapperBorderColor;
+        }
+        &.rounded {
+            border-radius: @defaultBorderRadius;
+        }
+        &.default {
+            svg.icon {
+                path {
+                    fill: @iconDefaultBgColor;
+                }
+            }
+        }
+        &.mini {
+            svg.icon {
+                width: @iconMini;
+                height: auto;
+            }
+            &.square {
+                svg.icon {
+                    height: @iconMini;
+                }
+            }
+        }
+        &.tiny {
+            svg.icon {
+                width: @iconTiny;
+                height: auto;
+            }
+            &.square {
+                svg.icon {
+                    height: @iconTiny;
+                }
+            }
+        }
+        &.small {
+            svg.icon {
+                width: @iconSmall;
+                height: auto;
+            }
+            &.square {
+                svg.icon {
+                    height: @iconSmall;
+                }
+            }
+        }
+        &.medium {
+            svg.icon {
+                width: @iconMedium;
+                height: auto;
+            }
+            &.square {
+                svg.icon {
+                    height: @iconMedium;
+                }
+            }
+        }
+        &.large {
+            svg.icon {
+                width: @iconLarge;
+                height: auto;
+            }
+            &.square {
+                svg.icon {
+                    height: @iconLarge;
+                }
+            }
+        }
+        &.big {
+            svg.icon {
+                width: @iconBig;
+                height: auto;
+            }
+            &.square {
+                svg.icon {
+                    height: @iconBig;
+                }
+            }
+        }
+        &.huge {
+            svg.icon {
+                width: @iconHuge;
+                height: auto;
+            }
+            &.square {
+                svg.icon {
+                    height: @iconHuge;
+                }
+            }
+        }
+        &.massive {
+            svg.icon {
+                width: @iconMassive;
+                height: auto;
+            }
+            &.square {
+                svg.icon {
+                    height: @iconMassive;
+                }
+            }
+        }
+        &.two-tone {
+            svg.icon {
+                .primary {
+                    fill: @iconWrapperTwoTonePrimaryColor;
+                }
+                .secondary {
+                    fill: @iconWrapperTwoToneSecondaryColor;
+                }
+            }
         }
     }
 }

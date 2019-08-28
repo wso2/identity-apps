@@ -19,11 +19,13 @@
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
 import {
     apiRequest,
+    showChangePasswordFormNotification
+} from "../actions";
+import {
     CHANGE_PASSWORD,
     CHANGE_PASSWORD_ERROR,
     CHANGE_PASSWORD_SUCCESS,
-    showChangePasswordFormNotification
-} from "../actions";
+} from "../actions/types";
 import { ServiceResourcesEndpoint } from "../configs";
 import i18n from "../helpers/i18n";
 import { HttpError, HttpRequestConfig, HttpResponse } from "../models/api";

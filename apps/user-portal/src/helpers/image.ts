@@ -16,11 +16,13 @@
  * under the License.
  */
 
-export * from "./account-security";
-export * from "./app-listing";
-export * from "./consent-management";
-export * from "./errors/404";
-export * from "./home";
-export * from "./theme";
-export * from "./user-listing";
-export * from "./user-profile";
+/**
+ * Extracts the mime-type from a base64encoded image.
+ *
+ * @param {string} encodedString - Encoded image.
+ * @return {string} - Mime-type as "image/png" | "image/svg+xml" etc.
+ */
+export const base64MimeType = (encodedString: string): string => {
+    const mime = encodedString.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
+    return mime && mime.length ? mime[1] : null;
+};

@@ -24,7 +24,7 @@ import {
   CHANGE_PASSWORD,
   HIDE_CHANGE_PASSWORD_FORM_NOTIFICATION,
   SHOW_CHANGE_PASSWORD_FORM_NOTIFICATION
-} from "../actions";
+} from "../actions/types";
 import { createEmptyNotificationActionPayload } from "../models/notifications";
 
 /**
