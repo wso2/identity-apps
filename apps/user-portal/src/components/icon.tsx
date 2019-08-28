@@ -44,7 +44,7 @@ interface ComponentProps {
  * @param {React.PropsWithChildren<any>} props
  * @return {any}
  */
-export const Icon: React.FunctionComponent<ComponentProps> = (props): JSX.Element => {
+export const ThemeIcon: React.FunctionComponent<ComponentProps> = (props): JSX.Element => {
     const {
         icon, inline, className, transparent, relaxed, bordered, rounded, defaultIcon, twoTone, size, style, square
     } = props;
@@ -96,7 +96,7 @@ export const Icon: React.FunctionComponent<ComponentProps> = (props): JSX.Elemen
 /**
  * Default proptypes for the Icon component.
  */
-Icon.defaultProps = {
+ThemeIcon.defaultProps = {
     bordered: false,
     className: "",
     defaultIcon: true,
