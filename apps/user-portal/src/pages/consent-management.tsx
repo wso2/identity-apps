@@ -42,7 +42,7 @@ import {
     updateConsentedClaim,
     updateRevokedClaimIds
 } from "../actions";
-import { Icon } from "../components/icon";
+import { ThemeIcon } from "../components/icon";
 import { GenericAppIcon } from "../configs/ui";
 import { AppState } from "../helpers/store";
 import { InnerPageLayout } from "../layouts";
@@ -58,9 +58,9 @@ import {
 class ConsentManagementComponent extends React.Component<any, any> {
 
     /**
-     * ComponentWillMount lifecycle method
+     * componentDidMount lifecycle method
      */
-    componentWillMount() {
+    componentDidMount() {
         const { actions } = this.props;
         // Set the default consent state which is `ACTIVE`.
         setConsentedAppsState(ConsentState.ACTIVE);
@@ -227,7 +227,7 @@ class ConsentManagementComponent extends React.Component<any, any> {
                     <List>
                         <List.Item>
                             <List.Content floated="left">
-                                <Icon
+                                <ThemeIcon
                                     icon={GenericAppIcon}
                                     size="tiny"
                                     defaultIcon
@@ -401,7 +401,7 @@ class ConsentManagementComponent extends React.Component<any, any> {
                                             </Button>
                                         </List.Content>
                                         <List.Content floated="left">
-                                            <Icon
+                                            <ThemeIcon
                                                 icon={GenericAppIcon}
                                                 size="mini"
                                                 defaultIcon

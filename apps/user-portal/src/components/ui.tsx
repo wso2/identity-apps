@@ -20,7 +20,7 @@ import classNames from "classnames";
 import * as React from "react";
 import { Image } from "semantic-ui-react";
 import { HomeTileIconImages, LogoImage, TitleText, UserImage } from "../configs/ui";
-import { Icon } from "./icon";
+import { ThemeIcon } from "./icon";
 
 interface ImageProps {
     classes?: any;
@@ -44,7 +44,7 @@ export const Logo = (props: ImageProps) => {
     const { classes, size, style } = props;
 
     return (
-        <Icon
+        <ThemeIcon
             icon={LogoImage}
             className={classNames(classes, "product-logo")}
             size={size}

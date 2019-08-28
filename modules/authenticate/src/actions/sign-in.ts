@@ -104,7 +104,6 @@ export const sendTokenRequest = (requestParams: OIDCRequestParamsInterface): Pro
             }
             return validateIdToken(requestParams, response.data.id_token).then((valid) => {
                 if (valid) {
-                    debugger;
                     setSessionParameter(REQUEST_PARAMS, JSON.stringify(requestParams))
                     const tokenResponse: TokenResponseInterface = {
                         accessToken: response.data.access_token,
