@@ -1,6 +1,6 @@
 # Authenticate module for React Applications
 
-This module can be used enable OIDC based authentication for React applications.
+This module can be used to enable OIDC based authentication for React applications.
 
 ## Install
 Add following dependency in your package.json file.
@@ -8,15 +8,15 @@ Add following dependency in your package.json file.
 
 ## Usage
 
-### OPConfigurationUtil.initOPConfiguration(wellKnownEndpoint, forceInit)
+#### OPConfigurationUtil.initOPConfiguration(wellKnownEndpoint, forceInit)
 Initiate the authentication module using openid provider configuration endpoint.
 * `wellKnownEndpoint` well known endpoint.
 * `forceInit` whether to re-initiate the configuration.
 
-### OPConfigurationUtil.resetOPConfiguration()
+#### OPConfigurationUtil.resetOPConfiguration()
 Reset the configuration acquired from openid provider.
 
-### SignInUtil.sendAuthorizationRequest(requestParams)
+#### SignInUtil.sendAuthorizationRequest(requestParams)
 Sends the OAuth2 authorization code request to the IdP based on the provided request params.
 
 `requestParams` is type of `OIDCRequestParamsInterface`
@@ -36,10 +36,10 @@ interface OIDCRequestParamsInterface {
 * `enablePKCE` Enable PKCE for the authorization grant type.
 * `redirectUri` Callback url of the application.
 
-### SignInUtil.hasAuthorizationCode()
+#### SignInUtil.hasAuthorizationCode()
 Check whether the current url contains the OAuth2 authorization code.
 
-### SignInUtil.sendTokenRequest(requestParams)
+#### SignInUtil.sendTokenRequest(requestParams)
 Sends the OAuth2 token request and returns a Promise with token response. Also validate the signature of the id_token.
 
 `requestParams` is type of `OIDCRequestParamsInterface` as explained above.
@@ -63,7 +63,7 @@ interface TokenResponseInterface {
 * `refreshToken` refresh token.
 * `tokenType` token type.
 
-### SignInUtil.getAuthenticatedUser(idToken)
+#### SignInUtil.getAuthenticatedUser(idToken)
 This will extract the authenticated user from the id_token.
 
 Response will be in `AuthenticatedUserInterface`.
@@ -79,21 +79,21 @@ interface AuthenticatedUserInterface {
 * `email` email of the user.
 * `username` username.
 
-### AuthenticateSessionUtil.initUserSession(tokenResponse, authenticatedUser)
+#### AuthenticateSessionUtil.initUserSession(tokenResponse, authenticatedUser)
 This will initiate the user session using the attributes in tokenResponse and authenticatedUser.
 
 tokenResponse is type of `TokenResponseInterface` and authenticatedUser is type of `AuthenticatedUserInterface`.
 
-### AuthenticateSessionUtil.getAccessToken()
+#### AuthenticateSessionUtil.getAccessToken()
 This will returns a Promise containing the OAuth2 access_token. Also it will refresh the access_token if it is expired.
 
 Response will be a `Promise<string>`.
 
-### SignOutUtil.sendSignOutRequest(redirectUri)
+#### SignOutUtil.sendSignOutRequest(redirectUri)
 Sends the logout request the openid provider. Requires the redirect uri of the application.
 
 
-### AuthenticateSessionUtil.endAuthenticatedSession()
+#### AuthenticateSessionUtil.endAuthenticatedSession()
 Terminates the user session and clears the session attributes.
 
 ## License
