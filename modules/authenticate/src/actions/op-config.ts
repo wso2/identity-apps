@@ -29,7 +29,6 @@ import {
 } from "../constants";
 
 export const initOPConfiguration = (wellKnownEndpoint: string, forceInit: boolean): Promise<any> => {
-    debugger;
     if (!forceInit && isOPConfigInitiated()) {
         return Promise.resolve("success");
     }
@@ -44,7 +43,6 @@ export const initOPConfiguration = (wellKnownEndpoint: string, forceInit: boolea
                 return Promise.reject(new Error("Failed to load OpenID provider configuration from: "
                     + wellKnownEndpoint));
             }
-            debugger;
             setSessionParameter(AUTHORIZATION_ENDPOINT, response.data.authorization_endpoint);
             setSessionParameter(TOKEN_ENDPOINT, response.data.token_endpoint);
             setSessionParameter(END_SESSION_ENDPOINT, response.data.end_session_endpoint);

@@ -64,7 +64,6 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
     }
 
     private updateState() {
-        debugger;
         if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
             this.setState({
                 displayName: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.DISPLAY_NAME),
