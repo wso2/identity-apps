@@ -36,6 +36,8 @@ interface ComponentProps {
     size?: string;
     style?: object;
     square?: boolean;
+    floated?: string;
+    spaced?: string;
 }
 
 /**
@@ -46,17 +48,20 @@ interface ComponentProps {
  */
 export const ThemeIcon: React.FunctionComponent<ComponentProps> = (props): JSX.Element => {
     const {
-        icon, inline, className, transparent, relaxed, bordered, rounded, defaultIcon, twoTone, size, style, square
+        icon, inline, className, transparent, relaxed, bordered, rounded, defaultIcon, twoTone, size, style, square,
+        floated, spaced
     } = props;
     const relaxLevel = (relaxed && relaxed === true) ? "" : relaxed;
 
     const classes = classNames({
         "bordered": bordered,
         "default": defaultIcon,
+        [`floated-${floated}`]: floated,
         "inline": inline,
         "relaxed": relaxed,
         "rounded": rounded,
         [`${size}`]: size,
+        [`spaced-${spaced}`]: spaced,
         "square": square,
         "transparent": transparent,
         "two-tone": twoTone,
@@ -99,11 +104,13 @@ export const ThemeIcon: React.FunctionComponent<ComponentProps> = (props): JSX.E
 ThemeIcon.defaultProps = {
     bordered: false,
     className: "",
-    defaultIcon: true,
+    defaultIcon: false,
+    floated: null,
     inline: false,
     relaxed: false,
     rounded: false,
     size: "mini",
+    spaced: null,
     square: false,
     style: {},
     transparent: false,

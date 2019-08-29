@@ -37,3 +37,5 @@
 @iconDefaultBgColor: @nobel;
 @iconWrapperTwoTonePrimaryColor: @primaryColor;
 @iconWrapperTwoToneSecondaryColor: @nobel;
+@iconWrapperSpacingRight: 8px;
+@iconWrapperSpacingLeft: 8px;
