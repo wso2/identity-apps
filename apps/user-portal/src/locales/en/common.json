@@ -1,12 +1,26 @@
 {
+    "access": "Access",
+    "applications": "Applications",
+    "applicationName": "Application name",
+    "browser": "Browser",
+    "user": "User",
+    "loginTime": "Login time",
+    "lastSeen": "Last seen",
+    "ipAddress": "ip address",
+    "deviceModel": "Device model",
+    "operatingSystem": "Operating System",
     "submit": "Submit",
     "cancel": "Cancel",
     "continue": "Continue",
     "update": "Update",
     "revoke": "Revoke",
+    "revokeAll": "Revoke all",
+    "revokeSession": "Revoke session",
     "active": "Active",
     "edit": "Edit",
     "change": "Change",
     "save": "Save",
-    "configure": "Configure"
+    "configure": "Configure",
+    "showMore": "Show more",
+    "showLess": "Show less"
 }

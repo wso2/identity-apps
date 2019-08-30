@@ -18,7 +18,12 @@
 
 import { applyMiddleware, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { accountSecurityMiddleware, apiMiddleware, consentManagementMiddleware } from "../middlewares";
+import {
+    accountSecurityMiddleware,
+    apiMiddleware,
+    consentManagementMiddleware,
+    userSessionsMiddleware
+} from "../middlewares";
 import reducers from "../reducers";
 
 /**
@@ -34,7 +39,12 @@ export type AppState = ReturnType<typeof reducers>;
  */
 export default function configureStore() {
     // Set of custom middlewares.
-    const middlewares = [...consentManagementMiddleware, ...accountSecurityMiddleware, apiMiddleware];
+    const middlewares = [
+        ...consentManagementMiddleware,
+        ...accountSecurityMiddleware,
+        ...userSessionsMiddleware,
+        apiMiddleware
+    ];
     const middleWareEnhancer = applyMiddleware(...middlewares);
 
     return createStore(

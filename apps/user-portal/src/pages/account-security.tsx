@@ -18,7 +18,7 @@
 
 import * as React from "react";
 import { Container, Divider, Header } from "semantic-ui-react";
-import { ChangePasswordComponent, SecurityQsComponent } from "../components";
+import { ChangePasswordComponent, SecurityQsComponent, UserSessionsComponent } from "../components";
 import { InnerPageLayout } from "../layouts";
 
 export const AccountSecurityPage = () => (
@@ -27,6 +27,8 @@ export const AccountSecurityPage = () => (
         pageDescription="Manage and Update Your Account Security">
         <Container>
             <ChangePasswordComponent />
+            <Divider hidden/>
+            <UserSessionsComponent />
         </Container>
         <Divider hidden/>
         <Divider hidden/>
