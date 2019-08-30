@@ -207,8 +207,8 @@ class UserSessionsComponentInner extends React.Component<any, any> {
                                                                         </Table.Header>
                                                                         <Table.Body>
                                                                         {
-                                                                            session.applications.map((app) => (
-                                                                                <Table.Row>
+                                                                            session.applications.map((app, i) => (
+                                                                                <Table.Row key={i}>
                                                                                     <Table.Cell>
                                                                                         { app.appName }
                                                                                     </Table.Cell>
