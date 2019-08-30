@@ -83,7 +83,9 @@ class AssociatedAccountsPageComponent extends React.Component<WithTranslation, a
     public handleSave = () => {
         const {userId, notification, password} = this.state;
         const {t} = this.props;
-        const encodedUserId = btoa("PRIMARY/" + userId);
+
+        // TODO Remove the step to encode userID
+        const encodedUserId = btoa(userId);
         const data = {
             userId: encodedUserId,
             password: password,
