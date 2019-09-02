@@ -31,3 +31,11 @@ export const HomeTileIcons = {
     security: require("../lib/assets/images/home_security_mgt.png"),
     consent: require("../lib/assets/images/home_consent_mgt.png")
 };
+export const SidePanelIconSet = {
+    overview: require("../lib/assets/images/dashboard-icon.svg"),
+    personal: require("../lib/assets/images/user-icon.svg"),
+    security: require("../lib/assets/images/lock-icon.svg"),
+    account: require("../lib/assets/images/controls-icon.svg"),
+    session: require("../lib/assets/images/monitor-icon.svg"),
+    consent: require("../lib/assets/images/tick-circle-icon.svg"),
+};
