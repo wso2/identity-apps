@@ -234,4 +234,54 @@ body {
     }
 }
 
+.sidebar-wrapper {
+    .sidebar {
+        list-style: none;
+        margin-top: unset;
+        padding-left: 0;
+
+        li {
+            > a {
+                display: block;
+                cursor: pointer;
+                color: @sidePanelDefaultFontColor;
+                padding: 10px 16px 10px 24px;
+                text-decoration: none;
+
+                svg, .icon {
+                    display: inline-block;
+                    vertical-align: middle;
+                    line-height: 1;
+                    width: 18px;
+                    height: 18px;
+
+                    .path {
+                        fill: @sidePanelDefaultFontColor;
+                    }
+                }
+            }
+            &.active {
+                a {
+                    color: @sidePanelActiveFontColor;
+                }
+                svg, .icon {
+                    .path {
+                        fill: @sidePanelActiveFontColor;
+                    }
+                }
+            }
+            &:hover {
+                a {
+                    color: @sidePanelHoverFontColor;
+                }
+                svg, .icon {
+                    .path {
+                        fill: @sidePanelHoverFontColor;
+                    }
+                }
+            }
+        }
+    }
+}
+
 .loadUIOverrides();

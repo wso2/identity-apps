@@ -66,7 +66,7 @@
     Icon Sizes
 --------------------*/
 
-@iconMicro: 20px;
+@iconMicro: 18px;
 @iconMini: 35px;
 @iconTiny: 80px;
 @iconSmall: 150px;

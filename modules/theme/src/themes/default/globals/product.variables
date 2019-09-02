@@ -26,6 +26,14 @@
 @bodyTopBorderStyle: solid;
 
 /*-------------------
+ Side Panel Component
+--------------------*/
+
+@sidePanelDefaultFontColor: @black;
+@sidePanelActiveFontColor: @primaryColor;
+@sidePanelHoverFontColor: @primaryColor;
+
+/*-------------------
     Icon Component
 --------------------*/
 
