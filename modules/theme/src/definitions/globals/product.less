@@ -234,50 +234,78 @@ body {
     }
 }
 
-.sidebar-wrapper {
-    .sidebar {
-        list-style: none;
-        margin-top: unset;
-        padding-left: 0;
+.content-wrapper {
+    padding-top: @headerHeight;
+}
 
-        li {
-            > a {
-                display: block;
-                cursor: pointer;
-                color: @sidePanelDefaultFontColor;
-                padding: 10px 16px 10px 24px;
-                text-decoration: none;
+.side-panel-pusher {
+    min-height: calc(100vh - @headerHeight) !important;
+}
 
-                svg, .icon {
-                    display: inline-block;
-                    vertical-align: middle;
-                    line-height: 1;
-                    width: 18px;
-                    height: 18px;
+.side-panel {
+    // override the box shadow and border in the semantic ui menu component
+    box-shadow: none !important;
+    border-radius: unset !important;
 
-                    .path {
-                        fill: @sidePanelDefaultFontColor;
-                    }
-                }
+    &.desktop {
+        border: unset;
+
+        .side-panel-item {
+            &:before {
+                display: none;
             }
             &.active {
-                a {
-                    color: @sidePanelActiveFontColor;
-                }
-                svg, .icon {
-                    .path {
-                        fill: @sidePanelActiveFontColor;
-                    }
+                background: transparent !important;
+            }
+        }
+    }
+
+    .side-panel-item {
+        // override the border-radius in the semantic ui menu component
+        border-radius: unset !important;
+
+        .route-name {
+            cursor: pointer;
+            color: @sidePanelDefaultFontColor;
+            padding: 10px 5px;
+        }
+
+        svg, .icon {
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 1;
+            width: 18px;
+            height: 18px;
+
+            .path {
+                fill: @sidePanelDefaultFontColor;
+            }
+        }
+
+        &.active {
+            // override semantic ui menu item active background color
+            background-color: transparent !important;
+
+            .route-name {
+                color: @sidePanelActiveFontColor;
+            }
+            svg, .icon {
+                .path {
+                    fill: @sidePanelActiveFontColor;
                 }
             }
-            &:hover {
-                a {
-                    color: @sidePanelHoverFontColor;
-                }
-                svg, .icon {
-                    .path {
-                        fill: @sidePanelHoverFontColor;
-                    }
+        }
+
+        &:hover {
+            // override semantic ui menu item hover background color
+            background-color: transparent !important;
+
+            .route-name {
+                color: @sidePanelHoverFontColor;
+            }
+            svg, .icon {
+                .path {
+                    fill: @sidePanelHoverFontColor;
                 }
             }
         }

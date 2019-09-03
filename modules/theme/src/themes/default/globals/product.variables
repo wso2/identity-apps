@@ -26,6 +26,11 @@
 @bodyTopBorderStyle: solid;
 
 /*-------------------
+   Header Component
+--------------------*/
+@headerHeight: 58px;
+
+/*-------------------
  Side Panel Component
 --------------------*/
 
