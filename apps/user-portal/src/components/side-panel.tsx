@@ -155,14 +155,14 @@ interface SidePanelWrapperProps {
 export const SidePanelWrapper: React.FunctionComponent<SidePanelWrapperProps> = (
     props: SidePanelWrapperProps
 ): JSX.Element => {
-    const { mobileSidePanelVisibility, children, onSidePanelPusherClick } = props;
+    const { mobileSidePanelVisibility, children, onSidePanelPusherClick, onSidePanelItemClick } = props;
     return (
         <>
             <Responsive { ...Responsive.onlyMobile }>
                 <MobileSidePanel
                     onPusherClick={ onSidePanelPusherClick }
                     visible={ mobileSidePanelVisibility }
-                    onSidePanelItemClick={ onSidePanelPusherClick }
+                    onSidePanelItemClick={ onSidePanelItemClick }
                 >
                     <Divider className="x1" hidden/>
                     <Container>{ children }</Container>
@@ -173,7 +173,7 @@ export const SidePanelWrapper: React.FunctionComponent<SidePanelWrapperProps> = 
                 <Grid>
                     <Grid.Row columns={ 2 }>
                         <Grid.Column tablet={ 6 } computer={ 4 }>
-                            <DefaultSidePanel onSidePanelItemClick={ onSidePanelPusherClick }/>
+                            <DefaultSidePanel onSidePanelItemClick={ onSidePanelItemClick }/>
                         </Grid.Column>
                         <Grid.Column tablet={ 10 } computer={ 12 }>
                             { children }
