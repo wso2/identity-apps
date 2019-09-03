@@ -61,23 +61,19 @@ export class UserAgentParser {
 
         const ua = UserAgentParser.parser.getUA();
 
+        // tslint:disable:max-line-length
         const type = ua.match(/iPad/i) || ua.match(/tablet/i) && !ua.match(/RX-34/i) || ua.match(/FOLIO/i) ? "tablet"
-            // tslint:disable-next-line:max-line-length
             : ua.match(/Linux/i) && ua.match(/Android/i) && !ua.match(/Fennec|mobi|HTC.Magic|HTCX06HT|Nexus.One|SC-02B|fone.945/i) ? "tablet"
                 : ua.match(/Kindle/i) || ua.match(/Mac.OS/i) && ua.match(/Silk/i) ? "tablet"
-                    // tslint:disable-next-line:max-line-length
                     : ua.match(/GT-P10|SC-01C|SHW-M180S|SGH-T849|SCH-I800|SHW-M180L|SPH-P100|SGH-I987|zt180|HTC(.Flyer|\_Flyer)|Sprint.ATP51|ViewPad7|pandigital(sprnova|nova)|Ideos.S7|Dell.Streak.7|Advent.Vega|A101IT|A70BHT|MID7015|Next2|nook/i) || ua.match(/MB511/i) && ua.match(/RUTEM/i) ? "tablet"
-                        // tslint:disable-next-line:max-line-length
                         : ua.match(/BOLT|Fennec|Iris|Maemo|Minimo|Mobi|mowser|NetFront|Novarra|Prism|RX-34|Skyfire|Tear|XV6875|XV6975|Google.Wireless.Transcoder/i) ? "mobile"
-                            // tslint:disable-next-line:max-line-length
                             : ua.match(/Opera/i) && ua.match(/Windows.NT.5/i) && ua.match(/HTC|Xda|Mini|Vario|SAMSUNG\-GT\-i8000|SAMSUNG\-SGH\-i9/i) ? "mobile"
-                                // tslint:disable-next-line:max-line-length
                                 : ua.match(/Windows.(NT|XP|ME|9)/) && !ua.match(/Phone/i) || ua.match(/Win(9|.9|NT)/i) ? "desktop"
                                     : ua.match(/Macintosh|PowerPC/i) && !ua.match(/Silk/i) ? "desktop"
                                         : ua.match(/Linux/i) && ua.match(/X11/i) ? "desktop"
                                             : ua.match(/Solaris|SunOS|BSD/i) ? "desktop"
-                                                // tslint:disable-next-line:max-line-length
                                                 : ua.match(/Bot|Crawler|Spider|Yahoo|ia_archiver|Covario-IDS|findlinks|DataparkSearch|larbin|Mediapartners-Google|NG-Search|Snappy|Teoma|Jeeves|TinEye/i) && !ua.match(/Mobile/i) ? "desktop" : "mobile";
+        // tslint:enable:max-line-length
 
         return { type, vendor: null, model: null };
     }
