@@ -383,7 +383,7 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
         );
 
         return (
-            <Container>
+            <>
                 <Header>{t("views:changePassword.title")}</Header>
                 <Header.Subheader>{t("views:changePassword.subTitle")}</Header.Subheader>
                 <Divider hidden/>
@@ -406,7 +406,7 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
                             t("views:changePassword.forms.passwordResetForm.inputs.currentPassword.placeholder")
                         }
                         type={types.currentPassword}
-                        width={8}
+                        width={ 9 }
                         icon={
                             types.currentPassword === "password" ? (
                                 <Icon
@@ -436,7 +436,7 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
                             t("views:changePassword.forms.passwordResetForm.inputs.newPassword.placeholder")
                         }
                         type={types.newPassword}
-                        width={8}
+                        width={ 9 }
                         icon={
                             types.newPassword === "password" ? (
                                 <Icon name="eye" link onClick={() => this.toggleInputType("newPassword")} />
@@ -458,7 +458,7 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
                             t("views:changePassword.forms.passwordResetForm.inputs.confirmPassword.placeholder")
                         }
                         type={types.confirmPassword}
-                        width={8}
+                        width={ 9 }
                         icon={
                             types.confirmPassword === "password" ? (
                                 <Icon name="eye" link onClick={() => this.toggleInputType("confirmPassword")} />
@@ -481,7 +481,7 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
                     </Button>
                 </Form>
                 {confirmationModal}
-            </Container>
+            </>
         );
     }
 }
