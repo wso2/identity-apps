@@ -17,70 +17,76 @@
  */
 
 import * as React from "react";
-import { Container, Divider, Header } from "semantic-ui-react";
-import { Header as AppHeader } from "../components";
+import { Header as AppHeader, PageHeader, SidePanelWrapper } from "../components";
 
-interface Props extends React.ComponentProps<any> {
+/**
+ * Inner page layout component Prop types.
+ */
+interface InnerPageLayoutProps {
+    children?: React.ReactNode;
     pageTitle: string;
+    pageDescription?: string;
     pageTitleTextAlign?: "left" | "center" | "right" | "justified";
 }
 
-export const InnerPageLayout = (props: Props) => (
-    <>
-        <AppHeader />
-        <Container style={{ marginTop: "7em" }}>
-            { (props.pageTitle || props.pageDescription) &&
-                <>
-                    <Divider className="x2" hidden />
-                    <Header as="h1" textAlign={props.pageTitleTextAlign}>
-                        { props.pageTitle &&
-                            <>{ props.pageTitle }</>
-                        }
-                        { props.pageDescription &&
-                            <Header.Subheader>{ props.pageDescription }</Header.Subheader>
-                        }
-                    </Header>
-                    <Divider className="x2" hidden />
-                </>
-            }
-            { props.children }
-        </Container>
-    </>
-);
+/**
+ * Inner page layout component state types.
+ */
+interface InnerPageLayoutState {
+    mobileSidePanelVisibility: boolean;
+}
 
 /**
- * Side panel component.
+ * Inner page layout.
  *
- * @return {JSX.Element}
+ * @param {Props} props
+ * @return {any}
  */
-const SidePanel: React.FunctionComponent<{}> = (): JSX.Element => {
-    const activeRoute = (path: string) => {
-        const pathname = window.location.pathname;
-        const urlTokens = path.split("/");
-        return pathname.indexOf(urlTokens[1]) > -1 ? "active" : "";
+export class InnerPageLayout extends React.Component<InnerPageLayoutProps, InnerPageLayoutState> {
+    public state = {
+        mobileSidePanelVisibility: false
     };
-    return (
-        <div className="sidebar-wrapper">
-            <ul className="sidebar">
-                {
-                    routes.map((route, index) => (
-                        route.showOnSidePanel ?
-                            <li className={ activeRoute(route.path) } key={ index }>
-                                <NavLink to={ route.path } className="nav-link" activeClassName="active">
-                                    <ThemeIcon
-                                        icon={ SidePanelIcons[route.icon] }
-                                        size="micro"
-                                        floated="left"
-                                        spaced="right"
-                                        transparent
-                                    />
-                                    { route.name }
-                                </NavLink>
-                            </li>
-                            : null
-                    ))
-                }
-            </ul>
-        </div>
-    );
-};
+
+    public handleSidePanelToggleClick = () => {
+        const { mobileSidePanelVisibility } = this.state;
+        this.setState({ mobileSidePanelVisibility: !mobileSidePanelVisibility });
+    }
+
+    public handleSidePanelPusherClick = () => {
+        const { mobileSidePanelVisibility } = this.state;
+
+        if (mobileSidePanelVisibility) {
+            this.setState({ mobileSidePanelVisibility: false });
+        }
+    }
+
+    public handleSidePanelItemClick = () => {
+        this.setState({ mobileSidePanelVisibility: false });
+    }
+
+    public render() {
+        const { mobileSidePanelVisibility } = this.state;
+        const { children, pageTitle, pageDescription, pageTitleTextAlign } = this.props;
+        return (
+            <>
+                <AppHeader onSidePanelToggleClick={ this.handleSidePanelToggleClick }/>
+                <div className="content-wrapper">
+                    <SidePanelWrapper
+                        mobileSidePanelVisibility={ mobileSidePanelVisibility }
+                        onSidePanelItemClick={ this.handleSidePanelItemClick }
+                        onSidePanelPusherClick={ this.handleSidePanelPusherClick }
+                    >
+                        <PageHeader
+                            title={ pageTitle }
+                            description={ pageDescription }
+                            titleTextAlign={ pageTitleTextAlign }
+                        />
+                        { children }
+                    </SidePanelWrapper>
+                </div>
+            </>
+        );
+    }
+}
+
+
