@@ -47,3 +47,40 @@ export const InnerPageLayout = (props: Props) => (
         </Container>
     </>
 );
+
+/**
+ * Side panel component.
+ *
+ * @return {JSX.Element}
+ */
+const SidePanel: React.FunctionComponent<{}> = (): JSX.Element => {
+    const activeRoute = (path: string) => {
+        const pathname = window.location.pathname;
+        const urlTokens = path.split("/");
+        return pathname.indexOf(urlTokens[1]) > -1 ? "active" : "";
+    };
+    return (
+        <div className="sidebar-wrapper">
+            <ul className="sidebar">
+                {
+                    routes.map((route, index) => (
+                        route.showOnSidePanel ?
+                            <li className={ activeRoute(route.path) } key={ index }>
+                                <NavLink to={ route.path } className="nav-link" activeClassName="active">
+                                    <ThemeIcon
+                                        icon={ SidePanelIcons[route.icon] }
+                                        size="micro"
+                                        floated="left"
+                                        spaced="right"
+                                        transparent
+                                    />
+                                    { route.name }
+                                </NavLink>
+                            </li>
+                            : null
+                    ))
+                }
+            </ul>
+        </div>
+    );
+};
