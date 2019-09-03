@@ -30,7 +30,7 @@ module.exports = env => {
      * Runtime configurations
      */
     const loginPagePath = '/login';
-    const homePagePath = '/home';
+    const homePagePath = '/overview';
     const serverHost = 'https://localhost:9443';
     const clientHost = (env.NODE_ENV === 'prod') ? serverHost : `https://localhost:${devServerPort}`;
     const externalLoginClientID = (env.NODE_ENV === 'prod') ? 'USER_PORTAL' : 'USER_PORTAL';
