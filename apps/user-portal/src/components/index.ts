@@ -17,6 +17,7 @@
  */
 
 export * from "./auth-context";
+export * from "./page-header";
 export * from "./change-password";
 export * from "./header";
 export * from "./notification";
@@ -24,3 +25,6 @@ export * from "./protected-route";
 export * from "./security-qs";
 export * from "./ui";
 export * from "./user-sessions";
+export * from "./icon";
+export * from "./consent-management";
+export * from "./side-panel";
