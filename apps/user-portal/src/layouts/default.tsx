@@ -17,33 +17,42 @@
  */
 
 import * as React from "react";
-import { Container, Divider, Header } from "semantic-ui-react";
-import { Header as AppHeader } from "../components";
+import { Container, Divider } from "semantic-ui-react";
+import { Header as AppHeader, PageHeader } from "../components";
 
-interface Props extends React.ComponentProps<any> {
+/**
+ * Default page layout component Prop types.
+ */
+interface DefaultPageLayoutProps {
+    children?: React.ReactNode;
     pageTitle: string;
+    pageDescription?: string;
     pageTitleTextAlign?: "left" | "center" | "right" | "justified";
 }
 
-export const DefaultPageLayout = (props: Props) => (
-    <>
-        <AppHeader />
-        <Container style={{ marginTop: "7em" }}>
-            { (props.pageTitle || props.pageDescription) &&
-            <>
-                <Divider className="x2" hidden />
-                <Header as="h1" textAlign={props.pageTitleTextAlign}>
-                    { props.pageTitle &&
-                    <>{ props.pageTitle }</>
-                    }
-                    { props.pageDescription &&
-                    <Header.Subheader>{ props.pageDescription }</Header.Subheader>
-                    }
-                </Header>
-                <Divider className="x2" hidden />
-            </>
-            }
-            { props.children }
-        </Container>
-    </>
-);
+/**
+ * Default page layout.
+ *
+ * @param {DefaultPageLayoutProps} props - Props injected to the default page layout component.
+ * @return {JSX.Element}
+ */
+export const DefaultPageLayout: React.FunctionComponent<DefaultPageLayoutProps> = (
+    props: DefaultPageLayoutProps
+): JSX.Element => {
+    const { children, pageTitle, pageDescription, pageTitleTextAlign } = props;
+    return (
+        <>
+            <AppHeader showSidePanelToggle={ false } />
+            <Container style={ { marginTop: "7em" } }>
+                <Divider className="x2" hidden/>
+                <PageHeader
+                    title={ pageTitle }
+                    description={ pageDescription }
+                    titleTextAlign={ pageTitleTextAlign }
+                />
+                <Divider className="x2" hidden/>
+                { children }
+            </Container>
+        </>
+    );
+};
