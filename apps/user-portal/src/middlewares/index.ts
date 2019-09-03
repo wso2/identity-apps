@@ -19,3 +19,4 @@
 export * from "./api";
 export * from "./account-security";
 export * from "./consent-management";
+export * from "./user-sessions";

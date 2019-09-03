@@ -196,6 +196,75 @@
                 }
             }
         }
+    },
+    "userSessions": {
+        "title": "Sessions",
+        "subTitle": "This is a list of devices that have been active on your account, or are currently signed in.",
+        "browserAndOS": "{{browser}} on {{os}} {{version}}",
+        "lastAccessed": "Last accessed {{date}}",
+        "notifications": {
+            "fetchSessions": {
+                "success": {
+                    "message": "User session retrieval successful.",
+                    "description": "Successfully retrieved the user sessions."
+                },
+                "error": {
+                    "message": "Error retrieving user session.",
+                    "description": "{{description}}"
+                },
+                "genericError": {
+                    "message": "Something went wrong.",
+                    "description": "Couldn't retrieve any user sessions."
+                }
+            },
+            "revokeAllUserSessions": {
+                "success": {
+                    "message": "Revoked all user sessions.",
+                    "description": "Successfully revoked all user sessions."
+                },
+                "error": {
+                    "message": "Couldn't revoke user sessions.",
+                    "description": "{{description}}"
+                },
+                "genericError": {
+                    "message": "Couldn't revoke user sessions.",
+                    "description": "Something went wrong while revoking user sessions."
+                }
+            },
+            "revokeUserSession": {
+                "success": {
+                    "message": "Session revoke success.",
+                    "description": "Successfully revoked the user session."
+                },
+                "error": {
+                    "message": "Couldn't revoke the user session.",
+                    "description": "{{description}}"
+                },
+                "genericError": {
+                    "message": "Couldn't revoke the user session.",
+                    "description": "Something went wrong while revoking the user session."
+                }
+            }
+        },
+        "placeholders": {
+            "emptySessionList": {
+                "heading": "There are no active sessions for this user"
+            }
+        },
+        "modals": {
+            "revokeAllUserSessionsModal": {
+                "heading": "Confirmation",
+                "message": "This action will log you out of all the sessions on every device. Do you wish to continue?"
+            },
+            "revokeUserSessionModal": {
+                "heading": "Confirmation",
+                "message": "This action will log you out of the session on the particular device. Do you wish to continue?"
+            }
+        },
+        "messages": {
+            "unrecognizedWarning": {
+                "header": "Revoke any sessions that you don't recognize."
+            }
+        }
     }
-
 }

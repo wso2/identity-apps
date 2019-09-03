@@ -16,9 +16,40 @@
  * under the License.
  */
 
-export * from "./account-security";
-export * from "./api";
-export * from "./consent-management";
-export * from "./login";
-export * from "./profile";
-export * from "./user-sessions";
+/**
+ * User sessions model.
+ */
+export interface UserSessions {
+    userId: string;
+    sessions: UserSession[];
+}
+
+/**
+ * Model to represent a single login session.
+ */
+export interface UserSession {
+    applications: Application[];
+    userAgent: string;
+    ip: string;
+    loginTime: string;
+    lastAccessTime: string;
+    id: string;
+}
+
+/**
+ * Model to represent logged in application details.
+ */
+interface Application {
+    subject: string;
+    appName: string;
+    appId: string;
+}
+
+export const createEmptyUserSession = (): UserSession => ({
+    applications: [],
+    id: "",
+    ip: "",
+    lastAccessTime: "",
+    loginTime: "",
+    userAgent: "",
+});

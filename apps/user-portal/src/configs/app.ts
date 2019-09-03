@@ -27,6 +27,7 @@ interface ServiceResourcesType {
     logout: string;
     me: string;
     receipts: string;
+    sessions: string;
     token: string;
     user: string;
     revoke: string;
@@ -43,8 +44,9 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     logout: `${ServiceEndpoint}/oidc/logout`,
     me: `${ServiceEndpoint}/scim2/Me`,
     receipts: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents/receipts`,
-    token: `${ServiceEndpoint}/oauth2/token`,
     revoke: `${ServiceEndpoint}/oauth2/revoke`,
+    sessions: `${ServiceEndpoint}/t/carbon.super/api/users/v1/me/sessions`,
+    token: `${ServiceEndpoint}/oauth2/token`,
     user: `${ServiceEndpoint}/api/identity/user/v1.0/me`,
     wellKnown: `${ServiceEndpoint}/oauth2/oidcdiscovery/.well-known/openid-configuration`
 };

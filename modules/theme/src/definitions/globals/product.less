@@ -110,6 +110,17 @@ body {
                 }
             }
         }
+        &.micro {
+            svg.icon {
+                width: @iconMicro;
+                height: auto;
+            }
+            &.square {
+                svg.icon {
+                    height: @iconMicro;
+                }
+            }
+        }
         &.mini {
             svg.icon {
                 width: @iconMini;
@@ -207,6 +218,18 @@ body {
                     fill: @iconWrapperTwoToneSecondaryColor;
                 }
             }
+        }
+        &.spaced-right {
+            margin-right: @iconWrapperSpacingRight;
+        }
+        &.spaced-left {
+            margin-left: @iconWrapperSpacingLeft;
+        }
+        &.floated-right {
+            float: right;
+        }
+        &.floated-left {
+            float: left;
         }
     }
 }
