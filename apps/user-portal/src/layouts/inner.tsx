@@ -88,5 +88,3 @@ export class InnerPageLayout extends React.Component<InnerPageLayoutProps, Inner
         );
     }
 }
-
-
