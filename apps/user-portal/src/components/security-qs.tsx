@@ -354,7 +354,7 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
             }
         };
         return (
-            <Container>
+            <>
                 <Header>{t("views:securityQuestions.title")}</Header>
                 <Header.Subheader>{t("views:securityQuestions.subTitle")}</Header.Subheader>
                 <Divider hidden/>
@@ -363,14 +363,10 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
                                            description={description} message={message}
                     />
                 </Transition>
-                <Grid>
-                    <Grid.Column width={10}>
-                        {listItems()}
-                        <Divider hidden/>
-                        {displayButton()}
-                    </Grid.Column>
-                </Grid>
-            </Container>);
+                {listItems()}
+                <Divider hidden/>
+                {displayButton()}
+            </>);
     }
 
     /**
