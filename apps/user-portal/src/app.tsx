@@ -31,7 +31,11 @@ import configureStore from "./helpers/store";
 const store = configureStore();
 
 const LoginPage = (props) => {
-    props.loginFunction(history.location.pathname);
+    const location = (history.location.state && history.location.state.details) ?
+        history.location.state.details : history.location.pathname;
+
+    props.loginFunction(location);
+
     return null;
 };
 

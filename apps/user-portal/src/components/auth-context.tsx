@@ -25,8 +25,8 @@ import {
     SignOutUtil
 } from "@wso2is/authenticate";
 import * as React from "react";
-import {AuthContextInterface, AuthProviderInterface, createEmptyAuthContext} from "../models/auth";
-import {ServiceResourcesEndpoint} from "../configs";
+import { ServiceResourcesEndpoint } from "../configs";
+import { AuthContextInterface, AuthProviderInterface, createEmptyAuthContext } from "../models/auth";
 
 const AuthContext = React.createContext<AuthContextInterface | null>(null);
 
@@ -87,38 +87,40 @@ class AuthProvider extends React.Component<AuthProviderInterface, any> {
         if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
             this.loginSuccessRedirect(location);
         } else {
-            OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false).then((response) => {
-                this.doSignIn();
-            }).catch((error) => {
-                OPConfigurationUtil.setAuthorizeEndpoint(ServiceResourcesEndpoint.authorize);
-                OPConfigurationUtil.setTokenEndpoint(ServiceResourcesEndpoint.token);
-                OPConfigurationUtil.setRevokeTokenEndpoint(ServiceResourcesEndpoint.revoke);
-                OPConfigurationUtil.setEndSessionEndpoint(ServiceResourcesEndpoint.logout);
-                OPConfigurationUtil.setJwksUri(ServiceResourcesEndpoint.jwks);
-                OPConfigurationUtil.setOPConfigInitiated();
-                this.doSignIn();
-            });
+            OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false)
+                .then(() => {
+                    this.doSignIn(location);
+                }).catch(() => {
+                    OPConfigurationUtil.setAuthorizeEndpoint(ServiceResourcesEndpoint.authorize);
+                    OPConfigurationUtil.setTokenEndpoint(ServiceResourcesEndpoint.token);
+                    OPConfigurationUtil.setRevokeTokenEndpoint(ServiceResourcesEndpoint.revoke);
+                    OPConfigurationUtil.setEndSessionEndpoint(ServiceResourcesEndpoint.logout);
+                    OPConfigurationUtil.setJwksUri(ServiceResourcesEndpoint.jwks);
+                    OPConfigurationUtil.setOPConfigInitiated();
+                    this.doSignIn(location);
+                });
         }
     }
 
-    private doSignIn() {
-        let requestParams = {
-            clientId: CLIENT_ID,
+    private doSignIn(location) {
+        const requestParams = {
             clientHost: CLIENT_HOST,
+            clientId: CLIENT_ID,
             clientSecret: null,
             enablePKCE: true,
             redirectUri: LOGIN_CALLBACK_URL,
             scope: null,
         };
         if (SignInUtil.hasAuthorizationCode()) {
-            SignInUtil.sendTokenRequest(requestParams).then((response) => {
-                AuthenticateSessionUtil.initUserSession(response,
-                    SignInUtil.getAuthenticatedUser(response.idToken));
-                this.updateState();
-                this.loginSuccessRedirect(location);
-            }).catch((error) => {
-                throw error;
-            });
+            SignInUtil.sendTokenRequest(requestParams)
+                .then((response) => {
+                    AuthenticateSessionUtil.initUserSession(response,
+                        SignInUtil.getAuthenticatedUser(response.idToken));
+                    this.updateState();
+                    this.loginSuccessRedirect(location);
+                }).catch((error) => {
+                    throw error;
+                });
         } else {
             SignInUtil.sendAuthorizationRequest(requestParams);
         }
