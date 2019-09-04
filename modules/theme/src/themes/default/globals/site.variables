@@ -75,3 +75,8 @@
 @iconBig: 600px;
 @iconHuge: 800px;
 @iconMassive: 960px;
+
+/*-------------------
+   Header Component
+--------------------*/
+@headerHeight: 58px;

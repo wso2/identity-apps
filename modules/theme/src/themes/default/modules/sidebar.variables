@@ -17,25 +17,12 @@
  *
  */
 
-/*-------------------
-     Body Styles
---------------------*/
-
-@bodyTopBorderWidth: 3px;
-@bodyTopBorderColor: @primaryColor;
-@bodyTopBorderStyle: solid;
+/*******************************
+            Sidebar
+*******************************/
 
 /*-------------------
-    Icon Component
+        Pusher
 --------------------*/
 
-@iconWrapperBgColor: @lightGray;
-@iconWrapperBorderColor: @darkGray;
-@iconWrapperBorderWidth: 1px;
-@iconWrapperPadding: 5px;
-@iconWrapperVeryPadding: 10px;
-@iconDefaultBgColor: @nobel;
-@iconWrapperTwoTonePrimaryColor: @primaryColor;
-@iconWrapperTwoToneSecondaryColor: @nobel;
-@iconWrapperSpacingRight: 8px;
-@iconWrapperSpacingLeft: 8px;
+@sidePanelPusherMinHeight: calc(100vh - @headerHeight);
