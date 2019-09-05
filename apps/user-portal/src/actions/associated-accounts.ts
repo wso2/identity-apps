@@ -26,7 +26,7 @@ import { ServiceResourcesEndpoint } from "../configs";
  * @return {{Promise<AxiosResponse<any>>} a promise containing the response
  */
 export const getAssociations = () => {
-    const token = AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST);
+    return AuthenticateSessionUtil.getAccessToken().then((token) => {
     const header = {
         headers: {
             "Access-Control-Allow-Origin": CLIENT_HOST,
@@ -46,6 +46,9 @@ export const getAssociations = () => {
             log.error(error);
             return Promise.reject(error);
         });
+    }).catch((error) => {
+        return Promise.reject(error);
+    });
 };
 
 /**
@@ -53,7 +56,7 @@ export const getAssociations = () => {
  * @return {{Promise<AxiosResponse<any>>} a promise containing the response
  */
 export const addAccountAssociation = (data: object) => {
-    const token = AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST);
+    return AuthenticateSessionUtil.getAccessToken().then((token) => {
     const header = {
         headers: {
             "Access-Control-Allow-Origin": CLIENT_HOST,
@@ -74,6 +77,9 @@ export const addAccountAssociation = (data: object) => {
             Promise.reject(error);
             return error.response;
         });
+    }).catch((error) => {
+        return Promise.reject(error);
+    });
 };
 
 /**
@@ -81,7 +87,7 @@ export const addAccountAssociation = (data: object) => {
  * @return {{Promise<AxiosResponse<any>>} a promise containing the response
  */
 export const removeAssociation = () => {
-    const token = AuthenticateSessionUtil.getAccessToken(CLIENT_ID, CLIENT_HOST);
+    return AuthenticateSessionUtil.getAccessToken().then((token) => {
     const header = {
         headers: {
             "Access-Control-Allow-Origin": CLIENT_HOST,
@@ -94,5 +100,8 @@ export const removeAssociation = () => {
         params: {
 
         }
+    });
+    }).catch((error) => {
+        return Promise.reject(error);
     });
 };
