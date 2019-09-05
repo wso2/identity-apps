@@ -24,10 +24,10 @@ import { Button, Card } from "semantic-ui-react";
  */
 interface ComponentProps {
     header: string;
-    description: string;
-    actionTitle: string;
-    isEdit: boolean;
-    onClick: any;
+    description?: string;
+    actionTitle?: string;
+    isEdit?: boolean;
+    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 /**
