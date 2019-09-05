@@ -45,7 +45,7 @@ import {
 import { AppState, UserAgentParser } from "../helpers";
 import { UserSession, UserSessions } from "../models/user-sessions";
 import { NotificationComponent } from "./notification";
-import {SettingsSection} from "./settings-section";
+import { SettingsSection } from "./settings-section";
 
 /**
  * This is the User Sessions component of the User Portal

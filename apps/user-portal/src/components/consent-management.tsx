@@ -50,7 +50,7 @@ import {
     ServiceInterface
 } from "../models/consents";
 import { ThemeIcon } from "./icon";
-import {SettingsSection} from "./settings-section";
+import { SettingsSection } from "./settings-section";
 
 /**
  * Consent Management Component.

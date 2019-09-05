@@ -33,9 +33,9 @@ import {
 } from "semantic-ui-react";
 import { addSecurityQs, getSecurityQs, updateSecurityQs } from "../actions/profile";
 import { createEmptyChallenge } from "../models/challenges";
+import { EditSection } from "./edit-section";
 import { NotificationComponent } from "./notification";
-import {SettingsSection} from "./settings-section";
-import {EditSection} from "./edit-section";
+import { SettingsSection } from "./settings-section";
 
 /**
  * The security questions section of the user
