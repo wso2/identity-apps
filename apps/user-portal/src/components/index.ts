@@ -21,6 +21,7 @@ export * from "./associated-accounts";
 export * from "./basic-details";
 export * from "./page-header";
 export * from "./change-password";
+export * from "./profile-export";
 export * from "./header";
 export * from "./notification";
 export * from "./personal-details";

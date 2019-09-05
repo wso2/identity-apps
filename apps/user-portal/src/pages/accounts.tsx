@@ -19,7 +19,7 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
-import { SecurityQsComponent } from "../components";
+import { ProfileExport, SecurityQsComponent } from "../components";
 import { InnerPageLayout } from "../layouts";
 
 /**
@@ -39,6 +39,11 @@ export const AccountsPage = (): JSX.Element => {
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
                         <SecurityQsComponent/>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column width={ 16 }>
+                        <ProfileExport/>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
