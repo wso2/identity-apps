@@ -200,7 +200,11 @@
             "email": "Email",
             "username": "Username",
             "organisation": "Organisation",
-            "mobile": "Mobile Number"
+            "mobile": "Mobile Number",
+            "emptyField": "Please fill out this field"
+        },
+        "personalDetails": {
+            "noDetails": "No Personal Information Configured for this User"
         },
         "notification": {
             "downloadProfileInfo": {
