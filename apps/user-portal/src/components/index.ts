@@ -18,10 +18,12 @@
 
 export * from "./auth-context";
 export * from "./associated-accounts";
+export * from "./basic-details";
 export * from "./page-header";
 export * from "./change-password";
 export * from "./header";
 export * from "./notification";
+export * from "./personal-details";
 export * from "./protected-route";
 export * from "./security-qs";
 export * from "./ui";
