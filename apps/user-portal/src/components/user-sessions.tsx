@@ -45,6 +45,7 @@ import {
 import { AppState, UserAgentParser } from "../helpers";
 import { UserSession, UserSessions } from "../models/user-sessions";
 import { NotificationComponent } from "./notification";
+import {SettingsSection} from "./settings-section";
 
 /**
  * This is the User Sessions component of the User Portal
@@ -559,7 +560,12 @@ class UserSessionsComponentInner extends React.Component<any, any> {
 
         return (
             <>
-                <Header>{ t("views:userSessions.title") }</Header>
+                <SettingsSection
+                    header={ t("views:userSessions.title") }
+                    description={ t("views:userSessions.description") }
+                    isEdit={false}
+                >
+                <Divider hidden/>
                 <Grid>
                     <Grid.Column width={ 12 }>
                         <Header.Subheader>{ t("views:userSessions.subTitle") }</Header.Subheader>
@@ -619,6 +625,7 @@ class UserSessionsComponentInner extends React.Component<any, any> {
                 }
                 {revokeAllUserSessionsModal}
                 {revokeUserSessionModal}
+                </SettingsSection>
             </>
         );
     }

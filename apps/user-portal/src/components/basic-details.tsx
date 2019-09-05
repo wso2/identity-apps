@@ -289,7 +289,7 @@ class BasicDetailsComponent extends React.Component<WithTranslation, any> {
             }
         };
         return(<SettingsSection header="Basic Details" description="Manage and Update Your Basic Information"
-                              isEdit={this.state.emailEdit}  actionTitle="" onClick={handleEmailChange}>
+                              isEdit={this.state.emailEdit} onClick={handleEmailChange}>
                 <Transition visible={this.state.updateStatus} duration={500}>
                     <NotificationComponent {...other} onDismiss={this.handleDismiss} size="small"
                                            description={description} message={message}
