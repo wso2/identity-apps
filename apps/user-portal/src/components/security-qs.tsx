@@ -33,7 +33,9 @@ import {
 } from "semantic-ui-react";
 import { addSecurityQs, getSecurityQs, updateSecurityQs } from "../actions/profile";
 import { createEmptyChallenge } from "../models/challenges";
+import { EditSection } from "./edit-section";
 import { NotificationComponent } from "./notification";
+import { SettingsSection } from "./settings-section";
 
 /**
  * The security questions section of the user
@@ -251,11 +253,11 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
             if (this.state.isEdit) {
                 return (<div>
                     <Divider/>
-                    <Button id="lastNameEdit" secondary floated="right" onClick={this.handleEdit}>
-                        {t("common:cancel")}
-                    </Button>
-                    <Button id="lastName" primary onClick={this.handleSave} floated="right">
+                    <Button id="lastName" primary onClick={this.handleSave} floated="left">
                         {t("common:save")}
+                    </Button>
+                    <Button id="lastNameEdit" default floated="left" onClick={this.handleEdit}>
+                        {t("common:cancel")}
                     </Button>
                 </div>);
             } else if (challenges.answers && (challenges.answers.length > 0) && (!this.state.isEdit)) {
@@ -297,7 +299,7 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
                     return challenges.questions.map((questionSet) => {
                         return (
                         <>
-                        <Segment secondary padded>
+                        <EditSection>
                             <Divider hidden />
                             <Grid>
                                 <Grid.Row>
@@ -335,19 +337,19 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
                                 </Grid.Row>
                             </Grid>
                             <Divider hidden />
-                        </Segment>
+                        </EditSection>
                         </>);
                     });
                 }
             } else {
                 return (
                     <>
-                        <Segment placeholder>
+                        <Segment size="small" placeholder>
                             <Header icon>
                                 <Icon name="search" />
                                 {t("views:securityQuestions.noConfiguration")}
                             </Header>
-                            <Button primary onClick={this.handleEdit}>{t("common:configure")}</Button>
+                            <Button primary size="small" onClick={this.handleEdit}>{t("common:configure")}</Button>
                         </Segment>
                     </>
                 );
@@ -355,9 +357,12 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
         };
         return (
             <>
-                <Header>{t("views:securityQuestions.title")}</Header>
-                <Header.Subheader>{t("views:securityQuestions.subTitle")}</Header.Subheader>
-                <Divider hidden/>
+                <SettingsSection
+                    header={t("views:securityQuestions.title")}
+                    description={t("views:securityQuestions.subTitle")}
+                    isEdit={this.state.isEdit}
+                    onClick={this.handleEdit}
+                >
                 <Transition visible={this.state.updateStatus} duration={500}>
                     <NotificationComponent {...other} onDismiss={this.handleDismiss} size="small"
                                            description={description} message={message}
@@ -366,6 +371,7 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
                 {listItems()}
                 <Divider hidden/>
                 {displayButton()}
+                </SettingsSection>
             </>);
     }
 

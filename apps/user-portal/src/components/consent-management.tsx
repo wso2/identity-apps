@@ -50,6 +50,7 @@ import {
     ServiceInterface
 } from "../models/consents";
 import { ThemeIcon } from "./icon";
+import { SettingsSection } from "./settings-section";
 
 /**
  * Consent Management Component.
@@ -358,7 +359,11 @@ class ConsentManagementComponentInner extends React.Component<any, any> {
 
         return (
             <>
-                <Header>{ t("views:consentManagement.title") }</Header>
+                <SettingsSection
+                    header={ t("views:consentManagement.title") }
+                    description={ t("views:consentManagement.description") }
+                >
+                    <Divider hidden/>
                 {
                     isFetchConsentedAppsRequestLoading ?
                         <Placeholder>
@@ -418,6 +423,7 @@ class ConsentManagementComponentInner extends React.Component<any, any> {
                 </List>
                 { editConsentModal }
                 { consentRevokeModal }
+                </SettingsSection>
             </>
         );
     }

@@ -96,6 +96,7 @@
     "consentManagement": {
         "title": "Consented applications",
         "subTitle": "Manage consented applications and websites",
+        "description": "View and Manage consented applications of your account",
         "modals": {
             "consentRevokeModal": {
                 "heading": "Revoke {{appName}}?",
@@ -282,6 +283,7 @@
     "userSessions": {
         "title": "Active user sessions",
         "subTitle": "This is a list of devices that have been active on your account, or are currently signed in.",
+        "description": "View and Manage active sessions of your account",
         "browserAndOS": "{{browser}} on {{os}} {{version}}",
         "lastAccessed": "Last accessed {{date}}",
         "notifications": {
