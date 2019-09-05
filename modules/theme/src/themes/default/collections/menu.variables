@@ -14,15 +14,17 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
+ 
+/*******************************
+            Menu
+*******************************/
 
-export * from "./account-security";
-export * from "./app-listing";
-export * from "./consent-management";
-export * from "./errors/404";
-export * from "./home";
-export * from "./theme";
-export * from "./user-listing";
-export * from "./user-profile";
-export * from "./sessions";
-export * from "./accounts";
+/*-------------------
+    Side Panel Menu
+--------------------*/
+
+@sidePanelDefaultFontColor: @black;
+@sidePanelActiveFontColor: @primaryColor;
+@sidePanelHoverFontColor: @primaryColor;

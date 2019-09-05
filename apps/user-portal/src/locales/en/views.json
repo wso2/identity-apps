@@ -1,4 +1,42 @@
 {
+    "overviewPage": {
+        "title": "Welcome, {{firstName}}",
+        "subTitle": "Manage and configure your user settings to customize the Identity Server experience",
+        "sections": {
+            "profile": {
+                "header": "Profile",
+                "description": "Manage basic information, like your name and photo, that you use on. And account associations etc ..."
+            },
+            "accountSecurity": {
+                "header": "Account Security",
+                "description": "Configure account security measures, like Password, Account Recovery Options, Multi-factor Authentication etc ..."
+            },
+            "applications": {
+                "header": "Apps & Websites",
+                "description": "Monitor & manage account activities, Both active and inactive, Manage given consents etc ..."
+            }
+        }
+    },
+    "personalInfoPage": {
+        "title": "Personal Info",
+        "subTitle": "Manage information about you, your sub profiles and your account in general"
+    },
+    "securityPage": {
+        "title": "Security",
+        "subTitle": "Update settings to make your account secure"
+    },
+    "accountsPage": {
+        "title": "Accounts",
+        "subTitle": "Manage and update your account security"
+    },
+    "sessionsPage": {
+        "title": "Sessions",
+        "subTitle": "Currently active sessions and the session history"
+    },
+    "consentManagementPage": {
+        "title": "Consent Management",
+        "subTitle": "Manage consented applications and websites"
+    },
     "changePassword": {
         "title": "Change Password",
         "subTitle": "Change and modify the existing password",
@@ -56,7 +94,7 @@
         }
     },
     "consentManagement": {
-        "title": "Consent Management",
+        "title": "Consented applications",
         "subTitle": "Manage consented applications and websites",
         "modals": {
             "consentRevokeModal": {
@@ -198,7 +236,7 @@
         }
     },
     "userSessions": {
-        "title": "Sessions",
+        "title": "Active user sessions",
         "subTitle": "This is a list of devices that have been active on your account, or are currently signed in.",
         "browserAndOS": "{{browser}} on {{os}} {{version}}",
         "lastAccessed": "Last accessed {{date}}",
@@ -266,5 +304,9 @@
                 "header": "Revoke any sessions that you don't recognize."
             }
         }
+    },
+    "404": {
+        "title": "It looks like you're lost. :(",
+        "subTitle": "The page you're looking for isn't here."
     }
 }

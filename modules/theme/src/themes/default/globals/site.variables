@@ -66,7 +66,7 @@
     Icon Sizes
 --------------------*/
 
-@iconMicro: 20px;
+@iconMicro: 18px;
 @iconMini: 35px;
 @iconTiny: 80px;
 @iconSmall: 150px;
@@ -75,3 +75,8 @@
 @iconBig: 600px;
 @iconHuge: 800px;
 @iconMassive: 960px;
+
+/*-------------------
+   Header Component
+--------------------*/
+@headerHeight: 58px;

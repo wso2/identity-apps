@@ -19,27 +19,26 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
-import { ConsentManagementComponent } from "../components";
+import { SecurityQsComponent } from "../components";
 import { InnerPageLayout } from "../layouts";
 
 /**
- * Consent Management page.
+ * Accounts page.
  *
  * @return {JSX.Element}
  */
-export const ConsentManagementPage = (): JSX.Element => {
+export const AccountsPage = (): JSX.Element => {
     const { t } = useTranslation();
-
     return (
         <InnerPageLayout
-            pageTitle={ t("views:consentManagementPage.title") }
-            pageDescription={ t("views:consentManagementPage.subTitle") }
+            pageTitle={ t("views:accountsPage.title") }
+            pageDescription={ t("views:accountsPage.subTitle") }
         >
             <Divider hidden />
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
-                        <ConsentManagementComponent/>
+                        <SecurityQsComponent/>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

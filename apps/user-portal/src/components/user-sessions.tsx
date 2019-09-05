@@ -558,16 +558,15 @@ class UserSessionsComponentInner extends React.Component<any, any> {
         );
 
         return (
-            <Container>
+            <>
                 <Header>{ t("views:userSessions.title") }</Header>
                 <Grid>
-                    <Grid.Column width={ 13 }>
+                    <Grid.Column width={ 12 }>
                         <Header.Subheader>{ t("views:userSessions.subTitle") }</Header.Subheader>
                     </Grid.Column>
-                    <Grid.Column width={ 3 }>
+                    <Grid.Column width={ 4 }>
                         <Button
                             floated="right"
-                            size="mini"
                             negative
                             onClick={ this.handleRevokeAllUserSessionsClick }
                             loading={ isRevokeAllUserSessionsRequestLoading }
@@ -577,10 +576,6 @@ class UserSessionsComponentInner extends React.Component<any, any> {
                         </Button>
                     </Grid.Column>
                 </Grid>
-                <Message warning hidden={ !isSecurityWarningVisible }>
-                    <Icon name="warning"/>
-                    { t("views:userSessions.messages.unrecognizedWarning.header") }
-                </Message>
                 {
                     userSessionsNotification && userSessionsNotification.message
                     && userSessionsNotification.description ?
@@ -624,7 +619,7 @@ class UserSessionsComponentInner extends React.Component<any, any> {
                 }
                 {revokeAllUserSessionsModal}
                 {revokeUserSessionModal}
-            </Container>
+            </>
         );
     }
 }

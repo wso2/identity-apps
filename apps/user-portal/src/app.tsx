@@ -23,16 +23,10 @@ import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { Dimmer, Loader } from "semantic-ui-react";
 import { AuthConsumer, AuthProvider } from "./components/auth-context";
 import ProtectedRoute from "./components/protected-route";
+import { routes } from "./configs";
 import { i18n } from "./helpers";
 import history from "./helpers/history";
 import configureStore from "./helpers/store";
-import {
-    AccountSecurityPage,
-    ConsentManagementPage,
-    HomePage,
-    PageNotFound,
-    UserProfilePage
-} from "./pages";
 
 const store = configureStore();
 
@@ -70,14 +64,30 @@ class App extends React.Component<any, any> {
                                                 <Route path="/logout" render={(props) => (
                                                     <LogoutPage logoutFunction={logout} {...props} />
                                                 )} />
-                                                <ProtectedRoute path="/home" component={HomePage} />
-                                                <ProtectedRoute component={UserProfilePage} path="/profile"/>
-                                                <ProtectedRoute
-                                                    component={AccountSecurityPage}
-                                                    path="/account-security"
-                                                />
-                                                <ProtectedRoute component={ConsentManagementPage} path="/consent" />
-                                                <ProtectedRoute component={PageNotFound} />
+                                                {
+                                                    routes.map((route, index) => {
+                                                        return (
+                                                            route.protected ?
+                                                                (
+                                                                    <ProtectedRoute
+                                                                        component={ route.component }
+                                                                        path={ route.path }
+                                                                        key={ index }
+                                                                    />
+                                                                )
+                                                                :
+                                                                (
+                                                                    <Route
+                                                                        path="/logout"
+                                                                        render={ (props) =>
+                                                                            (<route.component { ...props } />)
+                                                                        }
+                                                                        key={ index }
+                                                                    />
+                                                                )
+                                                        );
+                                                    })
+                                                }
                                             </Switch>
                                         </>
                                     )}

@@ -17,26 +17,31 @@
  */
 
 import * as React from "react";
-import { Container, Divider, Header } from "semantic-ui-react";
-import { ChangePasswordComponent, SecurityQsComponent, UserSessionsComponent } from "../components";
+import { useTranslation } from "react-i18next";
+import { Divider, Grid } from "semantic-ui-react";
+import { ChangePasswordComponent } from "../components";
 import { InnerPageLayout } from "../layouts";
 
-export const AccountSecurityPage = () => (
-    <InnerPageLayout
-        pageTitle="Account Security"
-        pageDescription="Manage and Update Your Account Security">
-        <Container>
-            <ChangePasswordComponent />
-            <Divider hidden/>
-            <UserSessionsComponent />
-        </Container>
-        <Divider hidden/>
-        <Divider hidden/>
-        <Container width={100}>
-            <Header as="h2" dividing={true}>Account Recovery</Header>
-            <Divider hidden/>
-            <SecurityQsComponent />
-            <Divider hidden/>
-        </Container>
-    </InnerPageLayout>
-);
+/**
+ * Account security page.
+ *
+ * @return {JSX.Element}
+ */
+export const AccountSecurityPage = (): JSX.Element => {
+    const { t } = useTranslation();
+    return (
+        <InnerPageLayout
+            pageTitle={ t("views:securityPage.title") }
+            pageDescription={ t("views:securityPage.subTitle") }
+        >
+            <Divider hidden />
+            <Grid>
+                <Grid.Row>
+                    <Grid.Column width={ 16 }>
+                        <ChangePasswordComponent />
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </InnerPageLayout>
+    );
+};

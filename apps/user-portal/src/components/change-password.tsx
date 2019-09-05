@@ -18,7 +18,7 @@
 
 import * as React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
-import { Button, Container, Divider, Form, Header, Icon, Modal } from "semantic-ui-react";
+import { Button, Container, Divider, Form, Grid, Header, Icon, Modal } from "semantic-ui-react";
 import { updatePassword } from "../actions";
 import { NotificationComponent } from "./notification";
 
@@ -383,7 +383,7 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
         );
 
         return (
-            <Container>
+            <>
                 <Header>{t("views:changePassword.title")}</Header>
                 <Header.Subheader>{t("views:changePassword.subTitle")}</Header.Subheader>
                 <Divider hidden/>
@@ -397,91 +397,126 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
                 ) : null}
 
                 <Form onSubmit={this.handleSubmit}>
-                    <Form.Input
-                        name="currentPassword"
-                        label={
-                            t("views:changePassword.forms.passwordResetForm.inputs.currentPassword.label")
-                        }
-                        placeholder={
-                            t("views:changePassword.forms.passwordResetForm.inputs.currentPassword.placeholder")
-                        }
-                        type={types.currentPassword}
-                        width={8}
-                        icon={
-                            types.currentPassword === "password" ? (
-                                <Icon
-                                    name="eye"
-                                    link
-                                    onClick={() => this.toggleInputType("currentPassword")}
+                    <Grid>
+                        <Grid.Row columns={1}>
+                            <Grid.Column mobile={16} tablet={16} computer={9}>
+                                <Form.Input
+                                    name="currentPassword"
+                                    label={
+                                        t("views:changePassword.forms.passwordResetForm.inputs.currentPassword" +
+                                            ".label")
+                                    }
+                                    placeholder={
+                                        t("views:changePassword.forms.passwordResetForm.inputs.currentPassword" +
+                                            ".placeholder")
+                                    }
+                                    type={types.currentPassword}
+                                    icon={
+                                        types.currentPassword === "password" ? (
+                                            <Icon
+                                                name="eye"
+                                                link
+                                                onClick={() => this.toggleInputType("currentPassword")}
+                                            />
+                                        ) : (
+                                            <Icon
+                                                name="eye slash"
+                                                link
+                                                onClick={() => this.toggleInputType("currentPassword")}
+                                            />
+                                        )
+                                    }
+                                    value={currentPassword}
+                                    onChange={this.handleInputChange}
+                                    onBlur={this.handleInputBlur}
+                                    error={
+                                        touched.currentPassword && errors.currentPassword
+                                            ? errors.currentPassword
+                                            : false
+                                    }
                                 />
-                            ) : (
-                                <Icon
-                                    name="eye slash"
-                                    link
-                                    onClick={() => this.toggleInputType("currentPassword")}
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column mobile={16} tablet={16} computer={9}>
+                                <Form.Input
+                                    name="newPassword"
+                                    label={
+                                        t("views:changePassword.forms.passwordResetForm.inputs.newPassword.label")
+                                    }
+                                    placeholder={
+                                        t("views:changePassword.forms.passwordResetForm.inputs.newPassword.placeholder")
+                                    }
+                                    type={types.newPassword}
+                                    icon={
+                                        types.newPassword === "password" ? (
+                                            <Icon
+                                                name="eye"
+                                                link
+                                                onClick={() => this.toggleInputType("newPassword")}
+                                            />
+                                        ) : (
+                                            <Icon
+                                                name="eye slash"
+                                                link
+                                                onClick={() => this.toggleInputType("newPassword")}
+                                            />
+                                        )
+                                    }
+                                    value={newPassword}
+                                    onChange={this.handleInputChange}
+                                    onBlur={this.handleInputBlur}
+                                    error={touched.newPassword && errors.newPassword ? errors.newPassword : false}
                                 />
-                            )
-                        }
-                        value={currentPassword}
-                        onChange={this.handleInputChange}
-                        onBlur={this.handleInputBlur}
-                        error={touched.currentPassword && errors.currentPassword ? errors.currentPassword : false}
-                    />
-                    <Form.Input
-                        name="newPassword"
-                        label={
-                            t("views:changePassword.forms.passwordResetForm.inputs.newPassword.label")
-                        }
-                        placeholder={
-                            t("views:changePassword.forms.passwordResetForm.inputs.newPassword.placeholder")
-                        }
-                        type={types.newPassword}
-                        width={8}
-                        icon={
-                            types.newPassword === "password" ? (
-                                <Icon name="eye" link onClick={() => this.toggleInputType("newPassword")} />
-                            ) : (
-                                <Icon name="eye slash" link onClick={() => this.toggleInputType("newPassword")} />
-                            )
-                        }
-                        value={newPassword}
-                        onChange={this.handleInputChange}
-                        onBlur={this.handleInputBlur}
-                        error={touched.newPassword && errors.newPassword ? errors.newPassword : false}
-                    />
-                    <Form.Input
-                        name="confirmPassword"
-                        label={
-                            t("views:changePassword.forms.passwordResetForm.inputs.confirmPassword.label")
-                        }
-                        placeholder={
-                            t("views:changePassword.forms.passwordResetForm.inputs.confirmPassword.placeholder")
-                        }
-                        type={types.confirmPassword}
-                        width={8}
-                        icon={
-                            types.confirmPassword === "password" ? (
-                                <Icon name="eye" link onClick={() => this.toggleInputType("confirmPassword")} />
-                            ) : (
-                                <Icon
-                                    name="eye slash"
-                                    link
-                                    onClick={() => this.toggleInputType("confirmPassword")}
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column mobile={16} tablet={16} computer={9}>
+                                <Form.Input
+                                    name="confirmPassword"
+                                    label={
+                                        t("views:changePassword.forms.passwordResetForm.inputs.confirmPassword" +
+                                            ".label")
+                                    }
+                                    placeholder={
+                                        t("views:changePassword.forms.passwordResetForm.inputs.confirmPassword" +
+                                            ".placeholder")
+                                    }
+                                    type={types.confirmPassword}
+                                    icon={
+                                        types.confirmPassword === "password" ? (
+                                            <Icon
+                                                name="eye"
+                                                link
+                                                onClick={() => this.toggleInputType("confirmPassword")}
+                                            />
+                                        ) : (
+                                            <Icon
+                                                name="eye slash"
+                                                link
+                                                onClick={() => this.toggleInputType("confirmPassword")}
+                                            />
+                                        )
+                                    }
+                                    value={confirmPassword}
+                                    onChange={this.handleInputChange}
+                                    onBlur={this.handleInputBlur}
+                                    error={
+                                        touched.confirmPassword && errors.confirmPassword
+                                            ? errors.confirmPassword
+                                            : false
+                                    }
                                 />
-                            )
-                        }
-                        value={confirmPassword}
-                        onChange={this.handleInputChange}
-                        onBlur={this.handleInputBlur}
-                        error={touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : false}
-                    />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
                     <br />
                     <Button primary type="submit">
                         {t("common:submit")}
                     </Button>
                 </Form>
                 {confirmationModal}
-            </Container>
+            </>
         );
     }
 }

@@ -17,17 +17,27 @@
  */
 
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { Button, Container, Divider } from "semantic-ui-react";
-import { InnerPageLayout } from "../../layouts";
+import { Button, Container } from "semantic-ui-react";
+import { DefaultPageLayout } from "../../layouts";
 
-export const PageNotFound = () => (
-    <InnerPageLayout
-        pageTitle="It looks like you're lost. :("
-        pageTitleTextAlign="center"
-        pageDescription="The page you're looking for isn't here.">
-        <Container text textAlign="center">
-            <Button as={Link} to={APP_HOME_PATH} primary>Go back home</Button>
-        </Container>
-    </InnerPageLayout>
-);
+/**
+ * Page not found page.
+ *
+ * @return {JSX.Element}
+ */
+export const PageNotFound = (): JSX.Element => {
+    const { t } = useTranslation();
+    return (
+        <DefaultPageLayout
+            pageTitle={ t("views:404.title") }
+            pageTitleTextAlign="center"
+            pageDescription={ t("views:404.subTitle") }
+        >
+            <Container text textAlign="center">
+                <Button as={ Link } to={ APP_HOME_PATH } primary>{ t("common:goBackHome") }</Button>
+            </Container>
+        </DefaultPageLayout>
+    );
+};
