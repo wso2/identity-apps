@@ -354,5 +354,12 @@
     "404": {
         "title": "It looks like you're lost. :(",
         "subTitle": "The page you're looking for isn't here."
+    },
+    "profileExport": {
+        "header": "Export Profile Data",
+        "description": "Download all your profile data including personal data, security questions and consents",
+        "buttons": {
+            "export": "Export"
+        }
     }
 }
