@@ -18,9 +18,21 @@
 
 import * as React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
-import {Button, Card, Container, Divider, Form, Grid, Header, Segment, Select, Transition} from "semantic-ui-react";
+import {
+    Button,
+    Container,
+    Divider,
+    Form,
+    Grid,
+    Header,
+    Icon, List,
+    Segment,
+    Transition
+} from "semantic-ui-react";
 import { addAccountAssociation, getAssociations } from "../actions/associated-accounts";
-import {NotificationComponent} from "./notification";
+import { EditSection } from "./edit-section";
+import { NotificationComponent } from "./notification";
+import { SettingsSection } from "./settings-section";
 import { UserImagePlaceHolder } from "./ui";
 
 class AssociatedAccountsPageComponent extends React.Component<WithTranslation, any> {
@@ -84,10 +96,8 @@ class AssociatedAccountsPageComponent extends React.Component<WithTranslation, a
         const {userId, notification, password} = this.state;
         const {t} = this.props;
 
-        // TODO Remove the step to encode userID
-        const encodedUserId = btoa(userId);
         const data = {
-            userId: encodedUserId,
+            userId: userId,
             password: password,
             properties: [
                 {
@@ -160,86 +170,83 @@ class AssociatedAccountsPageComponent extends React.Component<WithTranslation, a
         const {t} = this.props;
         const {associations, notification, showAddView} = this.state;
         const {description, message, other} = notification;
-        // const options = [
-        //     { key: "loc", value: "loc", text: "Local" },
-        //     { key: "fed", value: "fed", text: "Federated" },
-        // ];
         const addAccountForm = () => {
             if (showAddView) {
-                return (<Segment padded="very" style={{width: "400px"}}>
+                return (<EditSection>
                     <Container align="left">
-                    <Grid>
-                        <Grid.Row columns={1}>
-                            <Grid.Column>
-                                <Header>Associate Local User Account</Header>
-                                <Divider hidden/>
-                                {/*<Form.Field>*/}
-                                {/*    <label>{t("views:userProfile.associatedAccounts.inputFields.type")}</label>*/}
-                                {/*    <Select placeholder="Select Account Type" options={options} />*/}
-                                {/*</Form.Field>*/}
-                                <Form.Field>
-                                    <label>{t("views:userProfile.associatedAccounts.inputFields.username")}</label>
-                                    <input required name="userId" onChange={this.handleInputChange}/>
-                                </Form.Field>
-                                <Form.Field>
-                                    <label>{t("views:userProfile.associatedAccounts.inputFields.password")}</label>
-                                    <input required type="password" name="password" onChange={this.handleInputChange}/>
-                                </Form.Field>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                    <Divider hidden/>
-                    <Button primary onClick={this.handleSave}>
-                        {t("common:save")}
-                    </Button>
-                    <Button id="personalInfoEdit" basic onClick={this.handleCancel}>
-                        {t("common:cancel")}
-                    </Button>
+                        <Grid>
+                            <Grid.Row columns={1}>
+                                <Grid.Column>
+                                    <Header>Associate Local User Account</Header>
+                                    <Divider hidden/>
+                                    <Form.Field>
+                                        <label>{t("views:userProfile.associatedAccounts.inputFields.username")}</label>
+                                        <input required name="userId" onChange={this.handleInputChange}/>
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <label>{t("views:userProfile.associatedAccounts.inputFields.password")}</label>
+                                        <input required type="password" name="password"
+                                               onChange={this.handleInputChange}/>
+                                    </Form.Field>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                        <Divider hidden/>
+                        <Button primary onClick={this.handleSave}>
+                            {t("common:save")}
+                        </Button>
+                        <Button id="personalInfoEdit" default onClick={this.handleCancel}>
+                            {t("common:cancel")}
+                        </Button>
                     </Container>
-                </Segment>);
+                </EditSection>);
             } else {
-                return (<>
-                    <Card.Group>
-                    {associations.map((association) => {
-                        return (<>
-                            <Card size="small">
-                                <Card.Content>
-                                    <Grid columns={2}>
-                                        <Grid.Column width={5}>
-                                        <UserImagePlaceHolder size="small"/><br/>
-                                        </Grid.Column>
-                                        <Grid.Column>
-                                            <Grid.Row>
-                                                <label>{association.userId}</label>
-                                            </Grid.Row>
-                                            <Grid.Row>
-                                                <label>{association.username}</label>
-                                            </Grid.Row>
-                                        </Grid.Column>
-                                    </Grid>
-                                </Card.Content>
-                                <Card.Content extra>
-                                    <Button floated="right" primary size="mini">
-                                        {t("views:userProfile.associatedAccounts.buttons.removeBtn")}
-                                    </Button>
-                                    <Button floated="right" size="mini">
-                                        {t("views:userProfile.associatedAccounts.buttons.switchBtn")}
-                                    </Button>
-                                </Card.Content>
-                            </Card>
-                        </>);
-                    })
-                    }
-                    </Card.Group>
-                </>);
+                if (associations) {
+                    return (<>
+                        <List relaxed="very" divided>
+                            {associations.map((association) => {
+                                return (<>
+                                    <List.Item>
+                                        <Grid columns={2}>
+                                            <Grid.Column>
+                                                <UserImagePlaceHolder size="mini" floated="left"/>
+                                                <List.Header>{association.userId}</List.Header>
+                                                <List.Description>{association.username}</List.Description>
+                                            </Grid.Column>
+                                            <Grid.Column>
+                                                <List.Content>
+                                                    <Button floated="right" disabled primary size="mini">
+                                                        {t("views:userProfile.associatedAccounts.buttons.removeBtn")}
+                                                    </Button>
+                                                    <Button floated="right" disabled size="mini">
+                                                        {t("views:userProfile.associatedAccounts.buttons.switchBtn")}
+                                                    </Button>
+                                                </List.Content>
+                                            </Grid.Column>
+                                        </Grid>
+                                    </List.Item>
+                                </>);
+                            })
+                            }
+                        </List>
+                    </>);
+                } else {
+                    return (
+                        <>
+                            <Segment placeholder>
+                                <Header icon>
+                                    <Icon name="search"/>
+                                    {t("views:securityQuestions.noConfiguration")}
+                                </Header>
+                            </Segment>
+                        </>
+                    );
+                }
             }
         };
         return (
-            <Container>
-                <Header dividing as="h3">{t("views:userProfile.associatedAccounts.title")}
-                    <Button basic compact size="mini" onClick={this.handleShowView}>
-                        {t("views:userProfile.associatedAccounts.buttons.addBtn")}</Button>
-                </Header>
+            <SettingsSection header="Associated Accounts" description="Manage and Update Your Associated Accounts"
+                             isEdit={showAddView} actionTitle="Add" onClick={this.handleShowView}>
                 <Transition visible={this.state.updateStatus} duration={500}>
                     <NotificationComponent {...other} onDismiss={this.handleDismiss} size="small"
                                            description={description} message={message}
@@ -247,7 +254,7 @@ class AssociatedAccountsPageComponent extends React.Component<WithTranslation, a
                 </Transition>
                 <Divider hidden/>
                 {addAccountForm()}
-            </Container>
+            </SettingsSection>
         );
     }
 }
