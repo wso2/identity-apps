@@ -16,3 +16,17 @@
  * under the License.
  *
  */
+
+.ui.button {
+    &.link-button {
+        background: transparent;
+        color: @primaryColor;
+
+        &:hover {
+            background: @backgroundColor;
+        }
+        &:active {
+            background: @downBackgroundColor;
+        }
+    }
+}
