@@ -1,4 +1,4 @@
-/**
+/*!
  * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -14,20 +14,11 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
 
-export * from "./auth-context";
-export * from "./associated-accounts";
-export * from "./basic-details";
-export * from "./page-header";
-export * from "./change-password";
-export * from "./header";
-export * from "./notification";
-export * from "./personal-details";
-export * from "./protected-route";
-export * from "./security-qs";
-export * from "./ui";
-export * from "./user-sessions";
-export * from "./icon";
-export * from "./consent-management";
-export * from "./side-panel";
+ /*******************************
+             Segment
+ *******************************/
+
+ @segmentBackgroundColor: #f9fafb;

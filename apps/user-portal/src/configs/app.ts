@@ -19,6 +19,7 @@
 type ServiceEndpointURLType = string;
 
 interface ServiceResourcesType {
+    associations: string;
     authorize: string;
     challenges: string;
     challengeAnswers: string;
@@ -36,6 +37,7 @@ interface ServiceResourcesType {
 
 export const ServiceEndpoint: ServiceEndpointURLType = SERVER_HOST;
 export const ServiceResourcesEndpoint: ServiceResourcesType = {
+    associations: `${ServiceEndpoint}/api/users/v1/me/associations`,
     authorize: `${ServiceEndpoint}/oauth2/authorize`,
     challengeAnswers: `${ServiceEndpoint}/api/users/v1/me/challenge-answers`,
     challenges: `${ServiceEndpoint}/api/users/v1/me/challenges`,

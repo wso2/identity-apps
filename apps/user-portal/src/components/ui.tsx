@@ -26,6 +26,7 @@ interface ImageProps {
     classes?: any;
     size?: any;
     style?: any;
+    floated?: "left" | "right";
 }
 
 type HomeTileIconImagePropInputs = "Profile" | "Security" | "Consent";
@@ -68,13 +69,14 @@ export const Title = (props: TitleProps) => {
 };
 
 export const UserImagePlaceHolder = (props: ImageProps) => {
-    const { classes, size } = props;
+    const { classes, size, floated } = props;
 
     return (
         <Image
             className={classNames(classes, "user-image")}
             src={UserImage}
             size={size}
+            floated={floated}
             circular
             centered
         />

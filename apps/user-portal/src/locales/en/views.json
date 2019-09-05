@@ -200,7 +200,11 @@
             "email": "Email",
             "username": "Username",
             "organisation": "Organisation",
-            "mobile": "Mobile Number"
+            "mobile": "Mobile Number",
+            "emptyField": "Please fill out this field"
+        },
+        "personalDetails": {
+            "noDetails": "No Personal Information Configured for this User"
         },
         "notification": {
             "downloadProfileInfo": {
@@ -231,6 +235,46 @@
                 "error": {
                     "message": "An error occurred !!!",
                     "description": "Error occurred while updating the user profile details"
+                }
+            }
+        },
+        "associatedAccounts": {
+            "title": "Associated Accounts",
+            "subTitle": "Manage all your associated accounts in one place.",
+            "inputFields": {
+                "type": "Account Type",
+                "username": "Username",
+                "password": "Password"
+            },
+            "dropDown": {
+                "federated": "Federated",
+                "local": "Local"
+            },
+            "buttons": {
+                "addBtn": "Add Account",
+                "removeBtn": "Remove",
+                "switchBtn": "Switch"
+            },
+            "notification": {
+                "getAssociation": {
+                    "success": {
+                        "message": "Associated user account retrieved successfully.",
+                        "description": "The required user profile details are retrieved successfully."
+                    },
+                    "error": {
+                        "message": "An error occurred !!!",
+                        "description": "Error occurred while retrieving the associated user accounts."
+                    }
+                },
+                "addAssociation": {
+                    "success": {
+                        "message": "Associated user account added successfully.",
+                        "description": "The required Associated user account added successfully."
+                    },
+                    "error": {
+                        "message": "An error occurred !!!",
+                        "description": "Error occurred while adding the user account association"
+                    }
                 }
             }
         }

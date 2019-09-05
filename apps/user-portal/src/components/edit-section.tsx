@@ -16,18 +16,19 @@
  * under the License.
  */
 
-export * from "./auth-context";
-export * from "./associated-accounts";
-export * from "./basic-details";
-export * from "./page-header";
-export * from "./change-password";
-export * from "./header";
-export * from "./notification";
-export * from "./personal-details";
-export * from "./protected-route";
-export * from "./security-qs";
-export * from "./ui";
-export * from "./user-sessions";
-export * from "./icon";
-export * from "./consent-management";
-export * from "./side-panel";
+import * as React from "react";
+import { Segment } from "semantic-ui-react";
+
+/**
+ * Edit section component.
+ *
+ * @param {React.PropsWithChildren<any>} props
+ * @return {any}
+ */
+export const EditSection: React.FunctionComponent<any> = (props): JSX.Element => {
+    return (
+        <Segment padded className="edit-segment">
+            { props.children }
+        </Segment>
+    );
+}
