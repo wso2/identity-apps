@@ -31,7 +31,11 @@ import configureStore from "./helpers/store";
 const store = configureStore();
 
 const LoginPage = (props) => {
-    props.loginFunction(history.location.pathname);
+    const location = (history.location.state && history.location.state.details) ?
+        history.location.state.details : history.location.pathname;
+
+    props.loginFunction(location);
+
     return null;
 };
 
@@ -41,7 +45,7 @@ const LogoutPage = (props) => {
 };
 
 class App extends React.Component<any, any> {
-    render() {
+    public render() {
         return (
             <Router history={history}>
                 <div className="container-fluid">

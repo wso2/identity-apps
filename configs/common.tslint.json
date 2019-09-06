@@ -3,6 +3,7 @@
         "tslint:latest"
     ],
     "rules": {
+        "indent": [true, "spaces", 4],
         "interface-name": false,
         "trailing-comma": [
             true,

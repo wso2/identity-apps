@@ -55,8 +55,37 @@ body {
         .ui.divider {
             margin: 0.5rem 0rem;
         }
+    
     }
 
+    .ui.card,
+    .ui.card:last-child {
+        margin-bottom: 2rem;
+    }
+
+    .ui.cards > .card > .content > .header:not(.ui),
+    .ui.card > .content > .header:not(.ui) {
+        font-size: 1.7em;
+    }
+
+    .ui.small {
+        &.images {
+            .image,
+            img,
+            svg {
+                width: 105px;
+            }
+        }
+
+        &.image {
+            width: 105px;
+        }
+    }
+
+    .user-dropdown .ui.items {
+        margin: 0;
+    }
+    
     .product-title {
         .product-logo {
             width: 60px;
@@ -73,7 +102,7 @@ body {
             width: 100px !important;
         }
     }
-
+    
     .icon-wrapper {
         background-color: @iconWrapperBgColor;
         overflow: hidden;

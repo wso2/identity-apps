@@ -39,7 +39,7 @@ interface HeaderProps {
 export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps): JSX.Element => {
     const { onSidePanelToggleClick, showSidePanelToggle } = props;
     return (
-        <Menu fixed="top" borderless>
+        <Menu borderless>
             <Container>
                 { showSidePanelToggle ?
                     <Responsive as={ Menu.Item } maxWidth={ 767 }>
@@ -66,27 +66,25 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                             <Item.Content verticalAlign="middle">
                                                 <Item.Description>
                                                     <div>{ username }</div>
-                                                    { (emails !== "undefined") &&
+                                                    { (emails !== "undefined"
+                                                        && emails !== undefined
+                                                        && emails !== "null"
+                                                        && emails !== null) &&
                                                     <div>{ emails }</div>
                                                     }
                                                     <Divider hidden/>
-                                                    <Button as={ Link } to="/profile" size="tiny"
-                                                            primary>Profile</Button>
+                                                    <Button as={ Link } to="/my-apps" size="tiny"
+                                                            primary>My Apps</Button>
                                                 </Item.Description>
                                             </Item.Content>
                                         </Item>
                                     </Item.Group>
                                     <Dropdown.Divider/>
                                     <Dropdown.Item
-                                        icon="lock"
+                                        icon="shield"
                                         as={ Link }
-                                        to="/account-security"
-                                        text="Account Security"/>
-                                    <Dropdown.Item
-                                        icon="handshake outline"
-                                        as={ Link }
-                                        to="/consent"
-                                        text="Consent Management"/>
+                                        to="/overview"
+                                        text="Identity Server Account"/>
                                     <Dropdown.Divider/>
                                     <Dropdown.Item as={ Link } to="/logout" text="Logout"/>
                                 </Dropdown.Menu>
