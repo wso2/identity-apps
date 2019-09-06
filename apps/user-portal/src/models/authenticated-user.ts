@@ -20,10 +20,7 @@
  * Interface of the authenticated user.
  */
 export interface AuthenticatedUserInterface {
-
     display_name?: string;
-
     email?: string;
-
     username: string;
 }

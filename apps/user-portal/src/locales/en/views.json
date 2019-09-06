@@ -3,16 +3,16 @@
         "title": "Welcome, {{firstName}}",
         "subTitle": "Manage and configure your user settings to customize the Identity Server experience",
         "sections": {
-            "profile": {
-                "header": "Profile",
+            "personalInfo": {
+                "header": "Personal Infomation",
                 "description": "Manage basic information, like your name and photo, that you use on. And account associations etc ..."
             },
             "accountSecurity": {
-                "header": "Account Security",
-                "description": "Configure account security measures, like Password, Account Recovery Options, Multi-factor Authentication etc ..."
+                "header": "Manage Security",
+                "description": "Configure account security measures, like Password, Account Recovery Options, MFA etc ..."
             },
             "applications": {
-                "header": "Apps & Websites",
+                "header": "Consent Management",
                 "description": "Monitor & manage account activities, Both active and inactive, Manage given consents etc ..."
             }
         }

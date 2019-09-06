@@ -17,7 +17,7 @@
  */
 
 import * as React from "react";
-import { Header } from "semantic-ui-react";
+import { Divider, Header } from "semantic-ui-react";
 
 /**
  * Page header component Prop types.
@@ -39,6 +39,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderProps> = (props: Page
     return (
         <>
             { (title || description) &&
+                <>
                 <Header as="h1" textAlign={ titleTextAlign }>
                     { title &&
                         title
@@ -47,6 +48,8 @@ export const PageHeader: React.FunctionComponent<PageHeaderProps> = (props: Page
                         <Header.Subheader>{ description }</Header.Subheader>
                     }
                 </Header>
+                <Divider hidden />
+                </>
             }
         </>
     );

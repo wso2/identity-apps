@@ -45,7 +45,7 @@ const LogoutPage = (props) => {
 };
 
 class App extends React.Component<any, any> {
-    render() {
+    public render() {
         return (
             <Router history={history}>
                 <div className="container-fluid">

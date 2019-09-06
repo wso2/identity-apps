@@ -65,9 +65,9 @@ const initialState = {
  * @param action - Action type
  * @returns The new state
  */
-export function consentManagementReducer(
+export const consentManagementReducer = (
     state = initialState, action: ConsentManagementActionTypes | ApiActionTypes
-) {
+) => {
     switch (action.type) {
         case API_REQUEST_START:
             if (action.payload === FETCH_CONSENTED_APPS) {
@@ -173,4 +173,4 @@ export function consentManagementReducer(
         default:
             return state;
     }
-}
+};
