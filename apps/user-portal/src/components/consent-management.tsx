@@ -222,7 +222,12 @@ class ConsentManagementComponentInner extends React.Component<any, any> {
         } = this.props;
 
         const editConsentModal = (
-            <Modal open={ isConsentEditViewVisible } onClose={ this.handleConsentModalClose } size="tiny">
+            <Modal
+                open={ isConsentEditViewVisible }
+                onClose={ this.handleConsentModalClose }
+                size="tiny"
+                dimmer="blurring"
+            >
                 <Modal.Content>
                     <List>
                         <List.Item>
@@ -320,7 +325,7 @@ class ConsentManagementComponentInner extends React.Component<any, any> {
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button onClick={ this.handleConsentModalClose }>
+                    <Button className="link-button" onClick={ this.handleConsentModalClose }>
                         { t("common:cancel") }
                     </Button>
                     <Button primary onClick={ this.handleClaimsUpdateClick }>
@@ -331,7 +336,13 @@ class ConsentManagementComponentInner extends React.Component<any, any> {
         );
 
         const consentRevokeModal = (
-            <Modal size="mini" open={ isConsentRevokeModalVisible } onClose={ this.handleConsentRevokeModalClose }>
+            <Modal
+                size="mini"
+                className="link-button"
+                open={ isConsentRevokeModalVisible }
+                onClose={ this.handleConsentRevokeModalClose }
+                dimmer="blurring"
+            >
                 <Modal.Content>
                     <Container textAlign="center">
                         <h3>
@@ -347,7 +358,7 @@ class ConsentManagementComponentInner extends React.Component<any, any> {
                     <p>{ t("views:consentManagement.modals.consentRevokeModal.message") }</p>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button onClick={ this.handleConsentRevokeModalClose }>
+                    <Button className="link-button" onClick={ this.handleConsentRevokeModalClose }>
                         { t("common:cancel") }
                     </Button>
                     <Button primary onClick={ this.revokeConsent }>
