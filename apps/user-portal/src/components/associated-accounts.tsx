@@ -195,7 +195,7 @@ class AssociatedAccountsPageComponent extends React.Component<WithTranslation, a
                         <Button primary onClick={this.handleSave}>
                             {t("common:save")}
                         </Button>
-                        <Button id="personalInfoEdit" default onClick={this.handleCancel}>
+                        <Button className="link-button" id="personalInfoEdit" default onClick={this.handleCancel}>
                             {t("common:cancel")}
                         </Button>
                     </Container>
