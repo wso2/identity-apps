@@ -60,7 +60,7 @@ export const HomePage = (): JSX.Element => {
                         </Card>
                     </Grid.Column>
                     <Grid.Column mobile={16} tablet={16} computer={8}>
-                        <Card as={ Link } to="/account-security" fluid className="margin-x1">
+                        <Card as={ Link } to="/security" fluid className="margin-x1">
                             <Card.Content textAlign="center" className="padding-x2">
                                 <HomeTileIcon icon="Security"/>
                                 <Divider hidden />
@@ -74,7 +74,7 @@ export const HomePage = (): JSX.Element => {
                         </Card>
                     </Grid.Column>
                     <Grid.Column mobile={16} tablet={16} computer={8}>
-                        <Card as={ Link } to="/consent" fluid className="margin-x1">
+                        <Card as={ Link } to="/consent-management" fluid className="margin-x1">
                             <Card.Content textAlign="center" className="padding-x2">
                                 <HomeTileIcon icon="Consent"/>
                                 <Divider hidden />
