@@ -18,12 +18,11 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { base64MimeType } from "../helpers";
 
 /**
  * Proptypes for the Icon component.
  */
-interface ComponentProps {
+interface ThemeIconProps {
     icon: any;
     inline?: boolean;
     className?: string;
@@ -33,12 +32,16 @@ interface ComponentProps {
     rounded?: boolean;
     defaultIcon?: boolean;
     twoTone?: boolean;
-    size?: string;
+    colored?: boolean;
+    size?: ThemeIconSizes;
     style?: object;
     square?: boolean;
     floated?: string;
     spaced?: string;
 }
+
+export type ThemeIconSizes = "auto" | "micro" | "mini" | "tiny" | "small" | "medium" | "large" | "big" | "huge" |
+    "massive";
 
 /**
  * Generic component to render icons.
@@ -46,15 +49,16 @@ interface ComponentProps {
  * @param {React.PropsWithChildren<any>} props
  * @return {any}
  */
-export const ThemeIcon: React.FunctionComponent<ComponentProps> = (props): JSX.Element => {
+export const ThemeIcon: React.FunctionComponent<ThemeIconProps> = (props): JSX.Element => {
     const {
         icon, inline, className, transparent, relaxed, bordered, rounded, defaultIcon, twoTone, size, style, square,
-        floated, spaced
+        floated, spaced, colored
     } = props;
     const relaxLevel = (relaxed && relaxed === true) ? "" : relaxed;
 
     const classes = classNames({
         "bordered": bordered,
+        "colored": colored,
         "default": defaultIcon,
         [`floated-${floated}`]: floated,
         "inline": inline,
@@ -69,30 +73,37 @@ export const ThemeIcon: React.FunctionComponent<ComponentProps> = (props): JSX.E
     }, className);
 
     const constructContent = (): HTMLElement | SVGElement | JSX.Element => {
+        // Check if the icon is an SVG element
         if (icon instanceof SVGElement) {
             return icon;
         }
 
-        // Check if the icon is a React component.
+        // Check if the icon is a module and has `ReactComponent` property.
+        // Important when used with SVG's imported with `@svgr/webpack`.
         if (icon.ReactComponent && typeof icon.ReactComponent === "function") {
             return <icon.ReactComponent />;
         }
 
-        if (typeof icon !== "string") {
-            throw new Error("The provided icon type is not supported.");
+        // Check is icon is a component.
+        if (typeof icon === "function") {
+            return icon;
         }
 
-        const mimeType = base64MimeType(icon);
-
-        if (!mimeType) {
-            throw new Error("The provided icon type is not supported.");
+        // Check is icon is a component.
+        if (typeof icon === "object") {
+            return icon;
         }
 
-        return <img src={icon} alt="icon" />;
+        // Check if icon passed in is a string. Can be a URL or a base64 encoded.
+        if (typeof icon === "string") {
+            return <img src={icon} className="icon" alt="icon" />;
+        }
+
+        throw new Error("The provided icon type is not supported.");
     };
 
     return (
-        <div className={ `icon-wrapper ${classes}` } style={style}>
+        <div className={ `theme-icon ${classes}` } style={style}>
             { constructContent() }
         </div>
     );
@@ -109,7 +120,7 @@ ThemeIcon.defaultProps = {
     inline: false,
     relaxed: false,
     rounded: false,
-    size: "mini",
+    size: "auto",
     spaced: null,
     square: false,
     style: {},
