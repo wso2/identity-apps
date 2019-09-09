@@ -17,17 +17,23 @@
  */
 
 import * as React from "react";
-import { Button, Card } from "semantic-ui-react";
+import { Card, Grid, Header, List } from "semantic-ui-react";
+import { ThemeIcon, ThemeIconSizes } from "./icon";
 
 /**
  * Proptypes for the settings section component.
  */
-interface ComponentProps {
-    header: string;
-    description?: string;
+interface SettingsSectionProps {
     actionTitle?: string;
+    contentPadding?: boolean;
+    onClick?: (event: React.MouseEvent<HTMLElement>) => void;
+    description?: string;
+    header: string;
+    icon?: any;
+    iconFloated?: "left" | "right";
+    iconStyle?: "twoTone" | "default" | "colored";
+    iconSize?: ThemeIconSizes;
     isEdit?: boolean;
-    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 /**
@@ -36,28 +42,57 @@ interface ComponentProps {
  * @param {React.PropsWithChildren<any>} props
  * @return {any}
  */
-export const SettingsSection: React.FunctionComponent<ComponentProps> = (props): JSX.Element => {
-    const { header, description, onClick, actionTitle, isEdit } = props;
+export const SettingsSection: React.FunctionComponent<SettingsSectionProps> = (props): JSX.Element => {
+    const {
+        icon, iconFloated, iconSize, iconStyle, header, description, onClick, actionTitle, isEdit, contentPadding
+    } = props;
 
-    const cardExtraContent = () => {
-        if (actionTitle !== "" && !isEdit) {
-            return (
-                <Card.Content className="content padding-x2" extra>
-                    <Button primary size="small" onClick={onClick}>{actionTitle}</Button>
-                </Card.Content>
-            );
-        } else {
-            return null;
-        }
-    }
     return (
-        <Card fluid padded="very">
-            <Card.Content className="content padding-x2">
-                <Card.Header>{header}</Card.Header>
-                <Card.Meta>{description}</Card.Meta>
-                {props.children}
+        <Card className="settings-card" fluid padded="very">
+            <Card.Content>
+                <Grid>
+                    <Grid.Row className="header-section" columns={2}>
+                        <Grid.Column className="no-padding" width={10}>
+                            <Header as="h2">{ header }</Header>
+                            <Card.Meta>{ description }</Card.Meta>
+                        </Grid.Column>
+                        <Grid.Column width={6}>
+                            {
+                                icon
+                                    ?
+                                    <ThemeIcon
+                                        icon={icon}
+                                        transparent
+                                        size={iconSize}
+                                        floated={ iconFloated }
+                                        defaultIcon={ iconStyle === "default" }
+                                        twoTone={ iconStyle === "twoTone" }
+                                        colored={ iconStyle === "colored" }
+                                    />
+                                    : null
+                            }
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row className={ `main-content ${ contentPadding ? "" : "no-padding" }` } columns={ 1 }>
+                        <Grid.Column className="no-padding" width={16}>
+                            { props.children }
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </Card.Content>
-            {cardExtraContent()}
+            { (actionTitle !== "" && !isEdit)
+                ?
+                    <Card.Content className="extra-content" extra>
+                        <List selection verticalAlign="middle">
+                            <List.Item onClick={ onClick }>
+                                <List.Content>
+                                    <List.Header onClick={ onClick }>{ actionTitle }</List.Header>
+                                </List.Content>
+                            </List.Item>
+                        </List>
+                    </Card.Content>
+                : null
+            }
         </Card>
     );
 };
@@ -67,7 +102,8 @@ export const SettingsSection: React.FunctionComponent<ComponentProps> = (props):
  */
 SettingsSection.defaultProps = {
     actionTitle: "",
+    contentPadding: false,
     description: "",
     header: "",
     isEdit: false
-}
+};
