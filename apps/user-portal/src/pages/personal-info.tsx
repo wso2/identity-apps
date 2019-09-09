@@ -17,8 +17,8 @@
  */
 
 import * as React from "react";
-import { withTranslation, WithTranslation } from "react-i18next";
-import { Container, Divider, Form } from "semantic-ui-react";
+import { useTranslation } from "react-i18next";
+import { Divider, Grid } from "semantic-ui-react";
 import {
     AssociatedAccountsPage,
     BasicDetails,
@@ -27,28 +27,34 @@ import {
 import { InnerPageLayout } from "../layouts";
 
 /**
- * User Profile Page of the User Portal
+ * Personal Info page.
+ *
+ * @return {JSX.Element}
  */
-class UserProfilePageComponent extends React.Component<WithTranslation, any> {
-    public render() {
-        const {t} = this.props;
-        return (
-            <InnerPageLayout
-                pageTitle={t("views:userProfile.title")}
-                pageDescription={t("views:userProfile.subTitle")}>
-                <Container>
-                    <Form>
+export const PersonalInfoPage = (): JSX.Element => {
+    const { t } = useTranslation();
+    return (
+        <InnerPageLayout
+            pageTitle={ t("views:personalInfoPage.title") }
+            pageDescription={ t("views:personalInfoPage.subTitle") }>
+            <Divider hidden/>
+            <Grid>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 16 }>
                         <BasicDetails/>
-                        <Divider hidden/>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 16 }>
                         <PersonalDetails/>
-                        <Divider hidden/>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 16 }>
                         <AssociatedAccountsPage/>
-                        <Divider hidden/>
-                    </Form>
-                </Container>
-            </InnerPageLayout>
-        );
-    }
-}
-
-export const UserProfilePage = withTranslation()(UserProfilePageComponent);
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </InnerPageLayout>
+    );
+};
