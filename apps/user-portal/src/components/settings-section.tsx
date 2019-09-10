@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import * as React from "react";
+import React, { FunctionComponent, MouseEvent } from "react";
 import { Card, Grid, Header, List } from "semantic-ui-react";
 import { ThemeIcon, ThemeIconSizes } from "./icon";
 
@@ -26,7 +26,7 @@ import { ThemeIcon, ThemeIconSizes } from "./icon";
 interface SettingsSectionProps {
     actionTitle?: string;
     contentPadding?: boolean;
-    onClick?: (event: React.MouseEvent<HTMLElement>) => void;
+    onActionClick?: (event: MouseEvent<HTMLElement>) => void;
     description?: string;
     header: string;
     icon?: any;
@@ -39,31 +39,31 @@ interface SettingsSectionProps {
 /**
  * Settings section component.
  *
- * @param {React.PropsWithChildren<any>} props
+ * @param {PropsWithChildren<any>} props
  * @return {any}
  */
-export const SettingsSection: React.FunctionComponent<SettingsSectionProps> = (props): JSX.Element => {
+export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props): JSX.Element => {
     const {
-        icon, iconFloated, iconSize, iconStyle, header, description, onClick, actionTitle, isEdit, contentPadding
+        icon, iconFloated, iconSize, iconStyle, header, description, onActionClick, actionTitle, isEdit, contentPadding
     } = props;
 
     return (
         <Card className="settings-card" fluid padded="very">
             <Card.Content>
                 <Grid>
-                    <Grid.Row className="header-section" columns={2}>
-                        <Grid.Column className="no-padding" width={10}>
+                    <Grid.Row className="header-section" columns={ 2 }>
+                        <Grid.Column  width={ 10 } className="no-padding">
                             <Header as="h2">{ header }</Header>
                             <Card.Meta>{ description }</Card.Meta>
                         </Grid.Column>
-                        <Grid.Column width={6}>
+                        <Grid.Column width={ 6 } className="no-padding">
                             {
                                 icon
                                     ?
                                     <ThemeIcon
-                                        icon={icon}
+                                        icon={ icon }
                                         transparent
-                                        size={iconSize}
+                                        size={ iconSize }
                                         floated={ iconFloated }
                                         defaultIcon={ iconStyle === "default" }
                                         twoTone={ iconStyle === "twoTone" }
@@ -74,7 +74,7 @@ export const SettingsSection: React.FunctionComponent<SettingsSectionProps> = (p
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row className={ `main-content ${ contentPadding ? "" : "no-padding" }` } columns={ 1 }>
-                        <Grid.Column className="no-padding" width={16}>
+                        <Grid.Column className="no-padding" width={ 16 }>
                             { props.children }
                         </Grid.Column>
                     </Grid.Row>
@@ -82,15 +82,14 @@ export const SettingsSection: React.FunctionComponent<SettingsSectionProps> = (p
             </Card.Content>
             { (actionTitle !== "" && !isEdit)
                 ?
-                    <Card.Content className="extra-content" extra>
-                        <List selection verticalAlign="middle">
-                            <List.Item onClick={ onClick }>
-                                <List.Content>
-                                    <List.Header onClick={ onClick }>{ actionTitle }</List.Header>
-                                </List.Content>
-                            </List.Item>
-                        </List>
-                    </Card.Content>
+                <Card.Content className="extra-content" extra>
+                    <List selection verticalAlign="middle">
+                        <List.Item className="action-button" onClick={ onActionClick }>
+                            <List.Header className="action-button-text"
+                                         onClick={ onActionClick }>{ actionTitle }</List.Header>
+                        </List.Item>
+                    </List>
+                </Card.Content>
                 : null
             }
         </Card>
