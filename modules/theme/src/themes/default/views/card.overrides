@@ -24,6 +24,11 @@
         }
         .header-section {
             padding: @settingsCardPadding;
+
+            // override the semantic H2 margin
+            .ui.header {
+                margin-bottom: 5px;
+            }
         }
         .main-content {
             .main-content-inner {
@@ -43,7 +48,16 @@
             }
         }
         .extra-content {
+            padding: unset;
 
+            .action-button {
+                padding: 16px @settingsCardPadding;
+
+                .action-button-text {
+                    color: @settingsCardActionButtonColor;
+                    font-weight: 500;
+                }
+            }
         }
     }
 }

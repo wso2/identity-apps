@@ -26,3 +26,4 @@
 --------------------*/
 
 @settingsCardPadding: 2em;
+@settingsCardActionButtonColor: @primaryColor;
