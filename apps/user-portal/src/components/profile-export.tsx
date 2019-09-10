@@ -16,48 +16,43 @@
  * under the License.
  */
 
-import * as React from "react";
-import { withTranslation, WithTranslation } from "react-i18next";
-import { Divider, Transition } from "semantic-ui-react";
+import React, { FunctionComponent } from "react";
+import { useTranslation } from "react-i18next";
 import { getUserInfo } from "../actions";
-import { NotificationComponent } from "./notification";
+import { SettingsSectionIcons } from "../configs";
+import { NotificationActionPayload } from "../models/notifications";
 import { SettingsSection } from "./settings-section";
 
-class ProfileExportComponent extends React.Component<WithTranslation, any> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            notification: {
-                description: "",
-                message: "",
-                other: {
-                    error: false,
-                    success: false
-                }
-            },
-            updateStatus: false
-        };
-    }
+/**
+ * Proptypes for the profile export component.
+ */
+interface ProfileExportProps {
+    onNotificationFired: (notification: NotificationActionPayload) => void;
+}
+
+/**
+ * Profile export component.
+ *
+ * @param {ProfileExportProps} props - Props injected to the profile export component.
+ * @return {JSX.Element}
+ */
+export const ProfileExportComponent: FunctionComponent<ProfileExportProps> = (
+    props: ProfileExportProps
+): JSX.Element => {
+    const { onNotificationFired } = props;
+    const { t } = useTranslation();
 
     /**
-     * The following method handles the onClick event of the dismiss button
+     * The following method exports user's profile data into a json file.
      */
-    public handleDismiss = () => {
-        this.setState({
-            updateStatus: false
-        });
-    }
-
-    /**
-     * The following method export user's profile data into a json file
-     */
-    public downloadUserProfile = () => {
-        const {t} = this.props;
-        const {notification} = this.state;
+    const downloadUserProfile = (): void => {
         getUserInfo()
             .then((response) => {
                 if (response.status === 200) {
-                    const blob = new Blob([JSON.stringify(response.data, null, 2)], {type : "application/json"});
+                    const blob = new Blob(
+                        [JSON.stringify(response.data, null, 2)],
+                        { type: "application/json" }
+                    );
                     const url = window.URL.createObjectURL(blob);
                     const a = document.createElement("a");
                     a.style.display = "none";
@@ -66,61 +61,49 @@ class ProfileExportComponent extends React.Component<WithTranslation, any> {
                     document.body.appendChild(a);
                     a.click();
                     window.URL.revokeObjectURL(url);
-                    this.setState({
-                        notification: {
-                            ...notification,
-                            description: t(
-                                "views:userProfile.notification.downloadProfileInfo.success.description"
-                            ),
-                            message: t(
-                                "views:userProfile.notification.downloadProfileInfo.success.message"
-                            ),
-                            other: {
-                                success: true
-                            }
+
+                    // Sets a success notification.
+                    onNotificationFired({
+                        description: t(
+                            "views:profileExport.notification.downloadProfileInfo.success.description"
+                        ),
+                        message: t(
+                            "views:profileExport.notification.downloadProfileInfo.success.message"
+                        ),
+                        otherProps: {
+                            positive: true
                         },
-                        updateStatus: true
+                        visible: true
                     });
                 } else {
-                    this.setState({
-                        notification: {
-                            ...notification,
-                            description: t(
-                                "views:userProfile.notification.downloadProfileInfo.error.description"
-                            ),
-                            message: t(
-                                "views:userProfile.notification.downloadProfileInfo.error.message"
-                            ),
-                            other: {
-                                error: true
-                            }
+                    onNotificationFired({
+                        description: t(
+                            "views:profileExport.notification.downloadProfileInfo.error.description"
+                        ),
+                        message: t(
+                            "views:profileExport.notification.downloadProfileInfo.error.message"
+                        ),
+                        otherProps: {
+                            negative: true
                         },
-                        updateStatus: true
+                        visible: true
                     });
                 }
             });
-    }
+    };
 
-    public render() {
-        const {t} = this.props;
-        const {notification} = this.state;
-        const {description, message, other} = notification;
-
-        return (
-            <SettingsSection
-                header={t("views:profileExport.header")}
-                description={t("views:profileExport.description")}
-                actionTitle={t("views:profileExport.buttons.export")}
-                onActionClick={this.downloadUserProfile}>
-                <Transition visible={this.state.updateStatus} duration={500}>
-                    <NotificationComponent {...other} onDismiss={this.handleDismiss} size="small"
-                                           description={description} message={message}
-                    />
-                </Transition>
-                <Divider hidden/>
-            </SettingsSection>
-        );
-    }
-}
-
-export const ProfileExport = withTranslation()(ProfileExportComponent);
+    return (
+        <SettingsSection
+            contentPadding={ false }
+            header={ t("views:profileExport.title") }
+            description={ t("views:profileExport.subTitle") }
+            actionTitle={ t("views:profileExport.actionTitle") }
+            onActionClick={ downloadUserProfile }
+            icon={ SettingsSectionIcons.profileExport }
+            iconSize="auto"
+            iconStyle="colored"
+            iconFloated="right"
+        >
+        </SettingsSection>
+    );
+};
