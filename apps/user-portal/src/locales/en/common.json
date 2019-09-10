@@ -17,11 +17,14 @@
     "revokeAll": "Revoke all",
     "revokeSession": "Revoke session",
     "active": "Active",
+    "add": "Add",
     "edit": "Edit",
     "change": "Change",
     "save": "Save",
     "configure": "Configure",
     "showMore": "Show more",
     "showLess": "Show less",
-    "goBackHome": "Go back home"
+    "goBackHome": "Go back home",
+    "switch": "Switch",
+    "remove": "Remove"
 }

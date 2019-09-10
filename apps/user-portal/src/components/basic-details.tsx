@@ -16,83 +16,95 @@
  * under the License
  */
 
-import * as React from "react";
-import { withTranslation, WithTranslation } from "react-i18next";
-import { Button, Divider, Form, Grid, Icon, List, Transition } from "semantic-ui-react";
+import React, { ChangeEvent, FunctionComponent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Button, Divider, Form, Grid, Icon, List, Popup } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../actions";
+import { NotificationActionPayload } from "../models/notifications";
 import { createEmptyProfile } from "../models/profile";
 import { EditSection } from "./edit-section";
-import { NotificationComponent } from "./notification";
 import { SettingsSection } from "./settings-section";
 import { UserImagePlaceHolder } from "./ui";
 
 /**
- * Basic information section of the User Profile
+ * Proptypes for the basic details component.
  */
-class BasicDetailsComponent extends React.Component<WithTranslation, any> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            basicInfo: createEmptyProfile(),
-            emailEdit: false,
-            nameEdit: false,
-            notification: {
-                description: "",
-                message: "",
-                other: {
-                    error: false,
-                    success: false
-                }
-            },
-            personalInfoEdit: false,
-            updateStatus: false
-        };
-        this.handleSave = this.handleSave.bind(this);
-        this.handleFieldChange = this.handleFieldChange.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
-        this.handleEdit = this.handleEdit.bind(this);
-    }
+interface BasicDetailsProps {
+    onNotificationFired: (notification: NotificationActionPayload) => void;
+}
 
-    public componentDidMount() {
+/**
+ * Basic details component.
+ *
+ * @param {BasicDetailsProps} props - Props injected to the basic details component.
+ * @return {JSX.Element}
+ */
+export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
+    props: BasicDetailsProps
+): JSX.Element => {
+    const [profileInfo, setProfileInfo] = useState(createEmptyProfile());
+    const [editingProfileInfo, setEditingProfileInfo] = useState(createEmptyProfile());
+    const [editingForm, setEditingForm] = useState({
+        emailChangeForm: false,
+        mobileChangeForm: false,
+        nameChangeForm: false,
+        organizationChangeForm: false,
+    });
+    const { onNotificationFired } = props;
+
+    const { t } = useTranslation();
+
+    useEffect(() => {
+        if (profileInfo && !profileInfo.username) {
+            fetchProfileInfo();
+        }
+    });
+
+    /**
+     * Fetches profile information.
+     */
+    const fetchProfileInfo = (): void => {
         getProfileInfo()
             .then((response) => {
-                this.setBasicDetails(response);
+                if (response.responseStatus === 200) {
+                    setBasicDetails(response);
+                } else {
+                    onNotificationFired({
+                        description: t(
+                            "views:userProfile.notification.getProfileInfo.error.description"
+                        ),
+                        message: t(
+                            "views:userProfile.notification.getProfileInfo.error.message"
+                        ),
+                        otherProps: {
+                            negative: true
+                        },
+                        visible: true
+                    });
+                }
             });
-    }
+    };
 
     /**
      * The following method handles the change of state of the input fields.
      * The id of the event target will be used to set the state.
-     * @param event
+     *
+     * @param {ChangeEvent<HTMLInputElement>} e - Input change event
      */
-    public handleFieldChange = (event) => {
-        const {basicInfo} = this.state;
-        this.setState({
-            basicInfo : {
-                ...basicInfo,
-                [event.target.id]: event.target.value
-            }
+    const handleFieldChange = (e: ChangeEvent<HTMLInputElement>): void => {
+        setEditingProfileInfo({
+            ...editingProfileInfo,
+            [e.target.id]: e.target.value
         });
         event.preventDefault();
-    }
+    };
 
     /**
-     * The following method handles the onClick event of the dismiss button
+     * The following method handles the `onSubmit` event of forms.
+     *
+     * @param formName - Name of the form
      */
-    public handleDismiss = () => {
-        this.setState({
-            updateStatus: false
-        });
-    }
-
-    /**
-     * The following method handles the onClick event of the save button
-     * The update request will be sent depending on the id of the event target
-     * @param event
-     */
-    public handleSave = (event) => {
-        const {t} = this.props;
-        const {basicInfo, notification} = this.state;
+    const handleSubmit = (formName: string): void => {
         const data = {
             Operations: [
                 {
@@ -105,270 +117,503 @@ class BasicDetailsComponent extends React.Component<WithTranslation, any> {
             ]
         };
 
-        const emails = [];
-        emails.push(basicInfo.email);
-        switch (event.target.id) {
-            case "name" : {
+        switch (formName) {
+            case "nameChangeForm" : {
                 data.Operations[0].value = {
                     name: {
-                        familyName: basicInfo.lastName,
-                        givenName: basicInfo.displayName
+                        familyName: editingProfileInfo.lastName,
+                        givenName: editingProfileInfo.displayName
                     }
                 };
                 break;
             }
-            case "email" : {
-                data.Operations[0].value = {emails};
+            case "emailChangeForm" : {
+                data.Operations[0].value = {
+                    emails: [editingProfileInfo.email]
+                };
+                break;
+            }
+            case "organizationChangeForm" : {
+                data.Operations[0].value = {
+                    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+                        organization: editingProfileInfo.organisation
+                    }
+                };
+                break;
+            }
+            case "mobileChangeForm" : {
+                data.Operations[0].value = {
+                    phoneNumbers: [
+                        {
+                            type: "mobile",
+                            value: editingProfileInfo.mobile
+                        }
+                    ],
+                };
                 break;
             }
         }
+
         updateProfileInfo(data)
             .then((response) => {
                 if (response.status === 200) {
-                    this.setState({
-                        notification: {
-                            ...notification,
-                            description: t(
-                                "views:userProfile.notification.updateProfileInfo.success.description"
-                            ),
-                            message: t(
-                                "views:userProfile.notification.updateProfileInfo.success.message"
-                            ),
-                            other: {
-                                success: true
-                            }
+                    onNotificationFired({
+                        description: t(
+                            "views:userProfile.notification.updateProfileInfo.success.description"
+                        ),
+                        message: t(
+                            "views:userProfile.notification.updateProfileInfo.success.message"
+                        ),
+                        otherProps: {
+                            positive: true
                         },
-                        updateStatus: true
+                        visible: true
                     });
-                    getProfileInfo()
-                        .then((res) => {
-                            this.setBasicDetails(res);
-                        });
+
+                    // Re-fetch the profile information
+                    fetchProfileInfo();
                 }
             });
 
-        if (event.target.id === "name") {
-            this.setState({
-                nameEdit: false
-            });
-        } else if (event.target.id === "email") {
-            this.setState({
-                emailEdit: false
-            });
-        }
-    }
+        // Hide corresponding edit view
+        hideFormEditView(formName);
+    };
 
     /**
-     * The following method handles the onClick event of the edit button
-     * @param event
+     * The following method handles the onClick event of the edit button.
+     *
+     * @param formName - Name of the form
      */
-    public handleEdit = (event) => {
-        this.setState({
-            [event.target.id]: true
+    const showFormEditView = (formName: string): void => {
+        setEditingForm({
+            ...editingForm,
+            [formName]: true
         });
-    }
+    };
 
     /**
-     * The following method handles the onClick event of the cancel button
-     * @param event
+     * The following method handles the onClick event of the cancel button.
+     *
+     * @param formName - Name of the form
      */
-    public handleCancel = (event) => {
-        this.setState({
-            [event.target.id]: false
+    const hideFormEditView = (formName: string): void => {
+        setEditingForm({
+            ...editingForm,
+            [formName]: false
         });
-    }
-
-    public render() {
-        const {t} = this.props;
-        const {basicInfo, notification} = this.state;
-        const {description, message, other} = notification;
-        const handleNameChange = () => {
-            if (this.state.nameEdit) {
-                return (<>
-                        <EditSection>
-                            <Grid>
-                                <Grid.Row columns={2}>
-                                    <Grid.Column>
-                                        <Form.Field>
-                                            <label>{t("views:userProfile.inputFields.firstName")}</label>
-                                            <input required id="displayName"
-                                                   value={basicInfo.displayName}
-                                                   onChange={this.handleFieldChange}/>
-                                        </Form.Field>
-                                    </Grid.Column>
-                                    <Grid.Column>
-                                        <Form.Field>
-                                            <label>{t("views:userProfile.inputFields.lastName")}</label>
-                                            <input required id="lastName"
-                                                   value={basicInfo.lastName}
-                                                   onChange={this.handleFieldChange}/>
-                                        </Form.Field>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                            <Divider hidden/>
-                            <Button id="name" primary onClick={this.handleSave}>
-                                {t("common:save")}
-                            </Button>
-                            <Button id="nameEdit" default onClick={this.handleCancel}>
-                                {t("common:cancel")}
-                            </Button>
-                        </EditSection>
-                    </>
-                );
-            } else {
-                return (<>
-                        <Grid>
-                            <Grid.Row columns={3}>
-                                <Grid.Column>
-                                    <List.Content>
-                                        <List.Description>
-                                            {t("views:userProfile.inputFields.name")}
-                                        </List.Description>
-                                    </List.Content>
-                                </Grid.Column>
-                                <Grid.Column>
-                                    <List.Content>{basicInfo.displayName + " " + basicInfo.lastName}</List.Content>
-                                </Grid.Column>
-                                <Grid.Column>
-                                    <List.Content floated="right">
-                                        <Icon link size="small" color="grey" id="nameEdit"
-                                              onClick={this.handleEdit} style={{marginLeft: "10px"}}
-                                              name="pencil alternate"/>
-                                    </List.Content>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </>
-                );
-            }
-        };
-
-        const handleEmailChange = () => {
-            if (this.state.emailEdit) {
-                return (<>
-                        <EditSection>
-                            <Form.Field>
-                                <label>{t("views:userProfile.inputFields.email")}</label>
-                                <input required id="email" value={basicInfo.email} onChange={this.handleFieldChange}/>
-                            </Form.Field>
-                            <Button id="email" primary onClick={this.handleSave}>
-                                {t("common:save")}
-                            </Button>
-                            <Button id="emailEdit" default onClick={this.handleCancel}>
-                                {t("common:cancel")}
-                            </Button>
-                        </EditSection>
-                    </>
-                );
-            } else {
-                return (<>
-                        <Grid>
-                            <Grid.Row columns={3}>
-                                <Grid.Column>
-                                    <List.Content>
-                                        <List.Description>
-                                            {t("views:userProfile.inputFields.email")}
-                                        </List.Description>
-                                    </List.Content>
-                                </Grid.Column>
-                                <Grid.Column>
-                                    <List.Content>{basicInfo.email}</List.Content>
-                                </Grid.Column>
-                                <Grid.Column>
-                                    <List.Content floated="right">
-                                        <Icon link size="small" color="grey" id="emailEdit"
-                                              onClick={this.handleEdit} style={{marginLeft: "10px"}}
-                                              name="pencil alternate"/>
-                                    </List.Content>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </>
-                );
-            }
-        };
-        return(<SettingsSection header="Basic Details" description="Manage and Update Your Basic Information"
-                              isEdit={this.state.emailEdit} onClick={handleEmailChange}>
-                <Transition visible={this.state.updateStatus} duration={500}>
-                    <NotificationComponent {...other} onDismiss={this.handleDismiss} size="small"
-                                           description={description} message={message}
-                    />
-                </Transition>
-                <Divider hidden/>
-            <Grid>
-                <Grid.Row columns={2}>
-                    <Grid.Column width={3}>
-                        <UserImagePlaceHolder size="small"/><br/>
-                    </Grid.Column>
-                    <Grid.Column>
-                        <List relaxed="very" divided verticalAlign="middle">
-                            <List.Item>
-                                {handleNameChange()}
-                            </List.Item>
-                            <List.Item>
-                                {handleEmailChange()}
-                            </List.Item>
-                            <List.Item>
-                                <Grid>
-                                    <Grid.Row columns={3}>
-                                        <Grid.Column>
-                                            <List.Content>
-                                                <List.Description>
-                                                    {t("views:userProfile.inputFields.username")}
-                                                </List.Description>
-                                                </List.Content>
-                                        </Grid.Column>
-                                        <Grid.Column>
-                                            <List.Content>{basicInfo.username}</List.Content>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            </List.Item>
-                        </List>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-            </SettingsSection>
-        );
-    }
+    };
 
     /**
-     * Set the fetched basic profile details to the state
-     * @param response
+     * Set the fetched basic profile details to the state.
+     *
+     * @param profile - Response from the API request.
      */
-    private setBasicDetails(response) {
-        const {t} = this.props;
-        const {basicInfo, notification} = this.state;
-        if (response.responseStatus === 200) {
-            this.setState({
-                basicInfo: {
-                    ...basicInfo,
-                    displayName: response.displayName,
-                    email: response.emails[0],
-                    emails: response.emails,
-                    lastName: response.lastName,
-                    username: response.username
-                }
-            });
-        } else {
-            this.setState({
-                notification: {
-                    ...notification,
-                    description: t(
-                        "views:userProfile.notification.getProfileInfo.error.description"
-                    ),
-                    message: t(
-                        "views:userProfile.notification.getProfileInfo.error.message"
-                    ),
-                    other: {
-                        error: true
-                    }
-                },
-                updateStatus: true
-            });
-        }
-    }
-}
+    const setBasicDetails = (profile) => {
+        let mobileNumber = "";
+        profile.phoneNumbers.map((mobile) => {
+            mobileNumber = mobile.value;
+        });
+        setEditingProfileInfo({
+            ...editingProfileInfo,
+            displayName: profile.displayName,
+            email: profile.emails[0],
+            emails: profile.emails,
+            lastName: profile.lastName,
+            mobile: mobileNumber,
+            organisation: profile.organisation,
+            phoneNumbers: profile.phoneNumbers,
+            username: profile.username,
+        });
+        setProfileInfo({
+            ...profileInfo,
+            displayName: profile.displayName,
+            email: profile.emails[0],
+            emails: profile.emails,
+            lastName: profile.lastName,
+            mobile: mobileNumber,
+            organisation: profile.organisation,
+            phoneNumbers: profile.phoneNumbers,
+            username: profile.username,
+        });
+    };
 
-export const BasicDetails = withTranslation()(BasicDetailsComponent);
+    const handleNameChange = (
+        editingForm.nameChangeForm
+            ? (
+                <EditSection>
+                    <Grid>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column width={ 4 }>
+                                { t("views:userProfile.fields.name.label") }
+                            </Grid.Column>
+                            <Grid.Column width={ 12 }>
+                                <Form onSubmit={ () => handleSubmit("nameChangeForm") }>
+                                    <Form.Field>
+                                        <label>
+                                            { t("views:userProfile.forms.nameChangeForm.inputs.firstName.label") }
+                                        </label>
+                                        <input
+                                            required
+                                            id="displayName"
+                                            placeholder={ t("views:userProfile.forms.nameChangeForm.inputs" +
+                                                ".firstName.placeholder") }
+                                            value={ editingProfileInfo.displayName }
+                                            onChange={ handleFieldChange }/>
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <label>
+                                            { t("views:userProfile.forms.nameChangeForm.inputs.lastName.label") }
+                                        </label>
+                                        <input
+                                            required
+                                            id="lastName"
+                                            placeholder={ t("views:userProfile.forms.nameChangeForm.inputs" +
+                                                ".lastName.placeholder") }
+                                            value={ editingProfileInfo.lastName }
+                                            onChange={ handleFieldChange }/>
+                                    </Form.Field>
+                                    <Divider hidden/>
+                                    <Button type="submit" primary>
+                                        { t("common:save") }
+                                    </Button>
+                                    <Button
+                                        className="link-button"
+                                        onClick={ () => hideFormEditView("nameChangeForm") }
+                                    >
+                                        { t("common:cancel") }
+                                    </Button>
+                                </Form>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </EditSection>
+            )
+            :
+            (
+                <Grid padded>
+                    <Grid.Row columns={ 3 }>
+                        <Grid.Column width={ 4 } className="first-column">
+                            <List.Content>
+                                { t("views:userProfile.fields.name.label") }
+                            </List.Content>
+                        </Grid.Column>
+                        <Grid.Column width={ 10 }>
+                            <List.Content>
+                                <List.Description>
+                                    { profileInfo.displayName + " " + profileInfo.lastName }
+                                </List.Description>
+                            </List.Content>
+                        </Grid.Column>
+                        <Grid.Column width={ 2 } className="last-column">
+                            <List.Content floated="right">
+                                <Popup
+                                    trigger={
+                                        <Icon
+                                            link
+                                            className="list-icon"
+                                            size="small"
+                                            color="grey"
+                                            onClick={ () => showFormEditView("nameChangeForm") }
+                                            name="pencil alternate"
+                                        />
+                                    }
+                                    position="top center"
+                                    content="Edit"
+                                    inverted
+                                />
+                            </List.Content>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            ));
+
+    const handleEmailChange = (
+        editingForm.emailChangeForm
+            ? (
+                <EditSection>
+                    <Grid>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column width={ 4 }>
+                                { t("views:userProfile.fields.email.label") }
+                            </Grid.Column>
+                            <Grid.Column width={ 12 }>
+                                <Form onSubmit={ () => handleSubmit("emailChangeForm") }>
+                                    <Form.Field>
+                                        <label>{ t("views:userProfile.fields.email.label") }</label>
+                                        <input
+                                            required
+                                            id="email"
+                                            placeholder={ t("views:userProfile.forms.emailChangeForm.inputs" +
+                                                ".email.placeholder") }
+                                            value={ editingProfileInfo.email }
+                                            onChange={ handleFieldChange }
+                                        />
+                                    </Form.Field>
+                                    <Divider hidden/>
+                                    <Button type="submit" primary>
+                                        { t("common:save") }
+                                    </Button>
+                                    <Button
+                                        className="link-button"
+                                        onClick={ () => hideFormEditView("emailChangeForm") }
+                                    >
+                                        { t("common:cancel") }
+                                    </Button>
+                                </Form>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </EditSection>
+            )
+            :
+            (
+                <Grid padded>
+                    <Grid.Row columns={ 3 }>
+                        <Grid.Column width={ 4 } className="first-column">
+                            <List.Content>
+                                { t("views:userProfile.fields.email.label") }
+                            </List.Content>
+                        </Grid.Column>
+                        <Grid.Column width={ 10 }>
+                            <List.Content>
+                                <List.Description>
+                                    {
+                                        profileInfo.email
+                                            ? profileInfo.email
+                                            : t("views:userProfile.fields.email.default")
+                                    }
+                                </List.Description>
+                            </List.Content>
+                        </Grid.Column>
+                        <Grid.Column width={ 2 } className="last-column">
+                            <List.Content floated="right">
+                                <Popup
+                                    trigger={
+                                        <Icon
+                                            link
+                                            className="list-icon"
+                                            size="small"
+                                            color="grey"
+                                            id="emailEdit"
+                                            onClick={ () => showFormEditView("emailChangeForm") }
+                                            name={ profileInfo.email ? "pencil alternate" : "add" }
+                                        />
+                                    }
+                                    position="top center"
+                                    content={ profileInfo.email ? t("common:edit") : t("common:add") }
+                                    inverted
+                                />
+                            </List.Content>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            ));
+
+    const handleOrganisationChange = (
+        editingForm.organizationChangeForm
+            ? (
+                <EditSection>
+                    <Grid>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column width={ 4 }>
+                                { t("views:userProfile.fields.organization.label") }
+                            </Grid.Column>
+                            <Grid.Column width={ 12 }>
+                                <Form onSubmit={ () => handleSubmit("organizationChangeForm") }>
+                                    <Form.Field>
+                                        <label>{ t("views:userProfile.fields.organization.label") }</label>
+                                        <input
+                                            required
+                                            id="organisation"
+                                            placeholder={ t("views:userProfile.forms.organizationChangeForm" +
+                                                ".inputs.organization.placeholder") }
+                                            value={ editingProfileInfo.organisation }
+                                            onChange={ handleFieldChange }
+                                        />
+                                    </Form.Field>
+                                    <Divider hidden/>
+                                    <Button type="submit" primary>
+                                        { t("common:save") }
+                                    </Button>
+                                    <Button
+                                        className="link-button"
+                                        onClick={ () => hideFormEditView("organizationChangeForm") }
+                                    >
+                                        { t("common:cancel") }
+                                    </Button>
+                                </Form>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </EditSection>
+            )
+            :
+            (
+                <Grid padded>
+                    <Grid.Row columns={ 3 }>
+                        <Grid.Column width={ 4 } className="first-column">
+                            <List.Content>
+                                { t("views:userProfile.fields.organization.label") }
+                            </List.Content>
+                        </Grid.Column>
+                        <Grid.Column width={ 10 }>
+                            <List.Content>
+                                <List.Description>
+                                    {
+                                        profileInfo.organisation
+                                            ? profileInfo.organisation
+                                            : t("views:userProfile.fields.organization.default")
+                                    }
+                                </List.Description>
+                            </List.Content>
+                        </Grid.Column>
+                        <Grid.Column width={ 2 } className="last-column">
+                            <List.Content floated="right">
+                                <Popup
+                                    trigger={
+                                        <Icon
+                                            link
+                                            className="list-icon"
+                                            size="small"
+                                            color="grey"
+                                            id="organizationEdit"
+                                            onClick={ () => showFormEditView("organizationChangeForm") }
+                                            name={ profileInfo.organisation ? "pencil alternate" : "add" }
+                                        />
+                                    }
+                                    position="top center"
+                                    content={ profileInfo.organisation ? t("common:edit") : t("common:add") }
+                                    inverted
+                                />
+                            </List.Content>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            )
+    );
+
+    const handleMobileChange = (
+        editingForm.mobileChangeForm
+            ? (
+                <EditSection>
+                    <Grid>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column width={ 4 }>
+                                { t("views:userProfile.fields.mobile.label") }
+                            </Grid.Column>
+                            <Grid.Column width={ 12 }>
+                                <Form onSubmit={ () => handleSubmit("mobileChangeForm") }>
+                                    <Form.Field>
+                                        <label>{ t("views:userProfile.fields.mobile.label") }</label>
+                                        <input
+                                            required
+                                            id="mobile"
+                                            placeholder={ t("views:userProfile.forms.mobileChangeForm" +
+                                                ".inputs.mobile.placeholder") }
+                                            value={ editingProfileInfo.mobile }
+                                            onChange={ handleFieldChange }
+                                        />
+                                    </Form.Field>
+                                    <Divider hidden/>
+                                    <Button type="submit" primary>
+                                        { t("common:save") }
+                                    </Button>
+                                    <Button
+                                        className="link-button"
+                                        onClick={ () => hideFormEditView("mobileChangeForm") }
+                                    >
+                                        { t("common:cancel") }
+                                    </Button>
+                                </Form>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </EditSection>
+            )
+            :
+            (
+                <Grid padded>
+                    <Grid.Row columns={ 3 }>
+                        <Grid.Column width={ 4 } className="first-column">
+                            <List.Content>
+                                { t("views:userProfile.fields.mobile.label") }
+                            </List.Content>
+                        </Grid.Column>
+                        <Grid.Column width={ 10 }>
+                            <List.Content>
+                                <List.Description>
+                                    {
+                                        profileInfo.mobile
+                                            ? profileInfo.mobile
+                                            : t("views:userProfile.fields.mobile.default")
+                                    }
+                                </List.Description>
+                            </List.Content>
+                        </Grid.Column>
+                        <Grid.Column width={ 2 } className="last-column">
+                            <List.Content floated="right">
+                                <Popup
+                                    trigger={
+                                        <Icon
+                                            link
+                                            className="list-icon"
+                                            size="small"
+                                            color="grey"
+                                            onClick={ () => showFormEditView("mobileChangeForm") }
+                                            name={ profileInfo.mobile ? "pencil alternate" : "add" }
+                                        />
+                                    }
+                                    position="top center"
+                                    content={ profileInfo.mobile ? t("common:edit") : t("common:add") }
+                                    inverted
+                                />
+                            </List.Content>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            )
+    );
+
+    return (
+        <SettingsSection
+            contentPadding={ false }
+            header={ t("views:userProfile.title") }
+            description={ t("views:userProfile.subTitle") }
+            icon={ <UserImagePlaceHolder size="tiny"/> }
+            iconSize="auto"
+            iconStyle="colored"
+            iconFloated="right"
+        >
+            <List divided verticalAlign="middle" className="main-content-inner">
+                <List.Item className="inner-list-item">
+                    <Grid padded>
+                        <Grid.Row columns={ 3 }>
+                            <Grid.Column width={ 4 } className="first-column">
+                                <List.Content>
+                                    { t("views:userProfile.fields.username.label") }
+                                </List.Content>
+                            </Grid.Column>
+                            <Grid.Column width={ 10 }>
+                                <List.Content>
+                                    <List.Description>{ profileInfo.username }</List.Description>
+                                </List.Content>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </List.Item>
+                <List.Item className="inner-list-item">
+                    { handleNameChange }
+                </List.Item>
+                <List.Item className="inner-list-item">
+                    { handleEmailChange }
+                </List.Item>
+                <List.Item className="inner-list-item">
+                    { handleOrganisationChange }
+                </List.Item>
+                <List.Item className="inner-list-item">
+                    { handleMobileChange }
+                </List.Item>
+            </List>
+        </SettingsSection>
+    );
+};

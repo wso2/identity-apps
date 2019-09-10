@@ -21,8 +21,9 @@ import {
     AccountsPage,
     ConsentManagementPage,
     HomePage,
-    PageNotFound, SessionsPage,
-    UserProfilePage
+    PageNotFound,
+    PersonalInfoPage,
+    SessionsPage
 } from "../pages";
 
 /**
@@ -50,7 +51,7 @@ const ROUTES: Route[] = [
         showOnSidePanel: true,
     },
     {
-        component: UserProfilePage,
+        component: PersonalInfoPage,
         icon: "personal",
         name: "Personal Info",
         path: "/personal-info",
