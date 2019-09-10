@@ -34,13 +34,10 @@ interface BasicDetailsProps {
 }
 
 /**
- * Basic information section of the User Profile
- */
-/**
- * Settings section component.
+ * Basic details component.
  *
- * @param {React.PropsWithChildren<any>} props
- * @return {any}
+ * @param {BasicDetailsProps} props - Props injected to the basic details component.
+ * @return {JSX.Element}
  */
 export const BasicDetailsComponent: React.FunctionComponent<BasicDetailsProps> = (
     props: BasicDetailsProps
@@ -63,7 +60,10 @@ export const BasicDetailsComponent: React.FunctionComponent<BasicDetailsProps> =
         }
     });
 
-    const fetchProfileInfo = () => {
+    /**
+     * Fetches profile information.
+     */
+    const fetchProfileInfo = (): void => {
         getProfileInfo()
             .then((response) => {
                 if (response.responseStatus === 200) {
@@ -93,9 +93,7 @@ export const BasicDetailsComponent: React.FunctionComponent<BasicDetailsProps> =
      * @param {string} id - ID of the input element
      * @param {string} value - Value of the input element
      */
-    const handleFieldChange = (
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => {
+    const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setEditingProfileInfo({
             ...editingProfileInfo,
             [e.target.id]: e.target.value
@@ -109,7 +107,7 @@ export const BasicDetailsComponent: React.FunctionComponent<BasicDetailsProps> =
      *
      * @param formName - Name of the form
      */
-    const handleSubmit = (formName: string) => {
+    const handleSubmit = (formName: string): void => {
         const data = {
             Operations: [
                 {
@@ -189,7 +187,7 @@ export const BasicDetailsComponent: React.FunctionComponent<BasicDetailsProps> =
      *
      * @param formName - Name of the form
      */
-    const showFormEditView = (formName) => {
+    const showFormEditView = (formName: string): void => {
         setEditingForm({
             ...editingForm,
             [formName]: true
@@ -201,7 +199,7 @@ export const BasicDetailsComponent: React.FunctionComponent<BasicDetailsProps> =
      *
      * @param formName - Name of the form
      */
-    const hideFormEditView = (formName) => {
+    const hideFormEditView = (formName: string): void => {
         setEditingForm({
             ...editingForm,
             [formName]: false
@@ -578,9 +576,9 @@ export const BasicDetailsComponent: React.FunctionComponent<BasicDetailsProps> =
     return (
         <SettingsSection
             contentPadding={ false }
-            header="Basic Details"
-            description="Manage and Update Your Basic Information"
-            icon={ <UserImagePlaceHolder size="tiny"/> }
+            header={ t("views:userProfile.title") }
+            description={ t("views:userProfile.subTitle") }
+            icon={ <UserImagePlaceHolder size="tiny" /> }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
