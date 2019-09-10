@@ -24,7 +24,6 @@ export * from "./change-password";
 export * from "./profile-export";
 export * from "./header";
 export * from "./notification";
-export * from "./personal-details";
 export * from "./protected-route";
 export * from "./security-qs";
 export * from "./ui";
