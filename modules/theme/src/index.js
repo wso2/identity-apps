@@ -39,3 +39,8 @@ export const SidePanelIconSet = {
     session: require("../lib/assets/images/icons/monitor-icon.svg"),
     consent: require("../lib/assets/images/icons/tick-circle-icon.svg"),
 };
+export const SettigsSectionIconSet = {
+    associatedAccounts: require("../lib/assets/images/illustrations/associated-accounts.svg"),
+    profileExport: require("../lib/assets/images/illustrations/profile-export.svg"),
+    securityQuestions: require("../lib/assets/images/illustrations/security-questions.svg")
+};
