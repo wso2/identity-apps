@@ -111,7 +111,7 @@ class ProfileExportComponent extends React.Component<WithTranslation, any> {
                 header={t("views:profileExport.header")}
                 description={t("views:profileExport.description")}
                 actionTitle={t("views:profileExport.buttons.export")}
-                onClick={this.downloadUserProfile}>
+                onActionClick={this.downloadUserProfile}>
                 <Transition visible={this.state.updateStatus} duration={500}>
                     <NotificationComponent {...other} onDismiss={this.handleDismiss} size="small"
                                            description={description} message={message}

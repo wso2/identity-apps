@@ -361,7 +361,7 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
                     header={t("views:securityQuestions.title")}
                     description={t("views:securityQuestions.subTitle")}
                     isEdit={this.state.isEdit}
-                    onClick={this.handleEdit}
+                    onActionClick={this.handleEdit}
                 >
                 <Transition visible={this.state.updateStatus} duration={500}>
                     <NotificationComponent {...other} onDismiss={this.handleDismiss} size="small"

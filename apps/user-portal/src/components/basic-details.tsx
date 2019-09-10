@@ -16,7 +16,7 @@
  * under the License
  */
 
-import * as React from "react";
+import React, { ChangeEvent, FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Form, Grid, Icon, List, Popup } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../actions";
@@ -39,12 +39,12 @@ interface BasicDetailsProps {
  * @param {BasicDetailsProps} props - Props injected to the basic details component.
  * @return {JSX.Element}
  */
-export const BasicDetailsComponent: React.FunctionComponent<BasicDetailsProps> = (
+export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
     props: BasicDetailsProps
 ): JSX.Element => {
-    const [profileInfo, setProfileInfo] = React.useState(createEmptyProfile());
-    const [editingProfileInfo, setEditingProfileInfo] = React.useState(createEmptyProfile());
-    const [editingForm, setEditingForm] = React.useState({
+    const [profileInfo, setProfileInfo] = useState(createEmptyProfile());
+    const [editingProfileInfo, setEditingProfileInfo] = useState(createEmptyProfile());
+    const [editingForm, setEditingForm] = useState({
         emailChangeForm: false,
         mobileChangeForm: false,
         nameChangeForm: false,
@@ -54,7 +54,7 @@ export const BasicDetailsComponent: React.FunctionComponent<BasicDetailsProps> =
 
     const { t } = useTranslation();
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (profileInfo && !profileInfo.username) {
             fetchProfileInfo();
         }
@@ -89,11 +89,9 @@ export const BasicDetailsComponent: React.FunctionComponent<BasicDetailsProps> =
      * The following method handles the change of state of the input fields.
      * The id of the event target will be used to set the state.
      *
-     * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event
-     * @param {string} id - ID of the input element
-     * @param {string} value - Value of the input element
+     * @param {ChangeEvent<HTMLInputElement>} e - Input change event
      */
-    const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const handleFieldChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setEditingProfileInfo({
             ...editingProfileInfo,
             [e.target.id]: e.target.value
@@ -102,8 +100,7 @@ export const BasicDetailsComponent: React.FunctionComponent<BasicDetailsProps> =
     };
 
     /**
-     * The following method handles the onClick event of the save button
-     * The update request will be sent depending on the id of the event target
+     * The following method handles the `onSubmit` event of forms.
      *
      * @param formName - Name of the form
      */
@@ -183,7 +180,7 @@ export const BasicDetailsComponent: React.FunctionComponent<BasicDetailsProps> =
     };
 
     /**
-     * The following method handles the onClick event of the edit button
+     * The following method handles the onClick event of the edit button.
      *
      * @param formName - Name of the form
      */
@@ -313,6 +310,7 @@ export const BasicDetailsComponent: React.FunctionComponent<BasicDetailsProps> =
                                     trigger={
                                         <Icon
                                             link
+                                            className="list-icon"
                                             size="small"
                                             color="grey"
                                             onClick={ () => showFormEditView("nameChangeForm") }
@@ -393,6 +391,7 @@ export const BasicDetailsComponent: React.FunctionComponent<BasicDetailsProps> =
                                     trigger={
                                         <Icon
                                             link
+                                            className="list-icon"
                                             size="small"
                                             color="grey"
                                             id="emailEdit"
@@ -474,6 +473,7 @@ export const BasicDetailsComponent: React.FunctionComponent<BasicDetailsProps> =
                                     trigger={
                                         <Icon
                                             link
+                                            className="list-icon"
                                             size="small"
                                             color="grey"
                                             id="organizationEdit"
@@ -556,6 +556,7 @@ export const BasicDetailsComponent: React.FunctionComponent<BasicDetailsProps> =
                                     trigger={
                                         <Icon
                                             link
+                                            className="list-icon"
                                             size="small"
                                             color="grey"
                                             onClick={ () => showFormEditView("mobileChangeForm") }
