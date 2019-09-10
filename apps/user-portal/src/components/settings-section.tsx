@@ -26,7 +26,6 @@ import { ThemeIcon, ThemeIconSizes } from "./icon";
 interface SettingsSectionProps {
     actionTitle?: string;
     contentPadding?: boolean;
-    onActionClick?: (event: MouseEvent<HTMLElement>) => void;
     description?: string;
     header: string;
     icon?: any;
@@ -34,6 +33,7 @@ interface SettingsSectionProps {
     iconStyle?: "twoTone" | "default" | "colored";
     iconSize?: ThemeIconSizes;
     isEdit?: boolean;
+    onActionClick?: (event: MouseEvent<HTMLElement>) => void;
 }
 
 /**
@@ -44,7 +44,16 @@ interface SettingsSectionProps {
  */
 export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props): JSX.Element => {
     const {
-        icon, iconFloated, iconSize, iconStyle, header, description, onActionClick, actionTitle, isEdit, contentPadding
+        icon,
+        iconFloated,
+        iconSize,
+        iconStyle,
+        header,
+        description,
+        onActionClick,
+        actionTitle,
+        isEdit,
+        contentPadding
     } = props;
 
     return (

@@ -23,25 +23,34 @@ import * as React from "react";
  * Proptypes for the Icon component.
  */
 interface ThemeIconProps {
+    bordered?: boolean;
+    className?: string;
+    colored?: boolean;
+    defaultIcon?: boolean;
+    floated?: string;
     icon: any;
     inline?: boolean;
-    className?: string;
-    transparent?: boolean;
     relaxed?: boolean | string;
-    bordered?: boolean;
     rounded?: boolean;
-    defaultIcon?: boolean;
-    twoTone?: boolean;
-    colored?: boolean;
     size?: ThemeIconSizes;
+    spaced?: string;
     style?: object;
     square?: boolean;
-    floated?: string;
-    spaced?: string;
+    transparent?: boolean;
+    twoTone?: boolean;
 }
 
-export type ThemeIconSizes = "auto" | "micro" | "mini" | "tiny" | "small" | "medium" | "large" | "big" | "huge" |
-    "massive";
+export type ThemeIconSizes =
+    "auto"
+    | "micro"
+    | "mini"
+    | "tiny"
+    | "small"
+    | "medium"
+    | "large"
+    | "big"
+    | "huge"
+    | "massive";
 
 /**
  * Generic component to render icons.
@@ -51,8 +60,21 @@ export type ThemeIconSizes = "auto" | "micro" | "mini" | "tiny" | "small" | "med
  */
 export const ThemeIcon: React.FunctionComponent<ThemeIconProps> = (props): JSX.Element => {
     const {
-        icon, inline, className, transparent, relaxed, bordered, rounded, defaultIcon, twoTone, size, style, square,
-        floated, spaced, colored
+        bordered,
+        className,
+        colored,
+        defaultIcon,
+        floated,
+        icon,
+        inline,
+        relaxed,
+        rounded,
+        size,
+        spaced,
+        style,
+        square,
+        transparent,
+        twoTone,
     } = props;
     const relaxLevel = (relaxed && relaxed === true) ? "" : relaxed;
 
