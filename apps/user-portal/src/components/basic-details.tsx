@@ -261,7 +261,7 @@ export const BasicDetailsComponent: React.FunctionComponent<BasicDetailsProps> =
                                             placeholder={ t("views:userProfile.forms.nameChangeForm.inputs" +
                                                 ".firstName.placeholder") }
                                             value={ editingProfileInfo.displayName }
-                                            onChange={ handleFieldChange } />
+                                            onChange={ handleFieldChange }/>
                                     </Form.Field>
                                     <Form.Field>
                                         <label>
@@ -578,7 +578,7 @@ export const BasicDetailsComponent: React.FunctionComponent<BasicDetailsProps> =
             contentPadding={ false }
             header={ t("views:userProfile.title") }
             description={ t("views:userProfile.subTitle") }
-            icon={ <UserImagePlaceHolder size="tiny" /> }
+            icon={ <UserImagePlaceHolder size="tiny"/> }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
