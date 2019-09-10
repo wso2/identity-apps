@@ -16,15 +16,16 @@
  * under the License.
  */
 
-import * as React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import {
-    AssociatedAccountsPage,
-    BasicDetails,
-    PersonalDetails,
+    AssociatedAccountsComponent,
+    BasicDetailsComponent,
+    NotificationComponent
 } from "../components";
 import { InnerPageLayout } from "../layouts";
+import { createEmptyNotificationActionPayload, NotificationActionPayload } from "../models/notifications";
 
 /**
  * Personal Info page.
@@ -33,25 +34,42 @@ import { InnerPageLayout } from "../layouts";
  */
 export const PersonalInfoPage = (): JSX.Element => {
     const { t } = useTranslation();
+    const [ notification, setNotification ] = useState(createEmptyNotificationActionPayload());
+
+    const handleNotification = (firedNotification: NotificationActionPayload) => {
+        setNotification(firedNotification);
+    };
+
+    const handleNotificationDismiss = () => {
+        setNotification({
+            ...notification,
+            visible: false
+        });
+    };
+
     return (
         <InnerPageLayout
             pageTitle={ t("views:personalInfoPage.title") }
             pageDescription={ t("views:personalInfoPage.subTitle") }>
             <Divider hidden/>
+            {
+                notification && notification.visible
+                    ? (<NotificationComponent
+                        message={ notification.message }
+                        description={ notification.description }
+                        onDismiss={ handleNotificationDismiss }
+                        { ...notification.otherProps }/>)
+                    : null
+            }
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
-                        <BasicDetails/>
+                        <BasicDetailsComponent onNotificationFired={ handleNotification } />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
-                        <PersonalDetails/>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 16 }>
-                        <AssociatedAccountsPage/>
+                        <AssociatedAccountsComponent onNotificationFired={ handleNotification } />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
