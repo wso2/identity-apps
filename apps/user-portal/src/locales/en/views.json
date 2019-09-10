@@ -185,6 +185,31 @@
     "securityQuestions": {
         "title": "Security Questions",
         "subTitle": "Add and Update Account Recovery Challenge Questions",
+        "actionTitles": {
+          "configure": "Configure security questions",
+          "change": "Change security questions"
+        },
+        "formHeader": "Challenge Question {{number}}",
+        "forms": {
+            "securityQuestionForm": {
+                "inputs": {
+                    "question": {
+                        "label": "Question",
+                        "placeholder": "Select a security question",
+                        "validations": {
+                            "empty": "At least one security question must be selected"
+                        }
+                    },
+                    "answer": {
+                        "label": "Answer",
+                        "placeholder": "Enter your answer",
+                        "validations": {
+                            "empty": "Answer is a required field"
+                        }
+                    }
+                }
+            }
+        },
         "notification": {
             "addQuestions": {
                 "success": {
@@ -296,16 +321,6 @@
             "noDetails": "No Personal Information Configured for this User"
         },
         "notification": {
-            "downloadProfileInfo": {
-                "success": {
-                    "message": "User profile details downloaded successfully.",
-                    "description": "The required user profile details are downloaded successfully."
-                },
-                "error": {
-                    "message": "An error occurred !!!",
-                    "description": "Error occurred while downloading the user profile details."
-                }
-            },
             "getProfileInfo": {
                 "success": {
                     "message": "User profile details fetched successfully.",
@@ -456,10 +471,20 @@
         "subTitle": "The page you're looking for isn't here."
     },
     "profileExport": {
-        "header": "Export Profile Data",
-        "description": "Download all your profile data including personal data, security questions and consents",
-        "buttons": {
-            "export": "Export"
+        "title": "Export Profile",
+        "subTitle": "Download all your profile data including personal data, security questions and consents.",
+        "actionTitle": "Export profile data",
+        "notification": {
+            "downloadProfileInfo": {
+                "success": {
+                    "message": "User profile details downloaded successfully.",
+                    "description": "The required user profile details are downloaded successfully."
+                },
+                "error": {
+                    "message": "An error occurred !!!",
+                    "description": "Error occurred while downloading the user profile details."
+                }
+            }
         }
     }
 }
