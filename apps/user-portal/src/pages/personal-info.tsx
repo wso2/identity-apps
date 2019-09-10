@@ -22,7 +22,8 @@ import { Divider, Grid } from "semantic-ui-react";
 import {
     AssociatedAccountsComponent,
     BasicDetailsComponent,
-    NotificationComponent
+    NotificationComponent,
+    ProfileExportComponent
 } from "../components";
 import { InnerPageLayout } from "../layouts";
 import { createEmptyNotificationActionPayload, NotificationActionPayload } from "../models/notifications";
@@ -70,6 +71,11 @@ export const PersonalInfoPage = (): JSX.Element => {
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         <AssociatedAccountsComponent onNotificationFired={ handleNotification } />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 16 }>
+                        <ProfileExportComponent onNotificationFired={ handleNotification } />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
