@@ -35,7 +35,6 @@ import {
     fetchUserSessions,
     hideRevokeAllUserSessionsModal,
     hideRevokeUserSessionModal,
-    hideUserSessionsNotification,
     revokeAllUserSessions,
     revokeUserSession,
     setEditingUserSession,
@@ -69,7 +68,7 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
         (state: AppState) => state.userSessions.isRevokeUserSessionRequestLoading
     );
     const sessionsListActiveIndexes = useSelector((state: AppState) => state.userSessions.sessionsListActiveIndexes);
-    const userSessions = useSelector((state: AppState) => state.userSessions.userSessions);
+    const userSessions = useSelector((state: AppState) => state.userSessions.userSessions as UserSessions);
 
     const dispatch = useDispatch();
 
