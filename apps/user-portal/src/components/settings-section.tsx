@@ -33,8 +33,8 @@ interface SettingsSectionProps {
     iconFloated?: "left" | "right";
     iconStyle?: "twoTone" | "default" | "colored";
     iconSize?: ThemeIconSizes;
-    isEdit?: boolean;
     onActionClick?: (event: MouseEvent<HTMLElement>) => void;
+    showAction?: boolean;
 }
 
 /**
@@ -54,7 +54,7 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
         description,
         onActionClick,
         actionTitle,
-        isEdit,
+        showAction,
         contentPadding
     } = props;
 
@@ -91,7 +91,8 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
                     </Grid.Row>
                 </Grid>
             </Card.Content>
-            { (actionTitle !== "" && !isEdit)
+            {
+                actionTitle && showAction
                 ?
                 <Card.Content className="extra-content" extra>
                     <List selection verticalAlign="middle">
@@ -119,5 +120,5 @@ SettingsSection.defaultProps = {
     contentPadding: false,
     description: "",
     header: "",
-    isEdit: false
+    showAction: true
 };
