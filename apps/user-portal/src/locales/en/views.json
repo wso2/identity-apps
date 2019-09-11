@@ -62,6 +62,9 @@
     "changePassword": {
         "title": "Change Password",
         "subTitle": "Change and modify the existing password",
+        "actionTitles": {
+            "change": "Change your password"
+        },
         "forms": {
             "passwordResetForm": {
                 "inputs": {
