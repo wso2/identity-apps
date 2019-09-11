@@ -30,61 +30,61 @@ interface InnerPageLayoutProps {
 }
 
 /**
- * Inner page layout component state types.
+ * Default header height to be used in state initialisations
+ * @type {string}
  */
-interface InnerPageLayoutState {
-    mobileSidePanelVisibility: boolean;
-}
+const DEFAULT_HEADER_HEIGHT = 59;
 
 /**
  * Inner page layout.
  *
- * @param {Props} props
- * @return {any}
+ * @param {InnerPageLayoutProps} props - Props injected to the inner page layout
+ * @return {JSX.Element}
  */
-export class InnerPageLayout extends React.Component<InnerPageLayoutProps, InnerPageLayoutState> {
-    public state = {
-        mobileSidePanelVisibility: false
+export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
+    props: InnerPageLayoutProps
+): JSX.Element => {
+    const { children, pageTitle, pageDescription, pageTitleTextAlign } = props;
+
+    const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = React.useState(false);
+    const [ headerHeight, setHeaderHeight ] = React.useState(DEFAULT_HEADER_HEIGHT);
+
+    React.useEffect(() => {
+        if (headerHeight === document.getElementById("app-header").offsetHeight) {
+            return;
+        }
+        setHeaderHeight(document.getElementById("app-header").offsetHeight);
+    });
+
+    const handleSidePanelToggleClick = () => {
+        setMobileSidePanelVisibility(!mobileSidePanelVisibility);
     };
 
-    public handleSidePanelToggleClick = () => {
-        const { mobileSidePanelVisibility } = this.state;
-        this.setState({ mobileSidePanelVisibility: !mobileSidePanelVisibility });
-    }
+    const handleSidePanelPusherClick = () => {
+        setMobileSidePanelVisibility(false);
+    };
 
-    public handleSidePanelPusherClick = () => {
-        const { mobileSidePanelVisibility } = this.state;
+    const handleSidePanelItemClick = () => {
+        setMobileSidePanelVisibility(false);
+    };
 
-        if (mobileSidePanelVisibility) {
-            this.setState({ mobileSidePanelVisibility: false });
-        }
-    }
-
-    public handleSidePanelItemClick = () => {
-        this.setState({ mobileSidePanelVisibility: false });
-    }
-
-    public render() {
-        const { mobileSidePanelVisibility } = this.state;
-        const { children, pageTitle, pageDescription, pageTitleTextAlign } = this.props;
-        return (
-            <>
-                <AppHeader onSidePanelToggleClick={ this.handleSidePanelToggleClick }/>
-                <div className="content-wrapper">
-                    <SidePanelWrapper
-                        mobileSidePanelVisibility={ mobileSidePanelVisibility }
-                        onSidePanelItemClick={ this.handleSidePanelItemClick }
-                        onSidePanelPusherClick={ this.handleSidePanelPusherClick }
-                    >
-                        <PageHeader
-                            title={ pageTitle }
-                            description={ pageDescription }
-                            titleTextAlign={ pageTitleTextAlign }
-                        />
-                        { children }
-                    </SidePanelWrapper>
-                </div>
-            </>
-        );
-    }
-}
+    return (
+        <>
+            <AppHeader onSidePanelToggleClick={ handleSidePanelToggleClick }/>
+            <div style={ { paddingTop: `${headerHeight}px` } }>
+                <SidePanelWrapper
+                    mobileSidePanelVisibility={ mobileSidePanelVisibility }
+                    onSidePanelItemClick={ handleSidePanelItemClick }
+                    onSidePanelPusherClick={ handleSidePanelPusherClick }
+                >
+                    <PageHeader
+                        title={ pageTitle }
+                        description={ pageDescription }
+                        titleTextAlign={ pageTitleTextAlign }
+                    />
+                    { children }
+                </SidePanelWrapper>
+            </div>
+        </>
+    );
+};

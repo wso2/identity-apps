@@ -29,7 +29,7 @@ import {
     Header,
     Icon,
     List,
-    Message, Modal,
+    Modal,
     Placeholder,
     Segment,
     SemanticICONS,
@@ -523,7 +523,7 @@ class UserSessionsComponentInner extends React.Component<any, any> {
                     <p>{ t("views:userSessions.modals.revokeAllUserSessionsModal.message") }</p>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button onClick={ this.handleRevokeAllUserSessionsModalClose }>
+                    <Button className="link-button" onClick={ this.handleRevokeAllUserSessionsModalClose }>
                         { t("common:cancel") }
                     </Button>
                     <Button primary onClick={ this.revokeAllUserSessions }>
@@ -548,7 +548,7 @@ class UserSessionsComponentInner extends React.Component<any, any> {
                     <p>{ t("views:userSessions.modals.revokeUserSessionModal.message") }</p>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button onClick={ this.handleRevokeUserSessionModalClose }>
+                    <Button className="link-button" onClick={ this.handleRevokeUserSessionModalClose }>
                         { t("common:cancel") }
                     </Button>
                     <Button primary onClick={ this.revokeUserSession }>

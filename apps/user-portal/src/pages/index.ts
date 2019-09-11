@@ -23,6 +23,6 @@ export * from "./errors/404";
 export * from "./home";
 export * from "./theme";
 export * from "./user-listing";
-export * from "./user-profile";
+export * from "./personal-info";
 export * from "./sessions";
 export * from "./accounts";

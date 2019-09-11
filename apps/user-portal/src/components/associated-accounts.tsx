@@ -16,247 +16,281 @@
  * under the License.
  */
 
-import * as React from "react";
-import { withTranslation, WithTranslation } from "react-i18next";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Button,
-    Container,
     Divider,
     Form,
     Grid,
-    Header,
-    Icon, List,
-    Segment,
-    Transition
+    Icon,
+    List
 } from "semantic-ui-react";
 import { addAccountAssociation, getAssociations } from "../actions/associated-accounts";
+import { SettingsSectionIcons } from "../configs";
+import { NotificationActionPayload } from "../models/notifications";
 import { EditSection } from "./edit-section";
-import { NotificationComponent } from "./notification";
 import { SettingsSection } from "./settings-section";
 import { UserImagePlaceHolder } from "./ui";
 
-class AssociatedAccountsPageComponent extends React.Component<WithTranslation, any> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            associations: [],
-            notification: {
-                description: "",
-                message: "",
-                other: {
-                    error: false,
-                    success: false
-                }
-            },
-            password: "",
-            showAddView: false,
-            updateStatus: false,
-            userId: ""
-        };
-    }
+/**
+ * Proptypes for the associated accounts component.
+ */
+interface AssociatedAccountsProps {
+    onNotificationFired: (notification: NotificationActionPayload) => void;
+}
 
-    public componentWillMount() {
+/**
+ * Associated accounts component.
+ *
+ * @param {BasicDetailsProps} props - Props injected to the basic details component.
+ * @return {JSX.Element}
+ */
+export const AssociatedAccountsComponent: React.FunctionComponent<AssociatedAccountsProps> = (
+    props: AssociatedAccountsProps
+): JSX.Element => {
+    const [associations, setAssociations] = useState([]);
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [editingForm, setEditingForm] = useState({
+        addAccountForm: false
+    });
+    const { onNotificationFired } = props;
+
+    const { t } = useTranslation();
+
+    useEffect(() => {
+        fetchAssociations();
+    }, []);
+
+    /**
+     * Fetches associations from the API.
+     */
+    const fetchAssociations = (): void => {
         getAssociations()
             .then((response) => {
-                if (!(response.status === 200)) {
-                    Promise.reject(Error);
+                if (response.status === 200) {
+                    setAssociations(response.data);
+                } else {
+                    onNotificationFired({
+                        description: t(
+                            "views:associatedAccounts.notification.getAssociation.error.description"
+                        ),
+                        message: t(
+                            "views:associatedAccounts.notification.getAssociation.error.message"
+                        ),
+                        otherProps: {
+                            negative: true
+                        },
+                        visible: true
+                    });
                 }
-                this.setState({
-                    associations: response.data
-                });
             });
-    }
-
-    public handleShowView = () => {
-        this.setState({
-            showAddView: true
-        });
-    }
+    };
 
     /**
-     * The following method handles the onClick event of the cancel button
-     * @param event
+     * The following method handles the change of state of the input fields.
+     * The id of the event target will be used to set the state.
+     *
+     * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event
      */
-    public handleCancel = (event) => {
-        this.setState({
-            showAddView: false
-        });
-    }
+    const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        if (e.target.id === "username") {
+            setUsername(e.target.value);
+        } else if (e.target.id === "password") {
+            setPassword(e.target.value);
+        }
+        event.preventDefault();
+    };
 
     /**
-     * The following method handles the onClick event of the dismiss button
+     * The following method handles the `onSubmit` event of forms.
+     *
+     * @param formName - Name of the form
      */
-    public handleDismiss = () => {
-        this.setState({
-            updateStatus: false
-        });
-    }
-
-    public handleSave = () => {
-        const {userId, notification, password} = this.state;
-        const {t} = this.props;
-
+    const handleSubmit = (formName: string): void => {
         const data = {
-            userId: userId,
-            password: password,
+            password,
             properties: [
                 {
                     key: "string",
                     value: "string"
                 }
-            ]
+            ],
+            userId: username
         };
+
         addAccountAssociation(data)
             .then((response) => {
                 if (response.status !== 201) {
-                    this.setState({
-                        notification: {
-                            ...notification,
-                            description: t(
-                                "views:userProfile.associatedAccounts.notification.addAssociation.error.description"
-                            ),
-                            message: t(
-                                "views:userProfile.associatedAccounts.notification.addAssociation.error.message"
-                            ),
-                            other: {
-                                error: true
-                            }
+                    onNotificationFired({
+                        description: t(
+                            "views:associatedAccounts.notification.addAssociation.error.description"
+                        ),
+                        message: t(
+                            "views:associatedAccounts.notification.addAssociation.error.message"
+                        ),
+                        otherProps: {
+                            negative: true
                         },
-                        updateStatus: true
+                        visible: true
                     });
                 } else {
-                    this.setState({
-                        notification: {
-                            ...notification,
-                            description: t(
-                                "views:userProfile.associatedAccounts.notification.addAssociation.success.description"
-                            ),
-                            message: t(
-                                "views:userProfile.associatedAccounts.notification.addAssociation.success.message"
-                            ),
-                            other: {
-                                success: true
-                            }
+                    onNotificationFired({
+                        description: t(
+                            "views:associatedAccounts.notification.addAssociation.success.description"
+                        ),
+                        message: t(
+                            "views:associatedAccounts.notification.addAssociation.success.message"
+                        ),
+                        otherProps: {
+                            positive: true
                         },
-                        showAddView: false,
-                        updateStatus: true
+                        visible: true
                     });
-                    getAssociations()
-                        .then((resp) => {
-                            if (!(resp.status === 200)) {
-                                Promise.reject(Error);
-                            }
-                            this.setState({
-                                associations: resp.data
-                            });
-                        });
+
+                    // Hide form
+                    setEditingForm({
+                        ...editingForm,
+                        [formName]: false
+                    });
+
+                    // Re-fetch account associations.
+                    fetchAssociations();
                 }
             });
-    }
+    };
 
     /**
-     * The following method handles the change of state of the input fields.
-     * The name of the event target will be used to set the state.
-     * @param event
+     * The following method handles the onClick event of the edit button.
+     *
+     * @param formName - Name of the form
      */
-    public handleInputChange = (event) => {
-        this.setState({
-            [event.target.name]: event.target.value
+    const showFormEditView = (formName: string): void => {
+        setEditingForm({
+            ...editingForm,
+            [formName]: true
         });
-        event.preventDefault();
-    }
+    };
 
-    public render() {
-        const {t} = this.props;
-        const {associations, notification, showAddView} = this.state;
-        const {description, message, other} = notification;
-        const addAccountForm = () => {
-            if (showAddView) {
-                return (<EditSection>
-                    <Container align="left">
-                        <Grid>
-                            <Grid.Row columns={1}>
-                                <Grid.Column>
-                                    <Header>Associate Local User Account</Header>
-                                    <Divider hidden/>
-                                    <Form.Field>
-                                        <label>{t("views:userProfile.associatedAccounts.inputFields.username")}</label>
-                                        <input required name="userId" onChange={this.handleInputChange}/>
-                                    </Form.Field>
-                                    <Form.Field>
-                                        <label>{t("views:userProfile.associatedAccounts.inputFields.password")}</label>
-                                        <input required type="password" name="password"
-                                               onChange={this.handleInputChange}/>
-                                    </Form.Field>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                        <Divider hidden/>
-                        <Button primary onClick={this.handleSave}>
-                            {t("common:save")}
-                        </Button>
-                        <Button id="personalInfoEdit" default onClick={this.handleCancel}>
-                            {t("common:cancel")}
-                        </Button>
-                    </Container>
-                </EditSection>);
-            } else {
-                if (associations) {
-                    return (<>
-                        <List relaxed="very" divided>
-                            {associations.map((association) => {
-                                return (<>
-                                    <List.Item>
-                                        <Grid columns={2}>
-                                            <Grid.Column>
-                                                <UserImagePlaceHolder size="mini" floated="left"/>
-                                                <List.Header>{association.userId}</List.Header>
-                                                <List.Description>{association.username}</List.Description>
-                                            </Grid.Column>
-                                            <Grid.Column>
-                                                <List.Content>
-                                                    <Button floated="right" disabled primary size="mini">
-                                                        {t("views:userProfile.associatedAccounts.buttons.removeBtn")}
-                                                    </Button>
-                                                    <Button floated="right" disabled size="mini">
-                                                        {t("views:userProfile.associatedAccounts.buttons.switchBtn")}
-                                                    </Button>
-                                                </List.Content>
-                                            </Grid.Column>
+    /**
+     * The following method handles the onClick event of the cancel button.
+     *
+     * @param formName - Name of the form
+     */
+    const hideFormEditView = (formName: string): void => {
+        setEditingForm({
+            ...editingForm,
+            [formName]: false
+        });
+    };
+
+    return (
+        <SettingsSection
+            contentPadding={ false }
+            header={ t("views:associatedAccounts.title") }
+            description={ t("views:associatedAccounts.subTitle") }
+            icon={ SettingsSectionIcons.associatedAccounts }
+            iconSize="auto"
+            iconStyle="colored"
+            iconFloated="right"
+            isEdit={ editingForm.addAccountForm }
+            actionTitle={ t("views:associatedAccounts.actionTitle") }
+            onActionClick={ () => showFormEditView("addAccountForm") }
+        >
+            {
+                editingForm.addAccountForm
+                    ? (
+                        <EditSection>
+                            <Grid>
+                                <Grid.Row columns={ 2 }>
+                                    <Grid.Column width={ 4 }>
+                                        { t("views:associatedAccounts.accountTypes.local.label") }
+                                    </Grid.Column>
+                                    <Grid.Column width={ 12 }>
+                                        <Form onSubmit={ () => handleSubmit("addAccountForm") }>
+                                            <Form.Field>
+                                                <label>{ t("views:associatedAccounts.forms.addAccountForm.inputs" +
+                                                    ".username.label") }</label>
+                                                <input
+                                                    required
+                                                    placeholder={ t("views:associatedAccounts.forms.addAccountForm" +
+                                                        ".inputs.username.placeholder") }
+                                                    id="username"
+                                                    onChange={ handleFieldChange }
+                                                />
+                                            </Form.Field>
+                                            <Form.Field>
+                                                <label>{ t("views:associatedAccounts.forms.addAccountForm.inputs" +
+                                                    ".password.label") }</label>
+                                                <input
+                                                    required
+                                                    placeholder={ t("views:associatedAccounts.forms.addAccountForm" +
+                                                        ".inputs.password.placeholder") }
+                                                    type="password"
+                                                    id="password"
+                                                    onChange={ handleFieldChange }
+                                                />
+                                            </Form.Field>
+                                            <Divider hidden/>
+                                            <Button type="submit" primary>
+                                                { t("common:save") }
+                                            </Button>
+                                            <Button
+                                                className="link-button"
+                                                onClick={ () => hideFormEditView("addAccountForm") }
+                                            >
+                                                { t("common:cancel") }
+                                            </Button>
+                                        </Form>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </EditSection>
+                    )
+                    :
+                    (
+                        <List divided verticalAlign="middle" className="main-content-inner">
+                            {
+                                associations.map((association) => (
+                                    <List.Item className="inner-list-item">
+                                        <Grid padded>
+                                            <Grid.Row columns={ 2 }>
+                                                <Grid.Column width={ 11 } className="first-column">
+                                                    <UserImagePlaceHolder size="mini" floated="left"/>
+                                                    <List.Header>{ association.userId }</List.Header>
+                                                    <List.Description>
+                                                        <p style={ { fontSize: "11px" } }>
+                                                            { association.username }
+                                                        </p>
+                                                    </List.Description>
+                                                </Grid.Column>
+                                                <Grid.Column width={ 5 } className="last-column">
+                                                    <List.Content floated="right">
+                                                        <Icon
+                                                            link
+                                                            disabled
+                                                            className="list-icon"
+                                                            size="large"
+                                                            color="red"
+                                                            name="trash alternate outline"
+                                                        />
+                                                        <Button
+                                                            basic
+                                                            size="tiny"
+                                                        >
+                                                            { t("common:switch") }
+                                                        </Button>
+                                                    </List.Content>
+                                                </Grid.Column>
+                                            </Grid.Row>
                                         </Grid>
                                     </List.Item>
-                                </>);
-                            })
+                                ))
                             }
                         </List>
-                    </>);
-                } else {
-                    return (
-                        <>
-                            <Segment placeholder>
-                                <Header icon>
-                                    <Icon name="search"/>
-                                    {t("views:securityQuestions.noConfiguration")}
-                                </Header>
-                            </Segment>
-                        </>
-                    );
-                }
+                    )
             }
-        };
-        return (
-            <SettingsSection header="Associated Accounts" description="Manage and Update Your Associated Accounts"
-                             isEdit={showAddView} actionTitle="Add" onClick={this.handleShowView}>
-                <Transition visible={this.state.updateStatus} duration={500}>
-                    <NotificationComponent {...other} onDismiss={this.handleDismiss} size="small"
-                                           description={description} message={message}
-                    />
-                </Transition>
-                <Divider hidden/>
-                {addAccountForm()}
-            </SettingsSection>
-        );
-    }
-}
-
-export const AssociatedAccountsPage = withTranslation()(AssociatedAccountsPageComponent);
+        </SettingsSection>
+    );
+};

@@ -4,7 +4,7 @@
         "subTitle": "Manage and configure your user settings to customize the Identity Server experience",
         "sections": {
             "personalInfo": {
-                "header": "Personal Infomation",
+                "header": "Personal Information",
                 "description": "Manage basic information, like your name and photo, that you use on. And account associations etc ..."
             },
             "accountSecurity": {
@@ -204,16 +204,82 @@
     },
     "userProfile": {
         "title": "Profile",
-        "subTitle": "Manage information about you, your sub profiles and your account in general.",
+        "subTitle": "Manage and update your basic profile information.",
         "personalInfoTitle": "Personal Information",
-        "inputFields": {
-            "name": "Name",
-            "firstName": "First Name",
-            "lastName": "Last Name",
-            "email": "Email",
-            "username": "Username",
-            "organisation": "Organisation",
-            "mobile": "Mobile Number",
+        "forms": {
+            "nameChangeForm": {
+                "inputs": {
+                    "firstName": {
+                        "label": "First Name",
+                        "placeholder": "Enter the first name",
+                        "validations": {
+                            "empty": "First name is a required field"
+                        }
+                    },
+                    "lastName": {
+                        "label": "Last Name",
+                        "placeholder": "Enter the last name",
+                        "validations": {
+                            "empty": "Last name is a required field"
+                        }
+                    }
+                }
+            },
+            "emailChangeForm": {
+                "inputs": {
+                    "email": {
+                        "label": "Email",
+                        "placeholder": "Enter your email address",
+                        "validations": {
+                            "empty": "Email address is a required field"
+                        }
+                    }
+                }
+            },
+            "organizationChangeForm": {
+                "inputs": {
+                    "organization": {
+                        "label": "Organization",
+                        "placeholder": "Enter your organization",
+                        "validations": {
+                            "empty": "Organization is a required field"
+                        }
+                    }
+                }
+            },
+            "mobileChangeForm": {
+                "inputs": {
+                    "mobile": {
+                        "label": "Mobile number",
+                        "placeholder": "Enter your mobile number",
+                        "validations": {
+                            "empty": "Mobile number is a required field"
+                        }
+                    }
+                }
+            }
+        },
+        "fields": {
+            "name": {
+                "label": "Name",
+                "default": "Add name"
+            },
+            "email": {
+                "label": "Email",
+                "default": "Add email"
+            },
+            "username": {
+                "label": "Username",
+                "default": "Add username"
+            },
+            "organization": {
+                "label": "Organization",
+                "default": "Add organization"
+            },
+            "mobile": {
+                "label": "Mobile number",
+                "default": "Add mobile number"
+            },
             "emptyField": "Please fill out this field"
         },
         "personalDetails": {
@@ -250,44 +316,56 @@
                     "description": "Error occurred while updating the user profile details"
                 }
             }
+        }
+    },
+    "associatedAccounts": {
+        "title": "Associated Accounts",
+        "subTitle": "Manage all your associated accounts in one place.",
+        "actionTitle": "Add associated account",
+        "accountTypes": {
+            "local": {
+                "label": "Add local user account"
+            }
         },
-        "associatedAccounts": {
-            "title": "Associated Accounts",
-            "subTitle": "Manage all your associated accounts in one place.",
-            "inputFields": {
-                "type": "Account Type",
-                "username": "Username",
-                "password": "Password"
-            },
-            "dropDown": {
-                "federated": "Federated",
-                "local": "Local"
-            },
-            "buttons": {
-                "addBtn": "Add Account",
-                "removeBtn": "Remove",
-                "switchBtn": "Switch"
-            },
-            "notification": {
-                "getAssociation": {
-                    "success": {
-                        "message": "Associated user account retrieved successfully.",
-                        "description": "The required user profile details are retrieved successfully."
+        "forms": {
+            "addAccountForm": {
+                "inputs": {
+                    "username": {
+                        "label": "Username",
+                        "placeholder": "Enter the username",
+                        "validations": {
+                            "empty": "Username is a required field"
+                        }
                     },
-                    "error": {
-                        "message": "An error occurred !!!",
-                        "description": "Error occurred while retrieving the associated user accounts."
+                    "password": {
+                        "label": "Password",
+                        "placeholder": "Enter the password",
+                        "validations": {
+                            "empty": "Password is a required field"
+                        }
                     }
+                }
+            }
+        },
+        "notification": {
+            "getAssociation": {
+                "success": {
+                    "message": "Associated user account retrieved successfully.",
+                    "description": "The required user profile details are retrieved successfully."
                 },
-                "addAssociation": {
-                    "success": {
-                        "message": "Associated user account added successfully.",
-                        "description": "The required Associated user account added successfully."
-                    },
-                    "error": {
-                        "message": "An error occurred !!!",
-                        "description": "Error occurred while adding the user account association"
-                    }
+                "error": {
+                    "message": "An error occurred !!!",
+                    "description": "Error occurred while retrieving the associated user accounts."
+                }
+            },
+            "addAssociation": {
+                "success": {
+                    "message": "Associated user account added successfully.",
+                    "description": "The required Associated user account added successfully."
+                },
+                "error": {
+                    "message": "An error occurred !!!",
+                    "description": "Error occurred while adding the user account association"
                 }
             }
         }

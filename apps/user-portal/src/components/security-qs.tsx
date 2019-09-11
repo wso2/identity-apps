@@ -256,7 +256,7 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
                     <Button id="lastName" primary onClick={this.handleSave} floated="left">
                         {t("common:save")}
                     </Button>
-                    <Button id="lastNameEdit" default floated="left" onClick={this.handleEdit}>
+                    <Button className="link-button" id="lastNameEdit" default floated="left" onClick={this.handleEdit}>
                         {t("common:cancel")}
                     </Button>
                 </div>);
@@ -361,7 +361,7 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
                     header={t("views:securityQuestions.title")}
                     description={t("views:securityQuestions.subTitle")}
                     isEdit={this.state.isEdit}
-                    onClick={this.handleEdit}
+                    onActionClick={this.handleEdit}
                 >
                 <Transition visible={this.state.updateStatus} duration={500}>
                     <NotificationComponent {...other} onDismiss={this.handleDismiss} size="small"

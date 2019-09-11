@@ -103,7 +103,7 @@ body {
         }
     }
     
-    .icon-wrapper {
+    .theme-icon {
         background-color: @iconWrapperBgColor;
         overflow: hidden;
         display: flex;
@@ -131,13 +131,6 @@ body {
         }
         &.rounded {
             border-radius: @defaultBorderRadius;
-        }
-        &.default {
-            .icon {
-                path {
-                    fill: @iconDefaultBgColor;
-                }
-            }
         }
         &.micro {
             .icon {
@@ -233,8 +226,15 @@ body {
                 height: auto;
             }
             &.square {
-                svg.icon {
+                .icon {
                     height: @iconMassive;
+                }
+            }
+        }
+        &.default {
+            svg.icon {
+                path {
+                    fill: @iconDefaultBgColor;
                 }
             }
         }
@@ -245,6 +245,13 @@ body {
                 }
                 .secondary {
                     fill: @iconWrapperTwoToneSecondaryColor;
+                }
+            }
+        }
+        &.colored {
+            svg.icon {
+                .primary {
+                    fill: @iconWrapperColoredPrimaryColor;
                 }
             }
         }

@@ -1,4 +1,4 @@
-/**
+/*!
  * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -17,26 +17,9 @@
  *
  */
 
-/*-------------------
-     Body Styles
---------------------*/
-
-@bodyTopBorderWidth: 3px;
-@bodyTopBorderColor: @primaryColor;
-@bodyTopBorderStyle: solid;
-
-/*-------------------
-    Icon Component
---------------------*/
-
-@iconWrapperBgColor: @lightGray;
-@iconWrapperBorderColor: @darkGray;
-@iconWrapperBorderWidth: 1px;
-@iconWrapperPadding: 5px;
-@iconWrapperVeryPadding: 10px;
-@iconDefaultBgColor: @nobel;
-@iconWrapperTwoTonePrimaryColor: @primaryColor;
-@iconWrapperTwoToneSecondaryColor: @nobel;
-@iconWrapperColoredPrimaryColor: @primaryColor;
-@iconWrapperSpacingRight: 8px;
-@iconWrapperSpacingLeft: 8px;
+i.icon {
+    &.list-icon {
+        font-size: 1em;
+        margin-right: 8px;
+    }
+}

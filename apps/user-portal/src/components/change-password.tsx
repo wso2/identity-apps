@@ -376,7 +376,12 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
         const { visible, message, description, otherProps } = notification;
 
         const confirmationModal = (
-            <Modal size="mini" open={showConfirmationModal} onClose={this.handleConfirmationModalClose}>
+            <Modal
+                size="mini"
+                open={showConfirmationModal}
+                onClose={this.handleConfirmationModalClose}
+                dimmer="blurring"
+            >
                 <Modal.Content>
                     <Container textAlign="center">
                         <h3>{t("views:changePassword.modals.confirmationModal.heading")}</h3>
@@ -385,7 +390,8 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
                     <p>{t("views:changePassword.modals.confirmationModal.message")}</p>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button secondary onClick={this.handleConfirmationModalClose}>
+                    <Button
+                        className="link-button" secondary onClick={this.handleConfirmationModalClose}>
                         {t("common:cancel")}
                     </Button>
                     <Button primary onClick={this.changePassword}>

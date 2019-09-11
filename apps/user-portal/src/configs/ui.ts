@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { DefaultAppIcon, DummyUser, HomeTileIcons, Logo, MFAIconSet, SidePanelIconSet } from "@wso2is/theme";
+import { DefaultAppIcon, DummyUser, HomeTileIcons, Logo, MFAIconSet, SettigsSectionIconSet, SidePanelIconSet } from "@wso2is/theme";
 
 type ImageType = string;
 type TitleTextType = string;
@@ -36,6 +36,7 @@ export const UserImage: ImageType = DummyUser;
 export const HomeTileIconImages = HomeTileIcons;
 export const GenericAppIcon = DefaultAppIcon;
 export const SidePanelIcons = SidePanelIconSet;
+export const SettingsSectionIcons = SettigsSectionIconSet;
 export const MFAIcons = MFAIconSet;
 
 export const TitleText: TitleTextType = "Identity Server";

@@ -16,27 +16,3 @@
  * under the License.
  *
  */
-
-/*-------------------
-     Body Styles
---------------------*/
-
-@bodyTopBorderWidth: 3px;
-@bodyTopBorderColor: @primaryColor;
-@bodyTopBorderStyle: solid;
-
-/*-------------------
-    Icon Component
---------------------*/
-
-@iconWrapperBgColor: @lightGray;
-@iconWrapperBorderColor: @darkGray;
-@iconWrapperBorderWidth: 1px;
-@iconWrapperPadding: 5px;
-@iconWrapperVeryPadding: 10px;
-@iconDefaultBgColor: @nobel;
-@iconWrapperTwoTonePrimaryColor: @primaryColor;
-@iconWrapperTwoToneSecondaryColor: @nobel;
-@iconWrapperColoredPrimaryColor: @primaryColor;
-@iconWrapperSpacingRight: 8px;
-@iconWrapperSpacingLeft: 8px;
