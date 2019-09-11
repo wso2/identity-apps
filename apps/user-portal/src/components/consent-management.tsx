@@ -53,6 +53,11 @@ import {
 import { ThemeIcon } from "./icon";
 import { SettingsSection } from "./settings-section";
 
+// API returns the SP description for consented apps. The following
+// is returned for the user portal and will be used to hide the user
+// portal from the list of consented apps.
+const USER_PORTAL_IDENTIFIER = "This is the user portal application.";
+
 /**
  * Consent management component.
  *
@@ -75,9 +80,6 @@ export const ConsentManagementComponent: FunctionComponent<{}> = (): JSX.Element
 
     const { t } = useTranslation();
 
-    /**
-     * componentDidMount lifecycle method
-     */
     useEffect(() => {
         // Set the default consent state which is `ACTIVE`.
         dispatch(setConsentedAppsState(ConsentState.ACTIVE));
@@ -349,7 +351,7 @@ export const ConsentManagementComponent: FunctionComponent<{}> = (): JSX.Element
             dimmer="blurring"
         >
             <Modal.Content>
-                <Container textAlign="center">
+                <Container>
                     <h3>
                         {
                             t(
@@ -381,7 +383,8 @@ export const ConsentManagementComponent: FunctionComponent<{}> = (): JSX.Element
                 description={ t("views:consentManagement.subTitle") }
                 actionTitle={ t("views:consentManagement.actionTitles.empty") }
                 actionDisabled={ true }
-                showAction={ !isFetchConsentedAppsRequestLoading && (consentedApps && consentedApps.length === 0) }
+                // User portal is also returned in the payload. Hence (consentedApps.length > 1) is used.
+                showAction={ !(consentedApps && consentedApps.length && consentedApps.length > 1) }
             >
                 <List divided verticalAlign="middle" className="main-content-inner">
                     {
@@ -389,6 +392,10 @@ export const ConsentManagementComponent: FunctionComponent<{}> = (): JSX.Element
                             createConsentedAppsListPlaceholder()
                             :
                             consentedApps && consentedApps.map((consent: ConsentInterface) => {
+                                // Hide the user portal to avoid suicides.
+                                if (consent.spDisplayName === USER_PORTAL_IDENTIFIER) {
+                                    return;
+                                }
                                 return (
                                     <List.Item className="inner-list-item" key={ consent.consentReceiptID }>
                                         <Grid padded>
@@ -397,12 +404,11 @@ export const ConsentManagementComponent: FunctionComponent<{}> = (): JSX.Element
                                                     <List.Content verticalAlign="middle">
                                                         <ThemeIcon
                                                             icon={ GenericAppIcon }
-                                                            size="micro"
+                                                            size="mini"
                                                             bordered
                                                             defaultIcon
                                                             relaxed
                                                             rounded
-                                                            transparent
                                                             spaced="right"
                                                             square
                                                             floated="left"
