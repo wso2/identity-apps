@@ -563,7 +563,6 @@ class UserSessionsComponentInner extends React.Component<any, any> {
                 <SettingsSection
                     header={ t("views:userSessions.title") }
                     description={ t("views:userSessions.description") }
-                    isEdit={false}
                 >
                 <Divider hidden/>
                 <Grid>

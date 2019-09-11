@@ -194,7 +194,7 @@ export const AssociatedAccountsComponent: FunctionComponent<AssociatedAccountsPr
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
-            isEdit={ editingForm.addAccountForm }
+            showAction={ !editingForm.addAccountForm }
             actionTitle={ t("views:associatedAccounts.actionTitle") }
             onActionClick={ () => showFormEditView("addAccountForm") }
         >
@@ -253,8 +253,8 @@ export const AssociatedAccountsComponent: FunctionComponent<AssociatedAccountsPr
                     (
                         <List divided verticalAlign="middle" className="main-content-inner">
                             {
-                                associations.map((association) => (
-                                    <List.Item className="inner-list-item">
+                                associations.map((association, index) => (
+                                    <List.Item className="inner-list-item" key={ index }>
                                         <Grid padded>
                                             <Grid.Row columns={ 2 }>
                                                 <Grid.Column width={ 11 } className="first-column">
