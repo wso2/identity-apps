@@ -18,10 +18,10 @@
 
 import * as React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
-import { Button, Container, Divider, Form, Grid, Header, Icon, Modal } from "semantic-ui-react";
+import { Button, Container, Form, Grid, Icon, Modal } from "semantic-ui-react";
 import { updatePassword } from "../actions";
+import { NotificationActionPayload } from "../models/notifications";
 import { EditSection } from "./edit-section";
-import { NotificationComponent } from "./notification";
 import { SettingsSection } from "./settings-section";
 
 /**
@@ -31,23 +31,12 @@ interface ComponentStateInterface {
     currentPassword: string;
     newPassword: string;
     confirmPassword: string;
-    notification: NotifcationStateInterface;
     touched: InputTouchedStateInterface;
     errors: InputErrorStateInterface;
     hasErrors: boolean;
     isChange: boolean;
     types: InputTypesStateInterface;
     showConfirmationModal: boolean;
-}
-
-/**
- * Interface to map the notification state
- */
-interface NotifcationStateInterface {
-    visible: boolean;
-    message: string;
-    description: string;
-    otherProps: object;
 }
 
 /**
@@ -77,25 +66,24 @@ interface InputTypesStateInterface {
     confirmPassword: string;
 }
 
+interface ComponentProps extends WithTranslation {
+    onNotificationFired: (notification: NotificationActionPayload) => void;
+}
+
+// TODO: Refactor with Hooks.
 /**
  * This is the Change Password component of the User Portal
  */
-class ChangePasswordComponentInner extends React.Component<WithTranslation, ComponentStateInterface> {
+class ChangePasswordComponentInner extends React.Component<ComponentProps, ComponentStateInterface> {
     public state = {
         confirmPassword: "",
         currentPassword: "",
-        errors: {currentPassword: "", newPassword: "", confirmPassword: ""},
+        errors: { currentPassword: "", newPassword: "", confirmPassword: "" },
         hasErrors: true,
         isChange: false,
         newPassword: "",
-        notification: {
-            description: "",
-            message: "",
-            otherProps: {},
-            visible: false
-        },
         showConfirmationModal: false,
-        touched: {currentPassword: false, newPassword: false, confirmPassword: false},
+        touched: { currentPassword: false, newPassword: false, confirmPassword: false },
         types: {
             confirmPassword: "password",
             currentPassword: "password",
@@ -111,7 +99,7 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
      * @param {Readonly<S>} prevState previous state
      */
     public componentDidUpdate(prevProps: WithTranslation, prevState: ComponentStateInterface) {
-        const {errors} = this.state;
+        const { errors } = this.state;
         if (prevState && prevState.errors !== errors) {
             this.setState({
                 hasErrors: !!(errors.currentPassword || errors.newPassword || errors.confirmPassword)
@@ -125,9 +113,9 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
      * @param {React.ChangeEvent<HTMLInputElement>} e
      */
     public handleInputBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {touched} = this.state;
-        const {name} = e.target;
-        this.setState({touched: {...touched, [name]: true}}, () => {
+        const { touched } = this.state;
+        const { name } = e.target;
+        this.setState({ touched: { ...touched, [name]: true } }, () => {
             this.validate();
         });
     }
@@ -141,11 +129,11 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
      */
     public handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement>,
-        {name, value}: { name: string; value: string }
+        { name, value }: { name: string; value: string }
     ) => {
         // `as Pick<State, keyof State>` was used to silent the linter warning
         this.setState(
-            {[name]: value} as Pick<ComponentStateInterface, "currentPassword" | "newPassword" | "confirmPassword">,
+            { [name]: value } as Pick<ComponentStateInterface, "currentPassword" | "newPassword" | "confirmPassword">,
             () => this.validate()
         );
     }
@@ -154,7 +142,7 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
      * Handles the form submit.
      */
     public handleSubmit = () => {
-        const {hasErrors, touched} = this.state;
+        const { hasErrors, touched } = this.state;
 
         // The touched state of the inputs are set to true when submitting the form.
         this.setState({
@@ -175,15 +163,16 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
         }
 
         // Show the confirmation modal
-        this.setState({showConfirmationModal: true});
+        this.setState({ showConfirmationModal: true });
     }
 
     /**
      * Calls the API and updates the user password.
      */
     public changePassword = () => {
-        const {currentPassword, newPassword, notification} = this.state;
-        const {t} = this.props;
+        const { currentPassword, newPassword } = this.state;
+        const { onNotificationFired } = this.props;
+        const { t } = this.props;
 
         updatePassword(currentPassword, newPassword)
             .then((response) => {
@@ -192,20 +181,20 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
                         confirmPassword: "",
                         currentPassword: "",
                         hasErrors: true,
+                        isChange: false,
                         newPassword: "",
-                        notification: {
-                            ...notification,
-                            description: t(
-                                "views:changePassword.forms.passwordResetForm.validations.submitSuccess.description"
-                            ),
-                            message: t(
-                                "views:changePassword.forms.passwordResetForm.validations.submitSuccess.message"
-                            ),
-                            otherProps: {
-                                positive: true
-                            },
-                            visible: true
-                        }
+                    });
+                    onNotificationFired({
+                        description: t(
+                            "views:changePassword.forms.passwordResetForm.validations.submitSuccess.description"
+                        ),
+                        message: t(
+                            "views:changePassword.forms.passwordResetForm.validations.submitSuccess.message"
+                        ),
+                        otherProps: {
+                            positive: true
+                        },
+                        visible: true
                     });
                 }
             })
@@ -214,58 +203,49 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
                 // As a temporary solution, a check to see if a response
                 // is available has be used.
                 if (!error.response || error.response.status === 401) {
-                    this.setState({
-                        notification: {
-                            ...notification,
-                            description: t(
-                                "views:changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
-                                "description"
-                            ),
-                            message: t(
-                                "views:changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
-                                "message"
-                            ),
-                            otherProps: {
-                                negative: true
-                            },
-                            visible: true
-                        }
+                    onNotificationFired({
+                        description: t(
+                            "views:changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
+                            "description"
+                        ),
+                        message: t(
+                            "views:changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
+                            "message"
+                        ),
+                        otherProps: {
+                            negative: true
+                        },
+                        visible: true
                     });
                 } else if (error.response && error.response.data && error.response.data.detail) {
-                    this.setState({
-                        notification: {
-                            ...notification,
-                            description: t(
-                                "views:changePassword.forms.passwordResetForm.validations.submitError.description",
-                                {description: error.response.data.detail}
-                            ),
-                            message: t("views:changePassword.forms.passwordResetForm.validations.submitError.message"),
-                            otherProps: {
-                                negative: true
-                            },
-                            visible: true
-                        }
+                    onNotificationFired({
+                        description: t(
+                            "views:changePassword.forms.passwordResetForm.validations.submitError.description",
+                            { description: error.response.data.detail }
+                        ),
+                        message: t("views:changePassword.forms.passwordResetForm.validations.submitError.message"),
+                        otherProps: {
+                            negative: true
+                        },
+                        visible: true
                     });
                 } else {
                     // Generic error message
-                    this.setState({
-                        notification: {
-                            ...notification,
-                            description: t(
-                                "views:changePassword.forms.passwordResetForm.validations.genericError.description"
-                            ),
-                            message: t("views:changePassword.forms.passwordResetForm.validations.genericError.message"),
-                            otherProps: {
-                                negative: true
-                            },
-                            visible: true
-                        }
+                    onNotificationFired({
+                        description: t(
+                            "views:changePassword.forms.passwordResetForm.validations.genericError.description"
+                        ),
+                        message: t("views:changePassword.forms.passwordResetForm.validations.genericError.message"),
+                        otherProps: {
+                            negative: true
+                        },
+                        visible: true
                     });
                 }
             });
 
         // Close the modal
-        this.setState({showConfirmationModal: false});
+        this.setState({ showConfirmationModal: false });
     }
 
     /**
@@ -273,10 +253,10 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
      * message for the input field.
      */
     public validate = () => {
-        const {currentPassword, newPassword, confirmPassword, errors, touched} = this.state;
-        const {t} = this.props;
+        const { currentPassword, newPassword, confirmPassword, errors, touched } = this.state;
+        const { t } = this.props;
 
-        const formErrors = {currentPassword: "", newPassword: "", confirmPassword: ""};
+        const formErrors = { currentPassword: "", newPassword: "", confirmPassword: "" };
 
         if (currentPassword === null || currentPassword === "") {
             formErrors.currentPassword = t(
@@ -314,25 +294,12 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
     }
 
     /**
-     * Handles the notification bar close button click.
-     */
-    public handleNotificationDismiss = () => {
-        const {notification} = this.state;
-        this.setState({
-            notification: {
-                ...notification,
-                visible: false
-            }
-        });
-    }
-
-    /**
      * Handles the password field eye icon click. Toggles the
      * input field type between `password` and `text`.
      * @param name name attribute registered in the input field
      */
     public toggleInputType = (name: string) => {
-        const {types} = this.state;
+        const { types } = this.state;
 
         let type = "password";
 
@@ -349,15 +316,15 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
     }
 
     public handleConfirmationModalClose = (): void => {
-        this.setState({showConfirmationModal: false});
+        this.setState({ showConfirmationModal: false });
     }
 
     public handleShowChangeView = (): void => {
-        this.setState({isChange: true});
+        this.setState({ isChange: true });
     }
 
     public handleCancelChangeView = (): void => {
-        this.setState({isChange: false});
+        this.setState({ isChange: false });
     }
 
     public render() {
@@ -366,36 +333,34 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
             newPassword,
             confirmPassword,
             isChange,
-            notification,
             errors,
             touched,
             types,
             showConfirmationModal
         } = this.state;
-        const {t} = this.props;
-        const {visible, message, description, otherProps} = notification;
+        const { t } = this.props;
 
         const confirmationModal = (
             <Modal
                 size="mini"
-                open={showConfirmationModal}
-                onClose={this.handleConfirmationModalClose}
+                open={ showConfirmationModal }
+                onClose={ this.handleConfirmationModalClose }
                 dimmer="blurring"
             >
                 <Modal.Content>
-                    <Container textAlign="center">
-                        <h3>{t("views:changePassword.modals.confirmationModal.heading")}</h3>
+                    <Container>
+                        <h3>{ t("views:changePassword.modals.confirmationModal.heading") }</h3>
                     </Container>
                     <br/>
-                    <p>{t("views:changePassword.modals.confirmationModal.message")}</p>
+                    <p>{ t("views:changePassword.modals.confirmationModal.message") }</p>
                 </Modal.Content>
                 <Modal.Actions>
                     <Button
-                        className="link-button" onClick={this.handleConfirmationModalClose}>
-                        {t("common:cancel")}
+                        className="link-button" onClick={ this.handleConfirmationModalClose }>
+                        { t("common:cancel") }
                     </Button>
-                    <Button primary onClick={this.changePassword}>
-                        {t("common:continue")}
+                    <Button primary onClick={ this.changePassword }>
+                        { t("common:continue") }
                     </Button>
                 </Modal.Actions>
             </Modal>
@@ -407,10 +372,10 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
 
                 (
                     <EditSection>
-                        <Form onSubmit={this.handleSubmit}>
+                        <Form onSubmit={ this.handleSubmit }>
                             <Grid>
-                                <Grid.Row columns={1}>
-                                    <Grid.Column mobile={16} tablet={16} computer={9}>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 9 }>
                                         <Form.Input
                                             name="currentPassword"
                                             label={
@@ -421,25 +386,25 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
                                                 t("views:changePassword.forms.passwordResetForm.inputs." +
                                                     "currentPassword.placeholder")
                                             }
-                                            type={types.currentPassword}
+                                            type={ types.currentPassword }
                                             icon={
                                                 types.currentPassword === "password" ? (
                                                     <Icon
                                                         name="eye"
                                                         link
-                                                        onClick={() => this.toggleInputType("currentPassword")}
+                                                        onClick={ () => this.toggleInputType("currentPassword") }
                                                     />
                                                 ) : (
                                                     <Icon
                                                         name="eye slash"
                                                         link
-                                                        onClick={() => this.toggleInputType("currentPassword")}
+                                                        onClick={ () => this.toggleInputType("currentPassword") }
                                                     />
                                                 )
                                             }
-                                            value={currentPassword}
-                                            onChange={this.handleInputChange}
-                                            onBlur={this.handleInputBlur}
+                                            value={ currentPassword }
+                                            onChange={ this.handleInputChange }
+                                            onBlur={ this.handleInputBlur }
                                             error={
                                                 touched.currentPassword && errors.currentPassword
                                                     ? errors.currentPassword
@@ -449,7 +414,7 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
                                     </Grid.Column>
                                 </Grid.Row>
                                 <Grid.Row>
-                                    <Grid.Column mobile={16} tablet={16} computer={9}>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 9 }>
                                         <Form.Input
                                             name="newPassword"
                                             label={
@@ -460,32 +425,32 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
                                                 t("views:changePassword.forms.passwordResetForm.inputs." +
                                                     "newPassword.placeholder")
                                             }
-                                            type={types.newPassword}
+                                            type={ types.newPassword }
                                             icon={
                                                 types.newPassword === "password" ? (
                                                     <Icon
                                                         name="eye"
                                                         link
-                                                        onClick={() => this.toggleInputType("newPassword")}
+                                                        onClick={ () => this.toggleInputType("newPassword") }
                                                     />
                                                 ) : (
                                                     <Icon
                                                         name="eye slash"
                                                         link
-                                                        onClick={() => this.toggleInputType("newPassword")}
+                                                        onClick={ () => this.toggleInputType("newPassword") }
                                                     />
                                                 )
                                             }
-                                            value={newPassword}
-                                            onChange={this.handleInputChange}
-                                            onBlur={this.handleInputBlur}
-                                            error={touched.newPassword && errors.newPassword ?
-                                                errors.newPassword : false}
+                                            value={ newPassword }
+                                            onChange={ this.handleInputChange }
+                                            onBlur={ this.handleInputBlur }
+                                            error={ touched.newPassword && errors.newPassword ?
+                                                errors.newPassword : false }
                                         />
                                     </Grid.Column>
                                 </Grid.Row>
                                 <Grid.Row>
-                                    <Grid.Column mobile={16} tablet={16} computer={9}>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 9 }>
                                         <Form.Input
                                             name="confirmPassword"
                                             label={
@@ -496,25 +461,25 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
                                                 t("views:changePassword.forms.passwordResetForm.inputs." +
                                                     "confirmPassword.placeholder")
                                             }
-                                            type={types.confirmPassword}
+                                            type={ types.confirmPassword }
                                             icon={
                                                 types.confirmPassword === "password" ? (
                                                     <Icon
                                                         name="eye"
                                                         link
-                                                        onClick={() => this.toggleInputType("confirmPassword")}
+                                                        onClick={ () => this.toggleInputType("confirmPassword") }
                                                     />
                                                 ) : (
                                                     <Icon
                                                         name="eye slash"
                                                         link
-                                                        onClick={() => this.toggleInputType("confirmPassword")}
+                                                        onClick={ () => this.toggleInputType("confirmPassword") }
                                                     />
                                                 )
                                             }
-                                            value={confirmPassword}
-                                            onChange={this.handleInputChange}
-                                            onBlur={this.handleInputBlur}
+                                            value={ confirmPassword }
+                                            onChange={ this.handleInputChange }
+                                            onBlur={ this.handleInputBlur }
                                             error={
                                                 touched.confirmPassword && errors.confirmPassword
                                                     ? errors.confirmPassword
@@ -526,10 +491,10 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
                             </Grid>
                             <br/>
                             <Button primary type="submit" size="small">
-                                {t("common:submit")}
+                                { t("common:submit") }
                             </Button>
-                            <Button className="link-button" onClick={this.handleCancelChangeView} size="small">
-                                {t("common:cancel")}
+                            <Button className="link-button" onClick={ this.handleCancelChangeView } size="small">
+                                { t("common:cancel") }
                             </Button>
                         </Form>
                     </EditSection>
@@ -538,26 +503,16 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
         );
 
         return (
-            <>
-                <SettingsSection
-                    header={t("views:changePassword.title")}
-                    description={t("views:changePassword.subTitle")}
-                    actionTitle="Change"
-                    onActionClick={this.handleShowChangeView}
-                    isEdit={isChange}
-                >
-                    {visible ? (
-                        <NotificationComponent
-                            message={message}
-                            description={description}
-                            onDismiss={this.handleNotificationDismiss}
-                            {...otherProps}
-                        />
-                    ) : null}
-                        {showChangePasswordView}
-                        {confirmationModal}
-                </SettingsSection>
-            </>
+            <SettingsSection
+                header={ t("views:changePassword.title") }
+                description={ t("views:changePassword.subTitle") }
+                actionTitle={ t("views:changePassword.actionTitles.change") }
+                onActionClick={ this.handleShowChangeView }
+                showAction={ !isChange }
+            >
+                { showChangePasswordView }
+                { confirmationModal }
+            </SettingsSection>
         );
     }
 }
