@@ -16,22 +16,20 @@
  * under the License.
  */
 
-export * from "./auth-context";
-export * from "./associated-accounts";
-export * from "./basic-details";
-export * from "./page-header";
-export * from "./change-password";
-export * from "./multi-factor";
-export * from "./multi-factor-fido";
-export * from "./multi-factor-smsotp";
-export * from "./multi-factor-totp";
-export * from "./profile-export";
-export * from "./header";
-export * from "./notification";
-export * from "./protected-route";
-export * from "./security-qs";
-export * from "./ui";
-export * from "./user-sessions";
-export * from "./icon";
-export * from "./consent-management";
-export * from "./side-panel";
+import * as React from "react";
+import { withTranslation, WithTranslation } from "react-i18next";
+import { Divider, List } from "semantic-ui-react";
+
+export const Totp: React.FunctionComponent<any> = (props: WithTranslation): JSX.Element => {
+    return (
+        <List.Item>
+            <List.Content>
+                <List.Header>TOTP</List.Header>
+                <List.Description>
+                    You'll receive a text message containing the verification code to your mobile number
+                </List.Description>
+                <Divider hidden/>
+            </List.Content>
+        </List.Item>
+    );
+}

@@ -16,11 +16,12 @@
  * under the License.
  */
 
-import * as React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, Grid } from "semantic-ui-react";
-import { ChangePasswordComponent } from "../components";
+import { Grid } from "semantic-ui-react";
+import { ChangePasswordComponent, MultiFactor, NotificationComponent } from "../components";
 import { InnerPageLayout } from "../layouts";
+import { createEmptyNotificationActionPayload, NotificationActionPayload } from "../models/notifications";
 
 /**
  * Account security page.
@@ -29,16 +30,42 @@ import { InnerPageLayout } from "../layouts";
  */
 export const AccountSecurityPage = (): JSX.Element => {
     const { t } = useTranslation();
+    const [ notification, setNotification ] = useState(createEmptyNotificationActionPayload());
+
+    const handleNotification = (firedNotification: NotificationActionPayload) => {
+        setNotification(firedNotification);
+    };
+
+    const handleNotificationDismiss = () => {
+        setNotification({
+            ...notification,
+            visible: false
+        });
+    };
+
     return (
         <InnerPageLayout
             pageTitle={ t("views:securityPage.title") }
             pageDescription={ t("views:securityPage.subTitle") }
         >
-            <Divider hidden />
+            {
+                notification && notification.visible
+                    ? (<NotificationComponent
+                        message={ notification.message }
+                        description={ notification.description }
+                        onDismiss={ handleNotificationDismiss }
+                        { ...notification.otherProps }/>)
+                    : null
+            }
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
                         <ChangePasswordComponent />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column width={ 16 }>
+                        <MultiFactor onNotificationFired={ handleNotification }/>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

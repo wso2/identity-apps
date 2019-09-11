@@ -39,6 +39,10 @@ export const SidePanelIconSet = {
     session: require("../lib/assets/images/icons/monitor-icon.svg"),
     consent: require("../lib/assets/images/icons/tick-circle-icon.svg"),
 };
+export const MFAIconSet = {
+    sms: require("../lib/assets/images/icons/speech-bubble.svg"),
+    fido: require("../lib/assets/images/icons/fido-logo-black.png")
+};
 export const SettigsSectionIconSet = {
     associatedAccounts: require("../lib/assets/images/illustrations/associated-accounts.svg"),
     profileExport: require("../lib/assets/images/illustrations/profile-export.svg"),
