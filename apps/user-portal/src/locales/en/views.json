@@ -23,7 +23,19 @@
     },
     "securityPage": {
         "title": "Security",
-        "subTitle": "Update settings to make your account secure"
+        "subTitle": "Update settings to make your account secure",
+        "multiFactor": {
+            "title": "Multi Factor Authentication",
+            "subTitle": "View and Manage your multi factor authentication options",
+            "smsOtp": {
+                "title": "SMS OTP",
+                "description": "You'll receive a text message containing the verification code to your mobile number"
+            },
+            "fido": {
+                "title": "FIDO",
+                "description": "Authenticate yourself by connecting a FIDO key"
+            }
+        }
     },
     "accountsPage": {
         "title": "Accounts",
