@@ -273,10 +273,11 @@ export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
                                             onChange={ handleFieldChange }/>
                                     </Form.Field>
                                     <Divider hidden/>
-                                    <Button type="submit" primary>
+                                    <Button type="submit" primary size="small">
                                         { t("common:save") }
                                     </Button>
                                     <Button
+                                        size="small"
                                         className="link-button"
                                         onClick={ () => hideFormEditView("nameChangeForm") }
                                     >
@@ -350,10 +351,11 @@ export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
                                         />
                                     </Form.Field>
                                     <Divider hidden/>
-                                    <Button type="submit" primary>
+                                    <Button type="submit" primary size="small">
                                         { t("common:save") }
                                     </Button>
                                     <Button
+                                        size="small"
                                         className="link-button"
                                         onClick={ () => hideFormEditView("emailChangeForm") }
                                     >
@@ -432,10 +434,11 @@ export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
                                         />
                                     </Form.Field>
                                     <Divider hidden/>
-                                    <Button type="submit" primary>
+                                    <Button type="submit" primary size="small">
                                         { t("common:save") }
                                     </Button>
                                     <Button
+                                        size="small"
                                         className="link-button"
                                         onClick={ () => hideFormEditView("organizationChangeForm") }
                                     >
@@ -515,10 +518,11 @@ export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
                                         />
                                     </Form.Field>
                                     <Divider hidden/>
-                                    <Button type="submit" primary>
+                                    <Button type="submit" primary size="small">
                                         { t("common:save") }
                                     </Button>
                                     <Button
+                                        size="small"
                                         className="link-button"
                                         onClick={ () => hideFormEditView("mobileChangeForm") }
                                     >

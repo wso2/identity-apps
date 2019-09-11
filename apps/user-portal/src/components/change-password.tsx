@@ -391,7 +391,7 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
                 </Modal.Content>
                 <Modal.Actions>
                     <Button
-                        className="link-button" secondary onClick={this.handleConfirmationModalClose}>
+                        className="link-button" onClick={this.handleConfirmationModalClose}>
                         {t("common:cancel")}
                     </Button>
                     <Button primary onClick={this.changePassword}>
@@ -522,10 +522,10 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
                         </Grid.Row>
                     </Grid>
                     <br />
-                    <Button primary type="submit" size="mini">
+                    <Button primary type="submit" size="small">
                         {t("common:submit")}
                     </Button>
-                        <Button default onClick={this.handleCancelChangeView} size="mini">
+                        <Button className="link-button" onClick={this.handleCancelChangeView} size="small">
                             {t("common:cancel")}
                         </Button>
                 </Form>
@@ -540,7 +540,7 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
                     header={t("views:changePassword.title")}
                     description={t("views:changePassword.subTitle")}
                     actionTitle="Change"
-                    onClick={this.handleShowChangeView}
+                    onActionClick={this.handleShowChangeView}
                     isEdit={isChange}
                 >
                 {visible ? (

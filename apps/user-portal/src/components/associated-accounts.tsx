@@ -233,10 +233,11 @@ export const AssociatedAccountsComponent: React.FunctionComponent<AssociatedAcco
                                                 />
                                             </Form.Field>
                                             <Divider hidden/>
-                                            <Button type="submit" primary>
+                                            <Button type="submit" primary size="small">
                                                 { t("common:save") }
                                             </Button>
                                             <Button
+                                                size="small"
                                                 className="link-button"
                                                 onClick={ () => hideFormEditView("addAccountForm") }
                                             >
