@@ -72,7 +72,7 @@ const ROUTES: Route[] = [
         name: "Accounts",
         path: "/accounts",
         protected: true,
-        showOnSidePanel: true,
+        showOnSidePanel: false,
     },
     {
         component: SessionsPage,
@@ -80,7 +80,7 @@ const ROUTES: Route[] = [
         name: "Sessions",
         path: "/sessions",
         protected: true,
-        showOnSidePanel: true,
+        showOnSidePanel: false,
     },
     {
         component: ConsentManagementPage,
@@ -88,7 +88,7 @@ const ROUTES: Route[] = [
         name: "Consent Management",
         path: "/consent-management",
         protected: true,
-        showOnSidePanel: true,
+        showOnSidePanel: false,
     },
     {
         component: PageNotFound,
