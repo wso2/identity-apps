@@ -23,14 +23,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     Button,
     Container,
-    Divider,
     Grid,
-    Header,
     Icon,
     List,
     Modal,
     Placeholder,
-    Segment,
     SemanticICONS,
     Table
 } from "semantic-ui-react";
@@ -48,7 +45,8 @@ import {
 } from "../actions";
 import { AppState, UserAgentParser } from "../helpers";
 import { UserSession, UserSessions } from "../models/user-sessions";
-import { NotificationComponent } from "./notification";
+import { EditSection } from "./edit-section";
+import { ThemeIcon } from "./icon";
 import { SettingsSection } from "./settings-section";
 
 /**
@@ -64,19 +62,14 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
     const isRevokeAllUserSessionsModalVisible = useSelector(
         (state: AppState) => state.userSessions.isRevokeAllUserSessionsModalVisible
     );
-    const isRevokeAllUserSessionsRequestLoading = useSelector(
-        (state: AppState) => state.userSessions.isRevokeAllUserSessionsRequestLoading
-    );
     const isRevokeUserSessionModalVisible = useSelector(
         (state: AppState) => state.userSessions.isRevokeUserSessionModalVisible
     );
     const isRevokeUserSessionRequestLoading = useSelector(
         (state: AppState) => state.userSessions.isRevokeUserSessionRequestLoading
     );
-    const isSecurityWarningVisible = useSelector((state: AppState) => state.userSessions.isSecurityWarningVisible);
     const sessionsListActiveIndexes = useSelector((state: AppState) => state.userSessions.sessionsListActiveIndexes);
     const userSessions = useSelector((state: AppState) => state.userSessions.userSessions);
-    const userSessionsNotification = useSelector((state: AppState) => state.userSessions.userSessionsNotification);
 
     const dispatch = useDispatch();
 
@@ -93,19 +86,55 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
      * @return {JSX.Element[]}
      */
     const generateSessionList = (sessions: UserSessions): JSX.Element[] => {
+
+        if (!sessions || !sessions.sessions || !(sessions.sessions.length > 0)) {
+            return null;
+        }
+
         const userAgentParser = new UserAgentParser();
         const sessionList = [];
 
         for (const [index, session] of sessions.sessions.entries()) {
             userAgentParser.uaString = session.userAgent;
             sessionList.push(
-                <Table.Row key={ session.id }>
-                    <Table.Cell>
-                        <List relaxed="very">
-                            <List.Item>
+                <List.Item className="inner-list-item" key={ session.id }>
+                    <Grid padded>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column width={ 11 } className="first-column">
+                                <ThemeIcon
+                                    icon={
+                                        <Icon
+                                            name={ resolveDeviceType(userAgentParser.device.type) }
+                                            size="big"
+                                            color="grey"
+                                        />
+                                    }
+                                    transparent
+                                    spaced="right"
+                                    floated="left"
+                                />
+                                <List.Content>
+                                    <List.Header>{ session.ip }</List.Header>
+                                    <List.Description>
+                                        <p style={ { fontSize: "11px" } }>
+                                            {
+                                                t("views:userSessions.lastAccessed",
+                                                    {
+                                                        date: moment(
+                                                            parseInt(session.lastAccessTime, 10)
+                                                        ).fromNow()
+                                                    }
+                                                )
+                                            }
+                                        </p>
+                                    </List.Description>
+                                </List.Content>
+                            </Grid.Column>
+                            <Grid.Column width={ 5 } className="last-column">
                                 <List.Content floated="right">
                                     <Button
                                         icon
+                                        basic
                                         id={ index }
                                         labelPosition="right"
                                         size="mini"
@@ -125,180 +154,166 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                                         }
                                     </Button>
                                 </List.Content>
-                                <List.Icon
-                                    name={ resolveDeviceType(userAgentParser.device.type) }
-                                    size="big"
-                                    color="grey"
-                                    verticalAlign="middle"
-                                />
-                                <List.Content>
-                                    <List.Header>{ session.ip }</List.Header>
-                                    <List.Description>
-                                        <p style={ { fontSize: "11px" } }>
-                                            {
-                                                t("views:userSessions.lastAccessed",
+                            </Grid.Column>
+                        </Grid.Row>
+                        {
+                            sessionsListActiveIndexes.includes(index) ?
+                                <EditSection>
+                                    <Grid.Row>
+                                        <Grid.Column>
+                                            <List.Content>
+                                                <Grid padded>
+                                                    <Grid.Row columns={ 2 }>
+                                                        <Grid.Column width={ 8 }>
+                                                            { t("common:operatingSystem") }
+                                                        </Grid.Column>
+                                                        <Grid.Column width={ 8 }>
+                                                            <List.Description>
+                                                                <Icon
+                                                                    name={ resolveOSIcon(userAgentParser.os.name) }
+                                                                    color="grey"
+                                                                />
+                                                                { userAgentParser.os.name }
+                                                                { " " }
+                                                                { userAgentParser.os.version }
+                                                            </List.Description>
+                                                        </Grid.Column>
+                                                    </Grid.Row>
+                                                    <Grid.Row columns={ 2 }>
+                                                        <Grid.Column width={ 8 }>
+                                                            { t("common:browser") }
+                                                        </Grid.Column>
+                                                        <Grid.Column width={ 8 }>
+                                                            <List.Description>
+                                                                <Icon
+                                                                    name={
+                                                                        resolveBrowserIcon(userAgentParser.browser.name)
+                                                                    }
+                                                                    color="grey"/>
+                                                                { userAgentParser.browser.name }
+                                                                { " " }
+                                                                { userAgentParser.browser.version }
+                                                            </List.Description>
+                                                        </Grid.Column>
+                                                    </Grid.Row>
+                                                    <Grid.Row columns={ 2 }>
+                                                        <Grid.Column width={ 8 }>
+                                                            { t("common:ipAddress") }
+                                                        </Grid.Column>
+                                                        <Grid.Column width={ 8 }>
+                                                            <List.Description>{ session.ip }</List.Description>
+                                                        </Grid.Column>
+                                                    </Grid.Row>
                                                     {
-                                                        date: moment(
-                                                            parseInt(session.lastAccessTime, 10)
-                                                        ).fromNow()
+                                                        userAgentParser.device.vendor ?
+                                                            <Grid.Row columns={ 2 }>
+                                                                <Grid.Column width={ 8 }>
+                                                                    { t("common:deviceModel") }
+                                                                </Grid.Column>
+                                                                <Grid.Column width={ 8 }>
+                                                                    <List.Description>
+                                                                        { userAgentParser.device.vendor }
+                                                                        { " " }
+                                                                        { userAgentParser.device.model }
+                                                                    </List.Description>
+                                                                </Grid.Column>
+                                                            </Grid.Row>
+                                                            : null
                                                     }
-                                                )
-                                            }
-                                        </p>
-                                    </List.Description>
-                                </List.Content>
-                                {
-                                    sessionsListActiveIndexes.includes(index) ?
-                                        <List.Content>
-                                            <Divider hidden/>
-                                            <Divider/>
-                                            <Grid padded>
-                                                <Grid.Row columns={ 2 }>
-                                                    <Grid.Column width={ 8 }>
-                                                        { t("common:operatingSystem") }
-                                                    </Grid.Column>
-                                                    <Grid.Column width={ 8 }>
-                                                        <List.Description>
-                                                            <Icon
-                                                                name={ resolveOSIcon(userAgentParser.os.name) }
-                                                                color="grey"
-                                                            />
-                                                            { userAgentParser.os.name }
-                                                            { " " }
-                                                            { userAgentParser.os.version }
-                                                        </List.Description>
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                                <Grid.Row columns={ 2 }>
-                                                    <Grid.Column width={ 8 }>
-                                                        { t("common:browser") }
-                                                    </Grid.Column>
-                                                    <Grid.Column width={ 8 }>
-                                                        <List.Description>
-                                                            <Icon
-                                                                name={
-                                                                    resolveBrowserIcon(userAgentParser.browser.name)
+                                                    {
+                                                        session.applications && session.applications.length > 0 ?
+                                                            <Grid.Row columns={ 2 }>
+                                                                <Grid.Column width={ 8 }>
+                                                                    { t("common:applications") }
+                                                                </Grid.Column>
+                                                                <Grid.Column width={ 8 }>
+                                                                    <List.Description>
+                                                                        <Table celled compact>
+                                                                            <Table.Header>
+                                                                                <Table.Row>
+                                                                                    <Table.HeaderCell>
+                                                                                        { t("common:applicationName") }
+                                                                                    </Table.HeaderCell>
+                                                                                    <Table.HeaderCell>
+                                                                                        { t("common:user") }
+                                                                                    </Table.HeaderCell>
+                                                                                </Table.Row>
+                                                                            </Table.Header>
+                                                                            <Table.Body>
+                                                                                {
+                                                                                    session.applications.map(
+                                                                                        (app, i) => (
+                                                                                            <Table.Row key={ i }>
+                                                                                                <Table.Cell>
+                                                                                                    { app.appName }
+                                                                                                </Table.Cell>
+                                                                                                <Table.Cell>
+                                                                                                    { app.subject }
+                                                                                                </Table.Cell>
+                                                                                            </Table.Row>
+                                                                                        )
+                                                                                    )
+                                                                                }
+                                                                            </Table.Body>
+                                                                        </Table>
+                                                                    </List.Description>
+                                                                </Grid.Column>
+                                                            </Grid.Row>
+                                                            : null
+                                                    }
+                                                    <Grid.Row columns={ 2 }>
+                                                        <Grid.Column width={ 8 }>
+                                                            { t("common:loginTime") }
+                                                        </Grid.Column>
+                                                        <Grid.Column width={ 8 }>
+                                                            <List.Description>
+                                                                {
+                                                                    moment(parseInt(session.loginTime, 10))
+                                                                        .format("Do MMMM YYYY, h:mm:ss a")
                                                                 }
-                                                                color="grey"/>
-                                                            { userAgentParser.browser.name }
-                                                            { " " }
-                                                            { userAgentParser.browser.version }
-                                                        </List.Description>
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                                <Grid.Row columns={ 2 }>
-                                                    <Grid.Column width={ 8 }>
-                                                        { t("common:ipAddress") }
-                                                    </Grid.Column>
-                                                    <Grid.Column width={ 8 }>
-                                                        <List.Description>{ session.ip }</List.Description>
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                                {
-                                                    userAgentParser.device.vendor ?
-                                                        <Grid.Row columns={ 2 }>
-                                                            <Grid.Column width={ 8 }>
-                                                                { t("common:deviceModel") }
-                                                            </Grid.Column>
-                                                            <Grid.Column width={ 8 }>
-                                                                <List.Description>
-                                                                    { userAgentParser.device.vendor }
-                                                                    { " " }
-                                                                    { userAgentParser.device.model }
-                                                                </List.Description>
-                                                            </Grid.Column>
-                                                        </Grid.Row>
-                                                        : null
-                                                }
-                                                {
-                                                    session.applications && session.applications.length > 0 ?
-                                                        <Grid.Row columns={ 2 }>
-                                                            <Grid.Column width={ 8 }>
-                                                                { t("common:applications") }
-                                                            </Grid.Column>
-                                                            <Grid.Column width={ 8 }>
-                                                                <List.Description>
-                                                                    <Table celled compact>
-                                                                        <Table.Header>
-                                                                            <Table.Row>
-                                                                                <Table.HeaderCell>
-                                                                                    { t("common:applicationName") }
-                                                                                </Table.HeaderCell>
-                                                                                <Table.HeaderCell>
-                                                                                    { t("common:user") }
-                                                                                </Table.HeaderCell>
-                                                                            </Table.Row>
-                                                                        </Table.Header>
-                                                                        <Table.Body>
-                                                                            {
-                                                                                session.applications.map((app, i) => (
-                                                                                    <Table.Row key={ i }>
-                                                                                        <Table.Cell>
-                                                                                            { app.appName }
-                                                                                        </Table.Cell>
-                                                                                        <Table.Cell>
-                                                                                            { app.subject }
-                                                                                        </Table.Cell>
-                                                                                    </Table.Row>
-                                                                                ))
-                                                                            }
-                                                                        </Table.Body>
-                                                                    </Table>
-                                                                </List.Description>
-                                                            </Grid.Column>
-                                                        </Grid.Row>
-                                                        : null
-                                                }
-                                                <Grid.Row columns={ 2 }>
-                                                    <Grid.Column width={ 8 }>
-                                                        { t("common:loginTime") }
-                                                    </Grid.Column>
-                                                    <Grid.Column width={ 8 }>
-                                                        <List.Description>
-                                                            {
-                                                                moment(parseInt(session.loginTime, 10))
-                                                                    .format("Do MMMM YYYY, h:mm:ss a")
-                                                            }
-                                                        </List.Description>
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                                <Grid.Row columns={ 2 }>
-                                                    <Grid.Column width={ 8 }>
-                                                        { t("common:lastSeen") }
-                                                    </Grid.Column>
-                                                    <Grid.Column width={ 8 }>
-                                                        <List.Description>
-                                                            {
-                                                                moment(parseInt(session.lastAccessTime, 10))
-                                                                    .fromNow()
-                                                            }
-                                                        </List.Description>
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                                <Grid.Row columns={ 2 }>
-                                                    <Grid.Column width={ 8 }>
-                                                        { t("common:access") }
-                                                    </Grid.Column>
-                                                    <Grid.Column width={ 8 }>
-                                                        <Button
-                                                            size="mini"
-                                                            negative
-                                                            onClick={ () => handleRevokeUserSessionClick(session) }
-                                                            loading={ isRevokeUserSessionRequestLoading }
-                                                        >
-                                                            { t("common:revokeSession") }
-                                                        </Button>
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                            </Grid>
-                                        </List.Content>
-                                        :
-                                        null
-                                }
-                            </List.Item>
-                        </List>
-                    </Table.Cell>
-                </Table.Row>
+                                                            </List.Description>
+                                                        </Grid.Column>
+                                                    </Grid.Row>
+                                                    <Grid.Row columns={ 2 }>
+                                                        <Grid.Column width={ 8 }>
+                                                            { t("common:lastSeen") }
+                                                        </Grid.Column>
+                                                        <Grid.Column width={ 8 }>
+                                                            <List.Description>
+                                                                {
+                                                                    moment(parseInt(session.lastAccessTime, 10))
+                                                                        .fromNow()
+                                                                }
+                                                            </List.Description>
+                                                        </Grid.Column>
+                                                    </Grid.Row>
+                                                    <Grid.Row columns={ 2 }>
+                                                        <Grid.Column width={ 8 }>
+                                                            { t("common:access") }
+                                                        </Grid.Column>
+                                                        <Grid.Column width={ 8 }>
+                                                            <Button
+                                                                size="mini"
+                                                                negative
+                                                                onClick={
+                                                                    () => handleTerminateUserSessionClick(session)
+                                                                }
+                                                                loading={ isRevokeUserSessionRequestLoading }
+                                                            >
+                                                                { t("common:terminateSession") }
+                                                            </Button>
+                                                        </Grid.Column>
+                                                    </Grid.Row>
+                                                </Grid>
+                                            </List.Content>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </EditSection>
+                                :
+                                null
+                        }
+                    </Grid>
+                </List.Item>
             );
         }
         return sessionList;
@@ -413,19 +428,13 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
      */
     const createSessionListPlaceholder = (): JSX.Element[] => {
         const placeholder = [];
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 2; i++) {
             placeholder.push(
-                <Table.Row key={ i }>
-                    <Table.Cell>
-                        <List relaxed="very">
-                            <List.Item>
-                                <List.Content floated="right">
-                                    <Button icon labelPosition="right" size="mini" disabled>
-                                        { t("common:showMore") }
-                                        <Icon name="arrow down"/>
-                                    </Button>
-                                </List.Content>
-                                <List.Content>
+                <List.Item className="inner-list-item" key={ i }>
+                    <Grid padded>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column width={ 16 } className="first-column">
+                                <List.Content verticalAlign="middle">
                                     <Placeholder>
                                         <Placeholder.Header image>
                                             <Placeholder.Line/>
@@ -433,10 +442,10 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                                         </Placeholder.Header>
                                     </Placeholder>
                                 </List.Content>
-                            </List.Item>
-                        </List>
-                    </Table.Cell>
-                </Table.Row>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </List.Item>
             );
         }
         return placeholder;
@@ -465,7 +474,7 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
     /**
      * Revokes a single user session.
      */
-    const handleRevokeUserSession = () => {
+    const handleTerminateUserSession = () => {
         dispatch(revokeUserSession(editingUserSession.id));
         dispatch(hideRevokeUserSessionModal());
     };
@@ -473,94 +482,87 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
     /**
      * Revokes all the user sessions.
      */
-    const handleRevokeAllUserSessions = () => {
+    const handleTerminateAllUserSessions = () => {
         dispatch(revokeAllUserSessions());
         dispatch(hideRevokeAllUserSessionsModal());
     };
 
     /**
-     * Handles the notification dismiss click.
+     * Handles the terminate all user sessions click event.
      */
-    const handleNotificationDismiss = () => {
-        dispatch(hideUserSessionsNotification());
-    };
-
-    /**
-     * Handles the revoke all user sessions click event.
-     */
-    const handleRevokeAllUserSessionsClick = (): void => {
+    const handleTerminateAllUserSessionsClick = (): void => {
         dispatch(showRevokeAllUserSessionsModal());
     };
 
     /**
-     * Handles the revoke user sessions click event.
+     * Handles the terminate user sessions click event.
      *
      * @param {UserSession} session - Clicked session.
      */
-    const handleRevokeUserSessionClick = (session: UserSession): void => {
+    const handleTerminateUserSessionClick = (session: UserSession): void => {
         dispatch(setEditingUserSession(session));
         dispatch(showRevokeUserSessionModal());
     };
 
     /**
-     * Handle the revoke all user sessions modal close event.
+     * Handle the terminate all user sessions modal close event.
      */
-    const handleRevokeAllUserSessionsModalClose = () => {
+    const handleTerminateAllUserSessionsModalClose = () => {
         dispatch(hideRevokeAllUserSessionsModal());
     };
 
     /**
-     * Handle the revoke user session modal close event.
+     * Handle the terminate user session modal close event.
      */
-    const handleRevokeUserSessionModalClose = () => {
+    const handleTerminateUserSessionModalClose = () => {
         dispatch(hideRevokeUserSessionModal());
     };
 
-    const revokeAllUserSessionsModal = (
+    const terminateAllUserSessionsModal = (
         <Modal
             size="mini"
             open={ isRevokeAllUserSessionsModalVisible }
-            onClose={ handleRevokeAllUserSessionsModalClose }
+            onClose={ handleTerminateAllUserSessionsModalClose }
             dimmer="blurring"
         >
             <Modal.Content>
                 <Container>
-                    <h3>{ t("views:userSessions.modals.revokeAllUserSessionsModal.heading") }</h3>
+                    <h3>{ t("views:userSessions.modals.terminateAllUserSessionsModal.heading") }</h3>
                 </Container>
                 <br/>
-                <p>{ t("views:userSessions.modals.revokeAllUserSessionsModal.message") }</p>
+                <p>{ t("views:userSessions.modals.terminateAllUserSessionsModal.message") }</p>
             </Modal.Content>
             <Modal.Actions>
-                <Button className="link-button" onClick={ handleRevokeAllUserSessionsModalClose }>
+                <Button className="link-button" onClick={ handleTerminateAllUserSessionsModalClose }>
                     { t("common:cancel") }
                 </Button>
-                <Button primary onClick={ handleRevokeAllUserSessions }>
-                    { t("common:revoke") }
+                <Button primary onClick={ handleTerminateAllUserSessions }>
+                    { t("common:terminate") }
                 </Button>
             </Modal.Actions>
         </Modal>
     );
 
-    const revokeUserSessionModal = (
+    const terminateUserSessionModal = (
         <Modal
             size="mini"
             open={ isRevokeUserSessionModalVisible }
-            onClose={ handleRevokeUserSessionModalClose }
+            onClose={ handleTerminateUserSessionModalClose }
             dimmer="blurring"
         >
             <Modal.Content>
                 <Container>
-                    <h3>{ t("views:userSessions.modals.revokeUserSessionModal.heading") }</h3>
+                    <h3>{ t("views:userSessions.modals.terminateUserSessionModal.heading") }</h3>
                 </Container>
                 <br/>
-                <p>{ t("views:userSessions.modals.revokeUserSessionModal.message") }</p>
+                <p>{ t("views:userSessions.modals.terminateUserSessionModal.message") }</p>
             </Modal.Content>
             <Modal.Actions>
-                <Button className="link-button" onClick={ handleRevokeUserSessionModalClose }>
+                <Button className="link-button" onClick={ handleTerminateUserSessionModalClose }>
                     { t("common:cancel") }
                 </Button>
-                <Button primary onClick={ handleRevokeUserSession }>
-                    { t("common:revoke") }
+                <Button primary onClick={ handleTerminateUserSession }>
+                    { t("common:terminate") }
                 </Button>
             </Modal.Actions>
         </Modal>
@@ -568,69 +570,26 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
 
     return (
         <SettingsSection
+            contentPadding={ false }
             header={ t("views:userSessions.title") }
-            description={ t("views:userSessions.description") }
+            description={ t("views:userSessions.subTitle") }
+            actionTitle={
+                !(userSessions && userSessions.sessions && (userSessions.sessions.length > 0))
+                    ? t("views:userSessions.actionTitles.empty")
+                    : t("views:userSessions.actionTitles.terminateAll")
+            }
+            onActionClick={ handleTerminateAllUserSessionsClick }
+            actionDisabled={ !(userSessions && userSessions.sessions && (userSessions.sessions.length > 0)) }
         >
-            <Divider hidden/>
-            <Grid>
-                <Grid.Column width={ 12 }>
-                    <Header.Subheader>{ t("views:userSessions.subTitle") }</Header.Subheader>
-                </Grid.Column>
-                <Grid.Column width={ 4 }>
-                    <Button
-                        floated="right"
-                        negative
-                        onClick={ handleRevokeAllUserSessionsClick }
-                        loading={ isRevokeAllUserSessionsRequestLoading }
-                        disabled={ !userSessions || !userSessions.sessions || !(userSessions.sessions.length > 0) }
-                    >
-                        { t("common:revokeAll") }
-                    </Button>
-                </Grid.Column>
-            </Grid>
-            {
-                userSessionsNotification && userSessionsNotification.message
-                && userSessionsNotification.description ?
-                    <NotificationComponent
-                        message={ userSessionsNotification.message }
-                        description={ userSessionsNotification.description }
-                        onDismiss={ handleNotificationDismiss }
-                        { ...userSessionsNotification.otherProps }
-                    />
-                    : null
-            }
-            <Divider hidden/>
-
-            {
-                isFetchUserSessionsRequestLoading ?
-                    (
-                        <Table padded celled>
-                            <Table.Body>
-                                { createSessionListPlaceholder() }
-                            </Table.Body>
-                        </Table>
-                    )
-                    :
-                    userSessions.sessions && userSessions.sessions.length > 0 ?
-                        (
-                            <Table padded celled>
-                                <Table.Body>
-                                    { generateSessionList(userSessions) }
-                                </Table.Body>
-                            </Table>
-                        )
-                        :
-                        <Segment placeholder>
-                            <Header icon>
-                                <Icon name="computer"/>
-                                <h3>
-                                    { t("views:userSessions.placeholders.emptySessionList.heading") }
-                                </h3>
-                            </Header>
-                        </Segment>
-            }
-            { revokeAllUserSessionsModal }
-            { revokeUserSessionModal }
+            <List divided verticalAlign="middle" className="main-content-inner">
+                {
+                    isFetchUserSessionsRequestLoading
+                        ? createSessionListPlaceholder()
+                        : generateSessionList(userSessions)
+                }
+            </List>
+            { terminateAllUserSessionsModal }
+            { terminateUserSessionModal }
         </SettingsSection>
     );
 };
