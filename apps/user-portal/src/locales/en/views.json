@@ -119,6 +119,9 @@
         "title": "Consented applications",
         "subTitle": "Manage consented applications and websites",
         "description": "View and Manage consented applications of your account",
+        "actionTitles": {
+            "empty": "You have not granted consent to any application"
+        },
         "modals": {
             "consentRevokeModal": {
                 "heading": "Revoke {{appName}}?",
@@ -136,7 +139,7 @@
         },
         "placeholders": {
             "emptyConsentList": {
-                "heading": "You don't have any {{state}} applications"
+                "heading": "You have not granted consent to any application"
             }
         },
         "notifications": {
@@ -185,13 +188,9 @@
     "securityQuestions": {
         "title": "Security Questions",
         "subTitle": "Add and Update Account Recovery Challenge Questions",
-        "actionTitles": {
-          "configure": "Configure security questions",
-          "change": "Change security questions"
-        },
-        "formHeader": "Challenge Question {{number}}",
+        "actionTitle": "Configure security questions",
         "forms": {
-            "securityQuestionForm": {
+            "securityQuestionsForm": {
                 "inputs": {
                     "question": {
                         "label": "Question",
@@ -397,7 +396,11 @@
     },
     "userSessions": {
         "title": "Active user sessions",
-        "subTitle": "This is a list of devices that have been active on your account, or are currently signed in.",
+        "subTitle": "This is a list of devices that have been active on your account.",
+        "actionTitles": {
+            "terminateAll": "Terminate all sessions",
+            "empty": "You do not have any active sessions"
+        },
         "description": "View and Manage active sessions of your account",
         "browserAndOS": "{{browser}} on {{os}} {{version}}",
         "lastAccessed": "Last accessed {{date}}",
@@ -416,32 +419,32 @@
                     "description": "Couldn't retrieve any user sessions."
                 }
             },
-            "revokeAllUserSessions": {
+            "terminateAllUserSessions": {
                 "success": {
-                    "message": "Revoked all user sessions.",
-                    "description": "Successfully revoked all user sessions."
+                    "message": "Terminated all user sessions.",
+                    "description": "Successfully terminated all user sessions."
                 },
                 "error": {
-                    "message": "Couldn't revoke user sessions.",
+                    "message": "Couldn't terminate user sessions.",
                     "description": "{{description}}"
                 },
                 "genericError": {
-                    "message": "Couldn't revoke user sessions.",
-                    "description": "Something went wrong while revoking user sessions."
+                    "message": "Couldn't terminate user sessions.",
+                    "description": "Something went wrong while terminating user sessions."
                 }
             },
-            "revokeUserSession": {
+            "terminateUserSession": {
                 "success": {
-                    "message": "Session revoke success.",
-                    "description": "Successfully revoked the user session."
+                    "message": "Session terminate success.",
+                    "description": "Successfully terminated the user session."
                 },
                 "error": {
-                    "message": "Couldn't revoke the user session.",
+                    "message": "Couldn't terminate the user session.",
                     "description": "{{description}}"
                 },
                 "genericError": {
-                    "message": "Couldn't revoke the user session.",
-                    "description": "Something went wrong while revoking the user session."
+                    "message": "Couldn't terminate the user session.",
+                    "description": "Something went wrong while terminating the user session."
                 }
             }
         },
@@ -451,18 +454,13 @@
             }
         },
         "modals": {
-            "revokeAllUserSessionsModal": {
+            "terminateAllUserSessionsModal": {
                 "heading": "Confirmation",
                 "message": "This action will log you out of all the sessions on every device. Do you wish to continue?"
             },
-            "revokeUserSessionModal": {
+            "terminateUserSessionModal": {
                 "heading": "Confirmation",
                 "message": "This action will log you out of the session on the particular device. Do you wish to continue?"
-            }
-        },
-        "messages": {
-            "unrecognizedWarning": {
-                "header": "Revoke any sessions that you don't recognize."
             }
         }
     },
