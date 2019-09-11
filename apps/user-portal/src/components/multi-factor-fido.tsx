@@ -16,35 +16,54 @@
  * under the License.
  */
 
-import * as React from "react";
-import { useTranslation } from "react-i18next";
-import { Button, Divider, List } from "semantic-ui-react";
+import React from "react";
+import { useTranslation} from "react-i18next";
+import { Grid, Icon, List } from "semantic-ui-react";
 import { MFAIcons } from "../configs";
 import { ThemeIcon } from "./icon";
 
+/**
+ * FIDO section.
+ *
+ * @return {JSX.Element}
+ */
 export const Fido: React.FunctionComponent<any> = (): JSX.Element => {
     const {t} = useTranslation();
 
     return (
-        <>
-            <List.Content floated="left">
-                <ThemeIcon
-                    icon={ MFAIcons.fido }
-                    size="mini"
-                    twoTone
-                    transparent
-                    rounded
-                    relaxed
-                />
-            </List.Content>
-            <List.Content>
-                <List.Header>{ t("views:securityPage.multiFactor.fido.title") }</List.Header>
-                <Button primary floated="right" size="mini">Manage</Button>
-                <List.Description>
-                    { t("views:securityPage.multiFactor.fido.description") }
-                </List.Description>
-                <Divider hidden/>
-            </List.Content>
-        </>
+        <Grid padded>
+            <Grid.Row columns={2}>
+                <Grid.Column width={11} className="first-column">
+                    <List.Content floated="left">
+                        <ThemeIcon
+                            icon={MFAIcons.fido}
+                            size="mini"
+                            twoTone
+                            transparent
+                            rounded
+                            relaxed
+                        />
+                    </List.Content>
+                    <List.Content>
+                        <List.Header>{t("views:securityPage.multiFactor.fido.title")}</List.Header>
+                        <List.Description>
+                            {t("views:securityPage.multiFactor.fido.description")}
+                        </List.Description>
+                    </List.Content>
+                </Grid.Column>
+                <Grid.Column width={5} className="last-column">
+                    <List.Content floated="right">
+                        <Icon
+                            floated="right"
+                            link
+                            className="list-icon"
+                            size="small"
+                            color="grey"
+                            name="pencil alternate"
+                        />
+                    </List.Content>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
     );
 }

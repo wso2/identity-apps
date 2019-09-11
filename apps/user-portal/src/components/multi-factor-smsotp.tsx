@@ -16,18 +16,33 @@
  * under the License.
  */
 
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Divider, Form, Grid, List } from "semantic-ui-react";
+import { Button, Divider, Form, Grid, Icon, List } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../actions";
 import { MFAIcons } from "../configs";
+import { NotificationActionPayload } from "../models/notifications";
 import { EditSection } from "./edit-section";
 import { ThemeIcon } from "./icon";
 
-export const SmsOtp: React.FunctionComponent<any> = (): JSX.Element => {
-    const [mobile, setMobile] = React.useState("");
-    const [isEdit, setIsEdit] = React.useState(false);
+/**
+ * Proptypes for the SMS OTP component.
+ */
+interface SMSOTPProps {
+    onNotificationFired: (notification: NotificationActionPayload) => void;
+}
+
+/**
+ * SMS OTP section.
+ *
+ * @return {JSX.Element}
+ */
+export const SmsOtp: React.FunctionComponent<SMSOTPProps> = (props: SMSOTPProps): JSX.Element => {
+    const [mobile, setMobile] = useState("");
+    const [editedMobile, setEditedMobile] = useState("");
+    const [isEdit, setIsEdit] = useState(false);
     const {t} = useTranslation();
+    const {onNotificationFired} = props;
 
     const handleUpdate = () => {
         const data = {
@@ -50,17 +65,43 @@ export const SmsOtp: React.FunctionComponent<any> = (): JSX.Element => {
             phoneNumbers: [
                 {
                     type: "mobile",
-                    value: mobile
+                    value: editedMobile
                 }
             ]
         };
         updateProfileInfo(data)
             .then((response) => {
                 if (response.status === 200) {
+                    onNotificationFired({
+                        description: t(
+                            "views:securityPage.multiFactor.smsOtp.notification.success.description"
+                        ),
+                        message: t(
+                            "views:securityPage.multiFactor.smsOtp.notification.success.message"
+                        ),
+                        otherProps: {
+                            positive: true
+                        },
+                        visible: true
+                    });
                     getProfileInfo()
                         .then((res) => {
                             setMobileNo(res);
                         });
+                    setIsEdit(false);
+                } else {
+                    onNotificationFired({
+                        description: t(
+                            "views:userProfile.notification.getProfileInfo.error.description"
+                        ),
+                        message: t(
+                            "views:userProfile.notification.getProfileInfo.error.message"
+                        ),
+                        otherProps: {
+                            negative: true
+                        },
+                        visible: true
+                    });
                 }
             });
     };
@@ -71,7 +112,7 @@ export const SmsOtp: React.FunctionComponent<any> = (): JSX.Element => {
      * @param event
      */
     const handleFieldChange = (event) => {
-        setMobile(event.target.value);
+        setEditedMobile(event.target.value);
         event.preventDefault();
     };
 
@@ -81,6 +122,7 @@ export const SmsOtp: React.FunctionComponent<any> = (): JSX.Element => {
             mobileNumber = mobileNo.value;
         });
         setMobile(mobileNumber);
+        setEditedMobile(mobileNumber);
     };
 
     const handleEdit = () => {
@@ -93,28 +135,41 @@ export const SmsOtp: React.FunctionComponent<any> = (): JSX.Element => {
 
     const showEditView = () => {
         if (!isEdit) {
-            return (<>
-                    <List.Content floated="left">
-                        <ThemeIcon
-                            icon={ MFAIcons.sms }
-                            size="mini"
-                            twoTone
-                            transparent
-                            square
-                            rounded
-                            relaxed
-                        />
-                    </List.Content>
-                    <List.Content>
-                        <List.Header>{ t("views:securityPage.multiFactor.smsOtp.title") }</List.Header>
-                        <Button primary floated="right" size="mini" onClick={handleEdit}>
-                            { t("common:update") }
-                        </Button>
-                        <List.Description>
-                            { t("views:securityPage.multiFactor.smsOtp.description") }
-                        </List.Description>
-                    </List.Content>
-                </>
+            return (<Grid padded>
+                    <Grid.Row columns={2}>
+                        <Grid.Column width={11} className="first-column">
+                            <List.Content floated="left">
+                                <ThemeIcon
+                                    icon={MFAIcons.sms}
+                                    size="mini"
+                                    twoTone
+                                    transparent
+                                    square
+                                    rounded
+                                    relaxed
+                                />
+                            </List.Content>
+                            <List.Content>
+                                <List.Header>{t("views:securityPage.multiFactor.smsOtp.title")}</List.Header>
+                                <List.Description>
+                                    {t("views:securityPage.multiFactor.smsOtp.description")}
+                                </List.Description>
+                            </List.Content>
+                        </Grid.Column>
+                        <Grid.Column width={5} className="last-column">
+                            <List.Content floated="right">
+                                <Icon
+                                    link
+                                    onClick={handleEdit}
+                                    className="list-icon"
+                                    size="small"
+                                    color="grey"
+                                    name="pencil alternate"
+                                />
+                            </List.Content>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             );
         }
         return (
@@ -126,20 +181,28 @@ export const SmsOtp: React.FunctionComponent<any> = (): JSX.Element => {
                                 <List.Item>
                                     <List.Content>
                                         <Form>
-                                            <Form.Field>
+                                            <Form.Field width={8}>
                                                 <label>Mobile Number</label><br/>
-                                                <input onChange={handleFieldChange} value={mobile}/>
+                                                <input onChange={handleFieldChange} value={editedMobile}/><br/><br/>
+                                                <p style={{fontSize: "12px"}}>
+                                                    <Icon
+                                                        color="grey"
+                                                        floated="left"
+                                                        name="info circle"
+                                                    />
+                                                    NOTE: This will update the mobile number in your profile
+                                                </p>
                                             </Form.Field>
                                         </Form>
                                     </List.Content>
                                 </List.Item>
                                 <Divider hidden/>
                                 <List.Item>
-                                    <Button primary onClick={handleUpdate} size="mini">
-                                        { t("common:update") }
+                                    <Button primary onClick={handleUpdate} size="small">
+                                        {t("common:update")}
                                     </Button>
-                                    <Button default onClick={handleCancel} size="mini">
-                                        { t("common:cancel") }
+                                    <Button className="link-button" onClick={handleCancel} size="small">
+                                        {t("common:cancel")}
                                     </Button>
                                 </List.Item>
                             </List>
@@ -150,7 +213,7 @@ export const SmsOtp: React.FunctionComponent<any> = (): JSX.Element => {
         );
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (mobile === "") {
             getProfileInfo()
                 .then((response) => {
@@ -162,7 +225,6 @@ export const SmsOtp: React.FunctionComponent<any> = (): JSX.Element => {
     return (
         <div>
             {showEditView()}
-            <Divider hidden/>
         </div>
     );
 };

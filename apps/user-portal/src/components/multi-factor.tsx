@@ -16,25 +16,34 @@
  * under the License.
  */
 
-import * as React from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, List } from "semantic-ui-react";
+import { List } from "semantic-ui-react";
+import { NotificationActionPayload } from "../models/notifications";
 import { Fido } from "./multi-factor-fido";
 import { SmsOtp } from "./multi-factor-smsotp";
 import { SettingsSection } from "./settings-section";
 
-export const MultiFactor = (): JSX.Element => {
+/**
+ * Proptypes for the basic details component.
+ */
+interface MFAProps {
+    onNotificationFired: (notification: NotificationActionPayload) => void;
+}
+
+export const MultiFactor: React.FunctionComponent<MFAProps> = (props: MFAProps): JSX.Element => {
     const {t} = useTranslation();
+    const {onNotificationFired} = props;
+
     return (
         <SettingsSection
-            header={ t("views:securityPage.multiFactor.title") }
-            description={ t("views:securityPage.multiFactor.subTitle") }>
-            <Divider hidden/>
-            <List divided relaxed="very">
-                <List.Item>
-                    <SmsOtp/>
+            header={t("views:securityPage.multiFactor.title")}
+            description={t("views:securityPage.multiFactor.subTitle")}>
+            <List divided verticalAlign="middle" className="main-content-inner">
+                <List.Item className="inner-list-item">
+                    <SmsOtp onNotificationFired={onNotificationFired}/>
                 </List.Item>
-                <List.Item>
+                <List.Item className="inner-list-item">
                     <Fido/>
                 </List.Item>
             </List>
