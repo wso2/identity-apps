@@ -16,11 +16,12 @@
  * under the License.
  */
 
-import * as React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
-import { ProfileExport, SecurityQsComponent } from "../components";
+import { NotificationComponent, SecurityQuestionsComponent } from "../components";
 import { InnerPageLayout } from "../layouts";
+import { createEmptyNotificationActionPayload, NotificationActionPayload } from "../models/notifications";
 
 /**
  * Accounts page.
@@ -29,21 +30,38 @@ import { InnerPageLayout } from "../layouts";
  */
 export const AccountsPage = (): JSX.Element => {
     const { t } = useTranslation();
+    const [ notification, setNotification ] = useState(createEmptyNotificationActionPayload());
+
+    const handleNotification = (firedNotification: NotificationActionPayload) => {
+        setNotification(firedNotification);
+    };
+
+    const handleNotificationDismiss = () => {
+        setNotification({
+            ...notification,
+            visible: false
+        });
+    };
+
     return (
         <InnerPageLayout
             pageTitle={ t("views:accountsPage.title") }
             pageDescription={ t("views:accountsPage.subTitle") }
         >
+            {
+                notification && notification.visible
+                    ? (<NotificationComponent
+                        message={ notification.message }
+                        description={ notification.description }
+                        onDismiss={ handleNotificationDismiss }
+                        { ...notification.otherProps }/>)
+                    : null
+            }
             <Divider hidden />
             <Grid>
-                <Grid.Row>
+                <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
-                        <SecurityQsComponent/>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column width={ 16 }>
-                        <ProfileExport/>
+                        <SecurityQuestionsComponent onNotificationFired={ handleNotification } />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
