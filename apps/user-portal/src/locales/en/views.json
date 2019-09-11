@@ -29,7 +29,17 @@
             "subTitle": "View and Manage your multi factor authentication options",
             "smsOtp": {
                 "title": "SMS OTP",
-                "description": "You'll receive a text message containing the verification code to your mobile number"
+                "description": "You'll receive a text message containing the verification code",
+                "notification": {
+                    "success": {
+                        "message": "Mobile Number Updated Successfully",
+                        "description": "The mobile number in the user profile is updated successfully."
+                    },
+                    "error": {
+                        "message": "An error occurred !!!",
+                        "description": "Error occurred while updating the mobile number."
+                    }
+                }
             },
             "fido": {
                 "title": "FIDO",
