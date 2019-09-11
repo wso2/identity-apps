@@ -88,7 +88,7 @@ export const ThemeIcon: React.FunctionComponent<ComponentProps> = (props): JSX.E
             throw new Error("The provided icon type is not supported.");
         }
 
-        return <img src={icon} alt="icon" />;
+        return <img className="icon" src={icon} alt="icon" />;
     };
 
     return (
