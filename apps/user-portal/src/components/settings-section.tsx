@@ -24,6 +24,7 @@ import { ThemeIcon, ThemeIconSizes } from "./icon";
  * Proptypes for the settings section component.
  */
 interface SettingsSectionProps {
+    actionDisabled?: boolean;
     actionTitle?: string;
     contentPadding?: boolean;
     description?: string;
@@ -44,6 +45,7 @@ interface SettingsSectionProps {
  */
 export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props): JSX.Element => {
     const {
+        actionDisabled,
         icon,
         iconFloated,
         iconSize,
@@ -61,7 +63,7 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
             <Card.Content>
                 <Grid>
                     <Grid.Row className="header-section" columns={ 2 }>
-                        <Grid.Column  width={ 10 } className="no-padding">
+                        <Grid.Column width={ 10 } className="no-padding">
                             <Header as="h2">{ header }</Header>
                             <Card.Meta>{ description }</Card.Meta>
                         </Grid.Column>
@@ -93,7 +95,10 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
                 ?
                 <Card.Content className="extra-content" extra>
                     <List selection verticalAlign="middle">
-                        <List.Item className="action-button" onClick={ onActionClick }>
+                        <List.Item
+                            className={ `action-button ${ actionDisabled ? "disabled" : "" }` }
+                            onClick={ onActionClick }
+                        >
                             <List.Header className="action-button-text"
                                          onClick={ onActionClick }>{ actionTitle }</List.Header>
                         </List.Item>
@@ -109,6 +114,7 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
  * Default proptypes for the settings section component.
  */
 SettingsSection.defaultProps = {
+    actionDisabled: false,
     actionTitle: "",
     contentPadding: false,
     description: "",
