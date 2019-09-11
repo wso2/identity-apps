@@ -17,10 +17,9 @@
  */
 
 import moment from "moment";
-import * as React from "react";
-import { withTranslation } from "react-i18next";
-import { connect } from "react-redux";
-import { AnyAction, bindActionCreators, Dispatch } from "redux";
+import React, { FunctionComponent, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import {
     Button,
     Container,
@@ -36,11 +35,16 @@ import {
     Table
 } from "semantic-ui-react";
 import {
-    fetchUserSessions, hideRevokeAllUserSessionsModal, hideRevokeUserSessionModal,
+    fetchUserSessions,
+    hideRevokeAllUserSessionsModal,
+    hideRevokeUserSessionModal,
     hideUserSessionsNotification,
     revokeAllUserSessions,
-    revokeUserSession, setEditingUserSession,
-    setSessionsListActiveIndexes, showRevokeAllUserSessionsModal, showRevokeUserSessionModal
+    revokeUserSession,
+    setEditingUserSession,
+    setSessionsListActiveIndexes,
+    showRevokeAllUserSessionsModal,
+    showRevokeUserSessionModal
 } from "../actions";
 import { AppState, UserAgentParser } from "../helpers";
 import { UserSession, UserSessions } from "../models/user-sessions";
@@ -48,30 +52,51 @@ import { NotificationComponent } from "./notification";
 import { SettingsSection } from "./settings-section";
 
 /**
- * This is the User Sessions component of the User Portal
+ * User sessions component.
+ *
+ * @return {JSX.Element}
  */
-class UserSessionsComponentInner extends React.Component<any, any> {
+export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
+    const editingUserSession = useSelector((state: AppState) => state.userSessions.editingUserSession);
+    const isFetchUserSessionsRequestLoading = useSelector(
+        (state: AppState) => state.userSessions.isFetchUserSessionsRequestLoading
+    );
+    const isRevokeAllUserSessionsModalVisible = useSelector(
+        (state: AppState) => state.userSessions.isRevokeAllUserSessionsModalVisible
+    );
+    const isRevokeAllUserSessionsRequestLoading = useSelector(
+        (state: AppState) => state.userSessions.isRevokeAllUserSessionsRequestLoading
+    );
+    const isRevokeUserSessionModalVisible = useSelector(
+        (state: AppState) => state.userSessions.isRevokeUserSessionModalVisible
+    );
+    const isRevokeUserSessionRequestLoading = useSelector(
+        (state: AppState) => state.userSessions.isRevokeUserSessionRequestLoading
+    );
+    const isSecurityWarningVisible = useSelector((state: AppState) => state.userSessions.isSecurityWarningVisible);
+    const sessionsListActiveIndexes = useSelector((state: AppState) => state.userSessions.sessionsListActiveIndexes);
+    const userSessions = useSelector((state: AppState) => state.userSessions.userSessions);
+    const userSessionsNotification = useSelector((state: AppState) => state.userSessions.userSessionsNotification);
 
-    /**
-     * componentDidMount lifecycle method
-     */
-    public componentDidMount() {
-        const { actions } = this.props;
-        actions.userSessions.fetchUserSessions();
-    }
+    const dispatch = useDispatch();
+
+    const { t } = useTranslation();
+
+    useEffect(() => {
+        dispatch(fetchUserSessions());
+    }, []);
 
     /**
      * Generates the list of user login sessions.
      *
-     * @param {UserSessions} userSessions - Array of user sessions.
+     * @param {UserSessions} sessions - Array of user sessions.
      * @return {JSX.Element[]}
      */
-    public generateSessionList = (userSessions: UserSessions): JSX.Element[] => {
-        const { sessionsListActiveIndexes, isRevokeUserSessionRequestLoading, t } = this.props;
+    const generateSessionList = (sessions: UserSessions): JSX.Element[] => {
         const userAgentParser = new UserAgentParser();
         const sessionList = [];
 
-        for (const [index, session] of userSessions.sessions.entries()) {
+        for (const [index, session] of sessions.sessions.entries()) {
             userAgentParser.uaString = session.userAgent;
             sessionList.push(
                 <Table.Row key={ session.id }>
@@ -84,7 +109,7 @@ class UserSessionsComponentInner extends React.Component<any, any> {
                                         id={ index }
                                         labelPosition="right"
                                         size="mini"
-                                        onClick={ this.handleSessionDetailClick }
+                                        onClick={ handleSessionDetailClick }
                                     >
                                         {
                                             sessionsListActiveIndexes.includes(index) ?
@@ -101,7 +126,7 @@ class UserSessionsComponentInner extends React.Component<any, any> {
                                     </Button>
                                 </List.Content>
                                 <List.Icon
-                                    name={ this.resolveDeviceType(userAgentParser.device.type) }
+                                    name={ resolveDeviceType(userAgentParser.device.type) }
                                     size="big"
                                     color="grey"
                                     verticalAlign="middle"
@@ -135,7 +160,7 @@ class UserSessionsComponentInner extends React.Component<any, any> {
                                                     <Grid.Column width={ 8 }>
                                                         <List.Description>
                                                             <Icon
-                                                                name={ this.resolveOSIcon(userAgentParser.os.name) }
+                                                                name={ resolveOSIcon(userAgentParser.os.name) }
                                                                 color="grey"
                                                             />
                                                             { userAgentParser.os.name }
@@ -152,9 +177,7 @@ class UserSessionsComponentInner extends React.Component<any, any> {
                                                         <List.Description>
                                                             <Icon
                                                                 name={
-                                                                    this.resolveBrowserIcon(
-                                                                        userAgentParser.browser.name
-                                                                    )
+                                                                    resolveBrowserIcon(userAgentParser.browser.name)
                                                                 }
                                                                 color="grey"/>
                                                             { userAgentParser.browser.name }
@@ -207,18 +230,18 @@ class UserSessionsComponentInner extends React.Component<any, any> {
                                                                             </Table.Row>
                                                                         </Table.Header>
                                                                         <Table.Body>
-                                                                        {
-                                                                            session.applications.map((app, i) => (
-                                                                                <Table.Row key={i}>
-                                                                                    <Table.Cell>
-                                                                                        { app.appName }
-                                                                                    </Table.Cell>
-                                                                                    <Table.Cell>
-                                                                                        { app.subject }
-                                                                                    </Table.Cell>
-                                                                                </Table.Row>
-                                                                            ))
-                                                                        }
+                                                                            {
+                                                                                session.applications.map((app, i) => (
+                                                                                    <Table.Row key={ i }>
+                                                                                        <Table.Cell>
+                                                                                            { app.appName }
+                                                                                        </Table.Cell>
+                                                                                        <Table.Cell>
+                                                                                            { app.subject }
+                                                                                        </Table.Cell>
+                                                                                    </Table.Row>
+                                                                                ))
+                                                                            }
                                                                         </Table.Body>
                                                                     </Table>
                                                                 </List.Description>
@@ -260,7 +283,7 @@ class UserSessionsComponentInner extends React.Component<any, any> {
                                                         <Button
                                                             size="mini"
                                                             negative
-                                                            onClick={ () => this.handleRevokeUserSessionClick(session) }
+                                                            onClick={ () => handleRevokeUserSessionClick(session) }
                                                             loading={ isRevokeUserSessionRequestLoading }
                                                         >
                                                             { t("common:revokeSession") }
@@ -279,7 +302,7 @@ class UserSessionsComponentInner extends React.Component<any, any> {
             );
         }
         return sessionList;
-    }
+    };
 
     /**
      * Resolves an icon for the device type extracted from the user agent string.
@@ -287,7 +310,7 @@ class UserSessionsComponentInner extends React.Component<any, any> {
      * @param {string} type - Device type.
      * @return {SemanticICONS}
      */
-    public resolveDeviceType = (type: string): SemanticICONS => {
+    const resolveDeviceType = (type: string): SemanticICONS => {
         const deviceType = {
             desktop: {
                 icon: "computer",
@@ -311,7 +334,7 @@ class UserSessionsComponentInner extends React.Component<any, any> {
 
         // Default device icon.
         return "computer";
-    }
+    };
 
     /**
      * Resolves an icon for the operating system type extracted from the user agent string.
@@ -319,7 +342,7 @@ class UserSessionsComponentInner extends React.Component<any, any> {
      * @param {string} type - Operating system type.
      * @return {SemanticICONS}
      */
-    public resolveOSIcon = (type: string): SemanticICONS => {
+    const resolveOSIcon = (type: string): SemanticICONS => {
         const osType = {
             android: {
                 icon: "android",
@@ -348,7 +371,7 @@ class UserSessionsComponentInner extends React.Component<any, any> {
                 return value.icon as SemanticICONS;
             }
         }
-    }
+    };
 
     /**
      * Resolves an icon for the browser type extracted from the user agent string.
@@ -356,7 +379,7 @@ class UserSessionsComponentInner extends React.Component<any, any> {
      * @param {string} type - Browser type.
      * @return {SemanticICONS}
      */
-    public resolveBrowserIcon = (type: string): SemanticICONS => {
+    const resolveBrowserIcon = (type: string): SemanticICONS => {
         const browserType = {
             chrome: {
                 icon: "chrome",
@@ -381,15 +404,14 @@ class UserSessionsComponentInner extends React.Component<any, any> {
                 return value.icon as SemanticICONS;
             }
         }
-    }
+    };
 
     /**
      * Generates a placeholder for the sessions list.
      *
      * @return {JSX.Element[]}
      */
-    public createSessionListPlaceholder = (): JSX.Element[] => {
-        const { t } = this.props;
+    const createSessionListPlaceholder = (): JSX.Element[] => {
         const placeholder = [];
         for (let i = 0; i < 3; i++) {
             placeholder.push(
@@ -418,7 +440,7 @@ class UserSessionsComponentInner extends React.Component<any, any> {
             );
         }
         return placeholder;
-    }
+    };
 
     /**
      * Handler for the session detail button click.
@@ -426,8 +448,7 @@ class UserSessionsComponentInner extends React.Component<any, any> {
      * @param e - Click event.
      * @param {any} id - Session id.
      */
-    public handleSessionDetailClick = (e, { id }) => {
-        const { actions, sessionsListActiveIndexes } = this.props;
+    const handleSessionDetailClick = (e, { id }) => {
         const indexes = [...sessionsListActiveIndexes];
 
         if (!sessionsListActiveIndexes.includes(id)) {
@@ -438,232 +459,178 @@ class UserSessionsComponentInner extends React.Component<any, any> {
                 indexes.splice(removingIndex, 1);
             }
         }
-        actions.userSessions.setSessionsListActiveIndexes(indexes);
-    }
+        dispatch(setSessionsListActiveIndexes(indexes));
+    };
 
     /**
      * Revokes a single user session.
      */
-    public revokeUserSession = () => {
-        const { actions, editingUserSession } = this.props;
-        actions.userSessions.revokeUserSession(editingUserSession.id);
-        actions.userSessions.hideRevokeUserSessionModal();
-    }
+    const handleRevokeUserSession = () => {
+        dispatch(revokeUserSession(editingUserSession.id));
+        dispatch(hideRevokeUserSessionModal());
+    };
 
     /**
      * Revokes all the user sessions.
      */
-    public revokeAllUserSessions = () => {
-        const { actions } = this.props;
-        actions.userSessions.revokeAllUserSessions();
-        actions.userSessions.hideRevokeAllUserSessionsModal();
-    }
+    const handleRevokeAllUserSessions = () => {
+        dispatch(revokeAllUserSessions());
+        dispatch(hideRevokeAllUserSessionsModal());
+    };
 
     /**
      * Handles the notification dismiss click.
      */
-    public handleNotificationDismiss = () => {
-        const { actions } = this.props;
-        actions.userSessions.hideUserSessionsNotification();
-    }
+    const handleNotificationDismiss = () => {
+        dispatch(hideUserSessionsNotification());
+    };
 
     /**
      * Handles the revoke all user sessions click event.
      */
-    public handleRevokeAllUserSessionsClick = (): void => {
-        const { actions } = this.props;
-        actions.userSessions.showRevokeAllUserSessionsModal();
-    }
+    const handleRevokeAllUserSessionsClick = (): void => {
+        dispatch(showRevokeAllUserSessionsModal());
+    };
 
     /**
      * Handles the revoke user sessions click event.
      *
      * @param {UserSession} session - Clicked session.
      */
-    public handleRevokeUserSessionClick = (session: UserSession): void => {
-        const { actions } = this.props;
-        actions.userSessions.setEditingUserSession(session);
-        actions.userSessions.showRevokeUserSessionModal();
-    }
+    const handleRevokeUserSessionClick = (session: UserSession): void => {
+        dispatch(setEditingUserSession(session));
+        dispatch(showRevokeUserSessionModal());
+    };
 
     /**
      * Handle the revoke all user sessions modal close event.
      */
-    public handleRevokeAllUserSessionsModalClose = () => {
-        const { actions } = this.props;
-        actions.userSessions.hideRevokeAllUserSessionsModal();
-    }
+    const handleRevokeAllUserSessionsModalClose = () => {
+        dispatch(hideRevokeAllUserSessionsModal());
+    };
 
     /**
      * Handle the revoke user session modal close event.
      */
-    public handleRevokeUserSessionModalClose = () => {
-        const { actions } = this.props;
-        actions.userSessions.hideRevokeUserSessionModal();
-    }
+    const handleRevokeUserSessionModalClose = () => {
+        dispatch(hideRevokeUserSessionModal());
+    };
 
-    public render() {
-        const {
-            isFetchUserSessionsRequestLoading, t, isSecurityWarningVisible, userSessions, userSessionsNotification,
-            isRevokeAllUserSessionsRequestLoading, isRevokeAllUserSessionsModalVisible, isRevokeUserSessionModalVisible
-        } = this.props;
+    const revokeAllUserSessionsModal = (
+        <Modal
+            size="mini"
+            open={ isRevokeAllUserSessionsModalVisible }
+            onClose={ handleRevokeAllUserSessionsModalClose }
+            dimmer="blurring"
+        >
+            <Modal.Content>
+                <Container>
+                    <h3>{ t("views:userSessions.modals.revokeAllUserSessionsModal.heading") }</h3>
+                </Container>
+                <br/>
+                <p>{ t("views:userSessions.modals.revokeAllUserSessionsModal.message") }</p>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button className="link-button" onClick={ handleRevokeAllUserSessionsModalClose }>
+                    { t("common:cancel") }
+                </Button>
+                <Button primary onClick={ handleRevokeAllUserSessions }>
+                    { t("common:revoke") }
+                </Button>
+            </Modal.Actions>
+        </Modal>
+    );
 
-        const revokeAllUserSessionsModal = (
-            <Modal
-                size="mini"
-                open={ isRevokeAllUserSessionsModalVisible }
-                onClose={ this.handleRevokeAllUserSessionsModalClose }
-                dimmer="blurring"
-            >
-                <Modal.Content>
-                    <Container>
-                        <h3>{ t("views:userSessions.modals.revokeAllUserSessionsModal.heading") }</h3>
-                    </Container>
-                    <br/>
-                    <p>{ t("views:userSessions.modals.revokeAllUserSessionsModal.message") }</p>
-                </Modal.Content>
-                <Modal.Actions>
-                    <Button className="link-button" onClick={ this.handleRevokeAllUserSessionsModalClose }>
-                        { t("common:cancel") }
+    const revokeUserSessionModal = (
+        <Modal
+            size="mini"
+            open={ isRevokeUserSessionModalVisible }
+            onClose={ handleRevokeUserSessionModalClose }
+            dimmer="blurring"
+        >
+            <Modal.Content>
+                <Container>
+                    <h3>{ t("views:userSessions.modals.revokeUserSessionModal.heading") }</h3>
+                </Container>
+                <br/>
+                <p>{ t("views:userSessions.modals.revokeUserSessionModal.message") }</p>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button className="link-button" onClick={ handleRevokeUserSessionModalClose }>
+                    { t("common:cancel") }
+                </Button>
+                <Button primary onClick={ handleRevokeUserSession }>
+                    { t("common:revoke") }
+                </Button>
+            </Modal.Actions>
+        </Modal>
+    );
+
+    return (
+        <SettingsSection
+            header={ t("views:userSessions.title") }
+            description={ t("views:userSessions.description") }
+        >
+            <Divider hidden/>
+            <Grid>
+                <Grid.Column width={ 12 }>
+                    <Header.Subheader>{ t("views:userSessions.subTitle") }</Header.Subheader>
+                </Grid.Column>
+                <Grid.Column width={ 4 }>
+                    <Button
+                        floated="right"
+                        negative
+                        onClick={ handleRevokeAllUserSessionsClick }
+                        loading={ isRevokeAllUserSessionsRequestLoading }
+                        disabled={ !userSessions || !userSessions.sessions || !(userSessions.sessions.length > 0) }
+                    >
+                        { t("common:revokeAll") }
                     </Button>
-                    <Button primary onClick={ this.revokeAllUserSessions }>
-                        { t("common:revoke") }
-                    </Button>
-                </Modal.Actions>
-            </Modal>
-        );
+                </Grid.Column>
+            </Grid>
+            {
+                userSessionsNotification && userSessionsNotification.message
+                && userSessionsNotification.description ?
+                    <NotificationComponent
+                        message={ userSessionsNotification.message }
+                        description={ userSessionsNotification.description }
+                        onDismiss={ handleNotificationDismiss }
+                        { ...userSessionsNotification.otherProps }
+                    />
+                    : null
+            }
+            <Divider hidden/>
 
-        const revokeUserSessionModal = (
-            <Modal
-                size="mini"
-                open={ isRevokeUserSessionModalVisible }
-                onClose={ this.handleRevokeUserSessionModalClose }
-                dimmer="blurring"
-            >
-                <Modal.Content>
-                    <Container>
-                        <h3>{ t("views:userSessions.modals.revokeUserSessionModal.heading") }</h3>
-                    </Container>
-                    <br/>
-                    <p>{ t("views:userSessions.modals.revokeUserSessionModal.message") }</p>
-                </Modal.Content>
-                <Modal.Actions>
-                    <Button className="link-button" onClick={ this.handleRevokeUserSessionModalClose }>
-                        { t("common:cancel") }
-                    </Button>
-                    <Button primary onClick={ this.revokeUserSession }>
-                        { t("common:revoke") }
-                    </Button>
-                </Modal.Actions>
-            </Modal>
-        );
-
-        return (
-            <>
-                <SettingsSection
-                    header={ t("views:userSessions.title") }
-                    description={ t("views:userSessions.description") }
-                >
-                <Divider hidden/>
-                <Grid>
-                    <Grid.Column width={ 12 }>
-                        <Header.Subheader>{ t("views:userSessions.subTitle") }</Header.Subheader>
-                    </Grid.Column>
-                    <Grid.Column width={ 4 }>
-                        <Button
-                            floated="right"
-                            negative
-                            onClick={ this.handleRevokeAllUserSessionsClick }
-                            loading={ isRevokeAllUserSessionsRequestLoading }
-                            disabled={ !userSessions || !userSessions.sessions || !(userSessions.sessions.length > 0) }
-                        >
-                            { t("common:revokeAll") }
-                        </Button>
-                    </Grid.Column>
-                </Grid>
-                {
-                    userSessionsNotification && userSessionsNotification.message
-                    && userSessionsNotification.description ?
-                        <NotificationComponent
-                            message={ userSessionsNotification.message }
-                            description={ userSessionsNotification.description }
-                            onDismiss={ this.handleNotificationDismiss }
-                            {...userSessionsNotification.otherProps }
-                        />
-                        : null
-                }
-                <Divider hidden/>
-
-                {
-                    isFetchUserSessionsRequestLoading ?
+            {
+                isFetchUserSessionsRequestLoading ?
+                    (
+                        <Table padded celled>
+                            <Table.Body>
+                                { createSessionListPlaceholder() }
+                            </Table.Body>
+                        </Table>
+                    )
+                    :
+                    userSessions.sessions && userSessions.sessions.length > 0 ?
                         (
                             <Table padded celled>
                                 <Table.Body>
-                                    { this.createSessionListPlaceholder() }
+                                    { generateSessionList(userSessions) }
                                 </Table.Body>
                             </Table>
                         )
                         :
-                        userSessions.sessions && userSessions.sessions.length > 0 ?
-                            (
-                                <Table padded celled>
-                                    <Table.Body>
-                                        { this.generateSessionList(userSessions) }
-                                    </Table.Body>
-                                </Table>
-                            )
-                            :
-                            <Segment placeholder>
-                                <Header icon>
-                                    <Icon name="computer"/>
-                                    <h3>
-                                        { t("views:userSessions.placeholders.emptySessionList.heading") }
-                                    </h3>
-                                </Header>
-                            </Segment>
-                }
-                {revokeAllUserSessionsModal}
-                {revokeUserSessionModal}
-                </SettingsSection>
-            </>
-        );
-    }
-}
-
-const mapStateToProps = (state: AppState) => ({
-    editingUserSession: state.userSessions.editingUserSession,
-    isFetchUserSessionsRequestLoading: state.userSessions.isFetchUserSessionsRequestLoading,
-    isRevokeAllUserSessionsModalVisible: state.userSessions.isRevokeAllUserSessionsModalVisible,
-    isRevokeAllUserSessionsRequestLoading: state.userSessions.isRevokeAllUserSessionsRequestLoading,
-    isRevokeUserSessionModalVisible: state.userSessions.isRevokeUserSessionModalVisible,
-    isRevokeUserSessionRequestLoading: state.userSessions.isRevokeUserSessionRequestLoading,
-    isSecurityWarningVisible: state.userSessions.isSecurityWarningVisible,
-    sessionsListActiveIndexes: state.userSessions.sessionsListActiveIndexes,
-    userSessions: state.userSessions.userSessions,
-    userSessionsNotification: state.userSessions.userSessionsNotification
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => ({
-    actions: {
-        userSessions: (
-            bindActionCreators(
-                {
-                    fetchUserSessions,
-                    hideRevokeAllUserSessionsModal,
-                    hideRevokeUserSessionModal,
-                    hideUserSessionsNotification,
-                    revokeAllUserSessions,
-                    revokeUserSession,
-                    setEditingUserSession,
-                    setSessionsListActiveIndexes,
-                    showRevokeAllUserSessionsModal,
-                    showRevokeUserSessionModal
-                }, dispatch
-            )
-        )
-    }
-});
-
-export const UserSessionsComponent = connect(
-    mapStateToProps, mapDispatchToProps
-)(withTranslation()(UserSessionsComponentInner));
+                        <Segment placeholder>
+                            <Header icon>
+                                <Icon name="computer"/>
+                                <h3>
+                                    { t("views:userSessions.placeholders.emptySessionList.heading") }
+                                </h3>
+                            </Header>
+                        </Segment>
+            }
+            { revokeAllUserSessionsModal }
+            { revokeUserSessionModal }
+        </SettingsSection>
+    );
+};
