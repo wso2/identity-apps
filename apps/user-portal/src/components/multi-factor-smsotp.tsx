@@ -61,6 +61,7 @@ export const SmsOtp: React.FunctionComponent<SMSOTPProps> = (props: SMSOTPProps)
             type: "mobile",
             value: mobile
         };
+
         data.Operations[0].value = {
             phoneNumbers: [
                 {
@@ -69,6 +70,7 @@ export const SmsOtp: React.FunctionComponent<SMSOTPProps> = (props: SMSOTPProps)
                 }
             ]
         };
+
         updateProfileInfo(data)
             .then((response) => {
                 if (response.status === 200) {
