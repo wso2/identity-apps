@@ -16,10 +16,13 @@
  * under the License.
  */
 
-import * as React from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { ConsentManagementComponent } from "../components";
+import { hideConsentManagementNotification } from "../actions";
+import { ConsentManagementComponent, NotificationComponent } from "../components";
+import { AppState } from "../helpers";
 import { InnerPageLayout } from "../layouts";
 
 /**
@@ -28,18 +31,34 @@ import { InnerPageLayout } from "../layouts";
  * @return {JSX.Element}
  */
 export const ConsentManagementPage = (): JSX.Element => {
+    const notification = useSelector((state: AppState) => state.consentManagement.consentManagementNotification);
+    const dispatch = useDispatch();
+
     const { t } = useTranslation();
+
+    const handleNotificationDismiss = () => {
+        dispatch(hideConsentManagementNotification());
+    };
 
     return (
         <InnerPageLayout
             pageTitle={ t("views:consentManagementPage.title") }
             pageDescription={ t("views:consentManagementPage.subTitle") }
         >
+            {
+                notification && notification.visible
+                    ? (<NotificationComponent
+                        message={ notification.message }
+                        description={ notification.description }
+                        onDismiss={ handleNotificationDismiss }
+                        { ...notification.otherProps }/>)
+                    : null
+            }
             <Divider hidden />
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
-                        <ConsentManagementComponent/>
+                        <ConsentManagementComponent />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
