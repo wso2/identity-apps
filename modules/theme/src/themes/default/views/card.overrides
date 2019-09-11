@@ -19,6 +19,10 @@
  
 .ui.card {
     &.settings-card {
+        // override the default the margin bottom
+        &:last-child {
+            margin-bottom: 0.3em;
+        }
         .no-padding {
             padding: unset;
         }
@@ -56,6 +60,11 @@
                 .action-button-text {
                     color: @settingsCardActionButtonColor;
                     font-weight: 500;
+                }
+                &.disabled {
+                    .action-button-text {
+                        color: @black;
+                    }
                 }
             }
         }
