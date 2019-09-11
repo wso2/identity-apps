@@ -20,7 +20,7 @@ import * as React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 import {
     Button,
-    Container, Dimmer,
+    Dimmer,
     Divider,
     Dropdown,
     Form,
@@ -28,19 +28,22 @@ import {
     Header,
     Icon,
     List, Loader,
-    Message,
-    Segment, Transition
+    Segment
 } from "semantic-ui-react";
 import { addSecurityQs, getSecurityQs, updateSecurityQs } from "../actions/profile";
 import { createEmptyChallenge } from "../models/challenges";
+import { NotificationActionPayload } from "../models/notifications";
 import { EditSection } from "./edit-section";
-import { NotificationComponent } from "./notification";
 import { SettingsSection } from "./settings-section";
+
+interface ComponentProps extends WithTranslation {
+    onNotificationFired: (notification: NotificationActionPayload) => void;
+}
 
 /**
  * The security questions section of the user
  */
-class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
+class SecurityQuestionsComponentInner extends React.Component<ComponentProps, any> {
     /**
      * constructor
      * @param props
@@ -152,8 +155,8 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
      * on the status of the response
      */
     public handleSave = () => {
-        const { t } = this.props;
-        const {challenges, notification} = this.state;
+        const { t, onNotificationFired } = this.props;
+        const {challenges} = this.state;
         const data = this.state.challengeQuestions;
 
         if (challenges.answers && (challenges.answers.length > 0) && (this.state.isEdit)) {
@@ -167,35 +170,35 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
                             });
                         this.setState({
                             isEdit: !this.state.isEdit,
-                            notification: {
-                                ...notification,
-                                description: t(
-                                    "views:securityQuestions.notification.updateQuestions.success.description"
-                                ),
-                                message: t(
-                                    "views:securityQuestions.notification.updateQuestions.success.message"
-                                ),
-                                other: {
-                                    success: true
-                                }
-                            },
                             updateStatus: true
+                        });
+                        onNotificationFired({
+                            description: t(
+                                "views:securityQuestions.notification.updateQuestions.success.description"
+                            ),
+                            message: t(
+                                "views:securityQuestions.notification.updateQuestions.success.message"
+                            ),
+                            otherProps: {
+                                positive: true
+                            },
+                            visible: true
                         });
                     } else {
                         this.setState({
-                            notification: {
-                                ...notification,
-                                description: t(
-                                    "views:securityQuestions.notification.updateQuestions.error.description"
-                                ),
-                                message: t(
-                                    "views:securityQuestions.notification.updateQuestions.error.message"
-                                ),
-                                other: {
-                                    error: true
-                                }
-                            },
                             updateStatus: true
+                        });
+                        onNotificationFired({
+                            description: t(
+                                "views:securityQuestions.notification.updateQuestions.error.description"
+                            ),
+                            message: t(
+                                "views:securityQuestions.notification.updateQuestions.error.message"
+                            ),
+                            otherProps: {
+                                negative: true
+                            },
+                            visible: true
                         });
                     }
                 });
@@ -210,35 +213,35 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
                             });
                         this.setState({
                             isEdit: !this.state.isEdit,
-                            notification: {
-                                ...notification,
-                                description: t(
-                                    "views:securityQuestions.notification.addQuestions.success.description"
-                                ),
-                                message: t(
-                                    "views:securityQuestions.notification.addQuestions.success.message"
-                                ),
-                                other: {
-                                    success: true
-                                }
-                            },
                             updateStatus: true
+                        });
+                        onNotificationFired({
+                            description: t(
+                                "views:securityQuestions.notification.addQuestions.success.description"
+                            ),
+                            message: t(
+                                "views:securityQuestions.notification.addQuestions.success.message"
+                            ),
+                            otherProps: {
+                                positive: true
+                            },
+                            visible: true
                         });
                     } else {
                         this.setState({
-                            notification: {
-                                ...notification,
-                                description: t(
-                                    "views:securityQuestions.notification.addQuestions.error.description"
-                                ),
-                                message: t(
-                                    "views:securityQuestions.notification.addQuestions.error.message"
-                                ),
-                                other: {
-                                    error: true
-                                }
-                            },
                             updateStatus: true
+                        });
+                        onNotificationFired({
+                            description: t(
+                                "views:securityQuestions.notification.addQuestions.error.description"
+                            ),
+                            message: t(
+                                "views:securityQuestions.notification.addQuestions.error.message"
+                            ),
+                            otherProps: {
+                                negative: true
+                            },
+                            visible: true
                         });
                     }
                 });
@@ -247,8 +250,7 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
 
     public render() {
         const { t } = this.props;
-        const {challenges, notification} = this.state;
-        const {description, message, other} = notification;
+        const {challenges} = this.state;
         const displayButton = () => {
             if (this.state.isEdit) {
                 return (<div>
@@ -360,14 +362,9 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
                 <SettingsSection
                     header={t("views:securityQuestions.title")}
                     description={t("views:securityQuestions.subTitle")}
-                    isEdit={this.state.isEdit}
+                    showAction={this.state.isEdit}
                     onActionClick={this.handleEdit}
                 >
-                <Transition visible={this.state.updateStatus} duration={500}>
-                    <NotificationComponent {...other} onDismiss={this.handleDismiss} size="small"
-                                           description={description} message={message}
-                    />
-                </Transition>
                 {listItems()}
                 <Divider hidden/>
                 {displayButton()}
@@ -392,4 +389,4 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
     }
 }
 
-export const SecurityQsComponent = withTranslation()(SecurityQsComponentInner);
+export const SecurityQuestionsComponent = withTranslation()(SecurityQuestionsComponentInner);
