@@ -19,7 +19,14 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { ChangePasswordComponent, MultiFactor, NotificationComponent } from "../components";
+import {
+    ChangePasswordComponent,
+    ConsentManagementComponent,
+    MultiFactor,
+    NotificationComponent,
+    SecurityQuestionsComponent,
+    UserSessionsComponent
+} from "../components";
 import { InnerPageLayout } from "../layouts";
 import { createEmptyNotificationActionPayload, NotificationActionPayload } from "../models/notifications";
 
@@ -60,12 +67,27 @@ export const AccountSecurityPage = (): JSX.Element => {
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
-                        <ChangePasswordComponent />
+                        <ChangePasswordComponent onNotificationFired={ handleNotification } />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column width={ 16 }>
+                        <SecurityQuestionsComponent onNotificationFired={ handleNotification } />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
                         <MultiFactor onNotificationFired={ handleNotification }/>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column width={ 16 }>
+                        <UserSessionsComponent />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column width={ 16 }>
+                        <ConsentManagementComponent />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

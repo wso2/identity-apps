@@ -30,10 +30,10 @@ interface ThemeIconProps {
     floated?: string;
     icon: any;
     inline?: boolean;
-    relaxed?: boolean | string;
+    relaxed?: boolean | "very";
     rounded?: boolean;
     size?: ThemeIconSizes;
-    spaced?: string;
+    spaced?: "left" | "right";
     style?: object;
     square?: boolean;
     transparent?: boolean;

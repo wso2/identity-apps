@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
     Button,
@@ -46,7 +46,7 @@ interface AssociatedAccountsProps {
  * @param {BasicDetailsProps} props - Props injected to the basic details component.
  * @return {JSX.Element}
  */
-export const AssociatedAccountsComponent: React.FunctionComponent<AssociatedAccountsProps> = (
+export const AssociatedAccountsComponent: FunctionComponent<AssociatedAccountsProps> = (
     props: AssociatedAccountsProps
 ): JSX.Element => {
     const [associations, setAssociations] = useState([]);
@@ -92,9 +92,9 @@ export const AssociatedAccountsComponent: React.FunctionComponent<AssociatedAcco
      * The following method handles the change of state of the input fields.
      * The id of the event target will be used to set the state.
      *
-     * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event
+     * @param {ChangeEvent<HTMLInputElement>} e - Input change event
      */
-    const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const handleFieldChange = (e: ChangeEvent<HTMLInputElement>): void => {
         if (e.target.id === "username") {
             setUsername(e.target.value);
         } else if (e.target.id === "password") {
@@ -194,7 +194,7 @@ export const AssociatedAccountsComponent: React.FunctionComponent<AssociatedAcco
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
-            isEdit={ editingForm.addAccountForm }
+            showAction={ !editingForm.addAccountForm }
             actionTitle={ t("views:associatedAccounts.actionTitle") }
             onActionClick={ () => showFormEditView("addAccountForm") }
         >
@@ -253,8 +253,8 @@ export const AssociatedAccountsComponent: React.FunctionComponent<AssociatedAcco
                     (
                         <List divided verticalAlign="middle" className="main-content-inner">
                             {
-                                associations.map((association) => (
-                                    <List.Item className="inner-list-item">
+                                associations.map((association, index) => (
+                                    <List.Item className="inner-list-item" key={ index }>
                                         <Grid padded>
                                             <Grid.Row columns={ 2 }>
                                                 <Grid.Column width={ 11 } className="first-column">

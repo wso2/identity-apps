@@ -10,3 +10,4 @@
 ![monitor](modules/theme/src/themes/default/assets/images/icons/monitor-icon.svg) | Icon made by Pixel perfect from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/hand-shake_493808#term=shake%20hands&page=1&position=2)
 ![sms](modules/theme/src/themes/default/assets/images/icons/speech-bubble.svg) | Icon made by Alfredo Hernandez from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/speech-bubble_156974#term=sms&page=1&position=25)
 ![fido](modules/theme/src/themes/default/assets/images/icons/fido-logo.svg) | Icon from www.fidoalliance.org | [Link](https://fidoalliance.org)
+![package](modules/theme/src/themes/default/assets/images/icons/package.svg) | Icon made by Freepik from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/package-cube-box-for-delivery_45806#term=package&page=1&position=50)

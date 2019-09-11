@@ -21,7 +21,7 @@ import {
     apiRequest,
     fetchConsentedApps,
     setConsentReceipt,
-    showChangePasswordFormNotification,
+    showConsentManagementNotification,
     updateConsentedApps
 } from "../actions";
 import {
@@ -151,7 +151,7 @@ const handleFetchConsentedAppsError = ({ dispatch }) => (next) => (action) => {
     }
 
     // Dispatch an action to show the notification.
-    dispatch(showChangePasswordFormNotification(notification));
+    dispatch(showConsentManagementNotification(notification));
 };
 
 /**
@@ -256,7 +256,7 @@ const handleFetchConsentReceiptError = ({ dispatch }) => (next) => (action) => {
     }
 
     // Dispatch an action to show the notification.
-    dispatch(showChangePasswordFormNotification(notification));
+    dispatch(showConsentManagementNotification(notification));
 };
 
 /**
@@ -327,7 +327,7 @@ const handleRevokeConsentedAppSuccess = ({ dispatch }) => (next) => (action) => 
         // Dispatch actions to re-fetch the consented apps list and
         // to show a notification.
         dispatch(fetchConsentedApps());
-        dispatch(showChangePasswordFormNotification(notification));
+        dispatch(showConsentManagementNotification(notification));
     }
 };
 
@@ -374,7 +374,7 @@ const handleRevokeConsentedAppError = ({ dispatch }) => (next) => (action) => {
     }
 
     // Dispatch an action to show the notification.
-    dispatch(showChangePasswordFormNotification(notification));
+    dispatch(showConsentManagementNotification(notification));
 };
 
 /**
@@ -473,7 +473,7 @@ const handleUpdateConsentedClaimsSuccess = ({ dispatch }) => (next) => (action) 
         // Dispatch actions to re-fetch the consented apps list and
         // to show a notification.
         dispatch(fetchConsentedApps());
-        dispatch(showChangePasswordFormNotification(notification));
+        dispatch(showConsentManagementNotification(notification));
     }
 };
 
@@ -520,7 +520,7 @@ const handleUpdateConsentedClaimsError = ({ dispatch }) => (next) => (action) =>
     }
 
     // Dispatch an action to show the notification.
-    dispatch(showChangePasswordFormNotification(notification));
+    dispatch(showConsentManagementNotification(notification));
 };
 
 export const consentManagementMiddleware = [

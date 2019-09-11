@@ -15,7 +15,7 @@
     "update": "Update",
     "revoke": "Revoke",
     "revokeAll": "Revoke all",
-    "revokeSession": "Revoke session",
+    "terminateSession": "Terminate session",
     "active": "Active",
     "add": "Add",
     "edit": "Edit",
@@ -26,5 +26,7 @@
     "showLess": "Show less",
     "goBackHome": "Go back home",
     "switch": "Switch",
-    "remove": "Remove"
+    "remove": "Remove",
+    "terminate": "Terminate",
+    "challengeQuestionNumber": "Challenge Question {{number}}"
 }

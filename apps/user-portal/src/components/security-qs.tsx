@@ -20,27 +20,28 @@ import * as React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 import {
     Button,
-    Container, Dimmer,
     Divider,
     Dropdown,
     Form,
     Grid,
-    Header,
-    Icon,
-    List, Loader,
-    Message,
-    Segment, Transition
+    List
 } from "semantic-ui-react";
 import { addSecurityQs, getSecurityQs, updateSecurityQs } from "../actions/profile";
+import { SettingsSectionIcons } from "../configs";
 import { createEmptyChallenge } from "../models/challenges";
+import { NotificationActionPayload } from "../models/notifications";
 import { EditSection } from "./edit-section";
-import { NotificationComponent } from "./notification";
 import { SettingsSection } from "./settings-section";
 
+interface ComponentProps extends WithTranslation {
+    onNotificationFired: (notification: NotificationActionPayload) => void;
+}
+
+// TODO: Refactor with Hooks.
 /**
  * The security questions section of the user
  */
-class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
+class SecurityQuestionsComponentInner extends React.Component<ComponentProps, any> {
     /**
      * constructor
      * @param props
@@ -152,8 +153,8 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
      * on the status of the response
      */
     public handleSave = () => {
-        const { t } = this.props;
-        const {challenges, notification} = this.state;
+        const { t, onNotificationFired } = this.props;
+        const {challenges} = this.state;
         const data = this.state.challengeQuestions;
 
         if (challenges.answers && (challenges.answers.length > 0) && (this.state.isEdit)) {
@@ -167,35 +168,35 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
                             });
                         this.setState({
                             isEdit: !this.state.isEdit,
-                            notification: {
-                                ...notification,
-                                description: t(
-                                    "views:securityQuestions.notification.updateQuestions.success.description"
-                                ),
-                                message: t(
-                                    "views:securityQuestions.notification.updateQuestions.success.message"
-                                ),
-                                other: {
-                                    success: true
-                                }
-                            },
                             updateStatus: true
+                        });
+                        onNotificationFired({
+                            description: t(
+                                "views:securityQuestions.notification.updateQuestions.success.description"
+                            ),
+                            message: t(
+                                "views:securityQuestions.notification.updateQuestions.success.message"
+                            ),
+                            otherProps: {
+                                positive: true
+                            },
+                            visible: true
                         });
                     } else {
                         this.setState({
-                            notification: {
-                                ...notification,
-                                description: t(
-                                    "views:securityQuestions.notification.updateQuestions.error.description"
-                                ),
-                                message: t(
-                                    "views:securityQuestions.notification.updateQuestions.error.message"
-                                ),
-                                other: {
-                                    error: true
-                                }
-                            },
                             updateStatus: true
+                        });
+                        onNotificationFired({
+                            description: t(
+                                "views:securityQuestions.notification.updateQuestions.error.description"
+                            ),
+                            message: t(
+                                "views:securityQuestions.notification.updateQuestions.error.message"
+                            ),
+                            otherProps: {
+                                negative: true
+                            },
+                            visible: true
                         });
                     }
                 });
@@ -210,35 +211,35 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
                             });
                         this.setState({
                             isEdit: !this.state.isEdit,
-                            notification: {
-                                ...notification,
-                                description: t(
-                                    "views:securityQuestions.notification.addQuestions.success.description"
-                                ),
-                                message: t(
-                                    "views:securityQuestions.notification.addQuestions.success.message"
-                                ),
-                                other: {
-                                    success: true
-                                }
-                            },
                             updateStatus: true
+                        });
+                        onNotificationFired({
+                            description: t(
+                                "views:securityQuestions.notification.addQuestions.success.description"
+                            ),
+                            message: t(
+                                "views:securityQuestions.notification.addQuestions.success.message"
+                            ),
+                            otherProps: {
+                                positive: true
+                            },
+                            visible: true
                         });
                     } else {
                         this.setState({
-                            notification: {
-                                ...notification,
-                                description: t(
-                                    "views:securityQuestions.notification.addQuestions.error.description"
-                                ),
-                                message: t(
-                                    "views:securityQuestions.notification.addQuestions.error.message"
-                                ),
-                                other: {
-                                    error: true
-                                }
-                            },
                             updateStatus: true
+                        });
+                        onNotificationFired({
+                            description: t(
+                                "views:securityQuestions.notification.addQuestions.error.description"
+                            ),
+                            message: t(
+                                "views:securityQuestions.notification.addQuestions.error.message"
+                            ),
+                            otherProps: {
+                                negative: true
+                            },
+                            visible: true
                         });
                     }
                 });
@@ -247,130 +248,125 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
 
     public render() {
         const { t } = this.props;
-        const {challenges, notification} = this.state;
-        const {description, message, other} = notification;
-        const displayButton = () => {
-            if (this.state.isEdit) {
-                return (<div>
-                    <Divider/>
-                    <Button id="lastName" primary onClick={this.handleSave} floated="left">
-                        {t("common:save")}
-                    </Button>
-                    <Button className="link-button" id="lastNameEdit" default floated="left" onClick={this.handleEdit}>
-                        {t("common:cancel")}
-                    </Button>
-                </div>);
-            } else if (challenges.answers && (challenges.answers.length > 0) && (!this.state.isEdit)) {
-                return (<div>
-                    <Button primary onClick={this.handleEdit} floated="left">
-                        {t("common:change")}
-                    </Button>
-                </div>);
-            } else {
-                return null;
-            }
-        };
+        const {challenges} = this.state;
         const listItems = () => {
             if (challenges.answers && (challenges.answers.length > 0) && (!this.state.isEdit)) {
-                return challenges.answers.map((answer) => {
-                    return (
-                    <>
-                        <Divider hidden />
-                        <Dimmer active={false} inverted>
-                            <Loader>Loading</Loader>
-                        </Dimmer>
-                        <Grid>
-                            <Grid.Row>
-                                <Grid.Column>
-                                <List divided>
-                                    <List.Item>
-                                        <List.Content>
-                                            <List.Header>{answer.question}</List.Header>
-                                        </List.Content>
+                return (
+                    <List divided verticalAlign="middle" className="main-content-inner">
+                        {
+                            challenges.answers.map((answer) => {
+                                return (
+                                    <List.Item className="inner-list-item">
+                                        <Grid padded>
+                                            <Grid.Row columns={ 2 }>
+                                                <Grid.Column width={ 16 } className="first-column">
+                                                    <List.Content>{ answer.question }</List.Content>
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        </Grid>
                                     </List.Item>
-                                </List>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </>);
-                });
+                                );
+                            })
+                        }
+                    </List>
+                );
             } else if (this.state.isEdit) {
                 if (challenges.questions && (challenges.questions.length > 0)) {
-                    return challenges.questions.map((questionSet) => {
-                        return (
-                        <>
+                    return (
                         <EditSection>
-                            <Divider hidden />
-                            <Grid>
-                                <Grid.Row>
-                                <Grid.Column width={3}>
-                                        <label>Challenge Question</label>
-                                    </Grid.Column>
-                                    <Grid.Column width={10}>
-                                        <Dropdown
-                                            name={questionSet.questionSetId}
-                                            selection
-                                            fluid
-                                            placeholder="Select a Question"
-                                            onChange={this.handleDropdownChange}
-                                            options={
-                                                questionSet.questions.map((ques, index) => {
-                                                    return {
-                                                        key: index,
-                                                        text: ques.question,
-                                                        value: ques
-                                                    };
-                                                })} />
-                                    </Grid.Column>
-                                </Grid.Row>
-                                <Grid.Row>
-                                    <Grid.Column width={3}>
-                                        <label>Your Answer</label>
-                                    </Grid.Column>
-                                    <Grid.Column width={10}>
-                                        <Form.Input
-                                            required
-                                            name={questionSet.questionSetId}
-                                            fluid
-                                            onChange={this.handleInputChange}/>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                            <Divider hidden />
+                            <Form onSubmit={ this.handleSave }>
+                                <Grid>
+                                    {
+                                        challenges.questions.map((questionSet, index) => (
+                                            <Grid.Row columns={ 2 }>
+                                                <Grid.Column width={ 4 }>
+                                                    { t("common:challengeQuestionNumber", {number: index + 1 }) }
+                                                </Grid.Column>
+                                                <Grid.Column width={ 12 }>
+                                                    <Form.Field>
+                                                        <label>
+                                                            { t("views:securityQuestions.forms.securityQuestionsForm." +
+                                                                "inputs.question.label") }
+                                                        </label>
+                                                        <Dropdown
+                                                            name={ questionSet.questionSetId }
+                                                            selection
+                                                            placeholder={
+                                                                t("views:securityQuestions.forms." +
+                                                                    "securityQuestionsForm.inputs.question.placeholder")
+                                                            }
+                                                            onChange={ this.handleDropdownChange }
+                                                            options={
+                                                                questionSet.questions.map((ques, i) => {
+                                                                    return {
+                                                                        key: i,
+                                                                        text: ques.question,
+                                                                        value: ques
+                                                                    };
+                                                                })
+                                                            }
+                                                        />
+                                                    </Form.Field>
+                                                    <Form.Field>
+                                                        <label>
+                                                            { t("views:securityQuestions.forms.securityQuestionsForm" +
+                                                                ".inputs.answer.label") }
+                                                        </label>
+                                                        <Form.Input
+                                                            required
+                                                            id={ questionSet.questionSetId }
+                                                            placeholder={
+                                                                t("views:securityQuestions.forms." +
+                                                                    "securityQuestionsForm.inputs.answer.placeholder")
+                                                            }
+                                                            onChange={ this.handleInputChange }/>
+                                                    </Form.Field>
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        ))
+                                    }
+                                    <Divider hidden/>
+                                    <Grid.Row columns={ 2 }>
+                                        { /* TODO: Find a better way to offset grid */ }
+                                        <Grid.Column width={ 4 }>{" "}</Grid.Column>
+                                        <Grid.Column width={ 12 }>
+                                            <Button type="submit" primary>
+                                                { t("common:save") }
+                                            </Button>
+                                            <Button
+                                                className="link-button"
+                                                onClick={ this.handleEdit }
+                                            >
+                                                { t("common:cancel") }
+                                            </Button>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                            </Form>
                         </EditSection>
-                        </>);
-                    });
+                    );
                 }
-            } else {
-                return (
-                    <>
-                        <Segment size="small" placeholder>
-                            <Header icon>
-                                <Icon name="search" />
-                                {t("views:securityQuestions.noConfiguration")}
-                            </Header>
-                            <Button primary size="small" onClick={this.handleEdit}>{t("common:configure")}</Button>
-                        </Segment>
-                    </>
-                );
             }
         };
         return (
             <>
                 <SettingsSection
-                    header={t("views:securityQuestions.title")}
-                    description={t("views:securityQuestions.subTitle")}
-                    isEdit={this.state.isEdit}
-                    onActionClick={this.handleEdit}
+                    contentPadding={ false }
+                    header={ t("views:securityQuestions.title") }
+                    description={ t("views:securityQuestions.subTitle") }
+                    icon={ SettingsSectionIcons.securityQuestions }
+                    iconSize="auto"
+                    iconStyle="colored"
+                    iconFloated="right"
+                    showAction={ !this.state.isEdit }
+                    actionTitle={
+                        (challenges.answers && (challenges.answers.length > 0))
+                            ? t("views:securityQuestions.actionTitles.change")
+                            : t("views:securityQuestions.actionTitles.configure")
+                    }
+                    onActionClick={ this.handleEdit }
                 >
-                <Transition visible={this.state.updateStatus} duration={500}>
-                    <NotificationComponent {...other} onDismiss={this.handleDismiss} size="small"
-                                           description={description} message={message}
-                    />
-                </Transition>
-                {listItems()}
-                <Divider hidden/>
-                {displayButton()}
+                    {listItems()}
                 </SettingsSection>
             </>);
     }
@@ -392,4 +388,4 @@ class SecurityQsComponentInner extends React.Component<WithTranslation, any> {
     }
 }
 
-export const SecurityQsComponent = withTranslation()(SecurityQsComponentInner);
+export const SecurityQuestionsComponent = withTranslation()(SecurityQuestionsComponentInner);
