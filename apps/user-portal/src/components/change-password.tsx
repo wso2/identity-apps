@@ -21,6 +21,8 @@ import { withTranslation, WithTranslation } from "react-i18next";
 import { Button, Container, Divider, Form, Grid, Header, Icon, Modal } from "semantic-ui-react";
 import { updatePassword } from "../actions";
 import { NotificationComponent } from "./notification";
+import {SettingsSection} from "./settings-section";
+import {EditSection} from "./edit-section";
 
 /**
  * Component State types
@@ -33,6 +35,7 @@ interface ComponentStateInterface {
     touched: InputTouchedStateInterface;
     errors: InputErrorStateInterface;
     hasErrors: boolean;
+    isChange: boolean;
     types: InputTypesStateInterface;
     showConfirmationModal: boolean;
 }
@@ -83,6 +86,7 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
         currentPassword: "",
         errors: { currentPassword: "", newPassword: "", confirmPassword: "" },
         hasErrors: true,
+        isChange: false,
         newPassword: "",
         notification: {
             description: "",
@@ -348,11 +352,20 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
         this.setState({ showConfirmationModal: false });
     }
 
+    public handleShowChangeView = (): void => {
+        this.setState({isChange: true});
+    }
+
+    public handleCancelChangeView = (): void => {
+        this.setState({isChange: false});
+    }
+
     public render() {
         const {
             currentPassword,
             newPassword,
             confirmPassword,
+            isChange,
             notification,
             errors,
             touched,
@@ -382,21 +395,13 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
             </Modal>
         );
 
-        return (
-            <>
-                <Header>{t("views:changePassword.title")}</Header>
-                <Header.Subheader>{t("views:changePassword.subTitle")}</Header.Subheader>
-                <Divider hidden/>
-                {visible ? (
-                    <NotificationComponent
-                        message={message}
-                        description={description}
-                        onDismiss={this.handleNotificationDismiss}
-                        {...otherProps}
-                    />
-                ) : null}
+        const showChangePasswordView = (
+            isChange
+                ?
 
-                <Form onSubmit={this.handleSubmit}>
+                (
+                    <EditSection>
+                    <Form onSubmit={this.handleSubmit}>
                     <Grid>
                         <Grid.Row columns={1}>
                             <Grid.Column mobile={16} tablet={16} computer={9}>
@@ -511,11 +516,38 @@ class ChangePasswordComponentInner extends React.Component<WithTranslation, Comp
                         </Grid.Row>
                     </Grid>
                     <br />
-                    <Button primary type="submit">
+                    <Button primary type="submit" size="mini">
                         {t("common:submit")}
                     </Button>
+                        <Button default onClick={this.handleCancelChangeView} size="mini">
+                            {t("common:cancel")}
+                        </Button>
                 </Form>
+                </EditSection>
+                )
+                : null
+        );
+
+        return (
+            <>
+                <SettingsSection
+                    header={t("views:changePassword.title")}
+                    description={t("views:changePassword.subTitle")}
+                    actionTitle="Change"
+                    onClick={this.handleShowChangeView}
+                    isEdit={isChange}
+                >
+                {visible ? (
+                    <NotificationComponent
+                        message={message}
+                        description={description}
+                        onDismiss={this.handleNotificationDismiss}
+                        {...otherProps}
+                    />
+                ) : null}
+                {showChangePasswordView}
                 {confirmationModal}
+                </SettingsSection>
             </>
         );
     }
