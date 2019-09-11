@@ -19,7 +19,7 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
-import { ChangePasswordComponent } from "../components";
+import { ChangePasswordComponent, MultiFactor } from "../components";
 import { InnerPageLayout } from "../layouts";
 
 /**
@@ -39,6 +39,11 @@ export const AccountSecurityPage = (): JSX.Element => {
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
                         <ChangePasswordComponent />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column width={ 16 }>
+                        <MultiFactor />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
