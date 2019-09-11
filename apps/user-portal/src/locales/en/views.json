@@ -191,7 +191,10 @@
     "securityQuestions": {
         "title": "Security Questions",
         "subTitle": "Add and Update Account Recovery Challenge Questions",
-        "actionTitle": "Configure security questions",
+        "actionTitles": {
+            "configure": "Configure security questions",
+            "change": "Change security questions"
+        },
         "forms": {
             "securityQuestionsForm": {
                 "inputs": {

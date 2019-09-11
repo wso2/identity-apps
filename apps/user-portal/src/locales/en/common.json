@@ -27,5 +27,6 @@
     "goBackHome": "Go back home",
     "switch": "Switch",
     "remove": "Remove",
-    "terminate": "Terminate"
+    "terminate": "Terminate",
+    "challengeQuestionNumber": "Challenge Question {{number}}"
 }
