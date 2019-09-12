@@ -183,9 +183,10 @@ export const SmsOtp: React.FunctionComponent<SMSOTPProps> = (props: SMSOTPProps)
                                 <List.Item>
                                     <List.Content>
                                         <Form>
-                                            <Form.Field width={8}>
-                                                <label>Mobile Number</label><br/>
-                                                <input onChange={handleFieldChange} value={editedMobile}/><br/><br/>
+                                            <Form.Field width={9}>
+                                                <label>Mobile Number</label>
+                                                <input onChange={handleFieldChange} value={editedMobile}/>
+                                                <br /><br />
                                                 <p style={{fontSize: "12px"}}>
                                                     <Icon
                                                         color="grey"
