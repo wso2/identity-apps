@@ -40,8 +40,8 @@ export type AppState = ReturnType<typeof reducers>;
 export default function configureStore() {
     // Set of custom middlewares.
     const middlewares = [
-        ...consentManagementMiddleware,
         ...accountSecurityMiddleware,
+        ...consentManagementMiddleware,
         ...userSessionsMiddleware,
         apiMiddleware
     ];
