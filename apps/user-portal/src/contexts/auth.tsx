@@ -16,11 +16,12 @@
  * under the License.
  */
 
-import React, { createContext, useContext, useEffect, useReducer } from "react";
+import React, { createContext, useEffect, useReducer } from "react";
 import { useSignIn, useSignOut } from "../middlewares/authenticate";
+import { AuthContextInterface } from "../models/auth";
 import { authenticateInitialState, authenticateReducer } from "../reducers/authenticate";
 
-const AuthContext = createContext({
+const AuthContext = createContext<AuthContextInterface>({
     dispatch: (() => 0) as React.Dispatch<any>,
     signIn: () => { return; },
     signOut: () => { return; },
@@ -29,7 +30,6 @@ const AuthContext = createContext({
 
 const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authenticateReducer, authenticateInitialState);
-    const ctx = useContext(AuthContext);
 
     const signIn = () => { useSignIn(state, dispatch); };
     const signOut = () => { useSignOut(state, dispatch); };

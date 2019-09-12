@@ -19,11 +19,12 @@
 
 import { AuthenticateSessionUtil, AuthenticateTokenKeys, AuthenticateUserKeys } from "@wso2is/authenticate";
 import { authenticateActionTypes } from "../actions/types";
+import { AuthStateInterface } from "../models/auth";
 
 /**
  * Initial authenticate state.
  */
-const authenticateInitialState = {
+const authenticateInitialState: AuthStateInterface = {
     displayName: "",
     emails: "",
     isAuth: false,
@@ -65,7 +66,7 @@ const authenticateReducer = (state = authenticateInitialState, action) => {
                 ...authenticateInitialState
             };
         default:
-            throw new Error("Unsupported action. Suported actions are: SET_SIGN_IN, SET_SIGN_OUT & RESET_AUTHENTICATION");
+            return state;
     }
 };
 

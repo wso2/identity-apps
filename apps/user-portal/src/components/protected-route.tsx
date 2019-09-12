@@ -25,6 +25,9 @@ import { updateAuthenticationCallbackUrl } from "../middlewares";
 const ProtectedRoute = ({ component: Component, ...rest }) => {
     const { state } = useContext(AuthContext);
 
+    /**
+     * Update existing location path in the state to recall upon page refresh or authentication callback.
+     */
     if (history.location.pathname !== APP_LOGIN_PATH) {
         updateAuthenticationCallbackUrl(history.location.pathname);
     }
