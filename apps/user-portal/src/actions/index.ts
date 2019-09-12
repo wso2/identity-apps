@@ -18,7 +18,7 @@
 
 export * from "./account-security";
 export * from "./api";
+export * from "./authenticate";
 export * from "./consent-management";
-export * from "./login";
 export * from "./profile";
 export * from "./user-sessions";

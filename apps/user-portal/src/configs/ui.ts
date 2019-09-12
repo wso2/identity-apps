@@ -16,7 +16,15 @@
  * under the License.
  */
 
-import { DefaultAppIcon, DummyUser, HomeTileIcons, Logo, MFAIconSet, SettigsSectionIconSet, SidePanelIconSet } from "@wso2is/theme";
+import {
+    DefaultAppIcon,
+    DummyUser,
+    HomeTileIcons,
+    Logo,
+    MFAIconSet,
+    SettigsSectionIconSet,
+    SidePanelIconSet
+} from "@wso2is/theme";
 
 type ImageType = string;
 type TitleTextType = string;

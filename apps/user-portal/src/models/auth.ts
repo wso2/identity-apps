@@ -16,26 +16,20 @@
  * under the License.
  */
 
-import { BasicUserInterface, createEmptyBasicUser } from "./user";
-
-export interface AuthProviderInterface {
-    history: any;
-}
-
-export interface AuthContextInterface extends BasicUserInterface {
+export interface AuthStateInterface {
     children?: any;
+    displayName: string;
+    emails: string;
     isAuth: boolean;
-    login: (loginInfo: object, location: string) => void;
+    location: string;
     loginInit: boolean;
-    logout: () => void;
     logoutInit: boolean;
+    username: string;
 }
 
-export const createEmptyAuthContext = (): AuthContextInterface => ({
-    isAuth: false,
-    login: () => null,
-    loginInit: false,
-    logout: () => null,
-    logoutInit: false,
-    ...createEmptyBasicUser()
-});
+export interface AuthContextInterface {
+    dispatch: ({type}: {type: string}) => void;
+    signIn: () => void;
+    signOut: () => void;
+    state: AuthStateInterface;
+}

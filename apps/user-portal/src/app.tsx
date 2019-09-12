@@ -16,93 +16,74 @@
  * under the License.
  */
 
-import * as React from "react";
+import React, { useContext } from "react";
 import { I18nextProvider } from "react-i18next";
 import { Provider } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { Dimmer, Loader } from "semantic-ui-react";
-import { AuthConsumer, AuthProvider } from "./components/auth-context";
 import ProtectedRoute from "./components/protected-route";
 import { routes } from "./configs";
+import { AuthContext } from "./contexts/auth";
 import { i18n } from "./helpers";
 import history from "./helpers/history";
 import configureStore from "./helpers/store";
 
 const store = configureStore();
 
-const LoginPage = (props) => {
-    const location = (history.location.state && history.location.state.details) ?
-        history.location.state.details : history.location.pathname;
+const App = () =>  {
+    const { signIn, signOut } = useContext(AuthContext);
 
-    props.loginFunction(location);
-
-    return null;
+    return (
+        <Router history={history}>
+            <div className="container-fluid">
+                <I18nextProvider i18n={i18n}>
+                    <Provider store={store}>
+                        {/* TODO: Need to re-enable with app context */}
+                        {/* {(!state.isAuth) &&
+                            <Dimmer active inverted>
+                                <Loader>Loading</Loader>
+                            </Dimmer>
+                        } */}
+                        <Switch>
+                            <Redirect exact path="/" to={APP_LOGIN_PATH} />
+                            <Route path={APP_LOGIN_PATH} render={() => {
+                                signIn();
+                                return null;
+                            }} />
+                            <Route path="/logout" render={() => {
+                                signOut();
+                                return null;
+                            }} />
+                            {
+                                routes.map((route, index) => {
+                                    return (
+                                        route.protected ?
+                                            (
+                                                <ProtectedRoute
+                                                    component={ route.component }
+                                                    path={ route.path }
+                                                    key={ index }
+                                                />
+                                            )
+                                            :
+                                            (
+                                                <Route
+                                                    path={ route.path }
+                                                    render={ (props) =>
+                                                        (<route.component { ...props } />)
+                                                    }
+                                                    key={ index }
+                                                />
+                                            )
+                                    );
+                                })
+                            }
+                        </Switch>
+                    </Provider>
+                </I18nextProvider>
+            </div>
+        </Router>
+    );
 };
-
-const LogoutPage = (props) => {
-    props.logoutFunction();
-    return null;
-};
-
-class App extends React.Component<any, any> {
-    public render() {
-        return (
-            <Router history={history}>
-                <div className="container-fluid">
-                    <I18nextProvider i18n={i18n}>
-                        <Provider store={store}>
-                            <AuthProvider history={history}>
-                                <AuthConsumer>
-                                    {({ login, logout, isAuth }) => (
-                                        <>
-                                            {(!isAuth) &&
-                                                <Dimmer active inverted>
-                                                    <Loader>Loading</Loader>
-                                                </Dimmer>
-                                            }
-                                            <Switch>
-                                                <Redirect exact path="/" to="/login" />
-                                                <Route path="/login" render={(props) => (
-                                                    <LoginPage loginFunction={login} {...props} />
-                                                )} />
-                                                <Route path="/logout" render={(props) => (
-                                                    <LogoutPage logoutFunction={logout} {...props} />
-                                                )} />
-                                                {
-                                                    routes.map((route, index) => {
-                                                        return (
-                                                            route.protected ?
-                                                                (
-                                                                    <ProtectedRoute
-                                                                        component={ route.component }
-                                                                        path={ route.path }
-                                                                        key={ index }
-                                                                    />
-                                                                )
-                                                                :
-                                                                (
-                                                                    <Route
-                                                                        path="/logout"
-                                                                        render={ (props) =>
-                                                                            (<route.component { ...props } />)
-                                                                        }
-                                                                        key={ index }
-                                                                    />
-                                                                )
-                                                        );
-                                                    })
-                                                }
-                                            </Switch>
-                                        </>
-                                    )}
-                                </AuthConsumer>
-                            </AuthProvider>
-                        </Provider>
-                    </I18nextProvider>
-                </div>
-            </Router>
-        );
-    }
-}
 
 export default App;

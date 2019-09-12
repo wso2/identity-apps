@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import * as React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } from "semantic-ui-react";
-import { AuthConsumer } from "./auth-context";
+import { AuthContext } from "../contexts/auth";
 import { Title, UserImageDummy } from "./ui";
 
 /**
@@ -37,7 +37,9 @@ interface HeaderProps {
  * @return {JSX.Element}
  */
 export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps): JSX.Element => {
+    const { state } = useContext(AuthContext);
     const { onSidePanelToggleClick, showSidePanelToggle } = props;
+
     return (
         <Menu id="app-header" fixed="top" borderless>
             <Container>
@@ -50,48 +52,44 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                 <Menu.Item as={ Link } to={ APP_HOME_PATH } header>
                     <Title style={ { marginTop: 0 } }/>
                 </Menu.Item>
-                <AuthConsumer>
-                    { ({ displayName, emails, username }) => (
-                        <Menu.Menu position="right">
-                            <Dropdown
-                                item
-                                floating
-                                text={ (displayName !== "undefined") ? displayName : username }
-                                className="user-dropdown">
-                                <Dropdown.Menu>
-                                    <Item.Group>
-                                        <Item className="header">
-                                            <Item.Image size="tiny" circular src={ UserImageDummy }/>
+                <Menu.Menu position="right">
+                    <Dropdown
+                        item
+                        floating
+                        text={ (state.displayName !== "undefined") ? state.displayName : state.username }
+                        className="user-dropdown">
+                        <Dropdown.Menu>
+                            <Item.Group>
+                                <Item className="header">
+                                    <Item.Image size="tiny" circular src={ UserImageDummy }/>
 
-                                            <Item.Content verticalAlign="middle">
-                                                <Item.Description>
-                                                    <div>{ username }</div>
-                                                    { (emails !== "undefined"
-                                                        && emails !== undefined
-                                                        && emails !== "null"
-                                                        && emails !== null) &&
-                                                    <div>{ emails }</div>
-                                                    }
-                                                    <Divider hidden/>
-                                                    <Button as={ Link } to="/my-apps" size="tiny"
-                                                            primary>My Apps</Button>
-                                                </Item.Description>
-                                            </Item.Content>
-                                        </Item>
-                                    </Item.Group>
-                                    <Dropdown.Divider/>
-                                    <Dropdown.Item
-                                        icon="shield"
-                                        as={ Link }
-                                        to="/overview"
-                                        text="Identity Server Account"/>
-                                    <Dropdown.Divider/>
-                                    <Dropdown.Item as={ Link } to="/logout" text="Logout"/>
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </Menu.Menu>
-                    ) }
-                </AuthConsumer>
+                                    <Item.Content verticalAlign="middle">
+                                        <Item.Description>
+                                            <div>{ state.username }</div>
+                                            { (state.emails !== "undefined"
+                                                && state.emails !== undefined
+                                                && state.emails !== "null"
+                                                && state.emails !== null) &&
+                                            <div>{ state.emails }</div>
+                                            }
+                                            <Divider hidden/>
+                                            <Button as={ Link } to="/my-apps" size="tiny"
+                                                    primary>My Apps</Button>
+                                        </Item.Description>
+                                    </Item.Content>
+                                </Item>
+                            </Item.Group>
+                            <Dropdown.Divider/>
+                            <Dropdown.Item
+                                icon="shield"
+                                as={ Link }
+                                to="/overview"
+                                text="Identity Server Account"/>
+                            <Dropdown.Divider/>
+                            <Dropdown.Item as={ Link } to="/logout" text="Logout"/>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Menu.Menu>
             </Container>
         </Menu>
     );
