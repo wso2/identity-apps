@@ -16,25 +16,29 @@
  * under the License.
  */
 
-import * as React from "react";
+import React, { useContext, useEffect } from "react";
 import { Redirect, Route } from "react-router-dom";
+import { AuthContext } from "../contexts/auth";
 import history from "../helpers/history";
-import { AuthConsumer } from "./auth-context";
+import { updateAuthenticationCallbackUrl } from "../middlewares";
 
-const ProtectedRoute = ({ component: Component, ...rest }) => (
-    <AuthConsumer>
-        {({ isAuth }) => (
-            <Route
-                render={(props) =>
-                    isAuth ? <Component {...props} /> : <Redirect to={{
-                        pathname: "/login",
-                        state: { details: history.location.pathname }
-                      }} />
-                }
-                {...rest}
-            />
-        )}
-    </AuthConsumer>
-);
+const ProtectedRoute = ({ component: Component, ...rest }) => {
+    const { state } = useContext(AuthContext);
+
+    if (history.location.pathname !== APP_LOGIN_PATH) {
+        updateAuthenticationCallbackUrl(history.location.pathname);
+    }
+
+    return (
+        <Route
+            render={(props) =>
+                state.isAuth ?
+                    <Component {...props} /> :
+                    <Redirect to={APP_LOGIN_PATH} />
+            }
+            {...rest}
+        />
+    );
+};
 
 export default ProtectedRoute;

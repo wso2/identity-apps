@@ -16,8 +16,25 @@
  * under the License.
  */
 
-export * from "./api";
-export * from "./account-security";
-export * from "./authenticate";
-export * from "./consent-management";
-export * from "./user-sessions";
+import { authenticateActionTypes } from "./types";
+
+/**
+ * Dispatches an action of type `SET_SIGN_IN`.
+ */
+export const setSignIn = () => ({
+    type: authenticateActionTypes.SET_SIGN_IN
+});
+
+/**
+ * Dispatches an action of type `SET_SIGN_OUT`.
+ */
+export const setSignOut = () => ({
+    type: authenticateActionTypes.SET_SIGN_OUT
+});
+
+/**
+ * Dispatches an action of type `RESET_AUTHENTICATION`.
+ */
+export const resetAuthentication = () => ({
+    type: authenticateActionTypes.RESET_AUTHENTICATION
+});
