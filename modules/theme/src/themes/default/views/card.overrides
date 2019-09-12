@@ -27,7 +27,7 @@
             padding: 0;
         }
         .header-section {
-            padding: @settingsCardPadding;
+            padding: @settingsCardHeaderPadding;
 
             // override the semantic H2 margin
             .ui.header {
