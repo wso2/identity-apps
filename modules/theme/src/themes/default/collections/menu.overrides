@@ -17,6 +17,28 @@
  *
  */
 
+/*******************************
+         Theme Overrides
+*******************************/
+
+.ui.menu.fixed {
+    &.app-header {
+        border-top-style: @appHeaderTopBorderStyle;
+        border-top-width: @appHeaderTopBorderWidth;
+        border-top-color: @appHeaderTopBorderColor;
+
+        .ui.dropdown.item.user-dropdown .menu .item.header {
+            &, &:not(.filtered) {
+                display: flex;
+                padding: @relativeMini @relativeLarge;
+            }
+            .ui.divider {
+                margin: 0.5rem 0rem;
+            }
+        }
+    }
+}
+
 .ui.vertical.menu {
     &.side-panel {
         // override the box shadow and border in the semantic ui menu component
