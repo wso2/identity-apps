@@ -53,11 +53,6 @@ import {
 import { ThemeIcon } from "./icon";
 import { SettingsSection } from "./settings-section";
 
-// API returns the SP description for consented apps. The following
-// is returned for the user portal and will be used to hide the user
-// portal from the list of consented apps.
-const USER_PORTAL_IDENTIFIER = "This is the user portal application.";
-
 /**
  * Consent management component.
  *
@@ -392,10 +387,6 @@ export const ConsentManagementComponent: FunctionComponent<{}> = (): JSX.Element
                             createConsentedAppsListPlaceholder()
                             :
                             consentedApps && consentedApps.map((consent: ConsentInterface) => {
-                                // Hide the user portal to avoid suicides.
-                                if (consent.spDisplayName === USER_PORTAL_IDENTIFIER) {
-                                    return;
-                                }
                                 return (
                                     <List.Item className="inner-list-item" key={ consent.consentReceiptID }>
                                         <Grid padded>

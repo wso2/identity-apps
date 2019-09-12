@@ -292,7 +292,6 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                                                         </Grid.Column>
                                                         <Grid.Column width={ 8 }>
                                                             <Button
-                                                                size="mini"
                                                                 negative
                                                                 onClick={
                                                                     () => handleTerminateUserSessionClick(session)

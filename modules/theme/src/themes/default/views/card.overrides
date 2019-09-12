@@ -24,10 +24,10 @@
             margin-bottom: 0.3em;
         }
         .no-padding {
-            padding: unset;
+            padding: 0;
         }
         .header-section {
-            padding: @settingsCardPadding;
+            padding: @settingsCardHeaderPadding;
 
             // override the semantic H2 margin
             .ui.header {
@@ -40,7 +40,7 @@
                     padding: @settingsCardPadding;
                 }
                 .inner-list-item {
-                    padding: unset;
+                    padding: 0;
 
                     .first-column {
                         padding-left: @settingsCardPadding;
@@ -52,7 +52,7 @@
             }
         }
         .extra-content {
-            padding: unset;
+            padding: 0;
 
             .action-button {
                 padding: 16px @settingsCardPadding;
