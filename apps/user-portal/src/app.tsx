@@ -57,11 +57,21 @@ const App = () =>  {
                             {
                                 routes.map((route, index) => {
                                     return (
-                                        route.protected &&
+                                        route.protected ?
                                             (
                                                 <ProtectedRoute
                                                     component={ route.component }
                                                     path={ route.path }
+                                                    key={ index }
+                                                />
+                                            )
+                                            :
+                                            (
+                                                <Route
+                                                    path={ route.path }
+                                                    render={ (props) =>
+                                                        (<route.component { ...props } />)
+                                                    }
                                                     key={ index }
                                                 />
                                             )
