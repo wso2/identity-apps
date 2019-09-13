@@ -84,7 +84,7 @@ export const getJWKForTheIdToken = (jwtHeader: string, keys: JWKInterface[]) => 
     }
 
     throw new Error("Failed to find the 'kid' specified in the id_token. 'kid' found in the header : "
-        + headerJSON.kid + ", Expected values: " + keys.map(key => key.kid).join(", "));
+        + headerJSON.kid + ", Expected values: " + keys.map((key) => key.kid).join(", "));
 };
 
 /**

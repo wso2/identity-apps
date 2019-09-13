@@ -17,14 +17,15 @@
  */
 
 import axios from "axios";
+// tslint:disable-next-line:no-submodule-imports
+import { Error } from "tslint/lib/error";
 import { AUTHORIZATION_CODE, OIDC_SCOPE, PKCE_CODE_VERIFIER, REQUEST_PARAMS } from "../constants";
-import { getCodeChallenge, getCodeVerifier, getJWKForTheIdToken, isValidIdToken } from "./crypto";
-import { OIDCRequestParamsInterface } from "../models/oidc-request-params";
-import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
 import { AuthenticatedUserInterface } from "../models/authenticated-user";
+import { OIDCRequestParamsInterface } from "../models/oidc-request-params";
 import { TokenResponseInterface } from "../models/token-response";
-import { Error} from "tslint/lib/error";
+import { getCodeChallenge, getCodeVerifier, getJWKForTheIdToken, isValidIdToken } from "./crypto";
 import { getAuthorizeEndpoint, getJwksUri, getRevokeTokenEndpoint, getTokenEndpoint } from "./op-config";
+import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
 
 /**
  * Checks whether authorization code present in the request.
@@ -42,7 +43,7 @@ export const hasAuthorizationCode = () => {
  */
 export const sendAuthorizationRequest = (requestParams: OIDCRequestParamsInterface) => {
     const authorizeEndpoint = getAuthorizeEndpoint();
-    if (!authorizeEndpoint || authorizeEndpoint.trim().length == 0) {
+    if (!authorizeEndpoint || authorizeEndpoint.trim().length === 0) {
         return Promise.reject(new Error("Invalid authorize endpoint found."));
     }
 
@@ -77,7 +78,7 @@ export const sendAuthorizationRequest = (requestParams: OIDCRequestParamsInterfa
  */
 export const sendTokenRequest = (requestParams: OIDCRequestParamsInterface): Promise<TokenResponseInterface> => {
     const tokenEndpoint = getTokenEndpoint();
-    if (!tokenEndpoint || tokenEndpoint.trim().length == 0) {
+    if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
         return Promise.reject(new Error("Invalid token endpoint found."));
     }
     const code = new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE);
@@ -97,20 +98,20 @@ export const sendTokenRequest = (requestParams: OIDCRequestParamsInterface): Pro
     }
 
     return axios.post(tokenEndpoint, body.join("&"), getTokenRequestHeaders(requestParams.clientHost))
-        .then(response => {
+        .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Invalid status code received in the token response: "
                     + response.status));
             }
             return validateIdToken(requestParams, response.data.id_token).then((valid) => {
                 if (valid) {
-                    setSessionParameter(REQUEST_PARAMS, JSON.stringify(requestParams))
+                    setSessionParameter(REQUEST_PARAMS, JSON.stringify(requestParams));
                     const tokenResponse: TokenResponseInterface = {
                         accessToken: response.data.access_token,
-                        idToken: response.data.id_token,
                         expiresIn: response.data.expires_in,
-                        scope: response.data.scope,
+                        idToken: response.data.id_token,
                         refreshToken: response.data.refresh_token,
+                        scope: response.data.scope,
                         tokenType: response.data.token_type
                     };
                     return Promise.resolve(tokenResponse);
@@ -132,8 +133,8 @@ export const sendTokenRequest = (requestParams: OIDCRequestParamsInterface): Pro
 export const sendRefreshTokenRequest = (requestParams: OIDCRequestParamsInterface, refreshToken: string):
     Promise<TokenResponseInterface> => {
     const tokenEndpoint = getTokenEndpoint();
-    if (!tokenEndpoint || tokenEndpoint.trim().length == 0) {
-        return Promise.reject("Invalid token endpoint found.")
+    if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
+        return Promise.reject("Invalid token endpoint found.");
     }
 
     const body = [];
@@ -147,20 +148,22 @@ export const sendRefreshTokenRequest = (requestParams: OIDCRequestParamsInterfac
                 return Promise.reject(new Error("Invalid status code received in the refresh token response: "
                     + response.status));
             }
-            return validateIdToken(requestParams, response.data.id_token).then(valid => {
-                if (valid) {
-                    const tokenResponse: TokenResponseInterface = {
-                        accessToken: response.data.access_token,
-                        idToken: response.data.id_token,
-                        expiresIn: response.data.expires_in,
-                        scope: response.data.scope,
-                        refreshToken: response.data.refresh_token,
-                        tokenType: response.data.token_type
-                    };
-                    return Promise.resolve(tokenResponse);
-                }
-                return Promise.reject(new Error("Invalid id_token in the token response: " + response.data.id_token));
-            });
+            return validateIdToken(requestParams, response.data.id_token)
+                .then((valid) => {
+                    if (valid) {
+                        const tokenResponse: TokenResponseInterface = {
+                            accessToken: response.data.access_token,
+                            expiresIn: response.data.expires_in,
+                            idToken: response.data.id_token,
+                            refreshToken: response.data.refresh_token,
+                            scope: response.data.scope,
+                            tokenType: response.data.token_type
+                        };
+                        return Promise.resolve(tokenResponse);
+                    }
+                    return Promise.reject(new Error("Invalid id_token in the token response: " +
+                        response.data.id_token));
+                });
         }).catch((error) => {
             return Promise.reject(error);
         });
@@ -175,8 +178,8 @@ export const sendRefreshTokenRequest = (requestParams: OIDCRequestParamsInterfac
  */
 export const sendRevokeTokenRequest = (requestParams: OIDCRequestParamsInterface, accessToken: string) => {
     const revokeTokenEndpoint = getRevokeTokenEndpoint();
-    if (!revokeTokenEndpoint || revokeTokenEndpoint.trim().length == 0) {
-        return Promise.reject("Invalid revoke token endpoint found.")
+    if (!revokeTokenEndpoint || revokeTokenEndpoint.trim().length === 0) {
+        return Promise.reject("Invalid revoke token endpoint found.");
     }
 
     const body = [];
@@ -221,8 +224,8 @@ export const getAuthenticatedUser = (idToken: string): AuthenticatedUserInterfac
  */
 const validateIdToken = (requestParams: OIDCRequestParamsInterface, idToken: string): Promise<any> => {
     const jwksEndpoint = getJwksUri();
-    if (!jwksEndpoint || jwksEndpoint.trim().length == 0) {
-        return Promise.reject("Invalid JWKS URI found.")
+    if (!jwksEndpoint || jwksEndpoint.trim().length === 0) {
+        return Promise.reject("Invalid JWKS URI found.");
     }
 
     return axios.get(jwksEndpoint)
@@ -231,7 +234,7 @@ const validateIdToken = (requestParams: OIDCRequestParamsInterface, idToken: str
                 return Promise.reject(new Error("Failed to load public keys from JWKS URI: "
                     + jwksEndpoint));
             }
-            let jwk = getJWKForTheIdToken(idToken.split(".")[0], response.data.keys);
+            const jwk = getJWKForTheIdToken(idToken.split(".")[0], response.data.keys);
             return Promise.resolve(isValidIdToken(idToken, jwk, requestParams.clientId));
         }).catch((error) => {
             return Promise.reject(error);

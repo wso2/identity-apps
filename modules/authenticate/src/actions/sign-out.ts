@@ -16,10 +16,11 @@
  * under the License.
  */
 
+// tslint:disable-next-line:no-submodule-imports
 import { Error } from "tslint/lib/error";
+import { ID_TOKEN } from "../constants";
 import { getEndSessionEndpoint } from "./op-config";
 import { getSessionParameter } from "./session";
-import { ID_TOKEN } from "../constants";
 
 /**
  * Handle user sign out.
@@ -28,11 +29,11 @@ import { ID_TOKEN } from "../constants";
  */
 export const sendSignOutRequest =  (redirectUri: string): Promise<any> => {
     const logoutEndpoint = getEndSessionEndpoint();
-    if (!logoutEndpoint || logoutEndpoint.trim().length == 0) {
+    if (!logoutEndpoint || logoutEndpoint.trim().length === 0) {
         return Promise.reject(new Error("Invalid logout endpoint found."));
     }
     const idToken = getSessionParameter(ID_TOKEN);
-    if (!idToken || idToken.trim().length == 0) {
+    if (!idToken || idToken.trim().length === 0) {
         return Promise.reject(new Error("Invalid id_token found."));
     }
 

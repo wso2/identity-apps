@@ -16,6 +16,8 @@
  * under the License.
  */
 
+// tslint:disable-next-line:no-submodule-imports
+import { Error } from "tslint/lib/error";
 import {
     ACCESS_TOKEN,
     ACCESS_TOKEN_EXPIRE_IN,
@@ -29,10 +31,9 @@ import {
     TOKEN_TYPE,
     USERNAME
 } from "../constants";
+import { AuthenticatedUserInterface } from "../models/authenticated-user";
 import { SessionInterface } from "../models/session";
 import { TokenResponseInterface } from "../models/token-response";
-import { AuthenticatedUserInterface } from "../models/authenticated-user";
-import { Error } from "tslint/lib/error";
 import { getAuthenticatedUser, sendRefreshTokenRequest } from "./sign-in";
 
 /**
@@ -82,10 +83,10 @@ export const getAllSessionParameters = (): SessionInterface => {
         accessToken: sessionStorage.getItem(ACCESS_TOKEN),
         displayName: sessionStorage.getItem(DISPLAY_NAME),
         email: sessionStorage.getItem(EMAIL),
-        idToken: sessionStorage.getItem(ID_TOKEN),
         expiresIn: sessionStorage.getItem(ACCESS_TOKEN_ISSUED_AT),
-        scope: sessionStorage.getItem(SCOPE),
+        idToken: sessionStorage.getItem(ID_TOKEN),
         refreshToken: sessionStorage.getItem(REFRESH_TOKEN),
+        scope: sessionStorage.getItem(SCOPE),
         tokenType: sessionStorage.getItem(TOKEN_TYPE),
         username: sessionStorage.getItem(USERNAME)
     };
@@ -133,7 +134,7 @@ export const getAccessToken = (): Promise<string> => {
     if (!accessToken || accessToken.trim().length === 0 || !expiresIn || expiresIn.length === 0 || !issuedAt
         || issuedAt.length === 0) {
         endAuthenticatedSession();
-        //TODO logout.
+        // TODO: logout.
         Promise.reject(new Error("Invalid user session."));
     }
 
@@ -144,9 +145,9 @@ export const getAccessToken = (): Promise<string> => {
         sendRefreshTokenRequest(requestParams, getSessionParameter(REFRESH_TOKEN)).then((tokenResponse) => {
             const authenticatedUser = getAuthenticatedUser(tokenResponse.idToken);
             initUserSession(tokenResponse, authenticatedUser);
-            return Promise.resolve(tokenResponse.accessToken)
+            return Promise.resolve(tokenResponse.accessToken);
         }).catch((error) => {
-            //TODO logout.
+            // TODO: logout.
             return Promise.reject(error);
         });
     } else {
