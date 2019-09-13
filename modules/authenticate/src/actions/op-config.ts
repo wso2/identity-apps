@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { Error } from "tslint/lib/error";
 import axios from "axios";
-import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
+// tslint:disable-next-line:no-submodule-imports
+import { Error } from "tslint/lib/error";
 import {
     AUTHORIZATION_ENDPOINT,
     END_SESSION_ENDPOINT,
@@ -27,6 +27,7 @@ import {
     REVOKE_TOKEN_ENDPOINT,
     TOKEN_ENDPOINT
 } from "../constants";
+import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
 
 /**
  * Initialize openid provider configuration.
@@ -40,7 +41,7 @@ export const initOPConfiguration = (wellKnownEndpoint: string, forceInit: boolea
         return Promise.resolve("success");
     }
 
-    if (!wellKnownEndpoint || wellKnownEndpoint.trim().length == 0) {
+    if (!wellKnownEndpoint || wellKnownEndpoint.trim().length === 0) {
         return Promise.reject(new Error("OpenID provider configuration endpoint is not defined."));
     }
 
