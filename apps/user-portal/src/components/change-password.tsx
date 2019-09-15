@@ -390,19 +390,12 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordProps> = (
                                         }
                                         type={ inputTypes.currentPassword }
                                         icon={
-                                            inputTypes.currentPassword === "password" ? (
-                                                <Icon
-                                                    name="eye slash"
-                                                    link
-                                                    onClick={ () => toggleInputType("currentPassword") }
-                                                />
-                                            ) : (
-                                                <Icon
-                                                    name="eye"
-                                                    link
-                                                    onClick={ () => toggleInputType("currentPassword") }
-                                                />
-                                            )
+                                            <Icon
+                                                name={ inputTypes.currentPassword === "password" ? "eye slash" : "eye" }
+                                                disabled={ !currentPassword }
+                                                link
+                                                onClick={ () => toggleInputType("currentPassword") }
+                                            />
                                         }
                                         value={ currentPassword }
                                         onChange={ handleFieldChange }
@@ -429,19 +422,12 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordProps> = (
                                         }
                                         type={ inputTypes.newPassword }
                                         icon={
-                                            inputTypes.newPassword === "password" ? (
-                                                <Icon
-                                                    name="eye slash"
-                                                    link
-                                                    onClick={ () => toggleInputType("newPassword") }
-                                                />
-                                            ) : (
-                                                <Icon
-                                                    name="eye"
-                                                    link
-                                                    onClick={ () => toggleInputType("newPassword") }
-                                                />
-                                            )
+                                            <Icon
+                                                name={ inputTypes.newPassword === "password" ? "eye slash" : "eye" }
+                                                disabled={ !newPassword }
+                                                link
+                                                onClick={ () => toggleInputType("newPassword") }
+                                            />
                                         }
                                         value={ newPassword }
                                         onChange={ handleFieldChange }
@@ -465,19 +451,12 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordProps> = (
                                         }
                                         type={ inputTypes.confirmPassword }
                                         icon={
-                                            inputTypes.confirmPassword === "password" ? (
-                                                <Icon
-                                                    name="eye slash"
-                                                    link
-                                                    onClick={ () => toggleInputType("confirmPassword") }
-                                                />
-                                            ) : (
-                                                <Icon
-                                                    name="eye"
-                                                    link
-                                                    onClick={ () => toggleInputType("confirmPassword") }
-                                                />
-                                            )
+                                            <Icon
+                                                name={ inputTypes.confirmPassword === "password" ? "eye slash" : "eye" }
+                                                disabled={ !confirmPassword }
+                                                link
+                                                onClick={ () => toggleInputType("confirmPassword") }
+                                            />
                                         }
                                         value={ confirmPassword }
                                         onChange={ handleFieldChange }
