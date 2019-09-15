@@ -43,10 +43,10 @@
     &.side-panel {
         // override the box shadow and border in the semantic ui menu component
         box-shadow: none;
-        border-radius: unset;
+        border-radius: 0;
 
         &.desktop {
-            border: unset;
+            border: none;
 
             .side-panel-item {
                 &:before {
@@ -56,6 +56,12 @@
                     background: transparent;
                 }
             }
+        }
+
+        &.mobile {
+            border-top: none;
+            border-left: none;
+            border-right: none;
         }
 
         .side-panel-item {
