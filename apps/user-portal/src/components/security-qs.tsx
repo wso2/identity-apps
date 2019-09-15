@@ -355,6 +355,7 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
                     header={ t("views:securityQuestions.title") }
                     description={ t("views:securityQuestions.subTitle") }
                     icon={ SettingsSectionIcons.securityQuestions }
+                    iconMini={ SettingsSectionIcons.securityQuestionsMini }
                     iconSize="auto"
                     iconStyle="colored"
                     iconFloated="right"

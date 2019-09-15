@@ -20,6 +20,7 @@ import * as React from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 import { Button, Container, Form, Grid, Icon, Modal } from "semantic-ui-react";
 import { updatePassword } from "../actions";
+import { SettingsSectionIcons } from "../configs";
 import { NotificationActionPayload } from "../models/notifications";
 import { EditSection } from "./edit-section";
 import { SettingsSection } from "./settings-section";
@@ -509,6 +510,11 @@ class ChangePasswordComponentInner extends React.Component<ComponentProps, Compo
                 actionTitle={ t("views:changePassword.actionTitles.change") }
                 onActionClick={ this.handleShowChangeView }
                 showAction={ !isChange }
+                icon={ SettingsSectionIcons.changePassword }
+                iconMini={ SettingsSectionIcons.changePasswordMini }
+                iconSize="auto"
+                iconStyle="colored"
+                iconFloated="right"
             >
                 { showChangePasswordView }
                 { confirmationModal }

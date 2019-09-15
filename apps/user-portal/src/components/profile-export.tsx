@@ -100,6 +100,7 @@ export const ProfileExportComponent: FunctionComponent<ProfileExportProps> = (
             actionTitle={ t("views:profileExport.actionTitle") }
             onActionClick={ downloadUserProfile }
             icon={ SettingsSectionIcons.profileExport }
+            iconMini={ SettingsSectionIcons.profileExportMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"

@@ -45,6 +45,11 @@ export const MFAIconSet = {
 };
 export const SettigsSectionIconSet = {
     associatedAccounts: require("../lib/assets/images/illustrations/associated-accounts.svg"),
+    associatedAccountsMini: require("../lib/assets/images/illustrations/associated-accounts-mini.svg"),
+    changePassword: require("../lib/assets/images/illustrations/change-password.svg"),
+    changePasswordMini: require("../lib/assets/images/illustrations/change-password-mini.svg"),
     profileExport: require("../lib/assets/images/illustrations/profile-export.svg"),
-    securityQuestions: require("../lib/assets/images/illustrations/security-questions.svg")
+    profileExportMini: require("../lib/assets/images/illustrations/profile-export-mini.svg"),
+    securityQuestions: require("../lib/assets/images/illustrations/security-questions.svg"),
+    securityQuestionsMini: require("../lib/assets/images/illustrations/security-questions-mini.svg")
 };
