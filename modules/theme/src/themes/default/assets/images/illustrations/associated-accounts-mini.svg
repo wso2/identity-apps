@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
 -->
-<svg version="1.1" class="icon" id="associated-accounts" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="101px" height="100px" viewBox="0 0 101 100" enable-background="new 0 0 101 100" xml:space="preserve">
+<svg version="1.1" class="icon" id="associated-accounts-mini" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="101px" height="100px" viewBox="0 0 101 100" xml:space="preserve">
 	<g id="account_1_">
 		<path id="shield_1_" fill="#4069B2" d="M98.045,16.476L71.175,2.158c-0.398-0.213-0.876-0.21-1.272,0.007L43.776,16.484   c-0.428,0.234-0.695,0.684-0.695,1.173v18.703c0.016,15.375,9.125,29.283,23.211,35.443l3.627,1.58   c0.338,0.147,0.725,0.147,1.063,0.001l4.087-1.765c14.348-6.026,23.682-20.069,23.684-35.63V17.657   C98.754,17.163,98.48,16.708,98.045,16.476z M45.756,36.359 M74.022,69.159" />
 		<g id="user_1_">
