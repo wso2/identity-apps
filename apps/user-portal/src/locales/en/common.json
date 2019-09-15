@@ -28,5 +28,7 @@
     "switch": "Switch",
     "remove": "Remove",
     "terminate": "Terminate",
-    "challengeQuestionNumber": "Challenge Question {{number}}"
+    "challengeQuestionNumber": "Challenge Question {{number}}",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
 }

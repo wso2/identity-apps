@@ -18,7 +18,7 @@
 
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Container, Form, Grid, Icon, Modal } from "semantic-ui-react";
+import { Button, Container, Form, Grid, Icon, Modal, Popup } from "semantic-ui-react";
 import { updatePassword } from "../actions";
 import { SettingsSectionIcons } from "../configs";
 import { NotificationActionPayload } from "../models/notifications";
@@ -390,11 +390,26 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordProps> = (
                                         }
                                         type={ inputTypes.currentPassword }
                                         icon={
-                                            <Icon
-                                                name={ inputTypes.currentPassword === "password" ? "eye slash" : "eye" }
-                                                disabled={ !currentPassword }
-                                                link
-                                                onClick={ () => toggleInputType("currentPassword") }
+                                            <Popup
+                                                trigger={
+                                                    <Icon
+                                                        name={
+                                                            inputTypes.currentPassword === "password"
+                                                                ? "eye slash" :
+                                                                "eye"
+                                                        }
+                                                        disabled={ !currentPassword }
+                                                        link
+                                                        onClick={ () => toggleInputType("currentPassword") }
+                                                    />
+                                                }
+                                                position="top center"
+                                                content={
+                                                    inputTypes.currentPassword === "password"
+                                                        ? t("common:showPassword")
+                                                        : t("common:hidePassword")
+                                                }
+                                                inverted
                                             />
                                         }
                                         value={ currentPassword }
@@ -422,11 +437,26 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordProps> = (
                                         }
                                         type={ inputTypes.newPassword }
                                         icon={
-                                            <Icon
-                                                name={ inputTypes.newPassword === "password" ? "eye slash" : "eye" }
-                                                disabled={ !newPassword }
-                                                link
-                                                onClick={ () => toggleInputType("newPassword") }
+                                            <Popup
+                                                trigger={
+                                                    <Icon
+                                                        name={
+                                                            inputTypes.newPassword === "password"
+                                                                ? "eye slash" :
+                                                                "eye"
+                                                        }
+                                                        disabled={ !newPassword }
+                                                        link
+                                                        onClick={ () => toggleInputType("newPassword") }
+                                                    />
+                                                }
+                                                position="top center"
+                                                content={
+                                                    inputTypes.newPassword === "password"
+                                                        ? t("common:showPassword")
+                                                        : t("common:hidePassword")
+                                                }
+                                                inverted
                                             />
                                         }
                                         value={ newPassword }
@@ -451,11 +481,26 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordProps> = (
                                         }
                                         type={ inputTypes.confirmPassword }
                                         icon={
-                                            <Icon
-                                                name={ inputTypes.confirmPassword === "password" ? "eye slash" : "eye" }
-                                                disabled={ !confirmPassword }
-                                                link
-                                                onClick={ () => toggleInputType("confirmPassword") }
+                                            <Popup
+                                                trigger={
+                                                    <Icon
+                                                        name={
+                                                            inputTypes.confirmPassword === "password"
+                                                                ? "eye slash" :
+                                                                "eye"
+                                                        }
+                                                        disabled={ !confirmPassword }
+                                                        link
+                                                        onClick={ () => toggleInputType("confirmPassword") }
+                                                    />
+                                                }
+                                                position="top center"
+                                                content={
+                                                    inputTypes.confirmPassword === "password"
+                                                        ? t("common:showPassword")
+                                                        : t("common:hidePassword")
+                                                }
+                                                inverted
                                             />
                                         }
                                         value={ confirmPassword }
