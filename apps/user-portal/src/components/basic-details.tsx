@@ -301,7 +301,11 @@ export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
                         <Grid.Column width={ 10 }>
                             <List.Content>
                                 <List.Description>
-                                    { profileInfo.displayName + " " + profileInfo.lastName }
+                                    {
+                                        (profileInfo.displayName || profileInfo.lastName)
+                                            ? profileInfo.displayName + " " + profileInfo.lastName
+                                            : t("views:userProfile.fields.name.default")
+                                    }
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
@@ -315,11 +319,19 @@ export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
                                             size="small"
                                             color="grey"
                                             onClick={ () => showFormEditView("nameChangeForm") }
-                                            name="pencil alternate"
+                                            name={
+                                                (profileInfo.displayName || profileInfo.lastName)
+                                                    ? "pencil alternate"
+                                                    : "add"
+                                            }
                                         />
                                     }
                                     position="top center"
-                                    content="Edit"
+                                    content={
+                                        (profileInfo.displayName || profileInfo.lastName)
+                                            ? t("common:edit")
+                                            : t("common:add")
+                                    }
                                     inverted
                                 />
                             </List.Content>
