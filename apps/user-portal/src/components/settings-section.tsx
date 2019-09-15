@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import React, { FunctionComponent, MouseEvent } from "react";
-import { Card, Grid, Header, List } from "semantic-ui-react";
+import React, { Fragment, FunctionComponent, MouseEvent } from "react";
+import { Card, Grid, Header, List, Responsive } from "semantic-ui-react";
 import { ThemeIcon, ThemeIconSizes } from "./icon";
 
 /**
@@ -30,6 +30,7 @@ interface SettingsSectionProps {
     description?: string;
     header: string;
     icon?: any;
+    iconMini?: any;
     iconFloated?: "left" | "right";
     iconStyle?: "twoTone" | "default" | "colored";
     iconSize?: ThemeIconSizes;
@@ -47,6 +48,7 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
     const {
         actionDisabled,
         icon,
+        iconMini,
         iconFloated,
         iconSize,
         iconStyle,
@@ -68,20 +70,38 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
                             <Card.Meta>{ description }</Card.Meta>
                         </Grid.Column>
                         <Grid.Column width={ 6 } className="no-padding">
-                            {
-                                icon
-                                    ?
-                                    <ThemeIcon
-                                        icon={ icon }
-                                        transparent
-                                        size={ iconSize }
-                                        floated={ iconFloated }
-                                        defaultIcon={ iconStyle === "default" }
-                                        twoTone={ iconStyle === "twoTone" }
-                                        colored={ iconStyle === "colored" }
-                                    />
-                                    : null
-                            }
+                            <Responsive as={ Fragment } { ...Responsive.onlyComputer }>
+                                {
+                                    icon
+                                        ?
+                                        <ThemeIcon
+                                            icon={ icon }
+                                            transparent
+                                            size={ iconSize }
+                                            floated={ iconFloated }
+                                            defaultIcon={ iconStyle === "default" }
+                                            twoTone={ iconStyle === "twoTone" }
+                                            colored={ iconStyle === "colored" }
+                                        />
+                                        : null
+                                }
+                            </Responsive>
+                            <Responsive as={ Fragment } maxWidth={ Responsive.onlyTablet.maxWidth }>
+                                {
+                                    iconMini
+                                        ?
+                                        <ThemeIcon
+                                            icon={ iconMini }
+                                            transparent
+                                            size={ iconSize }
+                                            floated={ iconFloated }
+                                            defaultIcon={ iconStyle === "default" }
+                                            twoTone={ iconStyle === "twoTone" }
+                                            colored={ iconStyle === "colored" }
+                                        />
+                                        : null
+                                }
+                            </Responsive>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row className={ `main-content ${ contentPadding ? "" : "no-padding" }` } columns={ 1 }>
@@ -93,19 +113,19 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
             </Card.Content>
             {
                 actionTitle && showAction
-                ?
-                <Card.Content className="extra-content" extra>
-                    <List selection verticalAlign="middle">
-                        <List.Item
-                            className={ `action-button ${ actionDisabled ? "disabled" : "" }` }
-                            onClick={ onActionClick }
-                        >
-                            <List.Header className="action-button-text"
-                                         onClick={ onActionClick }>{ actionTitle }</List.Header>
-                        </List.Item>
-                    </List>
-                </Card.Content>
-                : null
+                    ?
+                    <Card.Content className="extra-content" extra>
+                        <List selection verticalAlign="middle">
+                            <List.Item
+                                className={ `action-button ${ actionDisabled ? "disabled" : "" }` }
+                                onClick={ onActionClick }
+                            >
+                                <List.Header className="action-button-text"
+                                             onClick={ onActionClick }>{ actionTitle }</List.Header>
+                            </List.Item>
+                        </List>
+                    </Card.Content>
+                    : null
             }
         </Card>
     );
