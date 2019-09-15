@@ -65,44 +65,50 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
             <Card.Content>
                 <Grid>
                     <Grid.Row className="header-section" columns={ 2 }>
-                        <Grid.Column width={ 10 } className="no-padding">
+                        <Grid.Column width={ (icon || iconMini) ? 10 : 16 } className="no-padding">
                             <Header as="h2">{ header }</Header>
                             <Card.Meta>{ description }</Card.Meta>
                         </Grid.Column>
-                        <Grid.Column width={ 6 } className="no-padding">
-                            <Responsive as={ Fragment } { ...Responsive.onlyComputer }>
-                                {
-                                    icon
-                                        ?
-                                        <ThemeIcon
-                                            icon={ icon }
-                                            transparent
-                                            size={ iconSize }
-                                            floated={ iconFloated }
-                                            defaultIcon={ iconStyle === "default" }
-                                            twoTone={ iconStyle === "twoTone" }
-                                            colored={ iconStyle === "colored" }
-                                        />
-                                        : null
-                                }
-                            </Responsive>
-                            <Responsive as={ Fragment } maxWidth={ Responsive.onlyTablet.maxWidth }>
-                                {
-                                    iconMini
-                                        ?
-                                        <ThemeIcon
-                                            icon={ iconMini }
-                                            transparent
-                                            size={ iconSize }
-                                            floated={ iconFloated }
-                                            defaultIcon={ iconStyle === "default" }
-                                            twoTone={ iconStyle === "twoTone" }
-                                            colored={ iconStyle === "colored" }
-                                        />
-                                        : null
-                                }
-                            </Responsive>
-                        </Grid.Column>
+                        {
+                            icon || iconMini
+                                ? (
+                                    <Grid.Column width={ 6 } className="no-padding">
+                                        <Responsive as={ Fragment } { ...Responsive.onlyComputer }>
+                                            {
+                                                icon
+                                                    ?
+                                                    <ThemeIcon
+                                                        icon={ icon }
+                                                        transparent
+                                                        size={ iconSize }
+                                                        floated={ iconFloated }
+                                                        defaultIcon={ iconStyle === "default" }
+                                                        twoTone={ iconStyle === "twoTone" }
+                                                        colored={ iconStyle === "colored" }
+                                                    />
+                                                    : null
+                                            }
+                                        </Responsive>
+                                        <Responsive as={ Fragment } maxWidth={ Responsive.onlyTablet.maxWidth }>
+                                            {
+                                                iconMini
+                                                    ?
+                                                    <ThemeIcon
+                                                        icon={ iconMini }
+                                                        transparent
+                                                        size={ iconSize }
+                                                        floated={ iconFloated }
+                                                        defaultIcon={ iconStyle === "default" }
+                                                        twoTone={ iconStyle === "twoTone" }
+                                                        colored={ iconStyle === "colored" }
+                                                    />
+                                                    : null
+                                            }
+                                        </Responsive>
+                                    </Grid.Column>
+                                )
+                                : null
+                        }
                     </Grid.Row>
                     <Grid.Row className={ `main-content ${ contentPadding ? "" : "no-padding" }` } columns={ 1 }>
                         <Grid.Column className="no-padding" width={ 16 }>
