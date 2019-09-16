@@ -624,12 +624,12 @@ export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
                 <List.Item className="inner-list-item">
                     <Grid padded>
                         <Grid.Row columns={ 3 }>
-                            <Grid.Column width={ 4 } className="first-column">
+                            <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
                                 <List.Content>
                                     { t("views:userProfile.fields.username.label") }
                                 </List.Content>
                             </Grid.Column>
-                            <Grid.Column width={ 10 }>
+                            <Grid.Column mobile={ 10 } tablet={ 10 } computer={ 12 }>
                                 <List.Content>
                                     <List.Description>{ profileInfo.username }</List.Description>
                                 </List.Content>
