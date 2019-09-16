@@ -378,8 +378,7 @@ export const ConsentManagementComponent: FunctionComponent<{}> = (): JSX.Element
                 description={ t("views:consentManagement.subTitle") }
                 actionTitle={ t("views:consentManagement.actionTitles.empty") }
                 actionDisabled={ true }
-                // User portal is also returned in the payload. Hence (consentedApps.length > 1) is used.
-                showAction={ !(consentedApps && consentedApps.length && consentedApps.length > 1) }
+                showAction={ !(consentedApps && consentedApps.length && consentedApps.length > 0) }
             >
                 <List divided verticalAlign="middle" className="main-content-inner">
                     {
