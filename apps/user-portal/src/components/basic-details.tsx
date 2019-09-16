@@ -18,7 +18,7 @@
 
 import React, { ChangeEvent, FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Divider, Form, Grid, Icon, List, Popup } from "semantic-ui-react";
+import { Button, Divider, Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../actions";
 import { NotificationActionPayload } from "../models/notifications";
 import { createEmptyProfile } from "../models/profile";
@@ -42,9 +42,9 @@ interface BasicDetailsProps {
 export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
     props: BasicDetailsProps
 ): JSX.Element => {
-    const [profileInfo, setProfileInfo] = useState(createEmptyProfile());
-    const [editingProfileInfo, setEditingProfileInfo] = useState(createEmptyProfile());
-    const [editingForm, setEditingForm] = useState({
+    const [ profileInfo, setProfileInfo ] = useState(createEmptyProfile());
+    const [ editingProfileInfo, setEditingProfileInfo ] = useState(createEmptyProfile());
+    const [ editingForm, setEditingForm ] = useState({
         emailChangeForm: false,
         mobileChangeForm: false,
         nameChangeForm: false,
@@ -129,7 +129,7 @@ export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
             }
             case "emailChangeForm" : {
                 data.Operations[0].value = {
-                    emails: [editingProfileInfo.email]
+                    emails: [ editingProfileInfo.email ]
                 };
                 break;
             }
@@ -293,12 +293,12 @@ export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
             (
                 <Grid padded>
                     <Grid.Row columns={ 3 }>
-                        <Grid.Column width={ 4 } className="first-column">
+                        <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
                             <List.Content>
                                 { t("views:userProfile.fields.name.label") }
                             </List.Content>
                         </Grid.Column>
-                        <Grid.Column width={ 10 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                             <List.Content>
                                 <List.Description>
                                     {
@@ -309,7 +309,12 @@ export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
-                        <Grid.Column width={ 2 } className="last-column">
+                        <Grid.Column
+                            mobile={ 2 }
+                            tablet={ 2 }
+                            computer={ 2 }
+                            className={ (window.innerWidth > Responsive.onlyTablet.minWidth) ? "last-column" : "" }
+                        >
                             <List.Content floated="right">
                                 <Popup
                                     trigger={
@@ -383,12 +388,12 @@ export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
             (
                 <Grid padded>
                     <Grid.Row columns={ 3 }>
-                        <Grid.Column width={ 4 } className="first-column">
+                        <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
                             <List.Content>
                                 { t("views:userProfile.fields.email.label") }
                             </List.Content>
                         </Grid.Column>
-                        <Grid.Column width={ 10 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                             <List.Content>
                                 <List.Description>
                                     {
@@ -399,7 +404,12 @@ export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
-                        <Grid.Column width={ 2 } className="last-column">
+                        <Grid.Column
+                            mobile={ 2 }
+                            tablet={ 2 }
+                            computer={ 2 }
+                            className={ (window.innerWidth > Responsive.onlyTablet.minWidth) ? "last-column" : "" }
+                        >
                             <List.Content floated="right">
                                 <Popup
                                     trigger={
@@ -466,12 +476,12 @@ export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
             (
                 <Grid padded>
                     <Grid.Row columns={ 3 }>
-                        <Grid.Column width={ 4 } className="first-column">
+                        <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
                             <List.Content>
                                 { t("views:userProfile.fields.organization.label") }
                             </List.Content>
                         </Grid.Column>
-                        <Grid.Column width={ 10 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                             <List.Content>
                                 <List.Description>
                                     {
@@ -482,7 +492,12 @@ export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
-                        <Grid.Column width={ 2 } className="last-column">
+                        <Grid.Column
+                            tablet={ 2 }
+                            mobile={ 2 }
+                            computer={ 2 }
+                            className={ (window.innerWidth > Responsive.onlyTablet.minWidth) ? "last-column" : "" }
+                        >
                             <List.Content floated="right">
                                 <Popup
                                     trigger={
@@ -550,12 +565,12 @@ export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
             (
                 <Grid padded>
                     <Grid.Row columns={ 3 }>
-                        <Grid.Column width={ 4 } className="first-column">
+                        <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
                             <List.Content>
                                 { t("views:userProfile.fields.mobile.label") }
                             </List.Content>
                         </Grid.Column>
-                        <Grid.Column width={ 10 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                             <List.Content>
                                 <List.Description>
                                     {
@@ -566,7 +581,12 @@ export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
-                        <Grid.Column width={ 2 } className="last-column">
+                        <Grid.Column
+                            mobile={ 2 }
+                            tablet={ 2 }
+                            computer={ 2 }
+                            className={ (window.innerWidth > Responsive.onlyTablet.minWidth) ? "last-column" : "" }
+                        >
                             <List.Content floated="right">
                                 <Popup
                                     trigger={
