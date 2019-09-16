@@ -17,14 +17,36 @@
  *
  */
 
+/*******************************
+         Theme Overrides
+*******************************/
+
+.ui.menu.fixed {
+    &.app-header {
+        border-top-style: @appHeaderTopBorderStyle;
+        border-top-width: @appHeaderTopBorderWidth;
+        border-top-color: @appHeaderTopBorderColor;
+
+        .ui.dropdown.item.user-dropdown .menu .item.header {
+            &, &:not(.filtered) {
+                display: flex;
+                padding: @relativeMini @relativeLarge;
+            }
+            .ui.divider {
+                margin: 0.5rem 0rem;
+            }
+        }
+    }
+}
+
 .ui.vertical.menu {
     &.side-panel {
         // override the box shadow and border in the semantic ui menu component
         box-shadow: none;
-        border-radius: unset;
+        border-radius: 0;
 
         &.desktop {
-            border: unset;
+            border: none;
 
             .side-panel-item {
                 &:before {
@@ -34,6 +56,12 @@
                     background: transparent;
                 }
             }
+        }
+
+        &.mobile {
+            border-top: none;
+            border-left: none;
+            border-right: none;
         }
 
         .side-panel-item {

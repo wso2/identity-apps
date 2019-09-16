@@ -20,7 +20,6 @@ import * as React from "react";
 import { NavLink } from "react-router-dom";
 import {
     Container,
-    Divider,
     Grid,
     Menu,
     Responsive,
@@ -28,6 +27,24 @@ import {
 } from "semantic-ui-react";
 import { routes, SidePanelIcons } from "../configs";
 import { ThemeIcon } from "./icon";
+
+/**
+ * Field variable to save the header height given by the prop.
+ * @type {number}
+ */
+let HEADER_HEIGHT: number = 0;
+
+/**
+ * Constant to handle desktop layout content top padding.
+ * @type {number}
+ */
+const DESKTOP_CONTENT_TOP_PADDING: number = 50;
+
+/**
+ * Constant to handle mobile layout content padding.
+ * @type {string}
+ */
+const MOBILE_CONTENT_PADDING: string = "2rem 1rem";
 
 /**
  * Default side panel component Prop types.
@@ -106,8 +123,16 @@ const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (props: Sid
         const urlTokens = path.split("/");
         return pathname.indexOf(urlTokens[1]) > -1 ? "active" : "";
     };
+
+    const style = type === "desktop"
+        ? {
+            position: "sticky",
+            top: `${ HEADER_HEIGHT + DESKTOP_CONTENT_TOP_PADDING }px`
+        }
+        : null;
+
     return (
-        <Menu className={ `side-panel ${ type }` } vertical fluid>
+        <Menu className={ `side-panel ${ type }` } style={ style } vertical fluid>
             {
                 routes.map((route, index) => (
                     route.showOnSidePanel ?
@@ -140,6 +165,7 @@ const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (props: Sid
  * Side panel wrapper component Prop types.
  */
 interface SidePanelWrapperProps {
+    headerHeight: number;
     children?: React.ReactNode;
     onSidePanelItemClick: () => void;
     onSidePanelPusherClick: () => void;
@@ -155,7 +181,18 @@ interface SidePanelWrapperProps {
 export const SidePanelWrapper: React.FunctionComponent<SidePanelWrapperProps> = (
     props: SidePanelWrapperProps
 ): JSX.Element => {
-    const { mobileSidePanelVisibility, children, onSidePanelPusherClick, onSidePanelItemClick } = props;
+    const { headerHeight, mobileSidePanelVisibility, children, onSidePanelPusherClick, onSidePanelItemClick } = props;
+
+    HEADER_HEIGHT = headerHeight;
+
+    const mobileContentStyle = {
+        padding: `${ MOBILE_CONTENT_PADDING }`
+    };
+
+    const desktopContentStyle = {
+        paddingTop: `${ DESKTOP_CONTENT_TOP_PADDING }px`
+    };
+
     return (
         <>
             <Responsive { ...Responsive.onlyMobile }>
@@ -164,13 +201,11 @@ export const SidePanelWrapper: React.FunctionComponent<SidePanelWrapperProps> = 
                     visible={ mobileSidePanelVisibility }
                     onSidePanelItemClick={ onSidePanelItemClick }
                 >
-                    <Divider className="x1" hidden/>
-                    <Container>{ children }</Container>
+                    <Container style={ mobileContentStyle }>{ children }</Container>
                 </MobileSidePanel>
             </Responsive>
             <Responsive as={ Container } minWidth={ Responsive.onlyTablet.minWidth }>
-                <Divider className="x2" hidden/>
-                <Grid>
+                <Grid style={ desktopContentStyle }>
                     <Grid.Row columns={ 2 }>
                         <Grid.Column tablet={ 6 } computer={ 4 }>
                             <DefaultSidePanel onSidePanelItemClick={ onSidePanelItemClick }/>

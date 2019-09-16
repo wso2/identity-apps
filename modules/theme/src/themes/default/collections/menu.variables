@@ -22,6 +22,14 @@
 *******************************/
 
 /*-------------------
+     App Header
+--------------------*/
+
+@appHeaderTopBorderWidth: 3px;
+@appHeaderTopBorderColor: @primaryColor;
+@appHeaderTopBorderStyle: solid;
+
+/*-------------------
     Side Panel Menu
 --------------------*/
 

@@ -41,7 +41,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     const { onSidePanelToggleClick, showSidePanelToggle } = props;
 
     return (
-        <Menu id="app-header" fixed="top" borderless>
+        <Menu id="app-header" className="app-header" fixed="top" borderless>
             <Container>
                 { showSidePanelToggle ?
                     <Responsive as={ Menu.Item } maxWidth={ 767 }>

@@ -38,26 +38,6 @@ each(range(5), {
 });
 
 body {
-    border-top-style: @bodyTopBorderStyle;
-    border-top-width: @bodyTopBorderWidth;
-    border-top-color: @bodyTopBorderColor;
-
-    .ui.fixed.menu,
-    .ui[class*="top fixed"].menu {
-        top: @bodyTopBorderWidth;
-    }
-
-    .ui.menu .ui.dropdown.item.user-dropdown .menu .item.header {
-        &, &:not(.filtered) {
-            display: flex;
-            padding: @relativeMini @relativeLarge;
-        }
-        .ui.divider {
-            margin: 0.5rem 0rem;
-        }
-    
-    }
-
     .ui.card,
     .ui.card:last-child {
         margin-bottom: 2rem;

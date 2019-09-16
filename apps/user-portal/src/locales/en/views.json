@@ -72,6 +72,7 @@
                         "label": "Current password",
                         "placeholder": "Enter the current password",
                         "validations": {
+                            "invalid": "Current password is invalid",
                             "empty": "Current password is a required field"
                         }
                     },

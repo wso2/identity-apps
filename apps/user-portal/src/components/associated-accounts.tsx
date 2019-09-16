@@ -191,6 +191,7 @@ export const AssociatedAccountsComponent: FunctionComponent<AssociatedAccountsPr
             header={ t("views:associatedAccounts.title") }
             description={ t("views:associatedAccounts.subTitle") }
             icon={ SettingsSectionIcons.associatedAccounts }
+            iconMini={ SettingsSectionIcons.associatedAccountsMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
