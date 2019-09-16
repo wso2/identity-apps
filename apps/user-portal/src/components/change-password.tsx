@@ -18,7 +18,7 @@
 
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Container, Form, Grid, Icon, Modal, Popup } from "semantic-ui-react";
+import { Button, Container, Divider, Form, Grid, Icon, Modal, Popup } from "semantic-ui-react";
 import { updatePassword } from "../actions";
 import { SettingsSectionIcons } from "../configs";
 import { NotificationActionPayload } from "../models/notifications";
@@ -113,7 +113,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordProps> = (
     /**
      * Handles the `onSubmit` event of forms.
      *
-     * @param formName - Name of the form
+     * @param {string} formName - Name of the form
      */
     const handleSubmit = (formName: string): void => {
         // The touched state of the inputs are set to true when submitting the form.
@@ -355,7 +355,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordProps> = (
                 <Container>
                     <h3>{ t("views:changePassword.modals.confirmationModal.heading") }</h3>
                 </Container>
-                <br/>
+                <Divider hidden />
                 <p>{ t("views:changePassword.modals.confirmationModal.message") }</p>
             </Modal.Content>
             <Modal.Actions>
@@ -515,7 +515,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordProps> = (
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
-                        <br/>
+                        <Divider hidden />
                         <Button primary type="submit" size="small">
                             { t("common:submit") }
                         </Button>
