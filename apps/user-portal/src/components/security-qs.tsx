@@ -351,21 +351,25 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
         return (
             <>
                 <SettingsSection
-                    contentPadding={ false }
-                    header={ t("views:securityQuestions.title") }
                     description={ t("views:securityQuestions.subTitle") }
+                    header={ t("views:securityQuestions.title") }
                     icon={ SettingsSectionIcons.securityQuestions }
                     iconMini={ SettingsSectionIcons.securityQuestionsMini }
                     iconSize="auto"
                     iconStyle="colored"
                     iconFloated="right"
-                    showAction={ !this.state.isEdit }
-                    actionTitle={
-                        (challenges.answers && (challenges.answers.length > 0))
+                    onPrimaryActionClick={ this.handleEdit }
+                    placeholder={
+                        !(challenges && challenges.questions && (challenges.questions.length > 0))
+                        ? t("views:securityQuestions.placeholders.emptyQuestionsList.heading")
+                            : null
+                    }
+                    primaryAction={
+                        (challenges && challenges.answers && (challenges.answers.length > 0))
                             ? t("views:securityQuestions.actionTitles.change")
                             : t("views:securityQuestions.actionTitles.configure")
                     }
-                    onActionClick={ this.handleEdit }
+                    showActionBar={ !this.state.isEdit }
                 >
                     {listItems()}
                 </SettingsSection>

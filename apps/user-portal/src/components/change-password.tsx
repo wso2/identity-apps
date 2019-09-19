@@ -534,16 +534,16 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordProps> = (
 
     return (
         <SettingsSection
-            header={ t("views:changePassword.title") }
             description={ t("views:changePassword.subTitle") }
-            actionTitle={ t("views:changePassword.actionTitles.change") }
-            onActionClick={ () => showFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER) }
-            showAction={ !editingForm[CHANGE_PASSWORD_FORM_IDENTIFIER] }
+            header={ t("views:changePassword.title") }
             icon={ SettingsSectionIcons.changePassword }
             iconMini={ SettingsSectionIcons.changePasswordMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
+            onPrimaryActionClick={ () => showFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER) }
+            primaryAction={ t("views:changePassword.actionTitles.change") }
+            showActionBar={ !editingForm[CHANGE_PASSWORD_FORM_IDENTIFIER] }
         >
             { showChangePasswordView }
             { confirmationModal }

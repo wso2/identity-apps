@@ -93,7 +93,7 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
         const userAgentParser = new UserAgentParser();
         const sessionList = [];
 
-        for (const [index, session] of sessions.sessions.entries()) {
+        for (const [ index, session ] of sessions.sessions.entries()) {
             userAgentParser.uaString = session.userAgent;
             sessionList.push(
                 <List.Item className="inner-list-item" key={ session.id }>
@@ -163,10 +163,10 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                                             <List.Content>
                                                 <Grid padded>
                                                     <Grid.Row columns={ 2 }>
-                                                        <Grid.Column width={ 8 }>
+                                                        <Grid.Column width={ 5 }>
                                                             { t("common:operatingSystem") }
                                                         </Grid.Column>
-                                                        <Grid.Column width={ 8 }>
+                                                        <Grid.Column width={ 11 }>
                                                             <List.Description>
                                                                 <Icon
                                                                     name={ resolveOSIcon(userAgentParser.os.name) }
@@ -179,10 +179,10 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                                                         </Grid.Column>
                                                     </Grid.Row>
                                                     <Grid.Row columns={ 2 }>
-                                                        <Grid.Column width={ 8 }>
+                                                        <Grid.Column width={ 5 }>
                                                             { t("common:browser") }
                                                         </Grid.Column>
-                                                        <Grid.Column width={ 8 }>
+                                                        <Grid.Column width={ 11 }>
                                                             <List.Description>
                                                                 <Icon
                                                                     name={
@@ -196,20 +196,20 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                                                         </Grid.Column>
                                                     </Grid.Row>
                                                     <Grid.Row columns={ 2 }>
-                                                        <Grid.Column width={ 8 }>
+                                                        <Grid.Column width={ 5 }>
                                                             { t("common:ipAddress") }
                                                         </Grid.Column>
-                                                        <Grid.Column width={ 8 }>
+                                                        <Grid.Column width={ 11 }>
                                                             <List.Description>{ session.ip }</List.Description>
                                                         </Grid.Column>
                                                     </Grid.Row>
                                                     {
                                                         userAgentParser.device.vendor ?
                                                             <Grid.Row columns={ 2 }>
-                                                                <Grid.Column width={ 8 }>
+                                                                <Grid.Column width={ 5 }>
                                                                     { t("common:deviceModel") }
                                                                 </Grid.Column>
-                                                                <Grid.Column width={ 8 }>
+                                                                <Grid.Column width={ 11 }>
                                                                     <List.Description>
                                                                         { userAgentParser.device.vendor }
                                                                         { " " }
@@ -222,10 +222,10 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                                                     {
                                                         session.applications && session.applications.length > 0 ?
                                                             <Grid.Row columns={ 2 }>
-                                                                <Grid.Column width={ 8 }>
+                                                                <Grid.Column width={ 5 }>
                                                                     { t("common:applications") }
                                                                 </Grid.Column>
-                                                                <Grid.Column width={ 8 }>
+                                                                <Grid.Column width={ 11 }>
                                                                     <List.Description>
                                                                         <Table celled compact>
                                                                             <Table.Header>
@@ -261,10 +261,10 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                                                             : null
                                                     }
                                                     <Grid.Row columns={ 2 }>
-                                                        <Grid.Column width={ 8 }>
+                                                        <Grid.Column width={ 5 }>
                                                             { t("common:loginTime") }
                                                         </Grid.Column>
-                                                        <Grid.Column width={ 8 }>
+                                                        <Grid.Column width={ 11 }>
                                                             <List.Description>
                                                                 {
                                                                     moment(parseInt(session.loginTime, 10))
@@ -274,10 +274,10 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                                                         </Grid.Column>
                                                     </Grid.Row>
                                                     <Grid.Row columns={ 2 }>
-                                                        <Grid.Column width={ 8 }>
-                                                            { t("common:lastSeen") }
+                                                        <Grid.Column width={ 5 }>
+                                                            { t("common:lastAccessed") }
                                                         </Grid.Column>
-                                                        <Grid.Column width={ 8 }>
+                                                        <Grid.Column width={ 11 }>
                                                             <List.Description>
                                                                 {
                                                                     moment(parseInt(session.lastAccessTime, 10))
@@ -287,10 +287,8 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                                                         </Grid.Column>
                                                     </Grid.Row>
                                                     <Grid.Row columns={ 2 }>
-                                                        <Grid.Column width={ 8 }>
-                                                            { t("common:access") }
-                                                        </Grid.Column>
-                                                        <Grid.Column width={ 8 }>
+                                                        <Grid.Column width={ 5 }>{ " " }</Grid.Column>
+                                                        <Grid.Column width={ 11 }>
                                                             <Button
                                                                 negative
                                                                 onClick={
@@ -327,19 +325,19 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
         const deviceType = {
             desktop: {
                 icon: "computer",
-                values: ["desktop"]
+                values: [ "desktop" ]
             },
             mobile: {
                 icon: "mobile alternate",
-                values: ["mobile"]
+                values: [ "mobile" ]
             },
             tablet: {
                 icon: "tablet alternate",
-                values: ["tablet"]
+                values: [ "tablet" ]
             }
         };
 
-        for (const [key, value] of Object.entries(deviceType)) {
+        for (const [ key, value ] of Object.entries(deviceType)) {
             if (value.values.includes(type)) {
                 return value.icon as SemanticICONS;
             }
@@ -359,27 +357,27 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
         const osType = {
             android: {
                 icon: "android",
-                values: ["Android"]
+                values: [ "Android" ]
             },
             ios: {
                 icon: "apple",
-                values: ["iOS"]
+                values: [ "iOS" ]
             },
             linux: {
                 icon: "linux",
-                values: ["Linux"]
+                values: [ "Linux" ]
             },
             mac: {
                 icon: "apple",
-                values: ["Mac OS"]
+                values: [ "Mac OS" ]
             },
             windows: {
                 icon: "windows",
-                values: ["Windows [Phone/Mobile]"]
+                values: [ "Windows [Phone/Mobile]" ]
             }
         };
 
-        for (const [key, value] of Object.entries(osType)) {
+        for (const [ key, value ] of Object.entries(osType)) {
             if (value.values.includes(type)) {
                 return value.icon as SemanticICONS;
             }
@@ -396,23 +394,23 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
         const browserType = {
             chrome: {
                 icon: "chrome",
-                values: ["Chrome", "Chrome Headless", "Chrome WebView", "Chromium"]
+                values: [ "Chrome", "Chrome Headless", "Chrome WebView", "Chromium" ]
             },
             firefox: {
                 icon: "firefox",
-                values: ["Firefox"]
+                values: [ "Firefox" ]
             },
             opera: {
                 icon: "opera",
-                values: ["Opera Coast", "Opera Mini", "Opera Mobi", "Opera Tablet", "Opera"]
+                values: [ "Opera Coast", "Opera Mini", "Opera Mobi", "Opera Tablet", "Opera" ]
             },
             safari: {
                 icon: "safari",
-                values: ["Mobile Safari", "Safari"]
+                values: [ "Mobile Safari", "Safari" ]
             }
         };
 
-        for (const [key, value] of Object.entries(browserType)) {
+        for (const [ key, value ] of Object.entries(browserType)) {
             if (value.values.includes(type)) {
                 return value.icon as SemanticICONS;
             }
@@ -456,7 +454,7 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
      * @param {any} id - Session id.
      */
     const handleSessionDetailClick = (e, { id }) => {
-        const indexes = [...sessionsListActiveIndexes];
+        const indexes = [ ...sessionsListActiveIndexes ];
 
         if (!sessionsListActiveIndexes.includes(id)) {
             indexes.push(id);
@@ -470,17 +468,17 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
     };
 
     /**
-     * Revokes a single user session.
+     * Terminate a single user session.
      */
-    const handleTerminateUserSession = () => {
+    const terminateUserSession = () => {
         dispatch(revokeUserSession(editingUserSession.id));
         dispatch(hideRevokeUserSessionModal());
     };
 
     /**
-     * Revokes all the user sessions.
+     * Terminates all the user sessions.
      */
-    const handleTerminateAllUserSessions = () => {
+    const terminateAllUserSessions = () => {
         dispatch(revokeAllUserSessions());
         dispatch(hideRevokeAllUserSessionsModal());
     };
@@ -534,7 +532,7 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                 <Button className="link-button" onClick={ handleTerminateAllUserSessionsModalClose }>
                     { t("common:cancel") }
                 </Button>
-                <Button primary onClick={ handleTerminateAllUserSessions }>
+                <Button primary onClick={ terminateAllUserSessions }>
                     { t("common:terminate") }
                 </Button>
             </Modal.Actions>
@@ -559,7 +557,7 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                 <Button className="link-button" onClick={ handleTerminateUserSessionModalClose }>
                     { t("common:cancel") }
                 </Button>
-                <Button primary onClick={ handleTerminateUserSession }>
+                <Button primary onClick={ terminateUserSession }>
                     { t("common:terminate") }
                 </Button>
             </Modal.Actions>
@@ -568,16 +566,22 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
 
     return (
         <SettingsSection
-            contentPadding={ false }
-            header={ t("views:userSessions.title") }
             description={ t("views:userSessions.subTitle") }
-            actionTitle={
+            header={ t("views:userSessions.title") }
+            placeholder={
                 !(userSessions && userSessions.sessions && (userSessions.sessions.length > 0))
                     ? t("views:userSessions.actionTitles.empty")
-                    : t("views:userSessions.actionTitles.terminateAll")
+                    : null
             }
-            onActionClick={ handleTerminateAllUserSessionsClick }
-            actionDisabled={ !(userSessions && userSessions.sessions && (userSessions.sessions.length > 0)) }
+            secondaryAction={
+                <Button
+                    basic
+                    onClick={ handleTerminateAllUserSessionsClick }
+                    color="red"
+                >
+                    { t("common:terminateAll") }
+                </Button>
+            }
         >
             <List divided verticalAlign="middle" className="main-content-inner">
                 {

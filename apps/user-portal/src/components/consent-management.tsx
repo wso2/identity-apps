@@ -373,12 +373,14 @@ export const ConsentManagementComponent: FunctionComponent<{}> = (): JSX.Element
     return (
         <>
             <SettingsSection
-                contentPadding={ false }
-                header={ t("views:consentManagement.title") }
                 description={ t("views:consentManagement.subTitle") }
-                actionTitle={ t("views:consentManagement.actionTitles.empty") }
-                actionDisabled={ true }
-                showAction={ !(consentedApps && consentedApps.length && consentedApps.length > 0) }
+                header={ t("views:consentManagement.title") }
+                placeholder={
+                    !(consentedApps && consentedApps.length && consentedApps.length > 0)
+                        ? t("views:consentManagement.actionTitles.empty")
+                        : null
+                }
+                showActionBar={ !(consentedApps && consentedApps.length && consentedApps.length > 0) }
             >
                 <List divided verticalAlign="middle" className="main-content-inner">
                     {
