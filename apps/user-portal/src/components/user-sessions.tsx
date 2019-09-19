@@ -113,7 +113,7 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                                     floated="left"
                                 />
                                 <List.Content>
-                                    <List.Header>{ session.ip }</List.Header>
+                                    <List.Header>{ userAgentParser.os.name }</List.Header>
                                     <List.Description>
                                         <p style={ { fontSize: "11px" } }>
                                             {
