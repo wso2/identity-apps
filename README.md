@@ -6,26 +6,31 @@ End-user apps in WSO2 Identity Server
 | :------------ |:------------- 
 | master      | [![Build Status](https://wso2.org/jenkins/view/Dashboard/job/platform-builds/job/identity-apps/badge/icon)](https://wso2.org/jenkins/view/Dashboard/job/platform-builds/job/identity-apps/) |
 
-## How to start
+## Setup build environment
+
+1. Install NodeJS from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
+2. Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi).
+
+## Build & Run
+
+#### Build
 
 1. Download or clone the project source code from [https://github.com/wso2/identity-apps](https://github.com/wso2/identity-apps)
-2. Install NodeJS from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
+2. Run `mvn clean install` from the command line in the project root directory (where the root `pom.xml` is located). 
 
-If you are building the project for [product-is](https://github.com/wso2/product-is) build, do this step.
+If you are building [product-is](https://github.com/wso2/product-is), the built identity apps dependencies will install to your local `.m2` repository during the build above.
 
-3.  Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi).
+3. Then you just need to build [WSO2 Identiy Server](https://github.com/wso2/product-is) after. _(Follow the guide there)_
 
-## Build
+#### Run
 
-1. Run `mvn clean install` from the command line in the project root directory (where the root `pom.xml` is located). And the built dependency will install to your local `.m2` repository.
-2. Then build [WSO2 Identiy Server](https://github.com/wso2/product-is). _(Follow the guide there)_
+4. Execute `wso2server.sh` (For unix environment) or `wso2server.bat` (For windows environment) file from the `bin` directory to run the WSO2 Identity Server.
+3. Navigate to `https://localhost:9443/user-portal` from the browser. (Add certificate exception if required)
 
-## Run (Dev Mode)
+## Run in dev mode
 
-1. Run `npm run build` from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependancies.
-2. Download a [WSO2 Identity Server](https://wso2.com/identity-and-access-management/) distrubution.
-3. Run the wso2server.sh or wso2server.bat file in the /bin directory
-4. Add below code to `repository/conf/tomcat/web.xml`in `WSO2 Identity Server` distribution pack to allow CORS for webpack dev servers. _(If you are running the app in webpack dev server as in the 4th step)_
+1. **Do only if you skip WSO2 Identity Server build step above:** Download the built distribution of WSO2 Identity Server from [https://wso2.com/identity-and-access-management/](https://wso2.com/identity-and-access-management/).
+2. Add below code to `repository/resources/conf/templates/repository/conf/tomcat/web.xml.j2` in `WSO2 Identity Server` distribution pack to allow CORS.
 
 ```xml
     <filter>
@@ -48,8 +53,9 @@ If you are building the project for [product-is](https://github.com/wso2/product
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
 ```
-
-5. Start in development mode, Execute `cd apps/<app> && npm start` command. E.g. `cd apps/user-portal && npm start`.
+4. Execute `wso2server.sh` (For unix environment) or `wso2server.bat` (For windows environment) file from the `bin` directory to run WSO2 Identity Server.
+2. Open cloned or downloaded Identity Apps repo and Run `npm run build` from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependancies. _(Note:- Not necessary if you have already done above identity apps build steps)_
+5. Start the apps in development mode, Execute `cd apps/<app> && npm start` command. E.g. `cd apps/user-portal && npm start`.
 
 ## License
 
