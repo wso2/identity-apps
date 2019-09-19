@@ -31,6 +31,7 @@
 
             // override the semantic H2 margin
             .ui.header {
+                font-size: @settingsCardHeaderFontSize;
                 margin-bottom: 5px;
             }
         }

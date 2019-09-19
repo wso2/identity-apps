@@ -25,6 +25,7 @@
     Settings Card
 --------------------*/
 
+@settingsCardHeaderFontSize: 1.5rem;
 @settingsCardPadding: 2em;
 @settingsCardHeaderPadding: 2em 2em 1.5em;
 @settingsCardActionButtonColor: @primaryColor;
