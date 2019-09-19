@@ -40,8 +40,8 @@ export const SidePanelIconSet = {
     consent: require("../lib/assets/images/icons/tick-circle-icon.svg"),
 };
 export const MFAIconSet = {
-    sms: require("../lib/assets/images/icons/speech-bubble.svg"),
-    fido: require("../lib/assets/images/icons/fido-logo-black.png")
+    sms: require("../lib/assets/images/icons/sms-icon.svg"),
+    fido: require("../lib/assets/images/icons/fido-logo.png")
 };
 export const SettigsSectionIconSet = {
     associatedAccounts: require("../lib/assets/images/illustrations/associated-accounts.svg"),
