@@ -268,7 +268,7 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                                                             <List.Description>
                                                                 {
                                                                     moment(parseInt(session.loginTime, 10))
-                                                                        .format("Do MMMM YYYY, h:mm:ss a")
+                                                                        .format("lll")
                                                                 }
                                                             </List.Description>
                                                         </Grid.Column>
