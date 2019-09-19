@@ -24,8 +24,6 @@ import { ThemeIcon, ThemeIconSizes } from "./icon";
  * Proptypes for the settings section component.
  */
 interface SettingsSectionProps {
-    actionDisabled?: boolean;
-    actionTitle?: string;
     contentPadding?: boolean;
     description?: string;
     header: string;
@@ -34,8 +32,14 @@ interface SettingsSectionProps {
     iconFloated?: "left" | "right";
     iconStyle?: "twoTone" | "default" | "colored";
     iconSize?: ThemeIconSizes;
-    onActionClick?: (event: MouseEvent<HTMLElement>) => void;
-    showAction?: boolean;
+    onPrimaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
+    onSecondaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
+    placeholder?: string;
+    primaryAction?: any;
+    primaryActionDisabled?: boolean;
+    secondaryAction?: any;
+    secondaryActionDisabled?: boolean;
+    showActionBar?: boolean;
 }
 
 /**
@@ -46,19 +50,66 @@ interface SettingsSectionProps {
  */
 export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props): JSX.Element => {
     const {
-        actionDisabled,
+        contentPadding,
+        description,
+        header,
         icon,
         iconMini,
         iconFloated,
-        iconSize,
         iconStyle,
-        header,
-        description,
-        onActionClick,
-        actionTitle,
-        showAction,
-        contentPadding
+        iconSize,
+        onPrimaryActionClick,
+        onSecondaryActionClick,
+        placeholder,
+        primaryAction,
+        primaryActionDisabled,
+        secondaryAction,
+        secondaryActionDisabled,
+        showActionBar,
     } = props;
+
+    /**
+     * Construct the action element.
+     *
+     * @param action - action which is passed in.
+     * @param {boolean} actionDisabled - Flag to determine if the action should be disabled.
+     * @param actionOnClick - On Click handler of the action.
+     * @param {"primary" | "secondary"} actionType - Type of the action.
+     * @return Constructed element.
+     */
+    const constructAction = (
+        action: any, actionDisabled: boolean, actionOnClick: any, actionType: "primary" | "secondary"
+    ) => {
+        // if passed in action is a react component
+        if (typeof action === "function" || typeof action === "object") {
+            return (
+                <List.Content
+                    className={ actionDisabled ? "disabled" : "" }
+                    floated={ actionType === "secondary" ? "right" : "left" }
+                >
+                    { action }
+                </List.Content>
+            );
+        }
+
+        // if passed in action is of type `string`.
+        if (typeof action === "string") {
+            return (
+                <List.Content
+                    className={ actionDisabled ? "disabled" : "" }
+                    floated={ actionType === "secondary" ? "right" : "left" }
+                >
+                    <List.Header
+                        className="action-button-text"
+                        onClick={ actionOnClick }>
+                        { action }
+                    </List.Header>
+                </List.Content>
+            );
+        }
+
+        return null;
+    };
 
     return (
         <Card className="settings-card" fluid padded="very">
@@ -118,16 +169,46 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
                 </Grid>
             </Card.Content>
             {
-                actionTitle && showAction
+                (primaryAction || secondaryAction || placeholder) && showActionBar
                     ?
                     <Card.Content className="extra-content" extra>
-                        <List selection verticalAlign="middle">
+                        <List selection={ !secondaryAction } verticalAlign="middle">
                             <List.Item
-                                className={ `action-button ${ actionDisabled ? "disabled" : "" }` }
-                                onClick={ onActionClick }
+                                className="action-button"
+                                disabled={ !!placeholder }
+                                // if both `primaryAction` & `secondaryAction` are passed in,
+                                // disable list item `onClick`.
+                                onClick={ !(primaryAction && secondaryAction)
+                                    ? onSecondaryActionClick || onPrimaryActionClick
+                                    : null
+                                }
                             >
-                                <List.Header className="action-button-text"
-                                             onClick={ onActionClick }>{ actionTitle }</List.Header>
+                                {
+                                    placeholder
+                                        ? <List.Header className="action-button-text">{ placeholder }</List.Header>
+                                        : <>
+                                            {
+                                                primaryAction
+                                                    ? constructAction(
+                                                    primaryAction,
+                                                    primaryActionDisabled,
+                                                    onPrimaryActionClick,
+                                                    "primary"
+                                                    )
+                                                    : null
+                                            }
+                                            {
+                                                secondaryAction
+                                                    ? constructAction(
+                                                    secondaryAction,
+                                                    secondaryActionDisabled,
+                                                    onSecondaryActionClick,
+                                                    "secondary"
+                                                    )
+                                                    : null
+                                            }
+                                        </>
+                                }
                             </List.Item>
                         </List>
                     </Card.Content>
@@ -141,10 +222,12 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
  * Default proptypes for the settings section component.
  */
 SettingsSection.defaultProps = {
-    actionDisabled: false,
-    actionTitle: "",
     contentPadding: false,
     description: "",
     header: "",
-    showAction: true
+    iconFloated: "right",
+    iconStyle: "colored",
+    primaryAction: "",
+    primaryActionDisabled: false,
+    showActionBar: true
 };
