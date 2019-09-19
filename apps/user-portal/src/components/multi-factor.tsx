@@ -32,16 +32,17 @@ interface MFAProps {
 }
 
 export const MultiFactor: React.FunctionComponent<MFAProps> = (props: MFAProps): JSX.Element => {
-    const {t} = useTranslation();
-    const {onNotificationFired} = props;
+    const { t } = useTranslation();
+    const { onNotificationFired } = props;
 
     return (
         <SettingsSection
-            header={t("views:securityPage.multiFactor.title")}
-            description={t("views:securityPage.multiFactor.subTitle")}>
+            description={ t("views:securityPage.multiFactor.subTitle") }
+            header={ t("views:securityPage.multiFactor.title") }
+        >
             <List divided verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">
-                    <SmsOtp onNotificationFired={onNotificationFired}/>
+                    <SmsOtp onNotificationFired={ onNotificationFired }/>
                 </List.Item>
                 <List.Item className="inner-list-item">
                     <Fido/>

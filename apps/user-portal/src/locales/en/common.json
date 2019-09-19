@@ -6,6 +6,7 @@
     "user": "User",
     "loginTime": "Login time",
     "lastSeen": "Last seen",
+    "lastAccessed": "Last accessed",
     "ipAddress": "ip address",
     "deviceModel": "Device model",
     "operatingSystem": "Operating System",
@@ -28,6 +29,7 @@
     "switch": "Switch",
     "remove": "Remove",
     "terminate": "Terminate",
+    "terminateAll": "Terminate all",
     "challengeQuestionNumber": "Challenge Question {{number}}",
     "showPassword": "Show password",
     "hidePassword": "Hide password"

@@ -238,6 +238,11 @@
                 }
             }
         },
+        "placeholders": {
+            "emptyQuestionsList": {
+                "heading": "Failed to load any security questions"
+            }
+        },
         "dropDown": {
             "label": "Select a Question"
         },
@@ -350,9 +355,9 @@
         }
     },
     "associatedAccounts": {
-        "title": "Associated Accounts",
-        "subTitle": "Manage all your associated accounts in one place.",
-        "actionTitle": "Add associated account",
+        "title": "Linked Accounts",
+        "subTitle": "Manage all your linked accounts in one place.",
+        "actionTitle": "Add an account",
         "accountTypes": {
             "local": {
                 "label": "Add local user account"
@@ -386,7 +391,7 @@
                 },
                 "error": {
                     "message": "An error occurred !!!",
-                    "description": "Error occurred while retrieving the associated user accounts."
+                    "description": "Error occurred while retrieving the linked user accounts."
                 }
             },
             "addAssociation": {
@@ -396,7 +401,7 @@
                 },
                 "error": {
                     "message": "An error occurred !!!",
-                    "description": "Error occurred while adding the user account association"
+                    "description": "Error occurred while adding the linked account."
                 }
             }
         }

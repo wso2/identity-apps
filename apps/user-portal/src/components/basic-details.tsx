@@ -612,9 +612,8 @@ export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
 
     return (
         <SettingsSection
-            contentPadding={ false }
-            header={ t("views:userProfile.title") }
             description={ t("views:userProfile.subTitle") }
+            header={ t("views:userProfile.title") }
             icon={ <UserImagePlaceHolder size="tiny"/> }
             iconSize="auto"
             iconStyle="colored"

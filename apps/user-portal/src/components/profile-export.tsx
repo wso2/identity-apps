@@ -50,7 +50,7 @@ export const ProfileExportComponent: FunctionComponent<ProfileExportProps> = (
             .then((response) => {
                 if (response.status === 200) {
                     const blob = new Blob(
-                        [JSON.stringify(response.data, null, 2)],
+                        [ JSON.stringify(response.data, null, 2) ],
                         { type: "application/json" }
                     );
                     const url = window.URL.createObjectURL(blob);
@@ -95,15 +95,15 @@ export const ProfileExportComponent: FunctionComponent<ProfileExportProps> = (
     return (
         <SettingsSection
             contentPadding={ false }
-            header={ t("views:profileExport.title") }
             description={ t("views:profileExport.subTitle") }
-            actionTitle={ t("views:profileExport.actionTitle") }
-            onActionClick={ downloadUserProfile }
+            header={ t("views:profileExport.title") }
             icon={ SettingsSectionIcons.profileExport }
             iconMini={ SettingsSectionIcons.profileExportMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
+            onPrimaryActionClick={ downloadUserProfile }
+            primaryAction={ t("views:profileExport.actionTitle") }
         >
         </SettingsSection>
     );

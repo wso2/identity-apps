@@ -1,4 +1,4 @@
-/**
+/*!
  * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -17,15 +17,8 @@
  *
  */
 
-/*******************************
-            Card
-*******************************/
+ /*******************************
+             Header
+ *******************************/
 
-/*-------------------
-    Settings Card
---------------------*/
-
-@settingsCardHeaderFontSize: 1.5rem;
-@settingsCardPadding: 2em;
-@settingsCardHeaderPadding: 2em 2em 1.5em;
-@settingsCardActionButtonColor: @primaryColor;
+@pageHeaderInnerMargin: 5px;

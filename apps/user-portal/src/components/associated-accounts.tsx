@@ -187,17 +187,16 @@ export const AssociatedAccountsComponent: FunctionComponent<AssociatedAccountsPr
 
     return (
         <SettingsSection
-            contentPadding={ false }
-            header={ t("views:associatedAccounts.title") }
             description={ t("views:associatedAccounts.subTitle") }
+            header={ t("views:associatedAccounts.title") }
             icon={ SettingsSectionIcons.associatedAccounts }
             iconMini={ SettingsSectionIcons.associatedAccountsMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
-            showAction={ !editingForm.addAccountForm }
-            actionTitle={ t("views:associatedAccounts.actionTitle") }
-            onActionClick={ () => showFormEditView("addAccountForm") }
+            onPrimaryActionClick={ () => showFormEditView("addAccountForm") }
+            primaryAction={ t("views:associatedAccounts.actionTitle") }
+            showActionBar={ !editingForm.addAccountForm }
         >
             {
                 editingForm.addAccountForm
