@@ -30,7 +30,7 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
 ## Run in dev mode
 
 1. **Do only if you skip WSO2 Identity Server build step above:** Download the built distribution of WSO2 Identity Server from [https://wso2.com/identity-and-access-management/](https://wso2.com/identity-and-access-management/).
-2. Add below code to `repository/conf/tomcat/web.xml`in `WSO2 Identity Server` distribution pack to allow CORS.
+2. Add below code to `repository/conf/tomcat/web.xml.j2`in `WSO2 Identity Server` distribution pack to allow CORS.
 
 ```xml
     <filter>
