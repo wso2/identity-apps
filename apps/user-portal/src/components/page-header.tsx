@@ -40,12 +40,12 @@ export const PageHeader: React.FunctionComponent<PageHeaderProps> = (props: Page
         <>
             { (title || description) &&
                 <>
-                <Header as="h1" textAlign={ titleTextAlign }>
+                <Header className="page-header" as="h1" textAlign={ titleTextAlign }>
                     { title &&
                         title
                     }
                     { description &&
-                        <Header.Subheader>{ description }</Header.Subheader>
+                        <Header.Subheader className="sub-header">{ description }</Header.Subheader>
                     }
                 </Header>
                 <Divider hidden />
