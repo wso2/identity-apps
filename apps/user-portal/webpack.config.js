@@ -34,8 +34,8 @@ module.exports = env => {
     const serverHost = 'https://localhost:9443';
     const clientHost = (env.NODE_ENV === 'prod') ? serverHost : `https://localhost:${devServerPort}`;
     const externalLoginClientID = (env.NODE_ENV === 'prod') ? 'USER_PORTAL' : 'USER_PORTAL';
-    const externalLoginCallbackURL = `${clientHost}/user-portal/login`;
-    const externalLogoutCallbackURL = `${clientHost}/user-portal/logout`;
+    const externalLoginCallbackURL = `${clientHost}/${basename}/login`;
+    const externalLogoutCallbackURL = `${clientHost}/${basename}/logout`;
 
     /**
      * Build configurations
