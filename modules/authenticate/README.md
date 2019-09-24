@@ -1,6 +1,6 @@
-# Authenticate module for React Applications
+# WSO2 Identity Server - Authentication SDK for Javascript Applications
 
-This module can be used to enable OIDC based authentication for React applications.
+Provide OpenID Connect (OIDC) and OAuth2 protocol support for JavaScript client applications.
 
 ## Install
 Add following dependency in your package.json file.
