@@ -16,19 +16,33 @@
  * under the License.
  */
 
+import classNames from "classnames";
 import * as React from "react";
 import { Segment } from "semantic-ui-react";
+
+/**
+ * Proptypes for the edit section component.
+ */
+interface EditSectionProps {
+    marginTop?: boolean;
+}
 
 /**
  * Edit section component.
  *
  * @param {React.PropsWithChildren<any>} props
- * @return {any}
+ * @return {JSX.Element}
  */
-export const EditSection: React.FunctionComponent<any> = (props): JSX.Element => {
+export const EditSection: React.FunctionComponent<EditSectionProps> = (props): JSX.Element => {
+    const { marginTop } = props;
+
+    const classes = classNames({
+        "top-margin": marginTop
+    });
+
     return (
-        <Segment padded className="edit-segment">
+        <Segment padded className={ `edit-segment ${classes}` }>
             { props.children }
         </Segment>
     );
-}
+};

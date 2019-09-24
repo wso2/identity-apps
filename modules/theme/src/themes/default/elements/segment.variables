@@ -18,7 +18,8 @@
  */
 
  /*******************************
-             Segment
+          Edit Segment
  *******************************/
 
- @segmentBackgroundColor: #f9fafb;
+@editSegmentBackgroundColor: @athensGray;
+@editSegmentMarginTop: 15px;
