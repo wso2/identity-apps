@@ -22,3 +22,4 @@ export * from "./authenticate";
 export * from "./consent-management";
 export * from "./profile";
 export * from "./user-sessions";
+export * from "./pending-approvals";

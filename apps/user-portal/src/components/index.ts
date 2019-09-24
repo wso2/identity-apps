@@ -34,3 +34,4 @@ export * from "./user-sessions";
 export * from "./icon";
 export * from "./consent-management";
 export * from "./side-panel";
+export * from "./pending-approvals";

@@ -27,6 +27,7 @@ interface ServiceResourcesType {
     jwks: string;
     logout: string;
     me: string;
+    pendingApprovals: string;
     receipts: string;
     sessions: string;
     token: string;
@@ -45,10 +46,11 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     jwks: `${ServiceEndpoint}/oauth2/jwks`,
     logout: `${ServiceEndpoint}/oidc/logout`,
     me: `${ServiceEndpoint}/scim2/Me`,
+    pendingApprovals: `${ServiceEndpoint}/t/carbon.super/api/users/v1/me/approval-tasks`,
     receipts: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents/receipts`,
     revoke: `${ServiceEndpoint}/oauth2/revoke`,
     sessions: `${ServiceEndpoint}/t/carbon.super/api/users/v1/me/sessions`,
     token: `${ServiceEndpoint}/oauth2/token`,
     user: `${ServiceEndpoint}/api/identity/user/v1.0/me`,
-    wellKnown: `${ServiceEndpoint}/oauth2/oidcdiscovery/.well-known/openid-configuration`
+    wellKnown: `${ServiceEndpoint}/oauth2/oidcdiscovery/.well-known/openid-configuration`,
 };
