@@ -32,12 +32,13 @@ export const HomeTileIcons = {
     consent: require("../lib/assets/images/home_consent_mgt.png")
 };
 export const SidePanelIconSet = {
+    account: require("../lib/assets/images/icons/controls-icon.svg"),
+    consent: require("../lib/assets/images/icons/tick-circle-icon.svg"),
+    operations: require("../lib/assets/images/icons/tools-icon.svg"),
     overview: require("../lib/assets/images/icons/dashboard-icon.svg"),
     personal: require("../lib/assets/images/icons/user-icon.svg"),
     security: require("../lib/assets/images/icons/lock-icon.svg"),
-    account: require("../lib/assets/images/icons/controls-icon.svg"),
     session: require("../lib/assets/images/icons/monitor-icon.svg"),
-    consent: require("../lib/assets/images/icons/tick-circle-icon.svg"),
 };
 export const MFAIconSet = {
     sms: require("../lib/assets/images/icons/sms-icon.svg"),
