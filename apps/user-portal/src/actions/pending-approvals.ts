@@ -39,54 +39,22 @@ export const fetchPendingApprovals = (status) => {
                 url: ServiceResourcesEndpoint.pendingApprovals
             };
 
-            if (status !== ApprovalStates.DEFAULT) {
-                if (status === ApprovalStates.ALL) {
-                    requestConfig = {
-                        ...requestConfig,
-                        params: null
-                    };
-                }
-                return axios.request(requestConfig)
-                    .then((response) => {
-                        return response.data as ApprovalTaskSummary[];
-                    })
-                    .catch((error) => {
-                        throw error;
-                    });
+            if (status === ApprovalStates.ALL) {
+                requestConfig = {
+                    ...requestConfig,
+                    params: null
+                };
             }
-
-            // Fetch `READY` state approvals.
-            const fetchReadyState = () => {
-                requestConfig = {
-                    ...requestConfig,
-                    params: {
-                        status: ApprovalStates.READY
-                    }
-                };
-                return axios.request(requestConfig);
-            };
-
-            // Fetch `RESERVED` state approvals.
-            const fetchReservedState = () => {
-                requestConfig = {
-                    ...requestConfig,
-                    params: {
-                        status: ApprovalStates.RESERVED
-                    }
-                };
-                return axios.request(requestConfig);
-            };
-
-            return axios.all([fetchReadyState(), fetchReservedState()])
-                .then(axios.spread((ready, reserved) => {
-                    return [...ready.data, ...reserved.data];
-                }))
+            return axios.request(requestConfig)
+                .then((response) => {
+                    return response.data as ApprovalTaskSummary[];
+                })
                 .catch((error) => {
                     throw error;
                 });
         })
         .catch((error) => {
-            throw new Error(`Failed to retrieve the access token - ${error}`);
+            throw new Error(`Failed to retrieve the access token - ${ error }`);
         });
 };
 
@@ -101,7 +69,7 @@ export const fetchPendingApprovalDetails = (id: string) => {
                     "Content-Type": "application/json"
                 },
                 method: HttpMethods.GET,
-                url: `${ServiceResourcesEndpoint.pendingApprovals}/${id}`
+                url: `${ ServiceResourcesEndpoint.pendingApprovals }/${ id }`
             };
 
             return axios.request(requestConfig)
@@ -113,7 +81,7 @@ export const fetchPendingApprovalDetails = (id: string) => {
                 });
         })
         .catch((error) => {
-            throw new Error(`Failed to retrieve the access token - ${error}`);
+            throw new Error(`Failed to retrieve the access token - ${ error }`);
         });
 };
 
@@ -135,7 +103,7 @@ export const updatePendingApprovalState = (
                     "Content-Type": "application/json"
                 },
                 method: HttpMethods.PUT,
-                url: `${ServiceResourcesEndpoint.pendingApprovals}/${id}/state`
+                url: `${ ServiceResourcesEndpoint.pendingApprovals }/${ id }/state`
             };
 
             return axios.request(requestConfig)
@@ -147,6 +115,6 @@ export const updatePendingApprovalState = (
                 });
         })
         .catch((error) => {
-            throw new Error(`Failed to retrieve the access token - ${error}`);
+            throw new Error(`Failed to retrieve the access token - ${ error }`);
         });
 };

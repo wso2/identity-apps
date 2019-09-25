@@ -111,7 +111,6 @@ export interface ApprovalAction {
 }
 
 export enum ApprovalStates {
-    DEFAULT = "DEFAULT",
     READY = "READY",
     COMPLETED = "COMPLETED",
     RESERVED = "RESERVED",

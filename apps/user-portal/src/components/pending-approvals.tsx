@@ -43,33 +43,40 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
 ): JSX.Element => {
     const [pendingApprovals, setPendingApprovals] = useState([]);
     const [pendingApprovalsListActiveIndexes, setPendingApprovalsListActiveIndexes] = useState([]);
-    const [filterStatus, setFilterStatus] = useState(ApprovalStates.DEFAULT);
+    const [filterStatus, setFilterStatus] = useState(ApprovalStates.READY);
     const { onNotificationFired } = props;
     const { t } = useTranslation();
+
+    useEffect(() => {
+        setPendingApprovals(pendingApprovals);
+        console.log('updated pendingApprovals', pendingApprovals)
+    }, [pendingApprovals]);
 
     useEffect(() => {
         getApprovals();
     }, [filterStatus]);
 
-    const getApprovals = (updateStatus: boolean = false) => {
+    const getApprovals = (shallowUpdate: boolean = false) => {
         fetchPendingApprovals(filterStatus)
             .then((response) => {
-                if (!updateStatus) {
+                if (!shallowUpdate) {
                     setPendingApprovals(response);
                     return;
                 }
 
                 const approvalsFromState = [...pendingApprovals];
                 const approvalsFromResponse = [...response];
+                const filteredApprovals = [];
                 approvalsFromState.forEach((fromState) => {
                     approvalsFromResponse.forEach((fromResponse) => {
                         if (fromState.id === fromResponse.id) {
                             fromState.status = fromResponse.status;
+                            filteredApprovals.push(fromState);
                         }
                     });
                 });
 
-                setPendingApprovals(approvalsFromState);
+                setPendingApprovals(filteredApprovals);
             })
             .catch((error) => {
                 let notification = {
@@ -112,6 +119,7 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                             approval.details = response;
                         }
                     });
+
                 });
         });
 
@@ -124,23 +132,24 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
     ) => {
         updatePendingApprovalState(id, state)
             .then((response) => {
+                console.log("Res", response);
                 getApprovals(true);
                 updateApprovalDetails();
             })
             .catch((error) => {
-                console.log("RES", error);
+                console.log("Error", error);
             });
     };
 
     const filterByStatus = (
         status:
-            ApprovalStates.DEFAULT
-            | ApprovalStates.READY
+            ApprovalStates.READY
             | ApprovalStates.RESERVED
             | ApprovalStates.COMPLETED
             | ApprovalStates.ALL
     ) => {
         setFilterStatus(status);
+        setPendingApprovalsListActiveIndexes([]);
     };
 
     /**
@@ -393,60 +402,66 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                     )
                     : null
             }
-            <Grid.Row>
-                <Grid.Column>
-                    <List.Content>
-                        <Grid padded>
-                            <Grid.Row columns={ 2 }>
-                                <Grid.Column width={ 5 }>
-                                    { " " }
-                                </Grid.Column>
-                                <Grid.Column width={ 11 }>
-                                    {
-                                        approval.status === ApprovalStates.READY
-                                            ? (
+            {
+                approval.status !== ApprovalStates.COMPLETED
+                    ? (
+                        <Grid.Row>
+                            <Grid.Column>
+                                <List.Content>
+                                    <Grid padded>
+                                        <Grid.Row columns={ 2 }>
+                                            <Grid.Column width={ 5 }>
+                                                { " " }
+                                            </Grid.Column>
+                                            <Grid.Column width={ 11 }>
+                                                {
+                                                    approval.status === ApprovalStates.READY
+                                                        ? (
+                                                            <Button
+                                                                default
+                                                                onClick={
+                                                                    () => updateApprovalState(approval.id, ApprovalStates.CLAIM)
+                                                                }
+                                                            >
+                                                                { t("common:claim") }
+                                                            </Button>
+                                                        )
+                                                        : (
+                                                            <Button
+                                                                default
+                                                                onClick={
+                                                                    () => updateApprovalState(approval.id, ApprovalStates.RELEASE)
+                                                                }
+                                                            >
+                                                                { t("common:release") }
+                                                            </Button>
+                                                        )
+                                                }
                                                 <Button
-                                                    default
+                                                    primary
                                                     onClick={
-                                                        () => updateApprovalState(approval.id, ApprovalStates.CLAIM)
+                                                        () => updateApprovalState(approval.id, ApprovalStates.APPROVE)
                                                     }
                                                 >
-                                                    { t("common:claim") }
+                                                    { t("common:approve") }
                                                 </Button>
-                                            )
-                                            : (
                                                 <Button
-                                                    default
+                                                    negative
                                                     onClick={
-                                                        () => updateApprovalState(approval.id, ApprovalStates.RELEASE)
+                                                        () => updateApprovalState(approval.id, ApprovalStates.REJECT)
                                                     }
                                                 >
-                                                    { t("common:release") }
+                                                    { t("common:reject") }
                                                 </Button>
-                                            )
-                                    }
-                                    <Button
-                                        primary
-                                        onClick={
-                                            () => updateApprovalState(approval.id, ApprovalStates.APPROVE)
-                                        }
-                                    >
-                                        { t("common:approve") }
-                                    </Button>
-                                    <Button
-                                        negative
-                                        onClick={
-                                            () => updateApprovalState(approval.id, ApprovalStates.REJECT)
-                                        }
-                                    >
-                                        { t("common:reject") }
-                                    </Button>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </List.Content>
-                </Grid.Column>
-            </Grid.Row>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                </List.Content>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                    : null
+            }
         </EditSection>
     );
 
@@ -460,16 +475,8 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                     <Label
                         as="a"
                         className="filter-label"
-                        onClick={ () => filterByStatus(ApprovalStates.DEFAULT) }
-                        basic
-                    >
-                        <Icon name="tag" color="grey"/>
-                        Default
-                    </Label>
-                    <Label
-                        as="a"
-                        className="filter-label"
                         onClick={ () => filterByStatus(ApprovalStates.READY) }
+                        active={ filterStatus === ApprovalStates.READY }
                         basic
                     >
                         <Icon name="tag" color="yellow"/>
@@ -479,6 +486,7 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                         as="a"
                         className="filter-label"
                         onClick={ () => filterByStatus(ApprovalStates.RESERVED) }
+                        active={ filterStatus === ApprovalStates.RESERVED }
                         basic
                     >
                         <Icon name="tag" color="orange"/>
@@ -488,6 +496,7 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                         as="a"
                         className="filter-label"
                         onClick={ () => filterByStatus(ApprovalStates.COMPLETED) }
+                        active={ filterStatus === ApprovalStates.COMPLETED }
                         basic
                     >
                         <Icon name="tag" color="green"/>
@@ -497,6 +506,7 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                         as="a"
                         className="filter-label"
                         onClick={ () => filterByStatus(ApprovalStates.ALL) }
+                        active={ filterStatus === ApprovalStates.ALL }
                         basic
                     >
                         <Icon name="tag" color="blue"/>
