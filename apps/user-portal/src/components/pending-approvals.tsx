@@ -19,14 +19,7 @@
 import moment from "moment";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-    Button,
-    Grid,
-    Icon,
-    List,
-    SemanticCOLORS,
-    Table
-} from "semantic-ui-react";
+import { Button, Grid, Icon, Label, List, SemanticCOLORS, Table } from "semantic-ui-react";
 import { fetchPendingApprovalDetails, fetchPendingApprovals, updatePendingApprovalState } from "../actions";
 import { NotificationActionPayload } from "../models/notifications";
 import { ApprovalStates, ApprovalTaskDetails } from "../models/pending-approvals";
@@ -50,15 +43,16 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
 ): JSX.Element => {
     const [pendingApprovals, setPendingApprovals] = useState([]);
     const [pendingApprovalsListActiveIndexes, setPendingApprovalsListActiveIndexes] = useState([]);
+    const [filterStatus, setFilterStatus] = useState(ApprovalStates.DEFAULT);
     const { onNotificationFired } = props;
     const { t } = useTranslation();
 
     useEffect(() => {
         getApprovals();
-    }, []);
+    }, [filterStatus]);
 
     const getApprovals = (updateStatus: boolean = false) => {
-        fetchPendingApprovals()
+        fetchPendingApprovals(filterStatus)
             .then((response) => {
                 if (!updateStatus) {
                     setPendingApprovals(response);
@@ -78,19 +72,31 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                 setPendingApprovals(approvalsFromState);
             })
             .catch((error) => {
-                onNotificationFired({
+                let notification = {
                     description: t(
-                        "views:pendingApprovals.notifications.fetchPendingApprovals.error.description",
-                        { description: error.response.data.detail }
+                        "views:pendingApprovals.notifications.fetchPendingApprovals.genericError.description"
                     ),
                     message: t(
-                        "views:pendingApprovals.notifications.fetchPendingApprovals.error.message"
+                        "views:pendingApprovals.notifications.fetchPendingApprovals.genericError.message"
                     ),
                     otherProps: {
                         negative: true
                     },
                     visible: true
-                });
+                };
+                if (error.response && error.response.data && error.response.detail) {
+                    notification = {
+                        ...notification,
+                        description: t(
+                            "views:pendingApprovals.notifications.fetchPendingApprovals.error.description",
+                            { description: error.response.data.detail }
+                        ),
+                        message: t(
+                            "views:pendingApprovals.notifications.fetchPendingApprovals.error.message"
+                        ),
+                    };
+                }
+                onNotificationFired(notification);
             });
     };
 
@@ -120,11 +126,21 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
             .then((response) => {
                 getApprovals(true);
                 updateApprovalDetails();
-                console.log("RES", response);
             })
             .catch((error) => {
                 console.log("RES", error);
             });
+    };
+
+    const filterByStatus = (
+        status:
+            ApprovalStates.DEFAULT
+            | ApprovalStates.READY
+            | ApprovalStates.RESERVED
+            | ApprovalStates.COMPLETED
+            | ApprovalStates.ALL
+    ) => {
+        setFilterStatus(status);
     };
 
     /**
@@ -168,7 +184,7 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
     ): SemanticCOLORS => {
         switch (state) {
             case ApprovalStates.READY:
-                return "teal";
+                return "yellow";
             case ApprovalStates.RESERVED:
                 return "orange";
             case ApprovalStates.COMPLETED:
@@ -439,6 +455,55 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
             description={ t("views:pendingApprovals:subTitle") }
             header={ t("views:pendingApprovals:title") }
         >
+            <div className="top-action-panel">
+                <Label.Group circular>
+                    <Label
+                        as="a"
+                        className="filter-label"
+                        onClick={ () => filterByStatus(ApprovalStates.DEFAULT) }
+                        basic
+                    >
+                        <Icon name="tag" color="grey"/>
+                        Default
+                    </Label>
+                    <Label
+                        as="a"
+                        className="filter-label"
+                        onClick={ () => filterByStatus(ApprovalStates.READY) }
+                        basic
+                    >
+                        <Icon name="tag" color="yellow"/>
+                        Ready
+                    </Label>
+                    <Label
+                        as="a"
+                        className="filter-label"
+                        onClick={ () => filterByStatus(ApprovalStates.RESERVED) }
+                        basic
+                    >
+                        <Icon name="tag" color="orange"/>
+                        Reserved
+                    </Label>
+                    <Label
+                        as="a"
+                        className="filter-label"
+                        onClick={ () => filterByStatus(ApprovalStates.COMPLETED) }
+                        basic
+                    >
+                        <Icon name="tag" color="green"/>
+                        Completed
+                    </Label>
+                    <Label
+                        as="a"
+                        className="filter-label"
+                        onClick={ () => filterByStatus(ApprovalStates.ALL) }
+                        basic
+                    >
+                        <Icon name="tag" color="blue"/>
+                        All
+                    </Label>
+                </Label.Group>
+            </div>
             <List divided verticalAlign="middle" className="main-content-inner">
                 {
                     (pendingApprovals && pendingApprovals.length && pendingApprovals.length > 0)

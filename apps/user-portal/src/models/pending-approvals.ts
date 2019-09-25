@@ -111,6 +111,7 @@ export interface ApprovalAction {
 }
 
 export enum ApprovalStates {
+    DEFAULT = "DEFAULT",
     READY = "READY",
     COMPLETED = "COMPLETED",
     RESERVED = "RESERVED",
@@ -118,5 +119,6 @@ export enum ApprovalStates {
     CLAIM = "CLAIM",
     RELEASE = "RELEASE",
     APPROVE = "APPROVE",
-    REJECT = "REJECT"
+    REJECT = "REJECT",
+    ALL = "ALL"
 }

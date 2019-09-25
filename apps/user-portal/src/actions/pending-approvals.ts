@@ -22,10 +22,10 @@ import { ServiceResourcesEndpoint } from "../configs";
 import { HttpMethods } from "../models/api";
 import { ApprovalAction, ApprovalStates, ApprovalTaskDetails, ApprovalTaskSummary } from "../models/pending-approvals";
 
-export const fetchPendingApprovals = () => {
+export const fetchPendingApprovals = (status) => {
     return AuthenticateSessionUtil.getAccessToken()
         .then((token) => {
-            const requestConfig = {
+            let requestConfig = {
                 headers: {
                     "Accept": "application/json",
                     "Access-Control-Allow-Origin": CLIENT_HOST,
@@ -33,13 +33,54 @@ export const fetchPendingApprovals = () => {
                     "Content-Type": "application/json"
                 },
                 method: HttpMethods.GET,
+                params: {
+                    status
+                },
                 url: ServiceResourcesEndpoint.pendingApprovals
             };
 
-            return axios.request(requestConfig)
-                .then((response) => {
-                    return response.data as ApprovalTaskSummary[];
-                })
+            if (status !== ApprovalStates.DEFAULT) {
+                if (status === ApprovalStates.ALL) {
+                    requestConfig = {
+                        ...requestConfig,
+                        params: null
+                    };
+                }
+                return axios.request(requestConfig)
+                    .then((response) => {
+                        return response.data as ApprovalTaskSummary[];
+                    })
+                    .catch((error) => {
+                        throw error;
+                    });
+            }
+
+            // Fetch `READY` state approvals.
+            const fetchReadyState = () => {
+                requestConfig = {
+                    ...requestConfig,
+                    params: {
+                        status: ApprovalStates.READY
+                    }
+                };
+                return axios.request(requestConfig);
+            };
+
+            // Fetch `RESERVED` state approvals.
+            const fetchReservedState = () => {
+                requestConfig = {
+                    ...requestConfig,
+                    params: {
+                        status: ApprovalStates.RESERVED
+                    }
+                };
+                return axios.request(requestConfig);
+            };
+
+            return axios.all([fetchReadyState(), fetchReservedState()])
+                .then(axios.spread((ready, reserved) => {
+                    return [...ready.data, ...reserved.data];
+                }))
                 .catch((error) => {
                     throw error;
                 });
