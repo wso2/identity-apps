@@ -21,6 +21,7 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, Label, List, SemanticCOLORS, Table } from "semantic-ui-react";
 import { fetchPendingApprovalDetails, fetchPendingApprovals, updatePendingApprovalState } from "../actions";
+import { SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT } from "../configs";
 import { NotificationActionPayload } from "../models/notifications";
 import { ApprovalStates, ApprovalTaskDetails } from "../models/pending-approvals";
 import { EditSection } from "./edit-section";
@@ -43,21 +44,47 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
 ): JSX.Element => {
     const [pendingApprovals, setPendingApprovals] = useState([]);
     const [pendingApprovalsListActiveIndexes, setPendingApprovalsListActiveIndexes] = useState([]);
-    const [filterStatus, setFilterStatus] = useState(ApprovalStates.READY);
+    const [filterStatus, setFilterStatus] =
+        useState<
+            ApprovalStates.READY | ApprovalStates.RESERVED | ApprovalStates.COMPLETED | ApprovalStates.ALL
+            >(ApprovalStates.READY);
+    const [pagination, setPagination] = useState({
+        [ApprovalStates.READY]: false,
+        [ApprovalStates.RESERVED]: false,
+        [ApprovalStates.COMPLETED]: false,
+        [ApprovalStates.ALL]: false
+    });
     const { onNotificationFired } = props;
     const { t } = useTranslation();
 
+    /**
+     * Updates the pending approvals list on change.
+     */
     useEffect(() => {
         setPendingApprovals(pendingApprovals);
-        console.log('updated pendingApprovals', pendingApprovals)
     }, [pendingApprovals]);
 
+    /**
+     * Updates the approval list when the filter criteria changes.
+     */
     useEffect(() => {
-        getApprovals();
+        getApprovals(false);
     }, [filterStatus]);
 
-    const getApprovals = (shallowUpdate: boolean = false) => {
-        fetchPendingApprovals(filterStatus)
+    /**
+     * Updates the approvals list when the pagination buttons are being clicked.
+     */
+    useEffect(() => {
+        getApprovals(false);
+    }, [pagination]);
+
+    /**
+     * Fetches the list of pending approvals from the API.
+     *
+     * @param {boolean} shallowUpdate - A flag to specify if only the statuses should be updated.
+     */
+    const getApprovals = (shallowUpdate: boolean = false): void => {
+        fetchPendingApprovals(pagination[filterStatus] ? 0 : SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT, 0, filterStatus)
             .then((response) => {
                 if (!shallowUpdate) {
                     setPendingApprovals(response);
@@ -67,6 +94,12 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                 const approvalsFromState = [...pendingApprovals];
                 const approvalsFromResponse = [...response];
                 const filteredApprovals = [];
+
+                // Compare the approvals list in the state with the new response
+                // and update the new statuses. When the status of the approval is changed,
+                // it has to be dropped from the list if the filter status is not `ALL`.
+                // Therefore the matching entries are extracted out to the `filteredApprovals` array
+                // and are set to the state.
                 approvalsFromState.forEach((fromState) => {
                     approvalsFromResponse.forEach((fromResponse) => {
                         if (fromState.id === fromResponse.id) {
@@ -107,7 +140,11 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
             });
     };
 
-    const updateApprovalDetails = () => {
+    /**
+     * Fetches the pending approval details from the API for the once
+     * that are in the expanded state and updates the state.
+     */
+    const updateApprovalDetails = (): void => {
         const indexes = [...pendingApprovalsListActiveIndexes];
         const approvals = [...pendingApprovals];
 
@@ -126,28 +163,60 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
         setPendingApprovals(approvals);
     };
 
-    const updateApprovalState = (
+    /**
+     * Updates the approvals status.
+     *
+     * @param {string} id - ID of the approval.
+     * @param {ApprovalStates.CLAIM | ApprovalStates.RELEASE | ApprovalStates.APPROVE | ApprovalStates.REJECT} status -
+     *     New status of the approval.
+     */
+    const updateApprovalStatus = (
         id: string,
-        state: ApprovalStates.CLAIM | ApprovalStates.RELEASE | ApprovalStates.APPROVE | ApprovalStates.REJECT
-    ) => {
-        updatePendingApprovalState(id, state)
+        status: ApprovalStates.CLAIM | ApprovalStates.RELEASE | ApprovalStates.APPROVE | ApprovalStates.REJECT
+    ): void => {
+        updatePendingApprovalState(id, status)
             .then((response) => {
-                console.log("Res", response);
                 getApprovals(true);
                 updateApprovalDetails();
             })
             .catch((error) => {
-                console.log("Error", error);
+                let notification = {
+                    description: t(
+                        "views:pendingApprovals.notifications.updatePendingApprovals.genericError.description"
+                    ),
+                    message: t(
+                        "views:pendingApprovals.notifications.updatePendingApprovals.genericError.message"
+                    ),
+                    otherProps: {
+                        negative: true
+                    },
+                    visible: true
+                };
+                if (error.response && error.response.data && error.response.detail) {
+                    notification = {
+                        ...notification,
+                        description: t(
+                            "views:pendingApprovals.notifications.updatePendingApprovals.error.description",
+                            { description: error.response.data.detail }
+                        ),
+                        message: t(
+                            "views:pendingApprovals.notifications.updatePendingApprovals.error.message"
+                        ),
+                    };
+                }
+                onNotificationFired(notification);
             });
     };
 
+    /**
+     * Filters the approvals list based on different criteria.
+     *
+     * @param {ApprovalStates.READY | ApprovalStates.RESERVED | ApprovalStates.COMPLETED | ApprovalStates.ALL} status -
+     *     Status of the approvals.
+     */
     const filterByStatus = (
-        status:
-            ApprovalStates.READY
-            | ApprovalStates.RESERVED
-            | ApprovalStates.COMPLETED
-            | ApprovalStates.ALL
-    ) => {
+        status: ApprovalStates.READY | ApprovalStates.RESERVED | ApprovalStates.COMPLETED | ApprovalStates.ALL
+    ): void => {
         setFilterStatus(status);
         setPendingApprovalsListActiveIndexes([]);
     };
@@ -158,40 +227,76 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
      * @param e - Click event.
      * @param {any} id - Session id.
      */
-    const handleApprovalDetailClick = (e, { id }) => {
+    const handleApprovalDetailClick = (e, { id }): void => {
         const indexes = [...pendingApprovalsListActiveIndexes];
         const approvals = [...pendingApprovals];
 
-        if (!pendingApprovalsListActiveIndexes.includes(id)) {
-            indexes.push(id);
-
-            // Fetch and update the approval details.
-            // Re-fetching on every click is necessary to avoid data inconsistency.
-            fetchPendingApprovalDetails(id)
-                .then((response: ApprovalTaskDetails) => {
-                    approvals.forEach((approval) => {
-                        if (approval.id === id) {
-                            approval.details = response;
-                        }
-                    });
-                    setPendingApprovals(approvals);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        } else if (pendingApprovalsListActiveIndexes.includes(id)) {
+        // If the list item is already extended, remove it from the active indexes
+        // array and update the active indexes state.
+        if (pendingApprovalsListActiveIndexes.includes(id)) {
             const removingIndex = pendingApprovalsListActiveIndexes.indexOf(id);
             if (removingIndex !== -1) {
                 indexes.splice(removingIndex, 1);
             }
+            setPendingApprovalsListActiveIndexes(indexes);
+            return;
         }
+
+        // If the list item is not extended, fetches the approval details and
+        // updates the state.
+        indexes.push(id);
+
+        // Fetch and update the approval details.
+        // Re-fetching on every click is necessary to avoid data inconsistency.
+        fetchPendingApprovalDetails(id)
+            .then((response: ApprovalTaskDetails) => {
+                approvals.forEach((approval) => {
+                    if (approval.id === id) {
+                        approval.details = response;
+                    }
+                });
+                setPendingApprovals(approvals);
+            })
+            .catch((error) => {
+                let notification = {
+                    description: t(
+                        "views:pendingApprovals.notifications.fetchApprovalDetails.genericError.description"
+                    ),
+                    message: t(
+                        "views:pendingApprovals.notifications.fetchApprovalDetails.genericError.message"
+                    ),
+                    otherProps: {
+                        negative: true
+                    },
+                    visible: true
+                };
+                if (error.response && error.response.data && error.response.detail) {
+                    notification = {
+                        ...notification,
+                        description: t(
+                            "views:pendingApprovals.notifications.fetchApprovalDetails.error.description",
+                            { description: error.response.data.detail }
+                        ),
+                        message: t(
+                            "views:pendingApprovals.notifications.fetchApprovalDetails.error.message"
+                        ),
+                    };
+                }
+                onNotificationFired(notification);
+            });
         setPendingApprovalsListActiveIndexes(indexes);
     };
 
+    /**
+     * Resolves the filter tag colors based on the approval statuses.
+     *
+     * @param {ApprovalStates.READY | ApprovalStates.RESERVED | ApprovalStates.COMPLETED} status - Filter status.
+     * @return {SemanticCOLORS} A semantic color instance.
+     */
     const resolveApprovalTagColor = (
-        state: ApprovalStates.READY | ApprovalStates.RESERVED | ApprovalStates.COMPLETED
+        status: ApprovalStates.READY | ApprovalStates.RESERVED | ApprovalStates.COMPLETED
     ): SemanticCOLORS => {
-        switch (state) {
+        switch (status) {
             case ApprovalStates.READY:
                 return "yellow";
             case ApprovalStates.RESERVED:
@@ -203,6 +308,17 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
         }
     };
 
+    /**
+     * Removes unnecessary commas at the end of property values.
+     *
+     * @remarks
+     * The API returns properties as key value pairs and these values often contains
+     * unnecessary commas at the end. This function will cleanup the values and it can
+     * be removed once the API is fixed.
+     *
+     * @param {string} value - Property value.
+     * @return {string} A cleaned up string.
+     */
     const cleanupPropertyValues = (value: string): string => {
         const lastChar = value.substr(value.length - 1);
         if (lastChar !== ",") {
@@ -211,7 +327,23 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
         return value.slice(0, -1);
     };
 
-    const approvalEditView = (approval) => (
+    /**
+     * Handles the show more pagination button click event.
+     */
+    const handleShowMoreClick = (): void => {
+        setPagination({
+            ...pagination,
+            [filterStatus]: !pagination[filterStatus]
+        });
+    };
+
+    /**
+     * Edit approval sub component.
+     *
+     * @param approval - The editing approval.
+     * @return {JSX.Element} An edit section component.
+     */
+    const approvalEditView = (approval): JSX.Element => (
         <EditSection marginTop>
             <Grid.Row>
                 <Grid.Column>
@@ -223,10 +355,7 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                                 </Grid.Column>
                                 <Grid.Column width={ 11 }>
                                     <List.Description>
-                                        {
-                                            moment(parseInt(approval.createdTimeInMillis, 10))
-                                                .format("lll")
-                                        }
+                                        { moment(parseInt(approval.createdTimeInMillis, 10)).format("lll") }
                                     </List.Description>
                                 </Grid.Column>
                             </Grid.Row>
@@ -319,34 +448,7 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                                             </Grid.Column>
                                             <Grid.Column width={ 11 }>
                                                 <List.Description>
-                                                    <Table celled compact>
-                                                        <Table.Header>
-                                                            <Table.Row>
-                                                                <Table.HeaderCell>
-                                                                    { t("common:type") }
-                                                                </Table.HeaderCell>
-                                                                <Table.HeaderCell>
-                                                                    { t("common:assignee") }
-                                                                </Table.HeaderCell>
-                                                            </Table.Row>
-                                                        </Table.Header>
-                                                        <Table.Body>
-                                                            {
-                                                                approval.details.assignees.map((assignee, i) => (
-                                                                        <Table.Row
-                                                                            key={ i }>
-                                                                            <Table.Cell>
-                                                                                { assignee.key }
-                                                                            </Table.Cell>
-                                                                            <Table.Cell>
-                                                                                { assignee.value }
-                                                                            </Table.Cell>
-                                                                        </Table.Row>
-                                                                    )
-                                                                )
-                                                            }
-                                                        </Table.Body>
-                                                    </Table>
+                                                    { assigneesTable(approval.details.assignees) }
                                                 </List.Description>
                                             </Grid.Column>
                                         </Grid.Row>
@@ -370,28 +472,7 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                                             </Grid.Column>
                                             <Grid.Column width={ 11 }>
                                                 <List.Description>
-                                                    <Table celled compact>
-                                                        <Table.Body>
-                                                            {
-                                                                approval.details.properties.map((property, i) => (
-                                                                        property.key && property.value
-                                                                            ? (
-                                                                                <Table.Row
-                                                                                    key={ i }>
-                                                                                    <Table.Cell>
-                                                                                        { property.key }
-                                                                                    </Table.Cell>
-                                                                                    <Table.Cell>
-                                                                                        { cleanupPropertyValues(property.value) }
-                                                                                    </Table.Cell>
-                                                                                </Table.Row>
-                                                                            )
-                                                                            : null
-                                                                    )
-                                                                )
-                                                            }
-                                                        </Table.Body>
-                                                    </Table>
+                                                    { propertiesTable(approval.details.properties) }
                                                 </List.Description>
                                             </Grid.Column>
                                         </Grid.Row>
@@ -414,45 +495,7 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                                                 { " " }
                                             </Grid.Column>
                                             <Grid.Column width={ 11 }>
-                                                {
-                                                    approval.status === ApprovalStates.READY
-                                                        ? (
-                                                            <Button
-                                                                default
-                                                                onClick={
-                                                                    () => updateApprovalState(approval.id, ApprovalStates.CLAIM)
-                                                                }
-                                                            >
-                                                                { t("common:claim") }
-                                                            </Button>
-                                                        )
-                                                        : (
-                                                            <Button
-                                                                default
-                                                                onClick={
-                                                                    () => updateApprovalState(approval.id, ApprovalStates.RELEASE)
-                                                                }
-                                                            >
-                                                                { t("common:release") }
-                                                            </Button>
-                                                        )
-                                                }
-                                                <Button
-                                                    primary
-                                                    onClick={
-                                                        () => updateApprovalState(approval.id, ApprovalStates.APPROVE)
-                                                    }
-                                                >
-                                                    { t("common:approve") }
-                                                </Button>
-                                                <Button
-                                                    negative
-                                                    onClick={
-                                                        () => updateApprovalState(approval.id, ApprovalStates.REJECT)
-                                                    }
-                                                >
-                                                    { t("common:reject") }
-                                                </Button>
+                                                { approvalActions(approval) }
                                             </Grid.Column>
                                         </Grid.Row>
                                     </Grid>
@@ -465,10 +508,123 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
         </EditSection>
     );
 
+    /**
+     * Assignees table sub component.
+     *
+     * @param assignees - List of assignees.
+     * @return {JSX.Element} - A table containing the list of assignees.
+     */
+    const assigneesTable = (assignees): JSX.Element => (
+        <Table celled compact>
+            <Table.Header>
+                <Table.Row>
+                    <Table.HeaderCell>
+                        { t("common:type") }
+                    </Table.HeaderCell>
+                    <Table.HeaderCell>
+                        { t("common:assignee") }
+                    </Table.HeaderCell>
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
+                {
+                    assignees.map((assignee, i) => (
+                        <Table.Row key={ i }>
+                            <Table.Cell>
+                                { assignee.key }
+                            </Table.Cell>
+                            <Table.Cell>
+                                { assignee.value }
+                            </Table.Cell>
+                        </Table.Row>
+                    ))
+                }
+            </Table.Body>
+        </Table>
+    );
+
+    /**
+     * Properties table sub component.
+     *
+     * @param properties - List of properties.
+     * @return {JSX.Element} A table containing the list of properties.
+     */
+    const propertiesTable = (properties): JSX.Element => (
+        <Table celled compact>
+            <Table.Body>
+                {
+                    properties.map((property, i) => (
+                        property.key && property.value
+                            ? (
+                                <Table.Row key={ i }>
+                                    <Table.Cell>
+                                        { property.key }
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        { cleanupPropertyValues(property.value) }
+                                    </Table.Cell>
+                                </Table.Row>
+                            )
+                            : null
+                        )
+                    )
+                }
+            </Table.Body>
+        </Table>
+    );
+
+    /**
+     * Button panel sub component to perform approval status changes.
+     *
+     * @param approval - The editing approval.
+     * @return {JSX.Element} A panel containing all the possible action buttons.
+     */
+    const approvalActions = (approval): JSX.Element => (
+        <>
+            {
+                approval.status === ApprovalStates.READY
+                    ? (
+                        <Button default onClick={ () => updateApprovalStatus(approval.id, ApprovalStates.CLAIM) }>
+                            { t("common:claim") }
+                        </Button>
+                    )
+                    : (
+                        <Button default onClick={ () => updateApprovalStatus(approval.id, ApprovalStates.RELEASE) }>
+                            { t("common:release") }
+                        </Button>
+                    )
+            }
+            <Button primary onClick={ () => updateApprovalStatus(approval.id, ApprovalStates.APPROVE) }>
+                { t("common:approve") }
+            </Button>
+            <Button negative onClick={ () => updateApprovalStatus(approval.id, ApprovalStates.REJECT) }>
+                { t("common:reject") }
+            </Button>
+        </>
+    );
+
     return (
         <SettingsSection
             description={ t("views:pendingApprovals:subTitle") }
             header={ t("views:pendingApprovals:title") }
+            primaryAction={
+                (
+                    pendingApprovals
+                    && pendingApprovals.length
+                    && pendingApprovals.length >= SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT
+                )
+                    ? pagination[filterStatus] ? t("common:showLess") : t("common:showMore")
+                    : null
+            }
+            onPrimaryActionClick={ handleShowMoreClick }
+            placeholder={
+                !(pendingApprovals && (pendingApprovals.length > 0))
+                    ? t(
+                        "views:pendingApprovals.placeholders.emptyApprovalList.heading",
+                    { status: filterStatus !== ApprovalStates.ALL ? filterStatus.toLocaleLowerCase() : "" }
+                    )
+                    : null
+            }
         >
             <div className="top-action-panel">
                 <Label.Group circular>
@@ -480,7 +636,7 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                         basic
                     >
                         <Icon name="tag" color="yellow"/>
-                        Ready
+                        { t("common:ready") }
                     </Label>
                     <Label
                         as="a"
@@ -490,7 +646,7 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                         basic
                     >
                         <Icon name="tag" color="orange"/>
-                        Reserved
+                        { t("common:reserved") }
                     </Label>
                     <Label
                         as="a"
@@ -500,7 +656,7 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                         basic
                     >
                         <Icon name="tag" color="green"/>
-                        Completed
+                        { t("common:completed") }
                     </Label>
                     <Label
                         as="a"
@@ -510,7 +666,7 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                         basic
                     >
                         <Icon name="tag" color="blue"/>
-                        All
+                        { t("common:all") }
                     </Label>
                 </Label.Group>
             </div>
