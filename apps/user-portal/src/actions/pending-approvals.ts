@@ -22,7 +22,11 @@ import { ServiceResourcesEndpoint } from "../configs";
 import { HttpMethods } from "../models/api";
 import { ApprovalAction, ApprovalStates, ApprovalTaskDetails, ApprovalTaskSummary } from "../models/pending-approvals";
 
-export const fetchPendingApprovals = (status) => {
+export const fetchPendingApprovals = (
+    limit: number,
+    offset: number,
+    status: ApprovalStates.READY | ApprovalStates.RESERVED | ApprovalStates.COMPLETED | ApprovalStates.ALL
+): Promise<any> => {
     return AuthenticateSessionUtil.getAccessToken()
         .then((token) => {
             let requestConfig = {
@@ -34,15 +38,22 @@ export const fetchPendingApprovals = (status) => {
                 },
                 method: HttpMethods.GET,
                 params: {
+                    limit,
+                    offset,
                     status
                 },
                 url: ServiceResourcesEndpoint.pendingApprovals
             };
 
+            // To fetch all the approvals from the api, the status
+            // has to set to null.
             if (status === ApprovalStates.ALL) {
                 requestConfig = {
                     ...requestConfig,
-                    params: null
+                    params: {
+                        ...requestConfig.params,
+                        status: null
+                    }
                 };
             }
             return axios.request(requestConfig)
@@ -58,7 +69,7 @@ export const fetchPendingApprovals = (status) => {
         });
 };
 
-export const fetchPendingApprovalDetails = (id: string) => {
+export const fetchPendingApprovalDetails = (id: string): Promise<any> => {
     return AuthenticateSessionUtil.getAccessToken()
         .then((token) => {
             const requestConfig = {
@@ -88,7 +99,7 @@ export const fetchPendingApprovalDetails = (id: string) => {
 export const updatePendingApprovalState = (
     id: string,
     state: ApprovalStates.CLAIM | ApprovalStates.RELEASE | ApprovalStates.APPROVE | ApprovalStates.REJECT
-) => {
+): Promise<any> => {
     return AuthenticateSessionUtil.getAccessToken()
         .then((token) => {
             const data: ApprovalAction = {
