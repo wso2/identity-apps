@@ -43,7 +43,7 @@ export interface ApprovalTaskSummary {
     /**
      * State of the Approval task
      */
-    status: ApprovalStates.READY | ApprovalStates.RESERVED | ApprovalStates.COMPLETED;
+    status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED;
     /**
      * Priority of the Approval task
      */
@@ -81,7 +81,7 @@ export interface ApprovalTaskDetails {
     /**
      * Available only for the completed Tasks, APPROVE or REJECT if the task has been completed, PENDING otherwise.
      */
-    approvalStatus: ApprovalStates.PENDING | ApprovalStates.APPROVE | ApprovalStates.REJECT;
+    approvalStatus: ApprovalStatus.PENDING | ApprovalStatus.APPROVE | ApprovalStatus.REJECT;
     /**
      * To whom the task is assigned
      */
@@ -107,10 +107,16 @@ export interface ApprovalAction {
     /**
      * Action to perform on the task.
      */
-    action: ApprovalStates.CLAIM | ApprovalStates.RELEASE | ApprovalStates.APPROVE | ApprovalStates.REJECT;
+    action: ApprovalStatus.CLAIM | ApprovalStatus.RELEASE | ApprovalStatus.APPROVE | ApprovalStatus.REJECT;
 }
 
-export enum ApprovalStates {
+/**
+ * Enum for approval statuses.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum ApprovalStatus {
     READY = "READY",
     COMPLETED = "COMPLETED",
     RESERVED = "RESERVED",

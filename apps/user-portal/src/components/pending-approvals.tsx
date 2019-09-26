@@ -20,10 +20,10 @@ import moment from "moment";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, Label, List, SemanticCOLORS, Table } from "semantic-ui-react";
-import { fetchPendingApprovalDetails, fetchPendingApprovals, updatePendingApprovalState } from "../actions";
+import { fetchPendingApprovalDetails, fetchPendingApprovals, updatePendingApprovalStatus } from "../actions";
 import { SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT } from "../configs";
 import { NotificationActionPayload } from "../models/notifications";
-import { ApprovalStates, ApprovalTaskDetails } from "../models/pending-approvals";
+import { ApprovalStatus, ApprovalTaskDetails } from "../models/pending-approvals";
 import { EditSection } from "./edit-section";
 import { SettingsSection } from "./settings-section";
 
@@ -46,13 +46,13 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
     const [pendingApprovalsListActiveIndexes, setPendingApprovalsListActiveIndexes] = useState([]);
     const [filterStatus, setFilterStatus] =
         useState<
-            ApprovalStates.READY | ApprovalStates.RESERVED | ApprovalStates.COMPLETED | ApprovalStates.ALL
-            >(ApprovalStates.READY);
+            ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.ALL
+            >(ApprovalStatus.READY);
     const [pagination, setPagination] = useState({
-        [ApprovalStates.READY]: false,
-        [ApprovalStates.RESERVED]: false,
-        [ApprovalStates.COMPLETED]: false,
-        [ApprovalStates.ALL]: false
+        [ApprovalStatus.READY]: false,
+        [ApprovalStatus.RESERVED]: false,
+        [ApprovalStatus.COMPLETED]: false,
+        [ApprovalStatus.ALL]: false
     });
     const { onNotificationFired } = props;
     const { t } = useTranslation();
@@ -167,14 +167,14 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
      * Updates the approvals status.
      *
      * @param {string} id - ID of the approval.
-     * @param {ApprovalStates.CLAIM | ApprovalStates.RELEASE | ApprovalStates.APPROVE | ApprovalStates.REJECT} status -
+     * @param {ApprovalStatus.CLAIM | ApprovalStatus.RELEASE | ApprovalStatus.APPROVE | ApprovalStatus.REJECT} status -
      *     New status of the approval.
      */
     const updateApprovalStatus = (
         id: string,
-        status: ApprovalStates.CLAIM | ApprovalStates.RELEASE | ApprovalStates.APPROVE | ApprovalStates.REJECT
+        status: ApprovalStatus.CLAIM | ApprovalStatus.RELEASE | ApprovalStatus.APPROVE | ApprovalStatus.REJECT
     ): void => {
-        updatePendingApprovalState(id, status)
+        updatePendingApprovalStatus(id, status)
             .then((response) => {
                 getApprovals(true);
                 updateApprovalDetails();
@@ -211,11 +211,11 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
     /**
      * Filters the approvals list based on different criteria.
      *
-     * @param {ApprovalStates.READY | ApprovalStates.RESERVED | ApprovalStates.COMPLETED | ApprovalStates.ALL} status -
+     * @param {ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.ALL} status -
      *     Status of the approvals.
      */
     const filterByStatus = (
-        status: ApprovalStates.READY | ApprovalStates.RESERVED | ApprovalStates.COMPLETED | ApprovalStates.ALL
+        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.ALL
     ): void => {
         setFilterStatus(status);
         setPendingApprovalsListActiveIndexes([]);
@@ -290,18 +290,18 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
     /**
      * Resolves the filter tag colors based on the approval statuses.
      *
-     * @param {ApprovalStates.READY | ApprovalStates.RESERVED | ApprovalStates.COMPLETED} status - Filter status.
+     * @param {ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED} status - Filter status.
      * @return {SemanticCOLORS} A semantic color instance.
      */
     const resolveApprovalTagColor = (
-        status: ApprovalStates.READY | ApprovalStates.RESERVED | ApprovalStates.COMPLETED
+        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED
     ): SemanticCOLORS => {
         switch (status) {
-            case ApprovalStates.READY:
+            case ApprovalStatus.READY:
                 return "yellow";
-            case ApprovalStates.RESERVED:
+            case ApprovalStatus.RESERVED:
                 return "orange";
-            case ApprovalStates.COMPLETED:
+            case ApprovalStatus.COMPLETED:
                 return "green";
             default:
                 return "grey";
@@ -484,7 +484,7 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                     : null
             }
             {
-                approval.status !== ApprovalStates.COMPLETED
+                approval.status !== ApprovalStatus.COMPLETED
                     ? (
                         <Grid.Row>
                             <Grid.Column>
@@ -582,22 +582,22 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
     const approvalActions = (approval): JSX.Element => (
         <>
             {
-                approval.status === ApprovalStates.READY
+                approval.status === ApprovalStatus.READY
                     ? (
-                        <Button default onClick={ () => updateApprovalStatus(approval.id, ApprovalStates.CLAIM) }>
+                        <Button default onClick={ () => updateApprovalStatus(approval.id, ApprovalStatus.CLAIM) }>
                             { t("common:claim") }
                         </Button>
                     )
                     : (
-                        <Button default onClick={ () => updateApprovalStatus(approval.id, ApprovalStates.RELEASE) }>
+                        <Button default onClick={ () => updateApprovalStatus(approval.id, ApprovalStatus.RELEASE) }>
                             { t("common:release") }
                         </Button>
                     )
             }
-            <Button primary onClick={ () => updateApprovalStatus(approval.id, ApprovalStates.APPROVE) }>
+            <Button primary onClick={ () => updateApprovalStatus(approval.id, ApprovalStatus.APPROVE) }>
                 { t("common:approve") }
             </Button>
-            <Button negative onClick={ () => updateApprovalStatus(approval.id, ApprovalStates.REJECT) }>
+            <Button negative onClick={ () => updateApprovalStatus(approval.id, ApprovalStatus.REJECT) }>
                 { t("common:reject") }
             </Button>
         </>
@@ -621,7 +621,7 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                 !(pendingApprovals && (pendingApprovals.length > 0))
                     ? t(
                         "views:pendingApprovals.placeholders.emptyApprovalList.heading",
-                    { status: filterStatus !== ApprovalStates.ALL ? filterStatus.toLocaleLowerCase() : "" }
+                    { status: filterStatus !== ApprovalStatus.ALL ? filterStatus.toLocaleLowerCase() : "" }
                     )
                     : null
             }
@@ -631,8 +631,8 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                     <Label
                         as="a"
                         className="filter-label"
-                        onClick={ () => filterByStatus(ApprovalStates.READY) }
-                        active={ filterStatus === ApprovalStates.READY }
+                        onClick={ () => filterByStatus(ApprovalStatus.READY) }
+                        active={ filterStatus === ApprovalStatus.READY }
                         basic
                     >
                         <Icon name="tag" color="yellow"/>
@@ -641,8 +641,8 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                     <Label
                         as="a"
                         className="filter-label"
-                        onClick={ () => filterByStatus(ApprovalStates.RESERVED) }
-                        active={ filterStatus === ApprovalStates.RESERVED }
+                        onClick={ () => filterByStatus(ApprovalStatus.RESERVED) }
+                        active={ filterStatus === ApprovalStatus.RESERVED }
                         basic
                     >
                         <Icon name="tag" color="orange"/>
@@ -651,8 +651,8 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                     <Label
                         as="a"
                         className="filter-label"
-                        onClick={ () => filterByStatus(ApprovalStates.COMPLETED) }
-                        active={ filterStatus === ApprovalStates.COMPLETED }
+                        onClick={ () => filterByStatus(ApprovalStatus.COMPLETED) }
+                        active={ filterStatus === ApprovalStatus.COMPLETED }
                         basic
                     >
                         <Icon name="tag" color="green"/>
@@ -661,8 +661,8 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                     <Label
                         as="a"
                         className="filter-label"
-                        onClick={ () => filterByStatus(ApprovalStates.ALL) }
-                        active={ filterStatus === ApprovalStates.ALL }
+                        onClick={ () => filterByStatus(ApprovalStatus.ALL) }
+                        active={ filterStatus === ApprovalStatus.ALL }
                         basic
                     >
                         <Icon name="tag" color="blue"/>

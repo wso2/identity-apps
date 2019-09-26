@@ -20,21 +20,21 @@ import { AuthenticateSessionUtil } from "@wso2is/authenticate";
 import axios from "axios";
 import { ServiceResourcesEndpoint } from "../configs";
 import { HttpMethods } from "../models/api";
-import { ApprovalAction, ApprovalStates, ApprovalTaskDetails, ApprovalTaskSummary } from "../models/pending-approvals";
+import { ApprovalAction, ApprovalStatus, ApprovalTaskDetails, ApprovalTaskSummary } from "../models/pending-approvals";
 
 /**
  * Fetches the list of pending approvals from the list.
  *
  * @param {number} limit - Maximum number of records to return.
  * @param {number} offset - Number of records to skip for pagination
- * @param {ApprovalStates.READY | ApprovalStates.RESERVED | ApprovalStates.COMPLETED | ApprovalStates.ALL} status -
+ * @param {ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.ALL} status -
  *     Approval task's status to filter tasks by their status.
  * @return {Promise<any>} A promise containing the response.
  */
 export const fetchPendingApprovals = (
     limit: number,
     offset: number,
-    status: ApprovalStates.READY | ApprovalStates.RESERVED | ApprovalStates.COMPLETED | ApprovalStates.ALL
+    status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.ALL
 ): Promise<any> => {
     return AuthenticateSessionUtil.getAccessToken()
         .then((token) => {
@@ -56,7 +56,7 @@ export const fetchPendingApprovals = (
 
             // To fetch all the approvals from the api, the status
             // has to set to null.
-            if (status === ApprovalStates.ALL) {
+            if (status === ApprovalStatus.ALL) {
                 requestConfig = {
                     ...requestConfig,
                     params: {
@@ -112,21 +112,21 @@ export const fetchPendingApprovalDetails = (id: string): Promise<any> => {
 };
 
 /**
- * Updates the approval state.
+ * Updates the approval status.
  *
  * @param {string} id - `id` of the approval.
- * @param {ApprovalStates.CLAIM | ApprovalStates.RELEASE | ApprovalStates.APPROVE | ApprovalStates.REJECT} state - New
+ * @param {ApprovalStatus.CLAIM | ApprovalStatus.RELEASE | ApprovalStatus.APPROVE | ApprovalStatus.REJECT} status - New
  *     status.
  * @return {Promise<any>} A promise containing the response.
  */
-export const updatePendingApprovalState = (
+export const updatePendingApprovalStatus = (
     id: string,
-    state: ApprovalStates.CLAIM | ApprovalStates.RELEASE | ApprovalStates.APPROVE | ApprovalStates.REJECT
+    status: ApprovalStatus.CLAIM | ApprovalStatus.RELEASE | ApprovalStatus.APPROVE | ApprovalStatus.REJECT
 ): Promise<any> => {
     return AuthenticateSessionUtil.getAccessToken()
         .then((token) => {
             const data: ApprovalAction = {
-                action: state
+                action: status
             };
             const requestConfig = {
                 data,
