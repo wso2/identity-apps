@@ -22,6 +22,15 @@ import { ServiceResourcesEndpoint } from "../configs";
 import { HttpMethods } from "../models/api";
 import { ApprovalAction, ApprovalStates, ApprovalTaskDetails, ApprovalTaskSummary } from "../models/pending-approvals";
 
+/**
+ * Fetches the list of pending approvals from the list.
+ *
+ * @param {number} limit - Maximum number of records to return.
+ * @param {number} offset - Number of records to skip for pagination
+ * @param {ApprovalStates.READY | ApprovalStates.RESERVED | ApprovalStates.COMPLETED | ApprovalStates.ALL} status -
+ *     Approval task's status to filter tasks by their status.
+ * @return {Promise<any>} A promise containing the response.
+ */
 export const fetchPendingApprovals = (
     limit: number,
     offset: number,
@@ -69,6 +78,12 @@ export const fetchPendingApprovals = (
         });
 };
 
+/**
+ * Fetches approval details when the `id` is passed in.
+ *
+ * @param {string} id - `id` of the approval.
+ * @return {Promise<any>} A promise containing the response.
+ */
 export const fetchPendingApprovalDetails = (id: string): Promise<any> => {
     return AuthenticateSessionUtil.getAccessToken()
         .then((token) => {
@@ -96,6 +111,14 @@ export const fetchPendingApprovalDetails = (id: string): Promise<any> => {
         });
 };
 
+/**
+ * Updates the approval state.
+ *
+ * @param {string} id - `id` of the approval.
+ * @param {ApprovalStates.CLAIM | ApprovalStates.RELEASE | ApprovalStates.APPROVE | ApprovalStates.REJECT} state - New
+ *     status.
+ * @return {Promise<any>} A promise containing the response.
+ */
 export const updatePendingApprovalState = (
     id: string,
     state: ApprovalStates.CLAIM | ApprovalStates.RELEASE | ApprovalStates.APPROVE | ApprovalStates.REJECT
