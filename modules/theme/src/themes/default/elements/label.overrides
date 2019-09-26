@@ -23,6 +23,9 @@
 
 .ui.basic.label {
     &.filter-label {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+
         &:hover {
             color: @filterLabelHoverTextColor;
             background: @filterLabelHoverBackgroundColor;
