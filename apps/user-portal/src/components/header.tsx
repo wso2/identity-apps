@@ -20,7 +20,8 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } from "semantic-ui-react";
 import { AuthContext } from "../contexts/auth";
-import { Title, UserImageDummy } from "./ui";
+import { Title } from "./ui";
+import { UserImage } from "./user-image";
 
 /**
  * Header component prop types.
@@ -32,6 +33,7 @@ interface HeaderProps {
 
 /**
  * Header component.
+ * TODO: Fix avatar responsive issue on mobile.
  *
  * @param {HeaderProps} props - Props supplied to the header component.
  * @return {JSX.Element}
@@ -59,10 +61,9 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                         text={ (state.displayName !== "undefined") ? state.displayName : state.username }
                         className="user-dropdown">
                         <Dropdown.Menu>
-                            <Item.Group>
+                            <Item.Group unstackable>
                                 <Item className="header">
-                                    <Item.Image size="tiny" circular src={ UserImageDummy }/>
-
+                                    <UserImage bordered avatar size="tiny" />
                                     <Item.Content verticalAlign="middle">
                                         <Item.Description>
                                             <div>{ state.username }</div>
