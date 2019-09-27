@@ -56,3 +56,9 @@ export const customCSS: CustomCSSType = {
         appPrimaryColor: "#ff5000"
     }
 };
+
+/**
+ * A constant to handle the maximum list item count on settings sections.
+ * @type {number}
+ */
+export const SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT: number = 10;

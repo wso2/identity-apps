@@ -19,7 +19,11 @@
 
 .ui.segment {
     &.edit-segment {
-        background: @segmentBackgroundColor;
+        background: @editSegmentBackgroundColor;
         border: none;
+
+        &.top-margin {
+            margin-top: @editSegmentMarginTop;
+        }
     }
 }

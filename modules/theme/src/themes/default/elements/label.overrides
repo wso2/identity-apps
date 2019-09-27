@@ -17,9 +17,22 @@
  *
  */
 
- /*******************************
-          Edit Segment
- *******************************/
+/*******************************
+         Theme Overrides
+*******************************/
 
-@editSegmentBackgroundColor: @athensGray;
-@editSegmentMarginTop: 15px;
+.ui.basic.label {
+    &.filter-label {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+
+        &:hover {
+            color: @filterLabelHoverTextColor;
+            background: @filterLabelHoverBackgroundColor;
+            border-color: @filterLabelBorderColor;
+        }
+        &.active {
+            border-color: @filterLabelBorderColor;
+        }
+    }
+}

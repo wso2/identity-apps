@@ -24,7 +24,7 @@ import { NotificationActionPayload } from "../models/notifications";
 import { createEmptyProfile } from "../models/profile";
 import { EditSection } from "./edit-section";
 import { SettingsSection } from "./settings-section";
-import { UserImagePlaceHolder } from "./ui";
+import { UserImage } from "./user-image";
 
 /**
  * Proptypes for the basic details component.
@@ -614,10 +614,7 @@ export const BasicDetailsComponent: FunctionComponent<BasicDetailsProps> = (
         <SettingsSection
             description={ t("views:userProfile.subTitle") }
             header={ t("views:userProfile.title") }
-            icon={ <UserImagePlaceHolder size="tiny"/> }
-            iconSize="auto"
-            iconStyle="colored"
-            iconFloated="right"
+            icon={ <UserImage bordered avatar size="tiny" /> }
         >
             <List divided verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">

@@ -59,6 +59,10 @@
         "title": "Consent Management",
         "subTitle": "Manage consented applications and websites"
     },
+    "operationsPage": {
+        "title": "Operations",
+        "subTitle": "Manage and maintain tasks like pending approvals etc."
+    },
     "changePassword": {
         "title": "Change Password",
         "subTitle": "Change and modify the existing password",
@@ -494,6 +498,59 @@
                     "message": "An error occurred !!!",
                     "description": "Error occurred while downloading the user profile details."
                 }
+            }
+        }
+    },
+    "pendingApprovals": {
+        "title": "Pending approvals",
+        "subTitle": "You can manage pending approvals here",
+        "notifications": {
+            "fetchPendingApprovals": {
+                "success": {
+                    "message": "Pending approvals retrieval successful",
+                    "description": "Successfully retrieved pending approvals"
+                },
+                "error": {
+                    "message": "Error retrieving pending approvals",
+                    "description": "{{description}}"
+                },
+                "genericError": {
+                    "message": "Something went wrong",
+                    "description": "Couldn't retrieve pending approvals"
+                }
+            },
+            "updatePendingApprovals": {
+                "success": {
+                    "message": "Update successful",
+                    "description": "Successfully updated the approval"
+                },
+                "error": {
+                    "message": "Error updating the approval",
+                    "description": "{{description}}"
+                },
+                "genericError": {
+                    "message": "Something went wrong",
+                    "description": "Couldn't update the approval"
+                }
+            },
+            "fetchApprovalDetails": {
+                "success": {
+                    "message": "Approval details retrieval successful",
+                    "description": "Successfully retrieved the approval details"
+                },
+                "error": {
+                    "message": "Error retrieving the approval details",
+                    "description": "{{description}}"
+                },
+                "genericError": {
+                    "message": "Something went wrong",
+                    "description": "Couldn't update the approval details"
+                }
+            }
+        },
+        "placeholders": {
+            "emptyApprovalList": {
+                "heading": "You don't have any {{status}} pending approvals"
             }
         }
     }

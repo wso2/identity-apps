@@ -22,6 +22,7 @@ import {
     AppListingPage,
     ConsentManagementPage,
     HomePage,
+    OperationsPage,
     PageNotFound,
     PersonalInfoPage,
     SessionsPage
@@ -98,6 +99,14 @@ const ROUTES: Route[] = [
         path: "/consent-management",
         protected: true,
         showOnSidePanel: false,
+    },
+    {
+        component: OperationsPage,
+        icon: "operations",
+        name: "Operations",
+        path: "/operations",
+        protected: true,
+        showOnSidePanel: true,
     },
     {
         component: PageNotFound,
