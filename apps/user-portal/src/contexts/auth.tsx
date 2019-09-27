@@ -17,7 +17,7 @@
  */
 
 import React, { createContext, useEffect, useReducer } from "react";
-import { useSignIn, useSignOut } from "../middlewares/authenticate";
+import { handleSignIn, handleSignOut } from "../middlewares/authenticate";
 import { AuthContextInterface } from "../models/auth";
 import { authenticateInitialState, authenticateReducer } from "../reducers/authenticate";
 
@@ -31,8 +31,8 @@ const AuthContext = createContext<AuthContextInterface>({
 const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authenticateReducer, authenticateInitialState);
 
-    const signIn = () => { useSignIn(state, dispatch); };
-    const signOut = () => { useSignOut(state, dispatch); };
+    const signIn = () => { handleSignIn(state, dispatch); };
+    const signOut = () => { handleSignOut(state, dispatch); };
 
     /**
      * Update authentication state on app load

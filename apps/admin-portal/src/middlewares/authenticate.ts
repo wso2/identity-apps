@@ -33,7 +33,7 @@ import history from "../helpers/history";
  * @param {object} state - AuthContext state object.
  * @param {function} dispatch - State update `dispatch` react hook for AuthContext.
  */
-export const useSignIn = (state, dispatch) => {
+export const handleSignIn = (state, dispatch) => {
     const loginSuccessRedirect = () => {
         const AuthenticationCallbackUrl = getAuthenticationCallbackUrl();
         const location = ((!AuthenticationCallbackUrl)
@@ -92,7 +92,7 @@ export const useSignIn = (state, dispatch) => {
  * @param {object} state - AuthContext state object.
  * @param {function} dispatch - State update `dispatch` react hook for AuthContext.
  */
-export const useSignOut = (state, dispatch) => {
+export const handleSignOut = (state, dispatch) => {
     if (!state.logoutInit) {
         SignOutUtil.sendSignOutRequest(LOGIN_CALLBACK_URL).then(() => {
             dispatch(setSignOut());
