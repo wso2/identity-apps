@@ -1,11 +1,13 @@
 {
     "compilerOptions": {
+        "esModuleInterop": true,
         "target": "es6",
         "module": "es6",
         "moduleResolution": "node",
         "declaration": false,
         "noImplicitAny": false,
         "jsx": "react",
+        "resolveJsonModule": true,
         "sourceMap": true,
         "noLib": false,
         "suppressImplicitAnyIndexErrors": true

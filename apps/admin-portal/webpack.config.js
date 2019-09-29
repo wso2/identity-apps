@@ -23,8 +23,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = env => {
-    const basename = 'user-portal';
-    const devServerPort = 9000;
+    const basename = 'admin-portal';
+    const devServerPort = 9001;
 
     /**
      * Runtime configurations
@@ -33,7 +33,7 @@ module.exports = env => {
     const homePagePath = '/overview';
     const serverHost = 'https://localhost:9443';
     const clientHost = (env.NODE_ENV === 'prod') ? serverHost : `https://localhost:${devServerPort}`;
-    const externalLoginClientID = (env.NODE_ENV === 'prod') ? 'USER_PORTAL' : 'USER_PORTAL';
+    const externalLoginClientID = (env.NODE_ENV === 'prod') ? 'ADMIN_PORTAL' : 'ADMIN_PORTAL';
     const externalLoginCallbackURL = `${clientHost}/${basename}/login`;
     const externalLogoutCallbackURL = `${clientHost}/${basename}/logout`;
 
@@ -127,17 +127,6 @@ module.exports = env => {
                     from: 'lib',
                     to: 'libs/styles/css'
                 },
-                // TODO: Removed temporally. Currently we don't use it in runtime
-                // {
-                //     context: path.resolve(__dirname, 'node_modules', '@wso2is', 'theme'),
-                //     from: 'src',
-                //     to: 'libs/styles/less/theme-module'
-                // },
-                // {
-                //     context: path.resolve(__dirname, 'node_modules'),
-                //     from: 'semantic-ui-less',
-                //     to: 'libs/styles/less/semantic-ui-less'
-                // },
                 {
                     context: path.resolve(__dirname, 'src'),
                     from: 'public',
