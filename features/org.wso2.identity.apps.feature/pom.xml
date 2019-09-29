@@ -41,6 +41,11 @@
         </dependency>
         <dependency>
             <groupId>org.wso2.identity.apps</groupId>
+            <artifactId>org.wso2.identity.apps.admin.portal.server.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.identity.apps</groupId>
             <artifactId>org.wso2.identity.apps.user.portal.server.feature</artifactId>
             <type>zip</type>
         </dependency>
@@ -65,6 +70,9 @@
                             <includedFeatures>
                                 <includedFeatureDef>
                                     org.wso2.identity.apps:org.wso2.identity.apps.common.server.feature
+                                </includedFeatureDef>
+                                <includedFeatureDef>
+                                    org.wso2.identity.apps:org.wso2.identity.apps.admin.portal.server.feature
                                 </includedFeatureDef>
                                 <includedFeatureDef>
                                     org.wso2.identity.apps:org.wso2.identity.apps.user.portal.server.feature
