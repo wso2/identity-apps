@@ -16,19 +16,4 @@
  * under the License.
  */
 
-// TODO: Fix theme load logic and enable this
-// import "@wso2is/theme/lib/wso2-default.css";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
-import { App } from "./app";
-import { AuthProvider } from "./contexts";
-
-ReactDOM.render(
-    <BrowserRouter>
-        <AuthProvider>
-            <App />
-        </AuthProvider>
-    </BrowserRouter>,
-    document.getElementById("root")
-);
+export * from "./auth";

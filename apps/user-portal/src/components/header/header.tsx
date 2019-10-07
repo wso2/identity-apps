@@ -19,7 +19,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } from "semantic-ui-react";
-import { AuthContext } from "../../contexts/auth";
+import { AuthContext } from "../../contexts";
 import { Title, UserImage } from "../shared";
 
 /**

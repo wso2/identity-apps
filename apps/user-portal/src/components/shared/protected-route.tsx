@@ -18,7 +18,7 @@
 
 import React, { useContext } from "react";
 import { Redirect, Route } from "react-router-dom";
-import { AuthContext } from "../../contexts/auth";
+import { AuthContext } from "../../contexts";
 import { history } from "../../helpers";
 import { updateAuthenticationCallbackUrl } from "../../store/middleware";
 

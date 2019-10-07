@@ -21,14 +21,14 @@ import { AuthContextInterface } from "../models";
 import { handleSignIn, handleSignOut } from "../store/middleware";
 import { authenticateInitialState, authenticateReducer } from "../store/reducers";
 
-const AuthContext = createContext<AuthContextInterface>({
+export const AuthContext = createContext<AuthContextInterface>({
     dispatch: (() => 0) as React.Dispatch<any>,
     signIn: () => { return; },
     signOut: () => { return; },
     state: authenticateInitialState
 });
 
-const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authenticateReducer, authenticateInitialState);
 
     const signIn = () => { handleSignIn(state, dispatch); };
@@ -50,5 +50,3 @@ const AuthProvider = ({ children }) => {
         </AuthContext.Provider>
     );
 };
-
-export { AuthContext, AuthProvider };
