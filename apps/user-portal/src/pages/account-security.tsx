@@ -20,15 +20,15 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import {
-    ChangePasswordComponent,
-    ConsentManagementComponent,
-    MultiFactor,
+    ChangePassword,
+    Consents,
+    MultiFactorAuthentication,
     NotificationComponent,
     SecurityQuestionsComponent,
     UserSessionsComponent
 } from "../components";
 import { InnerPageLayout } from "../layouts";
-import { createEmptyNotificationActionPayload, NotificationActionPayload } from "../models/notifications";
+import { createEmptyNotification, Notification } from "../models";
 
 /**
  * Account security page.
@@ -37,9 +37,9 @@ import { createEmptyNotificationActionPayload, NotificationActionPayload } from 
  */
 export const AccountSecurityPage = (): JSX.Element => {
     const { t } = useTranslation();
-    const [ notification, setNotification ] = useState(createEmptyNotificationActionPayload());
+    const [ notification, setNotification ] = useState(createEmptyNotification());
 
-    const handleNotification = (firedNotification: NotificationActionPayload) => {
+    const handleNotification = (firedNotification: Notification) => {
         setNotification(firedNotification);
     };
 
@@ -67,7 +67,7 @@ export const AccountSecurityPage = (): JSX.Element => {
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
-                        <ChangePasswordComponent onNotificationFired={ handleNotification } />
+                        <ChangePassword onNotificationFired={ handleNotification } />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
@@ -77,7 +77,7 @@ export const AccountSecurityPage = (): JSX.Element => {
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
-                        <MultiFactor onNotificationFired={ handleNotification }/>
+                        <MultiFactorAuthentication onNotificationFired={ handleNotification }/>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
@@ -87,7 +87,7 @@ export const AccountSecurityPage = (): JSX.Element => {
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
-                        <ConsentManagementComponent />
+                        <Consents />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { NotificationComponent, SecurityQuestionsComponent } from "../components";
 import { InnerPageLayout } from "../layouts";
-import { createEmptyNotificationActionPayload, NotificationActionPayload } from "../models/notifications";
+import { createEmptyNotification, Notification } from "../models";
 
 /**
  * Accounts page.
@@ -30,9 +30,9 @@ import { createEmptyNotificationActionPayload, NotificationActionPayload } from 
  */
 export const AccountsPage = (): JSX.Element => {
     const { t } = useTranslation();
-    const [ notification, setNotification ] = useState(createEmptyNotificationActionPayload());
+    const [ notification, setNotification ] = useState(createEmptyNotification());
 
-    const handleNotification = (firedNotification: NotificationActionPayload) => {
+    const handleNotification = (firedNotification: Notification) => {
         setNotification(firedNotification);
     };
 

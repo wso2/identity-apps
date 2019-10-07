@@ -17,9 +17,9 @@
  */
 
 import React, { createContext, useEffect, useReducer } from "react";
-import { handleSignIn, handleSignOut } from "../middlewares/authenticate";
-import { AuthContextInterface } from "../models/auth";
-import { authenticateInitialState, authenticateReducer } from "../reducers/authenticate";
+import { AuthContextInterface } from "../models";
+import { handleSignIn, handleSignOut } from "../store/middleware";
+import { authenticateInitialState, authenticateReducer } from "../store/reducers";
 
 const AuthContext = createContext<AuthContextInterface>({
     dispatch: (() => 0) as React.Dispatch<any>,
