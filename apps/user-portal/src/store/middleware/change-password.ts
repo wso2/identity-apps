@@ -17,8 +17,7 @@
  */
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
-import { ServiceResourcesEndpoint } from "../../configs";
-import { i18n } from "../../helpers";
+import { i18n, ServiceResourcesEndpoint } from "../../configs";
 import { createEmptyNotification, HttpError, HttpRequestConfig, HttpResponse, Notification } from "../../models";
 import { apiRequest, showChangePasswordFormNotification } from "../actions";
 import { CHANGE_PASSWORD, CHANGE_PASSWORD_ERROR, CHANGE_PASSWORD_SUCCESS } from "../actions/types";

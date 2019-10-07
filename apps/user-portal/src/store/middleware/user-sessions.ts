@@ -17,8 +17,7 @@
  */
 
 import { AuthenticateSessionUtil } from "@wso2is/authenticate";
-import { ServiceResourcesEndpoint } from "../../configs";
-import { i18n } from "../../helpers";
+import { i18n, ServiceResourcesEndpoint } from "../../configs";
 import { createEmptyNotification, HttpError, HttpRequestConfig, HttpResponse, Notification } from "../../models";
 import { apiRequest, fetchUserSessions, showUserSessionsNotification, updateUserSessions } from "../actions";
 import {

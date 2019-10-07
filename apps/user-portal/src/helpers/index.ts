@@ -18,6 +18,5 @@
 
 export * from "./history";
 export * from "./http-headers";
-export * from "./i18n";
 export * from "./image";
 export * from "./user-agent-parser";

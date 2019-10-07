@@ -22,9 +22,9 @@ import { Provider } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 // import { Dimmer, Loader } from "semantic-ui-react";
 import { ProtectedRoute } from "./components";
-import { routes } from "./configs";
+import { i18n, routes } from "./configs";
 import { AuthContext } from "./contexts";
-import { history, i18n } from "./helpers";
+import { history } from "./helpers";
 import { store } from "./store";
 
 /**

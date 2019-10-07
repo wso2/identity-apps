@@ -17,8 +17,7 @@
  */
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
-import { ServiceResourcesEndpoint } from "../../configs";
-import { i18n } from "../../helpers";
+import { i18n, ServiceResourcesEndpoint } from "../../configs";
 import {
     ConsentReceiptInterface,
     ConsentState,
