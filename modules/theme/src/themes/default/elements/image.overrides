@@ -31,6 +31,7 @@
                 color: @nobel;
             }
             &.mini {
+                width: @miniWidth;
                 height: @miniWidth;
 
                 .initials {
@@ -94,6 +95,12 @@
                     font-size: 17em;
                     line-height: @massiveWidth;
                 }
+            }
+            &.spaced-right {
+                margin-right: @userAvatarSpacingRight;
+            }
+            &.spaced-left {
+                margin-left: @userAvatarSpacingLeft;
             }
         }
     }
