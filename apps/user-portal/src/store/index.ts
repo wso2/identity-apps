@@ -16,9 +16,41 @@
  * under the License.
  */
 
-export * from "./actions";
-export * from "./actions/types";
-export * from "./middleware";
-export * from "./reducers";
-export * from "./combine-reducers";
-export * from "./store";
+import { applyMiddleware, createStore, Store } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import { reducers } from "./combine-reducers";
+import {
+    apiMiddleware,
+    changePasswordMiddleware,
+    consentManagementMiddleware,
+    userSessionsMiddleware
+} from "./middleware";
+
+/**
+ * Type of the Redux store.
+ */
+export type AppState = ReturnType<typeof reducers>;
+
+/**
+ * Enables the instantiation of a redux store which could be passed on
+ * to the `Provider` supplied by the `react-redux` library.
+ *
+ * @return {Store<any, AnyAction> & Store<S & {}, A> & {dispatch: any}} Redux Store
+ */
+const configureStore = (): any => {
+    // Set of custom middleware.
+    const middleware = [
+        ...changePasswordMiddleware,
+        ...consentManagementMiddleware,
+        ...userSessionsMiddleware,
+        apiMiddleware
+    ];
+    const middleWareEnhancer = applyMiddleware(...middleware);
+
+    return createStore(
+        reducers,
+        composeWithDevTools(middleWareEnhancer)
+    );
+};
+
+export const store = configureStore();
