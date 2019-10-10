@@ -19,4 +19,5 @@
 export * from "./approvals";
 export * from "./change-password";
 export * from "./linked-accounts";
+export * from "./profile";
 export * from "./security-questions";

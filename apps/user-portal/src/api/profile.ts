@@ -18,8 +18,8 @@
 
 import { AuthenticateSessionUtil } from "@wso2is/authenticate";
 import axios from "axios";
-import { ServiceResourcesEndpoint } from "../../configs";
-import { BasicProfileInterface } from "../../models";
+import { ServiceResourcesEndpoint } from "../configs";
+import { BasicProfileInterface } from "../models";
 
 /**
  * Retrieve the user information of the currently authenticated user.
