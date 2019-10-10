@@ -51,7 +51,7 @@ export const getSecurityQs = (): Promise<any> => {
                 return Promise.resolve([ questions.data, answers.data ]);
             }));
     }).catch((error) => {
-        return Promise.reject(error);
+        return Promise.reject(`Failed to retrieve the access token - ${ error }`);
     });
 };
 
@@ -82,7 +82,7 @@ export const addSecurityQs = (data: object): Promise<any> => {
                 return Promise.reject(error);
             });
     }).catch((error) => {
-        return Promise.reject(error);
+        return Promise.reject(`Failed to retrieve the access token - ${ error }`);
     });
 };
 
@@ -113,6 +113,6 @@ export const updateSecurityQs = (data: object): Promise<any> => {
                 return Promise.reject(error);
             });
     }).catch((error) => {
-        return Promise.reject(error);
+        return Promise.reject(`Failed to retrieve the access token - ${ error }`);
     });
 };

@@ -52,11 +52,11 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
     return axios.patch(url, body, { auth, headers })
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to update password."));
+                return Promise.reject("Failed to update password.");
             }
             return Promise.resolve(response);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            return Promise.reject(`Failed to retrieve the access token - ${ error }`);
         });
 };

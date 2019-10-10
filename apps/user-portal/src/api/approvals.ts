@@ -66,14 +66,14 @@ export const fetchPendingApprovals = (
             }
             return axios.request(requestConfig)
                 .then((response) => {
-                    return response.data as ApprovalTaskSummary[];
+                    return Promise.resolve(response.data as ApprovalTaskSummary[]);
                 })
                 .catch((error) => {
-                    throw error;
+                    return Promise.reject(error);
                 });
         })
         .catch((error) => {
-            throw new Error(`Failed to retrieve the access token - ${ error }`);
+            return Promise.reject(`Failed to retrieve the access token - ${ error }`);
         });
 };
 
@@ -99,14 +99,14 @@ export const fetchPendingApprovalDetails = (id: string): Promise<any> => {
 
             return axios.request(requestConfig)
                 .then((response) => {
-                    return response.data as ApprovalTaskDetails;
+                    return Promise.resolve(response.data as ApprovalTaskDetails);
                 })
                 .catch((error) => {
-                    throw error;
+                    return Promise.reject(error);
                 });
         })
         .catch((error) => {
-            throw new Error(`Failed to retrieve the access token - ${ error }`);
+            return Promise.reject(`Failed to retrieve the access token - ${ error }`);
         });
 };
 
@@ -141,13 +141,13 @@ export const updatePendingApprovalStatus = (
 
             return axios.request(requestConfig)
                 .then((response) => {
-                    return response;
+                    return Promise.resolve(response);
                 })
                 .catch((error) => {
-                    throw error;
+                    return Promise.reject(error);
                 });
         })
         .catch((error) => {
-            throw new Error(`Failed to retrieve the access token - ${ error }`);
+            return Promise.reject(`Failed to retrieve the access token - ${ error }`);
         });
 };

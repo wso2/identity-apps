@@ -38,16 +38,16 @@ export const getAssociations = () => {
     return axios.get(ServiceResourcesEndpoint.associations, header)
         .then((response) => {
             if (!(response.status === 200)) {
-                Promise.reject(Error);
+                return Promise.reject("Failed to retrieve associations.");
             }
-            return response;
+            return Promise.resolve(response);
         })
         .catch((error) => {
             log.error(error);
             return Promise.reject(error);
         });
     }).catch((error) => {
-        return Promise.reject(error);
+        return Promise.reject(`Failed to retrieve the access token - ${ error }`);
     });
 };
 
@@ -68,17 +68,16 @@ export const addAccountAssociation = (data: object) => {
     return axios.post(ServiceResourcesEndpoint.associations, data, header)
         .then((response) => {
             if (!(response.status === 200)) {
-                Promise.reject(Error);
+                return Promise.reject("Failed to add association.");
             }
-            return response;
+            return Promise.resolve(response);
         })
         .catch((error) => {
             log.error(error);
-            Promise.reject(error);
-            return error.response;
+            return Promise.reject(error);
         });
     }).catch((error) => {
-        return Promise.reject(error);
+        return Promise.reject(`Failed to retrieve the access token - ${ error }`);
     });
 };
 
@@ -102,6 +101,6 @@ export const removeAssociation = () => {
         }
     });
     }).catch((error) => {
-        return Promise.reject(error);
+        return Promise.reject(`Failed to retrieve the access token - ${ error }`);
     });
 };
