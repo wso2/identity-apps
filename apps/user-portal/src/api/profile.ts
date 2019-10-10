@@ -28,15 +28,13 @@ import { BasicProfileInterface } from "../models";
  */
 export const getUserInfo = (): Promise<any> => {
     return AuthenticateSessionUtil.getAccessToken().then((token) => {
-        const header = {
-            headers: {
-                "Access-Control-Allow-Origin": CLIENT_HOST,
-                "Authorization": `Bearer ${ token }`,
-                "Content-Type": "application/json"
-            }
+        const headers = {
+            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Authorization": `Bearer ${ token }`,
+            "Content-Type": "application/json"
         };
 
-        return axios.get(ServiceResourcesEndpoint.user, header)
+        return axios.get(ServiceResourcesEndpoint.user, { headers })
             .then((response) => {
                 if (response.status !== 200) {
                     return Promise.reject(new Error("Failed get user info from: "
@@ -59,16 +57,14 @@ export const getUserInfo = (): Promise<any> => {
 export const getProfileInfo = (): Promise<BasicProfileInterface> => {
     return AuthenticateSessionUtil.getAccessToken().then((token) => {
         const orgKey = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
-        const header = {
-            headers: {
-                "Accept": "application/json",
-                "Access-Control-Allow-Origin": CLIENT_HOST,
-                "Authorization": `Bearer ${ token }`,
-                "Content-Type": "application/scim+json"
-            }
+        const headers = {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Authorization": `Bearer ${ token }`,
+            "Content-Type": "application/scim+json"
         };
 
-        return axios.get(ServiceResourcesEndpoint.me, header)
+        return axios.get(ServiceResourcesEndpoint.me, { headers })
             .then((response) => {
                 if (response.status !== 200) {
                     return Promise.reject(new Error("Failed get user profile info from: "
@@ -104,15 +100,13 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
  */
 export const updateProfileInfo = (info: object): Promise<any> => {
     return AuthenticateSessionUtil.getAccessToken().then((token) => {
-        const header = {
-            headers: {
-                "Access-Control-Allow-Origin": CLIENT_HOST,
-                "Authorization": `Bearer ${ token }`,
-                "Content-Type": "application/json"
-            }
+        const headers = {
+            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Authorization": `Bearer ${ token }`,
+            "Content-Type": "application/json"
         };
 
-        return axios.patch(ServiceResourcesEndpoint.me, info, header)
+        return axios.patch(ServiceResourcesEndpoint.me, info, { headers })
             .then((response) => {
                 if (response.status !== 200) {
                     return Promise.reject(new Error("Failed update user profile info with: "

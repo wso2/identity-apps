@@ -27,28 +27,26 @@ import { ServiceResourcesEndpoint } from "../configs";
  */
 export const getSecurityQs = (): Promise<any> => {
     return AuthenticateSessionUtil.getAccessToken().then((token) => {
-        const header = {
-            headers: {
-                "Accept": "application/json",
-                "Access-Control-Allow-Origin": CLIENT_HOST,
-                "Authorization": `Bearer ${ token }`
-            }
+        const headers = {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Authorization": `Bearer ${ token }`
         };
 
         const getQuestions = () => {
-            return axios.get(ServiceResourcesEndpoint.challenges, header);
+            return axios.get(ServiceResourcesEndpoint.challenges, { headers });
         };
 
         const getAnswers = () => {
-            return axios.get(ServiceResourcesEndpoint.challengeAnswers, header);
+            return axios.get(ServiceResourcesEndpoint.challengeAnswers, { headers });
         };
 
-        return axios.all([ getQuestions(), getAnswers() ])
+        return axios.all([getQuestions(), getAnswers()])
             .then(axios.spread((questions, answers) => {
                 if (questions.status !== 200 && answers.status !== 200) {
                     return Promise.reject(new Error("Failed to get security questions and answers."));
                 }
-                return Promise.resolve([ questions.data, answers.data ]);
+                return Promise.resolve([questions.data, answers.data]);
             }));
     }).catch((error) => {
         return Promise.reject(`Failed to retrieve the access token - ${ error }`);
@@ -63,15 +61,13 @@ export const getSecurityQs = (): Promise<any> => {
  */
 export const addSecurityQs = (data: object): Promise<any> => {
     return AuthenticateSessionUtil.getAccessToken().then((token) => {
-        const header = {
-            headers: {
-                "Accept": "application/json",
-                "Access-Control-Allow-Origin": CLIENT_HOST,
-                "Authorization": `Bearer ${ token }`
-            }
+        const headers = {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Authorization": `Bearer ${ token }`
         };
 
-        return axios.post(ServiceResourcesEndpoint.challengeAnswers, data, header)
+        return axios.post(ServiceResourcesEndpoint.challengeAnswers, data, { headers })
             .then((response) => {
                 if (response.status !== 201) {
                     return Promise.reject(new Error("Failed to add security questions."));
@@ -94,15 +90,13 @@ export const addSecurityQs = (data: object): Promise<any> => {
  */
 export const updateSecurityQs = (data: object): Promise<any> => {
     return AuthenticateSessionUtil.getAccessToken().then((token) => {
-        const header = {
-            headers: {
-                "Accept": "application/json",
-                "Access-Control-Allow-Origin": CLIENT_HOST,
-                "Authorization": `Bearer ${ token }`
-            }
+        const headers = {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Authorization": `Bearer ${ token }`
         };
 
-        return axios.put(ServiceResourcesEndpoint.challengeAnswers, data, header)
+        return axios.put(ServiceResourcesEndpoint.challengeAnswers, data, { headers })
             .then((response) => {
                 if (response.status !== 200) {
                     return Promise.reject(new Error("Failed to update security questions."));

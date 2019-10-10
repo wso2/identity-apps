@@ -27,25 +27,23 @@ import { ServiceResourcesEndpoint } from "../configs";
  */
 export const getAssociations = () => {
     return AuthenticateSessionUtil.getAccessToken().then((token) => {
-    const header = {
-        headers: {
+        const headers = {
             "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${token}`,
+            "Authorization": `Bearer ${ token }`,
             "Content-Type": "application/json"
-        }
-    };
+        };
 
-    return axios.get(ServiceResourcesEndpoint.associations, header)
-        .then((response) => {
-            if (!(response.status === 200)) {
-                return Promise.reject("Failed to retrieve associations.");
-            }
-            return Promise.resolve(response);
-        })
-        .catch((error) => {
-            log.error(error);
-            return Promise.reject(error);
-        });
+        return axios.get(ServiceResourcesEndpoint.associations, { headers })
+            .then((response) => {
+                if (!(response.status === 200)) {
+                    return Promise.reject("Failed to retrieve associations.");
+                }
+                return Promise.resolve(response);
+            })
+            .catch((error) => {
+                log.error(error);
+                return Promise.reject(error);
+            });
     }).catch((error) => {
         return Promise.reject(`Failed to retrieve the access token - ${ error }`);
     });
@@ -57,25 +55,23 @@ export const getAssociations = () => {
  */
 export const addAccountAssociation = (data: object) => {
     return AuthenticateSessionUtil.getAccessToken().then((token) => {
-    const header = {
-        headers: {
+        const headers = {
             "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${token}`,
+            "Authorization": `Bearer ${ token }`,
             "Content-Type": "application/json"
-        }
-    };
+        };
 
-    return axios.post(ServiceResourcesEndpoint.associations, data, header)
-        .then((response) => {
-            if (!(response.status === 200)) {
-                return Promise.reject("Failed to add association.");
-            }
-            return Promise.resolve(response);
-        })
-        .catch((error) => {
-            log.error(error);
-            return Promise.reject(error);
-        });
+        return axios.post(ServiceResourcesEndpoint.associations, data, { headers })
+            .then((response) => {
+                if (!(response.status === 200)) {
+                    return Promise.reject("Failed to add association.");
+                }
+                return Promise.resolve(response);
+            })
+            .catch((error) => {
+                log.error(error);
+                return Promise.reject(error);
+            });
     }).catch((error) => {
         return Promise.reject(`Failed to retrieve the access token - ${ error }`);
     });
@@ -87,19 +83,15 @@ export const addAccountAssociation = (data: object) => {
  */
 export const removeAssociation = () => {
     return AuthenticateSessionUtil.getAccessToken().then((token) => {
-    const header = {
-        headers: {
+        const headers = {
             "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${token}`,
+            "Authorization": `Bearer ${ token }`,
             "Content-Type": "application/json"
-        }
-    };
+        };
 
-    return axios.delete(ServiceResourcesEndpoint.associations, {
-        params: {
-
-        }
-    });
+        return axios.delete(ServiceResourcesEndpoint.associations, {
+            params: {}
+        });
     }).catch((error) => {
         return Promise.reject(`Failed to retrieve the access token - ${ error }`);
     });
