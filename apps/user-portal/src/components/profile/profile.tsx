@@ -19,8 +19,8 @@
 import React, { ChangeEvent, FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
+import { getProfileInfo, updateProfileInfo } from "../../api";
 import { createEmptyProfile, Notification } from "../../models";
-import { getProfileInfo, updateProfileInfo } from "../../store/actions";
 import { EditSection, SettingsSection, UserImage } from "../shared";
 
 /**

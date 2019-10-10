@@ -19,9 +19,9 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Form, Grid, Icon, List } from "semantic-ui-react";
+import { getProfileInfo, updateProfileInfo } from "../../../api";
 import { MFAIcons } from "../../../configs";
 import { Notification } from "../../../models";
-import { getProfileInfo, updateProfileInfo } from "../../../store/actions";
 import { EditSection, ThemeIcon } from "../../shared";
 
 /**

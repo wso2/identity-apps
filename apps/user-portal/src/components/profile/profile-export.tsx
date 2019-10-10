@@ -18,9 +18,9 @@
 
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
+import { getUserInfo } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
 import { Notification } from "../../models";
-import { getUserInfo } from "../../store/actions";
 import { SettingsSection } from "../shared";
 
 /**
