@@ -38,7 +38,7 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
         <filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>
         <init-param>
             <param-name>cors.allowOrigin</param-name>
-            <param-value>https://localhost:9000</param-value>
+            <param-value>https://localhost:9000, https://localhost:9001</param-value>
         </init-param>
         <init-param>
             <param-name>cors.supportedMethods</param-name>
