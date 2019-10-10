@@ -24,7 +24,7 @@ import {
     ConsentManagementComponent,
     MultiFactor,
     NotificationComponent,
-    SecurityQuestionsComponent,
+    AccountRecovery,
     UserSessionsComponent
 } from "../components";
 import { InnerPageLayout } from "../layouts";
@@ -72,7 +72,7 @@ export const AccountSecurityPage = (): JSX.Element => {
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
-                        <SecurityQuestionsComponent onNotificationFired={ handleNotification } />
+                        <AccountRecovery onNotificationFired={ handleNotification } />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
