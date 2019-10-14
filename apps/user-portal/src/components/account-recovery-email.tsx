@@ -26,7 +26,7 @@ import { EditSection } from "./edit-section";
 import { ThemeIcon } from "./icon";
 
 /**
- * Proptypes for the SMS OTP component.
+ * Proptypes for the EmailRecoveryComponent component.
  */
 interface EmailRecoveryProps {
     onNotificationFired: (notification: NotificationActionPayload) => void;
@@ -35,9 +35,10 @@ interface EmailRecoveryProps {
 /**
  * Email recovery section.
  *
+ * @param {EmailRecoveryProps} props
  * @return {JSX.Element}
  */
-export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
+export const EmailRecoveryComponent: React.FunctionComponent<EmailRecoveryProps> = (
     props: EmailRecoveryProps
 ): JSX.Element => {
     const [email, setEmail] = useState("");
@@ -145,9 +146,9 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
      * This function masks the email address passed as the argument and returns 
      * the masked email address.  
      * The text between the second character of the email and the @ sign is masked.
-     * @param {String} email 
+     * @param {string} email 
      */
-    const maskEmail = (email: String) => {
+    const maskEmail = (email: string) => {
         let mask = "";
         let indexOfAt = email.indexOf("@");
         let textToBeMasked = email.slice(2, indexOfAt);

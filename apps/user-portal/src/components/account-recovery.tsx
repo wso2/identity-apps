@@ -22,16 +22,22 @@ import { List } from "semantic-ui-react";
 import { NotificationActionPayload } from "../models/notifications";
 import { SettingsSection } from "./settings-section";
 import { SecurityQuestionsComponent } from "./account-recovery-security-qs";
-import { EmailRecovery } from "./account-recovery-email";
+import { EmailRecoveryComponent } from "./account-recovery-email";
 
 /**
- * Proptypes for the basic details component.
+ * Proptypes for AccountRecoveryComponent component.
  */
 interface AccountRecoveryProps {
     onNotificationFired: (notification: NotificationActionPayload) => void;
 }
 
-export const AccountRecovery: React.FunctionComponent<AccountRecoveryProps> = (
+/**
+ * The AccountRecoveryComponent component in the Settings section
+ * 
+ * @param {AccountRecoveryProps} props 
+ * @return {JSX.Element}
+ */
+export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryProps> = (
     props: AccountRecoveryProps
 ): JSX.Element => {
     const { t } = useTranslation();
@@ -39,15 +45,15 @@ export const AccountRecovery: React.FunctionComponent<AccountRecoveryProps> = (
 
     return (
         <SettingsSection
-            description={ t("views:accountRecovery.subTitle") }
-            header={ t("views:accountRecovery.title") }
+            description={t("views:accountRecovery.subTitle")}
+            header={t("views:accountRecovery.title")}
         >
             <List divided verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">
-                    <SecurityQuestionsComponent onNotificationFired={onNotificationFired}/>
+                    <SecurityQuestionsComponent onNotificationFired={onNotificationFired} />
                 </List.Item>
                 <List.Item className="inner-list-item">
-                    <EmailRecovery onNotificationFired={onNotificationFired}/>
+                    <EmailRecoveryComponent onNotificationFired={onNotificationFired} />
                 </List.Item>
             </List>
         </SettingsSection>
