@@ -198,7 +198,8 @@
         "subTitle":"View and manage your account recovery options",
         "emailRecovery":{
             "title":"Email Recovery",
-            "description":"Add or update email recovery options",
+            "descriptionAdd":"Add a recovery email address",
+            "descriptionUpdate":"Update recovery email address ({{email}})",
             "emailAddress":"Email Address",
             "notification":{
                 "success":{

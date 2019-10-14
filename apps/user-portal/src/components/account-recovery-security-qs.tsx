@@ -28,11 +28,10 @@ import {
     Icon
 } from "semantic-ui-react";
 import { addSecurityQs, getSecurityQs, updateSecurityQs } from "../actions/profile";
-import { SettingsSectionIcons, MFAIcons } from "../configs";
+import { AccountRecoveryIcons } from "../configs";
 import { createEmptyChallenge } from "../models/challenges";
 import { NotificationActionPayload } from "../models/notifications";
 import { EditSection } from "./edit-section";
-import { SettingsSection } from "./settings-section";
 import { ThemeIcon } from ".";
 
 interface ComponentProps extends WithTranslation {
@@ -61,7 +60,7 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
             },
             challenges: createEmptyChallenge(),
             isConfigured: false,
-            isEdit: false,
+            isEdit: -1,
             isInit: false,
             isLoaderActive: false,
             notification: {
@@ -93,16 +92,25 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
     public initModel = () => {
         const { challenges, challengeQuestions } = this.state;
         const challengesCopy = [{ ...challengeQuestions }];
+
         challenges.questions.map((question) => {
+            let answer = challenges.answers && challenges.answers.length > 0
+                ? this.findAnswer(question.questionSetId)
+                : null;
+
+            let questionInSet = answer
+                ? this.findQuestion(question.questionSetId, question.questions)
+                : null;
+
             challengesCopy.push(
                 {
                     questionSetId: question.questionSetId,
                     challengeQuestion: {
-                        locale: "",
-                        question: "",
-                        questionId: ""
+                        locale: answer ? questionInSet.locale : "",
+                        question: answer ? questionInSet.question : "",
+                        questionId: answer ? questionInSet.questionId : ""
                     },
-                    answer: ""
+                    answer: answer ? answer.answer : ""
                 });
         });
 
@@ -117,27 +125,49 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
      * The name of the event target will be used to retrieve the set of questions
      * with a specific question set id
      * @param event
-     * @param data
+     * @param questionSetId
      */
-    public handleInputChange = (event, data) => {
-        let result;
+    public handleInputChange = (event, questionSetId) => {
         const { challengeQuestions } = this.state;
-        result = challengeQuestions.find((setObj) => (setObj.questionSetId === data.name));
-        result.answer = data.value;
+
+        challengeQuestions.forEach((question) => {
+            question.questionSetId === questionSetId
+                ? question.answer = event.target.value
+                : null;
+        })
+        this.setState({
+            challengeQuestions: challengeQuestions
+        });
     }
 
     /**
      * The following method handles the onClick event of the change button
      */
-    public handleEdit = () => {
-        this.setState({ isEdit: !this.state.isEdit });
+    public handleEdit = (question) => {
+        this.setState({ isEdit: question });
     }
 
-    public handleDropdownChange = (event, data) => {
-        let result;
-        const { challengeQuestions } = this.state;
-        result = challengeQuestions.find((setObj) => (setObj.questionSetId === data.name));
-        result.challengeQuestion = data.value;
+    /**
+     * The following function handles the change event 
+     */
+    public handleDropdownChange = (data, questionSetId) => {
+        const { challengeQuestions, challenges } = this.state;
+
+        let challenge = challenges.questions.find((challenge) => {
+            return challenge.questionSetId === questionSetId;
+        });
+
+        let chosenQuestion = challenge.questions.find((question) => {
+            return question.questionId === data.value;
+        })
+        challengeQuestions.forEach((question) => {
+            question.questionSetId === questionSetId
+                ? question.challengeQuestion = { ...chosenQuestion }
+                : null;
+        })
+        this.setState({
+            challengeQuestions: challengeQuestions
+        });
     }
 
     /**
@@ -159,7 +189,7 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
         const { challenges } = this.state;
         const data = this.state.challengeQuestions;
 
-        if (challenges.answers && (challenges.answers.length > 0) && (this.state.isEdit)) {
+        if (challenges.answers && (challenges.answers.length > 0) && (this.state.isEdit != -1)) {
             updateSecurityQs(data)
                 .then((response) => {
                     if (response.status === 200) {
@@ -169,7 +199,7 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
                                 this.initModel();
                             });
                         this.setState({
-                            isEdit: !this.state.isEdit,
+                            isEdit: -1,
                             updateStatus: true
                         });
                         onNotificationFired({
@@ -212,7 +242,7 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
                                 this.initModel();
                             });
                         this.setState({
-                            isEdit: !this.state.isEdit,
+                            isEdit: -1,
                             updateStatus: true
                         });
                         onNotificationFired({
@@ -248,18 +278,153 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
         }
     }
 
+    /**
+     * This function returns the question object for a saved answer
+     * @param {String} questionSetId
+     * @param questions
+     * 
+     * @returns question
+     */
+    public findQuestion(questionSetId: String, questions: any[]) {
+        const { challenges } = this.state;
+
+        let answer = challenges.answers.find((answer) => {
+            return answer.questionSetId === questionSetId;
+        });
+
+        let question = questions.find((question) => {
+            return question.question === answer.question;
+        });
+
+        return question;
+    }
+
+    /**
+     * This function returns the saved answer for a questionSet
+     * @param {String} questionSetId
+     * @returns answer
+     */
+    public findAnswer(questionSetId: String) {
+        const { challenges } = this.state;
+
+        let answer = challenges.answers.find((answer) => {
+            return answer.questionSetId === questionSetId;
+        });
+
+        return answer;
+    }
+
+    /**
+     * This function returns the question and answer chosen by the user for a questionSetId
+     * from challengeQuestions
+     * @param {String} questionSetId
+     */
+    public findChosenQuestionFromChallengeQuestions(questionSetId: String) {
+        const { challengeQuestions } = this.state;
+
+        let question = challengeQuestions.find((question) => {
+            return question.questionSetId === questionSetId;
+        });
+
+        return question;
+    }
+
     public render() {
         const { t } = this.props;
         const { challenges } = this.state;
+
+        const renderEdit = () => {
+            return (
+                <EditSection>
+                    <Form onSubmit={this.handleSave}>
+                        <Grid>
+                            {
+                                challenges.questions.map((questionSet, index) => {
+                                    return this.state.isEdit===0 || (this.state.isEdit===questionSet.questionSetId)
+                                        ? (
+                                            <Grid.Row key={index} columns={2}>
+                                                <Grid.Column width={4}>
+                                                    {t("common:challengeQuestionNumber", { number: index + 1 })}
+                                                </Grid.Column>
+                                                <Grid.Column width={12}>
+                                                    <Form.Field>
+                                                        <label>
+                                                            {t("views:securityQuestions.forms.securityQuestionsForm." +
+                                                                "inputs.question.label")}
+                                                        </label>
+                                                        <Dropdown
+                                                            name={questionSet.questionSetId}
+                                                            selection
+                                                            placeholder={
+                                                                t("views:securityQuestions.forms." +
+                                                                    "securityQuestionsForm.inputs.question.placeholder")
+                                                            }
+                                                            onChange={(e, data) => { this.handleDropdownChange(data, questionSet.questionSetId) }}
+                                                            options={
+                                                                questionSet.questions.map((ques, i) => {
+                                                                    return {
+                                                                        key: i,
+                                                                        text: ques.question,
+                                                                        value: ques.questionId
+                                                                    };
+                                                                })
+                                                            }
+                                                            value={this.findChosenQuestionFromChallengeQuestions(
+                                                                questionSet.questionSetId
+                                                            ).challengeQuestion.questionId}
+                                                        />
+                                                    </Form.Field>
+                                                    <Form.Field>
+                                                        <label>
+                                                            {t("views:securityQuestions.forms.securityQuestionsForm" +
+                                                                ".inputs.answer.label")}
+                                                        </label>
+                                                        <Form.Input
+                                                            required
+                                                            id={questionSet.questionSetId}
+                                                            placeholder={
+                                                                t("views:securityQuestions.forms." +
+                                                                    "securityQuestionsForm.inputs.answer.placeholder")
+                                                            }
+
+                                                            onChange={(e) => { this.handleInputChange(e, questionSet.questionSetId) }} />
+                                                    </Form.Field>
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        )
+                                        :null;
+                                })
+                            }
+                            <Divider hidden />
+                            <Grid.Row columns={2}>
+                                { /* TODO: Find a better way to offset grid */}
+                                <Grid.Column width={4}>{" "}</Grid.Column>
+                                <Grid.Column width={12}>
+                                    <Button type="submit" primary>
+                                        {t("common:save")}
+                                    </Button>
+                                    <Button
+                                        className="link-button"
+                                        onClick={()=>{this.handleEdit(-1)}}
+                                    >
+                                        {t("common:cancel")}
+                                    </Button>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    </Form>
+                </EditSection>
+            );
+        }
         const listItems = () => {
-            if (challenges.answers && (challenges.answers.length > 0) && (!this.state.isEdit)) {
+            if (challenges.questions && (challenges.questions.length > 0) && this.state.isEdit==-1) {
                 return (
                     <Grid padded>
                         <Grid.Row columns={2}>
                             <Grid.Column width={11} className="first-column">
                                 <List.Content floated="left">
                                     <ThemeIcon
-                                        icon={MFAIcons.sms}
+                                        icon={AccountRecoveryIcons.securityQuestions}
                                         size="mini"
                                         twoTone
                                         transparent
@@ -277,97 +442,64 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
                             </Grid.Column>
                             <Grid.Column width={5} className="last-column">
                                 <List.Content floated="right">
-                                    <Icon
-                                        link
-                                        onClick={this.handleEdit}
-                                        className="list-icon"
-                                        size="small"
-                                        color="grey"
-                                        name="pencil alternate"
-                                    />
+                                    {challenges && challenges.answers.length > 0
+                                        ? null
+                                        : <Icon
+                                            link
+                                            onClick={() => { this.handleEdit(0) }}
+                                            className="list-icon"
+                                            size="small"
+                                            color="grey"
+                                            name="plus"
+                                        />
+                                    }
                                 </List.Content>
                             </Grid.Column>
                         </Grid.Row>
+                        <Grid.Row style={{ paddingTop: 0 }}>
+                            <List divided verticalAlign="middle" style={{ paddingTop: 0, width: "100%" }} className="main-content-inner">
+                                {
+                                    challenges.answers.map((answer, index) => {
+                                        return (
+                                            <List.Item key={index} className="inner-list-item">
+                                                <Grid padded>
+                                                    <Grid.Row columns={3}>
+                                                        <Grid.Column width={1}>
+                                                        </Grid.Column>
+                                                        <Grid.Column width={9} className="first-column">
+                                                            <List.Content>{answer.question}</List.Content>
+                                                        </Grid.Column>
+                                                        <Grid.Column width={6} className="last-column">
+                                                            <List.Content floated="right">
+                                                                <Icon
+                                                                    link
+                                                                    onClick={() => { this.handleEdit(answer.questionSetId) }}
+                                                                    className="list-icon"
+                                                                    size="small"
+                                                                    color="grey"
+                                                                    name="pencil alternate"
+                                                                />
+                                                            </List.Content>
+                                                        </Grid.Column>
+                                                    </Grid.Row>
+                                                </Grid>
+                                            </List.Item>
+                                        );
+                                    })
+                                }
+                            </List>
+                        </Grid.Row>
                     </Grid>
                 );
-            } else if (this.state.isEdit) {
+            } else if (this.state.isEdit != -1) {
                 if (challenges.questions && (challenges.questions.length > 0)) {
                     return (
-                        <EditSection>
-                            <Form onSubmit={this.handleSave}>
-                                <Grid>
-                                    {
-                                        challenges.questions.map((questionSet, index) => (
-                                            <Grid.Row columns={2}>
-                                                <Grid.Column width={4}>
-                                                    {t("common:challengeQuestionNumber", { number: index + 1 })}
-                                                </Grid.Column>
-                                                <Grid.Column width={12}>
-                                                    <Form.Field>
-                                                        <label>
-                                                            {t("views:securityQuestions.forms.securityQuestionsForm." +
-                                                                "inputs.question.label")}
-                                                        </label>
-                                                        <Dropdown
-                                                            name={questionSet.questionSetId}
-                                                            selection
-                                                            placeholder={
-                                                                t("views:securityQuestions.forms." +
-                                                                    "securityQuestionsForm.inputs.question.placeholder")
-                                                            }
-                                                            onChange={this.handleDropdownChange}
-                                                            options={
-                                                                questionSet.questions.map((ques, i) => {
-                                                                    return {
-                                                                        key: i,
-                                                                        text: ques.question,
-                                                                        value: ques
-                                                                    };
-                                                                })
-                                                            }
-                                                        />
-                                                    </Form.Field>
-                                                    <Form.Field>
-                                                        <label>
-                                                            {t("views:securityQuestions.forms.securityQuestionsForm" +
-                                                                ".inputs.answer.label")}
-                                                        </label>
-                                                        <Form.Input
-                                                            required
-                                                            id={questionSet.questionSetId}
-                                                            placeholder={
-                                                                t("views:securityQuestions.forms." +
-                                                                    "securityQuestionsForm.inputs.answer.placeholder")
-                                                            }
-                                                            onChange={this.handleInputChange} />
-                                                    </Form.Field>
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                        ))
-                                    }
-                                    <Divider hidden />
-                                    <Grid.Row columns={2}>
-                                        { /* TODO: Find a better way to offset grid */}
-                                        <Grid.Column width={4}>{" "}</Grid.Column>
-                                        <Grid.Column width={12}>
-                                            <Button type="submit" primary>
-                                                {t("common:save")}
-                                            </Button>
-                                            <Button
-                                                className="link-button"
-                                                onClick={this.handleEdit}
-                                            >
-                                                {t("common:cancel")}
-                                            </Button>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            </Form>
-                        </EditSection>
+                        renderEdit()
                     );
                 }
             }
         };
+
         return (<>{listItems()}</>);
 
     }

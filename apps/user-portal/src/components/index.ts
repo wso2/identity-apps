@@ -37,5 +37,4 @@ export * from "./pending-approvals";
 export * from "./user-image";
 export * from "./account-recovery";
 export * from "./account-recovery-email";
-export * from "./account-recovery-code";
 export * from "./account-recovery-security-qs";

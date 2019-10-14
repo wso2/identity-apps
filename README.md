@@ -42,7 +42,7 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
         </init-param>
         <init-param>
             <param-name>cors.supportedMethods</param-name>
-            <param-value>GET, HEAD, POST, DELETE, OPTIONS</param-value>
+            <param-value>GET, HEAD, POST, DELETE, OPTIONS, PATCH, PUT</param-value>
         </init-param>
     </filter>
 

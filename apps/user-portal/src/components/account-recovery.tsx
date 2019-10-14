@@ -23,7 +23,6 @@ import { NotificationActionPayload } from "../models/notifications";
 import { SettingsSection } from "./settings-section";
 import { SecurityQuestionsComponent } from "./account-recovery-security-qs";
 import { EmailRecovery } from "./account-recovery-email";
-import { CodeRecovery } from "./account-recovery-code";
 
 /**
  * Proptypes for the basic details component.
@@ -45,13 +44,10 @@ export const AccountRecovery: React.FunctionComponent<AccountRecoveryProps> = (
         >
             <List divided verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">
-                    <SecurityQuestionsComponent/>
+                    <SecurityQuestionsComponent onNotificationFired={onNotificationFired}/>
                 </List.Item>
                 <List.Item className="inner-list-item">
                     <EmailRecovery onNotificationFired={onNotificationFired}/>
-                </List.Item>
-                <List.Item className="inner-list-item">
-                    <CodeRecovery onNotificationFired={onNotificationFired}/>
                 </List.Item>
             </List>
         </SettingsSection>
