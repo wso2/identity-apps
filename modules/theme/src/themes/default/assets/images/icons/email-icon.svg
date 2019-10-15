@@ -1,14 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg class="icon" ersion="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 14 14" style="enable-background:new 0 0 14 14;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:none;stroke:#ff5000;stroke-width:0.1;stroke-miterlimit:10;}
-	.st1{fill:none;stroke:#969696;stroke-miterlimit:10;}
-	.st2{fill:#ff5000;}
-</style>
-<polygon class="st0" points="7,4.76 13.45,12.29 0.55,12.29 "/>
-<path class="st1" d="M12.68,12.29H1.32c-0.42,0-0.77-0.34-0.77-0.77V2.87c0-0.42,0.34-0.77,0.77-0.77h11.36
-	c0.42,0,0.77,0.34,0.77,0.77v8.65C13.45,11.94,13.1,12.29,12.68,12.29z"/>
-<polygon class="st2" points="7,9.76 0.55,2.22 13.45,2.22 "/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+<svg xmlns:svg="http://www.w3.org/2000/svg" 
+   xmlns="http://www.w3.org/2000/svg" id="email-icon" height="14" width="14" version="1.1" xml:space="preserve" viewBox="0 0 420 420" y="0px" x="0px" version="1.1" class="icon">
+
+
+   <path class="path primary" d="M 209.46992,91.817395 208.35184,93.095736 11.863524,319.59479 H 407.07633 Z m 0,4.532303 191.07445,220.281642 
+   H 18.39548 Z" />
+   <polygon class="path primary" transform="matrix(30.129386,0,0,29.750516,-1.4357757,-47.521938)" points="13.45,2.22 7,9.76 0.55,2.22 " />
+
+   <path class="path secondary" d="M 38.324416,0.05859375 C 17.194139,0.05859375 0.07421875,17.362777 0.07421875,37.885909 V 295.18139 c 0,20.86455 
+   17.46570225,37.82731 38.25019725,37.82731 H 380.63425 c 21.02362,0 38.25019,-17.06808 38.25019,-37.82731 V 37.885909 c 0,-20.864566 -17.4657,
+   -37.82731525 -38.25019,-37.82731525 z m 0,29.75051725 H 380.63425 c 4.5242,0 8.1208,3.355924 8.1208,8.076798 V 295.18139 c 0,4.23116 -3.83574,8.0768 
+   -8.1208,8.0768 H 38.324416 c -4.524193,0 -8.12081,-3.35595 -8.12081,-8.0768 V 37.885909 c 0,-4.467296 3.339812,-8.076798 8.12081,-8.076798 z" />
+
+
 </svg>

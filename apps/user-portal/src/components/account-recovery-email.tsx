@@ -81,7 +81,7 @@ export const EmailRecoveryComponent: React.FunctionComponent<EmailRecoveryProps>
                     });
                     getProfileInfo()
                         .then((res) => {
-                            setEmailAddr(res);
+                            setEmailAddress(res);
                         });
                     setIsEdit(false);
                 } else {
@@ -114,12 +114,12 @@ export const EmailRecoveryComponent: React.FunctionComponent<EmailRecoveryProps>
     /**
      * This function gets the email address from the response passed as the argument 
      * and assigns it to email and editedEmail. 
-     * @param resp 
+     * @param response 
      */
-    const setEmailAddr = (resp) => {
+    const setEmailAddress = (response) => {
         let emailAddress = "";
-        resp.emails
-            ? resp.emails.map((email) => {
+        response.emails
+            ? response.emails.map((email) => {
                 emailAddress = email;
             })
             : null;
@@ -168,54 +168,55 @@ export const EmailRecoveryComponent: React.FunctionComponent<EmailRecoveryProps>
      */
     const showEditView = () => {
         if (!isEdit) {
-            return (<Grid padded>
-                <Grid.Row columns={2}>
-                    <Grid.Column width={11} className="first-column">
-                        <List.Content floated="left">
-                            <ThemeIcon
-                                icon={AccountRecoveryIcons.email}
-                                size="mini"
-                                twoTone
-                                transparent
-                                square
-                                rounded
-                                relaxed
-                            />
-                        </List.Content>
-                        <List.Content>
-                            <List.Header>{t("views:accountRecovery.emailRecovery.title")}</List.Header>
-                            <List.Description>
-                                {
-                                    email || email != ""
-                                        ? t("views:accountRecovery.emailRecovery.descriptionUpdate", { email: maskEmail(email) })
-                                        : t("views:accountRecovery.emailRecovery.descriptionAdd")
-                                }
-                            </List.Description>
-                        </List.Content>
-                    </Grid.Column>
-                    <Grid.Column width={5} className="last-column">
-                        <List.Content floated="right">
-                            {email || email != ""
-                                ? <Icon
-                                    link
-                                    onClick={handleEdit}
-                                    className="list-icon"
-                                    size="small"
-                                    color="grey"
-                                    name="pencil alternate"
+            return (
+                <Grid padded>
+                    <Grid.Row columns={2}>
+                        <Grid.Column width={11} className="first-column">
+                            <List.Content floated="left">
+                                <ThemeIcon
+                                    icon={AccountRecoveryIcons.email}
+                                    size="mini"
+                                    twoTone
+                                    transparent
+                                    square
+                                    rounded
+                                    relaxed
                                 />
-                                : <Icon
-                                    link
-                                    onClick={handleEdit}
-                                    className="list-icon"
-                                    size="small"
-                                    color="grey"
-                                    name="plus"
-                                />}
-                        </List.Content>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+                            </List.Content>
+                            <List.Content>
+                                <List.Header>{t("views:accountRecovery.emailRecovery.title")}</List.Header>
+                                <List.Description>
+                                    {
+                                        email || email != ""
+                                            ? t("views:accountRecovery.emailRecovery.descriptionUpdate", { email: maskEmail(email) })
+                                            : t("views:accountRecovery.emailRecovery.descriptionAdd")
+                                    }
+                                </List.Description>
+                            </List.Content>
+                        </Grid.Column>
+                        <Grid.Column width={5} className="last-column">
+                            <List.Content floated="right">
+                                {email || email != ""
+                                    ? <Icon
+                                        link
+                                        onClick={handleEdit}
+                                        className="list-icon"
+                                        size="small"
+                                        color="grey"
+                                        name="pencil alternate"
+                                    />
+                                    : <Icon
+                                        link
+                                        onClick={handleEdit}
+                                        className="list-icon"
+                                        size="small"
+                                        color="grey"
+                                        name="plus"
+                                    />}
+                            </List.Content>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             );
         }
         return (
@@ -258,14 +259,12 @@ export const EmailRecoveryComponent: React.FunctionComponent<EmailRecoveryProps>
     useEffect(() => {
         getProfileInfo()
             .then((response) => {
-                setEmailAddr(response);
+                setEmailAddress(response);
             });
 
     }, []);
 
     return (
-        <div>
-            {showEditView()}
-        </div>
+        showEditView()
     );
 };
