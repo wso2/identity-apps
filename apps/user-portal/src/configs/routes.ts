@@ -18,7 +18,6 @@
 
 import {
     AccountSecurityPage,
-    AccountsPage,
     AppListingPage,
     ConsentManagementPage,
     HomePage,
@@ -67,14 +66,6 @@ const ROUTES: Route[] = [
         path: "/security",
         protected: true,
         showOnSidePanel: true,
-    },
-    {
-        component: AccountsPage,
-        icon: "account",
-        name: "Accounts",
-        path: "/accounts",
-        protected: true,
-        showOnSidePanel: false,
     },
     {
         component: AppListingPage,

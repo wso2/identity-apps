@@ -20,11 +20,11 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import {
+    AccountRecoveryComponent,
     ChangePassword,
     Consents,
     MultiFactorAuthentication,
     NotificationComponent,
-    AccountRecoveryComponent,
     UserSessionsComponent
 } from "../components";
 import { InnerPageLayout } from "../layouts";
