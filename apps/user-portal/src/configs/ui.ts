@@ -58,7 +58,19 @@ export const customCSS: CustomCSSType = {
 };
 
 /**
- * A constant to handle the maximum list item count on settings sections.
+ * Constant to handle the maximum list item count on settings sections.
  * @type {number}
  */
 export const SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT: number = 10;
+
+/**
+ * Constant to handle desktop layout content top padding.
+ * @type {number}
+ */
+export const DESKTOP_CONTENT_TOP_PADDING: number = 50;
+
+/**
+ * Constant to handle mobile layout content padding.
+ * @type {string}
+ */
+export const MOBILE_CONTENT_PADDING: string = "2rem 1rem";

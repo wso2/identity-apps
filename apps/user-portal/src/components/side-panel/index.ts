@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export * from "./side-panel";
+export * from "./side-panel-wrapper";
