@@ -16,18 +16,41 @@
  * under the License.
  */
 
- export interface ChallengesInterface {
-     questions: string[];
-     answers: string[];
-     isEdit: boolean;
-     isInit: boolean;
-     options: string[];
- }
+export interface QuestionsInterface {
+    question: string;
+    questionId: string;
+    locale: string;
+}
 
- export const createEmptyChallenge = (): ChallengesInterface => ({
+export interface QuestionSetsInterface {
+    questionSetId: string;
+    questions: QuestionsInterface[];
+}
+
+export interface AnswersInterface {
+    answer: string,
+    question: string;
+    questionSetId: string;
+}
+
+export interface ChallengesQuestionsInterface {
+    answer: string;
+    challengeQuestion: QuestionsInterface;
+    questionSetId: string;
+}
+
+export interface ChallengesInterface {
+    questions: QuestionSetsInterface[];
+    answers: AnswersInterface[];
+    isEdit: boolean;
+    isInit: boolean;
+    options: string[];
+}
+
+export const createEmptyChallenge = (): ChallengesInterface => ({
     answers: [],
     isEdit: false,
     isInit: false,
     options: [],
     questions: []
- });
+});
