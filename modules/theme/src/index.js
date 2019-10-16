@@ -44,6 +44,10 @@ export const MFAIconSet = {
     sms: require("../lib/assets/images/icons/sms-icon.svg"),
     fido: require("../lib/assets/images/icons/fido-logo.png")
 };
+export const AccountRecoveryIconSet = {
+    email: require("../lib/assets/images/icons/email-icon.svg"),
+    securityQuestions: require("../lib/assets/images/icons/security-questions-icon.svg")
+};
 export const SettigsSectionIconSet = {
     associatedAccounts: require("../lib/assets/images/illustrations/associated-accounts.svg"),
     associatedAccountsMini: require("../lib/assets/images/illustrations/associated-accounts-mini.svg"),

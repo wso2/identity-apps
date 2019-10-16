@@ -24,7 +24,7 @@ import {
     ConsentManagementComponent,
     MultiFactor,
     NotificationComponent,
-    SecurityQuestionsComponent,
+    AccountRecoveryComponent,
     UserSessionsComponent
 } from "../components";
 import { InnerPageLayout } from "../layouts";
@@ -37,7 +37,7 @@ import { createEmptyNotificationActionPayload, NotificationActionPayload } from 
  */
 export const AccountSecurityPage = (): JSX.Element => {
     const { t } = useTranslation();
-    const [ notification, setNotification ] = useState(createEmptyNotificationActionPayload());
+    const [notification, setNotification] = useState(createEmptyNotificationActionPayload());
 
     const handleNotification = (firedNotification: NotificationActionPayload) => {
         setNotification(firedNotification);
@@ -52,41 +52,41 @@ export const AccountSecurityPage = (): JSX.Element => {
 
     return (
         <InnerPageLayout
-            pageTitle={ t("views:securityPage.title") }
-            pageDescription={ t("views:securityPage.subTitle") }
+            pageTitle={t("views:securityPage.title")}
+            pageDescription={t("views:securityPage.subTitle")}
         >
             {
                 notification && notification.visible
                     ? (<NotificationComponent
-                        message={ notification.message }
-                        description={ notification.description }
-                        onDismiss={ handleNotificationDismiss }
-                        { ...notification.otherProps }/>)
+                        message={notification.message}
+                        description={notification.description}
+                        onDismiss={handleNotificationDismiss}
+                        {...notification.otherProps} />)
                     : null
             }
             <Grid>
                 <Grid.Row>
-                    <Grid.Column width={ 16 }>
-                        <ChangePasswordComponent onNotificationFired={ handleNotification } />
+                    <Grid.Column width={16}>
+                        <ChangePasswordComponent onNotificationFired={handleNotification} />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
-                    <Grid.Column width={ 16 }>
-                        <SecurityQuestionsComponent onNotificationFired={ handleNotification } />
+                    <Grid.Column width={16}>
+                        <AccountRecoveryComponent onNotificationFired={handleNotification} />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
-                    <Grid.Column width={ 16 }>
-                        <MultiFactor onNotificationFired={ handleNotification }/>
+                    <Grid.Column width={16}>
+                        <MultiFactor onNotificationFired={handleNotification} />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
-                    <Grid.Column width={ 16 }>
+                    <Grid.Column width={16}>
                         <UserSessionsComponent />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
-                    <Grid.Column width={ 16 }>
+                    <Grid.Column width={16}>
                         <ConsentManagementComponent />
                     </Grid.Column>
                 </Grid.Row>

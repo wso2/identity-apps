@@ -23,7 +23,8 @@ import {
     Logo,
     MFAIconSet,
     SettigsSectionIconSet,
-    SidePanelIconSet
+    SidePanelIconSet,
+    AccountRecoveryIconSet
 } from "@wso2is/theme";
 
 type ImageType = string;
@@ -46,6 +47,7 @@ export const GenericAppIcon = DefaultAppIcon;
 export const SidePanelIcons = SidePanelIconSet;
 export const SettingsSectionIcons = SettigsSectionIconSet;
 export const MFAIcons = MFAIconSet;
+export const AccountRecoveryIcons = AccountRecoveryIconSet;
 
 export const TitleText: TitleTextType = "Identity Server";
 export const customCSS: CustomCSSType = {
