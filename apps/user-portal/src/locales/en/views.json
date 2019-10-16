@@ -193,9 +193,29 @@
             }
         }
     },
+    "accountRecovery":{
+        "title":"Account Recovery",
+        "subTitle":"View and manage your account recovery options",
+        "emailRecovery":{
+            "title":"Email Recovery",
+            "descriptionAdd":"Add a recovery email address",
+            "descriptionUpdate":"Update recovery email address ({{email}})",
+            "emailAddress":"Email Address",
+            "notification":{
+                "success":{
+                    "message":"Email Address Updated Auccessfully",
+                    "description":"The email address in the user profile has been updated successfully"
+                }
+            }
+        },
+        "codeRecovery":{
+            "title":"Code Recovery",
+            "description":"Add or update code recovery options"
+        }
+    },
     "securityQuestions": {
         "title": "Security Questions",
-        "subTitle": "Add and Update Account Recovery Challenge Questions",
+        "description": "Add and Update Account Recovery Challenge Questions",
         "actionTitles": {
             "configure": "Configure security questions",
             "change": "Change security questions"
