@@ -19,17 +19,16 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Form, Grid, Icon, List } from "semantic-ui-react";
-import { getProfileInfo, updateProfileInfo } from "../actions";
-import { AccountRecoveryIcons } from "../configs";
-import { NotificationActionPayload } from "../models/notifications";
-import { EditSection } from "./edit-section";
-import { ThemeIcon } from "./icon";
+import { getProfileInfo, updateProfileInfo } from "../../../api";
+import { AccountRecoveryIcons } from "../../../configs";
+import { Notification } from "../../../models";
+import { EditSection, ThemeIcon } from "../../shared";
 
 /**
  * Proptypes for the EmailRecoveryComponent component.
  */
 interface EmailRecoveryProps {
-    onNotificationFired: (notification: NotificationActionPayload) => void;
+    onNotificationFired: (notification: Notification) => void;
 }
 
 /**
@@ -38,7 +37,7 @@ interface EmailRecoveryProps {
  * @param {EmailRecoveryProps} props
  * @return {JSX.Element}
  */
-export const EmailRecoveryComponent: React.FunctionComponent<EmailRecoveryProps> = (
+export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
     props: EmailRecoveryProps
 ): JSX.Element => {
     const [email, setEmail] = useState("");

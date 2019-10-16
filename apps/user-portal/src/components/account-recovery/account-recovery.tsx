@@ -19,16 +19,15 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { List } from "semantic-ui-react";
-import { NotificationActionPayload } from "../models/notifications";
-import { SettingsSection } from "./settings-section";
-import { SecurityQuestionsComponent } from "./account-recovery-security-qs";
-import { EmailRecoveryComponent } from "./account-recovery-email";
+import { Notification } from "../../models";
+import { SettingsSection } from "../shared";
+import { EmailRecovery, SecurityQuestionsComponent } from "./options";
 
 /**
  * Proptypes for AccountRecoveryComponent component.
  */
 interface AccountRecoveryProps {
-    onNotificationFired: (notification: NotificationActionPayload) => void;
+    onNotificationFired: (notification: Notification) => void;
 }
 
 /**
@@ -53,7 +52,7 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
                     <SecurityQuestionsComponent onNotificationFired={onNotificationFired} />
                 </List.Item>
                 <List.Item className="inner-list-item">
-                    <EmailRecoveryComponent onNotificationFired={onNotificationFired} />
+                    <EmailRecovery onNotificationFired={onNotificationFired} />
                 </List.Item>
             </List>
         </SettingsSection>

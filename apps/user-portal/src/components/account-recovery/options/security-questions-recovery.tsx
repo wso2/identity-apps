@@ -24,18 +24,16 @@ import {
     Dropdown,
     Form,
     Grid,
-    List,
-    Icon
+    Icon,
+    List
 } from "semantic-ui-react";
-import { addSecurityQs, getSecurityQs, updateSecurityQs } from "../actions/profile";
-import { AccountRecoveryIcons } from "../configs";
-import { createEmptyChallenge } from "../models/challenges";
-import { NotificationActionPayload } from "../models/notifications";
-import { EditSection } from "./edit-section";
-import { ThemeIcon } from ".";
+import { addSecurityQs, getSecurityQs, updateSecurityQs } from "../../../api";
+import { AccountRecoveryIcons } from "../../../configs";
+import { createEmptyChallenge, Notification } from "../../../models";
+import { EditSection, ThemeIcon } from "../../shared";
 
 interface ComponentProps extends WithTranslation {
-    onNotificationFired: (notification: NotificationActionPayload) => void;
+    onNotificationFired: (notification: Notification) => void;
 }
 
 // TODO: Refactor with Hooks.

@@ -16,4 +16,5 @@
  * under the License.
  */
 
-export * from "./security-questions";
+export * from "./email-recovery";
+export * from "./security-questions-recovery";
