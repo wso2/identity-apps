@@ -261,7 +261,10 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
      * 
      * @returns {QuestionsInterface} question
      */
-    const findQuestion = (questionSetId: string, questions: QuestionsInterface[]): QuestionsInterface => {
+    const findQuestion = (
+        questionSetId: string,
+        questions: QuestionsInterface[]
+    ): QuestionsInterface => {
         let answer: AnswersInterface = challenges.answers.find((answer) => {
             return answer.questionSetId === questionSetId;
         });
@@ -344,7 +347,12 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row style={{ paddingTop: 0 }}>
-                        <List divided verticalAlign="middle" style={{ paddingTop: 0, width: "100%" }} className="main-content-inner">
+                        <List
+                            divided
+                            verticalAlign="middle"
+                            style={{ paddingTop: 0, width: "100%" }}
+                            className="main-content-inner"
+                        >
                             {
                                 challenges.answers.map((answer, index) => {
                                     return (
@@ -385,7 +393,10 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                         <Form onSubmit={handleSave}>
                             <Grid>
                                 {
-                                    challenges.questions.map((questionSet: QuestionSetsInterface, index: number) => {
+                                    challenges.questions.map((
+                                        questionSet: QuestionSetsInterface,
+                                        index: number
+                                    ) => {
                                         return isEdit === 0 || (isEdit === questionSet.questionSetId)
                                             ? (
                                                 <Grid.Row key={index} columns={2}>
@@ -405,7 +416,9 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                                                     t("views:securityQuestions.forms." +
                                                                         "securityQuestionsForm.inputs.question.placeholder")
                                                                 }
-                                                                onChange={(e, data: DropdownProps) => { handleDropdownChange(data, questionSet.questionSetId) }}
+                                                                onChange={(e, data: DropdownProps) => {
+                                                                    handleDropdownChange(data, questionSet.questionSetId)
+                                                                }}
                                                                 options={
                                                                     questionSet.questions.map((ques, i) => {
                                                                         return {
@@ -433,7 +446,9 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                                                         "securityQuestionsForm.inputs.answer.placeholder")
                                                                 }
 
-                                                                onChange={(e) => { handleInputChange(e, questionSet.questionSetId) }} />
+                                                                onChange={(e) => {
+                                                                    handleInputChange(e, questionSet.questionSetId)
+                                                                }} />
                                                         </Form.Field>
                                                     </Grid.Column>
                                                 </Grid.Row>
