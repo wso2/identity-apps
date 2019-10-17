@@ -17,8 +17,8 @@
  */
 
 import React, { SyntheticEvent } from "react";
-import { Dropdown } from "semantic-ui-react";
-import { i18n } from "../../configs";
+import { i18n } from "../../../configs";
+import { LanguageSwitcherDropdown } from "./language-switcher-dropdown";
 
 /**
  * Proptypes for the edit section component.
@@ -70,60 +70,6 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
             language={ resolveLangDisplayName() }
             changeLanguage={ handleLanguageChange }
         />
-    );
-};
-
-const LanguageSwitcherTrigger = (language: string) => (
-    <span className="dropdown-trigger link">{ language }</span>
-);
-
-/**
- * Proptypes for the edit section component.
- */
-interface LanguageSwitcherDropdownProps {
-    changeLanguage: (event: SyntheticEvent, data: object) => void;
-    className: string;
-    direction: "left" | "right";
-    language: string;
-    upward: boolean;
-}
-
-export const LanguageSwitcherDropdown: React.FunctionComponent<LanguageSwitcherDropdownProps> = (
-    props: LanguageSwitcherDropdownProps
-): JSX.Element => {
-    const { direction, className, language, changeLanguage, upward } = props;
-    const supportedLang = [
-        {
-            display: "English",
-            flag: "gb",
-            value: "en"
-        },
-        {
-            display: "Portuguese",
-            flag: "pt",
-            value: "pt"
-        }
-    ];
-    return (
-        <Dropdown
-            item
-            className={ className }
-            upward={ upward }
-            trigger={ LanguageSwitcherTrigger(language) }
-            icon={ null }
-            direction={ direction }
-            floating
-        >
-            <Dropdown.Menu>
-                {
-                    supportedLang.map((lang, index) => (
-                        <Dropdown.Item key={ index } onClick={ changeLanguage } value={ lang.value }>
-                            { lang.display }
-                        </Dropdown.Item>
-                    ))
-                }
-            </Dropdown.Menu>
-        </Dropdown>
     );
 };
 

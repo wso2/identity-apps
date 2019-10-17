@@ -17,11 +17,3 @@
  */
 
 export * from "./language-switcher";
-export * from "./edit-section";
-export * from "./icon";
-export * from "./notification";
-export * from "./page-header";
-export * from "./protected-route";
-export * from "./settings-section";
-export * from "./ui";
-export * from "./user-image";
