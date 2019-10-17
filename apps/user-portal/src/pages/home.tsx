@@ -16,10 +16,7 @@
  * under the License.
  */
 
-import {
-    AuthenticateSessionUtil,
-    AuthenticateUserKeys
-} from "@wso2is/authenticate";
+import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";

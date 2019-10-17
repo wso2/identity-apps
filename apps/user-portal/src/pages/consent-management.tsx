@@ -20,10 +20,10 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { hideConsentManagementNotification } from "../actions";
-import { ConsentManagementComponent, NotificationComponent } from "../components";
-import { AppState } from "../helpers";
+import { Consents, NotificationComponent } from "../components";
 import { InnerPageLayout } from "../layouts";
+import { AppState } from "../store";
+import { hideConsentManagementNotification } from "../store/actions";
 
 /**
  * Consent Management page.
@@ -58,7 +58,7 @@ export const ConsentManagementPage = (): JSX.Element => {
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
-                        <ConsentManagementComponent />
+                        <Consents />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

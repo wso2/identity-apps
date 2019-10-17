@@ -19,7 +19,7 @@
 /**
  * Notification action payload interface.
  */
-export interface NotificationActionPayload {
+export interface Notification {
     description: string;
     message: string;
     otherProps: object;
@@ -30,9 +30,9 @@ export interface NotificationActionPayload {
  * Creates an empty notification action payload object.
  * This can be used to initializations.
  *
- * @returns {NotificationActionPayload} an empty notification action payload object.
+ * @returns {Notification} an empty notification action payload object.
  */
-export const createEmptyNotificationActionPayload = (): NotificationActionPayload => ({
+export const createEmptyNotification = (): Notification => ({
     description: "",
     message: "",
     otherProps: {},

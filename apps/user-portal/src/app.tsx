@@ -20,40 +20,35 @@ import React, { useContext } from "react";
 import { I18nextProvider } from "react-i18next";
 import { Provider } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
-import { Dimmer, Loader } from "semantic-ui-react";
-import ProtectedRoute from "./components/protected-route";
-import { routes } from "./configs";
-import { AuthContext } from "./contexts/auth";
-import { i18n } from "./helpers";
-import history from "./helpers/history";
-import configureStore from "./helpers/store";
+import { ProtectedRoute } from "./components";
+import { i18n, routes } from "./configs";
+import { AuthContext } from "./contexts";
+import { history } from "./helpers";
+import { store } from "./store";
 
-const store = configureStore();
-
-const App = () =>  {
+/**
+ * Main App component.
+ *
+ * @return {JSX.Element}
+ */
+export const App = (): JSX.Element => {
     const { signIn, signOut } = useContext(AuthContext);
 
     return (
-        <Router history={history}>
+        <Router history={ history }>
             <div className="container-fluid">
-                <I18nextProvider i18n={i18n}>
-                    <Provider store={store}>
-                        {/* TODO: Need to re-enable with app context */}
-                        {/* {(!state.isAuth) &&
-                            <Dimmer active inverted>
-                                <Loader>Loading</Loader>
-                            </Dimmer>
-                        } */}
+                <I18nextProvider i18n={ i18n }>
+                    <Provider store={ store }>
                         <Switch>
-                            <Redirect exact path="/" to={APP_LOGIN_PATH} />
-                            <Route path={APP_LOGIN_PATH} render={() => {
+                            <Redirect exact path="/" to={ APP_LOGIN_PATH }/>
+                            <Route path={ APP_LOGIN_PATH } render={ () => {
                                 signIn();
                                 return null;
-                            }} />
-                            <Route path="/logout" render={() => {
+                            } }/>
+                            <Route path="/logout" render={ () => {
                                 signOut();
                                 return null;
-                            }} />
+                            } }/>
                             {
                                 routes.map((route, index) => {
                                     return (
@@ -85,5 +80,3 @@ const App = () =>  {
         </Router>
     );
 };
-
-export default App;

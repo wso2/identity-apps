@@ -18,4 +18,4 @@
 
 import { createBrowserHistory } from "history";
 
-export default createBrowserHistory({ basename: APP_BASENAME });
+export const history = createBrowserHistory({ basename: APP_BASENAME });

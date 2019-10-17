@@ -19,14 +19,9 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
-import {
-    AssociatedAccountsComponent,
-    BasicDetailsComponent,
-    NotificationComponent,
-    ProfileExportComponent
-} from "../components";
+import { LinkedAccounts, NotificationComponent, Profile, ProfileExport } from "../components";
 import { InnerPageLayout } from "../layouts";
-import { createEmptyNotificationActionPayload, NotificationActionPayload } from "../models/notifications";
+import { createEmptyNotification, Notification } from "../models";
 
 /**
  * Personal Info page.
@@ -35,9 +30,9 @@ import { createEmptyNotificationActionPayload, NotificationActionPayload } from 
  */
 export const PersonalInfoPage = (): JSX.Element => {
     const { t } = useTranslation();
-    const [ notification, setNotification ] = useState(createEmptyNotificationActionPayload());
+    const [ notification, setNotification ] = useState(createEmptyNotification());
 
-    const handleNotification = (firedNotification: NotificationActionPayload) => {
+    const handleNotification = (firedNotification: Notification) => {
         setNotification(firedNotification);
     };
 
@@ -65,17 +60,17 @@ export const PersonalInfoPage = (): JSX.Element => {
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
-                        <BasicDetailsComponent onNotificationFired={ handleNotification } />
+                        <Profile onNotificationFired={ handleNotification } />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
-                        <AssociatedAccountsComponent onNotificationFired={ handleNotification } />
+                        <LinkedAccounts onNotificationFired={ handleNotification } />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
-                        <ProfileExportComponent onNotificationFired={ handleNotification } />
+                        <ProfileExport onNotificationFired={ handleNotification } />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

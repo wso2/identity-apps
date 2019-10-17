@@ -25,5 +25,4 @@ export * from "./theme";
 export * from "./user-listing";
 export * from "./personal-info";
 export * from "./sessions";
-export * from "./accounts";
 export * from "./operations";

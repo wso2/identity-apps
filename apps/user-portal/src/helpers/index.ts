@@ -18,7 +18,5 @@
 
 export * from "./history";
 export * from "./http-headers";
-export { default as i18n } from "./i18n";
-export * from "./store";
 export * from "./image";
 export * from "./user-agent-parser";
