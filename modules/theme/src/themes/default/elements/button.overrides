@@ -30,3 +30,28 @@
         }
     }
 }
+
+.ui.basic.button {
+    &.borderless-button {
+        border: none;
+        margin-right: -15px;
+        box-shadow: none !important;
+
+        &:hover {
+            box-shadow: none !important;
+        }
+    }
+}
+
+.ui.labeled.icon.button {
+    &.borderless-button {
+        border: none;
+        box-shadow: none;
+        padding-left: 3em !important;
+        margin-right: -15px;
+
+        i {
+            background: transparent;
+        }
+    }
+}

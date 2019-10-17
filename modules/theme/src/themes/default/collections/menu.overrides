@@ -22,6 +22,13 @@
 *******************************/
 
 .ui.menu.fixed {
+    &.app-header, &.app-footer {
+        .item {
+            &:hover, &:active, &:focus, &:visited {
+                background: transparent;
+            }
+        }
+    }
     &.app-header {
         border-top-style: @appHeaderTopBorderStyle;
         border-top-width: @appHeaderTopBorderWidth;
@@ -34,6 +41,18 @@
             }
             .ui.divider {
                 margin: 0.5rem 0rem;
+            }
+        }
+    }
+    &.app-footer {
+        min-height: @appFooterMinHeight;
+
+        .footer-link, .footer-dropdown .dropdown-trigger.link {
+            color: @primaryColor;
+
+            &:hover {
+                text-decoration: underline;
+                cursor: pointer;
             }
         }
     }
