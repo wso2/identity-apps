@@ -24,5 +24,6 @@ export * from "./home";
 export * from "./theme";
 export * from "./user-listing";
 export * from "./personal-info";
+export * from "./privacy";
 export * from "./sessions";
 export * from "./operations";

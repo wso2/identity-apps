@@ -24,6 +24,7 @@ import {
     OperationsPage,
     PageNotFound,
     PersonalInfoPage,
+    PrivacyPage,
     SessionsPage
 } from "../pages";
 
@@ -98,6 +99,14 @@ const ROUTES: Route[] = [
         path: "/operations",
         protected: true,
         showOnSidePanel: true,
+    },
+    {
+        component: PrivacyPage,
+        icon: "security",
+        name: "Privacy",
+        path: "/privacy",
+        protected: true,
+        showOnSidePanel: false,
     },
     {
         component: PageNotFound,

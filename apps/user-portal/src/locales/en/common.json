@@ -48,5 +48,6 @@
     "ready": "Ready",
     "reserved": "Reserved",
     "completed": "Completed",
-    "all": "All"
+    "all": "All",
+    "privacy": "Privacy"
 }
