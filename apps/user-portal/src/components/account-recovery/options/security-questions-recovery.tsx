@@ -16,88 +16,85 @@
  * under the License.
  */
 
-import * as React from "react";
-import { withTranslation, WithTranslation } from "react-i18next";
+import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Button,
     Divider,
     Dropdown,
     Form,
     Grid,
+    List,
     Icon,
-    List
+    DropdownProps
 } from "semantic-ui-react";
-import { addSecurityQs, getSecurityQs, updateSecurityQs } from "../../../api";
+import { addSecurityQs, getSecurityQs, updateSecurityQs } from  "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
-import { createEmptyChallenge, Notification } from "../../../models";
-import { EditSection, ThemeIcon } from "../../shared";
+import {
+    createEmptyChallenge,
+    QuestionsInterface,
+    QuestionSetsInterface,
+    AnswersInterface,
+    ChallengesQuestionsInterface,
+    Notification
+} from "../../../models";
+import { ThemeIcon, EditSection } from "../../shared";
 
-interface ComponentProps extends WithTranslation {
+/**
+ * Prop types for SecurityQuestionsComponent
+ */
+interface SecurityQuestionsProps {
     onNotificationFired: (notification: Notification) => void;
 }
 
-// TODO: Refactor with Hooks.
 /**
- * The security questions section of the user
+ * The SecurityQuestionsComponent component in the AccountRecoveryComponent
+ * 
+ * @param {SecurityQuestionsProps} props
+ * @return {JSX.Element}
  */
-class SecurityQuestionsComponentInner extends React.Component<ComponentProps, any> {
-    /**
-     * constructor
-     * @param props
-     */
-    constructor(props) {
-        super(props);
-        this.state = {
-            challengeQuestions: {
-                questionSetId: "string",
-                challengeQuestion: {
-                    locale: "",
-                    question: "",
-                    questionId: ""
-                }
-            },
-            challenges: createEmptyChallenge(),
-            isConfigured: false,
-            isEdit: -1,
-            isInit: false,
-            isLoaderActive: false,
-            notification: {
-                description: "",
-                message: "",
-                other: {
-                    error: false,
-                    success: false
-                }
-            },
-            updateStatus: false
-        };
-    }
+export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestionsProps> = (
+    props: SecurityQuestionsProps
+) => {
+    const [challengeQuestions, setChallengeQuestions] = useState<ChallengesQuestionsInterface[]>();
+    const [challenges, setChallenges] = useState(createEmptyChallenge());
+    const [isEdit, setIsEdit] = useState<number | string>(-1);
+    const [isInit, setIsInit] = useState(false);
 
-    public componentWillMount() {
-        if (!this.state.isInit) {
+    const { onNotificationFired } = props;
+
+    const { t } = useTranslation();
+
+    useEffect(() => {
+        if (!isInit) {
             getSecurityQs()
                 .then((response) => {
-                    this.setSecurityDetails(response);
-                    this.initModel();
+                    setSecurityDetails(response);
                 });
         }
-    }
+    }, []);
+
+    useEffect(() => {
+        initModel();
+    }, [challenges]);
 
     /**
      * The following method initialises an array in the state with all the
      * question set ids of the questions fetched from the api.
      */
-    public initModel = () => {
-        const { challenges, challengeQuestions } = this.state;
-        const challengesCopy = [{ ...challengeQuestions }];
+    const initModel = () => {
+        const challengesCopy: ChallengesQuestionsInterface[] = challengeQuestions
+            && challengeQuestions.length > 0
+            ? [...challengeQuestions]
+            : [];
 
-        challenges.questions.map((question) => {
+        challenges.questions.map((question: QuestionSetsInterface) => {
             let answer = challenges.answers && challenges.answers.length > 0
-                ? this.findAnswer(question.questionSetId)
+                ? findAnswer(question.questionSetId)
                 : null;
 
             let questionInSet = answer
-                ? this.findQuestion(question.questionSetId, question.questions)
+                ? findQuestion(question.questionSetId, question.questions)
                 : null;
 
             challengesCopy.push(
@@ -111,11 +108,7 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
                     answer: answer ? answer.answer : ""
                 });
         });
-
-        challengesCopy.splice(0, 1);
-        this.setState({
-            challengeQuestions: challengesCopy
-        });
+        setChallengeQuestions(challengesCopy);
     }
 
     /**
@@ -123,34 +116,28 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
      * The name of the event target will be used to retrieve the set of questions
      * with a specific question set id
      * @param event
-     * @param questionSetId
+     * @param {string} questionSetId
      */
-    public handleInputChange = (event, questionSetId) => {
-        const { challengeQuestions } = this.state;
-
+    const handleInputChange = (event, questionSetId: string) => {
         challengeQuestions.forEach((question) => {
             question.questionSetId === questionSetId
                 ? question.answer = event.target.value
                 : null;
-        })
-        this.setState({
-            challengeQuestions: challengeQuestions
         });
+        setChallengeQuestions(challengeQuestions);
     }
 
     /**
      * The following method handles the onClick event of the change button
      */
-    public handleEdit = (question) => {
-        this.setState({ isEdit: question });
+    const handleEdit = (question: string | number) => {
+        setIsEdit(question);
     }
 
     /**
      * The following function handles the change event 
      */
-    public handleDropdownChange = (data, questionSetId) => {
-        const { challengeQuestions, challenges } = this.state;
-
+    const handleDropdownChange = (data: DropdownProps, questionSetId: string) => {
         let challenge = challenges.questions.find((challenge) => {
             return challenge.questionSetId === questionSetId;
         });
@@ -162,19 +149,8 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
             question.questionSetId === questionSetId
                 ? question.challengeQuestion = { ...chosenQuestion }
                 : null;
-        })
-        this.setState({
-            challengeQuestions: challengeQuestions
         });
-    }
-
-    /**
-     * The following method handles the onClick event of the dismiss button
-     */
-    public handleDismiss = () => {
-        this.setState({
-            updateStatus: false
-        });
+        setChallengeQuestions(challengeQuestions);
     }
 
     /**
@@ -182,24 +158,19 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
      * A notification will be displayed upon the submit of the request depending
      * on the status of the response
      */
-    public handleSave = () => {
-        const { t, onNotificationFired } = this.props;
-        const { challenges } = this.state;
-        const data = this.state.challengeQuestions;
+    const handleSave = () => {
+        const data: ChallengesQuestionsInterface[] = [...challengeQuestions];
 
-        if (challenges.answers && (challenges.answers.length > 0) && (this.state.isEdit != -1)) {
+        if (challenges.answers && (challenges.answers.length > 0) && (isEdit != -1)) {
             updateSecurityQs(data)
                 .then((response) => {
                     if (response.status === 200) {
                         getSecurityQs()
                             .then((res) => {
-                                this.setSecurityDetails(res);
-                                this.initModel();
+                                setSecurityDetails(res);
                             });
-                        this.setState({
-                            isEdit: -1,
-                            updateStatus: true
-                        });
+                        setIsEdit(-1);
+
                         onNotificationFired({
                             description: t(
                                 "views:securityQuestions.notification.updateQuestions.success.description"
@@ -213,9 +184,6 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
                             visible: true
                         });
                     } else {
-                        this.setState({
-                            updateStatus: true
-                        });
                         onNotificationFired({
                             description: t(
                                 "views:securityQuestions.notification.updateQuestions.error.description"
@@ -236,13 +204,11 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
                     if (status === 201) {
                         getSecurityQs()
                             .then((response) => {
-                                this.setSecurityDetails(response);
-                                this.initModel();
+                                setSecurityDetails(response);
                             });
-                        this.setState({
-                            isEdit: -1,
-                            updateStatus: true
-                        });
+
+                        setIsEdit(-1);
+
                         onNotificationFired({
                             description: t(
                                 "views:securityQuestions.notification.addQuestions.success.description"
@@ -256,9 +222,6 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
                             visible: true
                         });
                     } else {
-                        this.setState({
-                            updateStatus: true
-                        });
                         onNotificationFired({
                             description: t(
                                 "views:securityQuestions.notification.addQuestions.error.description"
@@ -277,20 +240,36 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
     }
 
     /**
-     * This function returns the question object for a saved answer
-     * @param {String} questionSetId
-     * @param questions
-     * 
-     * @returns question
-     */
-    public findQuestion(questionSetId: String, questions: any[]) {
-        const { challenges } = this.state;
+    * Set the fetched security questions and answers to the state
+    * @param response
+    */
+    const setSecurityDetails = (response) => {
+        setIsInit(true);
+        setChallenges({
+            answers: [...response[1]],
+            questions: [...response[0]],
+            options: [],
+            isInit: false,
+            isEdit: false
+        });
+    }
 
-        let answer = challenges.answers.find((answer) => {
+    /**
+     * This function returns the question object for a saved answer
+     * @param {string} questionSetId
+     * @param {QuestionsInterface[]} questions
+     * 
+     * @returns {QuestionsInterface} question
+     */
+    const findQuestion = (
+        questionSetId: string,
+        questions: QuestionsInterface[]
+    ): QuestionsInterface => {
+        let answer: AnswersInterface = challenges.answers.find((answer) => {
             return answer.questionSetId === questionSetId;
         });
 
-        let question = questions.find((question) => {
+        let question: QuestionsInterface = questions.find((question) => {
             return question.question === answer.question;
         });
 
@@ -299,13 +278,11 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
 
     /**
      * This function returns the saved answer for a questionSet
-     * @param {String} questionSetId
-     * @returns answer
+     * @param {string} questionSetId
+     * @returns {AnswersInterface} answer
      */
-    public findAnswer(questionSetId: String) {
-        const { challenges } = this.state;
-
-        let answer = challenges.answers.find((answer) => {
+    const findAnswer = (questionSetId: string): AnswersInterface => {
+        let answer: AnswersInterface = challenges.answers.find((answer: AnswersInterface) => {
             return answer.questionSetId === questionSetId;
         });
 
@@ -315,208 +292,193 @@ class SecurityQuestionsComponentInner extends React.Component<ComponentProps, an
     /**
      * This function returns the question and answer chosen by the user for a questionSetId
      * from challengeQuestions
-     * @param {String} questionSetId
+     * @param {string} questionSetId
+     * 
+     * @return {ChallengesQuestionsInterface} question
      */
-    public findChosenQuestionFromChallengeQuestions(questionSetId: String) {
-        const { challengeQuestions } = this.state;
+    const findChosenQuestionFromChallengeQuestions = (questionSetId: string) => {
 
-        let question = challengeQuestions.find((question) => {
-            return question.questionSetId === questionSetId;
-        });
+        let question: ChallengesQuestionsInterface = challengeQuestions.find(
+            (question: ChallengesQuestionsInterface) => {
+                return question.questionSetId === questionSetId;
+            });
 
         return question;
     }
 
-    public render() {
-        const { t } = this.props;
-        const { challenges } = this.state;
-
-        const renderEdit = () => {
+    const listItems = () => {
+        if (challenges.questions && (challenges.questions.length > 0) && isEdit == -1) {
             return (
-                <EditSection>
-                    <Form onSubmit={this.handleSave}>
-                        <Grid>
+                <Grid padded>
+                    <Grid.Row columns={2}>
+                        <Grid.Column width={11} className="first-column">
+                            <List.Content floated="left">
+                                <ThemeIcon
+                                    icon={AccountRecoveryIcons.securityQuestions}
+                                    size="mini"
+                                    twoTone
+                                    transparent
+                                    square
+                                    rounded
+                                    relaxed
+                                />
+                            </List.Content>
+                            <List.Content>
+                                <List.Header>{t("views:securityQuestions.title")}</List.Header>
+                                <List.Description>
+                                    {t("views:securityQuestions.description")}
+                                </List.Description>
+                            </List.Content>
+                        </Grid.Column>
+                        <Grid.Column width={5} className="last-column">
+                            <List.Content floated="right">
+                                {challenges && challenges.answers.length > 0
+                                    ? null
+                                    : <Icon
+                                        link
+                                        onClick={() => { handleEdit(0) }}
+                                        className="list-icon"
+                                        size="small"
+                                        color="grey"
+                                        name="plus"
+                                    />
+                                }
+                            </List.Content>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row style={{ paddingTop: 0 }}>
+                        <List
+                            divided
+                            verticalAlign="middle"
+                            style={{ paddingTop: 0, width: "100%" }}
+                            className="main-content-inner"
+                        >
                             {
-                                challenges.questions.map((questionSet, index) => {
-                                    return this.state.isEdit===0 || (this.state.isEdit===questionSet.questionSetId)
-                                        ? (
-                                            <Grid.Row key={index} columns={2}>
-                                                <Grid.Column width={4}>
-                                                    {t("common:challengeQuestionNumber", { number: index + 1 })}
-                                                </Grid.Column>
-                                                <Grid.Column width={12}>
-                                                    <Form.Field>
-                                                        <label>
-                                                            {t("views:securityQuestions.forms.securityQuestionsForm." +
-                                                                "inputs.question.label")}
-                                                        </label>
-                                                        <Dropdown
-                                                            name={questionSet.questionSetId}
-                                                            selection
-                                                            placeholder={
-                                                                t("views:securityQuestions.forms." +
-                                                                    "securityQuestionsForm.inputs.question.placeholder")
-                                                            }
-                                                            onChange={(e, data) => { this.handleDropdownChange(data, questionSet.questionSetId) }}
-                                                            options={
-                                                                questionSet.questions.map((ques, i) => {
-                                                                    return {
-                                                                        key: i,
-                                                                        text: ques.question,
-                                                                        value: ques.questionId
-                                                                    };
-                                                                })
-                                                            }
-                                                            value={this.findChosenQuestionFromChallengeQuestions(
-                                                                questionSet.questionSetId
-                                                            ).challengeQuestion.questionId}
-                                                        />
-                                                    </Form.Field>
-                                                    <Form.Field>
-                                                        <label>
-                                                            {t("views:securityQuestions.forms.securityQuestionsForm" +
-                                                                ".inputs.answer.label")}
-                                                        </label>
-                                                        <Form.Input
-                                                            required
-                                                            id={questionSet.questionSetId}
-                                                            placeholder={
-                                                                t("views:securityQuestions.forms." +
-                                                                    "securityQuestionsForm.inputs.answer.placeholder")
-                                                            }
-
-                                                            onChange={(e) => { this.handleInputChange(e, questionSet.questionSetId) }} />
-                                                    </Form.Field>
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                        )
-                                        :null;
+                                challenges.answers.map((answer, index) => {
+                                    return (
+                                        <List.Item key={index} className="inner-list-item">
+                                            <Grid padded>
+                                                <Grid.Row columns={3}>
+                                                    <Grid.Column width={2}>
+                                                    </Grid.Column>
+                                                    <Grid.Column width={9} className="first-column">
+                                                        <List.Content>{answer.question}</List.Content>
+                                                    </Grid.Column>
+                                                    <Grid.Column width={5} className="last-column">
+                                                        <List.Content floated="right">
+                                                            <Icon
+                                                                link
+                                                                onClick={() => { handleEdit(answer.questionSetId) }}
+                                                                className="list-icon"
+                                                                size="small"
+                                                                color="grey"
+                                                                name="pencil alternate"
+                                                            />
+                                                        </List.Content>
+                                                    </Grid.Column>
+                                                </Grid.Row>
+                                            </Grid>
+                                        </List.Item>
+                                    );
                                 })
                             }
-                            <Divider hidden />
-                            <Grid.Row columns={2}>
-                                { /* TODO: Find a better way to offset grid */}
-                                <Grid.Column width={4}>{" "}</Grid.Column>
-                                <Grid.Column width={12}>
-                                    <Button type="submit" primary>
-                                        {t("common:save")}
-                                    </Button>
-                                    <Button
-                                        className="link-button"
-                                        onClick={()=>{this.handleEdit(-1)}}
-                                    >
-                                        {t("common:cancel")}
-                                    </Button>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </Form>
-                </EditSection>
+                        </List>
+                    </Grid.Row>
+                </Grid>
             );
-        }
-        const listItems = () => {
-            if (challenges.questions && (challenges.questions.length > 0) && this.state.isEdit==-1) {
+        } else if (isEdit != -1) {
+            if (challenges.questions && (challenges.questions.length > 0)) {
                 return (
-                    <Grid padded>
-                        <Grid.Row columns={2}>
-                            <Grid.Column width={11} className="first-column">
-                                <List.Content floated="left">
-                                    <ThemeIcon
-                                        icon={AccountRecoveryIcons.securityQuestions}
-                                        size="mini"
-                                        twoTone
-                                        transparent
-                                        square
-                                        rounded
-                                        relaxed
-                                    />
-                                </List.Content>
-                                <List.Content>
-                                    <List.Header>{t("views:securityQuestions.title")}</List.Header>
-                                    <List.Description>
-                                        {t("views:securityQuestions.description")}
-                                    </List.Description>
-                                </List.Content>
-                            </Grid.Column>
-                            <Grid.Column width={5} className="last-column">
-                                <List.Content floated="right">
-                                    {challenges && challenges.answers.length > 0
-                                        ? null
-                                        : <Icon
-                                            link
-                                            onClick={() => { this.handleEdit(0) }}
-                                            className="list-icon"
-                                            size="small"
-                                            color="grey"
-                                            name="plus"
-                                        />
-                                    }
-                                </List.Content>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row style={{ paddingTop: 0 }}>
-                            <List divided verticalAlign="middle" style={{ paddingTop: 0, width: "100%" }} className="main-content-inner">
+                    <EditSection>
+                        <Form onSubmit={handleSave}>
+                            <Grid>
                                 {
-                                    challenges.answers.map((answer, index) => {
-                                        return (
-                                            <List.Item key={index} className="inner-list-item">
-                                                <Grid padded>
-                                                    <Grid.Row columns={3}>
-                                                        <Grid.Column width={1}>
-                                                        </Grid.Column>
-                                                        <Grid.Column width={9} className="first-column">
-                                                            <List.Content>{answer.question}</List.Content>
-                                                        </Grid.Column>
-                                                        <Grid.Column width={6} className="last-column">
-                                                            <List.Content floated="right">
-                                                                <Icon
-                                                                    link
-                                                                    onClick={() => { this.handleEdit(answer.questionSetId) }}
-                                                                    className="list-icon"
-                                                                    size="small"
-                                                                    color="grey"
-                                                                    name="pencil alternate"
-                                                                />
-                                                            </List.Content>
-                                                        </Grid.Column>
-                                                    </Grid.Row>
-                                                </Grid>
-                                            </List.Item>
-                                        );
+                                    challenges.questions.map((
+                                        questionSet: QuestionSetsInterface,
+                                        index: number
+                                    ) => {
+                                        return isEdit === 0 || (isEdit === questionSet.questionSetId)
+                                            ? (
+                                                <Grid.Row key={index} columns={2}>
+                                                    <Grid.Column width={4}>
+                                                        {t("common:challengeQuestionNumber", { number: index + 1 })}
+                                                    </Grid.Column>
+                                                    <Grid.Column width={12}>
+                                                        <Form.Field>
+                                                            <label>
+                                                                {t("views:securityQuestions.forms.securityQuestionsForm." +
+                                                                    "inputs.question.label")}
+                                                            </label>
+                                                            <Dropdown
+                                                                name={questionSet.questionSetId}
+                                                                selection
+                                                                placeholder={
+                                                                    t("views:securityQuestions.forms." +
+                                                                        "securityQuestionsForm.inputs.question.placeholder")
+                                                                }
+                                                                onChange={(e, data: DropdownProps) => {
+                                                                    handleDropdownChange(data, questionSet.questionSetId)
+                                                                }}
+                                                                options={
+                                                                    questionSet.questions.map((ques, i) => {
+                                                                        return {
+                                                                            key: i,
+                                                                            text: ques.question,
+                                                                            value: ques.questionId
+                                                                        };
+                                                                    })
+                                                                }
+                                                                value={findChosenQuestionFromChallengeQuestions(
+                                                                    questionSet.questionSetId
+                                                                ).challengeQuestion.questionId}
+                                                            />
+                                                        </Form.Field>
+                                                        <Form.Field>
+                                                            <label>
+                                                                {t("views:securityQuestions.forms.securityQuestionsForm" +
+                                                                    ".inputs.answer.label")}
+                                                            </label>
+                                                            <Form.Input
+                                                                required
+                                                                id={questionSet.questionSetId}
+                                                                placeholder={
+                                                                    t("views:securityQuestions.forms." +
+                                                                        "securityQuestionsForm.inputs.answer.placeholder")
+                                                                }
+
+                                                                onChange={(e) => {
+                                                                    handleInputChange(e, questionSet.questionSetId)
+                                                                }} />
+                                                        </Form.Field>
+                                                    </Grid.Column>
+                                                </Grid.Row>
+                                            )
+                                            : null;
                                     })
                                 }
-                            </List>
-                        </Grid.Row>
-                    </Grid>
+                                <Divider hidden />
+                                <Grid.Row columns={2}>
+                                    { /* TODO: Find a better way to offset grid */}
+                                    <Grid.Column width={4}>{" "}</Grid.Column>
+                                    <Grid.Column width={12}>
+                                        <Button type="submit" primary>
+                                            {t("common:save")}
+                                        </Button>
+                                        <Button
+                                            className="link-button"
+                                            onClick={() => { handleEdit(-1) }}
+                                        >
+                                            {t("common:cancel")}
+                                        </Button>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </Form>
+                    </EditSection>
                 );
-            } else if (this.state.isEdit != -1) {
-                if (challenges.questions && (challenges.questions.length > 0)) {
-                    return (
-                        renderEdit()
-                    );
-                }
             }
-        };
+        }
+    };
 
-        return (<>{listItems()}</>);
-
-    }
-
-    /**
-     * Set the fetched security questions and answers to the state
-     * @param response
-     */
-    private setSecurityDetails(response) {
-        const { challenges } = this.state;
-        this.setState({
-            challenges: {
-                ...challenges,
-                answers: response[1],
-                questions: response[0]
-            },
-            isInit: true
-        });
-    }
+    return (<>{listItems()}</>);
 }
-
-export const SecurityQuestionsComponent = withTranslation()(SecurityQuestionsComponentInner);
