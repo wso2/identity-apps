@@ -17,14 +17,19 @@
  */
 
 import {
+    AccountRecoveryIconSet,
+    ConsentForm,
     DefaultAppIcon,
     DummyUser,
+    ErrorStatusShield,
     HomeTileIcons,
     Logo,
     MFAIconSet,
+    OkayStatusShield,
+    Padlock,
     SettigsSectionIconSet,
     SidePanelIconSet,
-    AccountRecoveryIconSet
+    WarningStatusShield
 } from "@wso2is/theme";
 
 type ImageType = string;
@@ -48,6 +53,15 @@ export const SidePanelIcons = SidePanelIconSet;
 export const SettingsSectionIcons = SettigsSectionIconSet;
 export const MFAIcons = MFAIconSet;
 export const AccountRecoveryIcons = AccountRecoveryIconSet;
+export const AccountStatusShields = {
+    error: ErrorStatusShield,
+    okay: OkayStatusShield,
+    warning: WarningStatusShield
+};
+export const WidgetIcons = {
+    accountSecurity: Padlock,
+    consents: ConsentForm
+};
 
 export const TitleText: TitleTextType = "Identity Server";
 export const customCSS: CustomCSSType = {
@@ -60,7 +74,7 @@ export const customCSS: CustomCSSType = {
 };
 
 /**
- * Constant to handle the maximum list item count on settings sections.
+ * A constant to handle the maximum list item count on settings sections.
  * @type {number}
  */
 export const SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT: number = 10;
