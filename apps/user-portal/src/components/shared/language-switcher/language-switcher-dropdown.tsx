@@ -24,7 +24,7 @@ const LanguageSwitcherTrigger = (language: string) => (
 );
 
 /**
- * Proptypes for the edit section component.
+ * Proptypes for the language switcher dropdown component.
  */
 interface LanguageSwitcherDropdownProps {
     changeLanguage: (event: SyntheticEvent, data: object) => void;
@@ -34,6 +34,13 @@ interface LanguageSwitcherDropdownProps {
     upward: boolean;
 }
 
+/**
+ * Language switcher dropdown component.
+ *
+ * @param {LanguageSwitcherDropdownProps} props - Props passed in to the language switcher dropdown component.
+ * @return {JSX.Element}
+ * @constructor
+ */
 export const LanguageSwitcherDropdown: React.FunctionComponent<LanguageSwitcherDropdownProps> = (
     props: LanguageSwitcherDropdownProps
 ): JSX.Element => {

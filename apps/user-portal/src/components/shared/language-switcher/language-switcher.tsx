@@ -21,7 +21,7 @@ import { i18n } from "../../../configs";
 import { LanguageSwitcherDropdown } from "./language-switcher-dropdown";
 
 /**
- * Proptypes for the edit section component.
+ * Proptypes for the language switcher component.
  */
 interface LanguageSwitcherProps {
     className?: string;
@@ -32,7 +32,7 @@ interface LanguageSwitcherProps {
 /**
  * Language switcher component.
  *
- * @param {React.PropsWithChildren<any>} props
+ * @param {React.PropsWithChildren<any>} props - Props passed in to the language switcher component.
  * @return {JSX.Element}
  */
 export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = (
@@ -41,6 +41,12 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
     const { direction, className, upward } = props;
     const currentLang = i18n.language;
 
+    /**
+     * Resolves the display name for the language code returned by
+     * the i18next library.
+     *
+     * @return {string} - Resolved language display name.
+     */
     const resolveLangDisplayName = (): string => {
         switch (currentLang) {
             case "en":
@@ -56,6 +62,12 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
         }
     };
 
+    /**
+     * Handles the language change.
+     *
+     * @param {React.SyntheticEvent} event - Click event.
+     * @param data - data object returned from the dropdown item.
+     */
     const handleLanguageChange = (event: SyntheticEvent, data: any) => {
         i18n.changeLanguage(data.value, () => {
             window.location.reload();
@@ -73,6 +85,9 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
     );
 };
 
+/**
+ * Default proptypes for the language switcher component.
+ */
 LanguageSwitcher.defaultProps = {
     direction: "left",
     upward: true
