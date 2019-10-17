@@ -20,3 +20,6 @@
 /*******************************
            User Image
 *******************************/
+
+@userAvatarSpacingRight: 1em;
+@userAvatarSpacingLeft: 1em;

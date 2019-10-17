@@ -24,7 +24,7 @@ import {
     PendingApprovalsComponent
 } from "../components";
 import { InnerPageLayout } from "../layouts";
-import { createEmptyNotificationActionPayload, NotificationActionPayload } from "../models/notifications";
+import { createEmptyNotification, Notification } from "../models";
 
 /**
  * Operations page.
@@ -33,9 +33,9 @@ import { createEmptyNotificationActionPayload, NotificationActionPayload } from 
  */
 export const OperationsPage = (): JSX.Element => {
     const { t } = useTranslation();
-    const [ notification, setNotification ] = useState(createEmptyNotificationActionPayload());
+    const [ notification, setNotification ] = useState(createEmptyNotification());
 
-    const handleNotification = (firedNotification: NotificationActionPayload) => {
+    const handleNotification = (firedNotification: Notification) => {
         setNotification(firedNotification);
     };
 
