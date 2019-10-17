@@ -18,6 +18,7 @@
 
 export * from "./edit-section";
 export * from "./icon";
+export * from "./language-switcher";
 export * from "./notification";
 export * from "./page-header";
 export * from "./protected-route";
