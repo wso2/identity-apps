@@ -16,16 +16,14 @@
  * under the License.
  */
 
+import { i18n } from "../configs";
 import {
     AccountSecurityPage,
-    AppListingPage,
-    ConsentManagementPage,
     HomePage,
     OperationsPage,
     PageNotFound,
     PersonalInfoPage,
-    PrivacyPage,
-    SessionsPage
+    PrivacyPage
 } from "../pages";
 
 /**
@@ -47,7 +45,7 @@ const ROUTES: Route[] = [
     {
         component: HomePage,
         icon: "overview",
-        name: "Overview",
+        name: i18n.t("common:overview"),
         path: "/overview",
         protected: true,
         showOnSidePanel: true,
@@ -55,7 +53,7 @@ const ROUTES: Route[] = [
     {
         component: PersonalInfoPage,
         icon: "personal",
-        name: "Personal Info",
+        name: i18n.t("common:personalInfo"),
         path: "/personal-info",
         protected: true,
         showOnSidePanel: true,
@@ -63,39 +61,15 @@ const ROUTES: Route[] = [
     {
         component: AccountSecurityPage,
         icon: "security",
-        name: "Security",
+        name: i18n.t("common:security"),
         path: "/security",
         protected: true,
         showOnSidePanel: true,
     },
     {
-        component: AppListingPage,
-        icon: "security",
-        name: "Apps",
-        path: "/apps",
-        protected: true,
-        showOnSidePanel: false,
-    },
-    {
-        component: SessionsPage,
-        icon: "session",
-        name: "Sessions",
-        path: "/sessions",
-        protected: true,
-        showOnSidePanel: false,
-    },
-    {
-        component: ConsentManagementPage,
-        icon: "consent",
-        name: "Consent Management",
-        path: "/consent-management",
-        protected: true,
-        showOnSidePanel: false,
-    },
-    {
         component: OperationsPage,
         icon: "operations",
-        name: "Operations",
+        name: i18n.t("common:operations"),
         path: "/operations",
         protected: true,
         showOnSidePanel: true,
@@ -103,7 +77,7 @@ const ROUTES: Route[] = [
     {
         component: PrivacyPage,
         icon: "security",
-        name: "Privacy",
+        name: i18n.t("common:privacy"),
         path: "/privacy",
         protected: true,
         showOnSidePanel: false,
