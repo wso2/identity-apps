@@ -16,16 +16,4 @@
  * under the License.
  */
 
-export * from "./account-recovery";
-export * from "./approvals";
-export * from "./change-password";
-export * from "./consents";
-export * from "./footer";
-export * from "./header";
-export * from "./linked-accounts";
-export * from "./multi-factor-authentication";
 export * from "./overview";
-export * from "./profile";
-export * from "./shared";
-export * from "./side-panel";
-export * from "./user-sessions";
