@@ -16,6 +16,7 @@
  * under the License.
  */
 
+export * from "./language-switcher";
 export * from "./edit-section";
 export * from "./icon";
 export * from "./notification";

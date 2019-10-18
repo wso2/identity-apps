@@ -48,5 +48,11 @@
     "ready": "Ready",
     "reserved": "Reserved",
     "completed": "Completed",
-    "all": "All"
+    "all": "All",
+    "overview": "Overview",
+    "personalInfo": "Personal Info",
+    "security": "Security",
+    "operations": "Operations",
+    "filter": "Filter",
+    "privacy": "Privacy"
 }
