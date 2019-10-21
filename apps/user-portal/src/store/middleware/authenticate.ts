@@ -28,7 +28,7 @@ import { history } from "../../helpers";
 import { setSignIn, setSignOut } from "../actions";
 
 /**
- * Handle user signout
+ * Handle user sign-out
  *
  * @param {object} state - AuthContext state object.
  * @param {function} dispatch - State update `dispatch` react hook for AuthContext.
@@ -40,6 +40,23 @@ export const handleSignIn = (state, dispatch) => {
             || (AuthenticationCallbackUrl === APP_LOGIN_PATH)) ? APP_HOME_PATH : AuthenticationCallbackUrl;
 
         history.push(location);
+    };
+
+    /**
+     * Get profile info and associations from the API
+     * to set the associations in the context.
+     */
+    const setProfileDetails = () => {
+        getProfileInfo()
+            .then((infoResponse) => {
+                getAssociations()
+                    .then((associationsResponse) => {
+                        dispatch(setProfileInfo({
+                            ...infoResponse,
+                            associations: associationsResponse
+                        }));
+                    });
+            });
     };
 
     const sendSignInRequest = () => {
@@ -87,7 +104,7 @@ export const handleSignIn = (state, dispatch) => {
 };
 
 /**
- * Handle user signout
+ * Handle user sign-out
  *
  * @param {object} state - AuthContext state object.
  * @param {function} dispatch - State update `dispatch` react hook for AuthContext.
