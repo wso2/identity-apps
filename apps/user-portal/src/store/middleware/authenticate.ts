@@ -23,9 +23,10 @@ import {
     SignInUtil,
     SignOutUtil
 } from "@wso2is/authenticate";
+import { getAssociations, getProfileInfo } from "../../api";
 import { ServiceResourcesEndpoint } from "../../configs";
 import { history } from "../../helpers";
-import { setSignIn, setSignOut } from "../actions";
+import { setProfileInfo, setSignIn, setSignOut } from "../actions";
 
 /**
  * Handle user sign-out
@@ -74,6 +75,7 @@ export const handleSignIn = (state, dispatch) => {
                     AuthenticateSessionUtil.initUserSession(response,
                         SignInUtil.getAuthenticatedUser(response.idToken));
                     dispatch(setSignIn());
+                    setProfileDetails();
                     loginSuccessRedirect();
                 }).catch((error) => {
                     throw error;
@@ -85,6 +87,7 @@ export const handleSignIn = (state, dispatch) => {
 
     if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
         dispatch(setSignIn());
+        setProfileDetails();
         loginSuccessRedirect();
     } else {
         OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false)
