@@ -16,6 +16,7 @@
  * under the License.
  */
 
+export const USERIMAGE = "userimage";
 export const USERNAME = "username";
 export const EMAIL = "email";
 export const DISPLAY_NAME = "display_name";

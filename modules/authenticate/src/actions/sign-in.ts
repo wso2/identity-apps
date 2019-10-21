@@ -23,7 +23,7 @@ import { AUTHORIZATION_CODE, OIDC_SCOPE, PKCE_CODE_VERIFIER, REQUEST_PARAMS } fr
 import { AuthenticatedUserInterface } from "../models/authenticated-user";
 import { OIDCRequestParamsInterface } from "../models/oidc-request-params";
 import { TokenResponseInterface } from "../models/token-response";
-import { getCodeChallenge, getCodeVerifier, getJWKForTheIdToken, isValidIdToken } from "./crypto";
+import { getCodeChallenge, getCodeVerifier, getEmailHash, getJWKForTheIdToken, isValidIdToken } from "./crypto";
 import { getAuthorizeEndpoint, getJwksUri, getRevokeTokenEndpoint, getTokenEndpoint } from "./op-config";
 import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
 
@@ -200,6 +200,16 @@ export const sendRevokeTokenRequest = (requestParams: OIDCRequestParamsInterface
 };
 
 /**
+ * Get user image from gravatar.com.
+ *
+ * @param emailAddress email address received authenticated user.
+ * @returns {string} gravatar image path.
+ */
+export const getGravatar = (emailAddress: string) => {
+    return "https://www.gravatar.com/avatar/" + getEmailHash(emailAddress);
+};
+
+/**
  * Get authenticated user from the id_token.
  *
  * @param idToken id_token received from the IdP.
@@ -207,10 +217,12 @@ export const sendRevokeTokenRequest = (requestParams: OIDCRequestParamsInterface
  */
 export const getAuthenticatedUser = (idToken: string): AuthenticatedUserInterface => {
     const payload = JSON.parse(atob(idToken.split(".")[1]));
+    const emailAddress = payload.email ? payload.email : null;
 
     return {
         displayName: payload.preferred_username ? payload.preferred_username : payload.sub,
-        email: payload.email ? payload.email : null,
+        email: emailAddress,
+        userimage: getGravatar(emailAddress),
         username: payload.sub,
     };
 };

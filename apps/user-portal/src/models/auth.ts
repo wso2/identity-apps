@@ -25,6 +25,7 @@ export interface AuthStateInterface {
     loginInit: boolean;
     logoutInit: boolean;
     profileInfo: any;
+    userimage: string;
     username: string;
 }
 

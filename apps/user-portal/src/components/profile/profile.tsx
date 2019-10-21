@@ -50,7 +50,6 @@ export const Profile: FunctionComponent<ProfileProps> = (
     });
     const { onNotificationFired } = props;
     const { state, dispatch } = useContext(AuthContext);
-
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -209,9 +208,11 @@ export const Profile: FunctionComponent<ProfileProps> = (
      */
     const setBasicDetails = (profile) => {
         let mobileNumber = "";
+
         profile.phoneNumbers.map((mobile) => {
             mobileNumber = mobile.value;
         });
+
         setEditingProfileInfo({
             ...editingProfileInfo,
             displayName: profile.displayName,
@@ -221,6 +222,7 @@ export const Profile: FunctionComponent<ProfileProps> = (
             mobile: mobileNumber,
             organisation: profile.organisation,
             phoneNumbers: profile.phoneNumbers,
+            userimage: state.userimage,
             username: profile.username,
         });
         setProfileInfo({
@@ -232,6 +234,7 @@ export const Profile: FunctionComponent<ProfileProps> = (
             mobile: mobileNumber,
             organisation: profile.organisation,
             phoneNumbers: profile.phoneNumbers,
+            userimage: state.userimage,
             username: profile.username,
         });
     };
@@ -609,11 +612,17 @@ export const Profile: FunctionComponent<ProfileProps> = (
             )
     );
 
-    return (
-        <SettingsSection
-            description={ t("views:userProfile.subTitle") }
-            header={ t("views:userProfile.title") }
-            icon={
+    const handleImageChange = (
+        profileInfo.userimage
+            ? (
+                <UserImage
+                    bordered
+                    size="tiny"
+                    image={ profileInfo.userimage }
+                />
+            )
+            :
+            (
                 <UserImage
                     bordered
                     avatar
@@ -624,7 +633,14 @@ export const Profile: FunctionComponent<ProfileProps> = (
                             : null
                     }
                 />
-            }
+            )
+    );
+
+    return (
+        <SettingsSection
+            description={ t("views:userProfile.subTitle") }
+            header={ t("views:userProfile.title") }
+            icon={ handleImageChange }
         >
             <List divided verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">

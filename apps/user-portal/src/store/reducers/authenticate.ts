@@ -32,6 +32,7 @@ const authenticateInitialState: AuthStateInterface = {
     loginInit: false,
     logoutInit: false,
     profileInfo: {},
+    userimage: "",
     username: ""
 };
 
@@ -53,6 +54,7 @@ const authenticateReducer = (state = authenticateInitialState, action) => {
                     isAuth: true,
                     loginInit: true,
                     logoutInit: false,
+                    userimage: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERIMAGE),
                     username: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME),
                 };
             }
