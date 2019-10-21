@@ -33,7 +33,73 @@
         border-top-style: @appHeaderTopBorderStyle;
         border-top-width: @appHeaderTopBorderWidth;
         border-top-color: @appHeaderTopBorderColor;
+        box-shadow: none;
 
+        .user-dropdown {
+            padding-right: 0;
+
+            .divider {
+                margin: 0;
+            }
+            .user-dropdown-trigger {
+                .username {
+                    display: inline-block;
+                    margin-right: 0.7em;
+                }
+            }
+            .header {
+                .name {
+                    font-weight: bold;
+                }
+                .email {
+                    color: @nobel;
+                }
+            }
+            .linked-accounts-list {
+                max-height: 200px;
+                overflow: auto;
+            }
+            .linked-account {
+                background: @whiteSmoke;
+                border-top: 1px solid #ccc;
+                border-top-color: rgba(0,0,0,.2);
+                margin-top: 0;
+                margin-bottom: 0;
+
+                &:first-child {
+                    border-top: 0;
+                }
+                .name {
+                    font-weight: 400;
+                }
+                .email {
+                    color: @nobel;
+                }
+            }
+            .action-panel {
+                border-top: 1px solid #ccc;
+                border-color: rgba(0,0,0,.2);
+                padding: 10px 5px;
+
+                &:hover {
+                    background: transparent !important;
+                }
+
+                .action-button {
+                    background: #f8f8f8;
+                    border: 1px solid #c6c6c6;
+                    line-height: 28px;
+                    padding: 6px 20px;
+                    color: #666;
+                }
+            }
+        }
+        .ui.dropdown.item.user-dropdown .menu .item.linked-account {
+            &, &:not(.filtered) {
+                display: flex;
+                padding: @relativeMini @relativeLarge;
+            }
+        }
         .ui.dropdown.item.user-dropdown .menu .item.header {
             &, &:not(.filtered) {
                 display: flex;
