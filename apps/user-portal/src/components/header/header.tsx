@@ -20,6 +20,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } from "semantic-ui-react";
 import { AuthContext } from "../../contexts";
+import { resolveUserDisplayName } from "../../helpers";
 import { Title, UserImage } from "../shared";
 
 /**
@@ -41,23 +42,9 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     const { state } = useContext(AuthContext);
     const { onSidePanelToggleClick, showSidePanelToggle } = props;
 
-    /**
-     * Resolves the user's display name.
-     * @return {string}
-     */
-    const resolveDisplayName = (): string => {
-        if (state.profileInfo.displayName || state.profileInfo.lastName) {
-            return `${state.profileInfo.displayName} ${state.profileInfo.lastName}`;
-        }
-        if (state.displayName) {
-            return state.displayName;
-        }
-        return state.username;
-    };
-
     const trigger = (
         <span className="user-dropdown-trigger">
-            <div className="username">{ resolveDisplayName() }</div>
+            <div className="username">{ resolveUserDisplayName(state) }</div>
             <UserImage bordered avatar size="mini" name={ state.username } />
         </span>
     );
@@ -87,7 +74,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                     <UserImage bordered avatar size="tiny" name={ state.username } />
                                     <Item.Content verticalAlign="middle">
                                         <Item.Description>
-                                            <div className="name">{ resolveDisplayName() }</div>
+                                            <div className="name">{ resolveUserDisplayName(state) }</div>
                                             { (state.emails !== "undefined"
                                                 && state.emails !== undefined
                                                 && state.emails !== "null"
