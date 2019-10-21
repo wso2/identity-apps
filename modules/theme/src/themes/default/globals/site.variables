@@ -64,6 +64,7 @@
 @nobel            : #969696;
 @iron             : #DADCE0;
 @whiteSmoke       : #f5f5f5;
+@dustyGray        : #9c9c9c;
 
 /*-------------------
      Image Sizes
