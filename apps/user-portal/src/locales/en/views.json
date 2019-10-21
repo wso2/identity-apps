@@ -414,21 +414,29 @@
         "notification": {
             "getAssociation": {
                 "success": {
-                    "message": "Associated user account retrieved successfully.",
+                    "message": "Linked user accounts retrieved successfully.",
                     "description": "The required user profile details are retrieved successfully."
                 },
                 "error": {
-                    "message": "An error occurred !!!",
+                    "message": "Error retrieving linked user accounts.",
+                    "description": "{{description}}"
+                },
+                "genericError": {
+                    "message": "Something went wrong.",
                     "description": "Error occurred while retrieving the linked user accounts."
                 }
             },
             "addAssociation": {
                 "success": {
-                    "message": "Associated user account added successfully.",
-                    "description": "The required Associated user account added successfully."
+                    "message": "Linked user account added successfully.",
+                    "description": "The required linked user account added successfully."
                 },
                 "error": {
-                    "message": "An error occurred !!!",
+                    "message": "Error retrieving linked user accounts.",
+                    "description": "{{description}}"
+                },
+                "genericError": {
+                    "message": "Something went wrong.",
                     "description": "Error occurred while adding the linked account."
                 }
             }
