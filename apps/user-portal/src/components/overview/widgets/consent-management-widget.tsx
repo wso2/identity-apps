@@ -23,7 +23,7 @@ import { history } from "../../../helpers";
 import { SettingsSection } from "../../shared";
 
 /**
- * Account security widget
+ * Consent management widget
  *
  * @return {JSX.Element}
  */
