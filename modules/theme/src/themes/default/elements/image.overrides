@@ -39,6 +39,15 @@
                     line-height: @miniWidth;
                 }
             }
+            &.little {
+                width: @littleWidth;
+                height: @littleWidth;
+
+                .initials {
+                    font-size: 2em;
+                    line-height: @littleWidth;
+                }
+            }
             &.tiny {
                 height: @tinyWidth;
 
