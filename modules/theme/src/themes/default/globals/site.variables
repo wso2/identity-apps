@@ -89,3 +89,11 @@
    Header Component
 --------------------*/
 @headerHeight: 58px;
+
+/*--------------
+  Page Heading
+---------------*/
+
+@h3 : unit((20 / 14), rem);
+@h4 : unit((18 / 14), rem);
+@h5 : unit((16 / 14), rem);
