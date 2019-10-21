@@ -19,6 +19,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { Image, SemanticSIZES } from "semantic-ui-react";
+import { UserImageDummy } from "./ui";
 
 /**
  * Proptypes for the user image component.
@@ -99,6 +100,7 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
             }
             {
                 avatar
+                    ? name
                     ? (
                         <Image
                             className={ `user-image ${ classes }` }
@@ -113,6 +115,16 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
                             <span className="initials">{ generateInitials() }</span>
                         </Image>
                     )
+                    : <Image
+                        src={ UserImageDummy }
+                        size={ size as SemanticSIZES }
+                        bordered={ bordered }
+                        floated={ floated }
+                        verticalAlign="middle"
+                        circular
+                        centered
+                        style={ style }
+                    />
                     : null
             }
         </>
