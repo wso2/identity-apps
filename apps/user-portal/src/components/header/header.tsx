@@ -41,15 +41,23 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     const { state } = useContext(AuthContext);
     const { onSidePanelToggleClick, showSidePanelToggle } = props;
 
+    /**
+     * Resolves the user's display name.
+     * @return {string}
+     */
+    const resolveDisplayName = (): string => {
+        if (state.profileInfo.displayName || state.profileInfo.lastName) {
+            return `${state.profileInfo.displayName} ${state.profileInfo.lastName}`;
+        }
+        if (state.displayName) {
+            return state.displayName;
+        }
+        return state.username;
+    };
+
     const trigger = (
         <span className="user-dropdown-trigger">
-            <div className="username">
-                {
-                    (state.profileInfo.displayName || state.profileInfo.lastName)
-                        ? state.profileInfo.displayName + " " + state.profileInfo.lastName
-                        : (state.displayName !== "undefined") ? state.displayName : state.username
-                }
-            </div>
+            <div className="username">{ resolveDisplayName() }</div>
             <UserImage bordered avatar size="mini" name={ state.username } />
         </span>
     );
@@ -79,7 +87,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                     <UserImage bordered avatar size="tiny" name={ state.username } />
                                     <Item.Content verticalAlign="middle">
                                         <Item.Description>
-                                            <div className="name">{ state.username }</div>
+                                            <div className="name">{ resolveDisplayName() }</div>
                                             { (state.emails !== "undefined"
                                                 && state.emails !== undefined
                                                 && state.emails !== "null"
