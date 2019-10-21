@@ -45,7 +45,7 @@
                 <version>3.0.0</version>
                 <configuration>
                     <descriptors>
-                        <descriptor>\assembly\bin.xml</descriptor>
+                        <descriptor>/assembly/bin.xml</descriptor>
                     </descriptors>
                     <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
