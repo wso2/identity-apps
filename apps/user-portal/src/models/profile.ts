@@ -1,3 +1,5 @@
+import { string } from "prop-types";
+
 /**
  * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
@@ -31,6 +33,7 @@ export interface BasicProfileInterface {
     proUrl: string;
     isSecurity?: boolean;
     mobile?: string;
+    userimage?: string;
     username?: string;
 }
 
@@ -46,5 +49,6 @@ export const createEmptyProfile = (): BasicProfileInterface => ({
     proUrl: "",
     responseStatus: null,
     roles: [],
+    userimage: "",
     username: ""
 });
