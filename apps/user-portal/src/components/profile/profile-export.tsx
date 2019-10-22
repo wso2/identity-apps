@@ -104,6 +104,7 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
             iconFloated="right"
             onPrimaryActionClick={ downloadUserProfile }
             primaryAction={ t("views:profileExport.actionTitle") }
+            primaryActionIcon="cloud download"
         >
         </SettingsSection>
     );
