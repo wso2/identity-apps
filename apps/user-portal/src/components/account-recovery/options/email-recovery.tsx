@@ -18,11 +18,12 @@
 
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Divider, Form, Grid, Icon, List } from "semantic-ui-react";
+import { Grid, Icon, List } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
 import { Notification } from "../../../models";
-import { EditSection, ThemeIcon } from "../../shared";
+import { EditSection, ThemeIcon, FormWrapper, Validation } from "../../shared";
+import { Rule } from "@cesium133/forgjs";
 
 /**
  * Proptypes for the EmailRecoveryComponent component.
@@ -46,7 +47,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
     const { t } = useTranslation();
     const { onNotificationFired } = props;
 
-    const handleUpdate = () => {
+    const handleUpdate = (email: string) => {
         const data = {
             Operations: [
                 {
@@ -60,7 +61,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
         };
 
         data.Operations[0].value = {
-            emails: [editedEmail]
+            emails: [email]
         };
 
         updateProfileInfo(data)
@@ -98,16 +99,6 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                     });
                 }
             });
-    };
-
-    /**
-     * The following function handles the change of state of the input fields.
-     * The id of the event target will be used to set the state.
-     * @param event
-     */
-    const handleFieldChange = (event) => {
-        setEditedEmail(event.target.value);
-        event.preventDefault();
     };
 
     /**
@@ -227,26 +218,43 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                             <List>
                                 <List.Item>
                                     <List.Content>
-                                        <Form>
-                                            <Form.Field width={9}>
-                                                <label>{t("views:accountRecovery.emailRecovery.emailAddress")}</label>
-                                                <input onChange={handleFieldChange} value={editedEmail} />
-                                                <br /><br />
-                                                <p style={{ fontSize: "12px" }}>
+                                        <FormWrapper formFields={[{
+                                            type: "text",
+                                            width: 9,
+                                            placeholder: t("views:accountRecovery.emailRecovery.emailAddress"),
+                                            name: "email",
+                                            value: editedEmail,
+                                            required: true,
+                                            label: t("views:accountRecovery.emailRecovery.emailAddress"),
+                                            requiredErrorMessage: t(`views:accountRecovery.emailRecovery
+                                                .emailRequired`),
+                                            validation: (value: string, validation: Validation) => {
+                                                if (!new Rule({ type: "email" }).test(value)) {
+                                                    validation.isValid = false;
+                                                    validation.errorMessages.push("Invalid email")
+                                                }
+                                            }
+                                        }, {
+                                            type: "divider",
+                                            hidden: true
+                                        }, {
+                                            type: "submit",
+                                            value: t("common:update").toString(),
+                                            size: "small"
 
-                                                </p>
-                                            </Form.Field>
-                                        </Form>
+                                        }, {
+                                            type: "button",
+                                            className: "link-button",
+                                            value: t("common:cancel").toString(),
+                                            size: "small",
+                                            onClick: handleCancel
+                                        }]}
+                                            onSubmit={(values) => {
+                                                handleUpdate(values.get("email").toString())
+                                            }}
+                                            groups={[{ startIndex: 2, endIndex: 4, style: "inline" }]}
+                                        />
                                     </List.Content>
-                                </List.Item>
-                                <Divider hidden />
-                                <List.Item>
-                                    <Button primary onClick={handleUpdate} size="small">
-                                        {t("common:update")}
-                                    </Button>
-                                    <Button className="link-button" onClick={handleCancel} size="small">
-                                        {t("common:cancel")}
-                                    </Button>
                                 </List.Item>
                             </List>
                         </Grid.Column>
@@ -261,7 +269,6 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
             .then((response) => {
                 setEmailAddress(response);
             });
-
     }, []);
 
     return (
