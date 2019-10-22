@@ -381,7 +381,7 @@ export const Consents: FunctionComponent<{}> = (): JSX.Element => {
                                                     <List.Content verticalAlign="middle">
                                                         <ThemeIcon
                                                             icon={ GenericAppIcon }
-                                                            size="mini"
+                                                            size="micro"
                                                             bordered
                                                             defaultIcon
                                                             relaxed
