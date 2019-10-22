@@ -58,3 +58,8 @@ export const SettigsSectionIconSet = {
     securityQuestions: require("../lib/assets/images/illustrations/security-questions.svg"),
     securityQuestionsMini: require("../lib/assets/images/illustrations/security-questions-mini.svg")
 };
+export const Padlock = require("../lib/assets/images/icons/padlock.svg");
+export const OkayStatusShield = require("../lib/assets/images/okay-status-shield.svg");
+export const WarningStatusShield = require("../lib/assets/images/warning-status-shield.svg");
+export const ErrorStatusShield = require("../lib/assets/images/error-status-shield.svg");
+export const ConsentForm = require("../lib/assets/images/icons/consents.svg");

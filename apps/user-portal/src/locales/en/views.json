@@ -1,19 +1,36 @@
 {
     "overviewPage": {
         "title": "Welcome, {{firstName}}",
-        "subTitle": "Manage and configure your user settings to customize the Identity Server experience",
-        "sections": {
-            "personalInfo": {
-                "header": "Personal Information",
-                "description": "Manage basic information, like your name and photo, that you use on. And account associations etc ..."
+        "subTitle": "Manage your information, security, privacy and all the related configurations",
+        "widgets": {
+            "accountStatus": {
+                "header": "Your account status looks good!",
+                "list": {
+                    "0": "Password health",
+                    "1": "Account completion",
+                    "2": "Signed in activities"
+                }
+            },
+            "accountActivity": {
+                "header": "Account activity",
+                "description": "You are currently logged in from the following device",
+                "actionTitles": {
+                    "update": "Update account security"
+                }
             },
             "accountSecurity": {
-                "header": "Manage Security",
-                "description": "Configure account security measures, like Password, Account Recovery Options, MFA etc ..."
+                "header": "Account security",
+                "description": "Settings and recommendations to help you keep your account secure",
+                "actionTitles": {
+                    "update": "Update account security"
+                }
             },
-            "applications": {
-                "header": "Consent Management",
-                "description": "Monitor & manage account activities, Both active and inactive, Manage given consents etc ..."
+            "consentManagement": {
+                "header": "Consent control",
+                "description": "Control the data you want to share with applications",
+                "actionTitles": {
+                    "manage": "Manage consents"
+                }
             }
         }
     },

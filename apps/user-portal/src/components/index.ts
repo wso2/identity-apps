@@ -24,6 +24,7 @@ export * from "./footer";
 export * from "./header";
 export * from "./linked-accounts";
 export * from "./multi-factor-authentication";
+export * from "./overview";
 export * from "./profile";
 export * from "./shared";
 export * from "./side-panel";

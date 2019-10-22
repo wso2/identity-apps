@@ -1,4 +1,4 @@
-/*!
+/**
  * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -14,41 +14,9 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-@type    : "view";
-@element : "user-portal";
-
-@import (multiple) '../../wso2.config';
-
-.overview-page {
-    .widget {
-        margin-bottom: 3em;
-    }
-}
-
-.app-content {
-    margin-bottom: 4em;
-}
-
-.account-status {
-    display: flex;
-
-    .description {
-        margin-left: 3em;
-
-        .status-header {
-            margin-bottom: 1.2em;
-        }
-        .meta {
-            margin-bottom: 1em;
-
-            .meta-icon {
-                margin-right: 0.5em;
-            }
-        }
-    }
-}
-
-.loadUIOverrides();
+export * from "./account-security-widget";
+export * from "./account-status-widget";
+export * from "./consent-management-widget";
+export * from "./user-sessions-widget";

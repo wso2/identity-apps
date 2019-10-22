@@ -19,9 +19,7 @@
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import { Card, Divider, Grid } from "semantic-ui-react";
-import { HomeTileIcon } from "../components";
+import { Overview } from "../components";
 import { InnerPageLayout } from "../layouts";
 
 /**
@@ -40,52 +38,7 @@ export const HomePage = (): JSX.Element => {
             pageDescription={ t("views:overviewPage.subTitle") }
             pageTitleTextAlign="left"
         >
-            <Grid>
-                <Grid.Row>
-                    <Grid.Column mobile={16} tablet={16} computer={8}>
-                        <Card as={ Link } to="/personal-info" fluid className="margin-x1">
-                            <Card.Content textAlign="center" className="padding-x2">
-                                <HomeTileIcon icon="Profile"/>
-                                <Divider hidden />
-                                <Card.Header>
-                                    { t("views:overviewPage.sections.personalInfo.header") }
-                                </Card.Header>
-                                <Card.Description>
-                                    { t("views:overviewPage.sections.personalInfo.description") }
-                                </Card.Description>
-                            </Card.Content>
-                        </Card>
-                    </Grid.Column>
-                    <Grid.Column mobile={16} tablet={16} computer={8}>
-                        <Card as={ Link } to="/security" fluid className="margin-x1">
-                            <Card.Content textAlign="center" className="padding-x2">
-                                <HomeTileIcon icon="Security"/>
-                                <Divider hidden />
-                                <Card.Header>
-                                    { t("views:overviewPage.sections.accountSecurity.header") }
-                                </Card.Header>
-                                <Card.Description>
-                                    { t("views:overviewPage.sections.accountSecurity.description") }
-                                </Card.Description>
-                            </Card.Content>
-                        </Card>
-                    </Grid.Column>
-                    <Grid.Column mobile={16} tablet={16} computer={8}>
-                        <Card as={ Link } to="/consent-management" fluid className="margin-x1">
-                            <Card.Content textAlign="center" className="padding-x2">
-                                <HomeTileIcon icon="Consent"/>
-                                <Divider hidden />
-                                <Card.Header>
-                                    { t("views:overviewPage.sections.applications.header") }
-                                </Card.Header>
-                                <Card.Description>
-                                    { t("views:overviewPage.sections.applications.description") }
-                                </Card.Description>
-                            </Card.Content>
-                        </Card>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+            <Overview />
         </InnerPageLayout>
     );
 };
