@@ -19,6 +19,9 @@
  
 .ui.card {
     &.settings-card {
+        border: @settingsCardBorder;
+        box-shadow: none;
+
         // override the default the margin bottom
         &:last-child {
             margin-bottom: 0.3em;
@@ -36,7 +39,20 @@
             }
         }
         .top-action-panel {
-            padding: 0 @settingsCardPadding;;
+            box-shadow: none;
+            padding: 0 @settingsCardPadding;
+            border-left: 0px;
+            border-right: 0px;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+
+            .description {
+                display: flex;
+                align-items: center;
+            }
+            &.no-margin-bottom {
+                margin-bottom: 0px;
+            }
         }
         .main-content {
             .main-content-inner {
@@ -52,6 +68,9 @@
                     .last-column {
                         padding-right: @settingsCardPadding;
                     }
+                }
+                &.no-margin-top {
+                    margin-top: 0px;
                 }
             }
         }
