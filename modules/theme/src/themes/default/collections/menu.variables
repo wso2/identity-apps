@@ -30,6 +30,12 @@
 @appHeaderTopBorderStyle: solid;
 
 /*-------------------
+      App Footer
+--------------------*/
+
+@appFooterMinHeight: 60px;
+
+/*-------------------
     Side Panel Menu
 --------------------*/
 

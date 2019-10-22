@@ -16,12 +16,14 @@
  * under the License.
  */
 
-import React, { ChangeEvent, FunctionComponent, useEffect, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Form, Grid, Icon, List } from "semantic-ui-react";
-import { addAccountAssociation, getAssociations } from "../../api";
+import { addAccountAssociation, getAssociations, getProfileInfo } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
+import { AuthContext } from "../../contexts";
 import { Notification } from "../../models";
+import { setProfileInfo } from "../../store/actions";
 import { EditSection, SettingsSection, UserImage } from "../shared";
 
 /**
@@ -47,7 +49,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
         addAccountForm: false
     });
     const { onNotificationFired } = props;
-
+    const { state, dispatch } = useContext(AuthContext);
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -58,24 +60,57 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
      * Fetches associations from the API.
      */
     const fetchAssociations = (): void => {
+        if (!state.profileInfo || (state.profileInfo && !state.profileInfo.displayName)) {
+            getProfileInfo()
+                .then((infoResponse) => {
+                    getAssociations()
+                        .then((associationsResponse) => {
+                            setAssociations(associationsResponse);
+                            dispatch(setProfileInfo({
+                                ...infoResponse,
+                                associations: associationsResponse
+                            }));
+                        })
+                        .catch((error) => {
+                            onNotificationFired({
+                                description: t(
+                                    "views:associatedAccounts.notification.getAssociation.error.description",
+                                    { description: error }
+                                ),
+                                message: t(
+                                    "views:associatedAccounts.notification.getAssociation.error.message"
+                                ),
+                                otherProps: {
+                                    negative: true
+                                },
+                                visible: true
+                            });
+                        });
+                });
+            return;
+        }
         getAssociations()
             .then((response) => {
-                if (response.status === 200) {
-                    setAssociations(response.data);
-                } else {
-                    onNotificationFired({
-                        description: t(
-                            "views:associatedAccounts.notification.getAssociation.error.description"
-                        ),
-                        message: t(
-                            "views:associatedAccounts.notification.getAssociation.error.message"
-                        ),
-                        otherProps: {
-                            negative: true
-                        },
-                        visible: true
-                    });
-                }
+                setAssociations(response);
+                dispatch(setProfileInfo({
+                    ...state.profileInfo,
+                    associations: response
+                }));
+            })
+            .catch((error) => {
+                onNotificationFired({
+                    description: t(
+                        "views:associatedAccounts.notification.getAssociation.error.description",
+                        { description: error }
+                    ),
+                    message: t(
+                        "views:associatedAccounts.notification.getAssociation.error.message"
+                    ),
+                    otherProps: {
+                        negative: true
+                    },
+                    visible: true
+                });
             });
     };
 
@@ -147,8 +182,8 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
                     });
 
                     // Re-fetch account associations.
-                    fetchAssociations();
                 }
+                fetchAssociations();
             });
     };
 
@@ -255,6 +290,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
                                                         floated="left"
                                                         spaced="right"
                                                         size="mini"
+                                                        name={ association.username }
                                                     />
                                                     <List.Header>{ association.userId }</List.Header>
                                                     <List.Description>

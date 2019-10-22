@@ -16,10 +16,11 @@
  * under the License
  */
 
-import React, { ChangeEvent, FunctionComponent, useEffect, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../../api";
+import { AuthContext } from "../../contexts";
 import { createEmptyProfile, Notification } from "../../models";
 import { EditSection, SettingsSection, UserImage } from "../shared";
 
@@ -48,7 +49,7 @@ export const Profile: FunctionComponent<ProfileProps> = (
         organizationChangeForm: false,
     });
     const { onNotificationFired } = props;
-
+    const { state, dispatch } = useContext(AuthContext);
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -207,9 +208,11 @@ export const Profile: FunctionComponent<ProfileProps> = (
      */
     const setBasicDetails = (profile) => {
         let mobileNumber = "";
+
         profile.phoneNumbers.map((mobile) => {
             mobileNumber = mobile.value;
         });
+
         setEditingProfileInfo({
             ...editingProfileInfo,
             displayName: profile.displayName,
@@ -219,6 +222,7 @@ export const Profile: FunctionComponent<ProfileProps> = (
             mobile: mobileNumber,
             organisation: profile.organisation,
             phoneNumbers: profile.phoneNumbers,
+            userimage: state.userimage,
             username: profile.username,
         });
         setProfileInfo({
@@ -230,6 +234,7 @@ export const Profile: FunctionComponent<ProfileProps> = (
             mobile: mobileNumber,
             organisation: profile.organisation,
             phoneNumbers: profile.phoneNumbers,
+            userimage: state.userimage,
             username: profile.username,
         });
     };
@@ -607,11 +612,35 @@ export const Profile: FunctionComponent<ProfileProps> = (
             )
     );
 
+    const handleImageChange = (
+        profileInfo.userimage
+            ? (
+                <UserImage
+                    bordered
+                    size="tiny"
+                    image={ profileInfo.userimage }
+                />
+            )
+            :
+            (
+                <UserImage
+                    bordered
+                    avatar
+                    size="tiny"
+                    name={
+                        state.profileInfo && state.profileInfo.username
+                            ? state.profileInfo.username
+                            : null
+                    }
+                />
+            )
+    );
+
     return (
         <SettingsSection
             description={ t("views:userProfile.subTitle") }
             header={ t("views:userProfile.title") }
-            icon={ <UserImage bordered avatar size="tiny" /> }
+            icon={ handleImageChange }
         >
             <List divided verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">

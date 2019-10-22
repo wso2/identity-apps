@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.61-SNAPSHOT</version>
+    <version>0.1.65-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
@@ -44,10 +44,11 @@
     </scm>
 
     <modules>
-        <module>components/org.wso2.identity.apps.common</module>
         <module>apps/user-portal</module>
         <module>apps/admin-portal</module>
         <module>apps/authenticationendpoint</module>
+        <module>components/theme</module>
+        <module>components/org.wso2.identity.apps.common</module>
         <module>features/org.wso2.identity.apps.common.server.feature</module>
         <module>features/org.wso2.identity.apps.user.portal.server.feature</module>
         <module>features/org.wso2.identity.apps.admin.portal.server.feature</module>
@@ -203,10 +204,16 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.identity.apps</groupId>
+                <artifactId>identity-theme</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
+
+            <dependency>
+                <groupId>org.wso2.identity.apps</groupId>
                 <artifactId>org.wso2.identity.apps.common</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.wso2.identity.apps</groupId>
                 <artifactId>org.wso2.identity.apps.common.server.feature</artifactId>
@@ -225,11 +232,11 @@
                 <version>${project.version}</version>
                 <type>zip</type>
             </dependency>
-            <dependency>
-                <groupId>org.wso2.identity.apps</groupId>
-                <artifactId>org.wso2.identity.apps.authenticationendpoint.server.feature</artifactId>
-                <version>${project.version}</version>
-                <type>zip</type>
+            <dependency>	
+                <groupId>org.wso2.identity.apps</groupId>	
+                <artifactId>org.wso2.identity.apps.authenticationendpoint.server.feature</artifactId>	
+                <version>${project.version}</version>	
+                <type>zip</type>	
             </dependency>
         </dependencies>
     </dependencyManagement>

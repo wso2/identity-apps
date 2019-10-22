@@ -31,6 +31,8 @@ const authenticateInitialState: AuthStateInterface = {
     location: APP_HOME_PATH,
     loginInit: false,
     logoutInit: false,
+    profileInfo: {},
+    userimage: "",
     username: ""
 };
 
@@ -52,6 +54,7 @@ const authenticateReducer = (state = authenticateInitialState, action) => {
                     isAuth: true,
                     loginInit: true,
                     logoutInit: false,
+                    userimage: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERIMAGE),
                     username: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME),
                 };
             }
@@ -64,6 +67,11 @@ const authenticateReducer = (state = authenticateInitialState, action) => {
         case authenticateActionTypes.RESET_AUTHENTICATION:
             return {
                 ...authenticateInitialState
+            };
+        case authenticateActionTypes.SET_PROFILE_INFO:
+            return {
+                ...state,
+                profileInfo: action.payload
             };
         default:
             return state;

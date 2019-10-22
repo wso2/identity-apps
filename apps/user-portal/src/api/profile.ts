@@ -80,6 +80,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
                     proUrl: response.data.profileUrl || "",
                     responseStatus: response.status || null,
                     roles: response.data.roles || [],
+                    userimage: response.data.userImage || "",
                     username: response.data.userName || ""
                 };
                 return Promise.resolve(profileResponse);
