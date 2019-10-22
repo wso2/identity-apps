@@ -38,7 +38,7 @@ export const getAssociations = () => {
                 if (!(response.status === 200)) {
                     return Promise.reject("Failed to retrieve associations.");
                 }
-                return Promise.resolve(response);
+                return Promise.resolve(response.data);
             })
             .catch((error) => {
                 log.error(error);
@@ -63,9 +63,6 @@ export const addAccountAssociation = (data: object) => {
 
         return axios.post(ServiceResourcesEndpoint.associations, data, { headers })
             .then((response) => {
-                if (!(response.status === 200)) {
-                    return Promise.reject("Failed to add association.");
-                }
                 return Promise.resolve(response);
             })
             .catch((error) => {

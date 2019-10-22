@@ -38,3 +38,11 @@ export const setSignOut = () => ({
 export const resetAuthentication = () => ({
     type: authenticateActionTypes.RESET_AUTHENTICATION
 });
+
+/**
+ * Dispatches an action of type `SET_PROFILE_INFO`.
+ */
+export const setProfileInfo = (details: any) => ({
+    payload: details,
+    type: authenticateActionTypes.SET_PROFILE_INFO
+});

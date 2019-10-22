@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
 import classNames from "classnames";
 import * as React from "react";
 import { Image, SemanticSIZES } from "semantic-ui-react";
+import { UserImageDummy } from "./ui";
 
 /**
  * Proptypes for the user image component.
@@ -31,8 +31,9 @@ interface UserImageProps {
     floated?: "left" | "right";
     image?: React.ReactNode;
     inline?: boolean;
+    name?: string;
     relaxed?: boolean | "very";
-    size?: SemanticSIZES;
+    size?: SemanticSIZES | "little";
     spaced?: "left" | "right";
     style?: object;
     transparent?: boolean;
@@ -52,6 +53,7 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
         floated,
         image,
         inline,
+        name,
         relaxed,
         size,
         spaced,
@@ -78,7 +80,7 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
      * @return {string}
      */
     const generateInitials = (): string => {
-        return AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME).charAt(0).toUpperCase();
+        return name.charAt(0).toUpperCase();
     };
 
     return (
@@ -88,7 +90,7 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
                     ? (
                         <Image
                             src={ image }
-                            size={ size }
+                            size={ size as SemanticSIZES }
                             bordered={ bordered }
                             floated={ floated }
                             circular
@@ -98,10 +100,11 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
             }
             {
                 avatar
+                    ? name
                     ? (
                         <Image
                             className={ `user-image ${ classes }` }
-                            size={ size }
+                            size={ size as SemanticSIZES }
                             bordered={ bordered }
                             floated={ floated }
                             verticalAlign="middle"
@@ -112,6 +115,16 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
                             <span className="initials">{ generateInitials() }</span>
                         </Image>
                     )
+                    : <Image
+                        src={ UserImageDummy }
+                        size={ size as SemanticSIZES }
+                        bordered={ bordered }
+                        floated={ floated }
+                        verticalAlign="middle"
+                        circular
+                        centered
+                        style={ style }
+                    />
                     : null
             }
         </>

@@ -25,10 +25,10 @@
     &.user-image {
         &.user-avatar {
             text-align: center;
-            background: @lightGray;
+            background: @dustyGray;
 
             .initials {
-                color: @nobel;
+                color: @white;
             }
             &.mini {
                 width: @miniWidth;
@@ -37,6 +37,15 @@
                 .initials {
                     font-size: 1.5em;
                     line-height: @miniWidth;
+                }
+            }
+            &.little {
+                width: @littleWidth;
+                height: @littleWidth;
+
+                .initials {
+                    font-size: 2em;
+                    line-height: @littleWidth;
                 }
             }
             &.tiny {

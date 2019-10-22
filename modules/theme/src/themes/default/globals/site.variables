@@ -62,6 +62,15 @@
 @darkGray         : #d9d9d9;
 @athensGray       : #f9fafb;
 @nobel            : #969696;
+@iron             : #DADCE0;
+@whiteSmoke       : #f5f5f5;
+@dustyGray        : #9c9c9c;
+
+/*-------------------
+     Image Sizes
+--------------------*/
+
+@littleWidth: 48px;
 
 /*-------------------
     Icon Sizes
@@ -81,3 +90,11 @@
    Header Component
 --------------------*/
 @headerHeight: 58px;
+
+/*--------------
+  Page Heading
+---------------*/
+
+@h3 : unit((20 / 14), rem);
+@h4 : unit((18 / 14), rem);
+@h5 : unit((16 / 14), rem);

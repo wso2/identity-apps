@@ -20,6 +20,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } from "semantic-ui-react";
 import { AuthContext } from "../../contexts";
+import { resolveUserDisplayName } from "../../helpers";
 import { Title, UserImage } from "../shared";
 
 /**
@@ -41,12 +42,19 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     const { state } = useContext(AuthContext);
     const { onSidePanelToggleClick, showSidePanelToggle } = props;
 
+    const trigger = (
+        <span className="user-dropdown-trigger">
+            <div className="username">{ resolveUserDisplayName(state) }</div>
+            <UserImage bordered avatar size="mini" name={ state.username } />
+        </span>
+    );
+
     return (
         <Menu id="app-header" className="app-header" fixed="top" borderless>
             <Container>
                 { showSidePanelToggle ?
                     <Responsive as={ Menu.Item } maxWidth={ 767 }>
-                        <Icon name="bars" size="large" onClick={ onSidePanelToggleClick } link />
+                        <Icon name="bars" size="large" onClick={ onSidePanelToggleClick } link/>
                     </Responsive>
                     : null
                 }
@@ -56,21 +64,22 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                 <Menu.Menu position="right">
                     <Dropdown
                         item
+                        trigger={ trigger }
                         floating
-                        text={ (state.displayName !== "undefined") ? state.displayName : state.username }
+                        icon={ null }
                         className="user-dropdown">
                         <Dropdown.Menu>
                             <Item.Group unstackable>
                                 <Item className="header">
-                                    <UserImage bordered avatar size="tiny" />
+                                    <UserImage bordered avatar size="tiny" name={ state.username } />
                                     <Item.Content verticalAlign="middle">
                                         <Item.Description>
-                                            <div>{ state.username }</div>
+                                            <div className="name">{ resolveUserDisplayName(state) }</div>
                                             { (state.emails !== "undefined"
                                                 && state.emails !== undefined
                                                 && state.emails !== "null"
                                                 && state.emails !== null) &&
-                                            <div>{ state.emails }</div>
+                                            <div className="email">{ state.emails }</div>
                                             }
                                             <Divider hidden/>
                                             <Button as={ Link } to="/my-apps" size="tiny"
@@ -80,13 +89,41 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                 </Item>
                             </Item.Group>
                             <Dropdown.Divider/>
-                            <Dropdown.Item
-                                icon="shield"
-                                as={ Link }
-                                to="/overview"
-                                text="Identity Server Account"/>
-                            <Dropdown.Divider/>
-                            <Dropdown.Item as={ Link } to="/logout" text="Logout"/>
+                            {
+                                (state.profileInfo
+                                    && state.profileInfo.associations
+                                    && state.profileInfo.associations.length > 0)
+                                    ? (
+                                        <Item.Group className="linked-accounts-list" unstackable>
+                                            {
+                                                state.profileInfo.associations.map((association) => (
+                                                    <Item className="linked-account">
+                                                        <UserImage
+                                                            bordered
+                                                            avatar
+                                                            size="little"
+                                                            name={ association.username }
+                                                        />
+                                                        <Item.Content verticalAlign="middle">
+                                                            <Item.Description>
+                                                                <div className="name">
+                                                                    { association.username }
+                                                                </div>
+                                                                <div className="email">
+                                                                    { association.tenantDomain }
+                                                                </div>
+                                                            </Item.Description>
+                                                        </Item.Content>
+                                                    </Item>
+                                                ))
+                                            }
+                                        </Item.Group>
+                                    )
+                                    : null
+                            }
+                            <Dropdown.Item className="action-panel">
+                                <Link className="action-button" to="/logout">Logout</Link>
+                            </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </Menu.Menu>

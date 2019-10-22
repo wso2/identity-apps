@@ -31,6 +31,7 @@ const authenticateInitialState: AuthStateInterface = {
     location: APP_HOME_PATH,
     loginInit: false,
     logoutInit: false,
+    profileInfo: {},
     username: ""
 };
 
@@ -64,6 +65,11 @@ const authenticateReducer = (state = authenticateInitialState, action) => {
         case authenticateActionTypes.RESET_AUTHENTICATION:
             return {
                 ...authenticateInitialState
+            };
+        case authenticateActionTypes.SET_PROFILE_INFO:
+            return {
+                ...state,
+                profileInfo: action.payload
             };
         default:
             return state;

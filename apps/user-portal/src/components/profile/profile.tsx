@@ -16,10 +16,11 @@
  * under the License
  */
 
-import React, { ChangeEvent, FunctionComponent, useEffect, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../../api";
+import { AuthContext } from "../../contexts";
 import { createEmptyProfile, Notification } from "../../models";
 import { EditSection, SettingsSection, UserImage } from "../shared";
 
@@ -48,6 +49,7 @@ export const Profile: FunctionComponent<ProfileProps> = (
         organizationChangeForm: false,
     });
     const { onNotificationFired } = props;
+    const { state, dispatch } = useContext(AuthContext);
 
     const { t } = useTranslation();
 
@@ -611,7 +613,18 @@ export const Profile: FunctionComponent<ProfileProps> = (
         <SettingsSection
             description={ t("views:userProfile.subTitle") }
             header={ t("views:userProfile.title") }
-            icon={ <UserImage bordered avatar size="tiny" /> }
+            icon={
+                <UserImage
+                    bordered
+                    avatar
+                    size="tiny"
+                    name={
+                        state.profileInfo && state.profileInfo.username
+                            ? state.profileInfo.username
+                            : null
+                    }
+                />
+            }
         >
             <List divided verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">
