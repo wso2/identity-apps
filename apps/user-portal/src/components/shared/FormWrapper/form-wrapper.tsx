@@ -63,7 +63,7 @@ interface InputField {
     required: boolean;
     label: string;
     width?: SemanticWIDTHS;
-    validation: (value: string, validation: Validation) => void;
+    validation: (value: string, validation: Validation, allValues?:Map<string,FormValue>) => void;
     requiredErrorMessage: string;
     value?: string;
 }
@@ -210,6 +210,7 @@ interface FormProps {
     formFields: FormField[];
     groups?: Group[];
     onSubmit: (values: Map<string, FormValue>) => void;
+    triggerReset?: (reset: Function) => void;
 }
 
 /**
@@ -217,7 +218,7 @@ interface FormProps {
  */
 export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps): JSX.Element => {
 
-    const { formFields, onSubmit, groups } = props;
+    const { formFields, onSubmit, groups, triggerReset } = props;
 
     const [form, setForm] = useState(new Map<string, FormValue>());
     const [validFields, setValidFields] = useState(new Map<string, Validation>());
@@ -227,6 +228,10 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
     useEffect(() => {
         init(false);
     }, [formFields]);
+
+    useEffect(() => {
+        triggerReset?triggerReset(reset):null;
+    }, []);
 
     /**
      * Initialize form
@@ -250,7 +255,8 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
                                 : tempForm.set(inputField.name, "")
                     : null;
 
-                (!inputField.value || isReset) && inputField.required
+                ((!inputField.value && !tempForm.has(inputField.name))
+                    || isReset) && inputField.required
                     ? tempRequiredFields.set(inputField.name, false)
                     : tempRequiredFields.set(inputField.name, true)
                 tempValidFields.set(name, { isValid: true, errorMessages: [] });
@@ -390,7 +396,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
     const handleBlur = (event, name: string) => {
         let tempRequiredFields: Map<string, boolean> = new Map(requiredFields);
         let tempValidFields: Map<string, Validation> = new Map(validFields);
-
+        
         validate(name, tempRequiredFields, tempValidFields);
 
         setValidFields(tempValidFields);
@@ -432,7 +438,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
             && !isRadioField(inputField)
             && !isCheckBoxField(inputField)
             && !isDropdownField(inputField)
-            ? inputField.validation(form.get(name) as string, validation)
+            ? inputField.validation(form.get(name) as string, validation, new Map(form))
             : null;
 
         validFields.set(name, { isValid: validation.isValid, errorMessages: validation.errorMessages });
@@ -440,7 +446,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
     }
 
     /**
-     * Handler foir onSubmit event
+     * Handler for onSubmit event
      * @param event 
      */
     const handleSubmit = (event: React.FormEvent) => {
@@ -509,10 +515,18 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
     /**
      * Resets form
      */
-    const reset = (event) => {
-        event.preventDefault();
+    const reset = () => {
         setIsSubmitting(false);
         init(true);
+    }
+
+    /**
+     * Handles reset button click
+     * @param event 
+     */
+    const handleReset = (event) => {
+        event.preventDefault();
+        reset();
     }
 
     /**
@@ -687,7 +701,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
             return (
                 <Button size={inputField.size}
                     className={inputField.className}
-                    onClick={reset}
+                    onClick={handleReset}
                 >
                     {inputField.value}
                 </Button>
