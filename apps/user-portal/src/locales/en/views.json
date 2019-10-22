@@ -201,6 +201,7 @@
             "descriptionAdd":"Add a recovery email address",
             "descriptionUpdate":"Update recovery email address ({{email}})",
             "emailAddress":"Email Address",
+            "emailRequired":"Enter an email address",
             "notification":{
                 "success":{
                     "message":"Email Address Updated Auccessfully",
