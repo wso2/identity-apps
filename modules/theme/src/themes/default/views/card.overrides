@@ -91,5 +91,29 @@
                 }
             }
         }
+        .settings-section-tab {
+            .ui.attached.menu:not(.tabular) {
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+            }
+            .ui.secondary.pointing.menu .item {
+                padding-left: @settingsCardPadding;
+                padding-right: @settingsCardPadding;
+                border-bottom-width: @settingsSectionTabItemBorderBottom;
+
+                &:active, &.active {
+                    border-bottom-color: @settingsSectionTabItemBorderBottomColor;
+                }
+            }
+            .ui.segment {
+                &.tab-pane {
+                    border: none;
+                    box-shadow: none;
+                    margin-top: 0;
+                    padding: 0;
+                }
+            }
+        }
     }
 }
