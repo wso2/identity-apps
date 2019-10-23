@@ -35,16 +35,16 @@ export const Overview: FunctionComponent<{}> = (): JSX.Element => {
         <Grid className="overview-page">
             <Divider hidden/>
             <Grid.Row>
-                <Grid.Column width={ 9 }>
+                <Grid.Column computer={ 9 } mobile={ 16 }>
                     <AccountStatusWidget />
                 </Grid.Column>
-                <Grid.Column width={ 7 }>
+                <Grid.Column computer={ 7 } mobile={ 16 }>
                     <UserSessionsWidget />
                 </Grid.Column>
-                <Grid.Column width={ 8 }>
+                <Grid.Column computer={ 8 } mobile={ 16 }>
                     <AccountSecurityWidget />
                 </Grid.Column>
-                <Grid.Column width={ 8 }>
+                <Grid.Column computer={ 8 } mobile={ 16 }>
                     <ConsentManagementWidget />
                 </Grid.Column>
             </Grid.Row>
