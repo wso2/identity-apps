@@ -19,16 +19,11 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    Button,
-    Divider,
-    Dropdown,
-    Form,
     Grid,
     List,
-    Icon,
-    DropdownProps
+    Icon
 } from "semantic-ui-react";
-import { addSecurityQs, getSecurityQs, updateSecurityQs } from  "../../../api";
+import { addSecurityQs, getSecurityQs, updateSecurityQs } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
 import {
     createEmptyChallenge,
@@ -38,7 +33,7 @@ import {
     ChallengesQuestionsInterface,
     Notification
 } from "../../../models";
-import { ThemeIcon, EditSection } from "../../shared";
+import { ThemeIcon, EditSection, FormWrapper } from "../../shared";
 
 /**
  * Prop types for SecurityQuestionsComponent
@@ -60,7 +55,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     const [challenges, setChallenges] = useState(createEmptyChallenge());
     const [isEdit, setIsEdit] = useState<number | string>(-1);
     const [isInit, setIsInit] = useState(false);
-
+    const [questionIndex, setQuestionIndex] = useState(-1);
     const { onNotificationFired } = props;
 
     const { t } = useTranslation();
@@ -83,10 +78,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
      * question set ids of the questions fetched from the api.
      */
     const initModel = () => {
-        const challengesCopy: ChallengesQuestionsInterface[] = challengeQuestions
-            && challengeQuestions.length > 0
-            ? [...challengeQuestions]
-            : [];
+        const challengesCopy: ChallengesQuestionsInterface[] = [];
 
         challenges.questions.map((question: QuestionSetsInterface) => {
             let answer = challenges.answers && challenges.answers.length > 0
@@ -112,45 +104,11 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     }
 
     /**
-     * The following method handles the change of state of the input fields
-     * The name of the event target will be used to retrieve the set of questions
-     * with a specific question set id
-     * @param event
-     * @param {string} questionSetId
-     */
-    const handleInputChange = (event, questionSetId: string) => {
-        challengeQuestions.forEach((question) => {
-            question.questionSetId === questionSetId
-                ? question.answer = event.target.value
-                : null;
-        });
-        setChallengeQuestions(challengeQuestions);
-    }
-
-    /**
      * The following method handles the onClick event of the change button
      */
-    const handleEdit = (question: string | number) => {
+    const handleEdit = (question: string | number, index:number) => {
         setIsEdit(question);
-    }
-
-    /**
-     * The following function handles the change event 
-     */
-    const handleDropdownChange = (data: DropdownProps, questionSetId: string) => {
-        let challenge = challenges.questions.find((challenge) => {
-            return challenge.questionSetId === questionSetId;
-        });
-
-        let chosenQuestion = challenge.questions.find((question) => {
-            return question.questionId === data.value;
-        })
-        challengeQuestions.forEach((question) => {
-            question.questionSetId === questionSetId
-                ? question.challengeQuestion = { ...chosenQuestion }
-                : null;
-        });
-        setChallengeQuestions(challengeQuestions);
+        setQuestionIndex(index);
     }
 
     /**
@@ -158,8 +116,36 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
      * A notification will be displayed upon the submit of the request depending
      * on the status of the response
      */
-    const handleSave = () => {
+    const handleSave = (values: Map<string, string | string[]>) => {
         const data: ChallengesQuestionsInterface[] = [...challengeQuestions];
+
+        values.forEach((value, key) => {
+            if (key.includes("question")) {
+                let questionSetId = key.split(" ")[1];
+                let challenge = challenges.questions.find((challenge) => {
+                    return challenge.questionSetId === questionSetId;
+                });
+
+                let chosenQuestion = challenge.questions.find((question) => {
+                    return question.questionId === value;
+                });
+
+                data.forEach((question) => {
+                    question.questionSetId === questionSetId
+                        ? question.challengeQuestion = { ...chosenQuestion }
+                        : null;
+                });
+            }
+            if (key.includes("answer")) {
+                let questionSetId = key.split(" ")[1];
+                data.forEach((question) => {
+                    question.questionSetId === questionSetId
+                        ? question.answer = value.toString()
+                        : null;
+                });
+            }
+
+        })
 
         if (challenges.answers && (challenges.answers.length > 0) && (isEdit != -1)) {
             updateSecurityQs(data)
@@ -306,6 +292,73 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
         return question;
     }
 
+    /**
+     * This returns an array of form fields to be passed as a prop to Form Wrapper
+     */
+    const generateFormFields = () => {
+        let formFields = [];
+        challenges.questions.forEach((
+            questionSet: QuestionSetsInterface,
+            index: number
+        ) => {
+            if (isEdit === 0 || (isEdit === questionSet.questionSetId)) {
+                formFields.push(
+                    {
+                        label: t("views:securityQuestions.forms.securityQuestionsForm." +
+                            "inputs.question.label"),
+                        type: "dropdown",
+                        name: "question " + questionSet.questionSetId,
+                        value: findChosenQuestionFromChallengeQuestions(
+                            questionSet.questionSetId
+                        ).challengeQuestion.questionId,
+                        children: questionSet.questions.map((ques, i) => {
+                            return {
+                                key: i,
+                                text: ques.question,
+                                value: ques.questionId
+                            };
+                        }),
+                        required: true,
+                        requiredErrorMessage: "",
+                        placeholder:
+                            t("views:securityQuestions.forms." +
+                                "securityQuestionsForm.inputs.question.placeholder")
+                    },
+                    {
+                        type: "text",
+                        name: "answer " + questionSet.questionSetId,
+                        placeholder: t("views:securityQuestions.forms." +
+                            "securityQuestionsForm.inputs.answer.placeholder"),
+                        required: true,
+                        requiredErrorMessage: "",
+                        validation: () => { },
+                        label: t("views:securityQuestions.forms.securityQuestionsForm" +
+                            ".inputs.answer.label"),
+                    },
+                )
+            }
+        });
+        formFields=formFields.concat([
+            {
+                type: "divider",
+                hidden: true
+            },
+            {
+                type: "submit",
+                value: t("common:save").toString(),
+                size: "small",
+            },
+            {
+                type: "button",
+                size: "small",
+                className: "link-button",
+                value: t("common:cancel").toString(),
+                onClick: () => handleEdit(-1,-1)
+            }
+        ]);
+        return formFields;
+    }
+
     const listItems = () => {
         if (challenges.questions && (challenges.questions.length > 0) && isEdit == -1) {
             return (
@@ -336,7 +389,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                     ? null
                                     : <Icon
                                         link
-                                        onClick={() => { handleEdit(0) }}
+                                        onClick={() => { handleEdit(0,0) }}
                                         className="list-icon"
                                         size="small"
                                         color="grey"
@@ -368,7 +421,9 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                                         <List.Content floated="right">
                                                             <Icon
                                                                 link
-                                                                onClick={() => { handleEdit(answer.questionSetId) }}
+                                                                onClick={() => {
+                                                                    handleEdit(answer.questionSetId, index)
+                                                                }}
                                                                 className="list-icon"
                                                                 size="small"
                                                                 color="grey"
@@ -388,92 +443,35 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
             );
         } else if (isEdit != -1) {
             if (challenges.questions && (challenges.questions.length > 0)) {
+                let formFields = generateFormFields();
+                let endIndex = formFields.length;
+                let startIndex = endIndex - 2;
                 return (
                     <EditSection>
-                        <Form onSubmit={handleSave}>
-                            <Grid>
-                                {
-                                    challenges.questions.map((
-                                        questionSet: QuestionSetsInterface,
-                                        index: number
-                                    ) => {
-                                        return isEdit === 0 || (isEdit === questionSet.questionSetId)
-                                            ? (
-                                                <Grid.Row key={index} columns={2}>
-                                                    <Grid.Column width={4}>
-                                                        {t("common:challengeQuestionNumber", { number: index + 1 })}
-                                                    </Grid.Column>
-                                                    <Grid.Column width={12}>
-                                                        <Form.Field>
-                                                            <label>
-                                                                {t("views:securityQuestions.forms.securityQuestionsForm." +
-                                                                    "inputs.question.label")}
-                                                            </label>
-                                                            <Dropdown
-                                                                name={questionSet.questionSetId}
-                                                                selection
-                                                                placeholder={
-                                                                    t("views:securityQuestions.forms." +
-                                                                        "securityQuestionsForm.inputs.question.placeholder")
-                                                                }
-                                                                onChange={(e, data: DropdownProps) => {
-                                                                    handleDropdownChange(data, questionSet.questionSetId)
-                                                                }}
-                                                                options={
-                                                                    questionSet.questions.map((ques, i) => {
-                                                                        return {
-                                                                            key: i,
-                                                                            text: ques.question,
-                                                                            value: ques.questionId
-                                                                        };
-                                                                    })
-                                                                }
-                                                                value={findChosenQuestionFromChallengeQuestions(
-                                                                    questionSet.questionSetId
-                                                                ).challengeQuestion.questionId}
-                                                            />
-                                                        </Form.Field>
-                                                        <Form.Field>
-                                                            <label>
-                                                                {t("views:securityQuestions.forms.securityQuestionsForm" +
-                                                                    ".inputs.answer.label")}
-                                                            </label>
-                                                            <Form.Input
-                                                                required
-                                                                id={questionSet.questionSetId}
-                                                                placeholder={
-                                                                    t("views:securityQuestions.forms." +
-                                                                        "securityQuestionsForm.inputs.answer.placeholder")
-                                                                }
-
-                                                                onChange={(e) => {
-                                                                    handleInputChange(e, questionSet.questionSetId)
-                                                                }} />
-                                                        </Form.Field>
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                            )
-                                            : null;
-                                    })
-                                }
-                                <Divider hidden />
-                                <Grid.Row columns={2}>
-                                    { /* TODO: Find a better way to offset grid */}
-                                    <Grid.Column width={4}>{" "}</Grid.Column>
-                                    <Grid.Column width={12}>
-                                        <Button type="submit" primary>
-                                            {t("common:save")}
-                                        </Button>
-                                        <Button
-                                            className="link-button"
-                                            onClick={() => { handleEdit(-1) }}
-                                        >
-                                            {t("common:cancel")}
-                                        </Button>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </Form>
+                        <Grid>
+                            <Grid.Row columns={2}>
+                                <Grid.Column width={4}>
+                                    {t("common:challengeQuestionNumber", { number: questionIndex+ 1 })}
+                                </Grid.Column>
+                                <Grid.Column width={12}>
+                                    <FormWrapper
+                                        formFields={generateFormFields()}
+                                        groups={
+                                            [
+                                                {
+                                                    startIndex: startIndex,
+                                                    endIndex: endIndex,
+                                                    style: "inline"
+                                                }
+                                            ]
+                                        }
+                                        onSubmit={(values) => {
+                                            handleSave(values);
+                                        }}
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
                     </EditSection>
                 );
             }
