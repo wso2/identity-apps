@@ -20,7 +20,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } from "semantic-ui-react";
 import { AuthContext } from "../../contexts";
-import { resolveUserDisplayName } from "../../helpers";
+import { resolveUserAvatar, resolveUserDisplayName } from "../../helpers";
 import { Title, UserImage } from "../shared";
 
 /**
@@ -45,7 +45,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     const trigger = (
         <span className="user-dropdown-trigger">
             <div className="username">{ resolveUserDisplayName(state) }</div>
-            <UserImage bordered avatar size="mini" name={ resolveUserDisplayName(state) }/>
+            { resolveUserAvatar(state, "mini") }
         </span>
     );
 
@@ -71,7 +71,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                         <Dropdown.Menu>
                             <Item.Group unstackable>
                                 <Item className="header" key={ `logged-in-user-${ state.username }` }>
-                                    <UserImage bordered avatar size="tiny" name={ resolveUserDisplayName(state) }/>
+                                    { resolveUserAvatar(state, "tiny") }
                                     <Item.Content verticalAlign="middle">
                                         <Item.Description>
                                             <div className="name">{ resolveUserDisplayName(state) }</div>

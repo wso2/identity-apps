@@ -21,9 +21,9 @@ import { useTranslation } from "react-i18next";
 import { Button, Divider, Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../../api";
 import { AuthContext } from "../../contexts";
-import { resolveUserDisplayName } from "../../helpers";
+import { resolveUserAvatar } from "../../helpers";
 import { createEmptyProfile, Notification } from "../../models";
-import { EditSection, SettingsSection, UserImage } from "../shared";
+import { EditSection, SettingsSection } from "../shared";
 
 /**
  * Proptypes for the basic details component.
@@ -613,31 +613,11 @@ export const Profile: FunctionComponent<ProfileProps> = (
             )
     );
 
-    const handleImageChange = (
-        profileInfo.userimage
-            ? (
-                <UserImage
-                    bordered
-                    size="tiny"
-                    image={ profileInfo.userimage }
-                />
-            )
-            :
-            (
-                <UserImage
-                    bordered
-                    avatar
-                    size="tiny"
-                    name={ resolveUserDisplayName(state) }
-                />
-            )
-    );
-
     return (
         <SettingsSection
             description={ t("views:userProfile.subTitle") }
             header={ t("views:userProfile.title") }
-            icon={ handleImageChange }
+            icon={ resolveUserAvatar(state, "tiny") }
         >
             <List divided verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">
