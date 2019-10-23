@@ -45,7 +45,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     const trigger = (
         <span className="user-dropdown-trigger">
             <div className="username">{ resolveUserDisplayName(state) }</div>
-            <UserImage bordered avatar size="mini" name={ state.username } />
+            <UserImage bordered avatar size="mini" name={ state.username }/>
         </span>
     );
 
@@ -70,8 +70,8 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                         className="user-dropdown">
                         <Dropdown.Menu>
                             <Item.Group unstackable>
-                                <Item className="header">
-                                    <UserImage bordered avatar size="tiny" name={ state.username } />
+                                <Item className="header" key={ `logged-in-user-${ state.username }` }>
+                                    <UserImage bordered avatar size="tiny" name={ state.username }/>
                                     <Item.Content verticalAlign="middle">
                                         <Item.Description>
                                             <div className="name">{ resolveUserDisplayName(state) }</div>
@@ -96,8 +96,11 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                     ? (
                                         <Item.Group className="linked-accounts-list" unstackable>
                                             {
-                                                state.profileInfo.associations.map((association) => (
-                                                    <Item className="linked-account">
+                                                state.profileInfo.associations.map((association, index) => (
+                                                    <Item
+                                                        className="linked-account"
+                                                        key={ `${ association.userId }-${ index }` }
+                                                    >
                                                         <UserImage
                                                             bordered
                                                             avatar

@@ -67,7 +67,7 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
         [`floated-${ floated }`]: floated,
         inline,
         relaxed,
-        [`${ size }`]: size,
+        [`${ size }`]: size, // Size is used as a class to support the custom size "little"
         [`spaced-${ spaced }`]: spaced,
         transparent,
         "user-avatar": avatar,
@@ -90,7 +90,6 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
                     ? (
                         <Image
                             src={ image }
-                            size={ size as SemanticSIZES }
                             bordered={ bordered }
                             floated={ floated }
                             circular
@@ -104,7 +103,6 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
                     ? (
                         <Image
                             className={ `user-image ${ classes }` }
-                            size={ size as SemanticSIZES }
                             bordered={ bordered }
                             floated={ floated }
                             verticalAlign="middle"
@@ -117,7 +115,6 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
                     )
                     : <Image
                         src={ UserImageDummy }
-                        size={ size as SemanticSIZES }
                         bordered={ bordered }
                         floated={ floated }
                         verticalAlign="middle"
