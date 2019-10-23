@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Container, Divider, Form, Grid, Icon, Modal, Popup } from "semantic-ui-react";
+import { Button, Container, Divider, Modal } from "semantic-ui-react";
 import { updatePassword } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
 import { Notification } from "../../models";
-import { EditSection, SettingsSection } from "../shared";
+import { EditSection, SettingsSection, FormWrapper, Validation } from "../shared";
 
 /**
  * Constant to store the change password from identifier.
@@ -46,68 +46,19 @@ interface ChangePasswordProps {
 export const ChangePassword: FunctionComponent<ChangePasswordProps> = (
     props: ChangePasswordProps
 ): JSX.Element => {
-    const [ currentPassword, setCurrentPassword ] = useState("");
-    const [ newPassword, setNewPassword ] = useState("");
-    const [ confirmPassword, setConfirmPassword ] = useState("");
-    const [ errors, setErrors ] = useState({
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [errors, setErrors] = useState({
         confirmPassword: "",
         currentPassword: "",
         newPassword: ""
     });
-    const [ editingForm, setEditingForm ] = useState({
+    const [editingForm, setEditingForm] = useState({
         [CHANGE_PASSWORD_FORM_IDENTIFIER]: false
     });
-    const [ hasErrors, setHasErrors ] = useState(true);
-    const [ showConfirmationModal, setShowConfirmationModal ] = useState(false);
-    const [ touched, setTouched ] = useState({
-        confirmPassword: false,
-        currentPassword: false,
-        newPassword: false
-    });
-    const [ inputTypes, setInputTypes ] = useState({
-        confirmPassword: "password",
-        currentPassword: "password",
-        newPassword: "password"
-    });
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
     const { t } = useTranslation();
-
-    /**
-     * Validate the form when the input value in the state changes.
-     */
-    useEffect(() => {
-        validateForm();
-    }, [ currentPassword, newPassword, confirmPassword ]);
-
-    /**
-     * Handles the input onBlur event. The touched state is set
-     * based on the clicked input field.
-     *
-     * @param {React.ChangeEvent<HTMLInputElement>} e
-     */
-    const handleInputBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name } = e.target;
-        setTouched({
-            ...touched,
-            [name]: true
-        });
-    };
-
-    /**
-     * Handles the input onChange event. The value of the changed input
-     * field is set to the corresponding state.
-     *
-     * @param {React.ChangeEvent<HTMLInputElement>} e input change event
-     */
-    const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.id === "currentPassword") {
-            setCurrentPassword(e.target.value);
-        } else if (e.target.id === "newPassword") {
-            setNewPassword(e.target.value);
-        } else if (e.target.id === "confirmPassword") {
-            setConfirmPassword(e.target.value);
-        }
-    };
 
     /**
      * Handles the `onSubmit` event of forms.
@@ -115,22 +66,6 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (
      * @param {string} formName - Name of the form
      */
     const handleSubmit = (formName: string): void => {
-        // The touched state of the inputs are set to true when submitting the form.
-        setTouched({
-            confirmPassword: true,
-            currentPassword: true,
-            newPassword: true,
-        });
-
-        // Validate the form
-        validateForm();
-
-        // If the form has errors, return from the function.
-        if (hasErrors) {
-            return;
-        }
-
-        // Show the confirmation modal
         setShowConfirmationModal(true);
     };
 
@@ -231,86 +166,9 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (
     };
 
     /**
-     * Validates the form input fields and sets the corresponding error
-     * message for the input field.
-     */
-    const validateForm = () => {
-        const formErrors = { currentPassword: "", newPassword: "", confirmPassword: "" };
-
-        if (currentPassword === null || currentPassword === "") {
-            formErrors.currentPassword = t(
-                "views:changePassword.forms.passwordResetForm.inputs.currentPassword.validations.empty"
-            );
-        }
-        if (newPassword === null || newPassword === "") {
-            formErrors.newPassword = t(
-                "views:changePassword.forms.passwordResetForm.inputs.newPassword.validations.empty"
-            );
-        }
-        if (confirmPassword === null || confirmPassword === "") {
-            formErrors.confirmPassword = t(
-                "views:changePassword.forms.passwordResetForm.inputs.confirmPassword.validations.empty"
-            );
-        }
-        if (newPassword !== "" && confirmPassword !== "" && newPassword !== confirmPassword) {
-            setTouched({
-                ...touched,
-                confirmPassword: true
-            });
-            formErrors.confirmPassword = t(
-                "views:changePassword.forms.passwordResetForm.inputs.confirmPassword.validations.mismatch"
-            );
-        }
-
-        setErrors(formErrors);
-        setHasErrors(
-            !(formErrors.currentPassword === "" && formErrors.newPassword === "" && formErrors.confirmPassword === "")
-        );
-    };
-
-    /**
      * Resets the form by re-initializing state.
      */
-    const resetForm = () => {
-        setCurrentPassword("");
-        setNewPassword("");
-        setConfirmPassword("");
-        setErrors({
-            confirmPassword: "",
-            currentPassword: "",
-            newPassword: ""
-        });
-        setHasErrors(true);
-        setTouched({
-            confirmPassword: false,
-            currentPassword: false,
-            newPassword: false
-        });
-        setInputTypes({
-            confirmPassword: "password",
-            currentPassword: "password",
-            newPassword: "password"
-        });
-    };
-
-    /**
-     * Handles the password field eye icon click. Toggles the
-     * input field type between `password` and `text`.
-     *
-     * @param name name attribute registered in the input field
-     */
-    const toggleInputType = (name: string) => {
-        let type = "password";
-
-        if (inputTypes[name] === "password") {
-            type = "text";
-        }
-
-        setInputTypes({
-            ...inputTypes,
-            [name]: type
-        });
-    };
+    let resetForm:Function = () => { };
 
     /**
      * Handle the confirmation modal close event.
@@ -346,24 +204,24 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (
     const confirmationModal = (
         <Modal
             size="mini"
-            open={ showConfirmationModal }
-            onClose={ handleConfirmationModalClose }
+            open={showConfirmationModal}
+            onClose={handleConfirmationModalClose}
             dimmer="blurring"
         >
             <Modal.Content>
                 <Container>
-                    <h3>{ t("views:changePassword.modals.confirmationModal.heading") }</h3>
+                    <h3>{t("views:changePassword.modals.confirmationModal.heading")}</h3>
                 </Container>
                 <Divider hidden />
-                <p>{ t("views:changePassword.modals.confirmationModal.message") }</p>
+                <p>{t("views:changePassword.modals.confirmationModal.message")}</p>
             </Modal.Content>
             <Modal.Actions>
                 <Button
-                    className="link-button" onClick={ handleConfirmationModalClose }>
-                    { t("common:cancel") }
+                    className="link-button" onClick={handleConfirmationModalClose}>
+                    {t("common:cancel")}
                 </Button>
-                <Button primary onClick={ changePassword }>
-                    { t("common:continue") }
+                <Button primary onClick={changePassword}>
+                    {t("common:continue")}
                 </Button>
             </Modal.Actions>
         </Modal>
@@ -373,159 +231,92 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (
         editingForm[CHANGE_PASSWORD_FORM_IDENTIFIER]
             ? (
                 <EditSection>
-                    <Form onSubmit={ () => handleSubmit(CHANGE_PASSWORD_FORM_IDENTIFIER) }>
-                        <Grid>
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 9 }>
-                                    <Form.Input
-                                        id="currentPassword"
-                                        label={
-                                            t("views:changePassword.forms.passwordResetForm.inputs" +
-                                                ".currentPassword.label")
-                                        }
-                                        placeholder={
-                                            t("views:changePassword.forms.passwordResetForm.inputs." +
-                                                "currentPassword.placeholder")
-                                        }
-                                        type={ inputTypes.currentPassword }
-                                        icon={
-                                            <Popup
-                                                trigger={
-                                                    <Icon
-                                                        name={
-                                                            inputTypes.currentPassword === "password"
-                                                                ? "eye slash" :
-                                                                "eye"
-                                                        }
-                                                        disabled={ !currentPassword }
-                                                        link
-                                                        onClick={ () => toggleInputType("currentPassword") }
-                                                    />
-                                                }
-                                                position="top center"
-                                                content={
-                                                    inputTypes.currentPassword === "password"
-                                                        ? t("common:showPassword")
-                                                        : t("common:hidePassword")
-                                                }
-                                                inverted
-                                            />
-                                        }
-                                        value={ currentPassword }
-                                        onChange={ handleFieldChange }
-                                        onBlur={ handleInputBlur }
-                                        error={
-                                            touched.currentPassword && errors.currentPassword
-                                                ? errors.currentPassword
-                                                : false
-                                        }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 9 }>
-                                    <Form.Input
-                                        id="newPassword"
-                                        label={
-                                            t("views:changePassword.forms.passwordResetForm.inputs." +
-                                                "newPassword.label")
-                                        }
-                                        placeholder={
-                                            t("views:changePassword.forms.passwordResetForm.inputs." +
-                                                "newPassword.placeholder")
-                                        }
-                                        type={ inputTypes.newPassword }
-                                        icon={
-                                            <Popup
-                                                trigger={
-                                                    <Icon
-                                                        name={
-                                                            inputTypes.newPassword === "password"
-                                                                ? "eye slash" :
-                                                                "eye"
-                                                        }
-                                                        disabled={ !newPassword }
-                                                        link
-                                                        onClick={ () => toggleInputType("newPassword") }
-                                                    />
-                                                }
-                                                position="top center"
-                                                content={
-                                                    inputTypes.newPassword === "password"
-                                                        ? t("common:showPassword")
-                                                        : t("common:hidePassword")
-                                                }
-                                                inverted
-                                            />
-                                        }
-                                        value={ newPassword }
-                                        onChange={ handleFieldChange }
-                                        onBlur={ handleInputBlur }
-                                        error={ touched.newPassword && errors.newPassword ?
-                                            errors.newPassword : false }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 9 }>
-                                    <Form.Input
-                                        id="confirmPassword"
-                                        label={
-                                            t("views:changePassword.forms.passwordResetForm.inputs." +
-                                                "confirmPassword.label")
-                                        }
-                                        placeholder={
-                                            t("views:changePassword.forms.passwordResetForm.inputs." +
-                                                "confirmPassword.placeholder")
-                                        }
-                                        type={ inputTypes.confirmPassword }
-                                        icon={
-                                            <Popup
-                                                trigger={
-                                                    <Icon
-                                                        name={
-                                                            inputTypes.confirmPassword === "password"
-                                                                ? "eye slash" :
-                                                                "eye"
-                                                        }
-                                                        disabled={ !confirmPassword }
-                                                        link
-                                                        onClick={ () => toggleInputType("confirmPassword") }
-                                                    />
-                                                }
-                                                position="top center"
-                                                content={
-                                                    inputTypes.confirmPassword === "password"
-                                                        ? t("common:showPassword")
-                                                        : t("common:hidePassword")
-                                                }
-                                                inverted
-                                            />
-                                        }
-                                        value={ confirmPassword }
-                                        onChange={ handleFieldChange }
-                                        onBlur={ handleInputBlur }
-                                        error={
-                                            touched.confirmPassword && errors.confirmPassword
-                                                ? errors.confirmPassword
-                                                : false
-                                        }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                        <Divider hidden />
-                        <Button primary type="submit" size="small">
-                            { t("common:submit") }
-                        </Button>
-                        <Button
-                            className="link-button"
-                            onClick={ () => hideFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER) }
-                            size="small"
-                        >
-                            { t("common:cancel") }
-                        </Button>
-                    </Form>
+                    <FormWrapper
+                        formFields={[
+                            {
+                                type: "password",
+                                width: 9,
+                                name: "currentPassword",
+                                placeholder: t("views:changePassword.forms.passwordResetForm.inputs." +
+                                    "currentPassword.placeholder"),
+                                required: true,
+                                requiredErrorMessage: t("views:changePassword.forms.passwordResetForm.inputs"
+                                    + ".currentPassword.validations.empty"),
+                                label: t("views:changePassword.forms.passwordResetForm.inputs" +
+                                    ".currentPassword.label"),
+                                validation: (value: string, validation: Validation) => {
+
+                                }
+                            },
+                            {
+                                type: "password",
+                                width: 9,
+                                name: "newPassword",
+                                placeholder: t("views:changePassword.forms.passwordResetForm.inputs." +
+                                    "newPassword.placeholder"),
+                                required: true,
+                                requiredErrorMessage: t("views:changePassword.forms.passwordResetForm.inputs"
+                                    + ".newPassword.validations.empty"),
+                                label: t("views:changePassword.forms.passwordResetForm.inputs" +
+                                    ".newPassword.label"),
+                                validation: (value: string, validation: Validation) => {
+
+                                }
+                            },
+                            {
+                                type: "password",
+                                width: 9,
+                                name: "confirmPassword",
+                                placeholder: t("views:changePassword.forms.passwordResetForm.inputs." +
+                                    "confirmPassword.placeholder"),
+                                required: true,
+                                requiredErrorMessage: t("views:changePassword.forms.passwordResetForm.inputs"
+                                    + ".confirmPassword.validations.empty"),
+                                label: t("views:changePassword.forms.passwordResetForm.inputs" +
+                                    ".confirmPassword.label"),
+                                validation: (value: string, validation: Validation, formValues) => {
+                                    if (formValues.get("newPassword") !== value) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(t(
+                                            "views:changePassword.forms.passwordResetForm.inputs"
+                                            + ".confirmPassword.validations.mismatch"
+                                        ))
+                                    }
+                                }
+                            },
+                            {
+                                type: "divider",
+                                hidden: true
+                            },
+                            {
+                                type: "submit",
+                                value: t("common:submit").toString(),
+                                size: "small"
+                            },
+                            {
+                                type: "button",
+                                value: t("common:cancel").toString(),
+                                size: "small",
+                                className: "link-button",
+                                onClick: () => { hideFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER) }
+                            }
+                        ]}
+                        groups={
+                            [
+                                {
+                                    startIndex: 4,
+                                    endIndex: 7,
+                                    style: "inline"
+                                }
+                            ]
+                        }
+                        onSubmit={(value) => {
+                            setCurrentPassword(value.get("currentPassword").toString());
+                            setNewPassword(value.get("newPassword").toString());
+                            handleSubmit(CHANGE_PASSWORD_FORM_IDENTIFIER);
+                        }}
+                        triggerReset={(reset) => { resetForm = reset }}
+                    />
                 </EditSection>
             )
             : null
@@ -533,19 +324,19 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (
 
     return (
         <SettingsSection
-            description={ t("views:changePassword.subTitle") }
-            header={ t("views:changePassword.title") }
-            icon={ SettingsSectionIcons.changePassword }
-            iconMini={ SettingsSectionIcons.changePasswordMini }
+            description={t("views:changePassword.subTitle")}
+            header={t("views:changePassword.title")}
+            icon={SettingsSectionIcons.changePassword}
+            iconMini={SettingsSectionIcons.changePasswordMini}
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
-            onPrimaryActionClick={ () => showFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER) }
-            primaryAction={ t("views:changePassword.actionTitles.change") }
-            showActionBar={ !editingForm[CHANGE_PASSWORD_FORM_IDENTIFIER] }
+            onPrimaryActionClick={() => showFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER)}
+            primaryAction={t("views:changePassword.actionTitles.change")}
+            showActionBar={!editingForm[CHANGE_PASSWORD_FORM_IDENTIFIER]}
         >
-            { showChangePasswordView }
-            { confirmationModal }
+            {showChangePasswordView}
+            {confirmationModal}
         </SettingsSection>
     );
 };
