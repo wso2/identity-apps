@@ -144,7 +144,7 @@ interface CheckboxField {
 interface DropdownChild {
     text: string;
     value: string;
-    key: string;
+    key: number;
 }
 
 /**
@@ -230,7 +230,10 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
     }, [formFields]);
 
     useEffect(() => {
-        triggerReset?triggerReset(reset):null;
+        triggerReset ? triggerReset(reset) : null;
+        return () => {
+            triggerReset ? triggerReset(() => { }) : null;
+        }
     }, []);
 
     /**
