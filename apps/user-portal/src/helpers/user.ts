@@ -35,5 +35,8 @@ export const resolveUserDisplayName = (state: AuthStateInterface): string => {
     if (state.username) {
         return state.username;
     }
-    return AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME);
+    if (AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME)) {
+        return AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME);
+    }
+    return null;
 };
