@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import React, { ChangeEvent, FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Divider, Form, Grid, Icon, List } from "semantic-ui-react";
+import { Button, Grid, Icon, List } from "semantic-ui-react";
 import { addAccountAssociation, getAssociations } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
 import { Notification } from "../../models";
-import { EditSection, SettingsSection, UserImage } from "../shared";
+import { EditSection, SettingsSection, UserImage, FormWrapper } from "../shared";
 
 /**
  * Proptypes for the liked accounts component.
@@ -41,8 +41,6 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
     props: LinkedAccountsProps
 ): JSX.Element => {
     const [ associations, setAssociations ] = useState([]);
-    const [ username, setUsername ] = useState("");
-    const [ password, setPassword ] = useState("");
     const [ editingForm, setEditingForm ] = useState({
         addAccountForm: false
     });
@@ -80,26 +78,13 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
     };
 
     /**
-     * The following method handles the change of state of the input fields.
-     * The id of the event target will be used to set the state.
-     *
-     * @param {ChangeEvent<HTMLInputElement>} e - Input change event
-     */
-    const handleFieldChange = (e: ChangeEvent<HTMLInputElement>): void => {
-        if (e.target.id === "username") {
-            setUsername(e.target.value);
-        } else if (e.target.id === "password") {
-            setPassword(e.target.value);
-        }
-        event.preventDefault();
-    };
-
-    /**
      * The following method handles the `onSubmit` event of forms.
      *
      * @param formName - Name of the form
      */
-    const handleSubmit = (formName: string): void => {
+    const handleSubmit = (values: Map<string, string|string[]>, formName: string): void => {
+        let username = values.get("username");
+        let password = values.get("password");
         const data = {
             password,
             properties: [
@@ -198,43 +183,65 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
                                     <Grid.Column width={ 4 }>
                                         { t("views:associatedAccounts.accountTypes.local.label") }
                                     </Grid.Column>
-                                    <Grid.Column width={ 12 }>
-                                        <Form onSubmit={ () => handleSubmit("addAccountForm") }>
-                                            <Form.Field>
-                                                <label>{ t("views:associatedAccounts.forms.addAccountForm.inputs" +
-                                                    ".username.label") }</label>
-                                                <input
-                                                    required
-                                                    placeholder={ t("views:associatedAccounts.forms.addAccountForm" +
-                                                        ".inputs.username.placeholder") }
-                                                    id="username"
-                                                    onChange={ handleFieldChange }
-                                                />
-                                            </Form.Field>
-                                            <Form.Field>
-                                                <label>{ t("views:associatedAccounts.forms.addAccountForm.inputs" +
-                                                    ".password.label") }</label>
-                                                <input
-                                                    required
-                                                    placeholder={ t("views:associatedAccounts.forms.addAccountForm" +
-                                                        ".inputs.password.placeholder") }
-                                                    type="password"
-                                                    id="password"
-                                                    onChange={ handleFieldChange }
-                                                />
-                                            </Form.Field>
-                                            <Divider hidden/>
-                                            <Button type="submit" primary size="small">
-                                                { t("common:save") }
-                                            </Button>
-                                            <Button
-                                                size="small"
-                                                className="link-button"
-                                                onClick={ () => hideFormEditView("addAccountForm") }
-                                            >
-                                                { t("common:cancel") }
-                                            </Button>
-                                        </Form>
+                                    <Grid.Column width={12}>
+                                        <FormWrapper
+                                            formFields={[
+                                                {
+                                                    type: "text",
+                                                    placeholder: t("views:associatedAccounts.forms.addAccountForm" +
+                                                        ".inputs.username.placeholder"),
+                                                    name: "username",
+                                                    required: true,
+                                                    requiredErrorMessage: "",
+                                                    validation: () => {
+                                                        
+                                                    },
+                                                    label: t("views:associatedAccounts.forms.addAccountForm.inputs" +
+                                                        ".username.label")
+                                                },
+                                                {
+                                                    type: "password",
+                                                    placeholder: t("views:associatedAccounts.forms.addAccountForm" +
+                                                        ".inputs.password.placeholder"),
+                                                    name: "password",
+                                                    required: true,
+                                                    requiredErrorMessage: "",
+                                                    label: t("views:associatedAccounts.forms.addAccountForm.inputs" +
+                                                        ".password.label"),
+                                                    validation: () => {
+                                                        
+                                                    }
+                                                },
+                                                {
+                                                    type: "divider",
+                                                    hidden:true
+                                                },
+                                                {
+                                                    type: "submit",
+                                                    value: t("common:save").toString(),
+                                                    size:"small"
+                                                },
+                                                {
+                                                    type: "button",
+                                                    size: "small",
+                                                    className: "link-button",
+                                                    onClick: () => {
+                                                        hideFormEditView("addAccountForm")
+                                                    },
+                                                    value: t("common:cancel").toString()
+                                                }
+                                            ]}
+                                            groups={[
+                                                {
+                                                    startIndex: 3,
+                                                    endIndex: 5,
+                                                    style:'inline'
+                                                }
+                                            ]}
+                                            onSubmit={(values) => {
+                                                handleSubmit(values,"addAccountForm")
+                                            }}
+                                        />
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
