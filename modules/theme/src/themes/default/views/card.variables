@@ -31,5 +31,7 @@
 @settingsCardPadding: 2em;
 @settingsCardHeaderPadding: 2em 2em 1.5em;
 @settingsCardActionButtonColor: @primaryColor;
-@settingsSectionTabItemBorderBottom: 3px;
-@settingsSectionTabItemBorderBottomColor: @primaryColor;
+@settingsCardTabItemBorderBottom: 3px;
+@settingsCardTabItemBorderBottomColor: @primaryColor;
+@settingsCardTopActionPanelBorderTop: @gallery;
+@settingsCardTopActionPanelBorderBottom: @gallery;

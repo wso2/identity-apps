@@ -41,17 +41,17 @@
         .top-action-panel {
             box-shadow: none;
             padding: 0 @settingsCardPadding;
-            border-left: 0px;
-            border-right: 0px;
-            border-top: 1px solid #eee;
-            border-bottom: 1px solid #eee;
+            border-left: 0;
+            border-right: 0;
+            border-top: @settingsCardTopActionPanelBorderTop;
+            border-bottom: @settingsCardTopActionPanelBorderBottom;
 
             .description {
                 display: flex;
                 align-items: center;
             }
             &.no-margin-bottom {
-                margin-bottom: 0px;
+                margin-bottom: 0;
             }
         }
         .main-content {
@@ -70,7 +70,7 @@
                     }
                 }
                 &.no-margin-top {
-                    margin-top: 0px;
+                    margin-top: 0;
                 }
             }
         }
@@ -100,10 +100,10 @@
             .ui.secondary.pointing.menu .item {
                 padding-left: @settingsCardPadding;
                 padding-right: @settingsCardPadding;
-                border-bottom-width: @settingsSectionTabItemBorderBottom;
+                border-bottom-width: @settingsCardTabItemBorderBottom;
 
                 &:active, &.active {
-                    border-bottom-color: @settingsSectionTabItemBorderBottomColor;
+                    border-bottom-color: @settingsCardTabItemBorderBottomColor;
                 }
             }
             .ui.segment {
