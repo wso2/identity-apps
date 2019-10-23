@@ -75,11 +75,20 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
     }, className);
 
     /**
-     * Generates the initials for the avatar.
+     * Generates the initials for the avatar. If the name
+     * contains two or more words, two letter initial will
+     * be generated using the first two words of the name.
+     * i.e For the name "Brion Silva", "BS" will be generated.
+     * If the name only has one word, then only a single initial
+     * will be generated. i.e For "Brion", "B" will be generated.
      *
      * @return {string}
      */
     const generateInitials = (): string => {
+        const nameParts = name.split(" ");
+        if (nameParts.length >= 2) {
+            return (nameParts[0].charAt(0) + nameParts[1].charAt(0)).toUpperCase();
+        }
         return name.charAt(0).toUpperCase();
     };
 
