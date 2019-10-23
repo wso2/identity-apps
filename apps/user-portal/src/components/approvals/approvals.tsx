@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import React, { FunctionComponent, MouseEvent, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Icon, Label, SemanticCOLORS } from "semantic-ui-react";
+import { Icon, Menu, SemanticCOLORS, Tab } from "semantic-ui-react";
 import { fetchPendingApprovalDetails, fetchPendingApprovals, updatePendingApprovalStatus } from "../../api";
 import { SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT } from "../../configs";
 import { ApprovalStatus, ApprovalTaskDetails, Notification } from "../../models";
@@ -26,23 +26,23 @@ import { SettingsSection } from "../shared";
 import { ApprovalsList } from "./approvals-list";
 
 /**
- * Proptypes for the pending approvals component.
+ * Proptypes for the approvals component.
  */
-interface PendingApprovalsProps {
+interface ApprovalsProps {
     onNotificationFired: (notification: Notification) => void;
 }
 
 /**
- * Pending approvals component.
+ * Approvals component.
  *
- * @param {PendingApprovalsProps} props
+ * @param {ApprovalsProps} props
  * @return {JSX.Element}]
  */
-export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps> = (
-    props: PendingApprovalsProps
+export const Approvals: FunctionComponent<ApprovalsProps> = (
+    props: ApprovalsProps
 ): JSX.Element => {
-    const [ pendingApprovals, setPendingApprovals ] = useState([]);
-    const [ pendingApprovalsListActiveIndexes, setPendingApprovalsListActiveIndexes ] = useState([]);
+    const [ approvals, setApprovals ] = useState([]);
+    const [ approvalsListActiveIndexes, setApprovalsListActiveIndexes ] = useState([]);
     const [ filterStatus, setFilterStatus ] =
         useState<ApprovalStatus.READY
             | ApprovalStatus.RESERVED
@@ -61,8 +61,8 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
      * Updates the pending approvals list on change.
      */
     useEffect(() => {
-        setPendingApprovals(pendingApprovals);
-    }, [ pendingApprovals ]);
+        setApprovals(approvals);
+    }, [ approvals ]);
 
     /**
      * Updates the approval list when the filter criteria changes.
@@ -87,11 +87,11 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
         fetchPendingApprovals(pagination[ filterStatus ] ? 0 : SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT, 0, filterStatus)
             .then((response) => {
                 if (!shallowUpdate) {
-                    setPendingApprovals(response);
+                    setApprovals(response);
                     return;
                 }
 
-                const approvalsFromState = [ ...pendingApprovals ];
+                const approvalsFromState = [ ...approvals ];
                 const approvalsFromResponse = [ ...response ];
                 const filteredApprovals = [];
 
@@ -109,7 +109,7 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                     });
                 });
 
-                setPendingApprovals(filteredApprovals);
+                setApprovals(filteredApprovals);
             })
             .catch((error) => {
                 let notification = {
@@ -145,13 +145,13 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
      * that are in the expanded state and updates the state.
      */
     const updateApprovalDetails = (): void => {
-        const indexes = [ ...pendingApprovalsListActiveIndexes ];
-        const approvals = [ ...pendingApprovals ];
+        const indexes = [ ...approvalsListActiveIndexes ];
+        const approvalsClone = [ ...approvals ];
 
         indexes.forEach((index) => {
             fetchPendingApprovalDetails(index)
                 .then((response: ApprovalTaskDetails) => {
-                    approvals.forEach((approval) => {
+                    approvalsClone.forEach((approval) => {
                         if (approval.id === index) {
                             approval.details = response;
                         }
@@ -160,7 +160,7 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                 });
         });
 
-        setPendingApprovals(approvals);
+        setApprovals(approvalsClone);
     };
 
     /**
@@ -218,7 +218,7 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
         status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.ALL
     ): void => {
         setFilterStatus(status);
-        setPendingApprovalsListActiveIndexes([]);
+        setApprovalsListActiveIndexes([]);
     };
 
     /**
@@ -228,17 +228,17 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
      */
     const handleApprovalDetailClick = (e: MouseEvent<HTMLButtonElement>): void => {
         const id = e.currentTarget.id;
-        const indexes = [ ...pendingApprovalsListActiveIndexes ];
-        const approvals = [ ...pendingApprovals ];
+        const indexes = [ ...approvalsListActiveIndexes ];
+        const approvalsClone = [ ...approvals ];
 
         // If the list item is already extended, remove it from the active indexes
         // array and update the active indexes state.
-        if (pendingApprovalsListActiveIndexes.includes(id)) {
-            const removingIndex = pendingApprovalsListActiveIndexes.indexOf(id);
+        if (approvalsListActiveIndexes.includes(id)) {
+            const removingIndex = approvalsListActiveIndexes.indexOf(id);
             if (removingIndex !== -1) {
                 indexes.splice(removingIndex, 1);
             }
-            setPendingApprovalsListActiveIndexes(indexes);
+            setApprovalsListActiveIndexes(indexes);
             return;
         }
 
@@ -250,12 +250,12 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
         // Re-fetching on every click is necessary to avoid data inconsistency.
         fetchPendingApprovalDetails(id)
             .then((response: ApprovalTaskDetails) => {
-                approvals.forEach((approval) => {
+                approvalsClone.forEach((approval) => {
                     if (approval.id === id) {
                         approval.details = response;
                     }
                 });
-                setPendingApprovals(approvals);
+                setApprovals(approvalsClone);
             })
             .catch((error) => {
                 let notification = {
@@ -284,17 +284,18 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                 }
                 onNotificationFired(notification);
             });
-        setPendingApprovalsListActiveIndexes(indexes);
+        setApprovalsListActiveIndexes(indexes);
     };
 
     /**
      * Resolves the filter tag colors based on the approval statuses.
      *
-     * @param {ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED} status - Filter status.
+     * @param {ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.ALL } status -
+     *     Filter status.
      * @return {SemanticCOLORS} A semantic color instance.
      */
     const resolveApprovalTagColor = (
-        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED
+        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.ALL
     ): SemanticCOLORS => {
         switch (status) {
             case ApprovalStatus.READY:
@@ -303,6 +304,8 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                 return "orange";
             case ApprovalStatus.COMPLETED:
                 return "green";
+            case ApprovalStatus.ALL:
+                return "blue";
             default:
                 return "grey";
         }
@@ -318,22 +321,85 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
         });
     };
 
+    const panes = [
+        {
+            tabHeader: (
+                <Menu.Item key="ready">
+                    <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.READY) }/>
+                    { t("common:ready") }
+                </Menu.Item>
+            )
+        },
+        {
+            tabHeader: (
+                <Menu.Item key="reserved">
+                    <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.RESERVED) }/>
+                    { t("common:reserved") }
+                </Menu.Item>
+            )
+        },
+        {
+            tabHeader: (
+                <Menu.Item key="completed">
+                    <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.COMPLETED) }/>
+                    { t("common:completed") }
+                </Menu.Item>
+            )
+        },
+        {
+            tabHeader: (
+                <Menu.Item key="all">
+                    <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.ALL) }/>
+                    { t("common:all") }
+                </Menu.Item>
+            )
+        }
+    ];
+
+    /**
+     * Handles the approvals tab change event.
+     *
+     * @param {React.SyntheticEvent} e - React's original SyntheticEvent.
+     * @param data - All props and proposed new activeIndex.
+     */
+    const handleApprovalsTabChange = (e: SyntheticEvent, data: any): void => {
+        const { activeIndex } = data;
+
+        switch (activeIndex) {
+            case 0:
+                setFilterStatus(ApprovalStatus.READY);
+                break;
+            case 1:
+                setFilterStatus(ApprovalStatus.RESERVED);
+                break;
+            case 2:
+                setFilterStatus(ApprovalStatus.COMPLETED);
+                break;
+            case 3:
+                setFilterStatus(ApprovalStatus.ALL);
+                break;
+            default:
+                setFilterStatus(ApprovalStatus.READY);
+                break;
+        }
+    };
+
     return (
         <SettingsSection
             description={ t("views:pendingApprovals:subTitle") }
             header={ t("views:pendingApprovals:title") }
             primaryAction={
                 (
-                    pendingApprovals
-                    && pendingApprovals.length
-                    && pendingApprovals.length >= SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT
+                    approvals
+                    && approvals.length
+                    && approvals.length >= SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT
                 )
                     ? pagination[ filterStatus ] ? t("common:showLess") : t("common:showMore")
                     : null
             }
             onPrimaryActionClick={ handleShowMoreClick }
             placeholder={
-                !(pendingApprovals && (pendingApprovals.length > 0))
+                !(approvals && (approvals.length > 0))
                     ? t(
                     "views:pendingApprovals.placeholders.emptyApprovalList.heading",
                     { status: filterStatus !== ApprovalStatus.ALL ? filterStatus.toLocaleLowerCase() : "" }
@@ -341,56 +407,28 @@ export const PendingApprovalsComponent: FunctionComponent<PendingApprovalsProps>
                     : null
             }
         >
-            <div className="top-action-panel">
-                <Label.Group circular>
-                    <Label
-                        as="a"
-                        className="filter-label"
-                        onClick={ () => filterByStatus(ApprovalStatus.READY) }
-                        active={ filterStatus === ApprovalStatus.READY }
-                        basic
-                    >
-                        <Icon name="tag" color="yellow"/>
-                        { t("common:ready") }
-                    </Label>
-                    <Label
-                        as="a"
-                        className="filter-label"
-                        onClick={ () => filterByStatus(ApprovalStatus.RESERVED) }
-                        active={ filterStatus === ApprovalStatus.RESERVED }
-                        basic
-                    >
-                        <Icon name="tag" color="orange"/>
-                        { t("common:reserved") }
-                    </Label>
-                    <Label
-                        as="a"
-                        className="filter-label"
-                        onClick={ () => filterByStatus(ApprovalStatus.COMPLETED) }
-                        active={ filterStatus === ApprovalStatus.COMPLETED }
-                        basic
-                    >
-                        <Icon name="tag" color="green"/>
-                        { t("common:completed") }
-                    </Label>
-                    <Label
-                        as="a"
-                        className="filter-label"
-                        onClick={ () => filterByStatus(ApprovalStatus.ALL) }
-                        active={ filterStatus === ApprovalStatus.ALL }
-                        basic
-                    >
-                        <Icon name="tag" color="blue"/>
-                        { t("common:all") }
-                    </Label>
-                </Label.Group>
-            </div>
-            <ApprovalsList
-                approvals={ pendingApprovals }
-                approvalsListActiveIndexes={ pendingApprovalsListActiveIndexes }
-                onApprovalDetailClick={ handleApprovalDetailClick }
-                resolveApprovalTagColor={ resolveApprovalTagColor }
-                updateApprovalStatus={ updateApprovalStatus }
+            <Tab
+                className="settings-section-tab"
+                menu={ { secondary: true, pointing: true, attached: "top" } }
+                panes={
+                    panes.map((pane) => {
+                        return {
+                            menuItem: pane.tabHeader,
+                            render: () => (
+                                <Tab.Pane className="tab-pane" attached={ false }>
+                                    <ApprovalsList
+                                        approvals={ approvals }
+                                        approvalsListActiveIndexes={ approvalsListActiveIndexes }
+                                        onApprovalDetailClick={ handleApprovalDetailClick }
+                                        resolveApprovalTagColor={ resolveApprovalTagColor }
+                                        updateApprovalStatus={ updateApprovalStatus }
+                                    />
+                                </Tab.Pane>
+                            )
+                        };
+                    })
+                }
+                onTabChange={ handleApprovalsTabChange }
             />
         </SettingsSection>
     );

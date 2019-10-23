@@ -20,7 +20,7 @@ import React, { FunctionComponent, MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, SemanticCOLORS } from "semantic-ui-react";
 import { ApprovalStatus, ApprovalTaskSummary } from "../../models";
-import { PendingApprovalsEdit } from "./pending-approvals-edit";
+import { ApprovalsEdit } from "./approvals-edit";
 
 /**
  * Proptypes for the approvals list component.
@@ -109,7 +109,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListProps> = (
                                         ? (
                                             <Grid.Row columns={ 1 } className="no-padding">
                                                 <Grid.Column width={ 16 } className="no-padding">
-                                                    <PendingApprovalsEdit
+                                                    <ApprovalsEdit
                                                         approval={ approval }
                                                         updateApprovalStatus={ updateApprovalStatus }
                                                     />

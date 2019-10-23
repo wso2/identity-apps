@@ -24,9 +24,9 @@ import { ApprovalStatus, ApprovalTaskSummary } from "../../models";
 import { EditSection } from "../shared";
 
 /**
- * Proptypes for the pending approvals edit component.
+ * Proptypes for the approvals edit component.
  */
-interface PendingApprovalsEditProps {
+interface ApprovalsEditProps {
     approval: ApprovalTaskSummary;
     updateApprovalStatus: (
         id: string,
@@ -35,13 +35,13 @@ interface PendingApprovalsEditProps {
 }
 
 /**
- * Edit approvals component.
+ * Approvals edit component.
  *
- * @param {PendingApprovalsEditProps} props - Props injected to the pending approvals edit component.
+ * @param {ApprovalsEditProps} props - Props injected to the approvals edit component.
  * @return {JSX.Element}
  */
-export const PendingApprovalsEdit: FunctionComponent<PendingApprovalsEditProps> = (
-    props: PendingApprovalsEditProps
+export const ApprovalsEdit: FunctionComponent<ApprovalsEditProps> = (
+    props: ApprovalsEditProps
 ): JSX.Element => {
     const { approval, updateApprovalStatus } = props;
     const { t } = useTranslation();
