@@ -99,9 +99,11 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
                     ? (
                         <Image
                             src={ image }
+                            className={ `user-image ${ classes }` }
                             bordered={ bordered }
                             floated={ floated }
                             circular
+                            style={ style }
                         />
                     )
                     : null
@@ -123,6 +125,7 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
                         </Image>
                     )
                     : <Image
+                        className={ `user-image ${ classes }` }
                         src={ UserImageDummy }
                         bordered={ bordered }
                         floated={ floated }
