@@ -33,11 +33,16 @@ interface UserImageProps {
     inline?: boolean;
     name?: string;
     relaxed?: boolean | "very";
-    size?: SemanticSIZES | "little";
+    size?: UserImageSizes;
     spaced?: "left" | "right";
     style?: object;
     transparent?: boolean;
 }
+
+/**
+ * Type to handle user image sizes.
+ */
+export type UserImageSizes = SemanticSIZES | "little";
 
 /**
  * User image component.
@@ -98,13 +103,14 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
                 image
                     ? (
                         <Image
-                            src={ image }
                             className={ `user-image ${ classes }` }
                             bordered={ bordered }
                             floated={ floated }
                             circular
                             style={ style }
-                        />
+                        >
+                            <img alt="avatar" src={ image as string } />
+                        </Image>
                     )
                     : null
             }
@@ -133,7 +139,9 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
                         circular
                         centered
                         style={ style }
-                    />
+                    >
+                        <img alt="avatar" src={ image as string } />
+                    </Image>
                     : null
             }
         </>
