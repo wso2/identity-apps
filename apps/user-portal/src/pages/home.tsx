@@ -16,10 +16,11 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
-import * as React from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { Overview } from "../components";
+import { AuthContext } from "../contexts";
+import { resolveUserDisplayName } from "../helpers";
 import { InnerPageLayout } from "../layouts";
 
 /**
@@ -28,12 +29,14 @@ import { InnerPageLayout } from "../layouts";
  * @return {JSX.Element}
  */
 export const HomePage = (): JSX.Element => {
+    const { state } = useContext(AuthContext);
     const { t } = useTranslation();
+
     return (
         <InnerPageLayout
             pageTitle={ t(
                 "views:overviewPage.title",
-                { firstName: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.DISPLAY_NAME) }
+                { firstName: resolveUserDisplayName(state) }
                 ) }
             pageDescription={ t("views:overviewPage.subTitle") }
             pageTitleTextAlign="left"
