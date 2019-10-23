@@ -45,7 +45,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     const trigger = (
         <span className="user-dropdown-trigger">
             <div className="username">{ resolveUserDisplayName(state) }</div>
-            <UserImage bordered avatar size="mini" name={ state.username }/>
+            <UserImage bordered avatar size="mini" name={ resolveUserDisplayName(state) }/>
         </span>
     );
 
@@ -71,7 +71,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                         <Dropdown.Menu>
                             <Item.Group unstackable>
                                 <Item className="header" key={ `logged-in-user-${ state.username }` }>
-                                    <UserImage bordered avatar size="tiny" name={ state.username }/>
+                                    <UserImage bordered avatar size="tiny" name={ resolveUserDisplayName(state) }/>
                                     <Item.Content verticalAlign="middle">
                                         <Item.Description>
                                             <div className="name">{ resolveUserDisplayName(state) }</div>

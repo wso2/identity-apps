@@ -21,6 +21,7 @@ import { useTranslation } from "react-i18next";
 import { Button, Divider, Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../../api";
 import { AuthContext } from "../../contexts";
+import { resolveUserDisplayName } from "../../helpers";
 import { createEmptyProfile, Notification } from "../../models";
 import { EditSection, SettingsSection, UserImage } from "../shared";
 
@@ -627,11 +628,7 @@ export const Profile: FunctionComponent<ProfileProps> = (
                     bordered
                     avatar
                     size="tiny"
-                    name={
-                        state.profileInfo && state.profileInfo.username
-                            ? state.profileInfo.username
-                            : null
-                    }
+                    name={ resolveUserDisplayName(state) }
                 />
             )
     );
