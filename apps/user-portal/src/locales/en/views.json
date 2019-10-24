@@ -246,7 +246,7 @@
     },
     "securityQuestions": {
         "title": "Security questions",
-        "subTitle": "Add and update account recovery challenge questions",
+        "description": "Add and update account recovery challenge questions",
         "actionTitles": {
             "configure": "Configure security questions",
             "change": "Change security questions"

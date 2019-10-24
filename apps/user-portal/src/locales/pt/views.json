@@ -199,7 +199,7 @@
     },
     "securityQuestions": {
         "title": "Perguntas de segurança",
-        "subTitle": "Adicionar e Atualização de Recuperação de Conta do Desafio de Perguntas",
+        "description": "Adicionar e Atualização de Recuperação de Conta do Desafio de Perguntas",
         "actionTitles": {
             "configure": "Configurar questões de segurança",
             "change": "Alterar perguntas de segurança"
