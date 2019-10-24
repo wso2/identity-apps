@@ -77,31 +77,8 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                         visible: true
                     });
                 }
-                getFidoMetaData();
             });
-    }
-
-    const removeDevice = () => {
-        debugger;
-        console.log("I'm here!!");
-        const credentialId = "1234";
-        deleteDevice(credentialId)
-            .then((response) => {
-                if (response.status !== 200) {
-                    onNotificationFired({
-                        description: t(
-                            "views:securityPage.multiFactor.fido.notification.error.description"
-                        ),
-                        message: t(
-                            "views:securityPage.multiFactor.fido.notification.error.message"
-                        ),
-                        otherProps: {
-                            negative: true
-                        },
-                        visible: true
-                    });
-                }
-            });
+        getFidoMetaData();
     }
 
     return (
@@ -170,7 +147,6 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                             size="large"
                                                             color="red"
                                                             name="trash alternate outline"
-                                                            onClick={removeDevice}
                                                         />
                                                     </List.Content>
                                                 </Grid.Column>
