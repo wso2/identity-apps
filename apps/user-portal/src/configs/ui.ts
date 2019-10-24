@@ -17,6 +17,7 @@
  */
 
 import {
+    AccountRecoveryIconSet,
     DefaultAppIcon,
     DummyUser,
     HomeTileIcons,
@@ -24,7 +25,6 @@ import {
     MFAIconSet,
     SettigsSectionIconSet,
     SidePanelIconSet,
-    AccountRecoveryIconSet
 } from "@wso2is/theme";
 
 type ImageType = string;

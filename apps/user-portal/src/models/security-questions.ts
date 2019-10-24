@@ -28,7 +28,7 @@ export interface QuestionSetsInterface {
 }
 
 export interface AnswersInterface {
-    answer: string,
+    answer: string;
     question: string;
     questionSetId: string;
 }
