@@ -53,5 +53,7 @@
     "personalInfo": "Informação pessoal",
     "security": "Segurança",
     "operations": "Operações",
-    "filter": "Filtro"
+    "filter": "Filtro",
+    "privacy": "Privacidade",
+    "logout": "Sair"
 }

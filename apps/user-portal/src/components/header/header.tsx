@@ -17,6 +17,7 @@
  */
 
 import React, { useContext } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } from "semantic-ui-react";
 import { AuthContext } from "../../contexts";
@@ -40,6 +41,7 @@ interface HeaderProps {
  */
 export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps): JSX.Element => {
     const { state } = useContext(AuthContext);
+    const { t } = useTranslation();
     const { onSidePanelToggleClick, showSidePanelToggle } = props;
 
     const trigger = (
@@ -82,8 +84,8 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                             <div className="email">{ state.emails }</div>
                                             }
                                             <Divider hidden/>
-                                            <Button as={ Link } to="/my-apps" size="tiny"
-                                                    primary>My Apps</Button>
+                                            <Button as={ Link } to="/personal-info" size="tiny"
+                                                    primary>{ t("common:personalInfo") }</Button>
                                         </Item.Description>
                                     </Item.Content>
                                 </Item>
@@ -125,7 +127,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                     : null
                             }
                             <Dropdown.Item className="action-panel">
-                                <Link className="action-button" to="/logout">Logout</Link>
+                                <Link className="action-button" to="/logout">{ t("common:logout") }</Link>
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
