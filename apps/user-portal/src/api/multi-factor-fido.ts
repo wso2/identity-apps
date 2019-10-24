@@ -110,34 +110,6 @@ export const endFidoFlow = (clientResponse): Promise<any> => {
 };
 
 /**
- * Delete the FIDO device
- *
- * @return {Promise<any>} a promise containing the response.
- */
-export const deleteDevice = (credentialId): Promise<any> => {
-    return AuthenticateSessionUtil.getAccessToken().then((token) => {
-        const header = {
-            "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/x-www-form-urlencoded"
-        };
-
-        return axios.get(ServiceResourcesEndpoint.fidoMetaData,
-            {params: {credentialId}, headers: header})
-            .then((response) => {
-                if (response.status !== 200) {
-                    return Promise.reject(new Error("Failed device deletion."));
-                }
-                return Promise.resolve(response);
-            }).catch((error) => {
-                return Promise.reject(error);
-            });
-    }).catch((error) => {
-        return Promise.reject(error);
-    });
-};
-
-/**
  * This functions receive the response from the start-registration endpoint
  * and convert the values of the attributes of response object
  * from byte array to base64url format.
