@@ -21,7 +21,23 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 import * as locales from "../locales";
 
-// i18n initialization options
+/**
+ * Supported language list.
+ */
+const SupportedLanguages = {
+    en: {
+        flag: "us",
+        name: "English (US)"
+    },
+    pt: {
+        flag: "pt",
+        name: "Portuguese"
+    }
+};
+
+/*
+ * i18n initialization options
+ */
 const initOptions = {
     contextSeparator: "_",
     debug: false,
@@ -37,8 +53,31 @@ const initOptions = {
     resources: locales
 };
 
+/*
+ * initialize i18n
+ */
 i18n.use(LanguageDetector)
     .use(initReactI18next)
     .init(initOptions);
 
-export { i18n };
+/*
+ * If detected language is not a supported language fallback to default
+ */
+const defaultLanguageFallback = () => {
+    let unSupportedLanguage = true;
+
+    Object.keys(SupportedLanguages).forEach((elem) => {
+        if (elem === i18n.language) {
+            unSupportedLanguage = false;
+            return;
+        }
+    });
+
+    if (unSupportedLanguage) {
+        i18n.changeLanguage("en");
+    }
+};
+
+defaultLanguageFallback();
+
+export { i18n, SupportedLanguages };

@@ -17,7 +17,7 @@
  */
 
 import React, { SyntheticEvent } from "react";
-import { i18n } from "../../../configs";
+import { i18n, SupportedLanguages } from "../../../configs";
 import { LanguageSwitcherDropdown } from "./language-switcher-dropdown";
 
 /**
@@ -39,28 +39,7 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
     props: LanguageSwitcherProps
 ): JSX.Element => {
     const { direction, className, upward } = props;
-    const currentLang = i18n.language;
-
-    /**
-     * Resolves the display name for the language code returned by
-     * the i18next library.
-     *
-     * @return {string} - Resolved language display name.
-     */
-    const resolveLangDisplayName = (): string => {
-        switch (currentLang) {
-            case "en":
-                return "English";
-            case "en-GB":
-                return "English";
-            case "en-US":
-                return "English";
-            case "pt":
-                return "Portuguese";
-            default:
-                return currentLang;
-        }
-    };
+    const currentLang = i18n.languages[0];
 
     /**
      * Handles the language change.
@@ -69,9 +48,7 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
      * @param data - data object returned from the dropdown item.
      */
     const handleLanguageChange = (event: SyntheticEvent, data: any) => {
-        i18n.changeLanguage(data.value, () => {
-            window.location.reload();
-        });
+        i18n.changeLanguage(data.value);
     };
 
     return (
@@ -79,8 +56,9 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
             className={ className }
             direction={ direction }
             upward={ upward }
-            language={ resolveLangDisplayName() }
+            language={ currentLang }
             changeLanguage={ handleLanguageChange }
+            supportedLanguages={ SupportedLanguages }
         />
     );
 };
