@@ -72,7 +72,7 @@ export const SidePanelWrapper: React.FunctionComponent<SidePanelWrapperProps> = 
                         </Grid.Column>
                         <Grid.Column tablet={ 10 } computer={ 12 }>
                             { children }
-                        </Grid.Column>.
+                        </Grid.Column>
                     </Grid.Row>
                 </Grid>
             </Responsive>
