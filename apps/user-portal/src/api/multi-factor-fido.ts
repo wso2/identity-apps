@@ -19,7 +19,7 @@
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
 import axios from "axios";
 import { ServiceResourcesEndpoint } from "../configs";
-import { decode, encode} from "../helpers/base64Utils";
+import { decode, encode } from "../helpers/base64Utils";
 /**
  * Retrieve FIDO meta data
  *
