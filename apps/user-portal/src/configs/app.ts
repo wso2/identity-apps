@@ -24,6 +24,9 @@ interface ServiceResourcesType {
     challenges: string;
     challengeAnswers: string;
     consents: string;
+    fidoEnd: string;
+    fidoMetaData: string;
+    fidoStart: string;
     jwks: string;
     logout: string;
     me: string;
@@ -32,6 +35,7 @@ interface ServiceResourcesType {
     sessions: string;
     token: string;
     user: string;
+    userMeta: string;
     revoke: string;
     wellKnown: string;
 }
@@ -43,6 +47,9 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     challengeAnswers: `${ServiceEndpoint}/api/users/v1/me/challenge-answers`,
     challenges: `${ServiceEndpoint}/api/users/v1/me/challenges`,
     consents: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents`,
+    fidoEnd: `${ServiceEndpoint}/api/users/v1/me/webauthn/finish-registration`,
+    fidoMetaData: `${ServiceEndpoint}/api/users/v1/me/webauthn`,
+    fidoStart: `${ServiceEndpoint}/api/users/v1/me/webauthn/start-registration`,
     jwks: `${ServiceEndpoint}/oauth2/jwks`,
     logout: `${ServiceEndpoint}/oidc/logout`,
     me: `${ServiceEndpoint}/scim2/Me`,
@@ -52,5 +59,6 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     sessions: `${ServiceEndpoint}/t/carbon.super/api/users/v1/me/sessions`,
     token: `${ServiceEndpoint}/oauth2/token`,
     user: `${ServiceEndpoint}/api/identity/user/v1.0/me`,
-    wellKnown: `${ServiceEndpoint}/oauth2/oidcdiscovery/.well-known/openid-configuration`,
+    userMeta: `${ServiceEndpoint}/scim2/Schemas`,
+    wellKnown: `${ServiceEndpoint}/oauth2/oidcdiscovery/.well-known/openid-configuration`
 };
