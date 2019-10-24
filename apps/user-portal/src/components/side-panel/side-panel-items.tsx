@@ -17,6 +17,7 @@
  */
 
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
 import { DESKTOP_CONTENT_TOP_PADDING, routes, SidePanelIcons } from "../../configs";
@@ -41,6 +42,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
     props: SidePanelItemsProps
 ): JSX.Element => {
     const { headerHeight, type, onSidePanelItemClick } = props;
+    const { t } = useTranslation();
     const activeRoute = (path: string) => {
         const pathname = window.location.pathname;
         const urlTokens = path.split("/");
@@ -75,7 +77,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
                                 spaced="right"
                                 transparent
                             />
-                            <span className="route-name">{ route.name }</span>
+                            <span className="route-name">{ t(route.name) }</span>
                         </Menu.Item>
                         : null
                 ))

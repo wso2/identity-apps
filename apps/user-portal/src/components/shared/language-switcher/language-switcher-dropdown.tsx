@@ -17,11 +17,7 @@
  */
 
 import React, { SyntheticEvent } from "react";
-import { Dropdown } from "semantic-ui-react";
-
-const LanguageSwitcherTrigger = (language: string) => (
-    <span className="dropdown-trigger link">{ language }</span>
-);
+import { Dropdown, Flag, FlagNameValues } from "semantic-ui-react";
 
 /**
  * Proptypes for the language switcher dropdown component.
@@ -32,6 +28,7 @@ interface LanguageSwitcherDropdownProps {
     direction: "left" | "right";
     language: string;
     upward: boolean;
+    supportedLanguages: object;
 }
 
 /**
@@ -44,34 +41,27 @@ interface LanguageSwitcherDropdownProps {
 export const LanguageSwitcherDropdown: React.FunctionComponent<LanguageSwitcherDropdownProps> = (
     props: LanguageSwitcherDropdownProps
 ): JSX.Element => {
-    const { direction, className, language, changeLanguage, upward } = props;
-    const supportedLang = [
-        {
-            display: "English",
-            flag: "gb",
-            value: "en"
-        },
-        {
-            display: "Portuguese",
-            flag: "pt",
-            value: "pt"
-        }
-    ];
+    const { direction, className, language, changeLanguage, upward, supportedLanguages } = props;
+
+    const LanguageSwitcherTrigger = () => (
+        <span className="dropdown-trigger link">{ supportedLanguages[language].name }</span>
+    );
+
     return (
         <Dropdown
             item
             className={ className }
             upward={ upward }
-            trigger={ LanguageSwitcherTrigger(language) }
-            icon={ null }
+            trigger={ LanguageSwitcherTrigger() }
             direction={ direction }
             floating
         >
             <Dropdown.Menu>
                 {
-                    supportedLang.map((lang, index) => (
-                        <Dropdown.Item key={ index } onClick={ changeLanguage } value={ lang.value }>
-                            { lang.display }
+                    Object.keys(supportedLanguages).map((lang, index) => (
+                        <Dropdown.Item key={ index } onClick={ changeLanguage } value={ lang }>
+                            <Flag name={ supportedLanguages[lang].flag as FlagNameValues } />
+                             { supportedLanguages[lang].name }
                         </Dropdown.Item>
                     ))
                 }
