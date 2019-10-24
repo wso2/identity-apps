@@ -20,8 +20,8 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import {
-    NotificationComponent,
-    PendingApprovalsComponent
+    Approvals,
+    NotificationComponent
 } from "../components";
 import { InnerPageLayout } from "../layouts";
 import { createEmptyNotification, Notification } from "../models";
@@ -63,7 +63,7 @@ export const OperationsPage = (): JSX.Element => {
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
-                        <PendingApprovalsComponent onNotificationFired={ handleNotification } />
+                        <Approvals onNotificationFired={ handleNotification } />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

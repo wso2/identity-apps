@@ -19,6 +19,9 @@
  
 .ui.card {
     &.settings-card {
+        border: @settingsCardBorder;
+        box-shadow: none;
+
         // override the default the margin bottom
         &:last-child {
             margin-bottom: 0.3em;
@@ -36,7 +39,20 @@
             }
         }
         .top-action-panel {
-            padding: 0 @settingsCardPadding;;
+            box-shadow: none;
+            padding: 0 @settingsCardPadding;
+            border-left: 0;
+            border-right: 0;
+            border-top: @settingsCardTopActionPanelBorderTop;
+            border-bottom: @settingsCardTopActionPanelBorderBottom;
+
+            .description {
+                display: flex;
+                align-items: center;
+            }
+            &.no-margin-bottom {
+                margin-bottom: 0;
+            }
         }
         .main-content {
             .main-content-inner {
@@ -52,6 +68,9 @@
                     .last-column {
                         padding-right: @settingsCardPadding;
                     }
+                }
+                &.no-margin-top {
+                    margin-top: 0;
                 }
             }
         }
@@ -69,6 +88,30 @@
                     .action-button-text {
                         color: @black;
                     }
+                }
+            }
+        }
+        .settings-section-tab {
+            .ui.attached.menu:not(.tabular) {
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+            }
+            .ui.secondary.pointing.menu .item {
+                padding-left: @settingsCardPadding;
+                padding-right: @settingsCardPadding;
+                border-bottom-width: @settingsCardTabItemBorderBottom;
+
+                &:active, &.active {
+                    border-bottom-color: @settingsCardTabItemBorderBottomColor;
+                }
+            }
+            .ui.segment {
+                &.tab-pane {
+                    border: none;
+                    box-shadow: none;
+                    margin-top: 0;
+                    padding: 0;
                 }
             }
         }

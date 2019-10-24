@@ -22,7 +22,7 @@ import { Grid, Header, List } from "semantic-ui-react";
 import { DefaultPageLayout } from "../layouts";
 
 /**
- * Applications page.
+ * Privacy page.
  *
  * @return {JSX.Element}
  */
@@ -164,43 +164,39 @@ export const PrivacyPage = (): JSX.Element => {
                             <List.Item>
                                 { t("views:privacy.privacyPolicy.useOfPersonalInfo.description.list1.1") }
                                 <List.List>
-                                    <p>
-                                        { t("views:privacy.privacyPolicy.useOfPersonalInfo.description.subList1." +
-                                            "heading") }
-                                        <List.List>
-                                            <List.Item>
-                                                { t("views:privacy.privacyPolicy.useOfPersonalInfo.description." +
-                                                    "subList1.list.0") }
-                                            </List.Item>
-                                            <List.Item>
-                                                { t("views:privacy.privacyPolicy.useOfPersonalInfo.description." +
-                                                    "subList1.list.1") }
-                                            </List.Item>
-                                            <List.Item>
-                                                { t("views:privacy.privacyPolicy.useOfPersonalInfo.description." +
-                                                    "subList1.list.2") }
-                                            </List.Item>
-                                        </List.List>
-                                    </p>
+                                    { t("views:privacy.privacyPolicy.useOfPersonalInfo.description.subList1." +
+                                        "heading") }
+                                    <List.List>
+                                        <List.Item>
+                                            { t("views:privacy.privacyPolicy.useOfPersonalInfo.description." +
+                                                "subList1.list.0") }
+                                        </List.Item>
+                                        <List.Item>
+                                            { t("views:privacy.privacyPolicy.useOfPersonalInfo.description." +
+                                                "subList1.list.1") }
+                                        </List.Item>
+                                        <List.Item>
+                                            { t("views:privacy.privacyPolicy.useOfPersonalInfo.description." +
+                                                "subList1.list.2") }
+                                        </List.Item>
+                                    </List.List>
                                 </List.List>
                             </List.Item>
                             <List.Item>
                                 { t("views:privacy.privacyPolicy.useOfPersonalInfo.description.list1.2") }
                                 <List.List>
-                                    <p>
-                                        { t("views:privacy.privacyPolicy.useOfPersonalInfo.description.subList2." +
-                                            "heading") }
-                                        <List.List>
-                                            <List.Item>
-                                                { t("views:privacy.privacyPolicy.useOfPersonalInfo.description." +
-                                                    "subList2.list.0") }
-                                            </List.Item>
-                                            <List.Item>
-                                                { t("views:privacy.privacyPolicy.useOfPersonalInfo.description." +
-                                                    "subList2.list.1") }
-                                            </List.Item>
-                                        </List.List>
-                                    </p>
+                                    { t("views:privacy.privacyPolicy.useOfPersonalInfo.description.subList2." +
+                                        "heading") }
+                                    <List.List>
+                                        <List.Item>
+                                            { t("views:privacy.privacyPolicy.useOfPersonalInfo.description." +
+                                                "subList2.list.0") }
+                                        </List.Item>
+                                        <List.Item>
+                                            { t("views:privacy.privacyPolicy.useOfPersonalInfo.description." +
+                                                "subList2.list.1") }
+                                        </List.Item>
+                                    </List.List>
                                 </List.List>
                             </List.Item>
                         </List>

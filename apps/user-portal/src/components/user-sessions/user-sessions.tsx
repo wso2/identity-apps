@@ -20,7 +20,7 @@ import moment from "moment";
 import React, { FunctionComponent, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Container, Grid, Icon, List, Modal, Placeholder, SemanticICONS, Table } from "semantic-ui-react";
+import { Button, Container, Grid, Icon, List, Menu, Modal, Placeholder, SemanticICONS, Table } from "semantic-ui-react";
 import { UserAgentParser } from "../../helpers";
 import { UserSession, UserSessions } from "../../models";
 import { AppState } from "../../store";
@@ -562,16 +562,25 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                     ? t("views:userSessions.actionTitles.empty")
                     : null
             }
-            secondaryAction={
-                <Button
-                    basic
-                    onClick={ handleTerminateAllUserSessionsClick }
-                    color="red"
-                >
-                    { t("common:terminateAll") }
-                </Button>
-            }
         >
+            {
+                userSessions && userSessions.sessions && (userSessions.sessions.length > 0)
+                    ? (
+                        <Menu className="top-action-panel no-margin-bottom" borderless>
+                            <Menu.Menu position="right">
+                                <Button
+                                    className="borderless-button"
+                                    basic
+                                    color="red"
+                                    onClick={ handleTerminateAllUserSessionsClick }
+                                >
+                                    { t("common:terminateAll") }
+                                </Button>
+                            </Menu.Menu>
+                        </Menu>
+                    )
+                    : null
+            }
             <List divided verticalAlign="middle" className="main-content-inner">
                 {
                     isFetchUserSessionsRequestLoading

@@ -33,11 +33,16 @@ interface UserImageProps {
     inline?: boolean;
     name?: string;
     relaxed?: boolean | "very";
-    size?: SemanticSIZES | "little";
+    size?: UserImageSizes;
     spaced?: "left" | "right";
     style?: object;
     transparent?: boolean;
 }
+
+/**
+ * Type to handle user image sizes.
+ */
+export type UserImageSizes = SemanticSIZES | "little";
 
 /**
  * User image component.
@@ -67,7 +72,7 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
         [`floated-${ floated }`]: floated,
         inline,
         relaxed,
-        [`${ size }`]: size,
+        [`${ size }`]: size, // Size is used as a class to support the custom size "little"
         [`spaced-${ spaced }`]: spaced,
         transparent,
         "user-avatar": avatar,
@@ -75,11 +80,20 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
     }, className);
 
     /**
-     * Generates the initials for the avatar.
+     * Generates the initials for the avatar. If the name
+     * contains two or more words, two letter initial will
+     * be generated using the first two words of the name.
+     * i.e For the name "Brion Silva", "BS" will be generated.
+     * If the name only has one word, then only a single initial
+     * will be generated. i.e For "Brion", "B" will be generated.
      *
      * @return {string}
      */
     const generateInitials = (): string => {
+        const nameParts = name.split(" ");
+        if (nameParts.length >= 2) {
+            return (nameParts[0].charAt(0) + nameParts[1].charAt(0)).toUpperCase();
+        }
         return name.charAt(0).toUpperCase();
     };
 
@@ -89,12 +103,14 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
                 image
                     ? (
                         <Image
-                            src={ image }
-                            size={ size as SemanticSIZES }
+                            className={ `user-image ${ classes }` }
                             bordered={ bordered }
                             floated={ floated }
                             circular
-                        />
+                            style={ style }
+                        >
+                            <img alt="avatar" src={ image as string } />
+                        </Image>
                     )
                     : null
             }
@@ -104,7 +120,6 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
                     ? (
                         <Image
                             className={ `user-image ${ classes }` }
-                            size={ size as SemanticSIZES }
                             bordered={ bordered }
                             floated={ floated }
                             verticalAlign="middle"
@@ -116,15 +131,17 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
                         </Image>
                     )
                     : <Image
+                        className={ `user-image ${ classes }` }
                         src={ UserImageDummy }
-                        size={ size as SemanticSIZES }
                         bordered={ bordered }
                         floated={ floated }
                         verticalAlign="middle"
                         circular
                         centered
                         style={ style }
-                    />
+                    >
+                        <img alt="avatar" src={ image as string } />
+                    </Image>
                     : null
             }
         </>

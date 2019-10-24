@@ -20,6 +20,7 @@
 .ui.segment {
     &.edit-segment {
         background: @editSegmentBackgroundColor;
+        box-shadow: none;
         border: none;
 
         &.top-margin {

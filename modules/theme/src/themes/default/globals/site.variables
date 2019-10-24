@@ -65,6 +65,7 @@
 @iron             : #DADCE0;
 @whiteSmoke       : #f5f5f5;
 @dustyGray        : #9c9c9c;
+@gallery          : #eeeeee;
 
 /*-------------------
      Image Sizes

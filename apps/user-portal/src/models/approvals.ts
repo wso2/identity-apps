@@ -29,6 +29,10 @@ export interface ApprovalTaskSummary {
      */
     name: string;
     /**
+     * Details regarding the approval
+     */
+    details?: ApprovalTaskDetails;
+    /**
      * Display value for Approval Operation
      */
     presentationSubject: string;
