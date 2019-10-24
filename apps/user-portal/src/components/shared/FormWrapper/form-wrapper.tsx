@@ -17,191 +17,24 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Form, Button, Radio, FormField, SemanticWIDTHSNUMBER, SemanticSIZES, Divider } from "semantic-ui-react";
+import { Form, Button, Radio, Divider } from "semantic-ui-react";
 import { Password } from "./password";
-import { SemanticWIDTHS } from "semantic-ui-react/dist/commonjs/generic";
-
-/**
- * Form Field Types
- */
-type Type = "email"
-    | "text"
-    | "textarea"
-    | "password"
-    | "number"
-    | "submit"
-    | "radio"
-    | "dropdown"
-    | "checkbox"
-    | "reset"
-    | "button"
-    | "divider";
-
-/**
- * Model of the Validation object passed into validation fuinctions
- */
-export interface Validation {
-    isValid: boolean;
-    errorMessages: string[];
-}
-
-/**
- * Model of the Error object used by semntic Input elements to check for error
- */
-interface Error {
-    isError: boolean;
-    errorMessages: string[];
-}
-
-/**
- * Input field model
- */
-interface InputField {
-    placeholder: string;
-    name: string;
-    type: Type;
-    required: boolean;
-    label: string;
-    width?: SemanticWIDTHS;
-    validation: (value: string, validation: Validation, allValues?:Map<string,FormValue>) => void;
-    requiredErrorMessage: string;
-    value?: string;
-}
-
-/**
- * Form submit model
- */
-interface FormSubmit {
-    value: string;
-    type: Type;
-    size?: SemanticSIZES;
-    className?: string;
-}
-
-/**
- * Reset button model
- */
-interface Reset {
-    value: string;
-    type: Type;
-    size?: SemanticSIZES;
-    className?: string;
-}
-
-/**
- * Button model
- */
-interface Ibutton {
-    value: string;
-    type: string;
-    size?: SemanticSIZES;
-    className?: string;
-    onClick: () => void;
-}
-
-/**
- * Radio field child model
- */
-interface RadioChild {
-    label: string;
-    value: string;
-}
-
-/**
- * Radio field model
- */
-interface RadioField {
-    type: Type;
-    label: string
-    name: string;
-    default: string,
-    children: RadioChild[];
-    value?: string;
-}
-
-/**
- * Checkbox field child model
- */
-interface CheckboxChild {
-    label: string;
-    value: string;
-}
-
-/**
- * Checkbox field model
- */
-interface CheckboxField {
-    type: Type;
-    label: string
-    name: string;
-    children: CheckboxChild[];
-    value?: string[];
-}
-
-/**
- * Dropdown field child model
- */
-interface DropdownChild {
-    text: string;
-    value: string;
-    key: number;
-}
-
-/**
- * Dropdown field model
- */
-interface DropdownField {
-    type: Type;
-    label: string
-    name: string;
-    default?: string,
-    children: DropdownChild[];
-    placeholder?: string;
-    validation: (value: string, validation: Validation) => void;
-    requiredErrorMessage: string;
-    required: boolean;
-    value?: string;
-}
-
-/**
- * Group style types
- */
-type GroupStyle = "grouped" | "inline";
-
-/**
- * Group model
- */
-export interface Group {
-    startIndex: number;
-    endIndex: number;
-    style: GroupStyle;
-    width?: SemanticWIDTHS | 'equal';
-}
-
-/**
- * Divider model
- */
-interface Divider{
-    type: Type;
-    hidden: boolean;
-}
-
-/**
- * FormField types
- */
-export type FormField = InputField
-    | FormSubmit
-    | RadioField
-    | DropdownField
-    | CheckboxField
-    | Reset
-    | Ibutton
-    | Divider;
-
-/**
- * FormFied value types
- */
-type FormValue = string | string[];
+import {
+    Group,
+    FormValue,
+    Error,
+    FormField,
+    Validation,
+    InputField,
+    DropdownField,
+    CheckboxField,
+    FormSubmit,
+    RadioField,
+    Reset,
+    Ibutton,
+    Idivider,
+    RadioChild
+} from "../../../models";
 
 /**
  * Prop types for Form component
@@ -214,7 +47,7 @@ interface FormProps {
 }
 
 /**
- * This is a generic form component
+ * This is a Form wrapper component
  */
 export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps): JSX.Element => {
 
@@ -225,10 +58,16 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
     const [requiredFields, setRequiredFields] = useState(new Map<string, boolean>());
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    /**
+     * Initializes the state of the from everytime the passed formFields prop changes
+     */
     useEffect(() => {
         init(false);
     }, [formFields]);
 
+    /**
+     * passes the reset function as an argument into the triggerReset prop method
+     */
     useEffect(() => {
         triggerReset ? triggerReset(reset) : null;
         return () => {
@@ -258,7 +97,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
                                 : tempForm.set(inputField.name, "")
                     : null;
 
-                ((!inputField.value && !tempForm.has(inputField.name))
+                ((!inputField.value && !tempForm.get(inputField.name))
                     || isReset) && inputField.required
                     ? tempRequiredFields.set(inputField.name, false)
                     : tempRequiredFields.set(inputField.name, true)
@@ -354,8 +193,8 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      * Type guard to check if an input element is of the type Radio
      * @param toBeDetermined 
      */
-    const isDivider = (toBeDetermined: FormField): toBeDetermined is Divider => {
-        if ((toBeDetermined as Divider).type === "divider") {
+    const isDivider = (toBeDetermined: FormField): toBeDetermined is Idivider => {
+        if ((toBeDetermined as Idivider).type === "divider") {
             return true;
         }
         return false;
@@ -396,7 +235,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      * @param event 
      * @param name 
      */
-    const handleBlur = (event, name: string) => {
+    const handleBlur = (event:React.KeyboardEvent, name: string) => {
         let tempRequiredFields: Map<string, boolean> = new Map(requiredFields);
         let tempValidFields: Map<string, Validation> = new Map(validFields);
         
@@ -418,7 +257,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
         validFields: Map<string, Validation>
     ) => {
 
-        let inputField = formFields.find(inputField => {
+        let inputField:FormField = formFields.find(inputField => {
             return isInputField(inputField) && inputField.name === name;
         });
 
@@ -465,8 +304,8 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
     /**
      * Checks if all the required fields are filled
      */
-    const checkRequiredFieldsFilled = () => {
-        let requiredFilled = true;
+    const checkRequiredFieldsFilled = ():boolean => {
+        let requiredFilled:boolean = true;
         requiredFields.forEach(requiredField => {
             requiredField ? null : requiredFilled = false;
         });
@@ -476,8 +315,8 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
     /**
      * Checks if all the fields are validated
      */
-    const checkValidated = () => {
-        let isValidated = true;
+    const checkValidated = ():boolean => {
+        let isValidated:boolean = true;
         validFields.forEach(validField => {
             validField.isValid ? null : isValidated = false;
         })
@@ -527,7 +366,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      * Handles reset button click
      * @param event 
      */
-    const handleReset = (event) => {
+    const handleReset = (event:React.MouseEvent) => {
         event.preventDefault();
         reset();
     }
@@ -536,7 +375,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      * Generates a semantic Form element
      * @param inputField 
      */
-    const formFieldGenerator = (inputField: FormField) => {
+    const formFieldGenerator = (inputField: FormField):JSX.Element => {
         const { isError, errorMessages } = checkError(inputField);
         if (isInputField(inputField)) {
             if (inputField.type === "password") {
@@ -559,8 +398,10 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
                         placeholder={inputField.placeholder}
                         name={inputField.name}
                         value={form.get(inputField.name) as string || ""}
-                        onBlur={(event) => { handleBlur(event, inputField.name) }}
-                        onChange={(event) => { handleChange(event.target.value, inputField.name) }}
+                        onBlur={(event:React.KeyboardEvent) => { handleBlur(event, inputField.name) }}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                            handleChange(event.currentTarget.value, inputField.name)
+                        }}
                     />
                 );
             } else if (isRadioField(inputField)) {
@@ -568,7 +409,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
                     <Form.Group grouped>
                         <label>{inputField.label}</label>
                         {
-                            inputField.children.map((radio, index) => {
+                            inputField.children.map((radio:RadioChild, index:number) => {
                                 return (
                                     <Form.Field key={index}>
                                         <Radio
@@ -577,14 +418,16 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
                                             value={radio.value}
                                             checked={form.get(inputField.name) === radio.value}
                                             onChange={
-                                                (event, { value }) => {
+                                                (event:React.ChangeEvent<HTMLInputElement>, { value }) => {
                                                     handleChange(
                                                         value.toString(),
                                                         inputField.name
                                                     );
                                                 }
                                             }
-                                            onBlur={(event) => { handleBlur(event, inputField.name) }}
+                                            onBlur={(event: React.KeyboardEvent) => {
+                                                handleBlur(event, inputField.name)
+                                            }}
                                         />
                                     </Form.Field>
                                 )
@@ -601,19 +444,19 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
                         options={inputField.children}
                         value={form.get(inputField.name)}
                         onChange={
-                            (event, { value }) => {
+                            (event:React.ChangeEvent<HTMLInputElement>, { value }) => {
                                 handleChange(
                                     value.toString(),
                                     inputField.name
                                 );
                             }
                         }
-                        onBlur={(event) => { handleBlur(event, inputField.name) }}
+                        onBlur={(event:React.KeyboardEvent) => { handleBlur(event, inputField.name) }}
                         error={
                             isError
                                 ? {
                                     content:
-                                        errorMessages.map((errorMessage, index) => {
+                                        errorMessages.map((errorMessage:string, index:number) => {
                                             return <p key={index}>{errorMessage}</p>
                                         })
                                 }
@@ -637,20 +480,23 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
                                                 && (form.get(inputField.name) as string[])
                                                     .includes(checkbox.value)}
                                             onChange={
-                                                (event, { value }) => {
+                                                (event:React.ChangeEvent<HTMLInputElement>, { value }) => {
                                                     handleChangeCheckBox(
                                                         value.toString(),
                                                         inputField.name
                                                     );
                                                 }
                                             }
-                                            onBlur={(event) => { handleBlur(event, inputField.name) }}
+                                            onBlur={(event: React.KeyboardEvent) => {
+                                                handleBlur(event, inputField.name)
+                                            }}
                                             error={
                                                 index === 0
                                                     ? isError
                                                         ? {
                                                             content:
-                                                                errorMessages.map((errorMessage, index) => {
+                                                                errorMessages.map(
+                                                                    (errorMessage: string, index: number) => {
                                                                     return <p key={index}>{errorMessage}</p>
                                                                 }),
                                                             pointing: "left"
@@ -675,7 +521,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
                             isError
                                 ? {
                                     content:
-                                        errorMessages.map((errorMessage, index) => {
+                                        errorMessages.map((errorMessage:string, index:number) => {
                                             return <p key={index}>{errorMessage}</p>
                                         })
 
@@ -686,8 +532,10 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
                         placeholder={inputField.placeholder}
                         name={inputField.name}
                         value={form.get(inputField.name) || ""}
-                        onBlur={(event) => { handleBlur(event, inputField.name) }}
-                        onChange={(event) => { handleChange(event.target.value, inputField.name) }}
+                        onBlur={(event:React.KeyboardEvent) => { handleBlur(event, inputField.name) }}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                            handleChange(event.target.value, inputField.name)
+                        }}
                     />
                 )
             }
@@ -731,7 +579,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
     /**
      * This function renders the form
      */
-    const renderForm = () => {
+    const renderForm = ():JSX.Element[] => {
 
         let forms: JSX.Element[] = formFields.map((inputField: FormField, index: number) => {
             return <Form.Field key={index}>{formFieldGenerator(inputField)}</Form.Field>;

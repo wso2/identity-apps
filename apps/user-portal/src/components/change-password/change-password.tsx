@@ -21,8 +21,8 @@ import { useTranslation } from "react-i18next";
 import { Button, Container, Divider, Modal } from "semantic-ui-react";
 import { updatePassword } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
-import { Notification } from "../../models";
-import { EditSection, SettingsSection, FormWrapper, Validation } from "../shared";
+import { Notification, Validation } from "../../models";
+import { EditSection, SettingsSection, FormWrapper } from "../shared";
 
 /**
  * Constant to store the change password from identifier.

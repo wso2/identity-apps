@@ -240,7 +240,8 @@ export const Profile: FunctionComponent<ProfileProps> = (
                                                 placeholder: t("views:userProfile.forms.nameChangeForm.inputs" +
                                                     ".firstName.placeholder"),
                                                 required: true,
-                                                requiredErrorMessage: "",
+                                                requiredErrorMessage: t("views:userProfile.forms.nameChangeForm."
+                                                    + "inputs.firstName.validations.empty"),
                                                 validation: () => { },
                                                 label: t("views:userProfile.forms.nameChangeForm."
                                                     + "inputs.firstName.label"),
@@ -253,7 +254,9 @@ export const Profile: FunctionComponent<ProfileProps> = (
                                                     ".lastName.placeholder"),
                                                 value: editingProfileInfo.lastName,
                                                 required: true,
-                                                requiredErrorMessage: ""
+                                                requiredErrorMessage: t("views:userProfile.forms.nameChangeForm"+
+                                                    ".inputs.lastName.validations.empty"),
+                                                validation:()=>{}
                                             },
                                             {
                                                 type: "divider",
@@ -366,7 +369,8 @@ export const Profile: FunctionComponent<ProfileProps> = (
                                                 placeholder: t("views:userProfile.forms.emailChangeForm.inputs" +
                                                     ".email.placeholder"),
                                                 required: true,
-                                                requiredErrorMessage: "",
+                                                requiredErrorMessage: t("views:userProfile.forms.emailChangeForm"+
+                                                    ".inputs.email.validations.empty"),
                                                 validation: () => { },
                                                 label: t("views:userProfile.fields.email.label"),
                                                 value: editingProfileInfo.email
@@ -475,7 +479,8 @@ export const Profile: FunctionComponent<ProfileProps> = (
                                                 placeholder: t("views:userProfile.forms.organizationChangeForm" +
                                                     ".inputs.organization.placeholder"),
                                                 required: true,
-                                                requiredErrorMessage: "",
+                                                requiredErrorMessage: t("views:userProfile.forms." +
+                                                    "organizationChangeForm.inputs.organization.validations.empty"),
                                                 validation: () => { },
                                                 label: t("views:userProfile.fields.organization.label"),
                                                 value: editingProfileInfo.organisation
@@ -585,7 +590,8 @@ export const Profile: FunctionComponent<ProfileProps> = (
                                                 placeholder: t("views:userProfile.forms.mobileChangeForm" +
                                                     ".inputs.mobile.placeholder"),
                                                 required: true,
-                                                requiredErrorMessage: "",
+                                                requiredErrorMessage: t("views:userProfile.forms.mobileChangeForm" +
+                                                    ".inputs.mobile.validations.empty"),
                                                 validation: () => { },
                                                 label: t("views:userProfile.fields.mobile.label"),
                                                 value: editingProfileInfo.mobile

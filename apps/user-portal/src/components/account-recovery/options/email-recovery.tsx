@@ -21,9 +21,8 @@ import { useTranslation } from "react-i18next";
 import { Grid, Icon, List } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
-import { Notification } from "../../../models";
-import { EditSection, ThemeIcon, FormWrapper, Validation } from "../../shared";
-import { Rule } from "@cesium133/forgjs";
+import { Notification, Validation } from "../../../models";
+import { EditSection, ThemeIcon, FormWrapper } from "../../shared";
 
 /**
  * Proptypes for the EmailRecoveryComponent component.
@@ -226,13 +225,10 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                                             value: editedEmail,
                                             required: true,
                                             label: t("views:accountRecovery.emailRecovery.emailAddress"),
-                                            requiredErrorMessage: t(`views:accountRecovery.emailRecovery
-                                                .emailRequired`),
+                                            requiredErrorMessage: t("views:accountRecovery.emailRecovery"
+                                            +".emailRequired"),
                                             validation: (value: string, validation: Validation) => {
-                                                if (!new Rule({ type: "email" }).test(value)) {
-                                                    validation.isValid = false;
-                                                    validation.errorMessages.push("Invalid email")
-                                                }
+                                              
                                             }
                                         }, {
                                             type: "divider",

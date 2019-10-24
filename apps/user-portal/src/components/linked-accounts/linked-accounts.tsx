@@ -192,7 +192,8 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
                                                         ".inputs.username.placeholder"),
                                                     name: "username",
                                                     required: true,
-                                                    requiredErrorMessage: "",
+                                                    requiredErrorMessage: t("views:associatedAccounts.forms." +
+                                                        "addAccountForm.inputs.username.usernameRequired"),
                                                     validation: () => {
                                                         
                                                     },
@@ -205,7 +206,8 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
                                                         ".inputs.password.placeholder"),
                                                     name: "password",
                                                     required: true,
-                                                    requiredErrorMessage: "",
+                                                    requiredErrorMessage: t("views:associatedAccounts.forms" +
+                                                        ".addAccountForm.inputs.password.passwordRequired"),
                                                     label: t("views:associatedAccounts.forms.addAccountForm.inputs" +
                                                         ".password.label"),
                                                     validation: () => {

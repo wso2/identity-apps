@@ -193,25 +193,25 @@
             }
         }
     },
-    "accountRecovery":{
-        "title":"Account Recovery",
-        "subTitle":"View and manage your account recovery options",
-        "emailRecovery":{
-            "title":"Email Recovery",
-            "descriptionAdd":"Add a recovery email address",
-            "descriptionUpdate":"Update recovery email address ({{email}})",
-            "emailAddress":"Email Address",
-            "emailRequired":"Enter an email address",
-            "notification":{
-                "success":{
-                    "message":"Email Address Updated Auccessfully",
-                    "description":"The email address in the user profile has been updated successfully"
+    "accountRecovery": {
+        "title": "Account Recovery",
+        "subTitle": "View and manage your account recovery options",
+        "emailRecovery": {
+            "title": "Email Recovery",
+            "descriptionAdd": "Add a recovery email address",
+            "descriptionUpdate": "Update recovery email address ({{email}})",
+            "emailAddress": "Email Address",
+            "emailRequired": "Enter an email address",
+            "notification": {
+                "success": {
+                    "message": "Email Address Updated Auccessfully",
+                    "description": "The email address in the user profile has been updated successfully"
                 }
             }
         },
-        "codeRecovery":{
-            "title":"Code Recovery",
-            "description":"Add or update code recovery options"
+        "codeRecovery": {
+            "title": "Code Recovery",
+            "description": "Add or update code recovery options"
         }
     },
     "securityQuestions": {
@@ -229,14 +229,16 @@
                         "placeholder": "Select a security question",
                         "validations": {
                             "empty": "At least one security question must be selected"
-                        }
+                        },
+                        "questionRequired": "Select a question"
                     },
                     "answer": {
                         "label": "Answer",
                         "placeholder": "Enter your answer",
                         "validations": {
                             "empty": "Answer is a required field"
-                        }
+                        },
+                        "answerRequired": "Enter an answer"
                     }
                 }
             }
@@ -271,7 +273,7 @@
         "dropDown": {
             "label": "Select a Question"
         },
-        "noConfiguration" : "No security questions configured for this user"
+        "noConfiguration": "No security questions configured for this user"
     },
     "userProfile": {
         "title": "Profile",
@@ -396,14 +398,16 @@
                         "placeholder": "Enter the username",
                         "validations": {
                             "empty": "Username is a required field"
-                        }
+                        },
+                        "usernameRequired": "Enter a username"
                     },
                     "password": {
                         "label": "Password",
                         "placeholder": "Enter the password",
                         "validations": {
                             "empty": "Password is a required field"
-                        }
+                        },
+                        "passwordRequired": "Enter a password"
                     }
                 }
             }
