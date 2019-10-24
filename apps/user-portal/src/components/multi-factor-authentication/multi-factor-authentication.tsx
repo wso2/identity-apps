@@ -44,7 +44,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                     <SMSOTPAuthenticator onNotificationFired={ onNotificationFired }/>
                 </List.Item>
                 <List.Item className="inner-list-item">
-                    <FIDOAuthenticator />
+                    <FIDOAuthenticator onNotificationFired={ onNotificationFired } />
                 </List.Item>
             </List>
         </SettingsSection>
