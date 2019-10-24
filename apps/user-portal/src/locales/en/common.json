@@ -54,5 +54,6 @@
     "security": "Security",
     "operations": "Operations",
     "filter": "Filter",
-    "privacy": "Privacy"
+    "privacy": "Privacy",
+    "logout": "Logout"
 }
