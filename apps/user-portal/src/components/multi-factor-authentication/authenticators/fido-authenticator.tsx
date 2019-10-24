@@ -19,7 +19,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Modal } from "semantic-ui-react";
-import { getMetaData, startFidoFlow } from "../../../api";
+import { deleteDevice, getMetaData, startFidoFlow } from "../../../api";
 import { MFAIcons } from "../../../configs";
 import { Notification } from "../../../models";
 import { ThemeIcon } from "../../shared";
@@ -39,7 +39,7 @@ interface FIDOAuthenticatorProps {
 export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> = (props: FIDOAuthenticatorProps):
     JSX.Element => {
     const { t } = useTranslation();
-    const [ regTime, setRegTime ] = useState([]);
+    const [ deviceList, setDeviceList ] = useState([]);
     const { onNotificationFired } = props;
 
     useEffect(() => {
@@ -47,15 +47,15 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     }, []);
 
     const getFidoMetaData = () => {
-        const time = [];
+        const devices = [];
         getMetaData()
             .then((response) => {
                 if (response.status === 200) {
                     // tslint:disable-next-line:prefer-for-of
                     for (let i = 0; i < response.data.length; i++) {
-                        time.push(response.data[i].registrationTime);
+                        devices.push(response.data[i]);
                     }
-                    setRegTime(time);
+                    setDeviceList(devices);
                 }
             });
     };
@@ -78,6 +78,29 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                     });
                 }
                 getFidoMetaData();
+            });
+    }
+
+    const removeDevice = () => {
+        debugger;
+        console.log("I'm here!!");
+        const credentialId = "1234";
+        deleteDevice(credentialId)
+            .then((response) => {
+                if (response.status !== 200) {
+                    onNotificationFired({
+                        description: t(
+                            "views:securityPage.multiFactor.fido.notification.error.description"
+                        ),
+                        message: t(
+                            "views:securityPage.multiFactor.fido.notification.error.message"
+                        ),
+                        otherProps: {
+                            negative: true
+                        },
+                        visible: true
+                    });
+                }
             });
     }
 
@@ -119,10 +142,10 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                 </Grid.Row>
             </Grid>
             {
-                regTime ? (
+                deviceList ? (
                         <List divided verticalAlign="middle" className="main-content-inner">
                             {
-                                regTime.map((time, index) => (
+                                deviceList.map((device, index) => (
                                     <List.Item className="inner-list-item" key={index}>
                                         <Grid padded>
                                             <Grid.Row columns={2} className="first-column">
@@ -135,7 +158,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                             color="green"
                                                             name="check circle outline"
                                                         />
-                                                        {time}
+                                                        {device.registrationTime}
                                                     </List.Header>
                                                 </Grid.Column>
                                                 <Grid.Column width={5} className="last-column">
@@ -147,6 +170,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                             size="large"
                                                             color="red"
                                                             name="trash alternate outline"
+                                                            onClick={removeDevice}
                                                         />
                                                     </List.Content>
                                                 </Grid.Column>

@@ -18,13 +18,16 @@
 
 const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 
-// Use a lookup table to find the index.
+/**
+ * Use a lookup table to find the index.
+ * @type {Uint8Array}
+ */
 const lookup = new Uint8Array(256);
 for (let i = 0; i < chars.length; i++) {
     lookup[chars.charCodeAt(i)] = i;
 }
 
-export const encode = (arraybuffer) => {
+export const Encode = (arraybuffer) => {
     var bytes = new Uint8Array(arraybuffer),
         i, len = bytes.length, base64 = "";
 
@@ -44,7 +47,7 @@ export const encode = (arraybuffer) => {
     return base64;
 };
 
-export const decode = (base64) => {
+export const Decode = (base64) => {
     let bufferLength = base64.length * 0.75,
         len = base64.length, i, p = 0,
         encoded1, encoded2, encoded3, encoded4;

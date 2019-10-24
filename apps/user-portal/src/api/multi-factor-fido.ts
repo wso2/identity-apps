@@ -19,7 +19,8 @@
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
 import axios from "axios";
 import { ServiceResourcesEndpoint } from "../configs";
-import { decode, encode } from "../helpers/base64Utils";
+import { Decode, Encode } from "../helpers/base64-utils";
+
 /**
  * Retrieve FIDO meta data
  *
@@ -39,6 +40,33 @@ export const getMetaData = (): Promise<any> => {
                 if (response.status !== 200) {
                     return Promise.reject(new Error("Failed get meta info from: "
                         + ServiceResourcesEndpoint.fidoMetaData));
+                }
+                return Promise.resolve(response);
+            }).catch((error) => {
+                return Promise.reject(error);
+            });
+    }).catch((error) => {
+        return Promise.reject(error);
+    });
+};
+
+/**
+ * Delete the FIDO device
+ *
+ * @return {Promise<any>} a promise containing the response.
+ */
+export const deleteDevice = (credentialId): Promise<any> => {
+    return AuthenticateSessionUtil.getAccessToken().then((token) => {
+        const header = {
+            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/x-www-form-urlencoded"
+        };
+
+        return axios.delete(ServiceResourcesEndpoint.fidoMetaData + "/" + credentialId, {headers: header})
+            .then((response) => {
+                if (response.status !== 200) {
+                    return Promise.reject(new Error("Failed device deletion."));
                 }
                 return Promise.resolve(response);
             }).catch((error) => {
@@ -133,8 +161,8 @@ const responseToObject = (response) => {
             return {
                 id: response.id,
                 response: {
-                    attestationObject: encode(response.response.attestationObject),
-                    clientDataJSON: encode(response.response.clientDataJSON)
+                    attestationObject: Encode(response.response.attestationObject),
+                    clientDataJSON: Encode(response.response.clientDataJSON)
                 },
                 // tslint:disable-next-line:object-literal-sort-keys
                 clientExtensionResults,
@@ -144,10 +172,10 @@ const responseToObject = (response) => {
             return {
                 id: response.id,
                 response: {
-                    authenticatorData: encode(response.response.authenticatorData),
-                    clientDataJSON: encode(response.response.clientDataJSON),
-                    signature: encode(response.response.signature),
-                    userHandle: response.response.userHandle && encode(response.response.userHandle)
+                    authenticatorData: Encode(response.response.authenticatorData),
+                    clientDataJSON: Encode(response.response.clientDataJSON),
+                    signature: Encode(response.response.signature),
+                    userHandle: response.response.userHandle && Encode(response.response.userHandle)
                 },
                 // tslint:disable-next-line:object-literal-sort-keys
                 clientExtensionResults,
@@ -199,7 +227,7 @@ const connectToDevice = (requestId, credentialCreationOptions) => {
  */
 const decodePublicKeyCredentialCreationOptions = (request) => {
     const excludeCredentials = request.excludeCredentials.map((credential) => {
-        return { ...credential, id: decode(credential.id)};
+        return { ...credential, id: Decode(credential.id)};
     });
 
     return {
@@ -207,10 +235,10 @@ const decodePublicKeyCredentialCreationOptions = (request) => {
         attestation: "direct",
         user: {
             ...request.user,
-            id: decode(request.user.id),
+            id: Decode(request.user.id),
         },
         // tslint:disable-next-line:object-literal-sort-keys
-        challenge: decode(request.challenge),
+        challenge: Decode(request.challenge),
         excludeCredentials,
     };
 };
