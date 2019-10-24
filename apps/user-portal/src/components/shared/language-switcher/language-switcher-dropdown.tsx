@@ -28,7 +28,7 @@ interface LanguageSwitcherDropdownProps {
     direction: "left" | "right";
     language: string;
     upward: boolean;
-    supportedLanguages: any;
+    supportedLanguages: object;
 }
 
 /**
