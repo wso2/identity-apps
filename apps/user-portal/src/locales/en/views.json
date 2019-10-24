@@ -64,7 +64,17 @@
             },
             "fido": {
                 "title": "FIDO",
-                "description": "Authenticate yourself by connecting a FIDO key"
+                "description": "Authenticate yourself by connecting a FIDO key",
+                "notification": {
+                    "success": {
+                        "message": "Your Device Registered Successfully",
+                        "description": "The device was successfully registered and now you can use it as a second factor."
+                    },
+                    "error": {
+                        "message": "Something Went Wrong !!!",
+                        "description": "An error occurred while registering the device."
+                    }
+                }
             }
         }
     },
