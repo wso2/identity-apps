@@ -44,7 +44,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
 
     useEffect(() => {
         getFidoMetaData();
-    }, []);
+    }, [deviceList]);
 
     const getFidoMetaData = () => {
         const devices = [];
@@ -120,14 +120,14 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             </Grid>
             {
                 deviceList ? (
-                        <List divided verticalAlign="middle" className="main-content-inner">
+                        <List divided verticalAlign="middle" className="main-content-inner settings-section-inner-list">
                             {
                                 deviceList.map((device, index) => (
                                     <List.Item className="inner-list-item" key={index}>
                                         <Grid padded>
                                             <Grid.Row columns={2} className="first-column">
                                                 <Grid.Column width={11}>
-                                                    <List.Header style={{ "padding-left": "37px" }}>
+                                                    <List.Header className="with-left-padding">
                                                         <Icon
                                                             floated="right"
                                                             className="list-icon"
