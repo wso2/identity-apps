@@ -18,11 +18,12 @@
 
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Divider, Form, Grid, Icon, List } from "semantic-ui-react";
+import { Grid, Icon, List } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../../../api";
 import { MFAIcons } from "../../../configs";
-import { Notification } from "../../../models";
-import { EditSection, ThemeIcon } from "../../shared";
+import { Notification, Validation } from "../../../models";
+import { EditSection, ThemeIcon, FormWrapper } from "../../shared";
+import Joi from "@hapi/joi";
 
 /**
  * Proptypes for the SMS OTP component.
@@ -38,12 +39,11 @@ interface SMSOTPProps {
  */
 export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props: SMSOTPProps): JSX.Element => {
     const [mobile, setMobile] = useState("");
-    const [editedMobile, setEditedMobile] = useState("");
     const [isEdit, setIsEdit] = useState(false);
-    const {t} = useTranslation();
-    const {onNotificationFired} = props;
+    const { t } = useTranslation();
+    const { onNotificationFired } = props;
 
-    const handleUpdate = () => {
+    const handleUpdate = (mobileNumber) => {
         const data = {
             Operations: [
                 {
@@ -56,16 +56,11 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
             ]
         };
 
-        const phoneNumbers = {
-            type: "mobile",
-            value: mobile
-        };
-
         data.Operations[0].value = {
             phoneNumbers: [
                 {
                     type: "mobile",
-                    value: editedMobile
+                    value: mobileNumber
                 }
             ]
         };
@@ -107,23 +102,12 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
             });
     };
 
-    /**
-     * The following function handles the change of state of the input fields.
-     * The id of the event target will be used to set the state.
-     * @param event
-     */
-    const handleFieldChange = (event) => {
-        setEditedMobile(event.target.value);
-        event.preventDefault();
-    };
-
     const setMobileNo = (resp) => {
         let mobileNumber = "";
         resp.phoneNumbers.map((mobileNo) => {
             mobileNumber = mobileNo.value;
         });
         setMobile(mobileNumber);
-        setEditedMobile(mobileNumber);
     };
 
     const handleEdit = () => {
@@ -137,40 +121,40 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
     const showEditView = () => {
         if (!isEdit) {
             return (<Grid padded>
-                    <Grid.Row columns={2}>
-                        <Grid.Column width={11} className="first-column">
-                            <List.Content floated="left">
-                                <ThemeIcon
-                                    icon={MFAIcons.sms}
-                                    size="mini"
-                                    twoTone
-                                    transparent
-                                    square
-                                    rounded
-                                    relaxed
-                                />
-                            </List.Content>
-                            <List.Content>
-                                <List.Header>{t("views:securityPage.multiFactor.smsOtp.title")}</List.Header>
-                                <List.Description>
-                                    {t("views:securityPage.multiFactor.smsOtp.description")}
-                                </List.Description>
-                            </List.Content>
-                        </Grid.Column>
-                        <Grid.Column width={5} className="last-column">
-                            <List.Content floated="right">
-                                <Icon
-                                    link
-                                    onClick={handleEdit}
-                                    className="list-icon"
-                                    size="small"
-                                    color="grey"
-                                    name="pencil alternate"
-                                />
-                            </List.Content>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+                <Grid.Row columns={2}>
+                    <Grid.Column width={11} className="first-column">
+                        <List.Content floated="left">
+                            <ThemeIcon
+                                icon={MFAIcons.sms}
+                                size="mini"
+                                twoTone
+                                transparent
+                                square
+                                rounded
+                                relaxed
+                            />
+                        </List.Content>
+                        <List.Content>
+                            <List.Header>{t("views:securityPage.multiFactor.smsOtp.title")}</List.Header>
+                            <List.Description>
+                                {t("views:securityPage.multiFactor.smsOtp.description")}
+                            </List.Description>
+                        </List.Content>
+                    </Grid.Column>
+                    <Grid.Column width={5} className="last-column">
+                        <List.Content floated="right">
+                            <Icon
+                                link
+                                onClick={handleEdit}
+                                className="list-icon"
+                                size="small"
+                                color="grey"
+                                name="pencil alternate"
+                            />
+                        </List.Content>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
             );
         }
         return (
@@ -181,31 +165,68 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                             <List>
                                 <List.Item>
                                     <List.Content>
-                                        <Form>
-                                            <Form.Field width={9}>
-                                                <label>Mobile Number</label>
-                                                <input onChange={handleFieldChange} value={editedMobile}/>
-                                                <br /><br />
-                                                <p style={{fontSize: "12px"}}>
-                                                    <Icon
-                                                        color="grey"
-                                                        floated="left"
-                                                        name="info circle"
-                                                    />
-                                                    NOTE: This will update the mobile number in your profile
-                                                </p>
-                                            </Form.Field>
-                                        </Form>
+                                        <FormWrapper
+                                            formFields={[
+                                                {
+                                                    type: "text",
+                                                    required: true,
+                                                    requiredErrorMessage: t("views:userProfile.forms.mobileChangeForm"
+                                                        + ".inputs.mobile.validations.empty"),
+                                                    value:mobile,
+                                                    validation: (value: string, validation: Validation) => { 
+                                                        let error = Joi.number().integer().validate(value).error;
+                                                        if (error) {
+                                                            validation.isValid = false;
+                                                            validation.errorMessages.push(error.message);
+                                                        }
+                                                    },
+                                                    label: t("views:userProfile.forms.mobileChangeForm.inputs"
+                                                        + ".mobile.label"),
+                                                    placeholder: t("views:userProfile.forms.mobileChangeForm.inputs"
+                                                        + ".mobile.placeholder"),
+                                                    name: "mobileNumber"
+                                                },
+                                                {
+                                                    type: "custom",
+                                                    element:
+                                                        <p style={{ fontSize: "12px" }}>
+                                                            <Icon
+                                                                color="grey"
+                                                                floated="left"
+                                                                name="info circle"
+                                                            />
+                                                            NOTE: This will update the mobile number in your profile
+                                                        </p>
+                                                },
+                                                {
+                                                    type: "divider",
+                                                    hidden: true
+                                                },
+                                                {
+                                                    type: "submit",
+                                                    size: "small",
+                                                    value: t("common:update").toString()
+                                                },
+                                                {
+                                                    type: "button",
+                                                    size: "small",
+                                                    className: "link-button",
+                                                    value: t("common:cancel").toString(),
+                                                    onClick: handleCancel
+                                                }
+                                            ]}
+                                            groups={[
+                                                {
+                                                    startIndex: 3,
+                                                    endIndex: 5,
+                                                    style: "inline"
+                                                }
+                                            ]}
+                                            onSubmit={(values: Map<string, string>) => {
+                                                handleUpdate(values.get("mobileNumber"));
+                                            }}
+                                        />
                                     </List.Content>
-                                </List.Item>
-                                <Divider hidden/>
-                                <List.Item>
-                                    <Button primary onClick={handleUpdate} size="small">
-                                        {t("common:update")}
-                                    </Button>
-                                    <Button className="link-button" onClick={handleCancel} size="small">
-                                        {t("common:cancel")}
-                                    </Button>
                                 </List.Item>
                             </List>
                         </Grid.Column>
