@@ -25,4 +25,4 @@ export * from "./protected-route";
 export * from "./settings-section";
 export * from "./ui";
 export * from "./user-image";
-export * from "./FormWrapper/form-wrapper";
+export * from "./form-wrapper";
