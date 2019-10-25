@@ -23,6 +23,8 @@ import { getProfileInfo, updateProfileInfo } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
 import { Notification, Validation } from "../../../models";
 import { EditSection, ThemeIcon, FormWrapper } from "../../shared";
+import Joi from "@hapi/joi";
+import { valid } from "joi";
 
 /**
  * Proptypes for the EmailRecoveryComponent component.
@@ -226,9 +228,16 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                                             required: true,
                                             label: t("views:accountRecovery.emailRecovery.emailAddress"),
                                             requiredErrorMessage: t("views:accountRecovery.emailRecovery"
-                                            +".emailRequired"),
+                                                + ".emailRequired"),
                                             validation: (value: string, validation: Validation) => {
-                                              
+                                                let emailError = Joi.string().email({ tlds: { allow: ["com"] } })
+                                                    .validate(value).error;
+                                                if (emailError) {
+                                                    validation.isValid = false;
+                                                    validation.errorMessages.push(
+                                                        emailError.message
+                                                    );
+                                                }
                                             }
                                         }, {
                                             type: "divider",
