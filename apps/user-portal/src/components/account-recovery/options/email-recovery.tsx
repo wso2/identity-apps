@@ -24,7 +24,6 @@ import { AccountRecoveryIcons } from "../../../configs";
 import { Notification, Validation } from "../../../models";
 import { EditSection, ThemeIcon, FormWrapper } from "../../shared";
 import Joi from "@hapi/joi";
-import { valid } from "joi";
 
 /**
  * Proptypes for the EmailRecoveryComponent component.

@@ -106,7 +106,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     /**
      * The following method handles the onClick event of the change button
      */
-    const handleEdit = (question: string | number, index:number) => {
+    const handleEdit = (question: string | number, index: number) => {
         setIsEdit(question);
         setQuestionIndex(index);
     }
@@ -340,7 +340,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                 )
             }
         });
-        formFields=formFields.concat([
+        formFields = formFields.concat([
             {
                 type: "divider",
                 hidden: true
@@ -355,7 +355,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                 size: "small",
                 className: "link-button",
                 value: t("common:cancel").toString(),
-                onClick: () => handleEdit(-1,-1)
+                onClick: () => handleEdit(-1, -1)
             }
         ]);
         return formFields;
@@ -391,7 +391,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                     ? null
                                     : <Icon
                                         link
-                                        onClick={() => { handleEdit(0,0) }}
+                                        onClick={() => { handleEdit(0, 0) }}
                                         className="list-icon"
                                         size="small"
                                         color="grey"
@@ -413,11 +413,9 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                     return (
                                         <List.Item key={index} className="inner-list-item">
                                             <Grid padded>
-                                                <Grid.Row columns={3}>
-                                                    <Grid.Column width={2}>
-                                                    </Grid.Column>
-                                                    <Grid.Column width={9} className="first-column">
-                                                        <List.Content>{answer.question}</List.Content>
+                                                <Grid.Row columns={2} className="first-column">
+                                                    <Grid.Column width={11} className="first-column">
+                                                        <List.Header>{answer.question}</List.Header>
                                                     </Grid.Column>
                                                     <Grid.Column width={5} className="last-column">
                                                         <List.Content floated="right">
@@ -453,7 +451,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                         <Grid>
                             <Grid.Row columns={2}>
                                 <Grid.Column width={4}>
-                                    {t("common:challengeQuestionNumber", { number: questionIndex+ 1 })}
+                                    {t("common:challengeQuestionNumber", { number: questionIndex + 1 })}
                                 </Grid.Column>
                                 <Grid.Column width={12}>
                                     <FormWrapper
