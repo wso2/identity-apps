@@ -33,7 +33,8 @@ import {
     Reset,
     Ibutton,
     Idivider,
-    RadioChild
+    RadioChild,
+    CustomField
 } from "../../../models";
 
 /**
@@ -117,7 +118,8 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
         if ((toBeDetermined as InputField).type !== "submit"
             && (toBeDetermined as InputField).type !== "reset"
             && (toBeDetermined as InputField).type !== "button"
-            && (toBeDetermined as InputField).type !== "divider") {
+            && (toBeDetermined as InputField).type !== "divider"
+            && (toBeDetermined as InputField).type !== "custom") {
             return true;
         }
         return false;
@@ -195,6 +197,17 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      */
     const isDivider = (toBeDetermined: FormField): toBeDetermined is Idivider => {
         if ((toBeDetermined as Idivider).type === "divider") {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Type guard to check if an input element is of the type Radio
+     * @param toBeDetermined 
+     */
+    const isCustomField = (toBeDetermined: FormField): toBeDetermined is CustomField => {
+        if ((toBeDetermined as CustomField).type === "custom") {
             return true;
         }
         return false;
@@ -573,6 +586,8 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
             return (
                 <Divider hidden={inputField.hidden}/>
             );
+        } else if (isCustomField(inputField)) {
+            return inputField.element;
         }
     }
 

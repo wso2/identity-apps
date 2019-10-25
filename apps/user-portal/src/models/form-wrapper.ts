@@ -32,7 +32,8 @@ export type Type = "email"
     | "checkbox"
     | "reset"
     | "button"
-    | "divider";
+    | "divider"
+    | "custom";
 
 /**
  * Model of the Validation object passed into validation fuinctions
@@ -102,6 +103,14 @@ export interface Ibutton {
 export interface RadioChild {
     label: string;
     value: string;
+}
+
+/**
+ * Custom field model
+ */
+export interface CustomField {
+    type: Type,
+    element: JSX.Element
 }
 
 /**
@@ -193,7 +202,8 @@ export type FormField = InputField
     | CheckboxField
     | Reset
     | Ibutton
-    | Idivider;
+    | Idivider
+    | CustomField;
 
 /**
  * FormFied value types
