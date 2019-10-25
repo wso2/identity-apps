@@ -16,8 +16,5 @@
  * under the License.
  */
 
-import * as en from "./en";
-import * as pt from "./pt";
-import * as ta from "./ta";
-
-export { en, pt, ta };
+export { default as common } from "./common.json";
+export { default as views } from "./views.json";
