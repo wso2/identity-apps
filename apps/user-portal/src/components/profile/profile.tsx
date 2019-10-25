@@ -16,14 +16,14 @@
  * under the License
  */
 
-import React, { ChangeEvent, FunctionComponent, useContext, useEffect, useState } from "react";
+import React, { FunctionComponent, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Divider, Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
+import { Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../../api";
 import { AuthContext } from "../../contexts";
 import { resolveUserAvatar } from "../../helpers";
 import { createEmptyProfile, Notification } from "../../models";
-import { EditSection, SettingsSection } from "../shared";
+import { EditSection, SettingsSection, FormWrapper } from "../shared";
 
 /**
  * Proptypes for the basic details component.
@@ -41,9 +41,9 @@ interface ProfileProps {
 export const Profile: FunctionComponent<ProfileProps> = (
     props: ProfileProps
 ): JSX.Element => {
-    const [ profileInfo, setProfileInfo ] = useState(createEmptyProfile());
-    const [ editingProfileInfo, setEditingProfileInfo ] = useState(createEmptyProfile());
-    const [ editingForm, setEditingForm ] = useState({
+    const [profileInfo, setProfileInfo] = useState(createEmptyProfile());
+    const [editingProfileInfo, setEditingProfileInfo] = useState(createEmptyProfile());
+    const [editingForm, setEditingForm] = useState({
         emailChangeForm: false,
         mobileChangeForm: false,
         nameChangeForm: false,
@@ -85,25 +85,12 @@ export const Profile: FunctionComponent<ProfileProps> = (
     };
 
     /**
-     * The following method handles the change of state of the input fields.
-     * The id of the event target will be used to set the state.
-     *
-     * @param {ChangeEvent<HTMLInputElement>} e - Input change event
-     */
-    const handleFieldChange = (e: ChangeEvent<HTMLInputElement>): void => {
-        setEditingProfileInfo({
-            ...editingProfileInfo,
-            [e.target.id]: e.target.value
-        });
-        event.preventDefault();
-    };
-
-    /**
      * The following method handles the `onSubmit` event of forms.
      *
      * @param formName - Name of the form
      */
-    const handleSubmit = (formName: string): void => {
+    const handleSubmit = (values: Map<string, string | string[]>, formName: string): void => {
+
         const data = {
             Operations: [
                 {
@@ -117,35 +104,35 @@ export const Profile: FunctionComponent<ProfileProps> = (
         };
 
         switch (formName) {
-            case "nameChangeForm" : {
+            case "nameChangeForm": {
                 data.Operations[0].value = {
                     name: {
-                        familyName: editingProfileInfo.lastName,
-                        givenName: editingProfileInfo.displayName
+                        familyName: values.get("lastName"),
+                        givenName: values.get("displayName")
                     }
                 };
                 break;
             }
-            case "emailChangeForm" : {
+            case "emailChangeForm": {
                 data.Operations[0].value = {
-                    emails: [ editingProfileInfo.email ]
+                    emails: [values.get("email")]
                 };
                 break;
             }
-            case "organizationChangeForm" : {
+            case "organizationChangeForm": {
                 data.Operations[0].value = {
                     "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
-                        organization: editingProfileInfo.organisation
+                        organization: values.get("organisation")
                     }
                 };
                 break;
             }
-            case "mobileChangeForm" : {
+            case "mobileChangeForm": {
                 data.Operations[0].value = {
                     phoneNumbers: [
                         {
                             type: "mobile",
-                            value: editingProfileInfo.mobile
+                            value: values.get("mobile")
                         }
                     ],
                 };
@@ -245,48 +232,69 @@ export const Profile: FunctionComponent<ProfileProps> = (
             ? (
                 <EditSection>
                     <Grid>
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column width={ 4 }>
-                                { t("views:userProfile.fields.name.label") }
+                        <Grid.Row columns={2}>
+                            <Grid.Column width={4}>
+                                {t("views:userProfile.fields.name.label")}
                             </Grid.Column>
-                            <Grid.Column width={ 12 }>
-                                <Form onSubmit={ () => handleSubmit("nameChangeForm") }>
-                                    <Form.Field>
-                                        <label>
-                                            { t("views:userProfile.forms.nameChangeForm.inputs.firstName.label") }
-                                        </label>
-                                        <input
-                                            required
-                                            id="displayName"
-                                            placeholder={ t("views:userProfile.forms.nameChangeForm.inputs" +
-                                                ".firstName.placeholder") }
-                                            value={ editingProfileInfo.displayName }
-                                            onChange={ handleFieldChange }/>
-                                    </Form.Field>
-                                    <Form.Field>
-                                        <label>
-                                            { t("views:userProfile.forms.nameChangeForm.inputs.lastName.label") }
-                                        </label>
-                                        <input
-                                            required
-                                            id="lastName"
-                                            placeholder={ t("views:userProfile.forms.nameChangeForm.inputs" +
-                                                ".lastName.placeholder") }
-                                            value={ editingProfileInfo.lastName }
-                                            onChange={ handleFieldChange }/>
-                                    </Form.Field>
-                                    <Divider hidden/>
-                                    <Button type="submit" primary size="small">
-                                        { t("common:save") }
-                                    </Button>
-                                    <Button
-                                        size="small"
-                                        className="link-button"
-                                        onClick={ () => hideFormEditView("nameChangeForm") }
-                                    >
-                                        { t("common:cancel") }
-                                    </Button>
-                                </Form>
+                            <Grid.Column width={12}>
+                                <FormWrapper
+                                    formFields={
+                                        [
+                                            {
+                                                type: "text",
+                                                name: "displayName",
+                                                placeholder: t("views:userProfile.forms.nameChangeForm.inputs" +
+                                                    ".firstName.placeholder"),
+                                                required: true,
+                                                requiredErrorMessage: t("views:userProfile.forms.nameChangeForm."
+                                                    + "inputs.firstName.validations.empty"),
+                                                validation: () => { },
+                                                label: t("views:userProfile.forms.nameChangeForm."
+                                                    + "inputs.firstName.label"),
+                                                value: editingProfileInfo.displayName
+                                            },
+                                            {
+                                                type: "text",
+                                                name: "lastName",
+                                                placeholder: t("views:userProfile.forms.nameChangeForm.inputs" +
+                                                    ".lastName.placeholder"),
+                                                value: editingProfileInfo.lastName,
+                                                required: true,
+                                                requiredErrorMessage: t("views:userProfile.forms.nameChangeForm"+
+                                                    ".inputs.lastName.validations.empty"),
+                                                validation:()=>{}
+                                            },
+                                            {
+                                                type: "divider",
+                                                hidden: true
+                                            },
+                                            {
+                                                type: "submit",
+                                                size: "small",
+                                                value: t("common:save").toString()
+                                            },
+                                            {
+                                                type: "button",
+                                                className: "link-button",
+                                                size: "small",
+                                                value: t("common:cancel").toString(),
+                                                onClick: () => {
+                                                    hideFormEditView("nameChangeForm")
+                                                }
+                                            }
+                                        ]
+                                    }
+                                    groups={[
+                                        {
+                                            startIndex: 3,
+                                            endIndex: 5,
+                                            style: "inline"
+                                        }
+                                    ]}
+                                    onSubmit={(values) => {
+                                        handleSubmit(values, "nameChangeForm")
+                                    }}
+                                />
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
@@ -295,13 +303,13 @@ export const Profile: FunctionComponent<ProfileProps> = (
             :
             (
                 <Grid padded>
-                    <Grid.Row columns={ 3 }>
-                        <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
+                    <Grid.Row columns={3}>
+                        <Grid.Column mobile={6} tablet={6} computer={4} className="first-column">
                             <List.Content>
-                                { t("views:userProfile.fields.name.label") }
+                                {t("views:userProfile.fields.name.label")}
                             </List.Content>
                         </Grid.Column>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                        <Grid.Column mobile={8} tablet={8} computer={10}>
                             <List.Content>
                                 <List.Description>
                                     {
@@ -313,10 +321,10 @@ export const Profile: FunctionComponent<ProfileProps> = (
                             </List.Content>
                         </Grid.Column>
                         <Grid.Column
-                            mobile={ 2 }
-                            tablet={ 2 }
-                            computer={ 2 }
-                            className={ (window.innerWidth > Responsive.onlyTablet.minWidth) ? "last-column" : "" }
+                            mobile={2}
+                            tablet={2}
+                            computer={2}
+                            className={(window.innerWidth > Responsive.onlyTablet.minWidth) ? "last-column" : ""}
                         >
                             <List.Content floated="right">
                                 <Popup
@@ -326,7 +334,7 @@ export const Profile: FunctionComponent<ProfileProps> = (
                                             className="list-icon"
                                             size="small"
                                             color="grey"
-                                            onClick={ () => showFormEditView("nameChangeForm") }
+                                            onClick={() => showFormEditView("nameChangeForm")}
                                             name={
                                                 (profileInfo.displayName || profileInfo.lastName)
                                                     ? "pencil alternate"
@@ -353,35 +361,57 @@ export const Profile: FunctionComponent<ProfileProps> = (
             ? (
                 <EditSection>
                     <Grid>
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column width={ 4 }>
-                                { t("views:userProfile.fields.email.label") }
+                        <Grid.Row columns={2}>
+                            <Grid.Column width={4}>
+                                {t("views:userProfile.fields.email.label")}
                             </Grid.Column>
-                            <Grid.Column width={ 12 }>
-                                <Form onSubmit={ () => handleSubmit("emailChangeForm") }>
-                                    <Form.Field>
-                                        <label>{ t("views:userProfile.fields.email.label") }</label>
-                                        <input
-                                            required
-                                            id="email"
-                                            placeholder={ t("views:userProfile.forms.emailChangeForm.inputs" +
-                                                ".email.placeholder") }
-                                            value={ editingProfileInfo.email }
-                                            onChange={ handleFieldChange }
-                                        />
-                                    </Form.Field>
-                                    <Divider hidden/>
-                                    <Button type="submit" primary size="small">
-                                        { t("common:save") }
-                                    </Button>
-                                    <Button
-                                        size="small"
-                                        className="link-button"
-                                        onClick={ () => hideFormEditView("emailChangeForm") }
-                                    >
-                                        { t("common:cancel") }
-                                    </Button>
-                                </Form>
+                            <Grid.Column width={12}>
+                                <FormWrapper
+                                    formFields={
+                                        [
+                                            {
+                                                type: "text",
+                                                name: "email",
+                                                placeholder: t("views:userProfile.forms.emailChangeForm.inputs" +
+                                                    ".email.placeholder"),
+                                                required: true,
+                                                requiredErrorMessage: t("views:userProfile.forms.emailChangeForm"+
+                                                    ".inputs.email.validations.empty"),
+                                                validation: () => { },
+                                                label: t("views:userProfile.fields.email.label"),
+                                                value: editingProfileInfo.email
+                                            },
+                                            {
+                                                type: "divider",
+                                                hidden: true
+                                            },
+                                            {
+                                                type: "submit",
+                                                size: "small",
+                                                value: t("common:save").toString()
+                                            },
+                                            {
+                                                type: "button",
+                                                className: "link-button",
+                                                size: "small",
+                                                value: t("common:cancel").toString(),
+                                                onClick: () => {
+                                                    hideFormEditView("emailChangeForm")
+                                                }
+                                            }
+                                        ]
+                                    }
+                                    groups={[
+                                        {
+                                            startIndex: 2,
+                                            endIndex: 4,
+                                            style: "inline"
+                                        }
+                                    ]}
+                                    onSubmit={(values) => {
+                                        handleSubmit(values, "emailChangeForm")
+                                    }}
+                                />
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
@@ -390,13 +420,13 @@ export const Profile: FunctionComponent<ProfileProps> = (
             :
             (
                 <Grid padded>
-                    <Grid.Row columns={ 3 }>
-                        <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
+                    <Grid.Row columns={3}>
+                        <Grid.Column mobile={6} tablet={6} computer={4} className="first-column">
                             <List.Content>
-                                { t("views:userProfile.fields.email.label") }
+                                {t("views:userProfile.fields.email.label")}
                             </List.Content>
                         </Grid.Column>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                        <Grid.Column mobile={8} tablet={8} computer={10}>
                             <List.Content>
                                 <List.Description>
                                     {
@@ -408,10 +438,10 @@ export const Profile: FunctionComponent<ProfileProps> = (
                             </List.Content>
                         </Grid.Column>
                         <Grid.Column
-                            mobile={ 2 }
-                            tablet={ 2 }
-                            computer={ 2 }
-                            className={ (window.innerWidth > Responsive.onlyTablet.minWidth) ? "last-column" : "" }
+                            mobile={2}
+                            tablet={2}
+                            computer={2}
+                            className={(window.innerWidth > Responsive.onlyTablet.minWidth) ? "last-column" : ""}
                         >
                             <List.Content floated="right">
                                 <Popup
@@ -422,12 +452,12 @@ export const Profile: FunctionComponent<ProfileProps> = (
                                             size="small"
                                             color="grey"
                                             id="emailEdit"
-                                            onClick={ () => showFormEditView("emailChangeForm") }
-                                            name={ profileInfo.email ? "pencil alternate" : "add" }
+                                            onClick={() => showFormEditView("emailChangeForm")}
+                                            name={profileInfo.email ? "pencil alternate" : "add"}
                                         />
                                     }
                                     position="top center"
-                                    content={ profileInfo.email ? t("common:edit") : t("common:add") }
+                                    content={profileInfo.email ? t("common:edit") : t("common:add")}
                                     inverted
                                 />
                             </List.Content>
@@ -441,35 +471,57 @@ export const Profile: FunctionComponent<ProfileProps> = (
             ? (
                 <EditSection>
                     <Grid>
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column width={ 4 }>
-                                { t("views:userProfile.fields.organization.label") }
+                        <Grid.Row columns={2}>
+                            <Grid.Column width={4}>
+                                {t("views:userProfile.fields.organization.label")}
                             </Grid.Column>
-                            <Grid.Column width={ 12 }>
-                                <Form onSubmit={ () => handleSubmit("organizationChangeForm") }>
-                                    <Form.Field>
-                                        <label>{ t("views:userProfile.fields.organization.label") }</label>
-                                        <input
-                                            required
-                                            id="organisation"
-                                            placeholder={ t("views:userProfile.forms.organizationChangeForm" +
-                                                ".inputs.organization.placeholder") }
-                                            value={ editingProfileInfo.organisation }
-                                            onChange={ handleFieldChange }
-                                        />
-                                    </Form.Field>
-                                    <Divider hidden/>
-                                    <Button type="submit" primary size="small">
-                                        { t("common:save") }
-                                    </Button>
-                                    <Button
-                                        size="small"
-                                        className="link-button"
-                                        onClick={ () => hideFormEditView("organizationChangeForm") }
-                                    >
-                                        { t("common:cancel") }
-                                    </Button>
-                                </Form>
+                            <Grid.Column width={12}>
+                                <FormWrapper
+                                    formFields={
+                                        [
+                                            {
+                                                type: "text",
+                                                name: "organisation",
+                                                placeholder: t("views:userProfile.forms.organizationChangeForm" +
+                                                    ".inputs.organization.placeholder"),
+                                                required: true,
+                                                requiredErrorMessage: t("views:userProfile.forms." +
+                                                    "organizationChangeForm.inputs.organization.validations.empty"),
+                                                validation: () => { },
+                                                label: t("views:userProfile.fields.organization.label"),
+                                                value: editingProfileInfo.organisation
+                                            },
+                                            {
+                                                type: "divider",
+                                                hidden: true
+                                            },
+                                            {
+                                                type: "submit",
+                                                size: "small",
+                                                value: t("common:save").toString()
+                                            },
+                                            {
+                                                type: "button",
+                                                className: "link-button",
+                                                size: "small",
+                                                value: t("common:cancel").toString(),
+                                                onClick: () => {
+                                                    hideFormEditView("organizationChangeForm")
+                                                }
+                                            }
+                                        ]
+                                    }
+                                    groups={[
+                                        {
+                                            startIndex: 2,
+                                            endIndex: 4,
+                                            style: "inline"
+                                        }
+                                    ]}
+                                    onSubmit={(values) => {
+                                        handleSubmit(values, "organizationChangeForm")
+                                    }}
+                                />
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
@@ -478,13 +530,13 @@ export const Profile: FunctionComponent<ProfileProps> = (
             :
             (
                 <Grid padded>
-                    <Grid.Row columns={ 3 }>
-                        <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
+                    <Grid.Row columns={3}>
+                        <Grid.Column mobile={6} tablet={6} computer={4} className="first-column">
                             <List.Content>
-                                { t("views:userProfile.fields.organization.label") }
+                                {t("views:userProfile.fields.organization.label")}
                             </List.Content>
                         </Grid.Column>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                        <Grid.Column mobile={8} tablet={8} computer={10}>
                             <List.Content>
                                 <List.Description>
                                     {
@@ -496,10 +548,10 @@ export const Profile: FunctionComponent<ProfileProps> = (
                             </List.Content>
                         </Grid.Column>
                         <Grid.Column
-                            tablet={ 2 }
-                            mobile={ 2 }
-                            computer={ 2 }
-                            className={ (window.innerWidth > Responsive.onlyTablet.minWidth) ? "last-column" : "" }
+                            tablet={2}
+                            mobile={2}
+                            computer={2}
+                            className={(window.innerWidth > Responsive.onlyTablet.minWidth) ? "last-column" : ""}
                         >
                             <List.Content floated="right">
                                 <Popup
@@ -510,12 +562,12 @@ export const Profile: FunctionComponent<ProfileProps> = (
                                             size="small"
                                             color="grey"
                                             id="organizationEdit"
-                                            onClick={ () => showFormEditView("organizationChangeForm") }
-                                            name={ profileInfo.organisation ? "pencil alternate" : "add" }
+                                            onClick={() => showFormEditView("organizationChangeForm")}
+                                            name={profileInfo.organisation ? "pencil alternate" : "add"}
                                         />
                                     }
                                     position="top center"
-                                    content={ profileInfo.organisation ? t("common:edit") : t("common:add") }
+                                    content={profileInfo.organisation ? t("common:edit") : t("common:add")}
                                     inverted
                                 />
                             </List.Content>
@@ -530,35 +582,57 @@ export const Profile: FunctionComponent<ProfileProps> = (
             ? (
                 <EditSection>
                     <Grid>
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column width={ 4 }>
-                                { t("views:userProfile.fields.mobile.label") }
+                        <Grid.Row columns={2}>
+                            <Grid.Column width={4}>
+                                {t("views:userProfile.fields.mobile.label")}
                             </Grid.Column>
-                            <Grid.Column width={ 12 }>
-                                <Form onSubmit={ () => handleSubmit("mobileChangeForm") }>
-                                    <Form.Field>
-                                        <label>{ t("views:userProfile.fields.mobile.label") }</label>
-                                        <input
-                                            required
-                                            id="mobile"
-                                            placeholder={ t("views:userProfile.forms.mobileChangeForm" +
-                                                ".inputs.mobile.placeholder") }
-                                            value={ editingProfileInfo.mobile }
-                                            onChange={ handleFieldChange }
-                                        />
-                                    </Form.Field>
-                                    <Divider hidden/>
-                                    <Button type="submit" primary size="small">
-                                        { t("common:save") }
-                                    </Button>
-                                    <Button
-                                        size="small"
-                                        className="link-button"
-                                        onClick={ () => hideFormEditView("mobileChangeForm") }
-                                    >
-                                        { t("common:cancel") }
-                                    </Button>
-                                </Form>
+                            <Grid.Column width={12}>
+                                <FormWrapper
+                                    formFields={
+                                        [
+                                            {
+                                                type: "text",
+                                                name: "mobile",
+                                                placeholder: t("views:userProfile.forms.mobileChangeForm" +
+                                                    ".inputs.mobile.placeholder"),
+                                                required: true,
+                                                requiredErrorMessage: t("views:userProfile.forms.mobileChangeForm" +
+                                                    ".inputs.mobile.validations.empty"),
+                                                validation: () => { },
+                                                label: t("views:userProfile.fields.mobile.label"),
+                                                value: editingProfileInfo.mobile
+                                            },
+                                            {
+                                                type: "divider",
+                                                hidden: true
+                                            },
+                                            {
+                                                type: "submit",
+                                                size: "small",
+                                                value: t("common:save").toString()
+                                            },
+                                            {
+                                                type: "button",
+                                                className: "link-button",
+                                                size: "small",
+                                                value: t("common:cancel").toString(),
+                                                onClick: () => {
+                                                    hideFormEditView("mobileChangeForm")
+                                                }
+                                            }
+                                        ]
+                                    }
+                                    groups={[
+                                        {
+                                            startIndex: 2,
+                                            endIndex: 4,
+                                            style: "inline"
+                                        }
+                                    ]}
+                                    onSubmit={(values) => {
+                                        handleSubmit(values, "mobileChangeForm")
+                                    }}
+                                />
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
@@ -567,13 +641,13 @@ export const Profile: FunctionComponent<ProfileProps> = (
             :
             (
                 <Grid padded>
-                    <Grid.Row columns={ 3 }>
-                        <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
+                    <Grid.Row columns={3}>
+                        <Grid.Column mobile={6} tablet={6} computer={4} className="first-column">
                             <List.Content>
-                                { t("views:userProfile.fields.mobile.label") }
+                                {t("views:userProfile.fields.mobile.label")}
                             </List.Content>
                         </Grid.Column>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                        <Grid.Column mobile={8} tablet={8} computer={10}>
                             <List.Content>
                                 <List.Description>
                                     {
@@ -585,10 +659,10 @@ export const Profile: FunctionComponent<ProfileProps> = (
                             </List.Content>
                         </Grid.Column>
                         <Grid.Column
-                            mobile={ 2 }
-                            tablet={ 2 }
-                            computer={ 2 }
-                            className={ (window.innerWidth > Responsive.onlyTablet.minWidth) ? "last-column" : "" }
+                            mobile={2}
+                            tablet={2}
+                            computer={2}
+                            className={(window.innerWidth > Responsive.onlyTablet.minWidth) ? "last-column" : ""}
                         >
                             <List.Content floated="right">
                                 <Popup
@@ -598,12 +672,12 @@ export const Profile: FunctionComponent<ProfileProps> = (
                                             className="list-icon"
                                             size="small"
                                             color="grey"
-                                            onClick={ () => showFormEditView("mobileChangeForm") }
-                                            name={ profileInfo.mobile ? "pencil alternate" : "add" }
+                                            onClick={() => showFormEditView("mobileChangeForm")}
+                                            name={profileInfo.mobile ? "pencil alternate" : "add"}
                                         />
                                     }
                                     position="top center"
-                                    content={ profileInfo.mobile ? t("common:edit") : t("common:add") }
+                                    content={profileInfo.mobile ? t("common:edit") : t("common:add")}
                                     inverted
                                 />
                             </List.Content>
@@ -622,31 +696,31 @@ export const Profile: FunctionComponent<ProfileProps> = (
             <List divided verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">
                     <Grid padded>
-                        <Grid.Row columns={ 3 }>
-                            <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
+                        <Grid.Row columns={3}>
+                            <Grid.Column mobile={6} tablet={6} computer={4} className="first-column">
                                 <List.Content>
-                                    { t("views:userProfile.fields.username.label") }
+                                    {t("views:userProfile.fields.username.label")}
                                 </List.Content>
                             </Grid.Column>
-                            <Grid.Column mobile={ 10 } tablet={ 10 } computer={ 12 }>
+                            <Grid.Column mobile={10} tablet={10} computer={12}>
                                 <List.Content>
-                                    <List.Description>{ profileInfo.username }</List.Description>
+                                    <List.Description>{profileInfo.username}</List.Description>
                                 </List.Content>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
                 </List.Item>
                 <List.Item className="inner-list-item">
-                    { handleNameChange }
+                    {handleNameChange}
                 </List.Item>
                 <List.Item className="inner-list-item">
-                    { handleEmailChange }
+                    {handleEmailChange}
                 </List.Item>
                 <List.Item className="inner-list-item">
-                    { handleOrganisationChange }
+                    {handleOrganisationChange}
                 </List.Item>
                 <List.Item className="inner-list-item">
-                    { handleMobileChange }
+                    {handleMobileChange}
                 </List.Item>
             </List>
         </SettingsSection>

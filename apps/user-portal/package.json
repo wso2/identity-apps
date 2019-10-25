@@ -52,8 +52,11 @@
         "webpack-dev-server": "^3.7.2"
     },
     "dependencies": {
+        "@hapi/joi": "^16.1.7",
         "@svgr/webpack": "^4.3.2",
+        "@types/hapi__joi": "^16.0.2",
         "@types/history": "4.6.2",
+        "@types/joi": "^14.3.3",
         "@types/ua-parser-js": "^0.7.33",
         "@wso2is/authenticate": "^0.1.0",
         "@wso2is/theme": "^0.1.0",
