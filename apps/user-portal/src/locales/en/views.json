@@ -46,8 +46,8 @@
         "title": "Security",
         "subTitle": "Update settings to make your account secure",
         "multiFactor": {
-            "title": "Multi Factor Authentication",
-            "subTitle": "View and Manage your multi factor authentication options",
+            "title": "Multi factor authentication",
+            "subTitle": "View and manage your multi factor authentication options",
             "smsOtp": {
                 "title": "SMS OTP",
                 "description": "You'll receive a text message containing the verification code",
@@ -64,7 +64,17 @@
             },
             "fido": {
                 "title": "FIDO",
-                "description": "Authenticate yourself by connecting a FIDO key"
+                "description": "Authenticate yourself by connecting a FIDO key",
+                "notification": {
+                    "success": {
+                        "message": "Your Device Registered Successfully",
+                        "description": "The device was successfully registered and now you can use it as a second factor."
+                    },
+                    "error": {
+                        "message": "Something Went Wrong !!!",
+                        "description": "An error occurred while registering the device."
+                    }
+                }
             }
         }
     },
@@ -77,7 +87,7 @@
         "subTitle": "Currently active sessions and the session history"
     },
     "consentManagementPage": {
-        "title": "Consent Management",
+        "title": "Consent management",
         "subTitle": "Manage consented applications and websites"
     },
     "operationsPage": {
@@ -85,7 +95,7 @@
         "subTitle": "Manage and maintain tasks like pending approvals etc."
     },
     "changePassword": {
-        "title": "Change Password",
+        "title": "Change password",
         "subTitle": "Change and modify the existing password",
         "actionTitles": {
             "change": "Change your password"
@@ -235,8 +245,8 @@
         }
     },
     "securityQuestions": {
-        "title": "Security Questions",
-        "description": "Add and Update Account Recovery Challenge Questions",
+        "title": "Security questions",
+        "description": "Add and update account recovery challenge questions",
         "actionTitles": {
             "configure": "Configure security questions",
             "change": "Change security questions"
@@ -265,7 +275,7 @@
             "addQuestions": {
                 "success": {
                     "description": "The required security questions were added successfully.",
-                    "message": "Security Questions were successfully added."
+                    "message": "Security questions were successfully added."
                 },
                 "error": {
                     "description": "An error occurred !!!",
@@ -289,26 +299,26 @@
             }
         },
         "dropDown": {
-            "label": "Select a Question"
+            "label": "Select a question"
         },
         "noConfiguration" : "No security questions configured for this user"
     },
     "userProfile": {
         "title": "Profile",
         "subTitle": "Manage and update your basic profile information.",
-        "personalInfoTitle": "Personal Information",
+        "personalInfoTitle": "Personal information",
         "forms": {
             "nameChangeForm": {
                 "inputs": {
                     "firstName": {
-                        "label": "First Name",
+                        "label": "First name",
                         "placeholder": "Enter the first name",
                         "validations": {
                             "empty": "First name is a required field"
                         }
                     },
                     "lastName": {
-                        "label": "Last Name",
+                        "label": "Last name",
                         "placeholder": "Enter the last name",
                         "validations": {
                             "empty": "Last name is a required field"
@@ -400,9 +410,9 @@
         }
     },
     "associatedAccounts": {
-        "title": "Linked Accounts",
+        "title": "Linked accounts",
         "subTitle": "Manage all your linked accounts in one place.",
-        "actionTitle": "Add an account",
+        "actionTitle": "Add account",
         "accountTypes": {
             "local": {
                 "label": "Add local user account"
@@ -466,7 +476,7 @@
             "terminateAll": "Terminate all sessions",
             "empty": "You do not have any active sessions"
         },
-        "description": "View and Manage active sessions of your account",
+        "description": "View and manage active sessions of your account",
         "browserAndOS": "{{browser}} on {{os}} {{version}}",
         "lastAccessed": "Last accessed {{date}}",
         "notifications": {
@@ -534,7 +544,7 @@
         "subTitle": "The page you're looking for isn't here."
     },
     "profileExport": {
-        "title": "Export Profile",
+        "title": "Export profile",
         "subTitle": "Download all your profile data including personal data, security questions and consents.",
         "actionTitle": "Export profile data",
         "notification": {
@@ -553,6 +563,7 @@
     "pendingApprovals": {
         "title": "Pending approvals",
         "subTitle": "You can manage pending approvals here",
+        "listHelper": "Showing approvals in {{status}} state",
         "notifications": {
             "fetchPendingApprovals": {
                 "success": {

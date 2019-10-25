@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export * from "./pending-approvals";
+export * from "./approvals";

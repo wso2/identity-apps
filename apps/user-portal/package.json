@@ -25,6 +25,7 @@
         "@types/react-redux": "^7.1.1",
         "@types/react-router": "^5.0.3",
         "@types/react-router-dom": "^4.3.4",
+        "@types/webappsec-credential-management": "^0.5.1",
         "awesome-typescript-loader": "^5.2.1",
         "axios": "^0.18.0",
         "babel-loader": "^8.0.4",

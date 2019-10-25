@@ -17,7 +17,7 @@
  */
 
 import React, { Fragment, FunctionComponent, MouseEvent } from "react";
-import { Card, Grid, Header, List, Responsive } from "semantic-ui-react";
+import { Card, Grid, Header, Icon, List, Responsive, SemanticICONS } from "semantic-ui-react";
 import { ThemeIcon, ThemeIconSizes } from "./icon";
 
 /**
@@ -37,8 +37,10 @@ interface SettingsSectionProps {
     placeholder?: string;
     primaryAction?: any;
     primaryActionDisabled?: boolean;
+    primaryActionIcon?: SemanticICONS;
     secondaryAction?: any;
     secondaryActionDisabled?: boolean;
+    secondaryActionIcon?: SemanticICONS;
     showActionBar?: boolean;
 }
 
@@ -63,8 +65,10 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
         placeholder,
         primaryAction,
         primaryActionDisabled,
+        primaryActionIcon,
         secondaryAction,
         secondaryActionDisabled,
+        secondaryActionIcon,
         showActionBar,
     } = props;
 
@@ -72,13 +76,18 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
      * Construct the action element.
      *
      * @param action - action which is passed in.
+     * @param {SemanticICONS} actionIcon - Icon for the action.
      * @param {boolean} actionDisabled - Flag to determine if the action should be disabled.
      * @param actionOnClick - On Click handler of the action.
      * @param {"primary" | "secondary"} actionType - Type of the action.
      * @return Constructed element.
      */
     const constructAction = (
-        action: any, actionDisabled: boolean, actionOnClick: any, actionType: "primary" | "secondary"
+        action: any,
+        actionIcon: SemanticICONS,
+        actionDisabled: boolean,
+        actionOnClick: any,
+        actionType: "primary" | "secondary"
     ) => {
         // if passed in action is a react component
         if (typeof action === "function" || typeof action === "object") {
@@ -102,6 +111,11 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
                     <List.Header
                         className="action-button-text"
                         onClick={ actionOnClick }>
+                        {
+                            actionIcon
+                                ? (<><Icon name={ actionIcon }/>{ " " }</>)
+                                : null
+                        }
                         { action }
                     </List.Header>
                 </List.Content>
@@ -191,6 +205,7 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
                                                 primaryAction
                                                     ? constructAction(
                                                     primaryAction,
+                                                    primaryActionIcon,
                                                     primaryActionDisabled,
                                                     onPrimaryActionClick,
                                                     "primary"
@@ -201,6 +216,7 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
                                                 secondaryAction
                                                     ? constructAction(
                                                     secondaryAction,
+                                                    secondaryActionIcon,
                                                     secondaryActionDisabled,
                                                     onSecondaryActionClick,
                                                     "secondary"

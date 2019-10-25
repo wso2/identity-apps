@@ -21,3 +21,4 @@ export * from "./change-password";
 export * from "./linked-accounts";
 export * from "./profile";
 export * from "./security-questions";
+export * from "./multi-factor-fido";

@@ -222,6 +222,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
             iconFloated="right"
             onPrimaryActionClick={ () => showFormEditView("addAccountForm") }
             primaryAction={ t("views:associatedAccounts.actionTitle") }
+            primaryActionIcon="add"
             showActionBar={ !editingForm.addAccountForm }
         >
             {

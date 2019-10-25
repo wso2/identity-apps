@@ -34,7 +34,7 @@ import { JWKInterface } from "../models/crypto";
  * @returns {string} hashed email address.
  */
 export const getEmailHash = (emailAddress: string) => {
-    return MD5((emailAddress).trim());
+    return emailAddress ? MD5((emailAddress).trim()) : null;
 };
 
 /**

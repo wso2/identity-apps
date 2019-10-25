@@ -17,10 +17,11 @@
  */
 
 import React, { useContext } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } from "semantic-ui-react";
 import { AuthContext } from "../../contexts";
-import { resolveUserDisplayName } from "../../helpers";
+import { resolveUserAvatar, resolveUserDisplayName } from "../../helpers";
 import { Title, UserImage } from "../shared";
 
 /**
@@ -40,12 +41,13 @@ interface HeaderProps {
  */
 export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps): JSX.Element => {
     const { state } = useContext(AuthContext);
+    const { t } = useTranslation();
     const { onSidePanelToggleClick, showSidePanelToggle } = props;
 
     const trigger = (
         <span className="user-dropdown-trigger">
             <div className="username">{ resolveUserDisplayName(state) }</div>
-            <UserImage bordered avatar size="mini" name={ state.username } />
+            { resolveUserAvatar(state, "mini") }
         </span>
     );
 
@@ -70,8 +72,8 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                         className="user-dropdown">
                         <Dropdown.Menu>
                             <Item.Group unstackable>
-                                <Item className="header">
-                                    <UserImage bordered avatar size="tiny" name={ state.username } />
+                                <Item className="header" key={ `logged-in-user-${ state.username }` }>
+                                    { resolveUserAvatar(state, "tiny") }
                                     <Item.Content verticalAlign="middle">
                                         <Item.Description>
                                             <div className="name">{ resolveUserDisplayName(state) }</div>
@@ -82,8 +84,8 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                             <div className="email">{ state.emails }</div>
                                             }
                                             <Divider hidden/>
-                                            <Button as={ Link } to="/my-apps" size="tiny"
-                                                    primary>My Apps</Button>
+                                            <Button as={ Link } to="/personal-info" size="tiny"
+                                                    primary>{ t("common:personalInfo") }</Button>
                                         </Item.Description>
                                     </Item.Content>
                                 </Item>
@@ -96,8 +98,11 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                     ? (
                                         <Item.Group className="linked-accounts-list" unstackable>
                                             {
-                                                state.profileInfo.associations.map((association) => (
-                                                    <Item className="linked-account">
+                                                state.profileInfo.associations.map((association, index) => (
+                                                    <Item
+                                                        className="linked-account"
+                                                        key={ `${ association.userId }-${ index }` }
+                                                    >
                                                         <UserImage
                                                             bordered
                                                             avatar
@@ -122,7 +127,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                     : null
                             }
                             <Dropdown.Item className="action-panel">
-                                <Link className="action-button" to="/logout">Logout</Link>
+                                <Link className="action-button" to="/logout">{ t("common:logout") }</Link>
                             </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>

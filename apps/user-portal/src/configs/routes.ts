@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { i18n } from "../configs";
 import {
     AccountSecurityPage,
     HomePage,
@@ -45,7 +44,7 @@ const ROUTES: Route[] = [
     {
         component: HomePage,
         icon: "overview",
-        name: i18n.t("common:overview"),
+        name: "common:overview",
         path: "/overview",
         protected: true,
         showOnSidePanel: true,
@@ -53,7 +52,7 @@ const ROUTES: Route[] = [
     {
         component: PersonalInfoPage,
         icon: "personal",
-        name: i18n.t("common:personalInfo"),
+        name: "common:personalInfo",
         path: "/personal-info",
         protected: true,
         showOnSidePanel: true,
@@ -61,7 +60,7 @@ const ROUTES: Route[] = [
     {
         component: AccountSecurityPage,
         icon: "security",
-        name: i18n.t("common:security"),
+        name: "common:security",
         path: "/security",
         protected: true,
         showOnSidePanel: true,
@@ -69,7 +68,7 @@ const ROUTES: Route[] = [
     {
         component: OperationsPage,
         icon: "operations",
-        name: i18n.t("common:operations"),
+        name: "common:operations",
         path: "/operations",
         protected: true,
         showOnSidePanel: true,
@@ -77,7 +76,7 @@ const ROUTES: Route[] = [
     {
         component: PrivacyPage,
         icon: "security",
-        name: i18n.t("common:privacy"),
+        name: "common:privacy",
         path: "/privacy",
         protected: true,
         showOnSidePanel: false,

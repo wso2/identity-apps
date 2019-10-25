@@ -542,6 +542,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (
             iconFloated="right"
             onPrimaryActionClick={ () => showFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER) }
             primaryAction={ t("views:changePassword.actionTitles.change") }
+            primaryActionIcon="key"
             showActionBar={ !editingForm[CHANGE_PASSWORD_FORM_IDENTIFIER] }
         >
             { showChangePasswordView }
