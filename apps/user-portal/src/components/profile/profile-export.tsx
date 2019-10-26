@@ -65,10 +65,10 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
                     // Sets a success notification.
                     onNotificationFired({
                         description: t(
-                            "views:profileExport.notification.downloadProfileInfo.success.description"
+                            "views:components.profileExport.notifications.downloadProfileInfo.success.description"
                         ),
                         message: t(
-                            "views:profileExport.notification.downloadProfileInfo.success.message"
+                            "views:components.profileExport.notifications.downloadProfileInfo.success.message"
                         ),
                         otherProps: {
                             positive: true
@@ -78,10 +78,10 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
                 } else {
                     onNotificationFired({
                         description: t(
-                            "views:profileExport.notification.downloadProfileInfo.error.description"
+                            "views:components.profileExport.notifications.downloadProfileInfo.error.description"
                         ),
                         message: t(
-                            "views:profileExport.notification.downloadProfileInfo.error.message"
+                            "views:components.profileExport.notifications.downloadProfileInfo.error.message"
                         ),
                         otherProps: {
                             negative: true
@@ -95,15 +95,15 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
     return (
         <SettingsSection
             contentPadding={ false }
-            description={ t("views:profileExport.subTitle") }
-            header={ t("views:profileExport.title") }
+            description={ t("views:sections.profileExport.description") }
+            header={ t("views:sections.profileExport.heading") }
             icon={ SettingsSectionIcons.profileExport }
             iconMini={ SettingsSectionIcons.profileExportMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
             onPrimaryActionClick={ downloadUserProfile }
-            primaryAction={ t("views:profileExport.actionTitle") }
+            primaryAction={ t("views:sections.profileExport.actionTitles.export") }
             primaryActionIcon="cloud download"
         >
         </SettingsSection>

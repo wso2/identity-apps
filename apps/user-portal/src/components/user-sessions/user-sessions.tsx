@@ -106,7 +106,7 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                                     <List.Description>
                                         <p style={ { fontSize: "11px" } }>
                                             {
-                                                t("views:userSessions.lastAccessed",
+                                                t("views:components.userSessions.lastAccessed",
                                                     {
                                                         date: moment(
                                                             parseInt(session.lastAccessTime, 10)
@@ -512,10 +512,10 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
         >
             <Modal.Content>
                 <Container>
-                    <h3>{ t("views:userSessions.modals.terminateAllUserSessionsModal.heading") }</h3>
+                    <h3>{ t("views:components.userSessions.modals.terminateAllUserSessionsModal.heading") }</h3>
                 </Container>
                 <br/>
-                <p>{ t("views:userSessions.modals.terminateAllUserSessionsModal.message") }</p>
+                <p>{ t("views:components.userSessions.modals.terminateAllUserSessionsModal.message") }</p>
             </Modal.Content>
             <Modal.Actions>
                 <Button className="link-button" onClick={ handleTerminateAllUserSessionsModalClose }>
@@ -537,10 +537,10 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
         >
             <Modal.Content>
                 <Container>
-                    <h3>{ t("views:userSessions.modals.terminateUserSessionModal.heading") }</h3>
+                    <h3>{ t("views:components.userSessions.modals.terminateUserSessionModal.heading") }</h3>
                 </Container>
                 <br/>
-                <p>{ t("views:userSessions.modals.terminateUserSessionModal.message") }</p>
+                <p>{ t("views:components.userSessions.modals.terminateUserSessionModal.message") }</p>
             </Modal.Content>
             <Modal.Actions>
                 <Button className="link-button" onClick={ handleTerminateUserSessionModalClose }>
@@ -555,11 +555,11 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
 
     return (
         <SettingsSection
-            description={ t("views:userSessions.subTitle") }
-            header={ t("views:userSessions.title") }
+            description={ t("views:sections.userSessions.description") }
+            header={ t("views:sections.userSessions.heading") }
             placeholder={
                 !(userSessions && userSessions.sessions && (userSessions.sessions.length > 0))
-                    ? t("views:userSessions.actionTitles.empty")
+                    ? t("views:sections.userSessions.actionTitles.empty")
                     : null
             }
         >

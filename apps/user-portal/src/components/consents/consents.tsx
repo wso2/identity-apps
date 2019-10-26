@@ -234,7 +234,10 @@ export const Consents: FunctionComponent<{}> = (): JSX.Element => {
                             <List.Description>
                                 <div className="meta">
                                     <strong>
-                                        { t("views:consentManagement.modals.editConsentModal.description.state") }
+                                        {
+                                            t("views:components.consentManagement.modals.editConsentModal." +
+                                                "description.state")
+                                        }
                                         :
                                     </strong>
                                     { " " }
@@ -242,7 +245,10 @@ export const Consents: FunctionComponent<{}> = (): JSX.Element => {
                                 </div>
                                 <div className="meta">
                                     <strong>
-                                        { t("views:consentManagement.modals.editConsentModal.description.version") }
+                                        {
+                                            t("views:components.consentManagement.modals.editConsentModal." +
+                                                "description.version")
+                                        }
                                         :
                                     </strong>
                                     { " " }
@@ -250,16 +256,20 @@ export const Consents: FunctionComponent<{}> = (): JSX.Element => {
                                 </div>
                                 <div className="meta">
                                     <strong>
-                                        { t("views:consentManagement.modals.editConsentModal.description" +
-                                            ".collectionMethod") }:
+                                        {
+                                            t("views:components.consentManagement.modals.editConsentModal.description" +
+                                            ".collectionMethod")
+                                        }:
                                     </strong>
                                     { " " }
                                     { consentReceipt.collectionMethod }
                                 </div>
                                 <div className="meta">
                                     <strong>
-                                        { t("views:consentManagement.modals.editConsentModal.description" +
-                                            ".description") }:
+                                        {
+                                            t("views:components.consentManagement.modals.editConsentModal.description" +
+                                            ".description")
+                                        }:
                                     </strong>
                                     { " " }
                                     { editingConsent.spDescription }
@@ -274,7 +284,10 @@ export const Consents: FunctionComponent<{}> = (): JSX.Element => {
                 <Modal.Description>
                     <p>
                         <strong>
-                            { t("views:consentManagement.modals.editConsentModal.description.piiCategoryHeading") }:
+                            {
+                                t("views:components.consentManagement.modals.editConsentModal.description." +
+                                "piiCategoryHeading")
+                            }:
                         </strong>
                     </p>
                     { consentReceipt &&
@@ -334,15 +347,13 @@ export const Consents: FunctionComponent<{}> = (): JSX.Element => {
                 <Container>
                     <h3>
                         {
-                            t(
-                                "views:consentManagement.modals.consentRevokeModal.heading",
-                                { appName: editingConsent.spDisplayName }
-                            )
+                            t("views:components.consentManagement.modals.consentRevokeModal.heading",
+                                { appName: editingConsent.spDisplayName })
                         }
                     </h3>
                 </Container>
                 <br/>
-                <p>{ t("views:consentManagement.modals.consentRevokeModal.message") }</p>
+                <p>{ t("views:components.consentManagement.modals.consentRevokeModal.message") }</p>
             </Modal.Content>
             <Modal.Actions>
                 <Button className="link-button" onClick={ handleConsentRevokeModalClose }>
@@ -358,11 +369,11 @@ export const Consents: FunctionComponent<{}> = (): JSX.Element => {
     return (
         <>
             <SettingsSection
-                description={ t("views:consentManagement.subTitle") }
-                header={ t("views:consentManagement.title") }
+                description={ t("views:sections.consentManagement.description") }
+                header={ t("views:sections.consentManagement.heading") }
                 placeholder={
                     !(consentedApps && consentedApps.length && consentedApps.length > 0)
-                        ? t("views:consentManagement.actionTitles.empty")
+                        ? t("views:sections.consentManagement.actionTitles.empty")
                         : null
                 }
                 showActionBar={ !(consentedApps && consentedApps.length && consentedApps.length > 0) }

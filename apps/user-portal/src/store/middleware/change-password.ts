@@ -86,10 +86,10 @@ const handleOnChangePasswordSuccess = ({ dispatch }) => (next) => (action) => {
     if (response.status && response.status === 200) {
         const notification: Notification = {
             description: i18n.t(
-                "views:changePassword.forms.passwordResetForm.validations.submitSuccess.description"
+                "views:components.changePassword.forms.passwordResetForm.validations.submitSuccess.description"
             ),
             message: i18n.t(
-                "views:changePassword.forms.passwordResetForm.validations.submitSuccess.message"
+                "views:components.changePassword.forms.passwordResetForm.validations.submitSuccess.message"
             ),
             otherProps: {
                 positive: true
@@ -129,11 +129,11 @@ const handleOnChangePasswordError = ({ dispatch }) => (next) => (action) => {
     if (!error || !error.response || error.response.status === 401) {
         notification = {
             description: i18n.t(
-                "views:changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
+                "views:components.changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
                 "description"
             ),
             message: i18n.t(
-                "views:changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
+                "views:components.changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
                 "message"
             ),
             otherProps: {
@@ -144,10 +144,10 @@ const handleOnChangePasswordError = ({ dispatch }) => (next) => (action) => {
     } else if (error.response && error.response.data && error.response.data.detail) {
         notification = {
             description: i18n.t(
-                "views:changePassword.forms.passwordResetForm.validations.submitError.description",
+                "views:components.changePassword.forms.passwordResetForm.validations.submitError.description",
                 { description: error.response.data.detail }
             ),
-            message: i18n.t("views:changePassword.forms.passwordResetForm.validations.submitError.message"),
+            message: i18n.t("views:components.changePassword.forms.passwordResetForm.validations.submitError.message"),
             otherProps: {
                 negative: true
             },
@@ -157,9 +157,9 @@ const handleOnChangePasswordError = ({ dispatch }) => (next) => (action) => {
         // Generic error message
         notification = {
             description: i18n.t(
-                "views:changePassword.forms.passwordResetForm.validations.genericError.description"
+                "views:components.changePassword.forms.passwordResetForm.validations.genericError.description"
             ),
-            message: i18n.t("views:changePassword.forms.passwordResetForm.validations.genericError.message"),
+            message: i18n.t("views:components.changePassword.forms.passwordResetForm.validations.genericError.message"),
             otherProps: {
                 negative: true
             },

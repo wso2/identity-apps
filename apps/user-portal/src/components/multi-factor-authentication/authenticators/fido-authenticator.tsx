@@ -46,6 +46,10 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         getFidoMetaData();
     }, [deviceList]);
 
+    useEffect(() => {
+        getFidoMetaData();
+    }, []);
+
     const getFidoMetaData = () => {
         const devices = [];
         getMetaData()
@@ -66,10 +70,10 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                 if (response.status !== 200) {
                     onNotificationFired({
                         description: t(
-                            "views:securityPage.multiFactor.fido.notification.error.description"
+                            "views:components.mfa.fido.notifications.startFidoFlow.error.description"
                         ),
                         message: t(
-                            "views:securityPage.multiFactor.fido.notification.error.message"
+                            "views:components.mfa.fido.notifications.startFidoFlow.error.message"
                         ),
                         otherProps: {
                             negative: true
@@ -97,9 +101,9 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                             />
                         </List.Content>
                         <List.Content>
-                            <List.Header>{t("views:securityPage.multiFactor.fido.title")}</List.Header>
+                            <List.Header>{t("views:components.mfa.fido.heading")}</List.Header>
                             <List.Description>
-                                {t("views:securityPage.multiFactor.fido.description")}
+                                {t("views:components.mfa.fido.description")}
                             </List.Description>
                         </List.Content>
                     </Grid.Column>

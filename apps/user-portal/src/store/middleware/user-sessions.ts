@@ -86,9 +86,9 @@ const handleFetchUserSessionsSuccess = ({ dispatch }) => (next) => (action) => {
     if (response.status !== 200) {
         notification = {
             description: i18n.t(
-                "views:userSessions.notifications.fetchSessions.genericError.description"
+                "views:components.userSessions.notifications.fetchSessions.genericError.description"
             ),
-            message: i18n.t("views:userSessions.notifications.fetchSessions.genericError.message"),
+            message: i18n.t("views:components.userSessions.notifications.fetchSessions.genericError.message"),
             otherProps: {
                 negative: true
             },
@@ -123,10 +123,10 @@ const handleFetchUserSessionsError = ({ dispatch }) => (next) => (action) => {
     if (error.response && error.response.data && error.response.data.detail) {
         notification = {
             description: i18n.t(
-                "views:userSessions.notifications.fetchSessions.error.description",
+                "views:components.userSessions.notifications.fetchSessions.error.description",
                 { description: error.response.data.detail }
             ),
-            message: i18n.t("views:userSessions.notifications.fetchSessions.error.message"),
+            message: i18n.t("views:components.userSessions.notifications.fetchSessions.error.message"),
             otherProps: {
                 negative: true
             },
@@ -136,9 +136,9 @@ const handleFetchUserSessionsError = ({ dispatch }) => (next) => (action) => {
         // Generic error message
         notification = {
             description: i18n.t(
-                "views:userSessions.notifications.fetchSessions.genericError.description"
+                "views:components.userSessions.notifications.fetchSessions.genericError.description"
             ),
-            message: i18n.t("views:userSessions.notifications.fetchSessions.genericError.message"),
+            message: i18n.t("views:components.userSessions.notifications.fetchSessions.genericError.message"),
             otherProps: {
                 negative: true
             },
@@ -204,10 +204,10 @@ const handleRevokeAllUserSessionsSuccess = ({ dispatch }) => (next) => (action) 
     if (response.status && response.status === 204) {
         const notification: Notification = {
             description: i18n.t(
-                "views:userSessions.notifications.revokeAllUserSessions.success.description"
+                "views:components.userSessions.notifications.revokeAllUserSessions.success.description"
             ),
             message: i18n.t(
-                "views:userSessions.notifications.revokeAllUserSessions.success.message"
+                "views:components.userSessions.notifications.revokeAllUserSessions.success.message"
             ),
             otherProps: {
                 positive: true
@@ -240,10 +240,10 @@ const handleRevokeAllUserSessionsError = ({ dispatch }) => (next) => (action) =>
     if (error.response && error.response.data && error.response.data.detail) {
         notification = {
             description: i18n.t(
-                "views:userSessions.notifications.revokeAllUserSessions.error.description",
+                "views:components.userSessions.notifications.revokeAllUserSessions.error.description",
                 { description: error.response.data.detail }
             ),
-            message: i18n.t("views:userSessions.notifications.revokeAllUserSessions.error.message"),
+            message: i18n.t("views:components.userSessions.notifications.revokeAllUserSessions.error.message"),
             otherProps: {
                 negative: true
             },
@@ -253,9 +253,9 @@ const handleRevokeAllUserSessionsError = ({ dispatch }) => (next) => (action) =>
         // Generic error message
         notification = {
             description: i18n.t(
-                "views:userSessions.notifications.revokeAllUserSessions.genericError.description"
+                "views:components.userSessions.notifications.revokeAllUserSessions.genericError.description"
             ),
-            message: i18n.t("views:userSessions.notifications.revokeAllUserSessions.genericError.message"),
+            message: i18n.t("views:components.userSessions.notifications.revokeAllUserSessions.genericError.message"),
             otherProps: {
                 negative: true
             },
@@ -321,10 +321,10 @@ const handleRevokeUserSessionSuccess = ({ dispatch }) => (next) => (action) => {
     if (response.status && response.status === 204) {
         const notification: Notification = {
             description: i18n.t(
-                "views:userSessions.notifications.revokeUserSession.success.description"
+                "views:components.userSessions.notifications.revokeUserSession.success.description"
             ),
             message: i18n.t(
-                "views:userSessions.notifications.revokeUserSession.success.message"
+                "views:components.userSessions.notifications.revokeUserSession.success.message"
             ),
             otherProps: {
                 positive: true
@@ -357,10 +357,10 @@ const handleRevokeUserSessionError = ({ dispatch }) => (next) => (action) => {
     if (error.response && error.response.data && error.response.data.detail) {
         notification = {
             description: i18n.t(
-                "views:userSessions.notifications.revokeUserSession.error.description",
+                "views:components.userSessions.notifications.revokeUserSession.error.description",
                 { description: error.response.data.detail }
             ),
-            message: i18n.t("views:userSessions.notifications.revokeUserSession.error.message"),
+            message: i18n.t("views:components.userSessions.notifications.revokeUserSession.error.message"),
             otherProps: {
                 negative: true
             },
@@ -370,9 +370,9 @@ const handleRevokeUserSessionError = ({ dispatch }) => (next) => (action) => {
         // Generic error message
         notification = {
             description: i18n.t(
-                "views:userSessions.notifications.revokeUserSession.genericError.description"
+                "views:components.userSessions.notifications.revokeUserSession.genericError.description"
             ),
-            message: i18n.t("views:userSessions.notifications.revokeUserSession.genericError.message"),
+            message: i18n.t("views:components.userSessions.notifications.revokeUserSession.genericError.message"),
             otherProps: {
                 negative: true
             },
