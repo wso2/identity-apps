@@ -320,7 +320,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                         }),
                         required: true,
                         requiredErrorMessage: t("views:securityQuestions.forms." +
-                            "securityQuestionsForm.inputs.question.questionRequired"),
+                            "securityQuestionsForm.inputs.question.validations.empty"),
                         placeholder:
                             t("views:securityQuestions.forms." +
                                 "securityQuestionsForm.inputs.question.placeholder")
@@ -332,7 +332,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                             "securityQuestionsForm.inputs.answer.placeholder"),
                         required: true,
                         requiredErrorMessage: t("views:securityQuestions.forms.securityQuestionsForm" +
-                            ".inputs.answer.answerRequired"),
+                            ".inputs.answer.validations.empty"),
                         validation: () => { },
                         label: t("views:securityQuestions.forms.securityQuestionsForm" +
                             ".inputs.answer.label"),

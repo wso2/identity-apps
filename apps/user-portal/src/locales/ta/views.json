@@ -64,15 +64,15 @@
             },
             "fido": {
                 "title": "FIDO",
-                "description": "Authenticate yourself by connecting a FIDO key",
+                "description": "FIDO கருவியினை இணைப்பதானூடாக உங்களை உறுதிப்படுத்திக் கொள்ளுங்கள்",
                 "notification": {
                     "success": {
-                        "message": "Your Device Registered Successfully",
-                        "description": "The device was successfully registered and now you can use it as a second factor."
+                        "message": "உங்கள் கருவி பதிவு செய்யப்பட்டுவிட்டது.",
+                        "description": "உங்கள் கருவி வெற்றிகரமாக பதிவு செய்யப்பட்டுவிட்டது. இதனை, இனி, நீங்கள் உங்களது இரண்டாவது காரணியாக பயன்படுத்திக் கொள்ளலாம்."
                     },
                     "error": {
-                        "message": "Something Went Wrong !!!",
-                        "description": "An error occurred while registering the device."
+                        "message": "ஏதோ ஒரு தவறு ஏற்பட்டுவிட்டது !!!",
+                        "description": "உங்களின் கருவியினை பதிவு செய்யும் பொழுது தவறேற்பட்டுவிட்டது."
                     }
                 }
             }
@@ -80,196 +80,194 @@
     },
     "accountsPage": {
         "title": "கணக்கு",
-        "subTitle": "Manage and update your account security"
+        "subTitle": "உங்கள் கணக்கின் பாதுகாப்பை  முகாமை செய்ய மற்றும் புதுப்பிக்க"
     },
     "sessionsPage": {
         "title": "அமர்வுகள்",
-        "subTitle": "Currently active sessions and the session history"
+        "subTitle": "தற்பொழுது செயற்பாட்டில் உள்ள அமர்வுகளும், அமர்வு வரலாறும்"
     },
     "consentManagementPage": {
-        "title": "Consent management",
-        "subTitle": "Manage consented applications and websites"
+        "title": "அனுமதி முகாமைத்துவம்",
+        "subTitle": "அனுமதி அளிக்கபட்ட செயலிகளையும் வலைத்தளங்களையும் முகாமை செய்க"
     },
     "operationsPage": {
         "title": "செய்ற்பாடுகள்",
-        "subTitle": "Manage and maintain tasks like pending approvals etc."
+        "subTitle": "முடிவு செய்யப்படாத அனுமதிகள் போன்ற பணிகளை முகாமை செய்யவும் பராமரிக்கவும்"
     },
     "changePassword": {
-        "title": "Change password",
-        "subTitle": "Change and modify the existing password",
+        "title": "கடவுச்சொல்லை மாற்று",
+        "subTitle": "பதிவு செய்த கடவுச்சொல்லை மாற்று.",
         "actionTitles": {
-            "change": "Change your password"
+            "change": "உங்கள் கடவுச்சொல்லை மாற்றுக"
         },
         "forms": {
             "passwordResetForm": {
                 "inputs": {
                     "currentPassword": {
-                        "label": "Current password",
-                        "placeholder": "Enter the current password",
+                        "label": "நிகழ்கால கடவுச்சொல்",
+                        "placeholder": "உங்களின் நிகழ்கால கடவுச்சொல்லை உள்ளிடுங்கள்",
                         "validations": {
-                            "invalid": "Current password is invalid",
-                            "empty": "Current password is a required field"
+                            "invalid": "நீங்கள் அளித்த நிகழ்கால கடவுச்சொல் தவறானது",
+                            "empty": "நிகழ்கால கடவுச்சொல் கட்டாயமான களமாகும்."
                         }
                     },
                     "newPassword": {
-                        "label": "New password",
-                        "placeholder": "Enter the new password",
+                        "label": "புதிய கடவுச்சொல்",
+                        "placeholder": "புதிய கடவுச்சொல்லை உள்ளிடுங்கள்",
                         "validations": {
-                            "empty": "New password is a required field"
+                            "empty": "புதிய கடவுச்சொல் கட்டாயமான களமாகும்"
                         }
                     },
                     "confirmPassword": {
-                        "label": "Confirm password",
-                        "placeholder": "Enter the new password",
+                        "label": "கடவுச்சொல் உறுதிப்பாடு",
+                        "placeholder": "புதிய கடவுச்சொல்லை மீண்டும் உள்ளிடுங்கள்",
                         "validations": {
-                            "empty": "Confirm password is a required field",
-                            "mismatch": "The password confirmation doesn't match"
+                            "empty": "கடவுச்சொல் உறுதிப்பாடு கட்டாயாமன களமாகும்.",
+                            "mismatch": "உங்கள் புதிய கடவுச்சொல்லும் கடவுச்சொல் உறுதிப்பாடும் பொருந்தவில்லை."
                         }
                     }
                 },
                 "validations": {
                     "submitSuccess": {
-                        "message": "Password reset successful",
-                        "description": "The password has been changed successfully"
+                        "message": "கடவுச்சொல்லை மீட்டலில் வெற்றி",
+                        "description": "உங்கள் கடவுச்சொல் வெற்றிகரமாக மாற்றப்பட்டது விட்டது"
                     },
                     "submitError": {
-                        "message": "Password reset error",
+                        "message": "கடவுச்சொல்லை மீட்டலில் தவறு",
                         "description": "{{description}}"
                     },
                     "invalidCurrentPassword": {
-                        "message": "Password reset error",
-                        "description": "The current password you entered appears to be invalid. Please try again"
+                        "message": "கடவுச்சொல்லை மீட்டலில் தவறு",
+                        "description": "நீங்கள் அளித்த தற்போதைய கடவுச்சொல் தவறானது. மீண்டும் முயற்சி செய்க."
                     },
                     "genericError": {
-                        "message": "Password reset error",
-                        "description": "Something went wrong. Please try again."
+                        "message": "கடவுச்சொல்லை மீட்டலில் தவறு",
+                        "description": "ஏதோ தவறேற்பட்டுவிட்டது. மீண்டும் முயற்சி செய்க."
                     }
                 }
             }
         },
         "modals": {
             "confirmationModal": {
-                "heading": "Confirmation",
-                "message": "Changing the password will result in the termination of the current session. You will have to login with the newly changed password. Do you wish to continue?"
+                "heading": "உறுதிப்படுத்தல்",
+                "message": "கடவுச்சொல்லை மாற்றுவது உங்களது நிகழ்கால அமர்வை முடிவுக்குக்கொண்டுவரும். நீங்கள் உங்கள் புதிய கடவுச்சொல்லை பயன் படுத்தி மீண்டும் உள்நுழைய வேண்டும். மேலும் தொடர விரும்புகிறீர்களா?"
             }
         }
     },
     "consentManagement": {
-        "title": "Consented applications",
-        "subTitle": "Manage consented applications and websites",
-        "description": "View and Manage consented applications of your account",
+        "title": "அனுமதியளிக்கப்பட்ட செயலிகள்",
+        "subTitle": "அனுமதி அளிக்கபட்ட செயலிகளையும் வலைத்தளங்களையும் முகாமை செய்க",
+        "description": "உங்கள் கணக்கில் உள்ள அனுமதியாளிக்கப்பட்ட செயலிகளை பார்வையிட முகாமை செய்ய",
         "actionTitles": {
-            "empty": "You have not granted consent to any application"
+            "empty": "நீங்கள் எந்தவொரு செயலிற்கும் அனுமதி அளிக்கவில்லை."
         },
         "modals": {
             "consentRevokeModal": {
-                "heading": "Revoke {{appName}}?",
-                "message": "Are you sure you want to revoke this consent? This operation is not reversible."
+                "heading": "{{appName}} இற்கான அனுமதியினை நீக்க விரும்புகிறீர்களா?",
+                "message": "நீங்கள் அனுமதியினை நீக்க விரும்புகிறீர்களா? இச்செயல் மீள் திரும்ப முடியாக்க செயலாகும்."
             },
             "editConsentModal": {
                 "description": {
-                    "state": "State",
-                    "collectionMethod": "Collection Method",
-                    "version": "Version",
-                    "description": "Description",
-                    "piiCategoryHeading": "Information that you've shared with the application"
+                    "state": "நிலை",
+                    "collectionMethod": "அறவிடும் முறை",
+                    "version": "பதிப்பு",
+                    "description": "விபரம்",
+                    "piiCategoryHeading": "செயலியுடன் நீங்கள் பகிர்ந்துள்ள தகவல்கள்"
                 }
             }
         },
         "placeholders": {
             "emptyConsentList": {
-                "heading": "You have not granted consent to any application"
+                "heading": "நீங்கள் எந்தவொரு செயலிற்கும் அனுமதி அளிக்கவில்லை."
             }
         },
         "notifications": {
             "consentedAppsFetchGenericError": {
-                "message": "Something went wrong",
-                "description": "Couldn't load the list of consented applications."
+                "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                "description": "அனுமதியளிக்கப்பட்ட செயலிகளின் பட்டியலை பெற முடியவில்லை."
             },
             "consentedAppsFetchError": {
-                "message": "Something went wrong",
+                "message": "ஏதோ தவறேற்பட்டுவிட்டது",
                 "description": "{{description}}"
             },
             "consentReceiptFetchGenericError": {
-                "message": "Something went wrong",
-                "description": "Couldn't load information on the selected application."
+                "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                "description": "தேர்வு செய்யப்பட்ட செயலி பற்றிய தகவலை பெற முடியவில்லை"
             },
             "consentReceiptFetchError": {
-                "message": "Something went wrong",
+                "message": "ஏதோ தவறேற்பட்டுவிட்டது",
                 "description": "{{description}}"
             },
             "revokeConsentedAppSuccess": {
-                "message": "Consent Revoke Success",
-                "description": "The consent has been successfully revoked for the application."
+                "message": "அனுமதி நீக்கலில் வெற்றி",
+                "description": "செயலியின் அனுமதி வெற்றிகராமக நீக்கப்பட்டுவிட்டது."
             },
             "revokeConsentedAppGenericError": {
-                "message": "Something went wrong",
-                "description": "Couldn't revoke consent for the application."
+                "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                "description": "செயலியின் அனுமதியினை நீக்க இயலவில்லை."
             },
             "revokeConsentedAppError": {
-                "message": "Consent Revoke Error",
+                "message": "அனுமதி நீக்கலில் தவறு",
                 "description": "{{description}}"
             },
             "updateConsentedClaimsSuccess": {
-                "message": "Consented claims updated successfully",
-                "description": "The consented claims have been successfully updated for the application."
+                "message": "அனுமதியளிக்கப்பட்ட கூற்றுக்கள் புதுப்பிக்கப்பட்டுவிட்டன",
+                "description": "செயலியின் அனுமதியளிக்கப்பட்ட கூற்றுக்கள் வெற்றிகரமாக புதுப்பிக்கப்பட்டுவிட்டன"
             },
             "updateConsentedClaimsGenericError": {
-                "message": "Something went wrong",
-                "description": "The consented claims failed to update for the application."
+                "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                "description": "செயலியின் அனுமதியளிக்கப்பட்ட கூற்றுக்கள் புதுப்பிக்கப்படுவதில் தோல்வி"
             },
             "updateConsentedClaimsError": {
-                "message": "Something went wrong",
+                "message": "ஏதோ தவறேற்பட்டுவிட்டது",
                 "description": "{{description}}"
             }
         }
     },
     "accountRecovery": {
-        "title": "Account Recovery",
-        "subTitle": "View and manage your account recovery options",
+        "title": "கணக்கு மீட்பு",
+        "subTitle": "உங்கள் கணக்கின் மீட்பு சம்பந்தமான விருப்புகளை பார்வையிட மற்றும் மாற்ற",
         "emailRecovery": {
-            "title": "Email Recovery",
-            "descriptionAdd": "Add a recovery email address",
-            "descriptionUpdate": "Update recovery email address ({{email}})",
-            "emailAddress": "Email Address",
-            "emailRequired": "Enter an email address",
+            "title": "மின்னஞ்சல் மீட்பு",
+            "descriptionAdd": "மீட்பு மின்னஞ்சல் முகவரிய சேர்க்க",
+            "descriptionUpdate": "மீட்பு மின்னஞ்சல் முகவரியை புதிப்பிக்க ({{email}})",
+            "emailAddress": "மின்னஞ்சல் முகவரி",
+            "emailRequired": "மின்னஞ்சல் முகவரியினை உள்ளிடுக",
             "notification": {
                 "success": {
-                    "message": "Email Address Updated Auccessfully",
-                    "description": "The email address in the user profile has been updated successfully"
+                    "message": "மின்னஞ்சல் புதுப்பிக்கப்பட்டுவிட்டது",
+                    "description": "பயனர் விபரக்கோவையில் உள்ள மின்னஞ்சல் முகவரி புதுப்பிக்கப்பட்டுவிட்டது."
                 }
             }
         },
         "codeRecovery": {
-            "title": "Code Recovery",
-            "description": "Add or update code recovery options"
+            "title": "குறியீட்டு மீட்பு",
+            "description": "குறியீட்டு மீட்பு விருப்புகளை சேர்க்க மற்றும் புதுப்பிக்க"
         }
     },
     "securityQuestions": {
-        "title": "Security questions",
-        "description": "Add and update account recovery challenge questions",
+        "title": "பாதுகாப்பு வினாக்கள்",
+        "description": "கணக்கு மீட்பு சவால் வினாக்களை சேர்க்க மற்றும் புதுப்பிக்க",
         "actionTitles": {
-            "configure": "Configure security questions",
-            "change": "Change security questions"
+            "configure": "பாதுகாப்பு வினாக்களை கட்டமைக்க",
+            "change": "பாதுகாப்பு வினாக்களை மற்ற"
         },
         "forms": {
             "securityQuestionsForm": {
                 "inputs": {
                     "question": {
-                        "label": "Question",
-                        "placeholder": "Select a security question",
+                        "label": "வினா",
+                        "placeholder": "வினாவொன்றிணை தேர்வு செய்க",
                         "validations": {
-                            "empty": "At least one security question must be selected"
-                        },
-                        "questionRequired": "Select a question"
+                            "empty": "வினாவினை தேர்ந்தெடுத்தல் கட்டாயம்"
+                        }
                     },
                     "answer": {
-                        "label": "Answer",
-                        "placeholder": "Enter your answer",
+                        "label": "பதில்",
+                        "placeholder": "பதிலினை உள்ளிடுக",
                         "validations": {
-                            "empty": "Answer is a required field"
-                        },
-                        "answerRequired": "Enter an answer"
+                            "empty": "பதில் கட்டாய களமாகும்"
+                        }
                     }
                 }
             }

@@ -260,16 +260,14 @@
                         "placeholder": "Select a security question",
                         "validations": {
                             "empty": "At least one security question must be selected"
-                        },
-                        "questionRequired": "Select a question"
+                        }
                     },
                     "answer": {
                         "label": "Answer",
                         "placeholder": "Enter your answer",
                         "validations": {
                             "empty": "Answer is a required field"
-                        },
-                        "answerRequired": "Enter an answer"
+                        }
                     }
                 }
             }
