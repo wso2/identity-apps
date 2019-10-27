@@ -253,7 +253,9 @@ const handleFetchConsentReceiptError = ({ dispatch }) => (next) => (action) => {
             description: i18n.t(
                 "views:components.consentManagement.notifications.consentReceiptFetch.genericError.description"
             ),
-            message: i18n.t("views:components.consentManagement.notifications.consentReceiptFetch.genericError.message"),
+            message: i18n.t(
+                "views:components.consentManagement.notifications.consentReceiptFetch.genericError.message"
+            ),
             otherProps: {
                 negative: true
             },
