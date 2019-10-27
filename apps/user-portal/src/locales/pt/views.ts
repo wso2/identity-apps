@@ -18,7 +18,6 @@
 
 import { Views } from "../../models";
 
-// tslint:disable:max-line-length
 export const views: Views = {
     components: {
         accountRecovery: {
@@ -198,7 +197,8 @@ export const views: Views = {
                             message: "Erro de redefinição de senha"
                         },
                         invalidCurrentPassword: {
-                            description: "A senha atual que você digitou parece ser inválida. Por favor, tente novamente",
+                            description: "A senha atual que você digitou parece ser inválida. Por favor, tente " +
+                                "novamente",
                             message: "Erro de redefinição de senha"
                         },
                         submitError: {
@@ -215,7 +215,8 @@ export const views: Views = {
             modals: {
                 confirmationModal: {
                     heading: "Confirmação",
-                    message: "A alteração da senha resultará no encerramento da sessão atual. Você precisará fazer o login com a senha recém-alterada. Você deseja continuar?"
+                    message: "A alteração da senha resultará no encerramento da sessão atual. Você precisará fazer " +
+                        "o login com a senha recém-alterada. Você deseja continuar?"
                 }
             }
         },
@@ -369,7 +370,8 @@ export const views: Views = {
                             message: "Algo deu errado"
                         },
                         success: {
-                            description: "O dispositivo foi registrado com sucesso e agora você pode usá-lo como um segundo fator",
+                            description: "O dispositivo foi registrado com sucesso e agora você pode usá-lo como um " +
+                                "segundo fator",
                             message: "Seu dispositivo registrado com sucesso"
                         }
                     }
@@ -433,27 +435,35 @@ export const views: Views = {
         },
         privacy: {
             about: {
-                description: "O WSO2 Identity Server (referido como \"WSO2 IS\" nesta política) é um servidor de gerenciamento e titularidade de identidades de código aberto baseado em padrões e especificações abertos.",
+                description: "O WSO2 Identity Server (referido como \"WSO2 IS\" nesta política) é um servidor de " +
+                    "gerenciamento e titularidade de identidades de código aberto baseado em padrões e " +
+                    "especificações abertos.",
                 heading: "Sobre o servidor de identidade WSO2"
             },
             privacyPolicy: {
                 collectionOfPersonalInfo: {
                     description: {
                         list1: {
-                            0: "O WSO2 IS usa seu endereço IP para detectar tentativas suspeitas de login na sua conta.",
-                            1: "O WSO2 IS usa atributos como seu nome, sobrenome, etc., para fornecer uma experiência rica e personalizada ao usuário.",
-                            2: "O WSO2 IS usa suas perguntas e respostas de segurança apenas para permitir a recuperação da conta."
+                            0: "O WSO2 IS usa seu endereço IP para detectar tentativas suspeitas de login na sua " +
+                                "conta.",
+                            1: "O WSO2 IS usa atributos como seu nome, sobrenome, etc., para fornecer uma " +
+                                "experiência rica e personalizada ao usuário.",
+                            2: "O WSO2 IS usa suas perguntas e respostas de segurança apenas para permitir a " +
+                                "recuperação da conta."
                         },
-                        para1: "O WSO2 IS coleta suas informações apenas para atender aos seus requisitos de acesso. Por exemplo:"
+                        para1: "O WSO2 IS coleta suas informações apenas para atender aos seus requisitos de " +
+                            "acesso. Por exemplo:"
                     },
                     heading: "Coleta de informações pessoais",
                     trackingTechnologies: {
                         description: {
                             list1: {
-                                0: "Coletando informações da página de perfil do usuário em que você insere seus dados pessoais.",
+                                0: "Coletando informações da página de perfil do usuário em que você insere seus " +
+                                    "dados pessoais.",
                                 1: "Rastreando seu endereço IP com solicitação HTTP, cabeçalhos HTTP e TCP / IP.",
                                 2: "Rastreando suas informações geográficas com o endereço IP.",
-                                3: "Rastreando seu histórico de login com cookies do navegador. Por favor, consulte nosso {{cookiePolicyLink}} para obter mais informações."
+                                3: "Rastreando seu histórico de login com cookies do navegador. Por favor, consulte " +
+                                    "nosso {{cookiePolicyLink}} para obter mais informações."
                             },
                             para1: "O WSO2 IS coleta suas informações por:"
                         },
@@ -461,24 +471,53 @@ export const views: Views = {
                     }
                 },
                 description: {
-                    para1: "Esta política descreve como o WSO2 IS captura suas informações pessoais, os propósitos de coleta e informações sobre a retenção de suas informações pessoais.",
-                    para2: "Observe que esta política é apenas para referência e é aplicável ao software como um produto. A WSO2 Inc. e seus desenvolvedores não têm acesso às informações mantidas no WSO2 IS. Consulte a seção <1> isenção de responsabilidade </1> para obter mais informações.",
-                    para3: "Entidades, organizações ou indivíduos que controlam o uso e a administração do WSO2 IS devem criar suas próprias políticas de privacidade, definindo a maneira pela qual os dados são controlados ou processados ​​pela respectiva entidade, organização ou indivíduo."
+                    para1: "Esta política descreve como o WSO2 IS captura suas informações pessoais, os propósitos " +
+                        "de coleta e informações sobre a retenção de suas informações pessoais.",
+                    para2: "Observe que esta política é apenas para referência e é aplicável ao software como um " +
+                        "roduto. A WSO2 Inc. e seus desenvolvedores não têm acesso às informações mantidas no " +
+                        "WSO2 IS. Consulte a seção <1> isenção de responsabilidade </1> para obter mais informações.",
+                    para3: "Entidades, organizações ou indivíduos que controlam o uso e a administração do WSO2 IS " +
+                        "devem criar suas próprias políticas de privacidade, definindo a maneira pela qual os dados " +
+                        "são controlados ou processados ​​pela respectiva entidade, organização ou indivíduo."
                 },
                 disclaimer: {
                     description: {
                         list1: {
-                            0: "O WSO2, seus funcionários, parceiros e afiliados não têm acesso e não exigem, armazenam, processam ou controlam nenhum dos dados, incluindo dados pessoais contidos no WSO2 IS. Todos os dados, incluindo dados pessoais, são controlados e processados ​​pela entidade ou indivíduo que executa o WSO2 IS. O WSO2, seus funcionários parceiros e afiliados não são um processador de dados ou um controlador de dados, de acordo com os regulamentos de privacidade de dados. O WSO2 não fornece nenhuma garantia ou assume qualquer responsabilidade ou obrigação relacionada à legalidade ou à maneira e aos propósitos pelos quais o WSO2 IS é usado por essas entidades ou pessoas.",
-                            1: "Esta política de privacidade é para fins informativos da entidade ou pessoas que executam o WSO2 IS e define os processos e a funcionalidade contidos no WSO2 IS em relação à proteção de dados pessoais. É de responsabilidade das entidades e pessoas que executam o WSO2 IS criar e administrar suas próprias regras e processos que regem os dados pessoais dos usuários, e essas regras e processos podem alterar as políticas de uso, armazenamento e divulgação aqui contidas. Portanto, os usuários devem consultar a entidade ou pessoas que executam o WSO2 IS para obter sua própria política de privacidade para obter detalhes sobre os dados pessoais dos usuários."
+                            0: "O WSO2, seus funcionários, parceiros e afiliados não têm acesso e não exigem, " +
+                                "armazenam, processam ou controlam nenhum dos dados, incluindo dados pessoais " +
+                                "contidos no WSO2 IS. Todos os dados, incluindo dados pessoais, são controlados " +
+                                "e processados ​​pela entidade ou indivíduo que executa o WSO2 IS. O WSO2, seus " +
+                                "funcionários parceiros e afiliados não são um processador de dados ou um " +
+                                "controlador de dados, de acordo com os regulamentos de privacidade de dados. " +
+                                "O WSO2 não fornece nenhuma garantia ou assume qualquer responsabilidade ou " +
+                                "obrigação relacionada à legalidade ou à maneira e aos propósitos pelos quais " +
+                                "o WSO2 IS é usado por essas entidades ou pessoas.",
+                            1: "Esta política de privacidade é para fins informativos da entidade ou pessoas que " +
+                                "executam o WSO2 IS e define os processos e a funcionalidade contidos no WSO2 IS em " +
+                                "relação à proteção de dados pessoais. É de responsabilidade das entidades e " +
+                                "pessoas que executam o WSO2 IS criar e administrar suas próprias regras e " +
+                                "processos que regem os dados pessoais dos usuários, e essas regras e processos " +
+                                "podem alterar as políticas de uso, armazenamento e divulgação aqui contidas. " +
+                                "Portanto, os usuários devem consultar a entidade ou pessoas que executam o " +
+                                "WSO2 IS para obter sua própria política de privacidade para obter detalhes sobre " +
+                                "os dados pessoais dos usuários."
                         }
                     },
                     heading: "aviso Legal"
                 },
                 disclosureOfPersonalInfo: {
-                    description: "O WSO2 IS apenas divulga informações pessoais para os aplicativos relevantes (também conhecidos como Provedor de Serviços) registrados no WSO2 IS. Esses aplicativos são registrados pelo administrador de identidade de sua entidade ou organização. As informações pessoais são divulgadas apenas para os fins para os quais foram coletadas (ou para um uso identificado como consistente com essa finalidade), conforme controlado por esses Provedores de Serviços, a menos que você tenha consentido de outra forma ou onde seja exigido por lei.",
+                    description: "O WSO2 IS apenas divulga informações pessoais para os aplicativos relevantes " +
+                        "(também conhecidos como Provedor de Serviços) registrados no WSO2 IS. Esses aplicativos " +
+                        "são registrados pelo administrador de identidade de sua entidade ou organização. As " +
+                        "informações pessoais são divulgadas apenas para os fins para os quais foram coletadas " +
+                        "(ou para um uso identificado como consistente com essa finalidade), conforme controlado " +
+                        "por esses Provedores de Serviços, a menos que você tenha consentido de outra forma ou " +
+                        "onde seja exigido por lei.",
                     heading: "Divulgação de informações pessoais",
                     legalProcess: {
-                        description: "Observe que a organização, entidade ou indivíduo que executa o WSO2 IS pode ser obrigado a divulgar suas informações pessoais com ou sem o seu consentimento, quando exigidas por lei, após o devido e legal processo.",
+                        description: "Observe que a organização, entidade ou indivíduo que executa o WSO2 IS " +
+                            "pode ser obrigado a divulgar suas informações pessoais com ou sem o seu consentimento, " +
+                            "quando exigidas por lei, após o devido e legal processo.",
                         heading: "processo juridico"
                     }
                 },
@@ -486,22 +525,31 @@ export const views: Views = {
                 moreInfo: {
                     changesToPolicy: {
                         description: {
-                            para1: "As versões atualizadas do WSO2 IS podem conter alterações nesta política e as revisões dessa política serão incluídas nessas atualizações. Tais alterações se aplicariam apenas aos usuários que optarem por usar versões atualizadas.",
-                            para2: "A organização que executa o WSO2 IS pode revisar a Política de Privacidade de tempos em tempos. Você pode encontrar a política de governo mais recente com o respectivo link fornecido pela organização que executa o WSO2 IS 5.5. A organização notificará quaisquer alterações na política de privacidade nos nossos canais públicos oficiais."
+                            para1: "As versões atualizadas do WSO2 IS podem conter alterações nesta política e " +
+                                "as revisões dessa política serão incluídas nessas atualizações. Tais alterações " +
+                                "se aplicariam apenas aos usuários que optarem por usar versões atualizadas.",
+                            para2: "A organização que executa o WSO2 IS pode revisar a Política de Privacidade de " +
+                                "tempos em tempos. Você pode encontrar a política de governo mais recente com o " +
+                                "respectivo link fornecido pela organização que executa o WSO2 IS 5.5. " +
+                                "A organização notificará quaisquer alterações na política de privacidade " +
+                                "nos nossos canais públicos oficiais."
                         },
                         heading: "Alterações nesta política"
                     },
                     contactUs: {
                         description: {
-                            para1: "Entre em contato com o WSO2 se tiver alguma dúvida ou preocupação em relação a esta política de privacidade."
+                            para1: "Entre em contato com o WSO2 se tiver alguma dúvida ou preocupação em relação " +
+                                "a esta política de privacidade."
                         },
                         heading: "Contate-Nos"
                     },
                     heading: "Mais Informações",
                     yourChoices: {
                         description: {
-                            para1: "Se você já possui uma conta de usuário no WSO2 IS, tem o direito de desativar sua conta se achar que esta política de privacidade é inaceitável para você.",
-                            para2: "Se você não possui uma conta e não concorda com nossa política de privacidade, pode optar por não criar uma."
+                            para1: "Se você já possui uma conta de usuário no WSO2 IS, tem o direito de desativar " +
+                                "sua conta se achar que esta política de privacidade é inaceitável para você.",
+                            para2: "Se você não possui uma conta e não concorda com nossa política de privacidade, " +
+                                "pode optar por não criar uma."
                         },
                         heading: "Suas escolhas"
                     }
@@ -514,22 +562,33 @@ export const views: Views = {
                                 0: "Senha atual",
                                 1: "Senhas usadas anteriormente"
                             },
-                            para1: "O WSO2 IS retém seus dados pessoais, desde que você seja um usuário ativo do nosso sistema. Você pode atualizar seus dados pessoais a qualquer momento usando os portais de usuário de autocuidado fornecidos.",
-                            para2: "O WSO2 IS pode manter segredos de hash para fornecer um nível adicional de segurança. Isso inclui:"
+                            para1: "O WSO2 IS retém seus dados pessoais, desde que você seja um usuário ativo do " +
+                                "nosso sistema. Você pode atualizar seus dados pessoais a qualquer momento usando " +
+                                "os portais de usuário de autocuidado fornecidos.",
+                            para2: "O WSO2 IS pode manter segredos de hash para fornecer um nível adicional de " +
+                                "segurança. Isso inclui:"
                         },
                         heading: "Por quanto tempo suas informações pessoais são retidas"
                     },
                     requestRemoval: {
                         description: {
-                            para1: "Você pode solicitar que o administrador exclua sua conta. O administrador é o administrador do inquilino no qual você está registrado ou o superadministrador se você não usar o recurso de inquilino.",
-                            para2: "Além disso, você pode solicitar para anonimizar todos os vestígios de suas atividades que o WSO2 IS possa ter retido em logs, bancos de dados ou armazenamento analítico."
+                            para1: "Você pode solicitar que o administrador exclua sua conta. O administrador é " +
+                                "o administrador do inquilino no qual você está registrado ou o superadministrador " +
+                                "se você não usar o recurso de inquilino.",
+                            para2: "Além disso, você pode solicitar para anonimizar todos os vestígios de suas " +
+                                "atividades que o WSO2 IS possa ter retido em logs, bancos de dados ou " +
+                                "armazenamento analítico."
                         },
                         heading: "Como solicitar a remoção de suas informações pessoais"
                     },
                     where: {
                         description: {
-                            para1: "O WSO2 IS armazena suas informações pessoais em bancos de dados protegidos. O WSO2 IS exerce medidas adequadas de segurança aceitas pelo setor para proteger o banco de dados em que suas informações pessoais são mantidas. O WSO2 IS como produto não transfere ou compartilha seus dados com terceiros ou locais.",
-                            para2: "O WSO2 IS pode usar criptografia para manter seus dados pessoais com um nível adicional de segurança."
+                            para1: "O WSO2 IS armazena suas informações pessoais em bancos de dados protegidos. " +
+                                "O WSO2 IS exerce medidas adequadas de segurança aceitas pelo setor para proteger " +
+                                "o banco de dados em que suas informações pessoais são mantidas. O WSO2 IS como " +
+                                "produto não transfere ou compartilha seus dados com terceiros ou locais.",
+                            para2: "O WSO2 IS pode usar criptografia para manter seus dados pessoais com um nível " +
+                                "adicional de segurança."
                         },
                         heading: "Onde suas informações pessoais são armazenadas"
                     }
@@ -537,11 +596,17 @@ export const views: Views = {
                 useOfPersonalInfo: {
                     description: {
                         list1: {
-                            0: "Para fornecer uma experiência personalizada ao usuário. O WSO2 IS usa seu nome e as imagens de perfil carregadas para esse fim.",
-                            1: "Para proteger sua conta contra acesso não autorizado ou possíveis tentativas de hackers. O WSO2 IS usa cabeçalhos HTTP ou TCP / IP para esse fim.",
-                            2: "Derivar dados estatísticos para fins analíticos nas melhorias de desempenho do sistema. O WSO2 IS não manterá nenhuma informação pessoal após cálculos estatísticos. Portanto, o relatório estatístico não tem como identificar uma pessoa individualmente."
+                            0: "Para fornecer uma experiência personalizada ao usuário. O WSO2 IS usa seu nome e " +
+                                "as imagens de perfil carregadas para esse fim.",
+                            1: "Para proteger sua conta contra acesso não autorizado ou possíveis tentativas de " +
+                                "hackers. O WSO2 IS usa cabeçalhos HTTP ou TCP / IP para esse fim.",
+                            2: "Derivar dados estatísticos para fins analíticos nas melhorias de desempenho do " +
+                                "sistema. O WSO2 IS não manterá nenhuma informação pessoal após cálculos " +
+                                "estatísticos. Portanto, o relatório estatístico não tem como identificar " +
+                                "uma pessoa individualmente."
                         },
-                        para1: "O WSO2 IS usará suas informações pessoais apenas para os fins para os quais foram coletadas (ou para um uso identificado como consistente com esse objetivo).",
+                        para1: "O WSO2 IS usará suas informações pessoais apenas para os fins para os quais " +
+                            "foram coletadas (ou para um uso identificado como consistente com esse objetivo).",
                         para2: "O WSO2 IS usa suas informações pessoais apenas para os seguintes fins.",
                         subList1: {
                             heading: "Isso inclui:",
@@ -555,7 +620,8 @@ export const views: Views = {
                             heading: "WSO2 IS pode usar:",
                             list: {
                                 0: "Endereço IP para obter informações geográficas",
-                                1: "Impressão digital do navegador para determinar a tecnologia ou / e a versão do navegador"
+                                1: "Impressão digital do navegador para determinar a tecnologia ou / e a versão " +
+                                    "do navegador"
                             }
                         }
                     },
@@ -564,10 +630,12 @@ export const views: Views = {
                 whatIsPersonalInfo: {
                     description: {
                         list1: {
-                            0: "Seu nome de usuário (exceto nos casos em que o nome de usuário criado por seu empregador esteja sob contrato)",
+                            0: "Seu nome de usuário (exceto nos casos em que o nome de usuário criado por seu " +
+                                "empregador esteja sob contrato)",
                             1: "Sua data de nascimento / idade",
                             2: "Endereço IP usado para efetuar login",
-                            3: "O ID do seu dispositivo se você usar um dispositivo (por exemplo, telefone ou tablet) para fazer login"
+                            3: "O ID do seu dispositivo se você usar um dispositivo (por exemplo, telefone ou " +
+                                "tablet) para fazer login"
                         },
                         list2: {
                             0: "Cidade / país de onde você originou a conexão TCP / IP",
@@ -575,8 +643,12 @@ export const views: Views = {
                             2: "Tipo de dispositivo que você usou para fazer login (por exemplo, telefone ou tablet)",
                             3: "Sistema operacional e informações genéricas do navegador"
                         },
-                        para1: "O WSO2 IS considera qualquer coisa relacionada a você e pela qual você pode ser identificado como suas informações pessoais. Isso inclui, mas não se limita a:",
-                        para2: "No entanto, o WSO2 IS também coleta as seguintes informações que não são consideradas informações pessoais, mas são usadas apenas para fins <1> estatísticos </1>. A razão para isso é que essas informações não podem ser usadas para rastrear você."
+                        para1: "O WSO2 IS considera qualquer coisa relacionada a você e pela qual você pode ser " +
+                            "identificado como suas informações pessoais. Isso inclui, mas não se limita a:",
+                        para2: "No entanto, o WSO2 IS também coleta as seguintes informações que não são " +
+                            "consideradas informações pessoais, mas são usadas apenas para fins " +
+                            "<1> estatísticos </1>. A razão para isso é que essas informações não podem ser usadas " +
+                            "para rastrear você."
                     },
                     heading: "O que são informações pessoais?"
                 }
@@ -713,11 +785,13 @@ export const views: Views = {
             modals: {
                 terminateAllUserSessionsModal: {
                     heading: "Confirmação",
-                    message: "Esta ação fará o logout de todas as sessões em todos os dispositivos. Você deseja continuar?"
+                    message: "Esta ação fará o logout de todas as sessões em todos os dispositivos. Você deseja " +
+                        "continuar?"
                 },
                 terminateUserSessionModal: {
                     heading: "Confirmação",
-                    message: "Esta ação fará com que você saia da sessão no dispositivo específico. Você deseja continuar?"
+                    message: "Esta ação fará com que você saia da sessão no dispositivo específico. Você deseja " +
+                        "continuar?"
                 }
             },
             notifications: {
@@ -844,7 +918,8 @@ export const views: Views = {
             actionTitles: {
                 export: "Exportar dados do perfil"
             },
-            description: "Faça o download de todos os dados do seu perfil, incluindo dados pessoais, perguntas de segurança e consentimentos",
+            description: "Faça o download de todos os dados do seu perfil, incluindo dados pessoais, perguntas de " +
+                "segurança e consentimentos",
             heading: "Exportar perfil"
         },
         userSessions: {
@@ -862,4 +937,3 @@ export const views: Views = {
         }
     }
 };
-// tslint:enable:max-line-length
