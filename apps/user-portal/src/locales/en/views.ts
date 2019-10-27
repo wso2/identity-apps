@@ -18,6 +18,7 @@
 
 import { Views } from "../../models";
 
+// tslint:disable:max-line-length
 export const views: Views = {
     components: {
         accountRecovery: {
@@ -51,7 +52,7 @@ export const views: Views = {
                         },
                         genericError: {
                             description: "Error occurred while updating the recovery email",
-                            message: "Something went wrong."
+                            message: "Something went wrong"
                         },
                         success: {
                             description: "The email address in the user profile has been updated successfully",
@@ -96,8 +97,8 @@ export const views: Views = {
                             message: "Something went wrong."
                         },
                         success: {
-                            description: "The required security questions were added successfully.",
-                            message: "Security questions were successfully added."
+                            description: "The required security questions were added successfully",
+                            message: "Security questions were successfully added"
                         }
                     },
                     updateQuestions: {
@@ -110,8 +111,8 @@ export const views: Views = {
                             message: "Something went wrong."
                         },
                         success: {
-                            description: "The required security questions were updated successfully.",
-                            message: "Security Questions were successfully updated."
+                            description: "The required security questions were updated successfully",
+                            message: "Security Questions were successfully updated"
                         }
                     }
                 }
@@ -193,7 +194,7 @@ export const views: Views = {
                     },
                     validations: {
                         genericError: {
-                            description: "Something went wrong. Please try again.",
+                            description: "Something went wrong. Please try again",
                             message: "Password reset error"
                         },
                         invalidCurrentPassword: {
@@ -241,7 +242,7 @@ export const views: Views = {
                         message: "Something went wrong"
                     },
                     genericError: {
-                        description: "Couldn't load information on the selected application.",
+                        description: "Couldn't load information on the selected application",
                         message: "Something went wrong"
                     },
                     success: {
@@ -255,7 +256,7 @@ export const views: Views = {
                         message: "Something went wrong"
                     },
                     genericError: {
-                        description: "Couldn't load the list of consented applications.",
+                        description: "Couldn't load the list of consented applications",
                         message: "Something went wrong"
                     },
                     success: {
@@ -269,11 +270,11 @@ export const views: Views = {
                         message: "Consent Revoke Error"
                     },
                     genericError: {
-                        description: "Couldn't revoke consent for the application.",
+                        description: "Couldn't revoke consent for the application",
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "The consent has been successfully revoked for the application.",
+                        description: "The consent has been successfully revoked for the application",
                         message: "Consent Revoke Success"
                     }
                 },
@@ -283,11 +284,11 @@ export const views: Views = {
                         message: "Something went wrong"
                     },
                     genericError: {
-                        description: "The consented claims failed to update for the application.",
+                        description: "The consented claims failed to update for the application",
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "The consented claims have been successfully updated for the application.",
+                        description: "The consented claims have been successfully updated for the application",
                         message: "Consented claims updated successfully"
                     }
                 }
@@ -326,29 +327,29 @@ export const views: Views = {
                 addAssociation: {
                     error: {
                         description: "{{description}}",
-                        message: "Error retrieving linked user accounts."
+                        message: "Error retrieving linked user accounts"
                     },
                     genericError: {
-                        description: "Error occurred while adding the linked account.",
-                        message: "Something went wrong."
+                        description: "Error occurred while adding the linked account",
+                        message: "Something went wrong"
                     },
                     success: {
-                        description: "The required linked user account added successfully.",
-                        message: "Linked user account added successfully."
+                        description: "The required linked user account added successfully",
+                        message: "Linked user account added successfully"
                     }
                 },
                 getAssociations: {
                     error: {
                         description: "{{description}}",
-                        message: "Error retrieving linked user accounts."
+                        message: "Error retrieving linked user accounts"
                     },
                     genericError: {
-                        description: "Error occurred while retrieving the linked user accounts.",
-                        message: "Something went wrong."
+                        description: "Error occurred while retrieving the linked user accounts",
+                        message: "Something went wrong"
                     },
                     success: {
-                        description: "The required user profile details are retrieved successfully.",
-                        message: "Linked user accounts retrieved successfully."
+                        description: "The required user profile details are retrieved successfully",
+                        message: "Linked user accounts retrieved successfully"
                     }
                 }
             }
@@ -365,7 +366,7 @@ export const views: Views = {
                         },
                         genericError: {
                             description: "Error occurred while retrieving the device",
-                            message: "Something went wrong."
+                            message: "Something went wrong"
                         },
                         success: {
                             description: "The device was successfully registered and now you can use it as a second factor",
@@ -387,10 +388,10 @@ export const views: Views = {
                         },
                         genericError: {
                             description: "Error occurred while updating the mobile number",
-                            message: "Something went wrong."
+                            message: "Something went wrong"
                         },
                         success: {
-                            description: "The mobile number in the user profile is updated successfully.",
+                            description: "The mobile number in the user profile is updated successfully",
                             message: "Mobile number updated successfully"
                         }
                     }
@@ -468,7 +469,7 @@ export const views: Views = {
                     description: {
                         list1: {
                             0: "WSO2, its employees, partners, and affiliates do not have access to and do not require, store, process or control any of the data, including personal data contained in WSO2 IS. All data, including personal data is controlled and processed by the entity or individual running WSO2 IS. WSO2, its employees partners and affiliates are not a data processor or a data controller within the meaning of any data privacy regulations. WSO2 does not provide any warranties or undertake any responsibility or liability in connection with the lawfulness or the manner and purposes for which WSO2 IS is used by such entities or persons.",
-                            1: "is privacy policy is for the informational purposes of the entity or persons running WSO2 IS and sets out the processes and functionality contained within WSO2 IS regarding personal data protection. It is the responsibility of entities and persons running WSO2 IS to create and administer its own rules and processes governing users' personal data, and such rules and processes may change the use, storage and disclosure policies contained herein. Therefore users should consult the entity or persons running WSO2 IS for its own privacy policy for details governing users' personal data."
+                            1: "This privacy policy is for the informational purposes of the entity or persons running WSO2 IS and sets out the processes and functionality contained within WSO2 IS regarding personal data protection. It is the responsibility of entities and persons running WSO2 IS to create and administer its own rules and processes governing users' personal data, and such rules and processes may change the use, storage and disclosure policies contained herein. Therefore users should consult the entity or persons running WSO2 IS for its own privacy policy for details governing users' personal data."
                         }
                     },
                     heading: "Disclaimer"
@@ -665,7 +666,7 @@ export const views: Views = {
                     },
                     genericError: {
                         description: "Error occurred while retrieving the profile details",
-                        message: "Something went wrong."
+                        message: "Something went wrong"
                     },
                     success: {
                         description: "The required user profile details are retrieved successfully",
@@ -679,11 +680,11 @@ export const views: Views = {
                     },
                     genericError: {
                         description: "Error occurred while updating the profile details",
-                        message: "Something went wrong."
+                        message: "Something went wrong"
                     },
                     success: {
-                        description: "The required user profile details were successfully updated.",
-                        message: "User profile updated successfully."
+                        description: "The required user profile details were successfully updated",
+                        message: "User profile updated successfully"
                     }
                 }
             }
@@ -697,11 +698,11 @@ export const views: Views = {
                     },
                     genericError: {
                         description: "Error occurred while downloading the user profile details",
-                        message: "Something went wrong."
+                        message: "Something went wrong"
                     },
                     success: {
-                        description: "The required user profile details are downloaded successfully.",
-                        message: "User profile details downloaded successfully."
+                        description: "The required user profile details are downloaded successfully",
+                        message: "User profile details downloaded successfully"
                     }
                 }
             }
@@ -723,43 +724,43 @@ export const views: Views = {
                 fetchSessions: {
                     error: {
                         description: "{{description}}",
-                        message: "Error retrieving user session."
+                        message: "Error retrieving user session"
                     },
                     genericError: {
-                        description: "Couldn't retrieve any user sessions.",
-                        message: "Something went wrong."
+                        description: "Couldn't retrieve any user sessions",
+                        message: "Something went wrong"
                     },
                     success: {
-                        description: "Successfully retrieved the user sessions.",
-                        message: "User session retrieval successful."
+                        description: "Successfully retrieved the user sessions",
+                        message: "User session retrieval successful"
                     }
                 },
                 terminateAllUserSessions: {
                     error: {
                         description: "{{description}}",
-                        message: "Couldn't terminate user sessions."
+                        message: "Couldn't terminate user sessions"
                     },
                     genericError: {
-                        description: "Something went wrong while terminating user sessions.",
-                        message: "Couldn't terminate user sessions."
+                        description: "Something went wrong while terminating user sessions",
+                        message: "Couldn't terminate user sessions"
                     },
                     success: {
-                        description: "Successfully terminated all user sessions.",
-                        message: "Terminated all user sessions."
+                        description: "Successfully terminated all user sessions",
+                        message: "Terminated all user sessions"
                     }
                 },
                 terminateUserSession: {
                     error: {
                         description: "{{description}}",
-                        message: "Couldn't terminate the user session."
+                        message: "Couldn't terminate the user session"
                     },
                     genericError: {
-                        description: "Something went wrong while terminating the user session.",
-                        message: "Couldn't terminate the user session."
+                        description: "Something went wrong while terminating the user session",
+                        message: "Couldn't terminate the user session"
                     },
                     success: {
-                        description: "Successfully terminated the user session.",
-                        message: "Session terminate success."
+                        description: "Successfully terminated the user session",
+                        message: "Session terminate success"
                     }
                 }
             }
@@ -787,7 +788,7 @@ export const views: Views = {
             title: "Security"
         },
         404: {
-            subTitle: "The page you're looking for isn't here.",
+            subTitle: "The page you're looking for isn't here",
             title: "It looks like you're lost. :("
         },
     },
@@ -828,7 +829,7 @@ export const views: Views = {
             actionTitles: {
                 add: "Add account"
             },
-            description: "Manage all your linked accounts in one place.",
+            description: "Manage all your linked accounts in one place",
             heading: "Linked accounts"
         },
         mfa: {
@@ -836,14 +837,14 @@ export const views: Views = {
             heading: "Multi factor authentication"
         },
         profile: {
-            description: "Manage and update your basic profile information.",
+            description: "Manage and update your basic profile information",
             heading: "Profile"
         },
         profileExport: {
             actionTitles: {
                 export: "Export profile data"
             },
-            description: "Download all your profile data including personal data, security questions and consents.",
+            description: "Download all your profile data including personal data, security questions and consents",
             heading: "Export profile"
         },
         userSessions: {
@@ -851,7 +852,7 @@ export const views: Views = {
                 empty: "You do not have any active sessions",
                 terminateAll: "Terminate all sessions"
             },
-            description: "This is a list of devices that have been active on your account.",
+            description: "This is a list of devices that have been active on your account",
             heading: "Active user sessions",
             placeholders: {
                 emptySessionList: {
@@ -861,3 +862,4 @@ export const views: Views = {
         }
     }
 };
+// tslint:enable:max-line-length
