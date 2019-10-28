@@ -91,7 +91,7 @@
         "subTitle": "அனுமதி அளிக்கபட்ட செயலிகளையும் வலைத்தளங்களையும் முகாமை செய்க"
     },
     "operationsPage": {
-        "title": "செய்ற்பாடுகள்",
+        "title": "செயற்பாடுகள்",
         "subTitle": "முடிவு செய்யப்படாத அனுமதிகள் போன்ற பணிகளை முகாமை செய்யவும் பராமரிக்கவும்"
     },
     "changePassword": {
@@ -275,54 +275,54 @@
         "notification": {
             "addQuestions": {
                 "success": {
-                    "description": "The required security questions were added successfully.",
-                    "message": "Security questions were successfully added."
+                    "description": "பாதுகாப்பு வினாக்கள் சேர்க்கப்பட்டுவிட்டன",
+                    "message": "பாதுகாப்பு வினாக்கள் வெற்றிகரமாக சேர்க்கப்பட்டுவிட்டன"
                 },
                 "error": {
-                    "description": "An error occurred !!!",
-                    "message": "Error occurred while configuring the security questions"
+                    "description": "ஏதோ தவறேற்பட்டுவிட்டது !!!",
+                    "message": "பாதுகாப்பு வினாக்களை கட்டமைக்கும் பொழுது தவறேற்பட்டுவிட்டது"
                 }
             },
             "updateQuestions": {
                 "success": {
-                    "description": "The required security questions were updated successfully.",
-                    "message": "Security Questions were successfully updated."
+                    "description": "பாதுகாப்பு வினாக்கள் புதுப்பிக்கப்பட்டுவிட்டன",
+                    "message": "பாதுகாப்பு வினாக்கள் வெற்றிகரமாக புதுப்பிக்கப்பட்டுவிட்டன"
                 },
                 "error": {
-                    "description": "An error occurred !!!",
-                    "message": "Error occurred while updating the security questions"
+                    "description": "ஏதோ தவறேற்பட்டுவிட்டது !!!",
+                    "message": "பாதுகாப்பு வினாக்களை புதுப்பிககும் பொழுது தவறேற்பட்டுவிட்டது"
                 }
             }
         },
         "placeholders": {
             "emptyQuestionsList": {
-                "heading": "Failed to load any security questions"
+                "heading": "பாதுகாப்பு வினாக்களை பெறுவதில் தோல்வி"
             }
         },
         "dropDown": {
-            "label": "Select a question"
+            "label": "வினாவொன்றினை தேர்ந்தெடுக்கவும்"
         },
-        "noConfiguration": "No security questions configured for this user"
+        "noConfiguration": "இப்பயனருக்கு பாதுகாப்பு வினாவொன்றும் கட்டமைக்கப்படவில்லை"
     },
     "userProfile": {
         "title": "சுயவிபரம்",
-        "subTitle": "Manage and update your basic profile information.",
+        "subTitle": "உங்கள் அடிப்படை சுயவிபரத் தகவல்களை முகாமை செய்ய மற்றும் புதுப்பிக்க.",
         "personalInfoTitle": "பயனர் விபரம்",
         "forms": {
             "nameChangeForm": {
                 "inputs": {
                     "firstName": {
                         "label": "முதற்பெயர்",
-                        "placeholder": "Enter the first name",
+                        "placeholder": "முதற்பெயரை உள்ளிடவும்",
                         "validations": {
-                            "empty": "First name is a required field"
+                            "empty": "முதற்பெயர் ஒரு கட்டாயா களமாகும்"
                         }
                     },
                     "lastName": {
                         "label": "இறுதிப்பெயர்",
-                        "placeholder": "Enter the last name",
+                        "placeholder": "இறுதிப்பெயரை உள்ளிடவும்",
                         "validations": {
-                            "empty": "Last name is a required field"
+                            "empty": "இறுதிப்பெயர் ஒரு கட்டாயா களமாகும்"
                         }
                     }
                 }
@@ -331,9 +331,9 @@
                 "inputs": {
                     "email": {
                         "label": "மின்னஞ்சல் முகவரி",
-                        "placeholder": "Enter your email address",
+                        "placeholder": "மின்னஞ்சல் முகவரியை உள்ளிடவும்",
                         "validations": {
-                            "empty": "Email address is a required field"
+                            "empty": "மின்னஞ்சல் முகவரி ஒரு கட்டாயா களமாகும்"
                         }
                     }
                 }
@@ -342,9 +342,9 @@
                 "inputs": {
                     "organization": {
                         "label": "நிறுவனம்",
-                        "placeholder": "Enter your organization",
+                        "placeholder": "நிறுவனத்தை உள்ளிடவும்",
                         "validations": {
-                            "empty": "Organization is a required field"
+                            "empty": "நிறுவனம் ஒரு கட்டாயா களமாகும்"
                         }
                     }
                 }
@@ -353,9 +353,9 @@
                 "inputs": {
                     "mobile": {
                         "label": "கையடக்க தொலைபேசி இலக்கம்",
-                        "placeholder": "Enter your mobile number",
+                        "placeholder": "கையடக்க தொலைபேசி இலக்கத்தை உள்ளிடவும்",
                         "validations": {
-                            "empty": "Mobile number is a required field"
+                            "empty": "கையடக்க தொலைபேசி இலக்கம் ஒரு கட்டாயா களமாகும்"
                         }
                     }
                 }
@@ -364,79 +364,77 @@
         "fields": {
             "name": {
                 "label": "பெயர்",
-                "default": "Add name"
+                "default": "பெயரை சேர்க்க"
             },
             "email": {
                 "label": "மின்னஞ்சல்",
-                "default": "Add email"
+                "default": "மின்னஞ்சலை சேர்க்க"
             },
             "username": {
                 "label": "பயனர் பெயர்",
-                "default": "Add username"
+                "default": "பயனர் பெயரை சேர்க்க"
             },
             "organization": {
                 "label": "நிறுவனம்",
-                "default": "Add organization"
+                "default": "நிறுவனத்தை சேர்க்க"
             },
             "mobile": {
-                "label": "Mobile number",
-                "default": "Add mobile number"
+                "label": "கையடக்க தொலைபேசி இலக்கம்",
+                "default": "கையடக்க தொலைபேசி இலக்கத்தை சேர்க்க"
             },
-            "emptyField": "Please fill out this field"
+            "emptyField": "இக்களத்தை தயவுகூர்ந்து நிரப்புங்கள்"
         },
         "personalDetails": {
-            "noDetails": "No Personal Information Configured for this User"
+            "noDetails": "இப் பயனருக்கு எவ்வித சுய விபரமும் கட்டமைக்கப் படவில்லை"
         },
         "notification": {
             "getProfileInfo": {
                 "success": {
-                    "message": "User profile details fetched successfully.",
-                    "description": "The required user profile details are retrieved successfully."
+                    "message": "பயனர் விபரம் பெறப்பட்டுவிட்டது",
+                    "description": "பயனர் விபரம் வெற்றிகரமாக பெறப்பட்டுவிட்டது"
                 },
                 "error": {
-                    "message": "An error occurred !!!",
-                    "description": "Error occurred while retrieving the profile details."
+                    "message": "ஏதோ தவறேற்பட்டுவிட்டது !!!",
+                    "description": "பயனர் விபரத்தை பெறும் பொழுது தவறேற்பட்டுவிட்டது"
                 }
             },
             "updateProfileInfo": {
                 "success": {
-                    "message": "User profile updated successfully.",
-                    "description": "The required user profile details were successfully updated."
+                    "message": "பயனர் சுயவிபரம் புதுப்பிக்கபட்டுவிட்டது",
+                    "description": "பயனர் சுயவிபரம் வெற்றிகரமாக புதுப்பிக்கபட்டுவிட்டது."
                 },
                 "error": {
-                    "message": "An error occurred !!!",
-                    "description": "Error occurred while updating the user profile details"
+                    "message": "ஏதோ தவறேற்பட்டுவிட்டது !!!",
+                    "description": "பயனர் சுயவிபரத்தை புதுப்பிக்கும் பொழுது தவறேற்பட்டுவிட்டது"
                 }
             }
         }
     },
     "associatedAccounts": {
-        "title": "Linked accounts",
-        "subTitle": "Manage all your linked accounts in one place.",
-        "actionTitle": "Add account",
+        "title": "இணைக்கப்ப்ட்ட கணக்குகள்",
+        "subTitle": "உங்களுடைய அனைத்து இணைக்கப்பட்ட கணக்குகளையும் முகாமை செய்ய",
+        "actionTitle": "கணைக்கினை சேர்க்க",
         "accountTypes": {
             "local": {
-                "label": "Add local user account"
+                "label": "உட்பயனர் கணக்கினை சேர்க்க"
             }
         },
         "forms": {
             "addAccountForm": {
                 "inputs": {
                     "username": {
-                        "label": "Username",
-                        "placeholder": "Enter the username",
+                        "label": "பயனர்பெயர்",
+                        "placeholder": "பயனர்பெயரை உள்ளிடுக",
                         "validations": {
-                            "empty": "Username is a required field"
-                        },
-                        "usernameRequired": "Enter a username"
+                            "empty": "பயனர்பெயர் ஒரு கட்டாயா களமாகும்"
+                        }
                     },
                     "password": {
-                        "label": "Password",
-                        "placeholder": "Enter the password",
+                        "label": "கடவுச்சொல்",
+                        "placeholder": "கடவுச்சொல்லை உள்ளிடுக",
                         "validations": {
-                            "empty": "Password is a required field"
-                        },
-                        "passwordRequired": "Enter a password"
+                            "empty": "கடவுச்சொல் ஒரு கட்டாய களமாகும்"
+                        }
                     }
                 }
             }
@@ -444,156 +442,156 @@
         "notification": {
             "getAssociation": {
                 "success": {
-                    "message": "Linked user accounts retrieved successfully.",
-                    "description": "The required user profile details are retrieved successfully."
+                    "message": "இணைக்கபட்ட பயனர் கணக்குகள் பெறப்பட்டுவிட்டன",
+                    "description": "இணைக்கபட்ட பயனர் கணக்குகள் வெற்றிகரமாக பெறப்பட்டுவிட்டன"
                 },
                 "error": {
-                    "message": "Error retrieving linked user accounts.",
+                    "message": "இணைக்கப்பட்ட பயனர் கணக்குகளை பெறும் பொழுது தவறேற்பட்டுவிட்டது",
                     "description": "{{description}}"
                 },
                 "genericError": {
-                    "message": "Something went wrong.",
-                    "description": "Error occurred while retrieving the linked user accounts."
+                    "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                    "description": "இணைக்கப் பட்ட கனக்குகளை பெறும் பொழுது தவறேற்பட்டுவிட்டது"
                 }
             },
             "addAssociation": {
                 "success": {
-                    "message": "Linked user account added successfully.",
-                    "description": "The required linked user account added successfully."
+                    "message": "கணக்கு இணைக்கப் பட்டு விட்டது",
+                    "description": "கணக்கு வெற்றிகரமாக இணைக்கப் பட்டுவிட்டது"
                 },
                 "error": {
-                    "message": "Error retrieving linked user accounts.",
+                    "message": "இணைக்கப் பட்ட கணக்குகளை பெரும் பொழுது தவறேற்பட்டுவிட்டது",
                     "description": "{{description}}"
                 },
                 "genericError": {
-                    "message": "Something went wrong.",
-                    "description": "Error occurred while adding the linked account."
+                    "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                    "description": "கணக்கினை இணைக்கும் பொழுது தவறேற்பட்டுவிட்டது."
                 }
             }
         }
     },
     "userSessions": {
-        "title": "Active user sessions",
-        "subTitle": "This is a list of devices that have been active on your account.",
+        "title": "செயற்பாட்டில் உள்ள பயனர் அமர்வுகள்",
+        "subTitle": "உங்கள் கணக்கினில் செய்ற்பாட்டில் உள்ள கருவிகளின் பட்டியலிது.",
         "actionTitles": {
-            "terminateAll": "Terminate all sessions",
-            "empty": "You do not have any active sessions"
+            "terminateAll": "சகல அமர்வுகளையும் முடிக்க",
+            "empty": "செயற்பாட்டில் உள்ள அமர்வுகள் யாதுமில்லை"
         },
-        "description": "View and manage active sessions of your account",
-        "browserAndOS": "{{browser}} on {{os}} {{version}}",
-        "lastAccessed": "Last accessed {{date}}",
+        "description": "செய்ற்பாட்டில் உள்ள உங்கள் அமர்வுகளை முகாமை செய்ய மற்றும் பார்க்க",
+        "browserAndOS": "{{os}} {{version}} இல் {{browser}}",
+        "lastAccessed": "இறுதியாக அணுகியது {{date}}",
         "notifications": {
             "fetchSessions": {
                 "success": {
-                    "message": "User session retrieval successful.",
-                    "description": "Successfully retrieved the user sessions."
+                    "message": "பயனர் அமர்வுகள் பெறப்பட்டுவிட்டன",
+                    "description": "பயனர் அமர்வுகள் வெற்றிகரமாக பெறப்பட்டுவிட்டன."
                 },
                 "error": {
-                    "message": "Error retrieving user session.",
+                    "message": "பயனர் அமர்வுகளை பெறும் பொழுது தவறேற்பட்டுவிட்டது.",
                     "description": "{{description}}"
                 },
                 "genericError": {
-                    "message": "Something went wrong.",
-                    "description": "Couldn't retrieve any user sessions."
+                    "message": "ஏதோ தவறேற்பட்டுவிட்டது.",
+                    "description": "பயனர் அமர்வுகளை பெற இயலவில்லை"
                 }
             },
             "terminateAllUserSessions": {
                 "success": {
-                    "message": "Terminated all user sessions.",
-                    "description": "Successfully terminated all user sessions."
+                    "message": "சகல பயனர் அமர்வுகளும் முடிக்கப்பட்டுவிட்டன",
+                    "description": "சகல பயனர் அமர்வுகளும் வெற்றிகரமாக முடிக்கப்பட்டுவிட்டன."
                 },
                 "error": {
-                    "message": "Couldn't terminate user sessions.",
+                    "message": "பயனர் அமர்வுகளை முடிக்க இயலவில்லை",
                     "description": "{{description}}"
                 },
                 "genericError": {
-                    "message": "Couldn't terminate user sessions.",
-                    "description": "Something went wrong while terminating user sessions."
+                    "message": "பயனர் அமர்வுகளை முடிக்க இயலவில்லை",
+                    "description": "பயனர் அமர்வுகளை முடிக்கும் பொழுது தவறேற்பட்டுவிட்டது"
                 }
             },
             "terminateUserSession": {
                 "success": {
-                    "message": "Session terminate success.",
-                    "description": "Successfully terminated the user session."
+                    "message": "அமர்வு முடிக்கப்பட்டுவிட்டது",
+                    "description": "பயனர் அமர்வு வெற்றிகரமாக முடிக்கப்பட்டுவிட்டது."
                 },
                 "error": {
-                    "message": "Couldn't terminate the user session.",
+                    "message": "யனர் அமர்வினை முடிக்க இயலவில்லை",
                     "description": "{{description}}"
                 },
                 "genericError": {
-                    "message": "Couldn't terminate the user session.",
-                    "description": "Something went wrong while terminating the user session."
+                    "message": "யனர் அமர்வினை முடிக்க இயலவில்லை",
+                    "description": "பயனர் அமரவை முடிக்கும் பொழுது தவறேற்பட்டுவிட்டது"
                 }
             }
         },
         "placeholders": {
             "emptySessionList": {
-                "heading": "There are no active sessions for this user"
+                "heading": "இந்த பயனரின் எந்தவொரு அமர்வும் செய்ற்பாட்டினில் இல்லை"
             }
         },
         "modals": {
             "terminateAllUserSessionsModal": {
-                "heading": "Confirmation",
-                "message": "This action will log you out of all the sessions on every device. Do you wish to continue?"
+                "heading": "உறுதிப்பாடு",
+                "message": "இச்செயல் சகல கருவிகளிலும் உள்ள உங்களுடைய அனைத்து அமர்வுகளில் இருந்தும் உங்களை வெளியேற்றும். மேலும் தொடர விரும்புகின்றீர்களா?"
             },
             "terminateUserSessionModal": {
-                "heading": "Confirmation",
-                "message": "This action will log you out of the session on the particular device. Do you wish to continue?"
+                "heading": "உறுதிப்பாடு",
+                "message": "இச்செயல் குறிப்பிட்ட கருவியிலுள்ள அமர்விலிருந்து உங்களை வெளியேற்றும், மேலும் தொடர விரும்புகின்றீர்களா?"
             }
         }
     },
     "404": {
-        "title": "It looks like you're lost. :(",
-        "subTitle": "The page you're looking for isn't here."
+        "title": "நீங்கள் வழி தவறி வந்து விட்டதாக தெரிகிறது :(",
+        "subTitle": "நீங்கள் தேடி வந்த பக்கம் இங்கில்லை."
     },
     "profileExport": {
-        "title": "Export profile",
-        "subTitle": "Download all your profile data including personal data, security questions and consents.",
-        "actionTitle": "Export profile data",
+        "title": "சுயவிபரத்தை ஏற்றுமதி செய்க",
+        "subTitle": "பயனர் தகவல், பாதுகாப்பு வினாக்கள், அனுமதிகள் உள்ளிட்ட அனைத்து சுயவிபரங்களையும் பதிவிறக்கம் செய்ய.",
+        "actionTitle": "சுயவிபரத்தை ஏற்றுமதி செய்க",
         "notification": {
             "downloadProfileInfo": {
                 "success": {
-                    "message": "User profile details downloaded successfully.",
-                    "description": "The required user profile details are downloaded successfully."
+                    "message": "பயனர் சுயவிபரம் பதிவிறக்கப்பட்டுவிட்டது",
+                    "description": "பயனர் சுயவிபரம் வெற்றிகரமாக பதிவிறக்கப்பட்டுவிட்டது."
                 },
                 "error": {
-                    "message": "An error occurred !!!",
-                    "description": "Error occurred while downloading the user profile details."
+                    "message": "ஏதோ தவறேற்பட்டுவிட்டது !!!",
+                    "description": "பயனர் சுயவிபரத்தை பதிவிறக்கம் செய்யும் பொழுது தவறேற்பட்டுவிட்டது"
                 }
             }
         }
     },
     "pendingApprovals": {
-        "title": "Pending approvals",
-        "subTitle": "You can manage pending approvals here",
-        "listHelper": "Showing approvals in {{status}} state",
+        "title": "முடிவெடுக்கப்படாத அனுமதிகள்",
+        "subTitle": "முடிவெடுக்கப்படாதா அனுமதிகளை முகாமை செய்ய",
+        "listHelper": "{{status}} நிலையில் உள்ள அனுமதிகள்",
         "notifications": {
             "fetchPendingApprovals": {
                 "success": {
-                    "message": "Pending approvals retrieval successful",
-                    "description": "Successfully retrieved pending approvals"
+                    "message": "முடிவெடுக்கப்படாத அனுமதிகள் பெறப்பட்டுவிட்டன",
+                    "description": "முடிவெடுக்கப்படாத அனுமதிகள் வெற்றிகரமாக பெறப்பட்டுவிட்டன"
                 },
                 "error": {
-                    "message": "Error retrieving pending approvals",
+                    "message": "முடிவெடுக்கப்படாத அனுமதிகளை பெறுவதில் தவறு",
                     "description": "{{description}}"
                 },
                 "genericError": {
-                    "message": "Something went wrong",
-                    "description": "Couldn't retrieve pending approvals"
+                    "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                    "description": "முடிவெடுக்கப்படாத அனுமதிகளை பெறுவதில் தவறேற்பட்டுவிட்டது"
                 }
             },
             "updatePendingApprovals": {
                 "success": {
-                    "message": "Update successful",
-                    "description": "Successfully updated the approval"
+                    "message": "புதுப்பித்தல் வெற்றி",
+                    "description": "அனுமதி வெற்றிகரமாக புதுப்பிக்கப்பட்டுவிட்டது"
                 },
                 "error": {
-                    "message": "Error updating the approval",
+                    "message": "அனுமதி புதுப்பிக்கப்பட்டுவிட்டது",
                     "description": "{{description}}"
                 },
                 "genericError": {
-                    "message": "Something went wrong",
-                    "description": "Couldn't update the approval"
+                    "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                    "description": "அனுமதியினை புதுப்பிக்க இயலவில்லை"
                 }
             },
             "fetchApprovalDetails": {
@@ -602,18 +600,18 @@
                     "description": "Successfully retrieved the approval details"
                 },
                 "error": {
-                    "message": "Error retrieving the approval details",
+                    "message": "அனுமதிகளை பெறுவதில் தவறேற்பட்டுவிட்டது",
                     "description": "{{description}}"
                 },
                 "genericError": {
-                    "message": "Something went wrong",
-                    "description": "Couldn't update the approval details"
+                    "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                    "description": "அனுமதிகளை புதுப்பிக்க இயலவில்லை"
                 }
             }
         },
         "placeholders": {
             "emptyApprovalList": {
-                "heading": "You don't have any {{status}} pending approvals"
+                "heading": "உங்களிடம் {{status}} முடிவெடுக்கப்படாத அனுமதிகள் இல்லை"
             }
         }
     },
@@ -622,7 +620,7 @@
     },
     "privacy": {
         "about": {
-            "heading": "About WSO2 Identity Server",
+            "heading": "WSO2 Identity Serverஐ பற்றி",
             "description": "WSO2 Identity Server (referred to as “WSO2 IS” within this policy) is an open source Identity Management and Entitlement Server that is based on open standards and specifications."
         },
         "privacyPolicy": {
