@@ -60,7 +60,8 @@
                         "message": "An error occurred !!!",
                         "description": "Error occurred while updating the mobile number."
                     }
-                }
+                },
+                "note":"NOTE: This will update the mobile number in your profile"
             },
             "fido": {
                 "title": "FIDO",
@@ -427,16 +428,14 @@
                         "placeholder": "Enter the username",
                         "validations": {
                             "empty": "Username is a required field"
-                        },
-                        "usernameRequired": "Enter a username"
+                        }
                     },
                     "password": {
                         "label": "Password",
                         "placeholder": "Enter the password",
                         "validations": {
                             "empty": "Password is a required field"
-                        },
-                        "passwordRequired": "Enter a password"
+                        }
                     }
                 }
             }

@@ -195,7 +195,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                                                 floated="left"
                                                                 name="info circle"
                                                             />
-                                                            NOTE: This will update the mobile number in your profile
+                                                            {t("views:securityPage.multiFactor.smsOtp.note")}
                                                         </p>
                                                 },
                                                 {
