@@ -16,26 +16,21 @@
  * under the License.
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-    Grid,
-    List,
-    Icon
-} from "semantic-ui-react";
+import { Grid, Icon, List } from "semantic-ui-react";
 import { addSecurityQs, getSecurityQs, updateSecurityQs } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
 import {
-    createEmptyChallenge,
-    QuestionsInterface,
-    QuestionSetsInterface,
     AnswersInterface,
     ChallengesQuestionsInterface,
-    Notification
+    createEmptyChallenge,
+    Notification,
+    QuestionSetsInterface,
+    QuestionsInterface,
+    Views
 } from "../../../models";
-import { ThemeIcon, EditSection, FormWrapper } from "../../shared";
-import { Views } from "../../../models";
-let lang: Views;
+import { EditSection, FormWrapper, ThemeIcon } from "../../shared";
 
 /**
  * Prop types for SecurityQuestionsComponent
@@ -46,7 +41,7 @@ interface SecurityQuestionsProps {
 
 /**
  * The SecurityQuestionsComponent component in the AccountRecoveryComponent
- * 
+ *
  * @param {SecurityQuestionsProps} props
  * @return {JSX.Element}
  */
@@ -64,10 +59,9 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
 
     useEffect(() => {
         if (!isInit) {
-            getSecurityQs()
-                .then((response) => {
-                    setSecurityDetails(response);
-                });
+            getSecurityQs().then((response) => {
+                setSecurityDetails(response);
+            });
         }
     }, []);
 
@@ -83,27 +77,23 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
         const challengesCopy: ChallengesQuestionsInterface[] = [];
 
         challenges.questions.map((question: QuestionSetsInterface) => {
-            let answer = challenges.answers && challenges.answers.length > 0
-                ? findAnswer(question.questionSetId)
-                : null;
+            const answer =
+                challenges.answers && challenges.answers.length > 0 ? findAnswer(question.questionSetId) : null;
 
-            let questionInSet = answer
-                ? findQuestion(question.questionSetId, question.questions)
-                : null;
+            const questionInSet = answer ? findQuestion(question.questionSetId, question.questions) : null;
 
-            challengesCopy.push(
-                {
-                    questionSetId: question.questionSetId,
-                    challengeQuestion: {
-                        locale: answer ? questionInSet.locale : "",
-                        question: answer ? questionInSet.question : "",
-                        questionId: answer ? questionInSet.questionId : ""
-                    },
-                    answer: answer ? answer.answer : ""
-                });
+            challengesCopy.push({
+                answer: answer ? answer.answer : "",
+                challengeQuestion: {
+                    locale: answer ? questionInSet.locale : "",
+                    question: answer ? questionInSet.question : "",
+                    questionId: answer ? questionInSet.questionId : ""
+                },
+                questionSetId: question.questionSetId
+            });
         });
         setChallengeQuestions(challengesCopy);
-    }
+    };
 
     /**
      * The following method handles the onClick event of the change button
@@ -111,7 +101,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     const handleEdit = (question: string | number, index: number) => {
         setIsEdit(question);
         setQuestionIndex(index);
-    }
+    };
 
     /**
      * The following method handles the onClick event of the save button
@@ -123,146 +113,130 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
 
         values.forEach((value, key) => {
             if (key.includes("question")) {
-                let questionSetId = key.split(" ")[1];
-                let challenge = challenges.questions.find((challenge) => {
-                    return challenge.questionSetId === questionSetId;
+                const questionSetId = key.split(" ")[1];
+                const challenge = challenges.questions.find((challengeParam) => {
+                    return challengeParam.questionSetId === questionSetId;
                 });
 
-                let chosenQuestion = challenge.questions.find((question) => {
+                const chosenQuestion = challenge.questions.find((question) => {
                     return question.questionId === value;
                 });
 
                 data.forEach((question) => {
-                    question.questionSetId === questionSetId
-                        ? question.challengeQuestion = { ...chosenQuestion }
-                        : null;
+                    if (question.questionSetId === questionSetId) {
+                        question.challengeQuestion = { ...chosenQuestion };
+                    }
                 });
             }
             if (key.includes("answer")) {
-                let questionSetId = key.split(" ")[1];
+                const questionSetId = key.split(" ")[1];
                 data.forEach((question) => {
-                    question.questionSetId === questionSetId
-                        ? question.answer = value.toString()
-                        : null;
+                    if (question.questionSetId === questionSetId) {
+                        question.answer = value.toString();
+                    }
                 });
             }
+        });
 
-        })
+        if (challenges.answers && challenges.answers.length > 0 && isEdit !== -1) {
+            updateSecurityQs(data).then((response) => {
+                if (response.status === 200) {
+                    getSecurityQs().then((res) => {
+                        setSecurityDetails(res);
+                    });
+                    setIsEdit(-1);
 
-        if (challenges.answers && (challenges.answers.length > 0) && (isEdit != -1)) {
-            updateSecurityQs(data)
-                .then((response) => {
-                    if (response.status === 200) {
-                        getSecurityQs()
-                            .then((res) => {
-                                setSecurityDetails(res);
-                            });
-                        setIsEdit(-1);
-
-                        onNotificationFired({
-                            description: t(
-                                "views:components.questionRecovery.notifications.updateQuestions.success.description"
-                            ),
-                            message: t(
-                                "views:components.questionRecovery.notifications.updateQuestions.success.message"
-                            ),
-                            otherProps: {
-                                positive: true
-                            },
-                            visible: true
-                        });
-                    } else {
-                        onNotificationFired({
-                            description: t(
-                                "views:components.questionRecovery.notifications.updateQuestions.error.description"
-                            ),
-                            message: t(
-                                "views:components.questionRecovery.notifications.updateQuestions.error.message"
-                            ),
-                            otherProps: {
-                                negative: true
-                            },
-                            visible: true
-                        });
-                    }
-                });
+                    onNotificationFired({
+                        description: t(
+                            "views:components.questionRecovery.notifications.updateQuestions.success.description"
+                        ),
+                        message: t("views:components.questionRecovery.notifications.updateQuestions.success.message"),
+                        otherProps: {
+                            positive: true
+                        },
+                        visible: true
+                    });
+                } else {
+                    onNotificationFired({
+                        description: t(
+                            "views:components.questionRecovery.notifications.updateQuestions.error.description"
+                        ),
+                        message: t("views:components.questionRecovery.notifications.updateQuestions.error.message"),
+                        otherProps: {
+                            negative: true
+                        },
+                        visible: true
+                    });
+                }
+            });
         } else {
-            addSecurityQs(data)
-                .then((status) => {
-                    if (status === 201) {
-                        getSecurityQs()
-                            .then((response) => {
-                                setSecurityDetails(response);
-                            });
+            addSecurityQs(data).then((status) => {
+                if (status === 201) {
+                    getSecurityQs().then((response) => {
+                        setSecurityDetails(response);
+                    });
 
-                        setIsEdit(-1);
+                    setIsEdit(-1);
 
-                        onNotificationFired({
-                            description: t(
-                                "views:components.questionRecovery.notifications.addQuestions.success.description"
-                            ),
-                            message: t(
-                                "views:components.questionRecovery.notifications.addQuestions.success.message"
-                            ),
-                            otherProps: {
-                                positive: true
-                            },
-                            visible: true
-                        });
-                    } else {
-                        onNotificationFired({
-                            description: t(
-                                "views:components.questionRecovery.notifications.addQuestions.error.description"
-                            ),
-                            message: t(
-                                "views:components.questionRecovery.notifications.addQuestions.error.message"
-                            ),
-                            otherProps: {
-                                negative: true
-                            },
-                            visible: true
-                        });
-                    }
-                });
+                    onNotificationFired({
+                        description: t(
+                            "views:components.questionRecovery.notifications.addQuestions.success.description"
+                        ),
+                        message: t("views:components.questionRecovery.notifications.addQuestions.success.message"),
+                        otherProps: {
+                            positive: true
+                        },
+                        visible: true
+                    });
+                } else {
+                    onNotificationFired({
+                        description: t(
+                            "views:components.questionRecovery.notifications.addQuestions.error.description"
+                        ),
+                        message: t("views:components.questionRecovery.notifications.addQuestions.error.message"),
+                        otherProps: {
+                            negative: true
+                        },
+                        visible: true
+                    });
+                }
+            });
         }
-    }
+    };
 
     /**
-    * Set the fetched security questions and answers to the state
-    * @param response
-    */
+     * Set the fetched security questions and answers to the state
+     * @param response
+     */
     const setSecurityDetails = (response) => {
         setIsInit(true);
         setChallenges({
             answers: [...response[1]],
-            questions: [...response[0]],
-            options: [],
+            isEdit: false,
             isInit: false,
-            isEdit: false
+            options: [],
+            questions: [...response[0]]
         });
-    }
+    };
 
     /**
      * This function returns the question object for a saved answer
      * @param {string} questionSetId
      * @param {QuestionsInterface[]} questions
-     * 
+     *
      * @returns {QuestionsInterface} question
      */
-    const findQuestion = (
-        questionSetId: string,
-        questions: QuestionsInterface[]
-    ): QuestionsInterface => {
-        let answer: AnswersInterface = challenges.answers.find((answer) => {
-            return answer.questionSetId === questionSetId;
+    const findQuestion = (questionSetId: string, questions: QuestionsInterface[]): QuestionsInterface => {
+        const answer: AnswersInterface = challenges.answers.find((answerParam) => {
+            return answerParam.questionSetId === questionSetId;
         });
 
-        let question: QuestionsInterface = questions.find((question) => {
-            return question.question === answer.question;
+        const question: QuestionsInterface = questions.find((questionParam) => {
+            return questionParam.question === answer.question;
         });
 
         return question;
-    }
+    };
 
     /**
      * This function returns the saved answer for a questionSet
@@ -270,49 +244,39 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
      * @returns {AnswersInterface} answer
      */
     const findAnswer = (questionSetId: string): AnswersInterface => {
-        let answer: AnswersInterface = challenges.answers.find((answer: AnswersInterface) => {
-            return answer.questionSetId === questionSetId;
+        const answer: AnswersInterface = challenges.answers.find((answerParam: AnswersInterface) => {
+            return answerParam.questionSetId === questionSetId;
         });
 
         return answer;
-    }
+    };
 
     /**
      * This function returns the question and answer chosen by the user for a questionSetId
      * from challengeQuestions
      * @param {string} questionSetId
-     * 
+     *
      * @return {ChallengesQuestionsInterface} question
      */
     const findChosenQuestionFromChallengeQuestions = (questionSetId: string) => {
-
-        let question: ChallengesQuestionsInterface = challengeQuestions.find(
-            (question: ChallengesQuestionsInterface) => {
-                return question.questionSetId === questionSetId;
-            });
+        const question: ChallengesQuestionsInterface = challengeQuestions.find(
+            (questionParam: ChallengesQuestionsInterface) => {
+                return questionParam.questionSetId === questionSetId;
+            }
+        );
 
         return question;
-    }
+    };
 
     /**
      * This returns an array of form fields to be passed as a prop to Form Wrapper
      */
     const generateFormFields = () => {
         let formFields = [];
-        challenges.questions.forEach((
-            questionSet: QuestionSetsInterface,
-            index: number
-        ) => {
-            if (isEdit === 0 || (isEdit === questionSet.questionSetId)) {
+        challenges.questions.forEach((questionSet: QuestionSetsInterface, index: number) => {
+            if (isEdit === 0 || isEdit === questionSet.questionSetId) {
                 formFields.push(
                     {
-                        label: t("views:components.accountRecovery.questionRecovery.forms.securityQuestionsForm" +
-                            ".inputs.question.label"),
-                        type: "dropdown",
-                        name: "question " + questionSet.questionSetId,
-                        value: findChosenQuestionFromChallengeQuestions(
-                            questionSet.questionSetId
-                        ).challengeQuestion.questionId,
                         children: questionSet.questions.map((ques, i) => {
                             return {
                                 key: i,
@@ -320,52 +284,68 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                 value: ques.questionId
                             };
                         }),
+                        label: t(
+                            "views:components.accountRecovery.questionRecovery.forms.securityQuestionsForm" +
+                                ".inputs.question.label"
+                        ),
+                        name: "question " + questionSet.questionSetId,
+                        placeholder: t(
+                            "views:components.accountRecovery.questionRecovery.forms.securityQuestionsForm.inputs" +
+                                ".question.placeholder"
+                        ),
                         required: true,
-                        requiredErrorMessage: t("views:components.accountRecovery.questionRecovery.forms" +
-                            ".securityQuestionsForm" +
-                            ".inputs.question.validations.empty"),
-                        placeholder:
-                            t("views:components.accountRecovery.questionRecovery.forms.securityQuestionsForm.inputs"+
-                            ".question.placeholder")
+                        requiredErrorMessage: t(
+                            "views:components.accountRecovery.questionRecovery.forms" +
+                                ".securityQuestionsForm" +
+                                ".inputs.question.validations.empty"
+                        ),
+                        type: "dropdown",
+                        value: findChosenQuestionFromChallengeQuestions(questionSet.questionSetId).challengeQuestion
+                            .questionId
                     },
                     {
-                        type: "text",
+                        label: t(
+                            "views:components.accountRecovery.questionRecovery.forms.securityQuestionsForm." +
+                                "inputs.answer.label"
+                        ),
                         name: "answer " + questionSet.questionSetId,
-                        placeholder: t("views:components.accountRecovery.questionRecovery.forms." +
-                            "securityQuestionsForm.inputs.answer.placeholder"),
+                        placeholder: t(
+                            "views:components.accountRecovery.questionRecovery.forms." +
+                                "securityQuestionsForm.inputs.answer.placeholder"
+                        ),
                         required: true,
-                        requiredErrorMessage: t("views:components.accountRecovery.questionRecovery.forms." +
-                            "securityQuestionsForm.inputs.answer.validations.empty"),
-                        validation: () => { },
-                        label: t("views:components.accountRecovery.questionRecovery.forms.securityQuestionsForm." +
-                            "inputs.answer.label"),
-                    },
-                )
+                        requiredErrorMessage: t(
+                            "views:components.accountRecovery.questionRecovery.forms." +
+                                "securityQuestionsForm.inputs.answer.validations.empty"
+                        ),
+                        type: "text"
+                    }
+                );
             }
         });
         formFields = formFields.concat([
             {
-                type: "divider",
-                hidden: true
+                hidden: true,
+                type: "divider"
             },
             {
+                size: "small",
                 type: "submit",
-                value: t("common:save").toString(),
-                size: "small",
+                value: t("common:save").toString()
             },
             {
-                type: "button",
-                size: "small",
                 className: "link-button",
-                value: t("common:cancel").toString(),
-                onClick: () => handleEdit(-1, -1)
+                onClick: () => handleEdit(-1, -1),
+                size: "small",
+                type: "button",
+                value: t("common:cancel").toString()
             }
         ]);
         return formFields;
-    }
+    };
 
     const listItems = () => {
-        if (challenges.questions && (challenges.questions.length > 0) && isEdit == -1) {
+        if (challenges.questions && challenges.questions.length > 0 && isEdit === -1) {
             return (
                 <Grid padded>
                     <Grid.Row columns={2}>
@@ -392,17 +372,18 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                         </Grid.Column>
                         <Grid.Column width={5} className="last-column">
                             <List.Content floated="right">
-                                {challenges && challenges.answers.length > 0
-                                    ? null
-                                    : <Icon
+                                {challenges && challenges.answers.length > 0 ? null : (
+                                    <Icon
                                         link
-                                        onClick={() => { handleEdit(0, 0) }}
+                                        onClick={() => {
+                                            handleEdit(0, 0);
+                                        }}
                                         className="list-icon"
                                         size="small"
                                         color="grey"
                                         name="plus"
                                     />
-                                }
+                                )}
                             </List.Content>
                         </Grid.Column>
                     </Grid.Row>
@@ -413,44 +394,42 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                             style={{ paddingTop: 0, width: "100%" }}
                             className="main-content-inner"
                         >
-                            {
-                                challenges.answers.map((answer, index) => {
-                                    return (
-                                        <List.Item key={index} className="inner-list-item">
-                                            <Grid padded>
-                                                <Grid.Row columns={2} className="first-column">
-                                                    <Grid.Column width={11} className="first-column">
-                                                        <List.Header>{answer.question}</List.Header>
-                                                    </Grid.Column>
-                                                    <Grid.Column width={5} className="last-column">
-                                                        <List.Content floated="right">
-                                                            <Icon
-                                                                link
-                                                                onClick={() => {
-                                                                    handleEdit(answer.questionSetId, index)
-                                                                }}
-                                                                className="list-icon"
-                                                                size="small"
-                                                                color="grey"
-                                                                name="pencil alternate"
-                                                            />
-                                                        </List.Content>
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                            </Grid>
-                                        </List.Item>
-                                    );
-                                })
-                            }
+                            {challenges.answers.map((answer, index) => {
+                                return (
+                                    <List.Item key={index} className="inner-list-item">
+                                        <Grid padded>
+                                            <Grid.Row columns={2} className="first-column">
+                                                <Grid.Column width={11} className="first-column">
+                                                    <List.Header>{answer.question}</List.Header>
+                                                </Grid.Column>
+                                                <Grid.Column width={5} className="last-column">
+                                                    <List.Content floated="right">
+                                                        <Icon
+                                                            link
+                                                            onClick={() => {
+                                                                handleEdit(answer.questionSetId, index);
+                                                            }}
+                                                            className="list-icon"
+                                                            size="small"
+                                                            color="grey"
+                                                            name="pencil alternate"
+                                                        />
+                                                    </List.Content>
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        </Grid>
+                                    </List.Item>
+                                );
+                            })}
                         </List>
                     </Grid.Row>
                 </Grid>
             );
-        } else if (isEdit != -1) {
-            if (challenges.questions && (challenges.questions.length > 0)) {
-                let formFields = generateFormFields();
-                let endIndex = formFields.length;
-                let startIndex = endIndex - 2;
+        } else if (isEdit !== -1) {
+            if (challenges.questions && challenges.questions.length > 0) {
+                const formFields = generateFormFields();
+                const endIndex = formFields.length;
+                const startIndex = endIndex - 2;
                 return (
                     <EditSection>
                         <Grid>
@@ -461,15 +440,13 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                 <Grid.Column width={12}>
                                     <FormWrapper
                                         formFields={generateFormFields()}
-                                        groups={
-                                            [
-                                                {
-                                                    startIndex: startIndex,
-                                                    endIndex: endIndex,
-                                                    style: "inline"
-                                                }
-                                            ]
-                                        }
+                                        groups={[
+                                            {
+                                                endIndex,
+                                                startIndex,
+                                                style: "inline"
+                                            }
+                                        ]}
                                         onSubmit={(values) => {
                                             handleSave(values);
                                         }}
@@ -483,5 +460,5 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
         }
     };
 
-    return (<>{listItems()}</>);
-}
+    return <>{listItems()}</>;
+};

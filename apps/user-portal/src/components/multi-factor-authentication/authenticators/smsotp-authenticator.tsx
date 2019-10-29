@@ -16,14 +16,14 @@
  * under the License.
  */
 
+import Joi from "@hapi/joi";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, List } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../../../api";
 import { MFAIcons } from "../../../configs";
 import { Notification, Validation } from "../../../models";
-import { EditSection, ThemeIcon, FormWrapper } from "../../shared";
-import Joi from "@hapi/joi";
+import { EditSection, FormWrapper, ThemeIcon } from "../../shared";
 
 /**
  * Proptypes for the SMS OTP component.
@@ -51,9 +51,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                     value: {}
                 }
             ],
-            schemas: [
-                "urn:ietf:params:scim:api:messages:2.0:PatchOp"
-            ]
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
 
         data.Operations[0].value = {
@@ -65,41 +63,31 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
             ]
         };
 
-        updateProfileInfo(data)
-            .then((response) => {
-                if (response.status === 200) {
-                    onNotificationFired({
-                        description: t(
-                            "views:components.mfa.smsOtp.notifications.updateMobile.success.description"
-                        ),
-                        message: t(
-                            "views:components.mfa.smsOtp.notifications.updateMobile.success.message"
-                        ),
-                        otherProps: {
-                            positive: true
-                        },
-                        visible: true
-                    });
-                    getProfileInfo()
-                        .then((res) => {
-                            setMobileNo(res);
-                        });
-                    setIsEdit(false);
-                } else {
-                    onNotificationFired({
-                        description: t(
-                            "views:components.mfa.smsOtp.notifications.updateMobile.error.description"
-                        ),
-                        message: t(
-                            "views:components.mfa.smsOtp.notifications.updateMobile.error.message"
-                        ),
-                        otherProps: {
-                            negative: true
-                        },
-                        visible: true
-                    });
-                }
-            });
+        updateProfileInfo(data).then((response) => {
+            if (response.status === 200) {
+                onNotificationFired({
+                    description: t("views:components.mfa.smsOtp.notifications.updateMobile.success.description"),
+                    message: t("views:components.mfa.smsOtp.notifications.updateMobile.success.message"),
+                    otherProps: {
+                        positive: true
+                    },
+                    visible: true
+                });
+                getProfileInfo().then((res) => {
+                    setMobileNo(res);
+                });
+                setIsEdit(false);
+            } else {
+                onNotificationFired({
+                    description: t("views:components.mfa.smsOtp.notifications.updateMobile.error.description"),
+                    message: t("views:components.mfa.smsOtp.notifications.updateMobile.error.message"),
+                    otherProps: {
+                        negative: true
+                    },
+                    visible: true
+                });
+            }
+        });
     };
 
     const setMobileNo = (resp) => {
@@ -120,41 +108,34 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
 
     const showEditView = () => {
         if (!isEdit) {
-            return (<Grid padded>
-                <Grid.Row columns={2}>
-                    <Grid.Column width={11} className="first-column">
-                        <List.Content floated="left">
-                            <ThemeIcon
-                                icon={MFAIcons.sms}
-                                size="mini"
-                                twoTone
-                                transparent
-                                square
-                                rounded
-                                relaxed
-                            />
-                        </List.Content>
-                        <List.Content>
-                            <List.Header>{t("views:components.mfa.smsOtp.heading")}</List.Header>
-                            <List.Description>
-                                {t("views:components.mfa.smsOtp.descriptions.hint")}
-                            </List.Description>
-                        </List.Content>
-                    </Grid.Column>
-                    <Grid.Column width={5} className="last-column">
-                        <List.Content floated="right">
-                            <Icon
-                                link
-                                onClick={handleEdit}
-                                className="list-icon"
-                                size="small"
-                                color="grey"
-                                name="pencil alternate"
-                            />
-                        </List.Content>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+            return (
+                <Grid padded>
+                    <Grid.Row columns={2}>
+                        <Grid.Column width={11} className="first-column">
+                            <List.Content floated="left">
+                                <ThemeIcon icon={MFAIcons.sms} size="mini" twoTone transparent square rounded relaxed />
+                            </List.Content>
+                            <List.Content>
+                                <List.Header>{t("views:components.mfa.smsOtp.heading")}</List.Header>
+                                <List.Description>
+                                    {t("views:components.mfa.smsOtp.descriptions.hint")}
+                                </List.Description>
+                            </List.Content>
+                        </Grid.Column>
+                        <Grid.Column width={5} className="last-column">
+                            <List.Content floated="right">
+                                <Icon
+                                    link
+                                    onClick={handleEdit}
+                                    className="list-icon"
+                                    size="small"
+                                    color="grey"
+                                    name="pencil alternate"
+                                />
+                            </List.Content>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             );
         }
         return (
@@ -168,58 +149,66 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                         <FormWrapper
                                             formFields={[
                                                 {
-                                                    type: "text",
+                                                    label: t(
+                                                        "views:components.profile.forms.mobileChangeForm.inputs" +
+                                                            ".mobile.label"
+                                                    ),
+                                                    name: "mobileNumber",
+                                                    placeholder: t(
+                                                        "views:components.profile.forms.mobileChangeForm" +
+                                                            ".inputs.mobile.placeholder"
+                                                    ),
                                                     required: true,
-                                                    requiredErrorMessage: t("views:components.profile.forms." +
-                                                        "mobileChangeForm.inputs.mobile.validations.empty"),
-                                                    value:mobile,
-                                                    validation: (value: string, validation: Validation) => { 
-                                                        let error = Joi.number().integer().validate(value).error;
+                                                    requiredErrorMessage: t(
+                                                        "views:components.profile.forms." +
+                                                            "mobileChangeForm.inputs.mobile.validations.empty"
+                                                    ),
+                                                    type: "text",
+                                                    validation: (value: string, validation: Validation) => {
+                                                        const error = Joi.number()
+                                                            .integer()
+                                                            .validate(value).error;
+
                                                         if (error) {
                                                             validation.isValid = false;
                                                             validation.errorMessages.push(error.message);
                                                         }
                                                     },
-                                                    label: t("views:components.profile.forms.mobileChangeForm.inputs"
-                                                        + ".mobile.label"),
-                                                    placeholder: t("views:components.profile.forms.mobileChangeForm" +
-                                                        ".inputs.mobile.placeholder"),
-                                                    name: "mobileNumber"
+                                                    value: mobile
                                                 },
                                                 {
-                                                    type: "custom",
-                                                    element:
+                                                    element: (
                                                         <p style={{ fontSize: "12px" }}>
-                                                            <Icon
-                                                                color="grey"
-                                                                floated="left"
-                                                                name="info circle"
-                                                            />
-                                                            {t("views:components.profile.forms.mobileChangeForm" +
-                                                                ".inputs.mobile.note")}
+                                                            <Icon color="grey" floated="left" name="info circle" />
+                                                            {t(
+                                                                "views:components.profile.forms.mobileChangeForm" +
+                                                                    ".inputs.mobile.note"
+                                                            )}
                                                         </p>
+                                                    ),
+                                                    type: "custom"
                                                 },
                                                 {
-                                                    type: "divider",
-                                                    hidden: true
+                                                    hidden: true,
+                                                    type: "divider"
                                                 },
                                                 {
-                                                    type: "submit",
                                                     size: "small",
+                                                    type: "submit",
                                                     value: t("common:update").toString()
                                                 },
                                                 {
-                                                    type: "button",
-                                                    size: "small",
                                                     className: "link-button",
-                                                    value: t("common:cancel").toString(),
-                                                    onClick: handleCancel
+                                                    onClick: handleCancel,
+                                                    size: "small",
+                                                    type: "button",
+                                                    value: t("common:cancel").toString()
                                                 }
                                             ]}
                                             groups={[
                                                 {
-                                                    startIndex: 3,
                                                     endIndex: 5,
+                                                    startIndex: 3,
                                                     style: "inline"
                                                 }
                                             ]}
@@ -239,16 +228,11 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
 
     useEffect(() => {
         if (mobile === "") {
-            getProfileInfo()
-                .then((response) => {
-                    setMobileNo(response);
-                });
+            getProfileInfo().then((response) => {
+                setMobileNo(response);
+            });
         }
     });
 
-    return (
-        <div>
-            {showEditView()}
-        </div>
-    );
+    return <div>{showEditView()}</div>;
 };

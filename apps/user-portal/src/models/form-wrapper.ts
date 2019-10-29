@@ -16,12 +16,63 @@
  * under the License.
  */
 
-import { SemanticWIDTHS, SemanticSIZES } from "semantic-ui-react/dist/commonjs/generic";
+/**
+ * Semantic widths number type
+ */
+type SemanticWIDTHSNUMBER = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16;
 
 /**
-* Form Field Types
-*/
-export type Type = "email"
+ * Semnatic width string type
+ */
+type SemanticWIDTHSSTRING =
+    | "1"
+    | "2"
+    | "3"
+    | "4"
+    | "5"
+    | "6"
+    | "7"
+    | "8"
+    | "9"
+    | "10"
+    | "11"
+    | "12"
+    | "13"
+    | "14"
+    | "15"
+    | "16"
+    | "one"
+    | "two"
+    | "three"
+    | "four"
+    | "five"
+    | "six"
+    | "seven"
+    | "eight"
+    | "nine"
+    | "ten"
+    | "eleven"
+    | "twelve"
+    | "thirteen"
+    | "fourteen"
+    | "fifteen"
+    | "sixteen";
+
+/**
+ * Semantci widths type
+ */
+export type SemanticWIDTHS = SemanticWIDTHSNUMBER | SemanticWIDTHSSTRING;
+
+/**
+ * Semantic Sizes type
+ */
+export type SemanticSIZES = "big" | "small" | "mini" | "tiny" | "medium" | "large" | "huge" | "massive";
+
+/**
+ * Form Field Types
+ */
+export type Type =
+    | "email"
     | "text"
     | "textarea"
     | "password"
@@ -61,7 +112,7 @@ export interface InputField {
     required: boolean;
     label: string;
     width?: SemanticWIDTHS;
-    validation: (value: string, validation: Validation, allValues?: Map<string, FormValue>) => void;
+    validation?: (value: string, validation: Validation, allValues?: Map<string, FormValue>) => void;
     requiredErrorMessage: string;
     value?: string;
 }
@@ -109,8 +160,8 @@ export interface RadioChild {
  * Custom field model
  */
 export interface CustomField {
-    type: Type,
-    element: JSX.Element
+    type: Type;
+    element: JSX.Element;
 }
 
 /**
@@ -118,9 +169,9 @@ export interface CustomField {
  */
 export interface RadioField {
     type: Type;
-    label: string
+    label: string;
     name: string;
-    default: string,
+    default: string;
     children: RadioChild[];
     value?: string;
 }
@@ -138,7 +189,7 @@ export interface CheckboxChild {
  */
 export interface CheckboxField {
     type: Type;
-    label: string
+    label: string;
     name: string;
     children: CheckboxChild[];
     value?: string[];
@@ -158,12 +209,12 @@ export interface DropdownChild {
  */
 export interface DropdownField {
     type: Type;
-    label: string
+    label: string;
     name: string;
-    default?: string,
+    default?: string;
     children: DropdownChild[];
     placeholder?: string;
-    validation: (value: string, validation: Validation) => void;
+    validation?: (value: string, validation: Validation) => void;
     requiredErrorMessage: string;
     required: boolean;
     value?: string;
@@ -181,7 +232,7 @@ export interface Group {
     startIndex: number;
     endIndex: number;
     style: GroupStyle;
-    width?: SemanticWIDTHS | 'equal';
+    width?: SemanticWIDTHS | "equal";
 }
 
 /**
@@ -195,7 +246,8 @@ export interface Idivider {
 /**
  * FormField types
  */
-export type FormField = InputField
+export type FormField =
+    | InputField
     | FormSubmit
     | RadioField
     | DropdownField

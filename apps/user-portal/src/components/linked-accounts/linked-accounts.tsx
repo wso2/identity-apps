@@ -24,7 +24,7 @@ import { SettingsSectionIcons } from "../../configs";
 import { AuthContext } from "../../contexts";
 import { Notification } from "../../models";
 import { setProfileInfo } from "../../store/actions";
-import { EditSection, SettingsSection, UserImage, FormWrapper } from "../shared";
+import { EditSection, FormWrapper, SettingsSection, UserImage } from "../shared";
 
 /**
  * Proptypes for the liked accounts component.
@@ -39,11 +39,9 @@ interface LinkedAccountsProps {
  * @param {LinkedAccountsProps} props - Props injected to the component.
  * @return {JSX.Element}
  */
-export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
-    props: LinkedAccountsProps
-): JSX.Element => {
-    const [ associations, setAssociations ] = useState([]);
-    const [ editingForm, setEditingForm ] = useState({
+export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: LinkedAccountsProps): JSX.Element => {
+    const [associations, setAssociations] = useState([]);
+    const [editingForm, setEditingForm] = useState({
         addAccountForm: false
     });
     const { onNotificationFired } = props;
@@ -59,51 +57,49 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
      */
     const fetchAssociations = (): void => {
         if (!state.profileInfo || (state.profileInfo && !state.profileInfo.displayName)) {
-            getProfileInfo()
-                .then((infoResponse) => {
-                    getAssociations()
-                        .then((associationsResponse) => {
-                            setAssociations(associationsResponse);
-                            dispatch(setProfileInfo({
+            getProfileInfo().then((infoResponse) => {
+                getAssociations()
+                    .then((associationsResponse) => {
+                        setAssociations(associationsResponse);
+                        dispatch(
+                            setProfileInfo({
                                 ...infoResponse,
                                 associations: associationsResponse
-                            }));
-                        })
-                        .catch((error) => {
-                            onNotificationFired({
-                                description: t(
-                                    "views:components.linkedAccounts.notifications.getAssociations.error.description",
-                                    { description: error }
-                                ),
-                                message: t(
-                                    "views:components.linkedAccounts.notifications.getAssociations.error.message"
-                                ),
-                                otherProps: {
-                                    negative: true
-                                },
-                                visible: true
-                            });
+                            })
+                        );
+                    })
+                    .catch((error) => {
+                        onNotificationFired({
+                            description: t(
+                                "views:components.linkedAccounts.notifications.getAssociations.error.description",
+                                { description: error }
+                            ),
+                            message: t("views:components.linkedAccounts.notifications.getAssociations.error.message"),
+                            otherProps: {
+                                negative: true
+                            },
+                            visible: true
                         });
-                });
+                    });
+            });
             return;
         }
         getAssociations()
             .then((response) => {
                 setAssociations(response);
-                dispatch(setProfileInfo({
-                    ...state.profileInfo,
-                    associations: response
-                }));
+                dispatch(
+                    setProfileInfo({
+                        ...state.profileInfo,
+                        associations: response
+                    })
+                );
             })
             .catch((error) => {
                 onNotificationFired({
-                    description: t(
-                        "views:components.linkedAccounts.notifications.getAssociations.error.description",
-                        { description: error }
-                    ),
-                    message: t(
-                        "views:components.linkedAccounts.notifications.getAssociations.error.message"
-                    ),
+                    description: t("views:components.linkedAccounts.notifications.getAssociations.error.description", {
+                        description: error
+                    }),
+                    message: t("views:components.linkedAccounts.notifications.getAssociations.error.message"),
                     otherProps: {
                         negative: true
                     },
@@ -117,9 +113,9 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
      *
      * @param formName - Name of the form
      */
-    const handleSubmit = (values: Map<string, string|string[]>, formName: string): void => {
-        let username = values.get("username");
-        let password = values.get("password");
+    const handleSubmit = (values: Map<string, string | string[]>, formName: string): void => {
+        const username = values.get("username");
+        const password = values.get("password");
         const data = {
             password,
             properties: [
@@ -131,45 +127,36 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
             userId: username
         };
 
-        addAccountAssociation(data)
-            .then((response) => {
-                if (response.status !== 201) {
-                    onNotificationFired({
-                        description: t(
-                            "views:components.linkedAccounts.notifications.addAssociation.error.description"
-                        ),
-                        message: t(
-                            "views:components.linkedAccounts.notifications.addAssociation.error.message"
-                        ),
-                        otherProps: {
-                            negative: true
-                        },
-                        visible: true
-                    });
-                } else {
-                    onNotificationFired({
-                        description: t(
-                            "views:components.linkedAccounts.notifications.addAssociation.success.description"
-                        ),
-                        message: t(
-                            "views:components.linkedAccounts.notifications.addAssociation.success.message"
-                        ),
-                        otherProps: {
-                            positive: true
-                        },
-                        visible: true
-                    });
+        addAccountAssociation(data).then((response) => {
+            if (response.status !== 201) {
+                onNotificationFired({
+                    description: t("views:components.linkedAccounts.notifications.addAssociation.error.description"),
+                    message: t("views:components.linkedAccounts.notifications.addAssociation.error.message"),
+                    otherProps: {
+                        negative: true
+                    },
+                    visible: true
+                });
+            } else {
+                onNotificationFired({
+                    description: t("views:components.linkedAccounts.notifications.addAssociation.success.description"),
+                    message: t("views:components.linkedAccounts.notifications.addAssociation.success.message"),
+                    otherProps: {
+                        positive: true
+                    },
+                    visible: true
+                });
 
-                    // Hide form
-                    setEditingForm({
-                        ...editingForm,
-                        [formName]: false
-                    });
+                // Hide form
+                setEditingForm({
+                    ...editingForm,
+                    [formName]: false
+                });
 
-                    // Re-fetch account associations.
-                }
-                fetchAssociations();
-            });
+                // Re-fetch account associations.
+            }
+            fetchAssociations();
+        });
     };
 
     /**
@@ -198,143 +185,137 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
 
     return (
         <SettingsSection
-            description={ t("views:sections.linkedAccounts.description") }
-            header={ t("views:sections.linkedAccounts.heading") }
-            icon={ SettingsSectionIcons.associatedAccounts }
-            iconMini={ SettingsSectionIcons.associatedAccountsMini }
+            description={t("views:sections.linkedAccounts.description")}
+            header={t("views:sections.linkedAccounts.heading")}
+            icon={SettingsSectionIcons.associatedAccounts}
+            iconMini={SettingsSectionIcons.associatedAccountsMini}
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
-            onPrimaryActionClick={ () => showFormEditView("addAccountForm") }
-            primaryAction={ t("views:sections.linkedAccounts.actionTitles.add") }
+            onPrimaryActionClick={() => showFormEditView("addAccountForm")}
+            primaryAction={t("views:sections.linkedAccounts.actionTitles.add")}
             primaryActionIcon="add"
-            showActionBar={ !editingForm.addAccountForm }
+            showActionBar={!editingForm.addAccountForm}
         >
-            {
-                editingForm.addAccountForm
-                    ? (
-                        <EditSection>
-                            <Grid>
-                                <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 4 }>
-                                        { t("views:components.linkedAccounts.accountTypes.local.label") }
-                                    </Grid.Column>
-                                    <Grid.Column width={12}>
-                                        <FormWrapper
-                                            formFields={[
-                                                {
-                                                    type: "text",
-                                                    placeholder: t("views:components.linkedAccounts.forms." +
-                                                        "addAccountForm.inputs.username.placeholder"),
-                                                    name: "username",
-                                                    required: true,
-                                                    requiredErrorMessage: t("views:components.linkedAccounts.forms" +
-                                                        ".addAccountForm.inputs.username.validations.empty"),
-                                                    validation: () => {
-                                                        
-                                                    },
-                                                    label: t("views:components.linkedAccounts.forms.addAccountForm" +
-                                                        ".inputs.username.label")
-                                                },
-                                                {
-                                                    type: "password",
-                                                    placeholder: t("views:components.linkedAccounts.forms" +
-                                                        ".addAccountForm.inputs.password.placeholder"),
-                                                    name: "password",
-                                                    required: true,
-                                                    requiredErrorMessage: t("views:components.linkedAccounts.forms" +
-                                                        ".addAccountForm.inputs.password.validations.empty"),
-                                                    label: t("views:components.linkedAccounts.forms.addAccountForm." +
-                                                        "inputs.password.label"),
-                                                    validation: () => {
-                                                        
-                                                    }
-                                                },
-                                                {
-                                                    type: "divider",
-                                                    hidden:true
-                                                },
-                                                {
-                                                    type: "submit",
-                                                    value: t("common:save").toString(),
-                                                    size:"small"
-                                                },
-                                                {
-                                                    type: "button",
-                                                    size: "small",
-                                                    className: "link-button",
-                                                    onClick: () => {
-                                                        hideFormEditView("addAccountForm")
-                                                    },
-                                                    value: t("common:cancel").toString()
-                                                }
-                                            ]}
-                                            groups={[
-                                                {
-                                                    startIndex: 3,
-                                                    endIndex: 5,
-                                                    style:'inline'
-                                                }
-                                            ]}
-                                            onSubmit={(values) => {
-                                                handleSubmit(values,"addAccountForm")
-                                            }}
+            {editingForm.addAccountForm ? (
+                <EditSection>
+                    <Grid>
+                        <Grid.Row columns={2}>
+                            <Grid.Column width={4}>
+                                {t("views:components.linkedAccounts.accountTypes.local.label")}
+                            </Grid.Column>
+                            <Grid.Column width={12}>
+                                <FormWrapper
+                                    formFields={[
+                                        {
+                                            label: t(
+                                                "views:components.linkedAccounts.forms.addAccountForm" +
+                                                    ".inputs.username.label"
+                                            ),
+                                            name: "username",
+                                            placeholder: t(
+                                                "views:components.linkedAccounts.forms." +
+                                                    "addAccountForm.inputs.username.placeholder"
+                                            ),
+                                            required: true,
+                                            requiredErrorMessage: t(
+                                                "views:components.linkedAccounts.forms" +
+                                                    ".addAccountForm.inputs.username.validations.empty"
+                                            ),
+                                            type: "text"
+                                        },
+                                        {
+                                            label: t(
+                                                "views:components.linkedAccounts.forms.addAccountForm." +
+                                                    "inputs.password.label"
+                                            ),
+                                            name: "password",
+                                            placeholder: t(
+                                                "views:components.linkedAccounts.forms" +
+                                                    ".addAccountForm.inputs.password.placeholder"
+                                            ),
+                                            required: true,
+                                            requiredErrorMessage: t(
+                                                "views:components.linkedAccounts.forms" +
+                                                    ".addAccountForm.inputs.password.validations.empty"
+                                            ),
+                                            type: "password"
+                                        },
+                                        {
+                                            hidden: true,
+                                            type: "divider"
+                                        },
+                                        {
+                                            size: "small",
+                                            type: "submit",
+                                            value: t("common:save").toString()
+                                        },
+                                        {
+                                            className: "link-button",
+                                            onClick: () => {
+                                                hideFormEditView("addAccountForm");
+                                            },
+                                            size: "small",
+                                            type: "button",
+                                            value: t("common:cancel").toString()
+                                        }
+                                    ]}
+                                    groups={[
+                                        {
+                                            endIndex: 5,
+                                            startIndex: 3,
+                                            style: "inline"
+                                        }
+                                    ]}
+                                    onSubmit={(values) => {
+                                        handleSubmit(values, "addAccountForm");
+                                    }}
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </EditSection>
+            ) : (
+                <List divided verticalAlign="middle" className="main-content-inner">
+                    {associations.map((association, index) => (
+                        <List.Item className="inner-list-item" key={index}>
+                            <Grid padded>
+                                <Grid.Row columns={2}>
+                                    <Grid.Column width={11} className="first-column">
+                                        <UserImage
+                                            bordered
+                                            avatar
+                                            floated="left"
+                                            spaced="right"
+                                            size="mini"
+                                            name={association.username}
                                         />
+                                        <List.Header>{association.userId}</List.Header>
+                                        <List.Description>
+                                            <p style={{ fontSize: "11px" }}>{association.username}</p>
+                                        </List.Description>
+                                    </Grid.Column>
+                                    <Grid.Column width={5} className="last-column">
+                                        <List.Content floated="right">
+                                            <Icon
+                                                link
+                                                disabled
+                                                className="list-icon"
+                                                size="large"
+                                                color="red"
+                                                name="trash alternate outline"
+                                            />
+                                            <Button basic size="tiny">
+                                                {t("common:switch")}
+                                            </Button>
+                                        </List.Content>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
-                        </EditSection>
-                    )
-                    :
-                    (
-                        <List divided verticalAlign="middle" className="main-content-inner">
-                            {
-                                associations.map((association, index) => (
-                                    <List.Item className="inner-list-item" key={ index }>
-                                        <Grid padded>
-                                            <Grid.Row columns={ 2 }>
-                                                <Grid.Column width={ 11 } className="first-column">
-                                                    <UserImage
-                                                        bordered
-                                                        avatar
-                                                        floated="left"
-                                                        spaced="right"
-                                                        size="mini"
-                                                        name={ association.username }
-                                                    />
-                                                    <List.Header>{ association.userId }</List.Header>
-                                                    <List.Description>
-                                                        <p style={ { fontSize: "11px" } }>
-                                                            { association.username }
-                                                        </p>
-                                                    </List.Description>
-                                                </Grid.Column>
-                                                <Grid.Column width={ 5 } className="last-column">
-                                                    <List.Content floated="right">
-                                                        <Icon
-                                                            link
-                                                            disabled
-                                                            className="list-icon"
-                                                            size="large"
-                                                            color="red"
-                                                            name="trash alternate outline"
-                                                        />
-                                                        <Button
-                                                            basic
-                                                            size="tiny"
-                                                        >
-                                                            { t("common:switch") }
-                                                        </Button>
-                                                    </List.Content>
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                        </Grid>
-                                    </List.Item>
-                                ))
-                            }
-                        </List>
-                    )
-            }
+                        </List.Item>
+                    ))}
+                </List>
+            )}
         </SettingsSection>
     );
 };

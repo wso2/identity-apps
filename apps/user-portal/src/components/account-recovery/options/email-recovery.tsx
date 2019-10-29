@@ -16,14 +16,14 @@
  * under the License.
  */
 
+import Joi from "@hapi/joi";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, List } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
 import { Notification, Validation } from "../../../models";
-import { EditSection, ThemeIcon, FormWrapper } from "../../shared";
-import Joi from "@hapi/joi";
+import { EditSection, FormWrapper, ThemeIcon } from "../../shared";
 
 /**
  * Proptypes for the EmailRecoveryComponent component.
@@ -38,16 +38,14 @@ interface EmailRecoveryProps {
  * @param {EmailRecoveryProps} props
  * @return {JSX.Element}
  */
-export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
-    props: EmailRecoveryProps
-): JSX.Element => {
+export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props: EmailRecoveryProps): JSX.Element => {
     const [email, setEmail] = useState("");
     const [editedEmail, setEditedEmail] = useState("");
     const [isEdit, setIsEdit] = useState(false);
     const { t } = useTranslation();
     const { onNotificationFired } = props;
 
-    const handleUpdate = (email: string) => {
+    const handleUpdate = (emailParam: string) => {
         const data = {
             Operations: [
                 {
@@ -55,65 +53,61 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                     value: {}
                 }
             ],
-            schemas: [
-                "urn:ietf:params:scim:api:messages:2.0:PatchOp"
-            ]
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
 
         data.Operations[0].value = {
-            emails: [email]
+            emails: [emailParam]
         };
 
-        updateProfileInfo(data)
-            .then((response) => {
-                if (response.status === 200) {
-                    onNotificationFired({
-                        description: t(
-                            "views:components.accountRecovery.emailRecovery.updateEmail.notifications" +
+        updateProfileInfo(data).then((response) => {
+            if (response.status === 200) {
+                onNotificationFired({
+                    description: t(
+                        "views:components.accountRecovery.emailRecovery.updateEmail.notifications" +
                             ".success.description"
-                        ),
-                        message: t(
-                            "views:components.accountRecovery.emailRecovery.updateEmail.notifications.success.message"
-                        ),
-                        otherProps: {
-                            positive: true
-                        },
-                        visible: true
-                    });
-                    getProfileInfo()
-                        .then((res) => {
-                            setEmailAddress(res);
-                        });
-                    setIsEdit(false);
-                } else {
-                    onNotificationFired({
-                        description: t(
-                            "views:components.accountRecovery.emailRecovery.updateEmail.notifications.error.description"
-                        ),
-                        message: t(
-                            "views:components.accountRecovery.emailRecovery.updateEmail.notifications.error.message"
-                        ),
-                        otherProps: {
-                            negative: true
-                        },
-                        visible: true
-                    });
-                }
-            });
+                    ),
+                    message: t(
+                        "views:components.accountRecovery.emailRecovery.updateEmail.notifications.success.message"
+                    ),
+                    otherProps: {
+                        positive: true
+                    },
+                    visible: true
+                });
+                getProfileInfo().then((res) => {
+                    setEmailAddress(res);
+                });
+                setIsEdit(false);
+            } else {
+                onNotificationFired({
+                    description: t(
+                        "views:components.accountRecovery.emailRecovery.updateEmail.notifications.error.description"
+                    ),
+                    message: t(
+                        "views:components.accountRecovery.emailRecovery.updateEmail.notifications.error.message"
+                    ),
+                    otherProps: {
+                        negative: true
+                    },
+                    visible: true
+                });
+            }
+        });
     };
 
     /**
-     * This function gets the email address from the response passed as the argument 
-     * and assigns it to email and editedEmail. 
-     * @param response 
+     * This function gets the email address from the response passed as the argument
+     * and assigns it to email and editedEmail.
+     * @param response
      */
     const setEmailAddress = (response) => {
         let emailAddress = "";
-        response.emails
-            ? response.emails.map((email) => {
-                emailAddress = email;
-            })
-            : null;
+        if (response.emails) {
+            response.emails.map((emailParam) => {
+                emailAddress = emailParam;
+            });
+        }
         setEmail(emailAddress);
         setEditedEmail(emailAddress);
     };
@@ -139,19 +133,19 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
      * The text between the second character of the email and the @ sign is masked.
      * @param {string} email
      */
-    const maskEmail = (email: string) => {
+    const maskEmail = (emailParam: string) => {
         let mask = "";
-        let indexOfAt = email.indexOf("@");
-        let textToBeMasked = email.slice(2, indexOfAt);
+        const indexOfAt = emailParam.indexOf("@");
+        const textToBeMasked = emailParam.slice(2, indexOfAt);
 
-        for (let i = 0; i < textToBeMasked.length; i++) {
+        for (const i of textToBeMasked) {
             mask += "*";
         }
 
-        let maskedEmail = email.replace(textToBeMasked, mask);
+        const maskedEmail = email.replace(textToBeMasked, mask);
 
         return maskedEmail;
-    }
+    };
 
     /**
      * This function returns the EditSection component and the recovery option
@@ -177,19 +171,18 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                             <List.Content>
                                 <List.Header>{t("views:components.accountRecovery.emailRecovery.heading")}</List.Header>
                                 <List.Description>
-                                    {
-                                        email || email != ""
-                                            ? t("views:components.accountRecovery.emailRecovery.descriptions.update",
-                                                { email: maskEmail(email) })
-                                            : t("views:components.accountRecovery.emailRecovery.descriptions.add")
-                                    }
+                                    {email || email !== ""
+                                        ? t("views:components.accountRecovery.emailRecovery.descriptions.update", {
+                                              email: maskEmail(email)
+                                          })
+                                        : t("views:components.accountRecovery.emailRecovery.descriptions.add")}
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
                         <Grid.Column width={5} className="last-column">
                             <List.Content floated="right">
-                                {email || email != ""
-                                    ? <Icon
+                                {email || email !== "" ? (
+                                    <Icon
                                         link
                                         onClick={handleEdit}
                                         className="list-icon"
@@ -197,14 +190,16 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                                         color="grey"
                                         name="pencil alternate"
                                     />
-                                    : <Icon
+                                ) : (
+                                    <Icon
                                         link
                                         onClick={handleEdit}
                                         className="list-icon"
                                         size="small"
                                         color="grey"
                                         name="plus"
-                                    />}
+                                    />
+                                )}
                             </List.Content>
                         </Grid.Column>
                     </Grid.Row>
@@ -219,44 +214,60 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                             <List>
                                 <List.Item>
                                     <List.Content>
-                                        <FormWrapper formFields={[{
-                                            type: "text",
-                                            width: 9,
-                                            placeholder: t("views:components.accountRecovery.emailRecovery.forms" +
-                                                ".emailResetForm.inputs.email.placeholder"),
-                                            name: "email",
-                                            value: editedEmail,
-                                            required: true,
-                                            label: t("views:components.accountRecovery.emailRecovery.forms" +
-                                                ".emailResetForm.inputs.email.label"),
-                                            requiredErrorMessage: t("views:components.accountRecovery.emailRecovery.forms" +
-                                                ".emailResetForm.inputs.email.validations.empty"),
-                                            validation: (value: string, validation: Validation) => {
-                                                let emailError = Joi.string().email({ tlds: { allow: ["com"] } })
-                                                    .validate(value).error;
-                                                if (emailError) {
-                                                    validation.isValid = false;
-                                                    validation.errorMessages.push(
-                                                        emailError.message
-                                                    );
+                                        <FormWrapper
+                                            formFields={[
+                                                {
+                                                    label: t(
+                                                        "views:components.accountRecovery.emailRecovery.forms" +
+                                                            ".emailResetForm.inputs.email.label"
+                                                    ),
+                                                    name: "email",
+                                                    placeholder: t(
+                                                        "views:components.accountRecovery.emailRecovery.forms" +
+                                                            ".emailResetForm.inputs.email.placeholder"
+                                                    ),
+                                                    required: true,
+                                                    requiredErrorMessage: t(
+                                                        "views:components.accountRecovery.emailRecovery.forms" +
+                                                            ".emailResetForm.inputs.email.validations.empty"
+                                                    ),
+                                                    type: "text",
+                                                    validation: (value: string, validation: Validation) => {
+                                                        const emailError = Joi.string()
+                                                            .email({
+                                                                tlds: {
+                                                                    allow: ["com"]
+                                                                }
+                                                            })
+                                                            .validate(value).error;
+
+                                                        if (emailError) {
+                                                            validation.isValid = false;
+                                                            validation.errorMessages.push(emailError.message);
+                                                        }
+                                                    },
+                                                    value: editedEmail,
+                                                    width: 9
+                                                },
+                                                {
+                                                    hidden: true,
+                                                    type: "divider"
+                                                },
+                                                {
+                                                    size: "small",
+                                                    type: "submit",
+                                                    value: t("common:update").toString()
+                                                },
+                                                {
+                                                    className: "link-button",
+                                                    onClick: handleCancel,
+                                                    size: "small",
+                                                    type: "button",
+                                                    value: t("common:cancel").toString()
                                                 }
-                                            }
-                                        }, {
-                                            type: "divider",
-                                            hidden: true
-                                        }, {
-                                            type: "submit",
-                                            value: t("common:update").toString(),
-                                            size: "small"
-                                        }, {
-                                            type: "button",
-                                            className: "link-button",
-                                            value: t("common:cancel").toString(),
-                                            size: "small",
-                                            onClick: handleCancel
-                                        }]}
+                                            ]}
                                             onSubmit={(values) => {
-                                                handleUpdate(values.get("email").toString())
+                                                handleUpdate(values.get("email").toString());
                                             }}
                                             groups={[{ startIndex: 2, endIndex: 4, style: "inline" }]}
                                         />
@@ -271,13 +282,10 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
     };
 
     useEffect(() => {
-        getProfileInfo()
-            .then((response) => {
-                setEmailAddress(response);
-            });
+        getProfileInfo().then((response) => {
+            setEmailAddress(response);
+        });
     }, []);
 
-    return (
-        showEditView()
-    );
+    return showEditView();
 };

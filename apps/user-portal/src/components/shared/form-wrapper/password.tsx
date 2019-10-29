@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Form, Popup, Icon, SemanticWIDTHS } from "semantic-ui-react";
 import { useTranslation } from "react-i18next";
+import { Form, Icon, Popup, SemanticWIDTHS } from "semantic-ui-react";
 
 /**
  * Password prop types
  */
 interface PasswordProps {
-    label: string
+    label: string;
     value: string;
     error: false | { content: JSX.Element[] };
     width: SemanticWIDTHS;
@@ -19,7 +19,7 @@ interface PasswordProps {
 
 /**
  * Password component
- * @param props 
+ * @param props
  */
 export const Password: React.FunctionComponent<PasswordProps> = (
     props: PasswordProps
@@ -47,7 +47,7 @@ export const Password: React.FunctionComponent<PasswordProps> = (
                             }
                             disabled={!props.value}
                             link
-                            onClick={() => { setIsShow(!isShow) }}
+                            onClick={() => { setIsShow(!isShow); }}
                         />
                     }
                     position="top center"
@@ -61,4 +61,4 @@ export const Password: React.FunctionComponent<PasswordProps> = (
             }
         />
     );
-}
+};
