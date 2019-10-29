@@ -173,10 +173,10 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
 
                         onNotificationFired({
                             description: t(
-                                "views:securityQuestions.notification.updateQuestions.success.description"
+                                "views:components.questionRecovery.notifications.updateQuestions.success.description"
                             ),
                             message: t(
-                                "views:securityQuestions.notification.updateQuestions.success.message"
+                                "views:components.questionRecovery.notifications.updateQuestions.success.message"
                             ),
                             otherProps: {
                                 positive: true
@@ -186,10 +186,10 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                     } else {
                         onNotificationFired({
                             description: t(
-                                "views:securityQuestions.notification.updateQuestions.error.description"
+                                "views:components.questionRecovery.notifications.updateQuestions.error.description"
                             ),
                             message: t(
-                                "views:securityQuestions.notification.updateQuestions.error.message"
+                                "views:components.questionRecovery.notifications.updateQuestions.error.message"
                             ),
                             otherProps: {
                                 negative: true
@@ -211,10 +211,10 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
 
                         onNotificationFired({
                             description: t(
-                                "views:securityQuestions.notification.addQuestions.success.description"
+                                "views:components.questionRecovery.notifications.addQuestions.success.description"
                             ),
                             message: t(
-                                "views:securityQuestions.notification.addQuestions.success.message"
+                                "views:components.questionRecovery.notifications.addQuestions.success.message"
                             ),
                             otherProps: {
                                 positive: true
@@ -224,10 +224,10 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                     } else {
                         onNotificationFired({
                             description: t(
-                                "views:securityQuestions.notification.addQuestions.error.description"
+                                "views:components.questionRecovery.notifications.addQuestions.error.description"
                             ),
                             message: t(
-                                "views:securityQuestions.notification.addQuestions.error.message"
+                                "views:components.questionRecovery.notifications.addQuestions.error.message"
                             ),
                             otherProps: {
                                 negative: true
@@ -324,9 +324,9 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                 />
                             </List.Content>
                             <List.Content>
-                                <List.Header>{t("views:securityQuestions.title")}</List.Header>
+                                <List.Header>{t("views:components.questionRecovery.heading")}</List.Header>
                                 <List.Description>
-                                    {t("views:securityQuestions.description")}
+                                    {t("views:components.questionRecovery.descriptions.add")}
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
@@ -406,19 +406,25 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                                     <Grid.Column width={12}>
                                                         <Form.Field>
                                                             <label>
-                                                                {t("views:securityQuestions.forms.securityQuestionsForm." +
-                                                                    "inputs.question.label")}
+                                                                {
+                                                                    t("views:components.questionRecovery.forms." +
+                                                                        "securityQuestionsForm.inputs.question.label")
+                                                                }
                                                             </label>
                                                             <Dropdown
                                                                 name={questionSet.questionSetId}
                                                                 selection
                                                                 placeholder={
-                                                                    t("views:securityQuestions.forms." +
+                                                                    t("views:components.questionRecovery.forms." +
                                                                         "securityQuestionsForm.inputs.question.placeholder")
                                                                 }
-                                                                onChange={(e, data: DropdownProps) => {
-                                                                    handleDropdownChange(data, questionSet.questionSetId)
-                                                                }}
+                                                                onChange={
+                                                                    (e, data: DropdownProps) => {
+                                                                        handleDropdownChange(
+                                                                            data, questionSet.questionSetId
+                                                                        );
+                                                                    }
+                                                                }
                                                                 options={
                                                                     questionSet.questions.map((ques, i) => {
                                                                         return {
@@ -435,19 +441,21 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                                         </Form.Field>
                                                         <Form.Field>
                                                             <label>
-                                                                {t("views:securityQuestions.forms.securityQuestionsForm" +
-                                                                    ".inputs.answer.label")}
+                                                                {
+                                                                    t("views:components.questionRecovery.forms." +
+                                                                        "securityQuestionsForm.inputs.answer.label")
+                                                                }
                                                             </label>
                                                             <Form.Input
                                                                 required
                                                                 id={questionSet.questionSetId}
                                                                 placeholder={
-                                                                    t("views:securityQuestions.forms." +
+                                                                    t("views:components.questionRecovery.forms." +
                                                                         "securityQuestionsForm.inputs.answer.placeholder")
                                                                 }
 
                                                                 onChange={(e) => {
-                                                                    handleInputChange(e, questionSet.questionSetId)
+                                                                    handleInputChange(e, questionSet.questionSetId);
                                                                 }} />
                                                         </Form.Field>
                                                     </Grid.Column>

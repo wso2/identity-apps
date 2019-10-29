@@ -36,8 +36,8 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
 
     return (
         <SettingsSection
-            description={ t("views:securityPage.multiFactor.subTitle") }
-            header={ t("views:securityPage.multiFactor.title") }
+            description={ t("views:sections.mfa.description") }
+            header={ t("views:sections.mfa.heading") }
         >
             <List divided verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">

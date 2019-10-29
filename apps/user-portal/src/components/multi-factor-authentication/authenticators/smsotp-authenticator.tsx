@@ -75,10 +75,10 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                 if (response.status === 200) {
                     onNotificationFired({
                         description: t(
-                            "views:securityPage.multiFactor.smsOtp.notification.success.description"
+                            "views:components.mfa.smsOtp.notifications.updateMobile.success.description"
                         ),
                         message: t(
-                            "views:securityPage.multiFactor.smsOtp.notification.success.message"
+                            "views:components.mfa.smsOtp.notifications.updateMobile.success.message"
                         ),
                         otherProps: {
                             positive: true
@@ -93,10 +93,10 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                 } else {
                     onNotificationFired({
                         description: t(
-                            "views:userProfile.notification.getProfileInfo.error.description"
+                            "views:components.mfa.smsOtp.notifications.updateMobile.error.description"
                         ),
                         message: t(
-                            "views:userProfile.notification.getProfileInfo.error.message"
+                            "views:components.mfa.smsOtp.notifications.updateMobile.error.message"
                         ),
                         otherProps: {
                             negative: true
@@ -151,9 +151,9 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                 />
                             </List.Content>
                             <List.Content>
-                                <List.Header>{t("views:securityPage.multiFactor.smsOtp.title")}</List.Header>
+                                <List.Header>{t("views:components.mfa.smsOtp.heading")}</List.Header>
                                 <List.Description>
-                                    {t("views:securityPage.multiFactor.smsOtp.description")}
+                                    {t("views:components.mfa.smsOtp.descriptions.hint")}
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>

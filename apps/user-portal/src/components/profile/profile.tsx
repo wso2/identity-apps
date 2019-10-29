@@ -247,31 +247,40 @@ export const Profile: FunctionComponent<ProfileProps> = (
                     <Grid>
                         <Grid.Row columns={ 2 }>
                             <Grid.Column width={ 4 }>
-                                { t("views:userProfile.fields.name.label") }
+                                { t("views:components.profile.fields.name.label") }
                             </Grid.Column>
                             <Grid.Column width={ 12 }>
                                 <Form onSubmit={ () => handleSubmit("nameChangeForm") }>
                                     <Form.Field>
                                         <label>
-                                            { t("views:userProfile.forms.nameChangeForm.inputs.firstName.label") }
+                                            {
+                                                t("views:components.profile.forms.nameChangeForm.inputs." +
+                                                    "firstName.label")
+                                            }
                                         </label>
                                         <input
                                             required
                                             id="displayName"
-                                            placeholder={ t("views:userProfile.forms.nameChangeForm.inputs" +
-                                                ".firstName.placeholder") }
+                                            placeholder={
+                                                t("views:components.profile.forms.nameChangeForm.inputs" +
+                                                ".firstName.placeholder")
+                                            }
                                             value={ editingProfileInfo.displayName }
                                             onChange={ handleFieldChange }/>
                                     </Form.Field>
                                     <Form.Field>
                                         <label>
-                                            { t("views:userProfile.forms.nameChangeForm.inputs.lastName.label") }
+                                            {
+                                                t("views:components.profile.forms.nameChangeForm.inputs.lastName.label")
+                                            }
                                         </label>
                                         <input
                                             required
                                             id="lastName"
-                                            placeholder={ t("views:userProfile.forms.nameChangeForm.inputs" +
-                                                ".lastName.placeholder") }
+                                            placeholder={
+                                                t("views:components.profile.forms.nameChangeForm.inputs" +
+                                                ".lastName.placeholder")
+                                            }
                                             value={ editingProfileInfo.lastName }
                                             onChange={ handleFieldChange }/>
                                     </Form.Field>
@@ -298,7 +307,7 @@ export const Profile: FunctionComponent<ProfileProps> = (
                     <Grid.Row columns={ 3 }>
                         <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
                             <List.Content>
-                                { t("views:userProfile.fields.name.label") }
+                                { t("views:components.profile.fields.name.label") }
                             </List.Content>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
@@ -307,7 +316,7 @@ export const Profile: FunctionComponent<ProfileProps> = (
                                     {
                                         (profileInfo.displayName || profileInfo.lastName)
                                             ? profileInfo.displayName + " " + profileInfo.lastName
-                                            : t("views:userProfile.fields.name.default")
+                                            : t("views:components.profile.fields.name.default")
                                     }
                                 </List.Description>
                             </List.Content>
@@ -355,16 +364,16 @@ export const Profile: FunctionComponent<ProfileProps> = (
                     <Grid>
                         <Grid.Row columns={ 2 }>
                             <Grid.Column width={ 4 }>
-                                { t("views:userProfile.fields.email.label") }
+                                { t("views:components.profile.fields.email.label") }
                             </Grid.Column>
                             <Grid.Column width={ 12 }>
                                 <Form onSubmit={ () => handleSubmit("emailChangeForm") }>
                                     <Form.Field>
-                                        <label>{ t("views:userProfile.fields.email.label") }</label>
+                                        <label>{ t("views:components.profile.fields.email.label") }</label>
                                         <input
                                             required
                                             id="email"
-                                            placeholder={ t("views:userProfile.forms.emailChangeForm.inputs" +
+                                            placeholder={ t("views:components.profile.forms.emailChangeForm.inputs" +
                                                 ".email.placeholder") }
                                             value={ editingProfileInfo.email }
                                             onChange={ handleFieldChange }
@@ -393,7 +402,7 @@ export const Profile: FunctionComponent<ProfileProps> = (
                     <Grid.Row columns={ 3 }>
                         <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
                             <List.Content>
-                                { t("views:userProfile.fields.email.label") }
+                                { t("views:components.profile.fields.email.label") }
                             </List.Content>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
@@ -402,7 +411,7 @@ export const Profile: FunctionComponent<ProfileProps> = (
                                     {
                                         profileInfo.email
                                             ? profileInfo.email
-                                            : t("views:userProfile.fields.email.default")
+                                            : t("views:components.profile.fields.email.default")
                                     }
                                 </List.Description>
                             </List.Content>
@@ -443,16 +452,16 @@ export const Profile: FunctionComponent<ProfileProps> = (
                     <Grid>
                         <Grid.Row columns={ 2 }>
                             <Grid.Column width={ 4 }>
-                                { t("views:userProfile.fields.organization.label") }
+                                { t("views:components.profile.fields.organization.label") }
                             </Grid.Column>
                             <Grid.Column width={ 12 }>
                                 <Form onSubmit={ () => handleSubmit("organizationChangeForm") }>
                                     <Form.Field>
-                                        <label>{ t("views:userProfile.fields.organization.label") }</label>
+                                        <label>{ t("views:components.profile.fields.organization.label") }</label>
                                         <input
                                             required
                                             id="organisation"
-                                            placeholder={ t("views:userProfile.forms.organizationChangeForm" +
+                                            placeholder={ t("views:components.profile.forms.organizationChangeForm" +
                                                 ".inputs.organization.placeholder") }
                                             value={ editingProfileInfo.organisation }
                                             onChange={ handleFieldChange }
@@ -481,7 +490,7 @@ export const Profile: FunctionComponent<ProfileProps> = (
                     <Grid.Row columns={ 3 }>
                         <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
                             <List.Content>
-                                { t("views:userProfile.fields.organization.label") }
+                                { t("views:components.profile.fields.organization.label") }
                             </List.Content>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
@@ -490,7 +499,7 @@ export const Profile: FunctionComponent<ProfileProps> = (
                                     {
                                         profileInfo.organisation
                                             ? profileInfo.organisation
-                                            : t("views:userProfile.fields.organization.default")
+                                            : t("views:components.profile.fields.organization.default")
                                     }
                                 </List.Description>
                             </List.Content>
@@ -532,16 +541,16 @@ export const Profile: FunctionComponent<ProfileProps> = (
                     <Grid>
                         <Grid.Row columns={ 2 }>
                             <Grid.Column width={ 4 }>
-                                { t("views:userProfile.fields.mobile.label") }
+                                { t("views:components.profile.fields.mobile.label") }
                             </Grid.Column>
                             <Grid.Column width={ 12 }>
                                 <Form onSubmit={ () => handleSubmit("mobileChangeForm") }>
                                     <Form.Field>
-                                        <label>{ t("views:userProfile.fields.mobile.label") }</label>
+                                        <label>{ t("views:components.profile.fields.mobile.label") }</label>
                                         <input
                                             required
                                             id="mobile"
-                                            placeholder={ t("views:userProfile.forms.mobileChangeForm" +
+                                            placeholder={ t("views:components.profile.forms.mobileChangeForm" +
                                                 ".inputs.mobile.placeholder") }
                                             value={ editingProfileInfo.mobile }
                                             onChange={ handleFieldChange }
@@ -570,7 +579,7 @@ export const Profile: FunctionComponent<ProfileProps> = (
                     <Grid.Row columns={ 3 }>
                         <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
                             <List.Content>
-                                { t("views:userProfile.fields.mobile.label") }
+                                { t("views:components.profile.fields.mobile.label") }
                             </List.Content>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
@@ -579,7 +588,7 @@ export const Profile: FunctionComponent<ProfileProps> = (
                                     {
                                         profileInfo.mobile
                                             ? profileInfo.mobile
-                                            : t("views:userProfile.fields.mobile.default")
+                                            : t("views:components.profile.fields.mobile.default")
                                     }
                                 </List.Description>
                             </List.Content>
@@ -615,8 +624,8 @@ export const Profile: FunctionComponent<ProfileProps> = (
 
     return (
         <SettingsSection
-            description={ t("views:userProfile.subTitle") }
-            header={ t("views:userProfile.title") }
+            description={ t("views:sections.profile.description") }
+            header={ t("views:sections.profile.heading") }
             icon={ resolveUserAvatar(state, "tiny") }
         >
             <List divided verticalAlign="middle" className="main-content-inner">
@@ -625,7 +634,7 @@ export const Profile: FunctionComponent<ProfileProps> = (
                         <Grid.Row columns={ 3 }>
                             <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
                                 <List.Content>
-                                    { t("views:userProfile.fields.username.label") }
+                                    { t("views:components.profile.fields.username.label") }
                                 </List.Content>
                             </Grid.Column>
                             <Grid.Column mobile={ 10 } tablet={ 10 } computer={ 12 }>

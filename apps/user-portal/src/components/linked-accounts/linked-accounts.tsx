@@ -74,11 +74,11 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
                         .catch((error) => {
                             onNotificationFired({
                                 description: t(
-                                    "views:associatedAccounts.notification.getAssociation.error.description",
+                                    "views:linkedAccounts.notifications.getAssociations.error.description",
                                     { description: error }
                                 ),
                                 message: t(
-                                    "views:associatedAccounts.notification.getAssociation.error.message"
+                                    "views:linkedAccounts.notifications.getAssociations.error.message"
                                 ),
                                 otherProps: {
                                     negative: true
@@ -100,11 +100,11 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
             .catch((error) => {
                 onNotificationFired({
                     description: t(
-                        "views:associatedAccounts.notification.getAssociation.error.description",
+                        "views:linkedAccounts.notifications.getAssociations.error.description",
                         { description: error }
                     ),
                     message: t(
-                        "views:associatedAccounts.notification.getAssociation.error.message"
+                        "views:linkedAccounts.notifications.getAssociations.error.message"
                     ),
                     otherProps: {
                         negative: true
@@ -151,10 +151,10 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
                 if (response.status !== 201) {
                     onNotificationFired({
                         description: t(
-                            "views:associatedAccounts.notification.addAssociation.error.description"
+                            "views:linkedAccounts.notifications.addAssociation.error.description"
                         ),
                         message: t(
-                            "views:associatedAccounts.notification.addAssociation.error.message"
+                            "views:linkedAccounts.notifications.addAssociation.error.message"
                         ),
                         otherProps: {
                             negative: true
@@ -164,10 +164,10 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
                 } else {
                     onNotificationFired({
                         description: t(
-                            "views:associatedAccounts.notification.addAssociation.success.description"
+                            "views:linkedAccounts.notifications.addAssociation.success.description"
                         ),
                         message: t(
-                            "views:associatedAccounts.notification.addAssociation.success.message"
+                            "views:linkedAccounts.notifications.addAssociation.success.message"
                         ),
                         otherProps: {
                             positive: true
@@ -213,15 +213,15 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
 
     return (
         <SettingsSection
-            description={ t("views:associatedAccounts.subTitle") }
-            header={ t("views:associatedAccounts.title") }
+            description={ t("views:sections.linkedAccounts.description") }
+            header={ t("views:sections.linkedAccounts.heading") }
             icon={ SettingsSectionIcons.associatedAccounts }
             iconMini={ SettingsSectionIcons.associatedAccountsMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
             onPrimaryActionClick={ () => showFormEditView("addAccountForm") }
-            primaryAction={ t("views:associatedAccounts.actionTitle") }
+            primaryAction={ t("views:sections.linkedAccounts.actionTitles.add") }
             primaryActionIcon="add"
             showActionBar={ !editingForm.addAccountForm }
         >
@@ -232,28 +232,40 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (
                             <Grid>
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column width={ 4 }>
-                                        { t("views:associatedAccounts.accountTypes.local.label") }
+                                        { t("views:components.linkedAccounts.accountTypes.local.label") }
                                     </Grid.Column>
                                     <Grid.Column width={ 12 }>
                                         <Form onSubmit={ () => handleSubmit("addAccountForm") }>
                                             <Form.Field>
-                                                <label>{ t("views:associatedAccounts.forms.addAccountForm.inputs" +
-                                                    ".username.label") }</label>
+                                                <label>
+                                                    {
+                                                        t("views:components.linkedAccounts.forms.addAccountForm." +
+                                                            "inputs.username.label")
+                                                    }
+                                                </label>
                                                 <input
                                                     required
-                                                    placeholder={ t("views:associatedAccounts.forms.addAccountForm" +
-                                                        ".inputs.username.placeholder") }
+                                                    placeholder={
+                                                        t("views:components.linkedAccounts.forms.addAccountForm" +
+                                                        ".inputs.username.placeholder")
+                                                    }
                                                     id="username"
                                                     onChange={ handleFieldChange }
                                                 />
                                             </Form.Field>
                                             <Form.Field>
-                                                <label>{ t("views:associatedAccounts.forms.addAccountForm.inputs" +
-                                                    ".password.label") }</label>
+                                                <label>
+                                                    {
+                                                        t("views:components.linkedAccounts.forms.addAccountForm." +
+                                                            "inputs.password.label")
+                                                    }
+                                                </label>
                                                 <input
                                                     required
-                                                    placeholder={ t("views:associatedAccounts.forms.addAccountForm" +
-                                                        ".inputs.password.placeholder") }
+                                                    placeholder={
+                                                        t("views:components.linkedAccounts.forms.addAccountForm" +
+                                                        ".inputs.password.placeholder")
+                                                    }
                                                     type="password"
                                                     id="password"
                                                     onChange={ handleFieldChange }

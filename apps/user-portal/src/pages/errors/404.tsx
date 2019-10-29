@@ -31,9 +31,9 @@ export const PageNotFound = (): JSX.Element => {
     const { t } = useTranslation();
     return (
         <DefaultPageLayout
-            pageTitle={ t("views:404.title") }
+            pageTitle={ t("views:pages.404.title") }
             pageTitleTextAlign="center"
-            pageDescription={ t("views:404.subTitle") }
+            pageDescription={ t("views:pages.404.subTitle") }
         >
             <Container text textAlign="center">
                 <Button as={ Link } to={ APP_HOME_PATH } primary>{ t("common:goBackHome") }</Button>

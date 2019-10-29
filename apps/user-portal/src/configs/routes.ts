@@ -18,8 +18,8 @@
 
 import {
     AccountSecurityPage,
-    HomePage,
     OperationsPage,
+    OverviewPage,
     PageNotFound,
     PersonalInfoPage,
     PrivacyPage
@@ -42,7 +42,7 @@ interface Route {
  */
 const ROUTES: Route[] = [
     {
-        component: HomePage,
+        component: OverviewPage,
         icon: "overview",
         name: "common:overview",
         path: "/overview",

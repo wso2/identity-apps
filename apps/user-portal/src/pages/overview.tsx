@@ -16,32 +16,32 @@
  * under the License.
  */
 
-import * as React from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, Grid } from "semantic-ui-react";
-import { UserSessionsComponent } from "../components";
+import { Overview } from "../components";
+import { AuthContext } from "../contexts";
+import { resolveUserDisplayName } from "../helpers";
 import { InnerPageLayout } from "../layouts";
 
 /**
- * Sessions page.
+ * Overview page.
  *
  * @return {JSX.Element}
  */
-export const SessionsPage = (): JSX.Element => {
+export const OverviewPage = (): JSX.Element => {
+    const { state } = useContext(AuthContext);
     const { t } = useTranslation();
+
     return (
         <InnerPageLayout
-            pageTitle={ t("views:sessionsPage:title") }
-            pageDescription={ t("views:sessionsPage:subTitle") }
+            pageTitle={ t(
+                "views:pages:overview.title",
+                { firstName: resolveUserDisplayName(state) }
+                ) }
+            pageDescription={ t("views:pages:overview.subTitle") }
+            pageTitleTextAlign="left"
         >
-            <Divider hidden/>
-            <Grid>
-                <Grid.Row>
-                    <Grid.Column width={ 16 }>
-                        <UserSessionsComponent/>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+            <Overview />
         </InnerPageLayout>
     );
 };
