@@ -174,14 +174,14 @@ export const UserSessionsWidget: FunctionComponent<{}> = (): JSX.Element => {
     return (
         <div className="widget account-status">
             <SettingsSection
-                description={ t("views:overviewPage.widgets.accountActivity.description") }
-                header={ t("views:overviewPage.widgets.accountActivity.header") }
+                description={ t("views:components.overview.widgets.accountActivity.description") }
+                header={ t("views:components.overview.widgets.accountActivity.header") }
                 placeholder={
                     !(userSessions && userSessions.sessions && (userSessions.sessions.length > 0))
-                        ? t("views:userSessions.actionTitles.empty")
+                        ? t("views:sections.userSessions.actionTitles.empty")
                         : null
                 }
-                primaryAction={ t("views:overviewPage.widgets.accountActivity.actionTitles.update") }
+                primaryAction={ t("views:components.overview.widgets.accountActivity.actionTitles.update") }
                 onPrimaryActionClick={ navigate }
             >
                 <List divided verticalAlign="middle" className="main-content-inner">

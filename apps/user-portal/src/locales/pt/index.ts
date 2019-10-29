@@ -16,5 +16,5 @@
  * under the License.
  */
 
-export { default as common } from "./common.json";
-export { default as views } from "./views.json";
+export * from "./common";
+export * from "./views";

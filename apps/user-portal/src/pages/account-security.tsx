@@ -52,8 +52,8 @@ export const AccountSecurityPage = (): JSX.Element => {
 
     return (
         <InnerPageLayout
-            pageTitle={ t("views:securityPage.title") }
-            pageDescription={ t("views:securityPage.subTitle") }
+            pageTitle={ t("views:pages.security.title") }
+            pageDescription={ t("views:pages.security.subTitle") }
         >
             {
                 notification && notification.visible

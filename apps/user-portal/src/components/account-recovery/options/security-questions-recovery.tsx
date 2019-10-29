@@ -34,6 +34,8 @@ import {
     Notification
 } from "../../../models";
 import { ThemeIcon, EditSection, FormWrapper } from "../../shared";
+import { Views } from "../../../models";
+let lang: Views;
 
 /**
  * Prop types for SecurityQuestionsComponent
@@ -159,10 +161,10 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
 
                         onNotificationFired({
                             description: t(
-                                "views:securityQuestions.notification.updateQuestions.success.description"
+                                "views:components.questionRecovery.notifications.updateQuestions.success.description"
                             ),
                             message: t(
-                                "views:securityQuestions.notification.updateQuestions.success.message"
+                                "views:components.questionRecovery.notifications.updateQuestions.success.message"
                             ),
                             otherProps: {
                                 positive: true
@@ -172,10 +174,10 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                     } else {
                         onNotificationFired({
                             description: t(
-                                "views:securityQuestions.notification.updateQuestions.error.description"
+                                "views:components.questionRecovery.notifications.updateQuestions.error.description"
                             ),
                             message: t(
-                                "views:securityQuestions.notification.updateQuestions.error.message"
+                                "views:components.questionRecovery.notifications.updateQuestions.error.message"
                             ),
                             otherProps: {
                                 negative: true
@@ -197,10 +199,10 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
 
                         onNotificationFired({
                             description: t(
-                                "views:securityQuestions.notification.addQuestions.success.description"
+                                "views:components.questionRecovery.notifications.addQuestions.success.description"
                             ),
                             message: t(
-                                "views:securityQuestions.notification.addQuestions.success.message"
+                                "views:components.questionRecovery.notifications.addQuestions.success.message"
                             ),
                             otherProps: {
                                 positive: true
@@ -210,10 +212,10 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                     } else {
                         onNotificationFired({
                             description: t(
-                                "views:securityQuestions.notification.addQuestions.error.description"
+                                "views:components.questionRecovery.notifications.addQuestions.error.description"
                             ),
                             message: t(
-                                "views:securityQuestions.notification.addQuestions.error.message"
+                                "views:components.questionRecovery.notifications.addQuestions.error.message"
                             ),
                             otherProps: {
                                 negative: true
@@ -304,8 +306,8 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
             if (isEdit === 0 || (isEdit === questionSet.questionSetId)) {
                 formFields.push(
                     {
-                        label: t("views:securityQuestions.forms.securityQuestionsForm." +
-                            "inputs.question.label"),
+                        label: t("views:components.accountRecovery.questionRecovery.forms.securityQuestionsForm" +
+                            ".inputs.question.label"),
                         type: "dropdown",
                         name: "question " + questionSet.questionSetId,
                         value: findChosenQuestionFromChallengeQuestions(
@@ -319,23 +321,24 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                             };
                         }),
                         required: true,
-                        requiredErrorMessage: t("views:securityQuestions.forms." +
-                            "securityQuestionsForm.inputs.question.validations.empty"),
+                        requiredErrorMessage: t("views:components.accountRecovery.questionRecovery.forms" +
+                            ".securityQuestionsForm" +
+                            ".inputs.question.validations.empty"),
                         placeholder:
-                            t("views:securityQuestions.forms." +
-                                "securityQuestionsForm.inputs.question.placeholder")
+                            t("views:components.accountRecovery.questionRecovery.forms.securityQuestionsForm.inputs"+
+                            ".question.placeholder")
                     },
                     {
                         type: "text",
                         name: "answer " + questionSet.questionSetId,
-                        placeholder: t("views:securityQuestions.forms." +
+                        placeholder: t("views:components.accountRecovery.questionRecovery.forms." +
                             "securityQuestionsForm.inputs.answer.placeholder"),
                         required: true,
-                        requiredErrorMessage: t("views:securityQuestions.forms.securityQuestionsForm" +
-                            ".inputs.answer.validations.empty"),
+                        requiredErrorMessage: t("views:components.accountRecovery.questionRecovery.forms." +
+                            "securityQuestionsForm.inputs.answer.validations.empty"),
                         validation: () => { },
-                        label: t("views:securityQuestions.forms.securityQuestionsForm" +
-                            ".inputs.answer.label"),
+                        label: t("views:components.accountRecovery.questionRecovery.forms.securityQuestionsForm." +
+                            "inputs.answer.label"),
                     },
                 )
             }
@@ -379,9 +382,11 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                 />
                             </List.Content>
                             <List.Content>
-                                <List.Header>{t("views:securityQuestions.title")}</List.Header>
+                                <List.Header>
+                                    {t("views:components.accountRecovery.questionRecovery.heading")}
+                                </List.Header>
                                 <List.Description>
-                                    {t("views:securityQuestions.description")}
+                                    {t("views:components.accountRecovery.questionRecovery.descriptions.add")}
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>

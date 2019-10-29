@@ -85,10 +85,11 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (
 
                     onNotificationFired({
                         description: t(
-                            "views:changePassword.forms.passwordResetForm.validations.submitSuccess.description"
+                            "views:components.changePassword.forms.passwordResetForm.validations.submitSuccess." +
+                            "description"
                         ),
                         message: t(
-                            "views:changePassword.forms.passwordResetForm.validations.submitSuccess.message"
+                            "views:components.changePassword.forms.passwordResetForm.validations.submitSuccess.message"
                         ),
                         otherProps: {
                             positive: true
@@ -106,18 +107,19 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (
                     setErrors({
                         ...errors,
                         currentPassword: t(
-                            "views:changePassword.forms.passwordResetForm.inputs.currentPassword.validations.invalid"
+                            "views:components.changePassword.forms.passwordResetForm.inputs.currentPassword." +
+                            "validations.invalid"
                         )
                     });
 
                     onNotificationFired({
                         description: t(
-                            "views:changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
-                            "description"
+                            "views:components.changePassword.forms.passwordResetForm.validations." +
+                            "invalidCurrentPassword.description"
                         ),
                         message: t(
-                            "views:changePassword.forms.passwordResetForm.validations.invalidCurrentPassword." +
-                            "message"
+                            "views:components.changePassword.forms.passwordResetForm.validations." +
+                            "invalidCurrentPassword.message"
                         ),
                         otherProps: {
                             negative: true
@@ -132,10 +134,12 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (
 
                     onNotificationFired({
                         description: t(
-                            "views:changePassword.forms.passwordResetForm.validations.submitError.description",
+                            "views:components.changePassword.forms.passwordResetForm.validations.submitError.description",
                             { description: error.response.data.detail }
                         ),
-                        message: t("views:changePassword.forms.passwordResetForm.validations.submitError.message"),
+                        message: t(
+                            "views:components.changePassword.forms.passwordResetForm.validations.submitError.message"
+                        ),
                         otherProps: {
                             negative: true
                         },
@@ -150,9 +154,11 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (
                     // Generic error message
                     onNotificationFired({
                         description: t(
-                            "views:changePassword.forms.passwordResetForm.validations.genericError.description"
+                            "views:components.changePassword.forms.passwordResetForm.validations.genericError.description"
                         ),
-                        message: t("views:changePassword.forms.passwordResetForm.validations.genericError.message"),
+                        message: t(
+                            "views:components.changePassword.forms.passwordResetForm.validations.genericError.message"
+                        ),
                         otherProps: {
                             negative: true
                         },
@@ -210,10 +216,10 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (
         >
             <Modal.Content>
                 <Container>
-                    <h3>{t("views:changePassword.modals.confirmationModal.heading")}</h3>
+                    <h3>{ t("views:components.changePassword.modals.confirmationModal.heading") }</h3>
                 </Container>
                 <Divider hidden />
-                <p>{t("views:changePassword.modals.confirmationModal.message")}</p>
+                <p>{ t("views:components.changePassword.modals.confirmationModal.message") }</p>
             </Modal.Content>
             <Modal.Actions>
                 <Button
@@ -237,12 +243,12 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (
                                 type: "password",
                                 width: 9,
                                 name: "currentPassword",
-                                placeholder: t("views:changePassword.forms.passwordResetForm.inputs." +
+                                placeholder: t("views:components.changePassword.forms.passwordResetForm.inputs." +
                                     "currentPassword.placeholder"),
                                 required: true,
-                                requiredErrorMessage: t("views:changePassword.forms.passwordResetForm.inputs"
-                                    + ".currentPassword.validations.empty"),
-                                label: t("views:changePassword.forms.passwordResetForm.inputs" +
+                                requiredErrorMessage: t("views:components.changePassword.forms.passwordResetForm." +
+                                    "inputs.currentPassword.validations.empty"),
+                                label: t("views:components.changePassword.forms.passwordResetForm.inputs" +
                                     ".currentPassword.label"),
                                 validation: (value: string, validation: Validation) => {
 
@@ -252,12 +258,12 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (
                                 type: "password",
                                 width: 9,
                                 name: "newPassword",
-                                placeholder: t("views:changePassword.forms.passwordResetForm.inputs." +
+                                placeholder: t("views:components.changePassword.forms.passwordResetForm.inputs." +
                                     "newPassword.placeholder"),
                                 required: true,
-                                requiredErrorMessage: t("views:changePassword.forms.passwordResetForm.inputs"
-                                    + ".newPassword.validations.empty"),
-                                label: t("views:changePassword.forms.passwordResetForm.inputs" +
+                                requiredErrorMessage: t("views:components.changePassword.forms.passwordResetForm." +
+                                    "inputs.newPassword.validations.empty"),
+                                label: t("views:components.changePassword.forms.passwordResetForm.inputs" +
                                     ".newPassword.label"),
                                 validation: (value: string, validation: Validation) => {
 
@@ -267,19 +273,19 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (
                                 type: "password",
                                 width: 9,
                                 name: "confirmPassword",
-                                placeholder: t("views:changePassword.forms.passwordResetForm.inputs." +
+                                placeholder: t("views:components.changePassword.forms.passwordResetForm.inputs." +
                                     "confirmPassword.placeholder"),
                                 required: true,
-                                requiredErrorMessage: t("views:changePassword.forms.passwordResetForm.inputs"
-                                    + ".confirmPassword.validations.empty"),
-                                label: t("views:changePassword.forms.passwordResetForm.inputs" +
+                                requiredErrorMessage: t("views:components.changePassword.forms.passwordResetForm." +
+                                    "inputs.confirmPassword.validations.empty"),
+                                label: t("views:components.changePassword.forms.passwordResetForm.inputs" +
                                     ".confirmPassword.label"),
                                 validation: (value: string, validation: Validation, formValues) => {
                                     if (formValues.get("newPassword") !== value) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(t(
-                                            "views:changePassword.forms.passwordResetForm.inputs"
-                                            + ".confirmPassword.validations.mismatch"
+                                            "views:components.changePassword.forms.passwordResetForm.inputs" +
+                                            ".confirmPassword.validations.mismatch"
                                         ))
                                     }
                                 }
@@ -324,15 +330,15 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (
 
     return (
         <SettingsSection
-            description={t("views:changePassword.subTitle")}
-            header={t("views:changePassword.title")}
-            icon={SettingsSectionIcons.changePassword}
-            iconMini={SettingsSectionIcons.changePasswordMini}
+            description={ t("views:sections.changePassword.description") }
+            header={ t("views:sections.changePassword.heading") }
+            icon={ SettingsSectionIcons.changePassword }
+            iconMini={ SettingsSectionIcons.changePasswordMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
             onPrimaryActionClick={ () => showFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER) }
-            primaryAction={ t("views:changePassword.actionTitles.change") }
+            primaryAction={ t("views:sections.changePassword.actionTitles.change") }
             primaryActionIcon="key"
             showActionBar={ !editingForm[CHANGE_PASSWORD_FORM_IDENTIFIER] }
         >

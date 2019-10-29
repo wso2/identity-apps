@@ -17,13 +17,9 @@
  */
 
 export * from "./account-security";
-export * from "./app-listing";
 export * from "./consent-management";
 export * from "./errors/404";
-export * from "./home";
-export * from "./theme";
-export * from "./user-listing";
+export * from "./overview";
 export * from "./personal-info";
 export * from "./privacy";
-export * from "./sessions";
 export * from "./operations";

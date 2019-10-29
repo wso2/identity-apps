@@ -42,8 +42,8 @@ export const ConsentManagementPage = (): JSX.Element => {
 
     return (
         <InnerPageLayout
-            pageTitle={ t("views:consentManagementPage.title") }
-            pageDescription={ t("views:consentManagementPage.subTitle") }
+            pageTitle={ t("views:pages.consentManagement.title") }
+            pageDescription={ t("views:pages.consentManagement.subTitle") }
         >
             {
                 notification && notification.visible

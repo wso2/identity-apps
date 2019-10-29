@@ -69,10 +69,11 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                 if (response.status === 200) {
                     onNotificationFired({
                         description: t(
-                            "views:accountRecovery.emailRecovery.notification.success.description"
+                            "views:components.accountRecovery.emailRecovery.updateEmail.notifications" +
+                            ".success.description"
                         ),
                         message: t(
-                            "views:accountRecovery.emailRecovery.notification.success.message"
+                            "views:components.accountRecovery.emailRecovery.updateEmail.notifications.success.message"
                         ),
                         otherProps: {
                             positive: true
@@ -87,10 +88,10 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                 } else {
                     onNotificationFired({
                         description: t(
-                            "views:userProfile.notification.getProfileInfo.error.description"
+                            "views:components.accountRecovery.emailRecovery.updateEmail.notifications.error.description"
                         ),
                         message: t(
-                            "views:userProfile.notification.getProfileInfo.error.message"
+                            "views:components.accountRecovery.emailRecovery.updateEmail.notifications.error.message"
                         ),
                         otherProps: {
                             negative: true
@@ -118,8 +119,8 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
     };
 
     /**
-     * This is called when the edit icon is clicked. 
-     * 
+     * This is called when the edit icon is clicked.
+     *
      */
     const handleEdit = () => {
         setIsEdit(true);
@@ -133,10 +134,10 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
     };
 
     /**
-     * This function masks the email address passed as the argument and returns 
-     * the masked email address.  
+     * This function masks the email address passed as the argument and returns
+     * the masked email address.
      * The text between the second character of the email and the @ sign is masked.
-     * @param {string} email 
+     * @param {string} email
      */
     const maskEmail = (email: string) => {
         let mask = "";
@@ -153,7 +154,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
     }
 
     /**
-     * This function returns the EditSection component and the recovery option 
+     * This function returns the EditSection component and the recovery option
      * elements based on if the edit icon has been clicked
      */
     const showEditView = () => {
@@ -174,13 +175,13 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                                 />
                             </List.Content>
                             <List.Content>
-                                <List.Header>{t("views:accountRecovery.emailRecovery.title")}</List.Header>
+                                <List.Header>{t("views:components.accountRecovery.emailRecovery.heading")}</List.Header>
                                 <List.Description>
                                     {
                                         email || email != ""
-                                            ? t("views:accountRecovery.emailRecovery.descriptionUpdate",
+                                            ? t("views:components.accountRecovery.emailRecovery.descriptions.update",
                                                 { email: maskEmail(email) })
-                                            : t("views:accountRecovery.emailRecovery.descriptionAdd")
+                                            : t("views:components.accountRecovery.emailRecovery.descriptions.add")
                                     }
                                 </List.Description>
                             </List.Content>
@@ -221,13 +222,15 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                                         <FormWrapper formFields={[{
                                             type: "text",
                                             width: 9,
-                                            placeholder: t("views:accountRecovery.emailRecovery.emailAddress"),
+                                            placeholder: t("views:components.accountRecovery.emailRecovery.forms" +
+                                                ".emailResetForm.inputs.email.placeholder"),
                                             name: "email",
                                             value: editedEmail,
                                             required: true,
-                                            label: t("views:accountRecovery.emailRecovery.emailAddress"),
-                                            requiredErrorMessage: t("views:accountRecovery.emailRecovery"
-                                                + ".emailRequired"),
+                                            label: t("views:components.accountRecovery.emailRecovery.forms" +
+                                                ".emailResetForm.inputs.email.label"),
+                                            requiredErrorMessage: t("views:components.accountRecovery.emailRecovery.forms" +
+                                                ".emailResetForm.inputs.email.validations.empty"),
                                             validation: (value: string, validation: Validation) => {
                                                 let emailError = Joi.string().email({ tlds: { allow: ["com"] } })
                                                     .validate(value).error;
@@ -245,7 +248,6 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                                             type: "submit",
                                             value: t("common:update").toString(),
                                             size: "small"
-
                                         }, {
                                             type: "button",
                                             className: "link-button",

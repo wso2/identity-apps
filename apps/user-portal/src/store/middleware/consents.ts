@@ -133,10 +133,10 @@ const handleFetchConsentedAppsError = ({ dispatch }) => (next) => (action) => {
     if (error.response && error.response.data && error.response.data.detail) {
         notification = {
             description: i18n.t(
-                "views:consentManagement.notifications.consentedAppsFetchError.description",
+                "views:components.consentManagement.notifications.consentedAppsFetch.error.description",
                 { description: error.response.data.detail }
             ),
-            message: i18n.t("views:consentManagement.notifications.consentedAppsFetchError.message"),
+            message: i18n.t("views:components.consentManagement.notifications.consentedAppsFetch.error.message"),
             otherProps: {
                 negative: true
             },
@@ -146,9 +146,9 @@ const handleFetchConsentedAppsError = ({ dispatch }) => (next) => (action) => {
         // Generic error message
         notification = {
             description: i18n.t(
-                "views:consentManagement.notifications.consentedAppsFetchGenericError.description"
+                "views:components.consentManagement.notifications.consentedAppsFetch.genericError.description"
             ),
-            message: i18n.t("views:consentManagement.notifications.consentedAppsFetchGenericError.message"),
+            message: i18n.t("views:components.consentManagement.notifications.consentedAppsFetch.genericError.message"),
             otherProps: {
                 negative: true
             },
@@ -238,10 +238,10 @@ const handleFetchConsentReceiptError = ({ dispatch }) => (next) => (action) => {
     if (error.response && error.response.data && error.response.data.detail) {
         notification = {
             description: i18n.t(
-                "views:consentManagement.notifications.consentReceiptFetchError.description",
+                "views:components.consentManagement.notifications.consentReceiptFetch.error.description",
                 { description: error.response.data.detail }
             ),
-            message: i18n.t("views:consentManagement.notifications.consentReceiptFetchError.message"),
+            message: i18n.t("views:components.consentManagement.notifications.consentReceiptFetch.error.message"),
             otherProps: {
                 negative: true
             },
@@ -251,9 +251,11 @@ const handleFetchConsentReceiptError = ({ dispatch }) => (next) => (action) => {
         // Generic error message
         notification = {
             description: i18n.t(
-                "views:consentManagement.notifications.consentReceiptFetchGenericError.description"
+                "views:components.consentManagement.notifications.consentReceiptFetch.genericError.description"
             ),
-            message: i18n.t("views:consentManagement.notifications.consentReceiptFetchGenericError.message"),
+            message: i18n.t(
+                "views:components.consentManagement.notifications.consentReceiptFetch.genericError.message"
+            ),
             otherProps: {
                 negative: true
             },
@@ -319,10 +321,10 @@ const handleRevokeConsentedAppSuccess = ({ dispatch }) => (next) => (action) => 
     if (response.status && response.status === 200) {
         const notification: Notification = {
             description: i18n.t(
-                "views:consentManagement.notifications.revokeConsentedAppSuccess.description"
+                "views:components.consentManagement.notifications.revokeConsentedApp.success.description"
             ),
             message: i18n.t(
-                "views:consentManagement.notifications.revokeConsentedAppSuccess.message"
+                "views:components.consentManagement.notifications.revokeConsentedApp.success.message"
             ),
             otherProps: {
                 positive: true
@@ -356,10 +358,10 @@ const handleRevokeConsentedAppError = ({ dispatch }) => (next) => (action) => {
     if (error.response && error.response.data && error.response.data.detail) {
         notification = {
             description: i18n.t(
-                "views:consentManagement.notifications.revokeConsentedAppError.description",
+                "views:components.consentManagement.notifications.revokeConsentedApp.error.description",
                 { description: error.response.data.detail }
             ),
-            message: i18n.t("views:consentManagement.notifications.revokeConsentedAppError.message"),
+            message: i18n.t("views:components.consentManagement.notifications.revokeConsentedApp.error.message"),
             otherProps: {
                 negative: true
             },
@@ -369,9 +371,9 @@ const handleRevokeConsentedAppError = ({ dispatch }) => (next) => (action) => {
         // Generic error message
         notification = {
             description: i18n.t(
-                "views:consentManagement.notifications.revokeConsentedAppGenericError.description"
+                "views:components.consentManagement.notifications.revokeConsentedApp.genericError.description"
             ),
-            message: i18n.t("views:consentManagement.notifications.revokeConsentedAppGenericError.message"),
+            message: i18n.t("views:components.consentManagement.notifications.revokeConsentedApp.genericError.message"),
             otherProps: {
                 negative: true
             },
@@ -465,10 +467,10 @@ const handleUpdateConsentedClaimsSuccess = ({ dispatch }) => (next) => (action) 
     if (response.status && response.status === 200) {
         const notification: Notification = {
             description: i18n.t(
-                "views:consentManagement.notifications.updateConsentedClaimsSuccess.description"
+                "views:components.consentManagement.notifications.updateConsentedClaims.success.description"
             ),
             message: i18n.t(
-                "views:consentManagement.notifications.updateConsentedClaimsSuccess.message"
+                "views:components.consentManagement.notifications.updateConsentedClaims.success.message"
             ),
             otherProps: {
                 positive: true
@@ -502,10 +504,10 @@ const handleUpdateConsentedClaimsError = ({ dispatch }) => (next) => (action) =>
     if (error.response && error.response.data && error.response.data.detail) {
         notification = {
             description: i18n.t(
-                "views:consentManagement.notifications.updateConsentedClaimsError.description",
+                "views:components.consentManagement.notifications.updateConsentedClaims.error.description",
                 { description: error.response.data.detail }
             ),
-            message: i18n.t("views:consentManagement.notifications.updateConsentedClaimsError.message"),
+            message: i18n.t("views:components.consentManagement.notifications.updateConsentedClaims.error.message"),
             otherProps: {
                 negative: true
             },
@@ -515,9 +517,10 @@ const handleUpdateConsentedClaimsError = ({ dispatch }) => (next) => (action) =>
         // Generic error message
         notification = {
             description: i18n.t(
-                "views:consentManagement.notifications.updateConsentedClaimsGenericError.description"
+                "views:components.consentManagement.notifications.updateConsentedClaims.genericError.description"
             ),
-            message: i18n.t("views:consentManagement.notifications.updateConsentedClaimsGenericError.message"),
+            message: i18n.t("views:components.consentManagement.notifications.updateConsentedClaims." +
+                "genericError.message"),
             otherProps: {
                 negative: true
             },

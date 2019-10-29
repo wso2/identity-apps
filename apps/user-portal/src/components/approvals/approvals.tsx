@@ -114,10 +114,10 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
             .catch((error) => {
                 let notification = {
                     description: t(
-                        "views:pendingApprovals.notifications.fetchPendingApprovals.genericError.description"
+                        "views:components.approvals.notifications.fetchPendingApprovals.genericError.description"
                     ),
                     message: t(
-                        "views:pendingApprovals.notifications.fetchPendingApprovals.genericError.message"
+                        "views:components.approvals.notifications.fetchPendingApprovals.genericError.message"
                     ),
                     otherProps: {
                         negative: true
@@ -128,11 +128,11 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                     notification = {
                         ...notification,
                         description: t(
-                            "views:pendingApprovals.notifications.fetchPendingApprovals.error.description",
+                            "views:components.approvals.notifications.fetchPendingApprovals.error.description",
                             { description: error.response.data.detail }
                         ),
                         message: t(
-                            "views:pendingApprovals.notifications.fetchPendingApprovals.error.message"
+                            "views:components.approvals.notifications.fetchPendingApprovals.error.message"
                         ),
                     };
                 }
@@ -182,10 +182,10 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
             .catch((error) => {
                 let notification = {
                     description: t(
-                        "views:pendingApprovals.notifications.updatePendingApprovals.genericError.description"
+                        "views:components.approvals.notifications.updatePendingApprovals.genericError.description"
                     ),
                     message: t(
-                        "views:pendingApprovals.notifications.updatePendingApprovals.genericError.message"
+                        "views:components.approvals.notifications.updatePendingApprovals.genericError.message"
                     ),
                     otherProps: {
                         negative: true
@@ -196,11 +196,11 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                     notification = {
                         ...notification,
                         description: t(
-                            "views:pendingApprovals.notifications.updatePendingApprovals.error.description",
+                            "views:components.approvals.notifications.updatePendingApprovals.error.description",
                             { description: error.response.data.detail }
                         ),
                         message: t(
-                            "views:pendingApprovals.notifications.updatePendingApprovals.error.message"
+                            "views:components.approvals.notifications.updatePendingApprovals.error.message"
                         ),
                     };
                 }
@@ -260,10 +260,10 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
             .catch((error) => {
                 let notification = {
                     description: t(
-                        "views:pendingApprovals.notifications.fetchApprovalDetails.genericError.description"
+                        "views:components.approvals.notifications.fetchApprovalDetails.genericError.description"
                     ),
                     message: t(
-                        "views:pendingApprovals.notifications.fetchApprovalDetails.genericError.message"
+                        "views:components.approvals.notifications.fetchApprovalDetails.genericError.message"
                     ),
                     otherProps: {
                         negative: true
@@ -274,11 +274,11 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                     notification = {
                         ...notification,
                         description: t(
-                            "views:pendingApprovals.notifications.fetchApprovalDetails.error.description",
+                            "views:components.approvals.notifications.fetchApprovalDetails.error.description",
                             { description: error.response.data.detail }
                         ),
                         message: t(
-                            "views:pendingApprovals.notifications.fetchApprovalDetails.error.message"
+                            "views:components.approvals.notifications.fetchApprovalDetails.error.message"
                         ),
                     };
                 }
@@ -386,8 +386,8 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
 
     return (
         <SettingsSection
-            description={ t("views:pendingApprovals:subTitle") }
-            header={ t("views:pendingApprovals:title") }
+            description={ t("views:sections.approvals:description") }
+            header={ t("views:sections.approvals.heading") }
             primaryAction={
                 (
                     approvals
@@ -401,7 +401,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
             placeholder={
                 !(approvals && (approvals.length > 0))
                     ? t(
-                    "views:pendingApprovals.placeholders.emptyApprovalList.heading",
+                    "views:sections.approvals.placeholders.emptyApprovalList.heading",
                     { status: filterStatus !== ApprovalStatus.ALL ? filterStatus.toLocaleLowerCase() : "" }
                     )
                     : null

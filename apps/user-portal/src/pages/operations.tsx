@@ -48,8 +48,8 @@ export const OperationsPage = (): JSX.Element => {
 
     return (
         <InnerPageLayout
-            pageTitle={ t("views:operationsPage.title") }
-            pageDescription={ t("views:operationsPage.subTitle") }>
+            pageTitle={ t("views:pages.operations.title") }
+            pageDescription={ t("views:pages.operations.subTitle") }>
             <Divider hidden/>
             {
                 notification && notification.visible
