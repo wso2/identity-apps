@@ -30,7 +30,6 @@
         "@babel/polyfill": "^7.0.0",
         "@babel/preset-env": "^7.5.5",
         "@types/crypto-js": "^3.1.43",
-        "axios": "^0.18.0",
         "babel-loader": "^8.0.4",
         "rimraf": "^3.0.0",
         "tslint": "^5.18.0",
@@ -38,6 +37,7 @@
         "watch": "^1.0.2"
     },
     "dependencies": {
-        "@wso2is/authenticate": "^0.1.0"
+        "@wso2is/authenticate": "^0.1.0",
+        "axios": "^0.19.0"
     }
 }
