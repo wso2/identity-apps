@@ -17,12 +17,12 @@
  *
  */
 
-export interface HttpClientStatic {
-    getInstance();
+export interface HttpClientStatic<S> {
+    getInstance(): S;
 }
 
-export interface HttpClient {
-    requestHandler(request);
-    successHandler(response);
-    errorHandler(error);
+export interface HttpClient<T, U, V> {
+    requestHandler(request: T): T;
+    successHandler(response: U): U;
+    errorHandler(error: V): V;
 }
