@@ -35,7 +35,7 @@ export const getMetaData = (): Promise<any> => {
             "Content-Type": "application/x-www-form-urlencoded"
         };
 
-        return axios.get(ServiceResourcesEndpoint.fidoMetaData, {params: {username: user}, headers: header})
+        return axios.get(ServiceResourcesEndpoint.fidoMetaData, { params: { username: user }, headers: header })
             .then((response) => {
                 if (response.status !== 200) {
                     return Promise.reject(new Error("Failed get meta info from: "
@@ -63,7 +63,7 @@ export const deleteDevice = (credentialId): Promise<any> => {
             "Content-Type": "application/x-www-form-urlencoded"
         };
 
-        return axios.delete(ServiceResourcesEndpoint.fidoMetaData + "/" + credentialId, {headers: header})
+        return axios.delete(ServiceResourcesEndpoint.fidoMetaData + "/" + credentialId, { headers: header })
             .then((response) => {
                 if (response.status !== 200) {
                     return Promise.reject(new Error("Failed device deletion."));
@@ -91,7 +91,7 @@ export const startFidoFlow = (): Promise<any> => {
         };
 
         return axios.get(ServiceResourcesEndpoint.fidoStart,
-            {params: {appId: window.location.origin}, headers: header})
+            { params: { appId: window.location.origin }, headers: header })
             .then((response) => {
                 if (response.status !== 200) {
                     return Promise.reject(new Error("Failed to start registration flow at: "
@@ -122,7 +122,7 @@ export const endFidoFlow = (clientResponse): Promise<any> => {
             "Content-Type": "application/json"
         };
 
-        return axios.post(ServiceResourcesEndpoint.fidoEnd, clientResponse, {headers: header})
+        return axios.post(ServiceResourcesEndpoint.fidoEnd, clientResponse, { headers: header })
             .then((response) => {
                 if (response.status !== 200) {
                     return Promise.reject(new Error("Failed to end registration flow at: "
@@ -227,7 +227,7 @@ const connectToDevice = (requestId, credentialCreationOptions) => {
  */
 const decodePublicKeyCredentialCreationOptions = (request) => {
     const excludeCredentials = request.excludeCredentials.map((credential) => {
-        return { ...credential, id: Decode(credential.id)};
+        return { ...credential, id: Decode(credential.id) };
     });
 
     return {

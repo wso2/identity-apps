@@ -45,7 +45,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
     const { t } = useTranslation();
     const { onNotificationFired } = props;
 
-    const handleUpdate = (emailParam: string) => {
+    const handleUpdate = (emailAddress: string) => {
         const data = {
             Operations: [
                 {
@@ -57,18 +57,18 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
         };
 
         data.Operations[0].value = {
-            emails: [emailParam]
+            emails: [emailAddress]
         };
 
-        updateProfileInfo(data).then((response) => {
-            if (response.status === 200) {
+        updateProfileInfo(data)
+            .then((response) => {
                 onNotificationFired({
                     description: t(
-                        "views:components.accountRecovery.emailRecovery.updateEmail.notifications" +
-                            ".success.description"
+                        "views:components.accountRecovery.emailRecovery.notifications.updateEmail" +
+                        ".success.description"
                     ),
                     message: t(
-                        "views:components.accountRecovery.emailRecovery.updateEmail.notifications.success.message"
+                        "views:components.accountRecovery.emailRecovery.notifications.updateEmail.success.message"
                     ),
                     otherProps: {
                         positive: true
@@ -79,34 +79,49 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                     setEmailAddress(res);
                 });
                 setIsEdit(false);
-            } else {
+            })
+            .catch((error) => {
                 onNotificationFired({
-                    description: t(
-                        "views:components.accountRecovery.emailRecovery.updateEmail.notifications.error.description"
-                    ),
-                    message: t(
-                        "views:components.accountRecovery.emailRecovery.updateEmail.notifications.error.message"
-                    ),
+                    description: error && error.data && error.data.details
+                        ? t(
+                            "views:components.accountRecovery.emailRecovery." +
+                            "notifications.updateEmail.error.description",
+                            {
+                                description: error.data.details
+                            }
+                        )
+                        : t(
+                            "views:components.accountRecovery.emailRecovery." +
+                            "notifications.updateEmail.genericError.description"
+                        ),
+                    message: error && error.data && error.data.details
+                        ? t(
+                            "views:components.accountRecovery.emailRecovery." +
+                            "notifications.updateEmail.error.message"
+                        )
+                        : t(
+                            "views:components.accountRecovery.emailRecovery." +
+                            "notifications.updateEmail.genericError.message"
+                        ),
                     otherProps: {
                         negative: true
                     },
                     visible: true
                 });
-            }
-        });
+            });
     };
 
     /**
      * This function gets the email address from the response passed as the argument
      * and assigns it to email and editedEmail.
      * @param response
+     * @remark Temporarily the first element in the emails array is shown.
+     * In the future, we need to decide whether or not to allow multiple recovery emails
      */
     const setEmailAddress = (response) => {
         let emailAddress = "";
         if (response.emails) {
-            response.emails.map((emailParam) => {
-                emailAddress = emailParam;
-            });
+            emailAddress = response.emails[0];
         }
         setEmail(emailAddress);
         setEditedEmail(emailAddress);
@@ -133,10 +148,10 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
      * The text between the second character of the email and the @ sign is masked.
      * @param {string} email
      */
-    const maskEmail = (emailParam: string) => {
+    const maskEmail = (emailAddress: string) => {
         let mask = "";
-        const indexOfAt = emailParam.indexOf("@");
-        const textToBeMasked = emailParam.slice(2, indexOfAt);
+        const indexOfAt = emailAddress.indexOf("@");
+        const textToBeMasked = emailAddress.slice(2, indexOfAt);
 
         for (const i of textToBeMasked) {
             mask += "*";
@@ -154,52 +169,54 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
     const showEditView = () => {
         if (!isEdit) {
             return (
-                <Grid padded>
-                    <Grid.Row columns={2}>
-                        <Grid.Column width={11} className="first-column">
+                <Grid padded={ true }>
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column width={ 11 } className="first-column">
                             <List.Content floated="left">
                                 <ThemeIcon
-                                    icon={AccountRecoveryIcons.email}
+                                    icon={ AccountRecoveryIcons.email }
                                     size="mini"
-                                    twoTone
-                                    transparent
-                                    square
-                                    rounded
-                                    relaxed
+                                    twoTone={ true }
+                                    transparent={ true }
+                                    square={ true }
+                                    rounded={ true }
+                                    relaxed={ true }
                                 />
                             </List.Content>
                             <List.Content>
-                                <List.Header>{t("views:components.accountRecovery.emailRecovery.heading")}</List.Header>
+                                <List.Header>{
+                                    t("views:components.accountRecovery.emailRecovery.heading")
+                                }</List.Header>
                                 <List.Description>
-                                    {email || email !== ""
+                                    { email || email !== ""
                                         ? t("views:components.accountRecovery.emailRecovery.descriptions.update", {
-                                              email: maskEmail(email)
-                                          })
-                                        : t("views:components.accountRecovery.emailRecovery.descriptions.add")}
+                                            email: maskEmail(email)
+                                        })
+                                        : t("views:components.accountRecovery.emailRecovery.descriptions.add") }
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
-                        <Grid.Column width={5} className="last-column">
+                        <Grid.Column width={ 5 } className="last-column">
                             <List.Content floated="right">
-                                {email || email !== "" ? (
+                                { email || email !== "" ? (
                                     <Icon
-                                        link
-                                        onClick={handleEdit}
+                                        link={ true }
+                                        onClick={ handleEdit }
                                         className="list-icon"
                                         size="small"
                                         color="grey"
                                         name="pencil alternate"
                                     />
                                 ) : (
-                                    <Icon
-                                        link
-                                        onClick={handleEdit}
-                                        className="list-icon"
-                                        size="small"
-                                        color="grey"
-                                        name="plus"
-                                    />
-                                )}
+                                        <Icon
+                                            link={ true }
+                                            onClick={ handleEdit }
+                                            className="list-icon"
+                                            size="small"
+                                            color="grey"
+                                            name="plus"
+                                        />
+                                    ) }
                             </List.Content>
                         </Grid.Column>
                     </Grid.Row>
@@ -215,21 +232,21 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                 <List.Item>
                                     <List.Content>
                                         <FormWrapper
-                                            formFields={[
+                                            formFields={ [
                                                 {
                                                     label: t(
                                                         "views:components.accountRecovery.emailRecovery.forms" +
-                                                            ".emailResetForm.inputs.email.label"
+                                                        ".emailResetForm.inputs.email.label"
                                                     ),
                                                     name: "email",
                                                     placeholder: t(
                                                         "views:components.accountRecovery.emailRecovery.forms" +
-                                                            ".emailResetForm.inputs.email.placeholder"
+                                                        ".emailResetForm.inputs.email.placeholder"
                                                     ),
                                                     required: true,
                                                     requiredErrorMessage: t(
                                                         "views:components.accountRecovery.emailRecovery.forms" +
-                                                            ".emailResetForm.inputs.email.validations.empty"
+                                                        ".emailResetForm.inputs.email.validations.empty"
                                                     ),
                                                     type: "text",
                                                     validation: (value: string, validation: Validation) => {
@@ -265,11 +282,11 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                                     type: "button",
                                                     value: t("common:cancel").toString()
                                                 }
-                                            ]}
-                                            onSubmit={(values) => {
+                                            ] }
+                                            onSubmit={ (values) => {
                                                 handleUpdate(values.get("email").toString());
-                                            }}
-                                            groups={[{ startIndex: 2, endIndex: 4, style: "inline" }]}
+                                            } }
+                                            groups={ [{ startIndex: 2, endIndex: 4, style: "inline" }] }
                                         />
                                     </List.Content>
                                 </List.Item>

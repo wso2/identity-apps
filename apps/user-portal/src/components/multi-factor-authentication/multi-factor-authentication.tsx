@@ -35,16 +35,13 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
     const { onNotificationFired } = props;
 
     return (
-        <SettingsSection
-            description={t("views:sections.mfa.description")}
-            header={t("views:sections.mfa.heading")}
-        >
-            <List divided verticalAlign="middle" className="main-content-inner">
+        <SettingsSection description={ t("views:sections.mfa.description") } header={ t("views:sections.mfa.heading") }>
+            <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">
-                    <SMSOTPAuthenticator onNotificationFired={onNotificationFired} />
+                    <SMSOTPAuthenticator onNotificationFired={ onNotificationFired } />
                 </List.Item>
                 <List.Item className="inner-list-item">
-                    <FIDOAuthenticator onNotificationFired={onNotificationFired} />
+                    <FIDOAuthenticator onNotificationFired={ onNotificationFired } />
                 </List.Item>
             </List>
         </SettingsSection>

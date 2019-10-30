@@ -28,7 +28,6 @@ import {
     Notification,
     QuestionSetsInterface,
     QuestionsInterface,
-    Views
 } from "../../../models";
 import { EditSection, FormWrapper, ThemeIcon } from "../../shared";
 
@@ -140,66 +139,94 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
 
         if (challenges.answers && challenges.answers.length > 0 && isEdit !== -1) {
             updateSecurityQs(data).then((response) => {
-                if (response.status === 200) {
-                    getSecurityQs().then((res) => {
-                        setSecurityDetails(res);
-                    });
-                    setIsEdit(-1);
+                getSecurityQs().then((res) => {
+                    setSecurityDetails(res);
+                });
+                setIsEdit(-1);
 
+                onNotificationFired({
+                    description: t(
+                        "views:components.questionRecovery.notifications.updateQuestions.success.description"
+                    ),
+                    message: t("views:components.questionRecovery.notifications.updateQuestions.success.message"),
+                    otherProps: {
+                        positive: true
+                    },
+                    visible: true
+                });
+
+            })
+                .catch((error) => {
                     onNotificationFired({
-                        description: t(
-                            "views:components.questionRecovery.notifications.updateQuestions.success.description"
-                        ),
-                        message: t("views:components.questionRecovery.notifications.updateQuestions.success.message"),
-                        otherProps: {
-                            positive: true
-                        },
-                        visible: true
-                    });
-                } else {
-                    onNotificationFired({
-                        description: t(
-                            "views:components.questionRecovery.notifications.updateQuestions.error.description"
-                        ),
-                        message: t("views:components.questionRecovery.notifications.updateQuestions.error.message"),
+                        description: error && error.data && error.data.details
+                            ? t(
+                                "views:components.questionRecovery.notifications.updateQuestions.error.description",
+                                {
+                                    description: error.data.details
+                                }
+                            )
+                            : t(
+                                "views:components.questionRecovery.notifications.updateQuestions." +
+                                "genericError.description"
+                            ),
+                        message: error && error.data && error.data.details
+                            ? t(
+                                "views:components.questionRecovery.notifications.updateQuestions.error.message"
+                            )
+                            : t(
+                                "views:components.questionRecovery.notifications.updateQuestions." +
+                                "genericError.message"
+                            ),
                         otherProps: {
                             negative: true
                         },
                         visible: true
                     });
-                }
-            });
+                });
         } else {
             addSecurityQs(data).then((status) => {
-                if (status === 201) {
-                    getSecurityQs().then((response) => {
-                        setSecurityDetails(response);
-                    });
+                getSecurityQs().then((response) => {
+                    setSecurityDetails(response);
+                });
 
-                    setIsEdit(-1);
+                setIsEdit(-1);
 
-                    onNotificationFired({
-                        description: t(
-                            "views:components.questionRecovery.notifications.addQuestions.success.description"
+                onNotificationFired({
+                    description: t(
+                        "views:components.questionRecovery.notifications.addQuestions.success.description"
+                    ),
+                    message: t("views:components.questionRecovery.notifications.addQuestions.success.message"),
+                    otherProps: {
+                        positive: true
+                    },
+                    visible: true
+                });
+
+            })
+            .catch((error) => {
+                onNotificationFired({
+                    description: error && error.data && error.data.details
+                        ? t(
+                            "views:components.questionRecovery.notifications.addQuestions.error.description",
+                            {
+                                description: error.data.details
+                            }
+                        )
+                        : t(
+                            "views:components.questionRecovery.notifications.addQuestions.genericError.description"
                         ),
-                        message: t("views:components.questionRecovery.notifications.addQuestions.success.message"),
-                        otherProps: {
-                            positive: true
-                        },
-                        visible: true
-                    });
-                } else {
-                    onNotificationFired({
-                        description: t(
-                            "views:components.questionRecovery.notifications.addQuestions.error.description"
+                    message: error && error.data && error.data.details
+                        ? t(
+                            "views:components.questionRecovery.notifications.addQuestions.error.message"
+                        )
+                        : t(
+                            "views:components.questionRecovery.notifications.addQuestions.genericError.message"
                         ),
-                        message: t("views:components.questionRecovery.notifications.addQuestions.error.message"),
-                        otherProps: {
-                            negative: true
-                        },
-                        visible: true
-                    });
-                }
+                    otherProps: {
+                        negative: true
+                    },
+                    visible: true
+                });
             });
         }
     };
@@ -259,13 +286,9 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
      * @return {ChallengesQuestionsInterface} question
      */
     const findChosenQuestionFromChallengeQuestions = (questionSetId: string) => {
-        const question: ChallengesQuestionsInterface = challengeQuestions.find(
-            (questionParam: ChallengesQuestionsInterface) => {
-                return questionParam.questionSetId === questionSetId;
-            }
-        );
-
-        return question;
+        return challengeQuestions.find((questionParam: ChallengesQuestionsInterface) => {
+            return questionParam.questionSetId === questionSetId;
+        });
     };
 
     /**
@@ -286,18 +309,18 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                         }),
                         label: t(
                             "views:components.accountRecovery.questionRecovery.forms.securityQuestionsForm" +
-                                ".inputs.question.label"
+                            ".inputs.question.label"
                         ),
                         name: "question " + questionSet.questionSetId,
                         placeholder: t(
                             "views:components.accountRecovery.questionRecovery.forms.securityQuestionsForm.inputs" +
-                                ".question.placeholder"
+                            ".question.placeholder"
                         ),
                         required: true,
                         requiredErrorMessage: t(
                             "views:components.accountRecovery.questionRecovery.forms" +
-                                ".securityQuestionsForm" +
-                                ".inputs.question.validations.empty"
+                            ".securityQuestionsForm" +
+                            ".inputs.question.validations.empty"
                         ),
                         type: "dropdown",
                         value: findChosenQuestionFromChallengeQuestions(questionSet.questionSetId).challengeQuestion
@@ -306,17 +329,17 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                     {
                         label: t(
                             "views:components.accountRecovery.questionRecovery.forms.securityQuestionsForm." +
-                                "inputs.answer.label"
+                            "inputs.answer.label"
                         ),
                         name: "answer " + questionSet.questionSetId,
                         placeholder: t(
                             "views:components.accountRecovery.questionRecovery.forms." +
-                                "securityQuestionsForm.inputs.answer.placeholder"
+                            "securityQuestionsForm.inputs.answer.placeholder"
                         ),
                         required: true,
                         requiredErrorMessage: t(
                             "views:components.accountRecovery.questionRecovery.forms." +
-                                "securityQuestionsForm.inputs.answer.validations.empty"
+                            "securityQuestionsForm.inputs.answer.validations.empty"
                         ),
                         type: "text"
                     }
@@ -347,68 +370,68 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     const listItems = () => {
         if (challenges.questions && challenges.questions.length > 0 && isEdit === -1) {
             return (
-                <Grid padded>
-                    <Grid.Row columns={2}>
-                        <Grid.Column width={11} className="first-column">
+                <Grid padded={ true }>
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column width={ 11 } className="first-column">
                             <List.Content floated="left">
                                 <ThemeIcon
-                                    icon={AccountRecoveryIcons.securityQuestions}
+                                    icon={ AccountRecoveryIcons.securityQuestions }
                                     size="mini"
-                                    twoTone
-                                    transparent
-                                    square
-                                    rounded
-                                    relaxed
+                                    twoTone={ true }
+                                    transparent={ true }
+                                    square={ true }
+                                    rounded={ true }
+                                    relaxed={ true }
                                 />
                             </List.Content>
                             <List.Content>
                                 <List.Header>
-                                    {t("views:components.accountRecovery.questionRecovery.heading")}
+                                    { t("views:components.accountRecovery.questionRecovery.heading") }
                                 </List.Header>
                                 <List.Description>
-                                    {t("views:components.accountRecovery.questionRecovery.descriptions.add")}
+                                    { t("views:components.accountRecovery.questionRecovery.descriptions.add") }
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
-                        <Grid.Column width={5} className="last-column">
+                        <Grid.Column width={ 5 } className="last-column">
                             <List.Content floated="right">
-                                {challenges && challenges.answers.length > 0 ? null : (
+                                { challenges && challenges.answers.length > 0 ? null : (
                                     <Icon
-                                        link
-                                        onClick={() => {
+                                        link={ true }
+                                        onClick={ () => {
                                             handleEdit(0, 0);
-                                        }}
+                                        } }
                                         className="list-icon"
                                         size="small"
                                         color="grey"
                                         name="plus"
                                     />
-                                )}
+                                ) }
                             </List.Content>
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row style={{ paddingTop: 0 }}>
+                    <Grid.Row style={ { paddingTop: 0 } }>
                         <List
-                            divided
+                            divided={ true }
                             verticalAlign="middle"
-                            style={{ paddingTop: 0, width: "100%" }}
+                            style={ { paddingTop: 0, width: "100%" } }
                             className="main-content-inner"
                         >
-                            {challenges.answers.map((answer, index) => {
+                            { challenges.answers.map((answer, index) => {
                                 return (
-                                    <List.Item key={index} className="inner-list-item">
-                                        <Grid padded>
-                                            <Grid.Row columns={2} className="first-column">
-                                                <Grid.Column width={11} className="first-column">
-                                                    <List.Header>{answer.question}</List.Header>
+                                    <List.Item key={ index } className="inner-list-item">
+                                        <Grid padded={ true }>
+                                            <Grid.Row columns={ 2 } className="first-column">
+                                                <Grid.Column width={ 11 } className="first-column">
+                                                    <List.Header>{ answer.question }</List.Header>
                                                 </Grid.Column>
-                                                <Grid.Column width={5} className="last-column">
+                                                <Grid.Column width={ 5 } className="last-column">
                                                     <List.Content floated="right">
                                                         <Icon
-                                                            link
-                                                            onClick={() => {
+                                                            link={ true }
+                                                            onClick={ () => {
                                                                 handleEdit(answer.questionSetId, index);
-                                                            }}
+                                                            } }
                                                             className="list-icon"
                                                             size="small"
                                                             color="grey"
@@ -420,7 +443,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                         </Grid>
                                     </List.Item>
                                 );
-                            })}
+                            }) }
                         </List>
                     </Grid.Row>
                 </Grid>
@@ -433,23 +456,23 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                 return (
                     <EditSection>
                         <Grid>
-                            <Grid.Row columns={2}>
-                                <Grid.Column width={4}>
-                                    {t("common:challengeQuestionNumber", { number: questionIndex + 1 })}
+                            <Grid.Row columns={ 2 }>
+                                <Grid.Column width={ 4 }>
+                                    { t("common:challengeQuestionNumber", { number: questionIndex + 1 }) }
                                 </Grid.Column>
-                                <Grid.Column width={12}>
+                                <Grid.Column width={ 12 }>
                                     <FormWrapper
-                                        formFields={generateFormFields()}
-                                        groups={[
+                                        formFields={ generateFormFields() }
+                                        groups={ [
                                             {
                                                 endIndex,
                                                 startIndex,
                                                 style: "inline"
                                             }
-                                        ]}
-                                        onSubmit={(values) => {
+                                        ] }
+                                        onSubmit={ (values) => {
                                             handleSave(values);
-                                        }}
+                                        } }
                                     />
                                 </Grid.Column>
                             </Grid.Row>
@@ -460,5 +483,5 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
         }
     };
 
-    return <>{listItems()}</>;
+    return <>{ listItems() }</>;
 };

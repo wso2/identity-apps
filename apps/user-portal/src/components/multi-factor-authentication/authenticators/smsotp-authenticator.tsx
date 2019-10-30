@@ -26,7 +26,7 @@ import { Notification, Validation } from "../../../models";
 import { EditSection, FormWrapper, ThemeIcon } from "../../shared";
 
 /**
- * Proptypes for the SMS OTP component.
+ * Prop types for the SMS OTP component.
  */
 interface SMSOTPProps {
     onNotificationFired: (notification: Notification) => void;
@@ -64,35 +64,43 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
         };
 
         updateProfileInfo(data).then((response) => {
-            if (response.status === 200) {
-                onNotificationFired({
-                    description: t("views:components.mfa.smsOtp.notifications.updateMobile.success.description"),
-                    message: t("views:components.mfa.smsOtp.notifications.updateMobile.success.message"),
-                    otherProps: {
-                        positive: true
-                    },
-                    visible: true
-                });
-                getProfileInfo().then((res) => {
-                    setMobileNo(res);
-                });
-                setIsEdit(false);
-            } else {
-                onNotificationFired({
-                    description: t("views:components.mfa.smsOtp.notifications.updateMobile.error.description"),
-                    message: t("views:components.mfa.smsOtp.notifications.updateMobile.error.message"),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                });
-            }
+            onNotificationFired({
+                description: t("views:components.mfa.smsOtp.notifications.updateMobile.success.description"),
+                message: t("views:components.mfa.smsOtp.notifications.updateMobile.success.message"),
+                otherProps: {
+                    positive: true
+                },
+                visible: true
+            });
+            getProfileInfo().then((res) => {
+                setMobileNo(res);
+            });
+            setIsEdit(false);
+
+        })
+        .catch((error) => {
+            onNotificationFired({
+                description: error && error.data && error.data.details
+                    ? t("views:components.mfa.smsOtp.notifications.updateMobile.error.description",
+                        {
+                            description: error.data.details
+                        }
+                    )
+                    : t("views:components.mfa.smsOtp.notifications.updateMobile.genericError.description"),
+                message: error && error.data && error.data.details
+                    ? t("views:components.mfa.smsOtp.notifications.updateMobile.error.message")
+                    : t("views:components.mfa.smsOtp.notifications.updateMobile.genericError.message"),
+                otherProps: {
+                    negative: true
+                },
+                visible: true
+            });
         });
     };
 
-    const setMobileNo = (resp) => {
+    const setMobileNo = (response) => {
         let mobileNumber = "";
-        resp.phoneNumbers.map((mobileNo) => {
+        response.phoneNumbers.map((mobileNo) => {
             mobileNumber = mobileNo.value;
         });
         setMobile(mobileNumber);
@@ -109,24 +117,32 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
     const showEditView = () => {
         if (!isEdit) {
             return (
-                <Grid padded>
-                    <Grid.Row columns={2}>
-                        <Grid.Column width={11} className="first-column">
+                <Grid padded={ true }>
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column width={ 11 } className="first-column">
                             <List.Content floated="left">
-                                <ThemeIcon icon={MFAIcons.sms} size="mini" twoTone transparent square rounded relaxed />
+                                <ThemeIcon
+                                    icon={ MFAIcons.sms }
+                                    size="mini"
+                                    twoTone={ true }
+                                    transparent={ true }
+                                    square={ true }
+                                    rounded={ true }
+                                    relaxed={ true }
+                                />
                             </List.Content>
                             <List.Content>
-                                <List.Header>{t("views:components.mfa.smsOtp.heading")}</List.Header>
+                                <List.Header>{ t("views:components.mfa.smsOtp.heading") }</List.Header>
                                 <List.Description>
-                                    {t("views:components.mfa.smsOtp.descriptions.hint")}
+                                    { t("views:components.mfa.smsOtp.descriptions.hint") }
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
-                        <Grid.Column width={5} className="last-column">
+                        <Grid.Column width={ 5 } className="last-column">
                             <List.Content floated="right">
                                 <Icon
-                                    link
-                                    onClick={handleEdit}
+                                    link={ true }
+                                    onClick={ handleEdit }
                                     className="list-icon"
                                     size="small"
                                     color="grey"
@@ -147,21 +163,21 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                 <List.Item>
                                     <List.Content>
                                         <FormWrapper
-                                            formFields={[
+                                            formFields={ [
                                                 {
                                                     label: t(
                                                         "views:components.profile.forms.mobileChangeForm.inputs" +
-                                                            ".mobile.label"
+                                                        ".mobile.label"
                                                     ),
                                                     name: "mobileNumber",
                                                     placeholder: t(
                                                         "views:components.profile.forms.mobileChangeForm" +
-                                                            ".inputs.mobile.placeholder"
+                                                        ".inputs.mobile.placeholder"
                                                     ),
                                                     required: true,
                                                     requiredErrorMessage: t(
                                                         "views:components.profile.forms." +
-                                                            "mobileChangeForm.inputs.mobile.validations.empty"
+                                                        "mobileChangeForm.inputs.mobile.validations.empty"
                                                     ),
                                                     type: "text",
                                                     validation: (value: string, validation: Validation) => {
@@ -178,12 +194,12 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                                 },
                                                 {
                                                     element: (
-                                                        <p style={{ fontSize: "12px" }}>
+                                                        <p style={ { fontSize: "12px" } }>
                                                             <Icon color="grey" floated="left" name="info circle" />
-                                                            {t(
+                                                            { t(
                                                                 "views:components.profile.forms.mobileChangeForm" +
-                                                                    ".inputs.mobile.note"
-                                                            )}
+                                                                ".inputs.mobile.note"
+                                                            ) }
                                                         </p>
                                                     ),
                                                     type: "custom"
@@ -204,17 +220,17 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                                     type: "button",
                                                     value: t("common:cancel").toString()
                                                 }
-                                            ]}
-                                            groups={[
+                                            ] }
+                                            groups={ [
                                                 {
                                                     endIndex: 5,
                                                     startIndex: 3,
                                                     style: "inline"
                                                 }
-                                            ]}
-                                            onSubmit={(values: Map<string, string>) => {
+                                            ] }
+                                            onSubmit={ (values: Map<string, string>) => {
                                                 handleUpdate(values.get("mobileNumber"));
-                                            }}
+                                            } }
                                         />
                                     </List.Content>
                                 </List.Item>
@@ -234,5 +250,5 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
         }
     });
 
-    return <div>{showEditView()}</div>;
+    return <div>{ showEditView() }</div>;
 };
