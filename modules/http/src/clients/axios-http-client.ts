@@ -19,8 +19,11 @@
 
 import { AuthenticateSessionUtil } from "@wso2is/authenticate";
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import { staticDecorator } from "../helpers";
+import { HttpClient, HttpClientStatic } from "../models";
 
-export class AxiosHttpClient {
+@staticDecorator<HttpClientStatic<AxiosInstance>>()
+export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResponse, AxiosError> {
 
     private static axiosInstance: AxiosInstance;
     private static clientInstance: AxiosHttpClient;
