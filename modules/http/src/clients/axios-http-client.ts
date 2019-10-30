@@ -28,10 +28,10 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
     private static axiosInstance: AxiosInstance;
     private static clientInstance: AxiosHttpClient;
     private isHandlerEnabled: boolean;
-    private startCallback: () => void;
-    private successCallback: (response: AxiosResponse) => void;
-    private errorCallback: (error: AxiosError) => void;
-    private finishCallback: () => void;
+    private requestStartCallback: () => void;
+    private requestSuccessCallback: (response: AxiosResponse) => void;
+    private requestErrorCallback: (error: AxiosError) => void;
+    private requestFinishCallback: () => void;
 
     /**
      * Private constructor to avoid object instantiation.
@@ -65,15 +65,15 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
     }
 
     public requestHandler(request: AxiosRequestConfig): AxiosRequestConfig {
-        this.startCallback();
         if (this.isHandlerEnabled) {
+            this.requestStartCallback();
             return AuthenticateSessionUtil.getAccessToken()
                 .then((token) => {
                     request.headers.Authorization = `Bearer ${ token }`;
                     return request;
                 })
                 .catch((error) => {
-                    this.finishCallback();
+                    this.requestFinishCallback();
                     return Promise.reject(`Failed to retrieve the access token: ${error}`);
                 });
         }
@@ -82,38 +82,43 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
 
     public errorHandler(error: AxiosError): AxiosError {
         if (this.isHandlerEnabled) {
-            this.errorCallback(error);
-            this.finishCallback();
+            this.requestErrorCallback(error);
+            this.requestFinishCallback();
         }
         return error;
     }
 
     public successHandler(response: AxiosResponse): AxiosResponse {
         if (this.isHandlerEnabled) {
-            this.successCallback(response);
-            this.finishCallback();
+            this.requestSuccessCallback(response);
+            this.requestFinishCallback();
         }
         return response;
     }
 
-    public init(isHandlerEnabled, startCallback, successCallback, errorCallback, finishCallback): void {
+    public init(
+        isHandlerEnabled, requestStartCallback, requestSuccessCallback, requestErrorCallback, requestFinishCallback
+    ): void {
         this.isHandlerEnabled = isHandlerEnabled;
 
-        if (this.startCallback && this.successCallback && this.errorCallback && this.finishCallback) {
+        if (this.requestStartCallback
+            && this.requestSuccessCallback
+            && this.requestErrorCallback
+            && this.requestFinishCallback) {
             return;
         }
 
-        if (!this.startCallback) {
-            this.startCallback = startCallback;
+        if (!this.requestStartCallback) {
+            this.requestStartCallback = requestStartCallback;
         }
-        if (!this.successCallback) {
-            this.successCallback = successCallback;
+        if (!this.requestSuccessCallback) {
+            this.requestSuccessCallback = requestSuccessCallback;
         }
-        if (!this.errorCallback) {
-            this.errorCallback = errorCallback;
+        if (!this.requestErrorCallback) {
+            this.requestErrorCallback = requestErrorCallback;
         }
-        if (!this.finishCallback) {
-            this.finishCallback = finishCallback;
+        if (!this.requestFinishCallback) {
+            this.requestFinishCallback = requestFinishCallback;
         }
     }
 }
