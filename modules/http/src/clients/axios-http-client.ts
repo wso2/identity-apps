@@ -24,12 +24,17 @@ export class AxiosHttpClient {
 
     private static axiosInstance: AxiosInstance;
     private static clientInstance: AxiosHttpClient;
+    private startCallback: () => void;
+    private successCallback: (response: AxiosResponse) => void;
+    private errorCallback: (error: AxiosError) => void;
+    private finishCallback: () => void;
 
     /**
      * Private constructor to avoid object instantiation.
      */
     // tslint:disable-next-line:no-empty
-    private constructor() {}
+    private constructor() {
+    }
 
     public static getInstance(): AxiosInstance & any {
         if (!this.axiosInstance) {
@@ -55,21 +60,45 @@ export class AxiosHttpClient {
     }
 
     public requestHandler(request: AxiosRequestConfig): AxiosRequestConfig {
+        this.startCallback();
         return AuthenticateSessionUtil.getAccessToken()
             .then((token) => {
                 request.headers.Authorization = `Bearer ${ token }`;
                 return request;
             })
             .catch((error) => {
+                this.finishCallback();
                 return Promise.reject(`Failed to retrieve the access token: ${ error }`);
             });
     }
 
     public errorHandler(error: AxiosError): AxiosError {
+        this.errorCallback(error);
+        this.finishCallback();
         return error;
     }
 
     public successHandler(response: AxiosResponse): AxiosResponse {
+        this.successCallback(response);
+        this.finishCallback();
         return response;
+    }
+
+    public init(startCallback, successCallback, errorCallback, finishCallback): void {
+        if (this.startCallback && this.successCallback && this.errorCallback && this.finishCallback) {
+            return;
+        }
+        if (!this.startCallback) {
+            this.startCallback = startCallback;
+        }
+        if (!this.successCallback) {
+            this.successCallback = successCallback;
+        }
+        if (!this.errorCallback) {
+            this.errorCallback = errorCallback;
+        }
+        if (!this.finishCallback) {
+            this.finishCallback = finishCallback;
+        }
     }
 }
