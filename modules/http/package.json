@@ -18,7 +18,7 @@
     ],
     "scripts": {
         "build": "npm run clean && npm run compile",
-        "clean": "rm -rf ./dist",
+        "clean": "rimraf ./dist",
         "compile": "tsc -p tsconfig.json",
         "lint": "tslint -t stylish --project ."
     },
@@ -32,6 +32,7 @@
         "@types/crypto-js": "^3.1.43",
         "axios": "^0.18.0",
         "babel-loader": "^8.0.4",
+        "rimraf": "^3.0.0",
         "tslint": "^5.18.0",
         "typescript": "^3.5.3",
         "watch": "^1.0.2"
