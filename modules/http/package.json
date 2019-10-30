@@ -1,0 +1,42 @@
+{
+    "name": "@wso2is/http",
+    "version": "0.1.0",
+    "description": "HTTP module for WSO2 Identity Server web-apps.",
+    "keywords": [
+        "WSO2",
+        "WSO2-IS",
+        "WSO2-Identity-Server",
+        "http",
+        "http-client",
+        "axios-client",
+        "axios"
+    ],
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "npm run clean && npm run compile",
+        "clean": "rm -rf ./dist",
+        "compile": "tsc -p tsconfig.json",
+        "lint": "tslint -t stylish --project ."
+    },
+    "author": "WSO2",
+    "license": "Apache-2.0",
+    "devDependencies": {
+        "@babel/cli": "^7.5.5",
+        "@babel/core": "^7.5.5",
+        "@babel/polyfill": "^7.0.0",
+        "@babel/preset-env": "^7.5.5",
+        "@types/crypto-js": "^3.1.43",
+        "axios": "^0.18.0",
+        "babel-loader": "^8.0.4",
+        "tslint": "^5.18.0",
+        "typescript": "^3.5.3",
+        "watch": "^1.0.2"
+    },
+    "dependencies": {
+        "@wso2is/authenticate": "^0.1.0"
+    }
+}
