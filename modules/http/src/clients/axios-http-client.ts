@@ -17,11 +17,13 @@
  *
  */
 
-import axios, { AxiosInstance } from "axios";
+import { AuthenticateSessionUtil } from "@wso2is/authenticate";
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 export class AxiosHttpClient {
 
     private static axiosInstance: AxiosInstance;
+    private static clientInstance: AxiosHttpClient;
 
     /**
      * Private constructor to avoid object instantiation.
@@ -29,11 +31,45 @@ export class AxiosHttpClient {
     // tslint:disable-next-line:no-empty
     private constructor() {}
 
-    public static getInstance(): AxiosInstance {
+    public static getInstance(): AxiosInstance & any {
         if (!this.axiosInstance) {
             this.axiosInstance = axios.create();
         }
 
-        return this.axiosInstance;
+        if (!this.clientInstance) {
+            this.clientInstance = new AxiosHttpClient();
+        }
+
+        // Register request interceptor
+        this.axiosInstance.interceptors.request.use(
+            (request) => this.clientInstance.requestHandler(request)
+        );
+
+        // Register response interceptor
+        this.axiosInstance.interceptors.response.use(
+            (response) => this.clientInstance.successHandler(response),
+            (error) => this.clientInstance.errorHandler(error)
+        );
+
+        return { ...this.axiosInstance, ...this.clientInstance };
+    }
+
+    public requestHandler(request: AxiosRequestConfig): AxiosRequestConfig {
+        return AuthenticateSessionUtil.getAccessToken()
+            .then((token) => {
+                request.headers.Authorization = `Bearer ${ token }`;
+                return request;
+            })
+            .catch((error) => {
+                return Promise.reject(`Failed to retrieve the access token: ${ error }`);
+            });
+    }
+
+    public errorHandler(error: AxiosError): AxiosError {
+        return error;
+    }
+
+    public successHandler(response: AxiosResponse): AxiosResponse {
+        return response;
     }
 }
