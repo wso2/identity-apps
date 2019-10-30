@@ -37,6 +37,7 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
      */
     // tslint:disable-next-line:no-empty
     private constructor() {
+        this.init = this.init.bind(this);
     }
 
     public static getInstance(): AxiosInstance & any {
