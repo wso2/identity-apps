@@ -27,6 +27,7 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
 
     private static axiosInstance: AxiosInstance;
     private static clientInstance: AxiosHttpClient;
+    private isHandlerEnabled: boolean;
     private startCallback: () => void;
     private successCallback: (response: AxiosResponse) => void;
     private errorCallback: (error: AxiosError) => void;
@@ -65,33 +66,43 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
 
     public requestHandler(request: AxiosRequestConfig): AxiosRequestConfig {
         this.startCallback();
-        return AuthenticateSessionUtil.getAccessToken()
-            .then((token) => {
-                request.headers.Authorization = `Bearer ${ token }`;
-                return request;
-            })
-            .catch((error) => {
-                this.finishCallback();
-                return Promise.reject(`Failed to retrieve the access token: ${ error }`);
-            });
+        if (this.isHandlerEnabled) {
+            return AuthenticateSessionUtil.getAccessToken()
+                .then((token) => {
+                    request.headers.Authorization = `Bearer ${ token }`;
+                    return request;
+                })
+                .catch((error) => {
+                    this.finishCallback();
+                    return Promise.reject(`Failed to retrieve the access token: ${error}`);
+                });
+        }
+        return request;
     }
 
     public errorHandler(error: AxiosError): AxiosError {
-        this.errorCallback(error);
-        this.finishCallback();
+        if (this.isHandlerEnabled) {
+            this.errorCallback(error);
+            this.finishCallback();
+        }
         return error;
     }
 
     public successHandler(response: AxiosResponse): AxiosResponse {
-        this.successCallback(response);
-        this.finishCallback();
+        if (this.isHandlerEnabled) {
+            this.successCallback(response);
+            this.finishCallback();
+        }
         return response;
     }
 
-    public init(startCallback, successCallback, errorCallback, finishCallback): void {
+    public init(isHandlerEnabled, startCallback, successCallback, errorCallback, finishCallback): void {
+        this.isHandlerEnabled = isHandlerEnabled;
+
         if (this.startCallback && this.successCallback && this.errorCallback && this.finishCallback) {
             return;
         }
+
         if (!this.startCallback) {
             this.startCallback = startCallback;
         }
