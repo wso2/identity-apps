@@ -10,7 +10,7 @@
         "lint": "tslint -t stylish --project .",
         "build-prod": "webpack --env.NODE_ENV=prod",
         "build": "webpack --env.NODE_ENV=prod --mode development",
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "jest",
         "clean": "rm -rf node_modules build npm"
     },
     "devDependencies": {
@@ -21,6 +21,7 @@
         "@testing-library/react": "^9.3.1",
         "@types/crypto-js": "^3.1.43",
         "@types/i18next": "8.4.3",
+        "@types/jest": "^24.0.21",
         "@types/react": "^16.9.0",
         "@types/react-dom": "^16.8.5",
         "@types/react-redux": "^7.1.1",
