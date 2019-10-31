@@ -69,7 +69,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     }, [challenges]);
 
     /**
-     * The following method initialises an array in the state with all the
+     * The following method initializes an array in the state with all the
      * question set ids of the questions fetched from the api.
      */
     const initModel = () => {

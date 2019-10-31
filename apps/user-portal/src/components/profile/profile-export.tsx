@@ -24,7 +24,7 @@ import { Notification } from "../../models";
 import { SettingsSection } from "../shared";
 
 /**
- * Proptypes for the profile export component.
+ * Prop types for the profile export component.
  */
 interface ProfileExportProps {
     onNotificationFired: (notification: Notification) => void;
@@ -48,9 +48,9 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
     const downloadUserProfile = (): void => {
         getUserInfo()
             .then((response) => {
-                if (response.status === 200) {
+                if (response.data) {
                     const blob = new Blob(
-                        [ JSON.stringify(response.data, null, 2) ],
+                        [JSON.stringify(response.data, null, 2)],
                         { type: "application/json" }
                     );
                     const url = window.URL.createObjectURL(blob);
@@ -78,10 +78,10 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
                 } else {
                     onNotificationFired({
                         description: t(
-                            "views:components.profileExport.notifications.downloadProfileInfo.error.description"
+                            "views:components.profileExport.notifications.downloadProfileInfo.genericError.description"
                         ),
                         message: t(
-                            "views:components.profileExport.notifications.downloadProfileInfo.error.message"
+                            "views:components.profileExport.notifications.downloadProfileInfo.genericError.message"
                         ),
                         otherProps: {
                             negative: true
@@ -89,6 +89,31 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
                         visible: true
                     });
                 }
+            })
+            .catch((error) => {
+                onNotificationFired({
+                    description: error && error.data && error.data.details
+                        ? t(
+                            "views:components.profileExport.notifications.downloadProfileInfo.error.description",
+                            {
+                                description: error.data.details
+                            }
+                        )
+                        : t(
+                            "views:components.profileExport.notifications.downloadProfileInfo.genericError.description"
+                        ),
+                    message: error && error.data && error.data.details
+                        ? t(
+                            "views:components.profileExport.notifications.downloadProfileInfo.error.message"
+                        )
+                        : t(
+                            "views:components.profileExport.notifications.downloadProfileInfo.genericError.message"
+                        ),
+                    otherProps: {
+                        negative: true
+                    },
+                    visible: true
+                });
             });
     };
 
@@ -105,7 +130,6 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
             onPrimaryActionClick={ downloadUserProfile }
             primaryAction={ t("views:sections.profileExport.actionTitles.export") }
             primaryActionIcon="cloud download"
-        >
-        </SettingsSection>
+        />
     );
 };

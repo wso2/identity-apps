@@ -40,15 +40,21 @@ export const App = (): JSX.Element => {
                 <I18nextProvider i18n={ i18n }>
                     <Provider store={ store }>
                         <Switch>
-                            <Redirect exact path="/" to={ APP_LOGIN_PATH }/>
-                            <Route path={ APP_LOGIN_PATH } render={ () => {
-                                signIn();
-                                return null;
-                            } }/>
-                            <Route path="/logout" render={ () => {
-                                signOut();
-                                return null;
-                            } }/>
+                            <Redirect exact={ true } path="/" to={ APP_LOGIN_PATH } />
+                            <Route
+                                path={ APP_LOGIN_PATH }
+                                render={ () => {
+                                    signIn();
+                                    return null;
+                                } }
+                            />
+                            <Route
+                                path="/logout"
+                                render={ () => {
+                                    signOut();
+                                    return null;
+                                } }
+                            />
                             {
                                 routes.map((route, index) => {
                                     return (

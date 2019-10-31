@@ -94,10 +94,10 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
                     inputField.value && !isReset
                         ? tempForm.set(inputField.name, inputField.value)
                         : (isRadioField(inputField) || isDropdownField(inputField)) && inputField.default
-                        ? tempForm.set(inputField.name, inputField.default)
-                        : isCheckBoxField(inputField)
-                        ? tempForm.set(inputField.name, [])
-                        : tempForm.set(inputField.name, "");
+                            ? tempForm.set(inputField.name, inputField.default)
+                            : isCheckBoxField(inputField)
+                                ? tempForm.set(inputField.name, [])
+                                : tempForm.set(inputField.name, "");
                 }
 
                 ((!inputField.value && !tempForm.get(inputField.name)) || isReset) && inputField.required
@@ -406,172 +406,177 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
             if (inputField.type === "password") {
                 return (
                     <Password
-                        label={inputField.label}
-                        width={inputField.width}
+                        label={ inputField.label }
+                        width={ inputField.width }
                         error={
                             isError
                                 ? {
-                                      content: errorMessages.map((errorMessage, index) => {
-                                          return <p key={index}>{errorMessage}</p>;
-                                      })
-                                  }
+                                    content: errorMessages.map((errorMessage, index) => {
+                                        return <p key={ index }>{ errorMessage }</p>;
+                                    })
+                                }
                                 : false
                         }
-                        type={inputField.type}
-                        placeholder={inputField.placeholder}
-                        name={inputField.name}
-                        value={(form.get(inputField.name) as string) || ""}
-                        onBlur={(event: React.KeyboardEvent) => {
+                        type={ inputField.type }
+                        placeholder={ inputField.placeholder }
+                        name={ inputField.name }
+                        value={ (form.get(inputField.name) as string) || "" }
+                        onBlur={ (event: React.KeyboardEvent) => {
                             handleBlur(event, inputField.name);
-                        }}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                        } }
+                        onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
                             handleChange(event.currentTarget.value, inputField.name);
-                        }}
+                        } }
                     />
                 );
             } else if (isRadioField(inputField)) {
                 return (
-                    <Form.Group grouped>
-                        <label>{inputField.label}</label>
-                        {inputField.children.map((radio: RadioChild, index: number) => {
+                    <Form.Group grouped={ true }>
+                        <label>{ inputField.label }</label>
+                        { inputField.children.map((radio: RadioChild, index: number) => {
                             return (
-                                <Form.Field key={index}>
+                                <Form.Field key={ index }>
                                     <Radio
-                                        label={radio.label}
-                                        name={inputField.name}
-                                        value={radio.value}
-                                        checked={form.get(inputField.name) === radio.value}
-                                        onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }) => {
+                                        label={ radio.label }
+                                        name={ inputField.name }
+                                        value={ radio.value }
+                                        checked={ form.get(inputField.name) === radio.value }
+                                        onChange={ (event: React.ChangeEvent<HTMLInputElement>, { value }) => {
                                             handleChange(value.toString(), inputField.name);
-                                        }}
-                                        onBlur={(event: React.KeyboardEvent) => {
+                                        } }
+                                        onBlur={ (event: React.KeyboardEvent) => {
                                             handleBlur(event, inputField.name);
-                                        }}
+                                        } }
                                     />
                                 </Form.Field>
                             );
-                        })}
+                        }) }
                     </Form.Group>
                 );
             } else if (isDropdownField(inputField)) {
                 return (
                     <Form.Select
-                        label={inputField.label}
-                        placeholder={inputField.placeholder}
-                        options={inputField.children}
-                        value={form.get(inputField.name)}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }) => {
+                        label={ inputField.label }
+                        placeholder={ inputField.placeholder }
+                        options={ inputField.children }
+                        value={ form.get(inputField.name) }
+                        onChange={ (event: React.ChangeEvent<HTMLInputElement>, { value }) => {
                             handleChange(value.toString(), inputField.name);
-                        }}
-                        onBlur={(event: React.KeyboardEvent) => {
+                        } }
+                        onBlur={ (event: React.KeyboardEvent) => {
                             handleBlur(event, inputField.name);
-                        }}
+                        } }
                         error={
                             isError
                                 ? {
-                                      content: errorMessages.map((errorMessage: string, index: number) => {
-                                          return <p key={index}>{errorMessage}</p>;
-                                      })
-                                  }
+                                    content: errorMessages.map((errorMessage: string, index: number) => {
+                                        return <p key={ index }>{ errorMessage }</p>;
+                                    })
+                                }
                                 : false
                         }
                     />
                 );
             } else if (isCheckBoxField(inputField)) {
                 return (
-                    <Form.Group grouped>
-                        <label>{inputField.label}</label>
-                        {inputField.children.map((checkbox, index) => {
+                    <Form.Group grouped={ true }>
+                        <label>{ inputField.label }</label>
+                        { inputField.children.map((checkbox, index) => {
                             return (
-                                <Form.Field key={index}>
+                                <Form.Field key={ index }>
                                     <Form.Checkbox
-                                        label={checkbox.label}
-                                        name={inputField.name}
-                                        value={checkbox.value}
+                                        label={ checkbox.label }
+                                        name={ inputField.name }
+                                        value={ checkbox.value }
                                         checked={
                                             form.get(inputField.name) &&
                                             (form.get(inputField.name) as string[]).includes(checkbox.value)
                                         }
-                                        onChange={(event: React.ChangeEvent<HTMLInputElement>, { value }) => {
+                                        onChange={ (event: React.ChangeEvent<HTMLInputElement>, { value }) => {
                                             handleChangeCheckBox(value.toString(), inputField.name);
-                                        }}
-                                        onBlur={(event: React.KeyboardEvent) => {
+                                        } }
+                                        onBlur={ (event: React.KeyboardEvent) => {
                                             handleBlur(event, inputField.name);
-                                        }}
+                                        } }
                                         error={
                                             index === 0
                                                 ? isError
                                                     ? {
-                                                          content: errorMessages.map(
-                                                              (errorMessage: string, indexError: number) => {
-                                                                  return <p key={indexError}>{errorMessage}</p>;
-                                                              }
-                                                          ),
-                                                          pointing: "left"
-                                                      }
+                                                        content: errorMessages.map(
+                                                            (errorMessage: string, indexError: number) => {
+                                                                return <p key={ indexError }>{ errorMessage }</p>;
+                                                            }
+                                                        ),
+                                                        pointing: "left"
+                                                    }
                                                     : false
                                                 : isError
                                         }
                                     />
                                 </Form.Field>
                             );
-                        })}
+                        }) }
                     </Form.Group>
                 );
             } else {
                 return (
                     <Form.Input
-                        label={inputField.label}
-                        width={inputField.width}
+                        label={ inputField.label }
+                        width={ inputField.width }
                         error={
                             isError
                                 ? {
-                                      content: errorMessages.map((errorMessage: string, index: number) => {
-                                          return <p key={index}>{errorMessage}</p>;
-                                      })
-                                  }
+                                    content: errorMessages.map((errorMessage: string, index: number) => {
+                                        return <p key={ index }>{ errorMessage }</p>;
+                                    })
+                                }
                                 : false
                         }
-                        type={inputField.type}
-                        placeholder={inputField.placeholder}
-                        name={inputField.name}
-                        value={form.get(inputField.name) || ""}
-                        onBlur={(event: React.KeyboardEvent) => {
+                        type={ inputField.type }
+                        placeholder={ inputField.placeholder }
+                        name={ inputField.name }
+                        value={ form.get(inputField.name) || "" }
+                        onBlur={ (event: React.KeyboardEvent) => {
                             handleBlur(event, inputField.name);
-                        }}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                        } }
+                        onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
                             handleChange(event.target.value, inputField.name);
-                        }}
+                        } }
                     />
                 );
             }
         } else if (isSubmitField(inputField)) {
             return (
-                <Button primary size={inputField.size} className={inputField.className} type={inputField.type}>
-                    {inputField.value}
+                <Button
+                    primary={ true }
+                    size={ inputField.size }
+                    className={ inputField.className }
+                    type={ inputField.type }
+                >
+                    { inputField.value }
                 </Button>
             );
         } else if (isResetField(inputField)) {
             return (
-                <Button size={inputField.size} className={inputField.className} onClick={handleReset}>
-                    {inputField.value}
+                <Button size={ inputField.size } className={ inputField.className } onClick={ handleReset }>
+                    { inputField.value }
                 </Button>
             );
         } else if (isButtonField(inputField)) {
             return (
                 <Button
-                    size={inputField.size}
-                    className={inputField.className}
-                    onClick={(event) => {
+                    size={ inputField.size }
+                    className={ inputField.className }
+                    onClick={ (event) => {
                         event.preventDefault();
                         inputField.onClick();
-                    }}
+                    } }
                 >
-                    {inputField.value}
+                    { inputField.value }
                 </Button>
             );
         } else if (isDivider(inputField)) {
-            return <Divider hidden={inputField.hidden} />;
+            return <Divider hidden={ inputField.hidden } />;
         } else if (isCustomField(inputField)) {
             return inputField.element;
         }
@@ -582,30 +587,30 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      */
     const renderForm = (): JSX.Element[] => {
         let forms: JSX.Element[] = formFields.map((inputField: FormField, index: number) => {
-            return <Form.Field key={index}>{formFieldGenerator(inputField)}</Form.Field>;
+            return <Form.Field key={ index }>{ formFieldGenerator(inputField) }</Form.Field>;
         });
 
         if (groups) {
             groups.forEach((group, index) => {
                 const formGroup: JSX.Element[] = forms.slice(group.startIndex, group.endIndex);
-                const preceedingForm: JSX.Element[] = forms.slice(0, group.startIndex);
+                const precedingForm: JSX.Element[] = forms.slice(0, group.startIndex);
                 const succeedingForm: JSX.Element[] = forms.slice(group.endIndex);
                 const enclosedGroup: JSX.Element = (
                     <Form.Group
-                        key={index.toString() + group.endIndex}
-                        grouped={group.style === "grouped"}
-                        inline={group.style === "inline"}
-                        widths={group.width}
+                        key={ index.toString() + group.endIndex }
+                        grouped={ group.style === "grouped" }
+                        inline={ group.style === "inline" }
+                        widths={ group.width }
                     >
-                        {formGroup}
+                        { formGroup }
                     </Form.Group>
                 );
                 succeedingForm.unshift(enclosedGroup);
-                forms = preceedingForm.concat(succeedingForm);
+                forms = precedingForm.concat(succeedingForm);
             });
         }
 
         return forms;
     };
-    return <Form onSubmit={handleSubmit}>{renderForm()}</Form>;
+    return <Form onSubmit={ handleSubmit }>{ renderForm() }</Form>;
 };
