@@ -37,7 +37,7 @@ import { HttpClient, HttpClientStatic } from "../models";
  * import { AxiosHttpClient } from "@wso2is/http";
  *
  * const httpClient = AxiosHttpClient.getInstance();
- * httpClient.init(onRequestStart, onRequestSuccess, onRequestError, onRequestFinish);
+ * httpClient.init(true, onRequestStart, onRequestSuccess, onRequestError, onRequestFinish);
  * ```
  */
 @staticDecorator<HttpClientStatic<AxiosInstance>>()
