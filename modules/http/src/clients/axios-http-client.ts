@@ -22,6 +22,24 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } f
 import { staticDecorator } from "../helpers";
 import { HttpClient, HttpClientStatic } from "../models";
 
+/**
+ * An Axios Http client to perform Http requests.
+ *
+ * @remarks
+ * Typescript doesn't support static functions in interfaces. Therefore,
+ * a decorator i.e `staticDecorator` was written to add static support.
+ * Follow {@link https://github.com/Microsoft/TypeScript/issues/13462}
+ * for more info.
+ *
+ * @example
+ * Example usage.
+ * ```
+ * import { AxiosHttpClient } from "@wso2is/http";
+ *
+ * const httpClient = AxiosHttpClient.getInstance();
+ * httpClient.init(onRequestStart, onRequestSuccess, onRequestError, onRequestFinish);
+ * ```
+ */
 @staticDecorator<HttpClientStatic<AxiosInstance>>()
 export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResponse, AxiosError> {
 
@@ -34,13 +52,21 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
     private requestFinishCallback: () => void;
 
     /**
-     * Private constructor to avoid object instantiation.
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
      */
     // tslint:disable-next-line:no-empty
     private constructor() {
         this.init = this.init.bind(this);
     }
 
+    /**
+     * Returns an aggregated instance of type `AxiosInstance` of `AxiosHttpClient`.
+     *
+     * @return {any}
+     */
     public static getInstance(): AxiosInstance & any {
         if (!this.axiosInstance) {
             this.axiosInstance = axios.create();
@@ -64,9 +90,17 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
         return { ...this.axiosInstance, ...this.clientInstance };
     }
 
+    /**
+     * Intercepts all the requests.
+     * If the `isHandlerEnabled` flag is set to true, fires the `requestStartCallback`
+     * and retrieves the access token from the server and attaches it to the request.
+     * Else, just returns the original request.
+     *
+     * @param {AxiosRequestConfig} request - Original request.
+     * @return {AxiosRequestConfig}
+     */
     public requestHandler(request: AxiosRequestConfig): AxiosRequestConfig {
         if (this.isHandlerEnabled) {
-            this.requestStartCallback();
             return AuthenticateSessionUtil.getAccessToken()
                 .then((token) => {
                     request.headers.Authorization = `Bearer ${ token }`;
@@ -80,6 +114,14 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
         return request;
     }
 
+    /**
+     * Handles response errors.
+     * If the `isHandlerEnabled` flag is set to true, fires the `requestErrorCallback`
+     * and the `requestFinishCallback` functions. Else, just returns the original error.
+     *
+     * @param {AxiosError} error - Original error.
+     * @return {AxiosError}
+     */
     public errorHandler(error: AxiosError): AxiosError {
         if (this.isHandlerEnabled) {
             this.requestErrorCallback(error);
@@ -88,6 +130,14 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
         return error;
     }
 
+    /**
+     * Handles response success.
+     * If the `isHandlerEnabled` flag is set to true, fires the `requestSuccessCallback`
+     * and the `requestFinishCallback` functions. Else, just returns the original response.
+     *
+     * @param {AxiosResponse} response - Original response.
+     * @return {AxiosResponse}
+     */
     public successHandler(response: AxiosResponse): AxiosResponse {
         if (this.isHandlerEnabled) {
             this.requestSuccessCallback(response);
@@ -96,8 +146,21 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
         return response;
     }
 
+    /**
+     * Initializes the Http client.
+     *
+     * @param isHandlerEnabled - Flag to toggle handler enablement.
+     * @param requestStartCallback - Callback function to be triggered on request start.
+     * @param requestSuccessCallback - Callback function to be triggered on request success.
+     * @param requestErrorCallback - Callback function to be triggered on request error.
+     * @param requestFinishCallback - Callback function to be triggered on request error.
+     */
     public init(
-        isHandlerEnabled, requestStartCallback, requestSuccessCallback, requestErrorCallback, requestFinishCallback
+        isHandlerEnabled: boolean = true,
+        requestStartCallback: () => void,
+        requestSuccessCallback: (response: AxiosResponse) => void,
+        requestErrorCallback: (error: AxiosError) => void,
+        requestFinishCallback: () => void
     ): void {
         this.isHandlerEnabled = isHandlerEnabled;
 

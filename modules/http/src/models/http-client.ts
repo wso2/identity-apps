@@ -17,10 +17,16 @@
  *
  */
 
+/**
+ * Http client interface with static functions.
+ */
 export interface HttpClientStatic<S> {
     getInstance(): S;
 }
 
+/**
+ * Http client interface.
+ */
 export interface HttpClient<T, U, V> {
     requestHandler(request: T): T;
     successHandler(response: U): U;
