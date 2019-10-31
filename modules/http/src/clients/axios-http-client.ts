@@ -101,13 +101,18 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
      */
     public requestHandler(request: AxiosRequestConfig): AxiosRequestConfig {
         if (this.isHandlerEnabled) {
+            if (this.requestStartCallback && typeof this.requestStartCallback === "function") {
+                this.requestStartCallback();
+            }
             return AuthenticateSessionUtil.getAccessToken()
                 .then((token) => {
                     request.headers.Authorization = `Bearer ${ token }`;
                     return request;
                 })
                 .catch((error) => {
-                    this.requestFinishCallback();
+                    if (this.requestFinishCallback && typeof this.requestFinishCallback === "function") {
+                        this.requestFinishCallback();
+                    }
                     return Promise.reject(`Failed to retrieve the access token: ${error}`);
                 });
         }
@@ -124,8 +129,12 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
      */
     public errorHandler(error: AxiosError): AxiosError {
         if (this.isHandlerEnabled) {
-            this.requestErrorCallback(error);
-            this.requestFinishCallback();
+            if (this.requestErrorCallback && typeof this.requestErrorCallback === "function") {
+                this.requestErrorCallback(error);
+            }
+            if (this.requestFinishCallback && typeof this.requestFinishCallback === "function") {
+                this.requestFinishCallback();
+            }
         }
         return error;
     }
@@ -140,8 +149,12 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
      */
     public successHandler(response: AxiosResponse): AxiosResponse {
         if (this.isHandlerEnabled) {
-            this.requestSuccessCallback(response);
-            this.requestFinishCallback();
+            if (this.requestSuccessCallback && typeof this.requestSuccessCallback === "function") {
+                this.requestSuccessCallback(response);
+            }
+            if (this.requestFinishCallback && typeof this.requestFinishCallback === "function") {
+                this.requestFinishCallback();
+            }
         }
         return response;
     }
