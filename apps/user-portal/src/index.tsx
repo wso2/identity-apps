@@ -25,10 +25,12 @@ import { App } from "./app";
 import { AuthProvider } from "./contexts";
 
 ReactDOM.render(
-    <BrowserRouter>
-        <AuthProvider>
-            <App />
-        </AuthProvider>
-    </BrowserRouter>,
+    (
+        <BrowserRouter>
+            <AuthProvider>
+                <App />
+            </AuthProvider>
+        </BrowserRouter>
+    ),
     document.getElementById("root")
 );

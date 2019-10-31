@@ -24,7 +24,7 @@ import { SettingsSection } from "../shared";
 import { FIDOAuthenticator, SMSOTPAuthenticator } from "./authenticators";
 
 /**
- * Proptypes for the basic details component.
+ * Prop types for the basic details component.
  */
 interface MfaProps {
     onNotificationFired: (notification: Notification) => void;

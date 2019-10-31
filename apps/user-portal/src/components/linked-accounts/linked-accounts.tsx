@@ -27,7 +27,7 @@ import { setProfileInfo } from "../../store/actions";
 import { EditSection, FormWrapper, SettingsSection, UserImage } from "../shared";
 
 /**
- * Proptypes for the liked accounts component.
+ * Prop types for the liked accounts component.
  */
 interface LinkedAccountsProps {
     onNotificationFired: (notification: Notification) => void;
@@ -185,28 +185,28 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
 
     return (
         <SettingsSection
-            description={t("views:sections.linkedAccounts.description")}
-            header={t("views:sections.linkedAccounts.heading")}
-            icon={SettingsSectionIcons.associatedAccounts}
-            iconMini={SettingsSectionIcons.associatedAccountsMini}
+            description={ t("views:sections.linkedAccounts.description") }
+            header={ t("views:sections.linkedAccounts.heading") }
+            icon={ SettingsSectionIcons.associatedAccounts }
+            iconMini={ SettingsSectionIcons.associatedAccountsMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
-            onPrimaryActionClick={() => showFormEditView("addAccountForm")}
-            primaryAction={t("views:sections.linkedAccounts.actionTitles.add")}
+            onPrimaryActionClick={ () => showFormEditView("addAccountForm") }
+            primaryAction={ t("views:sections.linkedAccounts.actionTitles.add") }
             primaryActionIcon="add"
-            showActionBar={!editingForm.addAccountForm}
+            showActionBar={ !editingForm.addAccountForm }
         >
-            {editingForm.addAccountForm ? (
+            { editingForm.addAccountForm ? (
                 <EditSection>
                     <Grid>
-                        <Grid.Row columns={2}>
-                            <Grid.Column width={4}>
-                                {t("views:components.linkedAccounts.accountTypes.local.label")}
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column width={ 4 }>
+                                { t("views:components.linkedAccounts.accountTypes.local.label") }
                             </Grid.Column>
-                            <Grid.Column width={12}>
+                            <Grid.Column width={ 12 }>
                                 <FormWrapper
-                                    formFields={[
+                                    formFields={ [
                                         {
                                             label: t(
                                                 "views:components.linkedAccounts.forms.addAccountForm" +
@@ -259,63 +259,63 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                                             type: "button",
                                             value: t("common:cancel").toString()
                                         }
-                                    ]}
-                                    groups={[
+                                    ] }
+                                    groups={ [
                                         {
                                             endIndex: 5,
                                             startIndex: 3,
                                             style: "inline"
                                         }
-                                    ]}
-                                    onSubmit={(values) => {
+                                    ] }
+                                    onSubmit={ (values) => {
                                         handleSubmit(values, "addAccountForm");
-                                    }}
+                                    } }
                                 />
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
                 </EditSection>
             ) : (
-                <List divided verticalAlign="middle" className="main-content-inner">
-                    {associations.map((association, index) => (
-                        <List.Item className="inner-list-item" key={index}>
-                            <Grid padded>
-                                <Grid.Row columns={2}>
-                                    <Grid.Column width={11} className="first-column">
+                <List divided={ true } verticalAlign="middle" className="main-content-inner">
+                    { associations.map((association, index) => (
+                        <List.Item className="inner-list-item" key={ index }>
+                            <Grid padded={ true }>
+                                <Grid.Row columns={ 2 }>
+                                    <Grid.Column width={ 11 } className="first-column">
                                         <UserImage
-                                            bordered
-                                            avatar
+                                            bordered={ true }
+                                            avatar={ true }
                                             floated="left"
                                             spaced="right"
                                             size="mini"
-                                            name={association.username}
+                                            name={ association.username }
                                         />
-                                        <List.Header>{association.userId}</List.Header>
+                                        <List.Header>{ association.userId }</List.Header>
                                         <List.Description>
-                                            <p style={{ fontSize: "11px" }}>{association.username}</p>
+                                            <p style={ { fontSize: "11px" } }>{ association.username }</p>
                                         </List.Description>
                                     </Grid.Column>
-                                    <Grid.Column width={5} className="last-column">
+                                    <Grid.Column width={ 5 } className="last-column">
                                         <List.Content floated="right">
                                             <Icon
-                                                link
-                                                disabled
+                                                link={ true }
+                                                disabled={ true }
                                                 className="list-icon"
                                                 size="large"
                                                 color="red"
                                                 name="trash alternate outline"
                                             />
-                                            <Button basic size="tiny">
-                                                {t("common:switch")}
+                                            <Button basic={ true } size="tiny">
+                                                { t("common:switch") }
                                             </Button>
                                         </List.Content>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
                         </List.Item>
-                    ))}
+                    )) }
                 </List>
-            )}
+            ) }
         </SettingsSection>
     );
 };

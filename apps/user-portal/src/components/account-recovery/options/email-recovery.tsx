@@ -26,7 +26,7 @@ import { Notification, Validation } from "../../../models";
 import { EditSection, FormWrapper, ThemeIcon } from "../../shared";
 
 /**
- * Proptypes for the EmailRecoveryComponent component.
+ * Prop types for the EmailRecoveryComponent component.
  */
 interface EmailRecoveryProps {
     onNotificationFired: (notification: Notification) => void;
