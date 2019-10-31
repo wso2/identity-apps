@@ -22,7 +22,7 @@
 type SemanticWIDTHSNUMBER = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16;
 
 /**
- * Semnatic width string type
+ * Semantic width string type
  */
 type SemanticWIDTHSSTRING =
     | "1"
@@ -59,7 +59,7 @@ type SemanticWIDTHSSTRING =
     | "sixteen";
 
 /**
- * Semantci widths type
+ * Semantic widths type
  */
 export type SemanticWIDTHS = SemanticWIDTHSNUMBER | SemanticWIDTHSSTRING;
 
@@ -87,7 +87,7 @@ export type Type =
     | "custom";
 
 /**
- * Model of the Validation object passed into validation fuinctions
+ * Model of the Validation object passed into validation functions
  */
 export interface Validation {
     isValid: boolean;
@@ -95,7 +95,7 @@ export interface Validation {
 }
 
 /**
- * Model of the Error object used by semntic Input elements to check for error
+ * Model of the Error object used by semantic Input elements to check for error
  */
 export interface Error {
     isError: boolean;
@@ -258,6 +258,6 @@ export type FormField =
     | CustomField;
 
 /**
- * FormFied value types
+ * FormField value types
  */
 export type FormValue = string | string[];
