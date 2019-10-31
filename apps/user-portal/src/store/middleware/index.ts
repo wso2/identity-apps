@@ -18,6 +18,5 @@
 
 export * from "./api";
 export * from "./authenticate";
-export * from "./change-password";
 export * from "./consents";
 export * from "./user-sessions";

@@ -17,7 +17,7 @@
  */
 
 import { combineReducers } from "redux";
-import { changePasswordReducer, consentManagementReducer, userSessionsReducer } from "./reducers";
+import { consentManagementReducer, userSessionsReducer } from "./reducers";
 
 /**
  * Combines all the reducers.
@@ -25,7 +25,6 @@ import { changePasswordReducer, consentManagementReducer, userSessionsReducer } 
  * @type {Reducer<any>} Root reducer to be used when creating the store.
  */
 export const reducers = combineReducers({
-    changePassword: changePasswordReducer,
     consentManagement: consentManagementReducer,
     userSessions: userSessionsReducer
 });
