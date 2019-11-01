@@ -16,62 +16,12 @@
  * under the License.
  */
 
-/**
- * Semantic widths number type
- */
-type SemanticWIDTHSNUMBER = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16;
-
-/**
- * Semnatic width string type
- */
-type SemanticWIDTHSSTRING =
-    | "1"
-    | "2"
-    | "3"
-    | "4"
-    | "5"
-    | "6"
-    | "7"
-    | "8"
-    | "9"
-    | "10"
-    | "11"
-    | "12"
-    | "13"
-    | "14"
-    | "15"
-    | "16"
-    | "one"
-    | "two"
-    | "three"
-    | "four"
-    | "five"
-    | "six"
-    | "seven"
-    | "eight"
-    | "nine"
-    | "ten"
-    | "eleven"
-    | "twelve"
-    | "thirteen"
-    | "fourteen"
-    | "fifteen"
-    | "sixteen";
-
-/**
- * Semantci widths type
- */
-export type SemanticWIDTHS = SemanticWIDTHSNUMBER | SemanticWIDTHSSTRING;
-
-/**
- * Semantic Sizes type
- */
-export type SemanticSIZES = "big" | "small" | "mini" | "tiny" | "medium" | "large" | "huge" | "massive";
+ import { SemanticSIZES, SemanticWIDTHS } from "../../node_modules/semantic-ui-react/dist/commonjs/generic";
 
 /**
  * Form Field Types
  */
-export type Type =
+ export type Type =
     | "email"
     | "text"
     | "textarea"
@@ -87,17 +37,17 @@ export type Type =
     | "custom";
 
 /**
- * Model of the Validation object passed into validation fuinctions
+ * Model of the Validation object passed into validation functions
  */
-export interface Validation {
+ export interface Validation {
     isValid: boolean;
     errorMessages: string[];
 }
 
 /**
- * Model of the Error object used by semntic Input elements to check for error
+ * Model of the Error object used by semantic Input elements to check for error
  */
-export interface Error {
+ export interface Error {
     isError: boolean;
     errorMessages: string[];
 }
@@ -105,7 +55,7 @@ export interface Error {
 /**
  * Input field model
  */
-export interface InputField {
+ export interface InputField {
     placeholder: string;
     name: string;
     type: Type;
@@ -120,7 +70,7 @@ export interface InputField {
 /**
  * Form submit model
  */
-export interface FormSubmit {
+ export interface FormSubmit {
     value: string;
     type: Type;
     size?: SemanticSIZES;
@@ -130,7 +80,7 @@ export interface FormSubmit {
 /**
  * Reset button model
  */
-export interface Reset {
+ export interface Reset {
     value: string;
     type: Type;
     size?: SemanticSIZES;
@@ -140,7 +90,7 @@ export interface Reset {
 /**
  * Button model
  */
-export interface Ibutton {
+ export interface FormButton {
     value: string;
     type: string;
     size?: SemanticSIZES;
@@ -151,7 +101,7 @@ export interface Ibutton {
 /**
  * Radio field child model
  */
-export interface RadioChild {
+ export interface RadioChild {
     label: string;
     value: string;
 }
@@ -159,7 +109,7 @@ export interface RadioChild {
 /**
  * Custom field model
  */
-export interface CustomField {
+ export interface CustomField {
     type: Type;
     element: JSX.Element;
 }
@@ -167,7 +117,7 @@ export interface CustomField {
 /**
  * Radio field model
  */
-export interface RadioField {
+ export interface RadioField {
     type: Type;
     label: string;
     name: string;
@@ -179,7 +129,7 @@ export interface RadioField {
 /**
  * Checkbox field child model
  */
-export interface CheckboxChild {
+ export interface CheckboxChild {
     label: string;
     value: string;
 }
@@ -187,7 +137,7 @@ export interface CheckboxChild {
 /**
  * Checkbox field model
  */
-export interface CheckboxField {
+ export interface CheckboxField {
     type: Type;
     label: string;
     name: string;
@@ -198,7 +148,7 @@ export interface CheckboxField {
 /**
  * Dropdown field child model
  */
-export interface DropdownChild {
+ export interface DropdownChild {
     text: string;
     value: string;
     key: number;
@@ -207,7 +157,7 @@ export interface DropdownChild {
 /**
  * Dropdown field model
  */
-export interface DropdownField {
+ export interface DropdownField {
     type: Type;
     label: string;
     name: string;
@@ -223,12 +173,12 @@ export interface DropdownField {
 /**
  * Group style types
  */
-export type GroupStyle = "grouped" | "inline";
+ export type GroupStyle = "grouped" | "inline";
 
 /**
  * Group model
  */
-export interface Group {
+ export interface Group {
     startIndex: number;
     endIndex: number;
     style: GroupStyle;
@@ -238,7 +188,7 @@ export interface Group {
 /**
  * Divider model
  */
-export interface Idivider {
+ export interface FormDivider {
     type: Type;
     hidden: boolean;
 }
@@ -246,18 +196,18 @@ export interface Idivider {
 /**
  * FormField types
  */
-export type FormField =
+ export type FormField =
     | InputField
     | FormSubmit
     | RadioField
     | DropdownField
     | CheckboxField
     | Reset
-    | Ibutton
-    | Idivider
+    | FormButton
+    | FormDivider
     | CustomField;
 
 /**
- * FormFied value types
+ * FormField value types
  */
-export type FormValue = string | string[];
+ export type FormValue = string | string[];
