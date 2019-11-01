@@ -13,12 +13,14 @@
     "test": "jest",
     "clean": "rm -rf node_modules build npm"
   },
+  "jest":{
+     "^.+\\.tsx$": "ts-jest"
+  },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.5.5",
-    "@babel/preset-typescript": "^7.6.0",
     "@testing-library/react": "^9.3.1",
     "@types/crypto-js": "^3.1.43",
     "@types/i18next": "8.4.3",
@@ -31,7 +33,6 @@
     "@types/webappsec-credential-management": "^0.5.1",
     "awesome-typescript-loader": "^5.2.1",
     "axios": "^0.18.0",
-    "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.4",
     "classnames": "^2.2.6",
     "copy-webpack-plugin": "^5.0.4",

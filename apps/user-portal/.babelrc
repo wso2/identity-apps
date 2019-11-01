@@ -1,11 +1,10 @@
 {
-  "presets": [
-    [
-      "@babel/preset-env",
-      {
-        "useBuiltIns": "entry"
-      },
-      "@babel/preset-typescript"
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "useBuiltIns": "entry"
+            }
+        ]
     ]
-  ]
 }
