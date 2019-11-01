@@ -23,12 +23,12 @@ import {
     CustomField,
     DropdownField,
     Error,
+    FormButton,
+    FormDivider,
     FormField,
     FormSubmit,
     FormValue,
     Group,
-    Ibutton,
-    Idivider,
     InputField,
     RadioChild,
     RadioField,
@@ -189,8 +189,8 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      * Type guard to check if an input element is of the type Radio
      * @param toBeDetermined
      */
-    const isButtonField = (toBeDetermined: FormField): toBeDetermined is Ibutton => {
-        if ((toBeDetermined as Ibutton).type === "button") {
+    const isButtonField = (toBeDetermined: FormField): toBeDetermined is FormButton => {
+        if ((toBeDetermined as FormButton).type === "button") {
             return true;
         }
         return false;
@@ -200,8 +200,8 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      * Type guard to check if an input element is of the type Radio
      * @param toBeDetermined
      */
-    const isDivider = (toBeDetermined: FormField): toBeDetermined is Idivider => {
-        if ((toBeDetermined as Idivider).type === "divider") {
+    const isDivider = (toBeDetermined: FormField): toBeDetermined is FormDivider => {
+        if ((toBeDetermined as FormDivider).type === "divider") {
             return true;
         }
         return false;
