@@ -20,7 +20,7 @@ import { render, RenderOptions, RenderResult } from "@testing-library/react";
 import React from "react";
 import { I18nextProvider } from "react-i18next";
 import { Provider } from "react-redux";
-import { Router, Switch } from "react-router-dom";
+import { Router } from "react-router-dom";
 import { history } from ".";
 import { i18n } from "../configs";
 import { store } from "../store";
@@ -34,11 +34,7 @@ const AllTheProviders: React.FunctionComponent = ({ children }): JSX.Element => 
         <Router history={ history }>
             <div className="container-fluid">
                 <I18nextProvider i18n={ i18n }>
-                    <Provider store={ store }>
-                        <Switch>
-                            { children }
-                        </Switch>
-                    </Provider>
+                    { children }
                 </I18nextProvider>
             </div>
         </Router>

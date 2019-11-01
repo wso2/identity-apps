@@ -54,5 +54,10 @@ describe("Tests if the FormWrapper is working fine", () => {
             />
         );
 
+        const inputBox = getByLabelText("Text Box", {
+            selector: "input"
+        });
+        expect("inputBox").toBe("inputBox");
+
     });
 });
