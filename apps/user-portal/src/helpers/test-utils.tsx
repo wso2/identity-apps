@@ -34,7 +34,9 @@ const AllTheProviders: React.FunctionComponent = ({ children }): JSX.Element => 
         <Router history={ history }>
             <div className="container-fluid">
                 <I18nextProvider i18n={ i18n }>
-                    { children }
+                    <Provider store={ store }>
+                            { children }
+                    </Provider>
                 </I18nextProvider>
             </div>
         </Router>
