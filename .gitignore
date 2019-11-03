@@ -93,6 +93,7 @@ typings/
 # project build folders & files
 .project
 modules/theme/lib/
+modules/http/dist
 target/
 npm/
 apps/*/build/
