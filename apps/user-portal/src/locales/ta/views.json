@@ -1,0 +1,773 @@
+{
+    "overviewPage": {
+        "title": "வருக, {{firstName}}",
+        "subTitle": "உங்களின் தகவல், பாதுகாப்பு, தனியுரிமை மற்றும் ஏனைய சார்ந்த கட்டமைப்புக்களை முகாமை செய்க",
+        "widgets": {
+            "accountStatus": {
+                "header": "உங்கள் கணக்கின் ஆரோக்கியம் சிறப்பாக உள்ளது!",
+                "list": {
+                    "0": "கடவுச்சொல்லின் ஆரோக்கியம்",
+                    "1": "கணக்கின் பூரணத்துவம்",
+                    "2": "உள்நுழைந்திருக்கும் செயற்பாடுகள்"
+                }
+            },
+            "accountActivity": {
+                "header": "கணக்கின் செயற்பாடுகள்",
+                "description": " நீங்கள் பின்வரும் கருவியினூடாக உள் நுழைந்திருக்கின்றீர்கள்",
+                "actionTitles": {
+                    "update": "கணக்கின் பாதுகாப்பு அமைப்பினை புதுப்பி"
+                }
+            },
+            "accountSecurity": {
+                "header": "கணக்கின் பாதுகாப்பு",
+                "description": "உங்களின் கணக்கினை பாதுகாப்பாக வைத்திருப்பதற்கான அமைப்புக்களும் பரிந்துரைகளும்",
+                "actionTitles": {
+                    "update": "கணக்கின் பாதுகாப்பு அமைப்பினை புதுப்பி"
+                }
+            },
+            "consentManagement": {
+                "header": "அனுமதி முகாமை",
+                "description": "செயலிகளுடன் பகிர விரும்பும் தகவல்களை கட்டுப்படுத்து",
+                "actionTitles": {
+                    "manage": "அனுமதிகளை முகாமை செய்"
+                }
+            }
+        }
+    },
+    "personalInfoPage": {
+        "title": "பயனர் விபரம்",
+        "subTitle": "உங்களின் கணக்கு, உப சுயவிபரக்கோவை, மற்றும் உங்களை பற்றிய தகவல்களை முகாமை செய்க"
+    },
+    "privacyPage": {
+        "title": "WSO2 Identity Server தனியுரிமைக் கொள்கை",
+        "subTitle": ""
+    },
+    "securityPage": {
+        "title": "பாதுகாப்பு",
+        "subTitle": "உங்களின் கணக்கின் பாதுகாப்பை உறுதிப்படுத்த அமைப்புக்களை புதுப்பிக",
+        "multiFactor": {
+            "title": "பல காரணி உறுதிப்பாடு",
+            "subTitle": "உங்கள் பல காரணி உறுதிப்பாட்டு விருப்பங்களை பார்வையிடவும் முகாமை செய்யவும்",
+            "smsOtp": {
+                "title": "ஒரு முறை கடவுச்சொல் குறுஞ் செய்தி",
+                "description": "நீங்கள் உறுதிப்படுத்தும் குறியீட்டினை குறுஞ் செய்தியினூடாக பெறுவீர்கள்",
+                "notification": {
+                    "success": {
+                        "message": "கையடக்க தொலைபேசி இலக்கம் புதுப்பிக்கப்பட்டுவிட்டது",
+                        "description": "பயனர் விபரத்தில் உள்ள கையடக்க தொலைபேசி இலக்கம் வெற்றிகரமாக புதுப்பிக்கப்பட்டுவிட்டது."
+                    },
+                    "error": {
+                        "message": "தவறொன்று ஏற்பட்டுவிட்டது !!!",
+                        "description": "கையடக்க தொலைபேசி இலக்கத்தினை புதுப்பிக்கும் பொழுது தவறொன்று ஏற்பட்டு விட்டது"
+                    }
+                },
+                "note": "கவனிக்குக: இது உங்களின் சுயவிபரத்தில் உள்ள கையடக்க தொலைபேசி இலக்கத்தை மாற்றும்"
+            },
+            "fido": {
+                "title": "FIDO",
+                "description": "FIDO கருவியினை இணைப்பதானூடாக உங்களை உறுதிப்படுத்திக் கொள்ளுங்கள்",
+                "notification": {
+                    "success": {
+                        "message": "உங்கள் கருவி பதிவு செய்யப்பட்டுவிட்டது.",
+                        "description": "உங்கள் கருவி வெற்றிகரமாக பதிவு செய்யப்பட்டுவிட்டது. இதனை, இனி, நீங்கள் உங்களது இரண்டாவது காரணியாக பயன்படுத்திக் கொள்ளலாம்."
+                    },
+                    "error": {
+                        "message": "ஏதோ ஒரு தவறு ஏற்பட்டுவிட்டது !!!",
+                        "description": "உங்களின் கருவியினை பதிவு செய்யும் பொழுது தவறேற்பட்டுவிட்டது."
+                    }
+                }
+            }
+        }
+    },
+    "accountsPage": {
+        "title": "கணக்கு",
+        "subTitle": "உங்கள் கணக்கின் பாதுகாப்பை  முகாமை செய்ய மற்றும் புதுப்பிக்க"
+    },
+    "sessionsPage": {
+        "title": "அமர்வுகள்",
+        "subTitle": "தற்பொழுது செயற்பாட்டில் உள்ள அமர்வுகளும், அமர்வு வரலாறும்"
+    },
+    "consentManagementPage": {
+        "title": "அனுமதி முகாமைத்துவம்",
+        "subTitle": "அனுமதி அளிக்கபட்ட செயலிகளையும் வலைத்தளங்களையும் முகாமை செய்க"
+    },
+    "operationsPage": {
+        "title": "செயற்பாடுகள்",
+        "subTitle": "முடிவு செய்யப்படாத அனுமதிகள் போன்ற பணிகளை முகாமை செய்யவும் பராமரிக்கவும்"
+    },
+    "changePassword": {
+        "title": "கடவுச்சொல்லை மாற்று",
+        "subTitle": "பதிவு செய்த கடவுச்சொல்லை மாற்று.",
+        "actionTitles": {
+            "change": "உங்கள் கடவுச்சொல்லை மாற்றுக"
+        },
+        "forms": {
+            "passwordResetForm": {
+                "inputs": {
+                    "currentPassword": {
+                        "label": "நிகழ்கால கடவுச்சொல்",
+                        "placeholder": "உங்களின் நிகழ்கால கடவுச்சொல்லை உள்ளிடுங்கள்",
+                        "validations": {
+                            "invalid": "நீங்கள் அளித்த நிகழ்கால கடவுச்சொல் தவறானது",
+                            "empty": "நிகழ்கால கடவுச்சொல் கட்டாயமான களமாகும்."
+                        }
+                    },
+                    "newPassword": {
+                        "label": "புதிய கடவுச்சொல்",
+                        "placeholder": "புதிய கடவுச்சொல்லை உள்ளிடுங்கள்",
+                        "validations": {
+                            "empty": "புதிய கடவுச்சொல் கட்டாயமான களமாகும்"
+                        }
+                    },
+                    "confirmPassword": {
+                        "label": "கடவுச்சொல் உறுதிப்பாடு",
+                        "placeholder": "புதிய கடவுச்சொல்லை மீண்டும் உள்ளிடுங்கள்",
+                        "validations": {
+                            "empty": "கடவுச்சொல் உறுதிப்பாடு கட்டாயாமன களமாகும்.",
+                            "mismatch": "உங்கள் புதிய கடவுச்சொல்லும் கடவுச்சொல் உறுதிப்பாடும் பொருந்தவில்லை."
+                        }
+                    }
+                },
+                "validations": {
+                    "submitSuccess": {
+                        "message": "கடவுச்சொல்லை மீட்டலில் வெற்றி",
+                        "description": "உங்கள் கடவுச்சொல் வெற்றிகரமாக மாற்றப்பட்டது விட்டது"
+                    },
+                    "submitError": {
+                        "message": "கடவுச்சொல்லை மீட்டலில் தவறு",
+                        "description": "{{description}}"
+                    },
+                    "invalidCurrentPassword": {
+                        "message": "கடவுச்சொல்லை மீட்டலில் தவறு",
+                        "description": "நீங்கள் அளித்த தற்போதைய கடவுச்சொல் தவறானது. மீண்டும் முயற்சி செய்க."
+                    },
+                    "genericError": {
+                        "message": "கடவுச்சொல்லை மீட்டலில் தவறு",
+                        "description": "ஏதோ தவறேற்பட்டுவிட்டது. மீண்டும் முயற்சி செய்க."
+                    }
+                }
+            }
+        },
+        "modals": {
+            "confirmationModal": {
+                "heading": "உறுதிப்படுத்தல்",
+                "message": "கடவுச்சொல்லை மாற்றுவது உங்களது நிகழ்கால அமர்வை முடிவுக்குக்கொண்டுவரும். நீங்கள் உங்கள் புதிய கடவுச்சொல்லை பயன் படுத்தி மீண்டும் உள்நுழைய வேண்டும். மேலும் தொடர விரும்புகிறீர்களா?"
+            }
+        }
+    },
+    "consentManagement": {
+        "title": "அனுமதியளிக்கப்பட்ட செயலிகள்",
+        "subTitle": "அனுமதி அளிக்கபட்ட செயலிகளையும் வலைத்தளங்களையும் முகாமை செய்க",
+        "description": "உங்கள் கணக்கில் உள்ள அனுமதியாளிக்கப்பட்ட செயலிகளை பார்வையிட முகாமை செய்ய",
+        "actionTitles": {
+            "empty": "நீங்கள் எந்தவொரு செயலிற்கும் அனுமதி அளிக்கவில்லை."
+        },
+        "modals": {
+            "consentRevokeModal": {
+                "heading": "{{appName}} இற்கான அனுமதியினை நீக்க விரும்புகிறீர்களா?",
+                "message": "நீங்கள் அனுமதியினை நீக்க விரும்புகிறீர்களா? இச்செயல் மீள் திரும்ப முடியாக்க செயலாகும்."
+            },
+            "editConsentModal": {
+                "description": {
+                    "state": "நிலை",
+                    "collectionMethod": "அறவிடும் முறை",
+                    "version": "பதிப்பு",
+                    "description": "விபரம்",
+                    "piiCategoryHeading": "செயலியுடன் நீங்கள் பகிர்ந்துள்ள தகவல்கள்"
+                }
+            }
+        },
+        "placeholders": {
+            "emptyConsentList": {
+                "heading": "நீங்கள் எந்தவொரு செயலிற்கும் அனுமதி அளிக்கவில்லை."
+            }
+        },
+        "notifications": {
+            "consentedAppsFetchGenericError": {
+                "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                "description": "அனுமதியளிக்கப்பட்ட செயலிகளின் பட்டியலை பெற முடியவில்லை."
+            },
+            "consentedAppsFetchError": {
+                "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                "description": "{{description}}"
+            },
+            "consentReceiptFetchGenericError": {
+                "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                "description": "தேர்வு செய்யப்பட்ட செயலி பற்றிய தகவலை பெற முடியவில்லை"
+            },
+            "consentReceiptFetchError": {
+                "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                "description": "{{description}}"
+            },
+            "revokeConsentedAppSuccess": {
+                "message": "அனுமதி நீக்கலில் வெற்றி",
+                "description": "செயலியின் அனுமதி வெற்றிகராமக நீக்கப்பட்டுவிட்டது."
+            },
+            "revokeConsentedAppGenericError": {
+                "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                "description": "செயலியின் அனுமதியினை நீக்க இயலவில்லை."
+            },
+            "revokeConsentedAppError": {
+                "message": "அனுமதி நீக்கலில் தவறு",
+                "description": "{{description}}"
+            },
+            "updateConsentedClaimsSuccess": {
+                "message": "அனுமதியளிக்கப்பட்ட கூற்றுக்கள் புதுப்பிக்கப்பட்டுவிட்டன",
+                "description": "செயலியின் அனுமதியளிக்கப்பட்ட கூற்றுக்கள் வெற்றிகரமாக புதுப்பிக்கப்பட்டுவிட்டன"
+            },
+            "updateConsentedClaimsGenericError": {
+                "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                "description": "செயலியின் அனுமதியளிக்கப்பட்ட கூற்றுக்கள் புதுப்பிக்கப்படுவதில் தோல்வி"
+            },
+            "updateConsentedClaimsError": {
+                "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                "description": "{{description}}"
+            }
+        }
+    },
+    "accountRecovery": {
+        "title": "கணக்கு மீட்பு",
+        "subTitle": "உங்கள் கணக்கின் மீட்பு சம்பந்தமான விருப்புகளை பார்வையிட மற்றும் மாற்ற",
+        "emailRecovery": {
+            "title": "மின்னஞ்சல் மீட்பு",
+            "descriptionAdd": "மீட்பு மின்னஞ்சல் முகவரிய சேர்க்க",
+            "descriptionUpdate": "மீட்பு மின்னஞ்சல் முகவரியை புதிப்பிக்க ({{email}})",
+            "emailAddress": "மின்னஞ்சல் முகவரி",
+            "emailRequired": "மின்னஞ்சல் முகவரியினை உள்ளிடுக",
+            "notification": {
+                "success": {
+                    "message": "மின்னஞ்சல் புதுப்பிக்கப்பட்டுவிட்டது",
+                    "description": "பயனர் விபரக்கோவையில் உள்ள மின்னஞ்சல் முகவரி புதுப்பிக்கப்பட்டுவிட்டது."
+                }
+            }
+        },
+        "codeRecovery": {
+            "title": "குறியீட்டு மீட்பு",
+            "description": "குறியீட்டு மீட்பு விருப்புகளை சேர்க்க மற்றும் புதுப்பிக்க"
+        }
+    },
+    "securityQuestions": {
+        "title": "பாதுகாப்பு வினாக்கள்",
+        "description": "கணக்கு மீட்பு சவால் வினாக்களை சேர்க்க மற்றும் புதுப்பிக்க",
+        "actionTitles": {
+            "configure": "பாதுகாப்பு வினாக்களை கட்டமைக்க",
+            "change": "பாதுகாப்பு வினாக்களை மற்ற"
+        },
+        "forms": {
+            "securityQuestionsForm": {
+                "inputs": {
+                    "question": {
+                        "label": "வினா",
+                        "placeholder": "வினாவொன்றிணை தேர்வு செய்க",
+                        "validations": {
+                            "empty": "வினாவினை தேர்ந்தெடுத்தல் கட்டாயம்"
+                        }
+                    },
+                    "answer": {
+                        "label": "பதில்",
+                        "placeholder": "பதிலினை உள்ளிடுக",
+                        "validations": {
+                            "empty": "பதில் கட்டாய களமாகும்"
+                        }
+                    }
+                }
+            }
+        },
+        "notification": {
+            "addQuestions": {
+                "success": {
+                    "description": "பாதுகாப்பு வினாக்கள் சேர்க்கப்பட்டுவிட்டன",
+                    "message": "பாதுகாப்பு வினாக்கள் வெற்றிகரமாக சேர்க்கப்பட்டுவிட்டன"
+                },
+                "error": {
+                    "description": "ஏதோ தவறேற்பட்டுவிட்டது !!!",
+                    "message": "பாதுகாப்பு வினாக்களை கட்டமைக்கும் பொழுது தவறேற்பட்டுவிட்டது"
+                }
+            },
+            "updateQuestions": {
+                "success": {
+                    "description": "பாதுகாப்பு வினாக்கள் புதுப்பிக்கப்பட்டுவிட்டன",
+                    "message": "பாதுகாப்பு வினாக்கள் வெற்றிகரமாக புதுப்பிக்கப்பட்டுவிட்டன"
+                },
+                "error": {
+                    "description": "ஏதோ தவறேற்பட்டுவிட்டது !!!",
+                    "message": "பாதுகாப்பு வினாக்களை புதுப்பிககும் பொழுது தவறேற்பட்டுவிட்டது"
+                }
+            }
+        },
+        "placeholders": {
+            "emptyQuestionsList": {
+                "heading": "பாதுகாப்பு வினாக்களை பெறுவதில் தோல்வி"
+            }
+        },
+        "dropDown": {
+            "label": "வினாவொன்றினை தேர்ந்தெடுக்கவும்"
+        },
+        "noConfiguration": "இப்பயனருக்கு பாதுகாப்பு வினாவொன்றும் கட்டமைக்கப்படவில்லை"
+    },
+    "userProfile": {
+        "title": "சுயவிபரம்",
+        "subTitle": "உங்கள் அடிப்படை சுயவிபரத் தகவல்களை முகாமை செய்ய மற்றும் புதுப்பிக்க.",
+        "personalInfoTitle": "பயனர் விபரம்",
+        "forms": {
+            "nameChangeForm": {
+                "inputs": {
+                    "firstName": {
+                        "label": "முதற்பெயர்",
+                        "placeholder": "முதற்பெயரை உள்ளிடவும்",
+                        "validations": {
+                            "empty": "முதற்பெயர் ஒரு கட்டாயா களமாகும்"
+                        }
+                    },
+                    "lastName": {
+                        "label": "இறுதிப்பெயர்",
+                        "placeholder": "இறுதிப்பெயரை உள்ளிடவும்",
+                        "validations": {
+                            "empty": "இறுதிப்பெயர் ஒரு கட்டாயா களமாகும்"
+                        }
+                    }
+                }
+            },
+            "emailChangeForm": {
+                "inputs": {
+                    "email": {
+                        "label": "மின்னஞ்சல் முகவரி",
+                        "placeholder": "மின்னஞ்சல் முகவரியை உள்ளிடவும்",
+                        "validations": {
+                            "empty": "மின்னஞ்சல் முகவரி ஒரு கட்டாயா களமாகும்"
+                        }
+                    }
+                }
+            },
+            "organizationChangeForm": {
+                "inputs": {
+                    "organization": {
+                        "label": "நிறுவனம்",
+                        "placeholder": "நிறுவனத்தை உள்ளிடவும்",
+                        "validations": {
+                            "empty": "நிறுவனம் ஒரு கட்டாயா களமாகும்"
+                        }
+                    }
+                }
+            },
+            "mobileChangeForm": {
+                "inputs": {
+                    "mobile": {
+                        "label": "கையடக்க தொலைபேசி இலக்கம்",
+                        "placeholder": "கையடக்க தொலைபேசி இலக்கத்தை உள்ளிடவும்",
+                        "validations": {
+                            "empty": "கையடக்க தொலைபேசி இலக்கம் ஒரு கட்டாயா களமாகும்"
+                        }
+                    }
+                }
+            }
+        },
+        "fields": {
+            "name": {
+                "label": "பெயர்",
+                "default": "பெயரை சேர்க்க"
+            },
+            "email": {
+                "label": "மின்னஞ்சல்",
+                "default": "மின்னஞ்சலை சேர்க்க"
+            },
+            "username": {
+                "label": "பயனர் பெயர்",
+                "default": "பயனர் பெயரை சேர்க்க"
+            },
+            "organization": {
+                "label": "நிறுவனம்",
+                "default": "நிறுவனத்தை சேர்க்க"
+            },
+            "mobile": {
+                "label": "கையடக்க தொலைபேசி இலக்கம்",
+                "default": "கையடக்க தொலைபேசி இலக்கத்தை சேர்க்க"
+            },
+            "emptyField": "இக்களத்தை தயவுகூர்ந்து நிரப்புங்கள்"
+        },
+        "personalDetails": {
+            "noDetails": "இப் பயனருக்கு எவ்வித சுய விபரமும் கட்டமைக்கப் படவில்லை"
+        },
+        "notification": {
+            "getProfileInfo": {
+                "success": {
+                    "message": "பயனர் விபரம் பெறப்பட்டுவிட்டது",
+                    "description": "பயனர் விபரம் வெற்றிகரமாக பெறப்பட்டுவிட்டது"
+                },
+                "error": {
+                    "message": "ஏதோ தவறேற்பட்டுவிட்டது !!!",
+                    "description": "பயனர் விபரத்தை பெறும் பொழுது தவறேற்பட்டுவிட்டது"
+                }
+            },
+            "updateProfileInfo": {
+                "success": {
+                    "message": "பயனர் சுயவிபரம் புதுப்பிக்கபட்டுவிட்டது",
+                    "description": "பயனர் சுயவிபரம் வெற்றிகரமாக புதுப்பிக்கபட்டுவிட்டது."
+                },
+                "error": {
+                    "message": "ஏதோ தவறேற்பட்டுவிட்டது !!!",
+                    "description": "பயனர் சுயவிபரத்தை புதுப்பிக்கும் பொழுது தவறேற்பட்டுவிட்டது"
+                }
+            }
+        }
+    },
+    "associatedAccounts": {
+        "title": "இணைக்கப்ப்ட்ட கணக்குகள்",
+        "subTitle": "உங்களுடைய அனைத்து இணைக்கப்பட்ட கணக்குகளையும் முகாமை செய்ய",
+        "actionTitle": "கணைக்கினை சேர்க்க",
+        "accountTypes": {
+            "local": {
+                "label": "உட்பயனர் கணக்கினை சேர்க்க"
+            }
+        },
+        "forms": {
+            "addAccountForm": {
+                "inputs": {
+                    "username": {
+                        "label": "பயனர்பெயர்",
+                        "placeholder": "பயனர்பெயரை உள்ளிடுக",
+                        "validations": {
+                            "empty": "பயனர்பெயர் ஒரு கட்டாய களமாகும்"
+                        }
+                    },
+                    "password": {
+                        "label": "கடவுச்சொல்",
+                        "placeholder": "கடவுச்சொல்லை உள்ளிடுக",
+                        "validations": {
+                            "empty": "கடவுச்சொல் ஒரு கட்டாய களமாகும்"
+                        }
+                    }
+                }
+            }
+        },
+        "notification": {
+            "getAssociation": {
+                "success": {
+                    "message": "இணைக்கபட்ட பயனர் கணக்குகள் பெறப்பட்டுவிட்டன",
+                    "description": "இணைக்கபட்ட பயனர் கணக்குகள் வெற்றிகரமாக பெறப்பட்டுவிட்டன"
+                },
+                "error": {
+                    "message": "இணைக்கப்பட்ட பயனர் கணக்குகளை பெறும் பொழுது தவறேற்பட்டுவிட்டது",
+                    "description": "{{description}}"
+                },
+                "genericError": {
+                    "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                    "description": "இணைக்கப் பட்ட கனக்குகளை பெறும் பொழுது தவறேற்பட்டுவிட்டது"
+                }
+            },
+            "addAssociation": {
+                "success": {
+                    "message": "கணக்கு இணைக்கப் பட்டு விட்டது",
+                    "description": "கணக்கு வெற்றிகரமாக இணைக்கப் பட்டுவிட்டது"
+                },
+                "error": {
+                    "message": "இணைக்கப் பட்ட கணக்குகளை பெரும் பொழுது தவறேற்பட்டுவிட்டது",
+                    "description": "{{description}}"
+                },
+                "genericError": {
+                    "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                    "description": "கணக்கினை இணைக்கும் பொழுது தவறேற்பட்டுவிட்டது."
+                }
+            }
+        }
+    },
+    "userSessions": {
+        "title": "செயற்பாட்டில் உள்ள பயனர் அமர்வுகள்",
+        "subTitle": "உங்கள் கணக்கினில் செய்ற்பாட்டில் உள்ள கருவிகளின் பட்டியலிது.",
+        "actionTitles": {
+            "terminateAll": "சகல அமர்வுகளையும் முடிக்க",
+            "empty": "செயற்பாட்டில் உள்ள அமர்வுகள் யாதுமில்லை"
+        },
+        "description": "செய்ற்பாட்டில் உள்ள உங்கள் அமர்வுகளை முகாமை செய்ய மற்றும் பார்க்க",
+        "browserAndOS": "{{os}} {{version}} இல் {{browser}}",
+        "lastAccessed": "இறுதியாக அணுகியது {{date}}",
+        "notifications": {
+            "fetchSessions": {
+                "success": {
+                    "message": "பயனர் அமர்வுகள் பெறப்பட்டுவிட்டன",
+                    "description": "பயனர் அமர்வுகள் வெற்றிகரமாக பெறப்பட்டுவிட்டன."
+                },
+                "error": {
+                    "message": "பயனர் அமர்வுகளை பெறும் பொழுது தவறேற்பட்டுவிட்டது.",
+                    "description": "{{description}}"
+                },
+                "genericError": {
+                    "message": "ஏதோ தவறேற்பட்டுவிட்டது.",
+                    "description": "பயனர் அமர்வுகளை பெற இயலவில்லை"
+                }
+            },
+            "terminateAllUserSessions": {
+                "success": {
+                    "message": "சகல பயனர் அமர்வுகளும் முடிக்கப்பட்டுவிட்டன",
+                    "description": "சகல பயனர் அமர்வுகளும் வெற்றிகரமாக முடிக்கப்பட்டுவிட்டன."
+                },
+                "error": {
+                    "message": "பயனர் அமர்வுகளை முடிக்க இயலவில்லை",
+                    "description": "{{description}}"
+                },
+                "genericError": {
+                    "message": "பயனர் அமர்வுகளை முடிக்க இயலவில்லை",
+                    "description": "பயனர் அமர்வுகளை முடிக்கும் பொழுது தவறேற்பட்டுவிட்டது"
+                }
+            },
+            "terminateUserSession": {
+                "success": {
+                    "message": "அமர்வு முடிக்கப்பட்டுவிட்டது",
+                    "description": "பயனர் அமர்வு வெற்றிகரமாக முடிக்கப்பட்டுவிட்டது."
+                },
+                "error": {
+                    "message": "யனர் அமர்வினை முடிக்க இயலவில்லை",
+                    "description": "{{description}}"
+                },
+                "genericError": {
+                    "message": "யனர் அமர்வினை முடிக்க இயலவில்லை",
+                    "description": "பயனர் அமரவை முடிக்கும் பொழுது தவறேற்பட்டுவிட்டது"
+                }
+            }
+        },
+        "placeholders": {
+            "emptySessionList": {
+                "heading": "இந்த பயனரின் எந்தவொரு அமர்வும் செய்ற்பாட்டினில் இல்லை"
+            }
+        },
+        "modals": {
+            "terminateAllUserSessionsModal": {
+                "heading": "உறுதிப்பாடு",
+                "message": "இச்செயல் சகல கருவிகளிலும் உள்ள உங்களுடைய அனைத்து அமர்வுகளில் இருந்தும் உங்களை வெளியேற்றும். மேலும் தொடர விரும்புகின்றீர்களா?"
+            },
+            "terminateUserSessionModal": {
+                "heading": "உறுதிப்பாடு",
+                "message": "இச்செயல் குறிப்பிட்ட கருவியிலுள்ள அமர்விலிருந்து உங்களை வெளியேற்றும், மேலும் தொடர விரும்புகின்றீர்களா?"
+            }
+        }
+    },
+    "404": {
+        "title": "நீங்கள் வழி தவறி வந்து விட்டதாக தெரிகிறது :(",
+        "subTitle": "நீங்கள் தேடி வந்த பக்கம் இங்கில்லை."
+    },
+    "profileExport": {
+        "title": "சுயவிபரத்தை ஏற்றுமதி செய்க",
+        "subTitle": "பயனர் தகவல், பாதுகாப்பு வினாக்கள், அனுமதிகள் உள்ளிட்ட அனைத்து சுயவிபரங்களையும் பதிவிறக்கம் செய்ய.",
+        "actionTitle": "சுயவிபரத்தை ஏற்றுமதி செய்க",
+        "notification": {
+            "downloadProfileInfo": {
+                "success": {
+                    "message": "பயனர் சுயவிபரம் பதிவிறக்கப்பட்டுவிட்டது",
+                    "description": "பயனர் சுயவிபரம் வெற்றிகரமாக பதிவிறக்கப்பட்டுவிட்டது."
+                },
+                "error": {
+                    "message": "ஏதோ தவறேற்பட்டுவிட்டது !!!",
+                    "description": "பயனர் சுயவிபரத்தை பதிவிறக்கம் செய்யும் பொழுது தவறேற்பட்டுவிட்டது"
+                }
+            }
+        }
+    },
+    "pendingApprovals": {
+        "title": "முடிவெடுக்கப்படாத அனுமதிகள்",
+        "subTitle": "முடிவெடுக்கப்படாதா அனுமதிகளை முகாமை செய்ய",
+        "listHelper": "{{status}} நிலையில் உள்ள அனுமதிகள்",
+        "notifications": {
+            "fetchPendingApprovals": {
+                "success": {
+                    "message": "முடிவெடுக்கப்படாத அனுமதிகள் பெறப்பட்டுவிட்டன",
+                    "description": "முடிவெடுக்கப்படாத அனுமதிகள் வெற்றிகரமாக பெறப்பட்டுவிட்டன"
+                },
+                "error": {
+                    "message": "முடிவெடுக்கப்படாத அனுமதிகளை பெறுவதில் தவறு",
+                    "description": "{{description}}"
+                },
+                "genericError": {
+                    "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                    "description": "முடிவெடுக்கப்படாத அனுமதிகளை பெறுவதில் தவறேற்பட்டுவிட்டது"
+                }
+            },
+            "updatePendingApprovals": {
+                "success": {
+                    "message": "புதுப்பித்தல் வெற்றி",
+                    "description": "அனுமதி வெற்றிகரமாக புதுப்பிக்கப்பட்டுவிட்டது"
+                },
+                "error": {
+                    "message": "அனுமதி புதுப்பிக்கப்பட்டுவிட்டது",
+                    "description": "{{description}}"
+                },
+                "genericError": {
+                    "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                    "description": "அனுமதியினை புதுப்பிக்க இயலவில்லை"
+                }
+            },
+            "fetchApprovalDetails": {
+                "success": {
+                    "message": "Approval details retrieval successful",
+                    "description": "Successfully retrieved the approval details"
+                },
+                "error": {
+                    "message": "அனுமதிகளை பெறுவதில் தவறேற்பட்டுவிட்டது",
+                    "description": "{{description}}"
+                },
+                "genericError": {
+                    "message": "ஏதோ தவறேற்பட்டுவிட்டது",
+                    "description": "அனுமதிகளை புதுப்பிக்க இயலவில்லை"
+                }
+            }
+        },
+        "placeholders": {
+            "emptyApprovalList": {
+                "heading": "உங்களிடம் {{status}} முடிவெடுக்கப்படாத அனுமதிகள் இல்லை"
+            }
+        }
+    },
+    "footer": {
+        "copyright": "WSO2 Identity Server © {{year}}"
+    },
+    "privacy": {
+        "about": {
+            "heading": "WSO2 Identity Serverஐ பற்றி",
+            "description": "WSO2 Identity Server (referred to as “WSO2 IS” within this policy) is an open source Identity Management and Entitlement Server that is based on open standards and specifications."
+        },
+        "privacyPolicy": {
+            "heading": "தனியுரிமைக் கொள்கை",
+            "description": {
+                "para1": "This policy describes how WSO2 IS captures your personal information, the purposes of collection, and information about the retention of your personal information.",
+                "para2": "Please note that this policy is for reference only, and is applicable for the software as a product. WSO2 Inc. and its developers have no access to the information held within WSO2 IS. Please see the <1>disclaimer</1> section for more information.",
+                "para3": "Entities, organisations or individuals controlling the use and administration of WSO2 IS should create their own privacy policies setting out the manner in which data is controlled or processed by the respective entity, organisation or individual."
+            },
+            "whatIsPersonalInfo": {
+                "heading": "What is personal information?",
+                "description": {
+                    "para1": "WSO2 IS considers anything related to you, and by which you may be identified, as your personal information. This includes, but is not limited to:",
+                    "list1": {
+                        "0": "Your user name (except in cases where the user name created by your employer is under contract)",
+                        "1": "Your date of birth/age",
+                        "2": "IP address used to log in",
+                        "3": "Your device ID if you use a device (e.g., phone or tablet) to log in"
+                    },
+                    "para2": "However, WSO2 IS also collects the following information that is not considered personal information, but is used only for <1>statistical</1> purposes. The reason for this is that this information can not be used to track you.",
+                    "list2": {
+                        "0": "City/Country from which you originated the TCP/IP connection",
+                        "1": "Time of the day that you logged in (year, month, week, hour or minute)",
+                        "2": "Type of device that you used to log in (e.g., phone or tablet)",
+                        "3": "Operating system and generic browser information"
+                    }
+                }
+            },
+            "collectionOfPersonalInfo": {
+                "heading": "Collection of personal information",
+                "description": {
+                    "para1": "WSO2 IS collects your information only to serve your access requirements. For example:",
+                    "list1": {
+                        "0": "WSO2 IS uses your IP address to detect any suspicious login attempts to your account.",
+                        "1": "WSO2 IS uses attributes like your first name, last name, etc., to provide a rich and personalized user experience.",
+                        "2": "WSO2 IS uses your security questions and answers only to allow account recovery."
+                    }
+                },
+                "trackingTechnologies": {
+                    "heading": "Tracking Technologies",
+                    "description": {
+                        "para1": "WSO2 IS collects your information by:",
+                        "list1": {
+                            "0": "Collecting information from the user profile page where you enter your personal data.",
+                            "1": "Tracking your IP address with HTTP request, HTTP headers, and TCP/IP.",
+                            "2": "Tracking your geographic information with the IP address.",
+                            "3": "Tracking your login history with browser cookies. Please see our {{cookiePolicyLink}} for more information."
+                        }
+                    }
+                }
+            },
+            "useOfPersonalInfo": {
+                "heading": "Use of personal information",
+                "description": {
+                    "para1": "WSO2 IS will only use your personal information for the purposes for which it was collected (or for a use identified as consistent with that purpose).",
+                    "para2": "WSO2 IS uses your personal information only for the following purposes.",
+                    "list1": {
+                        "0": "To provide you with a personalized user experience. WSO2 IS uses your name and uploaded profile pictures for this purpose.",
+                        "1": "To protect your account from unauthorized access or potential hacking attempts. WSO2 IS uses HTTP or TCP/IP Headers for this purpose.",
+                        "2": "Derive statistical data for analytical purposes on system performance improvements. WSO2 IS will not keep any personal information after statistical calculations. Therefore, the statistical report has no means of identifying an individual person."
+                    },
+                    "subList1": {
+                        "heading": "This includes:",
+                        "list": {
+                            "0": "IP address",
+                            "1": "Browser fingerprinting",
+                            "2": "Cookies"
+                        }
+                    },
+                    "subList2": {
+                        "heading": "WSO2 IS may use:",
+                        "list": {
+                            "0": "IP Address to derive geographic information",
+                            "1": "Browser fingerprinting to determine the browser technology or/and version"
+                        }
+                    }
+                }
+            },
+            "disclosureOfPersonalInfo": {
+                "heading": "Disclosure of personal information",
+                "description": "WSO2 IS only discloses personal information to the relevant applications (also known as Service Provider) that are registered with WSO2 IS. These applications are registered by the identity administrator of your entity or organization. Personal information is disclosed only for the purposes for which it was collected (or for a use identified as consistent with that purpose), as controlled by such Service Providers, unless you have consented otherwise or where it is required by law.",
+                "legalProcess": {
+                    "heading": "Legal process",
+                    "description": "Please note that the organisation, entity or individual running WSO2 IS may be compelled to disclose your personal information with or without your consent when it is required by law following due and lawful process."
+                }
+            },
+            "storageOfPersonalInfo": {
+                "heading": "Storage of personal information",
+                "where": {
+                    "heading": "Where your personal information is stored",
+                    "description": {
+                        "para1": "WSO2 IS stores your personal information in secured databases. WSO2 IS exercises proper industry accepted security measures to protect the database where your personal information is held. WSO2 IS as a product does not transfer or share your data with any third parties or locations.",
+                        "para2": "WSO2 IS may use encryption to keep your personal data with an added level of security."
+                    }
+                },
+                "howLong": {
+                    "heading": "How long your personal information is retained",
+                    "description": {
+                        "para1": "WSO2 IS retains your personal data as long as you are an active user of our system. You can update your personal data at any time using the given self-care user portals.",
+                        "para2": "WSO2 IS may keep hashed secrets to provide you with an added level of security. This includes:",
+                        "list1": {
+                            "0": "Current password",
+                            "1": "Previously used passwords"
+                        }
+                    }
+                },
+                "requestRemoval": {
+                    "heading": "How to request removal of your personal information",
+                    "description": {
+                        "para1": "You can request the administrator to delete your account. The administrator is the administrator of the tenant you are registered under, or the super-administrator if you do not use the tenant feature.",
+                        "para2": "Additionally, you can request to anonymize all traces of your activities that WSO2 IS may have retained in logs, databases or analytical storage."
+                    }
+                }
+            },
+            "moreInfo": {
+                "heading": "மேலதிக தகவல்கள்",
+                "changesToPolicy": {
+                    "heading": "Changes to this policy",
+                    "description": {
+                        "para1": "Upgraded versions of WSO2 IS may contain changes to this policy and revisions to this policy will be packaged within such upgrades. Such changes would only apply to users who choose to use upgraded versions.",
+                        "para2": "The organization running WSO2 IS may revise the Privacy Policy from time to time. You can find the most recent governing policy with the respective link provided by the organization running WSO2 IS 5.5. The organization will notify any changes to the privacy policy over our official public channels."
+                    }
+                },
+                "yourChoices": {
+                    "heading": "Your choices",
+                    "description": {
+                        "para1": "If you are already have a user account within WSO2 IS, you have the right to deactivate your account if you find that this privacy policy is unacceptable to you.",
+                        "para2": "If you do not have an account and you do not agree with our privacy policy, you can chose not to create one."
+                    }
+                },
+                "contactUs": {
+                    "heading": "தொடர்பு கொள்க",
+                    "description": {
+                        "para1": "Please contact WSO2 if you have any question or concerns regarding this privacy policy."
+                    }
+                }
+            },
+            "disclaimer": {
+                "heading": "பொறுப்பு துறப்பு",
+                "description": {
+                    "list1": {
+                        "0": "WSO2, its employees, partners, and affiliates do not have access to and do not require, store, process or control any of the data, including personal data contained in WSO2 IS. All data, including personal data is controlled and processed by the entity or individual running WSO2 IS. WSO2, its employees partners and affiliates are not a data processor or a data controller within the meaning of any data privacy regulations. WSO2 does not provide any warranties or undertake any responsibility or liability in connection with the lawfulness or the manner and purposes for which WSO2 IS is used by such entities or persons.",
+                        "1": "is privacy policy is for the informational purposes of the entity or persons running WSO2 IS and sets out the processes and functionality contained within WSO2 IS regarding personal data protection. It is the responsibility of entities and persons running WSO2 IS to create and administer its own rules and processes governing users' personal data, and such rules and processes may change the use, storage and disclosure policies contained herein. Therefore users should consult the entity or persons running WSO2 IS for its own privacy policy for details governing users' personal data."
+                    }
+                }
+            }
+        }
+    }
+}

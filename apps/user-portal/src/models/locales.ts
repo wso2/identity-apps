@@ -103,6 +103,9 @@ export interface Views {
                             email: {
                                 label: string;
                                 placeholder: string;
+                                validations: {
+                                    empty: string;
+                                }
                             }
                         }
                     }
@@ -506,7 +509,8 @@ export interface Views {
                             placeholder: string;
                             validations: {
                                 empty: string;
-                            }
+                            },
+                            note: string;
                         }
                     }
                 },

@@ -38,6 +38,9 @@ export const views: Views = {
                             email: {
                                 label: "Endereço de e-mail",
                                 placeholder: "Digite o endereço de e-mail de recuperação",
+                                validations: {
+                                    empty: "Digite um endereço de email"
+                                }
                             }
                         }
                     }
@@ -693,6 +696,7 @@ export const views: Views = {
                     inputs: {
                         mobile: {
                             label: "Número de celular",
+                            note: "NOTA: Isso mudará o número do celular em seu perfil",
                             placeholder: "Digite seu número de celular",
                             validations: {
                                 empty: "O número do celular é um campo obrigatório"

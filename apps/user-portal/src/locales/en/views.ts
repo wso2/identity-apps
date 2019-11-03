@@ -38,6 +38,9 @@ export const views: Views = {
                             email: {
                                 label:  "Email address",
                                 placeholder: "Enter the recovery email address",
+                                validations: {
+                                    empty: "Enter an email address"
+                                }
                             }
                         }
                     }
@@ -679,6 +682,7 @@ export const views: Views = {
                     inputs: {
                         mobile: {
                             label: "Mobile number",
+                            note: "NOTE: This will change the mobile number in your profile",
                             placeholder: "Enter your mobile number",
                             validations: {
                                 empty: "Mobile number is a required field"

@@ -32,6 +32,10 @@ const SupportedLanguages = {
     pt: {
         flag: "pt",
         name: "Portuguese"
+    },
+    ta: {
+        flag: "lk",
+        name: "Tamil"
     }
 };
 

@@ -32,8 +32,8 @@ interface AccountRecoveryProps {
 
 /**
  * The AccountRecoveryComponent component in the Settings section
- * 
- * @param {AccountRecoveryProps} props 
+ *
+ * @param {AccountRecoveryProps} props
  * @return {JSX.Element}
  */
 export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryProps> = (
@@ -57,4 +57,4 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
             </List>
         </SettingsSection>
     );
-}
+};

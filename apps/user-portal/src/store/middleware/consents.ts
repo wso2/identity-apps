@@ -519,7 +519,8 @@ const handleUpdateConsentedClaimsError = ({ dispatch }) => (next) => (action) =>
             description: i18n.t(
                 "views:components.consentManagement.notifications.updateConsentedClaims.genericError.description"
             ),
-            message: i18n.t("views:components.consentManagement.notifications.updateConsentedClaims.genericError.message"),
+            message: i18n.t("views:components.consentManagement.notifications.updateConsentedClaims." +
+                "genericError.message"),
             otherProps: {
                 negative: true
             },

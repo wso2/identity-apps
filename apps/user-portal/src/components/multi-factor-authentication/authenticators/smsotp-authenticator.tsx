@@ -16,16 +16,17 @@
  * under the License.
  */
 
+import Joi from "@hapi/joi";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Divider, Form, Grid, Icon, List } from "semantic-ui-react";
+import { Grid, Icon, List } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../../../api";
 import { MFAIcons } from "../../../configs";
-import { Notification } from "../../../models";
-import { EditSection, ThemeIcon } from "../../shared";
+import { Notification, Validation } from "../../../models";
+import { EditSection, FormWrapper, ThemeIcon } from "../../shared";
 
 /**
- * Proptypes for the SMS OTP component.
+ * Prop types for the SMS OTP component.
  */
 interface SMSOTPProps {
     onNotificationFired: (notification: Notification) => void;
@@ -38,12 +39,11 @@ interface SMSOTPProps {
  */
 export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props: SMSOTPProps): JSX.Element => {
     const [mobile, setMobile] = useState("");
-    const [editedMobile, setEditedMobile] = useState("");
     const [isEdit, setIsEdit] = useState(false);
-    const {t} = useTranslation();
-    const {onNotificationFired} = props;
+    const { t } = useTranslation();
+    const { onNotificationFired } = props;
 
-    const handleUpdate = () => {
+    const handleUpdate = (mobileNumber) => {
         const data = {
             Operations: [
                 {
@@ -51,79 +51,59 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                     value: {}
                 }
             ],
-            schemas: [
-                "urn:ietf:params:scim:api:messages:2.0:PatchOp"
-            ]
-        };
-
-        const phoneNumbers = {
-            type: "mobile",
-            value: mobile
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
 
         data.Operations[0].value = {
             phoneNumbers: [
                 {
                     type: "mobile",
-                    value: editedMobile
+                    value: mobileNumber
                 }
             ]
         };
 
-        updateProfileInfo(data)
-            .then((response) => {
-                if (response.status === 200) {
-                    onNotificationFired({
-                        description: t(
-                            "views:components.mfa.smsOtp.notifications.updateMobile.success.description"
-                        ),
-                        message: t(
-                            "views:components.mfa.smsOtp.notifications.updateMobile.success.message"
-                        ),
-                        otherProps: {
-                            positive: true
-                        },
-                        visible: true
-                    });
-                    getProfileInfo()
-                        .then((res) => {
-                            setMobileNo(res);
-                        });
-                    setIsEdit(false);
-                } else {
-                    onNotificationFired({
-                        description: t(
-                            "views:components.mfa.smsOtp.notifications.updateMobile.error.description"
-                        ),
-                        message: t(
-                            "views:components.mfa.smsOtp.notifications.updateMobile.error.message"
-                        ),
-                        otherProps: {
-                            negative: true
-                        },
-                        visible: true
-                    });
-                }
+        updateProfileInfo(data).then((response) => {
+            onNotificationFired({
+                description: t("views:components.mfa.smsOtp.notifications.updateMobile.success.description"),
+                message: t("views:components.mfa.smsOtp.notifications.updateMobile.success.message"),
+                otherProps: {
+                    positive: true
+                },
+                visible: true
             });
+            getProfileInfo().then((res) => {
+                setMobileNo(res);
+            });
+            setIsEdit(false);
+
+        })
+        .catch((error) => {
+            onNotificationFired({
+                description: error && error.data && error.data.details
+                    ? t("views:components.mfa.smsOtp.notifications.updateMobile.error.description",
+                        {
+                            description: error.data.details
+                        }
+                    )
+                    : t("views:components.mfa.smsOtp.notifications.updateMobile.genericError.description"),
+                message: error && error.data && error.data.details
+                    ? t("views:components.mfa.smsOtp.notifications.updateMobile.error.message")
+                    : t("views:components.mfa.smsOtp.notifications.updateMobile.genericError.message"),
+                otherProps: {
+                    negative: true
+                },
+                visible: true
+            });
+        });
     };
 
-    /**
-     * The following function handles the change of state of the input fields.
-     * The id of the event target will be used to set the state.
-     * @param event
-     */
-    const handleFieldChange = (event) => {
-        setEditedMobile(event.target.value);
-        event.preventDefault();
-    };
-
-    const setMobileNo = (resp) => {
+    const setMobileNo = (response) => {
         let mobileNumber = "";
-        resp.phoneNumbers.map((mobileNo) => {
+        response.phoneNumbers.map((mobileNo) => {
             mobileNumber = mobileNo.value;
         });
         setMobile(mobileNumber);
-        setEditedMobile(mobileNumber);
     };
 
     const handleEdit = () => {
@@ -136,32 +116,33 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
 
     const showEditView = () => {
         if (!isEdit) {
-            return (<Grid padded>
-                    <Grid.Row columns={2}>
-                        <Grid.Column width={11} className="first-column">
+            return (
+                <Grid padded={ true }>
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column width={ 11 } className="first-column">
                             <List.Content floated="left">
                                 <ThemeIcon
-                                    icon={MFAIcons.sms}
+                                    icon={ MFAIcons.sms }
                                     size="mini"
-                                    twoTone
-                                    transparent
-                                    square
-                                    rounded
-                                    relaxed
+                                    twoTone={ true }
+                                    transparent={ true }
+                                    square={ true }
+                                    rounded={ true }
+                                    relaxed={ true }
                                 />
                             </List.Content>
                             <List.Content>
-                                <List.Header>{t("views:components.mfa.smsOtp.heading")}</List.Header>
+                                <List.Header>{ t("views:components.mfa.smsOtp.heading") }</List.Header>
                                 <List.Description>
-                                    {t("views:components.mfa.smsOtp.descriptions.hint")}
+                                    { t("views:components.mfa.smsOtp.descriptions.hint") }
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
-                        <Grid.Column width={5} className="last-column">
+                        <Grid.Column width={ 5 } className="last-column">
                             <List.Content floated="right">
                                 <Icon
-                                    link
-                                    onClick={handleEdit}
+                                    link={ true }
+                                    onClick={ handleEdit }
                                     className="list-icon"
                                     size="small"
                                     color="grey"
@@ -181,31 +162,77 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                             <List>
                                 <List.Item>
                                     <List.Content>
-                                        <Form>
-                                            <Form.Field width={9}>
-                                                <label>Mobile Number</label>
-                                                <input onChange={handleFieldChange} value={editedMobile}/>
-                                                <br /><br />
-                                                <p style={{fontSize: "12px"}}>
-                                                    <Icon
-                                                        color="grey"
-                                                        floated="left"
-                                                        name="info circle"
-                                                    />
-                                                    NOTE: This will update the mobile number in your profile
-                                                </p>
-                                            </Form.Field>
-                                        </Form>
+                                        <FormWrapper
+                                            formFields={ [
+                                                {
+                                                    label: t(
+                                                        "views:components.profile.forms.mobileChangeForm.inputs" +
+                                                        ".mobile.label"
+                                                    ),
+                                                    name: "mobileNumber",
+                                                    placeholder: t(
+                                                        "views:components.profile.forms.mobileChangeForm" +
+                                                        ".inputs.mobile.placeholder"
+                                                    ),
+                                                    required: true,
+                                                    requiredErrorMessage: t(
+                                                        "views:components.profile.forms." +
+                                                        "mobileChangeForm.inputs.mobile.validations.empty"
+                                                    ),
+                                                    type: "text",
+                                                    validation: (value: string, validation: Validation) => {
+                                                        const error = Joi.number()
+                                                            .integer()
+                                                            .validate(value).error;
+
+                                                        if (error) {
+                                                            validation.isValid = false;
+                                                            validation.errorMessages.push(error.message);
+                                                        }
+                                                    },
+                                                    value: mobile
+                                                },
+                                                {
+                                                    element: (
+                                                        <p style={ { fontSize: "12px" } }>
+                                                            <Icon color="grey" floated="left" name="info circle" />
+                                                            { t(
+                                                                "views:components.profile.forms.mobileChangeForm" +
+                                                                ".inputs.mobile.note"
+                                                            ) }
+                                                        </p>
+                                                    ),
+                                                    type: "custom"
+                                                },
+                                                {
+                                                    hidden: true,
+                                                    type: "divider"
+                                                },
+                                                {
+                                                    size: "small",
+                                                    type: "submit",
+                                                    value: t("common:update").toString()
+                                                },
+                                                {
+                                                    className: "link-button",
+                                                    onClick: handleCancel,
+                                                    size: "small",
+                                                    type: "button",
+                                                    value: t("common:cancel").toString()
+                                                }
+                                            ] }
+                                            groups={ [
+                                                {
+                                                    endIndex: 5,
+                                                    startIndex: 3,
+                                                    style: "inline"
+                                                }
+                                            ] }
+                                            onSubmit={ (values: Map<string, string>) => {
+                                                handleUpdate(values.get("mobileNumber"));
+                                            } }
+                                        />
                                     </List.Content>
-                                </List.Item>
-                                <Divider hidden/>
-                                <List.Item>
-                                    <Button primary onClick={handleUpdate} size="small">
-                                        {t("common:update")}
-                                    </Button>
-                                    <Button className="link-button" onClick={handleCancel} size="small">
-                                        {t("common:cancel")}
-                                    </Button>
                                 </List.Item>
                             </List>
                         </Grid.Column>
@@ -217,16 +244,11 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
 
     useEffect(() => {
         if (mobile === "") {
-            getProfileInfo()
-                .then((response) => {
-                    setMobileNo(response);
-                });
+            getProfileInfo().then((response) => {
+                setMobileNo(response);
+            });
         }
     });
 
-    return (
-        <div>
-            {showEditView()}
-        </div>
-    );
+    return <div>{ showEditView() }</div>;
 };
