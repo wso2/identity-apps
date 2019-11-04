@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { createEmptyNotification, createEmptyUserSession } from "../../models";
+import { createEmptyNotification, emptyUserSession } from "../../models";
 import {
     API_REQUEST_END,
     API_REQUEST_START,
@@ -40,7 +40,7 @@ import {
  * Initial state.
  */
 const initialState = {
-    editingUserSession: createEmptyUserSession(),
+    editingUserSession: emptyUserSession(),
     isFetchUserSessionsRequestLoading: false,
     isRevokeAllUserSessionsModalVisible: false,
     isRevokeAllUserSessionsRequestLoading: false,
