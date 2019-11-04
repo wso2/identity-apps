@@ -16,424 +16,84 @@
  * under the License.
  */
 
-import moment from "moment";
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Button, Container, Grid, Icon, List, Menu, Modal, Placeholder, SemanticICONS, Table } from "semantic-ui-react";
-import { UserAgentParser } from "../../helpers";
-import { UserSession, UserSessions } from "../../models";
-import { AppState } from "../../store";
+import { Button, Container, Menu, Modal } from "semantic-ui-react";
+import { fetchUserSessions, terminateAllUserSessions, terminateUserSession } from "../../api";
 import {
-    fetchUserSessions,
-    hideRevokeAllUserSessionsModal,
-    hideRevokeUserSessionModal,
-    revokeAllUserSessions,
-    revokeUserSession,
-    setEditingUserSession,
-    setSessionsListActiveIndexes,
-    showRevokeAllUserSessionsModal,
-    showRevokeUserSessionModal
-} from "../../store/actions";
-import { EditSection, SettingsSection, ThemeIcon } from "../shared";
+    createEmptyNotification,
+    emptyUserSession,
+    emptyUserSessions,
+    Notification,
+    UserSession,
+    UserSessions
+} from "../../models";
+import { SettingsSection } from "../shared";
+import { UserSessionsList } from "./user-sessions-list";
+
+/**
+ * Proptypes for the user sessions component.
+ */
+interface UserSessionsComponentProps {
+    onNotificationFired: (notification: Notification) => void;
+}
 
 /**
  * User sessions component.
  *
  * @return {JSX.Element}
  */
-export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
-    const editingUserSession = useSelector((state: AppState) => state.userSessions.editingUserSession);
-    const isFetchUserSessionsRequestLoading = useSelector(
-        (state: AppState) => state.userSessions.isFetchUserSessionsRequestLoading
-    );
-    const isRevokeAllUserSessionsModalVisible = useSelector(
-        (state: AppState) => state.userSessions.isRevokeAllUserSessionsModalVisible
-    );
-    const isRevokeUserSessionModalVisible = useSelector(
-        (state: AppState) => state.userSessions.isRevokeUserSessionModalVisible
-    );
-    const isRevokeUserSessionRequestLoading = useSelector(
-        (state: AppState) => state.userSessions.isRevokeUserSessionRequestLoading
-    );
-    const sessionsListActiveIndexes = useSelector((state: AppState) => state.userSessions.sessionsListActiveIndexes);
-    const userSessions = useSelector((state: AppState) => state.userSessions.userSessions as UserSessions);
-
-    const dispatch = useDispatch();
-
+export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps> = (
+    props: UserSessionsComponentProps
+): JSX.Element => {
+    const [ userSessions, setUserSessions ] = useState<UserSessions>(emptyUserSessions);
+    const [ editingUserSession, setEditingUserSession ] = useState<UserSession>(emptyUserSession);
+    const [ isRevokeAllUserSessionsModalVisible, setRevokeAllUserSessionsModalVisibility ] = useState(false);
+    const [ isRevokeUserSessionModalVisible, setRevokeUserSessionModalVisibility ] = useState(false);
+    const [ sessionsListActiveIndexes, setSessionsListActiveIndexes ] = useState([]);
+    const { onNotificationFired } = props;
     const { t } = useTranslation();
 
     useEffect(() => {
-        dispatch(fetchUserSessions());
+        getUserSessions();
     }, []);
 
     /**
-     * Generates the list of user login sessions.
-     *
-     * @param {UserSessions} sessions - Array of user sessions.
-     * @return {JSX.Element[]}
+     * Retrieves the user sessions.
      */
-    const generateSessionList = (sessions: UserSessions): JSX.Element[] => {
+    const getUserSessions = (): void => {
+        let notification: Notification = createEmptyNotification();
 
-        if (!sessions || !sessions.sessions || !(sessions.sessions.length > 0)) {
-            return null;
-        }
+        fetchUserSessions()
+            .then((response) => {
+                setUserSessions(response);
+            })
+            .catch((error) => {
+                notification = {
+                    description: t(
+                        "views:components.userSessions.notifications.fetchSessions.genericError.description"
+                    ),
+                    message: t("views:components.userSessions.notifications.fetchSessions.genericError.message"),
+                    otherProps: {
+                        negative: true
+                    },
+                    visible: true
+                };
+                if (error.response && error.response.data && error.response.detail) {
+                    notification = {
+                        ...notification,
+                        description: t(
+                            "views:components.userSessions.notifications.fetchSessions.error.description",
+                            { description: error.response.data.detail }
+                        ),
+                        message: t(
+                            "views:components.userSessions.notifications.fetchSessions.error.message"
+                        ),
+                    };
+                }
+            });
 
-        const userAgentParser = new UserAgentParser();
-        const sessionList = [];
-
-        for (const [ index, session ] of sessions.sessions.entries()) {
-            userAgentParser.uaString = session.userAgent;
-            sessionList.push(
-                <List.Item className="inner-list-item" key={ session.id }>
-                    <Grid padded>
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column width={ 11 } className="first-column">
-                                <ThemeIcon
-                                    icon={
-                                        <Icon
-                                            name={ resolveDeviceType(userAgentParser.device.type) }
-                                            size="big"
-                                            color="grey"
-                                        />
-                                    }
-                                    transparent
-                                    spaced="right"
-                                    floated="left"
-                                />
-                                <List.Content>
-                                    <List.Header>{ userAgentParser.os.name }</List.Header>
-                                    <List.Description>
-                                        <p style={ { fontSize: "11px" } }>
-                                            {
-                                                t("views:components.userSessions.lastAccessed",
-                                                    {
-                                                        date: moment(
-                                                            parseInt(session.lastAccessTime, 10)
-                                                        ).fromNow()
-                                                    }
-                                                )
-                                            }
-                                        </p>
-                                    </List.Description>
-                                </List.Content>
-                            </Grid.Column>
-                            <Grid.Column width={ 5 } className="last-column">
-                                <List.Content floated="right">
-                                    <Button
-                                        icon
-                                        basic
-                                        id={ index }
-                                        labelPosition="right"
-                                        size="mini"
-                                        onClick={ handleSessionDetailClick }
-                                    >
-                                        {
-                                            sessionsListActiveIndexes.includes(index) ?
-                                                <>
-                                                    { t("common:showLess") }
-                                                    <Icon name="arrow down" flipped="vertically"/>
-                                                </>
-                                                :
-                                                <>
-                                                    { t("common:showMore") }
-                                                    <Icon name="arrow down"/>
-                                                </>
-                                        }
-                                    </Button>
-                                </List.Content>
-                            </Grid.Column>
-                        </Grid.Row>
-                        {
-                            sessionsListActiveIndexes.includes(index) ?
-                                <EditSection>
-                                    <Grid.Row>
-                                        <Grid.Column>
-                                            <List.Content>
-                                                <Grid padded>
-                                                    <Grid.Row columns={ 2 }>
-                                                        <Grid.Column width={ 5 }>
-                                                            { t("common:operatingSystem") }
-                                                        </Grid.Column>
-                                                        <Grid.Column width={ 11 }>
-                                                            <List.Description>
-                                                                <Icon
-                                                                    name={ resolveOSIcon(userAgentParser.os.name) }
-                                                                    color="grey"
-                                                                />
-                                                                { userAgentParser.os.name }
-                                                                { " " }
-                                                                { userAgentParser.os.version }
-                                                            </List.Description>
-                                                        </Grid.Column>
-                                                    </Grid.Row>
-                                                    <Grid.Row columns={ 2 }>
-                                                        <Grid.Column width={ 5 }>
-                                                            { t("common:browser") }
-                                                        </Grid.Column>
-                                                        <Grid.Column width={ 11 }>
-                                                            <List.Description>
-                                                                <Icon
-                                                                    name={
-                                                                        resolveBrowserIcon(userAgentParser.browser.name)
-                                                                    }
-                                                                    color="grey"/>
-                                                                { userAgentParser.browser.name }
-                                                                { " " }
-                                                                { userAgentParser.browser.version }
-                                                            </List.Description>
-                                                        </Grid.Column>
-                                                    </Grid.Row>
-                                                    <Grid.Row columns={ 2 }>
-                                                        <Grid.Column width={ 5 }>
-                                                            { t("common:ipAddress") }
-                                                        </Grid.Column>
-                                                        <Grid.Column width={ 11 }>
-                                                            <List.Description>{ session.ip }</List.Description>
-                                                        </Grid.Column>
-                                                    </Grid.Row>
-                                                    {
-                                                        userAgentParser.device.vendor ?
-                                                            <Grid.Row columns={ 2 }>
-                                                                <Grid.Column width={ 5 }>
-                                                                    { t("common:deviceModel") }
-                                                                </Grid.Column>
-                                                                <Grid.Column width={ 11 }>
-                                                                    <List.Description>
-                                                                        { userAgentParser.device.vendor }
-                                                                        { " " }
-                                                                        { userAgentParser.device.model }
-                                                                    </List.Description>
-                                                                </Grid.Column>
-                                                            </Grid.Row>
-                                                            : null
-                                                    }
-                                                    {
-                                                        session.applications && session.applications.length > 0 ?
-                                                            <Grid.Row columns={ 2 }>
-                                                                <Grid.Column width={ 5 }>
-                                                                    { t("common:applications") }
-                                                                </Grid.Column>
-                                                                <Grid.Column width={ 11 }>
-                                                                    <List.Description>
-                                                                        <Table celled compact>
-                                                                            <Table.Header>
-                                                                                <Table.Row>
-                                                                                    <Table.HeaderCell>
-                                                                                        { t("common:applicationName") }
-                                                                                    </Table.HeaderCell>
-                                                                                    <Table.HeaderCell>
-                                                                                        { t("common:user") }
-                                                                                    </Table.HeaderCell>
-                                                                                </Table.Row>
-                                                                            </Table.Header>
-                                                                            <Table.Body>
-                                                                                {
-                                                                                    session.applications.map(
-                                                                                        (app, i) => (
-                                                                                            <Table.Row key={ i }>
-                                                                                                <Table.Cell>
-                                                                                                    { app.appName }
-                                                                                                </Table.Cell>
-                                                                                                <Table.Cell>
-                                                                                                    { app.subject }
-                                                                                                </Table.Cell>
-                                                                                            </Table.Row>
-                                                                                        )
-                                                                                    )
-                                                                                }
-                                                                            </Table.Body>
-                                                                        </Table>
-                                                                    </List.Description>
-                                                                </Grid.Column>
-                                                            </Grid.Row>
-                                                            : null
-                                                    }
-                                                    <Grid.Row columns={ 2 }>
-                                                        <Grid.Column width={ 5 }>
-                                                            { t("common:loginTime") }
-                                                        </Grid.Column>
-                                                        <Grid.Column width={ 11 }>
-                                                            <List.Description>
-                                                                {
-                                                                    moment(parseInt(session.loginTime, 10))
-                                                                        .format("lll")
-                                                                }
-                                                            </List.Description>
-                                                        </Grid.Column>
-                                                    </Grid.Row>
-                                                    <Grid.Row columns={ 2 }>
-                                                        <Grid.Column width={ 5 }>
-                                                            { t("common:lastAccessed") }
-                                                        </Grid.Column>
-                                                        <Grid.Column width={ 11 }>
-                                                            <List.Description>
-                                                                {
-                                                                    moment(parseInt(session.lastAccessTime, 10))
-                                                                        .fromNow()
-                                                                }
-                                                            </List.Description>
-                                                        </Grid.Column>
-                                                    </Grid.Row>
-                                                    <Grid.Row columns={ 2 }>
-                                                        <Grid.Column width={ 5 }>{ " " }</Grid.Column>
-                                                        <Grid.Column width={ 11 }>
-                                                            <Button
-                                                                negative
-                                                                onClick={
-                                                                    () => handleTerminateUserSessionClick(session)
-                                                                }
-                                                                loading={ isRevokeUserSessionRequestLoading }
-                                                            >
-                                                                { t("common:terminateSession") }
-                                                            </Button>
-                                                        </Grid.Column>
-                                                    </Grid.Row>
-                                                </Grid>
-                                            </List.Content>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </EditSection>
-                                :
-                                null
-                        }
-                    </Grid>
-                </List.Item>
-            );
-        }
-        return sessionList;
-    };
-
-    /**
-     * Resolves an icon for the device type extracted from the user agent string.
-     *
-     * @param {string} type - Device type.
-     * @return {SemanticICONS}
-     */
-    const resolveDeviceType = (type: string): SemanticICONS => {
-        const deviceType = {
-            desktop: {
-                icon: "computer",
-                values: [ "desktop" ]
-            },
-            mobile: {
-                icon: "mobile alternate",
-                values: [ "mobile" ]
-            },
-            tablet: {
-                icon: "tablet alternate",
-                values: [ "tablet" ]
-            }
-        };
-
-        for (const [ key, value ] of Object.entries(deviceType)) {
-            if (value.values.includes(type)) {
-                return value.icon as SemanticICONS;
-            }
-        }
-
-        // Default device icon.
-        return "computer";
-    };
-
-    /**
-     * Resolves an icon for the operating system type extracted from the user agent string.
-     *
-     * @param {string} type - Operating system type.
-     * @return {SemanticICONS}
-     */
-    const resolveOSIcon = (type: string): SemanticICONS => {
-        const osType = {
-            android: {
-                icon: "android",
-                values: [ "Android" ]
-            },
-            ios: {
-                icon: "apple",
-                values: [ "iOS" ]
-            },
-            linux: {
-                icon: "linux",
-                values: [ "Linux" ]
-            },
-            mac: {
-                icon: "apple",
-                values: [ "Mac OS" ]
-            },
-            windows: {
-                icon: "windows",
-                values: [ "Windows [Phone/Mobile]" ]
-            }
-        };
-
-        for (const [ key, value ] of Object.entries(osType)) {
-            if (value.values.includes(type)) {
-                return value.icon as SemanticICONS;
-            }
-        }
-    };
-
-    /**
-     * Resolves an icon for the browser type extracted from the user agent string.
-     *
-     * @param {string} type - Browser type.
-     * @return {SemanticICONS}
-     */
-    const resolveBrowserIcon = (type: string): SemanticICONS => {
-        const browserType = {
-            chrome: {
-                icon: "chrome",
-                values: [ "Chrome", "Chrome Headless", "Chrome WebView", "Chromium" ]
-            },
-            firefox: {
-                icon: "firefox",
-                values: [ "Firefox" ]
-            },
-            opera: {
-                icon: "opera",
-                values: [ "Opera Coast", "Opera Mini", "Opera Mobi", "Opera Tablet", "Opera" ]
-            },
-            safari: {
-                icon: "safari",
-                values: [ "Mobile Safari", "Safari" ]
-            }
-        };
-
-        for (const [ key, value ] of Object.entries(browserType)) {
-            if (value.values.includes(type)) {
-                return value.icon as SemanticICONS;
-            }
-        }
-    };
-
-    /**
-     * Generates a placeholder for the sessions list.
-     *
-     * @return {JSX.Element[]}
-     */
-    const createSessionListPlaceholder = (): JSX.Element[] => {
-        const placeholder = [];
-        for (let i = 0; i < 2; i++) {
-            placeholder.push(
-                <List.Item className="inner-list-item" key={ i }>
-                    <Grid padded>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column width={ 16 } className="first-column">
-                                <List.Content verticalAlign="middle">
-                                    <Placeholder>
-                                        <Placeholder.Header image>
-                                            <Placeholder.Line/>
-                                            <Placeholder.Line/>
-                                        </Placeholder.Header>
-                                    </Placeholder>
-                                </List.Content>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </List.Item>
-            );
-        }
-        return placeholder;
+        onNotificationFired(notification);
     };
 
     /**
@@ -453,54 +113,140 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                 indexes.splice(removingIndex, 1);
             }
         }
-        dispatch(setSessionsListActiveIndexes(indexes));
+        setSessionsListActiveIndexes(indexes);
     };
 
     /**
      * Terminate a single user session.
      */
-    const terminateUserSession = () => {
-        dispatch(revokeUserSession(editingUserSession.id));
-        dispatch(hideRevokeUserSessionModal());
+    const handleTerminateUserSession = () => {
+        let notification: Notification = createEmptyNotification();
+
+        terminateUserSession(editingUserSession.id)
+            .then((response) => {
+                notification = {
+                    description: t(
+                        "views:components.userSessions.notifications.terminateUserSession.success.description"
+                    ),
+                    message: t(
+                        "views:components.userSessions.notifications.terminateUserSession.success.message"
+                    ),
+                    otherProps: {
+                        positive: true
+                    },
+                    visible: true
+                };
+            })
+            .catch((error) => {
+                notification = {
+                    description: t(
+                        "views:components.userSessions.notifications.revokeUserSession.genericError.description"
+                    ),
+                    message: t("views:components.userSessions.notifications.revokeUserSession.genericError.message"),
+                    otherProps: {
+                        negative: true
+                    },
+                    visible: true
+                };
+                if (error.response && error.response.data && error.response.detail) {
+                    notification = {
+                        ...notification,
+                        description: t(
+                            "views:components.userSessions.notifications.revokeUserSession.error.description",
+                            { description: error.response.data.detail }
+                        ),
+                        message: t("views:components.userSessions.notifications.revokeUserSession.error.message"),
+                    };
+                }
+            });
+
+        onNotificationFired(notification);
+        setRevokeUserSessionModalVisibility(false);
+        getUserSessions();
     };
 
     /**
      * Terminates all the user sessions.
      */
-    const terminateAllUserSessions = () => {
-        dispatch(revokeAllUserSessions());
-        dispatch(hideRevokeAllUserSessionsModal());
+    const handleTerminateAllUserSessions = () => {
+        let notification: Notification = createEmptyNotification();
+
+        terminateAllUserSessions()
+            .then((response) => {
+                notification = {
+                    description: t(
+                        "views:components.userSessions.notifications.terminateAllUserSessions.success.description"
+                    ),
+                    message: t(
+                        "views:components.userSessions.notifications.terminateAllUserSessions.success.message"
+                    ),
+                    otherProps: {
+                        positive: true
+                    },
+                    visible: true
+                };
+            })
+            .catch((error) => {
+                notification = {
+                    description: t(
+                        "views:components.userSessions.notifications.terminateAllUserSessions.genericError.description"
+                    ),
+                    message: t(
+                        "views:components.userSessions.notifications.terminateAllUserSessions.genericError.message"
+                    ),
+                    otherProps: {
+                        negative: true
+                    },
+                    visible: true
+                };
+                if (error.response && error.response.data && error.response.detail) {
+                    notification = {
+                        ...notification,
+                        description: t(
+                            "views:components.userSessions.notifications.terminateAllUserSessions.error.description",
+                            { description: error.response.data.detail }
+                        ),
+                        message: t(
+                            "views:components.userSessions.notifications.terminateAllUserSessions.error.message"
+                        ),
+                    };
+                }
+            });
+
+        onNotificationFired(notification);
+        setRevokeAllUserSessionsModalVisibility(false);
+        getUserSessions();
     };
 
     /**
      * Handles the terminate all user sessions click event.
      */
     const handleTerminateAllUserSessionsClick = (): void => {
-        dispatch(showRevokeAllUserSessionsModal());
+        setRevokeAllUserSessionsModalVisibility(true);
     };
 
     /**
      * Handles the terminate user sessions click event.
      *
-     * @param {UserSession} session - Clicked session.
+     * @param {UserSession} session - Session which needs to be edited.
      */
     const handleTerminateUserSessionClick = (session: UserSession): void => {
-        dispatch(setEditingUserSession(session));
-        dispatch(showRevokeUserSessionModal());
+        setEditingUserSession(session);
+        setRevokeUserSessionModalVisibility(true);
     };
 
     /**
      * Handle the terminate all user sessions modal close event.
      */
     const handleTerminateAllUserSessionsModalClose = () => {
-        dispatch(hideRevokeAllUserSessionsModal());
+        setRevokeAllUserSessionsModalVisibility(false);
     };
 
     /**
      * Handle the terminate user session modal close event.
      */
     const handleTerminateUserSessionModalClose = () => {
-        dispatch(hideRevokeUserSessionModal());
+        setRevokeUserSessionModalVisibility(false);
     };
 
     const terminateAllUserSessionsModal = (
@@ -521,7 +267,7 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                 <Button className="link-button" onClick={ handleTerminateAllUserSessionsModalClose }>
                     { t("common:cancel") }
                 </Button>
-                <Button primary onClick={ terminateAllUserSessions }>
+                <Button primary={ true } onClick={ handleTerminateAllUserSessions }>
                     { t("common:terminate") }
                 </Button>
             </Modal.Actions>
@@ -546,7 +292,7 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                 <Button className="link-button" onClick={ handleTerminateUserSessionModalClose }>
                     { t("common:cancel") }
                 </Button>
-                <Button primary onClick={ terminateUserSession }>
+                <Button primary={ true } onClick={ handleTerminateUserSession }>
                     { t("common:terminate") }
                 </Button>
             </Modal.Actions>
@@ -570,7 +316,7 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                             <Menu.Menu position="right">
                                 <Button
                                     className="borderless-button"
-                                    basic
+                                    basic={ true }
                                     color="red"
                                     onClick={ handleTerminateAllUserSessionsClick }
                                 >
@@ -581,13 +327,12 @@ export const UserSessionsComponent: FunctionComponent<{}> = (): JSX.Element => {
                     )
                     : null
             }
-            <List divided verticalAlign="middle" className="main-content-inner">
-                {
-                    isFetchUserSessionsRequestLoading
-                        ? createSessionListPlaceholder()
-                        : generateSessionList(userSessions)
-                }
-            </List>
+            <UserSessionsList
+                onTerminateUserSessionClick={ handleTerminateUserSessionClick }
+                onUserSessionDetailClick={ handleSessionDetailClick }
+                userSessions={ userSessions }
+                userSessionsListActiveIndexes={ sessionsListActiveIndexes }
+            />
             { terminateAllUserSessionsModal }
             { terminateUserSessionModal }
         </SettingsSection>
