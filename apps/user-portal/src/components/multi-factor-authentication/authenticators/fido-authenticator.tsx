@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Modal } from "semantic-ui-react";
 import { deleteDevice, getMetaData, startFidoFlow } from "../../../api";
@@ -44,10 +44,6 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
 
     useEffect(() => {
         getFidoMetaData();
-    }, [deviceList]);
-
-    useEffect(() => {
-        getFidoMetaData();
     }, []);
 
     const getFidoMetaData = () => {
@@ -55,34 +51,79 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         getMetaData()
             .then((response) => {
                 if (response.status === 200) {
-                    // tslint:disable-next-line:prefer-for-of
-                    for (let i = 0; i < response.data.length; i++) {
-                        devices.push(response.data[i]);
+                    if (response.data.length > 0) {
+                        // tslint:disable-next-line:prefer-for-of
+                        for (let i = 0; i < response.data.length; i++) {
+                            devices.push(response.data[i]);
+                        }
                     }
                     setDeviceList(devices);
                 }
-            });
+                });
     };
 
     const addDevice = () => {
         startFidoFlow()
-            .then((response) => {
-                if (response.status !== 200) {
-                    onNotificationFired({
-                        description: t(
-                            "views:components.mfa.fido.notifications.startFidoFlow.error.description"
-                        ),
-                        message: t(
-                            "views:components.mfa.fido.notifications.startFidoFlow.error.message"
-                        ),
-                        otherProps: {
-                            negative: true
-                        },
-                        visible: true
-                    });
-                }
+            .then(() => {
+                getFidoMetaData();
+                onNotificationFired({
+                    description: t(
+                        "views:securityPage.multiFactor.fido.notification.registration.success.description"
+                    ),
+                    message: t(
+                        "views:securityPage.multiFactor.fido.notification.registration.success.message"
+                    ),
+                    otherProps: {
+                        positive: true
+                    },
+                    visible: true
+                });
+            }).catch(() => {
+                onNotificationFired({
+                    description: t(
+                        "views:securityPage.multiFactor.fido.notification.registration.error.description"
+                    ),
+                    message: t(
+                        "views:securityPage.multiFactor.fido.notification.registration.error.message"
+                    ),
+                    otherProps: {
+                        negative: true
+                    },
+                    visible: true
             });
-        getFidoMetaData();
+        });
+    }
+
+    const removeDevice = (event) => {
+        deleteDevice(event.target.id)
+            .then(() => {
+                getFidoMetaData();
+                onNotificationFired({
+                    description: t(
+                        "views:securityPage.multiFactor.fido.notification.deletion.success.description"
+                    ),
+                    message: t(
+                        "views:securityPage.multiFactor.fido.notification.deletion.success.message"
+                    ),
+                    otherProps: {
+                        success: true
+                    },
+                    visible: true
+                });
+            }).catch(() => {
+                onNotificationFired({
+                    description: t(
+                    "views:securityPage.multiFactor.fido.notification.deletion.error.description"
+                    ),
+                    message: t(
+                    "views:securityPage.multiFactor.fido.notification.deletion.error.message"
+                    ),
+                    otherProps: {
+                    negative: true
+                    },
+                    visible: true
+                });
+            });
     }
 
     return (
@@ -145,12 +186,13 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                 <Grid.Column width={5} className="last-column">
                                                     <List.Content floated="right">
                                                         <Icon
+                                                            id={device.credential.credentialId}
                                                             link
-                                                            disabled
                                                             className="list-icon"
                                                             size="large"
                                                             color="red"
                                                             name="trash alternate outline"
+                                                            onClick={removeDevice}
                                                         />
                                                     </List.Content>
                                                 </Grid.Column>
