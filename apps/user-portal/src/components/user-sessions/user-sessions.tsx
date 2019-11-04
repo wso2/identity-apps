@@ -330,7 +330,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
             <UserSessionsList
                 onTerminateUserSessionClick={ handleTerminateUserSessionClick }
                 onUserSessionDetailClick={ handleSessionDetailClick }
-                userSessions={ userSessions }
+                userSessions={ userSessions && userSessions.sessions ? userSessions.sessions : null }
                 userSessionsListActiveIndexes={ sessionsListActiveIndexes }
             />
             { terminateAllUserSessionsModal }

@@ -27,10 +27,7 @@ import {
     SemanticICONS
 } from "semantic-ui-react";
 import { UserAgentParser } from "../../helpers";
-import {
-    UserSession,
-    UserSessions
-} from "../../models";
+import { UserSession } from "../../models";
 import { ThemeIcon } from "../shared";
 import { UserSessionsEdit } from "./user-sessions-edit";
 
@@ -38,10 +35,10 @@ import { UserSessionsEdit } from "./user-sessions-edit";
  * Proptypes for the user sessions list component.
  */
 interface UserSessionsListProps {
-    userSessions: UserSessions;
-    userSessionsListActiveIndexes: number[];
-    onUserSessionDetailClick: (e: MouseEvent<HTMLButtonElement>, element: HTMLButtonElement) => void;
-    onTerminateUserSessionClick: (userSession: UserSession) => void;
+    onTerminateUserSessionClick?: (userSession: UserSession) => void;
+    onUserSessionDetailClick?: (e: MouseEvent<HTMLButtonElement>, element: HTMLButtonElement) => void;
+    userSessions: UserSession[];
+    userSessionsListActiveIndexes?: number[];
 }
 
 const userAgentParser = new UserAgentParser();
@@ -55,10 +52,10 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
     props: UserSessionsListProps
 ): JSX.Element => {
     const {
-        userSessions,
-        userSessionsListActiveIndexes,
+        onTerminateUserSessionClick,
         onUserSessionDetailClick,
-        onTerminateUserSessionClick
+        userSessions,
+        userSessionsListActiveIndexes
     } = props;
     const { t } = useTranslation();
 
@@ -98,10 +95,9 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
         <List divided verticalAlign="middle" className="main-content-inner">
             {
                 userSessions
-                && userSessions.sessions
-                && userSessions.sessions.length
-                && userSessions.sessions.length > 0
-                    ? userSessions.sessions.map((userSession, index) => {
+                && userSessions.length
+                && userSessions.length > 0
+                    ? userSessions.map((userSession, index) => {
                         userAgentParser.uaString = userSession.userAgent;
                         return (
                             <List.Item className="inner-list-item" key={ userSession.id }>
@@ -143,37 +139,45 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
                                                 </List.Description>
                                             </List.Content>
                                         </Grid.Column>
-                                        <Grid.Column width={ 5 } className="last-column">
-                                            <List.Content floated="right">
-                                                <Button
-                                                    icon
-                                                    basic
-                                                    id={ index }
-                                                    labelPosition="right"
-                                                    size="mini"
-                                                    onClick={ onUserSessionDetailClick }
-                                                >
-                                                    {
-                                                        userSessionsListActiveIndexes.includes(index)
-                                                            ? (
-                                                                <>
-                                                                    { t("common:showLess") }
-                                                                    <Icon name="arrow down" flipped="vertically"/>
-                                                                </>
-                                                            )
-                                                            : (
-                                                                <>
-                                                                    { t("common:showMore") }
-                                                                    <Icon name="arrow down"/>
-                                                                </>
-                                                            )
-                                                    }
-                                                </Button>
-                                            </List.Content>
-                                        </Grid.Column>
+                                        {
+                                            userSessionsListActiveIndexes
+                                                ? (
+                                                    <Grid.Column width={ 5 } className="last-column">
+                                                        <List.Content floated="right">
+                                                            <Button
+                                                                icon
+                                                                basic
+                                                                id={ index }
+                                                                labelPosition="right"
+                                                                size="mini"
+                                                                onClick={ onUserSessionDetailClick }
+                                                            >
+                                                                {
+                                                                    userSessionsListActiveIndexes.includes(index)
+                                                                        ? (
+                                                                            <>
+                                                                                { t("common:showLess") }
+                                                                                <Icon
+                                                                                    name="arrow down"
+                                                                                    flipped="vertically"
+                                                                                />
+                                                                            </>
+                                                                        )
+                                                                        : (
+                                                                            <>
+                                                                                { t("common:showMore") }
+                                                                                <Icon name="arrow down"/>
+                                                                            </>
+                                                                        )
+                                                                }
+                                                            </Button>
+                                                        </List.Content>
+                                                    </Grid.Column>
+                                                ) : null
+                                        }
                                     </Grid.Row>
                                     {
-                                        userSessionsListActiveIndexes.includes(index)
+                                        userSessionsListActiveIndexes && userSessionsListActiveIndexes.includes(index)
                                             ? (
                                                 <UserSessionsEdit
                                                     browser={ userAgentParser.browser }
@@ -192,4 +196,13 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
             }
         </List>
     );
+};
+
+/**
+ * Default proptypes for the user sessions list component.
+ */
+UserSessionsList.defaultProps = {
+    onTerminateUserSessionClick: () => null,
+    onUserSessionDetailClick: () => null,
+    userSessionsListActiveIndexes: null
 };

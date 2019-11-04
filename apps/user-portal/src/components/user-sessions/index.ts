@@ -17,3 +17,5 @@
  */
 
 export * from "./user-sessions";
+export * from "./user-sessions-edit";
+export * from "./user-sessions-list";
