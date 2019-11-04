@@ -193,6 +193,8 @@ export interface CheckboxField {
     name: string;
     children: CheckboxChild[];
     value?: string[];
+    required: boolean;
+    requiredErrorMessage: string;
 }
 
 /**
@@ -214,7 +216,6 @@ export interface DropdownField {
     default?: string;
     children: DropdownChild[];
     placeholder?: string;
-    validation?: (value: string, validation: Validation) => void;
     requiredErrorMessage: string;
     required: boolean;
     value?: string;

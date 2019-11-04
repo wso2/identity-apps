@@ -31,9 +31,10 @@
             "^.+\\.jsx$": "babel-jest"
         },
         "moduleNameMapper": {
-            "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/mocks/fileMock.js",
-            "\\.(css|less)$": "<rootDir>/mocks/styleMock.js"
-        }
+            "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test_configs/file_mock.js",
+            "\\.(css|less)$": "<rootDir>/test_configs/style_mock.js"
+        },
+        "setupFilesAfterEnv":["<rootDir>/test_configs/setup_test.ts"]
     },
     "devDependencies": {
         "@babel/cli": "^7.5.5",
@@ -41,6 +42,7 @@
         "@babel/plugin-transform-modules-commonjs": "^7.6.0",
         "@babel/polyfill": "^7.0.0",
         "@babel/preset-env": "^7.5.5",
+        "@testing-library/jest-dom": "^4.2.3",
         "@testing-library/react": "^9.3.1",
         "@types/crypto-js": "^3.1.43",
         "@types/i18next": "8.4.3",

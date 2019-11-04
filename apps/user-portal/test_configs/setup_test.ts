@@ -16,8 +16,4 @@
  * under the License.
  */
 
-export * from "./history";
-export * from "./http-headers";
-export * from "./image";
-export * from "./user";
-export * from "./user-agent-parser";
+import "../node_modules/@testing-library/jest-dom/extend-expect";

@@ -59,7 +59,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     /**
-     * Initializes the state of the from everytime the passed formFields prop changes
+     * Initializes the state of the from every time the passed formFields prop changes
      */
     useEffect(() => {
         init(false);
