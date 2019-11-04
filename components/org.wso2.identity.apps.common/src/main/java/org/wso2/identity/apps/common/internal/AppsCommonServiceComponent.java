@@ -70,6 +70,7 @@ import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH
 public class AppsCommonServiceComponent {
 
     private static Log log = LogFactory.getLog(AppsCommonServiceComponent.class);
+    public static final String GRANT_TYPE_ACCOUNT_SWITCH = "account_switch";
 
     @Activate
     protected void activate(BundleContext bundleContext) {
@@ -240,7 +241,7 @@ public class AppsCommonServiceComponent {
         oAuthConsumerAppDTO.setOauthConsumerSecret(consumerSecret);
         oAuthConsumerAppDTO.setCallbackUrl(IdentityUtil.getServerURL(portalPath, false, true));
         oAuthConsumerAppDTO.setBypassClientCredentials(true);
-        oAuthConsumerAppDTO.setGrantTypes(AUTHORIZATION_CODE + " " + REFRESH_TOKEN);
+        oAuthConsumerAppDTO.setGrantTypes(AUTHORIZATION_CODE + " " + REFRESH_TOKEN + " " + GRANT_TYPE_ACCOUNT_SWITCH);
         oAuthConsumerAppDTO.setPkceMandatory(true);
 
         try {
