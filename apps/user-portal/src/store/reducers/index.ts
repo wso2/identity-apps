@@ -18,4 +18,3 @@
 
 export * from "./authenticate";
 export * from "./consents";
-export * from "./user-sessions";
