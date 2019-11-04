@@ -37,7 +37,8 @@
         margin-right: -15px;
         box-shadow: none !important;
 
-        &:hover {
+        &:hover, &:focus, &:active {
+            background: transparent !important;
             box-shadow: none !important;
         }
     }
