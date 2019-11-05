@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import * as React from "react";
+import React from "react";
+import { FormWrapper } from "..";
 import { fireEvent, render } from "../../../../../test_configs/test-utils";
 import { Validation } from "../../../../models";
-import { FormWrapper } from "../form-wrapper";
 import constants from "./constants";
 import getForm from "./test-form";
 
@@ -27,33 +27,20 @@ describe("Test if the FormWrapper is working fine", () => {
 
     test("Test if the basic input type text functions work fine", () => {
 
-        const { getByText, getByPlaceholderText, getByDisplayValue } = render(
-            <FormWrapper
-                formFields={ [{
-                    label: constants.TEXT_BOX_LABEL,
-                    name: constants.TEXT_BOX_NAME,
-                    placeholder: constants.TEXT_BOX_PLACEHOLDER,
-                    required: true,
-                    requiredErrorMessage: constants.TEXT_BOX_REQUIRED_MESSAGE,
-                    type: "text" as const,
-                    validation: (value: string, validation: Validation) => {
-                        if (value !== constants.TEXT_BOX_VALID_MESSAGE) {
-                            validation.isValid = false;
-                            validation.errorMessages.push(
-                                constants.TEXT_BOX_VALIDATION_FAILED
-                            );
-                        }
-                    },
-                    value: constants.TEXT_BOX_VALUE,
-                    width: 15 as const
-                },
-                {
-                    type: "submit",
-                    value: "Submit"
-                }] }
-                onSubmit={ () => { } }
-            />
-        );
+        const { getByText, getByPlaceholderText, getByDisplayValue } = render(getForm([
+            {
+                isDefault: true,
+                isRequired: true,
+                isValue: true,
+                type: "text"
+            },
+            {
+                isDefault: false,
+                isRequired: false,
+                isValue: true,
+                type: "submit"
+            }
+        ]));
 
         // checks if the label is displayed
         expect(getByText(constants.TEXT_BOX_LABEL)).toBeInTheDocument();
@@ -65,6 +52,9 @@ describe("Test if the FormWrapper is working fine", () => {
         // checks if the submit button is displayed
         expect(getByText(constants.SUBMIT)).toBeInTheDocument();
 
+        // checks if the text box with the mentioned value is displayed
+        expect(getByDisplayValue(constants.TEXT_BOX_VALUE)).toBeInTheDocument();
+
         // check if the value of the text box changes
         const NEW_VALUE = "new value";
         fireEvent.change(textBox, { target: { value: NEW_VALUE } });
@@ -75,9 +65,6 @@ describe("Test if the FormWrapper is working fine", () => {
         fireEvent.blur(textBox);
         fireEvent.click(getByText(constants.SUBMIT));
         expect(getByText(constants.TEXT_BOX_REQUIRED_MESSAGE)).toBeInTheDocument();
-
-        // checks if the text box with the mentioned value is displayed
-        expect(getByDisplayValue(constants.TEXT_BOX_VALUE)).toBeInTheDocument();
 
         // checks if validation is working fine
         fireEvent.change(textBox, { target: { value: "wrong value" } });
@@ -95,7 +82,7 @@ describe("Test if the FormWrapper is working fine", () => {
 
     test("Test if input type text is empty by default when no value is passed", () => {
 
-        const { getByDisplayValue } = render(getForm([
+        const { getByPlaceholderText } = render(getForm([
             {
                 isDefault: true,
                 isRequired: true,
@@ -111,14 +98,14 @@ describe("Test if the FormWrapper is working fine", () => {
         ]));
 
         // checks if the text box with the mentioned value is displayed
-        expect(getByDisplayValue(constants.TEXT_BOX_VALUE)).not().toBeInTheDocument();
+        expect(getByPlaceholderText(constants.TEXT_BOX_PLACEHOLDER).nodeValue).toBe(null);
 
     });
 
     test("Test if the form is submitted successfully with an empty text box when required is set to false",
         () => {
 
-            const { getByPlaceholderText, getByText } = render(getForm([
+            const { getByPlaceholderText, queryByText, getByText } = render(getForm([
                 {
                     isDefault: true,
                     isRequired: false,
@@ -128,7 +115,7 @@ describe("Test if the FormWrapper is working fine", () => {
                 {
                     isDefault: false,
                     isRequired: false,
-                    isValue: false,
+                    isValue: true,
                     type: "submit"
                 }
             ]));
@@ -139,7 +126,7 @@ describe("Test if the FormWrapper is working fine", () => {
             fireEvent.change(textBox, { target: { value: "" } });
             fireEvent.blur(textBox);
             fireEvent.click(getByText(constants.SUBMIT));
-            expect(getByText(constants.TEXT_BOX_REQUIRED_MESSAGE)).not().toBeInTheDocument();
+            expect(queryByText(constants.TEXT_BOX_REQUIRED_MESSAGE)).not.toBeInTheDocument();
         });
 
     test("Test if the input type password works fine", () => {
@@ -154,7 +141,7 @@ describe("Test if the FormWrapper is working fine", () => {
             {
                 isDefault: false,
                 isRequired: false,
-                isValue: false,
+                isValue: true,
                 type: "submit"
             }
         ]));

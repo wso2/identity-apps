@@ -118,10 +118,10 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      * @param toBeDetermined
      */
     const isInputField = (toBeDetermined: FormField): toBeDetermined is InputField => {
-        return (toBeDetermined as InputField).type === "email" &&
-            (toBeDetermined as InputField).type === "password" &&
-            (toBeDetermined as InputField).type === "number" &&
-            (toBeDetermined as InputField).type === "text" &&
+        return (toBeDetermined as InputField).type === "email" ||
+            (toBeDetermined as InputField).type === "password" ||
+            (toBeDetermined as InputField).type === "number" ||
+            (toBeDetermined as InputField).type === "text" ||
             (toBeDetermined as InputField).type === "textarea";
 
     };
