@@ -16,9 +16,9 @@
  * under the License.
  */
 
-// import { Common } from "../../models";
+import { Common } from "../../models";
 
-export const common = {
+export const common: Common = {
     access: "ප්\u200Dරවේශය",
     active: "සක්\u200Dරීයයි",
     add: "එකතු කරන්න",

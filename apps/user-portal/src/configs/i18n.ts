@@ -21,6 +21,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 import * as locales from "../locales";
 
+console.log(locales);
 /**
  * Supported language list.
  */
@@ -33,6 +34,10 @@ const SupportedLanguages = {
         flag: "pt",
         name: "Portuguese"
     },
+    si: {
+        flag: "lk",
+        name: "Sinhala"
+    },
     ta: {
         flag: "lk",
         name: "Tamil"
@@ -44,7 +49,7 @@ const SupportedLanguages = {
  */
 const initOptions = {
     contextSeparator: "_",
-    debug: false,
+    debug: true,
     defaultNS: "common",
     fallbackLng: "en",
     interpolation: {
