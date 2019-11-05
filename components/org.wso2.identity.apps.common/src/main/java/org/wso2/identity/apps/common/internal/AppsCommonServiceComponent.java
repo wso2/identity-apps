@@ -37,7 +37,7 @@ import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.core.util.IdentityCoreInitializedEvent;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
-import org.wso2.carbon.identity.oauth.OAuthAdminService;
+import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
 import org.wso2.carbon.identity.oauth.OAuthUtil;
 import org.wso2.carbon.identity.oauth.dto.OAuthConsumerAppDTO;
 import org.wso2.carbon.registry.core.exceptions.RegistryException;
@@ -58,6 +58,7 @@ import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENA
 import static org.wso2.identity.apps.common.util.AppPortalConstants.DISPLAY_NAME_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.TOKEN_BINDING_TYPE;
 
 /***
  * OSGi service component which configure the service providers for portals.
@@ -126,6 +127,27 @@ public class AppsCommonServiceComponent {
         AppsCommonDataHolder.getInstance().setApplicationManagementService(null);
     }
 
+    @Reference(name = "oauth.admin.service",
+               service = OAuthAdminServiceImpl.class,
+               cardinality = ReferenceCardinality.MANDATORY,
+               policy = ReferencePolicy.DYNAMIC,
+               unbind = "unsetOAuthAdminService")
+    protected void setOAuthAdminService(OAuthAdminServiceImpl oAuthAdminService) {
+
+        if (log.isDebugEnabled()) {
+            log.debug("Setting the OAuth Admin Service.");
+        }
+        AppsCommonDataHolder.getInstance().setOAuthAdminService(oAuthAdminService);
+    }
+
+    protected void unsetOAuthAdminService(OAuthAdminServiceImpl oAuthAdminService) {
+
+        if (log.isDebugEnabled()) {
+            log.debug("Un-setting the OAuth Admin Service.");
+        }
+        AppsCommonDataHolder.getInstance().setOAuthAdminService(null);
+    }
+
     @Reference(name = "identity.core.init.event.service",
                service = IdentityCoreInitializedEvent.class,
                cardinality = ReferenceCardinality.MANDATORY,
@@ -153,7 +175,7 @@ public class AppsCommonServiceComponent {
 
         ApplicationManagementService applicationMgtService = AppsCommonDataHolder.getInstance()
                 .getApplicationManagementService();
-        OAuthAdminService oAuthAdminService = new OAuthAdminService();
+        OAuthAdminServiceImpl oAuthAdminService = AppsCommonDataHolder.getInstance().getOAuthAdminService();
 
         UserRealm userRealm = AppsCommonDataHolder.getInstance().getRegistryService().getUserRealm(SUPER_TENANT_ID);
         String adminUsername = userRealm.getRealmConfiguration().getAdminUserName();
@@ -217,6 +239,7 @@ public class AppsCommonServiceComponent {
         // Set requested claim mappings for the SP.
         ClaimConfig claimConfig = new ClaimConfig();
         claimConfig.setClaimMappings(getRequestedClaimMappings());
+        claimConfig.setLocalClaimDialect(true);
         serviceProvider.setClaimConfig(claimConfig);
 
         applicationMgtService.updateApplication(serviceProvider, SUPER_TENANT_DOMAIN_NAME, appOwner);
@@ -231,8 +254,9 @@ public class AppsCommonServiceComponent {
      * @param consumerKey       Consumer key.
      * @throws IdentityOAuthAdminException IdentityOAuthAdminException.
      */
-    private void createOAuth2Application(OAuthAdminService oAuthAdminService, String applicationName, String portalPath,
-            String consumerKey, String consumerSecret, String appOwner) throws IdentityOAuthAdminException {
+    private void createOAuth2Application(OAuthAdminServiceImpl oAuthAdminService, String applicationName,
+            String portalPath, String consumerKey, String consumerSecret, String appOwner)
+            throws IdentityOAuthAdminException {
 
         OAuthConsumerAppDTO oAuthConsumerAppDTO = new OAuthConsumerAppDTO();
         oAuthConsumerAppDTO.setApplicationName(applicationName);
@@ -243,6 +267,7 @@ public class AppsCommonServiceComponent {
         oAuthConsumerAppDTO.setBypassClientCredentials(true);
         oAuthConsumerAppDTO.setGrantTypes(AUTHORIZATION_CODE + " " + REFRESH_TOKEN + " " + GRANT_TYPE_ACCOUNT_SWITCH);
         oAuthConsumerAppDTO.setPkceMandatory(true);
+        oAuthConsumerAppDTO.setTokenBindingType(TOKEN_BINDING_TYPE);
 
         try {
             PrivilegedCarbonContext.startTenantFlow();
