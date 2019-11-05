@@ -363,6 +363,20 @@ export const views: Views = {
                 description: "FIDO යතුරක් සම්බන්ධ කිරීමෙන් සත්\u200Dයාපනය කිරීම",
                 heading: "FIDO",
                 notifications: {
+                    removeDevice: {
+                        error: {
+                            description: "{{description}}",
+                            message: "උපාංගය ඉවත් කිරීමේදී දෝෂයක් ඇතිවිය"
+                        },
+                        genericError: {
+                            description: "උපාංගය ඉවත් කිරීමේදී දෝෂයක් ඇතිවිය",
+                            message: "දෝෂයක් ඇතිවිය!!!"
+                        },
+                        success: {
+                            description: "උපාංගය ලැයිස්තුවෙන් සාර්ථකව ඉවත් කරන ලදි",
+                            message: "ඔබගේ උපාංගය සාර්ථකව ඉවත් කරන ලදි"
+                        }
+                    },
                     startFidoFlow: {
                         error: {
                             description: "{{description}}",

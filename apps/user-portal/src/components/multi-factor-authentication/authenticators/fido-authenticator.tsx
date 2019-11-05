@@ -68,10 +68,10 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                 getFidoMetaData();
                 onNotificationFired({
                     description: t(
-                        "views:securityPage.multiFactor.fido.notification.registration.success.description"
+                        "views:components.mfa.fido.notifications.startFidoFlow.success.description"
                     ),
                     message: t(
-                        "views:securityPage.multiFactor.fido.notification.registration.success.message"
+                        "views:components.mfa.fido.notifications.startFidoFlow.success.message"
                     ),
                     otherProps: {
                         positive: true
@@ -81,10 +81,10 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             }).catch(() => {
                 onNotificationFired({
                     description: t(
-                        "views:securityPage.multiFactor.fido.notification.registration.error.description"
+                        "views:components.mfa.fido.notifications.startFidoFlow.error.description"
                     ),
                     message: t(
-                        "views:securityPage.multiFactor.fido.notification.registration.error.message"
+                        "views:components.mfa.fido.notifications.startFidoFlow.error.message"
                     ),
                     otherProps: {
                         negative: true
@@ -100,10 +100,10 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                 getFidoMetaData();
                 onNotificationFired({
                     description: t(
-                        "views:securityPage.multiFactor.fido.notification.deletion.success.description"
+                        "views:securityPage.multiFactor.fido.notification.removeDevice.success.description"
                     ),
                     message: t(
-                        "views:securityPage.multiFactor.fido.notification.deletion.success.message"
+                        "views:securityPage.multiFactor.fido.notification.removeDevice.success.message"
                     ),
                     otherProps: {
                         success: true
@@ -113,10 +113,10 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             }).catch(() => {
                 onNotificationFired({
                     description: t(
-                    "views:securityPage.multiFactor.fido.notification.deletion.error.description"
+                    "views:securityPage.multiFactor.fido.notification.removeDevice.error.description"
                     ),
                     message: t(
-                    "views:securityPage.multiFactor.fido.notification.deletion.error.message"
+                    "views:securityPage.multiFactor.fido.notification.removeDevice.error.message"
                     ),
                     otherProps: {
                     negative: true
