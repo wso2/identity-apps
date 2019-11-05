@@ -213,7 +213,7 @@ const connectToDevice = (requestId, credentialCreationOptions) => {
         }).catch ((error) => {
         return Promise.reject(error);
     });
-}
+};
 
 /**
  * This function receive the response from start-registration endpoint and convert the user attributes

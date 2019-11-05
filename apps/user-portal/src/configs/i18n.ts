@@ -21,7 +21,6 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 import * as locales from "../locales";
 
-console.log(locales);
 /**
  * Supported language list.
  */
