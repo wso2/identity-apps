@@ -208,20 +208,20 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     };
 
     const confirmationModal = (
-        <Modal size="mini" open={showConfirmationModal} onClose={handleConfirmationModalClose} dimmer="blurring">
+        <Modal size="mini" open={ showConfirmationModal } onClose={ handleConfirmationModalClose } dimmer="blurring">
             <Modal.Content>
                 <Container>
-                    <h3>{t("views:components.changePassword.modals.confirmationModal.heading")}</h3>
+                    <h3>{ t("views:components.changePassword.modals.confirmationModal.heading") }</h3>
                 </Container>
-                <Divider hidden />
-                <p>{t("views:components.changePassword.modals.confirmationModal.message")}</p>
+                <Divider hidden={ true } />
+                <p>{ t("views:components.changePassword.modals.confirmationModal.message") }</p>
             </Modal.Content>
             <Modal.Actions>
-                <Button className="link-button" onClick={handleConfirmationModalClose}>
-                    {t("common:cancel")}
+                <Button className="link-button" onClick={ handleConfirmationModalClose }>
+                    { t("common:cancel") }
                 </Button>
-                <Button primary onClick={changePassword}>
-                    {t("common:continue")}
+                <Button primary={ true } onClick={ changePassword }>
+                    { t("common:continue") }
                 </Button>
             </Modal.Actions>
         </Modal>
@@ -230,7 +230,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     const showChangePasswordView = editingForm[CHANGE_PASSWORD_FORM_IDENTIFIER] ? (
         <EditSection>
             <FormWrapper
-                formFields={[
+                formFields={ [
                     {
                         label: t(
                             "views:components.changePassword.forms.passwordResetForm.inputs" + ".currentPassword.label"
@@ -311,42 +311,42 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         type: "button",
                         value: t("common:cancel").toString()
                     }
-                ]}
-                groups={[
+                ] }
+                groups={ [
                     {
                         endIndex: 7,
                         startIndex: 4,
                         style: "inline"
                     }
-                ]}
-                onSubmit={(value) => {
+                ] }
+                onSubmit={ (value) => {
                     setCurrentPassword(value.get("currentPassword").toString());
                     setNewPassword(value.get("newPassword").toString());
                     handleSubmit(CHANGE_PASSWORD_FORM_IDENTIFIER);
-                }}
-                triggerReset={(reset) => {
+                } }
+                triggerReset={ (reset) => {
                     resetForm = reset;
-                }}
+                } }
             />
         </EditSection>
     ) : null;
 
     return (
         <SettingsSection
-            description={t("views:sections.changePassword.description")}
-            header={t("views:sections.changePassword.heading")}
-            icon={SettingsSectionIcons.changePassword}
-            iconMini={SettingsSectionIcons.changePasswordMini}
+            description={ t("views:sections.changePassword.description") }
+            header={ t("views:sections.changePassword.heading") }
+            icon={ SettingsSectionIcons.changePassword }
+            iconMini={ SettingsSectionIcons.changePasswordMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
-            onPrimaryActionClick={() => showFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER)}
-            primaryAction={t("views:sections.changePassword.actionTitles.change")}
+            onPrimaryActionClick={ () => showFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER) }
+            primaryAction={ t("views:sections.changePassword.actionTitles.change") }
             primaryActionIcon="key"
-            showActionBar={!editingForm[CHANGE_PASSWORD_FORM_IDENTIFIER]}
+            showActionBar={ !editingForm[CHANGE_PASSWORD_FORM_IDENTIFIER] }
         >
-            {showChangePasswordView}
-            {confirmationModal}
+            { showChangePasswordView }
+            { confirmationModal }
         </SettingsSection>
     );
 };

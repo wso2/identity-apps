@@ -94,10 +94,10 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
                     inputField.value && !isReset
                         ? tempForm.set(inputField.name, inputField.value)
                         : (isRadioField(inputField) || isDropdownField(inputField)) && inputField.default
-                            ? tempForm.set(inputField.name, inputField.default)
-                            : isCheckBoxField(inputField)
-                                ? tempForm.set(inputField.name, [])
-                                : tempForm.set(inputField.name, "");
+                        ? tempForm.set(inputField.name, inputField.default)
+                        : isCheckBoxField(inputField)
+                            ? tempForm.set(inputField.name, [])
+                            : tempForm.set(inputField.name, "");
                 }
 
                 ((!inputField.value && !tempForm.get(inputField.name)) || isReset) && inputField.required
@@ -118,16 +118,12 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      * @param toBeDetermined
      */
     const isInputField = (toBeDetermined: FormField): toBeDetermined is InputField => {
-        if (
-            (toBeDetermined as InputField).type !== "submit" &&
-            (toBeDetermined as InputField).type !== "reset" &&
-            (toBeDetermined as InputField).type !== "button" &&
-            (toBeDetermined as InputField).type !== "divider" &&
-            (toBeDetermined as InputField).type !== "custom"
-        ) {
-            return true;
-        }
-        return false;
+        return (toBeDetermined as InputField).type === "email" &&
+            (toBeDetermined as InputField).type === "password" &&
+            (toBeDetermined as InputField).type === "number" &&
+            (toBeDetermined as InputField).type === "text" &&
+            (toBeDetermined as InputField).type === "textarea";
+
     };
 
     /**
@@ -135,10 +131,8 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      * @param toBeDetermined
      */
     const isRadioField = (toBeDetermined: FormField): toBeDetermined is RadioField => {
-        if ((toBeDetermined as RadioField).type === "radio") {
-            return true;
-        }
-        return false;
+        return (toBeDetermined as RadioField).type === "radio";
+
     };
 
     /**
@@ -146,10 +140,8 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      * @param toBeDetermined
      */
     const isDropdownField = (toBeDetermined: FormField): toBeDetermined is DropdownField => {
-        if ((toBeDetermined as DropdownField).type === "dropdown") {
-            return true;
-        }
-        return false;
+        return (toBeDetermined as DropdownField).type === "dropdown";
+
     };
 
     /**
@@ -157,10 +149,8 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      * @param toBeDetermined
      */
     const isCheckBoxField = (toBeDetermined: FormField): toBeDetermined is CheckboxField => {
-        if ((toBeDetermined as CheckboxField).type === "checkbox") {
-            return true;
-        }
-        return false;
+        return (toBeDetermined as CheckboxField).type === "checkbox";
+
     };
 
     /**
@@ -168,10 +158,8 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      * @param toBeDetermined
      */
     const isSubmitField = (toBeDetermined: FormField): toBeDetermined is FormSubmit => {
-        if ((toBeDetermined as FormSubmit).type === "submit") {
-            return true;
-        }
-        return false;
+        return (toBeDetermined as FormSubmit).type === "submit";
+
     };
 
     /**
@@ -179,10 +167,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      * @param toBeDetermined
      */
     const isResetField = (toBeDetermined: FormField): toBeDetermined is Reset => {
-        if ((toBeDetermined as Reset).type === "reset") {
-            return true;
-        }
-        return false;
+        return (toBeDetermined as Reset).type === "reset";
     };
 
     /**
@@ -190,10 +175,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      * @param toBeDetermined
      */
     const isButtonField = (toBeDetermined: FormField): toBeDetermined is Ibutton => {
-        if ((toBeDetermined as Ibutton).type === "button") {
-            return true;
-        }
-        return false;
+        return (toBeDetermined as Ibutton).type === "button";
     };
 
     /**
@@ -201,10 +183,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      * @param toBeDetermined
      */
     const isDivider = (toBeDetermined: FormField): toBeDetermined is Idivider => {
-        if ((toBeDetermined as Idivider).type === "divider") {
-            return true;
-        }
-        return false;
+        return (toBeDetermined as Idivider).type === "divider";
     };
 
     /**
@@ -212,16 +191,13 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      * @param toBeDetermined
      */
     const isCustomField = (toBeDetermined: FormField): toBeDetermined is CustomField => {
-        if ((toBeDetermined as CustomField).type === "custom") {
-            return true;
-        }
-        return false;
+        return (toBeDetermined as CustomField).type === "custom";
     };
 
     /**
      * Handler for the onChange event
-     * @param event
-     * @param index
+     * @param value
+     * @param name
      */
     const handleChange = (value: string, name: string) => {
         const tempForm: Map<string, FormValue> = new Map(form);
@@ -232,8 +208,8 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
 
     /**
      * Handler for the onChange event of checkboxes
-     * @param event
-     * @param index
+     * @param value
+     * @param name
      */
     const handleChangeCheckBox = (value: string, name: string) => {
         const tempForm: Map<string, FormValue> = new Map(form);
@@ -268,8 +244,8 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
     /**
      * This function checks if a form field is valid
      * @param name
-     * @param requiredFields
-     * @param validFields
+     * @param requiredFieldsParam
+     * @param validFieldsParam
      */
     const validate = (
         name: string,
@@ -501,15 +477,15 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
                                         error={
                                             index === 0
                                                 ? isError
-                                                    ? {
-                                                        content: errorMessages.map(
-                                                            (errorMessage: string, indexError: number) => {
-                                                                return <p key={ indexError }>{ errorMessage }</p>;
-                                                            }
-                                                        ),
-                                                        pointing: "left"
-                                                    }
-                                                    : false
+                                                ? {
+                                                    content: errorMessages.map(
+                                                        (errorMessage: string, indexError: number) => {
+                                                            return <p key={ indexError }>{ errorMessage }</p>;
+                                                        }
+                                                    ),
+                                                    pointing: "left"
+                                                }
+                                                : false
                                                 : isError
                                         }
                                     />
@@ -576,7 +552,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
                 </Button>
             );
         } else if (isDivider(inputField)) {
-            return <Divider hidden={ inputField.hidden } />;
+            return <Divider hidden={ inputField.hidden }/>;
         } else if (isCustomField(inputField)) {
             return inputField.element;
         }

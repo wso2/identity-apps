@@ -108,7 +108,7 @@ export interface Error {
 export interface InputField {
     placeholder: string;
     name: string;
-    type: Type;
+    type: "text" | "email" | "password" | "textarea" | "number";
     required: boolean;
     label: string;
     width?: SemanticWIDTHS;
@@ -122,7 +122,7 @@ export interface InputField {
  */
 export interface FormSubmit {
     value: string;
-    type: Type;
+    type: "submit";
     size?: SemanticSIZES;
     className?: string;
 }
@@ -132,7 +132,7 @@ export interface FormSubmit {
  */
 export interface Reset {
     value: string;
-    type: Type;
+    type: "reset";
     size?: SemanticSIZES;
     className?: string;
 }
@@ -142,7 +142,7 @@ export interface Reset {
  */
 export interface Ibutton {
     value: string;
-    type: string;
+    type: "button";
     size?: SemanticSIZES;
     className?: string;
     onClick: () => void;
@@ -168,7 +168,7 @@ export interface CustomField {
  * Radio field model
  */
 export interface RadioField {
-    type: Type;
+    type: "radio";
     label: string;
     name: string;
     default: string;
@@ -188,7 +188,7 @@ export interface CheckboxChild {
  * Checkbox field model
  */
 export interface CheckboxField {
-    type: Type;
+    type: "checkbox";
     label: string;
     name: string;
     children: CheckboxChild[];
@@ -210,7 +210,7 @@ export interface DropdownChild {
  * Dropdown field model
  */
 export interface DropdownField {
-    type: Type;
+    type: "dropdown";
     label: string;
     name: string;
     default?: string;
@@ -240,7 +240,7 @@ export interface Group {
  * Divider model
  */
 export interface Idivider {
-    type: Type;
+    type: "divider";
     hidden: boolean;
 }
 
