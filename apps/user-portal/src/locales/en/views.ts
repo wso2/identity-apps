@@ -832,15 +832,16 @@ export const views: Views = {
     },
     pages: {
         operations: {
-            subTitle: "Manage and maintain tasks like pending approvals etc.",
+            subTitle: "Manage your interactions in order to allow or deny the processes of the operations to proceed",
             title: "Operations"
         },
         overview: {
-            subTitle: "Manage your information, security, privacy and all the related configurations",
+            subTitle: "Manage your personal information, account security, account privacy and all in one place",
             title: "Welcome, {{firstName}}"
         },
         personalInfo: {
-            subTitle: "Manage information about you, your sub profiles and your account in general",
+            subTitle: "Manage your personal details, linked accounts and profile export to have a " +
+                "more personalised experience",
             title: "Personal info"
         },
         privacy: {
@@ -848,7 +849,7 @@ export const views: Views = {
             title: "WSO2 Identity Server Privacy Policy"
         },
         security: {
-            subTitle: "Update settings to make your account secure",
+            subTitle: "Secure your account by staying upto date with all security settings and recommendations",
             title: "Security"
         },
         404: {
@@ -858,11 +859,12 @@ export const views: Views = {
     },
     sections: {
         accountRecovery: {
-            description: "View and manage your account recovery options",
+            description: "If you forget your password or username recover your account using an email, " +
+                "recovery code, etc..",
             heading: "Account Recovery"
         },
         approvals: {
-            description: "You can manage pending approvals here",
+            description: "View and manage tasks related to workflow operations that awaits your approval",
             heading: "Pending approvals",
             placeholders: {
                 emptyApprovalList: {
@@ -874,14 +876,14 @@ export const views: Views = {
             actionTitles: {
                 change: "Change your password"
             },
-            description: "Change and modify the existing password",
+            description: "Update your password regularly and make sure it's unique from other passwords you use.",
             heading: "Change password"
         },
         consentManagement: {
             actionTitles: {
                 empty: "You have not granted consent to any application"
             },
-            description: "View and Manage consented applications of your account",
+            description: "View and Manage all the applications and personal details you have agreed to share",
             heading: "Consented applications",
             placeholders: {
                 emptyConsentList: {
@@ -893,22 +895,23 @@ export const views: Views = {
             actionTitles: {
                 add: "Add account"
             },
-            description: "Manage all your linked accounts in one place",
+            description: "Add your other accounts and switch between them after you logged in to a linked account.",
             heading: "Linked accounts"
         },
         mfa: {
-            description: "View and manage your multi factor authentication options",
+            description: "Add an extra layer of protection to your account by configuring multiple steps of " +
+                "authentication. You can choose from options like SMS OTP, FIDO, etc.",
             heading: "Multi factor authentication"
         },
         profile: {
-            description: "Manage and update your basic profile information",
+            description: "Manage and update your personal details like name, email, mobile number, organisation, etc.",
             heading: "Profile"
         },
         profileExport: {
             actionTitles: {
                 export: "Export profile data"
             },
-            description: "Download all your profile data including personal data, security questions and consents",
+            description: "Download all your profile data including personal data, security questions and consents.",
             heading: "Export profile"
         },
         userSessions: {
