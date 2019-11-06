@@ -38,6 +38,9 @@
         .user-dropdown {
             padding-right: 0;
 
+            &:hover {
+                background: transparent;
+            }
             .divider {
                 margin: 0;
             }
@@ -66,6 +69,10 @@
                 margin-top: 0;
                 margin-bottom: 0;
 
+                &:hover {
+                    cursor: pointer;
+                    background: darken(@whiteSmoke, 2);
+                }
                 &:first-child {
                     border-top: 0;
                 }
@@ -192,6 +199,21 @@
                 svg, .icon {
                     .path {
                         fill: @sidePanelHoverFontColor;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Fix for the unstackable list item images getting weird sizes on mobile.
+@media only screen and (max-width: 767px) {
+    .ui.menu.fixed {
+        &.app-header {
+            .user-dropdown {
+                .linked-accounts-list {
+                    .ui.image.user-image.user-avatar.little {
+                        width: @littleWidth !important;
                     }
                 }
             }

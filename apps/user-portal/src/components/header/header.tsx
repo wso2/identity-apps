@@ -34,7 +34,6 @@ interface HeaderProps {
 
 /**
  * Header component.
- * TODO: Fix avatar responsive issue on mobile.
  *
  * @param {HeaderProps} props - Props supplied to the header component.
  * @return {JSX.Element}
