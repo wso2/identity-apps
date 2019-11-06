@@ -16,9 +16,5 @@
  * under the License.
  */
 
-import * as en from "./en";
-import * as pt from "./pt";
-import * as si from "./si";
-import * as ta from "./ta";
-
-export { en, pt, si, ta };
+export * from "./common";
+export * from "./views";

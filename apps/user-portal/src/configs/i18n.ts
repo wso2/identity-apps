@@ -31,11 +31,15 @@ const SupportedLanguages = {
     },
     pt: {
         flag: "pt",
-        name: "Portuguese"
+        name: "Português"
+    },
+    si: {
+        flag: "lk",
+        name: "සිංහල"
     },
     ta: {
         flag: "lk",
-        name: "Tamil"
+        name: "தமிழ்"
     }
 };
 

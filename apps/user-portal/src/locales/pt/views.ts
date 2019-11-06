@@ -363,6 +363,20 @@ export const views: Views = {
                 description: "Autentique-se conectando uma chave FIDO",
                 heading: "FIDO",
                 notifications: {
+                    removeDevice: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Ocorreu um erro ao remover o dispositivo"
+                        },
+                        genericError: {
+                            description: "Ocorreu um erro ao remover o dispositivo",
+                            message: "Algo deu errado"
+                        },
+                        success: {
+                            description: "O dispositivo foi removido com sucesso da lista",
+                            message: "Seu dispositivo foi removido com sucesso"
+                        }
+                    },
                     startFidoFlow: {
                         error: {
                             description: "{{description}}",
