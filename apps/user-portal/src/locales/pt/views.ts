@@ -355,6 +355,20 @@ export const views: Views = {
                         description: "Os detalhes do perfil do usuário necessários são recuperados com sucesso",
                         message: "Contas de usuário vinculadas recuperadas com sucesso"
                     }
+                },
+                switchAccount: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Ocorreu um erro ao mudar de conta"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao mudar de conta",
+                        message: "Algo deu errado"
+                    },
+                    success: {
+                        description: "A conta foi trocada com sucesso",
+                        message: "Conta trocada com sucesso"
+                    }
                 }
             }
         },
