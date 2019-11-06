@@ -9,6 +9,6 @@
 ![tick](modules/theme/src/themes/default/assets/images/icons/tick-circle-icon.svg) | Icon made by Google from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/tick-inside-circle_61222#term=tick&page=1&position=6)
 ![monitor](modules/theme/src/themes/default/assets/images/icons/monitor-icon.svg) | Icon made by Pixel perfect from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/hand-shake_493808#term=shake%20hands&page=1&position=2)
 ![sms](modules/theme/src/themes/default/assets/images/icons/sms-icon.svg) | Icon made by Alfredo Hernandez from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/speech-bubble_156974#term=sms&page=1&position=25)
-![fido](modules/theme/src/themes/default/assets/images/icons/fido-logo.svg) | Icon from www.fidoalliance.org | [Link](https://fidoalliance.org)
+![fido](modules/theme/src/themes/default/assets/images/icons/fingerprint.svg) | Icon made by Smashicons from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/fingerprint_1230995#term=fingerprint%20scanner&page=1&position=22)
 ![package](modules/theme/src/themes/default/assets/images/icons/package.svg) | Icon made by Freepik from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/package-cube-box-for-delivery_45806#term=package&page=1&position=50)
 ![tools](modules/theme/src/themes/default/assets/images/icons/tools-icon.svg) | Icon made by monkik from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/customer-support_1086581#term=tools&page=1&position=33)
