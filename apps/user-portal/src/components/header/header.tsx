@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { KeyboardEvent, useContext } from "react";
+import React, { SyntheticEvent, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } from "semantic-ui-react";
@@ -55,9 +55,9 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     /**
      * Stops the dropdown from closing on click.
      *
-     * @param {React.KeyboardEvent<HTMLElement>} e - Click event.
+     * @param {React.SyntheticEvent<HTMLElement>} e - Click event.
      */
-    const handleUserDropdownClick = (e: KeyboardEvent<HTMLElement>) => {
+    const handleUserDropdownClick = (e: SyntheticEvent<HTMLElement>) => {
         e.stopPropagation();
     };
 
