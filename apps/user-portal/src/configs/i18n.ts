@@ -31,15 +31,15 @@ const SupportedLanguages = {
     },
     pt: {
         flag: "pt",
-        name: "Portuguese"
+        name: "Português"
     },
     si: {
         flag: "lk",
-        name: "Sinhala"
+        name: "සිංහල"
     },
     ta: {
         flag: "lk",
-        name: "Tamil"
+        name: "தமிழ்"
     }
 };
 
@@ -48,7 +48,7 @@ const SupportedLanguages = {
  */
 const initOptions = {
     contextSeparator: "_",
-    debug: true,
+    debug: false,
     defaultNS: "common",
     fallbackLng: "en",
     interpolation: {

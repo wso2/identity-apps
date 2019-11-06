@@ -59,7 +59,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                     }
                     setDeviceList(devices);
                 }
-                });
+            });
     };
 
     const addDevice = () => {
@@ -133,7 +133,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                     <Grid.Column width={ 11 } className="first-column">
                         <List.Content floated="left">
                             <ThemeIcon
-                                icon={ MFAIcons.fido }
+                                icon={ MFAIcons.fingerprint }
                                 size="mini"
                                 twoTone={ true }
                                 transparent={ true }
