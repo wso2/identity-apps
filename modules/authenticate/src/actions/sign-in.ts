@@ -269,7 +269,8 @@ export const sendAccountSwitchRequest = (
                         };
                         return Promise.resolve(tokenResponse);
                     }
-                    return Promise.reject(new Error("Invalid id_token in the token response: " + response.data.id_token));
+                    return Promise.reject(new Error("Invalid id_token in the token response: "
+                        + response.data.id_token));
                 });
         })
         .catch((error) => {
