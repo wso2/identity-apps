@@ -33,5 +33,5 @@
 @settingsCardActionButtonColor: @primaryColor;
 @settingsCardTabItemBorderBottom: 3px;
 @settingsCardTabItemBorderBottomColor: @primaryColor;
-@settingsCardTopActionPanelBorderTop: 1px solid @gallery;
-@settingsCardTopActionPanelBorderBottom: 1px solid @gallery;
+@settingsCardTopActionPanelBorderTop: 1px solid @galleryGray;
+@settingsCardTopActionPanelBorderBottom: 1px solid @galleryGray;
