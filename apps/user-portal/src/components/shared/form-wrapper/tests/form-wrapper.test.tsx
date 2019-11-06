@@ -75,6 +75,7 @@ describe("Test if the FormWrapper is working fine", () => {
         fireEvent.click(getByText(constants.SUBMIT));
         expect(constants.onSubmit).toHaveBeenCalledTimes(1);
         expect(constants.onSubmit.mock.calls[0][0].get(constants.TEXT_BOX_NAME)).toBe(constants.TEXT_BOX_VALID_MESSAGE);
+        constants.onSubmit.mockReset();
     });
 
     test("Test if input type text is empty by default when no value is passed", () => {
@@ -199,8 +200,9 @@ describe("Test if the FormWrapper is working fine", () => {
         fireEvent.change(passwordBox, { target: { value: constants.PASSWORD_VALID_MESSAGE } });
         fireEvent.blur(passwordBox);
         fireEvent.click(getByText(constants.SUBMIT));
-        expect(constants.onSubmit).toHaveBeenCalledTimes(2);
-        expect(constants.onSubmit.mock.calls[1][0].get(constants.PASSWORD_NAME)).toBe(constants.PASSWORD_VALID_MESSAGE);
+        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit.mock.calls[0][0].get(constants.PASSWORD_NAME)).toBe(constants.PASSWORD_VALID_MESSAGE);
+        constants.onSubmit.mockReset();
     });
 
     test("Test if the basic functions of a checkbox are working fine", () => {
@@ -248,6 +250,7 @@ describe("Test if the FormWrapper is working fine", () => {
         fireEvent.click(getByText(constants.SUBMIT));
         expect(constants.onSubmit).toHaveBeenCalledTimes(1);
         expect(constants.onSubmit.mock.calls[0][0].get(constants.CHECKBOX_NAME)).toHaveLength(2);
+        constants.onSubmit.mockReset();
 
     });
 
@@ -270,6 +273,7 @@ describe("Test if the FormWrapper is working fine", () => {
         expect(queryByText(constants.CHECKBOX_REQUIRED_MESSAGE)).not.toBeInTheDocument();
         expect(constants.onSubmit).toHaveBeenCalledTimes(1);
         expect(constants.onSubmit.mock.calls[0][0].get(constants.CHECKBOX_NAME)).toHaveLength(0);
+        constants.onSubmit.mockReset();
     });
 
     test("Test if the basic functions of the radio field are working fine", () => {
@@ -306,6 +310,7 @@ describe("Test if the FormWrapper is working fine", () => {
         fireEvent.click(getByText(constants.SUBMIT));
         expect(constants.onSubmit).toHaveBeenCalledTimes(1);
         expect(constants.onSubmit.mock.calls[0][0].get(constants.RADIO_NAME)).toBe(constants.RADIO_CHILD_2_VALUE);
+        constants.onSubmit.mockReset();
 
     });
 
@@ -365,7 +370,8 @@ describe("Test if the FormWrapper is working fine", () => {
         // check if submission works fine
         fireEvent.click(getByText(constants.SUBMIT));
         // expect(constants.onSubmit).toHaveBeenCalledTimes(1);
-        // expect(constants.onSubmit.mock.calls[0][0].get(constants.DROPDOWN_NAME)).toBe(constants.DROPDOWN_CHILD_2_VALUE);
+        // expect(constants.onSubmit.mock.calls[0][0].get(constants.DROPDOWN_NAME))
+        // .toBe(constants.DROPDOWN_CHILD_2_VALUE);
 
     });
 
@@ -429,6 +435,7 @@ describe("Test if the FormWrapper is working fine", () => {
         expect(queryByText(constants.DROPDOWN_REQUIRED_MESSAGE)).not.toBeInTheDocument();
         expect(constants.onSubmit).toHaveBeenCalledTimes(1);
         expect(constants.onSubmit.mock.calls[0][0].get(constants.DROPDOWN_NAME)).toBe("");
+        constants.onSubmit.mockReset();
     });
 
     test("Test if the reset button is working fine", () => {
@@ -465,6 +472,34 @@ describe("Test if the FormWrapper is working fine", () => {
 
         fireEvent.click(getByText(constants.BUTTON_VALUE));
         expect(constants.onClick).toHaveBeenCalledTimes(1);
+    });
+
+    test("Test if grouping works fine", () => {
+        const { getAllByText, getByText } = render(getForm([
+            {
+                isDefault: false,
+                isRequired: false,
+                isValue: true,
+                type: "button",
+            },
+            {
+                isDefault: false,
+                isRequired: false,
+                isValue: true,
+                type: "submit",
+            },
+            {
+                isDefault: false,
+                isRequired: false,
+                isValue: true,
+                type: "button",
+            }
+        ], true));
+
+        expect(getAllByText(constants.BUTTON_VALUE)[0].parentElement.parentElement).toBe(
+            getByText(constants.SUBMIT).parentElement.parentElement
+        );
+
     });
 
 });

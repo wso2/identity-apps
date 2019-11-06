@@ -28,7 +28,7 @@ export interface FormTestFields {
     type: Type;
 }
 
-const getForm = (testFields: FormTestFields[]): JSX.Element => {
+const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element => {
     const form = {
         button: {
             onClick: constants.onClick,
@@ -168,6 +168,13 @@ const getForm = (testFields: FormTestFields[]): JSX.Element => {
         <FormWrapper
             formFields={ formFields }
             onSubmit={ (value) => constants.onSubmit(value) }
+            groups={ isGroup ? [
+                {
+                    endIndex: 2,
+                    startIndex: 0,
+                    style: "inline"
+                }
+            ] : []  }
         />
     );
 
