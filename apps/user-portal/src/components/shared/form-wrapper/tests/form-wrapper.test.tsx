@@ -376,7 +376,7 @@ describe("Test if the FormWrapper is working fine", () => {
     });
 
     test("Test if the default value is selected in a dropdown", () => {
-        const { getByText, getByRole } = render(getForm([
+        const { getByRole } = render(getForm([
             {
                 isDefault: true,
                 isRequired: true,
@@ -396,7 +396,7 @@ describe("Test if the FormWrapper is working fine", () => {
     });
 
     test("Test if the passed value is selected in a dropdown", () => {
-        const { getByText, getByRole } = render(getForm([
+        const { getByRole } = render(getForm([
             {
                 isDefault: true,
                 isRequired: true,
@@ -416,7 +416,7 @@ describe("Test if the FormWrapper is working fine", () => {
     });
 
     test("Test if dropdown submission works when required is set to false", () => {
-        const { getByText, getByRole, queryByText } = render(getForm([
+        const { getByText, queryByText } = render(getForm([
             {
                 isDefault: false,
                 isRequired: false,
