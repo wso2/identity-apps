@@ -103,7 +103,7 @@ export const sendTokenRequest = (requestParams: OIDCRequestParamsInterface): Pro
                 return Promise.reject(new Error("Invalid status code received in the token response: "
                     + response.status));
             }
-            return validateIdToken(requestParams, response.data.id_token).then((valid) => {
+            return validateIdToken(requestParams.clientId, response.data.id_token).then((valid) => {
                 if (valid) {
                     setSessionParameter(REQUEST_PARAMS, JSON.stringify(requestParams));
                     const tokenResponse: TokenResponseInterface = {
@@ -148,7 +148,7 @@ export const sendRefreshTokenRequest = (requestParams: OIDCRequestParamsInterfac
                 return Promise.reject(new Error("Invalid status code received in the refresh token response: "
                     + response.status));
             }
-            return validateIdToken(requestParams, response.data.id_token)
+            return validateIdToken(requestParams.clientId, response.data.id_token)
                 .then((valid) => {
                     if (valid) {
                         const tokenResponse: TokenResponseInterface = {
@@ -230,11 +230,11 @@ export const getAuthenticatedUser = (idToken: string): AuthenticatedUserInterfac
 /**
  * Validate id_token.
  *
- * @param {OIDCRequestParamsInterface} requestParams request params.
+ * @param {string} clientId client ID.
  * @param {string} idToken id_token received from the IdP.
  * @returns {Promise<boolean>} whether token is valid.
  */
-const validateIdToken = (requestParams: OIDCRequestParamsInterface, idToken: string): Promise<any> => {
+const validateIdToken = (clientId: string, idToken: string): Promise<any> => {
     const jwksEndpoint = getJwksUri();
     if (!jwksEndpoint || jwksEndpoint.trim().length === 0) {
         return Promise.reject("Invalid JWKS URI found.");
@@ -247,7 +247,7 @@ const validateIdToken = (requestParams: OIDCRequestParamsInterface, idToken: str
                     + jwksEndpoint));
             }
             const jwk = getJWKForTheIdToken(idToken.split(".")[0], response.data.keys);
-            return Promise.resolve(isValidIdToken(idToken, jwk, requestParams.clientId));
+            return Promise.resolve(isValidIdToken(idToken, jwk, clientId));
         }).catch((error) => {
             return Promise.reject(error);
         });
