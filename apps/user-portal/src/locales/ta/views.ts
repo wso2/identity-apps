@@ -364,6 +364,20 @@ export const views: Views = {
                 description: "FIDO கருவியினை இணைப்பதானூடாக உங்களை உறுதிப்படுத்திக் கொள்ளுங்கள்",
                 heading: "FIDO",
                 notifications: {
+                    removeDevice: {
+                        error: {
+                            description: "{{description}}",
+                            message: "சாதனத்தை அகற்றும்போது பிழை ஏற்பட்டது"
+                        },
+                        genericError: {
+                            description: "சாதனத்தை அகற்றும்போது பிழை ஏற்பட்டது",
+                            message: "ஏதோ ஒரு தவறு ஏற்பட்டுவிட்டது"
+                        },
+                        success: {
+                            description: "சாதனம் பட்டியலிலிருந்து வெற்றிகரமாக அகற்றப்பட்டது",
+                            message: "உங்கள் சாதனம் வெற்றிகரமாக அகற்றப்பட்டது"
+                        }
+                    },
                     startFidoFlow: {
                         error: {
                             description: "கருவிகளின் பட்டியலை பெறும் பொழுது தவறேற்பட்டுவிட்டது",

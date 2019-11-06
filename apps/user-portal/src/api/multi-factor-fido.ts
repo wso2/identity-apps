@@ -46,7 +46,7 @@ export const getMetaData = (): Promise<any> => {
                 return Promise.reject(error);
             });
     }).catch((error) => {
-        return Promise.reject(error);
+        return Promise.reject(`Failed to retrieve the access token - ${ error }`);
     });
 };
 
@@ -58,22 +58,19 @@ export const getMetaData = (): Promise<any> => {
 export const deleteDevice = (credentialId): Promise<any> => {
     return AuthenticateSessionUtil.getAccessToken().then((token) => {
         const header = {
+            "Accept": "application/json",
             "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Authorization": `Bearer ${token}`
         };
 
         return axios.delete(ServiceResourcesEndpoint.fidoMetaData + "/" + credentialId, { headers: header })
             .then((response) => {
-                if (response.status !== 200) {
-                    return Promise.reject(new Error("Failed device deletion."));
-                }
                 return Promise.resolve(response);
             }).catch((error) => {
-                return Promise.reject(error);
+                return Promise.reject(new Error("Failed device deletion."));
             });
     }).catch((error) => {
-        return Promise.reject(error);
+        return Promise.reject(`Failed to retrieve the access token - ${ error }`);
     });
 };
 
@@ -97,14 +94,18 @@ export const startFidoFlow = (): Promise<any> => {
                     return Promise.reject(new Error("Failed to start registration flow at: "
                         + ServiceResourcesEndpoint.fidoStart));
                 }
-                connectToDevice(response.data.requestId,
-                    decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions));
-                return Promise.resolve(response);
+                return connectToDevice(response.data.requestId,
+                    decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions))
+                    .then((resp) => {
+                        return Promise.resolve(response);
+                    }).catch((error) => {
+                        return Promise.reject(error);
+                    });
             }).catch((error) => {
                 return Promise.reject(error);
             });
     }).catch((error) => {
-        return Promise.reject(error);
+        return Promise.reject(`Failed to retrieve the access token - ${ error }`);
     });
 };
 
@@ -133,7 +134,7 @@ export const endFidoFlow = (clientResponse): Promise<any> => {
                 return Promise.reject(error);
             });
     }).catch((error) => {
-        return Promise.reject(error);
+        return Promise.reject(`Failed to retrieve the access token - ${ error }`);
     });
 };
 
@@ -195,7 +196,7 @@ const responseToObject = (response) => {
  * @return {Promise<any>} a promise containing the response.
  */
 const connectToDevice = (requestId, credentialCreationOptions) => {
-    navigator.credentials.create({ publicKey: credentialCreationOptions })
+    return navigator.credentials.create({ publicKey: credentialCreationOptions })
         .then((credential) => {
             const payload = {
                 credential: {},
@@ -203,16 +204,13 @@ const connectToDevice = (requestId, credentialCreationOptions) => {
             };
             payload.requestId = requestId;
             payload.credential = responseToObject(credential);
-            endFidoFlow(JSON.stringify(payload))
+            return endFidoFlow(JSON.stringify(payload))
                 .then((response) => {
-                    if (response.status !== 200) {
-                        return Promise.reject(new Error("Failed get user info from"));
-                    }
                     return Promise.resolve(response);
-                }).catch((error) => {
-                return Promise.reject(error);
-            });
-        }).catch((error) => {
+                }).catch ((error) => {
+                    return Promise.reject(error);
+                });
+        }).catch ((error) => {
         return Promise.reject(error);
     });
 };

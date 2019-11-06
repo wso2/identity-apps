@@ -18,6 +18,7 @@
 
 import * as en from "./en";
 import * as pt from "./pt";
+import * as si from "./si";
 import * as ta from "./ta";
 
-export { en, pt, ta };
+export { en, pt, si, ta };

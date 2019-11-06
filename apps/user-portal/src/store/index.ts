@@ -21,9 +21,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { reducers } from "./combine-reducers";
 import {
     apiMiddleware,
-    changePasswordMiddleware,
-    consentManagementMiddleware,
-    userSessionsMiddleware
+    consentManagementMiddleware
 } from "./middleware";
 
 /**
@@ -40,9 +38,7 @@ export type AppState = ReturnType<typeof reducers>;
 const configureStore = (): any => {
     // Set of custom middleware.
     const middleware = [
-        ...changePasswordMiddleware,
         ...consentManagementMiddleware,
-        ...userSessionsMiddleware,
         apiMiddleware
     ];
     const middleWareEnhancer = applyMiddleware(...middleware);

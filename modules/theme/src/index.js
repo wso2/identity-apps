@@ -42,7 +42,7 @@ export const SidePanelIconSet = {
 };
 export const MFAIconSet = {
     sms: require("../lib/assets/images/icons/sms-icon.svg"),
-    fido: require("../lib/assets/images/icons/fido-logo.png")
+    fingerprint: require("../lib/assets/images/icons/fingerprint.svg")
 };
 export const AccountRecoveryIconSet = {
     email: require("../lib/assets/images/icons/email-icon.svg"),

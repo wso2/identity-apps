@@ -29,7 +29,7 @@ export const views: Views = {
             },
             emailRecovery: {
                 descriptions: {
-                    add: "Add a recovery email address",
+                    add: "Add or update recovery email address",
                     update: "Update recovery email address ({{email}})"
                 },
                 forms: {
@@ -65,7 +65,7 @@ export const views: Views = {
             },
             questionRecovery: {
                 descriptions: {
-                    add: "Add and update account recovery challenge questions"
+                    add: "Add or update account recovery challenge questions"
                 },
                 forms: {
                     securityQuestionsForm: {
@@ -359,9 +359,23 @@ export const views: Views = {
         },
         mfa: {
             fido: {
-                description: "Authenticate yourself by connecting a FIDO key",
-                heading: "FIDO",
+                description: "Authenticate yourself by connecting a biometric device or a FIDO key",
+                heading: "via Security Device",
                 notifications: {
+                    removeDevice: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while removing the device"
+                        },
+                        genericError: {
+                            description: "Error occurred while removing the device",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The device was successfully removed from the list",
+                            message: "Your Device Removed Successfully"
+                        }
+                    },
                     startFidoFlow: {
                         error: {
                             description: "{{description}}",
@@ -381,9 +395,9 @@ export const views: Views = {
             },
             smsOtp: {
                 descriptions: {
-                    hint: "You'll receive a text message containing the verification code"
+                    hint: "You'll receive a text message containing a one-time verification code"
                 },
-                heading: "SMS OTP",
+                heading: "via SMS",
                 notifications: {
                     updateMobile: {
                         error: {
@@ -832,15 +846,15 @@ export const views: Views = {
     },
     pages: {
         operations: {
-            subTitle: "Manage and maintain tasks like pending approvals etc.",
+            subTitle: "Review operational tasks that requires your approval",
             title: "Operations"
         },
         overview: {
-            subTitle: "Manage your information, security, privacy and all the related configurations",
+            subTitle: "Manage your personal information, account security, and privacy",
             title: "Welcome, {{firstName}}"
         },
         personalInfo: {
-            subTitle: "Manage information about you, your sub profiles and your account in general",
+            subTitle: "Edit and export your personal profile and manage linked accounts",
             title: "Personal info"
         },
         privacy: {
@@ -848,7 +862,7 @@ export const views: Views = {
             title: "WSO2 Identity Server Privacy Policy"
         },
         security: {
-            subTitle: "Update settings to make your account secure",
+            subTitle: "Secure your account by managing consents, sessions, and security settings",
             title: "Security"
         },
         404: {
@@ -858,11 +872,13 @@ export const views: Views = {
     },
     sections: {
         accountRecovery: {
-            description: "View and manage your account recovery options",
+            description: "If you forget your password or username, recover your account " +
+                "using email, SMS, or challenge questions",
             heading: "Account Recovery"
         },
         approvals: {
-            description: "You can manage pending approvals here",
+            description: "Approve or deny tasks related to workflow operations like adding users, " +
+                "updating user claims, deleting user roles, etc.",
             heading: "Pending approvals",
             placeholders: {
                 emptyApprovalList: {
@@ -874,15 +890,16 @@ export const views: Views = {
             actionTitles: {
                 change: "Change your password"
             },
-            description: "Change and modify the existing password",
+            description: "Update your password regularly and make sure it's unique from other passwords you use.",
             heading: "Change password"
         },
         consentManagement: {
             actionTitles: {
                 empty: "You have not granted consent to any application"
             },
-            description: "View and Manage consented applications of your account",
-            heading: "Consented applications",
+            description: "Revoke any consent given to an application or personal detail that you " +
+                "have agreed to share",
+            heading: "Manage Consents",
             placeholders: {
                 emptyConsentList: {
                     heading: "You have not granted consent to any application"
@@ -893,22 +910,23 @@ export const views: Views = {
             actionTitles: {
                 add: "Add account"
             },
-            description: "Manage all your linked accounts in one place",
+            description: "Link your other accounts and access them seamlessly without re-login",
             heading: "Linked accounts"
         },
         mfa: {
-            description: "View and manage your multi factor authentication options",
+            description: "Add an extra layer of protection to your account by configuring multiple " +
+                "steps of authentication. You can choose from options like SMS or a security device",
             heading: "Multi factor authentication"
         },
         profile: {
-            description: "Manage and update your basic profile information",
+            description: "Manage and update your personal details like name, email, mobile number, organisation, etc.",
             heading: "Profile"
         },
         profileExport: {
             actionTitles: {
-                export: "Export profile data"
+                export: "Download as JSON"
             },
-            description: "Download all your profile data including personal data, security questions and consents",
+            description: "Download all your profile data including personal data, security questions, and consents",
             heading: "Export profile"
         },
         userSessions: {
@@ -916,7 +934,7 @@ export const views: Views = {
                 empty: "You do not have any active sessions",
                 terminateAll: "Terminate all sessions"
             },
-            description: "This is a list of devices that have been active on your account",
+            description: "Review all devices that are currently active on your account",
             heading: "Active user sessions",
             placeholders: {
                 emptySessionList: {

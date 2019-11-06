@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Modal } from "semantic-ui-react";
 import { deleteDevice, getMetaData, startFidoFlow } from "../../../api";
@@ -44,10 +44,6 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
 
     useEffect(() => {
         getFidoMetaData();
-    }, [deviceList]);
-
-    useEffect(() => {
-        getFidoMetaData();
     }, []);
 
     const getFidoMetaData = () => {
@@ -55,9 +51,11 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         getMetaData()
             .then((response) => {
                 if (response.status === 200) {
-                    // tslint:disable-next-line:prefer-for-of
-                    for (let i = 0; i < response.data.length; i++) {
-                        devices.push(response.data[i]);
+                    if (response.data.length > 0) {
+                        // tslint:disable-next-line:prefer-for-of
+                        for (let i = 0; i < response.data.length; i++) {
+                            devices.push(response.data[i]);
+                        }
                     }
                     setDeviceList(devices);
                 }
@@ -66,57 +64,100 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
 
     const addDevice = () => {
         startFidoFlow()
-            .then((response) => {
-                if (response.status !== 200) {
-                    onNotificationFired({
-                        description: t(
-                            "views:components.mfa.fido.notifications.startFidoFlow.error.description"
-                        ),
-                        message: t(
-                            "views:components.mfa.fido.notifications.startFidoFlow.error.message"
-                        ),
-                        otherProps: {
-                            negative: true
-                        },
-                        visible: true
-                    });
-                }
+            .then(() => {
+                getFidoMetaData();
+                onNotificationFired({
+                    description: t(
+                        "views:components.mfa.fido.notifications.startFidoFlow.success.description"
+                    ),
+                    message: t(
+                        "views:components.mfa.fido.notifications.startFidoFlow.success.message"
+                    ),
+                    otherProps: {
+                        positive: true
+                    },
+                    visible: true
+                });
+            }).catch(() => {
+                onNotificationFired({
+                    description: t(
+                        "views:components.mfa.fido.notifications.startFidoFlow.error.description"
+                    ),
+                    message: t(
+                        "views:components.mfa.fido.notifications.startFidoFlow.error.message"
+                    ),
+                    otherProps: {
+                        negative: true
+                    },
+                    visible: true
             });
-        getFidoMetaData();
-    }
+        });
+    };
+
+    const removeDevice = (event) => {
+        deleteDevice(event.target.id)
+            .then(() => {
+                getFidoMetaData();
+                onNotificationFired({
+                    description: t(
+                        "views:securityPage.multiFactor.fido.notification.removeDevice.success.description"
+                    ),
+                    message: t(
+                        "views:securityPage.multiFactor.fido.notification.removeDevice.success.message"
+                    ),
+                    otherProps: {
+                        success: true
+                    },
+                    visible: true
+                });
+            }).catch(() => {
+                onNotificationFired({
+                    description: t(
+                    "views:securityPage.multiFactor.fido.notification.removeDevice.error.description"
+                    ),
+                    message: t(
+                    "views:securityPage.multiFactor.fido.notification.removeDevice.error.message"
+                    ),
+                    otherProps: {
+                    negative: true
+                    },
+                    visible: true
+                });
+            });
+    };
 
     return (
         <div>
-            <Grid padded>
-                <Grid.Row columns={2}>
-                    <Grid.Column width={11} className="first-column">
+            <Grid padded={ true }>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column width={ 11 } className="first-column">
                         <List.Content floated="left">
                             <ThemeIcon
-                                icon={MFAIcons.fido}
+                                icon={ MFAIcons.fingerprint }
                                 size="mini"
-                                twoTone
-                                transparent
-                                rounded
-                                relaxed
+                                twoTone={ true }
+                                transparent={ true }
+                                rounded={ true }
+                                relaxed={ true }
                             />
                         </List.Content>
                         <List.Content>
-                            <List.Header>{t("views:components.mfa.fido.heading")}</List.Header>
+                            <List.Header>{ t("views:components.mfa.fido.heading") }</List.Header>
                             <List.Description>
-                                {t("views:components.mfa.fido.description")}
+                                { t("views:components.mfa.fido.description") }
                             </List.Description>
                         </List.Content>
                     </Grid.Column>
-                    <Grid.Column width={5} className="last-column">
+                    <Grid.Column width={ 5 } className="last-column">
                         <List.Content floated="right">
                             <Icon
                                 floated="right"
-                                link
+                                link={ true }
                                 className="list-icon"
                                 size="small"
                                 color="grey"
                                 name="add"
-                                onClick={addDevice}
+                                onClick={ addDevice }
                             />
                         </List.Content>
                     </Grid.Column>
@@ -124,13 +165,17 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             </Grid>
             {
                 deviceList ? (
-                        <List divided verticalAlign="middle" className="main-content-inner settings-section-inner-list">
+                        <List
+                            divided={ true }
+                            verticalAlign="middle"
+                            className="main-content-inner settings-section-inner-list"
+                        >
                             {
                                 deviceList.map((device, index) => (
-                                    <List.Item className="inner-list-item" key={index}>
-                                        <Grid padded>
-                                            <Grid.Row columns={2} className="first-column">
-                                                <Grid.Column width={11}>
+                                    <List.Item className="inner-list-item" key={ index }>
+                                        <Grid padded={ true }>
+                                            <Grid.Row columns={ 2 } className="first-column">
+                                                <Grid.Column width={ 11 }>
                                                     <List.Header className="with-left-padding">
                                                         <Icon
                                                             floated="right"
@@ -139,18 +184,19 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                             color="green"
                                                             name="check circle outline"
                                                         />
-                                                        {device.registrationTime}
+                                                        { device.registrationTime }
                                                     </List.Header>
                                                 </Grid.Column>
-                                                <Grid.Column width={5} className="last-column">
+                                                <Grid.Column width={ 5 } className="last-column">
                                                     <List.Content floated="right">
                                                         <Icon
-                                                            link
-                                                            disabled
+                                                            id={ device.credential.credentialId }
+                                                            link={ true }
                                                             className="list-icon"
                                                             size="large"
                                                             color="red"
                                                             name="trash alternate outline"
+                                                            onClick={ removeDevice }
                                                         />
                                                     </List.Content>
                                                 </Grid.Column>
@@ -164,7 +210,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                     :
                     (
                         <>
-                            <p style={{fontSize: "12px"}}>
+                            <p style={ { fontSize: "12px" } }>
                                 <Icon
                                     color="grey"
                                     floated="left"

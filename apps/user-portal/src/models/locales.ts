@@ -270,6 +270,7 @@ export interface Views {
                 description: string;
                 heading: string;
                 notifications: {
+                    removeDevice: Notification;
                     startFidoFlow: Notification;
                 }
             },

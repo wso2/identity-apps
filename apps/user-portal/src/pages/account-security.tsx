@@ -82,7 +82,7 @@ export const AccountSecurityPage = (): JSX.Element => {
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
-                        <UserSessionsComponent />
+                        <UserSessionsComponent onNotificationFired={ handleNotification } />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>

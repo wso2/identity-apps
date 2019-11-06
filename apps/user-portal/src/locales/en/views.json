@@ -1,7 +1,7 @@
 {
     "overviewPage": {
         "title": "Welcome, {{firstName}}",
-        "subTitle": "Manage your information, security, privacy and all the related configurations",
+        "subTitle": "Manage your personal information, account security, account privacy and all in one place",
         "widgets": {
             "accountStatus": {
                 "header": "Your account status looks good!",
@@ -36,7 +36,7 @@
     },
     "personalInfoPage": {
         "title": "Personal info",
-        "subTitle": "Manage information about you, your sub profiles and your account in general"
+        "subTitle": "Manage your personal details, linked accounts and profile export to have a more personalised experience"
     },
     "privacyPage": {
         "title": "WSO2 Identity Server Privacy Policy",
@@ -44,10 +44,10 @@
     },
     "securityPage": {
         "title": "Security",
-        "subTitle": "Update settings to make your account secure",
+        "subTitle": "Secure your account by staying upto date with all security settings and recommendations",
         "multiFactor": {
             "title": "Multi factor authentication",
-            "subTitle": "View and manage your multi factor authentication options",
+            "subTitle": "Add an extra layer of protection to your account by configuring multiple steps of authentication. You can choose from options like SMS OTP, FIDO, etc.",
             "smsOtp": {
                 "title": "SMS OTP",
                 "description": "You'll receive a text message containing the verification code",
@@ -67,13 +67,25 @@
                 "title": "FIDO",
                 "description": "Authenticate yourself by connecting a FIDO key",
                 "notification": {
-                    "success": {
-                        "message": "Your Device Registered Successfully",
-                        "description": "The device was successfully registered and now you can use it as a second factor."
+                    "registration": {
+                        "success": {
+                            "message": "Your Device Registered Successfully",
+                            "description": "The device was successfully registered and now you can use it as a second factor."
+                        },
+                        "error": {
+                            "message": "Something Went Wrong !!!",
+                            "description": "An error occurred while registering the device."
+                        }
                     },
-                    "error": {
-                        "message": "Something Went Wrong !!!",
-                        "description": "An error occurred while registering the device."
+                    "deletion": {
+                        "success": {
+                            "message": "The Device Deleted Successfully",
+                            "description": "The device was successfully deleted and removed from the list."
+                        },
+                        "error": {
+                            "message": "Something Went Wrong !!!",
+                            "description": "An error occurred while deleting the device."
+                        }
                     }
                 }
             }
@@ -93,11 +105,11 @@
     },
     "operationsPage": {
         "title": "Operations",
-        "subTitle": "Manage and maintain tasks like pending approvals etc."
+        "subTitle": "Manage your interactions in order to allow or deny the processes of the operations to proceed"
     },
     "changePassword": {
         "title": "Change password",
-        "subTitle": "Change and modify the existing password",
+        "subTitle": "Update your password regularly and make sure it's unique from other passwords you use.",
         "actionTitles": {
             "change": "Change your password"
         },
@@ -157,8 +169,8 @@
     },
     "consentManagement": {
         "title": "Consented applications",
-        "subTitle": "Manage consented applications and websites",
-        "description": "View and Manage consented applications of your account",
+        "subTitle": "View and Manage all the applications and personal details you have agreed to share",
+        "description": "View and Manage all the applications and personal details you have agreed to share",
         "actionTitles": {
             "empty": "You have not granted consent to any application"
         },
@@ -225,19 +237,19 @@
             }
         }
     },
-    "accountRecovery": {
-        "title": "Account Recovery",
-        "subTitle": "View and manage your account recovery options",
-        "emailRecovery": {
-            "title": "Email Recovery",
-            "descriptionAdd": "Add a recovery email address",
-            "descriptionUpdate": "Update recovery email address ({{email}})",
-            "emailAddress": "Email Address",
+    "accountRecovery":{
+        "title":"Account Recovery",
+        "subTitle":"If you forget your password or username recover your account using an email, recovery code, etc..",
+        "emailRecovery":{
+            "title":"Email Recovery",
+            "descriptionAdd":"Add a recovery email address",
+            "descriptionUpdate":"Update recovery email address ({{email}})",
+            "emailAddress":"Email Address",
             "emailRequired": "Enter an email address",
-            "notification": {
-                "success": {
-                    "message": "Email Address Updated Auccessfully",
-                    "description": "The email address in the user profile has been updated successfully"
+            "notification":{
+                "success":{
+                    "message":"Email Address Updated Auccessfully",
+                    "description":"The email address in the user profile has been updated successfully"
                 }
             }
         },
@@ -307,7 +319,7 @@
     },
     "userProfile": {
         "title": "Profile",
-        "subTitle": "Manage and update your basic profile information.",
+        "subTitle": "Manage and update your personal details like name, email, mobile number, organisation, etc.",
         "personalInfoTitle": "Personal information",
         "forms": {
             "nameChangeForm": {
@@ -413,7 +425,7 @@
     },
     "associatedAccounts": {
         "title": "Linked accounts",
-        "subTitle": "Manage all your linked accounts in one place.",
+        "subTitle": "Add your other accounts and switch between them after you logged in to a linked account.",
         "actionTitle": "Add account",
         "accountTypes": {
             "local": {
@@ -461,7 +473,7 @@
                     "description": "The required linked user account added successfully."
                 },
                 "error": {
-                    "message": "Error retrieving linked user accounts.",
+                    "message": "Error adding linked user accounts.",
                     "description": "{{description}}"
                 },
                 "genericError": {
@@ -564,7 +576,7 @@
     },
     "pendingApprovals": {
         "title": "Pending approvals",
-        "subTitle": "You can manage pending approvals here",
+        "subTitle": "View and manage tasks related to workflow operations that awaits your approval",
         "listHelper": "Showing approvals in {{status}} state",
         "notifications": {
             "fetchPendingApprovals": {

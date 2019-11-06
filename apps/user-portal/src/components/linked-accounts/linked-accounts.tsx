@@ -127,36 +127,46 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
             userId: username
         };
 
-        addAccountAssociation(data).then((response) => {
-            if (response.status !== 201) {
+        addAccountAssociation(data)
+            .then((response) => {
+                    onNotificationFired({
+                        description: t(
+                            "views:associatedAccounts.notification.addAssociation.success.description"
+                        ),
+                        message: t(
+                            "views:associatedAccounts.notification.addAssociation.success.message"
+                        ),
+                        otherProps: {
+                            positive: true
+                        },
+                        visible: true
+                    });
+
+                    // Hide form
+                    setEditingForm({
+                        ...editingForm,
+                        [formName]: false
+                    });
+                    fetchAssociations();
+            })
+            .catch((error) => {
                 onNotificationFired({
-                    description: t("views:components.linkedAccounts.notifications.addAssociation.error.description"),
-                    message: t("views:components.linkedAccounts.notifications.addAssociation.error.message"),
+                    description: t(
+                        "views:associatedAccounts.notification.addAssociation.error.description",
+                        { description: error }
+
+                    ),
+                    message: t(
+                        "views:associatedAccounts.notification.addAssociation.error.message",
+                        { description: error }
+
+                    ),
                     otherProps: {
                         negative: true
                     },
                     visible: true
                 });
-            } else {
-                onNotificationFired({
-                    description: t("views:components.linkedAccounts.notifications.addAssociation.success.description"),
-                    message: t("views:components.linkedAccounts.notifications.addAssociation.success.message"),
-                    otherProps: {
-                        positive: true
-                    },
-                    visible: true
-                });
-
-                // Hide form
-                setEditingForm({
-                    ...editingForm,
-                    [formName]: false
-                });
-
-                // Re-fetch account associations.
-            }
-            fetchAssociations();
-        });
+            });
     };
 
     /**
