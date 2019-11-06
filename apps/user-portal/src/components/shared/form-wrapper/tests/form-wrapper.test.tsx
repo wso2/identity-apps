@@ -16,10 +16,7 @@
  * under the License.
  */
 
-import React from "react";
-import { FormWrapper } from "..";
 import { fireEvent, render } from "../../../../../test_configs/test-utils";
-import { Validation } from "../../../../models";
 import constants from "./constants";
 import getForm from "./test-form";
 
@@ -42,17 +39,17 @@ describe("Test if the FormWrapper is working fine", () => {
             }
         ]));
 
-        // checks if the label is displayed
+        // check if the label is displayed
         expect(getByText(constants.TEXT_BOX_LABEL)).toBeInTheDocument();
 
-        // checks if the text box with the mentioned placeholder value is displayed
+        // check if the text box with the mentioned placeholder value is displayed
         const textBox = getByPlaceholderText(constants.TEXT_BOX_PLACEHOLDER);
         expect(textBox).toBeInTheDocument();
 
-        // checks if the submit button is displayed
+        // check if the submit button is displayed
         expect(getByText(constants.SUBMIT)).toBeInTheDocument();
 
-        // checks if the text box with the mentioned value is displayed
+        // check if the text box with the mentioned value is displayed
         expect(getByDisplayValue(constants.TEXT_BOX_VALUE)).toBeInTheDocument();
 
         // check if the value of the text box changes
@@ -60,19 +57,19 @@ describe("Test if the FormWrapper is working fine", () => {
         fireEvent.change(textBox, { target: { value: NEW_VALUE } });
         expect(getByDisplayValue(NEW_VALUE)).toBeInTheDocument();
 
-        // checks if required error message is correctly displayed
+        // check if required error message is correctly displayed
         fireEvent.change(textBox, { target: { value: "" } });
         fireEvent.blur(textBox);
         fireEvent.click(getByText(constants.SUBMIT));
         expect(getByText(constants.TEXT_BOX_REQUIRED_MESSAGE)).toBeInTheDocument();
 
-        // checks if validation is working fine
+        // check if validation is working fine
         fireEvent.change(textBox, { target: { value: "wrong value" } });
         fireEvent.blur(textBox);
         fireEvent.click(getByText(constants.SUBMIT));
         expect(getByText(constants.TEXT_BOX_VALIDATION_FAILED)).toBeInTheDocument();
 
-        // checks if submit is working fine
+        // check if submit is working fine
         fireEvent.change(textBox, { target: { value: constants.TEXT_BOX_VALID_MESSAGE } });
         fireEvent.blur(textBox);
         fireEvent.click(getByText(constants.SUBMIT));
@@ -97,7 +94,7 @@ describe("Test if the FormWrapper is working fine", () => {
             }
         ]));
 
-        // checks if the text box with the mentioned value is displayed
+        // check if the text box with the mentioned value is displayed
         expect(getByPlaceholderText(constants.TEXT_BOX_PLACEHOLDER).nodeValue).toBe(null);
 
     });
@@ -107,7 +104,7 @@ describe("Test if the FormWrapper is working fine", () => {
 
             const { getByPlaceholderText, queryByText, getByText } = render(getForm([
                 {
-                    isDefault: true,
+                    isDefault: false,
                     isRequired: false,
                     isValue: false,
                     type: "text"
@@ -122,7 +119,7 @@ describe("Test if the FormWrapper is working fine", () => {
 
             const textBox = getByPlaceholderText(constants.TEXT_BOX_PLACEHOLDER);
 
-            // checks if required error message is correctly displayed
+            // check if required error message is correctly displayed
             fireEvent.change(textBox, { target: { value: "" } });
             fireEvent.blur(textBox);
             fireEvent.click(getByText(constants.SUBMIT));
@@ -133,7 +130,7 @@ describe("Test if the FormWrapper is working fine", () => {
 
         const { container, getByText, getByPlaceholderText, getByDisplayValue } = render(getForm([
             {
-                isDefault: true,
+                isDefault: false,
                 isRequired: true,
                 isValue: true,
                 type: "password"
@@ -146,16 +143,16 @@ describe("Test if the FormWrapper is working fine", () => {
             }
         ]));
 
-        // checks if the label is displayed
+        // check if the label is displayed
         expect(getByText(constants.PASSWORD_LABEL)).toBeInTheDocument();
 
-        // checks if the password box with the mentioned placeholder value is displayed
+        // check if the password box with the mentioned placeholder value is displayed
         expect(getByPlaceholderText(constants.PASSWORD_PLACEHOLDER)).toBeInTheDocument();
 
-        // checks if the submit button is displayed
+        // check if the submit button is displayed
         expect(getByText(constants.SUBMIT)).toBeInTheDocument();
 
-        // checks if the password box with the mentioned value is displayed
+        // check if the password box with the mentioned value is displayed
         const passwordBox = getByDisplayValue(constants.PASSWORD_VALUE);
         expect(passwordBox).toBeInTheDocument();
 
@@ -164,13 +161,13 @@ describe("Test if the FormWrapper is working fine", () => {
         fireEvent.change(passwordBox, { target: { value: NEW_VALUE } });
         expect(getByDisplayValue(NEW_VALUE)).toBeInTheDocument();
 
-        // checks if validation is working fine
+        // check if validation is working fine
         fireEvent.change(passwordBox, { target: { value: "wrong value" } });
         fireEvent.blur(passwordBox);
         fireEvent.click(getByText(constants.SUBMIT));
         expect(getByText(constants.PASSWORD_VALIDATION_FAILED)).toBeInTheDocument();
 
-        // checks if show/hide is working fine
+        // check if show/hide is working fine
         let showButton = container.getElementsByClassName("eye link icon")[0];
         expect(passwordBox).toHaveAttribute("type", "password");
         expect(showButton).toBeInTheDocument();
@@ -192,18 +189,282 @@ describe("Test if the FormWrapper is working fine", () => {
         fireEvent.change(passwordBox, { target: { value: "" } });
         expect(container.getElementsByClassName("eye disabled link icon")[0]).toBeInTheDocument();
 
-        // checks if required error message if correctly displayed
+        // check if required error message if correctly displayed
         fireEvent.change(passwordBox, { target: { value: "" } });
         fireEvent.blur(passwordBox);
         fireEvent.click(getByText(constants.SUBMIT));
         expect(getByText(constants.PASSWORD_REQUIRED_MESSAGE)).toBeInTheDocument();
 
-        // checks if submit is working fine
+        // check if submit is working fine
         fireEvent.change(passwordBox, { target: { value: constants.PASSWORD_VALID_MESSAGE } });
         fireEvent.blur(passwordBox);
         fireEvent.click(getByText(constants.SUBMIT));
         expect(constants.onSubmit).toHaveBeenCalledTimes(2);
         expect(constants.onSubmit.mock.calls[1][0].get(constants.PASSWORD_NAME)).toBe(constants.PASSWORD_VALID_MESSAGE);
+    });
+
+    test("Test if the basic functions of a checkbox are working fine", () => {
+        const { getByText, getByDisplayValue } = render(getForm([
+            {
+                isDefault: false,
+                isRequired: true,
+                isValue: true,
+                type: "checkbox"
+            },
+            {
+                isDefault: false,
+                isRequired: false,
+                isValue: true,
+                type: "submit"
+            }
+        ]));
+
+        // check if the label is displayed correctly
+        expect(getByText(constants.CHECKBOX_LABEL)).toBeInTheDocument();
+
+        // check if the children are there
+        expect(getByText(constants.CHECKBOX_CHILD_1_LABEL)).toBeInTheDocument();
+        expect(getByText(constants.CHECKBOX_CHILD_2_LABEL)).toBeInTheDocument();
+        expect(getByText(constants.CHECKBOX_CHILD_3_LABEL)).toBeInTheDocument();
+
+        // check if the provided value is selected
+        expect(getByDisplayValue(constants.CHECKBOX_VALUE[0]).parentElement).toHaveClass("checked");
+
+        // check if the checkbox selection is working fine
+        fireEvent.click(getByDisplayValue(constants.CHECKBOX_CHILD_1_VALUE));
+        expect(getByText(constants.CHECKBOX_CHILD_1_LABEL).parentElement).toHaveClass("checked");
+
+        // check if required validation is working fine
+        fireEvent.click(getByDisplayValue(constants.CHECKBOX_CHILD_1_VALUE));
+        fireEvent.click(getByDisplayValue(constants.CHECKBOX_CHILD_2_VALUE));
+        fireEvent.blur(getByDisplayValue(constants.CHECKBOX_CHILD_1_VALUE));
+        fireEvent.click(getByText(constants.SUBMIT));
+        expect(getByText(constants.CHECKBOX_REQUIRED_MESSAGE)).toBeInTheDocument();
+
+        // check if when submit is clicked the clicked checkboxes values are passed
+        fireEvent.click(getByDisplayValue(constants.CHECKBOX_CHILD_1_VALUE));
+        fireEvent.click(getByDisplayValue(constants.CHECKBOX_CHILD_2_VALUE));
+        fireEvent.blur(getByDisplayValue(constants.CHECKBOX_CHILD_1_VALUE));
+        fireEvent.click(getByText(constants.SUBMIT));
+        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit.mock.calls[0][0].get(constants.CHECKBOX_NAME)).toHaveLength(2);
+
+    });
+
+    test("Test if checkbox submission succeeds when required is set to false", () => {
+        const { getByText, queryByText } = render(getForm([
+            {
+                isDefault: false,
+                isRequired: false,
+                isValue: false,
+                type: "checkbox"
+            },
+            {
+                isDefault: false,
+                isRequired: false,
+                isValue: true,
+                type: "submit"
+            }
+        ]));
+        fireEvent.click(getByText(constants.SUBMIT));
+        expect(queryByText(constants.CHECKBOX_REQUIRED_MESSAGE)).not.toBeInTheDocument();
+        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit.mock.calls[0][0].get(constants.CHECKBOX_NAME)).toHaveLength(0);
+    });
+
+    test("Test if the basic functions of the radio field are working fine", () => {
+        const { getByText, getByDisplayValue } = render(getForm([
+            {
+                isDefault: true,
+                isRequired: true,
+                isValue: true,
+                type: "radio"
+            },
+            {
+                isDefault: false,
+                isRequired: false,
+                isValue: true,
+                type: "submit"
+            }
+        ]));
+
+        // check if the label is displayed correctly
+        expect(getByText(constants.RADIO_LABEL)).toBeInTheDocument();
+
+        // check if the children are displayed properly
+        expect(getByText(constants.RADIO_CHILD_1_LABEL)).toBeInTheDocument();
+        expect(getByText(constants.RADIO_CHILD_2_LABEL)).toBeInTheDocument();
+
+        // check if the provided value is selected
+        expect(getByDisplayValue(constants.RADIO_VALUE).parentElement).toHaveClass("checked");
+
+        // check if radio selection is working fine
+        fireEvent.click(getByDisplayValue(constants.RADIO_CHILD_2_VALUE));
+        expect(getByDisplayValue(constants.RADIO_CHILD_2_VALUE).parentElement).toHaveClass("checked");
+
+        // check if submission is working fine
+        fireEvent.click(getByText(constants.SUBMIT));
+        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit.mock.calls[0][0].get(constants.RADIO_NAME)).toBe(constants.RADIO_CHILD_2_VALUE);
+
+    });
+
+    test("Test if default value of a radio is checked", () => {
+        const { getByDisplayValue } = render(getForm([
+            {
+                isDefault: true,
+                isRequired: true,
+                isValue: false,
+                type: "radio"
+            },
+            {
+                isDefault: false,
+                isRequired: false,
+                isValue: true,
+                type: "submit"
+            }
+        ]));
+
+        // check if the provided value is selected
+        expect(getByDisplayValue(constants.RADIO_DEFAULT).parentElement).toHaveClass("checked");
+
+    });
+
+    test("Test if the basic functions of dropdown are working fine", () => {
+        const { getByText, getByRole } = render(getForm([
+            {
+                isDefault: false,
+                isRequired: true,
+                isValue: false,
+                type: "dropdown"
+            },
+            {
+                isDefault: false,
+                isRequired: false,
+                isValue: true,
+                type: "submit"
+            }
+        ]));
+
+        // check if the label is displayed properly
+        expect(getByText(constants.DROPDOWN_LABEL)).toBeInTheDocument();
+
+        // check if the children are displayed properly
+        expect(getByText(constants.DROPDOWN_CHILD_1_VALUE)).toBeInTheDocument();
+        expect(getByText(constants.DROPDOWN_CHILD_2_VALUE)).toBeInTheDocument();
+
+        // check if required validation works fine
+        fireEvent.click(getByText(constants.SUBMIT));
+        expect(getByText(constants.DROPDOWN_REQUIRED_MESSAGE)).toBeInTheDocument();
+
+        // check if selection works properly
+        fireEvent.click(getByRole("alert"));
+        fireEvent.click(getByText(constants.DROPDOWN_CHILD_2_VALUE).parentElement);
+        expect(getByRole("alert").firstChild.nodeValue).toBe(constants.DROPDOWN_CHILD_2_VALUE);
+
+        // check if submission works fine
+        fireEvent.click(getByText(constants.SUBMIT));
+        // expect(constants.onSubmit).toHaveBeenCalledTimes(1);
+        // expect(constants.onSubmit.mock.calls[0][0].get(constants.DROPDOWN_NAME)).toBe(constants.DROPDOWN_CHILD_2_VALUE);
+
+    });
+
+    test("Test if the default value is selected in a dropdown", () => {
+        const { getByText, getByRole } = render(getForm([
+            {
+                isDefault: true,
+                isRequired: true,
+                isValue: false,
+                type: "dropdown"
+            },
+            {
+                isDefault: false,
+                isRequired: false,
+                isValue: true,
+                type: "submit"
+            }
+        ]));
+
+        expect(getByRole("alert").firstChild.nodeValue).toBe(constants.DROPDOWN_DEFAULT);
+
+    });
+
+    test("Test if the passed value is selected in a dropdown", () => {
+        const { getByText, getByRole } = render(getForm([
+            {
+                isDefault: true,
+                isRequired: true,
+                isValue: true,
+                type: "dropdown"
+            },
+            {
+                isDefault: false,
+                isRequired: false,
+                isValue: true,
+                type: "submit"
+            }
+        ]));
+
+        expect(getByRole("alert").firstChild.nodeValue).toBe(constants.DROPDOWN_VALUE);
+
+    });
+
+    test("Test if dropdown submission works when required is set to false", () => {
+        const { getByText, getByRole, queryByText } = render(getForm([
+            {
+                isDefault: false,
+                isRequired: false,
+                isValue: false,
+                type: "dropdown"
+            },
+            {
+                isDefault: false,
+                isRequired: false,
+                isValue: true,
+                type: "submit"
+            }
+        ]));
+
+        fireEvent.click(getByText(constants.SUBMIT));
+        expect(queryByText(constants.DROPDOWN_REQUIRED_MESSAGE)).not.toBeInTheDocument();
+        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit.mock.calls[0][0].get(constants.DROPDOWN_NAME)).toBe("");
+    });
+
+    test("Test if the reset button is working fine", () => {
+
+        const { getByText, getByPlaceholderText } = render(getForm([
+            {
+                isDefault: true,
+                isRequired: true,
+                isValue: true,
+                type: "text"
+            },
+            {
+                isDefault: false,
+                isRequired: false,
+                isValue: true,
+                type: "reset"
+            }
+        ]));
+
+        fireEvent.click(getByText(constants.RESET_VALUE));
+        expect(getByPlaceholderText(constants.TEXT_BOX_PLACEHOLDER).nodeValue).toBe(null);
+
+    });
+
+    test("Test if the button works fine", () => {
+        const{ getByText } = render(getForm([
+            {
+                isDefault: false,
+                isRequired: false,
+                isValue: true,
+                type: "button"
+            }
+        ]));
+
+        fireEvent.click(getByText(constants.BUTTON_VALUE));
+        expect(constants.onClick).toHaveBeenCalledTimes(1);
     });
 
 });

@@ -26,7 +26,7 @@ import { createEmptyProfile, Notification } from "../../models";
 import { EditSection, FormWrapper, SettingsSection } from "../shared";
 
 /**
- * Proptypes for the basic details component.
+ * Prop types for the basic details component.
  */
 interface ProfileProps {
     onNotificationFired: (notification: Notification) => void;
@@ -48,7 +48,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         organizationChangeForm: false
     });
     const { onNotificationFired } = props;
-    const { state, dispatch } = useContext(AuthContext);
+    const { state } = useContext(AuthContext);
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -215,11 +215,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const handleNameChange = editingForm.nameChangeForm ? (
         <EditSection>
             <Grid>
-                <Grid.Row columns={2}>
-                    <Grid.Column width={4}>{t("views:components.profile.fields.name.label")}</Grid.Column>
-                    <Grid.Column width={12}>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column width={ 4 }>{ t("views:components.profile.fields.name.label") }</Grid.Column>
+                    <Grid.Column width={ 12 }>
                         <FormWrapper
-                            formFields={[
+                            formFields={ [
                                 {
                                     label: t(
                                         "views:components.profile.forms.nameChangeForm." + "inputs.firstName.label"
@@ -227,17 +227,20 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     name: "displayName",
                                     placeholder: t(
                                         "views:components.profile.forms.nameChangeForm.inputs" +
-                                            ".firstName.placeholder"
+                                        ".firstName.placeholder"
                                     ),
                                     required: true,
                                     requiredErrorMessage: t(
                                         "views:components.profile.forms." +
-                                            "nameChangeForm.inputs.firstName.validations.empty"
+                                        "nameChangeForm.inputs.firstName.validations.empty"
                                     ),
-                                    type: "text",
+                                    type: "text" as const,
                                     value: editingProfileInfo.displayName
                                 },
                                 {
+                                    label: t(
+                                        "views:components.profile.forms.nameChangeForm.inputs.lastName.label"
+                                    ),
                                     name: "lastName",
                                     placeholder: t(
                                         "views:components.profile.forms.nameChangeForm.inputs" + ".lastName.placeholder"
@@ -245,18 +248,18 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     required: true,
                                     requiredErrorMessage: t(
                                         "views:components.profile.forms." +
-                                            "nameChangeForm.inputs.lastName.validations.empty"
+                                        "nameChangeForm.inputs.lastName.validations.empty"
                                     ),
-                                    type: "text",
+                                    type: "text" as const,
                                     value: editingProfileInfo.lastName
                                 },
                                 {
                                     hidden: true,
-                                    type: "divider"
+                                    type: "divider" as const
                                 },
                                 {
-                                    size: "small",
-                                    type: "submit",
+                                    size: "small" as const,
+                                    type: "submit" as const,
                                     value: t("common:save").toString()
                                 },
                                 {
@@ -268,75 +271,79 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     type: "button",
                                     value: t("common:cancel").toString()
                                 }
-                            ]}
-                            groups={[
+                            ] }
+                            groups={ [
                                 {
                                     endIndex: 5,
                                     startIndex: 3,
                                     style: "inline"
                                 }
-                            ]}
-                            onSubmit={(values) => {
+                            ] }
+                            onSubmit={ (values) => {
                                 handleSubmit(values, "nameChangeForm");
-                            }}
+                            } }
                         />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
         </EditSection>
     ) : (
-        <Grid padded>
-            <Grid.Row columns={3}>
-                <Grid.Column mobile={6} tablet={6} computer={4} className="first-column">
-                    <List.Content>{t("views:components.profile.fields.name.label")}</List.Content>
-                </Grid.Column>
-                <Grid.Column mobile={8} tablet={8} computer={10}>
-                    <List.Content>
-                        <List.Description>
-                            {profileInfo.displayName || profileInfo.lastName
-                                ? profileInfo.displayName + " " + profileInfo.lastName
-                                : t("views:components.profile.fields.name.default")}
-                        </List.Description>
-                    </List.Content>
-                </Grid.Column>
-                <Grid.Column
-                    mobile={2}
-                    tablet={2}
-                    computer={2}
-                    className={window.innerWidth > Responsive.onlyTablet.minWidth ? "last-column" : ""}
-                >
-                    <List.Content floated="right">
-                        <Popup
-                            trigger={
-                                <Icon
-                                    link
-                                    className="list-icon"
-                                    size="small"
-                                    color="grey"
-                                    onClick={() => showFormEditView("nameChangeForm")}
-                                    name={profileInfo.displayName || profileInfo.lastName ? "pencil alternate" : "add"}
-                                />
-                            }
-                            position="top center"
-                            content={
-                                profileInfo.displayName || profileInfo.lastName ? t("common:edit") : t("common:add")
-                            }
-                            inverted
-                        />
-                    </List.Content>
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
-    );
+            <Grid padded={ true }>
+                <Grid.Row columns={ 3 }>
+                    <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
+                        <List.Content>{ t("views:components.profile.fields.name.label") }</List.Content>
+                    </Grid.Column>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                        <List.Content>
+                            <List.Description>
+                                { profileInfo.displayName || profileInfo.lastName
+                                    ? profileInfo.displayName + " " + profileInfo.lastName
+                                    : t("views:components.profile.fields.name.default") }
+                            </List.Description>
+                        </List.Content>
+                    </Grid.Column>
+                    <Grid.Column
+                        mobile={ 2 }
+                        tablet={ 2 }
+                        computer={ 2 }
+                        className={ window.innerWidth > Responsive.onlyTablet.minWidth ? "last-column" : "" }
+                    >
+                        <List.Content floated="right">
+                            <Popup
+                                trigger={
+                                    (
+                                        <Icon
+                                            link={ true }
+                                            className="list-icon"
+                                            size="small"
+                                            color="grey"
+                                            onClick={ () => showFormEditView("nameChangeForm") }
+                                            name={ profileInfo.displayName || profileInfo.lastName
+                                                ? "pencil alternate"
+                                                : "add" }
+                                        />
+                                    )
+                                }
+                                position="top center"
+                                content={
+                                    profileInfo.displayName || profileInfo.lastName ? t("common:edit") : t("common:add")
+                                }
+                                inverted={ true }
+                            />
+                        </List.Content>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        );
 
     const handleEmailChange = editingForm.emailChangeForm ? (
         <EditSection>
             <Grid>
-                <Grid.Row columns={2}>
-                    <Grid.Column width={4}>{t("views:components.profile.fields.email.label")}</Grid.Column>
-                    <Grid.Column width={12}>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column width={ 4 }>{ t("views:components.profile.fields.email.label") }</Grid.Column>
+                    <Grid.Column width={ 12 }>
                         <FormWrapper
-                            formFields={[
+                            formFields={ [
                                 {
                                     label: t("views:components.profile.fields.email.label"),
 
@@ -347,7 +354,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     required: true,
                                     requiredErrorMessage: t(
                                         "views:components.profile.forms." +
-                                            "emailChangeForm.inputs.email.validations.empty"
+                                        "emailChangeForm.inputs.email.validations.empty"
                                     ),
                                     type: "text",
                                     value: editingProfileInfo.email
@@ -370,83 +377,87 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     type: "button",
                                     value: t("common:cancel").toString()
                                 }
-                            ]}
-                            groups={[
+                            ] }
+                            groups={ [
                                 {
                                     endIndex: 4,
                                     startIndex: 2,
                                     style: "inline"
                                 }
-                            ]}
-                            onSubmit={(values) => {
+                            ] }
+                            onSubmit={ (values) => {
                                 handleSubmit(values, "emailChangeForm");
-                            }}
+                            } }
                         />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
         </EditSection>
     ) : (
-        <Grid padded>
-            <Grid.Row columns={3}>
-                <Grid.Column mobile={6} tablet={6} computer={4} className="first-column">
-                    <List.Content>{t("views:components.profile.fields.email.label")}</List.Content>
-                </Grid.Column>
-                <Grid.Column mobile={8} tablet={8} computer={10}>
-                    <List.Content>
-                        <List.Description>
-                            {profileInfo.email ? profileInfo.email : t("views:components.profile.fields.email.default")}
-                        </List.Description>
-                    </List.Content>
-                </Grid.Column>
-                <Grid.Column
-                    mobile={2}
-                    tablet={2}
-                    computer={2}
-                    className={window.innerWidth > Responsive.onlyTablet.minWidth ? "last-column" : ""}
-                >
-                    <List.Content floated="right">
-                        <Popup
-                            trigger={
-                                <Icon
-                                    link
-                                    className="list-icon"
-                                    size="small"
-                                    color="grey"
-                                    id="emailEdit"
-                                    onClick={() => showFormEditView("emailChangeForm")}
-                                    name={profileInfo.email ? "pencil alternate" : "add"}
-                                />
-                            }
-                            position="top center"
-                            content={profileInfo.email ? t("common:edit") : t("common:add")}
-                            inverted
-                        />
-                    </List.Content>
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
-    );
+            <Grid padded={ true }>
+                <Grid.Row columns={ 3 }>
+                    <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
+                        <List.Content>{ t("views:components.profile.fields.email.label") }</List.Content>
+                    </Grid.Column>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                        <List.Content>
+                            <List.Description>
+                                { profileInfo.email
+                                    ? profileInfo.email
+                                    : t("views:components.profile.fields.email.default") }
+                            </List.Description>
+                        </List.Content>
+                    </Grid.Column>
+                    <Grid.Column
+                        mobile={ 2 }
+                        tablet={ 2 }
+                        computer={ 2 }
+                        className={ window.innerWidth > Responsive.onlyTablet.minWidth ? "last-column" : "" }
+                    >
+                        <List.Content floated="right">
+                            <Popup
+                                trigger={
+                                    (
+                                        <Icon
+                                            link={ true }
+                                            className="list-icon"
+                                            size="small"
+                                            color="grey"
+                                            id="emailEdit"
+                                            onClick={ () => showFormEditView("emailChangeForm") }
+                                            name={ profileInfo.email ? "pencil alternate" : "add" }
+                                        />
+                                    )
+                                }
+                                position="top center"
+                                content={ profileInfo.email ? t("common:edit") : t("common:add") }
+                                inverted={ true }
+                            />
+                        </List.Content>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        );
 
     const handleOrganisationChange = editingForm.organizationChangeForm ? (
         <EditSection>
             <Grid>
-                <Grid.Row columns={2}>
-                    <Grid.Column width={4}>{t("views:components.profile.fields.organization.label")}</Grid.Column>
-                    <Grid.Column width={12}>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column width={ 4 }>{ t("views:components.profile.fields.organization.label") }</Grid.Column>
+                    <Grid.Column width={ 12 }>
                         <FormWrapper
-                            formFields={[
+                            formFields={ [
                                 {
                                     label: t("views:components.profile.fields.organization.label"),
                                     name: "organisation",
                                     placeholder: t(
                                         "views:components.profile.forms.organizationChangeForm" +
-                                            ".inputs.organization.placeholder"
+                                        ".inputs.organization.placeholder"
                                     ),
                                     required: true,
                                     requiredErrorMessage: t(
                                         "views:components.profile.forms." +
-                                            "organizationChangeForm.inputs.organization.validations.empty"
+                                        "organizationChangeForm.inputs.organization.validations.empty"
                                     ),
                                     type: "text",
                                     value: editingProfileInfo.organisation
@@ -469,84 +480,87 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     type: "button",
                                     value: t("common:cancel").toString()
                                 }
-                            ]}
-                            groups={[
+                            ] }
+                            groups={ [
                                 {
                                     endIndex: 4,
                                     startIndex: 2,
                                     style: "inline"
                                 }
-                            ]}
-                            onSubmit={(values) => {
+                            ] }
+                            onSubmit={ (values) => {
                                 handleSubmit(values, "organizationChangeForm");
-                            }}
+                            } }
                         />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
         </EditSection>
     ) : (
-        <Grid padded>
-            <Grid.Row columns={3}>
-                <Grid.Column mobile={6} tablet={6} computer={4} className="first-column">
-                    <List.Content>{t("views:components.profile.fields.organization.label")}</List.Content>
-                </Grid.Column>
-                <Grid.Column mobile={8} tablet={8} computer={10}>
-                    <List.Content>
-                        <List.Description>
-                            {profileInfo.organisation
-                                ? profileInfo.organisation
-                                : t("views:components.profile.fields.organization.default")}
-                        </List.Description>
-                    </List.Content>
-                </Grid.Column>
-                <Grid.Column
-                    tablet={2}
-                    mobile={2}
-                    computer={2}
-                    className={window.innerWidth > Responsive.onlyTablet.minWidth ? "last-column" : ""}
-                >
-                    <List.Content floated="right">
-                        <Popup
-                            trigger={
-                                <Icon
-                                    link
-                                    className="list-icon"
-                                    size="small"
-                                    color="grey"
-                                    id="organizationEdit"
-                                    onClick={() => showFormEditView("organizationChangeForm")}
-                                    name={profileInfo.organisation ? "pencil alternate" : "add"}
-                                />
-                            }
-                            position="top center"
-                            content={profileInfo.organisation ? t("common:edit") : t("common:add")}
-                            inverted
-                        />
-                    </List.Content>
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
-    );
+            <Grid padded={ true }>
+                <Grid.Row columns={ 3 }>
+                    <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
+                        <List.Content>{ t("views:components.profile.fields.organization.label") }</List.Content>
+                    </Grid.Column>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                        <List.Content>
+                            <List.Description>
+                                { profileInfo.organisation
+                                    ? profileInfo.organisation
+                                    : t("views:components.profile.fields.organization.default") }
+                            </List.Description>
+                        </List.Content>
+                    </Grid.Column>
+                    <Grid.Column
+                        tablet={ 2 }
+                        mobile={ 2 }
+                        computer={ 2 }
+                        className={ window.innerWidth > Responsive.onlyTablet.minWidth ? "last-column" : "" }
+                    >
+                        <List.Content floated="right">
+                            <Popup
+                                trigger={
+                                    (
+                                        <Icon
+                                            link={ true }
+                                            className="list-icon"
+                                            size="small"
+                                            color="grey"
+                                            id="organizationEdit"
+                                            onClick={ () => showFormEditView("organizationChangeForm") }
+                                            name={ profileInfo.organisation ? "pencil alternate" : "add" }
+                                        />
+                                    )
+                                }
+                                position="top center"
+                                content={ profileInfo.organisation ? t("common:edit") : t("common:add") }
+                                inverted={ true }
+                            />
+                        </List.Content>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        );
 
     const handleMobileChange = editingForm.mobileChangeForm ? (
         <EditSection>
             <Grid>
-                <Grid.Row columns={2}>
-                    <Grid.Column width={4}>{t("views:components.profile.fields.mobile.label")}</Grid.Column>
-                    <Grid.Column width={12}>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column width={ 4 }>{ t("views:components.profile.fields.mobile.label") }</Grid.Column>
+                    <Grid.Column width={ 12 }>
                         <FormWrapper
-                            formFields={[
+                            formFields={ [
                                 {
                                     label: t("views:components.profile.fields.mobile.label"),
                                     name: "mobile",
                                     placeholder: t(
-                                        "views:components.profile.forms.mobileChangeForm" + ".inputs.mobile.placeholder"
+                                        "views:components.profile.forms.mobileChangeForm"
+                                        + ".inputs.mobile.placeholder"
                                     ),
                                     required: true,
                                     requiredErrorMessage: t(
                                         "views:components.profile.forms." +
-                                            "mobileChangeForm.inputs.mobile.validations.empty"
+                                        "mobileChangeForm.inputs.mobile.validations.empty"
                                     ),
                                     type: "text",
                                     value: editingProfileInfo.mobile
@@ -569,90 +583,92 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     type: "button",
                                     value: t("common:cancel").toString()
                                 }
-                            ]}
-                            groups={[
+                            ] }
+                            groups={ [
                                 {
                                     endIndex: 4,
                                     startIndex: 2,
                                     style: "inline"
                                 }
-                            ]}
-                            onSubmit={(values) => {
+                            ] }
+                            onSubmit={ (values) => {
                                 handleSubmit(values, "mobileChangeForm");
-                            }}
+                            } }
                         />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
         </EditSection>
     ) : (
-        <Grid padded>
-            <Grid.Row columns={3}>
-                <Grid.Column mobile={6} tablet={6} computer={4} className="first-column">
-                    <List.Content>{t("views:components.profile.fields.mobile.label")}</List.Content>
-                </Grid.Column>
-                <Grid.Column mobile={8} tablet={8} computer={10}>
-                    <List.Content>
-                        <List.Description>
-                            {profileInfo.mobile
-                                ? profileInfo.mobile
-                                : t("views:components.profile.fields.mobile.default")}
-                        </List.Description>
-                    </List.Content>
-                </Grid.Column>
-                <Grid.Column
-                    mobile={2}
-                    tablet={2}
-                    computer={2}
-                    className={window.innerWidth > Responsive.onlyTablet.minWidth ? "last-column" : ""}
-                >
-                    <List.Content floated="right">
-                        <Popup
-                            trigger={
-                                <Icon
-                                    link
-                                    className="list-icon"
-                                    size="small"
-                                    color="grey"
-                                    onClick={() => showFormEditView("mobileChangeForm")}
-                                    name={profileInfo.mobile ? "pencil alternate" : "add"}
-                                />
-                            }
-                            position="top center"
-                            content={profileInfo.mobile ? t("common:edit") : t("common:add")}
-                            inverted
-                        />
-                    </List.Content>
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
-    );
+            <Grid padded={ true }>
+                <Grid.Row columns={ 3 }>
+                    <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
+                        <List.Content>{ t("views:components.profile.fields.mobile.label") }</List.Content>
+                    </Grid.Column>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                        <List.Content>
+                            <List.Description>
+                                { profileInfo.mobile
+                                    ? profileInfo.mobile
+                                    : t("views:components.profile.fields.mobile.default") }
+                            </List.Description>
+                        </List.Content>
+                    </Grid.Column>
+                    <Grid.Column
+                        mobile={ 2 }
+                        tablet={ 2 }
+                        computer={ 2 }
+                        className={ window.innerWidth > Responsive.onlyTablet.minWidth ? "last-column" : "" }
+                    >
+                        <List.Content floated="right">
+                            <Popup
+                                trigger={
+                                    (
+                                        <Icon
+                                            link={ true }
+                                            className="list-icon"
+                                            size="small"
+                                            color="grey"
+                                            onClick={ () => showFormEditView("mobileChangeForm") }
+                                            name={ profileInfo.mobile ? "pencil alternate" : "add" }
+                                        />
+                                    )
+                                }
+                                position="top center"
+                                content={ profileInfo.mobile ? t("common:edit") : t("common:add") }
+                                inverted={ true }
+                            />
+                        </List.Content>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        );
 
     return (
         <SettingsSection
-            description={t("views:sections.profile.description")}
-            header={t("views:sections.profile.heading")}
-            icon={resolveUserAvatar(state, "tiny")}
+            description={ t("views:sections.profile.description") }
+            header={ t("views:sections.profile.heading") }
+            icon={ resolveUserAvatar(state, "tiny") }
         >
-            <List divided verticalAlign="middle" className="main-content-inner">
+            <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">
-                    <Grid padded>
-                        <Grid.Row columns={3}>
-                            <Grid.Column mobile={6} tablet={6} computer={4} className="first-column">
-                                <List.Content>{t("views:components.profile.fields.username.label")}</List.Content>
+                    <Grid padded={ true }>
+                        <Grid.Row columns={ 3 }>
+                            <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
+                                <List.Content>{ t("views:components.profile.fields.username.label") }</List.Content>
                             </Grid.Column>
-                            <Grid.Column mobile={10} tablet={10} computer={12}>
+                            <Grid.Column mobile={ 10 } tablet={ 10 } computer={ 12 }>
                                 <List.Content>
-                                    <List.Description>{profileInfo.username}</List.Description>
+                                    <List.Description>{ profileInfo.username }</List.Description>
                                 </List.Content>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
                 </List.Item>
-                <List.Item className="inner-list-item">{handleNameChange}</List.Item>
-                <List.Item className="inner-list-item">{handleEmailChange}</List.Item>
-                <List.Item className="inner-list-item">{handleOrganisationChange}</List.Item>
-                <List.Item className="inner-list-item">{handleMobileChange}</List.Item>
+                <List.Item className="inner-list-item">{ handleNameChange }</List.Item>
+                <List.Item className="inner-list-item">{ handleEmailChange }</List.Item>
+                <List.Item className="inner-list-item">{ handleOrganisationChange }</List.Item>
+                <List.Item className="inner-list-item">{ handleMobileChange }</List.Item>
             </List>
         </SettingsSection>
     );

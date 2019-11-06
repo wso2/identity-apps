@@ -44,7 +44,7 @@ const constants = {
     PASSWORD_LABEL: "Password box label",
     PASSWORD_NAME: "passwordBox",
     PASSWORD_PLACEHOLDER: "Password box placeholder",
-    PASSWORD_REQUIRED_MESSAGE: "Required",
+    PASSWORD_REQUIRED_MESSAGE: "Password Required",
     PASSWORD_VALIDATION_FAILED: "Validation failed",
     PASSWORD_VALID_MESSAGE: "Password Validated",
     PASSWORD_VALUE: "Password box value",
