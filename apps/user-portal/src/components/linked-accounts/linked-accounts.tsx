@@ -18,11 +18,11 @@
 
 import React, { FunctionComponent, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid, Icon, List } from "semantic-ui-react";
-import { addAccountAssociation, getAssociations, getProfileInfo } from "../../api";
+import { Dropdown, Grid, Icon, List, Popup } from "semantic-ui-react";
+import { addAccountAssociation, getAssociations, getProfileInfo, switchAccount } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
 import { AuthContext } from "../../contexts";
-import { Notification } from "../../models";
+import { createEmptyNotification, LinkedAccountInterface, Notification } from "../../models";
 import { setProfileInfo } from "../../store/actions";
 import { EditSection, FormWrapper, SettingsSection, UserImage } from "../shared";
 
@@ -40,8 +40,8 @@ interface LinkedAccountsProps {
  * @return {JSX.Element}
  */
 export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: LinkedAccountsProps): JSX.Element => {
-    const [associations, setAssociations] = useState([]);
-    const [editingForm, setEditingForm] = useState({
+    const [ associations, setAssociations ] = useState([]);
+    const [ editingForm, setEditingForm ] = useState({
         addAccountForm: false
     });
     const { onNotificationFired } = props;
@@ -56,6 +56,8 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
      * Fetches associations from the API.
      */
     const fetchAssociations = (): void => {
+        let notification: Notification = createEmptyNotification();
+
         if (!state.profileInfo || (state.profileInfo && !state.profileInfo.displayName)) {
             getProfileInfo().then((infoResponse) => {
                 getAssociations()
@@ -69,7 +71,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                         );
                     })
                     .catch((error) => {
-                        onNotificationFired({
+                        notification = {
                             description: t(
                                 "views:components.linkedAccounts.notifications.getAssociations.error.description",
                                 { description: error }
@@ -79,11 +81,13 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                                 negative: true
                             },
                             visible: true
-                        });
+                        };
                     });
             });
+            onNotificationFired(notification);
             return;
         }
+
         getAssociations()
             .then((response) => {
                 setAssociations(response);
@@ -95,7 +99,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 );
             })
             .catch((error) => {
-                onNotificationFired({
+                notification = {
                     description: t("views:components.linkedAccounts.notifications.getAssociations.error.description", {
                         description: error
                     }),
@@ -104,8 +108,10 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                         negative: true
                     },
                     visible: true
-                });
+                };
             });
+
+        onNotificationFired(notification);
     };
 
     /**
@@ -114,6 +120,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
      * @param formName - Name of the form
      */
     const handleSubmit = (values: Map<string, string | string[]>, formName: string): void => {
+        let notification: Notification = createEmptyNotification();
         const username = values.get("username");
         const password = values.get("password");
         const data = {
@@ -128,45 +135,45 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
         };
 
         addAccountAssociation(data)
-            .then((response) => {
-                    onNotificationFired({
-                        description: t(
-                            "views:associatedAccounts.notification.addAssociation.success.description"
-                        ),
-                        message: t(
-                            "views:associatedAccounts.notification.addAssociation.success.message"
-                        ),
-                        otherProps: {
-                            positive: true
-                        },
-                        visible: true
-                    });
+            .then(() => {
+                notification = {
+                    description: t(
+                        "views:associatedAccounts.notification.addAssociation.success.description"
+                    ),
+                    message: t(
+                        "views:associatedAccounts.notification.addAssociation.success.message"
+                    ),
+                    otherProps: {
+                        positive: true
+                    },
+                    visible: true
+                };
 
-                    // Hide form
-                    setEditingForm({
-                        ...editingForm,
-                        [formName]: false
-                    });
-                    fetchAssociations();
+                // Hide form
+                setEditingForm({
+                    ...editingForm,
+                    [ formName ]: false
+                });
+                fetchAssociations();
             })
             .catch((error) => {
-                onNotificationFired({
+                notification = {
                     description: t(
                         "views:associatedAccounts.notification.addAssociation.error.description",
                         { description: error }
-
                     ),
                     message: t(
                         "views:associatedAccounts.notification.addAssociation.error.message",
                         { description: error }
-
                     ),
                     otherProps: {
                         negative: true
                     },
                     visible: true
-                });
+                };
             });
+
+        onNotificationFired(notification);
     };
 
     /**
@@ -177,7 +184,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
     const showFormEditView = (formName: string): void => {
         setEditingForm({
             ...editingForm,
-            [formName]: true
+            [ formName ]: true
         });
     };
 
@@ -189,8 +196,50 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
     const hideFormEditView = (formName: string): void => {
         setEditingForm({
             ...editingForm,
-            [formName]: false
+            [ formName ]: false
         });
+    };
+
+    /**
+     * Handles the account switch click event.
+     *
+     * @param {LinkedAccountInterface} account - Target account.
+     */
+    const handleLinkedAccountSwitch = (account: LinkedAccountInterface) => {
+        let notification: Notification = createEmptyNotification();
+
+        switchAccount(account)
+            .then(() => {
+                // reload the page on successful account switch.
+                window.location.reload();
+            })
+            .catch((error) => {
+                notification = {
+                    description: t(
+                        "views:components.linkedAccounts.notifications.switchAccount.genericError.description"
+                    ),
+                    message: t(
+                        "views:components.linkedAccounts.notifications.switchAccount.genericError.message"
+                    ),
+                    otherProps: {
+                        negative: true
+                    },
+                    visible: true
+                };
+                if (error.response && error.response.data && error.response.detail) {
+                    notification = {
+                        ...notification,
+                        description: t(
+                            "views:components.linkedAccounts.notifications.switchAccount.error.description",
+                            { description: error.response.data.detail }
+                        ),
+                        message: t(
+                            "views:components.linkedAccounts.notifications.switchAccount.error.message"
+                        ),
+                    };
+                }
+                // TODO: Fire the notification.
+            });
     };
 
     return (
@@ -220,34 +269,34 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                                         {
                                             label: t(
                                                 "views:components.linkedAccounts.forms.addAccountForm" +
-                                                    ".inputs.username.label"
+                                                ".inputs.username.label"
                                             ),
                                             name: "username",
                                             placeholder: t(
                                                 "views:components.linkedAccounts.forms." +
-                                                    "addAccountForm.inputs.username.placeholder"
+                                                "addAccountForm.inputs.username.placeholder"
                                             ),
                                             required: true,
                                             requiredErrorMessage: t(
                                                 "views:components.linkedAccounts.forms" +
-                                                    ".addAccountForm.inputs.username.validations.empty"
+                                                ".addAccountForm.inputs.username.validations.empty"
                                             ),
                                             type: "text"
                                         },
                                         {
                                             label: t(
                                                 "views:components.linkedAccounts.forms.addAccountForm." +
-                                                    "inputs.password.label"
+                                                "inputs.password.label"
                                             ),
                                             name: "password",
                                             placeholder: t(
                                                 "views:components.linkedAccounts.forms" +
-                                                    ".addAccountForm.inputs.password.placeholder"
+                                                ".addAccountForm.inputs.password.placeholder"
                                             ),
                                             required: true,
                                             requiredErrorMessage: t(
                                                 "views:components.linkedAccounts.forms" +
-                                                    ".addAccountForm.inputs.password.validations.empty"
+                                                ".addAccountForm.inputs.password.validations.empty"
                                             ),
                                             type: "password"
                                         },
@@ -307,17 +356,49 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                                     </Grid.Column>
                                     <Grid.Column width={ 5 } className="last-column">
                                         <List.Content floated="right">
-                                            <Icon
-                                                link={ true }
-                                                disabled={ true }
-                                                className="list-icon"
-                                                size="large"
-                                                color="red"
-                                                name="trash alternate outline"
+                                            <Popup
+                                                trigger={ (
+                                                    <Icon
+                                                        link
+                                                        className="list-icon"
+                                                        size="small"
+                                                        color="grey"
+                                                        name="exchange"
+                                                        onClick={ () => handleLinkedAccountSwitch(association) }
+                                                    />
+                                                ) }
+                                                position="top center"
+                                                content={ t("common:switch") }
+                                                inverted
                                             />
-                                            <Button basic={ true } size="tiny">
-                                                { t("common:switch") }
-                                            </Button>
+                                            <Popup
+                                                trigger={ (
+                                                    <Dropdown
+                                                        floating
+                                                        pointing="top"
+                                                        direction="left"
+                                                        icon={ null }
+                                                        trigger={ (
+                                                            <Icon
+                                                                link
+                                                                className="list-icon"
+                                                                size="small"
+                                                                color="grey"
+                                                                name="ellipsis vertical"
+                                                            />
+                                                        ) }
+                                                    >
+                                                        <Dropdown.Menu>
+                                                            <Dropdown.Item disabled>
+                                                                { t("common:remove") }
+                                                            </Dropdown.Item>
+                                                        </Dropdown.Menu>
+                                                    </Dropdown>
+                                                ) }
+                                                position="top center"
+                                                content={ t("common:more") }
+                                                inverted
+                                            />
                                         </List.Content>
                                     </Grid.Column>
                                 </Grid.Row>

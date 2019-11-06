@@ -16,10 +16,11 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil } from "@wso2is/authenticate";
+import { AuthenticateSessionUtil, SignInUtil } from "@wso2is/authenticate";
 import axios from "axios";
 import log from "log";
 import { ServiceResourcesEndpoint } from "../configs";
+import { LinkedAccountInterface } from "../models";
 
 /**
  * Retrieve the user account associations of the currently authenticated user.
@@ -92,4 +93,30 @@ export const removeAssociation = () => {
     }).catch((error) => {
         return Promise.reject(`Failed to retrieve the access token - ${ error }`);
     });
+};
+
+/**
+ * Switches the logged in user's account to one of the linked accounts
+ * associated to the corresponding user.
+ *
+ * @param {LinkedAccountInterface} account - The target account.
+ * @return {Promise<any>}
+ */
+export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
+    const requestParams = {
+        "client_id": CLIENT_ID,
+        "tenant-domain": account.tenantDomain,
+        "username": account.username,
+        "userstore-domain": account.userStoreDomain
+    };
+
+    return SignInUtil.sendAccountSwitchRequest(requestParams, CLIENT_HOST)
+        .then((response) => {
+            AuthenticateSessionUtil.initUserSession(response,
+                SignInUtil.getAuthenticatedUser(response.idToken));
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
 };

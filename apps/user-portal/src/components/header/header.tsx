@@ -16,12 +16,14 @@
  * under the License.
  */
 
-import React, { useContext } from "react";
+import React, { KeyboardEvent, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } from "semantic-ui-react";
+import { switchAccount } from "../../api";
 import { AuthContext } from "../../contexts";
 import { resolveUserAvatar, resolveUserDisplayName } from "../../helpers";
+import { createEmptyNotification, LinkedAccountInterface, Notification } from "../../models";
 import { Title, UserImage } from "../shared";
 
 /**
@@ -50,6 +52,57 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
         </span>
     );
 
+    /**
+     * Stops the dropdown from closing on click.
+     *
+     * @param {React.KeyboardEvent<HTMLElement>} e - Click event.
+     */
+    const handleUserDropdownClick = (e: KeyboardEvent<HTMLElement>) => {
+        e.stopPropagation();
+    };
+
+    /**
+     * Handles the account switch click event.
+     *
+     * @param {LinkedAccountInterface} account - Target account.
+     */
+    const handleLinkedAccountSwitch = (account: LinkedAccountInterface) => {
+        let notification: Notification = createEmptyNotification();
+
+        switchAccount(account)
+            .then(() => {
+                // reload the page on successful account switch.
+                window.location.reload();
+            })
+            .catch((error) => {
+                notification = {
+                    description: t(
+                        "views:components.linkedAccounts.notifications.switchAccount.genericError.description"
+                    ),
+                    message: t(
+                        "views:components.linkedAccounts.notifications.switchAccount.genericError.message"
+                    ),
+                    otherProps: {
+                        negative: true
+                    },
+                    visible: true
+                };
+                if (error.response && error.response.data && error.response.detail) {
+                    notification = {
+                        ...notification,
+                        description: t(
+                            "views:components.linkedAccounts.notifications.switchAccount.error.description",
+                            { description: error.response.data.detail }
+                        ),
+                        message: t(
+                            "views:components.linkedAccounts.notifications.switchAccount.error.message"
+                        ),
+                    };
+                }
+                // TODO: Fire the notification.
+            });
+    };
+
     return (
         <Menu id="app-header" className="app-header" fixed="top" borderless>
             <Container>
@@ -69,7 +122,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                         floating
                         icon={ null }
                         className="user-dropdown">
-                        <Dropdown.Menu>
+                        <Dropdown.Menu onClick={ handleUserDropdownClick }>
                             <Item.Group unstackable>
                                 <Item className="header" key={ `logged-in-user-${ state.username }` }>
                                     { resolveUserAvatar(state, "tiny") }
@@ -101,6 +154,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                                     <Item
                                                         className="linked-account"
                                                         key={ `${ association.userId }-${ index }` }
+                                                        onClick={ () => handleLinkedAccountSwitch(association) }
                                                     >
                                                         <UserImage
                                                             bordered
