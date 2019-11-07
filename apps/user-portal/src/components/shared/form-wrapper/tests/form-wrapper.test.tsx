@@ -372,7 +372,7 @@ describe("Test if the FormWrapper is working fine", () => {
         fireEvent.click(getByText(constants.SUBMIT));
         expect(constants.onSubmit).toHaveBeenCalledTimes(1);
         expect(constants.onSubmit.mock.calls[0][0].get(constants.DROPDOWN_NAME)).toBe(constants.DROPDOWN_CHILD_2_VALUE);
-
+        constants.onSubmit.mockReset();
     });
 
     test("Test if the default value is selected in a dropdown", () => {
