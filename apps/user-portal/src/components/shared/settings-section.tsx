@@ -78,6 +78,7 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
      * @param action - action which is passed in.
      * @param {SemanticICONS} actionIcon - Icon for the action.
      * @param {boolean} actionDisabled - Flag to determine if the action should be disabled.
+     * @param actionOnClick - On Click handler of the action.
      * @param {"primary" | "secondary"} actionType - Type of the action.
      * @return Constructed element.
      */
@@ -85,6 +86,7 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
         action: any,
         actionIcon: SemanticICONS,
         actionDisabled: boolean,
+        actionOnClick: any,
         actionType: "primary" | "secondary"
     ) => {
         // if passed in action is a react component
@@ -106,7 +108,7 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
                     className={ actionDisabled ? "disabled" : "" }
                     floated={ actionType === "secondary" ? "right" : "left" }
                 >
-                    <List.Header className="action-button-text">
+                    <List.Header className="action-button-text" onClick={ actionOnClick }>
                         {
                             actionIcon
                                 ? (<><Icon name={ actionIcon }/>{ " " }</>)
@@ -203,6 +205,9 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
                                                     primaryAction,
                                                     primaryActionIcon,
                                                     primaryActionDisabled,
+                                                    (primaryAction && secondaryAction)
+                                                        ? onPrimaryActionClick
+                                                        : null,
                                                     "primary"
                                                     )
                                                     : null
@@ -213,6 +218,9 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
                                                     secondaryAction,
                                                     secondaryActionIcon,
                                                     secondaryActionDisabled,
+                                                    (primaryAction && secondaryAction)
+                                                        ? onSecondaryActionClick
+                                                        : null,
                                                     "secondary"
                                                     )
                                                     : null
