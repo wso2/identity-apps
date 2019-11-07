@@ -17,11 +17,9 @@
  */
 
 import axios from "axios";
-// tslint:disable-next-line:no-submodule-imports
-import { Error } from "tslint/lib/error";
-import { AUTHORIZATION_CODE, OIDC_SCOPE, PKCE_CODE_VERIFIER, REQUEST_PARAMS } from "../constants";
+import { ACCESS_TOKEN, AUTHORIZATION_CODE, OIDC_SCOPE, PKCE_CODE_VERIFIER, REQUEST_PARAMS } from "../constants";
 import { AuthenticatedUserInterface } from "../models/authenticated-user";
-import { OIDCRequestParamsInterface } from "../models/oidc-request-params";
+import { AccountSwitchRequestParams, OIDCRequestParamsInterface } from "../models/oidc-request-params";
 import { TokenResponseInterface } from "../models/token-response";
 import { getCodeChallenge, getCodeVerifier, getEmailHash, getJWKForTheIdToken, isValidIdToken } from "./crypto";
 import { getAuthorizeEndpoint, getJwksUri, getRevokeTokenEndpoint, getTokenEndpoint } from "./op-config";
@@ -103,7 +101,7 @@ export const sendTokenRequest = (requestParams: OIDCRequestParamsInterface): Pro
                 return Promise.reject(new Error("Invalid status code received in the token response: "
                     + response.status));
             }
-            return validateIdToken(requestParams, response.data.id_token).then((valid) => {
+            return validateIdToken(requestParams.clientId, response.data.id_token).then((valid) => {
                 if (valid) {
                     setSessionParameter(REQUEST_PARAMS, JSON.stringify(requestParams));
                     const tokenResponse: TokenResponseInterface = {
@@ -148,7 +146,7 @@ export const sendRefreshTokenRequest = (requestParams: OIDCRequestParamsInterfac
                 return Promise.reject(new Error("Invalid status code received in the refresh token response: "
                     + response.status));
             }
-            return validateIdToken(requestParams, response.data.id_token)
+            return validateIdToken(requestParams.clientId, response.data.id_token)
                 .then((valid) => {
                     if (valid) {
                         const tokenResponse: TokenResponseInterface = {
@@ -228,13 +226,66 @@ export const getAuthenticatedUser = (idToken: string): AuthenticatedUserInterfac
 };
 
 /**
+ * Send account switch request.
+ *
+ * @param {AccountSwitchRequestParams} requestParams request parameters required for the account switch request.
+ * @param {string} clientHost client host.
+ * @returns {Promise<TokenResponseInterface>} token response data or error.
+ */
+export const sendAccountSwitchRequest = (
+    requestParams: AccountSwitchRequestParams,
+    clientHost: string
+): Promise<TokenResponseInterface> => {
+    const tokenEndpoint = getTokenEndpoint();
+    if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
+        return Promise.reject(new Error("Invalid token endpoint found."));
+    }
+
+    const body = [];
+    body.push(`grant_type=account_switch`);
+    body.push(`username=${ requestParams.username }`);
+    body.push(`userstore-domain=${ requestParams["userstore-domain"] }`);
+    body.push(`tenant-domain=${ requestParams["tenant-domain"] }`);
+    body.push(`token=${ getSessionParameter(ACCESS_TOKEN) }`);
+    body.push(`scope=openid`);
+    body.push(`client_id=${ requestParams.client_id }`);
+
+    return axios.post(tokenEndpoint, body.join("&"), getTokenRequestHeaders(clientHost))
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Invalid status code received in the token response: "
+                    + response.status));
+            }
+            return validateIdToken(requestParams.client_id, response.data.id_token)
+                .then((valid) => {
+                    if (valid) {
+                        const tokenResponse: TokenResponseInterface = {
+                            accessToken: response.data.access_token,
+                            expiresIn: response.data.expires_in,
+                            idToken: response.data.id_token,
+                            refreshToken: response.data.refresh_token,
+                            scope: response.data.scope,
+                            tokenType: response.data.token_type
+                        };
+                        return Promise.resolve(tokenResponse);
+                    }
+                    return Promise.reject(new Error("Invalid id_token in the token response: "
+                        + response.data.id_token));
+                });
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
  * Validate id_token.
  *
- * @param {OIDCRequestParamsInterface} requestParams request params.
+ * @param {string} clientId client ID.
  * @param {string} idToken id_token received from the IdP.
  * @returns {Promise<boolean>} whether token is valid.
  */
-const validateIdToken = (requestParams: OIDCRequestParamsInterface, idToken: string): Promise<any> => {
+const validateIdToken = (clientId: string, idToken: string): Promise<any> => {
     const jwksEndpoint = getJwksUri();
     if (!jwksEndpoint || jwksEndpoint.trim().length === 0) {
         return Promise.reject("Invalid JWKS URI found.");
@@ -247,7 +298,7 @@ const validateIdToken = (requestParams: OIDCRequestParamsInterface, idToken: str
                     + jwksEndpoint));
             }
             const jwk = getJWKForTheIdToken(idToken.split(".")[0], response.data.keys);
-            return Promise.resolve(isValidIdToken(idToken, jwk, requestParams.clientId));
+            return Promise.resolve(isValidIdToken(idToken, jwk, clientId));
         }).catch((error) => {
             return Promise.reject(error);
         });

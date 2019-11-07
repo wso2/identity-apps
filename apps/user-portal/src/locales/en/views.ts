@@ -354,6 +354,20 @@ export const views: Views = {
                         description: "The required user profile details are retrieved successfully",
                         message: "Linked user accounts retrieved successfully"
                     }
+                },
+                switchAccount: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error occurred while switching the account"
+                    },
+                    genericError: {
+                        description: "Error occurred while switching the account",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The account has been switched successfully",
+                        message: "Account switched successfully"
+                    }
                 }
             }
         },

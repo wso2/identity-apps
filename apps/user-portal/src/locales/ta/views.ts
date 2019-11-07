@@ -356,6 +356,21 @@ export const views: Views = {
                         description: "இணைக்கபட்ட பயனர் கணக்குகள் வெற்றிகரமாக பெறப்பட்டுவிட்டன",
                         message: "இணைக்கபட்ட பயனர் கணக்குகள் பெறப்பட்டுவிட்டன"
                     }
+                },
+                // TODO: Need to translate this.
+                switchAccount: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error occurred while switching the account"
+                    },
+                    genericError: {
+                        description: "Error occurred while switching the account",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The account has been switched successfully",
+                        message: "Account switched successfully"
+                    }
                 }
             }
         },
