@@ -336,7 +336,7 @@ describe("Test if the FormWrapper is working fine", () => {
     });
 
     test("Test if the basic functions of dropdown are working fine", () => {
-        const { getByText, getByRole } = render(getForm([
+        const { getByText, getByRole, getAllByText } = render(getForm([
             {
                 isDefault: false,
                 isRequired: true,
@@ -365,13 +365,13 @@ describe("Test if the FormWrapper is working fine", () => {
         // check if selection works properly
         fireEvent.click(getByRole("alert"));
         fireEvent.click(getByText(constants.DROPDOWN_CHILD_2_VALUE).parentElement);
+        fireEvent.blur(getAllByText(constants.DROPDOWN_CHILD_2_VALUE)[1].parentElement);
         expect(getByRole("alert").firstChild.nodeValue).toBe(constants.DROPDOWN_CHILD_2_VALUE);
 
         // check if submission works fine
         fireEvent.click(getByText(constants.SUBMIT));
-        // expect(constants.onSubmit).toHaveBeenCalledTimes(1);
-        // expect(constants.onSubmit.mock.calls[0][0].get(constants.DROPDOWN_NAME))
-        // .toBe(constants.DROPDOWN_CHILD_2_VALUE);
+        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit.mock.calls[0][0].get(constants.DROPDOWN_NAME)).toBe(constants.DROPDOWN_CHILD_2_VALUE);
 
     });
 
