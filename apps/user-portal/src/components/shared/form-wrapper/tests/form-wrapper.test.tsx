@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { fireEvent, render } from "../../../../../test_configs/test-utils";
+import { fireEvent, render } from "../../../../utils/test-utils";
 import constants from "./constants";
 import getForm from "./test-form";
 

@@ -21,9 +21,9 @@ import React from "react";
 import { I18nextProvider } from "react-i18next";
 import { Provider } from "react-redux";
 import { Router } from "react-router-dom";
-import { i18n } from "../src/configs";
-import { history } from "../src/helpers";
-import { store } from "../src/store";
+import { i18n } from "../configs";
+import { history } from "../helpers";
+import { store } from "../store";
 
 /**
  * This returns a higher order component with all the needed providers
