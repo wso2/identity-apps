@@ -108,9 +108,7 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
                     className={ actionDisabled ? "disabled" : "" }
                     floated={ actionType === "secondary" ? "right" : "left" }
                 >
-                    <List.Header
-                        className="action-button-text"
-                        onClick={ actionOnClick }>
+                    <List.Header className="action-button-text" onClick={ actionOnClick }>
                         {
                             actionIcon
                                 ? (<><Icon name={ actionIcon }/>{ " " }</>)
@@ -207,7 +205,9 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
                                                     primaryAction,
                                                     primaryActionIcon,
                                                     primaryActionDisabled,
-                                                    onPrimaryActionClick,
+                                                    (primaryAction && secondaryAction)
+                                                        ? onPrimaryActionClick
+                                                        : null,
                                                     "primary"
                                                     )
                                                     : null
@@ -218,7 +218,9 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
                                                     secondaryAction,
                                                     secondaryActionIcon,
                                                     secondaryActionDisabled,
-                                                    onSecondaryActionClick,
+                                                    (primaryAction && secondaryAction)
+                                                        ? onSecondaryActionClick
+                                                        : null,
                                                     "secondary"
                                                     )
                                                     : null
