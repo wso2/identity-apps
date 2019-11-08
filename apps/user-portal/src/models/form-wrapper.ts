@@ -181,8 +181,8 @@
  export interface Group {
     startIndex: number;
     endIndex: number;
-    style: GroupStyle;
-    width?: SemanticWIDTHS | "equal";
+    wrapper: React.ComponentType;
+    wrapperProps: any;
 }
 
 /**

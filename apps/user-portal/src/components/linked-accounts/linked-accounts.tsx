@@ -18,7 +18,7 @@
 
 import React, { FunctionComponent, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Dropdown, Grid, Icon, List, Popup } from "semantic-ui-react";
+import { Dropdown, Form, Grid, Icon, List, Popup } from "semantic-ui-react";
 import { addAccountAssociation, getAssociations, getProfileInfo, switchAccount } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
 import { AuthContext } from "../../contexts";
@@ -323,7 +323,10 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                                         {
                                             endIndex: 5,
                                             startIndex: 3,
-                                            style: "inline"
+                                            wrapper: Form.Group,
+                                            wrapperProps: {
+                                                inline: true
+                                            }
                                         }
                                     ] }
                                     onSubmit={ (values) => {

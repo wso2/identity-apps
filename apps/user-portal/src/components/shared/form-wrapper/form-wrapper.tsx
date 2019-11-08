@@ -59,7 +59,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     /**
-     * Initializes the state of the from everytime the passed formFields prop changes
+     * Initializes the state of the from every time the passed formFields prop changes
      */
     useEffect(() => {
         init(false);
@@ -592,18 +592,14 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
 
         if (groups) {
             groups.forEach((group, index) => {
+                const Wrapper = group.wrapper;
                 const formGroup: JSX.Element[] = forms.slice(group.startIndex, group.endIndex);
                 const precedingForm: JSX.Element[] = forms.slice(0, group.startIndex);
                 const succeedingForm: JSX.Element[] = forms.slice(group.endIndex);
                 const enclosedGroup: JSX.Element = (
-                    <Form.Group
-                        key={ index.toString() + group.endIndex }
-                        grouped={ group.style === "grouped" }
-                        inline={ group.style === "inline" }
-                        widths={ group.width }
-                    >
+                    <Wrapper { ...group.wrapperProps } key={ index.toString() + group.endIndex } >
                         { formGroup }
-                    </Form.Group>
+                    </Wrapper>
                 );
                 succeedingForm.unshift(enclosedGroup);
                 forms = precedingForm.concat(succeedingForm);
