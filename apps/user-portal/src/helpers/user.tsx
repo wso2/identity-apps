@@ -54,7 +54,7 @@ export const resolveUserAvatar = (state: AuthStateInterface, avatarSize: UserIma
     if (state.userimage) {
         return (
             <UserImage
-                bordered
+                bordered={ true }
                 size={ avatarSize }
                 image={ state.userimage }
             />
@@ -62,8 +62,8 @@ export const resolveUserAvatar = (state: AuthStateInterface, avatarSize: UserIma
     }
     return (
         <UserImage
-            bordered
-            avatar
+            bordered={ true }
+            avatar={ true }
             size={ avatarSize }
             name={ resolveUserDisplayName(state) }
         />

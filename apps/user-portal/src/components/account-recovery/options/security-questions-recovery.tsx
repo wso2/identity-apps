@@ -146,9 +146,11 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
 
                 onNotificationFired({
                     description: t(
-                        "views:components.questionRecovery.notifications.updateQuestions.success.description"
+                        "views:components.accountRecovery.questionRecovery.notifications" +
+                        ".updateQuestions.success.description"
                     ),
-                    message: t("views:components.questionRecovery.notifications.updateQuestions.success.message"),
+                    message: t("views:components.accountRecovery.questionRecovery.notifications" +
+                        ".updateQuestions.success.message"),
                     otherProps: {
                         positive: true
                     },
@@ -160,22 +162,24 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                     onNotificationFired({
                         description: error && error.data && error.data.details
                             ? t(
-                                "views:components.questionRecovery.notifications.updateQuestions.error.description",
+                                "views:components.accountRecovery.questionRecovery.notifications." +
+                                "updateQuestions.error.description",
                                 {
                                     description: error.data.details
                                 }
                             )
                             : t(
-                                "views:components.questionRecovery.notifications.updateQuestions." +
-                                "genericError.description"
+                                "views:components.accountRecovery.questionRecovery.notifications" +
+                                ".updateQuestions.genericError.description"
                             ),
                         message: error && error.data && error.data.details
                             ? t(
-                                "views:components.questionRecovery.notifications.updateQuestions.error.message"
+                                "views:components.accountRecovery.questionRecovery.notifications" +
+                                ".updateQuestions.error.message"
                             )
                             : t(
-                                "views:components.questionRecovery.notifications.updateQuestions." +
-                                "genericError.message"
+                                "views:components.accountRecovery.questionRecovery.notifications" +
+                                ".updateQuestions.genericError.message"
                             ),
                         otherProps: {
                             negative: true
@@ -193,9 +197,11 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
 
                 onNotificationFired({
                     description: t(
-                        "views:components.questionRecovery.notifications.addQuestions.success.description"
+                        "views:components.accountRecovery.questionRecovery.notifications" +
+                        ".addQuestions.success.description"
                     ),
-                    message: t("views:components.questionRecovery.notifications.addQuestions.success.message"),
+                    message: t("views:components.accountRecovery.questionRecovery.notifications" +
+                        ".addQuestions.success.message"),
                     otherProps: {
                         positive: true
                     },
@@ -207,20 +213,24 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                 onNotificationFired({
                     description: error && error.data && error.data.details
                         ? t(
-                            "views:components.questionRecovery.notifications.addQuestions.error.description",
+                            "views:components.accountRecovery.questionRecovery.notifications" +
+                            ".addQuestions.error.description",
                             {
                                 description: error.data.details
                             }
                         )
                         : t(
-                            "views:components.questionRecovery.notifications.addQuestions.genericError.description"
+                            "views:components.accountRecovery.questionRecovery.notifications" +
+                            ".addQuestions.genericError.description"
                         ),
                     message: error && error.data && error.data.details
                         ? t(
-                            "views:components.questionRecovery.notifications.addQuestions.error.message"
+                            "views:components.accountRecovery.questionRecovery.notifications" +
+                            ".addQuestions.error.message"
                         )
                         : t(
-                            "views:components.questionRecovery.notifications.addQuestions.genericError.message"
+                            "views:components.accountRecovery.questionRecovery.notifications" +
+                            ".addQuestions.genericError.message"
                         ),
                     otherProps: {
                         negative: true
@@ -415,7 +425,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                             divided={ true }
                             verticalAlign="middle"
                             style={ { paddingTop: 0, width: "100%" } }
-                            className="main-content-inner"
+                            className="main-content-inner settings-section-inner-list"
                         >
                             { challenges.answers.map((answer, index) => {
                                 return (
@@ -423,7 +433,9 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                         <Grid padded={ true }>
                                             <Grid.Row columns={ 2 } className="first-column">
                                                 <Grid.Column width={ 11 } className="first-column">
-                                                    <List.Header>{ answer.question }</List.Header>
+                                                    <List.Header className="with-left-padding">
+                                                        { answer.question }
+                                                    </List.Header>
                                                 </Grid.Column>
                                                 <Grid.Column width={ 5 } className="last-column">
                                                     <List.Content floated="right">

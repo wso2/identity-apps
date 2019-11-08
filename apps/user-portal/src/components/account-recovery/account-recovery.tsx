@@ -44,15 +44,15 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
 
     return (
         <SettingsSection
-            description={t("views:sections.accountRecovery.description")}
-            header={t("views:sections.accountRecovery.heading")}
+            description={ t("views:sections.accountRecovery.description") }
+            header={ t("views:sections.accountRecovery.heading") }
         >
-            <List divided verticalAlign="middle" className="main-content-inner">
+            <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">
-                    <SecurityQuestionsComponent onNotificationFired={onNotificationFired} />
+                    <SecurityQuestionsComponent onNotificationFired={ onNotificationFired } />
                 </List.Item>
                 <List.Item className="inner-list-item">
-                    <EmailRecovery onNotificationFired={onNotificationFired} />
+                    <EmailRecovery onNotificationFired={ onNotificationFired } />
                 </List.Item>
             </List>
         </SettingsSection>
