@@ -27,3 +27,17 @@ export interface OIDCRequestParamsInterface {
     redirectUri: string;
     scope?: string[];
 }
+
+/**
+ * Interface for the account switch grant
+ * request parameters.
+ */
+export interface AccountSwitchRequestParams {
+    grant_type: string;
+    username: string;
+    "userstore-domain": string;
+    "tenant-domain": string;
+    token: string;
+    scope: string;
+    client_id: string;
+}

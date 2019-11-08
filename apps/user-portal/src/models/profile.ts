@@ -35,6 +35,28 @@ export interface BasicProfileInterface {
     username?: string;
 }
 
+/**
+ * Linked account interface.
+ */
+export interface LinkedAccountInterface {
+    /**
+     * Tenant domain.
+     */
+    tenantDomain: string;
+    /**
+     * ID of the associated user.
+     */
+    userId: string;
+    /**
+     * User store domain.
+     */
+    userStoreDomain: string;
+    /**
+     * Username of the associated user.
+     */
+    username: string;
+}
+
 export const createEmptyProfile = (): BasicProfileInterface => ({
     displayName: "",
     email: "",

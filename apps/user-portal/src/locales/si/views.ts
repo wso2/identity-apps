@@ -355,6 +355,20 @@ export const views: Views = {
                         description: "අවශ්‍ය පරිශීලක පැතිකඩ විස්තර සාර්ථකව ලබා ගන්නා ලදි",
                         message: "සම්බන්ධිත පරිශීලක ගිණුම් සාර්ථකව ලබා ගන්නා ලදි"
                     }
+                },
+                switchAccount: {
+                    error: {
+                        description: "{{description}}",
+                        message: "ගිණුම මාරු කිරීමේදී දෝෂයක් ඇතිවිය"
+                    },
+                    genericError: {
+                        description: "ගිණුම මාරු කිරීමේදී දෝෂයක් ඇතිවිය",
+                        message: "දෝෂයක් ඇතිවිය"
+                    },
+                    success: {
+                        description: "ගිණුම සාර්ථකව මාරු කර ඇත",
+                        message: "ගිණුම සාර්ථකව මාරු විය"
+                    }
                 }
             }
         },

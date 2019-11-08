@@ -354,6 +354,20 @@ export const views: Views = {
                         description: "The required user profile details are retrieved successfully",
                         message: "Linked user accounts retrieved successfully"
                     }
+                },
+                switchAccount: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error occurred while switching the account"
+                    },
+                    genericError: {
+                        description: "Error occurred while switching the account",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The account has been switched successfully",
+                        message: "Account switched successfully"
+                    }
                 }
             }
         },
@@ -874,7 +888,7 @@ export const views: Views = {
         accountRecovery: {
             description: "If you forget your password or username, recover your account " +
                 "using email, SMS, or challenge questions",
-            heading: "Account Recovery"
+            heading: "Account recovery"
         },
         approvals: {
             description: "Approve or deny tasks related to workflow operations like adding users, " +
@@ -899,7 +913,7 @@ export const views: Views = {
             },
             description: "Revoke any consent given to an application or personal detail that you " +
                 "have agreed to share",
-            heading: "Manage Consents",
+            heading: "Manage consents",
             placeholders: {
                 emptyConsentList: {
                     heading: "You have not granted consent to any application"

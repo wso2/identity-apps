@@ -30,7 +30,7 @@ export interface AuthStateInterface {
 }
 
 export interface AuthContextInterface {
-    dispatch: ({type}: {type: string}) => void;
+    dispatch: ({ type }: {type: string}) => void;
     signIn: () => void;
     signOut: () => void;
     state: AuthStateInterface;

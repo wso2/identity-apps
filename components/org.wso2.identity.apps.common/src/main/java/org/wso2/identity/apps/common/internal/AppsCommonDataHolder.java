@@ -17,6 +17,7 @@
 package org.wso2.identity.apps.common.internal;
 
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
+import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
 import org.wso2.carbon.registry.core.service.RegistryService;
 
 /**
@@ -27,6 +28,8 @@ public class AppsCommonDataHolder {
     private static AppsCommonDataHolder instance = new AppsCommonDataHolder();
 
     private ApplicationManagementService applicationManagementService;
+
+    private OAuthAdminServiceImpl oAuthAdminService;
 
     private RegistryService registryService;
 
@@ -57,5 +60,15 @@ public class AppsCommonDataHolder {
     public void setRegistryService(RegistryService registryService) {
 
         this.registryService = registryService;
+    }
+
+    public OAuthAdminServiceImpl getOAuthAdminService() {
+
+        return oAuthAdminService;
+    }
+
+    public void setOAuthAdminService(OAuthAdminServiceImpl oAuthAdminService) {
+
+        this.oAuthAdminService = oAuthAdminService;
     }
 }
