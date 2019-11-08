@@ -29,6 +29,8 @@ public class AppPortalConstants {
 
     public static final String DISPLAY_NAME_CLAIM_URI = "http://wso2.org/claims/displayName";
 
+    public static final String TOKEN_BINDING_TYPE = "cookie";
+
     private AppPortalConstants() {
 
     }
