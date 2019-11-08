@@ -434,6 +434,13 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                             <Grid.Row columns={ 2 } className="first-column">
                                                 <Grid.Column width={ 11 } className="first-column">
                                                     <List.Header className="with-left-padding">
+                                                        <Icon
+                                                            floated="right"
+                                                            className="list-icon"
+                                                            size="small"
+                                                            color="green"
+                                                            name="check circle outline"
+                                                        />
                                                         { answer.question }
                                                     </List.Header>
                                                 </Grid.Column>
