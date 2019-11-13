@@ -35,13 +35,6 @@ export const AuthProvider = ({ children }) => {
     const signOut = () => { handleSignOut(state, dispatch); };
 
     /**
-     * Update authentication state on app load
-     */
-    useEffect(() => {
-        signIn();
-    }, []);
-
-    /**
      * Render state, dispatch and special case actions
      */
     return (
