@@ -29,6 +29,19 @@ import { history } from "../../helpers";
 import { setProfileInfo, setSignIn, setSignOut } from "../actions";
 
 /**
+ * Login scope.
+ *
+ * @type {string}
+ */
+const LOGIN_SCOPE = "internal_login";
+/**
+ * Scope to access workflow related resources.
+ *
+ * @type {string}
+ */
+const HUMAN_TASK_SCOPE = "internal_humantask_view";
+
+/**
  * Handle user sign-out
  *
  * @param {object} state - AuthContext state object.
@@ -67,7 +80,7 @@ export const handleSignIn = (state, dispatch) => {
             clientSecret: null,
             enablePKCE: true,
             redirectUri: LOGIN_CALLBACK_URL,
-            scope: null,
+            scope: [ LOGIN_SCOPE, HUMAN_TASK_SCOPE ],
         };
         if (SignInUtil.hasAuthorizationCode()) {
             SignInUtil.sendTokenRequest(requestParams)
