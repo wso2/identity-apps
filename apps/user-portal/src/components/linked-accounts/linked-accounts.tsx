@@ -352,9 +352,9 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                                             size="mini"
                                             name={ association.username }
                                         />
-                                        <List.Header>{ association.userId }</List.Header>
+                                        <List.Header>{ association.username }</List.Header>
                                         <List.Description>
-                                            <p style={ { fontSize: "11px" } }>{ association.username }</p>
+                                            <p style={ { fontSize: "11px" } }>{ association.tenantDomain }</p>
                                         </List.Description>
                                     </Grid.Column>
                                     <Grid.Column width={ 5 } className="last-column">

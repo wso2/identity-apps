@@ -19,6 +19,7 @@
 import { AuthenticateSessionUtil, SignInUtil } from "@wso2is/authenticate";
 import { AxiosHttpClient } from "@wso2is/http";
 import { ServiceResourcesEndpoint } from "../configs";
+import * as TokenConstants from "../constants";
 import { HttpMethods, LinkedAccountInterface } from "../models";
 import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "../utils";
 
@@ -116,6 +117,7 @@ export const removeAssociation = (): Promise<any> => {
 export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
     const requestParams = {
         "client_id": CLIENT_ID,
+        "scope": [ TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE ],
         "tenant-domain": account.tenantDomain,
         "username": account.username,
         "userstore-domain": account.userStoreDomain
