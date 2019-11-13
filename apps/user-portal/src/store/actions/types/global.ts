@@ -14,27 +14,38 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 /**
- * Http client interface with static functions.
+ * Global action types.
  */
-export interface HttpClientStatic<S> {
-    getInstance(): S;
+export enum GlobalActionTypes {
+    SHOW_GLOBAL_LOADER =  "SHOW_GLOBAL_LOADER",
+    HIDE_GLOBAL_LOADER = "HIDE_GLOBAL_LOADER"
 }
 
 /**
- * Http client interface.
+ * Global base action interface.
  */
-export interface HttpClient<T, U, V> {
-    init(isHandlerEnabled: boolean,
-        requestStartCallback: () => void,
-        requestSuccessCallback: (response: U) => void,
-        requestErrorCallback: (error: V) => void,
-        requestFinishCallback: () => void
-    ): void;
-    errorHandler(error: V): V;
-    requestHandler(request: T): T;
-    successHandler(response: U): U;
+interface GlobalBaseAction {
+    type: GlobalActionTypes;
 }
+
+/**
+ * Show global loader action interface.
+ */
+export interface ShowGlobalLoaderAction extends GlobalBaseAction {
+    type: GlobalActionTypes.SHOW_GLOBAL_LOADER;
+}
+
+/**
+ * Hide global loader action interface.
+ */
+export interface HideGlobalLoaderAction extends GlobalBaseAction {
+    type: GlobalActionTypes.HIDE_GLOBAL_LOADER;
+}
+
+/**
+ * Export action interfaces.
+ */
+export type GlobalActions = ShowGlobalLoaderAction | HideGlobalLoaderAction;

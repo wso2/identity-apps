@@ -532,7 +532,7 @@ const handleUpdateConsentedClaimsError = ({ dispatch }) => (next) => (action) =>
     dispatch(showConsentManagementNotification(notification));
 };
 
-export const consentManagementMiddleware = [
+export default [
     handleFetchConsentedApps,
     handleFetchConsentedAppsSuccess,
     handleFetchConsentedAppsError,

@@ -17,9 +17,18 @@
  */
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
-import axios from "axios";
+import { AxiosHttpClient } from "@wso2is/http";
 import { ServiceResourcesEndpoint } from "../configs";
 import { Decode, Encode } from "../helpers/base64-utils";
+import { HttpMethods } from "../models";
+import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "../utils";
+
+/**
+ * Initialize an axios Http client.
+ * @type {AxiosHttpClientInstance}
+ */
+const httpClient = AxiosHttpClient.getInstance();
+httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
 
 /**
  * Retrieve FIDO meta data
@@ -27,27 +36,29 @@ import { Decode, Encode } from "../helpers/base64-utils";
  * @return {Promise<any>} a promise containing the response.
  */
 export const getMetaData = (): Promise<any> => {
-    const user = AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME);
-    return AuthenticateSessionUtil.getAccessToken().then((token) => {
-        const header = {
+    const requestConfig = {
+        headers: {
             "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${token}`,
             "Content-Type": "application/x-www-form-urlencoded"
-        };
+        },
+        method: HttpMethods.GET,
+        params: {
+            username: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME)
+        },
+        url: ServiceResourcesEndpoint.fidoMetaData
+    };
 
-        return axios.get(ServiceResourcesEndpoint.fidoMetaData, { params: { username: user }, headers: header })
-            .then((response) => {
-                if (response.status !== 200) {
-                    return Promise.reject(new Error("Failed get meta info from: "
-                        + ServiceResourcesEndpoint.fidoMetaData));
-                }
-                return Promise.resolve(response);
-            }).catch((error) => {
-                return Promise.reject(error);
-            });
-    }).catch((error) => {
-        return Promise.reject(`Failed to retrieve the access token - ${ error }`);
-    });
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(
+                    new Error(`Failed get meta info from: ${ ServiceResourcesEndpoint.fidoMetaData }`)
+                );
+            }
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(`Failed to retrieve FIDO metadata - ${ error }`);
+        });
 };
 
 /**
@@ -56,22 +67,21 @@ export const getMetaData = (): Promise<any> => {
  * @return {Promise<any>} a promise containing the response.
  */
 export const deleteDevice = (credentialId): Promise<any> => {
-    return AuthenticateSessionUtil.getAccessToken().then((token) => {
-        const header = {
+    const requestConfig = {
+        headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${token}`
-        };
+            "Access-Control-Allow-Origin": CLIENT_HOST
+        },
+        method: HttpMethods.DELETE,
+        url: `${ ServiceResourcesEndpoint.fidoMetaData }/${ credentialId }`
+    };
 
-        return axios.delete(ServiceResourcesEndpoint.fidoMetaData + "/" + credentialId, { headers: header })
-            .then((response) => {
-                return Promise.resolve(response);
-            }).catch((error) => {
-                return Promise.reject(new Error("Failed device deletion."));
-            });
-    }).catch((error) => {
-        return Promise.reject(`Failed to retrieve the access token - ${ error }`);
-    });
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(`Failed to delete FIDO device - ${ error }`);
+        });
 };
 
 /**
@@ -80,33 +90,33 @@ export const deleteDevice = (credentialId): Promise<any> => {
  * @return {Promise<any>} a promise containing the response.
  */
 export const startFidoFlow = (): Promise<any> => {
-    return AuthenticateSessionUtil.getAccessToken().then((token) => {
-        const header = {
+    const requestConfig = {
+        headers: {
             "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${token}`,
             "Content-Type": "application/x-www-form-urlencoded"
-        };
+        },
+        method: HttpMethods.GET,
+        params: { appId: window.location.origin },
+        url: ServiceResourcesEndpoint.fidoStart
+    };
 
-        return axios.get(ServiceResourcesEndpoint.fidoStart,
-            { params: { appId: window.location.origin }, headers: header })
-            .then((response) => {
-                if (response.status !== 200) {
-                    return Promise.reject(new Error("Failed to start registration flow at: "
-                        + ServiceResourcesEndpoint.fidoStart));
-                }
-                return connectToDevice(response.data.requestId,
-                    decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions))
-                    .then((resp) => {
-                        return Promise.resolve(response);
-                    }).catch((error) => {
-                        return Promise.reject(error);
-                    });
-            }).catch((error) => {
-                return Promise.reject(error);
-            });
-    }).catch((error) => {
-        return Promise.reject(`Failed to retrieve the access token - ${ error }`);
-    });
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(
+                    new Error(`Failed to start registration flow at: ${ ServiceResourcesEndpoint.fidoStart }`)
+                );
+            }
+            return connectToDevice(response.data.requestId,
+                decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions))
+                .then(() => {
+                    return Promise.resolve(response);
+                }).catch((error) => {
+                    return Promise.reject(`Failed to connect to device - ${ error }`);
+                });
+        }).catch((error) => {
+            return Promise.reject(`FIDO connection terminated - ${ error }`);
+        });
 };
 
 /**
@@ -115,27 +125,28 @@ export const startFidoFlow = (): Promise<any> => {
  * @return {Promise<any>} a promise containing the response.
  */
 export const endFidoFlow = (clientResponse): Promise<any> => {
-    return AuthenticateSessionUtil.getAccessToken().then((token) => {
-        const header = {
+    const requestConfig = {
+        data: clientResponse,
+        headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json"
-        };
+        },
+        method: HttpMethods.POST,
+        url: ServiceResourcesEndpoint.fidoEnd
+    };
 
-        return axios.post(ServiceResourcesEndpoint.fidoEnd, clientResponse, { headers: header })
-            .then((response) => {
-                if (response.status !== 200) {
-                    return Promise.reject(new Error("Failed to end registration flow at: "
-                        + ServiceResourcesEndpoint.fidoEnd));
-                }
-                return Promise.resolve(response);
-            }).catch((error) => {
-                return Promise.reject(error);
-            });
-    }).catch((error) => {
-        return Promise.reject(`Failed to retrieve the access token - ${ error }`);
-    });
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(
+                    new Error(`Failed to end registration flow at: ${ ServiceResourcesEndpoint.fidoEnd }`)
+                );
+            }
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(`Failed to finish the FIDO registration - ${ error }`);
+        });
 };
 
 /**
@@ -207,12 +218,12 @@ const connectToDevice = (requestId, credentialCreationOptions) => {
             return endFidoFlow(JSON.stringify(payload))
                 .then((response) => {
                     return Promise.resolve(response);
-                }).catch ((error) => {
+                }).catch((error) => {
                     return Promise.reject(error);
                 });
-        }).catch ((error) => {
-        return Promise.reject(error);
-    });
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
 };
 
 /**

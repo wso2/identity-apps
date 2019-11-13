@@ -22,14 +22,6 @@
 *******************************/
 
 /*-------------------
-     App Header
---------------------*/
-
-@appHeaderTopBorderWidth: 3px;
-@appHeaderTopBorderColor: @primaryColor;
-@appHeaderTopBorderStyle: solid;
-
-/*-------------------
       App Footer
 --------------------*/
 

@@ -17,5 +17,19 @@
  *
  */
 
-export * from "./axios-http-client";
-export * from "./http-client";
+import { AxiosError, AxiosInstance, AxiosResponse } from "axios";
+
+/**
+ * Axios Http Client model
+ */
+export interface AxiosHttpClientInstance extends AxiosInstance {
+    init?(
+        isHandlerEnabled: boolean,
+        requestStartCallback: () => void,
+        requestSuccessCallback: (response: AxiosResponse) => void,
+        requestErrorCallback: (error: AxiosError) => void,
+        requestFinishCallback: () => void
+    ): void;
+    all?<T>(values: (T | Promise<T>)[]): Promise<T[]>;
+    spread?<T, R>(callback: (...args: T[]) => R): (array: T[]) => R;
+}

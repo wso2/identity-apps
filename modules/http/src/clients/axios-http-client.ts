@@ -18,9 +18,9 @@
  */
 
 import { AuthenticateSessionUtil } from "@wso2is/authenticate";
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { staticDecorator } from "../helpers";
-import { HttpClient, HttpClientStatic } from "../models";
+import { AxiosHttpClientInstance, HttpClient, HttpClientStatic } from "../models";
 
 /**
  * An Axios Http client to perform Http requests.
@@ -40,10 +40,10 @@ import { HttpClient, HttpClientStatic } from "../models";
  * httpClient.init(true, onRequestStart, onRequestSuccess, onRequestError, onRequestFinish);
  * ```
  */
-@staticDecorator<HttpClientStatic<AxiosInstance>>()
+@staticDecorator<HttpClientStatic<AxiosHttpClientInstance>>()
 export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResponse, AxiosError> {
 
-    private static axiosInstance: AxiosInstance;
+    private static axiosInstance: AxiosHttpClientInstance;
     private static clientInstance: AxiosHttpClient;
     private isHandlerEnabled: boolean;
     private requestStartCallback: () => void;
@@ -66,7 +66,7 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
      *
      * @return {any}
      */
-    public static getInstance(): AxiosInstance & any {
+    public static getInstance(): AxiosHttpClientInstance {
         if (!this.axiosInstance) {
             this.axiosInstance = axios.create();
         }
@@ -86,7 +86,14 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
             (error) => this.clientInstance.errorHandler(error)
         );
 
-        return { ...this.axiosInstance, ...this.clientInstance };
+        // Add the missing helper methods from axios
+        this.axiosInstance.all = axios.all;
+        this.axiosInstance.spread = axios.spread;
+
+        // Add the init method from the `AxiosHttpClient` instance.
+        this.axiosInstance.init = this.clientInstance.init;
+
+        return this.axiosInstance;
     }
 
     /**
