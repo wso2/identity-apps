@@ -16,10 +16,17 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil } from "@wso2is/authenticate";
-import axios from "axios";
+import { AxiosHttpClient } from "@wso2is/http";
 import { ServiceResourcesEndpoint } from "../configs";
-import { BasicProfileInterface } from "../models";
+import { BasicProfileInterface, HttpMethods } from "../models";
+import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "../utils";
+
+/**
+ * Initialize an axios Http client.
+ * @type {AxiosHttpClientInstance}
+ */
+const httpClient = AxiosHttpClient.getInstance();
+httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
 
 /**
  * Retrieve the user information of the currently authenticated user.
@@ -27,26 +34,24 @@ import { BasicProfileInterface } from "../models";
  * @return {Promise<any>} a promise containing the response.
  */
 export const getUserInfo = (): Promise<any> => {
-    return AuthenticateSessionUtil.getAccessToken().then((token) => {
-        const headers = {
+    const requestConfig = {
+        headers: {
             "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${ token }`,
             "Content-Type": "application/json"
-        };
+        },
+        method: HttpMethods.GET,
+        url: ServiceResourcesEndpoint.me
+    };
 
-        return axios.get(ServiceResourcesEndpoint.user, { headers })
-            .then((response) => {
-                if (response.status !== 200) {
-                    return Promise.reject(new Error("Failed get user info from: "
-                        + ServiceResourcesEndpoint.user));
-                }
-                return Promise.resolve(response);
-            }).catch((error) => {
-                return Promise.reject(error);
-            });
-    }).catch((error) => {
-        return Promise.reject(error);
-    });
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error(`Failed get user info from: ${ ServiceResourcesEndpoint.user }`));
+            }
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(`Failed to retrieve user information - ${ error }`);
+        });
 };
 
 /**
@@ -55,42 +60,40 @@ export const getUserInfo = (): Promise<any> => {
  * @returns {Promise<BasicProfileInterface>} a promise containing the user profile details.
  */
 export const getProfileInfo = (): Promise<BasicProfileInterface> => {
-    return AuthenticateSessionUtil.getAccessToken().then((token) => {
-        const orgKey = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
-        const headers = {
+    const orgKey = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
+    const requestConfig = {
+        headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${ token }`,
             "Content-Type": "application/scim+json"
-        };
+        },
+        method: HttpMethods.GET,
+        url: ServiceResourcesEndpoint.me
+    };
 
-        return axios.get(ServiceResourcesEndpoint.me, { headers })
-            .then((response) => {
-                if (response.status !== 200) {
-                    return Promise.reject(new Error("Failed get user profile info from: "
-                        + ServiceResourcesEndpoint.me));
-                }
-                const profileResponse: BasicProfileInterface = {
-                    displayName: response.data.name.givenName || "",
-                    emails: response.data.emails || "",
-                    lastName: response.data.name.familyName || "",
-                    organisation: (response.data[orgKey]) ?
-                        response.data[orgKey].organization : "",
-                    phoneNumbers: response.data.phoneNumbers || [],
-                    proUrl: response.data.profileUrl || "",
-                    responseStatus: response.status || null,
-                    roles: response.data.roles || [],
-                    userimage: response.data.userImage || "",
-                    username: response.data.userName || ""
-                };
-                return Promise.resolve(profileResponse);
-            })
-            .catch((error) => {
-                return Promise.reject(error);
-            });
-    }).catch((error) => {
-        return Promise.reject(error);
-    });
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error(`Failed get user profile info from: ${ ServiceResourcesEndpoint.me }`));
+            }
+            const profileResponse: BasicProfileInterface = {
+                displayName: response.data.name.givenName || "",
+                emails: response.data.emails || "",
+                lastName: response.data.name.familyName || "",
+                organisation: (response.data[ orgKey ]) ?
+                    response.data[ orgKey ].organization : "",
+                phoneNumbers: response.data.phoneNumbers || [],
+                proUrl: response.data.profileUrl || "",
+                responseStatus: response.status || null,
+                roles: response.data.roles || [],
+                userimage: response.data.userImage || "",
+                username: response.data.userName || ""
+            };
+            return Promise.resolve(profileResponse);
+        })
+        .catch((error) => {
+            return Promise.reject(`Failed to retrieve user profile information - ${ error }`);
+        });
 };
 
 /**
@@ -100,25 +103,26 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
  * @return {Promise<any>} a promise containing the response.
  */
 export const updateProfileInfo = (info: object): Promise<any> => {
-    return AuthenticateSessionUtil.getAccessToken().then((token) => {
-        const headers = {
+    const requestConfig = {
+        data: info,
+        headers: {
             "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${ token }`,
             "Content-Type": "application/json"
-        };
+        },
+        method: HttpMethods.PATCH,
+        url: ServiceResourcesEndpoint.me
+    };
 
-        return axios.patch(ServiceResourcesEndpoint.me, info, { headers })
-            .then((response) => {
-                if (response.status !== 200) {
-                    return Promise.reject(new Error("Failed update user profile info with: "
-                        + ServiceResourcesEndpoint.me));
-                }
-                return Promise.resolve(response);
-            })
-            .catch((error) => {
-                return Promise.reject(error);
-            });
-    }).catch((error) => {
-        return Promise.reject(error);
-    });
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(
+                    new Error(`Failed update user profile info with: ${ ServiceResourcesEndpoint.me }`)
+                );
+            }
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(`Failed to update the profile info - ${ error }`);
+        });
 };

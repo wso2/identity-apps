@@ -16,9 +16,17 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil } from "@wso2is/authenticate";
-import axios from "axios";
+import { AxiosHttpClient } from "@wso2is/http";
 import { ServiceResourcesEndpoint } from "../configs";
+import { HttpMethods } from "../models";
+import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "../utils";
+
+/**
+ * Initialize an axios Http client.
+ * @type {AxiosHttpClientInstance}
+ */
+const httpClient = AxiosHttpClient.getInstance();
+httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
 
 /**
  * Fetch the configured security questions of the user.
@@ -26,31 +34,38 @@ import { ServiceResourcesEndpoint } from "../configs";
  * @return {Promise<any>} a promise containing the response.
  */
 export const getSecurityQs = (): Promise<any> => {
-    return AuthenticateSessionUtil.getAccessToken().then((token) => {
-        const headers = {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${ token }`
+    const headers = {
+        "Accept": "application/json",
+        "Access-Control-Allow-Origin": CLIENT_HOST
+    };
+
+    const getQuestions = () => {
+        const requestConfig = {
+            headers,
+            method: HttpMethods.GET,
+            url: ServiceResourcesEndpoint.challenges
         };
 
-        const getQuestions = () => {
-            return axios.get(ServiceResourcesEndpoint.challenges, { headers });
+        return httpClient.request(requestConfig);
+    };
+
+    const getAnswers = () => {
+        const requestConfig = {
+            headers,
+            method: HttpMethods.GET,
+            url: ServiceResourcesEndpoint.challengeAnswers
         };
 
-        const getAnswers = () => {
-            return axios.get(ServiceResourcesEndpoint.challengeAnswers, { headers });
-        };
+        return httpClient.request(requestConfig);
+    };
 
-        return axios.all([getQuestions(), getAnswers()])
-            .then(axios.spread((questions, answers) => {
-                if (questions.status !== 200 && answers.status !== 200) {
-                    return Promise.reject(new Error("Failed to get security questions and answers."));
-                }
-                return Promise.resolve([questions.data, answers.data]);
-            }));
-    }).catch((error) => {
-        return Promise.reject(`Failed to retrieve the access token - ${ error }`);
-    });
+    return httpClient.all([ getQuestions(), getAnswers() ])
+        .then(httpClient.spread((questions, answers) => {
+            if (questions.status !== 200 && answers.status !== 200) {
+                return Promise.reject(new Error("Failed to get security questions and answers"));
+            }
+            return Promise.resolve([ questions.data, answers.data ]);
+        }));
 };
 
 /**
@@ -60,26 +75,26 @@ export const getSecurityQs = (): Promise<any> => {
  * @return {Promise<any>} a promise containing the response.
  */
 export const addSecurityQs = (data: object): Promise<any> => {
-    return AuthenticateSessionUtil.getAccessToken().then((token) => {
-        const headers = {
+    const requestConfig = {
+        data,
+        headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${ token }`
-        };
+            "Access-Control-Allow-Origin": CLIENT_HOST
+        },
+        method: HttpMethods.POST,
+        url: ServiceResourcesEndpoint.challengeAnswers
+    };
 
-        return axios.post(ServiceResourcesEndpoint.challengeAnswers, data, { headers })
-            .then((response) => {
-                if (response.status !== 201) {
-                    return Promise.reject(new Error("Failed to add security questions."));
-                }
-                return Promise.resolve(response.status);
-            })
-            .catch((error) => {
-                return Promise.reject(error);
-            });
-    }).catch((error) => {
-        return Promise.reject(`Failed to retrieve the access token - ${ error }`);
-    });
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 201) {
+                return Promise.reject(new Error("Failed to add security questions"));
+            }
+            return Promise.resolve(response.status);
+        })
+        .catch((error) => {
+            return Promise.reject(`Failed to add the security question - ${ error }`);
+        });
 };
 
 /**
@@ -89,24 +104,24 @@ export const addSecurityQs = (data: object): Promise<any> => {
  * @return {Promise<any>} a promise containing the response.
  */
 export const updateSecurityQs = (data: object): Promise<any> => {
-    return AuthenticateSessionUtil.getAccessToken().then((token) => {
-        const headers = {
+    const requestConfig = {
+        data,
+        headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${ token }`
-        };
+            "Access-Control-Allow-Origin": CLIENT_HOST
+        },
+        method: HttpMethods.PUT,
+        url: ServiceResourcesEndpoint.challengeAnswers
+    };
 
-        return axios.put(ServiceResourcesEndpoint.challengeAnswers, data, { headers })
-            .then((response) => {
-                if (response.status !== 200) {
-                    return Promise.reject(new Error("Failed to update security questions."));
-                }
-                return Promise.resolve(response);
-            })
-            .catch((error) => {
-                return Promise.reject(error);
-            });
-    }).catch((error) => {
-        return Promise.reject(`Failed to retrieve the access token - ${ error }`);
-    });
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to update security questions."));
+            }
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(`Failed to update the security question - ${ error }`);
+        });
 };

@@ -16,10 +16,18 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil } from "@wso2is/authenticate";
-import axios from "axios";
+import { AxiosHttpClient } from "@wso2is/http";
 import { ServiceResourcesEndpoint } from "../configs";
-import { ApprovalAction, ApprovalStatus, ApprovalTaskDetails, ApprovalTaskSummary, HttpMethods } from "../models";
+import { ApprovalStatus, ApprovalTaskDetails, ApprovalTaskSummary, HttpMethods } from "../models";
+import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "../utils";
+
+/**
+ * Initialize an axios Http client.
+ *
+ * @type {AxiosHttpClientInstance}
+ */
+const httpClient = AxiosHttpClient.getInstance();
+httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
 
 /**
  * Fetches the list of pending approvals from the list.
@@ -35,45 +43,39 @@ export const fetchPendingApprovals = (
     offset: number,
     status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.ALL
 ): Promise<any> => {
-    return AuthenticateSessionUtil.getAccessToken()
-        .then((token) => {
-            let requestConfig = {
-                headers: {
-                    "Accept": "application/json",
-                    "Access-Control-Allow-Origin": CLIENT_HOST,
-                    "Authorization": `Bearer ${ token }`,
-                    "Content-Type": "application/json"
-                },
-                method: HttpMethods.GET,
-                params: {
-                    limit,
-                    offset,
-                    status
-                },
-                url: ServiceResourcesEndpoint.pendingApprovals
-            };
+    let requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params: {
+            limit,
+            offset,
+            status
+        },
+        url: ServiceResourcesEndpoint.pendingApprovals
+    };
 
-            // To fetch all the approvals from the api, the status
-            // has to set to null.
-            if (status === ApprovalStatus.ALL) {
-                requestConfig = {
-                    ...requestConfig,
-                    params: {
-                        ...requestConfig.params,
-                        status: null
-                    }
-                };
+    // To fetch all the approvals from the api, the status
+    // has to set to null.
+    if (status === ApprovalStatus.ALL) {
+        requestConfig = {
+            ...requestConfig,
+            params: {
+                ...requestConfig.params,
+                status: null
             }
-            return axios.request(requestConfig)
-                .then((response) => {
-                    return Promise.resolve(response.data as ApprovalTaskSummary[]);
-                })
-                .catch((error) => {
-                    return Promise.reject(error);
-                });
+        };
+    }
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response.data as ApprovalTaskSummary[]);
         })
         .catch((error) => {
-            return Promise.reject(`Failed to retrieve the access token - ${ error }`);
+            return Promise.reject(`Failed to retrieve the pending approvals - ${ error }`);
         });
 };
 
@@ -84,29 +86,22 @@ export const fetchPendingApprovals = (
  * @return {Promise<any>} A promise containing the response.
  */
 export const fetchPendingApprovalDetails = (id: string): Promise<any> => {
-    return AuthenticateSessionUtil.getAccessToken()
-        .then((token) => {
-            const requestConfig = {
-                headers: {
-                    "Accept": "application/json",
-                    "Access-Control-Allow-Origin": CLIENT_HOST,
-                    "Authorization": `Bearer ${ token }`,
-                    "Content-Type": "application/json"
-                },
-                method: HttpMethods.GET,
-                url: `${ ServiceResourcesEndpoint.pendingApprovals }/${ id }`
-            };
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${ ServiceResourcesEndpoint.pendingApprovals }/${ id }`
+    };
 
-            return axios.request(requestConfig)
-                .then((response) => {
-                    return Promise.resolve(response.data as ApprovalTaskDetails);
-                })
-                .catch((error) => {
-                    return Promise.reject(error);
-                });
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response.data as ApprovalTaskDetails);
         })
         .catch((error) => {
-            return Promise.reject(`Failed to retrieve the access token - ${ error }`);
+            return Promise.reject(`Failed to retrieve the pending approval details - ${ error }`);
         });
 };
 
@@ -122,32 +117,24 @@ export const updatePendingApprovalStatus = (
     id: string,
     status: ApprovalStatus.CLAIM | ApprovalStatus.RELEASE | ApprovalStatus.APPROVE | ApprovalStatus.REJECT
 ): Promise<any> => {
-    return AuthenticateSessionUtil.getAccessToken()
-        .then((token) => {
-            const data: ApprovalAction = {
-                action: status
-            };
-            const requestConfig = {
-                data,
-                headers: {
-                    "Accept": "application/json",
-                    "Access-Control-Allow-Origin": CLIENT_HOST,
-                    "Authorization": `Bearer ${ token }`,
-                    "Content-Type": "application/json"
-                },
-                method: HttpMethods.PUT,
-                url: `${ ServiceResourcesEndpoint.pendingApprovals }/${ id }/state`
-            };
+    const requestConfig = {
+        data: {
+            action: status
+        },
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: `${ ServiceResourcesEndpoint.pendingApprovals }/${ id }/state`
+    };
 
-            return axios.request(requestConfig)
-                .then((response) => {
-                    return Promise.resolve(response);
-                })
-                .catch((error) => {
-                    return Promise.reject(error);
-                });
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
         })
         .catch((error) => {
-            return Promise.reject(`Failed to retrieve the access token - ${ error }`);
+            return Promise.reject(`Failed to update the pending approval status - ${ error }`);
         });
 };
