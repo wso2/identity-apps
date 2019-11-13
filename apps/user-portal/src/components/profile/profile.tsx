@@ -16,15 +16,17 @@
  * under the License
  */
 
+import { isEmpty } from "lodash";
 import React, { FunctionComponent, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../../api";
 import { AuthContext } from "../../contexts";
 import { resolveUserAvatar } from "../../helpers";
 import { createEmptyProfile, Notification } from "../../models";
+import { getProfileInformation } from "../../store/actions";
 import { EditSection, FormWrapper, SettingsSection } from "../shared";
-
 /**
  * Prop types for the basic details component.
  */
@@ -50,32 +52,26 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const { onNotificationFired } = props;
     const { state } = useContext(AuthContext);
     const { t } = useTranslation();
-
-    useEffect(() => {
-        if (profileInfo && !profileInfo.username) {
-            fetchProfileInfo();
-        }
-    });
+    const dispatch = useDispatch();
+    const profileDetails = useSelector((storeState: any) => storeState.authenticationInformation.profileInfo);
 
     /**
-     * Fetches profile information.
+     * dispatch getProfileInformation action if the profileDetails object is empty
      */
-    const fetchProfileInfo = (): void => {
-        getProfileInfo().then((response) => {
-            if (response.responseStatus === 200) {
-                setBasicDetails(response);
-            } else {
-                onNotificationFired({
-                    description: t("views:components.profile.notifications.getProfileInfo.error.description"),
-                    message: t("views:components.profile.notifications.getProfileInfo.error.message"),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                });
-            }
-        });
-    };
+    useEffect(() => {
+        if (isEmpty(profileDetails)) {
+            dispatch(getProfileInformation());
+        }
+    }, []);
+
+    /**
+     * If the profileDetails object changes call the setBasicDetails function
+     */
+    useEffect(() => {
+        if (!isEmpty(profileDetails)) {
+            setBasicDetails(profileDetails);
+        }
+    }, [profileDetails]);
 
     /**
      * The following method handles the `onSubmit` event of forms.
@@ -142,7 +138,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 });
 
                 // Re-fetch the profile information
-                fetchProfileInfo();
+                dispatch(getProfileInformation());
             }
         });
 

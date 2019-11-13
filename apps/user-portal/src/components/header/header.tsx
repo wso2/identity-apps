@@ -16,10 +16,13 @@
  * under the License.
  */
 
-import React, { SyntheticEvent, useContext } from "react";
+import { isEmpty } from "lodash";
+import React, { SyntheticEvent, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } from "semantic-ui-react";
+import { getProfileInformation } from "../../../src/store/actions";
 import { switchAccount } from "../../api";
 import { AuthContext } from "../../contexts";
 import { resolveUserAvatar, resolveUserDisplayName } from "../../helpers";
@@ -44,11 +47,19 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     const { state } = useContext(AuthContext);
     const { t } = useTranslation();
     const { onSidePanelToggleClick, showSidePanelToggle } = props;
+    const profileDetails = useSelector((storeState: any) => storeState.authenticationInformation);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (isEmpty(profileDetails)) {
+            dispatch(getProfileInformation());
+        }
+    }, []);
 
     const trigger = (
         <span className="user-dropdown-trigger">
-            <div className="username">{ resolveUserDisplayName(state) }</div>
-            { resolveUserAvatar(state, "mini") }
+            <div className="username">{ resolveUserDisplayName(profileDetails) }</div>
+            { resolveUserAvatar(profileDetails, "mini") }
         </span>
     );
 
@@ -107,13 +118,15 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
         <Menu id="app-header" className="app-header" fixed="top" borderless>
             <Container>
                 { showSidePanelToggle ?
-                    <Responsive as={ Menu.Item } maxWidth={ 767 }>
-                        <Icon name="bars" size="large" onClick={ onSidePanelToggleClick } link/>
-                    </Responsive>
+                    (
+                        <Responsive as={ Menu.Item } maxWidth={ 767 }>
+                            <Icon name="bars" size="large" onClick={ onSidePanelToggleClick } link />
+                        </Responsive>
+                    )
                     : null
                 }
                 <Menu.Item as={ Link } to={ APP_HOME_PATH } header>
-                    <Title style={ { marginTop: 0 } }/>
+                    <Title style={ { marginTop: 0 } } />
                 </Menu.Item>
                 <Menu.Menu position="right">
                     <Dropdown
@@ -121,28 +134,38 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                         trigger={ trigger }
                         floating
                         icon={ null }
-                        className="user-dropdown">
+                        className="user-dropdown"
+                    >
                         <Dropdown.Menu onClick={ handleUserDropdownClick }>
                             <Item.Group unstackable>
-                                <Item className="header" key={ `logged-in-user-${ state.username }` }>
-                                    { resolveUserAvatar(state, "tiny") }
+                                <Item
+                                    className="header"
+                                    key={ `logged-in-user-${profileDetails.profileInfo.username}` }
+                                >
+                                    { resolveUserAvatar(profileDetails, "tiny") }
                                     <Item.Content verticalAlign="middle">
                                         <Item.Description>
-                                            <div className="name">{ resolveUserDisplayName(state) }</div>
-                                            { (state.emails !== "undefined"
-                                                && state.emails !== undefined
-                                                && state.emails !== "null"
-                                                && state.emails !== null) &&
-                                            <div className="email">{ state.emails }</div>
+                                            <div className="name">{ resolveUserDisplayName(profileDetails) }</div>
+                                            { (profileDetails.profileInfo.emails !== "undefined"
+                                                && profileDetails.profileInfo.emails !== undefined
+                                                && profileDetails.profileInfo.emails !== "null"
+                                                && profileDetails.profileInfo.emails !== null) &&
+                                                <div className="email">{ profileDetails.profileInfo.emails }</div>
                                             }
-                                            <Divider hidden/>
-                                            <Button as={ Link } to="/personal-info" size="tiny"
-                                                    primary>{ t("common:personalInfo") }</Button>
+                                            <Divider hidden />
+                                            <Button
+                                                as={ Link }
+                                                to="/personal-info"
+                                                size="tiny"
+                                                primary
+                                            >
+                                                { t("common:personalInfo") }
+                                            </Button>
                                         </Item.Description>
                                     </Item.Content>
                                 </Item>
                             </Item.Group>
-                            <Dropdown.Divider/>
+                            <Dropdown.Divider />
                             {
                                 (state.profileInfo
                                     && state.profileInfo.associations
@@ -153,7 +176,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                                 state.profileInfo.associations.map((association, index) => (
                                                     <Item
                                                         className="linked-account"
-                                                        key={ `${ association.userId }-${ index }` }
+                                                        key={ `${association.userId}-${index}` }
                                                         onClick={ () => handleLinkedAccountSwitch(association) }
                                                     >
                                                         <UserImage
@@ -191,7 +214,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
 };
 
 /**
- * Default proptypes for the header component.
+ * Default prop types for the header component.
  */
 Header.defaultProps = {
     onSidePanelToggleClick: () => null,
