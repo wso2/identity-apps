@@ -25,7 +25,7 @@ import {
 } from "@wso2is/authenticate";
 import { getAssociations, getProfileInfo } from "../../api";
 import { ServiceResourcesEndpoint } from "../../configs";
-import { ScopeConstants } from "../../constants";
+import * as TokenConstants from "../../constants/token";
 import { history } from "../../helpers";
 import { setProfileInfo, setSignIn, setSignOut } from "../actions";
 
@@ -68,7 +68,7 @@ export const handleSignIn = (state, dispatch) => {
             clientSecret: null,
             enablePKCE: true,
             redirectUri: LOGIN_CALLBACK_URL,
-            scope: [ ScopeConstants.LOGIN_SCOPE, ScopeConstants.HUMAN_TASK_SCOPE ],
+            scope: [ TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE ],
         };
         if (SignInUtil.hasAuthorizationCode()) {
             SignInUtil.sendTokenRequest(requestParams)

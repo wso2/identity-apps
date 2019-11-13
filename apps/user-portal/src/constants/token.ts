@@ -16,12 +16,5 @@
  * under the License.
  */
 
-/**
- * Constants to handle scopes.
- *
- * @type {{HUMAN_TASK_SCOPE: string; LOGIN_SCOPE: string}}
- */
-export const ScopeConstants = {
-    HUMAN_TASK_SCOPE: "internal_login",
-    LOGIN_SCOPE: "internal_humantask_view"
-};
+export const LOGIN_SCOPE = "internal_login";
+export const HUMAN_TASK_SCOPE = "internal_humantask_view";
