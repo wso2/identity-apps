@@ -17,9 +17,12 @@
  */
 
 import Joi from "@hapi/joi";
+import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
+import { getProfileInformation } from "../../../../src/store/actions";
 import { getProfileInfo, updateProfileInfo } from "../../../api";
 import { MFAIcons } from "../../../configs";
 import { Notification, Validation } from "../../../models";
@@ -42,6 +45,20 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
     const [isEdit, setIsEdit] = useState(false);
     const { t } = useTranslation();
     const { onNotificationFired } = props;
+    const dispatch = useDispatch();
+    const profileInfo = useSelector((state: any) => state.authenticationInformation.profileInfo);
+
+    useEffect(() => {
+        if (isEmpty(profileInfo)) {
+            dispatch(getProfileInformation());
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!isEmpty(profileInfo)) {
+            setMobileNo(profileInfo);
+        }
+    }, [profileInfo]);
 
     const handleUpdate = (mobileNumber) => {
         const data = {
@@ -72,9 +89,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                 },
                 visible: true
             });
-            getProfileInfo().then((res) => {
-                setMobileNo(res);
-            });
+            dispatch(getProfileInformation());
             setIsEdit(false);
 
         })
@@ -244,14 +259,6 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
             </EditSection>
         );
     };
-
-    useEffect(() => {
-        if (mobile === "") {
-            getProfileInfo().then((response) => {
-                setMobileNo(response);
-            });
-        }
-    });
 
     return <div>{ showEditView() }</div>;
 };
