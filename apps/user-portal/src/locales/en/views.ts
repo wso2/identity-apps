@@ -45,7 +45,7 @@ export const views: Views = {
                         }
                     }
                 },
-                heading: "Email Recovery",
+                heading: "Email recovery",
                 notifications: {
                     updateEmail: {
                         error: {
