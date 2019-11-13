@@ -28,7 +28,13 @@ export interface HttpClientStatic<S> {
  * Http client interface.
  */
 export interface HttpClient<T, U, V> {
+    init(isHandlerEnabled: boolean,
+        requestStartCallback: () => void,
+        requestSuccessCallback: (response: U) => void,
+        requestErrorCallback: (error: V) => void,
+        requestFinishCallback: () => void
+    ): void;
+    errorHandler(error: V): V;
     requestHandler(request: T): T;
     successHandler(response: U): U;
-    errorHandler(error: V): V;
 }
