@@ -25,21 +25,9 @@ import {
 } from "@wso2is/authenticate";
 import { getAssociations, getProfileInfo } from "../../api";
 import { ServiceResourcesEndpoint } from "../../configs";
+import { ScopeConstants } from "../../constants";
 import { history } from "../../helpers";
 import { setProfileInfo, setSignIn, setSignOut } from "../actions";
-
-/**
- * Login scope.
- *
- * @type {string}
- */
-const LOGIN_SCOPE = "internal_login";
-/**
- * Scope to access workflow related resources.
- *
- * @type {string}
- */
-const HUMAN_TASK_SCOPE = "internal_humantask_view";
 
 /**
  * Handle user sign-out
@@ -80,7 +68,7 @@ export const handleSignIn = (state, dispatch) => {
             clientSecret: null,
             enablePKCE: true,
             redirectUri: LOGIN_CALLBACK_URL,
-            scope: [ LOGIN_SCOPE, HUMAN_TASK_SCOPE ],
+            scope: [ ScopeConstants.LOGIN_SCOPE, ScopeConstants.HUMAN_TASK_SCOPE ],
         };
         if (SignInUtil.hasAuthorizationCode()) {
             SignInUtil.sendTokenRequest(requestParams)
