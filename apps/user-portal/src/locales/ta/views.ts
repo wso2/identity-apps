@@ -332,7 +332,7 @@ export const views: Views = {
                 addAssociation: {
                     error: {
                         description: "{{description}}",
-                        message: "இணைக்கப் பட்ட கணக்குகளை பெரும் பொழுது தவறேற்பட்டுவிட்டது"
+                        message: "இணைக்கப்பட்ட கணக்குகளை பெரும் பொழுது தவறேற்பட்டுவிட்டது"
                     },
                     genericError: {
                         description: "கணக்கினை இணைக்கும் பொழுது தவறேற்பட்டுவிட்டது.",
@@ -340,7 +340,7 @@ export const views: Views = {
                     },
                     success: {
                         description: "கணக்கு வெற்றிகரமாக இணைக்கப் பட்டுவிட்டது",
-                        message: "கணக்கு இணைக்கப் பட்டு விட்டது"
+                        message: "கணக்கு இணைக்கப்பட்டு விட்டது"
                     }
                 },
                 getAssociations: {
@@ -349,27 +349,26 @@ export const views: Views = {
                         message: "இணைக்கப்பட்ட பயனர் கணக்குகளை பெறும் பொழுது தவறேற்பட்டுவிட்டது"
                     },
                     genericError: {
-                        description: "இணைக்கப் பட்ட கனக்குகளை பெறும் பொழுது தவறேற்பட்டுவிட்டது",
+                        description: "இணைக்கப்பட்ட கனக்குகளை பெறும் பொழுது தவறேற்பட்டுவிட்டது",
                         message: "ஏதோ தவறேற்பட்டுவிட்டது"
                     },
                     success: {
                         description: "இணைக்கபட்ட பயனர் கணக்குகள் வெற்றிகரமாக பெறப்பட்டுவிட்டன",
-                        message: "இணைக்கபட்ட பயனர் கணக்குகள் பெறப்பட்டுவிட்டன"
+                        message: "இணைக்கப்பட்ட பயனர் கணக்குகள் பெறப்பட்டுவிட்டன"
                     }
                 },
-                // TODO: Need to translate this.
                 switchAccount: {
                     error: {
                         description: "{{description}}",
-                        message: "Error occurred while switching the account"
+                        message: "கணக்கினை மாற்றும் பொழுது தவறேற்பட்டுவிட்டது"
                     },
                     genericError: {
-                        description: "Error occurred while switching the account",
-                        message: "Something went wrong"
+                        description: "கணக்கினை மாற்றும் பொழுது தவறேற்பட்டுவிட்டது",
+                        message: "ஏதோ தவறேற்பட்டுவிட்டது"
                     },
                     success: {
-                        description: "The account has been switched successfully",
-                        message: "Account switched successfully"
+                        description: "கணக்கு வெற்றிகரமாக மாற்றப்பட்டுவிட்டது",
+                        message: "கணக்கு மாற்றப்பட்டுவிட்டது"
                     }
                 }
             }
@@ -469,32 +468,38 @@ export const views: Views = {
                 }
             }
         },
+        // TODO: Translate to Tamil
         privacy: {
             about: {
                 description:
                     "WSO2 Identity Server (referred to as “WSO2 IS” within this policy) is an open source " +
-                    "Identity Management and Entitlement Server that is based on open standards and specifications.",
+                    "Identity Management and Entitlement Server that is based on open standards " +
+                    "and specifications.",
                 heading: "About WSO2 Identity Server"
             },
             privacyPolicy: {
                 collectionOfPersonalInfo: {
                     description: {
                         list1: {
-                            0: "WSO2 IS uses your IP address to detect any suspicious login attempts to your account.",
+                            0:
+                                "WSO2 IS uses your IP address to detect any suspicious login attempts" +
+                                " to your account.",
                             1:
-                                "WSO2 IS uses attributes like your first name, last name, etc., to provide a rich and" +
-                                " personalized user experience.",
+                                "WSO2 IS uses attributes like your first name, last name, etc., " +
+                                "to provide a rich and personalized user experience.",
                             2: "WSO2 IS uses your security questions and answers only to allow account recovery."
                         },
-                        para1: "WSO2 IS collects your information only to serve your access requirements. For example:"
+                        para1:
+                            "WSO2 IS collects your information only to serve your access requirements. " +
+                            "For example:"
                     },
                     heading: "Collection of personal information",
                     trackingTechnologies: {
                         description: {
                             list1: {
                                 0:
-                                    "Collecting information from the user profile page where you enter your personal" +
-                                    " data.",
+                                    "Collecting information from the user profile page where you enter " +
+                                    "your personal data.",
                                 1: "Tracking your IP address with HTTP request, HTTP headers, and TCP/IP.",
                                 2: "Tracking your geographic information with the IP address.",
                                 3:
@@ -839,8 +844,8 @@ export const views: Views = {
                 terminateAllUserSessionsModal: {
                     heading: "உறுதிப்பாடு",
                     message:
-                        "இச்செயல் சகல கருவிகளிலும் உள்ள உங்களுடைய அனைத்து அமர்வுகளில் இருந்தும் உங்களை வெளியேற்றும்." +
-                        " மேலும் தொடர விரும்புகின்றீர்களா?"
+                        "இச்செயல் சகல கருவிகளிலும் உள்ள உங்களுடைய அனைத்து அமர்வுகளில் இருந்தும் " +
+                        "உங்களை வெளியேற்றும். மேலும் தொடர விரும்புகின்றீர்களா?"
                 },
                 terminateUserSessionModal: {
                     heading: "உறுதிப்பாடு",
@@ -959,7 +964,7 @@ export const views: Views = {
                 add: "கணைக்கினை சேர்க்க"
             },
             description: "உங்களுடைய அனைத்து இணைக்கப்பட்ட கணக்குகளையும் முகாமை செய்ய",
-            heading: "இணைக்கப்ப்ட்ட கணக்குகள்"
+            heading: "இணைக்கப்பட்ட கணக்குகள்"
         },
         mfa: {
             description: "உங்கள் பல காரணி உறுதிப்பாட்டு விருப்பங்களை பார்வையிடவும் முகாமை செய்யவும்",

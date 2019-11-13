@@ -19,7 +19,7 @@
 import Joi from "@hapi/joi";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Icon, List } from "semantic-ui-react";
+import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../../../api";
 import { MFAIcons } from "../../../configs";
 import { Notification, Validation } from "../../../models";
@@ -225,7 +225,10 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                                 {
                                                     endIndex: 5,
                                                     startIndex: 3,
-                                                    style: "inline"
+                                                    wrapper: Form.Group,
+                                                    wrapperProps: {
+                                                        inline: true
+                                                    }
                                                 }
                                             ] }
                                             onSubmit={ (values: Map<string, string>) => {

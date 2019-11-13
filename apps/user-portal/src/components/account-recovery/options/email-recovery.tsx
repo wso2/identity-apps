@@ -19,7 +19,7 @@
 import Joi from "@hapi/joi";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Icon, List } from "semantic-ui-react";
+import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
 import { Notification, Validation } from "../../../models";
@@ -286,7 +286,14 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                             onSubmit={ (values) => {
                                                 handleUpdate(values.get("email").toString());
                                             } }
-                                            groups={ [{ startIndex: 2, endIndex: 4, style: "inline" }] }
+                                            groups={ [{
+                                                endIndex: 4,
+                                                startIndex: 2,
+                                                wrapper: Form.Group,
+                                                wrapperProps: {
+                                                    inline: true
+                                                }
+                                            }] }
                                         />
                                     </List.Content>
                                 </List.Item>

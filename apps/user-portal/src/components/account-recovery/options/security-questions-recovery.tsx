@@ -18,7 +18,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Icon, List } from "semantic-ui-react";
+import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { addSecurityQs, getSecurityQs, updateSecurityQs } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
 import {
@@ -75,7 +75,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     const initModel = () => {
         const challengesCopy: ChallengesQuestionsInterface[] = [];
 
-        challenges.questions.map((question: QuestionSetsInterface) => {
+        challenges.questions.forEach((question: QuestionSetsInterface) => {
             const answer =
                 challenges.answers && challenges.answers.length > 0 ? findAnswer(question.questionSetId) : null;
 
@@ -100,6 +100,40 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     const handleEdit = (question: string | number, index: number) => {
         setIsEdit(question);
         setQuestionIndex(index);
+    };
+
+    /**
+     * This function is called when a notification on error should be fired
+     * @param error
+     */
+    const fireNotificationOnError = (error: any) => {
+        onNotificationFired({
+            description: error && error.data && error.data.details
+                ? t(
+                    "views:components.accountRecovery.questionRecovery.notifications." +
+                    "updateQuestions.error.description",
+                    {
+                        description: error.data.details
+                    }
+                )
+                : t(
+                    "views:components.accountRecovery.questionRecovery.notifications" +
+                    ".updateQuestions.genericError.description"
+                ),
+            message: error && error.data && error.data.details
+                ? t(
+                    "views:components.accountRecovery.questionRecovery.notifications" +
+                    ".updateQuestions.error.message"
+                )
+                : t(
+                    "views:components.accountRecovery.questionRecovery.notifications" +
+                    ".updateQuestions.genericError.message"
+                ),
+            otherProps: {
+                negative: true
+            },
+            visible: true
+        });
     };
 
     /**
@@ -159,33 +193,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
 
             })
                 .catch((error) => {
-                    onNotificationFired({
-                        description: error && error.data && error.data.details
-                            ? t(
-                                "views:components.accountRecovery.questionRecovery.notifications." +
-                                "updateQuestions.error.description",
-                                {
-                                    description: error.data.details
-                                }
-                            )
-                            : t(
-                                "views:components.accountRecovery.questionRecovery.notifications" +
-                                ".updateQuestions.genericError.description"
-                            ),
-                        message: error && error.data && error.data.details
-                            ? t(
-                                "views:components.accountRecovery.questionRecovery.notifications" +
-                                ".updateQuestions.error.message"
-                            )
-                            : t(
-                                "views:components.accountRecovery.questionRecovery.notifications" +
-                                ".updateQuestions.genericError.message"
-                            ),
-                        otherProps: {
-                            negative: true
-                        },
-                        visible: true
-                    });
+                    fireNotificationOnError(error);
                 });
         } else {
             addSecurityQs(data).then((status) => {
@@ -209,35 +217,9 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                 });
 
             })
-            .catch((error) => {
-                onNotificationFired({
-                    description: error && error.data && error.data.details
-                        ? t(
-                            "views:components.accountRecovery.questionRecovery.notifications" +
-                            ".addQuestions.error.description",
-                            {
-                                description: error.data.details
-                            }
-                        )
-                        : t(
-                            "views:components.accountRecovery.questionRecovery.notifications" +
-                            ".addQuestions.genericError.description"
-                        ),
-                    message: error && error.data && error.data.details
-                        ? t(
-                            "views:components.accountRecovery.questionRecovery.notifications" +
-                            ".addQuestions.error.message"
-                        )
-                        : t(
-                            "views:components.accountRecovery.questionRecovery.notifications" +
-                            ".addQuestions.genericError.message"
-                        ),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
+                .catch((error) => {
+                    fireNotificationOnError(error);
                 });
-            });
         }
     };
 
@@ -268,11 +250,9 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
             return answerParam.questionSetId === questionSetId;
         });
 
-        const question: QuestionsInterface = questions.find((questionParam) => {
+        return questions.find((questionParam) => {
             return questionParam.question === answer.question;
         });
-
-        return question;
     };
 
     /**
@@ -281,11 +261,9 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
      * @returns {AnswersInterface} answer
      */
     const findAnswer = (questionSetId: string): AnswersInterface => {
-        const answer: AnswersInterface = challenges.answers.find((answerParam: AnswersInterface) => {
+        return challenges.answers.find((answerParam: AnswersInterface) => {
             return answerParam.questionSetId === questionSetId;
         });
-
-        return answer;
     };
 
     /**
@@ -306,9 +284,18 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
      */
     const generateFormFields = () => {
         let formFields = [];
+
         challenges.questions.forEach((questionSet: QuestionSetsInterface, index: number) => {
             if (isEdit === 0 || isEdit === questionSet.questionSetId) {
                 formFields.push(
+                    {
+                        element: (
+                            <div>
+                                { t("common:challengeQuestionNumber", { number: index + 1 }) }
+                            </div>
+                        ),
+                        type: "custom",
+                    },
                     {
                         children: questionSet.questions.map((ques, i) => {
                             return {
@@ -375,6 +362,53 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
             }
         ]);
         return formFields;
+    };
+
+    /**
+     * This returns an array of group objects to be passed to the groups prop of Form Wrapper
+     */
+    const generateGroups = () => {
+        const groups = [];
+        let questionNumber = 0;
+        challenges.questions.forEach((questionSet: QuestionSetsInterface, index: number) => {
+            if (isEdit === 0 || isEdit === questionSet.questionSetId) {
+                groups.push(
+                    {
+                        endIndex: questionNumber + 1,
+                        startIndex: questionNumber,
+                        wrapper: Grid.Column,
+                        wrapperProps: {
+                            width: 4
+                        }
+                    },
+                    {
+                        endIndex: questionNumber + 3,
+                        startIndex: questionNumber + 1,
+                        wrapper: Grid.Column,
+                        wrapperProps: {
+                            width: 12
+                        }
+                    },
+                    {
+                        endIndex: questionNumber + 2,
+                        startIndex: questionNumber,
+                        wrapper: Grid.Row,
+                        wrapperProps: {
+                            columns: 2
+                        }
+                    },
+                    {
+                        endIndex: questionNumber + 1,
+                        startIndex: questionNumber,
+                        wrapper: Grid,
+                        wrapperProps: {}
+                    }
+
+                );
+                questionNumber++;
+            }
+        });
+        return groups;
     };
 
     const listItems = () => {
@@ -475,19 +509,19 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                 return (
                     <EditSection>
                         <Grid>
-                            <Grid.Row columns={ 2 }>
-                                <Grid.Column width={ 4 }>
-                                    { t("common:challengeQuestionNumber", { number: questionIndex + 1 }) }
-                                </Grid.Column>
-                                <Grid.Column width={ 12 }>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column width={ 16 }>
                                     <FormWrapper
-                                        formFields={ generateFormFields() }
+                                        formFields={ formFields }
                                         groups={ [
                                             {
                                                 endIndex,
                                                 startIndex,
-                                                style: "inline"
-                                            }
+                                                wrapper: WrapButtons,
+                                                wrapperProps: {}
+                                            },
+                                            ...generateGroups()
+
                                         ] }
                                         onSubmit={ (values) => {
                                             handleSave(values);
@@ -503,4 +537,21 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     };
 
     return <>{ listItems() }</>;
+};
+
+/**
+ * This component wraps the save and submit buttons of the form in a Grid
+ * @param props
+ */
+const WrapButtons: React.FunctionComponent = (props): JSX.Element => {
+    return (
+        <Grid>
+            <Grid.Row column={ 2 }>
+                <Grid.Column width={ 4 } />
+                <Grid.Column width={ 12 }>
+                    <Form.Group inline={ true }>{ props.children }</Form.Group>
+                </Grid.Column>
+           </Grid.Row>
+        </Grid>
+    );
 };
