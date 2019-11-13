@@ -171,11 +171,6 @@
 }
 
 /**
- * Group style types
- */
- export type GroupStyle = "grouped" | "inline";
-
-/**
  * Group model
  */
  export interface Group {
