@@ -15,8 +15,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { Notification } from "../../models";
+import { DISMISS_NOTIFICATION, DismissNotificationAction, FIRE_NOTIFICATION, FireNotificationAction } from "./types";
 
-export * from "./api";
-export * from "./authenticate";
-export * from "./consents";
-export * from "./globals";
+/**
+ * Dispatches an action that fires a notification
+ * @param notification
+ */
+export const fireNotification = (notification: Notification): FireNotificationAction => ({
+    payload: notification,
+    type: FIRE_NOTIFICATION
+});
+
+export const dismissNotification = (): DismissNotificationAction => ({
+    type: DISMISS_NOTIFICATION
+});

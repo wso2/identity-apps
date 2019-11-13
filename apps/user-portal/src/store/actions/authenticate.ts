@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { getProfileInfo } from "../../../src/api";
+import { fireNotification } from "./globals";
 import { authenticateActionTypes } from "./types";
 
 /**
@@ -46,3 +48,45 @@ export const setProfileInfo = (details: any) => ({
     payload: details,
     type: authenticateActionTypes.SET_PROFILE_INFO
 });
+
+/**
+ *  Gets profile information by making an API call
+ */
+export const getProfileInformation = () => {
+    return (dispatch) => {
+        getProfileInfo()
+            .then((infoResponse) => {
+                if (infoResponse.responseStatus === 200) {
+                    dispatch(
+                        setProfileInfo({
+                            ...infoResponse
+                        })
+                    );
+                } else {
+                    dispatch(
+                        fireNotification({
+                            description:
+                                "views:components.profile.notifications.getProfileInfo.genericError" + ".description",
+                            message: "views:components.profile.notifications.getProfileInfo.genericError.message",
+                            otherProps: {
+                                negative: true
+                            },
+                            visible: true
+                        })
+                    );
+                }
+            })
+            .catch((error) => {
+                dispatch(
+                    fireNotification({
+                        description: error && error.data && error.data.details,
+                        message: "views:components.profile.notifications.getProfileInfo.error.message",
+                        otherProps: {
+                            negative: true
+                        },
+                        visible: true
+                    })
+                );
+            });
+    };
+};
