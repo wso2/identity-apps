@@ -19,6 +19,9 @@
 
 import { GlobalActions, GlobalActionTypes } from "../actions/types";
 
+/**
+ * Global state interface.
+ */
 interface GlobalState {
     isGlobalLoaderVisible: boolean;
 }
