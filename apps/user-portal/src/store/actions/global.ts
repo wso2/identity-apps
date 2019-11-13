@@ -16,7 +16,22 @@
  * under the License.
  */
 
-export * from "./api";
-export * from "./authenticate";
-export * from "./consents";
-export * from "./global";
+import { GlobalActionTypes, HideGlobalLoaderAction, ShowGlobalLoaderAction } from "./types";
+
+/**
+ * Show global loader action.
+ *
+ * @returns An action of type `SHOW_GLOBAL_LOADER`
+ */
+export const showGlobalLoader = (): ShowGlobalLoaderAction => ({
+    type: GlobalActionTypes.SHOW_GLOBAL_LOADER
+});
+
+/**
+ * Hide global loader action.
+ *
+ * @returns An action of type `HIDE_GLOBAL_LOADER`
+ */
+export const hideGlobalLoader = (): HideGlobalLoaderAction => ({
+    type: GlobalActionTypes.HIDE_GLOBAL_LOADER
+});
