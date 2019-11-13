@@ -38,6 +38,6 @@ export interface AccountSwitchRequestParams {
     "userstore-domain": string;
     "tenant-domain": string;
     token: string;
-    scope: string;
+    scope: string[];
     client_id: string;
 }
