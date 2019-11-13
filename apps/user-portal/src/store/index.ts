@@ -19,10 +19,8 @@
 import { applyMiddleware, createStore, Store } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { reducers } from "./combine-reducers";
-import {
-    apiMiddleware,
-    consentManagementMiddleware
-} from "./middleware";
+import { apiMiddleware } from "./middleware";
+import consentManagementMiddleware from "./middleware/consents";
 
 /**
  * Type of the Redux store.

@@ -17,7 +17,7 @@
  */
 
 import * as React from "react";
-import { AppFooter, Header as AppHeader, PageHeader, SidePanelWrapper } from "../components";
+import { AppFooter, GlobalLoader, Header as AppHeader, PageHeader, SidePanelWrapper } from "../components";
 
 /**
  * Inner page layout component Prop types.
@@ -70,6 +70,7 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
 
     return (
         <>
+            <GlobalLoader height={ 3 } />
             <AppHeader onSidePanelToggleClick={ handleSidePanelToggleClick }/>
             <div style={ { paddingTop: `${ headerHeight }px` } } className="app-content">
                 <SidePanelWrapper

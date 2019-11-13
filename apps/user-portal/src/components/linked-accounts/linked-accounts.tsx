@@ -18,7 +18,7 @@
 
 import React, { FunctionComponent, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Dropdown, Form, Grid, Icon, List, Popup } from "semantic-ui-react";
+import { Form, Grid, Icon, List, Popup } from "semantic-ui-react";
 import { addAccountAssociation, getAssociations, getProfileInfo, switchAccount } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
 import { AuthContext } from "../../contexts";
@@ -372,34 +372,6 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                                                 ) }
                                                 position="top center"
                                                 content={ t("common:switch") }
-                                                inverted
-                                            />
-                                            <Popup
-                                                trigger={ (
-                                                    <Dropdown
-                                                        floating
-                                                        pointing="top"
-                                                        direction="left"
-                                                        icon={ null }
-                                                        trigger={ (
-                                                            <Icon
-                                                                link
-                                                                className="list-icon"
-                                                                size="small"
-                                                                color="grey"
-                                                                name="ellipsis vertical"
-                                                            />
-                                                        ) }
-                                                    >
-                                                        <Dropdown.Menu>
-                                                            <Dropdown.Item disabled>
-                                                                { t("common:remove") }
-                                                            </Dropdown.Item>
-                                                        </Dropdown.Menu>
-                                                    </Dropdown>
-                                                ) }
-                                                position="top center"
-                                                content={ t("common:more") }
                                                 inverted
                                             />
                                         </List.Content>

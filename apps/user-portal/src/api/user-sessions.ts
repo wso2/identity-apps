@@ -16,13 +16,20 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil } from "@wso2is/authenticate";
-import axios, { AxiosRequestConfig } from "axios";
+import { AxiosHttpClient } from "@wso2is/http";
 import { ServiceResourcesEndpoint } from "../configs";
 import {
     HttpMethods,
     UserSessions
 } from "../models";
+import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "../utils";
+
+/**
+ * Initialize an axios Http client.
+ * @type {AxiosHttpClientInstance}
+ */
+const httpClient = AxiosHttpClient.getInstance();
+httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
 
 /**
  * Fetches the list of user sessions from the API.
@@ -30,27 +37,20 @@ import {
  * @return {Promise<any>} A promise containing the response.
  */
 export const fetchUserSessions = (): Promise<any> => {
-    return AuthenticateSessionUtil.getAccessToken()
-        .then((token) => {
-            const requestConfig: AxiosRequestConfig = {
-                headers: {
-                    Accept: "application/json",
-                    Authorization: `Bearer ${ token }`,
-                },
-                method: HttpMethods.GET,
-                url: ServiceResourcesEndpoint.sessions
-            };
+    const requestConfig = {
+        headers: {
+            Accept: "application/json"
+        },
+        method: HttpMethods.GET,
+        url: ServiceResourcesEndpoint.sessions
+    };
 
-            return axios.request(requestConfig)
-                .then((response) => {
-                    return response.data as UserSessions;
-                })
-                .catch((error) => {
-                    return Promise.reject(error);
-                });
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            return response.data as UserSessions;
         })
         .catch((error) => {
-            return Promise.reject(new Error(`Failed to retrieve the access token - ${ error }`));
+            return Promise.reject(error);
         });
 };
 
@@ -61,27 +61,20 @@ export const fetchUserSessions = (): Promise<any> => {
  * @return {Promise<any>} A promise containing the response.
  */
 export const terminateUserSession = (id: string): Promise<any> => {
-    return AuthenticateSessionUtil.getAccessToken()
-        .then((token) => {
-            const requestConfig: AxiosRequestConfig = {
-                headers: {
-                    Accept: "application/json",
-                    Authorization: `Bearer ${ token }`,
-                },
-                method: HttpMethods.DELETE,
-                url: `${ ServiceResourcesEndpoint.sessions }/${ id }`
-            };
+    const requestConfig = {
+        headers: {
+            Accept: "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: `${ ServiceResourcesEndpoint.sessions }/${ id }`
+    };
 
-            return axios.request(requestConfig)
-                .then((response) => {
-                    return response.data;
-                })
-                .catch((error) => {
-                    return Promise.reject(error);
-                });
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            return response.data;
         })
         .catch((error) => {
-            return Promise.reject(new Error(`Failed to retrieve the access token - ${ error }`));
+            return Promise.reject(error);
         });
 };
 
@@ -91,26 +84,19 @@ export const terminateUserSession = (id: string): Promise<any> => {
  * @return {Promise<any>} A promise containing the response.
  */
 export const terminateAllUserSessions = (): Promise<any> => {
-    return AuthenticateSessionUtil.getAccessToken()
-        .then((token) => {
-            const requestConfig: AxiosRequestConfig = {
-                headers: {
-                    Accept: "application/json",
-                    Authorization: `Bearer ${ token }`,
-                },
-                method: HttpMethods.DELETE,
-                url: ServiceResourcesEndpoint.sessions
-            };
+    const requestConfig = {
+        headers: {
+            Accept: "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: ServiceResourcesEndpoint.sessions
+    };
 
-            return axios.request(requestConfig)
-                .then((response) => {
-                    return response.data;
-                })
-                .catch((error) => {
-                    return Promise.reject(error);
-                });
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            return response.data;
         })
         .catch((error) => {
-            return Promise.reject(new Error(`Failed to retrieve the access token - ${ error }`));
+            return Promise.reject(error);
         });
 };

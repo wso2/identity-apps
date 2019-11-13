@@ -17,8 +17,18 @@
  */
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
-import axios from "axios";
+import { AxiosHttpClient } from "@wso2is/http";
 import { ServiceResourcesEndpoint } from "../configs";
+import { HttpMethods } from "../models";
+import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "../utils";
+
+/**
+ * Initialize an axios Http client.
+ *
+ * @type {AxiosHttpClientInstance}
+ */
+const httpClient = AxiosHttpClient.getInstance();
+httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
 
 /**
  * Updates the user's password.
@@ -28,28 +38,30 @@ import { ServiceResourcesEndpoint } from "../configs";
  * @return {Promise<any>} a promise containing the response.
  */
 export const updatePassword = (currentPassword: string, newPassword: string): Promise<any> => {
-    const url = ServiceResourcesEndpoint.me;
-    const username = AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME);
-    const auth = {
-        password: currentPassword,
-        username
-    };
-    const headers = {
-        "Content-Type": "application/json"
-    };
-    const body = {
-        Operations: [
-            {
-                op: "add",
-                value: {
-                    password: newPassword
+    const requestConfig = {
+        auth: {
+            password: currentPassword,
+            username: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME)
+        },
+        data: {
+            Operations: [
+                {
+                    op: "add",
+                    value: {
+                        password: newPassword
+                    }
                 }
-            }
-        ],
-        schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+            ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        },
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: ServiceResourcesEndpoint.me
     };
 
-    return axios.patch(url, body, { auth, headers })
+    return httpClient.request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject("Failed to update password.");
@@ -57,6 +69,6 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
             return Promise.resolve(response);
         })
         .catch((error) => {
-            return Promise.reject(`Failed to retrieve the access token - ${ error }`);
+            return Promise.reject(`Failed to update the password - ${ error }`);
         });
 };

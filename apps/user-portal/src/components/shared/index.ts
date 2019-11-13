@@ -18,6 +18,7 @@
 
 export * from "./language-switcher";
 export * from "./edit-section";
+export * from "./global-loader";
 export * from "./icon";
 export * from "./notification";
 export * from "./page-header";

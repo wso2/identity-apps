@@ -14,8 +14,24 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-export * from "./axios-http-client";
-export * from "./http-client";
+import { GlobalActionTypes, HideGlobalLoaderAction, ShowGlobalLoaderAction } from "./types";
+
+/**
+ * Show global loader action.
+ *
+ * @returns An action of type `SHOW_GLOBAL_LOADER`
+ */
+export const showGlobalLoader = (): ShowGlobalLoaderAction => ({
+    type: GlobalActionTypes.SHOW_GLOBAL_LOADER
+});
+
+/**
+ * Hide global loader action.
+ *
+ * @returns An action of type `HIDE_GLOBAL_LOADER`
+ */
+export const hideGlobalLoader = (): HideGlobalLoaderAction => ({
+    type: GlobalActionTypes.HIDE_GLOBAL_LOADER
+});

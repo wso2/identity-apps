@@ -30,9 +30,6 @@
         }
     }
     &.app-header {
-        border-top-style: @appHeaderTopBorderStyle;
-        border-top-width: @appHeaderTopBorderWidth;
-        border-top-color: @appHeaderTopBorderColor;
         box-shadow: none;
 
         .user-dropdown {
