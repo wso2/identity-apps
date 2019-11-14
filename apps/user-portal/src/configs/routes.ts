@@ -18,6 +18,7 @@
 
 import {
     AccountSecurityPage,
+    ApplicationsPage,
     OperationsPage,
     OverviewPage,
     PageNotFound,
@@ -46,6 +47,14 @@ const ROUTES: Route[] = [
         icon: "overview",
         name: "common:overview",
         path: "/overview",
+        protected: true,
+        showOnSidePanel: true,
+    },
+    {
+        component: ApplicationsPage,
+        icon: "apps",
+        name: "common:applications",
+        path: "/applications",
         protected: true,
         showOnSidePanel: true,
     },

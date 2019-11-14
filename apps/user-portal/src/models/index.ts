@@ -17,6 +17,7 @@
  */
 
 export * from "./api";
+export * from "./applications";
 export * from "./approvals";
 export * from "./auth";
 export * from "./authenticated-user";

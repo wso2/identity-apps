@@ -16,6 +16,7 @@
  * under the License.
  */
 
+export * from "./applications";
 export * from "./account-recovery";
 export * from "./approvals";
 export * from "./change-password";

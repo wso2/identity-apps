@@ -16,15 +16,4 @@
  * under the License.
  */
 
-export * from "./language-switcher";
-export * from "./advance-search";
-export * from "./edit-section";
-export * from "./global-loader";
-export * from "./icon";
-export * from "./notification";
-export * from "./page-header";
-export * from "./protected-route";
-export * from "./settings-section";
-export * from "./ui";
-export * from "./user-image";
-export * from "./form-wrapper";
+export * from "./applications";

@@ -48,7 +48,7 @@ const SupportedLanguages = {
  */
 const initOptions = {
     contextSeparator: "_",
-    debug: false,
+    debug: true,
     defaultNS: "common",
     fallbackLng: "en",
     interpolation: {

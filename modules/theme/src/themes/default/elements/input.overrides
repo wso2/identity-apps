@@ -1,4 +1,4 @@
-/**
+/*!
  * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -14,17 +14,18 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
 
-export * from "./language-switcher";
-export * from "./advance-search";
-export * from "./edit-section";
-export * from "./global-loader";
-export * from "./icon";
-export * from "./notification";
-export * from "./page-header";
-export * from "./protected-route";
-export * from "./settings-section";
-export * from "./ui";
-export * from "./user-image";
-export * from "./form-wrapper";
+.ui.input {
+    &.advance-search {
+        &.with-add-on {
+            &:focus {
+                .input-add-on {
+                    border-color: @focusBorderColor;
+                    background: @focusBackground;
+                }
+            }
+        }
+    }
+}

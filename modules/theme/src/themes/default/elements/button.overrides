@@ -22,11 +22,13 @@
         background: transparent;
         color: @primaryColor;
 
-        &:hover {
-            background: @backgroundColor;
-        }
-        &:active {
-            background: @downBackgroundColor;
+        &.with-hover {
+            &:hover {
+                background: @backgroundColor;
+            }
+            &:active {
+                background: @downBackgroundColor;
+            }
         }
     }
 }
@@ -41,6 +43,12 @@
             background: transparent !important;
             box-shadow: none !important;
         }
+    }
+    &.input-add-on {
+        box-shadow: none;
+        padding-right: 0.4em;
+        border: @inputAddOnBorder;
+        border-left: 0;
     }
 }
 

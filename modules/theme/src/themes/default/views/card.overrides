@@ -18,6 +18,45 @@
  */
  
 .ui.card {
+    &.application-card {
+        &.recent {
+            color: @recentApplicationCardDefaultColor;
+
+            &:hover {
+                transform: none;
+            }
+            .logo {
+                background: transparent;
+                padding: 3em 0;
+                height: 170px;
+            }
+            .content {
+                display: inline-block;
+
+                &.text {
+                    .header {
+                        font-size: 1.4em;
+                        margin-bottom: 4px;
+                    }
+                }
+                .tag {
+                    margin: 0;
+                    font-size: 0.8em;
+                }
+                &.icon {
+                    font-size: 1.3em;
+                    float: right;
+                    margin-top: 10px;
+
+                    .favourite-icon {
+                        &.favoured {
+                            color: @starColor;
+                        }
+                    }
+                }
+            }
+        }
+    }
     &.settings-card {
         border: @settingsCardBorder;
         box-shadow: none;

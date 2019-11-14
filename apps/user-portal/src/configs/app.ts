@@ -19,6 +19,7 @@
 type ServiceEndpointURLType = string;
 
 interface ServiceResourcesType {
+    applications: string;
     associations: string;
     authorize: string;
     challenges: string;
@@ -42,6 +43,7 @@ interface ServiceResourcesType {
 
 export const ServiceEndpoint: ServiceEndpointURLType = SERVER_HOST;
 export const ServiceResourcesEndpoint: ServiceResourcesType = {
+    applications: `${ServiceEndpoint}/t/carbon.super/api/users/v1/me/applications`,
     associations: `${ServiceEndpoint}/api/users/v1/me/associations`,
     authorize: `${ServiceEndpoint}/oauth2/authorize`,
     challengeAnswers: `${ServiceEndpoint}/api/users/v1/me/challenge-answers`,

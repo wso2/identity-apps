@@ -33,6 +33,7 @@ export const HomeTileIcons = {
 };
 export const SidePanelIconSet = {
     account: require("../lib/assets/images/icons/controls-icon.svg"),
+    apps: require("../lib/assets/images/icons/app-icon.svg"),
     consent: require("../lib/assets/images/icons/tick-circle-icon.svg"),
     operations: require("../lib/assets/images/icons/tools-icon.svg"),
     overview: require("../lib/assets/images/icons/dashboard-icon.svg"),

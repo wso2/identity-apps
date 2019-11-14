@@ -148,6 +148,20 @@ export interface Views {
                 }
             }
         },
+        applications: {
+            all: {
+                heading: string;
+            },
+            favourite: {
+                heading: string;
+            },
+            notifications: {
+                fetchApplications: Notification;
+            }
+            recent: {
+                heading: string;
+            },
+        },
         approvals: {
             notifications: {
                 fetchApprovalDetails: Notification,
@@ -579,6 +593,7 @@ export interface Views {
         },
     };
     pages: {
+        applications: Page;
         operations: Page;
         overview: Page;
         personalInfo: Page;
