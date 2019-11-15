@@ -22,9 +22,9 @@ import { Link } from "react-router-dom";
 import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } from "semantic-ui-react";
 import { switchAccount } from "../../api";
 import { AuthContext } from "../../contexts";
-import { resolveUserAvatar, resolveUserDisplayName } from "../../helpers";
+import { resolveUserDisplayName } from "../../helpers";
 import { createEmptyNotification, LinkedAccountInterface, Notification } from "../../models";
-import { Title, UserImage } from "../shared";
+import { Title, UserAvatar } from "../shared";
 
 /**
  * Header component prop types.
@@ -48,7 +48,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     const trigger = (
         <span className="user-dropdown-trigger">
             <div className="username">{ resolveUserDisplayName(state) }</div>
-            { resolveUserAvatar(state, "mini") }
+            <UserAvatar authState={ state } size="mini" />
         </span>
     );
 
@@ -125,7 +125,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                         <Dropdown.Menu onClick={ handleUserDropdownClick }>
                             <Item.Group unstackable>
                                 <Item className="header" key={ `logged-in-user-${ state.username }` }>
-                                    { resolveUserAvatar(state, "tiny") }
+                                    <UserAvatar authState={ state } size="tiny" />
                                     <Item.Content verticalAlign="middle">
                                         <Item.Description>
                                             <div className="name">{ resolveUserDisplayName(state) }</div>
@@ -156,7 +156,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                                         key={ `${ association.userId }-${ index }` }
                                                         onClick={ () => handleLinkedAccountSwitch(association) }
                                                     >
-                                                        <UserImage
+                                                        <UserAvatar
                                                             bordered
                                                             avatar
                                                             size="little"

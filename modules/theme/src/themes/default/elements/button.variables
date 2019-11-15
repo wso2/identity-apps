@@ -27,3 +27,9 @@
 
 /* Text */
 @fontWeight: 500;
+
+/*-------------------
+ Input add on button
+--------------------*/
+
+@inputAddOnBorder: 1px solid rgba(34, 36, 38, 0.15);

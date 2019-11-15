@@ -35,3 +35,9 @@
 @settingsCardTabItemBorderBottomColor: @primaryColor;
 @settingsCardTopActionPanelBorderTop: 1px solid @galleryGray;
 @settingsCardTopActionPanelBorderBottom: 1px solid @galleryGray;
+
+/*-------------------
+Recent Application Card
+--------------------*/
+
+@recentApplicationCardDefaultColor: @black;

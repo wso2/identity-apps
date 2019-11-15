@@ -120,6 +120,33 @@ export const views: Views = {
                 }
             }
         },
+        applications: {
+            all: {
+                heading: "All Applications"
+            },
+            favourite: {
+                heading: "Favourites"
+            },
+            notifications: {
+                fetchApplications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error retrieving applications"
+                    },
+                    genericError: {
+                        description: "Couldn't retrieve applications",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully retrieved the applications.",
+                        message: "Applications retrieval successful"
+                    }
+                }
+            },
+            recent: {
+                heading: "Recent Applications"
+            }
+        },
         approvals: {
             notifications: {
                 fetchApprovalDetails: {
@@ -861,6 +888,10 @@ export const views: Views = {
         },
     },
     pages: {
+        applications: {
+            subTitle: "Manage and maintain your applications",
+            title: "Applications"
+        },
         operations: {
             subTitle: "මෙහෙයුම් ක්‍රියාවලියට ඉදිරියට යාමට ඉඩ දීම හෝ ප්‍රතික්ෂේප කිරීම සඳහා ඔබේ " +
                 "අන්තර්ක්‍රියා කළමනාකරණය කිරීම.",

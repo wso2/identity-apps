@@ -16,17 +16,30 @@
  * under the License.
  */
 
-export * from "./applications";
-export * from "./account-recovery";
-export * from "./approvals";
-export * from "./change-password";
-export * from "./consents";
-export * from "./footer";
-export * from "./header";
-export * from "./linked-accounts";
-export * from "./multi-factor-authentication";
-export * from "./overview";
-export * from "./profile";
-export * from "./shared";
-export * from "./side-panel";
-export * from "./user-sessions";
+import React, { FunctionComponent } from "react";
+import { useTranslation } from "react-i18next";
+import { Application } from "../../models";
+import { ApplicationList } from "./application-list";
+
+/**
+ * Proptypes for the all applications component.
+ */
+interface AllApplicationsProps {
+    allApps: Application[];
+}
+
+/**
+ * All applications component.
+ *
+ * @return {JSX.Element}
+ */
+export const AllApplications: FunctionComponent<AllApplicationsProps> = (
+    props: AllApplicationsProps
+): JSX.Element => {
+    const { allApps } = props;
+    const { t } = useTranslation();
+
+    return (
+        <ApplicationList apps={ allApps } isFavouritesList={ false } />
+    );
+};
