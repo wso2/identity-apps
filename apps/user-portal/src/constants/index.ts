@@ -16,4 +16,5 @@
  * under the License.
  */
 
+export * from "./colors";
 export * from "./token";
