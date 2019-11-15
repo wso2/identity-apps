@@ -18,7 +18,6 @@
 
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Divider, Grid, Header } from "semantic-ui-react";
 import { Application } from "../../models";
 import { ApplicationList } from "./application-list";
 

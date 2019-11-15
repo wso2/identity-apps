@@ -80,28 +80,6 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
             });
     }, []);
 
-    /**
-     * Filters the list of recent applications.
-     * TODO: Replace the hardcoded return count with actual recent apps.
-     *
-     * @return {Application[]} - The list of recent applications.
-     */
-    const filterRecentApps = (): Application[] => {
-        const apps = [...applications];
-        return apps.splice(0, 3);
-    };
-
-    /**
-     * Filters the list of favourite apps.
-     *
-     * @return {Application[]}
-     */
-    const filterFavouriteApps = (): Application[] => {
-        return applications.filter((app) => {
-            return app.favourite === true;
-        });
-    };
-
     return (
         <>
             <AdvanceSearch aligned="right">
