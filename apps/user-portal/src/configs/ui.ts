@@ -18,14 +18,15 @@
 
 import {
     AccountRecoveryIconSet,
+    CodeIcon,
     ConsentForm,
-    DefaultAppIcon,
     DummyUser,
     ErrorStatusShield,
     HomeTileIcons,
     Logo,
     MFAIconSet,
     OkayStatusShield,
+    PackageIcon,
     Padlock,
     SettigsSectionIconSet,
     SidePanelIconSet,
@@ -48,7 +49,8 @@ interface CustomCSSType {
 export const LogoImage = Logo;
 export const UserImage: ImageType = DummyUser;
 export const HomeTileIconImages = HomeTileIcons;
-export const GenericAppIcon = DefaultAppIcon;
+export const ConsentedAppIcon = PackageIcon;
+export const DefaultAppIcon = CodeIcon;
 export const SidePanelIcons = SidePanelIconSet;
 export const SettingsSectionIcons = SettigsSectionIconSet;
 export const MFAIcons = MFAIconSet;

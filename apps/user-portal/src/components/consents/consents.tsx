@@ -20,7 +20,7 @@ import React, { FunctionComponent, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Checkbox, Container, Divider, Grid, Icon, List, Modal, Placeholder } from "semantic-ui-react";
-import { GenericAppIcon } from "../../configs";
+import { ConsentedAppIcon } from "../../configs";
 import { ConsentInterface, ConsentState, ServiceInterface } from "../../models";
 import { AppState } from "../../store";
 import {
@@ -220,7 +220,7 @@ export const Consents: FunctionComponent<{}> = (): JSX.Element => {
                     <List.Item>
                         <List.Content floated="left">
                             <ThemeIcon
-                                icon={ GenericAppIcon }
+                                icon={ ConsentedAppIcon }
                                 size="tiny"
                                 defaultIcon
                                 square
@@ -391,7 +391,7 @@ export const Consents: FunctionComponent<{}> = (): JSX.Element => {
                                                 <Grid.Column width={ 11 } className="first-column">
                                                     <List.Content verticalAlign="middle">
                                                         <ThemeIcon
-                                                            icon={ GenericAppIcon }
+                                                            icon={ ConsentedAppIcon }
                                                             size="micro"
                                                             bordered
                                                             defaultIcon
