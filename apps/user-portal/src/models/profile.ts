@@ -34,7 +34,7 @@ export interface BasicProfileInterface {
     userimage?: string;
     username?: string;
     // TODO: Create an interface for associations
-    associations: any;
+    associations?: any;
 }
 
 /**
