@@ -28,5 +28,5 @@
            App Image
 *******************************/
 
-@appAvatarSpacingRight: 0.5em;
-@appAvatarSpacingLeft: 0.5em;
+@appAvatarSpacingRight: 0.4em;
+@appAvatarSpacingLeft: 0.4em;

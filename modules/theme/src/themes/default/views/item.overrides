@@ -42,6 +42,7 @@
                 overflow: hidden;
             }
             .item-description {
+                margin-top: 0;
                 max-width: @applicationListItemDescMaxWidth;
                 white-space: nowrap;
                 overflow: hidden;
