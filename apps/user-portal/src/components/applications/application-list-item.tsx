@@ -73,7 +73,7 @@ export const ApplicationListItem: FunctionComponent<ApplicationListItemProps> = 
                                         {
                                             app.tags.map((tag, index) => {
                                                 if (index === 0) {
-                                                    return <span className="tag" key={ index }>&ensp;{ tag }</span>;
+                                                    return <span className="tag" key={ index }>{ " " }{ tag }</span>;
                                                 }
                                                 return <span className="tag" key={ index }>, { tag }</span>;
                                             })
