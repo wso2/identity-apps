@@ -32,10 +32,3 @@
 @iconWrapperColoredPrimaryColor: @primaryColor;
 @iconWrapperSpacingRight: 8px;
 @iconWrapperSpacingLeft: 8px;
-
-/*-------------------
-   Advance search
---------------------*/
-
-@advanceSearchMinWidth: 260px;
-@advanceSearchMaxWidth: 520px;
