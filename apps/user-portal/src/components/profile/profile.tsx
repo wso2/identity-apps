@@ -21,9 +21,8 @@ import { useTranslation } from "react-i18next";
 import { Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
 import { getProfileInfo, updateProfileInfo } from "../../api";
 import { AuthContext } from "../../contexts";
-import { resolveUserAvatar } from "../../helpers";
 import { createEmptyProfile, Notification } from "../../models";
-import { EditSection, FormWrapper, SettingsSection } from "../shared";
+import { EditSection, FormWrapper, SettingsSection, UserAvatar } from "../shared";
 
 /**
  * Prop types for the basic details component.
@@ -660,7 +659,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         <SettingsSection
             description={ t("views:sections.profile.description") }
             header={ t("views:sections.profile.heading") }
-            icon={ resolveUserAvatar(state, "tiny") }
+            icon={ <UserAvatar authState={ state } size="tiny" /> }
         >
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">

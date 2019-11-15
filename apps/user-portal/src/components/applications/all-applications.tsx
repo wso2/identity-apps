@@ -16,28 +16,30 @@
  * under the License.
  */
 
+import React, { FunctionComponent } from "react";
+import { useTranslation } from "react-i18next";
+import { Application } from "../../models";
+import { ApplicationList } from "./application-list";
+
 /**
- * OIDC request parameters.
+ * Proptypes for the all applications component.
  */
-export interface OIDCRequestParamsInterface {
-    clientId: string;
-    clientHost: string;
-    clientSecret?: string;
-    enablePKCE: boolean;
-    redirectUri: string;
-    scope?: string[];
+interface AllApplicationsProps {
+    allApps: Application[];
 }
 
 /**
- * Interface for the account switch grant
- * request parameters.
+ * All applications component.
+ *
+ * @return {JSX.Element}
  */
-export interface AccountSwitchRequestParams {
-    grant_type: string;
-    username: string;
-    "userstore-domain": string;
-    "tenant-domain": string;
-    token: string;
-    scope: string[];
-    client_id: string;
-}
+export const AllApplications: FunctionComponent<AllApplicationsProps> = (
+    props: AllApplicationsProps
+): JSX.Element => {
+    const { allApps } = props;
+    const { t } = useTranslation();
+
+    return (
+        <ApplicationList apps={ allApps } isFavouritesList={ false } />
+    );
+};

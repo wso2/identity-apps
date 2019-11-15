@@ -1,4 +1,4 @@
-/**
+/*!
  * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -16,17 +16,34 @@
  * under the License.
  *
  */
- 
-/*******************************
-           User Image
-*******************************/
-
-@userAvatarSpacingRight: 1em;
-@userAvatarSpacingLeft: 1em;
 
 /*******************************
-           App Image
+    Advance Search Variation
 *******************************/
 
-@appAvatarSpacingRight: 0.4em;
-@appAvatarSpacingLeft: 0.4em;
+.ui.action.input {
+    &.advance-search {
+        max-width: @advanceSearchMaxWidth;
+        min-width: @advanceSearchMinWidth;
+
+        input {
+            &:focus {
+                border-color: @borderColor;
+                border-right-color: transparent !important;
+            }
+        }
+        .input-add-on {
+            &:active {
+                background: transparent !important;
+            }
+        }
+        &.with-add-on {
+            &:focus {
+                .input-add-on {
+                    border-color: @focusBorderColor;
+                    background: @focusBackground;
+                }
+            }
+        }
+    }
+}

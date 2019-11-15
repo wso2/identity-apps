@@ -68,7 +68,9 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
      */
     public static getInstance(): AxiosHttpClientInstance {
         if (!this.axiosInstance) {
-            this.axiosInstance = axios.create();
+            this.axiosInstance = axios.create({
+                withCredentials: true
+            });
         }
 
         if (!this.clientInstance) {

@@ -241,13 +241,21 @@ export const sendAccountSwitchRequest = (
         return Promise.reject(new Error("Invalid token endpoint found."));
     }
 
+    let scope = OIDC_SCOPE;
+    if (requestParams.scope && requestParams.scope.length > 0) {
+        if (!requestParams.scope.includes(OIDC_SCOPE)) {
+            requestParams.scope.push(OIDC_SCOPE);
+        }
+        scope = requestParams.scope.join(" ");
+    }
+
     const body = [];
     body.push(`grant_type=account_switch`);
     body.push(`username=${ requestParams.username }`);
     body.push(`userstore-domain=${ requestParams["userstore-domain"] }`);
     body.push(`tenant-domain=${ requestParams["tenant-domain"] }`);
     body.push(`token=${ getSessionParameter(ACCESS_TOKEN) }`);
-    body.push(`scope=openid`);
+    body.push(`scope=${ scope }`);
     body.push(`client_id=${ requestParams.client_id }`);
 
     return axios.post(tokenEndpoint, body.join("&"), getTokenRequestHeaders(clientHost))

@@ -25,7 +25,8 @@ export const Theme = require("./theme");
 // );
 export const Logo = require("../lib/assets/images/logo.svg");
 export const DummyUser = require("../lib/assets/images/user.png");
-export const DefaultAppIcon = require("../lib/assets/images/icons/package.svg");
+export const PackageIcon = require("../lib/assets/images/icons/package.svg");
+export const CodeIcon = require("../lib/assets/images/icons/code-icon.svg");
 export const HomeTileIcons = {
     profile: require("../lib/assets/images/home_profile_mgt.png"),
     security: require("../lib/assets/images/home_security_mgt.png"),
@@ -33,6 +34,7 @@ export const HomeTileIcons = {
 };
 export const SidePanelIconSet = {
     account: require("../lib/assets/images/icons/controls-icon.svg"),
+    apps: require("../lib/assets/images/icons/app-icon.svg"),
     consent: require("../lib/assets/images/icons/tick-circle-icon.svg"),
     operations: require("../lib/assets/images/icons/tools-icon.svg"),
     overview: require("../lib/assets/images/icons/dashboard-icon.svg"),

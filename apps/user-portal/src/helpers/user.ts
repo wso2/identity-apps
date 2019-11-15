@@ -17,8 +17,6 @@
  */
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
-import React from "react";
-import { UserImage, UserImageSizes } from "../components/shared";
 import { AuthStateInterface } from "../models";
 
 /**
@@ -41,31 +39,4 @@ export const resolveUserDisplayName = (state: AuthStateInterface): string => {
         return AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME);
     }
     return null;
-};
-
-/**
- * Resolves the user's avatar.
- *
- * @param {AuthStateInterface} state - auth state.
- * @param {UserImageSizes} avatarSize - size of the avatar
- * @return {JSX.Element}
- */
-export const resolveUserAvatar = (state: AuthStateInterface, avatarSize: UserImageSizes): JSX.Element => {
-    if (state.userimage) {
-        return (
-            <UserImage
-                bordered={ true }
-                size={ avatarSize }
-                image={ state.userimage }
-            />
-        );
-    }
-    return (
-        <UserImage
-            bordered={ true }
-            avatar={ true }
-            size={ avatarSize }
-            name={ resolveUserDisplayName(state) }
-        />
-    );
 };

@@ -251,6 +251,33 @@ body {
 }
 
 /*****************************************
+         Advance Search Wrapper
+*****************************************/
+
+.advance-search-wrapper {
+    &.aligned-left {
+        text-align: left;
+    }
+    &.aligned-right {
+        text-align: right;
+    }
+    &.aligned-center {
+        text-align: center;
+    }
+    .advance-search-dropdown {
+        max-width: @advanceSearchMaxWidth;
+        min-width: @advanceSearchMinWidth;
+        padding: 0.8em 1.3em;
+        position: absolute;
+        width: 100%;
+        z-index: 9;
+        background: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        border: 1px solid rgba(0,0,0,0.2);
+    }
+}
+
+/*****************************************
     Global loading bar style overrides
 *****************************************/
 

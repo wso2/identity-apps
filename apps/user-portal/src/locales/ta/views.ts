@@ -120,6 +120,33 @@ export const views: Views = {
                 }
             }
         },
+        applications: {
+            all: {
+                heading: "All Applications"
+            },
+            favourite: {
+                heading: "Favourites"
+            },
+            notifications: {
+                fetchApplications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error retrieving applications"
+                    },
+                    genericError: {
+                        description: "Couldn't retrieve applications",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully retrieved the applications.",
+                        message: "Applications retrieval successful"
+                    }
+                }
+            },
+            recent: {
+                heading: "Recent Applications"
+            }
+        },
         approvals: {
             notifications: {
                 fetchApprovalDetails: {
@@ -901,6 +928,10 @@ export const views: Views = {
         }
     },
     pages: {
+        applications: {
+            subTitle: "Manage and maintain your applications",
+            title: "Applications"
+        },
         operations: {
             subTitle: "முடிவு செய்யப்படாத அனுமதிகள் போன்ற பணிகளை முகாமை செய்யவும் பராமரிக்கவும்",
             title: "செயற்பாடுகள்"
