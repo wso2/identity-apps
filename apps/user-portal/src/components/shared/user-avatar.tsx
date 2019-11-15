@@ -50,17 +50,17 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
 
     return (
         <Avatar
+            { ...props }
             avatarType="user"
             bordered
             avatar
             name={ authState ? resolveUserDisplayName(authState) : name }
-            { ...props }
         />
     );
 };
 
 /**
- * Default proptypes for the User avatar component.
+ * Default prop types for the User avatar component.
  */
 UserAvatar.defaultProps = {
     authState: null,

@@ -19,11 +19,11 @@
 import classNames from "classnames";
 import * as React from "react";
 import { Image, SemanticSIZES } from "semantic-ui-react";
-import { UserImageDummy } from "./ui";
 import { DefaultAppIcon } from "../../configs";
+import { UserImageDummy } from "./ui";
 
 /**
- * Proptypes for the Avatar component.
+ * Prop types for the Avatar component.
  */
 export interface AvatarProps {
     avatar?: boolean;
@@ -72,14 +72,14 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
 
     const classes = classNames({
         bordered,
-        [ `floated-${ floated }` ]: floated,
+        [`floated-${floated}`]: floated,
         inline,
         relaxed,
-        [ `${ size }` ]: size, // Size is used as a class to support the custom size "little"
-        [ `spaced-${ spaced }` ]: spaced,
+        [`${size}`]: size, // Size is used as a class to support the custom size "little"
+        [`spaced-${spaced}`]: spaced,
         transparent,
-        [ `${ avatarType === "user" ? "user-avatar" : "app-avatar" }` ]: avatar,
-        [ `${ relaxLevel }` ]: relaxLevel,
+        [`${avatarType === "user" ? "user-avatar" : "app-avatar"}`]: avatar,
+        [`${relaxLevel}`]: relaxLevel,
     }, className);
 
     /**
@@ -101,7 +101,7 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
         }
 
         if (nameParts.length >= 2) {
-            return (nameParts[ 0 ].charAt(0) + nameParts[ 1 ].charAt(0)).toUpperCase();
+            return (nameParts[0].charAt(0) + nameParts[1].charAt(0)).toUpperCase();
         }
         return name.charAt(0).toUpperCase();
     };
@@ -112,14 +112,14 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
                 image
                     ? (
                         <Image
-                            className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
+                            className={ `${avatarType === "user" ? "user-image" : "app-image"} ${classes}` }
                             bordered={ bordered }
                             floated={ floated }
                             circular={ avatarType === "user" }
                             rounded={ avatarType === "app" }
                             style={ style }
                         >
-                            <img alt="avatar" src={ image as string }/>
+                            <img alt="avatar" src={ image as string } />
                         </Image>
                     )
                     : null
@@ -129,7 +129,7 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
                     ? name
                         ? (
                             <Image
-                                className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
+                                className={ `${avatarType === "user" ? "user-image" : "app-image"} ${classes}` }
                                 bordered={ bordered }
                                 floated={ floated }
                                 verticalAlign="middle"
@@ -142,9 +142,10 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
                             </Image>
                         )
                         : (
+
                             <Image
-                                className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
-                                src={ avatarType === "user" ? UserImageDummy : DefaultAppIcon }
+                                className={ `${avatarType === "user" ? "user-image" : "app-image"} ${classes}` }
+                                src={ avatarType === "user" ? UserImageDummy : DefaultAppIcon.default }
                                 bordered={ bordered }
                                 floated={ floated }
                                 verticalAlign="middle"
@@ -152,9 +153,7 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
                                 rounded={ avatarType === "app" }
                                 centered
                                 style={ style }
-                            >
-                                <img alt="avatar" src={ image as string }/>
-                            </Image>
+                            />
                         )
                     : null
             }
@@ -163,7 +162,7 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
 };
 
 /**
- * Default proptypes for the Avatar component.
+ * Default prop types for the Avatar component.
  */
 Avatar.defaultProps = {
     avatar: false,
