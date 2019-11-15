@@ -113,4 +113,95 @@
             }
         }
     }
+    &.app-image {
+        &.app-avatar {
+            text-align: center;
+            background: @dustyGray;
+
+            .initials {
+                color: @white;
+            }
+            &.mini {
+                width: @miniWidth;
+                height: @miniWidth;
+
+                .initials {
+                    font-size: 1.5em;
+                    line-height: @miniWidth;
+                }
+            }
+            &.little {
+                width: @littleWidth;
+                height: @littleWidth;
+
+                .initials {
+                    font-size: 2em;
+                    line-height: @littleWidth;
+                }
+            }
+            &.tiny {
+                height: @tinyWidth;
+
+                .initials {
+                    font-size: 3em;
+                    line-height: @tinyWidth;
+                }
+            }
+            // This is breaking due to `ui.small` override in `product.less`
+            &.small {
+                height: @smallWidth;
+
+                .initials {
+                    font-size: 4em;
+                    line-height: @smallWidth;
+                }
+            }
+            &.medium {
+                height: @mediumWidth;
+
+                .initials {
+                    font-size: 8em;
+                    line-height: @mediumWidth;
+                }
+            }
+            &.large {
+                height: @largeWidth;
+
+                .initials {
+                    font-size: 11em;
+                    line-height: @largeWidth;
+                }
+            }
+            &.big {
+                height: @bigWidth;
+
+                .initials {
+                    font-size: 13em;
+                    line-height: @bigWidth;
+                }
+            }
+            &.huge {
+                height: @hugeWidth;
+
+                .initials {
+                    font-size: 16em;
+                    line-height: @hugeWidth;
+                }
+            }
+            &.massive {
+                height: @massiveWidth;
+
+                .initials {
+                    font-size: 17em;
+                    line-height: @massiveWidth;
+                }
+            }
+            &.spaced-right {
+                margin-right: @appAvatarSpacingRight;
+            }
+            &.spaced-left {
+                margin-left: @appAvatarSpacingLeft;
+            }
+        }
+    }
 }

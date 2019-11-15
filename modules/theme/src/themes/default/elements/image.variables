@@ -23,3 +23,10 @@
 
 @userAvatarSpacingRight: 1em;
 @userAvatarSpacingLeft: 1em;
+
+/*******************************
+           App Image
+*******************************/
+
+@appAvatarSpacingRight: 0.5em;
+@appAvatarSpacingLeft: 0.5em;

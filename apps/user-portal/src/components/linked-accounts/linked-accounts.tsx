@@ -24,7 +24,7 @@ import { SettingsSectionIcons } from "../../configs";
 import { AuthContext } from "../../contexts";
 import { createEmptyNotification, LinkedAccountInterface, Notification } from "../../models";
 import { setProfileInfo } from "../../store/actions";
-import { EditSection, FormWrapper, SettingsSection, UserImage } from "../shared";
+import { EditSection, FormWrapper, SettingsSection, UserAvatar } from "../shared";
 
 /**
  * Prop types for the liked accounts component.
@@ -338,15 +338,13 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                     </Grid>
                 </EditSection>
             ) : (
-                <List divided={ true } verticalAlign="middle" className="main-content-inner">
+                <List divided verticalAlign="middle" className="main-content-inner">
                     { associations.map((association, index) => (
                         <List.Item className="inner-list-item" key={ index }>
-                            <Grid padded={ true }>
+                            <Grid padded>
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column width={ 11 } className="first-column">
-                                        <UserImage
-                                            bordered={ true }
-                                            avatar={ true }
+                                        <UserAvatar
                                             floated="left"
                                             spaced="right"
                                             size="mini"
