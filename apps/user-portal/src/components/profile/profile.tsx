@@ -21,12 +21,10 @@ import React, { FunctionComponent, useContext, useEffect, useState } from "react
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
-import { getProfileInfo, updateProfileInfo } from "../../api";
-import { AuthContext } from "../../contexts";
-import { resolveUserAvatar } from "../../helpers";
+import { updateProfileInfo } from "../../api";
 import { createEmptyProfile, Notification } from "../../models";
 import { getProfileInformation } from "../../store/actions";
-import { EditSection, FormWrapper, SettingsSection } from "../shared";
+import { EditSection, FormWrapper, resolveUserAvatar, SettingsSection } from "../shared";
 /**
  * Prop types for the basic details component.
  */
@@ -50,16 +48,15 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         organizationChangeForm: false
     });
     const { onNotificationFired } = props;
-    const { state } = useContext(AuthContext);
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const profileDetails = useSelector((storeState: any) => storeState.authenticationInformation.profileInfo);
+    const profileDetails = useSelector((storeState: any) => storeState.authenticationInformation);
 
     /**
      * dispatch getProfileInformation action if the profileDetails object is empty
      */
     useEffect(() => {
-        if (isEmpty(profileDetails)) {
+        if (isEmpty(profileDetails.profileInfo)) {
             dispatch(getProfileInformation());
         }
     }, []);
@@ -68,10 +65,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
      * If the profileDetails object changes call the setBasicDetails function
      */
     useEffect(() => {
-        if (!isEmpty(profileDetails)) {
-            setBasicDetails(profileDetails);
+        if (!isEmpty(profileDetails.profileInfo)) {
+            setBasicDetails(profileDetails.profileInfo);
         }
-    }, [profileDetails]);
+    }, [profileDetails.profileInfo]);
 
     /**
      * The following method handles the `onSubmit` event of forms.
@@ -191,7 +188,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             mobile: mobileNumber,
             organisation: profile.organisation,
             phoneNumbers: profile.phoneNumbers,
-            userimage: state.userimage,
+            userimage: profile.userimage,
             username: profile.username
         });
         setProfileInfo({
@@ -203,7 +200,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             mobile: mobileNumber,
             organisation: profile.organisation,
             phoneNumbers: profile.phoneNumbers,
-            userimage: state.userimage,
+            userimage: profile.userimage,
             username: profile.username
         });
     };
@@ -656,7 +653,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         <SettingsSection
             description={ t("views:sections.profile.description") }
             header={ t("views:sections.profile.heading") }
-            icon={ resolveUserAvatar(state, "tiny") }
+            icon={ resolveUserAvatar(profileDetails, "tiny") }
         >
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">

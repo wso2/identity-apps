@@ -25,9 +25,9 @@ import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } fr
 import { getProfileInformation } from "../../../src/store/actions";
 import { switchAccount } from "../../api";
 import { AuthContext } from "../../contexts";
-import { resolveUserAvatar, resolveUserDisplayName } from "../../helpers";
+import { resolveUserDisplayName } from "../../helpers";
 import { createEmptyNotification, LinkedAccountInterface, Notification } from "../../models";
-import { Title, UserImage } from "../shared";
+import { resolveUserAvatar, Title, UserImage } from "../shared";
 
 /**
  * Header component prop types.

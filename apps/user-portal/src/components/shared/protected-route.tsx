@@ -16,15 +16,14 @@
  * under the License.
  */
 
-import React, { useContext } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
-import { AuthContext } from "../../contexts";
 import { history } from "../../helpers";
 import { updateAuthenticationCallbackUrl } from "../../store/middleware";
 
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
-    const { state } = useContext(AuthContext);
-
+    const isAuth = useSelector((state: any) => state.authenticationInformation.isAuth);
     /**
      * Update existing location path in the state to recall upon page refresh or authentication callback.
      */
@@ -34,12 +33,12 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
 
     return (
         <Route
-            render={(props) =>
-                state.isAuth ?
-                    <Component {...props} /> :
-                    <Redirect to={APP_LOGIN_PATH} />
+            render={ (props) =>
+                isAuth ?
+                    <Component { ...props } /> :
+                    <Redirect to={ APP_LOGIN_PATH } />
             }
-            {...rest}
+            { ...rest }
         />
     );
 };

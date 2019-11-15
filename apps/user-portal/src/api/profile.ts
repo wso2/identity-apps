@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil } from "@wso2is/authenticate";
+import { AuthenticateSessionUtil, SignInUtil } from "@wso2is/authenticate";
 import axios from "axios";
+import { isEmpty } from "lodash";
 import { ServiceResourcesEndpoint } from "../configs";
 import { BasicProfileInterface } from "../models";
 
@@ -27,26 +28,29 @@ import { BasicProfileInterface } from "../models";
  * @return {Promise<any>} a promise containing the response.
  */
 export const getUserInfo = (): Promise<any> => {
-    return AuthenticateSessionUtil.getAccessToken().then((token) => {
-        const headers = {
-            "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${ token }`,
-            "Content-Type": "application/json"
-        };
+    return AuthenticateSessionUtil.getAccessToken()
+        .then((token) => {
+            const headers = {
+                "Access-Control-Allow-Origin": CLIENT_HOST,
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            };
 
-        return axios.get(ServiceResourcesEndpoint.user, { headers })
-            .then((response) => {
-                if (response.status !== 200) {
-                    return Promise.reject(new Error("Failed get user info from: "
-                        + ServiceResourcesEndpoint.user));
-                }
-                return Promise.resolve(response);
-            }).catch((error) => {
-                return Promise.reject(error);
-            });
-    }).catch((error) => {
-        return Promise.reject(error);
-    });
+            return axios
+                .get(ServiceResourcesEndpoint.user, { headers })
+                .then((response) => {
+                    if (response.status !== 200) {
+                        return Promise.reject(new Error("Failed get user info from: " + ServiceResourcesEndpoint.user));
+                    }
+                    return Promise.resolve(response);
+                })
+                .catch((error) => {
+                    return Promise.reject(error);
+                });
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
 };
 
 /**
@@ -55,42 +59,53 @@ export const getUserInfo = (): Promise<any> => {
  * @returns {Promise<BasicProfileInterface>} a promise containing the user profile details.
  */
 export const getProfileInfo = (): Promise<BasicProfileInterface> => {
-    return AuthenticateSessionUtil.getAccessToken().then((token) => {
-        const orgKey = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
-        const headers = {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${ token }`,
-            "Content-Type": "application/scim+json"
-        };
+    return AuthenticateSessionUtil.getAccessToken()
+        .then((token) => {
+            const orgKey = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
+            const headers = {
+                "Accept": "application/json",
+                "Access-Control-Allow-Origin": CLIENT_HOST,
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/scim+json"
+            };
 
-        return axios.get(ServiceResourcesEndpoint.me, { headers })
-            .then((response) => {
-                if (response.status !== 200) {
-                    return Promise.reject(new Error("Failed get user profile info from: "
-                        + ServiceResourcesEndpoint.me));
-                }
-                const profileResponse: BasicProfileInterface = {
-                    displayName: response.data.name.givenName || "",
-                    emails: response.data.emails || "",
-                    lastName: response.data.name.familyName || "",
-                    organisation: (response.data[orgKey]) ?
-                        response.data[orgKey].organization : "",
-                    phoneNumbers: response.data.phoneNumbers || [],
-                    proUrl: response.data.profileUrl || "",
-                    responseStatus: response.status || null,
-                    roles: response.data.roles || [],
-                    userimage: response.data.userImage || "",
-                    username: response.data.userName || ""
-                };
-                return Promise.resolve(profileResponse);
-            })
-            .catch((error) => {
-                return Promise.reject(error);
-            });
-    }).catch((error) => {
-        return Promise.reject(error);
-    });
+            return axios
+                .get(ServiceResourcesEndpoint.me, { headers })
+                .then(async (response) => {
+                    let gravatar = "";
+                    if (response.status !== 200) {
+                        return Promise.reject(
+                            new Error("Failed get user profile info from: " + ServiceResourcesEndpoint.me)
+                        );
+                    }
+                    if (isEmpty(response.data.userImage)) {
+                            try {
+                                gravatar = await getGravatarImage(response.data.emails[0]);
+                            } catch (error) {
+                                gravatar = "";
+                            }
+                    }
+                    const profileResponse: BasicProfileInterface = {
+                        displayName: response.data.name.givenName || "",
+                        emails: response.data.emails || "",
+                        lastName: response.data.name.familyName || "",
+                        organisation: response.data[orgKey] ? response.data[orgKey].organization : "",
+                        phoneNumbers: response.data.phoneNumbers || [],
+                        proUrl: response.data.profileUrl || "",
+                        responseStatus: response.status || null,
+                        roles: response.data.roles || [],
+                        userimage: response.data.userImage || gravatar,
+                        username: response.data.userName || ""
+                    };
+                    return Promise.resolve(profileResponse);
+                })
+                .catch((error) => {
+                    return Promise.reject(error);
+                });
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
 };
 
 /**
@@ -100,25 +115,46 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
  * @return {Promise<any>} a promise containing the response.
  */
 export const updateProfileInfo = (info: object): Promise<any> => {
-    return AuthenticateSessionUtil.getAccessToken().then((token) => {
-        const headers = {
-            "Access-Control-Allow-Origin": CLIENT_HOST,
-            "Authorization": `Bearer ${ token }`,
-            "Content-Type": "application/json"
-        };
+    return AuthenticateSessionUtil.getAccessToken()
+        .then((token) => {
+            const headers = {
+                "Access-Control-Allow-Origin": CLIENT_HOST,
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            };
 
-        return axios.patch(ServiceResourcesEndpoint.me, info, { headers })
+            return axios
+                .patch(ServiceResourcesEndpoint.me, info, { headers })
+                .then((response) => {
+                    if (response.status !== 200) {
+                        return Promise.reject(
+                            new Error("Failed update user profile info with: " + ServiceResourcesEndpoint.me)
+                        );
+                    }
+                    return Promise.resolve(response);
+                })
+                .catch((error) => {
+                    return Promise.reject(error);
+                });
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+};
+/**
+ *  Get gravatar image using email address
+ * @param email
+ */
+export const getGravatarImage = (email: string): Promise<string> => {
+    const url: string = SignInUtil.getGravatar(email);
+    return new Promise((resolve, reject) => {
+        axios
+            .get(url)
             .then((response) => {
-                if (response.status !== 200) {
-                    return Promise.reject(new Error("Failed update user profile info with: "
-                        + ServiceResourcesEndpoint.me));
-                }
-                return Promise.resolve(response);
+                resolve(url.split("?")[0]);
             })
             .catch((error) => {
-                return Promise.reject(error);
+                reject();
             });
-    }).catch((error) => {
-        return Promise.reject(error);
     });
 };
