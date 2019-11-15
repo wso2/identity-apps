@@ -175,7 +175,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      * Type guard to check if an input element is of the type Radio
      * @param toBeDetermined
      */
-    const isButtonField = (toBeDetermined: FormField): toBeDetermined is Ibutton => {
+    const isButtonField = (toBeDetermined: FormField): toBeDetermined is FormButton => {
         return (toBeDetermined as FormButton).type === "button";
     };
 
@@ -183,7 +183,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
      * Type guard to check if an input element is of the type Radio
      * @param toBeDetermined
      */
-    const isDivider = (toBeDetermined: FormField): toBeDetermined is Idivider => {
+    const isDivider = (toBeDetermined: FormField): toBeDetermined is FormDivider => {
         return (toBeDetermined as FormDivider).type === "divider";
     };
 

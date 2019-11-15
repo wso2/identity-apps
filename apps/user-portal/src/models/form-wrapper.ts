@@ -117,7 +117,7 @@
 /**
  * Radio field model
  */
-export interface RadioField {
+ export interface RadioField {
     type: "radio";
     label: string;
     name: string;
@@ -137,7 +137,7 @@ export interface RadioField {
 /**
  * Checkbox field model
  */
-export interface CheckboxField {
+ export interface CheckboxField {
     type: "checkbox";
     label: string;
     name: string;
@@ -159,7 +159,7 @@ export interface CheckboxField {
 /**
  * Dropdown field model
  */
-export interface DropdownField {
+ export interface DropdownField {
     type: "dropdown";
     label: string;
     name: string;
@@ -184,7 +184,7 @@ export interface DropdownField {
 /**
  * Divider model
  */
-export interface Idivider {
+ export interface FormDivider {
     type: "divider";
     hidden: boolean;
 }

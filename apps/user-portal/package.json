@@ -34,7 +34,9 @@
             "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test_configs/file_mock.js",
             "\\.(css|less)$": "<rootDir>/test_configs/style_mock.js"
         },
-        "setupFilesAfterEnv":["<rootDir>/test_configs/setup_test.ts"]
+        "setupFilesAfterEnv": [
+            "<rootDir>/test_configs/setup_test.ts"
+        ]
     },
     "devDependencies": {
         "@babel/cli": "^7.5.5",

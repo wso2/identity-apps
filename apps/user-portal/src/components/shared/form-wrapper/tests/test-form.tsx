@@ -17,6 +17,7 @@
  */
 
 import React from "react";
+import { Form } from "semantic-ui-react";
 import { FormField, Type, Validation } from "../../../../models";
 import { FormWrapper } from "../form-wrapper";
 import constants from "./constants";
@@ -172,7 +173,10 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
                 {
                     endIndex: 2,
                     startIndex: 0,
-                    style: "inline"
+                    wrapper: Form.Group,
+                    wrapperProps: {
+                        inline: true
+                    }
                 }
             ] : []  }
         />
