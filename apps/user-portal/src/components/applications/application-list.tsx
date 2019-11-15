@@ -49,7 +49,7 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
                 {
                     apps
                         ? apps.map((app) => (
-                            <Grid.Column width={ 5 } key={ app.id }>
+                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 5 } key={ app.id }>
                                 <ApplicationListItem
                                     app={ app }
                                     hideFavouriteIcon={ isFavouritesList }

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import classNames from "classnames";
 import React, { FunctionComponent } from "react";
 import { Button, Icon, Input } from "semantic-ui-react";
 
@@ -24,6 +25,8 @@ import { Button, Icon, Input } from "semantic-ui-react";
  * Proptypes for the advance search component
  */
 interface AdvanceSearchProps {
+    aligned?: "left" | "right" | "center";
+    className?: string;
 }
 
 /**
@@ -35,17 +38,33 @@ interface AdvanceSearchProps {
 export const AdvanceSearch: FunctionComponent<React.PropsWithChildren<AdvanceSearchProps>> = (
     props: React.PropsWithChildren<AdvanceSearchProps>
 ): JSX.Element => {
-    const { children } = props;
+    const { aligned, className } = props;
+
+    const classes = classNames({
+        [ `aligned-${ aligned }` ]: aligned,
+    }, className);
+
     return (
-        <Input
-            action={
-                <Button basic compact className="input-add-on"><Icon name="angle down" /></Button>
-            }
-            className="advance-search with-add-on"
-            size="large"
-            icon="search"
-            iconPosition="left"
-            placeholder="Search..."
-        />
+        <div className={ `advance-search-wrapper ${ classes }` }>
+            <Input
+                action={
+                    <Button basic compact className="input-add-on"><Icon name="angle down"/></Button>
+                }
+                className="advance-search with-add-on"
+                size="large"
+                icon="search"
+                iconPosition="left"
+                placeholder="Search..."
+            />
+            { /*<div className="advance-search-dropdown"></div>*/ }
+        </div>
     );
+};
+
+/**
+ * Default proptypes for the Advance search component.
+ */
+AdvanceSearch.defaultProps = {
+    aligned: "left",
+    className: "",
 };

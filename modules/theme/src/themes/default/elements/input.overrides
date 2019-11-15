@@ -17,8 +17,39 @@
  *
  */
 
-.ui.input {
+.advance-search-wrapper {
+    &.aligned-left {
+        text-align: left;
+    }
+    &.aligned-right {
+        text-align: right;
+    }
+    &.aligned-center {
+        text-align: center;
+    }
+    .advance-search-dropdown {
+        position: absolute;
+        width: 100%;
+        z-index: 999;
+        background: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        border: 1px solid rgba(0,0,0,0.2);
+    }
+}
+
+.ui.action.input {
     &.advance-search {
+        input {
+            &:focus {
+                border-color: @borderColor;
+                border-right-color: transparent !important;
+            }
+        }
+        .input-add-on {
+            &:active {
+                background: transparent !important;
+            }
+        }
         &.with-add-on {
             &:focus {
                 .input-add-on {

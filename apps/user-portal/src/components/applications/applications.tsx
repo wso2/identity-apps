@@ -23,8 +23,6 @@ import { fetchApplications } from "../../api";
 import { Application, Notification } from "../../models";
 import { AdvanceSearch } from "../shared";
 import { AllApplications } from "./all-applications";
-import { FavouriteApplications } from "./favourite-applications";
-import { RecentApplications } from "./recent-applications";
 
 /**
  * Proptypes for the applications component.
@@ -106,7 +104,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
 
     return (
         <>
-            <AdvanceSearch>
+            <AdvanceSearch aligned="right">
                 <Grid>
                     <Grid.Row>
                         <Grid.Column width={ 16 }>
@@ -117,11 +115,9 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
                     </Grid.Row>
                 </Grid>
             </AdvanceSearch>
+            <Divider hidden />
             <Divider />
-            <RecentApplications recentApps={ filterRecentApps() } />
-            <Divider />
-            <FavouriteApplications favouriteApps={ filterFavouriteApps() } />
-            <Divider />
+            <Divider hidden className="x1"/>
             <AllApplications allApps={ applications } />
         </>
     );

@@ -17,8 +17,10 @@
  */
 
 import React, { FunctionComponent } from "react";
-import { Icon, Item } from "semantic-ui-react";
+import { Icon, Item, List } from "semantic-ui-react";
+import { DefaultAppIcon } from "../../configs";
 import { Application } from "../../models";
+import { AppAvatar, ThemeIcon } from "../shared";
 
 /**
  * Proptypes for the application list item component.
@@ -40,10 +42,24 @@ export const ApplicationListItem: FunctionComponent<ApplicationListItemProps> = 
     const { app, hideFavouriteIcon, navigateToApp } = props;
 
     return (
-        <Item.Group>
+        <Item.Group unstackable>
             <Item className="application-list-item">
-                <Item.Image size="tiny" src={ app.logo }/>
-                <Item.Content>
+               {/*<Item.Image size="tiny" src="https://cdn.auth0.com/manhattan/versions/1.963.0/assets/none.svg"/>*/}
+                <List.Content className="icon-container" floated="left">
+                    {/*<ThemeIcon
+                        icon={ DefaultAppIcon }
+                        size="mini"
+                        square
+                        inline
+                        twoTone
+                        spaced="right"
+                        bordered
+                        rounded
+                        relaxed="very"
+                    />*/}
+                    <AppAvatar spaced="right" size="little" name={ app.name } image={ app.logo } />
+                </List.Content>
+                <Item.Content className="text-content-container">
                     <Item.Header as="a">
                         <div className="item-header">{ app.name }</div>
                         {

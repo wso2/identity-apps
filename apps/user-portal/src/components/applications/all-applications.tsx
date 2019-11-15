@@ -41,20 +41,6 @@ export const AllApplications: FunctionComponent<AllApplicationsProps> = (
     const { t } = useTranslation();
 
     return (
-        <>
-            <Divider hidden />
-            <Grid>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column width={ 12 }>
-                        <Header as="h2">{ t("views:components.applications.all.heading") }</Header>
-                    </Grid.Column>
-                    <Grid.Column width={ 4 }>
-                        <Button className="link-button" floated="right">Show all</Button>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-            <Divider hidden />
-            <ApplicationList apps={ allApps } isFavouritesList={ false } />
-        </>
+        <ApplicationList apps={ allApps } isFavouritesList={ false } />
     );
 };
