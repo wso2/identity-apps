@@ -99,3 +99,11 @@
 @h3 : unit((20 / 14), rem);
 @h4 : unit((18 / 14), rem);
 @h5 : unit((16 / 14), rem);
+
+
+/*-------------------
+   Advance search
+--------------------*/
+
+@advanceSearchMinWidth: 260px;
+@advanceSearchMaxWidth: 520px;
