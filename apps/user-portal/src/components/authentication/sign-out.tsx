@@ -16,16 +16,23 @@
  * under the License.
  */
 
-import { combineReducers } from "redux";
-import { authenticateReducer, consentManagementReducer, globalReducer } from "./reducers";
-
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { history } from "../../helpers";
+import { handleSignOut } from "../../store/actions";
 /**
- * Combines all the reducers.
- *
- * @type {Reducer<any>} Root reducer to be used when creating the store.
+ * This component handles the sign-out function
  */
-export const reducers = combineReducers({
-    authenticationInformation: authenticateReducer,
-    consentManagement: consentManagementReducer,
-    global: globalReducer
-});
+export const SignOut = () => {
+    const dispatch = useDispatch();
+    const logoutInit = useSelector((state: any) => state.authenticationInformation.logoutInit);
+
+    useEffect(() => {
+        if (!logoutInit) {
+            dispatch(handleSignOut());
+        } else {
+            history.push(APP_LOGIN_PATH);
+        }
+    }, [logoutInit]);
+    return null;
+};

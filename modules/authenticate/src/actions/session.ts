@@ -55,7 +55,6 @@ export const initUserSession = (tokenResponse: TokenResponseInterface,
     sessionStorage.setItem(SCOPE, tokenResponse.scope);
     sessionStorage.setItem(REFRESH_TOKEN, tokenResponse.refreshToken);
     sessionStorage.setItem(TOKEN_TYPE, tokenResponse.tokenType);
-    sessionStorage.setItem(USERIMAGE, authenticatedUser.userimage);
     sessionStorage.setItem(USERNAME, authenticatedUser.username);
 };
 
@@ -72,7 +71,6 @@ export const endAuthenticatedSession = () => {
     sessionStorage.removeItem(REFRESH_TOKEN);
     sessionStorage.removeItem(SCOPE);
     sessionStorage.removeItem(TOKEN_TYPE);
-    sessionStorage.removeItem(USERIMAGE);
     sessionStorage.removeItem(USERNAME);
 };
 
@@ -91,7 +89,6 @@ export const getAllSessionParameters = (): SessionInterface => {
         refreshToken: sessionStorage.getItem(REFRESH_TOKEN),
         scope: sessionStorage.getItem(SCOPE),
         tokenType: sessionStorage.getItem(TOKEN_TYPE),
-        userimage: sessionStorage.getItem(USERIMAGE),
         username: sessionStorage.getItem(USERNAME)
     };
 };

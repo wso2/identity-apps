@@ -17,6 +17,9 @@
  */
 
 import { AxiosHttpClient } from "@wso2is/http";
+import { AuthenticateSessionUtil, SignInUtil } from "@wso2is/authenticate";
+import axios from "axios";
+import { isEmpty } from "lodash";
 import { ServiceResourcesEndpoint } from "../configs";
 import { BasicProfileInterface, HttpMethods } from "../models";
 import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "../utils";
@@ -73,9 +76,17 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
 
     return httpClient.request(requestConfig)
         .then((response) => {
+            let gravatar = "";
             if (response.status !== 200) {
                 return Promise.reject(new Error(`Failed get user profile info from: ${ ServiceResourcesEndpoint.me }`));
             }
+                if (isEmpty(response.data.userImage)) {
+                            try {
+                                gravatar = await getGravatarImage(response.data.emails[0]);
+                            } catch (error) {
+                                gravatar = "";
+                            }
+                    }
             const profileResponse: BasicProfileInterface = {
                 displayName: response.data.name.givenName || "",
                 emails: response.data.emails || "",
@@ -86,7 +97,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
                 proUrl: response.data.profileUrl || "",
                 responseStatus: response.status || null,
                 roles: response.data.roles || [],
-                userimage: response.data.userImage || "",
+                userimage: response.data.userImage || gravatar,
                 username: response.data.userName || ""
             };
             return Promise.resolve(profileResponse);
@@ -126,3 +137,21 @@ export const updateProfileInfo = (info: object): Promise<any> => {
             return Promise.reject(`Failed to update the profile info - ${ error }`);
         });
 };
+
+/**
+ *  Get gravatar image using email address
+ * @param email
+ */
+export const getGravatarImage = (email: string): Promise<string> => {
+    const url: string = SignInUtil.getGravatar(email);
+    return new Promise((resolve, reject) => {
+        axios
+            .get(url)
+            .then((response) => {
+                resolve(url.split("?")[0]);
+            })
+            .catch((error) => {
+                reject();
+            });
+    });
+

@@ -23,6 +23,8 @@
         "axios": "^0.18.0",
         "babel-loader": "^8.0.4",
         "tslint": "^5.18.0",
+        "tslint-eslint-rules": "^5.4.0",
+        "tslint-react": "^4.1.0",
         "typescript": "^3.5.3",
         "watch": "^1.0.2"
     },

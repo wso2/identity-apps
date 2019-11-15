@@ -16,16 +16,29 @@
  * under the License.
  */
 
-import { combineReducers } from "redux";
-import { authenticateReducer, consentManagementReducer, globalReducer } from "./reducers";
+ import { Notification } from "../../../models";
+
+ /**
+  * Action type that fires a notification
+  */
+ export const FIRE_NOTIFICATION = "FIRE_NOTIFICATION";
+
+ /**
+  * Interface for the action that fores notifications
+  */
+ export interface FireNotificationAction {
+    payload: Notification;
+    type: typeof FIRE_NOTIFICATION;
+}
 
 /**
- * Combines all the reducers.
- *
- * @type {Reducer<any>} Root reducer to be used when creating the store.
+ * Action type that dismisses a notification
  */
-export const reducers = combineReducers({
-    authenticationInformation: authenticateReducer,
-    consentManagement: consentManagementReducer,
-    global: globalReducer
-});
+ export const DISMISS_NOTIFICATION = "DISMISS_NOTIFICATION";
+
+/**
+ *  Interface for the action that dismisses notifications
+ */
+ export interface DismissNotificationAction {
+    type: typeof DISMISS_NOTIFICATION;
+}

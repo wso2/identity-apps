@@ -15,17 +15,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import { combineReducers } from "redux";
-import { authenticateReducer, consentManagementReducer, globalReducer } from "./reducers";
+import { Notification } from "../../models";
+import { DISMISS_NOTIFICATION, DismissNotificationAction, FIRE_NOTIFICATION, FireNotificationAction } from "./types";
 
 /**
- * Combines all the reducers.
- *
- * @type {Reducer<any>} Root reducer to be used when creating the store.
+ * Dispatches an action that fires a notification
+ * @param notification
  */
-export const reducers = combineReducers({
-    authenticationInformation: authenticateReducer,
-    consentManagement: consentManagementReducer,
-    global: globalReducer
+export const fireNotification = (notification: Notification): FireNotificationAction => ({
+    payload: notification,
+    type: FIRE_NOTIFICATION
+});
+
+export const dismissNotification = (): DismissNotificationAction => ({
+    type: DISMISS_NOTIFICATION
 });
