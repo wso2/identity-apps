@@ -45,57 +45,59 @@ module.exports = env => {
     const titleText = 'WSO2 Identity Server';
 
     return {
-        entry: [
-            './src/index.tsx',
-        ],
+        entry: ["./src/index.tsx"],
         output: {
             path: distFolder,
-            filename: '[name].js',
+            filename: "[name].js",
             publicPath: `/${basename}/`
         },
         resolve: {
-            extensions: ['.tsx', '.ts', '.js', '.json']
+            extensions: [".tsx", ".ts", ".js", ".json"]
         },
         module: {
-            rules: [{
+            rules: [
+                {
                     test: /\.css$/,
-                    use: ['style-loader', 'css-loader']
+                    use: ["style-loader", "css-loader"]
                 },
                 {
                     test: /\.less$/,
-                    use: ['style-loader', 'css-loader', 'less-loader']
+                    use: ["style-loader", "css-loader", "less-loader"]
                 },
                 {
                     test: /\.(png|jpg|cur|gif|eot|ttf|woff|woff2)$/,
-                    use: ['url-loader'],
+                    use: ["url-loader"]
                 },
                 {
                     test: /\.svg$/,
                     use: [
                         {
-                            loader: '@svgr/webpack',
+                            loader: "@svgr/webpack",
                             options: {
                                 svgoConfig: {
-                                    plugins: [{ prefixIds: false }],
+                                    plugins: [{ prefixIds: false }]
                                 }
-                            },
+                            }
                         },
                         {
-                            loader: 'url-loader'
+                            loader: "url-loader"
                         }
-                    ],
+                    ]
                 },
                 {
                     test: /\.tsx?$/,
-                    use: 'ts-loader',
-                    exclude: /(node_modules|diagram)/
+                    use: "ts-loader",
+                    exclude: /(node_modules|diagram)/,
+                    exclude: /\.test.tsx?$/
                 },
                 {
                     test: /\.ts$/,
-                    enforce: 'pre',
-                    use: [{
-                        loader: 'tslint-loader'
-                    }]
+                    enforce: "pre",
+                    use: [
+                        {
+                            loader: "tslint-loader"
+                        }
+                    ]
                 },
                 {
                     test: /\.js$/,
@@ -105,27 +107,25 @@ module.exports = env => {
             ]
         },
         watchOptions: {
-            ignored: [
-                /node_modules([\\]+|\/)+(?!@wso2is)/,
-                /build/
-            ]
+            ignored: [/node_modules([\\]+|\/)+(?!@wso2is)/, /build/]
         },
         devServer: {
             https: true,
             contentBase: distFolder,
             inline: true,
-            host: 'localhost',
+            host: "localhost",
             port: devServerPort,
             historyApiFallback: true
         },
         node: {
-            fs: 'empty'
+            fs: "empty"
         },
         plugins: [
-            new CopyWebpackPlugin([{
-                    context: path.resolve(__dirname, 'node_modules', '@wso2is', 'theme'),
-                    from: 'lib',
-                    to: 'libs/styles/css'
+            new CopyWebpackPlugin([
+                {
+                    context: path.resolve(__dirname, "node_modules", "@wso2is", "theme"),
+                    from: "lib",
+                    to: "libs/styles/css"
                 },
                 // TODO: Removed temporally. Currently we don't use it in runtime
                 // {
@@ -139,14 +139,14 @@ module.exports = env => {
                 //     to: 'libs/styles/less/semantic-ui-less'
                 // },
                 {
-                    context: path.resolve(__dirname, 'src'),
-                    from: 'public',
-                    to: '.'
+                    context: path.resolve(__dirname, "src"),
+                    from: "public",
+                    to: "."
                 }
             ]),
             new HtmlWebpackPlugin({
-                filename: path.join(distFolder, 'index.html'),
-                template: path.resolve(__dirname, 'src', 'index.html'),
+                filename: path.join(distFolder, "index.html"),
+                template: path.resolve(__dirname, "src", "index.html"),
                 hash: true,
                 favicon: faviconImage,
                 title: titleText
@@ -160,18 +160,18 @@ module.exports = env => {
                 LOGIN_CALLBACK_URL: JSON.stringify(externalLoginCallbackURL),
                 LOGOUT_CALLBACK_URL: JSON.stringify(externalLogoutCallbackURL),
                 SERVER_HOST: JSON.stringify(serverHost),
-                'typeof window': JSON.stringify('object'),
-                'process.env': {
+                "typeof window": JSON.stringify("object"),
+                "process.env": {
                     NODE_ENV: JSON.stringify(process.env.NODE_ENV)
                 }
             })
         ],
-        devtool: 'source-map',
+        devtool: "source-map",
         optimization: {
             minimizer: [
                 new UglifyJsPlugin({
                     uglifyOptions: {
-                        keep_fnames: true,
+                        keep_fnames: true
                     }
                 })
             ]

@@ -213,14 +213,14 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                 <Container>
                     <h3>{ t("views:components.changePassword.modals.confirmationModal.heading") }</h3>
                 </Container>
-                <Divider hidden />
+                <Divider hidden={ true } />
                 <p>{ t("views:components.changePassword.modals.confirmationModal.message") }</p>
             </Modal.Content>
             <Modal.Actions>
                 <Button className="link-button" onClick={ handleConfirmationModalClose }>
                     { t("common:cancel") }
                 </Button>
-                <Button primary onClick={ changePassword }>
+                <Button primary={ true } onClick={ changePassword }>
                     { t("common:continue") }
                 </Button>
             </Modal.Actions>
