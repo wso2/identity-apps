@@ -16,8 +16,16 @@
  * under the License.
  */
 
-import { GlobalActionTypes, HideGlobalLoaderAction, ShowGlobalLoaderAction } from "./types";
-
+import { Notification } from "../../models";
+import {
+    DISMISS_NOTIFICATION,
+    DismissNotificationAction,
+    FIRE_NOTIFICATION,
+    FireNotificationAction,
+    GlobalActionTypes,
+    HideGlobalLoaderAction,
+    ShowGlobalLoaderAction
+} from "./types";
 /**
  * Show global loader action.
  *
@@ -34,4 +42,17 @@ export const showGlobalLoader = (): ShowGlobalLoaderAction => ({
  */
 export const hideGlobalLoader = (): HideGlobalLoaderAction => ({
     type: GlobalActionTypes.HIDE_GLOBAL_LOADER
+});
+
+/**
+ * Dispatches an action that fires a notification
+ * @param notification
+ */
+export const fireNotification = (notification: Notification): FireNotificationAction => ({
+    payload: notification,
+    type: FIRE_NOTIFICATION
+});
+
+export const dismissNotification = (): DismissNotificationAction => ({
+    type: DISMISS_NOTIFICATION
 });

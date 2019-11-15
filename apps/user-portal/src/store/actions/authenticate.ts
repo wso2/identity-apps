@@ -25,8 +25,7 @@ import {
 } from "@wso2is/authenticate";
 import { getAssociations, getProfileInfo } from "../../api";
 import { ServiceResourcesEndpoint } from "../../configs";
-import { history } from "../../helpers";
-import { fireNotification } from "./globals";
+import { fireNotification } from "./global";
 import { authenticateActionTypes } from "./types";
 
 /**
