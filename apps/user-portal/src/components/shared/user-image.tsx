@@ -17,12 +17,14 @@
  */
 
 import classNames from "classnames";
+import { isEmpty } from "lodash";
 import * as React from "react";
 import { Image, SemanticSIZES } from "semantic-ui-react";
+import { resolveUserDisplayName } from "../../../src/helpers";
+import { AuthStateInterface } from "../../../src/models";
 import { UserImageDummy } from "./ui";
-
 /**
- * Proptypes for the user image component.
+ * Prop types for the user image component.
  */
 interface UserImageProps {
     avatar?: boolean;
@@ -69,14 +71,14 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
 
     const classes = classNames({
         bordered,
-        [`floated-${ floated }`]: floated,
+        [`floated-${floated}`]: floated,
         inline,
         relaxed,
-        [`${ size }`]: size, // Size is used as a class to support the custom size "little"
-        [`spaced-${ spaced }`]: spaced,
+        [`${size}`]: size, // Size is used as a class to support the custom size "little"
+        [`spaced-${spaced}`]: spaced,
         transparent,
         "user-avatar": avatar,
-        [`${ relaxLevel }`]: relaxLevel,
+        [`${relaxLevel}`]: relaxLevel,
     }, className);
 
     /**
@@ -103,7 +105,7 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
                 image
                     ? (
                         <Image
-                            className={ `user-image ${ classes }` }
+                            className={ `user-image ${classes}` }
                             bordered={ bordered }
                             floated={ floated }
                             circular
@@ -117,31 +119,33 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
             {
                 avatar
                     ? name
-                    ? (
-                        <Image
-                            className={ `user-image ${ classes }` }
-                            bordered={ bordered }
-                            floated={ floated }
-                            verticalAlign="middle"
-                            circular
-                            centered
-                            style={ style }
-                        >
-                            <span className="initials">{ generateInitials() }</span>
-                        </Image>
-                    )
-                    : <Image
-                        className={ `user-image ${ classes }` }
-                        src={ UserImageDummy }
-                        bordered={ bordered }
-                        floated={ floated }
-                        verticalAlign="middle"
-                        circular
-                        centered
-                        style={ style }
-                    >
-                        <img alt="avatar" src={ image as string } />
-                    </Image>
+                        ? (
+                            <Image
+                                className={ `user-image ${classes}` }
+                                bordered={ bordered }
+                                floated={ floated }
+                                verticalAlign="middle"
+                                circular
+                                centered
+                                style={ style }
+                            >
+                                <span className="initials">{ generateInitials() }</span>
+                            </Image>
+                        )
+                        : (
+                            <Image
+                                className={ `user-image ${classes}` }
+                                src={ UserImageDummy }
+                                bordered={ bordered }
+                                floated={ floated }
+                                verticalAlign="middle"
+                                circular
+                                centered
+                                style={ style }
+                            >
+                                <img alt="avatar" src={ image as string } />
+                            </Image>
+                        )
                     : null
             }
         </>
@@ -149,7 +153,7 @@ export const UserImage: React.FunctionComponent<UserImageProps> = (props): JSX.E
 };
 
 /**
- * Default proptypes for the User image component.
+ * Default prop types for the User image component.
  */
 UserImage.defaultProps = {
     bordered: true,
@@ -160,4 +164,33 @@ UserImage.defaultProps = {
     spaced: null,
     style: {},
     transparent: false
+};
+
+/**
+ * Resolves the user's avatar.
+ *
+ * @param {AuthStateInterface} state - auth state.
+ * @param {UserImageSizes} avatarSize - size of the avatar
+ * @return {JSX.Element}
+ */
+export const resolveUserAvatar = (
+    state: AuthStateInterface,
+    avatarSize: UserImageSizes): JSX.Element => {
+    if (!isEmpty(state.profileInfo.userimage)) {
+        return (
+            <UserImage
+                bordered={ true }
+                size={ avatarSize }
+                image={ state.profileInfo.userimage }
+            />
+        );
+    }
+    return (
+        <UserImage
+            bordered={ true }
+            avatar={ true }
+            size={ avatarSize }
+            name={ resolveUserDisplayName(state) }
+        />
+    );
 };
