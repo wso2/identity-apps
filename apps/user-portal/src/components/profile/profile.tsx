@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
 import { updateProfileInfo } from "../../api";
-import { createEmptyProfile, Notification } from "../../models";
+import { AuthStateInterface, createEmptyProfile, Notification } from "../../models";
 import { getProfileInformation } from "../../store/actions";
 import { EditSection, FormWrapper, SettingsSection, UserAvatar } from "../shared";
 /**
@@ -50,7 +50,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const { onNotificationFired } = props;
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const profileDetails = useSelector((storeState: any) => storeState.authenticationInformation);
+    const profileDetails: AuthStateInterface = useSelector((storeState: any) => storeState.authenticationInformation);
 
     /**
      * dispatch getProfileInformation action if the profileDetails object is empty

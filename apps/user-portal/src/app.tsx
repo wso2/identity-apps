@@ -18,7 +18,7 @@
 
 import React from "react";
 import { I18nextProvider } from "react-i18next";
-import { Provider, useDispatch, useSelector } from "react-redux";
+import { Provider } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
 import { SignIn, SignOut } from "./components/authentication";

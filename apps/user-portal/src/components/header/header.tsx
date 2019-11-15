@@ -26,7 +26,8 @@ import { getProfileInformation } from "../../../src/store/actions";
 import { switchAccount } from "../../api";
 import { AuthContext } from "../../contexts";
 import { resolveUserDisplayName } from "../../helpers";
-import { createEmptyNotification, LinkedAccountInterface, Notification } from "../../models";
+import { AuthStateInterface, createEmptyNotification, LinkedAccountInterface, Notification } from "../../models";
+import { AppState } from "../../store";
 import { Title, UserAvatar } from "../shared";
 
 /**
@@ -47,7 +48,9 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     const { state } = useContext(AuthContext);
     const { t } = useTranslation();
     const { onSidePanelToggleClick, showSidePanelToggle } = props;
-    const profileDetails = useSelector((storeState: any) => storeState.authenticationInformation);
+    const profileDetails: AuthStateInterface = useSelector(
+        (storeState: AppState) => storeState.authenticationInformation
+    );
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -146,9 +149,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                     <Item.Content verticalAlign="middle">
                                         <Item.Description>
                                             <div className="name">{ resolveUserDisplayName(profileDetails) }</div>
-                                            { (profileDetails.profileInfo.emails !== "undefined"
-                                                && profileDetails.profileInfo.emails !== undefined
-                                                && profileDetails.profileInfo.emails !== "null"
+                                            { (profileDetails.profileInfo.emails !== undefined
                                                 && profileDetails.profileInfo.emails !== null) &&
                                                 <div className="email">{ profileDetails.profileInfo.emails }</div>
                                             }

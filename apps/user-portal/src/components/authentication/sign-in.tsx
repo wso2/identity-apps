@@ -18,13 +18,14 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../../helpers";
+import { AppState } from "../../store";
 import { handleSignIn } from "../../store/actions";
 /**
  * This component handles the sign-in function
  */
 export const SignIn = () => {
     const dispatch = useDispatch();
-    const isAuth = useSelector((state: any) => state.authenticationInformation.isAuth);
+    const isAuth = useSelector((state: AppState) => state.authenticationInformation.isAuth);
     useEffect(() => {
         if (!isAuth) {
             dispatch(handleSignIn());

@@ -23,9 +23,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { getProfileInformation } from "../../../../src/store/actions";
-import { getProfileInfo, updateProfileInfo } from "../../../api";
+import {  updateProfileInfo } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
-import { Notification, Validation } from "../../../models";
+import { BasicProfileInterface, Notification, Validation } from "../../../models";
+import { AppState } from "../../../store";
 import { EditSection, FormWrapper, ThemeIcon } from "../../shared";
 
 /**
@@ -48,7 +49,9 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
     const { t } = useTranslation();
     const { onNotificationFired } = props;
     const dispatch = useDispatch();
-    const profileInfo = useSelector((state: any) => state.authenticationInformation.profileInfo);
+    const profileInfo: BasicProfileInterface = useSelector(
+        (state: AppState) => state.authenticationInformation.profileInfo
+    );
 
     useEffect(() => {
         if (isEmpty(profileInfo)) {
