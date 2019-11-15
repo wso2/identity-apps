@@ -22,7 +22,7 @@ import { AuthStateInterface } from "../../models";
 import { Avatar, AvatarProps } from "./avatar";
 
 /**
- * Proptypes for the user avatar component.
+ * Prop types for the user avatar component.
  */
 interface UserAvatarProps extends AvatarProps {
     authState?: AuthStateInterface;
@@ -37,12 +37,12 @@ interface UserAvatarProps extends AvatarProps {
 export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatarProps): JSX.Element => {
     const { authState } = props;
 
-    if (authState && authState.userimage) {
+    if (authState && authState.profileInfo && authState.profileInfo.userimage) {
         return (
             <Avatar
                 avatarType="user"
                 bordered
-                image={ authState.userimage }
+                image={ authState.profileInfo && authState.profileInfo.userimage }
                 { ...props }
             />
         );
