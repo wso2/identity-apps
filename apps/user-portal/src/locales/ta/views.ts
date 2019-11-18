@@ -466,7 +466,7 @@ export const views: Views = {
             widgets: {
                 accountActivity: {
                     actionTitles: {
-                        update: "கணக்கின் பாதுகாப்பு அமைப்பினை புதுப்பி"
+                        update: "கணக்கு செயல்பாட்டை நிர்வகிக்கவும்"
                     },
                     description: " நீங்கள் பின்வரும் கருவியினூடாக உள் நுழைந்திருக்கின்றீர்கள்",
                     header: "கணக்கின் செயற்பாடுகள்"
@@ -1016,7 +1016,7 @@ export const views: Views = {
         },
         userSessions: {
             actionTitles: {
-                empty: "செயற்பாட்டில் உள்ள அமர்வுகள் யாதுமில்லை",
+                empty: "செயலில் அமர்வுகள் இல்லை",
                 terminateAll: "சகல அமர்வுகளையும் முடிக்க"
             },
             description: "செய்ற்பாட்டில் உள்ள உங்கள் அமர்வுகளை முகாமை செய்ய மற்றும் பார்க்க",

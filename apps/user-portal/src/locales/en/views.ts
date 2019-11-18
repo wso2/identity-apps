@@ -461,7 +461,7 @@ export const views: Views = {
             widgets: {
                 accountActivity: {
                     actionTitles: {
-                        update: "Update account security"
+                        update: "Manage account activity"
                     },
                     description: "You are currently logged in from the following device",
                     header: "Account activity"
@@ -976,7 +976,7 @@ export const views: Views = {
         },
         userSessions: {
             actionTitles: {
-                empty: "You do not have any active sessions",
+                empty: "No active sessions",
                 terminateAll: "Terminate all sessions"
             },
             description: "Review all devices that are currently active on your account",
