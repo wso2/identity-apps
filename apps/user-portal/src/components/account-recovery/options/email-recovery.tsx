@@ -164,7 +164,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
      * This function masks the email address passed as the argument and returns
      * the masked email address.
      * The text between the second character of the email and the @ sign is masked.
-     * @param {string} email
+     * @param emailAddress
      */
     const maskEmail = (emailAddress: string) => {
         let mask = "";
@@ -175,9 +175,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
             mask += "*";
         }
 
-        const maskedEmail = email.replace(textToBeMasked, mask);
-
-        return maskedEmail;
+        return email.replace(textToBeMasked, mask);
     };
 
     /**
