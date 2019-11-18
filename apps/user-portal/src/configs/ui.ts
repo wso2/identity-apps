@@ -65,7 +65,7 @@ export const WidgetIcons = {
     consents: ConsentForm
 };
 
-export const TitleText: TitleTextType = "Identity Server";
+export const TitleText: TitleTextType = "User Portal";
 export const customCSS: CustomCSSType = {
     dark: {
         appPrimaryColor: "#ff5000"
