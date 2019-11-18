@@ -466,7 +466,7 @@ export const views: Views = {
             widgets: {
                 accountActivity: {
                     actionTitles: {
-                        update: "கணக்கின் பாதுகாப்பு அமைப்பினை புதுப்பி"
+                        update: "கணக்கு செயல்பாட்டை நிர்வகிக்கவும்"
                     },
                     description: " நீங்கள் பின்வரும் கருவியினூடாக உள் நுழைந்திருக்கின்றீர்கள்",
                     header: "கணக்கின் செயற்பாடுகள்"

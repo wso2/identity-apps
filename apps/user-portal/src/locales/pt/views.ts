@@ -462,7 +462,7 @@ export const views: Views = {
             widgets: {
                 accountActivity: {
                     actionTitles: {
-                        update: "Atualizar segurança da conta"
+                        update: "Gerenciar a atividade da conta"
                     },
                     description: "No momento, você está conectado no seguinte dispositivo",
                     header: "Atividade da conta"

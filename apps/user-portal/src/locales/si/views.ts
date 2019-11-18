@@ -462,7 +462,7 @@ export const views: Views = {
             widgets: {
                 accountActivity: {
                     actionTitles: {
-                        update: "ඔබගේ ගිණුම ආරක්\u200Dෂිත කිරීමට සැකසුම් යාවත්කාලීන කිරීම"
+                        update: "ගිණුම් ක්‍රියාකාරකම් කළමනාකරණය කරන්න"
                     },
                     description: "ඔබ දැනට පහත උපාංගයෙන් පුරනය වී ඇත",
                     header: "ගිණුම් ක්‍රියාකාරකම්"

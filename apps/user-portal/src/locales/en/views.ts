@@ -461,7 +461,7 @@ export const views: Views = {
             widgets: {
                 accountActivity: {
                     actionTitles: {
-                        update: "Update account security"
+                        update: "Manage account activity"
                     },
                     description: "You are currently logged in from the following device",
                     header: "Account activity"
