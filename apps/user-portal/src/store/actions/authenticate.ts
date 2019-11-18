@@ -16,6 +16,16 @@
  * under the License.
  */
 
+import {
+    AuthenticateSessionUtil,
+    AuthenticateTokenKeys,
+    OPConfigurationUtil,
+    SignInUtil,
+    SignOutUtil
+} from "@wso2is/authenticate";
+import { getAssociations, getProfileInfo } from "../../api";
+import { ServiceResourcesEndpoint } from "../../configs";
+import { fireNotification } from "./global";
 import { authenticateActionTypes } from "./types";
 
 /**
@@ -46,3 +56,134 @@ export const setProfileInfo = (details: any) => ({
     payload: details,
     type: authenticateActionTypes.SET_PROFILE_INFO
 });
+
+/**
+ *  Gets profile information by making an API call
+ */
+export const getProfileInformation = () => {
+    return (dispatch) => {
+        getProfileInfo()
+            .then((infoResponse) => {
+                if (infoResponse.responseStatus === 200) {
+                    dispatch(
+                        setProfileInfo({
+                            ...infoResponse
+                        })
+                    );
+                } else {
+                    dispatch(
+                        fireNotification({
+                            description:
+                                "views:components.profile.notifications.getProfileInfo.genericError" +
+                                ".description",
+                            message: "views:components.profile.notifications.getProfileInfo.genericError" +
+                                ".message",
+                            otherProps: {
+                                negative: true
+                            },
+                            visible: true
+                        })
+                    );
+                }
+            })
+            .catch((error) => {
+                dispatch(
+                    fireNotification({
+                        description: error && error.data && error.data.details,
+                        message: "views:components.profile.notifications.getProfileInfo.error.message",
+                        otherProps: {
+                            negative: true
+                        },
+                        visible: true
+                    })
+                );
+            });
+    };
+};
+
+/**
+ * Handle user sign-in
+ */
+export const handleSignIn = () => {
+    /**
+     * Get profile info and associations from the API
+     * to set the associations in the context.
+     */
+    const setProfileDetails = (dispatch) => {
+        getProfileInfo().then((infoResponse) => {
+            getAssociations().then((associationsResponse) => {
+                dispatch(
+                    setProfileInfo({
+                        ...infoResponse,
+                        associations: associationsResponse
+                    })
+                );
+            });
+        });
+    };
+
+    const sendSignInRequest = (dispatch) => {
+        const requestParams = {
+            clientHost: CLIENT_HOST,
+            clientId: CLIENT_ID,
+            clientSecret: null,
+            enablePKCE: true,
+            redirectUri: LOGIN_CALLBACK_URL,
+            scope: null
+        };
+        if (SignInUtil.hasAuthorizationCode()) {
+            SignInUtil.sendTokenRequest(requestParams)
+                .then((response) => {
+                    AuthenticateSessionUtil.initUserSession(
+                        response,
+                        SignInUtil.getAuthenticatedUser(response.idToken)
+                    );
+                    dispatch(setSignIn());
+                    setProfileDetails(dispatch);
+                })
+                .catch((error) => {
+                    throw error;
+                });
+        } else {
+            SignInUtil.sendAuthorizationRequest(requestParams);
+        }
+    };
+    return (dispatch) => {
+        if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
+            dispatch(setSignIn());
+            setProfileDetails(dispatch);
+        } else {
+            OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false)
+                .then(() => {
+                    sendSignInRequest(dispatch);
+                })
+                .catch(() => {
+                    OPConfigurationUtil.setAuthorizeEndpoint(ServiceResourcesEndpoint.authorize);
+                    OPConfigurationUtil.setTokenEndpoint(ServiceResourcesEndpoint.token);
+                    OPConfigurationUtil.setRevokeTokenEndpoint(ServiceResourcesEndpoint.revoke);
+                    OPConfigurationUtil.setEndSessionEndpoint(ServiceResourcesEndpoint.logout);
+                    OPConfigurationUtil.setJwksUri(ServiceResourcesEndpoint.jwks);
+                    OPConfigurationUtil.setOPConfigInitiated();
+
+                    sendSignInRequest(dispatch);
+                });
+        }
+    };
+};
+
+/**
+ * Handle user sign-out
+ */
+export const handleSignOut = () => {
+    return (dispatch) => {
+        SignOutUtil.sendSignOutRequest(LOGIN_CALLBACK_URL)
+            .then(() => {
+                dispatch(setSignOut());
+                AuthenticateSessionUtil.endAuthenticatedSession();
+                OPConfigurationUtil.resetOPConfiguration();
+            })
+            .catch
+            // TODO show error page.
+            ();
+    };
+};

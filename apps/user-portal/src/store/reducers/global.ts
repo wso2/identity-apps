@@ -17,19 +17,13 @@
  * under the License.
  */
 
+import { GlobalInterface } from "../../models";
 import { GlobalActions, GlobalActionTypes } from "../actions/types";
-
-/**
- * Global state interface.
- */
-interface GlobalState {
-    isGlobalLoaderVisible: boolean;
-}
 
 /**
  * Initial state.
  */
-const initialState: GlobalState = {
+const initialState: GlobalInterface = {
     isGlobalLoaderVisible: false,
 };
 
@@ -40,7 +34,7 @@ const initialState: GlobalState = {
  * @param action - Action type
  * @returns The new state
  */
-export const globalReducer = (state: GlobalState = initialState, action: GlobalActions) => {
+export const globalReducer = (state: GlobalInterface = initialState, action: GlobalActions) => {
     switch (action.type) {
         case GlobalActionTypes.SHOW_GLOBAL_LOADER:
             return {

@@ -16,23 +16,22 @@
  * under the License.
  */
 
-import React, { useContext } from "react";
+import React from "react";
 import { I18nextProvider } from "react-i18next";
 import { Provider } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
+import { SignIn, SignOut } from "./components/authentication";
 import { i18n, routes } from "./configs";
-import { AuthContext } from "./contexts";
 import { history } from "./helpers";
 import { store } from "./store";
-
+import { handleSignIn, handleSignOut } from "./store/actions";
 /**
  * Main App component.
  *
  * @return {JSX.Element}
  */
 export const App = (): JSX.Element => {
-    const { signIn, signOut } = useContext(AuthContext);
 
     return (
         <Router history={ history }>
@@ -44,15 +43,13 @@ export const App = (): JSX.Element => {
                             <Route
                                 path={ APP_LOGIN_PATH }
                                 render={ () => {
-                                    signIn();
-                                    return null;
+                                    return <SignIn />;
                                 } }
                             />
                             <Route
                                 path="/logout"
                                 render={ () => {
-                                    signOut();
-                                    return null;
+                                    return <SignOut />;
                                 } }
                             />
                             {

@@ -22,6 +22,5 @@
 export interface AuthenticatedUserInterface {
     displayName?: string;
     email?: string;
-    userimage?: string;
     username: string;
 }

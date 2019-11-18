@@ -18,7 +18,7 @@
  */
 
 import { AuthenticateSessionUtil, AuthenticateTokenKeys, AuthenticateUserKeys } from "@wso2is/authenticate";
-import { AuthStateInterface } from "../../models";
+import { AuthStateInterface, createEmptyProfile } from "../../models";
 import { authenticateActionTypes } from "../actions/types";
 
 /**
@@ -31,8 +31,7 @@ const authenticateInitialState: AuthStateInterface = {
     location: APP_HOME_PATH,
     loginInit: false,
     logoutInit: false,
-    profileInfo: {},
-    userimage: "",
+    profileInfo: createEmptyProfile(),
     username: ""
 };
 
@@ -54,10 +53,10 @@ const authenticateReducer = (state = authenticateInitialState, action) => {
                     isAuth: true,
                     loginInit: true,
                     logoutInit: false,
-                    userimage: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERIMAGE),
                     username: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME),
                 };
             }
+            break;
         case authenticateActionTypes.SET_SIGN_OUT:
             return {
                 ...state,

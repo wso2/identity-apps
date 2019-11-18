@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { BasicProfileInterface } from "./profile";
+
 export interface AuthStateInterface {
     children?: any;
     displayName: string;
@@ -24,8 +26,7 @@ export interface AuthStateInterface {
     location: string;
     loginInit: boolean;
     logoutInit: boolean;
-    profileInfo: any;
-    userimage: string;
+    profileInfo: BasicProfileInterface;
     username: string;
 }
 

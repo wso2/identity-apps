@@ -57,11 +57,14 @@ export const AccountSecurityPage = (): JSX.Element => {
         >
             {
                 notification && notification.visible
-                    ? (<NotificationComponent
-                        message={ notification.message }
-                        description={ notification.description }
-                        onDismiss={ handleNotificationDismiss }
-                        { ...notification.otherProps }/>)
+                    ? (
+                        <NotificationComponent
+                            message={ notification.message }
+                            description={ notification.description }
+                            onDismiss={ handleNotificationDismiss }
+                            { ...notification.otherProps }
+                        />
+                        )
                     : null
             }
             <Grid>
@@ -71,8 +74,8 @@ export const AccountSecurityPage = (): JSX.Element => {
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
-                    <Grid.Column width={16}>
-                        <AccountRecoveryComponent onNotificationFired={handleNotification} />
+                    <Grid.Column width={ 16 }>
+                        <AccountRecoveryComponent onNotificationFired={ handleNotification } />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>

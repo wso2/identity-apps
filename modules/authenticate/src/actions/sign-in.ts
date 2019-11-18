@@ -204,7 +204,7 @@ export const sendRevokeTokenRequest = (requestParams: OIDCRequestParamsInterface
  * @returns {string} gravatar image path.
  */
 export const getGravatar = (emailAddress: string) => {
-    return "https://www.gravatar.com/avatar/" + getEmailHash(emailAddress);
+    return "https://www.gravatar.com/avatar/" + getEmailHash(emailAddress) + "?d=404";
 };
 
 /**
@@ -220,7 +220,6 @@ export const getAuthenticatedUser = (idToken: string): AuthenticatedUserInterfac
     return {
         displayName: payload.preferred_username ? payload.preferred_username : payload.sub,
         email: emailAddress,
-        userimage: getGravatar(emailAddress),
         username: payload.sub,
     };
 };

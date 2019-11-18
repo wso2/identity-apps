@@ -16,16 +16,5 @@
  * under the License.
  */
 
-import { combineReducers } from "redux";
-import { authenticateReducer, consentManagementReducer, globalReducer } from "./reducers";
-
-/**
- * Combines all the reducers.
- *
- * @type {Reducer<any>} Root reducer to be used when creating the store.
- */
-export const reducers = combineReducers({
-    authenticationInformation: authenticateReducer,
-    consentManagement: consentManagementReducer,
-    global: globalReducer
-});
+export * from "./sign-in";
+export * from "./sign-out";

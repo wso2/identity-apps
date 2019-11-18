@@ -17,12 +17,16 @@
  */
 
 import Joi from "@hapi/joi";
+import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
-import { getProfileInfo, updateProfileInfo } from "../../../api";
+import { getProfileInformation } from "../../../../src/store/actions";
+import {  updateProfileInfo } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
-import { Notification, Validation } from "../../../models";
+import { BasicProfileInterface, Notification, Validation } from "../../../models";
+import { AppState } from "../../../store";
 import { EditSection, FormWrapper, ThemeIcon } from "../../shared";
 
 /**
@@ -44,6 +48,22 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
     const [isEdit, setIsEdit] = useState(false);
     const { t } = useTranslation();
     const { onNotificationFired } = props;
+    const dispatch = useDispatch();
+    const profileInfo: BasicProfileInterface = useSelector(
+        (state: AppState) => state.authenticationInformation.profileInfo
+    );
+
+    useEffect(() => {
+        if (isEmpty(profileInfo)) {
+            dispatch(getProfileInformation());
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!isEmpty(profileInfo)) {
+            setEmailAddress(profileInfo);
+        }
+    }, [profileInfo]);
 
     const handleUpdate = (emailAddress: string) => {
         const data = {
@@ -75,9 +95,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                     },
                     visible: true
                 });
-                getProfileInfo().then((res) => {
-                    setEmailAddress(res);
-                });
+                dispatch(getProfileInformation());
                 setIsEdit(false);
             })
             .catch((error) => {
@@ -304,12 +322,6 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
             </EditSection>
         );
     };
-
-    useEffect(() => {
-        getProfileInfo().then((response) => {
-            setEmailAddress(response);
-        });
-    }, []);
 
     return showEditView();
 };

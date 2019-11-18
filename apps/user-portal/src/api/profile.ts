@@ -16,7 +16,10 @@
  * under the License.
  */
 
+import { SignInUtil } from "@wso2is/authenticate";
 import { AxiosHttpClient } from "@wso2is/http";
+import axios from "axios";
+import { isEmpty } from "lodash";
 import { ServiceResourcesEndpoint } from "../configs";
 import { BasicProfileInterface, HttpMethods } from "../models";
 import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "../utils";
@@ -43,14 +46,16 @@ export const getUserInfo = (): Promise<any> => {
         url: ServiceResourcesEndpoint.me
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient
+        .request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error(`Failed get user info from: ${ ServiceResourcesEndpoint.user }`));
+                return Promise.reject(new Error(`Failed get user info from: ${ServiceResourcesEndpoint.user}`));
             }
             return Promise.resolve(response);
-        }).catch((error) => {
-            return Promise.reject(`Failed to retrieve user information - ${ error }`);
+        })
+        .catch((error) => {
+            return Promise.reject(`Failed to retrieve user information - ${error}`);
         });
 };
 
@@ -71,28 +76,36 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
         url: ServiceResourcesEndpoint.me
     };
 
-    return httpClient.request(requestConfig)
-        .then((response) => {
+    return httpClient
+        .request(requestConfig)
+        .then(async (response) => {
+            let gravatar = "";
             if (response.status !== 200) {
-                return Promise.reject(new Error(`Failed get user profile info from: ${ ServiceResourcesEndpoint.me }`));
+                return Promise.reject(new Error(`Failed get user profile info from: ${ServiceResourcesEndpoint.me}`));
+            }
+            if (isEmpty(response.data.userImage)) {
+                try {
+                    gravatar = await getGravatarImage(response.data.emails[0]);
+                } catch (error) {
+                    gravatar = "";
+                }
             }
             const profileResponse: BasicProfileInterface = {
                 displayName: response.data.name.givenName || "",
                 emails: response.data.emails || "",
                 lastName: response.data.name.familyName || "",
-                organisation: (response.data[ orgKey ]) ?
-                    response.data[ orgKey ].organization : "",
+                organisation: response.data[orgKey] ? response.data[orgKey].organization : "",
                 phoneNumbers: response.data.phoneNumbers || [],
                 proUrl: response.data.profileUrl || "",
                 responseStatus: response.status || null,
                 roles: response.data.roles || [],
-                userimage: response.data.userImage || "",
+                userimage: response.data.userImage || gravatar,
                 username: response.data.userName || ""
             };
             return Promise.resolve(profileResponse);
         })
         .catch((error) => {
-            return Promise.reject(`Failed to retrieve user profile information - ${ error }`);
+            return Promise.reject(`Failed to retrieve user profile information - ${error}`);
         });
 };
 
@@ -113,16 +126,35 @@ export const updateProfileInfo = (info: object): Promise<any> => {
         url: ServiceResourcesEndpoint.me
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient
+        .request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
-                    new Error(`Failed update user profile info with: ${ ServiceResourcesEndpoint.me }`)
+                    new Error(`Failed update user profile info with: ${ServiceResourcesEndpoint.me}`)
                 );
             }
             return Promise.resolve(response);
         })
         .catch((error) => {
-            return Promise.reject(`Failed to update the profile info - ${ error }`);
+            return Promise.reject(`Failed to update the profile info - ${error}`);
         });
+};
+
+/**
+ *  Get gravatar image using email address
+ * @param email
+ */
+export const getGravatarImage = (email: string): Promise<string> => {
+    const url: string = SignInUtil.getGravatar(email);
+    return new Promise((resolve, reject) => {
+        axios
+            .get(url)
+            .then((response) => {
+                resolve(url.split("?")[0]);
+            })
+            .catch((error) => {
+                reject();
+            });
+    });
 };

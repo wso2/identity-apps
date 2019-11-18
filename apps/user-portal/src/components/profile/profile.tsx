@@ -16,14 +16,15 @@
  * under the License
  */
 
+import { isEmpty } from "lodash";
 import React, { FunctionComponent, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
-import { getProfileInfo, updateProfileInfo } from "../../api";
-import { AuthContext } from "../../contexts";
-import { createEmptyProfile, Notification } from "../../models";
+import { updateProfileInfo } from "../../api";
+import { AuthStateInterface, createEmptyProfile, Notification } from "../../models";
+import { getProfileInformation } from "../../store/actions";
 import { EditSection, FormWrapper, SettingsSection, UserAvatar } from "../shared";
-
 /**
  * Prop types for the basic details component.
  */
@@ -47,34 +48,29 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         organizationChangeForm: false
     });
     const { onNotificationFired } = props;
-    const { state } = useContext(AuthContext);
     const { t } = useTranslation();
-
-    useEffect(() => {
-        if (profileInfo && !profileInfo.username) {
-            fetchProfileInfo();
-        }
-    });
+    const dispatch = useDispatch();
+    const profileDetails: AuthStateInterface = useSelector(
+        (storeState: any) => storeState.authenticationInformation
+    );
 
     /**
-     * Fetches profile information.
+     * dispatch getProfileInformation action if the profileDetails object is empty
      */
-    const fetchProfileInfo = (): void => {
-        getProfileInfo().then((response) => {
-            if (response.responseStatus === 200) {
-                setBasicDetails(response);
-            } else {
-                onNotificationFired({
-                    description: t("views:components.profile.notifications.getProfileInfo.error.description"),
-                    message: t("views:components.profile.notifications.getProfileInfo.error.message"),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                });
-            }
-        });
-    };
+    useEffect(() => {
+        if (isEmpty(profileDetails.profileInfo)) {
+            dispatch(getProfileInformation());
+        }
+    }, []);
+
+    /**
+     * If the profileDetails object changes call the setBasicDetails function
+     */
+    useEffect(() => {
+        if (!isEmpty(profileDetails.profileInfo)) {
+            setBasicDetails(profileDetails.profileInfo);
+        }
+    }, [profileDetails.profileInfo]);
 
     /**
      * The following method handles the `onSubmit` event of forms.
@@ -141,7 +137,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 });
 
                 // Re-fetch the profile information
-                fetchProfileInfo();
+                dispatch(getProfileInformation());
             }
         });
 
@@ -194,7 +190,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             mobile: mobileNumber,
             organisation: profile.organisation,
             phoneNumbers: profile.phoneNumbers,
-            userimage: state.userimage,
+            userimage: profile.userimage,
             username: profile.username
         });
         setProfileInfo({
@@ -206,7 +202,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             mobile: mobileNumber,
             organisation: profile.organisation,
             phoneNumbers: profile.phoneNumbers,
-            userimage: state.userimage,
+            userimage: profile.userimage,
             username: profile.username
         });
     };
@@ -659,7 +655,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         <SettingsSection
             description={ t("views:sections.profile.description") }
             header={ t("views:sections.profile.heading") }
-            icon={ <UserAvatar authState={ state } size="tiny" /> }
+            icon={ <UserAvatar authState={ profileDetails } size="tiny" /> }
         >
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">
