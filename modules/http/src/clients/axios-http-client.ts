@@ -144,7 +144,7 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
                 this.requestFinishCallback();
             }
         }
-        return error;
+        throw error;
     }
 
     /**

@@ -178,6 +178,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
             .then((response) => {
                 getApprovals(true);
                 updateApprovalDetails();
+                removeApprovalsListIndex(id);
             })
             .catch((error) => {
                 let notification = {
@@ -222,6 +223,24 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
     };
 
     /**
+     *
+     * @param {string} id
+     */
+    const removeApprovalsListIndex = (id: string): boolean => {
+        const indexes = [...approvalsListActiveIndexes];
+
+        if (approvalsListActiveIndexes.includes(id)) {
+            const removingIndex = approvalsListActiveIndexes.indexOf(id);
+            if (removingIndex !== -1) {
+                indexes.splice(removingIndex, 1);
+            }
+            setApprovalsListActiveIndexes(indexes);
+            return true;
+        }
+        return false;
+    };
+
+    /**
      * Handler for the approval detail button click.
      *
      * @param {React.MouseEvent<HTMLButtonElement>} e
@@ -233,12 +252,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
 
         // If the list item is already extended, remove it from the active indexes
         // array and update the active indexes state.
-        if (approvalsListActiveIndexes.includes(id)) {
-            const removingIndex = approvalsListActiveIndexes.indexOf(id);
-            if (removingIndex !== -1) {
-                indexes.splice(removingIndex, 1);
-            }
-            setApprovalsListActiveIndexes(indexes);
+        if (removeApprovalsListIndex(id)) {
             return;
         }
 
@@ -250,6 +264,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
         // Re-fetching on every click is necessary to avoid data inconsistency.
         fetchPendingApprovalDetails(id)
             .then((response: ApprovalTaskDetails) => {
+                setApprovalsListActiveIndexes(indexes);
                 approvalsClone.forEach((approval) => {
                     if (approval.id === id) {
                         approval.details = response;
@@ -284,7 +299,6 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                 }
                 onNotificationFired(notification);
             });
-        setApprovalsListActiveIndexes(indexes);
     };
 
     /**

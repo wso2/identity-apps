@@ -23,7 +23,7 @@ import { ApprovalStatus, ApprovalTaskSummary } from "../../models";
 import { ApprovalsEdit } from "./approvals-edit";
 
 /**
- * Proptypes for the approvals list component.
+ * Prop types for the approvals list component.
  */
 interface ApprovalsListProps {
     approvals: ApprovalTaskSummary[];
@@ -90,15 +90,19 @@ export const ApprovalsList: FunctionComponent<ApprovalsListProps> = (
                                             >
                                                 {
                                                     approvalsListActiveIndexes.includes(approval.id) ?
-                                                        <>
-                                                            { t("common:showLess") }
-                                                            <Icon name="arrow down" flipped="vertically"/>
-                                                        </>
+                                                        (
+                                                            <>
+                                                                { t("common:showLess") }
+                                                                <Icon name="arrow down" flipped="vertically" />
+                                                            </>
+                                                        )
                                                         :
-                                                        <>
-                                                            { t("common:showMore") }
-                                                            <Icon name="arrow down"/>
-                                                        </>
+                                                        (
+                                                            <>
+                                                                { t("common:showMore") }
+                                                                <Icon name="arrow down" />
+                                                            </>
+                                                        )
                                                 }
                                             </Button>
                                         </List.Content>
