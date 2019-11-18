@@ -16,12 +16,14 @@
  * under the License.
  */
 
-import React, { useContext } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Overview } from "../components";
-import { AuthContext } from "../contexts";
 import { resolveUserDisplayName } from "../helpers";
 import { InnerPageLayout } from "../layouts";
+import { AuthStateInterface } from "../models";
+import { AppState } from "../store";
 
 /**
  * Overview page.
@@ -29,14 +31,14 @@ import { InnerPageLayout } from "../layouts";
  * @return {JSX.Element}
  */
 export const OverviewPage = (): JSX.Element => {
-    const { state } = useContext(AuthContext);
     const { t } = useTranslation();
+    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
 
     return (
         <InnerPageLayout
             pageTitle={ t(
                 "views:pages:overview.title",
-                { firstName: resolveUserDisplayName(state) }
+                { firstName: resolveUserDisplayName(profileDetails) }
                 ) }
             pageDescription={ t("views:pages:overview.subTitle") }
             pageTitleTextAlign="left"
