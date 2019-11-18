@@ -25,7 +25,6 @@ import { SignIn, SignOut } from "./components/authentication";
 import { i18n, routes } from "./configs";
 import { history } from "./helpers";
 import { store } from "./store";
-import { handleSignIn, handleSignOut } from "./store/actions";
 /**
  * Main App component.
  *

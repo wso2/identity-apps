@@ -16,33 +16,33 @@
  * under the License.
  */
 
-const webpack = require('webpack');
-const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const webpack = require("webpack");
+const path = require("path");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
-module.exports = env => {
-    const basename = 'user-portal';
+module.exports = (env) => {
+    const basename = "user-portal";
     const devServerPort = 9000;
 
     /**
      * Runtime configurations
      */
-    const loginPagePath = '/login';
-    const homePagePath = '/overview';
-    const serverHost = 'https://localhost:9443';
-    const clientHost = (env.NODE_ENV === 'prod') ? serverHost : `https://localhost:${devServerPort}`;
-    const externalLoginClientID = (env.NODE_ENV === 'prod') ? 'USER_PORTAL' : 'USER_PORTAL';
+    const loginPagePath = "/login";
+    const homePagePath = "/overview";
+    const serverHost = "https://localhost:9443";
+    const clientHost = env.NODE_ENV === "prod" ? serverHost : `https://localhost:${devServerPort}`;
+    const externalLoginClientID = env.NODE_ENV === "prod" ? "USER_PORTAL" : "USER_PORTAL";
     const externalLoginCallbackURL = `${clientHost}/${basename}/login`;
     const externalLogoutCallbackURL = `${clientHost}/${basename}/logout`;
 
     /**
      * Build configurations
      */
-    const distFolder = path.resolve(__dirname, 'build', basename);
-    const faviconImage = path.resolve(__dirname, 'node_modules', '@wso2is/theme/lib/assets/images/favicon.ico');
-    const titleText = 'WSO2 Identity Server';
+    const distFolder = path.resolve(__dirname, "build", basename);
+    const faviconImage = path.resolve(__dirname, "node_modules", "@wso2is/theme/lib/assets/images/favicon.ico");
+    const titleText = "WSO2 Identity Server";
 
     return {
         entry: ["./src/index.tsx"],
@@ -87,8 +87,7 @@ module.exports = env => {
                 {
                     test: /\.tsx?$/,
                     use: "ts-loader",
-                    exclude: /(node_modules|diagram)/,
-                    exclude: /\.test.tsx?$/
+                    exclude: /(node_modules|diagram)/
                 },
                 {
                     test: /\.ts$/,
