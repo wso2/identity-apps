@@ -25,6 +25,7 @@ import {
 } from "@wso2is/authenticate";
 import { getAssociations, getProfileInfo } from "../../api";
 import { ServiceResourcesEndpoint } from "../../configs";
+import * as TokenConstants from "../../constants";
 import { fireNotification } from "./global";
 import { authenticateActionTypes } from "./types";
 
@@ -129,7 +130,7 @@ export const handleSignIn = () => {
             clientSecret: null,
             enablePKCE: true,
             redirectUri: LOGIN_CALLBACK_URL,
-            scope: null
+            scope: [ TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE ],
         };
         if (SignInUtil.hasAuthorizationCode()) {
             SignInUtil.sendTokenRequest(requestParams)

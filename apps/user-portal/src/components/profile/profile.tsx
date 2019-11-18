@@ -17,14 +17,16 @@
  */
 
 import { isEmpty } from "lodash";
-import React, { FunctionComponent, useContext, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
 import { updateProfileInfo } from "../../api";
 import { AuthStateInterface, createEmptyProfile, Notification } from "../../models";
+import { AppState } from "../../store";
 import { getProfileInformation } from "../../store/actions";
 import { EditSection, FormWrapper, SettingsSection, UserAvatar } from "../shared";
+
 /**
  * Prop types for the basic details component.
  */
@@ -50,9 +52,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const { onNotificationFired } = props;
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const profileDetails: AuthStateInterface = useSelector(
-        (storeState: any) => storeState.authenticationInformation
-    );
+    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
 
     /**
      * dispatch getProfileInformation action if the profileDetails object is empty

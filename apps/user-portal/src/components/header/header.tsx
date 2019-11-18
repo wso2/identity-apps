@@ -24,7 +24,6 @@ import { Link } from "react-router-dom";
 import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } from "semantic-ui-react";
 import { getProfileInformation } from "../../../src/store/actions";
 import { switchAccount } from "../../api";
-import { AuthContext } from "../../contexts";
 import { resolveUserDisplayName } from "../../helpers";
 import { AuthStateInterface, createEmptyNotification, LinkedAccountInterface, Notification } from "../../models";
 import { AppState } from "../../store";
@@ -45,12 +44,9 @@ interface HeaderProps {
  * @return {JSX.Element}
  */
 export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps): JSX.Element => {
-    const { state } = useContext(AuthContext);
     const { t } = useTranslation();
     const { onSidePanelToggleClick, showSidePanelToggle } = props;
-    const profileDetails: AuthStateInterface = useSelector(
-        (storeState: AppState) => storeState.authenticationInformation
-    );
+    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -168,13 +164,13 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                             </Item.Group>
                             <Dropdown.Divider />
                             {
-                                (state.profileInfo
-                                    && state.profileInfo.associations
-                                    && state.profileInfo.associations.length > 0)
+                                (profileDetails.profileInfo
+                                    && profileDetails.profileInfo.associations
+                                    && profileDetails.profileInfo.associations.length > 0)
                                     ? (
                                         <Item.Group className="linked-accounts-list" unstackable>
                                             {
-                                                state.profileInfo.associations.map((association, index) => (
+                                                profileDetails.profileInfo.associations.map((association, index) => (
                                                     <Item
                                                         className="linked-account"
                                                         key={ `${association.userId}-${index}` }
