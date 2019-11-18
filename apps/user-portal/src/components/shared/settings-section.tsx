@@ -17,7 +17,7 @@
  */
 
 import React, { Fragment, FunctionComponent, MouseEvent } from "react";
-import { Card, Grid, Header, Icon, List, Responsive, SemanticICONS } from "semantic-ui-react";
+import { Card, Grid, Header, Icon, List, Message, Responsive, SemanticICONS } from "semantic-ui-react";
 import { ThemeIcon, ThemeIconSizes } from "./icon";
 
 /**
@@ -133,38 +133,37 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
                             <Card.Meta>{ description }</Card.Meta>
                         </Grid.Column>
                         {
-                            icon || iconMini
-                                ? (
+                            icon || iconMini ? (
                                     <Grid.Column width={ 6 } className="no-padding">
                                         <Responsive as={ Fragment } { ...Responsive.onlyComputer }>
                                             {
-                                                icon
-                                                    ?
-                                                    <ThemeIcon
-                                                        icon={ icon }
-                                                        transparent
-                                                        size={ iconSize }
-                                                        floated={ iconFloated }
-                                                        defaultIcon={ iconStyle === "default" }
-                                                        twoTone={ iconStyle === "twoTone" }
-                                                        colored={ iconStyle === "colored" }
-                                                    />
+                                                icon ? (
+                                                        <ThemeIcon
+                                                            icon={ icon }
+                                                            transparent
+                                                            size={ iconSize }
+                                                            floated={ iconFloated }
+                                                            defaultIcon={ iconStyle === "default" }
+                                                            twoTone={ iconStyle === "twoTone" }
+                                                            colored={ iconStyle === "colored" }
+                                                        />
+                                                    )
                                                     : null
                                             }
                                         </Responsive>
                                         <Responsive as={ Fragment } maxWidth={ Responsive.onlyTablet.maxWidth }>
                                             {
-                                                iconMini
-                                                    ?
-                                                    <ThemeIcon
-                                                        icon={ iconMini }
-                                                        transparent
-                                                        size={ iconSize }
-                                                        floated={ iconFloated }
-                                                        defaultIcon={ iconStyle === "default" }
-                                                        twoTone={ iconStyle === "twoTone" }
-                                                        colored={ iconStyle === "colored" }
-                                                    />
+                                                iconMini ? (
+                                                        <ThemeIcon
+                                                            icon={ iconMini }
+                                                            transparent
+                                                            size={ iconSize }
+                                                            floated={ iconFloated }
+                                                            defaultIcon={ iconStyle === "default" }
+                                                            twoTone={ iconStyle === "twoTone" }
+                                                            colored={ iconStyle === "colored" }
+                                                        />
+                                                    )
                                                     : null
                                             }
                                         </Responsive>
@@ -181,55 +180,63 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
                 </Grid>
             </Card.Content>
             {
-                (primaryAction || secondaryAction || placeholder) && showActionBar
-                    ?
-                    <Card.Content className="extra-content" extra>
-                        <List selection={ !secondaryAction } verticalAlign="middle">
-                            <List.Item
-                                className="action-button"
-                                disabled={ !!placeholder }
-                                // if both `primaryAction` & `secondaryAction` are passed in,
-                                // disable list item `onClick`.
-                                onClick={ !(primaryAction && secondaryAction)
-                                    ? onSecondaryActionClick || onPrimaryActionClick
-                                    : null
-                                }
-                            >
-                                {
-                                    placeholder
-                                        ? <List.Header className="action-button-text">{ placeholder }</List.Header>
-                                        : <>
-                                            {
-                                                primaryAction
-                                                    ? constructAction(
-                                                    primaryAction,
-                                                    primaryActionIcon,
-                                                    primaryActionDisabled,
-                                                    (primaryAction && secondaryAction)
-                                                        ? onPrimaryActionClick
-                                                        : null,
-                                                    "primary"
-                                                    )
-                                                    : null
-                                            }
-                                            {
-                                                secondaryAction
-                                                    ? constructAction(
-                                                    secondaryAction,
-                                                    secondaryActionIcon,
-                                                    secondaryActionDisabled,
-                                                    (primaryAction && secondaryAction)
-                                                        ? onSecondaryActionClick
-                                                        : null,
-                                                    "secondary"
-                                                    )
-                                                    : null
-                                            }
-                                        </>
-                                }
-                            </List.Item>
-                        </List>
-                    </Card.Content>
+                (primaryAction || secondaryAction || placeholder) && showActionBar ? (
+                        <Card.Content className="extra-content" extra>
+                            <List selection={ !secondaryAction } verticalAlign="middle">
+                                <List.Item
+                                    className="action-button"
+                                    disabled={ !!placeholder }
+                                    // if both `primaryAction` & `secondaryAction` are passed in,
+                                    // disable list item `onClick`.
+                                    onClick={ !(primaryAction && secondaryAction)
+                                        ? onSecondaryActionClick || onPrimaryActionClick
+                                        : null
+                                    }
+                                >
+                                    {
+                                        placeholder
+                                            ? (
+                                                <List.Header className="action-button-text">
+                                                    <Message info>
+                                                        <Icon name="info circle" />{ placeholder }
+                                                    </Message>
+                                                </List.Header>
+                                            )
+                                            : (
+                                                <>
+                                                    {
+                                                        primaryAction
+                                                            ? constructAction(
+                                                            primaryAction,
+                                                            primaryActionIcon,
+                                                            primaryActionDisabled,
+                                                            (primaryAction && secondaryAction)
+                                                                ? onPrimaryActionClick
+                                                                : null,
+                                                            "primary"
+                                                            )
+                                                            : null
+                                                    }
+                                                    {
+                                                        secondaryAction
+                                                            ? constructAction(
+                                                            secondaryAction,
+                                                            secondaryActionIcon,
+                                                            secondaryActionDisabled,
+                                                            (primaryAction && secondaryAction)
+                                                                ? onSecondaryActionClick
+                                                                : null,
+                                                            "secondary"
+                                                            )
+                                                            : null
+                                                    }
+                                                </>
+                                            )
+                                    }
+                                </List.Item>
+                            </List>
+                        </Card.Content>
+                    )
                     : null
             }
         </Card>

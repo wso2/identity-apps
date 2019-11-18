@@ -16,13 +16,14 @@
  * under the License.
  */
 
-import React, { FunctionComponent, useContext, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Popup } from "semantic-ui-react";
 import { addAccountAssociation, getAssociations, getProfileInfo, switchAccount } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
-import { AuthContext } from "../../contexts";
-import { createEmptyNotification, LinkedAccountInterface, Notification } from "../../models";
+import { AuthStateInterface, createEmptyNotification, LinkedAccountInterface, Notification } from "../../models";
+import { AppState } from "../../store";
 import { setProfileInfo } from "../../store/actions";
 import { EditSection, FormWrapper, SettingsSection, UserAvatar } from "../shared";
 
@@ -45,8 +46,9 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
         addAccountForm: false
     });
     const { onNotificationFired } = props;
-    const { state, dispatch } = useContext(AuthContext);
+    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         fetchAssociations();
@@ -58,7 +60,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
     const fetchAssociations = (): void => {
         let notification: Notification = createEmptyNotification();
 
-        if (!state.profileInfo || (state.profileInfo && !state.profileInfo.displayName)) {
+        if (!profileDetails.profileInfo || (profileDetails.profileInfo && !profileDetails.profileInfo.displayName)) {
             getProfileInfo().then((infoResponse) => {
                 getAssociations()
                     .then((associationsResponse) => {
@@ -93,7 +95,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 setAssociations(response);
                 dispatch(
                     setProfileInfo({
-                        ...state.profileInfo,
+                        ...profileDetails.profileInfo,
                         associations: response
                     })
                 );

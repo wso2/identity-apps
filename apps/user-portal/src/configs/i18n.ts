@@ -35,11 +35,11 @@ const SupportedLanguages = {
     },
     si: {
         flag: "lk",
-        name: "සිංහල"
+        name: "සිංහල (LK)"
     },
     ta: {
         flag: "lk",
-        name: "தமிழ்"
+        name: "தமிழ் (LK)"
     }
 };
 

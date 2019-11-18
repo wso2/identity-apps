@@ -29,10 +29,3 @@ export interface AuthStateInterface {
     profileInfo: BasicProfileInterface;
     username: string;
 }
-
-export interface AuthContextInterface {
-    dispatch: ({ type }: {type: string}) => void;
-    signIn: () => void;
-    signOut: () => void;
-    state: AuthStateInterface;
-}

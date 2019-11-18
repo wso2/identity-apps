@@ -462,7 +462,7 @@ export const views: Views = {
             widgets: {
                 accountActivity: {
                     actionTitles: {
-                        update: "Atualizar segurança da conta"
+                        update: "Gerenciar a atividade da conta"
                     },
                     description: "No momento, você está conectado no seguinte dispositivo",
                     header: "Atividade da conta"
@@ -987,7 +987,7 @@ export const views: Views = {
         },
         userSessions: {
             actionTitles: {
-                empty: "Você não possui nenhuma sessão ativa",
+                empty: "Nenhuma sessão ativa",
                 terminateAll: "Terminar todas as sessões"
             },
             description: "Esta é uma lista dos dispositivos que estão ativos em sua conta",
