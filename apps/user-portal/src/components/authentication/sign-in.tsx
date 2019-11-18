@@ -26,6 +26,7 @@ import { handleSignIn } from "../../store/actions";
 export const SignIn = () => {
     const dispatch = useDispatch();
     const isAuth = useSelector((state: AppState) => state.authenticationInformation.isAuth);
+
     useEffect(() => {
         if (!isAuth) {
             dispatch(handleSignIn());
@@ -33,6 +34,7 @@ export const SignIn = () => {
             loginSuccessRedirect();
         }
     }, [isAuth]);
+
     const getAuthenticationCallbackUrl = () => {
         return window.sessionStorage.getItem("auth_callback_url");
     };
@@ -46,5 +48,6 @@ export const SignIn = () => {
 
         history.push(location);
     };
+
     return null;
 };

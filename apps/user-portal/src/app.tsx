@@ -43,13 +43,13 @@ export const App = (): JSX.Element => {
                             <Route
                                 path={ APP_LOGIN_PATH }
                                 render={ () => {
-                                    return <SignIn/>;
+                                    return <SignIn />;
                                 } }
                             />
                             <Route
                                 path="/logout"
                                 render={ () => {
-                                    return <SignOut/>;
+                                    return <SignOut />;
                                 } }
                             />
                             {

@@ -46,7 +46,9 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
     const { t } = useTranslation();
     const { onNotificationFired } = props;
     const dispatch = useDispatch();
-    const profileInfo: BasicProfileInterface = useSelector((state: any) => state.authenticationInformation.profileInfo);
+    const profileInfo: BasicProfileInterface = useSelector(
+        (state: any) => state.authenticationInformation.profileInfo
+    );
 
     useEffect(() => {
         if (isEmpty(profileInfo)) {

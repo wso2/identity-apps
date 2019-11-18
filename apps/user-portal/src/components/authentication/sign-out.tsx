@@ -35,5 +35,6 @@ export const SignOut = () => {
             history.push(APP_LOGIN_PATH);
         }
     }, [logoutInit]);
+
     return null;
 };

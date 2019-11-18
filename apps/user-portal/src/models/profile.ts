@@ -73,5 +73,5 @@ export const createEmptyProfile = (): BasicProfileInterface => ({
     responseStatus: null,
     roles: [],
     userimage: "",
-    username: "",
+    username: ""
 });

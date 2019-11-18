@@ -74,8 +74,10 @@ export const getProfileInformation = () => {
                     dispatch(
                         fireNotification({
                             description:
-                                "views:components.profile.notifications.getProfileInfo.genericError" + ".description",
-                            message: "views:components.profile.notifications.getProfileInfo.genericError.message",
+                                "views:components.profile.notifications.getProfileInfo.genericError" +
+                                ".description",
+                            message: "views:components.profile.notifications.getProfileInfo.genericError" +
+                                ".message",
                             otherProps: {
                                 negative: true
                             },

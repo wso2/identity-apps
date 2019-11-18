@@ -50,7 +50,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const { onNotificationFired } = props;
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const profileDetails: AuthStateInterface = useSelector((storeState: any) => storeState.authenticationInformation);
+    const profileDetails: AuthStateInterface = useSelector(
+        (storeState: any) => storeState.authenticationInformation
+    );
 
     /**
      * dispatch getProfileInformation action if the profileDetails object is empty
