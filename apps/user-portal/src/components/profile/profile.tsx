@@ -230,10 +230,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                         "views:components.profile.forms." +
                                         "nameChangeForm.inputs.firstName.validations.empty"
                                     ),
-                                    type: "text",
+                                    type: "text" as const,
                                     value: editingProfileInfo.displayName
                                 },
                                 {
+                                    label: t(
+                                        "views:components.profile.forms.nameChangeForm.inputs.lastName.label"
+                                    ),
                                     name: "lastName",
                                     placeholder: t(
                                         "views:components.profile.forms.nameChangeForm.inputs" +
@@ -244,16 +247,16 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                         "views:components.profile.forms." +
                                         "nameChangeForm.inputs.lastName.validations.empty"
                                     ),
-                                    type: "text",
+                                    type: "text" as const,
                                     value: editingProfileInfo.lastName
                                 },
                                 {
                                     hidden: true,
-                                    type: "divider"
+                                    type: "divider" as const
                                 },
                                 {
-                                    size: "small",
-                                    type: "submit",
+                                    size: "small" as const,
+                                    type: "submit" as const,
                                     value: t("common:save").toString()
                                 },
                                 {
@@ -315,15 +318,15 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             size="small"
                                             color="grey"
                                             onClick={ () => showFormEditView("nameChangeForm") }
-                                            name={ profileInfo.displayName || profileInfo.lastName ?
-                                                "pencil alternate" : "add" }
+                                            name={ profileInfo.displayName || profileInfo.lastName
+                                                ? "pencil alternate"
+                                                : "add" }
                                         />
                                     )
                                 }
                                 position="top center"
                                 content={
-                                    profileInfo.displayName || profileInfo.lastName ?
-                                        t("common:edit") : t("common:add")
+                                    profileInfo.displayName || profileInfo.lastName ? t("common:edit") : t("common:add")
                                 }
                                 inverted={ true }
                             />
@@ -403,8 +406,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                         <List.Content>
                             <List.Description>
-                                { profileInfo.email ? profileInfo.email : t("views:components.profile" +
-                                    ".fields.email.default") }
+                                { profileInfo.email
+                                    ? profileInfo.email
+                                    : t("views:components.profile.fields.email.default") }
                             </List.Description>
                         </List.Content>
                     </Grid.Column>
@@ -443,9 +447,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         <EditSection>
             <Grid>
                 <Grid.Row columns={ 2 }>
-                    <Grid.Column width={ 4 }>
-                        { t("views:components.profile.fields.organization.label") }
-                    </Grid.Column>
+                    <Grid.Column width={ 4 }>{ t("views:components.profile.fields.organization.label") }</Grid.Column>
                     <Grid.Column width={ 12 }>
                         <FormWrapper
                             formFields={ [
@@ -559,7 +561,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     label: t("views:components.profile.fields.mobile.label"),
                                     name: "mobile",
                                     placeholder: t(
-                                        "views:components.profile.forms.mobileChangeForm" + ".inputs.mobile.placeholder"
+                                        "views:components.profile.forms.mobileChangeForm"
+                                        + ".inputs.mobile.placeholder"
                                     ),
                                     required: true,
                                     requiredErrorMessage: t(
@@ -662,9 +665,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     <Grid padded={ true }>
                         <Grid.Row columns={ 3 }>
                             <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
-                                <List.Content>
-                                    { t("views:components.profile.fields.username.label") }
-                                </List.Content>
+                                <List.Content>{ t("views:components.profile.fields.username.label") }</List.Content>
                             </Grid.Column>
                             <Grid.Column mobile={ 10 } tablet={ 10 } computer={ 12 }>
                                 <List.Content>
