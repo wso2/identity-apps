@@ -21,16 +21,16 @@ import {
     CodeIcon,
     ConsentForm,
     DummyUser,
-    ErrorStatusShield,
     HomeTileIcons,
     Logo,
     MFAIconSet,
-    OkayStatusShield,
     PackageIcon,
     Padlock,
     SettigsSectionIconSet,
     SidePanelIconSet,
-    WarningStatusShield
+    StatusShieldDanger,
+    StatusShieldGood,
+    StatusShieldWarning
 } from "@wso2is/theme";
 
 type ImageType = string;
@@ -56,9 +56,9 @@ export const SettingsSectionIcons = SettigsSectionIconSet;
 export const MFAIcons = MFAIconSet;
 export const AccountRecoveryIcons = AccountRecoveryIconSet;
 export const AccountStatusShields = {
-    error: ErrorStatusShield,
-    okay: OkayStatusShield,
-    warning: WarningStatusShield
+    danger: StatusShieldDanger,
+    good: StatusShieldGood,
+    warning: StatusShieldWarning
 };
 export const WidgetIcons = {
     accountSecurity: Padlock,

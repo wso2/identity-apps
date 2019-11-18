@@ -33,7 +33,7 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
     return (
         <div className="widget account-status">
             <div className="shield">
-                <ThemeIcon icon={ AccountStatusShields.okay } size="auto" transparent/>
+                <ThemeIcon icon={ AccountStatusShields.good } size="auto" transparent/>
             </div>
             <div className="description">
                 <Header className="status-header" as="h3">
