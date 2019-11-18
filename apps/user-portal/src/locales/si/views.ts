@@ -981,7 +981,7 @@ export const views: Views = {
         },
         userSessions: {
             actionTitles: {
-                empty: "ඔබට කිසිදු ක්‍රියාකාරී සැසි නොමැත",
+                empty: "සක්‍රීය සැසි නොමැත",
                 terminateAll: "සියලුම සැසි අවසන් කරන්න"
             },
             description: "මෙය ඔබගේ ගිණුමේ සක්‍රියව ඇති උපාංග ලැයිස්තුවකි",

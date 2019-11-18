@@ -987,7 +987,7 @@ export const views: Views = {
         },
         userSessions: {
             actionTitles: {
-                empty: "Você não possui nenhuma sessão ativa",
+                empty: "Nenhuma sessão ativa",
                 terminateAll: "Terminar todas as sessões"
             },
             description: "Esta é uma lista dos dispositivos que estão ativos em sua conta",

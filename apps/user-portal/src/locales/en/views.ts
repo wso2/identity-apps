@@ -976,7 +976,7 @@ export const views: Views = {
         },
         userSessions: {
             actionTitles: {
-                empty: "You do not have any active sessions",
+                empty: "No active sessions",
                 terminateAll: "Terminate all sessions"
             },
             description: "Review all devices that are currently active on your account",
