@@ -475,7 +475,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
                         event.preventDefault();
                         inputField.onClick();
                     } }
-                    disabled={ inputField.disabled ? inputField.disabled(form) : true }
+                    disabled={ inputField.disabled ? inputField.disabled(form) : false }
                 >
                     { inputField.value }
                 </Button>
