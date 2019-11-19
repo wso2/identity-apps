@@ -19,4 +19,6 @@
 
 import { email, mobileNumber } from "./validator";
 
-export default { email, mobileNumber };
+const Validator = { email, mobileNumber };
+
+export default Validator;
