@@ -91,11 +91,12 @@
  * Button model
  */
  export interface FormButton {
-    value: string;
-    type: "button";
-    size?: SemanticSIZES;
-    className?: string;
-    onClick: () => void;
+     disabled?: (values: Map<string, FormValue>) => boolean;
+     onClick: () => void;
+     className?: string;
+     size?: SemanticSIZES;
+     type: "button";
+     value: string;
 }
 
 /**
