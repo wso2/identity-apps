@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import Joi from "@hapi/joi";
+import Validator from "@wso2is/validator";
 import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -266,17 +266,15 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                                     ),
                                                     type: "text",
                                                     validation: (value: string, validation: Validation) => {
-                                                        const emailError = Joi.string()
-                                                            .email({
-                                                                tlds: {
-                                                                    allow: ["com"]
-                                                                }
-                                                            })
-                                                            .validate(value).error;
-
-                                                        if (emailError) {
+                                                        if (!Validator.email(value)) {
                                                             validation.isValid = false;
-                                                            validation.errorMessages.push(emailError.message);
+                                                            validation.errorMessages.push(
+                                                                t(
+                                                                    "views:components.accountRecovery.emailRecovery" +
+                                                                    ".forms.emailResetForm.inputs.email." +
+                                                                    "validations.invalidFormat"
+                                                                ).toString()
+                                                            );
                                                         }
                                                     },
                                                     value: editedEmail,

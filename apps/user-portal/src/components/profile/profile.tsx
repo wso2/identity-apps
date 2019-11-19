@@ -16,17 +16,17 @@
  * under the License
  */
 
+import Validator from "@wso2is/validator";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
 import { updateProfileInfo } from "../../api";
-import { AuthStateInterface, createEmptyProfile, Notification } from "../../models";
+import { AuthStateInterface, createEmptyProfile, Notification, Validation } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation } from "../../store/actions";
 import { EditSection, FormWrapper, SettingsSection, UserAvatar } from "../shared";
-
 /**
  * Prop types for the basic details component.
  */
@@ -358,6 +358,15 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                         "emailChangeForm.inputs.email.validations.empty"
                                     ),
                                     type: "text",
+                                    validation: (value: string, validation: Validation) => {
+                                        if (!Validator.email(value)) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(t(
+                                                "views:components.profile.forms." +
+                                                "emailChangeForm.inputs.email.validations.invalidFormat"
+                                            ));
+                                        }
+                                    },
                                     value: editingProfileInfo.email
                                 },
                                 {
@@ -570,6 +579,15 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                         "mobileChangeForm.inputs.mobile.validations.empty"
                                     ),
                                     type: "text",
+                                    validation: (value: string, validation: Validation) => {
+                                        if (!Validator.mobileNumber(value)) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(t(
+                                                "views:components.profile.forms." +
+                                                "mobileChangeForm.inputs.mobile.validations.invalidFormat"
+                                            ));
+                                        }
+                                    },
                                     value: editingProfileInfo.mobile
                                 },
                                 {

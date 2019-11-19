@@ -39,7 +39,8 @@ export const views: Views = {
                                 label:  "Email address",
                                 placeholder: "Enter the recovery email address",
                                 validations: {
-                                    empty: "Enter an email address"
+                                    empty: "Enter an email address",
+                                    invalidFormat: "The email address is not of the correct format"
                                 }
                             }
                         }
@@ -728,7 +729,8 @@ export const views: Views = {
                             label: "Email",
                             placeholder: "Enter your email address",
                             validations: {
-                                empty: "Email address is a required field"
+                                empty: "Email address is a required field",
+                                invalidFormat: "The email address is not of the correct format"
                             }
                         }
                     }
@@ -740,7 +742,8 @@ export const views: Views = {
                             note: "NOTE: This will change the mobile number in your profile",
                             placeholder: "Enter your mobile number",
                             validations: {
-                                empty: "Mobile number is a required field"
+                                empty: "Mobile number is a required field",
+                                invalidFormat: "The mobile number is not of the right format"
                             }
                         }
                     }

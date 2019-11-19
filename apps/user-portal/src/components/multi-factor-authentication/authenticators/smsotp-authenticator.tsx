@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import Joi from "@hapi/joi";
+import Validator from "@wso2is/validator";
 import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -198,13 +198,12 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                                     ),
                                                     type: "text",
                                                     validation: (value: string, validation: Validation) => {
-                                                        const error = Joi.number()
-                                                            .integer()
-                                                            .validate(value).error;
-
-                                                        if (error) {
+                                                        if (!Validator.mobileNumber(value)) {
                                                             validation.isValid = false;
-                                                            validation.errorMessages.push(error.message);
+                                                            validation.errorMessages.push(t(
+                                                                "views:components.profile.forms.mobileChangeForm." +
+                                                                "inputs.mobile.validations.invalidFormat"
+                                                            ));
                                                         }
                                                     },
                                                     value: mobile
