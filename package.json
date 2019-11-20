@@ -1,5 +1,5 @@
 {
-    "private": false,
+    "private": true,
     "name": "@wso2is/webapps",
     "version": "0.1.0",
     "description": "WSO2 Identity Server Web Applications",
