@@ -4,5 +4,6 @@
         "outDir": "./dist",
         "declaration": true
     },
-    "extends": "../../configs/common.tsconfig.json"
+    "extends": "../../configs/common.tsconfig.json",
+    "exclude": ["tests","test_configs"]
 }
