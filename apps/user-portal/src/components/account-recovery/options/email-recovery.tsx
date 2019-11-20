@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+import { FormWrapper, Validation } from "@wso2is/form";
 import Validator from "@wso2is/validator";
 import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
@@ -25,9 +25,9 @@ import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { getProfileInformation } from "../../../../src/store/actions";
 import {  updateProfileInfo } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
-import { BasicProfileInterface, Notification, Validation } from "../../../models";
+import { BasicProfileInterface, Notification } from "../../../models";
 import { AppState } from "../../../store";
-import { EditSection, FormWrapper, ThemeIcon } from "../../shared";
+import { EditSection, ThemeIcon } from "../../shared";
 
 /**
  * Prop types for the EmailRecoveryComponent component.

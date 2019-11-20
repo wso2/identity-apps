@@ -28,5 +28,4 @@ export * from "./page-header";
 export * from "./protected-route";
 export * from "./settings-section";
 export * from "./ui";
-export * from "./form-wrapper";
 export * from "./user-avatar";

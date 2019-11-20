@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FormWrapper } from "@wso2is/form";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
@@ -29,7 +30,7 @@ import {
     QuestionSetsInterface,
     QuestionsInterface,
 } from "../../../models";
-import { EditSection, FormWrapper, ThemeIcon } from "../../shared";
+import { EditSection, ThemeIcon } from "../../shared";
 
 /**
  * Prop types for SecurityQuestionsComponent

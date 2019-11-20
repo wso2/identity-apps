@@ -16,14 +16,14 @@
  * under the License.
  */
 
+import { FormWrapper, Validation } from "@wso2is/form";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
 import { updatePassword } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
-import { Notification, Validation } from "../../models";
-import { EditSection, FormWrapper, SettingsSection } from "../shared";
-
+import { Notification } from "../../models";
+import { EditSection, SettingsSection } from "../shared";
 /**
  * Constant to store the change password from identifier.
  * @type {string}

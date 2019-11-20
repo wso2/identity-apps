@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FormWrapper } from "@wso2is/form";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,7 +26,7 @@ import { SettingsSectionIcons } from "../../configs";
 import { AuthStateInterface, createEmptyNotification, LinkedAccountInterface, Notification } from "../../models";
 import { AppState } from "../../store";
 import { setProfileInfo } from "../../store/actions";
-import { EditSection, FormWrapper, SettingsSection, UserAvatar } from "../shared";
+import { EditSection, SettingsSection, UserAvatar } from "../shared";
 
 /**
  * Prop types for the liked accounts component.

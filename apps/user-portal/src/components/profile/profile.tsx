@@ -16,6 +16,7 @@
  * under the License
  */
 
+import { FormWrapper, Validation } from "@wso2is/form";
 import Validator from "@wso2is/validator";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
@@ -23,10 +24,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
 import { updateProfileInfo } from "../../api";
-import { AuthStateInterface, createEmptyProfile, Notification, Validation } from "../../models";
+import { AuthStateInterface, createEmptyProfile, Notification } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation } from "../../store/actions";
-import { EditSection, FormWrapper, SettingsSection, UserAvatar } from "../shared";
+import { EditSection, SettingsSection, UserAvatar } from "../shared";
+
 /**
  * Prop types for the basic details component.
  */
