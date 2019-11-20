@@ -41,7 +41,7 @@ module.exports = env => {
      * Build configurations
      */
     const distFolder = path.resolve(__dirname, 'build', basename);
-    const faviconImage = path.resolve(__dirname, 'node_modules', '@wso2is/theme/lib/assets/images/favicon.ico');
+    const faviconImage = path.resolve(__dirname, '../../node_modules', '@wso2is/theme/lib/assets/images/favicon.ico');
     const titleText = 'WSO2 Identity Server';
 
     return {
@@ -123,7 +123,7 @@ module.exports = env => {
         },
         plugins: [
             new CopyWebpackPlugin([{
-                    context: path.resolve(__dirname, 'node_modules', '@wso2is', 'theme'),
+                    context: path.resolve(__dirname, '../../node_modules', '@wso2is', 'theme'),
                     from: 'lib',
                     to: 'libs/styles/css'
                 },
