@@ -18,8 +18,8 @@
 
 import React from "react";
 import { Form } from "semantic-ui-react";
+import { FormWrapper } from "../form/form-wrapper";
 import { FormField, Type, Validation } from "../models";
-import { FormWrapper } from "../src/form-wrapper";
 import constants from "./constants";
 
 export interface FormTestFields {
