@@ -5,12 +5,17 @@
     "description": "WSO2 Identity Server Web Applications",
     "repository": "https://github.com/wso2/identity-apps.git",
     "scripts": {
-        "prebuild": "npm i && lerna bootstrap",
+        "prebuild": "yarn",
         "build": "lerna run build --stream",
         "clean": "lerna run clean --stream"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
+    "workspaces": [
+        "modules/*",
+        "apps/*",
+        "components/theme"
+    ],
     "dependencies": {
         "@types/react": "^16.9.0",
         "classnames": "^2.2.6",
