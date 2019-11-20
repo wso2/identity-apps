@@ -22,8 +22,7 @@ import { useEffect, useRef, useState } from "react";
  * Hook to notify component outside clicks.
  *
  * @param {boolean} initialValue - Initial value.
- * @return {{ref: React.MutableRefObject<null>; isComponentVisible: any; setIsComponentVisible:
- *     React.Dispatch<React.SetStateAction<any>>}}
+ * @return {object} - ref, isComponentVisible & setIsComponentVisible
  */
 export function useClickOutside(initialValue: boolean = false) {
     const [ isComponentVisible, setIsComponentVisible ] = useState(initialValue);
