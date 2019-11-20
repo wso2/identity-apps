@@ -17,7 +17,6 @@
  */
 
 import React, { FunctionComponent } from "react";
-import { useTranslation } from "react-i18next";
 import { Application } from "../../models";
 import { ApplicationList } from "./application-list";
 
@@ -26,6 +25,9 @@ import { ApplicationList } from "./application-list";
  */
 interface AllApplicationsProps {
     allApps: Application[];
+    loading: boolean;
+    onSearchQueryClear: () => void;
+    searchQuery: string;
 }
 
 /**
@@ -36,10 +38,15 @@ interface AllApplicationsProps {
 export const AllApplications: FunctionComponent<AllApplicationsProps> = (
     props: AllApplicationsProps
 ): JSX.Element => {
-    const { allApps } = props;
-    const { t } = useTranslation();
+    const { allApps, onSearchQueryClear, loading, searchQuery } = props;
 
     return (
-        <ApplicationList apps={ allApps } isFavouritesList={ false } />
+        <ApplicationList
+            apps={ allApps }
+            isFavouritesList={ false }
+            searchQuery={ searchQuery }
+            loading={ loading }
+            onSearchQueryClear={ onSearchQueryClear }
+        />
     );
 };

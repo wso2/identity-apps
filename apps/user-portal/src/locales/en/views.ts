@@ -145,6 +145,50 @@ export const views: Views = {
             },
             recent: {
                 heading: "Recent Applications"
+            },
+            search: {
+                forms: {
+                    searchForm: {
+                        inputs: {
+                            filerAttribute: {
+                                label: "Filter attribute",
+                                placeholder: "ex: name, description etc.",
+                                validations: {
+                                    empty: "Filter attribute is a required field"
+                                }
+                            },
+                            filterCondition: {
+                                label: "Filter condition",
+                                placeholder: "ex: Starts with etc.",
+                                validations: {
+                                    empty: "Filter condition is a required field"
+                                }
+                            },
+                            filterValue: {
+                                label: "Filter value",
+                                placeholder: "ex: facebook, slack etc.",
+                                validations: {
+                                    empty: "Filter value is a required field"
+                                }
+                            },
+                        }
+                    }
+                },
+                hints: {
+                    querySearch: {
+                        actionKeys: "Shift + Enter",
+                        label: "To search as a query"
+                    }
+                },
+                options: {
+                    header: "Advance search",
+                },
+                placeholder: "Search by name",
+                popups: {
+                    clear: "clear search",
+                    dropdown: "show options"
+                },
+                resultsIndicator: "Showing results for \"{{query}}\""
             }
         },
         approvals: {
@@ -914,6 +958,16 @@ export const views: Views = {
             subTitle: "The page you're looking for isn't here",
             title: "It looks like you're lost. :("
         },
+    },
+    placeholders: {
+        emptySearchResult: {
+            action: "Clear search query",
+            subtitles: {
+                0: "We couldn't find any results for \"{{query}}\"",
+                1: "Please try a different search term."
+            },
+            title: "No results found"
+        }
     },
     sections: {
         accountRecovery: {

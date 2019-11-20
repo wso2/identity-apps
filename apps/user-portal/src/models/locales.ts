@@ -36,12 +36,15 @@ export interface Common {
     claim: string;
     completed: string;
     configure: string;
+    contains: string;
     continue: string;
     createdOn: string;
     delete: string;
     description: string;
     deviceModel: string;
     edit: string;
+    endsWith: string;
+    equals: string;
     filter: string;
     goBackHome: string;
     help: string;
@@ -53,6 +56,7 @@ export interface Common {
     loginTime: string;
     logout: string;
     more: string;
+    name: string;
     operatingSystem: string;
     operations: string;
     overview: string;
@@ -65,13 +69,16 @@ export interface Common {
     release: string;
     remove: string;
     reserved: string;
+    resetFilters: string;
     revoke: string;
     revokeAll: string;
     save: string;
+    search: string;
     security: string;
     showLess: string;
     showMore: string;
     showPassword: string;
+    startsWith: string;
     submit: string;
     switch: string;
     terminate: string;
@@ -161,6 +168,50 @@ export interface Views {
             recent: {
                 heading: string;
             },
+            search: {
+                forms: {
+                    searchForm: {
+                        inputs: {
+                            filerAttribute: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                }
+                            },
+                            filterCondition: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                }
+                            },
+                            filterValue: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                }
+                            },
+                        }
+                    }
+                },
+                hints: {
+                    querySearch: {
+                        actionKeys: string;
+                        label: string;
+                    }
+                },
+                options: {
+                    header: string;
+                }
+                placeholder: string;
+                popups: {
+                    clear: string;
+                    dropdown: string;
+                },
+                resultsIndicator: string;
+            }
         },
         approvals: {
             notifications: {
@@ -601,6 +652,9 @@ export interface Views {
         security: Page;
         404: Page;
     };
+    placeholders: {
+        emptySearchResult: Placeholder
+    };
     sections: {
         accountRecovery: {
             description: string;
@@ -695,4 +749,20 @@ interface Notification {
 interface NotificationItem {
     message: string;
     description: string;
+}
+
+/**
+ * Model for placeholder.
+ */
+interface Placeholder {
+    action?: string;
+    title: string;
+    subtitles: string | PlaceholderSubtitle;
+}
+
+/**
+ * Model for placeholder subtitle.
+ */
+interface PlaceholderSubtitle {
+    [key: number]: string;
 }

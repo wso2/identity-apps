@@ -42,6 +42,7 @@ interface ThemeIconProps {
 
 export type ThemeIconSizes =
     "auto"
+    | "nano"
     | "micro"
     | "mini"
     | "tiny"

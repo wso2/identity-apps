@@ -65,3 +65,6 @@ export const StatusShieldGood = require("../lib/assets/images/accounts-status-ic
 export const StatusShieldWarning = require("../lib/assets/images/accounts-status-icons/warning.svg");
 export const StatusShieldDanger = require("../lib/assets/images/accounts-status-icons/danger.svg");
 export const ConsentForm = require("../lib/assets/images/icons/consents.svg");
+export const CrossIcon = require("../lib/assets/images/icons/cross-icon.svg");
+
+export const EmptySearchResultsIllustration = require("../lib/assets/images/app-states/no-search-results.svg");

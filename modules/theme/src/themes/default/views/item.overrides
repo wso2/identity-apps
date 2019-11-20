@@ -21,6 +21,9 @@
     &.application-list-item {
         margin-bottom: 25px;
 
+        &:hover {
+            cursor: pointer;
+        }
         .content {
             flex: 0 1 auto;
             &:hover {

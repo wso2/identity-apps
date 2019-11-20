@@ -20,7 +20,9 @@ import {
     AccountRecoveryIconSet,
     CodeIcon,
     ConsentForm,
+    CrossIcon,
     DummyUser,
+    EmptySearchResultsIllustration,
     HomeTileIcons,
     Logo,
     MFAIconSet,
@@ -73,6 +75,14 @@ export const customCSS: CustomCSSType = {
     light: {
         appPrimaryColor: "#ff5000"
     }
+};
+
+export const AdvanceSearchIcons = {
+    clear: CrossIcon
+};
+
+export const EmptyPlaceholderIllustrations = {
+    search: EmptySearchResultsIllustration
 };
 
 /**

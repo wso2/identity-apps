@@ -18,11 +18,11 @@
 
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, Form, Grid, Input } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
 import { fetchApplications } from "../../api";
 import { Application, Notification } from "../../models";
-import { AdvanceSearch } from "../shared";
 import { AllApplications } from "./all-applications";
+import { ApplicationSearch } from "./application-search";
 
 /**
  * Proptypes for the applications component.
@@ -39,17 +39,33 @@ interface ApplicationsProps {
 export const Applications: FunctionComponent<ApplicationsProps> = (
     props: ApplicationsProps
 ): JSX.Element => {
-    const [ applications, setApplications ] = useState<Application[]>([]);
     const { onNotificationFired } = props;
+    const [ applications, setApplications ] = useState<Application[]>([]);
+    const [ searchQuery, setSearchQuery ] = useState("");
+    const [ isRequestLoading, setIsRequestLoading ] = useState(false);
     const { t } = useTranslation();
 
     /**
      * Fetches the applications list on component mount.
      */
     useEffect(() => {
-        fetchApplications()
+        getApplications(null, null, null);
+    }, []);
+
+    /**
+     * Fetches the list of applications from the API.
+     *
+     * @param {number} limit - Results limit.
+     * @param {number} offset - Results offset.
+     * @param {string} filter - Filter query.
+     */
+    const getApplications = (limit: number, offset: number, filter: string) => {
+        setIsRequestLoading(true);
+
+        fetchApplications(limit, offset, filter)
             .then((response) => {
                 setApplications(response.applications);
+                setIsRequestLoading(false);
             })
             .catch((error) => {
                 let notification = {
@@ -78,25 +94,46 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
                 }
                 onNotificationFired(notification);
             });
-    }, []);
+    };
+
+    /**
+     * Handles the `onFilter` callback action from the
+     * application search component.
+     *
+     * @param {string} query - Search query.
+     */
+    const handleApplicationFilter = (query: string) => {
+        setSearchQuery(query);
+        getApplications(null, null, query);
+    };
+
+    /**
+     * Handles the `onSearchQueryClear` callback action from the
+     * all application component.
+     */
+    const handleSearchQueryClear = () => {
+        setSearchQuery("");
+        getApplications(null, null, null);
+    };
 
     return (
         <>
-            <AdvanceSearch aligned="right">
-                <Grid>
-                    <Grid.Row>
-                        <Grid.Column width={ 16 }>
-                            <Form>
-                                <Input placeholder="test" />
-                            </Form>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </AdvanceSearch>
-            <Divider hidden />
-            <Divider />
+            <ApplicationSearch onFilter={ handleApplicationFilter }/>
+            <div className="search-results-indicator">
+                {
+                    searchQuery
+                        ? t("views:components.applications.search.resultsIndicator", { query: searchQuery })
+                        : ""
+                }
+            </div>
+            <Divider/>
             <Divider hidden className="x1"/>
-            <AllApplications allApps={ applications } />
+            <AllApplications
+                allApps={ applications }
+                searchQuery={ searchQuery }
+                loading={ isRequestLoading }
+                onSearchQueryClear={ handleSearchQueryClear }
+            />
         </>
     );
 };
