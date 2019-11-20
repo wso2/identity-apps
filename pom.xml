@@ -353,16 +353,13 @@
                 <inherited>false</inherited>
                 <executions>
                     <execution>
-                        <id>npm install (initialize)</id>
+                        <id>yarn install (initialize)</id>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <phase>initialize</phase>
                         <configuration>
-                            <executable>npm</executable>
-                            <arguments>
-                                <argument>install</argument>
-                            </arguments>
+                            <executable>yarn</executable>
                             <workingDirectory>${basedir}</workingDirectory>
                         </configuration>
                     </execution>
