@@ -97,7 +97,8 @@ modules/http/dist
 target/
 npm/
 apps/*/build/
-apps/*/src/main/
+apps/user-portal/src/main/
+apps/admin-portal/src/main/
 apps/authenticationendpoint/src/libs/theme/
 
 .classpath
