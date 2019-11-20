@@ -82,172 +82,218 @@ body {
             width: 100px !important;
         }
     }
-    
-    .theme-icon {
-        background-color: @iconWrapperBgColor;
-        overflow: hidden;
-        display: flex;
-        text-align: center;
-        align-items: center;
-        justify-content: center;
+}
 
-        &.inline {
-            display: inline-block;
-        }
-        &.transparent {
-            background-color: transparent;
-        }
-        &.relaxed {
-            padding: @iconWrapperPadding;
+/*****************************************
+                Theme Icon
+*****************************************/
 
-            &.very {
-                padding: @iconWrapperVeryPadding;
-            }
-        }
-        &.bordered {
-            border-width: @iconWrapperBorderWidth;
-            border-style: solid;
-            border-color: @iconWrapperBorderColor;
-        }
-        &.rounded {
-            border-radius: @defaultBorderRadius;
-        }
-        &.micro {
-            .icon {
-                width: @iconMicro;
-                height: auto;
-            }
-            &.square {
-                .icon {
-                    height: @iconMicro;
-                }
-            }
-        }
-        &.mini {
-            .icon {
-                width: @iconMini;
-                height: auto;
-            }
-            &.square {
-                .icon {
-                    height: @iconMini;
-                }
-            }
-        }
-        &.tiny {
-            .icon {
-                width: @iconTiny;
-                height: auto;
-            }
-            &.square {
-                .icon {
-                    height: @iconTiny;
-                }
-            }
-        }
-        &.small {
-            .icon {
-                width: @iconSmall;
-                height: auto;
-            }
-            &.square {
-                .icon {
-                    height: @iconSmall;
-                }
-            }
-        }
-        &.medium {
-            .icon {
-                width: @iconMedium;
-                height: auto;
-            }
-            &.square {
-                .icon {
-                    height: @iconMedium;
-                }
-            }
-        }
-        &.large {
-            .icon {
-                width: @iconLarge;
-                height: auto;
-            }
-            &.square {
-                .icon {
-                    height: @iconLarge;
-                }
-            }
-        }
-        &.big {
-            .icon {
-                width: @iconBig;
-                height: auto;
-            }
-            &.square {
-                .icon {
-                    height: @iconBig;
-                }
-            }
-        }
-        &.huge {
-            .icon {
-                width: @iconHuge;
-                height: auto;
-            }
-            &.square {
-                .icon {
-                    height: @iconHuge;
-                }
-            }
-        }
-        &.massive {
-            .icon {
-                width: @iconMassive;
-                height: auto;
-            }
-            &.square {
-                .icon {
-                    height: @iconMassive;
-                }
-            }
-        }
-        &.default {
-            svg.icon {
-                path {
-                    fill: @iconDefaultBgColor;
-                }
-            }
-        }
-        &.two-tone {
-            svg.icon {
-                .primary {
-                    fill: @iconWrapperTwoTonePrimaryColor;
-                }
-                .secondary {
-                    fill: @iconWrapperTwoToneSecondaryColor;
-                }
-            }
-        }
-        &.colored {
-            svg.icon {
-                .primary {
-                    fill: @iconWrapperColoredPrimaryColor;
-                }
-            }
-        }
-        &.spaced-right {
-            margin-right: @iconWrapperSpacingRight;
-        }
-        &.spaced-left {
-            margin-left: @iconWrapperSpacingLeft;
-        }
-        &.floated-right {
-            float: right;
-        }
-        &.floated-left {
-            float: left;
+.theme-icon {
+    background-color: @iconWrapperBgColor;
+    overflow: hidden;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+    &.inline {
+        display: inline-block;
+    }
+    &.transparent {
+        background-color: transparent;
+    }
+    &.relaxed {
+        padding: @iconWrapperPadding;
+
+        &.very {
+            padding: @iconWrapperVeryPadding;
         }
     }
+    &.bordered {
+        border-width: @iconWrapperBorderWidth;
+        border-style: solid;
+        border-color: @iconWrapperBorderColor;
+    }
+    &.rounded {
+        border-radius: @defaultBorderRadius;
+    }
+    &.nano {
+        .icon {
+            width: @iconNano;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconNano;
+            }
+        }
+    }
+    &.micro {
+        .icon {
+            width: @iconMicro;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconMicro;
+            }
+        }
+    }
+    &.mini {
+        .icon {
+            width: @iconMini;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconMini;
+            }
+        }
+    }
+    &.tiny {
+        .icon {
+            width: @iconTiny;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconTiny;
+            }
+        }
+    }
+    &.small {
+        .icon {
+            width: @iconSmall;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconSmall;
+            }
+        }
+    }
+    &.medium {
+        .icon {
+            width: @iconMedium;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconMedium;
+            }
+        }
+    }
+    &.large {
+        .icon {
+            width: @iconLarge;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconLarge;
+            }
+        }
+    }
+    &.big {
+        .icon {
+            width: @iconBig;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconBig;
+            }
+        }
+    }
+    &.huge {
+        .icon {
+            width: @iconHuge;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconHuge;
+            }
+        }
+    }
+    &.massive {
+        .icon {
+            width: @iconMassive;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconMassive;
+            }
+        }
+    }
+    &.default {
+        svg.icon {
+            path {
+                fill: @iconDefaultBgColor;
+            }
+            &:hover {
+                path {
+                    fill: @iconDefaultBgHoverColor;
+                }
+            }
+        }
+    }
+    &.two-tone {
+        svg.icon {
+            .primary {
+                fill: @iconWrapperTwoTonePrimaryColor;
+            }
+            .secondary {
+                fill: @iconWrapperTwoToneSecondaryColor;
+            }
+        }
+    }
+    &.colored {
+        svg.icon {
+            .primary {
+                fill: @iconWrapperColoredPrimaryColor;
+            }
+        }
+    }
+    &.spaced-right {
+        margin-right: @iconWrapperSpacingRight;
+    }
+    &.spaced-left {
+        margin-left: @iconWrapperSpacingLeft;
+    }
+    &.floated-right {
+        float: right;
+    }
+    &.floated-left {
+        float: left;
+    }
+}
+
+/*****************************************
+    Advance Search Related Styles
+*****************************************/
+
+.empty-placeholder {
+    text-align: center;
+    padding: 2em;
+
+    .subtitle {
+        color: @lightFontColor;
+    }
+    .action-container {
+        margin-top: 12px;
+    }
+}
+
+/*****************************************
+    Advance Search Related Styles
+*****************************************/
+
+.search-results-indicator {
+    height: 28px;
+    padding-top: 16px;
+    color: @lightFontColor;
 }
 
 /*****************************************
@@ -264,16 +310,54 @@ body {
     &.aligned-center {
         text-align: center;
     }
-    .advance-search-dropdown {
-        max-width: @advanceSearchMaxWidth;
-        min-width: @advanceSearchMinWidth;
-        padding: 0.8em 1.3em;
+    .search-query-hint {
+        position: absolute;
+        visibility: hidden;
+        padding: 5px 16px;
+        border-bottom-right-radius: 4px;
+        border-bottom-left-radius: 4px;
+        width: @advanceSearchWidth;
+        font-size: 12px;
+        background: @white;
+        border: @advanceSearchHintBorder;
+
+        .query {
+            display: inline-block;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            max-width: 200px;
+        }
+        .short-cut {
+            color: @lightFontColor;
+            float: right;
+        }
+        &.active {
+            visibility: visible;
+        }
+    }
+    .advance-search-options {
+        max-width: @advanceSearchDropdownMaxWidth;
+        min-width: @advanceSearchDropdownMinWidth;
         position: absolute;
         width: 100%;
         z-index: 9;
         background: white;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        border: 1px solid rgba(0,0,0,0.2);
+        box-shadow: @advanceSearchOptionsShadow;
+        border: @advanceSearchOptionsBorder;
+        margin-top: 10px;
+
+        &.hidden {
+            display: none;
+        }
+        .header {
+            padding: 0.7em 1em;
+            border-bottom: @advanceSearchOptionsHeaderBorderBottom;
+            font-weight: 500;
+        }
+        .form-wrapper {
+            padding: 0.7em 1em;
+        }
     }
 }
 

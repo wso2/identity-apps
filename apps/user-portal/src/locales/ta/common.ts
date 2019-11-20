@@ -35,12 +35,15 @@ export const common: Common = {
     claim: "கோர்",
     completed: "பூரணப்படுத்தப்பட்டவை",
     configure: "கட்டமை",
+    contains: "கொண்டுள்ளது", // TODO: translate
     continue: "தொடர்",
     createdOn: "உருவாக்கப்பட்ட தினம்",
     delete: "அழி",
     description: "விபரம்",
     deviceModel: "கருவி மாதிரி",
     edit: "திருத்து",
+    endsWith: "Ends with", // TODO: translate
+    equals: "Equals", // TODO: translate
     filter: "வடிகட்டு",
     goBackHome: "முகப்புக்கு செல்",
     help: "உதவி",
@@ -52,6 +55,7 @@ export const common: Common = {
     loginTime: "நுழைந்த நேரம்",
     logout: "வெளியேறு",
     more: "மேலும்",
+    name: "Name", // TODO: translate
     operatingSystem: "இயங்கு தளம்",
     operations: "செயற்பாடுகள்",
     overview: "கண்ணோட்டம்",
@@ -64,13 +68,16 @@ export const common: Common = {
     release: "விடுவி",
     remove: "நீக்கு",
     reserved: "ஒதுக்கப்பட்டவை",
+    resetFilters: "Reset filters", // TODO: translate
     revoke: "நீக்கு",
     revokeAll: "அனைத்தையும் நீக்கு",
     save: "சேமி",
+    search: "Search",
     security: "பாதுகாப்பு",
     showLess: "சுருக்கிக் காண்",
     showMore: "மேலுங் காண்",
     showPassword: "கடவுச்சொல்லை காண்",
+    startsWith: "Starts with", // TODO: translate
     submit: "சமர்ப்பி",
     switch: "மாற்று",
     terminate: "முடி",
