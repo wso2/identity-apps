@@ -36,7 +36,7 @@
     <dependencies>
         <dependency>
             <groupId>org.wso2.identity.apps</groupId>
-            <artifactId>authenticationendpoint</artifactId>
+            <artifactId>authentication-portal</artifactId>
             <type>war</type>
         </dependency>
     </dependencies>
@@ -58,7 +58,7 @@
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.wso2.identity.apps</groupId>
-                                    <artifactId>authenticationendpoint</artifactId>
+                                    <artifactId>authentication-portal</artifactId>
                                     <type>war</type>
                                     <overWrite>true</overWrite>
                                     <outputDirectory>${basedir}/src/main/resources/</outputDirectory>
