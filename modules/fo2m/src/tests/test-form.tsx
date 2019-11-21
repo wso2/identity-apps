@@ -18,7 +18,7 @@
 
 import React from "react";
 import { Form } from "semantic-ui-react";
-import { FormWrapper } from "..";
+import { Fo2m } from "..";
 import { FormField, Type, Validation } from "../models";
 import constants from "./constants";
 
@@ -168,7 +168,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
     });
 
     return (
-        <FormWrapper
+        <Fo2m
             formFields={ formFields }
             onSubmit={ (value) => constants.onSubmit(value) }
             groups={ isGroup ? [
