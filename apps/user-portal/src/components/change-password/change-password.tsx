@@ -232,6 +232,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
             <FormWrapper
                 formFields={ [
                     {
+                        hidePassword: t("common:hidePassword"),
                         label: t(
                             "views:components.changePassword.forms.passwordResetForm.inputs" + ".currentPassword.label"
                         ),
@@ -245,10 +246,12 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                             "views:components.changePassword.forms.passwordResetForm." +
                                 "inputs.currentPassword.validations.empty"
                         ),
-                        type: "password",
-                        width: 9
+                        showPassword: t("common:showPassword"),
+                        type: "password" as const,
+                        width: 9,
                     },
                     {
+                        hidePassword: t("common:hidePassword"),
                         label: t(
                             "views:components.changePassword.forms.passwordResetForm.inputs" + ".newPassword.label"
                         ),
@@ -262,10 +265,12 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                             "views:components.changePassword.forms.passwordResetForm." +
                                 "inputs.newPassword.validations.empty"
                         ),
-                        type: "password",
+                        showPassword: t("common:showPassword"),
+                        type: "password" as const,
                         width: 9
                     },
                     {
+                        hidePassword: t("common:hidePassword"),
                         label: t(
                             "views:components.changePassword.forms.passwordResetForm.inputs" + ".confirmPassword.label"
                         ),
@@ -279,7 +284,8 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                             "views:components.changePassword.forms.passwordResetForm." +
                                 "inputs.confirmPassword.validations.empty"
                         ),
-                        type: "password",
+                        showPassword: t("common:showPassword"),
+                        type: "password" as const,
                         validation: (value: string, validation: Validation, formValues) => {
                             if (formValues.get("newPassword") !== value) {
                                 validation.isValid = false;
@@ -295,11 +301,11 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     },
                     {
                         hidden: true,
-                        type: "divider"
+                        type: "divider" as const
                     },
                     {
-                        size: "small",
-                        type: "submit",
+                        size: "small" as const,
+                        type: "submit" as const,
                         value: t("common:submit").toString()
                     },
                     {
@@ -307,8 +313,8 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         onClick: () => {
                             hideFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER);
                         },
-                        size: "small",
-                        type: "button",
+                        size: "small" as const,
+                        type: "button" as const,
                         value: t("common:cancel").toString()
                     }
                 ] }

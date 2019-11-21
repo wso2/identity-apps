@@ -116,15 +116,15 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
     };
 
     /**
-     * Type guard to check if an input element is not of the type submit/reset/button
+     * Type guard to check if an input element is a text field
      * @param toBeDetermined
      */
-    const isTextField = (toBeDetermined: FormField): toBeDetermined is InputField => {
-        return (toBeDetermined as InputField).type === "email" ||
-            (toBeDetermined as InputField).type === "password" ||
-            (toBeDetermined as InputField).type === "number" ||
-            (toBeDetermined as InputField).type === "text" ||
-            (toBeDetermined as InputField).type === "textarea";
+    const isTextField = (toBeDetermined: FormField): toBeDetermined is InputField | PasswordField => {
+        return (toBeDetermined as InputField).type === "email"
+            || (toBeDetermined as PasswordField).type === "password"
+            || (toBeDetermined as InputField).type === "number"
+            || (toBeDetermined as InputField).type === "text"
+            || (toBeDetermined as InputField).type === "textarea";
 
     };
 
@@ -138,7 +138,7 @@ export const FormWrapper: React.FunctionComponent<FormProps> = (props: FormProps
     };
 
     /**
-     * Type guard to check if an input element is of the type Radio
+     * Type guard to check if an input element is of the type Password
      * @param toBeDetermined
      */
     const isPasswordField = (toBeDetermined: FormField): toBeDetermined is PasswordField => {

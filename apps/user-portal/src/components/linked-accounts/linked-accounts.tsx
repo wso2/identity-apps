@@ -284,9 +284,10 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                                                 "views:components.linkedAccounts.forms" +
                                                 ".addAccountForm.inputs.username.validations.empty"
                                             ),
-                                            type: "text"
+                                            type: "text" as const
                                         },
                                         {
+                                            hidePassword: t("common:hidePassword"),
                                             label: t(
                                                 "views:components.linkedAccounts.forms.addAccountForm." +
                                                 "inputs.password.label"
@@ -301,15 +302,16 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                                                 "views:components.linkedAccounts.forms" +
                                                 ".addAccountForm.inputs.password.validations.empty"
                                             ),
-                                            type: "password"
+                                            showPassword: t("common:showPassword"),
+                                            type: "password" as const
                                         },
                                         {
                                             hidden: true,
-                                            type: "divider"
+                                            type: "divider" as const
                                         },
                                         {
-                                            size: "small",
-                                            type: "submit",
+                                            size: "small" as const,
+                                            type: "submit" as const,
                                             value: t("common:save").toString()
                                         },
                                         {
@@ -317,8 +319,8 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                                             onClick: () => {
                                                 hideFormEditView("addAccountForm");
                                             },
-                                            size: "small",
-                                            type: "button",
+                                            size: "small" as const,
+                                            type: "button" as const,
                                             value: t("common:cancel").toString()
                                         }
                                     ] }
