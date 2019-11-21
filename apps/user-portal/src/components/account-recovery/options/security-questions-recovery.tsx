@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FormWrapper } from "@wso2is/form";
+import { Field, Fo2m } from "@wso2is/fo2m";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
@@ -512,7 +512,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                         <Grid>
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column width={ 16 }>
-                                    <FormWrapper
+                                { /*     <Fo2m
                                         formFields={ formFields }
                                         groups={ [
                                             {
@@ -527,7 +527,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                         onSubmit={ (values) => {
                                             handleSave(values);
                                         } }
-                                    />
+                                    /> */ }
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>

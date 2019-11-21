@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FormWrapper, Validation } from "@wso2is/form";
+import { Fo2m, Validation } from "@wso2is/fo2m";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
@@ -174,7 +174,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     /**
      * Resets the form by re-initializing state.
      */
-    let resetForm: () => void = () => undefined;
+    const resetForm: () => void = () => undefined;
 
     /**
      * Handle the confirmation modal close event.
@@ -229,7 +229,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
 
     const showChangePasswordView = editingForm[CHANGE_PASSWORD_FORM_IDENTIFIER] ? (
         <EditSection>
-            <FormWrapper
+            { /* <Fo2m
                 formFields={ [
                     {
                         hidePassword: t("common:hidePassword"),
@@ -336,7 +336,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                 triggerReset={ (reset) => {
                     resetForm = reset;
                 } }
-            />
+            /> */ }
         </EditSection>
     ) : null;
 

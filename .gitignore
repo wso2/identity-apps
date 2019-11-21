@@ -95,7 +95,7 @@ typings/
 modules/theme/lib/
 modules/http/dist
 modules/validator/dist
-modules/form/dist
+modules/fo2m/dist
 target/
 npm/
 apps/*/build/

@@ -92,7 +92,7 @@
         "@types/lodash": "^4.14.146",
         "@types/ua-parser-js": "^0.7.33",
         "@wso2is/authenticate": "^0.1.0",
-        "@wso2is/form": "^0.1.0",
+        "@wso2is/fo2m": "^0.1.0",
         "@wso2is/http": "^0.1.0",
         "@wso2is/theme": "^0.1.0",
         "@wso2is/validator": "^0.1.0",

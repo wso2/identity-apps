@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FormWrapper } from "@wso2is/form";
+import { Fo2m } from "@wso2is/fo2m";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -267,7 +267,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                                 { t("views:components.linkedAccounts.accountTypes.local.label") }
                             </Grid.Column>
                             <Grid.Column width={ 12 }>
-                                <FormWrapper
+                                { /* <Fo2m
                                     formFields={ [
                                         {
                                             label: t(
@@ -337,7 +337,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                                     onSubmit={ (values) => {
                                         handleSubmit(values, "addAccountForm");
                                     } }
-                                />
+                                /> */ }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

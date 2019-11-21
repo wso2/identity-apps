@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import { FormWrapper, Validation } from "@wso2is/form";
+import { Fo2m, Validation } from "@wso2is/fo2m";
 import Validator from "@wso2is/validator";
 import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
-import { getProfileInformation } from "../../../store/actions";
 import { updateProfileInfo } from "../../../api";
 import { MFAIcons } from "../../../configs";
 import { BasicProfileInterface, Notification } from "../../../models";
+import { getProfileInformation } from "../../../store/actions";
 import { EditSection, ThemeIcon } from "../../shared";
 
 /**
@@ -180,7 +180,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                             <List>
                                 <List.Item>
                                     <List.Content>
-                                        <FormWrapper
+                                        { /* <Fo2m
                                             formFields={ [
                                                 {
                                                     label: t(
@@ -251,7 +251,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                             onSubmit={ (values: Map<string, string>) => {
                                                 handleUpdate(values.get("mobileNumber"));
                                             } }
-                                        />
+                                        /> */ }
                                     </List.Content>
                                 </List.Item>
                             </List>

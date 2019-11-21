@@ -16,7 +16,7 @@
  * under the License
  */
 
-import { FormWrapper, Validation } from "@wso2is/form";
+import { Fo2m, Validation } from "@wso2is/fo2m";
 import Validator from "@wso2is/validator";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
@@ -215,7 +215,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 4 }>{ t("views:components.profile.fields.name.label") }</Grid.Column>
                     <Grid.Column width={ 12 }>
-                        <FormWrapper
+                        { /* <Fo2m
                             formFields={ [
                                 {
                                     label: t(
@@ -284,7 +284,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             onSubmit={ (values) => {
                                 handleSubmit(values, "nameChangeForm");
                             } }
-                        />
+                        /> */ }
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -344,7 +344,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 4 }>{ t("views:components.profile.fields.email.label") }</Grid.Column>
                     <Grid.Column width={ 12 }>
-                        <FormWrapper
+                       { /*  <Fo2m
                             formFields={ [
                                 {
                                     label: t("views:components.profile.fields.email.label"),
@@ -403,7 +403,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             onSubmit={ (values) => {
                                 handleSubmit(values, "emailChangeForm");
                             } }
-                        />
+                        /> */ }
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -460,7 +460,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 4 }>{ t("views:components.profile.fields.organization.label") }</Grid.Column>
                     <Grid.Column width={ 12 }>
-                        <FormWrapper
+                        { /* <Fo2m
                             formFields={ [
                                 {
                                     label: t("views:components.profile.fields.organization.label"),
@@ -509,7 +509,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             onSubmit={ (values) => {
                                 handleSubmit(values, "organizationChangeForm");
                             } }
-                        />
+                        /> */ }
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -566,7 +566,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 4 }>{ t("views:components.profile.fields.mobile.label") }</Grid.Column>
                     <Grid.Column width={ 12 }>
-                        <FormWrapper
+                        { /* <Fo2m
                             formFields={ [
                                 {
                                     label: t("views:components.profile.fields.mobile.label"),
@@ -624,7 +624,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             onSubmit={ (values) => {
                                 handleSubmit(values, "mobileChangeForm");
                             } }
-                        />
+                        /> */ }
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
