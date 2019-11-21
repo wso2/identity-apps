@@ -9,7 +9,7 @@
         "start": "webpack-dev-server --env.NODE_ENV=local --mode development --inline --hot --open",
         "lint": "tslint -t stylish --project .",
         "build-prod": "webpack --env.NODE_ENV=prod",
-        "build": "webpack --env.NODE_ENV=prod --mode development && npm run test ",
+        "build": "webpack --env.NODE_ENV=prod --mode development && npm run test",
         "test": "jest --passWithNoTests",
         "clean": "rm -rf node_modules build npm"
     },

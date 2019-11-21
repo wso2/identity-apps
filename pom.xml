@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.91-SNAPSHOT</version>
+    <version>0.1.92-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
@@ -198,7 +198,7 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.identity.apps</groupId>
-                <artifactId>authenticationendpoint</artifactId>
+                <artifactId>authentication-portal</artifactId>
                 <version>${project.version}</version>
                 <type>war</type>
             </dependency>
