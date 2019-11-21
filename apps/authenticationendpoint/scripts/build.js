@@ -21,7 +21,7 @@ const path = require('path');
 const fs = require('fs-extra');
 
 const srcDir = path.join(__dirname, "..", "src");
-const themeModuleDir = path.join(__dirname, "..", "node_modules", "@wso2is", "theme");
+const themeModuleDir = path.join(__dirname, "../../../", "node_modules", "@wso2is", "theme");
 
 fs.copy(path.join(themeModuleDir, "lib"), path.join(srcDir, "libs", "theme"))
     .then(() => {
