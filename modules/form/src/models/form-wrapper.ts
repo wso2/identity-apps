@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { SemanticSIZES, SemanticWIDTHS } from "semantic-ui-react";
 import * as React from "react";
+import { SemanticSIZES, SemanticWIDTHS } from "semantic-ui-react";
 
 /**
  * Form Field Types
