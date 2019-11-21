@@ -17,6 +17,7 @@
  */
 
 import { SemanticSIZES, SemanticWIDTHS } from "semantic-ui-react";
+import * as React from "react";
 
 /**
  * Form Field Types
@@ -58,7 +59,7 @@ export interface Error {
 export interface InputField {
     placeholder: string;
     name: string;
-    type: "text" | "email" | "password" | "textarea" | "number";
+    type: "text" | "email" | "textarea" | "number";
     required: boolean;
     label: string;
     width?: SemanticWIDTHS;
@@ -212,6 +213,7 @@ export interface FormDivider {
  */
 export type FormField =
     | InputField
+    | PasswordField
     | FormSubmit
     | RadioField
     | DropdownField

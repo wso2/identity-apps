@@ -22,7 +22,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
-import { getProfileInformation } from "../../../../src/store/actions";
+import { getProfileInformation } from "../../../store/actions";
 import {  updateProfileInfo } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
 import { BasicProfileInterface, Notification } from "../../../models";

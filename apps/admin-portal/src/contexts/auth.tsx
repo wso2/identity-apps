@@ -17,7 +17,7 @@
  */
 
 import React, { createContext, useEffect, useReducer } from "react";
-import { handleSignIn, handleSignOut } from "../middlewares/authenticate";
+import { handleSignIn, handleSignOut } from "../middlewares";
 import { AuthContextInterface } from "../models/auth";
 import { authenticateInitialState, authenticateReducer } from "../reducers/authenticate";
 
