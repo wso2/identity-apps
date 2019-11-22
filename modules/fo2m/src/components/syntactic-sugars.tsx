@@ -37,6 +37,6 @@ interface GroupFieldsProps {
  * This component is a syntactic sugar for the InnerGroupFields component
  * @param props
  */
-export const GroupFields = (props: GroupFieldsProps): JSX.Element => {
+export const GroupFields = (props: React.PropsWithChildren<GroupFieldsProps>): JSX.Element => {
     return null;
 };
