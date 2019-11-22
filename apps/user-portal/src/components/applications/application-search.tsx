@@ -44,7 +44,7 @@ const FILTER_VALUES_FIELD_IDENTIFIER: string = "filerValues";
  * field value to this.
  * @type {string}
  */
-const DEFAULT_SEARCH_STRATEGY: string = "name sw";
+const DEFAULT_SEARCH_STRATEGY: string = "name co";
 
 /**
  * Proptypes for the application search component.
