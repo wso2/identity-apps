@@ -37,7 +37,7 @@ import { Password } from "./password";
  * prop types for the Field component
  */
 interface InnerFieldProps {
-    passedProps: { formField: FormField };
+    passedProps: FormField ;
     formProps: {
         checkError: (inputField: FormField) => { isError: boolean, errorMessages: string[] };
         handleBlur: (event: React.KeyboardEvent, name: string) => void;
@@ -58,8 +58,11 @@ export const InnerField = (props: InnerFieldProps): JSX.Element => {
         passedProps,
         formProps,
     } = props;
-    const { formField } = passedProps;
+
+    const formField: FormField = { ...passedProps };
+
     const { checkError, handleBlur, handleChange, handleChangeCheckBox, handleReset, form } = formProps;
+
     /**
      * Generates a semantic Form element
      * @param inputField
@@ -251,6 +254,6 @@ export const InnerField = (props: InnerFieldProps): JSX.Element => {
         }
     };
     return (
-        formFieldGenerator(formField)
+        <Form.Field>{ formFieldGenerator(formField) }</Form.Field>
     );
 };
