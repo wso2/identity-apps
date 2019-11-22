@@ -18,7 +18,8 @@
 
 import React from "react";
 import { Form } from "semantic-ui-react";
-import { Fo2m } from "..";
+import { Field, Fo2m } from "..";
+import { GroupFields } from "../components";
 import { FormField, Type, Validation } from "../models";
 import constants from "./constants";
 
@@ -168,20 +169,24 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
     });
 
     return (
-        <Fo2m
-            formFields={ formFields }
-            onSubmit={ (value) => constants.onSubmit(value) }
-            groups={ isGroup ? [
-                {
-                    endIndex: 2,
-                    startIndex: 0,
-                    wrapper: Form.Group,
-                    wrapperProps: {
-                        inline: true
-                    }
-                }
-            ] : []  }
-        />
+        <Fo2m onSubmit={ (value) => constants.onSubmit(value) }>
+            {
+                isGroup
+                    ? (
+                        <>
+                            <GroupFields wrapper={ Form.Group } wrapperProps={ { inline: true } }>
+                                <Field { ...formFields[0] } />
+                                <Field { ...formFields[1] } />
+                            </GroupFields>
+                            <Field { ...formFields[2] } />
+
+                        </>
+                    )
+                    : formFields.map((formField, index) => {
+                        return <Field key={ index } { ...formField } />;
+                    })
+            }
+        </Fo2m>
     );
 
 };
