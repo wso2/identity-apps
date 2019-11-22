@@ -15,7 +15,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { Field, Fo2m, GroupFields, Validation } from "@wso2is/fo2m";
 import Validator from "@wso2is/validator";
+import { FORMERR } from "dns";
 import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -26,7 +28,6 @@ import { AccountRecoveryIcons } from "../../../configs";
 import { BasicProfileInterface, Notification } from "../../../models";
 import { AppState } from "../../../store";
 import { getProfileInformation } from "../../../store/actions";
-import { Field, Fo2m, GroupFields, Validation } from "../../fo2m";
 import { EditSection, ThemeIcon } from "../../shared";
 
 /**
@@ -288,18 +289,20 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                                 hidden={ true }
                                                 type="divider"
                                             />
-                                            <Field
-                                                size="small"
-                                                type="submit"
-                                                value={ t("common:update").toString() }
-                                            />
-                                            <Field
-                                                className="link-button"
-                                                onClick={ handleCancel }
-                                                size="small"
-                                                type="button"
-                                                value={ t("common:cancel").toString() }
-                                            />
+                                            <Form.Group inline={ true }>
+                                                <Field
+                                                    size="small"
+                                                    type="submit"
+                                                    value={ t("common:update").toString() }
+                                                />
+                                                <Field
+                                                    className="link-button"
+                                                    onClick={ handleCancel }
+                                                    size="small"
+                                                    type="button"
+                                                    value={ t("common:cancel").toString() }
+                                                />
+                                            </Form.Group>
                                         </Fo2m>
 
                                     </List.Content>
@@ -308,7 +311,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-            </EditSection>
+            </EditSection >
         );
     };
 

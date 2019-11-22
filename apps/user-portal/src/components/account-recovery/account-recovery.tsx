@@ -24,7 +24,7 @@ import { SettingsSection } from "../shared";
 import { EmailRecovery, SecurityQuestionsComponent } from "./options";
 
 /**
- * Proptypes for AccountRecoveryComponent component.
+ * Prop types for AccountRecoveryComponent component.
  */
 interface AccountRecoveryProps {
     onNotificationFired: (notification: Notification) => void;
