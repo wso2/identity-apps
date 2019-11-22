@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FormWrapper } from "@wso2is/form";
+import { Field, Fo2m } from "@wso2is/fo2m";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,8 +42,8 @@ interface LinkedAccountsProps {
  * @return {JSX.Element}
  */
 export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: LinkedAccountsProps): JSX.Element => {
-    const [ associations, setAssociations ] = useState([]);
-    const [ editingForm, setEditingForm ] = useState({
+    const [associations, setAssociations] = useState([]);
+    const [editingForm, setEditingForm] = useState({
         addAccountForm: false
     });
     const { onNotificationFired } = props;
@@ -155,7 +155,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 // Hide form
                 setEditingForm({
                     ...editingForm,
-                    [ formName ]: false
+                    [formName]: false
                 });
                 fetchAssociations();
             })
@@ -187,7 +187,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
     const showFormEditView = (formName: string): void => {
         setEditingForm({
             ...editingForm,
-            [ formName ]: true
+            [formName]: true
         });
     };
 
@@ -199,7 +199,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
     const hideFormEditView = (formName: string): void => {
         setEditingForm({
             ...editingForm,
-            [ formName ]: false
+            [formName]: false
         });
     };
 
@@ -267,124 +267,115 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                                 { t("views:components.linkedAccounts.accountTypes.local.label") }
                             </Grid.Column>
                             <Grid.Column width={ 12 }>
-                                <FormWrapper
-                                    formFields={ [
-                                        {
-                                            label: t(
-                                                "views:components.linkedAccounts.forms.addAccountForm" +
-                                                ".inputs.username.label"
-                                            ),
-                                            name: "username",
-                                            placeholder: t(
-                                                "views:components.linkedAccounts.forms." +
-                                                "addAccountForm.inputs.username.placeholder"
-                                            ),
-                                            required: true,
-                                            requiredErrorMessage: t(
-                                                "views:components.linkedAccounts.forms" +
-                                                ".addAccountForm.inputs.username.validations.empty"
-                                            ),
-                                            type: "text" as const
-                                        },
-                                        {
-                                            hidePassword: t("common:hidePassword"),
-                                            label: t(
-                                                "views:components.linkedAccounts.forms.addAccountForm." +
-                                                "inputs.password.label"
-                                            ),
-                                            name: "password",
-                                            placeholder: t(
-                                                "views:components.linkedAccounts.forms" +
-                                                ".addAccountForm.inputs.password.placeholder"
-                                            ),
-                                            required: true,
-                                            requiredErrorMessage: t(
-                                                "views:components.linkedAccounts.forms" +
-                                                ".addAccountForm.inputs.password.validations.empty"
-                                            ),
-                                            showPassword: t("common:showPassword"),
-                                            type: "password" as const
-                                        },
-                                        {
-                                            hidden: true,
-                                            type: "divider" as const
-                                        },
-                                        {
-                                            size: "small" as const,
-                                            type: "submit" as const,
-                                            value: t("common:save").toString()
-                                        },
-                                        {
-                                            className: "link-button",
-                                            onClick: () => {
-                                                hideFormEditView("addAccountForm");
-                                            },
-                                            size: "small" as const,
-                                            type: "button" as const,
-                                            value: t("common:cancel").toString()
-                                        }
-                                    ] }
-                                    groups={ [
-                                        {
-                                            endIndex: 5,
-                                            startIndex: 3,
-                                            wrapper: Form.Group,
-                                            wrapperProps: {
-                                                inline: true
-                                            }
-                                        }
-                                    ] }
+                                <Fo2m
                                     onSubmit={ (values) => {
                                         handleSubmit(values, "addAccountForm");
                                     } }
-                                />
+                                >
+                                    <Field
+                                        label={ t(
+                                            "views:components.linkedAccounts.forms.addAccountForm" +
+                                            ".inputs.username.label"
+                                        ) }
+                                        name="username"
+                                        placeholder={ t(
+                                            "views:components.linkedAccounts.forms." +
+                                            "addAccountForm.inputs.username.placeholder"
+                                        ) }
+                                        required={ true }
+                                        requiredErrorMessage={ t(
+                                            "views:components.linkedAccounts.forms" +
+                                            ".addAccountForm.inputs.username.validations.empty"
+                                        ) }
+                                        type="text"
+                                    />
+                                    <Field
+                                        hidePassword={ t("common:hidePassword") }
+                                        label={ t(
+                                            "views:components.linkedAccounts.forms.addAccountForm." +
+                                            "inputs.password.label"
+                                        ) }
+                                        name="password"
+                                        placeholder={ t(
+                                            "views:components.linkedAccounts.forms" +
+                                            ".addAccountForm.inputs.password.placeholder"
+                                        ) }
+                                        required={ true }
+                                        requiredErrorMessage={ t(
+                                            "views:components.linkedAccounts.forms" +
+                                            ".addAccountForm.inputs.password.validations.empty"
+                                        ) }
+                                        showPassword={ t("common:showPassword") }
+                                        type="password"
+                                    />
+                                    <Field
+                                        hidden={ true }
+                                        type="divider"
+                                    />
+                                    <Form.Group inline={ true }>
+                                        <Field
+                                            size="small"
+                                            type="submit"
+                                            value={ t("common:save").toString() }
+                                        />
+                                        <Field
+                                            className="link-button"
+                                            onClick={ () => {
+                                                hideFormEditView("addAccountForm");
+                                            } }
+                                            size="small"
+                                            type="button"
+                                            value={ t("common:cancel").toString() }
+                                        />
+                                    </Form.Group>
+                                </Fo2m>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
                 </EditSection>
             ) : (
-                <List divided verticalAlign="middle" className="main-content-inner">
-                    { associations.map((association, index) => (
-                        <List.Item className="inner-list-item" key={ index }>
-                            <Grid padded>
-                                <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 11 } className="first-column">
-                                        <UserAvatar
-                                            floated="left"
-                                            spaced="right"
-                                            size="mini"
-                                            name={ association.username }
-                                        />
-                                        <List.Header>{ association.username }</List.Header>
-                                        <List.Description>
-                                            <p style={ { fontSize: "11px" } }>{ association.tenantDomain }</p>
-                                        </List.Description>
-                                    </Grid.Column>
-                                    <Grid.Column width={ 5 } className="last-column">
-                                        <List.Content floated="right">
-                                            <Popup
-                                                trigger={ (
-                                                    <Icon
-                                                        link
-                                                        className="list-icon"
-                                                        size="small"
-                                                        color="grey"
-                                                        name="exchange"
-                                                        onClick={ () => handleLinkedAccountSwitch(association) }
-                                                    />
-                                                ) }
-                                                position="top center"
-                                                content={ t("common:switch") }
-                                                inverted
+                    <List divided verticalAlign="middle" className="main-content-inner">
+                        { associations.map((association, index) => (
+                            <List.Item className="inner-list-item" key={ index }>
+                                <Grid padded>
+                                    <Grid.Row columns={ 2 }>
+                                        <Grid.Column width={ 11 } className="first-column">
+                                            <UserAvatar
+                                                floated="left"
+                                                spaced="right"
+                                                size="mini"
+                                                name={ association.username }
                                             />
-                                        </List.Content>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </List.Item>
-                    )) }
-                </List>
-            ) }
+                                            <List.Header>{ association.username }</List.Header>
+                                            <List.Description>
+                                                <p style={ { fontSize: "11px" } }>{ association.tenantDomain }</p>
+                                            </List.Description>
+                                        </Grid.Column>
+                                        <Grid.Column width={ 5 } className="last-column">
+                                            <List.Content floated="right">
+                                                <Popup
+                                                    trigger={ (
+                                                        <Icon
+                                                            link
+                                                            className="list-icon"
+                                                            size="small"
+                                                            color="grey"
+                                                            name="exchange"
+                                                            onClick={ () => handleLinkedAccountSwitch(association) }
+                                                        />
+                                                    ) }
+                                                    position="top center"
+                                                    content={ t("common:switch") }
+                                                    inverted
+                                                />
+                                            </List.Content>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                            </List.Item>
+                        )) }
+                    </List>
+                ) }
         </SettingsSection>
     );
 };

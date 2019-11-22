@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export * from "./form-wrapper";
+export * from "./fo2m";

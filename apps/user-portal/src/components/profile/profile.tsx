@@ -16,7 +16,7 @@
  * under the License
  */
 
-import { FormWrapper, Validation } from "@wso2is/form";
+import { Field, Fo2m, Validation } from "@wso2is/fo2m";
 import Validator from "@wso2is/validator";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
@@ -215,76 +215,67 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 4 }>{ t("views:components.profile.fields.name.label") }</Grid.Column>
                     <Grid.Column width={ 12 }>
-                        <FormWrapper
-                            formFields={ [
-                                {
-                                    label: t(
-                                        "views:components.profile.forms.nameChangeForm." +
-                                        "inputs.firstName.label"
-                                    ),
-                                    name: "displayName",
-                                    placeholder: t(
-                                        "views:components.profile.forms.nameChangeForm.inputs" +
-                                        ".firstName.placeholder"
-                                    ),
-                                    required: true,
-                                    requiredErrorMessage: t(
-                                        "views:components.profile.forms." +
-                                        "nameChangeForm.inputs.firstName.validations.empty"
-                                    ),
-                                    type: "text" as const,
-                                    value: editingProfileInfo.displayName
-                                },
-                                {
-                                    label: t(
-                                        "views:components.profile.forms.nameChangeForm.inputs.lastName.label"
-                                    ),
-                                    name: "lastName",
-                                    placeholder: t(
-                                        "views:components.profile.forms.nameChangeForm.inputs" +
-                                        ".lastName.placeholder"
-                                    ),
-                                    required: true,
-                                    requiredErrorMessage: t(
-                                        "views:components.profile.forms." +
-                                        "nameChangeForm.inputs.lastName.validations.empty"
-                                    ),
-                                    type: "text" as const,
-                                    value: editingProfileInfo.lastName
-                                },
-                                {
-                                    hidden: true,
-                                    type: "divider" as const
-                                },
-                                {
-                                    size: "small" as const,
-                                    type: "submit" as const,
-                                    value: t("common:save").toString()
-                                },
-                                {
-                                    className: "link-button",
-                                    onClick: () => {
-                                        hideFormEditView("nameChangeForm");
-                                    },
-                                    size: "small",
-                                    type: "button",
-                                    value: t("common:cancel").toString()
-                                }
-                            ] }
-                            groups={ [
-                                {
-                                    endIndex: 5,
-                                    startIndex: 3,
-                                    wrapper: Form.Group,
-                                    wrapperProps: {
-                                        inline: true
-                                    }
-                                }
-                            ] }
+                        <Fo2m
                             onSubmit={ (values) => {
                                 handleSubmit(values, "nameChangeForm");
                             } }
-                        />
+                        >
+                            <Field
+                                label={ t(
+                                    "views:components.profile.forms.nameChangeForm." +
+                                    "inputs.firstName.label"
+                                ) }
+                                name="displayName"
+                                placeholder={ t(
+                                    "views:components.profile.forms.nameChangeForm.inputs" +
+                                    ".firstName.placeholder"
+                                ) }
+                                required={ true }
+                                requiredErrorMessage={ t(
+                                    "views:components.profile.forms." +
+                                    "nameChangeForm.inputs.firstName.validations.empty"
+                                ) }
+                                type="text"
+                                value={ editingProfileInfo.displayName }
+                            />
+                            <Field
+                                label={ t(
+                                    "views:components.profile.forms.nameChangeForm.inputs.lastName.label"
+                                ) }
+                                name="lastName"
+                                placeholder={ t(
+                                    "views:components.profile.forms.nameChangeForm.inputs" +
+                                    ".lastName.placeholder"
+                                ) }
+                                required={ true }
+                                requiredErrorMessage={ t(
+                                    "views:components.profile.forms." +
+                                    "nameChangeForm.inputs.lastName.validations.empty"
+                                ) }
+                                type="text"
+                                value={ editingProfileInfo.lastName }
+                            />
+                            <Field
+                                hidden={ true }
+                                type="divider"
+                            />
+                            <Form.Group>
+                                <Field
+                                    size="small"
+                                    type="submit"
+                                    value={ t("common:save").toString() }
+                                />
+                                <Field
+                                    className="link-button"
+                                    onClick={ () => {
+                                        hideFormEditView("nameChangeForm");
+                                    } }
+                                    size="small"
+                                    type="button"
+                                    value={ t("common:cancel").toString() }
+                                />
+                            </Form.Group>
+                        </Fo2m>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -344,66 +335,57 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 4 }>{ t("views:components.profile.fields.email.label") }</Grid.Column>
                     <Grid.Column width={ 12 }>
-                        <FormWrapper
-                            formFields={ [
-                                {
-                                    label: t("views:components.profile.fields.email.label"),
-
-                                    name: "email",
-                                    placeholder: t(
-                                        "views:components.profile.forms.emailChangeForm.inputs" +
-                                        ".email.placeholder"
-                                    ),
-                                    required: true,
-                                    requiredErrorMessage: t(
-                                        "views:components.profile.forms." +
-                                        "emailChangeForm.inputs.email.validations.empty"
-                                    ),
-                                    type: "text",
-                                    validation: (value: string, validation: Validation) => {
-                                        if (!Validator.email(value)) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push(t(
-                                                "views:components.profile.forms." +
-                                                "emailChangeForm.inputs.email.validations.invalidFormat"
-                                            ));
-                                        }
-                                    },
-                                    value: editingProfileInfo.email
-                                },
-                                {
-                                    hidden: true,
-                                    type: "divider"
-                                },
-                                {
-                                    size: "small",
-                                    type: "submit",
-                                    value: t("common:save").toString()
-                                },
-                                {
-                                    className: "link-button",
-                                    onClick: () => {
-                                        hideFormEditView("emailChangeForm");
-                                    },
-                                    size: "small",
-                                    type: "button",
-                                    value: t("common:cancel").toString()
-                                }
-                            ] }
-                            groups={ [
-                                {
-                                    endIndex: 4,
-                                    startIndex: 2,
-                                    wrapper: Form.Group,
-                                    wrapperProps: {
-                                        inline: true
-                                    }
-                                }
-                            ] }
+                        <Fo2m
                             onSubmit={ (values) => {
                                 handleSubmit(values, "emailChangeForm");
                             } }
-                        />
+                        >
+                            <Field
+                                label={ t("views:components.profile.fields.email.label") }
+
+                                name="email"
+                                placeholder={ t(
+                                    "views:components.profile.forms.emailChangeForm.inputs" +
+                                    ".email.placeholder"
+                                ) }
+                                required={ true }
+                                requiredErrorMessage={ t(
+                                    "views:components.profile.forms." +
+                                    "emailChangeForm.inputs.email.validations.empty"
+                                ) }
+                                type="text"
+                                validation={ (value: string, validation: Validation) => {
+                                    if (!Validator.email(value)) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(t(
+                                            "views:components.profile.forms." +
+                                            "emailChangeForm.inputs.email.validations.invalidFormat"
+                                        ));
+                                    }
+                                } }
+                                value={ editingProfileInfo.email }
+                            />
+                            <Field
+                                hidden={ true }
+                                type="divider"
+                            />
+                            <Form.Group>
+                                <Field
+                                    size="small"
+                                    type="submit"
+                                    value={ t("common:save").toString() }
+                                />
+                                <Field
+                                    className="link-button"
+                                    onClick={ () => {
+                                        hideFormEditView("emailChangeForm");
+                                    } }
+                                    size="small"
+                                    type="button"
+                                    value={ t("common:cancel").toString() }
+                                />
+                            </Form.Group>
+                        </Fo2m>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -460,56 +442,47 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 4 }>{ t("views:components.profile.fields.organization.label") }</Grid.Column>
                     <Grid.Column width={ 12 }>
-                        <FormWrapper
-                            formFields={ [
-                                {
-                                    label: t("views:components.profile.fields.organization.label"),
-                                    name: "organisation",
-                                    placeholder: t(
-                                        "views:components.profile.forms.organizationChangeForm" +
-                                        ".inputs.organization.placeholder"
-                                    ),
-                                    required: true,
-                                    requiredErrorMessage: t(
-                                        "views:components.profile.forms." +
-                                        "organizationChangeForm.inputs.organization.validations.empty"
-                                    ),
-                                    type: "text",
-                                    value: editingProfileInfo.organisation
-                                },
-                                {
-                                    hidden: true,
-                                    type: "divider"
-                                },
-                                {
-                                    size: "small",
-                                    type: "submit",
-                                    value: t("common:save").toString()
-                                },
-                                {
-                                    className: "link-button",
-                                    onClick: () => {
-                                        hideFormEditView("organizationChangeForm");
-                                    },
-                                    size: "small",
-                                    type: "button",
-                                    value: t("common:cancel").toString()
-                                }
-                            ] }
-                            groups={ [
-                                {
-                                    endIndex: 4,
-                                    startIndex: 2,
-                                    wrapper: Form.Group,
-                                    wrapperProps: {
-                                        inline: true
-                                    }
-                                }
-                            ] }
+                        <Fo2m
                             onSubmit={ (values) => {
                                 handleSubmit(values, "organizationChangeForm");
                             } }
-                        />
+                        >
+                            <Field
+                                label={ t("views:components.profile.fields.organization.label") }
+                                name="organisation"
+                                placeholder={ t(
+                                    "views:components.profile.forms.organizationChangeForm" +
+                                    ".inputs.organization.placeholder"
+                                ) }
+                                required={ true }
+                                requiredErrorMessage={ t(
+                                    "views:components.profile.forms." +
+                                    "organizationChangeForm.inputs.organization.validations.empty"
+                                ) }
+                                type="text"
+                                value={ editingProfileInfo.organisation }
+                            />
+                            <Field
+                                hidden={ true }
+                                type="divider"
+                            />
+                            <Form.Group>
+                                <Field
+                                    size="small"
+                                    type="submit"
+                                    value={ t("common:save").toString() }
+                                />
+                                <Field
+                                    className="link-button"
+                                    onClick={ () => {
+                                        hideFormEditView("organizationChangeForm");
+                                    } }
+                                    size="small"
+                                    type="button"
+                                    value={ t("common:cancel").toString() }
+                                />
+                            </Form.Group>
+                        </Fo2m>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -566,65 +539,56 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 4 }>{ t("views:components.profile.fields.mobile.label") }</Grid.Column>
                     <Grid.Column width={ 12 }>
-                        <FormWrapper
-                            formFields={ [
-                                {
-                                    label: t("views:components.profile.fields.mobile.label"),
-                                    name: "mobile",
-                                    placeholder: t(
-                                        "views:components.profile.forms.mobileChangeForm"
-                                        + ".inputs.mobile.placeholder"
-                                    ),
-                                    required: true,
-                                    requiredErrorMessage: t(
-                                        "views:components.profile.forms." +
-                                        "mobileChangeForm.inputs.mobile.validations.empty"
-                                    ),
-                                    type: "text",
-                                    validation: (value: string, validation: Validation) => {
-                                        if (!Validator.mobileNumber(value)) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push(t(
-                                                "views:components.profile.forms." +
-                                                "mobileChangeForm.inputs.mobile.validations.invalidFormat"
-                                            ));
-                                        }
-                                    },
-                                    value: editingProfileInfo.mobile
-                                },
-                                {
-                                    hidden: true,
-                                    type: "divider"
-                                },
-                                {
-                                    size: "small",
-                                    type: "submit",
-                                    value: t("common:save").toString()
-                                },
-                                {
-                                    className: "link-button",
-                                    onClick: () => {
-                                        hideFormEditView("mobileChangeForm");
-                                    },
-                                    size: "small",
-                                    type: "button",
-                                    value: t("common:cancel").toString()
-                                }
-                            ] }
-                            groups={ [
-                                {
-                                    endIndex: 4,
-                                    startIndex: 2,
-                                    wrapper: Form.Group,
-                                    wrapperProps: {
-                                        inline: true
-                                    }
-                                }
-                            ] }
+                        <Fo2m
                             onSubmit={ (values) => {
                                 handleSubmit(values, "mobileChangeForm");
                             } }
-                        />
+                        >
+                            <Field
+                                label={ t("views:components.profile.fields.mobile.label") }
+                                name="mobile"
+                                placeholder={ t(
+                                    "views:components.profile.forms.mobileChangeForm"
+                                    + ".inputs.mobile.placeholder"
+                                ) }
+                                required={ true }
+                                requiredErrorMessage={ t(
+                                    "views:components.profile.forms." +
+                                    "mobileChangeForm.inputs.mobile.validations.empty"
+                                ) }
+                                type="text"
+                                validation={ (value: string, validation: Validation) => {
+                                    if (!Validator.mobileNumber(value)) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(t(
+                                            "views:components.profile.forms." +
+                                            "mobileChangeForm.inputs.mobile.validations.invalidFormat"
+                                        ));
+                                    }
+                                } }
+                                value={ editingProfileInfo.mobile }
+                            />
+                            <Field
+                                hidden={ true }
+                                type="divider"
+                            />
+                            <Form.Group>
+                                <Field
+                                    size="small"
+                                    type="submit"
+                                    value={ t("common:save").toString() }
+                                />
+                                <Field
+                                    className="link-button"
+                                    onClick={ () => {
+                                        hideFormEditView("mobileChangeForm");
+                                    } }
+                                    size="small"
+                                    type="button"
+                                    value={ t("common:cancel").toString() }
+                                />
+                            </Form.Group>
+                        </Fo2m>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

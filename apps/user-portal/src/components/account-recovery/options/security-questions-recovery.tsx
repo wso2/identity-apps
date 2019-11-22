@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { FormWrapper } from "@wso2is/form";
-import React, { useEffect, useState } from "react";
+import { Field, Fo2m } from "@wso2is/fo2m";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Form, Grid, Icon, List } from "semantic-ui-react";
+import { Divider, Form, Grid, Icon, List } from "semantic-ui-react";
 import { addSecurityQs, getSecurityQs, updateSecurityQs } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
 import {
@@ -284,132 +284,91 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
      * This returns an array of form fields to be passed as a prop to Form Wrapper
      */
     const generateFormFields = () => {
-        let formFields = [];
+        let formFields: ReactElement[] = [];
 
         challenges.questions.forEach((questionSet: QuestionSetsInterface, index: number) => {
             if (isEdit === 0 || isEdit === questionSet.questionSetId) {
                 formFields.push(
-                    {
-                        element: (
+                    <Grid.Row columns={ 2 } key={ index }>
+                        <Grid.Column width={ 4 }>
                             <div>
                                 { t("common:challengeQuestionNumber", { number: index + 1 }) }
                             </div>
-                        ),
-                        type: "custom",
-                    },
-                    {
-                        children: questionSet.questions.map((ques, i) => {
-                            return {
-                                key: i,
-                                text: ques.question,
-                                value: ques.questionId
-                            };
-                        }),
-                        label: t(
-                            "views:components.accountRecovery.questionRecovery.forms.securityQuestionsForm" +
-                            ".inputs.question.label"
-                        ),
-                        name: "question " + questionSet.questionSetId,
-                        placeholder: t(
-                            "views:components.accountRecovery.questionRecovery.forms.securityQuestionsForm.inputs" +
-                            ".question.placeholder"
-                        ),
-                        required: true,
-                        requiredErrorMessage: t(
-                            "views:components.accountRecovery.questionRecovery.forms" +
-                            ".securityQuestionsForm" +
-                            ".inputs.question.validations.empty"
-                        ),
-                        type: "dropdown",
-                        value: findChosenQuestionFromChallengeQuestions(questionSet.questionSetId).challengeQuestion
-                            .questionId
-                    },
-                    {
-                        label: t(
-                            "views:components.accountRecovery.questionRecovery.forms.securityQuestionsForm." +
-                            "inputs.answer.label"
-                        ),
-                        name: "answer " + questionSet.questionSetId,
-                        placeholder: t(
-                            "views:components.accountRecovery.questionRecovery.forms." +
-                            "securityQuestionsForm.inputs.answer.placeholder"
-                        ),
-                        required: true,
-                        requiredErrorMessage: t(
-                            "views:components.accountRecovery.questionRecovery.forms." +
-                            "securityQuestionsForm.inputs.answer.validations.empty"
-                        ),
-                        type: "text"
-                    }
+                        </Grid.Column>
+                        <Grid.Column width={ 12 }>
+                            <Field
+                                children={ questionSet.questions.map((ques, i) => {
+                                    return {
+                                        key: i,
+                                        text: ques.question,
+                                        value: ques.questionId
+                                    };
+                                }) }
+                                label={ t(
+                                    "views:components.accountRecovery.questionRecovery.forms.securityQuestionsForm" +
+                                    ".inputs.question.label"
+                                ) }
+                                name={ "question " + questionSet.questionSetId }
+                                placeholder={ t(
+                                    "views:components.accountRecovery.questionRecovery.forms.securityQuestionsForm" +
+                                    ".inputs.question.placeholder"
+                                ) }
+                                required={ true }
+                                requiredErrorMessage={ t(
+                                    "views:components.accountRecovery.questionRecovery.forms" +
+                                    ".securityQuestionsForm" +
+                                    ".inputs.question.validations.empty"
+                                ) }
+                                type="dropdown"
+                                value={ findChosenQuestionFromChallengeQuestions(questionSet.questionSetId).
+                                    challengeQuestion.questionId }
+                            />
+                            <Field
+                                label={ t(
+                                    "views:components.accountRecovery.questionRecovery.forms.securityQuestionsForm." +
+                                    "inputs.answer.label"
+                                ) }
+                                name={ "answer " + questionSet.questionSetId }
+                                placeholder={ t(
+                                    "views:components.accountRecovery.questionRecovery.forms." +
+                                    "securityQuestionsForm.inputs.answer.placeholder"
+                                ) }
+                                required={ true }
+                                requiredErrorMessage={ t(
+                                    "views:components.accountRecovery.questionRecovery.forms." +
+                                    "securityQuestionsForm.inputs.answer.validations.empty"
+                                ) }
+                                type="text"
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
                 );
             }
         });
         formFields = formFields.concat([
-            {
-                hidden: true,
-                type: "divider"
-            },
-            {
-                size: "small",
-                type: "submit",
-                value: t("common:save").toString()
-            },
-            {
-                className: "link-button",
-                onClick: () => handleEdit(-1, -1),
-                size: "small",
-                type: "button",
-                value: t("common:cancel").toString()
-            }
+            (
+                <Grid.Row key={ formFields.length } columns={ 2 }>
+                    <Grid.Column width={ 4 } />
+                    <Grid.Column width={ 12 }>
+                        <Form.Group inline={ true }>
+                            <Field
+                                size="small"
+                                type="submit"
+                                value={ t("common:save").toString() }
+                            />
+                            <Field
+                                className="link-button"
+                                onClick={ () => handleEdit(-1, -1) }
+                                size="small"
+                                type="button"
+                                value={ t("common:cancel").toString() }
+                            />
+                        </Form.Group>
+                    </Grid.Column>
+                </Grid.Row>
+            )
         ]);
         return formFields;
-    };
-
-    /**
-     * This returns an array of group objects to be passed to the groups prop of Form Wrapper
-     */
-    const generateGroups = () => {
-        const groups = [];
-        let questionNumber = 0;
-        challenges.questions.forEach((questionSet: QuestionSetsInterface, index: number) => {
-            if (isEdit === 0 || isEdit === questionSet.questionSetId) {
-                groups.push(
-                    {
-                        endIndex: questionNumber + 1,
-                        startIndex: questionNumber,
-                        wrapper: Grid.Column,
-                        wrapperProps: {
-                            width: 4
-                        }
-                    },
-                    {
-                        endIndex: questionNumber + 3,
-                        startIndex: questionNumber + 1,
-                        wrapper: Grid.Column,
-                        wrapperProps: {
-                            width: 12
-                        }
-                    },
-                    {
-                        endIndex: questionNumber + 2,
-                        startIndex: questionNumber,
-                        wrapper: Grid.Row,
-                        wrapperProps: {
-                            columns: 2
-                        }
-                    },
-                    {
-                        endIndex: questionNumber + 1,
-                        startIndex: questionNumber,
-                        wrapper: Grid,
-                        wrapperProps: {}
-                    }
-
-                );
-                questionNumber++;
-            }
-        });
-        return groups;
     };
 
     const listItems = () => {
@@ -505,29 +464,18 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
         } else if (isEdit !== -1) {
             if (challenges.questions && challenges.questions.length > 0) {
                 const formFields = generateFormFields();
-                const endIndex = formFields.length;
-                const startIndex = endIndex - 2;
                 return (
                     <EditSection>
                         <Grid>
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column width={ 16 }>
-                                    <FormWrapper
-                                        formFields={ formFields }
-                                        groups={ [
-                                            {
-                                                endIndex,
-                                                startIndex,
-                                                wrapper: WrapButtons,
-                                                wrapperProps: {}
-                                            },
-                                            ...generateGroups()
-
-                                        ] }
+                                    <Fo2m
                                         onSubmit={ (values) => {
                                             handleSave(values);
                                         } }
-                                    />
+                                    >
+                                        <Grid>{ formFields }</Grid>
+                                    </Fo2m>
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
@@ -552,7 +500,7 @@ const WrapButtons: React.FunctionComponent = (props): JSX.Element => {
                 <Grid.Column width={ 12 }>
                     <Form.Group inline={ true }>{ props.children }</Form.Group>
                 </Grid.Column>
-           </Grid.Row>
+            </Grid.Row>
         </Grid>
     );
 };

@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { SemanticSIZES, SemanticWIDTHS } from "semantic-ui-react";
 import * as React from "react";
+import { SemanticSIZES, SemanticWIDTHS } from "semantic-ui-react";
 
 /**
  * Form Field Types
@@ -89,6 +89,7 @@ export interface PasswordField {
  * Form submit model
  */
 export interface FormSubmit {
+    disabled?: (values: Map<string, FormValue>) => boolean;
     value: string;
     type: "submit";
     size?: SemanticSIZES;
@@ -99,6 +100,7 @@ export interface FormSubmit {
  * Reset button model
  */
 export interface Reset {
+    disabled?: (values: Map<string, FormValue>) => boolean;
     value: string;
     type: "reset";
     size?: SemanticSIZES;

@@ -20,7 +20,7 @@ import { fireEvent, render } from "@testing-library/react";
 import constants from "./constants";
 import getForm from "./test-form";
 
-describe("Test if the FormWrapper is working fine", () => {
+describe("Test if the Fo2m is working fine", () => {
 
     test("Test if the basic input type text functions work fine", () => {
 
@@ -509,10 +509,71 @@ describe("Test if the FormWrapper is working fine", () => {
             }
         ], true));
 
+        // check if the first two elements belong to the same group
         expect(getAllByText(constants.BUTTON_VALUE)[0].parentElement.parentElement).toBe(
             getByText(constants.SUBMIT).parentElement.parentElement
         );
 
+        // check if the first and the last element do not belong to the same group
+        expect(getAllByText(constants.BUTTON_VALUE)[1].parentElement.parentElement).not.toBe(
+            getByText(constants.SUBMIT).parentElement.parentElement
+        );
+
+    });
+    test("Test if a field inside a group is working fine", () => {
+
+        const { getByText, getByPlaceholderText, getByDisplayValue } = render(getForm([
+            {
+                isDefault: true,
+                isRequired: true,
+                isValue: true,
+                type: "text"
+            },
+            {
+                isDefault: false,
+                isRequired: false,
+                isValue: true,
+                type: "submit"
+            }
+        ], true));
+
+        // check if the label is displayed
+        expect(getByText(constants.TEXT_BOX_LABEL)).toBeInTheDocument();
+
+        // check if the text box with the mentioned placeholder value is displayed
+        const textBox = getByPlaceholderText(constants.TEXT_BOX_PLACEHOLDER);
+        expect(textBox).toBeInTheDocument();
+
+        // check if the submit button is displayed
+        expect(getByText(constants.SUBMIT)).toBeInTheDocument();
+
+        // check if the text box with the mentioned value is displayed
+        expect(getByDisplayValue(constants.TEXT_BOX_VALUE)).toBeInTheDocument();
+
+        // check if the value of the text box changes
+        const NEW_VALUE = "new value";
+        fireEvent.change(textBox, { target: { value: NEW_VALUE } });
+        expect(getByDisplayValue(NEW_VALUE)).toBeInTheDocument();
+
+        // check if required error message is correctly displayed
+        fireEvent.change(textBox, { target: { value: "" } });
+        fireEvent.blur(textBox);
+        fireEvent.click(getByText(constants.SUBMIT));
+        expect(getByText(constants.TEXT_BOX_REQUIRED_MESSAGE)).toBeInTheDocument();
+
+        // check if validation is working fine
+        fireEvent.change(textBox, { target: { value: "wrong value" } });
+        fireEvent.blur(textBox);
+        fireEvent.click(getByText(constants.SUBMIT));
+        expect(getByText(constants.TEXT_BOX_VALIDATION_FAILED)).toBeInTheDocument();
+
+        // check if submit is working fine
+        fireEvent.change(textBox, { target: { value: constants.TEXT_BOX_VALID_MESSAGE } });
+        fireEvent.blur(textBox);
+        fireEvent.click(getByText(constants.SUBMIT));
+        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit.mock.calls[0][0].get(constants.TEXT_BOX_NAME)).toBe(constants.TEXT_BOX_VALID_MESSAGE);
+        constants.onSubmit.mockReset();
     });
 
 });

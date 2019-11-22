@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import { FormWrapper, Validation } from "@wso2is/form";
+import { Field, Fo2m, Validation } from "@wso2is/fo2m";
 import Validator from "@wso2is/validator";
 import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
-import { getProfileInformation } from "../../../store/actions";
 import { updateProfileInfo } from "../../../api";
 import { MFAIcons } from "../../../configs";
 import { BasicProfileInterface, Notification } from "../../../models";
+import { getProfileInformation } from "../../../store/actions";
 import { EditSection, ThemeIcon } from "../../shared";
 
 /**
@@ -96,24 +96,24 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
             setIsEdit(false);
 
         })
-        .catch((error) => {
-            onNotificationFired({
-                description: error && error.data && error.data.details
-                    ? t("views:components.mfa.smsOtp.notifications.updateMobile.error.description",
-                        {
-                            description: error.data.details
-                        }
-                    )
-                    : t("views:components.mfa.smsOtp.notifications.updateMobile.genericError.description"),
-                message: error && error.data && error.data.details
-                    ? t("views:components.mfa.smsOtp.notifications.updateMobile.error.message")
-                    : t("views:components.mfa.smsOtp.notifications.updateMobile.genericError.message"),
-                otherProps: {
-                    negative: true
-                },
-                visible: true
+            .catch((error) => {
+                onNotificationFired({
+                    description: error && error.data && error.data.details
+                        ? t("views:components.mfa.smsOtp.notifications.updateMobile.error.description",
+                            {
+                                description: error.data.details
+                            }
+                        )
+                        : t("views:components.mfa.smsOtp.notifications.updateMobile.genericError.description"),
+                    message: error && error.data && error.data.details
+                        ? t("views:components.mfa.smsOtp.notifications.updateMobile.error.message")
+                        : t("views:components.mfa.smsOtp.notifications.updateMobile.genericError.message"),
+                    otherProps: {
+                        negative: true
+                    },
+                    visible: true
+                });
             });
-        });
     };
 
     const setMobileNo = (response) => {
@@ -180,78 +180,64 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                             <List>
                                 <List.Item>
                                     <List.Content>
-                                        <FormWrapper
-                                            formFields={ [
-                                                {
-                                                    label: t(
-                                                        "views:components.profile.forms.mobileChangeForm.inputs" +
-                                                        ".mobile.label"
-                                                    ),
-                                                    name: "mobileNumber",
-                                                    placeholder: t(
-                                                        "views:components.profile.forms.mobileChangeForm" +
-                                                        ".inputs.mobile.placeholder"
-                                                    ),
-                                                    required: true,
-                                                    requiredErrorMessage: t(
-                                                        "views:components.profile.forms." +
-                                                        "mobileChangeForm.inputs.mobile.validations.empty"
-                                                    ),
-                                                    type: "text",
-                                                    validation: (value: string, validation: Validation) => {
-                                                        if (!Validator.mobileNumber(value)) {
-                                                            validation.isValid = false;
-                                                            validation.errorMessages.push(t(
-                                                                "views:components.profile.forms.mobileChangeForm." +
-                                                                "inputs.mobile.validations.invalidFormat"
-                                                            ));
-                                                        }
-                                                    },
-                                                    value: mobile
-                                                },
-                                                {
-                                                    element: (
-                                                        <p style={ { fontSize: "12px" } }>
-                                                            <Icon color="grey" floated="left" name="info circle" />
-                                                            { t(
-                                                                "views:components.profile.forms.mobileChangeForm" +
-                                                                ".inputs.mobile.note"
-                                                            ) }
-                                                        </p>
-                                                    ),
-                                                    type: "custom"
-                                                },
-                                                {
-                                                    hidden: true,
-                                                    type: "divider"
-                                                },
-                                                {
-                                                    size: "small",
-                                                    type: "submit",
-                                                    value: t("common:update").toString()
-                                                },
-                                                {
-                                                    className: "link-button",
-                                                    onClick: handleCancel,
-                                                    size: "small",
-                                                    type: "button",
-                                                    value: t("common:cancel").toString()
-                                                }
-                                            ] }
-                                            groups={ [
-                                                {
-                                                    endIndex: 5,
-                                                    startIndex: 3,
-                                                    wrapper: Form.Group,
-                                                    wrapperProps: {
-                                                        inline: true
-                                                    }
-                                                }
-                                            ] }
+                                        <Fo2m
                                             onSubmit={ (values: Map<string, string>) => {
                                                 handleUpdate(values.get("mobileNumber"));
                                             } }
-                                        />
+                                        >
+                                            <Field
+                                                label={ t(
+                                                    "views:components.profile.forms.mobileChangeForm.inputs" +
+                                                    ".mobile.label"
+                                                ) }
+                                                name="mobileNumber"
+                                                placeholder={ t(
+                                                    "views:components.profile.forms.mobileChangeForm" +
+                                                    ".inputs.mobile.placeholder"
+                                                ) }
+                                                required={ true }
+                                                requiredErrorMessage={ t(
+                                                    "views:components.profile.forms." +
+                                                    "mobileChangeForm.inputs.mobile.validations.empty"
+                                                ) }
+                                                type="text"
+                                                validation={ (value: string, validation: Validation) => {
+                                                    if (!Validator.mobileNumber(value)) {
+                                                        validation.isValid = false;
+                                                        validation.errorMessages.push(t(
+                                                            "views:components.profile.forms.mobileChangeForm." +
+                                                            "inputs.mobile.validations.invalidFormat"
+                                                        ));
+                                                    }
+                                                } }
+                                                value={ mobile }
+                                            />
+                                            <p style={ { fontSize: "12px" } }>
+                                                <Icon color="grey" floated="left" name="info circle" />
+                                                { t(
+                                                    "views:components.profile.forms.mobileChangeForm" +
+                                                    ".inputs.mobile.note"
+                                                ) }
+                                            </p>
+                                            <Field
+                                                hidden={ true }
+                                                type="divider"
+                                            />
+                                            <Form.Group>
+                                                <Field
+                                                    size="small"
+                                                    type="submit"
+                                                    value={ t("common:update").toString() }
+                                                />
+                                                <Field
+                                                    className="link-button"
+                                                    onClick={ handleCancel }
+                                                    size="small"
+                                                    type="button"
+                                                    value={ t("common:cancel").toString() }
+                                                />
+                                            </Form.Group>
+                                        </Fo2m>
                                     </List.Content>
                                 </List.Item>
                             </List>
