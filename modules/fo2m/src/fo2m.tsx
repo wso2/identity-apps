@@ -176,7 +176,9 @@ export const Fo2m: React.FunctionComponent<React.PropsWithChildren<FormProps>> =
                     ...element.props,
                     children: parseChildren(element.props.children, fields)
                 });
-            } else if (React.Children.count(element.props.children) > 0) {
+            } else if (element.props
+                && element.props.children
+                && React.Children.count(element.props.children) > 0) {
                 return React.createElement(element.type, {
                     ...element.props,
                     children: parseChildren(element.props.children, fields)

@@ -37,7 +37,7 @@ import { Password } from "./password";
  * prop types for the Field component
  */
 interface InnerFieldProps {
-    passedProps: FormField ;
+    passedProps: FormField;
     formProps: {
         checkError: (inputField: FormField) => { isError: boolean, errorMessages: string[] };
         handleBlur: (event: React.KeyboardEvent, name: string) => void;
@@ -134,13 +134,19 @@ export const InnerField = (props: InnerFieldProps): JSX.Element => {
                     size={ inputField.size }
                     className={ inputField.className }
                     type={ inputField.type }
+                    disabled={ inputField.disabled ? inputField.disabled(form) : false }
                 >
                     { inputField.value }
                 </Button>
             );
         } else if (isResetField(inputField)) {
             return (
-                <Button size={ inputField.size } className={ inputField.className } onClick={ handleReset }>
+                <Button
+                    size={ inputField.size }
+                    className={ inputField.className }
+                    onClick={ handleReset }
+                    disabled={ inputField.disabled ? inputField.disabled(form) : false }
+                >
                     { inputField.value }
                 </Button>
             );
