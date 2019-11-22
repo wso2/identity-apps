@@ -509,7 +509,13 @@ describe("Test if the Fo2m is working fine", () => {
             }
         ], true));
 
+        // check if the first two elements belong to the same group
         expect(getAllByText(constants.BUTTON_VALUE)[0].parentElement.parentElement).toBe(
+            getByText(constants.SUBMIT).parentElement.parentElement
+        );
+
+        // check if the first and the last element do not belong to the same group
+        expect(getAllByText(constants.BUTTON_VALUE)[1].parentElement.parentElement).not.toBe(
             getByText(constants.SUBMIT).parentElement.parentElement
         );
 
