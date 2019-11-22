@@ -530,9 +530,9 @@ export const views: Views = {
                     para2: "Please note that this policy is for reference only, and is applicable for the software " +
                         "as a product. WSO2 Inc. and its developers have no access to the information held within " +
                         "WSO2 IS. Please see the <1>disclaimer</1> section for more information.",
-                    para3: "Entities, organisations or individuals controlling the use and administration of WSO2 IS " +
+                    para3: "Entities, organizations or individuals controlling the use and administration of WSO2 IS " +
                         "should create their own privacy policies setting out the manner in which data is controlled " +
-                        "or processed by the respective entity, organisation or individual."
+                        "or processed by the respective entity, organization or individual."
                 },
                 disclaimer: {
                     description: {
@@ -566,7 +566,7 @@ export const views: Views = {
                         "unless you have consented otherwise or where it is required by law.",
                     heading: "Disclosure of personal information",
                     legalProcess: {
-                        description: "Please note that the organisation, entity or individual running WSO2 IS may " +
+                        description: "Please note that the organization, entity or individual running WSO2 IS may " +
                             "be compelled to disclose your personal information with or without your consent when " +
                             "it is required by law following due and lawful process.",
                         heading: "Legal process"
@@ -967,7 +967,7 @@ export const views: Views = {
             heading: "Multi factor authentication"
         },
         profile: {
-            description: "Manage and update your personal details like name, email, mobile number, organisation, etc.",
+            description: "Manage and update your personal details like name, email, mobile number, organization, etc.",
             heading: "Profile"
         },
         profileExport: {
