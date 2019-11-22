@@ -127,7 +127,7 @@ export const ApplicationSearch: FunctionComponent<ApplicationSearchProps> = (
      * Handles the external search query clear action.
      */
     const handleExternalSearchQueryClear = () => {
-        setExternalSearchQuery(null);
+        setExternalSearchQuery("");
     };
 
     return (

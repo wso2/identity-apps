@@ -26,6 +26,7 @@ import {
     HomeTileIcons,
     Logo,
     MFAIconSet,
+    OrangeAppIconBackground,
     PackageIcon,
     Padlock,
     SettigsSectionIconSet,
@@ -83,6 +84,10 @@ export const AdvanceSearchIcons = {
 
 export const EmptyPlaceholderIllustrations = {
     search: EmptySearchResultsIllustration
+};
+
+export const AppIconBackgrounds = {
+    orange: OrangeAppIconBackground
 };
 
 /**

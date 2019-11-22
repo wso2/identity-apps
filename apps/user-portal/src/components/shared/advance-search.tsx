@@ -81,10 +81,17 @@ export const AdvanceSearch: FunctionComponent<React.PropsWithChildren<AdvanceSea
         if (!internalSearchQuery) {
             setShowSearchFieldHint(false);
         }
-        if (internalSearchQuery && !isComponentVisible) {
+        if (internalSearchQuery && !isComponentVisible && (externalSearchQuery !== internalSearchQuery)) {
             setShowSearchFieldHint(true);
         }
     }, [ internalSearchQuery ]);
+
+    /**
+     * useEffect hook to handle `externalSearchQuery` changes.
+     */
+    useEffect(() => {
+        setInternalSearchQuery(externalSearchQuery);
+    }, [ externalSearchQuery ]);
 
     /**
      * useEffect hook to handle `submitted` prop changes.
@@ -181,7 +188,7 @@ export const AdvanceSearch: FunctionComponent<React.PropsWithChildren<AdvanceSea
                 action={ (
                     <>
                         {
-                            (internalSearchQuery || externalSearchQuery)
+                            internalSearchQuery
                                 ? (
                                     <Popup
                                         disabled={ !clearButtonPopupLabel }
@@ -229,7 +236,7 @@ export const AdvanceSearch: FunctionComponent<React.PropsWithChildren<AdvanceSea
                 icon="search"
                 iconPosition="left"
                 placeholder={ placeholder }
-                value={ externalSearchQuery ? externalSearchQuery : internalSearchQuery }
+                value={ internalSearchQuery }
                 onBlur={ handleSearchFieldBlur }
                 onChange={ handleSearchQueryChange }
                 onKeyDown={ handleSearchQuerySubmit }

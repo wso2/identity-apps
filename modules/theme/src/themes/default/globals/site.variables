@@ -31,12 +31,6 @@
 
 @bold              : 400;
 
-/*-----------------------
-  Font Color Variations
-------------------------*/
-
-@lightFontColor : @doveGray;
-
 /*-------------------
     Border Radius
 --------------------*/

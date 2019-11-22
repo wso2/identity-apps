@@ -188,7 +188,7 @@ export const views: Views = {
                     clear: "clear search",
                     dropdown: "show options"
                 },
-                resultsIndicator: "Showing results for \"{{query}}\""
+                resultsIndicator: "Showing results for the query \"{{query}}\""
             }
         },
         approvals: {

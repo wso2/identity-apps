@@ -23,6 +23,14 @@
 
         &:hover {
             cursor: pointer;
+
+            .app-avatar {
+                &.bg-image {
+                    .initials {
+                        text-shadow: 1px 1px 3px darken(@primaryColor, 20);
+                    }
+                }
+            }
         }
         .content {
             flex: 0 1 auto;
@@ -38,6 +46,7 @@
             margin-left: 5px;
 
             .item-header {
+                color: @applicationListItemHeaderColor;
                 float: left;
                 max-width: @applicationListItemHeaderMaxWidth;
                 white-space: nowrap;
