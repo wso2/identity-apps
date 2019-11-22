@@ -15,9 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Field, Fo2m, GroupFields, Validation } from "@wso2is/fo2m";
+import { Field, Fo2m, Validation } from "@wso2is/fo2m";
 import Validator from "@wso2is/validator";
-import { FORMERR } from "dns";
 import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
