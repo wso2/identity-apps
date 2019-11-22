@@ -17,25 +17,16 @@
  */
 
 import React from "react";
-import { Field, GroupFields, InnerField } from ".";
+import { Field, GroupFields, InnerField } from "../components";
 import { FormField, FormValue } from "../models";
 
 /**
  * prop types for the Group component
  */
 interface InnerGroupFieldsProps {
-    passedProps: {
         wrapper: React.ComponentType;
         wrapperProps: any;
-    };
-    formProps: {
-        checkError: (inputField: FormField) => { isError: boolean, errorMessages: string[] };
-        handleBlur: (event: React.KeyboardEvent, name: string) => void;
-        handleChange: (value: string, name: string) => void;
-        handleChangeCheckBox: (value: string, name: string) => void;
-        handleReset: (event: React.MouseEvent) => void;
-        form: Map<string, FormValue>;
-    };
+        children: React.ReactNode;
 }
 /**
  * This function generates a Group component
@@ -43,30 +34,12 @@ interface InnerGroupFieldsProps {
  */
 export const InnerGroupFields = (props: React.PropsWithChildren<InnerGroupFieldsProps>): JSX.Element => {
 
-    const { passedProps, children, formProps } = props;
-    const { wrapper, wrapperProps } = passedProps;
+    const { wrapper, wrapperProps, children } = props;
     const Wrapper = wrapper;
 
-    const mutatedChildren: React.ReactElement[] = React.Children.map(children, (child: React.ReactElement) => {
-        if (child.type === Field) {
-            return React.createElement(InnerField, {
-                formProps: {
-                    ...formProps
-                },
-                passedProps: { ...child.props }
-            });
-        } else if (child.type === GroupFields) {
-            return React.createElement(InnerGroupFields, {
-                formProps: {
-                    ...formProps
-                },
-                passedProps: { ...child.props }
-            });
-        }
-    });
     return (
         <Wrapper { ...wrapperProps } >
-            { mutatedChildren }
+            { children }
         </Wrapper>
     );
 };
