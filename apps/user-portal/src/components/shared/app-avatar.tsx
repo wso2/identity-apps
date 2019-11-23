@@ -17,6 +17,7 @@
  */
 
 import React, { FunctionComponent } from "react";
+import { AppIconBackgrounds } from "../../configs";
 import * as ColorConstants from "../../constants/colors";
 import { Avatar, AvatarProps } from "./avatar";
 
@@ -83,7 +84,8 @@ export const AppAvatar: FunctionComponent<AvatarProps> = (props: AvatarProps): J
     return (
         <Avatar
             avatarType="app"
-            style={ { background: generateBackgroundColor() } }
+            className="bg-image"
+            style={ { backgroundImage: `url(${ AppIconBackgrounds.orange })` } }
             bordered
             avatar
             name={ name }

@@ -21,6 +21,17 @@
     &.application-list-item {
         margin-bottom: 25px;
 
+        &:hover {
+            cursor: pointer;
+
+            .app-avatar {
+                &.bg-image {
+                    .initials {
+                        text-shadow: 1px 1px 3px darken(@primaryColor, 20);
+                    }
+                }
+            }
+        }
         .content {
             flex: 0 1 auto;
             &:hover {

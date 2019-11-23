@@ -34,7 +34,11 @@ httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestErr
  *
  * @return {Promise<any>} A promise containing the response.
  */
-export const fetchApplications = (): Promise<any> => {
+export const fetchApplications = (
+    limit: number,
+    offset: number,
+    filter: string
+): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -42,8 +46,14 @@ export const fetchApplications = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
+        params: {
+            filter,
+            limit,
+            offset
+        },
         url: ServiceResourcesEndpoint.applications
     };
+
     return httpClient.request(requestConfig)
         .then((response) => {
             return Promise.resolve(response.data as ApplicationList);

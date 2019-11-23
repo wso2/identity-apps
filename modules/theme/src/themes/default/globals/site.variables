@@ -66,6 +66,7 @@
 @whiteSmoke       : #f5f5f5;
 @dustyGray        : #9c9c9c;
 @galleryGray      : #eeeeee;
+@doveGray         : #666666;
 
 /*-------------------
      Image Sizes
@@ -77,6 +78,7 @@
     Icon Sizes
 --------------------*/
 
+@iconNano: 10px;
 @iconMicro: 18px;
 @iconMini: 35px;
 @iconTiny: 80px;
@@ -105,5 +107,7 @@
    Advance search
 --------------------*/
 
-@advanceSearchMinWidth: 260px;
-@advanceSearchMaxWidth: 520px;
+@advanceSearchWidth: 320px;
+@advanceSearchDropdownMinWidth: 260px;
+@advanceSearchDropdownMaxWidth: 520px;
+@advanceSearchBorder: 1px solid @borderColor;

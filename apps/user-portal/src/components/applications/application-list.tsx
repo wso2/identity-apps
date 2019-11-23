@@ -17,8 +17,11 @@
  */
 
 import React, { FunctionComponent } from "react";
-import { Grid } from "semantic-ui-react";
+import { useTranslation } from "react-i18next";
+import { Button, Grid } from "semantic-ui-react";
+import { EmptyPlaceholderIllustrations } from "../../configs";
 import { Application } from "../../models";
+import { EmptyPlaceholder } from "../shared";
 import { ApplicationListItem } from "./application-list-item";
 
 /**
@@ -27,6 +30,9 @@ import { ApplicationListItem } from "./application-list-item";
 interface ApplicationListProps {
     apps: Application[];
     isFavouritesList?: boolean;
+    loading: boolean;
+    onSearchQueryClear: () => void;
+    searchQuery: string;
 }
 
 /**
@@ -37,27 +43,62 @@ interface ApplicationListProps {
 export const ApplicationList: FunctionComponent<ApplicationListProps> = (
     props: ApplicationListProps
 ): JSX.Element => {
-    const { apps, isFavouritesList } = props;
+    const { apps, isFavouritesList, onSearchQueryClear, loading, searchQuery } = props;
+    const { t } = useTranslation();
 
+    /**
+     * Handles access url navigation.
+     *
+     * @remarks
+     * `_blank` target has a security vulnerability. Hence the `rel=noopener`
+     * attribute was used.
+     * @see {@link https://searchenginelaws.com/seo/what-is-rel-noopener-noreferrer-tag/}
+     *
+     * @param {string} url - App access url.
+     */
     const handleAppNavigation = (url: string) => {
-        window.open(url, "_blank");
+        const a = document.createElement("a");
+        a.href = url;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.click();
     };
 
     return (
         <Grid>
             <Grid.Row>
                 {
-                    apps
+                    (apps && apps.length && apps.length > 0)
                         ? apps.map((app) => (
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 5 } key={ app.id }>
                                 <ApplicationListItem
                                     app={ app }
                                     hideFavouriteIcon={ isFavouritesList }
-                                    navigateToApp={ () => handleAppNavigation(app.accessUrl) }
+                                    onAppNavigate={ () => handleAppNavigation(app.accessUrl) }
                                 />
                             </Grid.Column>
                         ))
-                        : null
+                        : !loading && (
+                        <Grid.Column width={ 16 }>
+                            <EmptyPlaceholder
+                                action={ (
+                                    <Button
+                                        className="link-button"
+                                        onClick={ onSearchQueryClear }
+                                    >
+                                        { t("views:placeholders.emptySearchResult.action") }
+                                    </Button>
+                                ) }
+                                image={ EmptyPlaceholderIllustrations.search }
+                                title={ t("views:placeholders.emptySearchResult.title") }
+                                subtitle={ [
+                                    t("views:placeholders.emptySearchResult.subtitles.0",
+                                        { query: searchQuery }),
+                                    t("views:placeholders.emptySearchResult.subtitles.1"),
+                                ] }
+                            />
+                        </Grid.Column>
+                    )
                 }
             </Grid.Row>
         </Grid>

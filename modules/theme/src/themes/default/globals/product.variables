@@ -27,8 +27,20 @@
 @iconWrapperPadding: 5px;
 @iconWrapperVeryPadding: 10px;
 @iconDefaultBgColor: @nobel;
+@iconDefaultBgHoverColor: @black;
 @iconWrapperTwoTonePrimaryColor: @primaryColor;
 @iconWrapperTwoToneSecondaryColor: @nobel;
 @iconWrapperColoredPrimaryColor: @primaryColor;
 @iconWrapperSpacingRight: 8px;
 @iconWrapperSpacingLeft: 8px;
+
+/*-------------------
+   Advance search
+--------------------*/
+
+@advanceSearchHintBorder: 1px solid rgba(34, 36, 38, 0.15);
+@advanceSearchOptionsShadow: 0 2px 4px rgba(0,0,0,0.2);
+@advanceSearchOptionsBorder: 1px solid rgba(0,0,0,0.2);
+@advanceSearchOptionsHeaderBorderBottom: 1px solid #dededf;
+@advanceSearchDropdownMaxWidth: 520px;
+@advanceSearchBorder: 1px solid @borderColor;

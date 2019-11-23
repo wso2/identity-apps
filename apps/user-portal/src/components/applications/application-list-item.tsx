@@ -27,7 +27,7 @@ import { AppAvatar } from "../shared";
 interface ApplicationListItemProps {
     app: Application;
     hideFavouriteIcon: boolean;
-    navigateToApp: () => void;
+    onAppNavigate: (url: string) => void;
 }
 
 /**
@@ -38,13 +38,13 @@ interface ApplicationListItemProps {
 export const ApplicationListItem: FunctionComponent<ApplicationListItemProps> = (
     props: ApplicationListItemProps
 ): JSX.Element => {
-    const { app, hideFavouriteIcon, navigateToApp } = props;
+    const { app, hideFavouriteIcon, onAppNavigate } = props;
 
     return (
-        <Item.Group unstackable>
+        <Item.Group unstackable onClick={ () => onAppNavigate(app.accessUrl) }>
             <Item className="application-list-item">
                 <List.Content className="icon-container" floated="left">
-                    <AppAvatar spaced="right" size="little" name={ app.name } image={ app.logo } />
+                    <AppAvatar spaced="right" size="little" name={ app.name } image={ app.logo }/>
                 </List.Content>
                 <Item.Content className="text-content-container">
                     <Item.Header as="a">

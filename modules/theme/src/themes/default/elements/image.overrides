@@ -56,7 +56,6 @@
                     line-height: @tinyWidth;
                 }
             }
-            // This is breaking due to `ui.small` override in `product.less`
             &.small {
                 height: @smallWidth;
 
@@ -116,10 +115,12 @@
     &.app-image {
         &.app-avatar {
             text-align: center;
-            background: @dustyGray;
 
             .initials {
                 color: @white;
+            }
+            &.bg-image {
+                background-repeat: no-repeat;
             }
             &.mini {
                 width: @miniWidth;
@@ -128,6 +129,9 @@
                 .initials {
                     font-size: 1.5em;
                     line-height: @miniWidth;
+                }
+                &.bg-image {
+                    background-size: @miniWidth @miniWidth;
                 }
             }
             &.little {
@@ -138,6 +142,9 @@
                     font-size: 2em;
                     line-height: @littleWidth;
                 }
+                &.bg-image {
+                    background-size: @littleWidth @littleWidth;
+                }
             }
             &.tiny {
                 height: @tinyWidth;
@@ -145,6 +152,9 @@
                 .initials {
                     font-size: 3em;
                     line-height: @tinyWidth;
+                }
+                &.bg-image {
+                    background-size: @tinyWidth @tinyWidth;
                 }
             }
             // This is breaking due to `ui.small` override in `product.less`
@@ -155,6 +165,9 @@
                     font-size: 4em;
                     line-height: @smallWidth;
                 }
+                &.bg-image {
+                    background-size: @smallWidth @smallWidth;
+                }
             }
             &.medium {
                 height: @mediumWidth;
@@ -162,6 +175,9 @@
                 .initials {
                     font-size: 8em;
                     line-height: @mediumWidth;
+                }
+                &.bg-image {
+                    background-size: @mediumWidth @mediumWidth;
                 }
             }
             &.large {
@@ -171,6 +187,9 @@
                     font-size: 11em;
                     line-height: @largeWidth;
                 }
+                &.bg-image {
+                    background-size: @largeWidth @largeWidth;
+                }
             }
             &.big {
                 height: @bigWidth;
@@ -178,6 +197,9 @@
                 .initials {
                     font-size: 13em;
                     line-height: @bigWidth;
+                }
+                &.bg-image {
+                    background-size: @bigWidth @bigWidth;
                 }
             }
             &.huge {
@@ -187,6 +209,9 @@
                     font-size: 16em;
                     line-height: @hugeWidth;
                 }
+                &.bg-image {
+                    background-size: @hugeWidth @hugeWidth;
+                }
             }
             &.massive {
                 height: @massiveWidth;
@@ -194,6 +219,9 @@
                 .initials {
                     font-size: 17em;
                     line-height: @massiveWidth;
+                }
+                &.bg-image {
+                    background-size: @massiveWidth @massiveWidth;
                 }
             }
             &.spaced-right {
