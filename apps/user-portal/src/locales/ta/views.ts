@@ -121,7 +121,7 @@ export const views: Views = {
                 }
             }
         },
-        applications: {
+        applications: { // TODO: translate
             all: {
                 heading: "All Applications"
             },
@@ -146,6 +146,50 @@ export const views: Views = {
             },
             recent: {
                 heading: "Recent Applications"
+            },
+            search: {
+                forms: {
+                    searchForm: {
+                        inputs: {
+                            filerAttribute: {
+                                label: "Filter attribute",
+                                placeholder: "ex: name, description etc.",
+                                validations: {
+                                    empty: "Filter attribute is a required field"
+                                }
+                            },
+                            filterCondition: {
+                                label: "Filter condition",
+                                placeholder: "ex: Starts with etc.",
+                                validations: {
+                                    empty: "Filter condition is a required field"
+                                }
+                            },
+                            filterValue: {
+                                label: "Filter value",
+                                placeholder: "ex: facebook, slack etc.",
+                                validations: {
+                                    empty: "Filter value is a required field"
+                                }
+                            },
+                        }
+                    }
+                },
+                hints: {
+                    querySearch: {
+                        actionKeys: "Shift + Enter",
+                        label: "To search as a query"
+                    }
+                },
+                options: {
+                    header: "Advance search",
+                },
+                placeholder: "Search by name",
+                popups: {
+                    clear: "clear search",
+                    dropdown: "show options"
+                },
+                resultsIndicator: "Showing results for \"{{query}}\""
             }
         },
         approvals: {
@@ -958,6 +1002,16 @@ export const views: Views = {
         404: {
             subTitle: "நீங்கள் தேடி வந்த பக்கம் இங்கில்லை.",
             title: "நீங்கள் வழி தவறி வந்து விட்டதாக தெரிகிறது :("
+        }
+    },
+    placeholders: { // TODO: translate
+        emptySearchResult: {
+            action: "Clear search query",
+            subtitles: {
+                0: "We couldn't find any results for \"{{query}}\"",
+                1: "Please try a different search term."
+            },
+            title: "No results found"
         }
     },
     sections: {

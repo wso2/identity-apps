@@ -123,29 +123,73 @@ export const views: Views = {
         },
         applications: {
             all: {
-                heading: "All Applications"
+                heading: "සියලුම ඇප්ස්"
             },
             favourite: {
-                heading: "Favourites"
+                heading: "ප්රියතම ඇප්ස්"
             },
             notifications: {
                 fetchApplications: {
                     error: {
                         description: "{{description}}",
-                        message: "Error retrieving applications"
+                        message: "ඇප්ස් ලබා ගැනීමේ දෝෂයකි"
                     },
                     genericError: {
-                        description: "Couldn't retrieve applications",
-                        message: "Something went wrong"
+                        description: "ඇප්ස් ලබා ගැනීමේ දෝෂයකි",
+                        message: "දෝෂයක් ඇතිවිය"
                     },
                     success: {
-                        description: "Successfully retrieved the applications.",
-                        message: "Applications retrieval successful"
+                        description: "ඇප්ස් සාර්ථකව ලබා ගන්නා ලදි.",
+                        message: "සාර්ථකයි"
                     }
                 }
             },
             recent: {
-                heading: "Recent Applications"
+                heading: "මෑතකදී විවෘත කළ ඇප්ස්"
+            },
+            search: {
+                forms: {
+                    searchForm: {
+                        inputs: {
+                            filerAttribute: {
+                                label: "පෙරහන් ගුණාංගය",
+                                placeholder: "උදා: නම, විස්තරය ආදිය.",
+                                validations: {
+                                    empty: "පෙරහන් ගුණාංගය අවශ්‍ය ක්ෂේත්‍රයකි"
+                                }
+                            },
+                            filterCondition: {
+                                label: "පෙරහන් තත්වය",
+                                placeholder: "උදා: සමඟ ආරම්භ වේ.",
+                                validations: {
+                                    empty: "පෙරහන් තත්ත්වය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි"
+                                }
+                            },
+                            filterValue: {
+                                label: "පෙරහන් අගය",
+                                placeholder: "උදා: facebook, slack ආදිය.",
+                                validations: {
+                                    empty: "පෙරහන් අගය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි"
+                                }
+                            },
+                        }
+                    }
+                },
+                hints: {
+                    querySearch: {
+                        actionKeys: "Shift + Enter",
+                        label: "විමසුමක් ලෙස සෙවීමට"
+                    }
+                },
+                options: {
+                    header: "සංකීර්ණ සෙවීම",
+                },
+                placeholder: "නමින් සොයන්න",
+                popups: {
+                    clear: "මකන්න",
+                    dropdown: "විකල්ප පෙන්වන්න"
+                },
+                resultsIndicator: "\"{{query}}\" සඳහා ප්රතිපල"
             }
         },
         approvals: {
@@ -921,6 +965,16 @@ export const views: Views = {
             subTitle: "ඔබ සොයන පිටුව මෙහි නොමැත",
             title: "ඔබට අතරමං වූ බවක් පෙනේ. :("
         },
+    },
+    placeholders: {
+        emptySearchResult: {
+            action: "සෙවුම් විමසුම හිස් කරන්න",
+            subtitles: {
+                0: "\"{{query}}\" සෙවීමට කිසිදු ප්‍රතිපලයක් සොයාගත නොහැකි විය",
+                1: "කරුණාකර වෙනත් සෙවුම් පදයක් උත්සාහ කරන්න."
+            },
+            title: "ප්‍රතිපලයක් හමු නොවීය"
+        }
     },
     sections: {
         accountRecovery: {

@@ -21,6 +21,7 @@ export * from "./app-avatar";
 export * from "./language-switcher";
 export * from "./advance-search";
 export * from "./edit-section";
+export * from "./empty-placeholder";
 export * from "./global-loader";
 export * from "./icon";
 export * from "./notification";

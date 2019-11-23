@@ -40,15 +40,15 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                     { t("views:components.overview.widgets.accountStatus.header") }
                 </Header>
                 <div className="meta">
-                    <Icon className="meta-icon" name="check circle" />
+                    <Icon className="meta-icon" name="check circle outline" />
                     { t("views:components.overview.widgets.accountStatus.list.0") }
                 </div>
                 <div className="meta">
-                    <Icon className="meta-icon" name="check circle" />
+                    <Icon className="meta-icon" name="check circle outline" />
                     { t("views:components.overview.widgets.accountStatus.list.1") }
                 </div>
                 <div className="meta">
-                    <Icon className="meta-icon" name="check circle" />
+                    <Icon className="meta-icon" name="check circle outline" />
                     { t("views:components.overview.widgets.accountStatus.list.2") }
                 </div>
             </div>

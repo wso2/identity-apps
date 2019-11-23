@@ -23,27 +23,25 @@
 
 .ui.action.input {
     &.advance-search {
-        max-width: @advanceSearchMaxWidth;
-        min-width: @advanceSearchMinWidth;
+        min-width: @advanceSearchWidth;
+        border: @advanceSearchBorder;
+        border-radius: @borderRadius;
 
         input {
-            &:focus {
-                border-color: @borderColor;
-                border-right-color: transparent !important;
-            }
-        }
-        .input-add-on {
-            &:active {
-                background: transparent !important;
-            }
+            border: none;
         }
         &.with-add-on {
-            &:focus {
-                .input-add-on {
-                    border-color: @focusBorderColor;
-                    background: @focusBackground;
+            .input-add-on {
+                border: none;
+
+                &:active {
+                    background: transparent !important;
                 }
             }
+        }
+        &.active {
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
         }
     }
 }

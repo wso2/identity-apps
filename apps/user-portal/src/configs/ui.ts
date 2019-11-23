@@ -20,10 +20,13 @@ import {
     AccountRecoveryIconSet,
     CodeIcon,
     ConsentForm,
+    CrossIcon,
     DummyUser,
+    EmptySearchResultsIllustration,
     HomeTileIcons,
     Logo,
     MFAIconSet,
+    OrangeAppIconBackground,
     PackageIcon,
     Padlock,
     SettigsSectionIconSet,
@@ -73,6 +76,18 @@ export const customCSS: CustomCSSType = {
     light: {
         appPrimaryColor: "#ff5000"
     }
+};
+
+export const AdvanceSearchIcons = {
+    clear: CrossIcon
+};
+
+export const EmptyPlaceholderIllustrations = {
+    search: EmptySearchResultsIllustration
+};
+
+export const AppIconBackgrounds = {
+    orange: OrangeAppIconBackground
 };
 
 /**

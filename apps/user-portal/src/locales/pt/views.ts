@@ -123,29 +123,73 @@ export const views: Views = {
         },
         applications: {
             all: {
-                heading: "All Applications"
+                heading: "Todas as aplicações"
             },
             favourite: {
-                heading: "Favourites"
+                heading: "Favoritas"
             },
             notifications: {
                 fetchApplications: {
                     error: {
                         description: "{{description}}",
-                        message: "Error retrieving applications"
+                        message: "Erro ao recuperar aplicativos"
                     },
                     genericError: {
-                        description: "Couldn't retrieve applications",
-                        message: "Something went wrong"
+                        description: "Não foi possível recuperar aplicativos",
+                        message: "Algo deu errado"
                     },
                     success: {
-                        description: "Successfully retrieved the applications.",
-                        message: "Applications retrieval successful"
+                        description: "Os aplicativos foram recuperados com sucesso.",
+                        message: "Recuperação de aplicativos bem-sucedida"
                     }
                 }
             },
             recent: {
-                heading: "Recent Applications"
+                heading: "Aplicações recentes"
+            },
+            search: {
+                forms: {
+                    searchForm: {
+                        inputs: {
+                            filerAttribute: {
+                                label: "Atributo de filtro",
+                                placeholder: "ex: nome, descrição etc.",
+                                validations: {
+                                    empty: "O atributo de filtro é um campo obrigatório"
+                                }
+                            },
+                            filterCondition: {
+                                label: "Condição do filtro",
+                                placeholder: "ex: começa com etc.",
+                                validations: {
+                                    empty: "A condição do filtro é um campo obrigatório"
+                                }
+                            },
+                            filterValue: {
+                                label: "Valor do filtro",
+                                placeholder: "ex: facebook, folga etc.",
+                                validations: {
+                                    empty: "O valor do filtro é um campo obrigatório"
+                                }
+                            },
+                        }
+                    }
+                },
+                hints: {
+                    querySearch: {
+                        actionKeys: "Shift + Enter",
+                        label: "Para pesquisar como uma consulta"
+                    }
+                },
+                options: {
+                    header: "Busca Avançada",
+                },
+                placeholder: "Procura por nome",
+                popups: {
+                    clear: "pesquisa clara",
+                    dropdown: "mostrar opções"
+                },
+                resultsIndicator: "Mostrando resultados para \"{{query}}\""
             }
         },
         approvals: {
@@ -931,6 +975,16 @@ export const views: Views = {
             subTitle: "A página que você está procurando não está aqui",
             title: "Parece que você está perdido. :("
         },
+    },
+    placeholders: {
+        emptySearchResult: {
+            action: "Limpar consulta de pesquisa",
+            subtitles: {
+                0: "Não conseguimos encontrar resultados para \"{{query}}\"",
+                1: "Tente um termo de pesquisa diferente."
+            },
+            title: "Nenhum resultado encontrado"
+        }
     },
     sections: {
         accountRecovery: {
