@@ -46,7 +46,6 @@
             margin-left: 5px;
 
             .item-header {
-                color: @applicationListItemHeaderColor;
                 float: left;
                 max-width: @applicationListItemHeaderMaxWidth;
                 white-space: nowrap;

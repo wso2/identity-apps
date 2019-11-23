@@ -28,7 +28,7 @@
     <g id="No-search-results" clip-path="url(#clip-No-search-results)">
         <rect width="351" height="201" fill="#fff"/>
         <g id="no-search-results-2" transform="translate(-6.095 1.356)">
-            <circle id="Ellipse_8" cx="46" cy="46" r="46" transform="translate(137.095 48.644)"
+            <circle class="fill faded primary" id="Ellipse_8" cx="46" cy="46" r="46" transform="translate(137.095 48.644)"
                     fill="rgba(255,80,0,0.09)"/>
             <g id="magnifier" transform="translate(119.057 32.098)">
                 <path id="Path_178"
