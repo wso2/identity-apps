@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Field, Fo2m, Validation } from "@wso2is/fo2m";
+import { Field, Forms, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
@@ -229,7 +229,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
 
     const showChangePasswordView = editingForm[CHANGE_PASSWORD_FORM_IDENTIFIER] ? (
         <EditSection>
-            <Fo2m
+            <Forms
                 onSubmit={ (value) => {
                     setCurrentPassword(value.get("currentPassword").toString());
                     setNewPassword(value.get("newPassword").toString());
@@ -328,7 +328,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     />
                 </Form.Group>
 
-            </Fo2m>
+            </Forms>
         </EditSection>
     ) : null;
 

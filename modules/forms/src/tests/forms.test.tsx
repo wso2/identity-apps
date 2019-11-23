@@ -20,7 +20,7 @@ import { fireEvent, render } from "@testing-library/react";
 import constants from "./constants";
 import getForm from "./test-form";
 
-describe("Test if the Fo2m is working fine", () => {
+describe("Test if the Forms is working fine", () => {
 
     test("Test if the basic input type text functions work fine", () => {
 

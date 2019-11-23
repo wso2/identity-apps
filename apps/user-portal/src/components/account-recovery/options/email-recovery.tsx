@@ -15,8 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Field, Fo2m, Validation } from "@wso2is/fo2m";
-import Validator from "@wso2is/validator";
+import { Field, Forms, Validation } from "@wso2is/forms";
+import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -247,7 +247,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                             <List>
                                 <List.Item>
                                     <List.Content>
-                                        <Fo2m
+                                        <Forms
                                             onSubmit={ (values) => {
                                                 handleUpdate(values.get("email").toString());
                                             } }
@@ -269,7 +269,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                                 ) }
                                                 type="text"
                                                 validation={ (value: string, validation: Validation) => {
-                                                    if (!Validator.email(value)) {
+                                                    if (!FormValidation.email(value)) {
                                                         validation.isValid = false;
                                                         validation.errorMessages.push(
                                                             t(
@@ -302,7 +302,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                                     value={ t("common:cancel").toString() }
                                                 />
                                             </Form.Group>
-                                        </Fo2m>
+                                        </Forms>
 
                                     </List.Content>
                                 </List.Item>

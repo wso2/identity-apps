@@ -38,9 +38,9 @@ interface FormProps {
 }
 
 /**
- * This is a Fo2m component
+ * This is a Forms component
  */
-export const Fo2m: React.FunctionComponent<React.PropsWithChildren<FormProps>> = (
+export const Forms: React.FunctionComponent<React.PropsWithChildren<FormProps>> = (
     props: React.PropsWithChildren<FormProps>
 ): JSX.Element => {
 

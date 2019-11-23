@@ -17,8 +17,6 @@
  *
  */
 
-import { email, mobileNumber } from "./validator";
+import { email, mobileNumber } from "./validation";
 
-const Validator = { email, mobileNumber };
-
-export default Validator;
+export const FormValidation = { email, mobileNumber };

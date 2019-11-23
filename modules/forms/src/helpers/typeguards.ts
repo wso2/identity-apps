@@ -28,7 +28,7 @@ import {
     PasswordField,
     RadioField,
     Reset
-} from "..";
+} from "../../src";
 
 /**
  * Type guard to check if an input element is a text field

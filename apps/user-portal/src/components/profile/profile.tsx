@@ -16,8 +16,8 @@
  * under the License
  */
 
-import { Field, Fo2m, Validation } from "@wso2is/fo2m";
-import Validator from "@wso2is/validator";
+import { Field, Forms, Validation } from "@wso2is/forms";
+import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -215,7 +215,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 4 }>{ t("views:components.profile.fields.name.label") }</Grid.Column>
                     <Grid.Column width={ 12 }>
-                        <Fo2m
+                        <Forms
                             onSubmit={ (values) => {
                                 handleSubmit(values, "nameChangeForm");
                             } }
@@ -275,7 +275,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     value={ t("common:cancel").toString() }
                                 />
                             </Form.Group>
-                        </Fo2m>
+                        </Forms>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -335,7 +335,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 4 }>{ t("views:components.profile.fields.email.label") }</Grid.Column>
                     <Grid.Column width={ 12 }>
-                        <Fo2m
+                        <Forms
                             onSubmit={ (values) => {
                                 handleSubmit(values, "emailChangeForm");
                             } }
@@ -355,7 +355,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                 ) }
                                 type="text"
                                 validation={ (value: string, validation: Validation) => {
-                                    if (!Validator.email(value)) {
+                                    if (!FormValidation.email(value)) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(t(
                                             "views:components.profile.forms." +
@@ -385,7 +385,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     value={ t("common:cancel").toString() }
                                 />
                             </Form.Group>
-                        </Fo2m>
+                        </Forms>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -442,7 +442,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 4 }>{ t("views:components.profile.fields.organization.label") }</Grid.Column>
                     <Grid.Column width={ 12 }>
-                        <Fo2m
+                        <Forms
                             onSubmit={ (values) => {
                                 handleSubmit(values, "organizationChangeForm");
                             } }
@@ -482,7 +482,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     value={ t("common:cancel").toString() }
                                 />
                             </Form.Group>
-                        </Fo2m>
+                        </Forms>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -539,7 +539,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 4 }>{ t("views:components.profile.fields.mobile.label") }</Grid.Column>
                     <Grid.Column width={ 12 }>
-                        <Fo2m
+                        <Forms
                             onSubmit={ (values) => {
                                 handleSubmit(values, "mobileChangeForm");
                             } }
@@ -558,7 +558,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                 ) }
                                 type="text"
                                 validation={ (value: string, validation: Validation) => {
-                                    if (!Validator.mobileNumber(value)) {
+                                    if (!FormValidation.mobileNumber(value)) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(t(
                                             "views:components.profile.forms." +
@@ -588,7 +588,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     value={ t("common:cancel").toString() }
                                 />
                             </Form.Group>
-                        </Fo2m>
+                        </Forms>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

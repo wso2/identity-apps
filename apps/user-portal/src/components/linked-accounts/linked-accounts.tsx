@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Field, Fo2m } from "@wso2is/fo2m";
+import { Field, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -267,7 +267,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                                 { t("views:components.linkedAccounts.accountTypes.local.label") }
                             </Grid.Column>
                             <Grid.Column width={ 12 }>
-                                <Fo2m
+                                <Forms
                                     onSubmit={ (values) => {
                                         handleSubmit(values, "addAccountForm");
                                     } }
@@ -328,7 +328,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                                             value={ t("common:cancel").toString() }
                                         />
                                     </Form.Group>
-                                </Fo2m>
+                                </Forms>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

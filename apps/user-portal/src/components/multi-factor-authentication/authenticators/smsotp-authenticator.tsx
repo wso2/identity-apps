@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { Field, Fo2m, Validation } from "@wso2is/fo2m";
-import Validator from "@wso2is/validator";
+import { Field, Forms, Validation } from "@wso2is/forms";
+import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -180,7 +180,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                             <List>
                                 <List.Item>
                                     <List.Content>
-                                        <Fo2m
+                                        <Forms
                                             onSubmit={ (values: Map<string, string>) => {
                                                 handleUpdate(values.get("mobileNumber"));
                                             } }
@@ -202,7 +202,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                                 ) }
                                                 type="text"
                                                 validation={ (value: string, validation: Validation) => {
-                                                    if (!Validator.mobileNumber(value)) {
+                                                    if (!FormValidation.mobileNumber(value)) {
                                                         validation.isValid = false;
                                                         validation.errorMessages.push(t(
                                                             "views:components.profile.forms.mobileChangeForm." +
@@ -237,7 +237,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                                     value={ t("common:cancel").toString() }
                                                 />
                                             </Form.Group>
-                                        </Fo2m>
+                                        </Forms>
                                     </List.Content>
                                 </List.Item>
                             </List>

@@ -16,6 +16,4 @@
  * under the License.
  */
 
-export * from "./fo2m";
-export * from "./models";
-export { Field, GroupFields } from "./components";
+export * from "./forms";
