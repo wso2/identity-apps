@@ -56,7 +56,6 @@
                     line-height: @tinyWidth;
                 }
             }
-            // This is breaking due to `ui.small` override in `product.less`
             &.small {
                 height: @smallWidth;
 
