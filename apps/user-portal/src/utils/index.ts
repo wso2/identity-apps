@@ -18,3 +18,4 @@
  */
 
 export * from "./http-utils";
+export * from "./search-utils";
