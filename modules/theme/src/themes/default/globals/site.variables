@@ -104,10 +104,10 @@
 
 
 /*-------------------
-   Advance search
+   Advanced search
 --------------------*/
 
-@advanceSearchWidth: 320px;
-@advanceSearchDropdownMinWidth: 260px;
-@advanceSearchDropdownMaxWidth: 520px;
-@advanceSearchBorder: 1px solid @borderColor;
+@advancedSearchWidth: 320px;
+@advancedSearchDropdownMinWidth: 260px;
+@advancedSearchDropdownMaxWidth: 520px;
+@advancedSearchBorder: 1px solid @borderColor;

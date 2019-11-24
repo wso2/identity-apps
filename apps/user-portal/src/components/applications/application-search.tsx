@@ -20,7 +20,7 @@ import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Form, Grid } from "semantic-ui-react";
 import { buildSearchQuery } from "../../utils";
-import { AdvanceSearch, FormWrapper } from "../shared";
+import { AdvancedSearch, FormWrapper } from "../shared";
 
 /**
  * Filter attribute field identifier.
@@ -138,7 +138,7 @@ export const ApplicationSearch: FunctionComponent<ApplicationSearchProps> = (
     };
 
     return (
-        <AdvanceSearch
+        <AdvancedSearch
             aligned="left"
             clearButtonPopupLabel={ t("views:components.applications.search.popups.clear") }
             defaultSearchStrategy={ DEFAULT_SEARCH_STRATEGY }
@@ -269,6 +269,6 @@ export const ApplicationSearch: FunctionComponent<ApplicationSearchProps> = (
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-        </AdvanceSearch>
+        </AdvancedSearch>
     );
 };

@@ -78,7 +78,7 @@ export const customCSS: CustomCSSType = {
     }
 };
 
-export const AdvanceSearchIcons = {
+export const AdvancedSearchIcons = {
     clear: CrossIcon
 };
 
