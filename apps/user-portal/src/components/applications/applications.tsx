@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
@@ -23,7 +24,8 @@ import { fetchApplications } from "../../api";
 import * as ApplicationConstants from "../../constants/application-constants";
 import * as UIConstants from "../../constants/ui-constants";
 import {
-    Application, emptyStorageApplicationSettings,
+    Application,
+    emptyStorageApplicationSettingsItem,
     Notification,
     StorageApplicationSettingsInterface
 } from "../../models";
@@ -117,17 +119,23 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
      * Populates the list of recent applications.
      */
     const populateRecentApplications = (): void => {
+        const username = AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME);
         const applicationSettings: StorageApplicationSettingsInterface = JSON.parse(
             getValueFromLocalStorage(ApplicationConstants.APPLICATION_SETTINGS_STORAGE_KEY)
         );
+
+        // Check if the current logged in user already has an entry in the settings.
+        if (!applicationSettings || !applicationSettings.hasOwnProperty(username)) {
+            return;
+        }
+
         const recentApps: Application[] = [];
 
-        if (applicationSettings
-            && applicationSettings.recentApplications
-            && applicationSettings.recentApplications.length
-            && applicationSettings.recentApplications.length > 0) {
+        if (applicationSettings[username].recentApplications
+            && applicationSettings[username].recentApplications.length
+            && applicationSettings[username].recentApplications.length > 0) {
 
-            for (const appId of applicationSettings.recentApplications) {
+            for (const appId of applicationSettings[username].recentApplications) {
                 for (const app of applications) {
                     if (app.id === appId) {
                         recentApps.push(app);
@@ -139,40 +147,59 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
         setRecentApplications(recentApps);
     };
 
+    /**
+     * Updates the recent applications list.
+     *
+     * @param {string} id - Id of the accessed application.
+     */
     const updateRecentApplications = (id: string): void => {
+        const username = AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME);
         let applicationSettings: StorageApplicationSettingsInterface = JSON.parse(
             getValueFromLocalStorage(ApplicationConstants.APPLICATION_SETTINGS_STORAGE_KEY)
         );
 
-        if (applicationSettings
-            && applicationSettings.recentApplications
-            && applicationSettings.recentApplications.length
-            && applicationSettings.recentApplications.length > 0) {
-            // check if the current app is in the recent apps array.
-            // If the app is already in the array, terminate the function.
-            for (const appId of applicationSettings.recentApplications) {
-                if (appId === id) {
-                    return;
+        // Check if the current logged in user already has an entry in the settings.
+        if (applicationSettings && applicationSettings.hasOwnProperty(username)) {
+            if (applicationSettings[username].recentApplications
+                && applicationSettings[username].recentApplications.length
+                && applicationSettings[username].recentApplications.length > 0) {
+                // check if the current app is in the recent apps array.
+                // If the app is already in the array, terminate the function.
+                for (const appId of applicationSettings[username].recentApplications) {
+                    if (appId === id) {
+                        return;
+                    }
+                }
+
+                // If the array size is greater than the limit, adjust the array length.
+                // If the array size is equal to the limit, remove the last item.
+                if (applicationSettings[username].recentApplications.length >=
+                    UIConstants.RECENT_APPLICATIONS_LIST_LIMIT
+                ) {
+                    applicationSettings[username].recentApplications.length =
+                        UIConstants.RECENT_APPLICATIONS_LIST_LIMIT;
+                    applicationSettings[username].recentApplications.pop();
                 }
             }
-
-            // If the array size is greater than the limit, adjust the array length.
-            // If the array size is equal to the limit, remove the last item.
-            if (applicationSettings.recentApplications.length >= UIConstants.RECENT_APPLICATIONS_LIST_LIMIT) {
-                applicationSettings.recentApplications.length = UIConstants.RECENT_APPLICATIONS_LIST_LIMIT;
-                applicationSettings.recentApplications.pop();
-            }
         }
 
+        // If `applicationSettings` is null, init it with an empty object.
         if (!applicationSettings) {
-            applicationSettings = emptyStorageApplicationSettings();
+            applicationSettings = {};
         }
 
-        applicationSettings.recentApplications.unshift(id);
+        // If `applicationSettings` doesn't have the logged in user's entry,
+        // create a new one.
+        if (!applicationSettings.hasOwnProperty(username)) {
+            applicationSettings[username] = emptyStorageApplicationSettingsItem();
+        }
+
+        applicationSettings[username].recentApplications.unshift(id);
 
         // Set the new array in localstorage.
         setValueInLocalStorage(ApplicationConstants.APPLICATION_SETTINGS_STORAGE_KEY,
             JSON.stringify(applicationSettings));
+
         // Re-populate the recent apps array.
         populateRecentApplications();
     };

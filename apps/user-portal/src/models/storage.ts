@@ -21,16 +21,26 @@
  */
 export interface StorageApplicationSettingsInterface {
     /**
+     * A user's application settings.
+     */
+    [ key: string ]: StorageApplicationSettingsItemsInterface;
+}
+
+/**
+ * Interface for the applications settings items.
+ */
+export interface StorageApplicationSettingsItemsInterface {
+    /**
      * Array of recent application ids.
      */
     recentApplications: string[];
 }
 
 /**
- * Empty storage application settings object.
+ * Empty storage application settings item object.
  *
- * @return {StorageApplicationSettingsInterface}
+ * @return {StorageApplicationSettingsItemsInterface}
  */
-export const emptyStorageApplicationSettings = (): StorageApplicationSettingsInterface => ({
+export const emptyStorageApplicationSettingsItem = (): StorageApplicationSettingsItemsInterface => ({
     recentApplications: []
 });
