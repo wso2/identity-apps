@@ -25,7 +25,7 @@ import {
 } from "@wso2is/authenticate";
 import { getAssociations, getProfileInfo } from "../../api";
 import { ServiceResourcesEndpoint } from "../../configs";
-import * as TokenConstants from "../../constants/token";
+import * as TokenConstants from "../../constants/token-constants";
 import { history } from "../../helpers";
 import { setProfileInfo, setSignIn, setSignOut } from "../actions";
 

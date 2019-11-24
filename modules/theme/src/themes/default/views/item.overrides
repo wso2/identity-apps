@@ -46,6 +46,7 @@
             margin-left: 5px;
 
             .item-header {
+                color: @applicationListItemHeaderColor;
                 float: left;
                 max-width: @applicationListItemHeaderMaxWidth;
                 white-space: nowrap;
@@ -53,6 +54,7 @@
                 overflow: hidden;
             }
             .item-description {
+                color: @applicationListItemDescColor;
                 margin-top: 0;
                 max-width: @applicationListItemDescMaxWidth;
                 white-space: nowrap;

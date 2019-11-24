@@ -14,19 +14,12 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-/*******************************
-            Item
-*******************************/
-
-/*-------------------
-Application List Item
---------------------*/
-
-@starColor: #FFB70A;
-@applicationListItemHeaderMaxWidth: 140px;
-@applicationListItemDescMaxWidth: 160px;
-@applicationListItemHeaderColor: @darkTextColor;
-@applicationListItemDescColor: @mutedTextColor;
+/**
+ * Application settings key in local storage.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const APPLICATION_SETTINGS_STORAGE_KEY = "application_settings";

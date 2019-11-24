@@ -26,8 +26,10 @@ import { ApplicationList } from "./application-list";
 interface AllApplicationsProps {
     allApps: Application[];
     loading: boolean;
+    onAppNavigate: (id: string, url: string) => void;
     onSearchQueryClear: () => void;
     searchQuery: string;
+    showFavourites?: boolean;
 }
 
 /**
@@ -38,15 +40,23 @@ interface AllApplicationsProps {
 export const AllApplications: FunctionComponent<AllApplicationsProps> = (
     props: AllApplicationsProps
 ): JSX.Element => {
-    const { allApps, onSearchQueryClear, loading, searchQuery } = props;
+    const { allApps, onAppNavigate, onSearchQueryClear, loading, searchQuery, showFavourites } = props;
 
     return (
         <ApplicationList
             apps={ allApps }
-            isFavouritesList={ false }
+            showFavourites={ showFavourites }
             searchQuery={ searchQuery }
             loading={ loading }
+            onAppNavigate={ onAppNavigate }
             onSearchQueryClear={ onSearchQueryClear }
         />
     );
+};
+
+/**
+ * All applications component default props.
+ */
+AllApplications.defaultProps = {
+    showFavourites: true
 };

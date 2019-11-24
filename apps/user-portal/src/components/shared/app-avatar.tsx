@@ -16,10 +16,17 @@
  * under the License.
  */
 
+import classNames from "classnames";
 import React, { FunctionComponent } from "react";
 import { AppIconBackgrounds } from "../../configs";
-import * as ColorConstants from "../../constants/colors";
 import { Avatar, AvatarProps } from "./avatar";
+
+/**
+ * Prop types for the App Avatar component.
+ */
+export interface AppAvatarProps extends AvatarProps {
+    onCard?: boolean;
+}
 
 /**
  * App Avatar component.
@@ -27,55 +34,20 @@ import { Avatar, AvatarProps } from "./avatar";
  * @param {AvatarProps} props - Props injected in to the app avatar component.
  * @return {JSX.Element}
  */
-export const AppAvatar: FunctionComponent<AvatarProps> = (props: AvatarProps): JSX.Element => {
-    const { image, name } = props;
+export const AppAvatar: FunctionComponent<AppAvatarProps> = (props: AppAvatarProps): JSX.Element => {
+    const { image, className, name, onCard } = props;
 
-    /**
-     * Generates a color based on the ASCII values of
-     * the characters in the App name.
-     *
-     * @return {string}
-     */
-    const generateBackgroundColor = (): string => {
-        const MULTIPLIER: number = 5;
-        let asciiValue: number = 0;
-        let count: number = 0;
-
-        for (const letter of name) {
-            if (letter.toUpperCase().charCodeAt(0) < 100) {
-                count++;
-                asciiValue += letter.toUpperCase().charCodeAt(0);
-            }
-        }
-
-        const generatedValue: number = Math.ceil((asciiValue / count) / MULTIPLIER) * MULTIPLIER;
-        const colorArray: string[] = [];
-
-        for (const [key, value] of Object.entries(ColorConstants)) {
-            colorArray.push(value);
-        }
-
-        let checker: number = MULTIPLIER;
-        let assignedColorIndex: number = colorArray.length;
-        for (let i = 0; i <= 100; i++) {
-            if (generatedValue < checker) {
-                return colorArray[assignedColorIndex];
-            }
-            if (i === checker) {
-                checker += MULTIPLIER;
-                assignedColorIndex--;
-            }
-        }
-
-        return colorArray[0];
-    };
+    const appAvatarClassNames = classNames({
+        [ "default-app-icon" ]: onCard,
+        [ "bg-image" ]: !onCard
+    }, className);
 
     if (image) {
         return (
             <Avatar
                 avatarType="app"
-                bordered
                 image={ image }
+                bordered={ false }
                 { ...props }
             />
         );
@@ -84,8 +56,8 @@ export const AppAvatar: FunctionComponent<AvatarProps> = (props: AvatarProps): J
     return (
         <Avatar
             avatarType="app"
-            className="bg-image"
-            style={ { backgroundImage: `url(${ AppIconBackgrounds.orange })` } }
+            className={ appAvatarClassNames }
+            style={ onCard ? {} : { backgroundImage: `url(${ AppIconBackgrounds.orange })` } }
             bordered
             avatar
             name={ name }
@@ -99,5 +71,6 @@ export const AppAvatar: FunctionComponent<AvatarProps> = (props: AvatarProps): J
  */
 AppAvatar.defaultProps = {
     image: null,
-    name: null
+    name: null,
+    onCard: false
 };

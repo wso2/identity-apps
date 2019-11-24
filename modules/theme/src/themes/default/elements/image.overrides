@@ -116,11 +116,17 @@
         &.app-avatar {
             text-align: center;
 
-            .initials {
-                color: @white;
-            }
             &.bg-image {
                 background-repeat: no-repeat;
+
+                .initials {
+                    color: @white;
+                }
+            }
+            &.default-app-icon {
+                .initials {
+                    color: @primaryColor;
+                }
             }
             &.mini {
                 width: @miniWidth;
@@ -157,7 +163,6 @@
                     background-size: @tinyWidth @tinyWidth;
                 }
             }
-            // This is breaking due to `ui.small` override in `product.less`
             &.small {
                 height: @smallWidth;
 

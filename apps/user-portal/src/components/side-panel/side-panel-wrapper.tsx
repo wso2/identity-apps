@@ -18,7 +18,7 @@
 
 import * as React from "react";
 import { Container, Grid, Responsive } from "semantic-ui-react";
-import { DESKTOP_CONTENT_TOP_PADDING, MOBILE_CONTENT_PADDING } from "../../configs";
+import * as UIConstants from "../../constants/ui-constants";
 import { SidePanel } from "./side-panel";
 import { SidePanelMobile } from "./side-panel-mobile";
 
@@ -45,11 +45,11 @@ export const SidePanelWrapper: React.FunctionComponent<SidePanelWrapperProps> = 
     const { headerHeight, mobileSidePanelVisibility, children, onSidePanelPusherClick, onSidePanelItemClick } = props;
 
     const mobileContentStyle = {
-        padding: `${ MOBILE_CONTENT_PADDING }`
+        padding: `${ UIConstants.MOBILE_CONTENT_PADDING }`
     };
 
     const desktopContentStyle = {
-        paddingTop: `${ DESKTOP_CONTENT_TOP_PADDING }px`
+        paddingTop: `${ UIConstants.DESKTOP_CONTENT_TOP_PADDING }px`
     };
 
     return (

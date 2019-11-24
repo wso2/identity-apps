@@ -37,7 +37,7 @@ interface AdvanceSearchProps {
     hintActionKeys?: string;
     hintLabel?: string;
     onExternalSearchQueryClear?: () => void;
-    onSearchQuerySubmit: (query: string) => void;
+    onSearchQuerySubmit: (processQuery: boolean, query: string) => void;
     placeholder?: string;
     resetSubmittedState?: () => void;
     searchOptionsHeader?: string;
@@ -129,7 +129,7 @@ export const AdvanceSearch: FunctionComponent<React.PropsWithChildren<AdvanceSea
      *
      * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event.
      */
-    const handleSearchQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleSearchQueryChange = (e: ChangeEvent<HTMLInputElement>): void => {
         const { value } = e.target;
 
         setInternalSearchQuery(value);
@@ -138,16 +138,16 @@ export const AdvanceSearch: FunctionComponent<React.PropsWithChildren<AdvanceSea
     /**
      * Handles the show options dropdown `onClick` event.
      */
-    const handleShowOptionsClick = () => {
+    const handleShowOptionsClick = (): void => {
         setIsComponentVisible(!isComponentVisible);
     };
 
     /**
      * Handles the clear query button `onClick` event.
      */
-    const handleQueryClearClick = () => {
+    const handleQueryClearClick = (): void => {
         setInternalSearchQuery("");
-        onSearchQuerySubmit(null);
+        onSearchQuerySubmit(false, null);
         onExternalSearchQueryClear();
     };
 
@@ -156,21 +156,21 @@ export const AdvanceSearch: FunctionComponent<React.PropsWithChildren<AdvanceSea
      *
      * @param {KeyboardEvent} e - Keyboard event.
      */
-    const handleSearchQuerySubmit = (e: KeyboardEvent) => {
+    const handleSearchQuerySubmit = (e: KeyboardEvent): void => {
         const { key, shiftKey } = e;
         let query = "";
 
         // If only enter key is pressed perform the default filter strategy.
         if (!shiftKey && key === "Enter") {
             query = `${ defaultSearchStrategy } ${ internalSearchQuery }`;
-            onSearchQuerySubmit(query);
+            onSearchQuerySubmit(false, query);
             setShowSearchFieldHint(false);
         }
         // If both `Enter` key and `Shift` key are pressed, treat the input
         // as a query and perform the search.
         if (shiftKey && key === "Enter") {
             query = internalSearchQuery;
-            onSearchQuerySubmit(query);
+            onSearchQuerySubmit(true, query);
             setShowSearchFieldHint(false);
         }
     };
@@ -178,7 +178,7 @@ export const AdvanceSearch: FunctionComponent<React.PropsWithChildren<AdvanceSea
     /**
      * Handles the search field blur.
      */
-    const handleSearchFieldBlur = () => {
+    const handleSearchFieldBlur = (): void => {
         setShowSearchFieldHint(false);
     };
 

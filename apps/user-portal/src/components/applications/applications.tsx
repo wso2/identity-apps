@@ -20,9 +20,17 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
 import { fetchApplications } from "../../api";
-import { Application, Notification } from "../../models";
+import * as ApplicationConstants from "../../constants/application-constants";
+import * as UIConstants from "../../constants/ui-constants";
+import {
+    Application, emptyStorageApplicationSettings,
+    Notification,
+    StorageApplicationSettingsInterface
+} from "../../models";
+import { getValueFromLocalStorage, setValueInLocalStorage } from "../../utils";
 import { AllApplications } from "./all-applications";
 import { ApplicationSearch } from "./application-search";
+import { RecentApplications } from "./recent-applications";
 
 /**
  * Proptypes for the applications component.
@@ -41,6 +49,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
 ): JSX.Element => {
     const { onNotificationFired } = props;
     const [ applications, setApplications ] = useState<Application[]>([]);
+    const [ recentApplications, setRecentApplications ] = useState<Application[]>([]);
     const [ searchQuery, setSearchQuery ] = useState("");
     const [ isRequestLoading, setIsRequestLoading ] = useState(false);
     const { t } = useTranslation();
@@ -53,13 +62,21 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
     }, []);
 
     /**
+     * Trigger the recent application populate method when
+     * the applications array changes.
+     */
+    useEffect(() => {
+        populateRecentApplications();
+    }, [ applications ]);
+
+    /**
      * Fetches the list of applications from the API.
      *
      * @param {number} limit - Results limit.
      * @param {number} offset - Results offset.
      * @param {string} filter - Filter query.
      */
-    const getApplications = (limit: number, offset: number, filter: string) => {
+    const getApplications = (limit: number, offset: number, filter: string): void => {
         setIsRequestLoading(true);
 
         fetchApplications(limit, offset, filter)
@@ -97,12 +114,76 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
     };
 
     /**
+     * Populates the list of recent applications.
+     */
+    const populateRecentApplications = (): void => {
+        const applicationSettings: StorageApplicationSettingsInterface = JSON.parse(
+            getValueFromLocalStorage(ApplicationConstants.APPLICATION_SETTINGS_STORAGE_KEY)
+        );
+        const recentApps: Application[] = [];
+
+        if (applicationSettings
+            && applicationSettings.recentApplications
+            && applicationSettings.recentApplications.length
+            && applicationSettings.recentApplications.length > 0) {
+
+            for (const appId of applicationSettings.recentApplications) {
+                for (const app of applications) {
+                    if (app.id === appId) {
+                        recentApps.push(app);
+                    }
+                }
+            }
+        }
+
+        setRecentApplications(recentApps);
+    };
+
+    const updateRecentApplications = (id: string): void => {
+        let applicationSettings: StorageApplicationSettingsInterface = JSON.parse(
+            getValueFromLocalStorage(ApplicationConstants.APPLICATION_SETTINGS_STORAGE_KEY)
+        );
+
+        if (applicationSettings
+            && applicationSettings.recentApplications
+            && applicationSettings.recentApplications.length
+            && applicationSettings.recentApplications.length > 0) {
+            // check if the current app is in the recent apps array.
+            // If the app is already in the array, terminate the function.
+            for (const appId of applicationSettings.recentApplications) {
+                if (appId === id) {
+                    return;
+                }
+            }
+
+            // If the array size is greater than the limit, adjust the array length.
+            // If the array size is equal to the limit, remove the last item.
+            if (applicationSettings.recentApplications.length >= UIConstants.RECENT_APPLICATIONS_LIST_LIMIT) {
+                applicationSettings.recentApplications.length = UIConstants.RECENT_APPLICATIONS_LIST_LIMIT;
+                applicationSettings.recentApplications.pop();
+            }
+        }
+
+        if (!applicationSettings) {
+            applicationSettings = emptyStorageApplicationSettings();
+        }
+
+        applicationSettings.recentApplications.unshift(id);
+
+        // Set the new array in localstorage.
+        setValueInLocalStorage(ApplicationConstants.APPLICATION_SETTINGS_STORAGE_KEY,
+            JSON.stringify(applicationSettings));
+        // Re-populate the recent apps array.
+        populateRecentApplications();
+    };
+
+    /**
      * Handles the `onFilter` callback action from the
      * application search component.
      *
      * @param {string} query - Search query.
      */
-    const handleApplicationFilter = (query: string) => {
+    const handleApplicationFilter = (query: string): void => {
         setSearchQuery(query);
         getApplications(null, null, query);
     };
@@ -111,13 +192,34 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
      * Handles the `onSearchQueryClear` callback action from the
      * all application component.
      */
-    const handleSearchQueryClear = () => {
+    const handleSearchQueryClear = (): void => {
         setSearchQuery("");
         getApplications(null, null, null);
     };
 
+    /**
+     * Handles access url navigation.
+     *
+     * @remarks
+     * `_blank` target has a security vulnerability. Hence the `rel=noopener`
+     * attribute was used.
+     * @see {@link https://searchenginelaws.com/seo/what-is-rel-noopener-noreferrer-tag/}
+     *
+     * @param {string} id - ID of the application.
+     * @param {string} url - App access url.
+     */
+    const handleAppNavigation = (id: string, url: string): void => {
+        updateRecentApplications(id);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.click();
+    };
+
     return (
-        <>
+        <div className="applications-page">
             <ApplicationSearch onFilter={ handleApplicationFilter }/>
             <div className="search-results-indicator">
                 {
@@ -127,13 +229,36 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
                 }
             </div>
             <Divider/>
-            <Divider hidden className="x1"/>
+            {
+                (searchQuery || (recentApplications && recentApplications.length <= 0))
+                    ? <Divider hidden className="x1"/>
+                    : null
+            }
+            {
+                (!searchQuery && recentApplications && recentApplications.length && recentApplications.length > 0)
+                    ? (
+                        <>
+                            <h3 className="section-header">
+                                { t("views:components.applications.recent.heading") }
+                            </h3>
+                            <RecentApplications
+                                onAppNavigate={ handleAppNavigation }
+                                recentApps={ recentApplications }
+                                showFavourites={ false }
+                            />
+                            <h3 className="section-header">{ t("views:components.applications.all.heading") }</h3>
+                        </>
+                    )
+                    : null
+            }
             <AllApplications
                 allApps={ applications }
                 searchQuery={ searchQuery }
                 loading={ isRequestLoading }
+                onAppNavigate={ handleAppNavigation }
                 onSearchQueryClear={ handleSearchQueryClear }
+                showFavourites={ false }
             />
-        </>
+        </div>
     );
 };

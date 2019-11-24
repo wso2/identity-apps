@@ -14,19 +14,20 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-/*******************************
-            Item
-*******************************/
+/**
+ * The login scope.
+ * @constant
+ * @type {number}
+ * @default
+ */
+export const LOGIN_SCOPE = "internal_login";
 
-/*-------------------
-Application List Item
---------------------*/
-
-@starColor: #FFB70A;
-@applicationListItemHeaderMaxWidth: 140px;
-@applicationListItemDescMaxWidth: 160px;
-@applicationListItemHeaderColor: @darkTextColor;
-@applicationListItemDescColor: @mutedTextColor;
+/**
+ * Human task scope.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const HUMAN_TASK_SCOPE = "internal_humantask_view";

@@ -16,5 +16,34 @@
  * under the License.
  */
 
-export const LOGIN_SCOPE = "internal_login";
-export const HUMAN_TASK_SCOPE = "internal_humantask_view";
+/**
+ * The maximum list item count on settings sections.
+ * @constant
+ * @type {number}
+ * @default
+ */
+export const SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT: number = 5;
+
+/**
+ * Desktop layout content top padding.
+ * @constant
+ * @type {number}
+ * @default
+ */
+export const DESKTOP_CONTENT_TOP_PADDING: number = 50;
+
+/**
+ * Mobile layout content padding.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const MOBILE_CONTENT_PADDING: string = "2rem 1rem";
+
+/**
+ * The maximum recent application count.
+ * @constant
+ * @type {number}
+ * @default
+ */
+export const RECENT_APPLICATIONS_LIST_LIMIT: number = 3;

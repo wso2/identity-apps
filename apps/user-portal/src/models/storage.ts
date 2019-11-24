@@ -14,19 +14,23 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-/*******************************
-            Item
-*******************************/
+/**
+ * Interface for the applications settings local storage item.
+ */
+export interface StorageApplicationSettingsInterface {
+    /**
+     * Array of recent application ids.
+     */
+    recentApplications: string[];
+}
 
-/*-------------------
-Application List Item
---------------------*/
-
-@starColor: #FFB70A;
-@applicationListItemHeaderMaxWidth: 140px;
-@applicationListItemDescMaxWidth: 160px;
-@applicationListItemHeaderColor: @darkTextColor;
-@applicationListItemDescColor: @mutedTextColor;
+/**
+ * Empty storage application settings object.
+ *
+ * @return {StorageApplicationSettingsInterface}
+ */
+export const emptyStorageApplicationSettings = (): StorageApplicationSettingsInterface => ({
+    recentApplications: []
+});

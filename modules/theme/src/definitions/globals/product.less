@@ -26,28 +26,9 @@ each(range(5), {
     .ui.divider.hidden.x@{value} {
         margin: (@value * 1rem) 0rem;
     }
-
-    .ui.cards > .card.margin-x@{value} {
-        margin: (@value * 1rem);
-    }
-
-    .ui.cards > .card > .content.padding-x@{value},
-    .ui.card > .content.padding-x@{value} {
-        padding: (@value * 1rem);
-    }
 });
 
 body {
-    .ui.card,
-    .ui.card:last-child {
-        margin-bottom: 2rem;
-    }
-
-    .ui.cards > .card > .content > .header:not(.ui),
-    .ui.card > .content > .header:not(.ui) {
-        font-size: 1.7em;
-    }
-
     .user-dropdown .ui.items {
         margin: 0;
     }

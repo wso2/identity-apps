@@ -30,20 +30,41 @@
                 padding: 3em 0;
                 height: 170px;
             }
-            .content {
-                display: inline-block;
+            .application-image {
+                text-align: center;
 
-                &.text {
-                    .header {
-                        font-size: 1.4em;
+                &.default {
+                    background: @whiteSmoke;
+                }
+            }
+            .application-content {
+                .text-content-container {
+                    display: inline-block;
+
+                    .application-name {
+                        color: @recentApplicationCardHeaderColor;
+                        font-size: @recentApplicationCardHeaderFontSize;
+                        line-height: @recentApplicationCardHeaderFontSize;
                         margin-bottom: 4px;
+                        max-width: @recentApplicationCardHeaderMaxWidth;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                    }
+                    .application-description {
+                        color: @recentApplicationCardDescColor;
+                        max-width: @recentApplicationCardDescMaxWidth;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                    .application-tag {
+                        margin: 0;
+                        font-size: 0.8em;
                     }
                 }
-                .tag {
-                    margin: 0;
-                    font-size: 0.8em;
-                }
-                &.icon {
+                .icon-container {
+                    display: inline-block;
                     font-size: 1.3em;
                     float: right;
                     margin-top: 10px;
