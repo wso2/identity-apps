@@ -16,10 +16,11 @@
  * under the License.
  */
 
+import { Field, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Form, Grid } from "semantic-ui-react";
-import { AdvanceSearch, FormWrapper } from "../shared";
+import { AdvanceSearch } from "../shared";
 
 /**
  * Filter attribute field identifier.
@@ -47,7 +48,7 @@ const FILTER_VALUES_FIELD_IDENTIFIER: string = "filerValues";
 const DEFAULT_SEARCH_STRATEGY: string = "name co";
 
 /**
- * Proptypes for the application search component.
+ * Prop types for the application search component.
  */
 interface ApplicationSearchProps {
     onFilter: (query: string) => void;
@@ -97,10 +98,10 @@ export const ApplicationSearch: FunctionComponent<ApplicationSearchProps> = (
      */
     const handleFormSubmit = (values: Map<string, string | string[]>) => {
         const query = values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER) as string
-        + " "
-        + values.get(FILTER_CONDITION_FIELD_IDENTIFIER) as string
-        + " "
-        + values.get(FILTER_VALUES_FIELD_IDENTIFIER) as string;
+            + " "
+            + values.get(FILTER_CONDITION_FIELD_IDENTIFIER) as string
+            + " "
+            + values.get(FILTER_VALUES_FIELD_IDENTIFIER) as string;
 
         setExternalSearchQuery(query);
         onFilter(query);
@@ -149,116 +150,83 @@ export const ApplicationSearch: FunctionComponent<ApplicationSearchProps> = (
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
-                        <FormWrapper
-                            formFields={ [
-                                {
-                                    children: filterAttributeOptions.map((attribute, index) => {
-                                        return {
-                                            key: index,
-                                            text: attribute.text,
-                                            value: attribute.value
-                                        };
-                                    }),
-                                    label: t("views:components.applications.search.forms.searchForm.inputs" +
-                                        ".filerAttribute.label"),
-                                    name: FILTER_ATTRIBUTE_FIELD_IDENTIFIER,
-                                    placeholder: t("views:components.applications.search.forms.searchForm.inputs" +
-                                        ".filerAttribute.placeholder"),
-                                    required: true,
-                                    requiredErrorMessage: t("views:components.applications.search.forms.searchForm" +
-                                        ".inputs.filerAttribute.validations.empty"),
-                                    type: "dropdown",
-                                    width: 16
-                                },
-                                {
-                                    children: filterConditionOptions.map((condition, index) => {
-                                        return {
-                                            key: index,
-                                            text: condition.text,
-                                            value: condition.value
-                                        };
-                                    }),
-                                    label: t("views:components.applications.search.forms.searchForm.inputs" +
-                                        ".filterCondition.label"),
-                                    name: FILTER_CONDITION_FIELD_IDENTIFIER,
-                                    placeholder: t("views:components.applications.search.forms.searchForm.inputs" +
-                                        ".filterCondition.placeholder"),
-                                    required: true,
-                                    requiredErrorMessage: t("views:components.applications.search.forms.searchForm" +
-                                        ".inputs.filterCondition.validations.empty"),
-                                    type: "dropdown",
-                                    width: 16
-                                },
-                                {
-                                    label: t("views:components.applications.search.forms.searchForm.inputs" +
-                                        ".filterValue.label"),
-                                    name: FILTER_VALUES_FIELD_IDENTIFIER,
-                                    placeholder: t("views:components.applications.search.forms.searchForm.inputs" +
-                                        ".filterValue.placeholder"),
-                                    required: true,
-                                    requiredErrorMessage: t("views:components.applications.search.forms.searchForm" +
-                                        ".inputs.filterValue.validations.empty"),
-                                    type: "text",
-                                    width: 16
-                                },
-                                {
-                                    hidden: true,
-                                    type: "divider"
-                                },
-                                {
-                                    size: "small",
-                                    type: "submit",
-                                    value: t("common:search") as string
-                                },
-                                {
-                                    className: "link-button",
-                                    size: "small",
-                                    type: "reset",
-                                    value: t("common:resetFilters") as string
-                                }
-                            ] }
-                            groups={ [
-                                {
-                                    endIndex: 2,
-                                    startIndex: 1,
-                                    wrapper: Grid.Column,
-                                    wrapperProps: {
-                                        width: 8
-                                    }
-                                },
-                                {
-                                    endIndex: 3,
-                                    startIndex: 2,
-                                    wrapper: Grid.Column,
-                                    wrapperProps: {
-                                        width: 8
-                                    }
-                                },
-                                {
-                                    endIndex: 3,
-                                    startIndex: 1,
-                                    wrapper: Grid.Row,
-                                    wrapperProps: {
-                                        columns: 2
-                                    }
-                                },
-                                {
-                                    endIndex: 2,
-                                    startIndex: 1,
-                                    wrapper: Grid,
-                                    wrapperProps: {}
-                                },
-                                {
-                                    endIndex: 5,
-                                    startIndex: 3,
-                                    wrapper: Form.Group,
-                                    wrapperProps: {
-                                        inline: true
-                                    }
-                                }
-                            ] }
-                            onSubmit={ (values) => handleFormSubmit(values) }
-                        />
+                        <Forms onSubmit={ (values) => handleFormSubmit(values) }>
+                            <Field
+                                children={ filterAttributeOptions.map((attribute, index) => {
+                                    return {
+                                        key: index,
+                                        text: attribute.text,
+                                        value: attribute.value
+                                    };
+                                }) }
+                                label={ t("views:components.applications.search.forms.searchForm.inputs" +
+                                    ".filerAttribute.label") }
+                                name={ FILTER_ATTRIBUTE_FIELD_IDENTIFIER }
+                                placeholder={ t("views:components.applications.search.forms.searchForm.inputs" +
+                                    ".filerAttribute.placeholder") }
+                                required={ true }
+                                requiredErrorMessage={ t("views:components.applications.search.forms.searchForm" +
+                                    ".inputs.filerAttribute.validations.empty") }
+                                type="dropdown"
+                                width={ 16 }
+                            />
+                            <Grid>
+                                <Grid.Row columns={ 2 }>
+                                    <Grid.Column width={ 8 }>
+                                        <Field
+                                            children={ filterConditionOptions.map((condition, index) => {
+                                                return {
+                                                    key: index,
+                                                    text: condition.text,
+                                                    value: condition.value
+                                                };
+                                            }) }
+                                            label={ t("views:components.applications.search.forms.searchForm.inputs" +
+                                                ".filterCondition.label") }
+                                            name={ FILTER_CONDITION_FIELD_IDENTIFIER }
+                                            placeholder={ t("views:components.applications.search.forms." +
+                                                "searchForm.inputs.filterCondition.placeholder") }
+                                            required={ true }
+                                            requiredErrorMessage={ t("views:components.applications.search.forms" +
+                                                ".searchForm.inputs.filterCondition.validations.empty") }
+                                            type="dropdown"
+                                            width={ 16 }
+                                        />
+                                    </Grid.Column>
+                                    <Grid.Column width={ 8 }>
+                                        <Field
+                                            label={ t("views:components.applications.search.forms.searchForm.inputs" +
+                                                ".filterValue.label") }
+                                            name={ FILTER_VALUES_FIELD_IDENTIFIER }
+                                            placeholder={ t("views:components.applications.search.forms." +
+                                                "searchForm.inputs.filterValue.placeholder") }
+                                            required={ true }
+                                            requiredErrorMessage={ t("views:components.applications.search." +
+                                                "forms.searchForm.inputs.filterValue.validations.empty") }
+                                            type="text"
+                                            width={ 16 }
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                            <Field
+                                hidden={ true }
+                                type="divider"
+                            />
+                            <Form.Group inline={ true }>
+                                <Field
+                                    size="small"
+                                    type="submit"
+                                    value={ t("common:search") as string }
+                                />
+                                <Field
+                                    className="link-button"
+                                    size="small"
+                                    type="reset"
+                                    value={ t("common:resetFilters") as string }
+                                />
+                            </Form.Group>
+                        </Forms>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
