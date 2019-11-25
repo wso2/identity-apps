@@ -189,7 +189,7 @@ export const views: Views = {
                     clear: "தேடலை அழி",
                     dropdown: "தேர்வுகளை காண்பி"
                 },
-                resultsIndicator: '"{{query}} இற்கான பெறுபேறுகள்"'
+                resultsIndicator: "\"{{query}}\" இற்கான பெறுபேறுகள்"
             }
         },
         approvals: {
@@ -1007,12 +1007,12 @@ export const views: Views = {
     placeholders: {
         // TODO: translate
         emptySearchResult: {
-            action: "Clear search query",
+            action: "தேடல் கேள்வியினை அழி",
             subtitles: {
-                0: 'We couldn\'t find any results for "{{query}}"',
-                1: "Please try a different search term."
+                0: "\"{{query}}\" இற்கான பெறுபேறுகள் எதுவுமில்லை",
+                1: "தயவுசெய்து வேறு பதத்தினை பயன்படுத்தி தேடவும்"
             },
-            title: "No results found"
+            title: "பெறுபேறுகள் எதுவுமில்லை"
         }
     },
     sections: {
