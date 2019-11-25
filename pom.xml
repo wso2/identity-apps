@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.97-SNAPSHOT</version>
+    <version>0.1.98-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
@@ -447,13 +447,16 @@
                 <inherited>false</inherited>
                 <executions>
                     <execution>
-                        <id>yarn install (initialize)</id>
+                        <id>npm install (initialize)</id>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <phase>initialize</phase>
                         <configuration>
-                            <executable>yarn</executable>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>install</argument>
+                            </arguments>
                             <workingDirectory>${basedir}</workingDirectory>
                         </configuration>
                     </execution>
