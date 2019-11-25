@@ -17,6 +17,7 @@
  */
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
+import * as ApplicationConstants from "../constants/application-constants";
 import { AuthStateInterface } from "../models";
 
 /**
@@ -39,4 +40,47 @@ export const resolveUserDisplayName = (state: AuthStateInterface): string => {
         return AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME);
     }
     return null;
+};
+
+/**
+ * Same username can exist in two different user stores. This function
+ * will resolve the username so that the `PRIMARY` user store users will
+ * have just the username and the other user store users will have their
+ * corresponding user store prefixed to their username.
+ *
+ * @param {string} username - Username of the user.
+ * @param {string} userStoreDomain - User store domain of the user.
+ * @return {string}
+ */
+export const resolveUsername = (username: string, userStoreDomain: string) => {
+    // check if the user store is `PRIMARY`.
+    if (userStoreDomain === ApplicationConstants.PRIMARY_USER_STORE_IDENTIFIER) {
+        return username;
+    }
+
+    return `${ userStoreDomain }/${ username }`;
+};
+
+/**
+ * Resolves the user's username when the user store is embedded
+ * in it. `PRIMARY` user store users will have just the username
+ * and the other user store users will have their corresponding
+ * user store prefixed to their username.
+ *
+ * @param {string} username - Username of the user with user store embedded.
+ * @return {string}
+ */
+export const resolveUserStoreEmbeddedUsername = (username: string) => {
+    const parts = username.split("/");
+
+    if (parts.length === 1) {
+        return username;
+    }
+
+    // check if the user store is `PRIMARY`.
+    if (parts[0] === ApplicationConstants.PRIMARY_USER_STORE_IDENTIFIER) {
+        return parts[1];
+    }
+
+    return username;
 };

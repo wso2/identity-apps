@@ -17,16 +17,16 @@
  */
 
 import { isEmpty } from "lodash";
-import React, { SyntheticEvent, useContext, useEffect } from "react";
+import React, { SyntheticEvent, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } from "semantic-ui-react";
-import { getProfileInformation } from "../../store/actions";
 import { switchAccount } from "../../api";
-import { resolveUserDisplayName } from "../../helpers";
+import { resolveUserDisplayName, resolveUsername } from "../../helpers";
 import { AuthStateInterface, createEmptyNotification, LinkedAccountInterface, Notification } from "../../models";
 import { AppState } from "../../store";
+import { getProfileInformation } from "../../store/actions";
 import { Title, UserAvatar } from "../shared";
 
 /**
@@ -185,7 +185,12 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                                         <Item.Content verticalAlign="middle">
                                                             <Item.Description>
                                                                 <div className="name">
-                                                                    { association.username }
+                                                                    {
+                                                                        resolveUsername(
+                                                                            association.username,
+                                                                            association.userStoreDomain
+                                                                        )
+                                                                    }
                                                                 </div>
                                                                 <div className="email">
                                                                     { association.tenantDomain }
