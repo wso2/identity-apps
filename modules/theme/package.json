@@ -10,7 +10,7 @@
     ],
     "main": "src/index.js",
     "scripts": {
-        "build": "node scripts/build-theme.js",
+        "build": "npm run clean && node scripts/build-theme.js",
         "test": "echo \"Error: no test specified\"",
         "lint": "tslint -t stylish --project .",
         "test-coverage": "echo \"Error: no test coverage specified\"",
