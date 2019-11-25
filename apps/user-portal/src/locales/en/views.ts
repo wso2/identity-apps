@@ -643,7 +643,7 @@ export const views: Views = {
                             para1: "If you are already have a user account within WSO2 IS, you have the right to " +
                                 "deactivate your account if you find that this privacy policy is unacceptable to you.",
                             para2: "If you do not have an account and you do not agree with our privacy policy, " +
-                                "you can chose not to create one."
+                                "you can choose not to create one."
                         },
                         heading: "Your choices"
                     }
