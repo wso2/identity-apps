@@ -27,16 +27,16 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>org.wso2.identity.apps.authenticationendpoint.server.feature</artifactId>
+    <artifactId>org.wso2.identity.apps.recovery.portal.server.feature</artifactId>
     <packaging>pom</packaging>
-    <name>WSO2 Identity Server Apps - Authentication Endpoint Server Feature</name>
+    <name>WSO2 Identity Server Apps - Recovery Portal Server Feature</name>
     <url>http://wso2.org</url>
-    <description>This feature contains the application authentication module</description>
+    <description>This feature contains the recovery portal module</description>
 
     <dependencies>
         <dependency>
             <groupId>org.wso2.identity.apps</groupId>
-            <artifactId>authentication-portal</artifactId>
+            <artifactId>recovery-portal</artifactId>
             <type>war</type>
         </dependency>
     </dependencies>
@@ -58,11 +58,11 @@
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.wso2.identity.apps</groupId>
-                                    <artifactId>authentication-portal</artifactId>
+                                    <artifactId>recovery-portal</artifactId>
                                     <type>war</type>
                                     <overWrite>true</overWrite>
                                     <outputDirectory>${basedir}/src/main/resources/</outputDirectory>
-                                    <destFileName>authenticationendpoint.war</destFileName>
+                                    <destFileName>accountrecoveryendpoint.war</destFileName>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
@@ -86,7 +86,7 @@
                                     <includes>
                                         <include>p2.inf</include>
                                         <include>build.properties</include>
-                                        <include>authenticationendpoint.war</include>
+                                        <include>accountrecoveryendpoint.war</include>
                                     </includes>
                                 </resource>
                             </resources>
@@ -106,7 +106,7 @@
                             <goal>p2-feature-gen</goal>
                         </goals>
                         <configuration>
-                            <id>org.wso2.identity.apps.authenticationendpoint.server</id>
+                            <id>org.wso2.identity.apps.recovery.portal.server</id>
                             <propertiesFile>../etc/feature.properties</propertiesFile>
                             <adviceFile>
                                 <properties>
