@@ -181,7 +181,7 @@ export const views: Views = {
                     }
                 },
                 options: {
-                    header: "Advance search",
+                    header: "Advanced search",
                 },
                 placeholder: "Search by name",
                 popups: {

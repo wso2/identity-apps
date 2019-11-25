@@ -98,16 +98,16 @@
   Page Heading
 ---------------*/
 
-@h3 : unit((20 / 14), rem);
-@h4 : unit((18 / 14), rem);
+@h3 : unit((22 / 14), rem);
+@h4 : unit((19 / 14), rem);
 @h5 : unit((16 / 14), rem);
 
 
 /*-------------------
-   Advance search
+   Advanced search
 --------------------*/
 
-@advanceSearchWidth: 320px;
-@advanceSearchDropdownMinWidth: 260px;
-@advanceSearchDropdownMaxWidth: 520px;
-@advanceSearchBorder: 1px solid @borderColor;
+@advancedSearchWidth: 320px;
+@advancedSearchDropdownMinWidth: 260px;
+@advancedSearchDropdownMaxWidth: 520px;
+@advancedSearchBorder: 1px solid @borderColor;

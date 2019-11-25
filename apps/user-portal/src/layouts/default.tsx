@@ -40,10 +40,11 @@ export const DefaultPageLayout: React.FunctionComponent<DefaultPageLayoutProps> 
     props: DefaultPageLayoutProps
 ): JSX.Element => {
     const { children, pageTitle, pageDescription, pageTitleTextAlign } = props;
+
     return (
         <>
-            <AppHeader showSidePanelToggle={ false } />
-            <Container style={ { marginTop: "7em" } } className="app-content">
+            <AppHeader showSidePanelToggle={ false }/>
+            <Container className="main-content default-layout">
                 <Divider className="x2" hidden/>
                 <PageHeader
                     title={ pageTitle }
@@ -53,7 +54,7 @@ export const DefaultPageLayout: React.FunctionComponent<DefaultPageLayoutProps> 
                 { children }
                 <Divider className="x3" hidden/>
             </Container>
-            <AppFooter />
+            <AppFooter/>
         </>
     );
 };

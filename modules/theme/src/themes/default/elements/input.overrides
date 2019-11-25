@@ -18,13 +18,13 @@
  */
 
 /*******************************
-    Advance Search Variation
+    Advanced Search Variation
 *******************************/
 
 .ui.action.input {
-    &.advance-search {
-        min-width: @advanceSearchWidth;
-        border: @advanceSearchBorder;
+    &.advanced-search {
+        min-width: @advancedSearchWidth;
+        border: @advancedSearchBorder;
         border-radius: @borderRadius;
 
         input {

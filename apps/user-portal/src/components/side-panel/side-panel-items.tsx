@@ -20,7 +20,8 @@ import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
-import { DESKTOP_CONTENT_TOP_PADDING, routes, SidePanelIcons } from "../../configs";
+import { routes, SidePanelIcons } from "../../configs";
+import * as UIConstants from "../../constants/ui-constants";
 import { ThemeIcon } from "../shared";
 
 /**
@@ -46,13 +47,13 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
     const activeRoute = (path: string) => {
         const pathname = window.location.pathname;
         const urlTokens = path.split("/");
-        return pathname.indexOf(urlTokens[1]) > -1 ? "active" : "";
+        return pathname.indexOf(urlTokens[ 1 ]) > -1 ? "active" : "";
     };
 
     const style = type === "desktop"
         ? {
             position: "sticky",
-            top: `${ headerHeight + DESKTOP_CONTENT_TOP_PADDING }px`
+            top: `${ headerHeight + UIConstants.DESKTOP_CONTENT_TOP_PADDING }px`
         }
         : null;
 
@@ -71,7 +72,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
                             key={ index }
                         >
                             <ThemeIcon
-                                icon={ SidePanelIcons[route.icon] }
+                                icon={ SidePanelIcons[ route.icon ] }
                                 size="micro"
                                 floated="left"
                                 spaced="right"
