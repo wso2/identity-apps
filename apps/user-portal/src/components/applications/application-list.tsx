@@ -29,10 +29,11 @@ import { ApplicationListItem } from "./application-list-item";
  */
 interface ApplicationListProps {
     apps: Application[];
-    isFavouritesList?: boolean;
     loading: boolean;
+    onAppNavigate: (id: string, url: string) => void;
     onSearchQueryClear: () => void;
     searchQuery: string;
+    showFavourites?: boolean;
 }
 
 /**
@@ -43,26 +44,8 @@ interface ApplicationListProps {
 export const ApplicationList: FunctionComponent<ApplicationListProps> = (
     props: ApplicationListProps
 ): JSX.Element => {
-    const { apps, isFavouritesList, onSearchQueryClear, loading, searchQuery } = props;
+    const { apps, onAppNavigate, onSearchQueryClear, loading, searchQuery, showFavourites } = props;
     const { t } = useTranslation();
-
-    /**
-     * Handles access url navigation.
-     *
-     * @remarks
-     * `_blank` target has a security vulnerability. Hence the `rel=noopener`
-     * attribute was used.
-     * @see {@link https://searchenginelaws.com/seo/what-is-rel-noopener-noreferrer-tag/}
-     *
-     * @param {string} url - App access url.
-     */
-    const handleAppNavigation = (url: string) => {
-        const a = document.createElement("a");
-        a.href = url;
-        a.target = "_blank";
-        a.rel = "noopener";
-        a.click();
-    };
 
     return (
         <Grid>
@@ -73,8 +56,8 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 5 } key={ app.id }>
                                 <ApplicationListItem
                                     app={ app }
-                                    hideFavouriteIcon={ isFavouritesList }
-                                    onAppNavigate={ () => handleAppNavigation(app.accessUrl) }
+                                    showFavouriteIcon={ showFavourites }
+                                    onAppNavigate={ onAppNavigate }
                                 />
                             </Grid.Column>
                         ))
@@ -109,5 +92,5 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
  * Default proptypes for the application list component.
  */
 ApplicationList.defaultProps = {
-    isFavouritesList: false
+    showFavourites: true
 };

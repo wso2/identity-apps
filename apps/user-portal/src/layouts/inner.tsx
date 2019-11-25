@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { AppFooter, GlobalLoader, Header as AppHeader, PageHeader, SidePanelWrapper } from "../components";
 
 /**
@@ -46,33 +46,33 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
 ): JSX.Element => {
     const { children, pageTitle, pageDescription, pageTitleTextAlign } = props;
 
-    const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = React.useState(false);
-    const [ headerHeight, setHeaderHeight ] = React.useState(DEFAULT_HEADER_HEIGHT);
+    const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState(false);
+    const [ headerHeight, setHeaderHeight ] = useState(DEFAULT_HEADER_HEIGHT);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (headerHeight === document.getElementById("app-header").offsetHeight) {
             return;
         }
         setHeaderHeight(document.getElementById("app-header").offsetHeight);
     });
 
-    const handleSidePanelToggleClick = () => {
+    const handleSidePanelToggleClick = (): void => {
         setMobileSidePanelVisibility(!mobileSidePanelVisibility);
     };
 
-    const handleSidePanelPusherClick = () => {
+    const handleSidePanelPusherClick = (): void => {
         setMobileSidePanelVisibility(false);
     };
 
-    const handleSidePanelItemClick = () => {
+    const handleSidePanelItemClick = (): void => {
         setMobileSidePanelVisibility(false);
     };
 
     return (
         <>
-            <GlobalLoader height={ 3 } />
+            <GlobalLoader height={ 3 }/>
             <AppHeader onSidePanelToggleClick={ handleSidePanelToggleClick }/>
-            <div style={ { paddingTop: `${ headerHeight }px` } } className="app-content">
+            <div style={ { paddingTop: `${ headerHeight }px` } } className="main-content">
                 <SidePanelWrapper
                     headerHeight={ headerHeight }
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
@@ -87,7 +87,7 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
                     { children }
                 </SidePanelWrapper>
             </div>
-            <AppFooter />
+            <AppFooter/>
         </>
     );
 };

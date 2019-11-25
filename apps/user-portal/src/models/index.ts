@@ -28,6 +28,7 @@ export * from "./notifications";
 export * from "./profile";
 export * from "./security-questions";
 export * from "./session";
+export * from "./storage";
 export * from "./tokens";
 export * from "./user-sessions";
 export * from "./global";

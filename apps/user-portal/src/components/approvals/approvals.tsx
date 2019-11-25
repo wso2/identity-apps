@@ -20,7 +20,7 @@ import React, { FunctionComponent, MouseEvent, SyntheticEvent, useEffect, useSta
 import { useTranslation } from "react-i18next";
 import { Icon, Menu, SemanticCOLORS, Tab } from "semantic-ui-react";
 import { fetchPendingApprovalDetails, fetchPendingApprovals, updatePendingApprovalStatus } from "../../api";
-import { SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT } from "../../configs";
+import * as UIConstants from "../../constants/ui-constants";
 import { ApprovalStatus, ApprovalTaskDetails, Notification } from "../../models";
 import { SettingsSection } from "../shared";
 import { ApprovalsList } from "./approvals-list";
@@ -84,7 +84,11 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
      * @param {boolean} shallowUpdate - A flag to specify if only the statuses should be updated.
      */
     const getApprovals = (shallowUpdate: boolean = false): void => {
-        fetchPendingApprovals(pagination[ filterStatus ] ? 0 : SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT, 0, filterStatus)
+        fetchPendingApprovals(
+            pagination[ filterStatus ]
+                ? 0
+                : UIConstants.SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT, 0, filterStatus
+        )
             .then((response) => {
                 if (!shallowUpdate) {
                     setApprovals(response);
@@ -227,7 +231,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
      * @param {string} id
      */
     const removeApprovalsListIndex = (id: string): boolean => {
-        const indexes = [...approvalsListActiveIndexes];
+        const indexes = [ ...approvalsListActiveIndexes ];
 
         if (approvalsListActiveIndexes.includes(id)) {
             const removingIndex = approvalsListActiveIndexes.indexOf(id);
@@ -406,7 +410,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                 (
                     approvals
                     && approvals.length
-                    && approvals.length >= SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT
+                    && approvals.length >= UIConstants.SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT
                 )
                     ? pagination[ filterStatus ] ? t("common:showLess") : t("common:showMore")
                     : null

@@ -19,15 +19,15 @@
 import classNames from "classnames";
 import React, { ChangeEvent, FunctionComponent, useEffect, useState } from "react";
 import { Button, Icon, Input, Popup } from "semantic-ui-react";
-import { AdvanceSearchIcons } from "../../configs";
+import { AdvancedSearchIcons } from "../../configs";
 import { useClickOutside } from "../../hooks";
 import { ThemeIcon } from "./icon";
 
 /**
  *
- * Proptypes for the advance search component
+ * Proptypes for the advanced search component
  */
-interface AdvanceSearchProps {
+interface AdvancedSearchProps {
     aligned?: "left" | "right" | "center";
     className?: string;
     clearButtonPopupLabel?: string;
@@ -37,7 +37,7 @@ interface AdvanceSearchProps {
     hintActionKeys?: string;
     hintLabel?: string;
     onExternalSearchQueryClear?: () => void;
-    onSearchQuerySubmit: (query: string) => void;
+    onSearchQuerySubmit: (processQuery: boolean, query: string) => void;
     placeholder?: string;
     resetSubmittedState?: () => void;
     searchOptionsHeader?: string;
@@ -45,13 +45,13 @@ interface AdvanceSearchProps {
 }
 
 /**
- * Advance search component.
+ * Advanced search component.
  *
- * @param {React.PropsWithChildren<AdvanceSearchProps>} props - Props injected to the component.
+ * @param {React.PropsWithChildren<AdvancedSearchProps>} props - Props injected to the component.
  * @return {JSX.Element}
  */
-export const AdvanceSearch: FunctionComponent<React.PropsWithChildren<AdvanceSearchProps>> = (
-    props: React.PropsWithChildren<AdvanceSearchProps>
+export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedSearchProps>> = (
+    props: React.PropsWithChildren<AdvancedSearchProps>
 ): JSX.Element => {
     const {
         aligned,
@@ -129,7 +129,7 @@ export const AdvanceSearch: FunctionComponent<React.PropsWithChildren<AdvanceSea
      *
      * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event.
      */
-    const handleSearchQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleSearchQueryChange = (e: ChangeEvent<HTMLInputElement>): void => {
         const { value } = e.target;
 
         setInternalSearchQuery(value);
@@ -138,16 +138,16 @@ export const AdvanceSearch: FunctionComponent<React.PropsWithChildren<AdvanceSea
     /**
      * Handles the show options dropdown `onClick` event.
      */
-    const handleShowOptionsClick = () => {
+    const handleShowOptionsClick = (): void => {
         setIsComponentVisible(!isComponentVisible);
     };
 
     /**
      * Handles the clear query button `onClick` event.
      */
-    const handleQueryClearClick = () => {
+    const handleQueryClearClick = (): void => {
         setInternalSearchQuery("");
-        onSearchQuerySubmit(null);
+        onSearchQuerySubmit(false, null);
         onExternalSearchQueryClear();
     };
 
@@ -156,21 +156,21 @@ export const AdvanceSearch: FunctionComponent<React.PropsWithChildren<AdvanceSea
      *
      * @param {KeyboardEvent} e - Keyboard event.
      */
-    const handleSearchQuerySubmit = (e: KeyboardEvent) => {
+    const handleSearchQuerySubmit = (e: KeyboardEvent): void => {
         const { key, shiftKey } = e;
         let query = "";
 
         // If only enter key is pressed perform the default filter strategy.
         if (!shiftKey && key === "Enter") {
             query = `${ defaultSearchStrategy } ${ internalSearchQuery }`;
-            onSearchQuerySubmit(query);
+            onSearchQuerySubmit(false, query);
             setShowSearchFieldHint(false);
         }
         // If both `Enter` key and `Shift` key are pressed, treat the input
         // as a query and perform the search.
         if (shiftKey && key === "Enter") {
             query = internalSearchQuery;
-            onSearchQuerySubmit(query);
+            onSearchQuerySubmit(true, query);
             setShowSearchFieldHint(false);
         }
     };
@@ -178,12 +178,12 @@ export const AdvanceSearch: FunctionComponent<React.PropsWithChildren<AdvanceSea
     /**
      * Handles the search field blur.
      */
-    const handleSearchFieldBlur = () => {
+    const handleSearchFieldBlur = (): void => {
         setShowSearchFieldHint(false);
     };
 
     return (
-        <div className={ `advance-search-wrapper ${ wrapperClasses }` }>
+        <div className={ `advanced-search-wrapper ${ wrapperClasses }` }>
             <Input
                 action={ (
                     <>
@@ -204,7 +204,7 @@ export const AdvanceSearch: FunctionComponent<React.PropsWithChildren<AdvanceSea
                                                         size="nano"
                                                         defaultIcon
                                                         transparent
-                                                        icon={ AdvanceSearchIcons.clear }
+                                                        icon={ AdvancedSearchIcons.clear }
                                                     />
                                                 </Button>
                                             )
@@ -231,7 +231,7 @@ export const AdvanceSearch: FunctionComponent<React.PropsWithChildren<AdvanceSea
                         />
                     </>
                 ) }
-                className={ `advance-search with-add-on ${ searchFieldClasses }` }
+                className={ `advanced-search with-add-on ${ searchFieldClasses }` }
                 size="large"
                 icon="search"
                 iconPosition="left"
@@ -249,7 +249,7 @@ export const AdvanceSearch: FunctionComponent<React.PropsWithChildren<AdvanceSea
                 {
                     isComponentVisible
                         ? (
-                            <div className="advance-search-options">
+                            <div className="advanced-search-options">
                                 <div className="header">{ searchOptionsHeader }</div>
                                 <div className="form-wrapper">
                                     { children }
@@ -264,9 +264,9 @@ export const AdvanceSearch: FunctionComponent<React.PropsWithChildren<AdvanceSea
 };
 
 /**
- * Default proptypes for the Advance search component.
+ * Default proptypes for the Advanced search component.
  */
-AdvanceSearch.defaultProps = {
+AdvancedSearch.defaultProps = {
     aligned: "left",
     className: null,
     clearButtonPopupLabel: null,
@@ -276,6 +276,6 @@ AdvanceSearch.defaultProps = {
     hintLabel: "Search for",
     onExternalSearchQueryClear: null,
     placeholder: null,
-    searchOptionsHeader: "Advance Search",
+    searchOptionsHeader: "Advanced Search",
     submitted: false
 };
