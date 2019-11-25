@@ -40,21 +40,21 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
     if (authState && authState.profileInfo && authState.profileInfo.userimage) {
         return (
             <Avatar
+                { ...props }
                 avatarType="user"
                 bordered
                 image={ authState.profileInfo && authState.profileInfo.userimage }
-                { ...props }
             />
         );
     }
 
     return (
         <Avatar
+            { ...props }
             avatarType="user"
             bordered
             avatar
             name={ authState ? resolveUserDisplayName(authState) : name }
-            { ...props }
         />
     );
 };
