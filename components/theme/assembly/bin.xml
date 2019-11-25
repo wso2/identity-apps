@@ -27,7 +27,7 @@
     </formats>
     <fileSets>
         <fileSet>
-            <directory>../../node_modules/@wso2is/theme/lib</directory>
+            <directory>node_modules/@wso2is/theme/lib</directory>
             <outputDirectory></outputDirectory>
             <fileMode>644</fileMode>
         </fileSet>
