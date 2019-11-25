@@ -98,11 +98,11 @@ export const ApplicationSearch: FunctionComponent<ApplicationSearchProps> = (
      * @param {Map<string, string | string[]>} values - Form values.
      */
     const handleFormSubmit = (values: Map<string, string | string[]>): void => {
-        const query = values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER) as string
+        const query = values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
             + " "
-            + values.get(FILTER_CONDITION_FIELD_IDENTIFIER) as string
+            + values.get(FILTER_CONDITION_FIELD_IDENTIFIER)
             + " "
-            + values.get(FILTER_VALUES_FIELD_IDENTIFIER) as string;
+            + values.get(FILTER_VALUES_FIELD_IDENTIFIER);
 
         setExternalSearchQuery(query);
         onFilter(query);
@@ -224,13 +224,13 @@ export const ApplicationSearch: FunctionComponent<ApplicationSearchProps> = (
                                 <Field
                                     size="small"
                                     type="submit"
-                                    value={ t("common:search") as string }
+                                    value={ t("common:search").toString() }
                                 />
                                 <Field
                                     className="link-button"
                                     size="small"
                                     type="reset"
-                                    value={ t("common:resetFilters") as string }
+                                    value={ t("common:resetFilters").toString() }
                                 />
                             </Form.Group>
                         </Forms>
