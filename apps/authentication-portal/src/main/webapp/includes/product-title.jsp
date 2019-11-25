@@ -15,3 +15,14 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   --%>
+
+<!-- localize.jsp MUST already be included in the calling script -->
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
+
+<div class="product-title">
+    <img src="libs/theme/assets/images/logo.svg"
+        alt="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "business.name")%>"
+        title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "business.name")%>"
+        class="ui inline image product-logo">
+    <h1 class="product-title-text"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "identity.server")%></h1>
+</div>
