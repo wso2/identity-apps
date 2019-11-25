@@ -15,19 +15,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import Joi from "@hapi/joi";
+import { Field, Forms, Validation } from "@wso2is/forms";
+import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
-import { getProfileInformation } from "../../../../src/store/actions";
-import {  updateProfileInfo } from "../../../api";
+import { updateProfileInfo } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
-import { BasicProfileInterface, Notification, Validation } from "../../../models";
+import { BasicProfileInterface, Notification } from "../../../models";
 import { AppState } from "../../../store";
-import { EditSection, FormWrapper, ThemeIcon } from "../../shared";
+import { getProfileInformation } from "../../../store/actions";
+import { EditSection, ThemeIcon } from "../../shared";
 
 /**
  * Prop types for the EmailRecoveryComponent component.
@@ -247,77 +247,70 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                             <List>
                                 <List.Item>
                                     <List.Content>
-                                        <FormWrapper
-                                            formFields={ [
-                                                {
-                                                    label: t(
-                                                        "views:components.accountRecovery.emailRecovery.forms" +
-                                                        ".emailResetForm.inputs.email.label"
-                                                    ),
-                                                    name: "email",
-                                                    placeholder: t(
-                                                        "views:components.accountRecovery.emailRecovery.forms" +
-                                                        ".emailResetForm.inputs.email.placeholder"
-                                                    ),
-                                                    required: true,
-                                                    requiredErrorMessage: t(
-                                                        "views:components.accountRecovery.emailRecovery.forms" +
-                                                        ".emailResetForm.inputs.email.validations.empty"
-                                                    ),
-                                                    type: "text",
-                                                    validation: (value: string, validation: Validation) => {
-                                                        const emailError = Joi.string()
-                                                            .email({
-                                                                tlds: {
-                                                                    allow: ["com"]
-                                                                }
-                                                            })
-                                                            .validate(value).error;
-
-                                                        if (emailError) {
-                                                            validation.isValid = false;
-                                                            validation.errorMessages.push(emailError.message);
-                                                        }
-                                                    },
-                                                    value: editedEmail,
-                                                    width: 9
-                                                },
-                                                {
-                                                    hidden: true,
-                                                    type: "divider"
-                                                },
-                                                {
-                                                    size: "small",
-                                                    type: "submit",
-                                                    value: t("common:update").toString()
-                                                },
-                                                {
-                                                    className: "link-button",
-                                                    onClick: handleCancel,
-                                                    size: "small",
-                                                    type: "button",
-                                                    value: t("common:cancel").toString()
-                                                }
-                                            ] }
+                                        <Forms
                                             onSubmit={ (values) => {
                                                 handleUpdate(values.get("email").toString());
                                             } }
-                                            groups={ [{
-                                                endIndex: 4,
-                                                startIndex: 2,
-                                                wrapper: Form.Group,
-                                                wrapperProps: {
-                                                    inline: true
+                                        >
+                                            <Field
+                                                label={ t(
+                                                    "views:components.accountRecovery.emailRecovery.forms" +
+                                                    ".emailResetForm.inputs.email.label"
+                                                ) }
+                                                name="email"
+                                                placeholder={ t(
+                                                    "views:components.accountRecovery.emailRecovery.forms" +
+                                                    ".emailResetForm.inputs.email.placeholder"
+                                                ) }
+                                                required={ true }
+                                                requiredErrorMessage={ t(
+                                                    "views:components.accountRecovery.emailRecovery.forms" +
+                                                    ".emailResetForm.inputs.email.validations.empty"
+                                                ) }
+                                                type="text"
+                                                validation={ (value: string, validation: Validation) => {
+                                                    if (!FormValidation.email(value)) {
+                                                        validation.isValid = false;
+                                                        validation.errorMessages.push(
+                                                            t(
+                                                                "views:components.accountRecovery.emailRecovery" +
+                                                                ".forms.emailResetForm.inputs.email." +
+                                                                "validations.invalidFormat"
+                                                            ).toString()
+                                                        );
+                                                    }
                                                 }
-                                            }] }
-                                        />
+                                                }
+                                                value={ editedEmail }
+                                                width={ 9 }
+                                            />
+                                            <Field
+                                                hidden={ true }
+                                                type="divider"
+                                            />
+                                            <Form.Group inline={ true }>
+                                                <Field
+                                                    size="small"
+                                                    type="submit"
+                                                    value={ t("common:update").toString() }
+                                                />
+                                                <Field
+                                                    className="link-button"
+                                                    onClick={ handleCancel }
+                                                    size="small"
+                                                    type="button"
+                                                    value={ t("common:cancel").toString() }
+                                                />
+                                            </Form.Group>
+                                        </Forms>
+
                                     </List.Content>
                                 </List.Item>
                             </List>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-            </EditSection>
+            </EditSection >
         );
     };
 

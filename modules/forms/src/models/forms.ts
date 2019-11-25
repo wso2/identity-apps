@@ -16,12 +16,13 @@
  * under the License.
  */
 
- import { SemanticSIZES, SemanticWIDTHS } from "../../node_modules/semantic-ui-react/dist/commonjs/generic";
+import * as React from "react";
+import { SemanticSIZES, SemanticWIDTHS } from "semantic-ui-react";
 
 /**
  * Form Field Types
  */
- export type Type =
+export type Type =
     | "email"
     | "text"
     | "textarea"
@@ -39,7 +40,7 @@
 /**
  * Model of the Validation object passed into validation functions
  */
- export interface Validation {
+export interface Validation {
     isValid: boolean;
     errorMessages: string[];
 }
@@ -47,7 +48,7 @@
 /**
  * Model of the Error object used by semantic Input elements to check for error
  */
- export interface Error {
+export interface Error {
     isError: boolean;
     errorMessages: string[];
 }
@@ -55,10 +56,10 @@
 /**
  * Input field model
  */
- export interface InputField {
+export interface InputField {
     placeholder: string;
     name: string;
-    type: "text" | "email" | "password" | "textarea" | "number";
+    type: "text" | "email" | "textarea" | "number";
     required: boolean;
     label: string;
     width?: SemanticWIDTHS;
@@ -68,9 +69,27 @@
 }
 
 /**
+ * Password field model
+ */
+export interface PasswordField {
+    placeholder: string;
+    name: string;
+    type: "password";
+    required: boolean;
+    label: string;
+    width?: SemanticWIDTHS;
+    validation?: (value: string, validation: Validation, allValues?: Map<string, FormValue>) => void;
+    requiredErrorMessage: string;
+    value?: string;
+    showPassword: string;
+    hidePassword: string;
+}
+
+/**
  * Form submit model
  */
- export interface FormSubmit {
+export interface FormSubmit {
+    disabled?: (values: Map<string, FormValue>) => boolean;
     value: string;
     type: "submit";
     size?: SemanticSIZES;
@@ -80,7 +99,8 @@
 /**
  * Reset button model
  */
- export interface Reset {
+export interface Reset {
+    disabled?: (values: Map<string, FormValue>) => boolean;
     value: string;
     type: "reset";
     size?: SemanticSIZES;
@@ -90,18 +110,19 @@
 /**
  * Button model
  */
- export interface FormButton {
-    value: string;
-    type: "button";
-    size?: SemanticSIZES;
-    className?: string;
+export interface FormButton {
+    disabled?: (values: Map<string, FormValue>) => boolean;
     onClick: () => void;
+    className?: string;
+    size?: SemanticSIZES;
+    type: "button";
+    value: string;
 }
 
 /**
  * Radio field child model
  */
- export interface RadioChild {
+export interface RadioChild {
     label: string;
     value: string;
 }
@@ -109,7 +130,7 @@
 /**
  * Custom field model
  */
- export interface CustomField {
+export interface CustomField {
     type: Type;
     element: JSX.Element;
 }
@@ -117,7 +138,7 @@
 /**
  * Radio field model
  */
- export interface RadioField {
+export interface RadioField {
     type: "radio";
     label: string;
     name: string;
@@ -129,7 +150,7 @@
 /**
  * Checkbox field child model
  */
- export interface CheckboxChild {
+export interface CheckboxChild {
     label: string;
     value: string;
 }
@@ -137,7 +158,7 @@
 /**
  * Checkbox field model
  */
- export interface CheckboxField {
+export interface CheckboxField {
     type: "checkbox";
     label: string;
     name: string;
@@ -150,7 +171,7 @@
 /**
  * Dropdown field child model
  */
- export interface DropdownChild {
+export interface DropdownChild {
     text: string;
     value: string;
     key: number;
@@ -159,7 +180,7 @@
 /**
  * Dropdown field model
  */
- export interface DropdownField {
+export interface DropdownField {
     type: "dropdown";
     label: string;
     name: string;
@@ -174,7 +195,7 @@
 /**
  * Group model
  */
- export interface Group {
+export interface Group {
     startIndex: number;
     endIndex: number;
     wrapper: React.ComponentType;
@@ -184,7 +205,7 @@
 /**
  * Divider model
  */
- export interface FormDivider {
+export interface FormDivider {
     type: "divider";
     hidden: boolean;
 }
@@ -192,8 +213,9 @@
 /**
  * FormField types
  */
- export type FormField =
+export type FormField =
     | InputField
+    | PasswordField
     | FormSubmit
     | RadioField
     | DropdownField
@@ -206,4 +228,4 @@
 /**
  * FormField value types
  */
- export type FormValue = string | string[];
+export type FormValue = string | string[];

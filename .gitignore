@@ -94,6 +94,8 @@ typings/
 .project
 modules/theme/lib/
 modules/http/dist
+modules/validation/dist
+modules/forms/dist
 target/
 npm/
 apps/*/build/

@@ -14,19 +14,29 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-const path = require('path');
-const fs = require('fs-extra');
+import { FormField } from "../models";
 
-const srcDir = path.join(__dirname, "..", "src");
-const themeModuleDir = path.join(__dirname, "../../../", "node_modules", "@wso2is", "theme");
+/**
+ * This component is a syntactic sugar for the InnerField component
+ * @param props
+ */
+export const Field = (props: FormField): JSX.Element => {
+    return null;
+};
 
-fs.copy(path.join(themeModuleDir, "lib"), path.join(srcDir, "libs", "theme"))
-    .then(() => {
-        console.error("theme css files copied.");
-    })
-    .catch((error) => {
-        console.error(error);
-    });
+/**
+ * Prop types for the GroupFields component
+ */
+interface GroupFieldsProps {
+    wrapper: React.ComponentType;
+    wrapperProps: any;
+}
+/**
+ * This component is a syntactic sugar for the InnerGroupFields component
+ * @param props
+ */
+export const GroupFields = (props: React.PropsWithChildren<GroupFieldsProps>): JSX.Element => {
+    return null;
+};

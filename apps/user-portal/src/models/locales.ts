@@ -114,6 +114,7 @@ export interface Views {
                                 placeholder: string;
                                 validations: {
                                     empty: string;
+                                    invalidFormat: string;
                                 }
                             }
                         }
@@ -567,6 +568,7 @@ export interface Views {
                             placeholder: string;
                             validations: {
                                 empty: string;
+                                invalidFormat: string;
                             }
                         }
                     }
@@ -578,6 +580,7 @@ export interface Views {
                             placeholder: string;
                             validations: {
                                 empty: string;
+                                invalidFormat: string;
                             },
                             note: string;
                         }

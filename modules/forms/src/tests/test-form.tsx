@@ -18,8 +18,9 @@
 
 import React from "react";
 import { Form } from "semantic-ui-react";
-import { FormField, Type, Validation } from "../../../../models";
-import { FormWrapper } from "../form-wrapper";
+import { Field, Forms } from "../../src";
+import { GroupFields } from "../components";
+import { FormField, Type, Validation } from "../models";
 import constants from "./constants";
 
 export interface FormTestFields {
@@ -88,11 +89,13 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
             type: "dropdown" as const, value: constants.DROPDOWN_VALUE
         },
         password: {
+            hidePassword: constants.HIDE_PASSWORD,
             label: constants.PASSWORD_LABEL,
             name: constants.PASSWORD_NAME,
             placeholder: constants.PASSWORD_PLACEHOLDER,
             required: true,
             requiredErrorMessage: constants.PASSWORD_REQUIRED_MESSAGE,
+            showPassword: constants.SHOW_PASSWORD,
             type: "password" as const,
             validation: (value: string, validation: Validation) => {
                 if (value !== constants.PASSWORD_VALID_MESSAGE) {
@@ -166,20 +169,24 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
     });
 
     return (
-        <FormWrapper
-            formFields={ formFields }
-            onSubmit={ (value) => constants.onSubmit(value) }
-            groups={ isGroup ? [
-                {
-                    endIndex: 2,
-                    startIndex: 0,
-                    wrapper: Form.Group,
-                    wrapperProps: {
-                        inline: true
-                    }
-                }
-            ] : []  }
-        />
+        <Forms onSubmit={ (value) => constants.onSubmit(value) }>
+            {
+                isGroup
+                    ? (
+                        <>
+                            <GroupFields wrapper={ Form.Group } wrapperProps={ { inline: true } }>
+                                <Field { ...formFields[0] } />
+                                <Field { ...formFields[1] } />
+                            </GroupFields>
+                            <Field { ...formFields[2] } />
+
+                        </>
+                    )
+                    : formFields.map((formField, index) => {
+                        return <Field key={ index } { ...formField } />;
+                    })
+            }
+        </Forms>
     );
 
 };

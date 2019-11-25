@@ -10,7 +10,7 @@
         "lint": "tslint -t stylish --project .",
         "build-prod": "webpack --env.NODE_ENV=prod",
         "build": "webpack --env.NODE_ENV=prod --mode development && npm run test",
-        "test": "jest",
+        "test": "jest --passWithNoTests",
         "clean": "rm -rf node_modules build npm"
     },
     "jest": {
@@ -92,8 +92,10 @@
         "@types/lodash": "^4.14.146",
         "@types/ua-parser-js": "^0.7.33",
         "@wso2is/authenticate": "^0.1.0",
+        "@wso2is/forms": "^0.1.0",
         "@wso2is/http": "^0.1.0",
         "@wso2is/theme": "^0.1.0",
+        "@wso2is/validation": "^0.1.0",
         "history": "^4.9.0",
         "i18next": "^17.0.11",
         "i18next-browser-languagedetector": "^3.0.3",

@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export * from "./form-wrapper";
+module.exports = "test-file-stub";

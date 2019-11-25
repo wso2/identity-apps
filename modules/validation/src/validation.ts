@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!--
+/**
  * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -8,7 +6,7 @@
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -16,20 +14,20 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
--->
+ *
+ */
 
-<assembly>
-    <includeBaseDirectory>true</includeBaseDirectory>
-    <baseDirectory>${basedir}</baseDirectory>
-    <id>component</id>
-    <formats>
-        <format>zip</format>
-    </formats>
-    <fileSets>
-        <fileSet>
-            <directory>../../node_modules/@wso2is/theme/lib</directory>
-            <outputDirectory></outputDirectory>
-            <fileMode>644</fileMode>
-        </fileSet>
-    </fileSets>
-</assembly>
+import Joi from "@hapi/joi";
+
+export const email = (value: string): boolean => {
+    if (Joi.string().email({ tlds: false }).validate(value).error) {
+        return false;
+    }
+    return true;
+};
+export const mobileNumber = (value: string): boolean => {
+    if (Joi.string().pattern(/^[\d-\+]+$/).validate(value).error) {
+        return false;
+    }
+    return true;
+};

@@ -9,7 +9,8 @@ End-user apps in WSO2 Identity Server
 ## Setup build environment
 
 1. Install NodeJS from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
-2. Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi).
+2. Install Yarn from [https://yarnpkg.com/en/docs/install](https://yarnpkg.com/en/docs/install).
+3. Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi).
 
 ## Build & Run
 

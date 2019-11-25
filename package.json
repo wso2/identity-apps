@@ -1,23 +1,29 @@
 {
-    "private": false,
+    "private": true,
     "name": "@wso2is/webapps",
     "version": "0.1.0",
     "description": "WSO2 Identity Server Web Applications",
     "repository": "https://github.com/wso2/identity-apps.git",
     "scripts": {
-        "prebuild": "npm i && lerna bootstrap",
+        "prebuild": "yarn",
         "build": "lerna run build --stream",
         "clean": "lerna run clean --stream"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
+    "workspaces": [
+        "modules/*",
+        "apps/*",
+        "components/theme"
+    ],
     "dependencies": {
+        "@types/react": "^16.9.0",
         "classnames": "^2.2.6",
-        "react": "^16.4.2",
-        "react-dom": "^16.4.2",
+        "react": "^16.9.0",
+        "react-dom": "^16.9.0",
         "semantic-ui-css": "^2.4.1",
         "semantic-ui-less": "^2.4.1",
-        "semantic-ui-react": "^0.82.5",
+        "semantic-ui-react": "^0.87.3",
         "url-loader": "^2.1.0"
     },
     "devDependencies": {

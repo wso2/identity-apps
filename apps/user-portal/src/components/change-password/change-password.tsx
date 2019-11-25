@@ -16,14 +16,14 @@
  * under the License.
  */
 
+import { Field, Forms, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
 import { updatePassword } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
-import { Notification, Validation } from "../../models";
-import { EditSection, FormWrapper, SettingsSection } from "../shared";
-
+import { Notification } from "../../models";
+import { EditSection, SettingsSection } from "../shared";
 /**
  * Constant to store the change password from identifier.
  * @type {string}
@@ -84,7 +84,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     onNotificationFired({
                         description: t(
                             "views:components.changePassword.forms.passwordResetForm.validations.submitSuccess." +
-                                "description"
+                            "description"
                         ),
                         message: t(
                             "views:components.changePassword.forms.passwordResetForm.validations.submitSuccess.message"
@@ -106,18 +106,18 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         ...errors,
                         currentPassword: t(
                             "views:components.changePassword.forms.passwordResetForm.inputs.currentPassword." +
-                                "validations.invalid"
+                            "validations.invalid"
                         )
                     });
 
                     onNotificationFired({
                         description: t(
                             "views:components.changePassword.forms.passwordResetForm.validations." +
-                                "invalidCurrentPassword.description"
+                            "invalidCurrentPassword.description"
                         ),
                         message: t(
                             "views:components.changePassword.forms.passwordResetForm.validations." +
-                                "invalidCurrentPassword.message"
+                            "invalidCurrentPassword.message"
                         ),
                         otherProps: {
                             negative: true
@@ -133,7 +133,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     onNotificationFired({
                         description: t(
                             "views:components.changePassword.forms.passwordResetForm.validations." +
-                                "submitError.description",
+                            "submitError.description",
                             { description: error.response.data.detail }
                         ),
                         message: t(
@@ -154,7 +154,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     onNotificationFired({
                         description: t(
                             "views:components.changePassword.forms.passwordResetForm.validations." +
-                                "genericError.description"
+                            "genericError.description"
                         ),
                         message: t(
                             "views:components.changePassword.forms.passwordResetForm.validations.genericError.message"
@@ -229,99 +229,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
 
     const showChangePasswordView = editingForm[CHANGE_PASSWORD_FORM_IDENTIFIER] ? (
         <EditSection>
-            <FormWrapper
-                formFields={ [
-                    {
-                        label: t(
-                            "views:components.changePassword.forms.passwordResetForm.inputs" + ".currentPassword.label"
-                        ),
-                        name: "currentPassword",
-                        placeholder: t(
-                            "views:components.changePassword.forms.passwordResetForm.inputs." +
-                                "currentPassword.placeholder"
-                        ),
-                        required: true,
-                        requiredErrorMessage: t(
-                            "views:components.changePassword.forms.passwordResetForm." +
-                                "inputs.currentPassword.validations.empty"
-                        ),
-                        type: "password",
-                        width: 9
-                    },
-                    {
-                        label: t(
-                            "views:components.changePassword.forms.passwordResetForm.inputs" + ".newPassword.label"
-                        ),
-                        name: "newPassword",
-                        placeholder: t(
-                            "views:components.changePassword.forms.passwordResetForm.inputs." +
-                                "newPassword.placeholder"
-                        ),
-                        required: true,
-                        requiredErrorMessage: t(
-                            "views:components.changePassword.forms.passwordResetForm." +
-                                "inputs.newPassword.validations.empty"
-                        ),
-                        type: "password",
-                        width: 9
-                    },
-                    {
-                        label: t(
-                            "views:components.changePassword.forms.passwordResetForm.inputs" + ".confirmPassword.label"
-                        ),
-                        name: "confirmPassword",
-                        placeholder: t(
-                            "views:components.changePassword.forms.passwordResetForm.inputs." +
-                                "confirmPassword.placeholder"
-                        ),
-                        required: true,
-                        requiredErrorMessage: t(
-                            "views:components.changePassword.forms.passwordResetForm." +
-                                "inputs.confirmPassword.validations.empty"
-                        ),
-                        type: "password",
-                        validation: (value: string, validation: Validation, formValues) => {
-                            if (formValues.get("newPassword") !== value) {
-                                validation.isValid = false;
-                                validation.errorMessages.push(
-                                    t(
-                                        "views:components.changePassword.forms.passwordResetForm.inputs" +
-                                            ".confirmPassword.validations.mismatch"
-                                    )
-                                );
-                            }
-                        },
-                        width: 9
-                    },
-                    {
-                        hidden: true,
-                        type: "divider"
-                    },
-                    {
-                        size: "small",
-                        type: "submit",
-                        value: t("common:submit").toString()
-                    },
-                    {
-                        className: "link-button",
-                        onClick: () => {
-                            hideFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER);
-                        },
-                        size: "small",
-                        type: "button",
-                        value: t("common:cancel").toString()
-                    }
-                ] }
-                groups={ [
-                    {
-                        endIndex: 7,
-                        startIndex: 4,
-                        wrapper: Form.Group,
-                        wrapperProps: {
-                            inline: true
-                        }
-                    }
-                ] }
+            <Forms
                 onSubmit={ (value) => {
                     setCurrentPassword(value.get("currentPassword").toString());
                     setNewPassword(value.get("newPassword").toString());
@@ -330,7 +238,97 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                 triggerReset={ (reset) => {
                     resetForm = reset;
                 } }
-            />
+            >
+                <Field
+                    hidePassword={ t("common:hidePassword") }
+                    label={ t(
+                        "views:components.changePassword.forms.passwordResetForm.inputs" + ".currentPassword.label"
+                    ) }
+                    name="currentPassword"
+                    placeholder={ t(
+                        "views:components.changePassword.forms.passwordResetForm.inputs." +
+                        "currentPassword.placeholder"
+                    ) }
+                    required={ true }
+                    requiredErrorMessage={ t(
+                        "views:components.changePassword.forms.passwordResetForm." +
+                        "inputs.currentPassword.validations.empty"
+                    ) }
+                    showPassword={ t("common:showPassword") }
+                    type="password"
+                    width={ 9 }
+                />
+                <Field
+                    hidePassword={ t("common:hidePassword") }
+                    label={ t(
+                        "views:components.changePassword.forms.passwordResetForm.inputs" + ".newPassword.label"
+                    ) }
+                    name="newPassword"
+                    placeholder={ t(
+                        "views:components.changePassword.forms.passwordResetForm.inputs." +
+                        "newPassword.placeholder"
+                    ) }
+                    required={ true }
+                    requiredErrorMessage={ t(
+                        "views:components.changePassword.forms.passwordResetForm." +
+                        "inputs.newPassword.validations.empty"
+                    ) }
+                    showPassword={ t("common:showPassword") }
+                    type="password"
+                    width={ 9 }
+                />
+                <Field
+                    hidePassword={ t("common:hidePassword") }
+                    label={ t(
+                        "views:components.changePassword.forms.passwordResetForm.inputs" + ".confirmPassword.label"
+                    ) }
+                    name="confirmPassword"
+                    placeholder={ t(
+                        "views:components.changePassword.forms.passwordResetForm.inputs." +
+                        "confirmPassword.placeholder"
+                    ) }
+                    required={ true }
+                    requiredErrorMessage={ t(
+                        "views:components.changePassword.forms.passwordResetForm." +
+                        "inputs.confirmPassword.validations.empty"
+                    ) }
+                    showPassword={ t("common:showPassword") }
+                    type="password"
+                    validation={ (value: string, validation: Validation, formValues) => {
+                        if (formValues.get("newPassword") !== value) {
+                            validation.isValid = false;
+                            validation.errorMessages.push(
+                                t(
+                                    "views:components.changePassword.forms.passwordResetForm.inputs" +
+                                    ".confirmPassword.validations.mismatch"
+                                )
+                            );
+                        }
+                    } }
+                    width={ 9 }
+                />
+                <Field
+                    hidden={ true }
+                    type="divider"
+                />
+                <Form.Group>
+                    <Field
+                        size="small"
+                        type="submit"
+                        value={ t("common:submit").toString() }
+                    />
+                    <Field
+                        className="link-button"
+                        onClick={ () => {
+                            hideFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER);
+                        } }
+                        size="small"
+                        type="button"
+                        value={ t("common:cancel").toString() }
+                    />
+                </Form.Group>
+
+            </Forms>
         </EditSection>
     ) : null;
 

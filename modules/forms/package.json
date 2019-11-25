@@ -1,0 +1,66 @@
+{
+    "name": "@wso2is/forms",
+    "version": "0.1.0",
+    "description": "Forms module for WSO2 Identity Server web-apps.",
+    "keywords": [
+        "WSO2",
+        "WSO2-IS",
+        "WSO2-Identity-Server",
+        "form"
+    ],
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "npm run clean && npm run compile",
+        "clean": "rimraf ./dist",
+        "compile": "tsc -p tsconfig.json",
+        "lint": "tslint -t stylish --project .",
+        "test": "jest"
+    },
+    "author": "WSO2",
+    "license": "Apache-2.0",
+    "jest": {
+        "transform": {
+            "^.+\\.tsx$": "ts-jest",
+            "^.+\\.ts$": "ts-jest",
+            "^.+\\.js$": "babel-jest",
+            "^.+\\.jsx$": "babel-jest"
+        },
+        "moduleNameMapper": {
+            "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test_configs/file_mock.js",
+            "\\.(css|less)$": "<rootDir>/test_configs/style_mock.js"
+        },
+        "setupFilesAfterEnv": [
+            "<rootDir>/test_configs/setup_test.ts"
+        ]
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.5.5",
+        "@babel/core": "^7.5.5",
+        "@babel/plugin-transform-modules-commonjs": "^7.6.0",
+        "@babel/polyfill": "^7.0.0",
+        "@babel/preset-env": "^7.5.5",
+        "@types/crypto-js": "^3.1.43",
+        "babel-loader": "^8.0.4",
+        "rimraf": "^3.0.0",
+        "tslint": "^5.18.0",
+        "tslint-eslint-rules": "^5.4.0",
+        "tslint-react": "^4.1.0",
+        "typescript": "^3.5.3",
+        "watch": "^1.0.2",
+        "@types/jest": "^24.0.0",
+        "jest": "^24.0.0",
+        "@testing-library/jest-dom": "^4.2.3",
+        "@testing-library/react": "^9.3.1",
+        "ts-jest": "^24.1.0"
+    },
+    "peerDependencies": {
+        "semantic-ui-react": "^0.87.3",
+        "react": "^16.9.0",
+        "react-dom": "^16.9.0",
+        "@types/react": "^16.9.0"
+    }
+}
