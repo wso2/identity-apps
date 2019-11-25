@@ -44,7 +44,7 @@ export const DefaultPageLayout: React.FunctionComponent<DefaultPageLayoutProps> 
     return (
         <>
             <AppHeader showSidePanelToggle={ false }/>
-            <Container className="main-content default-layout">
+            <Container className="layout-content default-layout">
                 <Divider className="x2" hidden/>
                 <PageHeader
                     title={ pageTitle }
