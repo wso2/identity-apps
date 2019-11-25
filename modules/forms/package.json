@@ -58,9 +58,6 @@
         "ts-jest": "^24.1.0"
     },
     "dependencies": {
-        "semantic-ui-react": "^0.87.3",
-        "react": "^16.9.0",
-        "react-dom": "^16.9.0",
-        "@types/react": "^16.9.0"
+        "semantic-ui-react": "^0.87.3"
     }
 }
