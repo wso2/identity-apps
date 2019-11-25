@@ -35,7 +35,7 @@ interface UserAvatarProps extends AvatarProps {
  * @return {JSX.Element}
  */
 export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatarProps): JSX.Element => {
-    const { authState } = props;
+    const { authState, name } = props;
 
     if (authState && authState.profileInfo && authState.profileInfo.userimage) {
         return (
@@ -50,11 +50,11 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
 
     return (
         <Avatar
-            { ...props }
             avatarType="user"
             bordered
             avatar
             name={ authState ? resolveUserDisplayName(authState) : name }
+            { ...props }
         />
     );
 };
