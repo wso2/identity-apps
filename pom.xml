@@ -422,11 +422,17 @@
                 <version>${project.version}</version>
                 <type>zip</type>
             </dependency>
-            <dependency>	
-                <groupId>org.wso2.identity.apps</groupId>	
-                <artifactId>org.wso2.identity.apps.authenticationendpoint.server.feature</artifactId>	
-                <version>${project.version}</version>	
-                <type>zip</type>	
+            <dependency>
+                <groupId>org.wso2.identity.apps</groupId>
+                <artifactId>org.wso2.identity.apps.authentication.portal.server.feature</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.identity.apps</groupId>
+                <artifactId>org.wso2.identity.apps.recovery.portal.server.feature</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -530,7 +536,7 @@
         <carbon.kernel.registry.imp.pkg.version.range>[1.0.1, 2.0.0)</carbon.kernel.registry.imp.pkg.version.range>
         <carbon.user.api.imp.pkg.version.range>[1.0.1, 2.0.0)</carbon.user.api.imp.pkg.version.range>
 
-        <carbon.identity.framework.version>5.15.10</carbon.identity.framework.version>
+        <carbon.identity.framework.version>5.15.11</carbon.identity.framework.version>
         <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 6.0.0)</carbon.identity.framework.imp.pkg.version.range>
         <carbon.identity.oauth.version>6.2.41</carbon.identity.oauth.version>
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)</carbon.identity.oauth.imp.pkg.version.range>
