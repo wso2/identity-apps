@@ -24,7 +24,7 @@ export const common: Common = {
     add: "சேர்",
     all: "அனைத்தும்",
     applicationName: "செயலியின் பெயர்",
-    applications: "செயலி",
+    applications: "செயலிகள்",
     approvalStatus: "அனுமதி நிலை",
     approve: "அனுமதி",
     assignees: "அளிக்கப்பட்டவர்கள்",

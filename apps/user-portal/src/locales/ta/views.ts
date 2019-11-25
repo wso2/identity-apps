@@ -121,75 +121,75 @@ export const views: Views = {
                 }
             }
         },
-        applications: { // TODO: translate
+        applications: {
             all: {
-                heading: "All Applications"
+                heading: "அனைத்து செயலிகளும்"
             },
             favourite: {
-                heading: "Favourites"
+                heading: "பிடித்தவை"
             },
             notifications: {
                 fetchApplications: {
                     error: {
                         description: "{{description}}",
-                        message: "Error retrieving applications"
+                        message: "செயலிகளை பெறுவதில் தவறேற்பட்டுவிட்டது"
                     },
                     genericError: {
-                        description: "Couldn't retrieve applications",
-                        message: "Something went wrong"
+                        description: "செயலிகளை பெறமுடியவில்லை",
+                        message: "ஏதோ தவறேற்பட்டுவிட்டது"
                     },
                     success: {
-                        description: "Successfully retrieved the applications.",
-                        message: "Applications retrieval successful"
+                        description: "செயலிகள் வெற்றிகராமாக பெறப்பட்டுவிட்டன.",
+                        message: "செயலிகள் பெறப்பட்டுவிட்டன"
                     }
                 }
             },
             recent: {
-                heading: "Recent Applications"
+                heading: "அண்மையில் பயன்படுத்தப்பட்ட செயலிகள்"
             },
             search: {
                 forms: {
                     searchForm: {
                         inputs: {
                             filerAttribute: {
-                                label: "Filter attribute",
-                                placeholder: "ex: name, description etc.",
+                                label: "வடிகட்டும் பண்பு",
+                                placeholder: "எ.கா.: பெயர், விவரம் போன்றவை",
                                 validations: {
-                                    empty: "Filter attribute is a required field"
+                                    empty: "வடிகட்டல் பண்பு ஒரு கட்டாய களமாகும்"
                                 }
                             },
                             filterCondition: {
-                                label: "Filter condition",
+                                label: "வடிகட்டும் நிபந்தனை",
                                 placeholder: "ex: Starts with etc.",
                                 validations: {
-                                    empty: "Filter condition is a required field"
+                                    empty: "வடிகட்டும் நிபந்தனை ஒரு கட்டாய களமாகும்"
                                 }
                             },
                             filterValue: {
-                                label: "Filter value",
-                                placeholder: "ex: facebook, slack etc.",
+                                label: "வடிகட்டும் மதிப்பு",
+                                placeholder: "எ.கா.: facebook, slack போன்றவை",
                                 validations: {
-                                    empty: "Filter value is a required field"
+                                    empty: "வடிகட்டும் மதிப்பு ஒரு கட்டாய களமாகும்"
                                 }
-                            },
+                            }
                         }
                     }
                 },
                 hints: {
                     querySearch: {
                         actionKeys: "Shift + Enter",
-                        label: "To search as a query"
+                        label: "கேள்வியின் மூலம் தேடுவதற்கு"
                     }
                 },
                 options: {
-                    header: "Advanced search",
+                    header: "மேம்பட்ட தேடல்"
                 },
-                placeholder: "Search by name",
+                placeholder: "பெயரை வைத்துத் தேடு",
                 popups: {
-                    clear: "clear search",
-                    dropdown: "show options"
+                    clear: "தேடலை அழி",
+                    dropdown: "தேர்வுகளை காண்பி"
                 },
-                resultsIndicator: "Showing results for \"{{query}}\""
+                resultsIndicator: '"{{query}} இற்கான பெறுபேறுகள்"'
             }
         },
         approvals: {
@@ -197,42 +197,42 @@ export const views: Views = {
                 fetchApprovalDetails: {
                     error: {
                         description: "{{description}}",
-                        message: "அனுமதிகளை பெறுவதில் தவறேற்பட்டுவிட்டது"
+                        message: "ஒப்புதல்களை பெறுவதில் தவறேற்பட்டுவிட்டது"
                     },
                     genericError: {
-                        description: "அனுமதிகளை புதுப்பிக்க இயலவில்லை",
+                        description: "ஒப்புதல்களை புதுப்பிக்க இயலவில்லை",
                         message: "ஏதோ தவறேற்பட்டுவிட்டது"
                     },
                     success: {
-                        description: "Successfully retrieved the approval details",
-                        message: "Approval details retrieval successful"
+                        description: "ஒப்புதல் விவரங்கள் வெற்றிகரமாக பெறப்பட்டுவிட்டன",
+                        message: "ஒப்புதல் விவரங்கள் பெறப்பட்டுவிட்டன"
                     }
                 },
                 fetchPendingApprovals: {
                     error: {
                         description: "{{description}}",
-                        message: "முடிவெடுக்கப்படாத அனுமதிகளை பெறுவதில் தவறு"
+                        message: "முடிவெடுக்கப்படாத ஒப்புதல்களை பெறுவதில் தவறு"
                     },
                     genericError: {
-                        description: "முடிவெடுக்கப்படாத அனுமதிகளை பெறுவதில் தவறேற்பட்டுவிட்டது",
+                        description: "முடிவெடுக்கப்படாத ஒப்புதல்களை பெறுவதில் தவறேற்பட்டுவிட்டது",
                         message: "ஏதோ தவறேற்பட்டுவிட்டது"
                     },
                     success: {
-                        description: "முடிவெடுக்கப்படாத அனுமதிகள் வெற்றிகரமாக பெறப்பட்டுவிட்டன",
-                        message: "முடிவெடுக்கப்படாத அனுமதிகள் பெறப்பட்டுவிட்டன"
+                        description: "முடிவெடுக்கப்படாத ஒப்புதல்களை வெற்றிகரமாக பெறப்பட்டுவிட்டன",
+                        message: "முடிவெடுக்கப்படாத ஒப்புதல்களை பெறப்பட்டுவிட்டன"
                     }
                 },
                 updatePendingApprovals: {
                     error: {
                         description: "{{description}}",
-                        message: "அனுமதி புதுப்பிக்கப்பட்டுவிட்டது"
+                        message: "ஒப்புதல் புதுப்பிக்கப்பட்டுவிட்டது"
                     },
                     genericError: {
-                        description: "அனுமதியினை புதுப்பிக்க இயலவில்லை",
+                        description: "ஒப்புதலை புதுப்பிக்க இயலவில்லை",
                         message: "ஏதோ தவறேற்பட்டுவிட்டது"
                     },
                     success: {
-                        description: "அனுமதி வெற்றிகரமாக புதுப்பிக்கப்பட்டுவிட்டது",
+                        description: "ஒப்புதல் வெற்றிகரமாக புதுப்பிக்கப்பட்டுவிட்டது",
                         message: "புதுப்பித்தல் வெற்றி"
                     }
                 }
@@ -976,8 +976,8 @@ export const views: Views = {
     },
     pages: {
         applications: {
-            subTitle: "Manage and maintain your applications",
-            title: "Applications"
+            subTitle: "உங்கள் செயலிகளை முகாமை செய்ய மற்றும் பராமரிக்க",
+            title: "செயலிகள்"
         },
         operations: {
             subTitle: "முடிவு செய்யப்படாத அனுமதிகள் போன்ற பணிகளை முகாமை செய்யவும் பராமரிக்கவும்",
@@ -1004,11 +1004,12 @@ export const views: Views = {
             title: "நீங்கள் வழி தவறி வந்து விட்டதாக தெரிகிறது :("
         }
     },
-    placeholders: { // TODO: translate
+    placeholders: {
+        // TODO: translate
         emptySearchResult: {
             action: "Clear search query",
             subtitles: {
-                0: "We couldn't find any results for \"{{query}}\"",
+                0: 'We couldn\'t find any results for "{{query}}"',
                 1: "Please try a different search term."
             },
             title: "No results found"
@@ -1020,11 +1021,11 @@ export const views: Views = {
             heading: "கணக்கு மீட்பு"
         },
         approvals: {
-            description: "முடிவெடுக்கப்படாதா அனுமதிகளை முகாமை செய்ய",
-            heading: "முடிவெடுக்கப்படாத அனுமதிகள்",
+            description: "முடிவெடுக்கப்படாதா ஒப்புதல்களை முகாமை செய்ய",
+            heading: "முடிவெடுக்கப்படாத ஒப்புதல்கள்",
             placeholders: {
                 emptyApprovalList: {
-                    heading: "உங்களிடம் {{status}} நிலையில் உள்ள முடிவெடுக்கப்படாத அனுமதிகள் இல்லை"
+                    heading: "உங்களிடம் {{status}} நிலையில் உள்ள முடிவெடுக்கப்படாத ஒப்புதல்கள் இல்லை"
                 }
             }
         },
