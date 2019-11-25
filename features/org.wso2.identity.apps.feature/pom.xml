@@ -49,6 +49,16 @@
             <artifactId>org.wso2.identity.apps.user.portal.server.feature</artifactId>
             <type>zip</type>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.identity.apps</groupId>
+            <artifactId>org.wso2.identity.apps.authentication.portal.server.feature</artifactId>
+            <type>zip</type>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.identity.apps</groupId>
+            <artifactId>org.wso2.identity.apps.recovery.portal.server.feature</artifactId>
+            <type>zip</type>
+        </dependency>
     </dependencies>
 
     <build>
@@ -76,6 +86,12 @@
                                 </includedFeatureDef>
                                 <includedFeatureDef>
                                     org.wso2.identity.apps:org.wso2.identity.apps.user.portal.server.feature
+                                </includedFeatureDef>
+                                <includedFeatureDef>
+                                    org.wso2.identity.apps:org.wso2.identity.apps.authentication.portal.server.feature
+                                </includedFeatureDef>
+                                <includedFeatureDef>
+                                    org.wso2.identity.apps:org.wso2.identity.apps.recovery.portal.server.feature
                                 </includedFeatureDef>
                             </includedFeatures>
                         </configuration>
