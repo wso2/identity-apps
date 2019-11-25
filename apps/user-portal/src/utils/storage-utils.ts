@@ -17,10 +17,22 @@
  *
  */
 
-/*******************************
-            Input
-*******************************/
+/**
+ * Set a value in local storage.
+ *
+ * @param {string} key - Key to set the value under.
+ * @param {string} value - Value to be set.
+ */
+export const setValueInLocalStorage = (key: string, value: string): void => {
+    localStorage.setItem(key, value);
+};
 
-/*-------------------
-   Advanced search
---------------------*/
+/**
+ * Get a value from local storage.
+ *
+ * @param {string} key - Key to retrieve the value.
+ * @returns {string} Value or null.
+ */
+export const getValueFromLocalStorage = (key: string): string => {
+    return localStorage.getItem(key);
+};

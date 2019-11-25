@@ -19,7 +19,8 @@
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Form, Grid } from "semantic-ui-react";
-import { AdvanceSearch, FormWrapper } from "../shared";
+import { buildSearchQuery } from "../../utils";
+import { AdvancedSearch, FormWrapper } from "../shared";
 
 /**
  * Filter attribute field identifier.
@@ -95,7 +96,7 @@ export const ApplicationSearch: FunctionComponent<ApplicationSearchProps> = (
      *
      * @param {Map<string, string | string[]>} values - Form values.
      */
-    const handleFormSubmit = (values: Map<string, string | string[]>) => {
+    const handleFormSubmit = (values: Map<string, string | string[]>): void => {
         const query = values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER) as string
         + " "
         + values.get(FILTER_CONDITION_FIELD_IDENTIFIER) as string
@@ -110,28 +111,34 @@ export const ApplicationSearch: FunctionComponent<ApplicationSearchProps> = (
     /**
      * Handles the search query submit.
      *
+     * @param {boolean} processQuery - Flag to enable query processing.
      * @param {string} query - Search query.
      */
-    const handleSearchQuerySubmit = (query: string) => {
-        onFilter(query);
+    const handleSearchQuerySubmit = (processQuery: boolean, query: string): void => {
+        if (!processQuery) {
+            onFilter(query);
+            return;
+        }
+
+        onFilter(buildSearchQuery(query));
     };
 
     /**
      * Handles the submitted state reset action.
      */
-    const handleResetSubmittedState = () => {
+    const handleResetSubmittedState = (): void => {
         setIsFormSubmitted(false);
     };
 
     /**
      * Handles the external search query clear action.
      */
-    const handleExternalSearchQueryClear = () => {
+    const handleExternalSearchQueryClear = (): void => {
         setExternalSearchQuery("");
     };
 
     return (
-        <AdvanceSearch
+        <AdvancedSearch
             aligned="left"
             clearButtonPopupLabel={ t("views:components.applications.search.popups.clear") }
             defaultSearchStrategy={ DEFAULT_SEARCH_STRATEGY }
@@ -262,6 +269,6 @@ export const ApplicationSearch: FunctionComponent<ApplicationSearchProps> = (
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-        </AdvanceSearch>
+        </AdvancedSearch>
     );
 };

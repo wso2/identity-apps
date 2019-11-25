@@ -26,8 +26,8 @@ import { AppAvatar } from "../shared";
  */
 interface ApplicationListItemProps {
     app: Application;
-    hideFavouriteIcon: boolean;
-    onAppNavigate: (url: string) => void;
+    onAppNavigate: (id: string, url: string) => void;
+    showFavouriteIcon: boolean;
 }
 
 /**
@@ -38,10 +38,10 @@ interface ApplicationListItemProps {
 export const ApplicationListItem: FunctionComponent<ApplicationListItemProps> = (
     props: ApplicationListItemProps
 ): JSX.Element => {
-    const { app, hideFavouriteIcon, onAppNavigate } = props;
+    const { app, onAppNavigate, showFavouriteIcon } = props;
 
     return (
-        <Item.Group unstackable onClick={ () => onAppNavigate(app.accessUrl) }>
+        <Item.Group unstackable onClick={ () => onAppNavigate(app.id, app.accessUrl) }>
             <Item className="application-list-item">
                 <List.Content className="icon-container" floated="left">
                     <AppAvatar spaced="right" size="little" name={ app.name } image={ app.logo }/>
@@ -50,7 +50,7 @@ export const ApplicationListItem: FunctionComponent<ApplicationListItemProps> = 
                     <Item.Header as="a">
                         <div className="item-header">{ app.name }</div>
                         {
-                            !hideFavouriteIcon && app.favourite
+                            (showFavouriteIcon && app.favourite)
                                 ? (
                                     <Icon
                                         name={
@@ -66,7 +66,7 @@ export const ApplicationListItem: FunctionComponent<ApplicationListItemProps> = 
                     <Item.Meta className="item-description">{ app.description }</Item.Meta>
                     <Item.Extra>
                         {
-                            app.tags && app.tags.length && app.tags.length > 0
+                            (app.tags && app.tags.length && app.tags.length > 0)
                                 ? (
                                     <>
                                         <Icon name="tag" size="small"/>

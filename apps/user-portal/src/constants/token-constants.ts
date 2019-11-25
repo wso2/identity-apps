@@ -14,13 +14,20 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-/*******************************
-            Input
-*******************************/
+/**
+ * The login scope.
+ * @constant
+ * @type {number}
+ * @default
+ */
+export const LOGIN_SCOPE = "internal_login";
 
-/*-------------------
-   Advanced search
---------------------*/
+/**
+ * Human task scope.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const HUMAN_TASK_SCOPE = "internal_humantask_view";

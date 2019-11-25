@@ -28,3 +28,5 @@ Application List Item
 @starColor: #FFB70A;
 @applicationListItemHeaderMaxWidth: 140px;
 @applicationListItemDescMaxWidth: 160px;
+@applicationListItemHeaderColor: @darkTextColor;
+@applicationListItemDescColor: @mutedTextColor;

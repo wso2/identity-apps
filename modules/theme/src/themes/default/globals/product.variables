@@ -35,12 +35,12 @@
 @iconWrapperSpacingLeft: 8px;
 
 /*-------------------
-   Advance search
+   Advanced search
 --------------------*/
 
-@advanceSearchHintBorder: 1px solid rgba(34, 36, 38, 0.15);
-@advanceSearchOptionsShadow: 0 2px 4px rgba(0,0,0,0.2);
-@advanceSearchOptionsBorder: 1px solid rgba(0,0,0,0.2);
-@advanceSearchOptionsHeaderBorderBottom: 1px solid #dededf;
-@advanceSearchDropdownMaxWidth: 520px;
-@advanceSearchBorder: 1px solid @borderColor;
+@advancedSearchHintBorder: 1px solid rgba(34, 36, 38, 0.15);
+@advancedSearchOptionsShadow: 0 2px 4px rgba(0,0,0,0.2);
+@advancedSearchOptionsBorder: 1px solid rgba(0,0,0,0.2);
+@advancedSearchOptionsHeaderBorderBottom: 1px solid #dededf;
+@advancedSearchDropdownMaxWidth: 520px;
+@advancedSearchBorder: 1px solid @borderColor;

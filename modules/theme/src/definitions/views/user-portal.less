@@ -22,33 +22,55 @@
 
 @import (multiple) '../../wso2.config';
 
-.overview-page {
-    .widget {
-        margin-bottom: 3em;
+/*****************************************
+       Main content area styles
+*****************************************/
+
+.main-content {
+    margin-bottom: 4em;
+
+    &.default-layout {
+        margin-top: 7em;
     }
 }
 
-.app-content {
-    margin-bottom: 4em;
-}
+/*****************************************
+         Overview page styles
+*****************************************/
 
-.account-status {
-    display: flex;
+.overview-page {
+    .widget {
+        margin-bottom: 3em;
 
-    .description {
-        margin-left: 3em;
+        &.account-status {
+            display: flex;
 
-        .status-header {
-            margin: 1.3em 0;
-        }
-        .meta {
-            margin-bottom: 1em;
+            .description {
+                margin-left: 3em;
 
-            .meta-icon {
-                color: @green;
-                margin-right: 0.5em;
+                .status-header {
+                    margin: 1.3em 0;
+                }
+                .meta {
+                    margin-bottom: 1em;
+
+                    .meta-icon {
+                        color: @green;
+                        margin-right: 0.5em;
+                    }
+                }
             }
         }
+    }
+}
+
+/*****************************************
+        Applications page styles
+*****************************************/
+
+.applications-page {
+    .section-header {
+        margin: 1em 0 1.2em 0;
     }
 }
 

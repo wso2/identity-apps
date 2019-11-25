@@ -41,3 +41,8 @@ Recent Application Card
 --------------------*/
 
 @recentApplicationCardDefaultColor: @black;
+@recentApplicationCardHeaderFontSize: 1.3em;
+@recentApplicationCardHeaderMaxWidth: 140px;
+@recentApplicationCardDescMaxWidth: 160px;
+@recentApplicationCardHeaderColor: @darkTextColor;
+@recentApplicationCardDescColor: @mutedTextColor;
