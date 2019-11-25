@@ -160,7 +160,7 @@ export const views: Views = {
                             },
                             filterCondition: {
                                 label: "வடிகட்டும் நிபந்தனை",
-                                placeholder: "ex: Starts with etc.",
+                                placeholder: "எ.கா.: தொடங்குவது",
                                 validations: {
                                     empty: "வடிகட்டும் நிபந்தனை ஒரு கட்டாய களமாகும்"
                                 }
@@ -184,12 +184,12 @@ export const views: Views = {
                 options: {
                     header: "மேம்பட்ட தேடல்"
                 },
-                placeholder: "பெயரை வைத்துத் தேடு",
+                placeholder: "பெயரைக் கொண்டு தேடு",
                 popups: {
                     clear: "தேடலை அழி",
                     dropdown: "தேர்வுகளை காண்பி"
                 },
-                resultsIndicator: "\"{{query}}\" இற்கான பெறுபேறுகள்"
+                resultsIndicator: '"{{query}}" இற்கான பெறுபேறுகள்'
             }
         },
         approvals: {
@@ -1009,7 +1009,7 @@ export const views: Views = {
         emptySearchResult: {
             action: "தேடல் கேள்வியினை அழி",
             subtitles: {
-                0: "\"{{query}}\" இற்கான பெறுபேறுகள் எதுவுமில்லை",
+                0: '"{{query}}" இற்கான பெறுபேறுகள் எதுவுமில்லை',
                 1: "தயவுசெய்து வேறு பதத்தினை பயன்படுத்தி தேடவும்"
             },
             title: "பெறுபேறுகள் எதுவுமில்லை"
@@ -1038,7 +1038,7 @@ export const views: Views = {
         },
         consentManagement: {
             actionTitles: {
-                empty: "Yநீங்கள் எந்தவொரு செயலிற்கும் அனுமதி அளிக்கவில்லை"
+                empty: "நீங்கள் எந்தவொரு செயலிற்கும் அனுமதி அளிக்கவில்லை"
             },
             description: "அனுமதி அளிக்கபட்ட செயலிகளையும் வலைத்தளங்களையும் முகாமை செய்க",
             heading: "அனுமதியளிக்கப்பட்ட செயலிகள்",
