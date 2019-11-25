@@ -223,7 +223,7 @@ export const PrivacyPage = (): JSX.Element => {
                         </Header>
                         <p>{ t("views:components.privacy.privacyPolicy.disclosureOfPersonalInfo.description") }</p>
 
-                        { /* Legal process */}
+                        { /* Legal process */ }
                         <Header as="h4">
                             { t("views:components.privacy.privacyPolicy.disclosureOfPersonalInfo." +
                                 "legalProcess.heading") }
