@@ -27,11 +27,11 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>org.wso2.identity.apps.authenticationendpoint.server.feature</artifactId>
+    <artifactId>org.wso2.identity.apps.authentication.portal.server.feature</artifactId>
     <packaging>pom</packaging>
-    <name>WSO2 Identity Server Apps - Authentication Endpoint Server Feature</name>
+    <name>WSO2 Identity Server Apps - Authentication Portal Server Feature</name>
     <url>http://wso2.org</url>
-    <description>This feature contains the application authentication module</description>
+    <description>This feature contains the authentication portal module</description>
 
     <dependencies>
         <dependency>
@@ -106,7 +106,7 @@
                             <goal>p2-feature-gen</goal>
                         </goals>
                         <configuration>
-                            <id>org.wso2.identity.apps.authenticationendpoint.server</id>
+                            <id>org.wso2.identity.apps.authentication.portal.server</id>
                             <propertiesFile>../etc/feature.properties</propertiesFile>
                             <adviceFile>
                                 <properties>
