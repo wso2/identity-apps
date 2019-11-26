@@ -101,7 +101,9 @@ npm/
 apps/*/build/
 apps/user-portal/src/main/
 apps/admin-portal/src/main/
+apps/authenticationendpoint/src/main/
 apps/authenticationendpoint/src/libs/theme/
+apps/authentication-portal/src/main/webapp/libs/theme/
 
 .classpath
 .settings

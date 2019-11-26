@@ -15,11 +15,18 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   --%>
+
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@include file="localize.jsp" %>
-<%@include file="init-url.jsp" %>
+
+<%@ taglib prefix="ui" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+    
+<%@ include file="localize.jsp" %>
+<jsp:directive.include file="init-url.jsp"/>
 
 <%
     String errorCode = request.getParameter("oauthErrorCode");
@@ -32,131 +39,49 @@
         errorMsgContext = errorMsg.split(regex)[0] + regex;
         errorMsgApp = errorMsg.split(regex)[1];
     }
-%>
-
-<html>
-<head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- title -->
+%>  
+    
+<c:set var="bodyContent">
+    <!-- product-title -->
     <%
-        File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-        if (titleFile.exists()) {
+        File headerFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+        if (headerFile.exists()) {
     %>
-            <jsp:include page="extensions/title.jsp"/>
+            <jsp:include page="extensions/product-title.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/title.jsp"/>
+            <jsp:directive.include file="includes/product-title.jsp"/>
     <% } %>
 
-    <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-    <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/Roboto.css" rel="stylesheet">
-    <link href="css/custom-common.css" rel="stylesheet">
-
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
-</head>
-
-<body>
-
-<script type="text/javascript">
-    function approved() {
-        document.getElementById('consent').value = "approve";
-        document.getElementById("oauth2_authz").submit();
-    }
-    function approvedAlways() {
-        document.getElementById('consent').value = "approveAlways";
-        document.getElementById("oauth2_authz").submit();
-    }
-    function deny() {
-        document.getElementById('consent').value = "deny";
-        document.getElementById("oauth2_authz").submit();
-    }
-</script>
-
-<!-- header -->
-<%
-    File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-    if (headerFile.exists()) {
-%>
-        <jsp:include page="extensions/header.jsp"/>
-<% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
-<% } %>
-
-<!-- page content -->
-<div class="container-fluid body-wrapper">
-
-    <div class="row">
-        <div class="col-md-12">
-
-            <!-- content -->
-            <div class="container col-xs-10 col-sm-6 col-md-6 col-lg-3 col-centered wr-content wr-login col-centered">
-                <div>
-                    <h2 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.request")%>
-                    </h2>
-                </div>
-
-                <div class="boarder-all ">
-                    <div class="clearfix"></div>
-                    <form action="<%=commonauthURL%>" method="post" id="oauth2_authz" name="oauth2_authz" class="form-horizontal" >
-                        <div class="padding-double login-form">
-                            <div id="workArea">
-                                <table>
-                                    <%
-                                        if (errorCode != null && errorMsg != null) {
-                                    %>
-                                    <tr>
-                                        <td><b><%=AuthenticationEndpointUtil.i18n(resourceBundle, errorCode)%>
-                                        </b></td>
-                                    </tr>
-                                    <tr>
-                                        <td><%=AuthenticationEndpointUtil.i18nBase64(resourceBundle, errorMsgContext)%><%=Encode.forHtml(errorMsgApp)%>
-                                        </td>
-                                    </tr>
-                                    <%
-                                    } else {
-                                    %>
-                                    <tr>
-                                        <td><%=AuthenticationEndpointUtil.i18n(resourceBundle,
-                                                "oauth.processing.error.msg")%></td>
-                                    </tr>
-                                    <%
-                                        }
-                                    %>
-                                </table>
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-
-
-        </div>
-        <!-- /content -->
-
+    <div class="ui visible negative message">
+        <%
+            if (errorCode != null && errorMsg != null) {
+        %>
+            <%=AuthenticationEndpointUtil.i18nBase64(resourceBundle, errorMsgContext)%><%=Encode.forHtml(errorMsgApp)%>
+        <% } else { %>
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle,"oauth.processing.error.msg")%></td>
+        <% } %>
     </div>
-</div>
-<!-- /content/body -->
+    <form  action="<%=commonauthURL%>" method="post" id="oauth2_authz" name="oauth2_authz"></form>
+</c:set>
+<c:set var="footer">
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+            <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+            <jsp:directive.include file="includes/footer.jsp"/>
+    <% } %>
+</c:set>
 
-</div>
+<c:set var="body">
+    <ui:loginWrapper>
+        <jsp:attribute name="footerContent">${footer}</jsp:attribute>
+        <jsp:body>${bodyContent}</jsp:body>
+    </ui:loginWrapper>
+</c:set>
 
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
-        <jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
-<% } %>
-
-<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
-</body>
-</html>
+<ui:base pageTitle='<%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%>'>
+    <jsp:body>${body}</jsp:body>
+</ui:base>

@@ -15,3 +15,19 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   --%>
+
+<%@ tag description="Login Wrapper" pageEncoding="UTF-8"%>
+    
+<%@ attribute name="footerContent" fragment="true" required="false" %>
+
+<div class="login-form">
+    <div class="ui center aligned middle aligned grid" style="height: 100%;">
+        <div class="column" style="max-width: 450px;">
+            <div class="ui segment">
+                <jsp:doBody />  
+            </div>
+        </div>
+    </div>
+    
+    <jsp:invoke fragment="footerContent" />
+</div>

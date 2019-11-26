@@ -20,13 +20,13 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 
 <!-- footer -->
-<footer class="footer">
+<footer class="footer" style="text-align: center">
     <div class="container-fluid">
         <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%> | &copy;
             <script>document.write(new Date().getFullYear());</script>
             <a href="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "business.homepage")%>"
                target="_blank">
-               <i class="icon fw fw-wso2"></i>
+               WSO2
                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "inc")%>
             </a>
             . <%=AuthenticationEndpointUtil.i18n(resourceBundle, "all.rights.reserved")%>

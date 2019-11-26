@@ -4,8 +4,9 @@
     "description": "Validator module for WSO2 Identity Server web-apps.",
     "keywords": [
         "WSO2",
-        "WSO2-IS",
-        "WSO2-Identity-Server",
+        "WSO2 IS",
+		"WSO2 Identity Server",
+		"WSO2 Identity Apps",
         "validation"
     ],
     "main": "dist/index.js",
@@ -21,20 +22,6 @@
     },
     "author": "WSO2",
     "license": "Apache-2.0",
-    "devDependencies": {
-        "@babel/cli": "^7.5.5",
-        "@babel/core": "^7.5.5",
-        "@babel/polyfill": "^7.0.0",
-        "@babel/preset-env": "^7.5.5",
-        "@types/crypto-js": "^3.1.43",
-        "babel-loader": "^8.0.4",
-        "rimraf": "^3.0.0",
-        "tslint": "^5.18.0",
-        "tslint-eslint-rules": "^5.4.0",
-        "tslint-react": "^4.1.0",
-        "typescript": "^3.5.3",
-        "watch": "^1.0.2"
-    },
     "dependencies": {
         "@hapi/joi": "^16.1.7",
         "@types/hapi__joi": "^16.0.3"
