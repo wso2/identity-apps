@@ -104,6 +104,7 @@ apps/admin-portal/src/main/
 apps/authenticationendpoint/src/main/
 apps/authenticationendpoint/src/libs/theme/
 apps/authentication-portal/src/main/webapp/libs/theme/
+apps/recovery-portal/src/main/webapp/libs/theme/
 
 .classpath
 .settings
