@@ -35,15 +35,15 @@ interface UserAvatarProps extends AvatarProps {
  * @return {JSX.Element}
  */
 export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatarProps): JSX.Element => {
-    const { authState } = props;
+    const { authState, name } = props;
 
     if (authState && authState.profileInfo && authState.profileInfo.userimage) {
         return (
             <Avatar
+                { ...props }
                 avatarType="user"
                 bordered
                 image={ authState.profileInfo && authState.profileInfo.userimage }
-                { ...props }
             />
         );
     }

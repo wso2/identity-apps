@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Popup } from "semantic-ui-react";
 import { addAccountAssociation, getAssociations, getProfileInfo, switchAccount } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
+import { resolveUsername } from "../../helpers";
 import { AuthStateInterface, createEmptyNotification, LinkedAccountInterface, Notification } from "../../models";
 import { AppState } from "../../store";
 import { setProfileInfo } from "../../store/actions";
@@ -346,7 +347,9 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                                                 size="mini"
                                                 name={ association.username }
                                             />
-                                            <List.Header>{ association.username }</List.Header>
+                                            <List.Header>
+                                                { resolveUsername(association.username, association.userStoreDomain) }
+                                            </List.Header>
                                             <List.Description>
                                                 <p style={ { fontSize: "11px" } }>{ association.tenantDomain }</p>
                                             </List.Description>

@@ -23,3 +23,11 @@
  * @default
  */
 export const APPLICATION_SETTINGS_STORAGE_KEY = "application_settings";
+
+/**
+ * Primary user store identifier.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const PRIMARY_USER_STORE_IDENTIFIER = "PRIMARY";

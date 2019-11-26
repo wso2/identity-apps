@@ -121,7 +121,7 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
                     if (this.requestFinishCallback && typeof this.requestFinishCallback === "function") {
                         this.requestFinishCallback();
                     }
-                    return Promise.reject(`Failed to retrieve the access token: ${ error }`);
+                    throw error;
                 });
         }
         return request;
