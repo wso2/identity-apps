@@ -143,14 +143,15 @@ export const getAccessToken = (): Promise<string> => {
     if (validityPeriod <= 300) {
 
         const requestParams = JSON.parse(getSessionParameter(REQUEST_PARAMS));
-        sendRefreshTokenRequest(requestParams, getSessionParameter(REFRESH_TOKEN)).then((tokenResponse) => {
-            const authenticatedUser = getAuthenticatedUser(tokenResponse.idToken);
-            initUserSession(tokenResponse, authenticatedUser);
-            return Promise.resolve(tokenResponse.accessToken);
-        }).catch((error) => {
-            // TODO: logout.
-            return Promise.reject(error);
-        });
+        return sendRefreshTokenRequest(requestParams, getSessionParameter(REFRESH_TOKEN))
+            .then((tokenResponse) => {
+                const authenticatedUser = getAuthenticatedUser(tokenResponse.idToken);
+                initUserSession(tokenResponse, authenticatedUser);
+                return Promise.resolve(tokenResponse.accessToken);
+            }).catch((error) => {
+                // TODO: logout.
+                return Promise.reject(error);
+            });
     } else {
         return Promise.resolve(accessToken);
     }
