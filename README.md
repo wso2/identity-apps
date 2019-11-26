@@ -9,7 +9,6 @@ End-user apps in WSO2 Identity Server
 ## Setup build environment
 
 1. Install NodeJS from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
-2. Install Yarn from [https://yarnpkg.com/en/docs/install](https://yarnpkg.com/en/docs/install).
 3. Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi).
 
 ## Build & Run
@@ -26,7 +25,7 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
 #### Run
 
 4. Execute `wso2server.sh` (For unix environment) or `wso2server.bat` (For windows environment) file from the `bin` directory to run the WSO2 Identity Server.
-3. Navigate to `https://localhost:9443/user-portal` from the browser. (Add certificate exception if required)
+3. Navigate to `https://localhost:9443/user-portal` or `https://localhost:9443/admin-portal` from the browser. (Add certificate exception if required)
 
 ## Run in dev mode
 
