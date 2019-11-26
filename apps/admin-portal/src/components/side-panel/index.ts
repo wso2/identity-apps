@@ -16,15 +16,4 @@
  * under the License.
  */
 
-export * from "./page-header";
-export * from "./header";
-export * from "./notification";
-export * from "./protected-route";
-export * from "./ui";
-export * from "./shared/icon";
-export * from "./side-panel/side-panel";
-export * from "./side-panel/side-panel-items";
-export * from "./side-panel/side-panel-mobile";
-export * from "./side-panel/side-panel-wrapper";
-export * from "./users/users-search";
-export * from "./users/users-list";
+export * from "./side-panel-wrapper";

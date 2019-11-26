@@ -17,7 +17,11 @@
  */
 
 import {
+    Account,
     AccountRecoveryIconSet,
+    Consent,
+    ConsentForm,
+    DefaultAppIcon,
     BlockedMagnifierIcon,
     BoxIcon,
     CloseIcon,
@@ -33,9 +37,15 @@ import {
     InfoIcon,
     Logo,
     MFAIconSet,
+    OkayStatusShield,
+    Operations,
+    Overview,
     OrangeAppIconBackground,
     PackageIcon,
     Padlock,
+    Personal,
+    Security,
+    Session,
     SettigsSectionIconSet,
     SidePanelIconSet,
     StatusShieldDanger,
@@ -60,6 +70,16 @@ interface CustomCSSType {
 export const LogoImage = Logo;
 export const UserImage: ImageType = DummyUser;
 export const HomeTileIconImages = HomeTileIcons;
+export const GenericAppIcon = DefaultAppIcon;
+export const SidePanelIcons = {
+    account: Account,
+    consent: Consent,
+    operations: Operations,
+    overview: Overview,
+    personal: Personal,
+    security: Security,
+    session: Session,
+};
 export const ConsentedAppIcon = PackageIcon;
 export const DefaultAppIcon = CodeIcon;
 export const SidePanelIcons = SidePanelIconSet;

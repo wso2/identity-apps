@@ -19,8 +19,8 @@
 import classNames from "classnames";
 import * as React from "react";
 import { Image } from "semantic-ui-react";
-import { HomeTileIconImages, LogoImage, TitleText, UserImage } from "../configs";
-import { ThemeIcon } from "./icon";
+import { HomeTileIconImages, LogoImage, TitleText, UserImage } from "../configs/ui";
+import { ThemeIcon } from "./shared/icon";
 
 interface ImageProps {
     classes?: any;

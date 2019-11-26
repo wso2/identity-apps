@@ -18,7 +18,7 @@
 
 import React, { FunctionComponent, MouseEvent } from "react";
 import { Card, Grid, Header, List } from "semantic-ui-react";
-import { ThemeIcon, ThemeIconSizes } from "./icon";
+import { ThemeIcon, ThemeIconSizes } from "./shared";
 
 /**
  * Proptypes for the settings section component.
@@ -100,8 +100,12 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
                             className={ `action-button ${ actionDisabled ? "disabled" : "" }` }
                             onClick={ onActionClick }
                         >
-                            <List.Header className="action-button-text"
-                                         onClick={ onActionClick }>{ actionTitle }</List.Header>
+                            <List.Header
+                                className="action-button-text"
+                                onClick={ onActionClick }
+                            >
+                                { actionTitle }
+                            </List.Header>
                         </List.Item>
                     </List>
                 </Card.Content>

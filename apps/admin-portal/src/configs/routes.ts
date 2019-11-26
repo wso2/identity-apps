@@ -20,12 +20,14 @@ import {
     HomePage,
     PageNotFound
 } from "../pages";
+import { UsersPage } from "../pages/users";
 
 /**
  * Interface to handle route types.
  */
 interface Route {
     component: any;
+    children: any;
     icon?: string;
     name: string;
     path: string;
@@ -38,6 +40,7 @@ interface Route {
  */
 const ROUTES: Route[] = [
     {
+        children: [],
         component: HomePage,
         icon: "overview",
         name: "Overview",
@@ -46,6 +49,342 @@ const ROUTES: Route[] = [
         showOnSidePanel: true,
     },
     {
+        children: [
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "sso",
+                path: "/sso",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "Identity federation",
+                path: "/identity-federation",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "Adaptive authentication",
+                path: "/adaptive-authentication",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "SSO with controlled access",
+                path: "/sso-controlled-access",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "Delegated access control",
+                path: "sso-delegated-access",
+                protected: ""
+            },
+            ],
+        component: HomePage,
+        icon: "security",
+        name: "Applications",
+        path: "/applications",
+        protected: true,
+        showOnSidePanel: true,
+    },
+    {
+        children: [
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "User stores",
+                path: "/user-stores",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "sso",
+                path: "/sso",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "Claims",
+                path: "/claims",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "OIDC scopes",
+                path: "/oidc-scopes",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "Identity Providers",
+                path: "/identity-providers",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "Outbound provisioning",
+                path: "/outbound-provisioning",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "JIT provisioning",
+                path: "/jit",
+                protected: ""
+            }
+        ],
+        component: HomePage,
+        icon: "consent",
+        name: "Connections",
+        path: "/connections",
+        protected: true,
+        showOnSidePanel: true,
+    },
+    {
+        children: [
+            {
+                component: UsersPage,
+                icon: "arrowRight",
+                level: "",
+                name: "Users",
+                path: "/users",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "Roles",
+                path: "/roles",
+                protected: ""
+            }
+        ],
+        component: UsersPage,
+        icon: "personal",
+        name: "Users & Roles",
+        path: "/users",
+        protected: true,
+        showOnSidePanel: true,
+    },
+    {
+        children: [
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "PAP",
+                path: "/pap",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "PDP",
+                path: "/pdp",
+                protected: ""
+            }
+        ],
+        component: HomePage,
+        icon: "operations",
+        name: "Entitlements",
+        path: "/entitlements",
+        protected: true,
+        showOnSidePanel: true,
+    },
+    {
+        children: [
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "Resident IDP",
+                path: "/resident-idp",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "Resident SP",
+                path: "/resident-sp",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "Workflow engagements",
+                path: "/workflow-engagements",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "Workflow definitions",
+                path: "/workflow-definitions",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "Challenge questions",
+                path: "/challenge-questions",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "Email templates",
+                path: "/email-templates",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "Keystore",
+                path: "/keystore",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "Consent purposes",
+                path: "/consent-purposes",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "Function libraries",
+                path: "/function-libraries",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "Workflow engine profiles",
+                path: "/workflow-profiles",
+                protected: ""
+            }
+        ],
+        component: HomePage,
+        icon: "session",
+        name: "Manage",
+        path: "/manage",
+        protected: true,
+        showOnSidePanel: true,
+    },
+    {
+        children: [
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "System statistics",
+                path: "/system-statistics",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "Workflow requests",
+                path: "/workflow-requests",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "SOAP tracer",
+                path: "/soap-tracer",
+                protected: ""
+            }
+        ],
+        component: HomePage,
+        icon: "session",
+        name: "Monitor",
+        path: "/monitor",
+        protected: true,
+        showOnSidePanel: true,
+    },
+    {
+        children: [
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "User",
+                path: "/user-tool",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "SAML",
+                path: "/saml",
+                protected: ""
+            },
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "XACML",
+                path: "/xacml",
+                protected: ""
+            }
+        ],
+        component: HomePage,
+        icon: "session",
+        name: "Tools",
+        path: "/tools",
+        protected: true,
+        showOnSidePanel: true,
+    },
+    {
+        children: [
+            {
+                component: "",
+                icon: "arrowRight",
+                level: "",
+                name: "sso",
+                path: "",
+                protected: ""
+            }
+        ],
         component: PageNotFound,
         name: "404",
         path: null,

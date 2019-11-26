@@ -31,6 +31,7 @@ interface ServiceResourcesType {
     sessions: string;
     token: string;
     user: string;
+    users: string;
     revoke: string;
     wellKnown: string;
 }
@@ -50,5 +51,6 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     sessions: `${ServiceEndpoint}/t/carbon.super/api/users/v1/me/sessions`,
     token: `${ServiceEndpoint}/oauth2/token`,
     user: `${ServiceEndpoint}/api/identity/user/v1.0/me`,
+    users: `${ServiceEndpoint}/scim2/Users`,
     wellKnown: `${ServiceEndpoint}/oauth2/oidcdiscovery/.well-known/openid-configuration`
 };

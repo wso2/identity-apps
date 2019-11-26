@@ -6,5 +6,9 @@
     "404": {
         "title": "It looks like you're lost. :(",
         "subTitle": "The page you're looking for isn't here."
+    },
+    "UsersPage": {
+        "title": "Users",
+        "subTitle": "Manage user identities including adding, deleting, blocking users..."
     }
 }

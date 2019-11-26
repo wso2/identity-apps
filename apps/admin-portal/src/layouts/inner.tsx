@@ -17,6 +17,7 @@
  */
 
 import * as React from "react";
+import { AppFooter } from "../../../user-portal/src/components/footer";
 import { Header as AppHeader, PageHeader, SidePanelWrapper } from "../components";
 
 /**
@@ -71,8 +72,9 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
     return (
         <>
             <AppHeader onSidePanelToggleClick={ handleSidePanelToggleClick }/>
-            <div style={ { paddingTop: `${headerHeight}px` } }>
+            <div style={ { paddingTop: `${ headerHeight }px` } } className="app-content">
                 <SidePanelWrapper
+                    headerHeight={ headerHeight }
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
@@ -85,6 +87,7 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
                     { children }
                 </SidePanelWrapper>
             </div>
+            {/*<AppFooter />*/}
         </>
     );
 };

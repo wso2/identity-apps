@@ -16,15 +16,27 @@
  * under the License.
  */
 
-export * from "./page-header";
-export * from "./header";
-export * from "./notification";
-export * from "./protected-route";
-export * from "./ui";
-export * from "./shared/icon";
-export * from "./side-panel/side-panel";
-export * from "./side-panel/side-panel-items";
-export * from "./side-panel/side-panel-mobile";
-export * from "./side-panel/side-panel-wrapper";
-export * from "./users/users-search";
-export * from "./users/users-list";
+import * as React from "react";
+import { SidePanelItems } from "./side-panel-items";
+
+/**
+ * Side panel base component Prop types.
+ */
+export interface SidePanelProps {
+    headerHeight: number;
+    onSidePanelItemClick: () => void;
+}
+
+/**
+ * Side panel base component.
+ *
+ * @return {JSX.Element}
+ */
+export const SidePanel: React.FunctionComponent<SidePanelProps> = (
+    props: SidePanelProps
+): JSX.Element => {
+    const { headerHeight, onSidePanelItemClick } = props;
+    return (
+        <SidePanelItems type="desktop" onSidePanelItemClick={ onSidePanelItemClick } headerHeight={ headerHeight } />
+    );
+};
