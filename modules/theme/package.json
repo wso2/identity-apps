@@ -4,13 +4,14 @@
     "description": "Theme for web components of WSO2 Identity Server Webapps.",
     "keywords": [
         "WSO2",
-        "WSO2-IS",
-        "WSO2-Identity-Server",
+        "WSO2 IS",
+        "WSO2 Identity Server",
+        "WSO2 Identity Apps",
         "theme"
     ],
     "main": "src/index.js",
     "scripts": {
-        "build": "npm run clean && node scripts/build-theme.js",
+        "build": "node scripts/build-theme.js",
         "test": "echo \"Error: no test specified\"",
         "lint": "tslint -t stylish --project .",
         "test-coverage": "echo \"Error: no test coverage specified\"",
@@ -21,14 +22,9 @@
     "license": "Apache-2.0",
     "devDependencies": {
         "clean-css": "^4.2.1",
-        "fs-extra": "^8.1.0",
         "less-plugin-npm-import": "^2.1.0",
         "less-plugin-rewrite-import": "^0.1.1",
-        "log": "^6.0.0",
-        "rimraf": "^2.6.3",
-        "tslint": "^5.18.0",
-        "typescript": "^3.5.3",
-        "watch": "^1.0.2"
+        "log": "^6.0.0"
     },
     "dependencies": {
         "less": "^3.9.0",

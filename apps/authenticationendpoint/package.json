@@ -11,7 +11,6 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "clean": "rm -rf node_modules build npm"
     },
-    "devDependencies": {},
     "dependencies": {
         "@wso2is/theme": "^0.1.0"
     }
