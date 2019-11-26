@@ -16,8 +16,6 @@
  * under the License.
  */
 
-// tslint:disable-next-line:no-submodule-imports
-import { Error } from "tslint/lib/error";
 import {
     ACCESS_TOKEN,
     ACCESS_TOKEN_EXPIRE_IN,

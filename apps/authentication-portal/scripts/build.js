@@ -25,7 +25,7 @@ const themeModuleDir = path.join(__dirname, "../", "node_modules", "@wso2is", "t
 
 fs.copy(path.join(themeModuleDir, "lib"), path.join(srcDir, "libs", "theme"))
     .then(() => {
-        console.error("theme css files copied.");
+        console.error("Theme files copied.");
     })
     .catch((error) => {
         console.error(error);

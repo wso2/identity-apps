@@ -1,4 +1,10 @@
 {
-    "compilerOptions": { "baseUrl": ".", "paths": { "*": ["types/*"] } },
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "declaration": true,
+        "paths": {
+            "*": ["types/*"]
+        }
+    },
     "extends": "../../configs/common.tsconfig.json"
 }

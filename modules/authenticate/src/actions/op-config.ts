@@ -17,8 +17,6 @@
  */
 
 import axios from "axios";
-// tslint:disable-next-line:no-submodule-imports
-import { Error } from "tslint/lib/error";
 import {
     AUTHORIZATION_ENDPOINT,
     END_SESSION_ENDPOINT,
