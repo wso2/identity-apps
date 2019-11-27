@@ -76,6 +76,11 @@
         text-align: right;
     }
 
+    main #toc {
+        position: sticky;
+        top: 93px;
+    }
+
     main #toc > nav.table-of-contents ol > li:not(.sub) {
         list-style: square;
     }
