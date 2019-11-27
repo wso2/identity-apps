@@ -172,17 +172,22 @@
 
                 if (CollectionUtils.isNotEmpty(openIdScopes)) {
         %>
-            <div class="ui secondary segment" style="text-align: left;">
+            <div class="ui segment" style="text-align: left;">
                 <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.scopes")%></h5>
-                <ul class="scopes-list ui list">
+                <div class="scopes-list ui list">
                     <%
                         for (String scopeID : openIdScopes) {
                     %>
-                    <li><%=Encode.forHtml(scopeID)%></li>
+                    <div class="item">
+                        <i class="check circle outline icon"></i>
+                        <div class="content">
+                            <%=Encode.forHtml(scopeID)%>
+                        </div>
+                    </div>
                     <%
                         }
                     %>
-                </ul>
+                </div>
             </div>
         <%
                     }
@@ -213,23 +218,23 @@
             <% if (ArrayUtils.isNotEmpty(mandatoryClaimList) || ArrayUtils.isNotEmpty(requestedClaimList)) { %>
             <input type="hidden" name="user_claims_consent" id="user_claims_consent" value="true"/>
             <!-- validation -->
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <h5 class="section-heading-5"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.attributes")%></h5>
+            <div class="ui secondary segment" style="text-align: left;">
+                <h3><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.attributes")%> :</h3>
                 <div class="border-gray margin-bottom-double">
                     <div class="claim-alert" role="alert">
                         <p class="margin-bottom-double">
                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "by.selecting.following.attributes")%>
                         </p>
                     </div>
-                    <div class="padding">
+                    <div>
+                        <div class="ui divider hidden"></div>
                         <div class="select-all">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="consent_select_all" id="consent_select_all"/>
-                                    Select All
-                                </label>
+                            <div class="ui checkbox claim-cb">
+                                <input type="checkbox" class="hidden" name="consent_select_all" id="consent_select_all" />
+                                <label for="consent_select_all">Select All</label>
                             </div>
                         </div>
+                        <div class="ui divider"></div>
                         <div class="claim-list">
                             <% for (String claim : mandatoryClaimList) {
                                 String[] mandatoryClaimData = claim.split("_", 2);
@@ -237,13 +242,11 @@
                                     String claimId = mandatoryClaimData[0];
                                     String displayName = mandatoryClaimData[1];
                             %>
-                            <div class="checkbox claim-cb">
-                                <label>
-                                    <input class="mandatory-claim" type="checkbox" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>"
-                                           required/>
-                                    <%=Encode.forHtml(displayName)%>
-                                    <span class="required font-medium">*</span>
-                                </label>
+                            <div class="field">
+                                <div class="ui checkbox claim-cb">
+                                    <input type="checkbox" class="mandatory-claim hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" required />
+                                    <label for="consent_<%=Encode.forHtmlAttribute(claimId)%>"><%=Encode.forHtml(displayName)%> <span class="required font-medium">*</span></label>
+                                </div>
                             </div>
                             <%
                                     }
@@ -255,17 +258,18 @@
                                     String claimId = requestedClaimData[0];
                                     String displayName = requestedClaimData[1];
                             %>
-                            <div class="checkbox claim-cb">
-                                <label>
-                                    <input type="checkbox" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>"/>
-                                    <%=Encode.forHtml(displayName)%>
-                                </label>
+                            <div class="field">
+                                <div class="ui checkbox claim-cb">
+                                    <input type="checkbox" class="hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" />
+                                    <label for="consent_<%=Encode.forHtmlAttribute(claimId)%>"><%=Encode.forHtml(displayName)%></label>
+                                </div>
                             </div>
                             <%
                                     }
                                 }
                             %>
                         </div>
+                        <div class="ui divider hidden"></div>
                         <div class="text-left padding-top-double">
                             <span class="mandatory"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "mandatory.claims.recommendation")%></span>
                             <span class="required font-medium">( * )</span>
