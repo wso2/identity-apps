@@ -19,15 +19,26 @@
 
 const path = require('path');
 const fs = require('fs-extra');
-const parser = require('fast-xml-parser');
+const XmlParser = require('fast-xml-parser');
 const { execSync } = require('child_process');
 
-const parentPom = path.join(__dirname, "..", "pom.xml");
-const projectVersion = function() {
-    const fileContent = fs.readFileSync(parentPom);
-    const pom = parser.parse(fileContent.toString());
+const packageJson =  path.join(__dirname, "..", "package.json");
+const pomXml = path.join(__dirname, "..", "pom.xml");
+
+const getProjectVersion = function() {
+    const fileContent = fs.readFileSync(pomXml);
+    const pom = XmlParser.parse(fileContent.toString());
+
     return pom.project.version;
 };
 
-execSync("npx lerna version " + projectVersion() + " --yes --no-git-tag-version", { cwd: path.join(__dirname, "..")});
-console.log("lerna update project version to " + projectVersion());
+let packageJsonContent = require(packageJson);
+packageJsonContent.version = getProjectVersion();
+
+fs.writeFileSync(packageJson, JSON.stringify(packageJsonContent, null, 4)+"\n");
+
+execSync("npx lerna version " + getProjectVersion() + " --yes --no-git-tag-version",
+    { cwd: path.join(__dirname, "..") }
+);
+
+console.log("lerna update project version to " + getProjectVersion());
