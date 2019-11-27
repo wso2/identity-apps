@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, SignInUtil } from "@wso2is/authenticate";
+import { AuthenticateSessionUtil, SignInUtil } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
 import { ServiceResourcesEndpoint } from "../configs";
 import * as TokenConstants from "../constants";

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
+import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
 import { i18n, ServiceResourcesEndpoint } from "../../configs";
 import {
     ConsentReceiptInterface,

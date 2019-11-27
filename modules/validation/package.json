@@ -21,9 +21,5 @@
         "lint": "tslint -t stylish --project ."
     },
     "author": "WSO2",
-    "license": "Apache-2.0",
-    "dependencies": {
-        "@hapi/joi": "^16.1.7",
-        "@types/hapi__joi": "^16.0.3"
-    }
+    "license": "Apache-2.0"
 }

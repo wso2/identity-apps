@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
+import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";

@@ -19,7 +19,7 @@
 import {
     AuthenticateSessionUtil,
     AuthenticateUserKeys
-} from "@wso2is/authenticate";
+} from "@wso2is/authentication";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { InnerPageLayout } from "../layouts";

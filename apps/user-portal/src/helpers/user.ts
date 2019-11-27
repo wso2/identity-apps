@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
+import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
 import * as ApplicationConstants from "../constants/application-constants";
 import { AuthStateInterface } from "../models";
 
