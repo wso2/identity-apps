@@ -88,7 +88,6 @@
 </c:set>
 
 <ui:base pageTitle='<%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%>'>
-
     <jsp:attribute name="bottomIncludes">${bottom}</jsp:attribute>
     <jsp:body>${body}</jsp:body>
 </ui:base>

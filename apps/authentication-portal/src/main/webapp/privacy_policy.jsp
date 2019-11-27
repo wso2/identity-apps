@@ -17,92 +17,76 @@
   --%>
 
 <%@ page import="java.io.File" %>
-<%@include file="localize.jsp" %>
 
-<html>
-<head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- title -->
+<%@ taglib prefix="ui" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+    
+<%@ include file="localize.jsp" %>
+    
+<c:set var="body">
+    <div id="app-header" class="ui borderless top fixed app-header menu">
+        <div class="ui container">
+            <!-- product-title -->
+            <%
+                File headerFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (headerFile.exists()) {
+            %>
+                    <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                    <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>  
+        </div>
+    </div>
+    
+    <div class="app-content" style="padding-top: 62px;">
+        <!-- page content -->
+        <%
+            File privacyPolicyFile = new File(getServletContext().getRealPath("extensions/privacy-policy-content.jsp"));
+            if (privacyPolicyFile.exists()) {
+        %>
+                <jsp:include page="extensions/privacy-policy-content.jsp"/>
+        <% } else { %>
+                <jsp:directive.include file="includes/privacy-policy-content.jsp"/>
+        <% } %>
+    </div>
+</c:set>
+<c:set var="bottom">
+    <!-- footer -->
     <%
-        File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-        if (titleFile.exists()) {
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
     %>
-            <jsp:include page="extensions/title.jsp"/>
+            <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/title.jsp"/>
+            <jsp:directive.include file="includes/footer.jsp"/>
     <% } %>
 
-    <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-    <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/Roboto.css" rel="stylesheet">
-    <link href="css/custom-common.css" rel="stylesheet">
+    <script type="text/javascript" src="js/u2f-api.js"></script>
+    <script type="text/javascript">
+        var ToC = "<nav role='navigation' class='table-of-contents'>" + "<h4>On this page:</h4>" + "<ul>";
+        var newLine, el, title, link;
 
+        $("#privacyPolicy h2,#privacyPolicy h3").each(function() {
+            el = $(this);
+            title = el.text();
+            link = "#" + el.attr("id");
+            if(el.is("h3")){
+                newLine = "<li class='sub'>" + "<a href='" + link + "'>" + title + "</a>" + "</li>";
+            }else{
+                newLine = "<li >" + "<a href='" + link + "'>" + title + "</a>" + "</li>";
+            }
 
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
-</head>
+            ToC += newLine;
+        });
 
-<body>
+        ToC += "</ul>" + "</nav>";
 
-<!-- header -->
-<%
-    File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-    if (headerFile.exists()) {
-%>
-        <jsp:include page="extensions/header.jsp"/>
-<% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
-<% } %>
+        $("#toc").append(ToC);
+    </script>
+</c:set>
 
-<!-- page content -->
-<%
-    File privacyPolicyFile = new File(getServletContext().getRealPath("extensions/privacy-policy-content.jsp"));
-    if (privacyPolicyFile.exists()) {
-%>
-        <jsp:include page="extensions/privacy-policy-content.jsp"/>
-<% } else { %>
-        <jsp:directive.include file="includes/privacy-policy-content.jsp"/>
-<% } %>
-
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
-        <jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
-<% } %>
-
-<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
-
-<script type="text/javascript" src="js/u2f-api.js"></script>
-<script type="text/javascript">
-    var ToC = "<nav role='navigation' class='table-of-contents'>" + "<h4>On this page:</h4>" + "<ul>";
-    var newLine, el, title, link;
-
-    $("#privacyPolicy h2,#privacyPolicy h3").each(function() {
-        el = $(this);
-        title = el.text();
-        link = "#" + el.attr("id");
-        if(el.is("h3")){
-            newLine = "<li class='sub'>" + "<a href='" + link + "'>" + title + "</a>" + "</li>";
-        }else{
-            newLine = "<li >" + "<a href='" + link + "'>" + title + "</a>" + "</li>";
-        }
-
-        ToC += newLine;
-    });
-
-    ToC += "</ul>" + "</nav>";
-
-    $("#toc").append(ToC);
-</script>
-
-</body>
-</html>
+<ui:base pageTitle='<%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%>'>
+    <jsp:attribute name="bottomIncludes">${bottom}</jsp:attribute>
+    <jsp:body>${body}</jsp:body>
+</ui:base>

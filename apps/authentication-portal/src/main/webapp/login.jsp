@@ -115,38 +115,10 @@
     <%
         if (reCaptchaEnabled) {
     %>
-    <script src='<%=(Encode.forJavaScriptSource(request.getParameter("reCaptchaAPI")))%>'></script>
+        <script src='<%=(Encode.forJavaScriptSource(request.getParameter("reCaptchaAPI")))%>'></script>
     <%
         }
     %>
-
-    <script>
-        function checkSessionKey() {
-            $.ajax({
-                type: "GET",
-                url: "/logincontext?sessionDataKey=" + getParameterByName("sessionDataKey") + "&relyingParty=" + getParameterByName("relyingParty") + "&tenantDomain=" + getParameterByName("tenantDomain"),
-                success: function (data) {
-                    if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
-                        window.location.href = data.redirectUrl;
-                    }
-                },
-                cache: false
-            });
-        }
-
-
-        function getParameterByName(name, url) {
-            if (!url) {
-                url = window.location.href;
-            }
-            name = name.replace(/[\[\]]/g, '\\$&');
-            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-            results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return "";
-            return decodeURIComponent(results[2].replace(/\+/g, ' '));
-        }
-    </script>
 
     <!-- header includes -->
     <%
@@ -358,6 +330,31 @@
 </c:set>
 <c:set var="bottom">
     <script>
+        function checkSessionKey() {
+            $.ajax({
+                type: "GET",
+                url: "/logincontext?sessionDataKey=" + getParameterByName("sessionDataKey") + "&relyingParty=" + getParameterByName("relyingParty") + "&tenantDomain=" + getParameterByName("tenantDomain"),
+                success: function (data) {
+                    if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
+                        window.location.href = data.redirectUrl;
+                    }
+                },
+                cache: false
+            });
+        }
+
+        function getParameterByName(name, url) {
+            if (!url) {
+                url = window.location.href;
+            }
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return "";
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
         $(document).ready(function () {
             $('.main-link').click(function () {
                 $('.main-link').next().hide();
@@ -367,7 +364,7 @@
                 $('.overlay').css("width", w + "px").css("height", h + "px").show();
             });
             
-            $('[data-toggle="popover"]').popover();
+            $('[data-toggle="popover"]').popup();
             
             $('.overlay').click(function () {
                 $(this).hide();
@@ -428,7 +425,7 @@
             }
         }
 
-        $('#popover').popover({
+        $('#popover').popup({
             html: true,
             title: function () {
                 return $("#popover-head").html();
