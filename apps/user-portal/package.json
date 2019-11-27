@@ -53,5 +53,18 @@
     },
     "devDependencies": {
         "run-script-os": "^1.0.7"
+    },
+    "peerDependencies": {
+        "axios": "*",
+        "history": "*",
+        "i18next": "*",
+        "i18next-browser-languagedetector": "*",
+        "lodash": "*",
+        "log": "*",
+        "react-i18next": "*",
+        "redux": "*",
+        "redux-devtools-extension": "*",
+        "redux-thunk": "*",
+        "ua-parser-js": "*"
     }
 }

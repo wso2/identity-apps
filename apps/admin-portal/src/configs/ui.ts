@@ -17,7 +17,7 @@
  */
 
 import {
-    DefaultAppIcon,
+    CodeIcon,
     DummyUser,
     HomeTileIcons,
     Logo,
@@ -42,7 +42,7 @@ interface CustomCSSType {
 export const LogoImage = Logo;
 export const UserImage: ImageType = DummyUser;
 export const HomeTileIconImages = HomeTileIcons;
-export const GenericAppIcon = DefaultAppIcon;
+export const GenericAppIcon = CodeIcon;
 export const SidePanelIcons = SidePanelIconSet;
 export const SettingsSectionIcons = SettigsSectionIconSet;
 export const MFAIcons = MFAIconSet;

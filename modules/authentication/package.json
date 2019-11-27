@@ -17,5 +17,9 @@
     "license": "Apache-2.0",
     "dependencies": {
         "jsrsasign": "^8.0.12"
+    },
+    "peerDependencies": {
+        "axios": "*",
+        "crypto-js": "*"
     }
 }
