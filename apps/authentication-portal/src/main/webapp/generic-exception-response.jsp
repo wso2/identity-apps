@@ -17,7 +17,10 @@
   --%>
 
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@include file="localize.jsp" %>
+<%@ page import="java.io.File" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@include file="includes/localize.jsp" %>
 
 <%
     String stat = request.getParameter("status");
@@ -28,30 +31,58 @@
     }
     session.invalidate();
 %>
-<style>
-    .info-box {
-        background-color: #EEF3F6;
-        border: 1px solid #ABA7A7;
-        font-size: 13px;
-        font-weight: bold;
-        margin-bottom: 10px;
-        padding: 10px;
-    }
-</style>
 
-<div id="middle">
+<!doctype html>
+<html>
+<head>
+    <!-- header -->
+    <%
+        File headerFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+        if (headerFile.exists()) {
+    %>
+        <jsp:include page="extensions/header.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/header.jsp"/>
+    <% } %>
+</head>
+<body>
+    <main class="center-segment">
+        <div class="ui container large center aligned middle aligned">
+            <div class="ui segment">
+                <!-- product-title -->
+                <%
+                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                    if (productTitleFile.exists()) {
+                %>
+                    <jsp:include page="extensions/product-title.jsp"/>
+                <% } else { %>
+                    <jsp:directive.include file="includes/product-title.jsp"/>
+                <% } %>
 
-    <div id="workArea">
-        <div class="info-box">
-            <%=Encode.forHtml(stat)%>
+                <h1><%=Encode.forHtml(stat)%></h1>
+                <p><%=Encode.forHtmlContent(statusMessage)%></p> 
+            </div>
         </div>
-        <table class="styledLeft">
-            <tbody>
-            <tr>
-            <td><%=Encode.forHtmlContent(statusMessage)%>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+    </main>
+
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+        <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
+
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+        <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/footer.jsp"/>
+    <% } %>
+</body>
+</html>
