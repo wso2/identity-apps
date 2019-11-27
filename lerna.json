@@ -1,8 +1,8 @@
 {
     "packages": [
-        "modules/*",
         "apps/*",
-        "components/theme"
+        "components/theme",
+        "modules/*"
     ],
-    "version": "0.1.0"
+    "version": "0.1.103-SNAPSHOT"
 }
