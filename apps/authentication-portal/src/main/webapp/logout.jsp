@@ -19,26 +19,50 @@
 <%@ page import="java.io.File" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<%@ taglib prefix="ui" tagdir="/WEB-INF/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-    
-<%@ include file="localize.jsp" %>
-    
-<c:set var="bodyContent">
-    <!-- product-title -->
+<%@ include file="includes/localize.jsp" %>
+
+<!doctype html>
+<html>
+<head>
+    <!-- header -->
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
         if (headerFile.exists()) {
     %>
-        <jsp:include page="extensions/product-title.jsp"/>
+        <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/product-title.jsp"/>
+        <jsp:directive.include file="includes/header.jsp"/>
+    <% } %>
+</head>
+<body>
+    <main class="center-segment">
+        <div class="ui container medium center aligned middle aligned">
+            <div class="ui segment">
+                <!-- product-title -->
+                <%
+                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                    if (productTitleFile.exists()) {
+                %>
+                    <jsp:include page="extensions/product-title.jsp"/>
+                <% } else { %>
+                    <jsp:directive.include file="includes/product-title.jsp"/>
+                <% } %>
+
+                <h1><%=AuthenticationEndpointUtil.i18n(resourceBundle, "logged.out")%></h1>
+            </div>
+        </div>
+    </main>
+
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+        <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/product-footer.jsp"/>
     <% } %>
 
-    <h1><%=AuthenticationEndpointUtil.i18n(resourceBundle, "logged.out")%></h1>
-</c:set>
-<c:set var="footer">
     <!-- footer -->
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
@@ -48,15 +72,7 @@
     <% } else { %>
         <jsp:directive.include file="includes/footer.jsp"/>
     <% } %>
-</c:set>
 
-<c:set var="body">
-    <ui:loginWrapper>
-        <jsp:attribute name="footerContent">${footer}</jsp:attribute>
-        <jsp:body>${bodyContent}</jsp:body>
-    </ui:loginWrapper>
-</c:set>
-
-<ui:base pageTitle='<%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%>'>
-    <jsp:body>${body}</jsp:body>
-</ui:base>
+    
+</body>
+</html>

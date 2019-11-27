@@ -16,20 +16,5 @@
   ~ under the License.
   --%>
 
-<!-- localize.jsp MUST already be included in the calling script -->
-<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
-
-<!-- footer -->
-<footer class="footer" style="text-align: center">
-    <div class="container-fluid">
-        <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%> | &copy;
-            <script>document.write(new Date().getFullYear());</script>
-            <a href="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "business.homepage")%>"
-               target="_blank">
-               WSO2
-               <%=AuthenticationEndpointUtil.i18n(resourceBundle, "inc")%>
-            </a>
-            . <%=AuthenticationEndpointUtil.i18n(resourceBundle, "all.rights.reserved")%>
-        </p>
-    </div>
-</footer>
+<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
+<script src="libs/theme/semantic.min.js"></script>
