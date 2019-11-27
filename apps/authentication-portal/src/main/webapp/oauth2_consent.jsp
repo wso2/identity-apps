@@ -233,7 +233,7 @@
                                     <div class="select-all">
                                         <div class="ui checkbox claim-cb">
                                             <input type="checkbox" class="hidden" name="consent_select_all" id="consent_select_all" />
-                                            <label for="consent_select_all">Select All</label>
+                                            <label for="consent_select_all"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "select.all")%></label>
                                         </div>
                                     </div>
                                     <div class="ui divider"></div>
@@ -295,14 +295,13 @@
                             <input type="hidden" name="<%=Constants.SESSION_DATA_KEY_CONSENT%>"
                                     value="<%=Encode.forHtmlAttribute(request.getParameter(Constants.SESSION_DATA_KEY_CONSENT))%>"/>
                             <input type="hidden" name="consent" id="consent" value="deny"/>
-                            <div style="text-align: right;">
-                                <input class="ui large button" type="reset"
-                                    onclick="deny(); return false;"
-                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"cancel")%>" />
-                                <input type="button" class="ui primary large button" id="approve" name="approve"
-                                        onclick="approved(); return false;"
-                                        value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"continue")%> "/>
-                            </div>
+               
+                            <input class="ui large button" type="reset"
+                                onclick="deny(); return false;"
+                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"cancel")%>" />
+                            <input type="button" class="ui primary large button" id="approve" name="approve"
+                                    onclick="approved(); return false;"
+                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"continue")%> "/>
                         </div>
                     </div>
                 </form>
