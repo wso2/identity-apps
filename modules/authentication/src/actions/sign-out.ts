@@ -16,8 +16,6 @@
  * under the License.
  */
 
-// tslint:disable-next-line:no-submodule-imports
-import { Error } from "tslint/lib/error";
 import { ID_TOKEN } from "../constants";
 import { getEndSessionEndpoint } from "./op-config";
 import { getSessionParameter } from "./session";

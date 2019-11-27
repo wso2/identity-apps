@@ -37,8 +37,5 @@
         "setupFilesAfterEnv": [
             "<rootDir>/test_configs/setup_test.ts"
         ]
-    },
-    "devDependencies": {
-        "@types/crypto-js": "^3.1.43"
     }
 }

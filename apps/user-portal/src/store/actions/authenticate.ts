@@ -22,7 +22,7 @@ import {
     OPConfigurationUtil,
     SignInUtil,
     SignOutUtil
-} from "@wso2is/authenticate";
+} from "@wso2is/authentication";
 import { getAssociations, getProfileInfo } from "../../api";
 import { ServiceResourcesEndpoint } from "../../configs";
 import * as TokenConstants from "../../constants";

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { SignInUtil } from "@wso2is/authenticate";
+import { SignInUtil } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
 import axios from "axios";
 import { isEmpty } from "lodash";

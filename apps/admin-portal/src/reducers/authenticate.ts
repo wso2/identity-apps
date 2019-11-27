@@ -17,7 +17,7 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, AuthenticateTokenKeys, AuthenticateUserKeys } from "@wso2is/authenticate";
+import { AuthenticateSessionUtil, AuthenticateTokenKeys, AuthenticateUserKeys } from "@wso2is/authentication";
 import { authenticateActionTypes } from "../actions/types";
 import { AuthStateInterface } from "../models/auth";
 
