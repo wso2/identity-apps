@@ -76,6 +76,18 @@
         text-align: right;
     }
 
+    main #toc > nav.table-of-contents ol > li:not(.sub) {
+        list-style: square;
+    }
+
+    main #toc > nav.table-of-contents ol > li:not(.sub):before {
+        display: none;
+    }
+
+    main #toc > nav.table-of-contents ol > li.sub {
+        margin-left: 20px;
+    }
+
     footer {
         padding: 1.5rem 0;
         margin-top: auto;

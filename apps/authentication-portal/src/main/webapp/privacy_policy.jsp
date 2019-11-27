@@ -89,7 +89,7 @@
 
     <script type="text/javascript" src="js/u2f-api.js"></script>
     <script type="text/javascript">
-        var ToC = "<nav role='navigation' class='table-of-contents'>" + "<h4>On this page:</h4>" + "<ul>";
+        var ToC = "<nav role='navigation' class='table-of-contents'>" + "<h4>On this page:</h4>" + "<ol class='ui list'>";
         var newLine, el, title, link;
 
         $("#privacyPolicy h2, #privacyPolicy h3").each(function() {
@@ -98,15 +98,15 @@
             link = "#" + el.attr("id");
 
             if (el.is("h3")){
-                newLine = "<li class='sub'>" + "<a href='" + link + "'>" + title + "</a>" + "</li>";
+                newLine = "<li class='sub' value='-'>" + "<a href='" + link + "'>" + title + "</a>" + "</li>";
             } else {
-                newLine = "<li >" + "<a href='" + link + "'>" + title + "</a>" + "</li>";
+                newLine = "<li>" + "<a href='" + link + "'>" + title + "</a>" + "</li>";
             }
 
             ToC += newLine;
         });
 
-        ToC += "</ul>" + "</nav>";
+        ToC += "</ol>" + "</nav>";
 
         $("#toc").append(ToC);
     </script>
