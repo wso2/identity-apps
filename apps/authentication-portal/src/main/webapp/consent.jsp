@@ -66,17 +66,17 @@
 
                 <form class="ui large form" action="<%=commonauthURL%>" method="post" id="profile" name="">
                     <div class="ui divider hidden"></div>
-                    <p class="margin-bottom-double">
+                    <p>
                         <strong><%=Encode.forHtml(request.getParameter("sp"))%></strong>
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile")%>
                     </p>
                     
                     <div class="segment-form">
-                        <div class="ui secondary segment" style="text-align: left;">
+                        <div class="ui secondary segment">
                             <h3><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.attributes")%> :</h3>
-                            <div class="border-gray margin-bottom-double">
+                            <div>
                                 <div class="claim-alert" role="alert">
-                                    <p class="margin-bottom-double">
+                                    <p>
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "by.selecting.following.attributes")%>
                                     </p>
                                 </div>
