@@ -36,6 +36,12 @@ const httpClient = AxiosHttpClient.getInstance();
  * @return {Promise<any>} a promise containing the response.
  */
 export const updatePassword = (currentPassword: string, newPassword: string): Promise<any> => {
+    // We're currently using basic auth to validate the current password. If the password is
+    // different, the server responds with a status code `401`. The callbacks handle 401 errors and
+    // terminates the session. To bypass the callbacks disable the handler when the client is initialized.
+    // TODO: Remove this once the API supports current password validation.
+    httpClient.disableHandler();
+
     const requestConfig = {
         auth: {
             password: currentPassword,
@@ -68,5 +74,9 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
         })
         .catch((error) => {
             return Promise.reject(error);
+        })
+        .finally(() => {
+            // TODO: Remove this once the API supports current password validation.
+            httpClient.enableHandler();
         });
 };
