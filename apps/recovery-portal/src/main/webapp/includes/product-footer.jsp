@@ -19,5 +19,17 @@
 <!-- localize.jsp MUST already be included in the calling script -->
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 
-<!-- title -->
-<title><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "wso2.identity.server")%></title>
+<!-- footer -->
+<footer class="footer" style="text-align: center">
+    <div class="container-fluid">
+        <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "wso2.identity.server")%> | &copy;
+            <script>document.write(new Date().getFullYear());</script>
+            <a href="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "business.homepage")%>"
+               target="_blank">
+               WSO2
+               <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "inc")%>
+            </a>
+            . <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "all.rights.reserved")%>
+        </p>
+    </div>
+</footer>
