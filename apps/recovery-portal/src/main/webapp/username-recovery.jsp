@@ -176,7 +176,7 @@
                     <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
                         <% if (isFirstNameInClaims || isLastNameInClaims) { %>
                         <div class="field">
-                            <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Name")%></label>
+                            <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "name")%></label>
                             <div class="two fields">
                                 <% if (isFirstNameInClaims) { %>
                                 <div class="field">
