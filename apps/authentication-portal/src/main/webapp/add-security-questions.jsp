@@ -15,8 +15,8 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   --%>
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
@@ -35,6 +35,7 @@
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="java.io.File" %>
 
 <%
     String BUNDLE = "org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources";
@@ -72,75 +73,110 @@
     }
 %>
 
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
 <html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title><%=AuthenticationEndpointUtil.i18n(resourceBundle, "add.challenge.answers")%>
-    </title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
-
-<body>
-<div class="container">
-    <h1><%=AuthenticationEndpointUtil.i18n(resourceBundle, "answer.following.questions")%>
-    </h1>
+    <!-- header -->
     <%
-        for (String challengeQuestionSet : challengeQuestionMap.keySet()) {
+        File headerFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+        if (headerFile.exists()) {
     %>
-    <br><br>
-    <form action="../commonauth" method="post" id="profile" name="">
-        <dev class="form-horizontal">
-            <legend><%=AuthenticationEndpointUtil.i18n(resourceBundle, "challenge.question.set")%>
-            </legend>
-            <div class="form-group">
-                <label class="control-label col-sm-4"><%=AuthenticationEndpointUtil.i18n(resourceBundle,
-                 "select.challenge.question")%>
-                </label>
-                <div class="col-sm-8">
-                    <select class="form-control" id="challengeQuestion1"
-                            name=<%="Q-" + Encode.forHtmlAttribute(challengeQuestionSet)%>>
+        <jsp:include page="extensions/header.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/header.jsp"/>
+    <% } %>
+</head>
+<body>
+    <main class="center-segment">
+        <div class="ui container medium center aligned middle aligned">
+            <div class="ui segment">
+                <!-- product-title -->
+                <%
+                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                    if (productTitleFile.exists()) {
+                %>
+                    <jsp:include page="extensions/product-title.jsp"/>
+                <% } else { %>
+                    <jsp:directive.include file="includes/product-title.jsp"/>
+                <% } %>
+
+                <h3><%=AuthenticationEndpointUtil.i18n(resourceBundle, "answer.following.questions")%></h3>
+
+                <div class="ui divider hidden"></div>
+
+                <form class="ui large form" action="../commonauth" method="post" id="profile" name="">
+                    <div class="segment-form">
                         <%
-                            for (ChallengeQuestion challengeQuestion : challengeQuestionMap.get(challengeQuestionSet)) {
+                            for (String challengeQuestionSet : challengeQuestionMap.keySet()) {
                         %>
-                        <option name="q" selected="selected" value="<%=Encode.forHtmlAttribute(challengeQuestion.getQuestion())%>">
-                            <%=Encode.forHtmlContent(challengeQuestion.getQuestion())%>
-                        </option>
+                        <legend><%=AuthenticationEndpointUtil.i18n(resourceBundle, "challenge.question.set")%></legend>
+                        <div class="ui divider"></div>
+                        <div class="field">
+                            <label>
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "select.challenge.question")%>
+                            </label>
+                            <div>
+                                <select id="challengeQuestion1" 
+                                    name=<%="Q-" + Encode.forHtmlAttribute(challengeQuestionSet)%>>
+                                    <%
+                                        for (ChallengeQuestion challengeQuestion : challengeQuestionMap.get(challengeQuestionSet)) {
+                                    %>
+                                    <option name="q" selected="selected" value="<%=Encode.forHtmlAttribute(challengeQuestion.getQuestion())%>">
+                                        <%=Encode.forHtmlContent(challengeQuestion.getQuestion())%>
+                                    </option>
+                                    <%
+                                        }
+                                    %>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "answers.challenge.question")%>
+                            </label>
+                            <div>
+                                <input required type="text" class="form-control" id="answer_to_questions"
+                                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "type.your.challenge.answer")%>"
+                                    name=<%="A-" + Encode.forHtmlAttribute(challengeQuestionSet)%>>
+                            </div>
+                        </div>
+                        <div class="ui divider hidden"></div>
                         <%
                             }
                         %>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-4"><%=AuthenticationEndpointUtil.i18n(resourceBundle,
-                 "answers.challenge.question")%>
-                </label>
-                <div class="col-sm-8">
-                    <input required type="text" class="form-control" id="answer_to_questions"
-                           placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "type.your.challenge.answer")%>"
-                           name=<%="A-" + Encode.forHtmlAttribute(challengeQuestionSet)%>>
-                </div>
-            </div>
-        </dev>
-        <%
-            }
-        %>
-        <br>
-        <label class="control-label col-sm-4"></label>
-        <div class="col-sm-8">
-            <input type="submit" class="btn btn-primary"
-                   value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "update")%>">
-        </div>
-        <input type="hidden" name="<%="sessionDataKey"%>"
-               value="<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>"/>
 
-    </form>
-</div>
+                        <div class="align-right buttons">
+                            <input type="submit" class="ui primary large button"
+                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "update")%>">
+        
+                            <input type="hidden" name="<%="sessionDataKey"%>"
+                                value="<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+        <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
+
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+        <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/footer.jsp"/>
+    <% } %>
+    
 </body>
 </html>
