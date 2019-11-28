@@ -16,5 +16,12 @@
   ~ under the License.
 --%>
 
-<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/theme/semantic.min.js"></script>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.EncodedControl" %>
+<%@ page import="java.nio.charset.StandardCharsets" %>
+<%@ page import="java.util.ResourceBundle" %>
+
+<%
+    String BUNDLE = "org.wso2.carbon.identity.mgt.recovery.endpoint.i18n.Resources";
+    ResourceBundle recoveryResourceBundle = ResourceBundle.getBundle(BUNDLE, request.getLocale(),
+            new EncodedControl(StandardCharsets.UTF_8.toString()));
+%>
