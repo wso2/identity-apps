@@ -45,11 +45,12 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
 
     private static axiosInstance: AxiosHttpClientInstance;
     private static clientInstance: AxiosHttpClient;
-    private isHandlerEnabled: boolean;
+    private static isHandlerEnabled: boolean;
     private requestStartCallback: () => void;
     private requestSuccessCallback: (response: AxiosResponse) => void;
     private requestErrorCallback: (error: AxiosError) => void;
     private requestFinishCallback: () => void;
+    private static readonly DEFAULT_HANDLER_DISABLE_TIMEOUT: number = 1000;
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -97,6 +98,11 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
         // Add the init method from the `AxiosHttpClient` instance.
         this.axiosInstance.init = this.clientInstance.init;
 
+        // Add the handler enabling & disabling methods to the instance.
+        this.axiosInstance.enableHandler = this.clientInstance.enableHandler;
+        this.axiosInstance.disableHandler = this.clientInstance.disableHandler;
+        this.axiosInstance.disableHandlerWithTimeout = this.clientInstance.disableHandlerWithTimeout;
+
         return this.axiosInstance;
     }
 
@@ -110,7 +116,7 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
      * @return {AxiosRequestConfig}
      */
     public requestHandler(request: AxiosRequestConfig): AxiosRequestConfig {
-        if (this.isHandlerEnabled) {
+        if (AxiosHttpClient.isHandlerEnabled) {
             if (this.requestStartCallback && typeof this.requestStartCallback === "function") {
                 this.requestStartCallback();
             }
@@ -138,7 +144,7 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
      * @return {AxiosError}
      */
     public errorHandler(error: AxiosError): AxiosError {
-        if (this.isHandlerEnabled) {
+        if (AxiosHttpClient.isHandlerEnabled) {
             if (this.requestErrorCallback && typeof this.requestErrorCallback === "function") {
                 this.requestErrorCallback(error);
             }
@@ -158,7 +164,7 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
      * @return {AxiosResponse}
      */
     public successHandler(response: AxiosResponse): AxiosResponse {
-        if (this.isHandlerEnabled) {
+        if (AxiosHttpClient.isHandlerEnabled) {
             if (this.requestSuccessCallback && typeof this.requestSuccessCallback === "function") {
                 this.requestSuccessCallback(response);
             }
@@ -185,7 +191,7 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
         requestErrorCallback: (error: AxiosError) => void,
         requestFinishCallback: () => void
     ): void {
-        this.isHandlerEnabled = isHandlerEnabled;
+        AxiosHttpClient.isHandlerEnabled = isHandlerEnabled;
 
         if (this.requestStartCallback
             && this.requestSuccessCallback
@@ -206,5 +212,32 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
         if (!this.requestFinishCallback) {
             this.requestFinishCallback = requestFinishCallback;
         }
+    }
+
+    /**
+     * Enables the handler.
+     */
+    public enableHandler() {
+        AxiosHttpClient.isHandlerEnabled = true;
+    }
+
+    /**
+     * Disables the handler.
+     */
+    public disableHandler() {
+        AxiosHttpClient.isHandlerEnabled = false;
+    }
+
+    /**
+     * Disables the handler for a given period of time.
+     *
+     * @param {number} timeout - Timeout in milliseconds.
+     */
+    public disableHandlerWithTimeout(timeout: number = AxiosHttpClient.DEFAULT_HANDLER_DISABLE_TIMEOUT) {
+        AxiosHttpClient.isHandlerEnabled = false;
+
+        setTimeout(() => {
+            AxiosHttpClient.isHandlerEnabled = true;
+        }, (timeout));
     }
 }
