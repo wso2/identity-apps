@@ -27,5 +27,8 @@
     "license": "Apache-2.0",
     "dependencies": {
         "@wso2is/authentication": "^0.1.104-SNAPSHOT"
+    },
+    "peerDependencies": {
+        "axios": "*"
     }
 }
