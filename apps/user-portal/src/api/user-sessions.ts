@@ -22,14 +22,13 @@ import {
     HttpMethods,
     UserSessions
 } from "../models";
-import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "../utils";
 
 /**
- * Initialize an axios Http client.
+ * Get an axios instance.
+ *
  * @type {AxiosHttpClientInstance}
  */
 const httpClient = AxiosHttpClient.getInstance();
-httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
 
 /**
  * Fetches the list of user sessions from the API.

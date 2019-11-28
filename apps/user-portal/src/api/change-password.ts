@@ -20,15 +20,13 @@ import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentic
 import { AxiosHttpClient } from "@wso2is/http";
 import { ServiceResourcesEndpoint } from "../configs";
 import { HttpMethods } from "../models";
-import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "../utils";
 
 /**
- * Initialize an axios Http client.
+ * Get an axios instance.
  *
  * @type {AxiosHttpClientInstance}
  */
 const httpClient = AxiosHttpClient.getInstance();
-httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
 
 /**
  * Updates the user's password.
@@ -69,6 +67,6 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
             return Promise.resolve(response);
         })
         .catch((error) => {
-            return Promise.reject(`Failed to update the password - ${ error }`);
+            return Promise.reject(error);
         });
 };
