@@ -94,8 +94,7 @@
     }
 
     footer {
-        padding: 1.5rem 0;
-        margin-top: auto;
+        padding: 2rem 0;
     }
 
     body .product-title .product-title-text {
