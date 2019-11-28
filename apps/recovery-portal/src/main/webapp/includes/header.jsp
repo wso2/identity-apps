@@ -26,7 +26,7 @@
 <link rel="icon" href="libs/theme/assets/images/favicon.ico" type="image/x-icon"/>
 <link href="libs/theme/wso2-default.min.css" rel="stylesheet">
 
-<title><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "wso2.identity.server")%></title>
+<title><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Wso2.identity.server")%></title>
 
 <style>
     html, body {

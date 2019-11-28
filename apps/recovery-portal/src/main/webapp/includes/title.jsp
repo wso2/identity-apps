@@ -20,4 +20,4 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 
 <!-- title -->
-<title><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "wso2.identity.server")%></title>
+<title><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Wso2.identity.server")%></title>
