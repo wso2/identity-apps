@@ -182,16 +182,17 @@ export const sendRevokeTokenRequest = (requestParams: OIDCRequestParamsInterface
 
     const body = [];
     body.push(`client_id=${requestParams.clientId}`);
-    body.push(`token=${sessionStorage.getItem(accessToken)}`);
+    body.push(`token=${accessToken}`);
     body.push("token_type_hint=access_token");
 
-    return axios.post(revokeTokenEndpoint, body.join("&"), getTokenRequestHeaders(requestParams.clientHost))
+    return axios.post(revokeTokenEndpoint, body.join("&"),
+        { headers: getTokenRequestHeaders(requestParams.clientHost), withCredentials: true })
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Invalid status code received in the revoke token response: "
                     + response.status));
             }
-            return Promise.resolve("success");
+            return Promise.resolve(response);
         }).catch((error) => {
             return Promise.reject(error);
         });
