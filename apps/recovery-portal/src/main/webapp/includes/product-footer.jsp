@@ -22,7 +22,7 @@
 <!-- footer -->
 <footer class="footer" style="text-align: center">
     <div class="container-fluid">
-        <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "wso2.identity.server")%> | &copy;
+        <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Wso2.identity.server")%> | &copy;
             <script>document.write(new Date().getFullYear());</script>
             <a href="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "business.homepage")%>"
                target="_blank">
