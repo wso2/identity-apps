@@ -14,7 +14,8 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
+--%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="org.apache.commons.lang.StringUtils" %>
@@ -33,7 +34,8 @@
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
-<jsp:directive.include file="localize.jsp"/>
+
+<jsp:directive.include file="includes/localize.jsp"/>
 
 <%
     if (!Boolean.parseBoolean(application.getInitParameter(
@@ -112,7 +114,6 @@
             isEmailInClaims = true;
         }
     }
-
 %>
 <%
     boolean reCaptchaEnabled = false;
@@ -122,224 +123,203 @@
     }
 %>
 
-    <html>
-    <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- title -->
-        <%
-            File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-            if (titleFile.exists()) {
-        %>
-                <jsp:include page="extensions/title.jsp"/>
-        <% } else { %>
-                <jsp:directive.include file="includes/title.jsp"/>
-        <% } %>
 
-        <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-        <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/Roboto.css" rel="stylesheet">
-        <link href="css/custom-common.css" rel="stylesheet">
-
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.min.js"></script>
-        <script src="js/respond.min.js"></script>
-        <![endif]-->
-        <%
-            if (reCaptchaEnabled) {
-        %>
-        <script src='<%=(request.getAttribute("reCaptchaAPI"))%>'></script>
-        <%
-            }
-        %>
-    </head>
-
-    <body>
-
+<!doctype html>
+<html>
+<head>
     <!-- header -->
     <%
-        File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
+        File headerFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
         if (headerFile.exists()) {
     %>
-            <jsp:include page="extensions/header.jsp"/>
+        <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
 
-    <!-- page content -->
-    <div class="container-fluid body-wrapper">
+    <%
+        if (reCaptchaEnabled) {
+    %>
+    <script src='<%=(request.getAttribute("reCaptchaAPI"))%>'></script>
+    <%
+        }
+    %>
+</head>
+<body>
+    <main class="center-segment">
+        <div class="ui container large center aligned middle aligned">
+            <div class="ui segment">
+                <!-- product-title -->
+                <%
+                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                    if (productTitleFile.exists()) {
+                %>
+                    <jsp:include page="extensions/product-title.jsp"/>
+                <% } else { %>
+                    <jsp:directive.include file="includes/product-title.jsp"/>
+                <% } %>
 
-        <div class="row">
-            <!-- content -->
-            <div class="col-xs-12 col-sm-10 col-md-8 col-lg-5 col-centered wr-login">
-                <h2 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.username")%>
-                </h2>
+                <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.username")%></h2>
 
-                <div class="clearfix"></div>
-                <div class="boarder-all ">
-
-                    <% if (error) { %>
-                    <div class="alert alert-danger" id="server-error-msg">
+                <% if (error) { %>
+                    <div class="ui visible negative messag" id="server-error-msg">
                         <%= IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg) %>
                     </div>
-                    <% } %>
-                    <div class="alert alert-danger" id="error-msg" hidden="hidden"></div>
+                <% } %>
+                <div class="ui visible negative messag" id="error-msg" hidden="hidden"></div>
 
-                    <div class="padding-double font-large">
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                "Enter.detail.to.recover.uname")%></div>
-                    <div class="padding-double">
-                        <form method="post" action="verify.do" id="recoverDetailsForm">
-                            <% if (isFirstNameInClaims) { %>
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 ">
-                                <label class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                        "First.name")%></label>
-                                <input id="first-name" type="text" name="http://wso2.org/claims/givenname"
-                                       class="form-control">
-                            </div>
-                            <%}%>
+                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.detail.to.recover.uname")%>
 
-                            <% if (isLastNameInClaims) { %>
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 ">
-                                <label class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                        "Last.name")%></label>
-                                <input id="last-name" type="text" name="http://wso2.org/claims/lastname"
-                                       class="form-control ">
-                            </div>
-                            <%}%>
+                <div class="ui divider hidden"></div>
 
-                            <%
-                                String callback = request.getParameter("callback");
-
-                                if (StringUtils.isBlank(callback)) {
-                                    callback = IdentityManagementEndpointUtil.getUserPortalUrl(
-                                            application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
-                                }
-
-                                if (callback != null) {
-                            %>
-                            <div>
-                                <input type="hidden" name="callback" value="<%=Encode.forHtmlAttribute(callback) %>"/>
-                            </div>
-                            <%
-                                }
-
-                             if (isEmailInClaims) { %>
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                <label class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                        "Email")%></label>
-                                <input id="email" type="email" name="http://wso2.org/claims/emailaddress"
-                                       class="form-control"
-                                       data-validate="email">
-                            </div>
-                            <%}%>
-    
-                            <%
-                                if (StringUtils.isNotEmpty(tenantDomain) && !error) {
-                            %>
-                            <div>
-                                <input type="hidden" name="tenantDomain" value="<%=Encode.forHtmlAttribute(tenantDomain)%>"/>
-                            </div>
-                            <%
-                            } else {
-                            %>
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                <label class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                        "Tenant.domain")%>
-                                </label>
-                                <input id="tenant-domain" type="text" name="tenantDomain"
-                                       class="form-control ">
-                            </div>
-                            <%
-                                }
-                            %>
-                            
-                            <td>&nbsp;&nbsp;</td>
-                            <input type="hidden" id="isUsernameRecovery" name="isUsernameRecovery" value="true">
-
-                            <% for (Claim claim : claims) {
-                                if (claim.getRequired() &&
-                                        !StringUtils.equals(claim.getUri(),
-                                                IdentityManagementEndpointConstants.ClaimURIs.FIRST_NAME_CLAIM) &&
-                                        !StringUtils.equals(claim.getUri(),
-                                                IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM) &&
-                                        !StringUtils.equals(claim.getUri(),
-                                                IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM)) {
-                            %>
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
-                                <label class="control-label"><%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle,
-                                        claim.getDisplayName())%>
-                                </label>
-                                <input type="text" name="<%= Encode.forHtmlAttribute(claim.getUri()) %>"
-                                       class="form-control"/>
-                            </div>
-                            <%
-                                    }
-                                }
-                            %>
-    
-                            <%
-                                if (reCaptchaEnabled) {
-                            %>
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
-                                <div class="g-recaptcha"
-                                     data-sitekey=
-                                             "<%=Encode.forHtmlContent((String)request.getAttribute("reCaptchaKey"))%>">
+                <div class="segment-form">
+                    <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
+                        <% if (isFirstNameInClaims || isLastNameInClaims) { %>
+                        <div class="field">
+                            <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Name")%></label>
+                            <div class="two fields">
+                                <% if (isFirstNameInClaims) { %>
+                                <div class="field">
+                                    <input id="first-name" type="text" name="http://wso2.org/claims/givenname"
+                                        placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                            "First.name")%>" />
                                 </div>
+                                <% } %>
+                                <% if (isLastNameInClaims) { %>
+                                <div class="field">
+                                    <input id="last-name" type="text" name="http://wso2.org/claims/lastname"
+                                        placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                            "Last.name")%>" />
+                                </div>
+                                <% } %>
                             </div>
-                            <%
+                        </div>
+                        <% } %>
+
+                        <%
+                            String callback = request.getParameter("callback");
+
+                            if (StringUtils.isBlank(callback)) {
+                                callback = IdentityManagementEndpointUtil.getUserPortalUrl(
+                                        application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
+                            }
+
+                            if (callback != null) {
+                        %>
+                        <div>
+                            <input type="hidden" name="callback" value="<%=Encode.forHtmlAttribute(callback) %>"/>
+                        </div>
+                        <%
+                            }
+
+                            if (isEmailInClaims) { %>
+                        <div class="field">
+                            <label class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                    "Email")%></label>
+                            <input id="email" type="email" name="http://wso2.org/claims/emailaddress"
+                                    class="form-control"
+                                    data-validate="email">
+                        </div>
+                        <%}%>
+
+                        <%
+                            if (StringUtils.isNotEmpty(tenantDomain) && !error) {
+                        %>
+                        <div>
+                            <input type="hidden" name="tenantDomain" value="<%=Encode.forHtmlAttribute(tenantDomain)%>"/>
+                        </div>
+                        <%
+                        } else {
+                        %>
+                        <div class="field">
+                            <label class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                    "Tenant.domain")%>
+                            </label>
+                            <input id="tenant-domain" type="text" name="tenantDomain"
+                                    class="form-control ">
+                        </div>
+                        <%
+                            }
+                        %>
+                        
+                        <input type="hidden" id="isUsernameRecovery" name="isUsernameRecovery" value="true">
+
+                        <% for (Claim claim : claims) {
+                            if (claim.getRequired() &&
+                                    !StringUtils.equals(claim.getUri(),
+                                            IdentityManagementEndpointConstants.ClaimURIs.FIRST_NAME_CLAIM) &&
+                                    !StringUtils.equals(claim.getUri(),
+                                            IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM) &&
+                                    !StringUtils.equals(claim.getUri(),
+                                            IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM)) {
+                        %>
+
+                        <div class="field">
+                            <label class="control-label"><%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle,
+                                    claim.getDisplayName())%>
+                            </label>
+                            <input type="text" name="<%= Encode.forHtmlAttribute(claim.getUri()) %>"
+                                    class="form-control"/>
+                        </div>
+                        <%
                                 }
-                            %>
+                            }
+                        %>
 
-                            <div class="form-actions">
-                                <table width="100%" class="styledLeft">
-                                    <tbody>
-                                    <tr class="buttonRow">
-                                        <td>
-                                            <button id="recoverySubmit"
-                                                    class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large"
-                                                    type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
-                                            </button>
-                                        </td>
-                                        <td>&nbsp;&nbsp;</td>
-                                        <td>
-                                            <button id="recoveryCancel"
-                                                    class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large"
-                                                    type="button"
-                                                    onclick="location.href='<%=Encode.forJavaScript(IdentityManagementEndpointUtil.getURLEncodedCallback(callback))%>';">
-                                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                        <%
+                            if (reCaptchaEnabled) {
+                        %>
+                        <div class="field">
+                            <div class="g-recaptcha"
+                                    data-sitekey=
+                                            "<%=Encode.forHtmlContent((String)request.getAttribute("reCaptchaKey"))%>">
                             </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <!-- /content/body -->
+                        </div>
+                        <%
+                            }
+                        %>
 
+                        <div class="ui divider hidden"></div>
+
+                        <div class="align-right buttons">
+                            <button id="recoveryCancel"
+                                class="ui large button"
+                                type="button"
+                                onclick="location.href='<%=Encode.forJavaScript(IdentityManagementEndpointUtil.getURLEncodedCallback(callback))%>';">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
+                            </button>
+                            <button id="recoverySubmit"
+                                    class="ui primary large button"
+                                    type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
+    </main>
+
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+        <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
 
     <!-- footer -->
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {
     %>
-            <jsp:include page="extensions/footer.jsp"/>
+        <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:directive.include file="includes/footer.jsp"/>
     <% } %>
 
-    <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-    <script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
     <script type="text/javascript">
-
         $(document).ready(function () {
 
             $("#recoverDetailsForm").submit(function (e) {
@@ -347,36 +327,39 @@
                 errorMessage.hide();
 
                 <%
-                if (isFirstNameInClaims){
+                    if (isFirstNameInClaims){
                 %>
-                var firstName = $("#first-name").val();
-                if (firstName == '') {
-                    errorMessage.text("Please fill the first name.");
-                    errorMessage.show();
-                    $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
-                    return false;
-                }
+                    var firstName = $("#first-name").val();
+
+                    if (firstName == '') {
+                        errorMessage.text("Please fill the first name.");
+                        errorMessage.show();
+                        $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+
+                        return false;
+                    }
                 <%
-                }
+                    }
                 %>
 
                 <%
-                if (reCaptchaEnabled) {
+                    if (reCaptchaEnabled) {
                 %>
-                var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
-                if (reCaptchaResponse.trim() == '') {
-                    errorMessage.text("Please select reCaptcha.");
-                    errorMessage.show();
-                    $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
-                    return false;
-                }
+                    var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
+
+                    if (reCaptchaResponse.trim() == '') {
+                        errorMessage.text("Please select reCaptcha.");
+                        errorMessage.show();
+                        $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+                        return false;
+                    }
                 <%
-                }
+                    }
                 %>
+
                 return true;
             });
         });
-
     </script>
-    </body>
-    </html>
+</body>
+</html>
