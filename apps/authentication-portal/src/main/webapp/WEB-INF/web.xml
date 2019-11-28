@@ -249,11 +249,6 @@
     </servlet>
 
     <servlet>
-        <servlet-name>registration.do</servlet-name>
-        <jsp-file>/registration.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
         <servlet-name>consent.do</servlet-name>
         <jsp-file>/consent.jsp</jsp-file>
     </servlet>
