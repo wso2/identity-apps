@@ -18,116 +18,82 @@
 
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@include file="localize.jsp" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-    <%
-        String stat = request.getParameter("status");
-        String statusMessage = request.getParameter("statusMsg");
-        if (stat == null || statusMessage == null) {
-            stat = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");
-            statusMessage =  AuthenticationEndpointUtil.i18n(resourceBundle,
-                    "something.went.wrong.during.authentication");
-        } else {
-            stat = AuthenticationEndpointUtil.customi18n(resourceBundle, stat);
-            statusMessage = AuthenticationEndpointUtil.customi18n(resourceBundle, statusMessage);
-        }
-        session.invalidate();
-    %>
+<%@ include file="includes/localize.jsp" %>
 
-    <html>
-    <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- title -->
-        <%
-            File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-            if (titleFile.exists()) {
-        %>
-                <jsp:include page="extensions/title.jsp"/>
-        <% } else { %>
-                <jsp:directive.include file="includes/title.jsp"/>
-        <% } %>
+<%
+    String stat = request.getParameter("status");
+    String statusMessage = request.getParameter("statusMsg");
+    if (stat == null || statusMessage == null) {
+        stat = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");
+        statusMessage =  AuthenticationEndpointUtil.i18n(resourceBundle,
+                "something.went.wrong.during.authentication");
+    } else {
+        stat = AuthenticationEndpointUtil.customi18n(resourceBundle, stat);
+        statusMessage = AuthenticationEndpointUtil.customi18n(resourceBundle, statusMessage);
+    }
+    session.invalidate();
+%>
 
-        <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-        <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/Roboto.css" rel="stylesheet">
-        <link href="css/custom-common.css" rel="stylesheet">
-
-
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.min.js"></script>
-        <script src="js/respond.min.js"></script>
-        <![endif]-->
-    </head>
-
-    <body>
-
+<!doctype html>
+<html>
+<head>
     <!-- header -->
     <%
-        File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
+        File headerFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
         if (headerFile.exists()) {
     %>
-            <jsp:include page="extensions/header.jsp"/>
+        <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
+</head>
+<body>
+    <main class="center-segment">
+        <div class="ui container medium center aligned middle aligned">
+            <div class="ui segment">
+                <!-- product-title -->
+                <%
+                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                    if (productTitleFile.exists()) {
+                %>
+                    <jsp:include page="extensions/product-title.jsp"/>
+                <% } else { %>
+                    <jsp:directive.include file="includes/product-title.jsp"/>
+                <% } %>
 
-    <!-- page content -->
-    <div class="row">
-        <div class="col-md-12">
-            <!-- content -->
-            <div class="container col-xs-7 col-sm-5 col-md-4 col-lg-3 col-centered wr-content wr-login col-centered">
-                <div>
-                    <h2 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none"><%=Encode.forHtmlContent(stat)%> </h2>
+                <h1><%=Encode.forHtmlContent(stat)%></h1>
+                <div class="font-medium">
+                    <strong>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "attention")%> :
+                    </strong>
                 </div>
-
-                <div class="boarder-all col-lg-12 padding-top-double padding-bottom-double error-alert  ">
-                    <div class="font-medium">
-                        <strong>
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "attention")%> :
-                        </strong>
-                    </div>
-                    <div class="padding-bottom-double">
-                        <%=Encode.forHtmlContent(statusMessage)%>
-                    </div>
+                <div class="padding-bottom-double">
+                    <%=Encode.forHtmlContent(statusMessage)%>
                 </div>
             </div>
-            <!-- /content -->
-
         </div>
-    </div>
+    </main>
+
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+        <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
 
     <!-- footer -->
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {
     %>
-            <jsp:include page="extensions/footer.jsp"/>
+        <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:directive.include file="includes/footer.jsp"/>
     <% } %>
-
-    <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-    <script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
-
-    <script>
-
-
-        $('#popover').popover({
-            html: true,
-            title: function () {
-                return $("#popover-head").html();
-            },
-            content: function () {
-                return $("#popover-content").html();
-            }
-        });
-
-    </script>
-
-    <script type="text/javascript" src="js/u2f-api.js"></script>
-
-    </body>
-    </html>
+</body>
+</html>

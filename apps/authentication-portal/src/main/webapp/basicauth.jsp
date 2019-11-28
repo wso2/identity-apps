@@ -224,7 +224,7 @@
         </a>
     </div>
 
-    <div class="login-buttons">
+    <div class="align-right buttons">
         <button
             type="submit"
             onclick="submitCredentials(event)"    
@@ -268,7 +268,7 @@
 
                 if (isRecoveryEPAvailable) {
         %>
-        <div class="field">
+        <div class="align-center buttons">
             <div class="form-actions">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
                 <% if (!isIdentifierFirstLogin(inputType)) { %>
@@ -295,7 +295,7 @@
                 }
                 if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType)) {
         %>
-        <div class="field">
+        <div class="field align-center">
             <div class="form-actions">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.account")%>
             <a id="registerLink" href="<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL)%>">

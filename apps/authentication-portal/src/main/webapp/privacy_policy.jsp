@@ -17,92 +17,98 @@
   --%>
 
 <%@ page import="java.io.File" %>
-<%@include file="localize.jsp" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+    
+<%@ include file="includes/localize.jsp" %>
 
+<!doctype html>
 <html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- title -->
+    <!-- header -->
     <%
-        File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-        if (titleFile.exists()) {
+        File headerFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+        if (headerFile.exists()) {
     %>
-            <jsp:include page="extensions/title.jsp"/>
+        <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/title.jsp"/>
+        <jsp:directive.include file="includes/header.jsp"/>
+    <% } %>
+</head>
+<body>
+    <main>
+        <div id="app-header" class="ui borderless top fixed app-header menu">
+            <div class="ui container">
+                <div class="header item">
+                    <!-- product-title -->
+                    <%
+                        File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                        if (productTitleFile.exists()) {
+                    %>
+                        <jsp:include page="extensions/product-title.jsp"/>
+                    <% } else { %>
+                        <jsp:directive.include file="includes/product-title.jsp"/>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-content" style="padding-top: 62px;">
+            <div class="ui container">
+                <!-- page-content -->
+                <%
+                    File privacyPolicyFile = new File(getServletContext().getRealPath("extensions/privacy-policy-content.jsp"));
+                    if (privacyPolicyFile.exists()) {
+                %>
+                        <jsp:include page="extensions/privacy-policy-content.jsp"/>
+                <% } else { %>
+                        <jsp:directive.include file="includes/privacy-policy-content.jsp"/>
+                <% } %>
+            </div>
+        </div>
+    </main>
+
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+        <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/product-footer.jsp"/>
     <% } %>
 
-    <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-    <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/Roboto.css" rel="stylesheet">
-    <link href="css/custom-common.css" rel="stylesheet">
-
-
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
-</head>
-
-<body>
-
-<!-- header -->
-<%
-    File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-    if (headerFile.exists()) {
-%>
-        <jsp:include page="extensions/header.jsp"/>
-<% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
-<% } %>
-
-<!-- page content -->
-<%
-    File privacyPolicyFile = new File(getServletContext().getRealPath("extensions/privacy-policy-content.jsp"));
-    if (privacyPolicyFile.exists()) {
-%>
-        <jsp:include page="extensions/privacy-policy-content.jsp"/>
-<% } else { %>
-        <jsp:directive.include file="includes/privacy-policy-content.jsp"/>
-<% } %>
-
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
         <jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
+    <% } else { %>
         <jsp:directive.include file="includes/footer.jsp"/>
-<% } %>
+    <% } %>
 
-<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/u2f-api.js"></script>
+    <script type="text/javascript">
+        var ToC = "<nav role='navigation' class='table-of-contents'>" + "<h4>On this page:</h4>" + "<ol class='ui list'>";
+        var newLine, el, title, link;
 
-<script type="text/javascript" src="js/u2f-api.js"></script>
-<script type="text/javascript">
-    var ToC = "<nav role='navigation' class='table-of-contents'>" + "<h4>On this page:</h4>" + "<ul>";
-    var newLine, el, title, link;
+        $("#privacyPolicy h2, #privacyPolicy h3").each(function() {
+            el = $(this);
+            title = el.text();
+            link = "#" + el.attr("id");
 
-    $("#privacyPolicy h2,#privacyPolicy h3").each(function() {
-        el = $(this);
-        title = el.text();
-        link = "#" + el.attr("id");
-        if(el.is("h3")){
-            newLine = "<li class='sub'>" + "<a href='" + link + "'>" + title + "</a>" + "</li>";
-        }else{
-            newLine = "<li >" + "<a href='" + link + "'>" + title + "</a>" + "</li>";
-        }
+            if (el.is("h3")){
+                newLine = "<li class='sub' value='-'>" + "<a href='" + link + "'>" + title + "</a>" + "</li>";
+            } else {
+                newLine = "<li>" + "<a href='" + link + "'>" + title + "</a>" + "</li>";
+            }
 
-        ToC += newLine;
-    });
+            ToC += newLine;
+        });
 
-    ToC += "</ul>" + "</nav>";
+        ToC += "</ol>" + "</nav>";
 
-    $("#toc").append(ToC);
-</script>
-
+        $("#toc").append(ToC);
+    </script>
 </body>
 </html>

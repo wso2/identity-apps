@@ -18,105 +18,61 @@
 
 <%@ page import="java.io.File" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@include file="localize.jsp" %>
 
+<%@ include file="includes/localize.jsp" %>
+
+<!doctype html>
 <html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- title -->
+    <!-- header -->
     <%
-        File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-        if (titleFile.exists()) {
+        File headerFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+        if (headerFile.exists()) {
     %>
-            <jsp:include page="extensions/title.jsp"/>
-    <% } else { %>
-            <jsp:directive.include file="includes/title.jsp"/>
-    <% } %>
-
-    <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-    <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/Roboto.css" rel="stylesheet">
-    <link href="css/custom-common.css" rel="stylesheet">
-
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
-</head>
-
-<body>
-
-<script type="text/javascript">
-    function approved() {
-        document.getElementById('consent').value = "approve";
-        document.getElementById("oauth2_authz").submit();
-    }
-    function approvedAlways() {
-        document.getElementById('consent').value = "approveAlways";
-        document.getElementById("oauth2_authz").submit();
-    }
-    function deny() {
-        document.getElementById('consent').value = "deny";
-        document.getElementById("oauth2_authz").submit();
-    }
-</script>
-
-<!-- header -->
-<%
-    File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-    if (headerFile.exists()) {
-%>
         <jsp:include page="extensions/header.jsp"/>
-<% } else { %>
+    <% } else { %>
         <jsp:directive.include file="includes/header.jsp"/>
-<% } %>
+    <% } %>
+</head>
+<body>
+    <main class="center-segment">
+        <div class="ui container medium center aligned middle aligned">
+            <div class="ui segment">
+                <!-- product-title -->
+                <%
+                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                    if (productTitleFile.exists()) {
+                %>
+                    <jsp:include page="extensions/product-title.jsp"/>
+                <% } else { %>
+                    <jsp:directive.include file="includes/product-title.jsp"/>
+                <% } %>
 
-<!-- page content -->
-<div class="container-fluid body-wrapper">
-
-    <div class="row">
-        <div class="col-md-12">
-
-            <!-- content -->
-            <div class="container col-xs-10 col-sm-6 col-md-6 col-lg-3 col-centered wr-content wr-login col-centered">
-                <div>
-                    <div class="clearfix"></div>
-
-                    <div class="container">
-                        <div class="row">
-                            <div class="span12">
-                                <h1 style="margin-left: -100;">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "logged.out")%>
-                                </h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <h1><%=AuthenticationEndpointUtil.i18n(resourceBundle, "logged.out")%></h1>
             </div>
         </div>
-        <!-- /content -->
-    </div>
-</div>
-<!-- /content/body -->
+    </main>
 
-</div>
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+        <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
 
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
         <jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
+    <% } else { %>
         <jsp:directive.include file="includes/footer.jsp"/>
-<% } %>
+    <% } %>
 
-<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
+    
 </body>
 </html>
-
-
-
