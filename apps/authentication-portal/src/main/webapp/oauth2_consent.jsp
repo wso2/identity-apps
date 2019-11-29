@@ -291,6 +291,9 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="ui divider hidden"></div>
+                        
                         <div class="align-right buttons">
                             <input type="hidden" name="<%=Constants.SESSION_DATA_KEY_CONSENT%>"
                                     value="<%=Encode.forHtmlAttribute(request.getParameter(Constants.SESSION_DATA_KEY_CONSENT))%>"/>

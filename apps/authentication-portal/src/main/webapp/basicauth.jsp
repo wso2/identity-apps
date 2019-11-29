@@ -201,6 +201,72 @@
     <%
         }
     %>
+
+    <%
+        String recoveryEPAvailable = application.getInitParameter("EnableRecoveryEndpoint");
+        String enableSelfSignUpEndpoint = application.getInitParameter("EnableSelfSignUpEndpoint");
+        Boolean isRecoveryEPAvailable = false;
+        Boolean isSelfSignUpEPAvailable = false;
+        String identityMgtEndpointContext = "";
+        String urlEncodedURL = "";
+
+        if (StringUtils.isNotBlank(recoveryEPAvailable)) {
+            isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
+        } else {
+            isRecoveryEPAvailable = isRecoveryEPAvailable();
+        }
+
+        if (StringUtils.isNotBlank(enableSelfSignUpEndpoint)) {
+            isSelfSignUpEPAvailable = Boolean.valueOf(enableSelfSignUpEndpoint);
+        } else {
+            isSelfSignUpEPAvailable = isSelfSignUpEPAvailable();
+        }
+
+        if (isRecoveryEPAvailable || isSelfSignUpEPAvailable) {
+            String scheme = request.getScheme();
+            String serverName = request.getServerName();
+            int serverPort = request.getServerPort();
+            String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
+            String prmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
+            String urlWithoutEncoding = scheme + "://" +serverName + ":" + serverPort + uri + "?" + prmstr;
+            urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
+
+            identityMgtEndpointContext =
+                    application.getInitParameter("IdentityManagementEndpointContextURL");
+            if (StringUtils.isBlank(identityMgtEndpointContext)) {
+                identityMgtEndpointContext = getServerURL("/accountrecoveryendpoint", true, true);
+            }
+        } 
+    %>
+
+    <% if (isRecoveryEPAvailable) { %>
+    <div class="buttons">
+        <div class="form-actions">
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
+            <% if (!isIdentifierFirstLogin(inputType)) { %>
+                <a id="usernameRecoverLink" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true)%>">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
+                </a>
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
+            <% } %>
+            <a id="passwordRecoverLink" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false)%>">
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
+            </a>
+            ?
+        </div>
+
+        <div class="form-actions">
+            <% if (isIdentifierFirstLogin(inputType)) { %>
+            <a id="backLink" onclick="goBack()">
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.different.account")%>
+            </a>
+            <% } %>
+        </div>
+    </div>
+    
+    <div class="ui divider hidden"></div>
+    <% } %>
+
     <div class="field">
         <div class="ui checkbox">
             <input type="checkbox" id="chkRemember" name="chkRemember">
@@ -225,100 +291,38 @@
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%>
         </a>
     </div>
-    <%
-        String recoveryEPAvailable = application.getInitParameter("EnableRecoveryEndpoint");
-        String enableSelfSignUpEndpoint = application.getInitParameter("EnableSelfSignUpEndpoint");
-        Boolean isRecoveryEPAvailable;
-        Boolean isSelfSignUpEPAvailable;
-
-        if (StringUtils.isNotBlank(recoveryEPAvailable)) {
-            isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
-        } else {
-            isRecoveryEPAvailable = isRecoveryEPAvailable();
-        }
-
-        if (StringUtils.isNotBlank(enableSelfSignUpEndpoint)) {
-            isSelfSignUpEPAvailable = Boolean.valueOf(enableSelfSignUpEndpoint);
-        } else {
-            isSelfSignUpEPAvailable = isSelfSignUpEPAvailable();
-        }
-
-        if (isRecoveryEPAvailable || isSelfSignUpEPAvailable) {
-            String scheme = request.getScheme();
-            String serverName = request.getServerName();
-            int serverPort = request.getServerPort();
-            String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
-            String prmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
-            String urlWithoutEncoding = scheme + "://" +serverName + ":" + serverPort + uri + "?" + prmstr;
-            String urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
-
-            String identityMgtEndpointContext =
-                    application.getInitParameter("IdentityManagementEndpointContextURL");
-            if (StringUtils.isBlank(identityMgtEndpointContext)) {
-                identityMgtEndpointContext = getServerURL("/accountrecoveryendpoint", true, true);
-            }
-
-            if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType)) {
-    %>
-            <div class="align-right buttons">
-                <button
-                    type="submit"
-                    onclick="window.location.href='<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL)%>';"   
-                    class="ui large button"
-                    id="registerLink"
-                    role="button">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.account")%>
-                </button>
-                <button
-                    type="submit"
-                    onclick="submitCredentials(event)"    
-                    class="ui primary large button"
-                    role="button">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>
-                </button>
-            </div>
-    <%
-            }
-
-            if (isRecoveryEPAvailable) {
-    %>
-            <div class="align-center buttons">
-                <div class="form-actions">
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
-                    <% if (!isIdentifierFirstLogin(inputType)) { %>
-                        <a id="usernameRecoverLink" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true)%>">
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
-                        </a>
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
-                    <% } %>
-                    <a id="passwordRecoverLink" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false)%>">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
-                    </a>
-                    ?
-                </div>
-
-                <div class="form-actions">
-                    <% if (isIdentifierFirstLogin(inputType)) { %>
-                    <a id="backLink" onclick="goBack()">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.different.account")%>
-                    </a>
-                    <% } %>
-                </div>
-            </div>
-    <%
-            }
-        }
-    %>
+    <div class="ui divider hidden"></div>
+    
+    <div class="align-right buttons">
+        <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType)) { %>
+        <button
+            type="submit"
+            onclick="window.location.href='<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL)%>';"   
+            class="ui large button"
+            id="registerLink"
+            role="button">
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.account")%>
+        </button>
+        <% } %>
+        <button
+            type="submit"
+            onclick="submitCredentials(event)"    
+            class="ui primary large button"
+            role="button">
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>
+        </button>
+    </div>
+    
     <% if (Boolean.parseBoolean(loginFailed) && errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE) && request.getParameter("resend_username") == null) { %>
-        <div class="field">
-            <div class="form-actions">
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.confirmation.mail")%>
-                <a id="registerLink"
-                   href="login.do?resend_username=<%=Encode.forHtml(request.getParameter("failedUsername"))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>">
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.mail")%>
-                </a>
-            </div>
+    <div class="field">
+        <div class="form-actions">
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.confirmation.mail")%>
+            <a id="registerLink"
+                href="login.do?resend_username=<%=Encode.forHtml(request.getParameter("failedUsername"))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>">
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.mail")%>
+            </a>
         </div>
+    </div>
     <% } %>
     <%!
     
