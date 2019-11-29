@@ -269,15 +269,15 @@ export const views: Views = {
                     validations: {
                         genericError: {
                             description: "දෝෂයක් ඇතිවිය!! කරුණාකර නැවත උත්සාහ කරන්න",
-                            message: "මුරපද යළි පිහිටුවීමේ දෝෂයකි"
+                            message: "මුරපද වෙනස් කිරීමේ දෝෂයකි"
                         },
                         invalidCurrentPassword: {
                             description: "ඔබ ඇතුලත් කළ මුරපදය අවලංගු බව පෙනේ. කරුණාකර නැවත උත්සාහ කරන්න",
-                            message: "මුරපද යළි පිහිටුවීමේ දෝෂයකි"
+                            message: "මුරපද වෙනස් කිරීමේ දෝෂයකිි"
                         },
                         submitError: {
                             description: "{{description}}",
-                            message: "මුරපද යළි පිහිටුවීමේ දෝෂයකි"
+                            message: "මුරපද වෙනස් කිරීමේ දෝෂයකි"
                         },
                         submitSuccess: {
                             description: "මුරපදය සාර්ථකව වෙනස් කර ඇත",
@@ -774,6 +774,7 @@ export const views: Views = {
                     inputs: {
                         email: {
                             label: "විද්‍යුත් තැපෑල",
+                            note: "සටහන: මෙය ඔබගේ පැතිකඩෙහි විද්‍යුත් තැපැල් ලිපිනය වෙනස් කරයි",
                             placeholder: "විද්‍යුත් තැපෑල ඇතුල් කරන්න",
                             validations: {
                                 empty: "විද්‍යුත් තැපෑල අත්\u200Dයවශ්\u200Dය ක්ෂේත්\u200Dරයකි",

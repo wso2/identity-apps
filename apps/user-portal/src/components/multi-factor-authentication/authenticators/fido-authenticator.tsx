@@ -181,8 +181,8 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                             floated="right"
                                                             className="list-icon"
                                                             size="small"
-                                                            color="green"
-                                                            name="check circle outline"
+                                                            color="grey"
+                                                            name="dot circle outline"
                                                         />
                                                         { device.registrationTime }
                                                     </List.Header>

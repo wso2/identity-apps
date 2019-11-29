@@ -432,8 +432,8 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                                             floated="right"
                                                             className="list-icon"
                                                             size="small"
-                                                            color="green"
-                                                            name="check circle outline"
+                                                            color="grey"
+                                                            name="dot circle outline"
                                                         />
                                                         { answer.question }
                                                     </List.Header>

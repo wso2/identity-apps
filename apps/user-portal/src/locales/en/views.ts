@@ -269,15 +269,15 @@ export const views: Views = {
                     validations: {
                         genericError: {
                             description: "Something went wrong. Please try again",
-                            message: "Password reset error"
+                            message: "Change password error"
                         },
                         invalidCurrentPassword: {
                             description: "The current password you entered appears to be invalid. Please try again",
-                            message: "Password reset error"
+                            message: "Change password error"
                         },
                         submitError: {
                             description: "{{description}}",
-                            message: "Password reset error"
+                            message: "Change password error"
                         },
                         submitSuccess: {
                             description: "The password has been changed successfully",
@@ -771,6 +771,7 @@ export const views: Views = {
                     inputs: {
                         email: {
                             label: "Email",
+                            note: "NOTE: This will change the email address in your profile",
                             placeholder: "Enter your email address",
                             validations: {
                                 empty: "Email address is a required field",
@@ -1012,7 +1013,7 @@ export const views: Views = {
             actionTitles: {
                 add: "Add account"
             },
-            description: "Link your other accounts and access them seamlessly without re-login",
+            description: "Link/associate your other accounts, and access them seamlessly without re-login",
             heading: "Linked accounts"
         },
         mfa: {
