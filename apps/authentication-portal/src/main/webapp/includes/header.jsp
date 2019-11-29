@@ -6,7 +6,7 @@
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing,
   ~ software distributed under the License is distributed on an
@@ -14,7 +14,7 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
+--%>
 
 <!-- localize.jsp MUST already be included in the calling script -->
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
@@ -62,6 +62,11 @@
 
     main.center-segment > .ui.container > .ui.segment .segment-form .buttons {
         margin-top: 1em;
+    }
+
+    main.center-segment > .ui.container > .ui.segment .segment-form .buttons.align-right button,
+    main.center-segment > .ui.container > .ui.segment .segment-form .buttons.align-right input {
+        margin: 0 0 0 0.25em;
     }
 
     main.center-segment > .ui.container > .ui.segment .segment-form {

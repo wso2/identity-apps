@@ -47,7 +47,7 @@
 </head>
 <body>
     <main class="center-segment">
-        <div class="ui container large center aligned middle aligned">
+        <div class="ui container medium center aligned middle">
             <div class="ui segment">
                 <!-- product-title -->
                 <%
@@ -59,8 +59,14 @@
                     <jsp:directive.include file="includes/product-title.jsp"/>
                 <% } %>
 
-                <h1><%=Encode.forHtml(stat)%></h1>
-                <p><%=Encode.forHtmlContent(statusMessage)%></p> 
+                <div class="ui divider hidden"></div>
+
+                <div class="segment-form">
+                    <div class="ui visible negative message">
+                        <div class="header"><%=Encode.forHtml(stat)%></div>
+                        <p><%=Encode.forHtmlContent(statusMessage)%></p>
+                    </div>
+                </div>
             </div>
         </div>
     </main>

@@ -64,6 +64,11 @@
         margin-top: 1em;
     }
 
+    main.center-segment > .ui.container > .ui.segment .segment-form .buttons.align-right button,
+    main.center-segment > .ui.container > .ui.segment .segment-form .buttons.align-right input {
+        margin: 0 0 0 0.25em;
+    }
+
     main.center-segment > .ui.container > .ui.segment .segment-form {
         text-align: left;
     }
