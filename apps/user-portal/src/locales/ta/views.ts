@@ -269,15 +269,15 @@ export const views: Views = {
                     validations: {
                         genericError: {
                             description: "ஏதோ தவறேற்பட்டுவிட்டது. மீண்டும் முயற்சி செய்க.",
-                            message: "கடவுச்சொல்லை மீட்டலில் தவறு"
+                            message: "கடவுச்சொல் பிழையை மாற்றவும்"
                         },
                         invalidCurrentPassword: {
                             description: "நீங்கள் அளித்த தற்போதைய கடவுச்சொல் தவறானது. மீண்டும் முயற்சி செய்க.",
-                            message: "கடவுச்சொல்லை மீட்டலில் தவறு"
+                            message: "கடவுச்சொல் பிழையை மாற்றவும்"
                         },
                         submitError: {
                             description: "{{description}}",
-                            message: "கடவுச்சொல்லை மீட்டலில் தவறு"
+                            message: "கடவுச்சொல் பிழையை மாற்றவும்"
                         },
                         submitSuccess: {
                             description: "உங்கள் கடவுச்சொல் வெற்றிகரமாக மாற்றப்பட்டது விட்டது",
@@ -811,6 +811,7 @@ export const views: Views = {
                     inputs: {
                         email: {
                             label: "மின்னஞ்சல் முகவரி",
+                            note: "கவனிக்குக: இது உங்கள் சுயவிவரத்தில் உள்ள மின்னஞ்சல் முகவரியை மாற்றும்",
                             placeholder: "மின்னஞ்சல் முகவரியை உள்ளிடவும்",
                             validations: {
                                 empty: "மின்னஞ்சல் முகவரி ஒரு கட்டாயா களமாகும்",

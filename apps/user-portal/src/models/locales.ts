@@ -569,7 +569,8 @@ export interface Views {
                             validations: {
                                 empty: string;
                                 invalidFormat: string;
-                            }
+                            },
+                            note: string;
                         }
                     }
                 },

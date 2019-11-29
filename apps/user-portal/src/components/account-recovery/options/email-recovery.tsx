@@ -284,6 +284,13 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                                 value={ editedEmail }
                                                 width={ 9 }
                                             />
+                                            <p style={ { fontSize: "12px" } }>
+                                                <Icon color="grey" floated="left" name="info circle" />
+                                                { t(
+                                                    "views:components.profile.forms.mobileChangeForm" +
+                                                    ".inputs.mobile.note"
+                                                ) }
+                                            </p>
                                             <Field
                                                 hidden={ true }
                                                 type="divider"
