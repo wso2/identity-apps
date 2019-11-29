@@ -18,7 +18,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.InitiateQuestionResponse" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.RetryError" %>
 <%@ page import="java.io.File" %>
@@ -35,125 +34,119 @@
     }
 %>
 
-    <html>
-    <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- title -->
-        <%
-            File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-            if (titleFile.exists()) {
-        %>
-                <jsp:include page="extensions/title.jsp"/>
-        <% } else { %>
-                <jsp:directive.include file="includes/title.jsp"/>
-        <% } %>
-
-        <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-        <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/Roboto.css" rel="stylesheet">
-        <link href="css/custom-common.css" rel="stylesheet">
-
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.min.js"></script>
-        <script src="js/respond.min.js"></script>
-        <![endif]-->
-
-        <%
-            if (reCaptchaEnabled) {
-        %>
-        <script src='<%=(request.getAttribute("reCaptchaAPI"))%>'></script>
-        <%
-            }
-        %>
-    </head>
-
-    <body>
-
-    <!-- header -->
+<!doctype html>
+<html>
+<head>
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
     %>
-            <jsp:include page="extensions/header.jsp"/>
+    <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/header.jsp"/>
+    <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.min.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
 
-    <!-- page content -->
-    <div class="container-fluid body-wrapper">
+    <%
+        if (reCaptchaEnabled) {
+    %>
+    <script src='<%=(request.getAttribute("reCaptchaAPI"))%>'></script>
+    <%
+        }
+    %>
+</head>
 
-        <div class="row">
-            <!-- content -->
-            <div class="col-xs-12 col-sm-10 col-md-8 col-lg-5 col-centered wr-login">
-                <%
-                    if (errorResponse != null) {
-                %>
-                <div class="alert alert-danger" id="server-error-msg">
-                    <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorResponse.getDescription())%>
-                </div>
-                <%
-                    }
-                %>
-                <div class="clearfix"></div>
-                <div class="boarder-all ">
+<body>
+<main class="center-segment">
+    <div class="ui container medium center aligned middle aligned">
+        <div class="ui segment">
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+            <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+            <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>
+            <div class="ui divider hidden"></div>
 
-                    <div class="padding-double">
-                        <form method="post" action="processsecurityquestions.do" id="securityQuestionForm">
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
-                                <label class="control-label"><%=initiateQuestionResponse.getQuestion().getQuestion()%>
-                                </label>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
-                                <input id="securityQuestionAnswer" name="securityQuestionAnswer" type="password"
-                                       class="form-control"
-                                       tabindex="0" autocomplete="off" required/>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
-                                <input type="hidden" name="step"
-                                       value="<%=Encode.forHtmlAttribute(request.getParameter("step"))%>"/>
-                            </div>
-                            <%
-                                if (reCaptchaEnabled) {
-                            %>
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
-                                <div class="g-recaptcha"
-                                     data-sitekey="<%=Encode.forHtmlContent((String)request.getAttribute("reCaptchaKey"))%>">
-                                </div>
-                            </div>
-                            <%
-                                }
-                            %>
-                            <div class="form-actions">
-                                <button id="answerSubmit"
-                                        class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large"
-                                        type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
-                                </button>
-                            </div>
-                            <div class="clearfix"></div>
-                        </form>
-                    </div>
-                </div>
+            <!-- page content -->
+
+            <%
+                if (errorResponse != null) {
+            %>
+            <div class="ui visible negative message" id="server-error-msg">
+                <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorResponse.getDescription())%>
             </div>
-            <!-- /content/body -->
+            <div class="ui divider hidden"></div>
 
+            <%
+                }
+            %>
+
+
+            <div class="segment-form">
+                <form class="ui large form" method="post" action="processsecurityquestions.do"
+                      id="securityQuestionForm">
+                    <div class="field">
+                        <label class="control-label"><%=initiateQuestionResponse.getQuestion().getQuestion()%>
+                        </label>
+                    </div>
+                    <div class="field">
+                        <input id="securityQuestionAnswer" name="securityQuestionAnswer" type="password"
+                               class="form-control"
+                               tabindex="0" autocomplete="off" required/>
+                    </div>
+                    <div class="field">
+                        <input type="hidden" name="step"
+                               value="<%=Encode.forHtmlAttribute(request.getParameter("step"))%>"/>
+                    </div>
+                    <%
+                        if (reCaptchaEnabled) {
+                    %>
+                    <div class="field">
+                        <div class="g-recaptcha"
+                             data-sitekey="<%=Encode.forHtmlContent((String)request.getAttribute("reCaptchaKey"))%>">
+                        </div>
+                    </div>
+                    <%
+                        }
+                    %>
+                    <div class="ui divider hidden"></div>
+                    <div class="align-right buttons">
+                        <button id="answerSubmit"
+                                class="ui primary button"
+                                type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    <!-- /content/body -->
+</main>
+<!-- /content/body -->
+<!-- product-footer -->
+<%
+    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+    if (productFooterFile.exists()) {
+%>
+<jsp:include page="extensions/product-footer.jsp"/>
+<% } else { %>
+<jsp:directive.include file="includes/product-footer.jsp"/>
+<% } %>
+<!-- footer -->
+<%
+    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+    if (footerFile.exists()) {
+%>
+<jsp:include page="extensions/footer.jsp"/>
+<% } else { %>
+<jsp:directive.include file="includes/footer.jsp"/>
+<% } %>
 
-    </div>
-    </div>
-
-    <!-- footer -->
-    <%
-        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-        if (footerFile.exists()) {
-    %>
-            <jsp:include page="extensions/footer.jsp"/>
-    <% } else { %>
-            <jsp:directive.include file="includes/footer.jsp"/>
-    <% } %>
-
-    </body>
-    </html>
+</body>
+</html>
