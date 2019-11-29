@@ -53,17 +53,32 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
 ```
-3. Execute `wso2server.sh` (For unix environment) or `wso2server.bat` (For windows environment) file from the `bin` directory to run WSO2 Identity Server.
-4. Navigate to `https://localhost:9443/carbon/` from the browser, and login to the system by entering an admin password.
+3. Add your hostname and port as a trusted FIDO2 origin in `repository/resources/conf/templates/repository/conf/identity/identity.xml.j2` as given below.
+
+```xml
+   <FIDO>
+        <WebAuthn>
+            <Enable>{{fido.webauthn.enable}}</Enable>
+        </WebAuthn>
+        <FIDO2TrustedOrigins>
+            {% for origin in fido.trusted.origins %}
+                <Origin>{{origin}}</Origin>
+            {% endfor %}
+               <Origin>https://localhost:9000</Origin>
+        </FIDO2TrustedOrigins>
+   </FIDO>
+```
+4. Execute `wso2server.sh` (For unix environment) or `wso2server.bat` (For windows environment) file from the `bin` directory to run WSO2 Identity Server.
+5. Navigate to `https://localhost:9443/carbon/` from the browser, and login to the system by entering an admin password.
 > **Hint!** Can find out the default password details here: [https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator](https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator)
-5. In the system navigate to `Service Providers -> List` from left navigation. And then go to `Edit` option in `USER_PORTAL` application. Then after to `Inbound Authentication Configuration -> OAuth/OpenID Connect Configuration -> Edit`. And then update the `Callback Url` feild with below value.
+6. In the system navigate to `Service Providers -> List` from left navigation. And then go to `Edit` option in `USER_PORTAL` application. Then after to `Inbound Authentication Configuration -> OAuth/OpenID Connect Configuration -> Edit`. And then update the `Callback Url` feild with below value.
 
 ```
 regexp=(https://localhost:9443/user-portal/login|https://localhost:9443/user-portal/logout|https://localhost:9000/user-portal/login|https://localhost:9000/user-portal/logout)
 ```
 
-6. Open cloned or downloaded Identity Apps repo and Run `npm run build` from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependancies. _(Note:- Not necessary if you have already done above identity apps build steps)_
-7. Start the apps in development mode, Execute `cd apps/<app> && npm start` command. E.g. `cd apps/user-portal && npm start`.
+7. Open cloned or downloaded Identity Apps repo and Run `npm run build` from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependancies. _(Note:- Not necessary if you have already done above identity apps build steps)_
+8. Start the apps in development mode, Execute `cd apps/<app> && npm start` command. E.g. `cd apps/user-portal && npm start`.
 
 ## Reporting Issues
 
