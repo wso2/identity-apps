@@ -123,13 +123,12 @@
     }
 %>
 
-
 <!doctype html>
 <html>
 <head>
     <!-- header -->
     <%
-        File headerFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+        File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
     %>
         <jsp:include page="extensions/header.jsp"/>
@@ -162,11 +161,11 @@
                 <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.username")%></h2>
 
                 <% if (error) { %>
-                    <div class="ui visible negative messag" id="server-error-msg">
+                    <div class="ui visible negative message" id="server-error-msg">
                         <%= IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg) %>
                     </div>
                 <% } %>
-                <div class="ui visible negative messag" id="error-msg" hidden="hidden"></div>
+                <div class="ui negative message" id="error-msg" hidden="hidden"></div>
 
                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.detail.to.recover.uname")%>
 

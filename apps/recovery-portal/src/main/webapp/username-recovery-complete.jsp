@@ -17,10 +17,11 @@
   --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CallBackValidator" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityRecoveryException" %>
+<%@ page import="java.io.File" %>
 <%@ page import="java.net.URISyntaxException" %>
+
 <jsp:directive.include file="localize.jsp"/>
 
 <%
@@ -45,56 +46,60 @@
     }
 %>
 
+<!doctype html>
 <html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/Roboto.css" rel="stylesheet">
-    <link href="css/custom-common.css" rel="stylesheet">
+    <%
+        File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
+        if (headerFile.exists()) {
+    %>
+    <jsp:include page="extensions/header.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/header.jsp"/>
+    <% } %>
 </head>
 <body>
-<div class="container">
-    <div id="infoModel" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                            "Information")%></h4>
-                </div>
-                <div class="modal-body">
-                    <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                            "Username.recovery.information.sent.to.your.email")%></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Close")%>
-                    </button>
-                </div>
-            </div>
-        </div>
+<div class="ui tiny modal notify">
+    <div class="header">
+        <h4 class="modal-title"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                "Information")%>
+        </h4>
+    </div>
+    <div class="content">
+        <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                "Username.recovery.information.sent.to.your.email")%>
+        </p>
+    </div>
+    <div class="actions">
+        <button type="button" class="ui primary button cancel" data-dismiss="modal">
+            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Close")%>
+        </button>
     </div>
 </div>
+
 <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
+<script src="libs/theme/semantic.js"></script>
+
 <script type="application/javascript">
     $(document).ready(function () {
-        var infoModel = $("#infoModel");
-        infoModel.modal("show");
-        infoModel.on('hidden.bs.modal', function () {
-            <%
-            try {
-            %>
+        $(".notify").modal({
+            blurring: true,
+            closable: false,
+            onHide: function () {
+                <%
+                try {
+                %>
                 location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>";
-            <%
-            } catch (URISyntaxException e) {
-                request.setAttribute("error", true);
-                request.setAttribute("errorMsg", "Invalid callback URL found in the request.");
-                request.getRequestDispatcher("error.jsp").forward(request, response);
-                return;
+                <%
+                } catch (URISyntaxException e) {
+                    request.setAttribute("error", true);
+                    request.setAttribute("errorMsg", "Invalid callback URL found in the request.");
+                    request.getRequestDispatcher("error.jsp").forward(request, response);
+                    return;
+                }
+                %>
             }
-            %>
-        })
+        }).modal("show");
     });
 </script>
 </body>
