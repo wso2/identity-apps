@@ -19,15 +19,13 @@
 import { AxiosHttpClient } from "@wso2is/http";
 import { ServiceResourcesEndpoint } from "../configs";
 import { ApprovalStatus, ApprovalTaskDetails, ApprovalTaskSummary, HttpMethods } from "../models";
-import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "../utils";
 
 /**
- * Initialize an axios Http client.
+ * Get an axios instance.
  *
  * @type {AxiosHttpClientInstance}
  */
 const httpClient = AxiosHttpClient.getInstance();
-httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
 
 /**
  * Fetches the list of pending approvals from the list.

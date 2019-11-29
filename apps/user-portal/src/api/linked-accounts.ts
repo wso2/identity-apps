@@ -21,15 +21,13 @@ import { AxiosHttpClient } from "@wso2is/http";
 import { ServiceResourcesEndpoint } from "../configs";
 import * as TokenConstants from "../constants";
 import { HttpMethods, LinkedAccountInterface } from "../models";
-import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "../utils";
 
 /**
- * Initialize an axios Http client.
+ * Get an axios instance.
  *
  * @type {AxiosHttpClientInstance}
  */
 const httpClient = AxiosHttpClient.getInstance();
-httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
 
 /**
  * Retrieve the user account associations of the currently authenticated user.

@@ -23,6 +23,7 @@ import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
 import { updatePassword } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
 import { Notification } from "../../models";
+import { endUserSession } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
 /**
  * Constant to store the change password from identifier.
@@ -94,6 +95,9 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         },
                         visible: true
                     });
+
+                    // Terminate the user session.
+                    endUserSession();
                 }
             })
             .catch((error) => {

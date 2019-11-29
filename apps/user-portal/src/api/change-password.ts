@@ -20,15 +20,13 @@ import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentic
 import { AxiosHttpClient } from "@wso2is/http";
 import { ServiceResourcesEndpoint } from "../configs";
 import { HttpMethods } from "../models";
-import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "../utils";
 
 /**
- * Initialize an axios Http client.
+ * Get an axios instance.
  *
  * @type {AxiosHttpClientInstance}
  */
 const httpClient = AxiosHttpClient.getInstance();
-httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
 
 /**
  * Updates the user's password.
@@ -38,6 +36,12 @@ httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestErr
  * @return {Promise<any>} a promise containing the response.
  */
 export const updatePassword = (currentPassword: string, newPassword: string): Promise<any> => {
+    // We're currently using basic auth to validate the current password. If the password is
+    // different, the server responds with a status code `401`. The callbacks handle 401 errors and
+    // terminates the session. To bypass the callbacks disable the handler when the client is initialized.
+    // TODO: Remove this once the API supports current password validation.
+    httpClient.disableHandler();
+
     const requestConfig = {
         auth: {
             password: currentPassword,
@@ -69,6 +73,10 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
             return Promise.resolve(response);
         })
         .catch((error) => {
-            return Promise.reject(`Failed to update the password - ${ error }`);
+            return Promise.reject(error);
+        })
+        .finally(() => {
+            // TODO: Remove this once the API supports current password validation.
+            httpClient.enableHandler();
         });
 };

@@ -30,6 +30,9 @@ export interface AxiosHttpClientInstance extends AxiosInstance {
         requestErrorCallback: (error: AxiosError) => void,
         requestFinishCallback: () => void
     ): void;
+    disableHandler?: () => void;
+    disableHandlerWithTimeout?: (timeout: number) => void;
+    enableHandler?: () => void;
     all?<T>(values: (T | Promise<T>)[]): Promise<T[]>;
     spread?<T, R>(callback: (...args: T[]) => R): (array: T[]) => R;
 }

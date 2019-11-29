@@ -29,11 +29,14 @@ export interface HttpClientStatic<S> {
  */
 export interface HttpClient<T, U, V> {
     init(isHandlerEnabled: boolean,
-        requestStartCallback: () => void,
-        requestSuccessCallback: (response: U) => void,
-        requestErrorCallback: (error: V) => void,
-        requestFinishCallback: () => void
+         requestStartCallback: () => void,
+         requestSuccessCallback: (response: U) => void,
+         requestErrorCallback: (error: V) => void,
+         requestFinishCallback: () => void
     ): void;
+    disableHandler: () => void;
+    disableHandlerWithTimeout: (timeout: number) => void;
+    enableHandler: () => void;
     errorHandler(error: V): V;
     requestHandler(request: T): T;
     successHandler(response: U): U;

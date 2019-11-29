@@ -22,6 +22,10 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";
+import { setupHttpClient } from "./utils";
+
+// Set up the Http client.
+setupHttpClient();
 
 ReactDOM.render(
     (

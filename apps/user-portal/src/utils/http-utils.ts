@@ -17,8 +17,19 @@
  *
  */
 
+import { OPConfigurationUtil } from "@wso2is/authentication";
+import { AxiosHttpClient } from "@wso2is/http";
 import { store } from "../store";
 import { hideGlobalLoader, showGlobalLoader } from "../store/actions";
+import { endUserSession } from "./authenticate-util";
+
+/**
+ * Set up the http client by registering the callback functions.
+ */
+export const setupHttpClient = () => {
+    const httpClient = AxiosHttpClient.getInstance();
+    httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
+};
 
 /**
  * Callback to be fired on every Http request start.
@@ -37,12 +48,36 @@ export const onHttpRequestSuccess = (response: any) => {
 };
 
 /**
- * Callback to be fired on every Http request error.
+ * Callback to be fired on every Http request error. The error
+ * codes are evaluated necessary actions are being taken.
+ *
+ * @remarks
+ * Axios throws a generic `Network Error` for 401 errors.
+ * As a temporary solution, a check to see if an error code
+ * is available has be used.
+ * @see {@link https://github.com/axios/axios/issues/383}
  *
  * @param error - Http error.
  */
 export const onHttpRequestError = (error: any) => {
-    // TODO: Handle error codes.
+    // Terminate the session if the token endpoint returns a bad request(400)
+    // The token binding feature will return a 400 status code when the session
+    // times out.
+    if (error.response && error.response.request
+        && error.response.request.responseURL
+        && error.response.request.responseURL === OPConfigurationUtil.getTokenEndpoint()) {
+
+        if (error.response.status === 400) {
+            endUserSession();
+        }
+    }
+
+    // Terminate the session if the requests returns an un-authorized status code (401)
+    // or a forbidden status code (403). NOTE: Axios is unable to handle 401 errors.
+    // `!error.response` will usually catch the `401` error. Check the link in the doc comment.
+    if (!error.response || error.response.status === 403 || error.response.status === 401) {
+        endUserSession();
+    }
 };
 
 /**

@@ -21,14 +21,13 @@ import { AxiosHttpClient } from "@wso2is/http";
 import { ServiceResourcesEndpoint } from "../configs";
 import { Decode, Encode } from "../helpers/base64-utils";
 import { HttpMethods } from "../models";
-import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "../utils";
 
 /**
- * Initialize an axios Http client.
+ * Get an axios instance.
+ *
  * @type {AxiosHttpClientInstance}
  */
 const httpClient = AxiosHttpClient.getInstance();
-httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
 
 /**
  * Retrieve FIDO meta data
