@@ -62,9 +62,9 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
         </WebAuthn>
         <FIDO2TrustedOrigins>
             {% for origin in fido.trusted.origins %}
-                <Origin>{{origin}}</Origin>
+            <Origin>{{origin}}</Origin>
             {% endfor %}
-               <Origin>https://localhost:9000</Origin>
+            <Origin>https://localhost:9000</Origin>
         </FIDO2TrustedOrigins>
    </FIDO>
 ```
