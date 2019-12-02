@@ -985,6 +985,14 @@ export const views: Views = {
                 1: "Tente um termo de pesquisa diferente."
             },
             title: "Nenhum resultado encontrado"
+        },
+        loginError: {
+            action: "Continuar logout",
+            subtitles: {
+                0: "Parece que você não tem permissão para usar este portal.",
+                1: "Faça logout e faça login com uma conta diferente."
+            },
+            title: "Você não está autorizado"
         }
     },
     sections: {

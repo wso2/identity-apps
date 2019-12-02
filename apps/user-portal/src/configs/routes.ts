@@ -16,9 +16,11 @@
  * under the License.
  */
 
+import * as ApplicationConstants from "../constants/application-constants";
 import {
     AccountSecurityPage,
     ApplicationsPage,
+    LoginErrorPage,
     OperationsPage,
     OverviewPage,
     PageNotFound,
@@ -91,9 +93,16 @@ const ROUTES: Route[] = [
         showOnSidePanel: false,
     },
     {
+        component: LoginErrorPage,
+        name: "Login error",
+        path: ApplicationConstants.LOGIN_ERROR_PAGE_PATH,
+        protected: true,
+        showOnSidePanel: false,
+    },
+    {
         component: PageNotFound,
         name: "404",
-        path: null,
+        path: "*",
         protected: true,
         showOnSidePanel: false,
     },

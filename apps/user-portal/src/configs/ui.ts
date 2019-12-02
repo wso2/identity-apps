@@ -24,6 +24,7 @@ import {
     DummyUser,
     EmptySearchResultsIllustration,
     HomeTileIcons,
+    LoginErrorIllustration,
     Logo,
     MFAIconSet,
     OrangeAppIconBackground,
@@ -83,6 +84,7 @@ export const AdvancedSearchIcons = {
 };
 
 export const EmptyPlaceholderIllustrations = {
+    loginError: LoginErrorIllustration,
     search: EmptySearchResultsIllustration
 };
 

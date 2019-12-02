@@ -23,6 +23,7 @@ import {
     OPConfigurationUtil,
     SignInUtil
 } from "@wso2is/authentication";
+import * as TokenConstants from "../constants";
 import { store } from "../store";
 import { handleSignIn } from "../store/actions";
 
@@ -43,4 +44,14 @@ export const endUserSession = () => {
         .catch((error) => {
             // TODO: Add a notification message.
         });
+};
+
+/**
+ * Checks if the logged in user has login scope.
+ *
+ * @return {boolean}
+ */
+export const hasLoginPermission = (): boolean => {
+    const scopes = AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.SCOPE);
+    return scopes.includes(TokenConstants.LOGIN_SCOPE);
 };

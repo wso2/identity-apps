@@ -19,9 +19,11 @@
 
 import { OPConfigurationUtil } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
+import * as ApplicationConstants from "../constants/application-constants";
+import { history } from "../helpers";
 import { store } from "../store";
 import { hideGlobalLoader, showGlobalLoader } from "../store/actions";
-import { endUserSession } from "./authenticate-util";
+import { endUserSession, hasLoginPermission } from "./authenticate-util";
 
 /**
  * Set up the http client by registering the callback functions.
@@ -69,7 +71,14 @@ export const onHttpRequestError = (error: any) => {
 
         if (error.response.status === 400) {
             endUserSession();
+            return;
         }
+    }
+
+    // If the user doesn't have login permission, redirect to login error page.
+    if (!hasLoginPermission()) {
+        history.push(ApplicationConstants.LOGIN_ERROR_PAGE_PATH);
+        return;
     }
 
     // Terminate the session if the requests returns an un-authorized status code (401)

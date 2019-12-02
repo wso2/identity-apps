@@ -1006,7 +1006,6 @@ export const views: Views = {
         }
     },
     placeholders: {
-        // TODO: translate
         emptySearchResult: {
             action: "தேடல் கேள்வியினை அழி",
             subtitles: {
@@ -1014,6 +1013,14 @@ export const views: Views = {
                 1: "தயவுசெய்து வேறு பதத்தினை பயன்படுத்தி தேடவும்"
             },
             title: "பெறுபேறுகள் எதுவுமில்லை"
+        },
+        loginError: {
+            action: "வெளியேறுதலைத் தொடரவும்",
+            subtitles: {
+                0: "இந்த செயலியைப் பயன்படுத்த உங்களுக்கு அனுமதி இல்லை என்று தெரிகிறது.",
+                1: "தயவுசெய்து வெளியேறி வேறு கணக்கில் உள்நுழைக."
+            },
+            title: "உங்களுக்கு அங்கீகாரம் இல்லை"
         }
     },
     sections: {

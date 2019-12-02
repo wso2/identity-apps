@@ -657,7 +657,8 @@ export interface Views {
         404: Page;
     };
     placeholders: {
-        emptySearchResult: Placeholder
+        emptySearchResult: Placeholder,
+        loginError: Placeholder
     };
     sections: {
         accountRecovery: {

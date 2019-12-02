@@ -971,6 +971,14 @@ export const views: Views = {
                 1: "Please try a different search term."
             },
             title: "No results found"
+        },
+        loginError: {
+            action: "Continue logout",
+            subtitles: {
+                0: "It seems like you don't have permission to use this portal.",
+                1: "Please logout and login with a different account."
+            },
+            title: "You are not authorized"
         }
     },
     sections: {

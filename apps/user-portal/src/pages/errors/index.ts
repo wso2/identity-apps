@@ -16,11 +16,5 @@
  * under the License.
  */
 
-export * from "./account-security";
-export * from "./applications";
-export * from "./consent-management";
-export * from "./errors";
-export * from "./overview";
-export * from "./personal-info";
-export * from "./privacy";
-export * from "./operations";
+export * from "./404";
+export * from "./login-error";
