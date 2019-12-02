@@ -57,7 +57,7 @@
     }
 
     main.center-segment > .ui.container > .ui.segment {
-        padding: 2.5em 1.6rem;
+        padding: 3rem;
     }
 
     main.center-segment > .ui.container > .ui.segment .segment-form .buttons {
@@ -67,6 +67,11 @@
     main.center-segment > .ui.container > .ui.segment .segment-form .buttons.align-right button,
     main.center-segment > .ui.container > .ui.segment .segment-form .buttons.align-right input {
         margin: 0 0 0 0.25em;
+    }
+
+    main.center-segment > .ui.container > .ui.segment .segment-form .column .buttons.align-left button.link-button,
+    main.center-segment > .ui.container > .ui.segment .segment-form .column .buttons.align-left input.link-button {
+        padding: .78571429em 1.5em .78571429em 0;
     }
 
     main.center-segment > .ui.container > .ui.segment .segment-form {
@@ -81,28 +86,64 @@
         text-align: right;
     }
 
-    main #toc {
-        position: sticky;
-        top: 93px;
-    }
-
-    main #toc > nav.table-of-contents ol > li:not(.sub) {
-        list-style: square;
-    }
-
-    main #toc > nav.table-of-contents ol > li:not(.sub):before {
-        display: none;
-    }
-
-    main #toc > nav.table-of-contents ol > li.sub {
-        margin-left: 20px;
-    }
-
     footer {
         padding: 2rem 0;
     }
 
     body .product-title .product-title-text {
-        margin-top: 0;
+        margin: 0;
+    }
+
+    body .center-segment .product-title .product-title-text {
+        margin-top: 2em;
+        margin-bottom: 1em;
+    }
+
+    .ui.menu.fixed.app-header .product-logo {
+        padding-left: 0;
+    }
+
+    /* Table of content styling */
+
+    main #toc {
+        position: sticky;
+        top: 93px;
+    }
+
+    main .ui.segment.toc {
+        padding: 20px;
+    }
+
+    main .ui.segment.toc ul.ui.list.nav > li.sub {
+        margin-left: 20px;
+    }
+
+    main .ui.segment.toc ul.ui.list.nav > li > a {
+        color: rgba(0,0,0,.87);
+        text-decoration: none;
+    }
+
+    main .ui.segment.toc ul.ui.list.nav > li:before {
+        content: "\2219";
+        font-weight: bold;
+        font-size: 1.6em;
+        line-height: 0.5em;
+        display: inline-block;
+        width: 1em;
+        margin-left: -0.7em;
+    }
+
+    main .ui.segment.toc ul.ui.list.nav > li.sub:before {
+        content: "\2192";
+        margin-left: -1em;
+    }
+
+    main .ui.segment.toc ul.ui.list.nav > li:hover a {
+        color: #ff5000;
+        text-decoration: none;
+    }
+
+    main .ui.segment.toc ul.ui.list.nav > li:hover:before {
+        color: #ff5000;
     }
 </style>

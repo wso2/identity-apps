@@ -292,25 +292,29 @@
         </a>
     </div>
     <div class="ui divider hidden"></div>
-    
-    <div class="align-right buttons">
-        <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType)) { %>
-        <button
-            type="submit"
-            onclick="window.location.href='<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL)%>';"   
-            class="ui large button"
-            id="registerLink"
-            role="button">
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.account")%>
-        </button>
-        <% } %>
-        <button
-            type="submit"
-            onclick="submitCredentials(event)"    
-            class="ui primary large button"
-            role="button">
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>
-        </button>
+
+    <div class="ui two column stackable grid">
+        <div class="column align-left buttons">
+            <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType)) { %>
+            <button
+                type="submit"
+                onclick="window.location.href='<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL)%>';"   
+                class="ui large button link-button"
+                id="registerLink"
+                role="button">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.account")%>
+            </button>
+            <% } %>
+        </div>
+        <div class="column align-right buttons">
+            <button
+                type="submit"
+                onclick="submitCredentials(event)"    
+                class="ui primary large button"
+                role="button">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>
+            </button>
+        </div>
     </div>
     
     <% if (Boolean.parseBoolean(loginFailed) && errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE) && request.getParameter("resend_username") == null) { %>
