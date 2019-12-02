@@ -603,8 +603,8 @@
     <script type="text/javascript" src="libs/handlebars-v4.0.11.js"></script>
     <script type="text/javascript" src="libs/jstree/dist/jstree.min.js"></script>
     <script type="text/javascript" src="libs/jstree/src/jstree-actions.js"></script>
-    <script type="text/javascript" src="assets/js/consent_template_1.js"></script>
-    <script type="text/javascript" src="assets/js/consent_template_2.js"></script>
+    <script type="text/javascript" src="js/consent_template_1.js"></script>
+    <script type="text/javascript" src="js/consent_template_2.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             var container;
