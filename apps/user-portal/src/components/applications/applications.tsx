@@ -225,6 +225,14 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
     };
 
     /**
+     * Handles the `onListRefresh` callback action from the
+     * all application component.
+     */
+    const handleListRefresh = (): void => {
+        getApplications(null, null, null);
+    };
+
+    /**
      * Handles access url navigation.
      *
      * @remarks
@@ -283,6 +291,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
                 searchQuery={ searchQuery }
                 loading={ isRequestLoading }
                 onAppNavigate={ handleAppNavigation }
+                onListRefresh={ handleListRefresh }
                 onSearchQueryClear={ handleSearchQueryClear }
                 showFavourites={ false }
             />

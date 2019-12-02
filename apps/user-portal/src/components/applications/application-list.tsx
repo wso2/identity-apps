@@ -31,6 +31,7 @@ interface ApplicationListProps {
     apps: Application[];
     loading: boolean;
     onAppNavigate: (id: string, url: string) => void;
+    onListRefresh: () => void;
     onSearchQueryClear: () => void;
     searchQuery: string;
     showFavourites?: boolean;
@@ -44,7 +45,7 @@ interface ApplicationListProps {
 export const ApplicationList: FunctionComponent<ApplicationListProps> = (
     props: ApplicationListProps
 ): JSX.Element => {
-    const { apps, onAppNavigate, onSearchQueryClear, loading, searchQuery, showFavourites } = props;
+    const { apps, onAppNavigate, onListRefresh, onSearchQueryClear, loading, searchQuery, showFavourites } = props;
     const { t } = useTranslation();
 
     /**
@@ -80,7 +81,7 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
                 action={ (
                     <Button
                         className="link-button"
-                        onClick={ onSearchQueryClear }
+                        onClick={ onListRefresh }
                     >
                         { t("views:components.applications.placeholders.emptyList.action") }
                     </Button>
