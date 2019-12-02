@@ -657,9 +657,9 @@ export interface Views {
         personalInfo: Page;
         privacy: Page;
         security: Page;
-        404: Page;
     };
     placeholders: {
+        404: Placeholder,
         emptySearchResult: Placeholder,
         loginError: Placeholder
     };

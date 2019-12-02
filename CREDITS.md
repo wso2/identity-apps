@@ -12,3 +12,5 @@
 ![fingerprint](modules/theme/src/themes/default/assets/images/icons/fingerprint.svg) | Icon made by Smashicons from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/fingerprint_1230995#term=fingerprint%20scanner&page=1&position=22)
 ![package](modules/theme/src/themes/default/assets/images/icons/package.svg) | Icon made by Freepik from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/package-cube-box-for-delivery_45806#term=package&page=1&position=50)
 ![tools](modules/theme/src/themes/default/assets/images/icons/tools-icon.svg) | Icon made by monkik from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/customer-support_1086581#term=tools&page=1&position=33)
+![cone](modules/theme/src/themes/default/assets/images/icons/traffic-cone-icon.svg) | Icon made by Freepik from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/traffic-cone_394576?term=cone&page=1&position=44)
+![cone](modules/theme/src/themes/default/assets/images/icons/box-icon.svg) | Icon made by Freepik from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/box_1380641?term=empty%20box&page=1&position=1)

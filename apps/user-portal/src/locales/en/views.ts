@@ -968,13 +968,18 @@ export const views: Views = {
         security: {
             subTitle: "Secure your account by managing consents, sessions, and security settings",
             title: "Security"
-        },
-        404: {
-            subTitle: "The page you're looking for isn't here",
-            title: "It looks like you're lost. :("
-        },
+        }
     },
     placeholders: {
+        404: {
+            action: "Back to home",
+            subtitles: {
+                0: "We couldn't find the page you are looking for.",
+                1: "Try to enter the path manually or press the button below",
+                2: "to navigate back to the home page."
+            },
+            title: "404"
+        },
         emptySearchResult: {
             action: "Clear search query",
             subtitles: {

@@ -35,7 +35,8 @@ import {
     SidePanelIconSet,
     StatusShieldDanger,
     StatusShieldGood,
-    StatusShieldWarning
+    StatusShieldWarning,
+    TrafficConeIcon
 } from "@wso2is/theme";
 
 type ImageType = string;
@@ -87,6 +88,7 @@ export const AdvancedSearchIcons = {
 export const EmptyPlaceholderIllustrations = {
     emptyList: BoxIcon,
     loginError: ForbiddenIcon,
+    pageNotFound: TrafficConeIcon,
     search: EmptySearchResultsIllustration
 };
 

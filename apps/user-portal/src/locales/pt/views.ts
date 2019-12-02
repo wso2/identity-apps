@@ -982,13 +982,18 @@ export const views: Views = {
         security: {
             subTitle: "Atualize as configurações para tornar sua conta segura",
             title: "Segurança"
-        },
-        404: {
-            subTitle: "A página que você está procurando não está aqui",
-            title: "Parece que você está perdido. :("
-        },
+        }
     },
     placeholders: {
+        404: {
+            action: "Voltar para casa",
+            subtitles: {
+                0: "Não foi possível encontrar a página que você estava procurando.",
+                1: "Tente inserir o caminho manualmente ou pressione o botão abaixo",
+                2: "para voltar à página inicial."
+            },
+            title: "404"
+        },
         emptySearchResult: {
             action: "Limpar consulta de pesquisa",
             subtitles: {

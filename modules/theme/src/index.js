@@ -68,6 +68,7 @@ export const ConsentForm = require("../lib/assets/images/icons/consents.svg");
 export const CrossIcon = require("../lib/assets/images/icons/cross-icon.svg");
 export const BoxIcon = require("../lib/assets/images/icons/box-icon.svg");
 export const ForbiddenIcon = require("../lib/assets/images/icons/forbidden-icon.svg");
+export const TrafficConeIcon = require("../lib/assets/images/icons/traffic-cone-icon.svg");
 
 export const EmptySearchResultsIllustration = require("../lib/assets/images/app-states/no-search-results.svg");
 
