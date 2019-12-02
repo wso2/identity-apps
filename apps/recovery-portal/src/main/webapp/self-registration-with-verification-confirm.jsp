@@ -27,7 +27,7 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
-<jsp:directive.include file="localize.jsp"/>
+<jsp:directive.include file="includes/localize.jsp"/>
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));

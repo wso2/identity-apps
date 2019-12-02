@@ -19,10 +19,10 @@
 
 <%@ page isErrorPage="true" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
-<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
-<jsp:directive.include file="localize.jsp"/>
+<jsp:directive.include file="includes/localize.jsp"/>
 
 <%
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
@@ -30,82 +30,63 @@
     if (StringUtils.isBlank(errorMsg)) {
         errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Server.failed.to.respond");
     }
-
 %>
 
-    <html>
-    <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- title -->
-        <%
-            File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-            if (titleFile.exists()) {
-        %>
-                <jsp:include page="extensions/title.jsp"/>
-        <% } else { %>
-                <jsp:directive.include file="includes/title.jsp"/>
-        <% } %>
-
-        <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-        <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/Roboto.css" rel="stylesheet">
-        <link href="css/custom-common.css" rel="stylesheet">
-
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.min.js"></script>
-        <script src="js/respond.min.js"></script>
-        <![endif]-->
-    </head>
-
-    <body>
-
+<!doctype html>
+<html>
+<head>
     <!-- header -->
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
     %>
-            <jsp:include page="extensions/header.jsp"/>
+    <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/header.jsp"/>
+    <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
+</head>
+<body>
+    <main class="center-segment">
+        <div class="ui container large center aligned middle aligned">
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+            <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+            <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>
+            <div class="ui segment">
+                <div class="ui negative icon message" id="server-error-code">
+                    <i class="icon exclamation triangle"></i>
+                    <div class="content">
+                        <div>
+                            <% if (StringUtils.isNotBlank(errorCode)) {%>
 
-    <!-- page content -->
-    <div class="container-fluid body-wrapper">
-
-        <div class="row">
-            <!-- content -->
-            <div class="col-xs-12 col-sm-10 col-md-8 col-lg-5 col-centered wr-login">
-                <div class="alert alert-danger" id="server-error-code">
-                    <% if (StringUtils.isNotBlank(errorCode)) {%>
-    
-                    <b><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Code")%> :
-                    </b><%=Encode.forHtmlContent(errorCode) %>
-                    <% }%>
-
-                    </br>
-    
-                    <b><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Message")%> : </b>
-                    <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
+                            <b><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Code")%> :
+                            </b><%=Encode.forHtmlContent(errorCode) %>
+                        </div>
+                        <% }%>
+                        <div>
+                            <b><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Message")%> : </b>
+                            <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
+                        </div>
+                    </div>
                 </div>
-
             </div>
         </div>
-        <!-- /content/body -->
-
-    </div>
-    </div>
+    </main>
+    <!-- /content/body -->
 
     <!-- footer -->
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {
     %>
-            <jsp:include page="extensions/footer.jsp"/>
+    <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/footer.jsp"/>
+    <jsp:directive.include file="includes/footer.jsp"/>
     <% } %>
-
-    </body>
-    </html>
+</body>
+</html>

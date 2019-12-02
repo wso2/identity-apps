@@ -27,9 +27,9 @@
             <a href="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "business.homepage")%>"
                target="_blank">
                WSO2
-               <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "inc")%>
+               <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Inc")%>
             </a>
-            . <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "all.rights.reserved")%>
+            . <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "All.rights.reserved")%>
         </p>
     </div>
 </footer>

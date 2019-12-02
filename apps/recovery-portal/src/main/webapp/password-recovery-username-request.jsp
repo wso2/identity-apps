@@ -21,7 +21,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="java.io.File" %>
-<jsp:directive.include file="localize.jsp"/>
+<jsp:directive.include file="includes/localize.jsp"/>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -56,120 +56,117 @@
 </head>
 
 <body>
+    <!-- header -->
+    <%
+        File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
+        if (headerFile.exists()) {
+    %>
+            <jsp:include page="extensions/header.jsp"/>
+    <% } else { %>
+            <jsp:directive.include file="includes/header.jsp"/>
+    <% } %>
 
-<!-- header -->
-<%
-    File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-    if (headerFile.exists()) {
-%>
-        <jsp:include page="extensions/header.jsp"/>
-<% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
-<% } %>
+    <!-- page content -->
+    <div class="container-fluid body-wrapper">
 
-<!-- page content -->
-<div class="container-fluid body-wrapper">
-    
-    <div class="row">
-        <!-- content -->
-        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 col-centered wr-login">
-            <form action="recoverpassword.do" method="post" id="tenantBasedRecovery">
-                <h2 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Start.password.recovery")%>
-                </h2>
-                
-                <div class="clearfix"></div>
-                <div class="boarder-all ">
-                    <div class="alert alert-danger margin-left-double margin-right-double margin-top-double"
-                         id="error-msg" hidden="hidden">
-                    </div>
-                    <% if (error) { %>
-                    <div class="alert alert-danger margin-left-double margin-right-double margin-top-double"
-                         id="server-error-msg">
-                        <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
-                    </div>
-                    <% } %>
-                    <!-- validation -->
-                    <div class="padding-double">
-                        
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group required">
-                            <div class="margin-bottom-double">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.your.username.here")%>
+        <div class="row">
+            <!-- content -->
+            <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 col-centered wr-login">
+                <form action="recoverpassword.do" method="post" id="tenantBasedRecovery">
+                    <h2 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none">
+                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Start.password.recovery")%>
+                    </h2>
+
+                    <div class="clearfix"></div>
+                    <div class="boarder-all ">
+                        <div class="alert alert-danger margin-left-double margin-right-double margin-top-double"
+                             id="error-msg" hidden="hidden">
+                        </div>
+                        <% if (error) { %>
+                        <div class="alert alert-danger margin-left-double margin-right-double margin-top-double"
+                             id="server-error-msg">
+                            <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
+                        </div>
+                        <% } %>
+                        <!-- validation -->
+                        <div class="padding-double">
+
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group required">
+                                <div class="margin-bottom-double">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.your.username.here")%>
+                                </div>
+                                <label class="control-label">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")%>
+                                </label>
+
+                                <input id="username" name="username" type="text"
+                                       class="form-control required usrName usrNameLength" required>
+                                <div class="font-small help-block">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                            "If.you.do.not.specify.tenant.domain.consider.as.super.tenant")%>
+                                </div>
                             </div>
-                            <label class="control-label">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")%>
-                            </label>
-                            
-                            <input id="username" name="username" type="text"
-                                   class="form-control required usrName usrNameLength" required>
-                            <div class="font-small help-block">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                        "If.you.do.not.specify.tenant.domain.consider.as.super.tenant")%>
+
+                            <%
+                                String callback = Encode.forHtmlAttribute
+                                        (request.getParameter("callback"));
+                                if (callback != null) {
+                            %>
+                            <div>
+                                <input type="hidden" name="callback" value="<%=callback %>"/>
                             </div>
+                            <%
+                                }
+                            %>
+
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group username-proceed">
+                                <button id="registrationSubmit"
+                                        class="wr-btn grey-bg uppercase font-large full-width-xs"
+                                        type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                        "Proceed.password.recovery")%>
+                                </button>
+                                <a href="<%=Encode.forHtmlAttribute(IdentityManagementEndpointUtil.getUserPortalUrl(
+                                        application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL)))%>"
+                                   class="light-btn uppercase font-large full-width-xs">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
+                                </a>
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
-                        
-                        <%
-                            String callback = Encode.forHtmlAttribute
-                                    (request.getParameter("callback"));
-                            if (callback != null) {
-                        %>
-                        <div>
-                            <input type="hidden" name="callback" value="<%=callback %>"/>
-                        </div>
-                        <%
-                            }
-                        %>
-                        
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group username-proceed">
-                            <button id="registrationSubmit"
-                                    class="wr-btn grey-bg uppercase font-large full-width-xs"
-                                    type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                    "Proceed.password.recovery")%>
-                            </button>
-                            <a href="<%=Encode.forHtmlAttribute(IdentityManagementEndpointUtil.getUserPortalUrl(
-                                    application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL)))%>"
-                               class="light-btn uppercase font-large full-width-xs">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
-                            </a>
-                        </div>
-                        <div class="clearfix"></div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
 
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
-        <jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
-<% } %>
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+            <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+            <jsp:directive.include file="includes/footer.jsp"/>
+    <% } %>
 
-<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    $(document).ready(function () {
-        $("#tenantBasedRecovery").submit(function (e) {
-            var errorMessage = $("#error-msg");
-            errorMessage.hide();
-            var username = $("#username").val();
+        $(document).ready(function () {
+            $("#tenantBasedRecovery").submit(function (e) {
+                var errorMessage = $("#error-msg");
+                errorMessage.hide();
+                var username = $("#username").val();
 
-            if (username == '') {
-                errorMessage.text("Please fill the username.");
-                errorMessage.show();
-                $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
-                return false;
-            }
-            return true;
+                if (username == '') {
+                    errorMessage.text("Please fill the username.");
+                    errorMessage.show();
+                    $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+                    return false;
+                }
+                return true;
+            });
         });
-    });
-</script>
+    </script>
 </body>
 </html>
