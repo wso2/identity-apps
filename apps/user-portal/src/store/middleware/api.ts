@@ -16,19 +16,11 @@
  * under the License.
  */
 
-import { AxiosHttpClient } from "@wso2is/http";
 import axios from "axios";
 import log from "log";
 import { HttpRequestConfig } from "../../models";
 import { apiRequestEnd, apiRequestStart } from "../actions";
 import { API_REQUEST } from "../actions/types";
-
-/**
- * Get an axios instance.
- *
- * @type {AxiosHttpClientInstance}
- */
-const httpClient = AxiosHttpClient.getInstance();
 
 /**
  * Intercepts and handles actions of type `API_REQUEST`.
@@ -55,13 +47,14 @@ export const apiMiddleware = ({ dispatch }) => (next) => (action) => {
         dispatch(apiRequestStart(dispatcher));
     }
 
-    httpClient
+    axios
         .request({
             auth,
             [dataOrParams]: data,
             headers,
             method,
-            url
+            url,
+            withCredentials: true
         })
         .then((response) => {
             dispatch({ type: onSuccess, payload: response });
