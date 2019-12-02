@@ -166,6 +166,9 @@ export interface Views {
             notifications: {
                 fetchApplications: Notification;
             }
+            placeholders: {
+                emptyList: Placeholder
+            }
             recent: {
                 heading: string;
             },
@@ -212,7 +215,7 @@ export interface Views {
                     dropdown: string;
                 },
                 resultsIndicator: string;
-            }
+            },
         },
         approvals: {
             notifications: {

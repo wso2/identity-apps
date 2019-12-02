@@ -144,6 +144,17 @@ export const views: Views = {
                     }
                 }
             },
+            placeholders: {
+                emptyList: {
+                    action: "Atualizar lista",
+                    subtitles: {
+                        0: "A lista de aplicativos retornou vazia.",
+                        1: "Isso pode ser devido a não ter aplicativos detectáveis.",
+                        2: "Peça a um administrador para ativar a capacidade de descoberta de aplicativos."
+                    },
+                    title: "Sem aplicações"
+                }
+            },
             recent: {
                 heading: "Aplicações recentes"
             },

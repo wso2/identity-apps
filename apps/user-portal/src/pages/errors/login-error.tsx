@@ -44,7 +44,7 @@ export const LoginErrorPage = (): JSX.Element => {
                     </Button>
                 ) }
                 image={ EmptyPlaceholderIllustrations.loginError }
-                imageSize="medium"
+                imageSize="tiny"
                 subtitle={ [
                     t("views:placeholders.loginError.subtitles.0"),
                     t("views:placeholders.loginError.subtitles.1"),

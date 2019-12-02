@@ -58,7 +58,7 @@ const ROUTES: Route[] = [
         component: ApplicationsPage,
         icon: "apps",
         name: "common:applications",
-        path: "/applications",
+        path: ApplicationConstants.APPLICATIONS_PAGE_PATH,
         protected: true,
         showOnSidePanel: true,
     },

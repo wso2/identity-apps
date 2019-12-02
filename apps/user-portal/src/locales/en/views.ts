@@ -144,6 +144,17 @@ export const views: Views = {
                     }
                 }
             },
+            placeholders: {
+                emptyList: {
+                    action: "Refresh list",
+                    subtitles: {
+                        0: "The applications list returned empty.",
+                        1: "This could be due to having no discoverable applications.",
+                        2: "Please ask an admin to enable discoverability for applications."
+                    },
+                    title: "No Applications"
+                }
+            },
             recent: {
                 heading: "Recent Applications"
             },

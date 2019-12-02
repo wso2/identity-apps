@@ -47,6 +47,56 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
     const { apps, onAppNavigate, onSearchQueryClear, loading, searchQuery, showFavourites } = props;
     const { t } = useTranslation();
 
+    /**
+     * Shows list placeholders.
+     * @return {JSX.Element}
+     */
+    const showPlaceholders = (): JSX.Element => {
+        // When the search returns empty.
+        if (searchQuery) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <Button
+                            className="link-button"
+                            onClick={ onSearchQueryClear }
+                        >
+                            { t("views:placeholders.emptySearchResult.action") }
+                        </Button>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.search }
+                    title={ t("views:placeholders.emptySearchResult.title") }
+                    subtitle={ [
+                        t("views:placeholders.emptySearchResult.subtitles.0",
+                            { query: searchQuery }),
+                        t("views:placeholders.emptySearchResult.subtitles.1"),
+                    ] }
+                />
+            );
+        }
+
+        return (
+            <EmptyPlaceholder
+                action={ (
+                    <Button
+                        className="link-button"
+                        onClick={ onSearchQueryClear }
+                    >
+                        { t("views:components.applications.placeholders.emptyList.action") }
+                    </Button>
+                ) }
+                image={ EmptyPlaceholderIllustrations.emptyList }
+                imageSize="tiny"
+                title={ t("views:components.applications.placeholders.emptyList.title") }
+                subtitle={ [
+                    t("views:components.applications.placeholders.emptyList.subtitles.0"),
+                    t("views:components.applications.placeholders.emptyList.subtitles.1"),
+                    t("views:components.applications.placeholders.emptyList.subtitles.2")
+                ] }
+            />
+        );
+    };
+
     return (
         <Grid>
             <Grid.Row>
@@ -63,23 +113,7 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
                         ))
                         : !loading && (
                         <Grid.Column width={ 16 }>
-                            <EmptyPlaceholder
-                                action={ (
-                                    <Button
-                                        className="link-button"
-                                        onClick={ onSearchQueryClear }
-                                    >
-                                        { t("views:placeholders.emptySearchResult.action") }
-                                    </Button>
-                                ) }
-                                image={ EmptyPlaceholderIllustrations.search }
-                                title={ t("views:placeholders.emptySearchResult.title") }
-                                subtitle={ [
-                                    t("views:placeholders.emptySearchResult.subtitles.0",
-                                        { query: searchQuery }),
-                                    t("views:placeholders.emptySearchResult.subtitles.1"),
-                                ] }
-                            />
+                            { showPlaceholders() }
                         </Grid.Column>
                     )
                 }

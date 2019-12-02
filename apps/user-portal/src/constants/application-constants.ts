@@ -39,3 +39,11 @@ export const PRIMARY_USER_STORE_IDENTIFIER: string = "PRIMARY";
  * @default
  */
 export const LOGIN_ERROR_PAGE_PATH: string = "/login-error";
+
+/**
+ * Path to the applications page.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const APPLICATIONS_PAGE_PATH: string = "/applications";

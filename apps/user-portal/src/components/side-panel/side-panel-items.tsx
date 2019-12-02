@@ -16,12 +16,18 @@
  * under the License.
  */
 
-import * as React from "react";
+import _ from "lodash";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
+import { fetchApplications } from "../../api";
 import { routes, SidePanelIcons } from "../../configs";
+import * as ApplicationConstants from "../../constants/application-constants";
 import * as UIConstants from "../../constants/ui-constants";
+import { AppState } from "../../store";
+import { toggleApplicationsPageVisibility } from "../../store/actions";
 import { hasScope } from "../../utils";
 import { ThemeIcon } from "../shared";
 
@@ -45,6 +51,8 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
 ): JSX.Element => {
     const { headerHeight, type, onSidePanelItemClick } = props;
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+    const isApplicationsPageVisible = useSelector((state: AppState) => state.global.isApplicationsPageVisible);
     const activeRoute = (path: string) => {
         const pathname = window.location.pathname;
         const urlTokens = path.split("/");
@@ -58,11 +66,47 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
         }
         : null;
 
+    /**
+     * Performs pre-requisites for the side panel items visibility.
+     */
+    useEffect(() => {
+        // Fetches the list of applications to see if the list is empty.
+        // If it is empty, hides the side panel item.
+        if (isApplicationsPageVisible === undefined) {
+            fetchApplications(null, null, null)
+                .then((response) => {
+                    if (_.isEmpty(response.applications)) {
+                        dispatch(toggleApplicationsPageVisibility(false));
+                        return;
+                    }
+                    dispatch(toggleApplicationsPageVisibility(true));
+                })
+                .catch(() => {
+                    dispatch(toggleApplicationsPageVisibility(false));
+                });
+        }
+    }, []);
+
+    /**
+     * Validates if the side panel item should be displayed.
+     *
+     * @param {string} path - specific route.
+     * @return {boolean}
+     */
+    const validateSidePanelVisibility = (path: string): boolean => {
+        if (path === ApplicationConstants.APPLICATIONS_PAGE_PATH) {
+            return isApplicationsPageVisible;
+        }
+        return true;
+    };
+
     return (
         <Menu className={ `side-panel ${ type }` } style={ style } vertical fluid>
             {
                 routes.map((route, index) => (
-                    route.showOnSidePanel && (route.scope ? hasScope(route.scope) : true)
+                    (route.showOnSidePanel
+                        && (route.scope ? hasScope(route.scope) : true)
+                        && validateSidePanelVisibility(route.path))
                         ? (
                             <Menu.Item
                                 as={ NavLink }

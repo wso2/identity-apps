@@ -18,13 +18,14 @@
 
 import {
     AccountRecoveryIconSet,
+    BoxIcon,
     CodeIcon,
     ConsentForm,
     CrossIcon,
     DummyUser,
     EmptySearchResultsIllustration,
+    ForbiddenIcon,
     HomeTileIcons,
-    LoginErrorIllustration,
     Logo,
     MFAIconSet,
     OrangeAppIconBackground,
@@ -84,7 +85,8 @@ export const AdvancedSearchIcons = {
 };
 
 export const EmptyPlaceholderIllustrations = {
-    loginError: LoginErrorIllustration,
+    emptyList: BoxIcon,
+    loginError: ForbiddenIcon,
     search: EmptySearchResultsIllustration
 };
 

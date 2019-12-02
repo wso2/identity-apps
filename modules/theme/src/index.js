@@ -66,8 +66,9 @@ export const StatusShieldWarning = require("../lib/assets/images/accounts-status
 export const StatusShieldDanger = require("../lib/assets/images/accounts-status-icons/danger.svg");
 export const ConsentForm = require("../lib/assets/images/icons/consents.svg");
 export const CrossIcon = require("../lib/assets/images/icons/cross-icon.svg");
+export const BoxIcon = require("../lib/assets/images/icons/box-icon.svg");
+export const ForbiddenIcon = require("../lib/assets/images/icons/forbidden-icon.svg");
 
 export const EmptySearchResultsIllustration = require("../lib/assets/images/app-states/no-search-results.svg");
-export const LoginErrorIllustration = require("../lib/assets/images/app-states/login-error.svg");
 
 export const OrangeAppIconBackground = require("../lib/assets/images/app-icon-background.png");
