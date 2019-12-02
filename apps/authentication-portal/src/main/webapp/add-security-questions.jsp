@@ -6,7 +6,7 @@
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing,
   ~ software distributed under the License is distributed on an
@@ -14,11 +14,10 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
+--%>
 
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EncodedControl" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
@@ -27,7 +26,6 @@
 <%@ page import="org.wso2.carbon.utils.ServerConstants" %>
 <%@ page import="org.wso2.carbon.ui.CarbonUIUtil" %>
 <%@ page import="org.wso2.carbon.CarbonConstants" %>
-
 <%@ page import="java.nio.charset.StandardCharsets" %>
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="java.util.ArrayList" %>
@@ -89,17 +87,18 @@
 <body>
     <main class="center-segment">
         <div class="ui container medium center aligned middle aligned">
-            <div class="ui segment">
-                <!-- product-title -->
-                <%
-                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                    if (productTitleFile.exists()) {
-                %>
-                    <jsp:include page="extensions/product-title.jsp"/>
-                <% } else { %>
-                    <jsp:directive.include file="includes/product-title.jsp"/>
-                <% } %>
 
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>
+
+            <div class="ui segment">
                 <h3><%=AuthenticationEndpointUtil.i18n(resourceBundle, "answer.following.questions")%></h3>
 
                 <div class="ui divider hidden"></div>
@@ -116,7 +115,7 @@
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "select.challenge.question")%>
                             </label>
                             <div>
-                                <select id="challengeQuestion1" 
+                                <select id="challengeQuestion1" class="ui fluid dropdown"
                                     name=<%="Q-" + Encode.forHtmlAttribute(challengeQuestionSet)%>>
                                     <%
                                         for (ChallengeQuestion challengeQuestion : challengeQuestionMap.get(challengeQuestionSet)) {
@@ -147,7 +146,7 @@
 
                         <div class="align-right buttons">
                             <input type="submit" class="ui primary large button"
-                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "update")%>">
+                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>">
         
                             <input type="hidden" name="<%="sessionDataKey"%>"
                                 value="<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>"/>
@@ -177,6 +176,10 @@
     <% } else { %>
         <jsp:directive.include file="includes/footer.jsp"/>
     <% } %>
+
+    <script>
+        $('select.dropdown').dropdown();
+    </script>
     
 </body>
 </html>
