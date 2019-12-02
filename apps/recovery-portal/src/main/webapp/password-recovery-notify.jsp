@@ -34,11 +34,9 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 
-<jsp:directive.include file="localize.jsp"/>
+<jsp:directive.include file="includes/localize.jsp"/>
 
 <%
-
-
     String username = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("username"));
 
     User user = IdentityManagementServiceUtil.getInstance().getUser(username);
@@ -70,7 +68,6 @@
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
-
 %>
 
 <!doctype html>
@@ -106,8 +103,15 @@
         </div>
     </div>
 
-    <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-    <script src="libs/theme/semantic.js"></script>
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+    <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/footer.jsp"/>
+    <% } %>
 
     <script type="application/javascript">
         $(document).ready(function () {

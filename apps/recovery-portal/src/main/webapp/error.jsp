@@ -21,7 +21,7 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
-<jsp:directive.include file="localize.jsp"/>
+<jsp:directive.include file="includes/localize.jsp"/>
 
 <%
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
@@ -29,7 +29,6 @@
     if (StringUtils.isBlank(errorMsg)) {
         errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Server.failed.to.respond");
     }
-
 %>
 
 <!doctype html>
@@ -44,11 +43,6 @@
     <% } else { %>
     <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
-
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
 </head>
 <body>
     <main class="center-segment">

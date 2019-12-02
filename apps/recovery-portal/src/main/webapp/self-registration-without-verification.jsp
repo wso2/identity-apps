@@ -25,7 +25,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.serviceclient.beans.Claim" %>
 <%@ page import="java.io.File" %>
 <%@ page import="javax.ws.rs.core.Response" %>
-<jsp:directive.include file="localize.jsp"/>
+<jsp:directive.include file="includes/localize.jsp"/>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));

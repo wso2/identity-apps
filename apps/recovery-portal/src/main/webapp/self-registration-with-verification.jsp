@@ -37,7 +37,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 
-<jsp:directive.include file="localize.jsp"/>
+<jsp:directive.include file="includes/localize.jsp"/>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -178,10 +178,6 @@
     <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
 
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
     <%
         if (reCaptchaEnabled) {
     %>
@@ -604,9 +600,6 @@
         </div>
     </div>
 
-
-    <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-    <script src="libs/theme/semantic.js"></script>
     <script type="text/javascript" src="libs/handlebars-v4.0.11.js"></script>
     <script type="text/javascript" src="libs/jstree/dist/jstree.min.js"></script>
     <script type="text/javascript" src="libs/jstree/src/jstree-actions.js"></script>

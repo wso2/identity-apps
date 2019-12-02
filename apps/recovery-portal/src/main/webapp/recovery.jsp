@@ -28,7 +28,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
-<jsp:directive.include file="localize.jsp"/>
+<jsp:directive.include file="includes/localize.jsp"/>
 
 <%
     boolean isPasswordRecoveryEmailConfirmation =
@@ -54,7 +54,6 @@
 
     // Password recovery parameters
     String recoveryOption = request.getParameter("recoveryOption");
-
 
     if (isUsernameRecovery) {
         // Username Recovery Scenario

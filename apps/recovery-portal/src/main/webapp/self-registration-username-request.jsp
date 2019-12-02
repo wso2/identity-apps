@@ -25,7 +25,7 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 
-<jsp:directive.include file="localize.jsp"/>
+<jsp:directive.include file="includes/localize.jsp"/>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -66,11 +66,6 @@
     <% } else { %>
     <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
-
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
 </head>
 <body>
     <main class="center-segment">
@@ -172,7 +167,5 @@
     <jsp:directive.include file="includes/footer.jsp"/>
     <% } %>
 
-    <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-    <script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>

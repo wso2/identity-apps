@@ -59,12 +59,14 @@
         </div>
         <div class="content">
             <% if (StringUtils.isNotBlank(confirm) && confirm.equals("true")) {%>
-            <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Successfully.confirmed")%></p>
+            <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Successfully.confirmed")%>
+            </p>
             <%
             } else {
                 if (isEmailNotificationEnabled) {
             %>
-            <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Confirmation.sent.to.mail")%></p>
+            <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Confirmation.sent.to.mail")%>
+            </p>
             <% } else {%>
             <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                     "User.registration.completed.successfully")%>
@@ -81,17 +83,14 @@
         </div>
     </div>
 
-    <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-    <script src="libs/theme/semantic.js"></script>
-
     <script type="application/javascript">
         $(document).ready(function () {
 
             $('.notify').modal({
                 onHide: function () {
                     <%
-      try {
-      %>
+                        try {
+                    %>
                     location.href = "<%= IdentityManagementEndpointUtil.encodeURL(callback)%>";
                     <%
                     } catch (MalformedURLException e) {
@@ -103,12 +102,12 @@
                     %>
                 },
                 blurring: true,
-                detachable:true,
+                detachable: true,
                 closable: false,
                 centered: true,
             }).modal("show");
 
         });
     </script>
-</body>
+    </body>
 </html>

@@ -27,7 +27,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
-<jsp:directive.include file="localize.jsp"/>
+<jsp:directive.include file="includes/localize.jsp"/>
 
 <%
     String confirmationKey = request.getParameter("confirmation");

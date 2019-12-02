@@ -22,8 +22,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.InitiateQuestionResponse" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.RetryError" %>
 <%@ page import="java.io.File" %>
-<jsp:directive.include file="localize.jsp"/>
-
+<jsp:directive.include file="includes/localize.jsp"/>
 
 <%
     InitiateQuestionResponse initiateQuestionResponse = (InitiateQuestionResponse)
@@ -46,10 +45,6 @@
     <% } else { %>
     <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
 
     <%
         if (reCaptchaEnabled) {
