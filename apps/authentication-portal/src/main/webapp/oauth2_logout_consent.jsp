@@ -38,20 +38,25 @@
 <body>
     <main class="center-segment">
         <div class="ui container medium center aligned middle aligned">
+
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>
+
             <div class="ui segment">
-                <!-- product-title -->
-                <%
-                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                    if (productTitleFile.exists()) {
-                %>
-                    <jsp:include page="extensions/product-title.jsp"/>
-                <% } else { %>
-                    <jsp:directive.include file="includes/product-title.jsp"/>
-                <% } %>
+                
 
                 <h3 class="ui header"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "do.you.want.to.logout")%></h3>
                 <form action="<%=oidcLogoutURL%>" method="post" id="oidc_logout_consent_form"
                     name="oidc_logout_consent_form">
+
+                    <div class="ui divider hidden"></div>
 
                     <div class="field">
                         <button
@@ -62,7 +67,7 @@
                         <button
                             type="submit"
                             onclick="javascript: deny(); return false;"   
-                            class="ui large button"
+                            class="ui large button link-button"
                             role="button"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "no")%></button>
                     </div>
                     <input type="hidden" name="consent" id="consent" value="deny"/>

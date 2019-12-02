@@ -72,7 +72,7 @@
                     <div class="align-right buttons">
                         <input type="hidden" name="SAMLResponse" value="<%=Encode.forHtmlAttribute(samlResp)%>"/>
                         <input type="hidden" name="RelayState" value="<%=Encode.forHtmlAttribute(relayState)%>"/>
-                        <button class="" type="submit"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "post")%></button>
+                        <button class="ui primary large button" type="submit"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "post")%></button>
                     </div>
                 </form>
             </div>

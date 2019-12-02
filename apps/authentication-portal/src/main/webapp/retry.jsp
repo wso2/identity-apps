@@ -52,25 +52,23 @@
 <body>
     <main class="center-segment">
         <div class="ui container medium center aligned middle aligned">
-            <div class="ui segment">
-                <!-- product-title -->
-                <%
-                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                    if (productTitleFile.exists()) {
-                %>
-                    <jsp:include page="extensions/product-title.jsp"/>
-                <% } else { %>
-                    <jsp:directive.include file="includes/product-title.jsp"/>
-                <% } %>
 
-                <h1><%=Encode.forHtmlContent(stat)%></h1>
-                <div class="font-medium">
-                    <strong>
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "attention")%> :
-                    </strong>
-                </div>
-                <div class="padding-bottom-double">
-                    <%=Encode.forHtmlContent(statusMessage)%>
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>
+
+            <div class="ui segment">
+                <div class="segment-form">
+                    <div class="ui visible negative message">
+                        <div class="header"><%=Encode.forHtmlContent(stat)%></div>
+                        <p><%=Encode.forHtmlContent(statusMessage)%></p>
+                    </div>
                 </div>
             </div>
         </div>

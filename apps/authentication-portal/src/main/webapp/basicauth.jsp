@@ -21,8 +21,7 @@
 <%@ page import="org.apache.cxf.jaxrs.client.WebClient" %>
 <%@ page import="org.apache.http.HttpStatus" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page
-        import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.SelfUserRegistrationResource" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.SelfUserRegistrationResource" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.bean.ResendCodeRequestDTO" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.bean.UserDTO" %>
@@ -292,25 +291,29 @@
         </a>
     </div>
     <div class="ui divider hidden"></div>
-    
-    <div class="align-right buttons">
-        <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType)) { %>
-        <button
-            type="submit"
-            onclick="window.location.href='<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL)%>';"   
-            class="ui large button"
-            id="registerLink"
-            role="button">
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.account")%>
-        </button>
-        <% } %>
-        <button
-            type="submit"
-            onclick="submitCredentials(event)"    
-            class="ui primary large button"
-            role="button">
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>
-        </button>
+
+    <div class="ui two column stackable grid">
+        <div class="column align-left buttons">
+            <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType)) { %>
+            <button
+                type="submit"
+                onclick="window.location.href='<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL)%>';"   
+                class="ui large button link-button"
+                id="registerLink"
+                role="button">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.account")%>
+            </button>
+            <% } %>
+        </div>
+        <div class="column align-right buttons">
+            <button
+                type="submit"
+                onclick="submitCredentials(event)"    
+                class="ui primary large button"
+                role="button">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>
+            </button>
+        </div>
     </div>
     
     <% if (Boolean.parseBoolean(loginFailed) && errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE) && request.getParameter("resend_username") == null) { %>
@@ -325,7 +328,6 @@
     </div>
     <% } %>
     <%!
-    
         private String getRecoverAccountUrl(String identityMgtEndpointContext, String urlEncodedURL, boolean isUsernameRecovery) {
         
             return identityMgtEndpointContext + "/recoveraccountrouter.do?callback=" +

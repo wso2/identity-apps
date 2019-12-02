@@ -20,15 +20,15 @@
 <div class="ui grid">
     <div class="two column row"></div>
         <div class="four wide computer four wide tablet column">
-            <div id="toc"></div>
+            <div id="toc" class="ui segment toc"></div>
         </div>
         <div class="twelve wide computer twelve wide tablet column">
             <!-- content -->
             <div>
                 <div>
-                    <h2>
+                    <h1>
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%> - <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%>
-                    </h2>
+                    </h1>
                 </div>
                 <div">
                     <%-- Customizable content. Due to this nature, i18n is not implemented for this section --%>

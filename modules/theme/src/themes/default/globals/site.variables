@@ -102,6 +102,12 @@
 @h4 : unit((19 / 14), rem);
 @h5 : unit((16 / 14), rem);
 
+/*-------------------
+       Links
+--------------------*/
+
+@linkColor           : @primaryColor;
+@linkHoverUnderline  : underline;
 
 /*-------------------
    Advanced search
