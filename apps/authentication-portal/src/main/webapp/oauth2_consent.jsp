@@ -6,7 +6,7 @@
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing,
   ~ software distributed under the License is distributed on an
@@ -14,7 +14,7 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
+--%>
 
 <%@ page import="org.apache.commons.collections.CollectionUtils" %>
 <%@ page import="org.apache.commons.lang.ArrayUtils" %>
@@ -65,99 +65,29 @@
     <% } else { %>
         <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
-
-    <script type="text/javascript">
-        function approved() {
-            var mandatoryClaimCBs = $(".mandatory-claim");
-            var checkedMandatoryClaimCBs = $(".mandatory-claim:checked");
-            var scopeApproval = $("input[name='scope-approval']");
-
-            // If scope approval radio button is rendered then we need to validate that it's checked
-            if (scopeApproval.length > 0) {
-                if (scopeApproval.is(":checked")) {
-                    var checkScopeConsent = $("input[name='scope-approval']:checked");
-                    $('#consent').val(checkScopeConsent.val());
-                } else {
-                    $("#modal_scope_validation").modal("show");
-                    return;
-                }
-            } else {
-                // Scope radio button was not rendered therefore set the consent to 'approve'
-                document.getElementById('consent').value = "approve";
-            }
-
-            if (checkedMandatoryClaimCBs.length === mandatoryClaimCBs.length) {
-                document.getElementById("profile").submit();
-            } else {
-                $("#modal_claim_validation").modal("show");
-            }
-        }
-
-        function approvedAlways() {
-            var mandatoryClaimCBs = $(".mandatory-claim");
-            var checkedMandatoryClaimCBs = $(".mandatory-claim:checked");
-
-            if (checkedMandatoryClaimCBs.length === mandatoryClaimCBs.length) {
-                document.getElementById('consent').value = "approveAlways";
-                document.getElementById("profile").submit();
-            } else {
-                $("#modal_claim_validation").modal("show");
-            }
-        }
-
-        function deny() {
-            document.getElementById('consent').value = "deny";
-            document.getElementById("profile").submit();
-        }
-        
-        function hideModal(elem) {
-            $(elem).closest('.modal').modal('hide');
-        }
-        
-        $(document).ready(function () {
-            $("#consent_select_all").click(function () {
-                if (this.checked) {
-                    $('.checkbox input:checkbox').each(function () {
-                        $(this).prop("checked", true);
-                    });
-                } else {
-                    $('.checkbox :checkbox').each(function () {
-                        $(this).prop("checked", false);
-                    });
-                }
-            });
-            $(".checkbox input").click(function () {
-                var claimCheckedCheckboxes = $(".claim-cb input:checked").length;
-                var claimCheckboxes = $(".claim-cb input").length;
-                if (claimCheckedCheckboxes !== claimCheckboxes) {
-                    $("#consent_select_all").prop("checked", false);
-                } else {
-                    $("#consent_select_all").prop("checked", true);
-                }
-            });
-        });
-    </script>
 </head>
 <body>
     <main class="center-segment">
         <div class="ui container medium center aligned middle aligned">
-            <div class="ui segment">
-                <!-- product-title -->
-                <%
-                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                    if (productTitleFile.exists()) {
-                %>
-                    <jsp:include page="extensions/product-title.jsp"/>
-                <% } else { %>
-                    <jsp:directive.include file="includes/product-title.jsp"/>
-                <% } %>
 
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>
+
+            <div class="ui segment">
                 <form class="ui large form" action="<%=oauth2AuthorizeURL%>" method="post" id="profile" name="oauth2_authz">
-                    <div class="ui divider hidden"></div>
                     <p class="margin-bottom-double">
                         <strong><%=Encode.forHtml(request.getParameter("application"))%></strong>
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile")%>
                     </p>
+
+                    <div class="ui divider hidden"></div>
                     
                     <div class="segment-form">
                         <div class="feild">
@@ -293,13 +223,13 @@
                         </div>
 
                         <div class="ui divider hidden"></div>
-                        
+
                         <div class="align-right buttons">
                             <input type="hidden" name="<%=Constants.SESSION_DATA_KEY_CONSENT%>"
                                     value="<%=Encode.forHtmlAttribute(request.getParameter(Constants.SESSION_DATA_KEY_CONSENT))%>"/>
                             <input type="hidden" name="consent" id="consent" value="deny"/>
                
-                            <input class="ui large button" type="reset"
+                            <input class="ui large button link-button" type="reset"
                                 onclick="deny(); return false;"
                                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"cancel")%>" />
                             <input type="button" class="ui primary large button" id="approve" name="approve"
@@ -361,5 +291,77 @@
             </button>
         </div>
     </div>
+
+    <script type="text/javascript">
+        function approved() {
+            var mandatoryClaimCBs = $(".mandatory-claim");
+            var checkedMandatoryClaimCBs = $(".mandatory-claim:checked");
+            var scopeApproval = $("input[name='scope-approval']");
+
+            // If scope approval radio button is rendered then we need to validate that it's checked
+            if (scopeApproval.length > 0) {
+                if (scopeApproval.is(":checked")) {
+                    var checkScopeConsent = $("input[name='scope-approval']:checked");
+                    $('#consent').val(checkScopeConsent.val());
+                } else {
+                    $("#modal_scope_validation").modal("show");
+                    return;
+                }
+            } else {
+                // Scope radio button was not rendered therefore set the consent to 'approve'
+                document.getElementById('consent').value = "approve";
+            }
+
+            if (checkedMandatoryClaimCBs.length === mandatoryClaimCBs.length) {
+                document.getElementById("profile").submit();
+            } else {
+                $("#modal_claim_validation").modal("show");
+            }
+        }
+
+        function approvedAlways() {
+            var mandatoryClaimCBs = $(".mandatory-claim");
+            var checkedMandatoryClaimCBs = $(".mandatory-claim:checked");
+
+            if (checkedMandatoryClaimCBs.length === mandatoryClaimCBs.length) {
+                document.getElementById('consent').value = "approveAlways";
+                document.getElementById("profile").submit();
+            } else {
+                $("#modal_claim_validation").modal("show");
+            }
+        }
+
+        function deny() {
+            document.getElementById('consent').value = "deny";
+            document.getElementById("profile").submit();
+        }
+        
+        function hideModal(elem) {
+            $(elem).closest('.modal').modal('hide');
+        }
+        
+        $(document).ready(function () {
+            $("#consent_select_all").click(function () {
+                if (this.checked) {
+                    $('.checkbox input:checkbox').each(function () {
+                        $(this).prop("checked", true);
+                    });
+                } else {
+                    $('.checkbox :checkbox').each(function () {
+                        $(this).prop("checked", false);
+                    });
+                }
+            });
+            $(".checkbox input").click(function () {
+                var claimCheckedCheckboxes = $(".claim-cb input:checked").length;
+                var claimCheckboxes = $(".claim-cb input").length;
+                if (claimCheckedCheckboxes !== claimCheckboxes) {
+                    $("#consent_select_all").prop("checked", false);
+                } else {
+                    $("#consent_select_all").prop("checked", true);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
