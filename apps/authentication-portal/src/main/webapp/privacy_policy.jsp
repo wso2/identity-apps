@@ -38,7 +38,7 @@
     <main>
         <div id="app-header" class="ui borderless top fixed app-header menu">
             <div class="ui container">
-                <div class="header item">
+                <div class="header item product-logo">
                     <!-- product-title -->
                     <%
                         File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -89,7 +89,7 @@
 
     <script type="text/javascript" src="js/u2f-api.js"></script>
     <script type="text/javascript">
-        var ToC = "<nav role='navigation' class='table-of-contents'>" + "<h4>On this page:</h4>" + "<ol class='ui list'>";
+        var ToC = "<nav role='navigation' class='table-of-contents'>" + "<h4>On this page:</h4>" + "<ul class='ui list nav'>";
         var newLine, el, title, link;
 
         $("#privacyPolicy h2, #privacyPolicy h3").each(function() {
@@ -98,7 +98,7 @@
             link = "#" + el.attr("id");
 
             if (el.is("h3")){
-                newLine = "<li class='sub' value='-'>" + "<a href='" + link + "'>" + title + "</a>" + "</li>";
+                newLine = "<li class='sub'>" + "<a href='" + link + "'>" + title + "</a>" + "</li>";
             } else {
                 newLine = "<li>" + "<a href='" + link + "'>" + title + "</a>" + "</li>";
             }
@@ -106,7 +106,7 @@
             ToC += newLine;
         });
 
-        ToC += "</ol>" + "</nav>";
+        ToC += "</ul>" + "</nav>";
 
         $("#toc").append(ToC);
     </script>
