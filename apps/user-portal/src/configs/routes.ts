@@ -17,6 +17,7 @@
  */
 
 import * as ApplicationConstants from "../constants/application-constants";
+import * as TokenConstants from "../constants/token-constants";
 import {
     AccountSecurityPage,
     ApplicationsPage,
@@ -37,6 +38,7 @@ interface Route {
     name: string;
     path: string;
     protected: boolean;
+    scope?: string;
     showOnSidePanel: boolean;
 }
 
@@ -82,6 +84,7 @@ const ROUTES: Route[] = [
         name: "common:operations",
         path: "/operations",
         protected: true,
+        scope: TokenConstants.HUMAN_TASK_SCOPE,
         showOnSidePanel: true,
     },
     {

@@ -22,6 +22,7 @@ import { NavLink } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
 import { routes, SidePanelIcons } from "../../configs";
 import * as UIConstants from "../../constants/ui-constants";
+import { hasScope } from "../../utils";
 import { ThemeIcon } from "../shared";
 
 /**
@@ -61,25 +62,27 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
         <Menu className={ `side-panel ${ type }` } style={ style } vertical fluid>
             {
                 routes.map((route, index) => (
-                    route.showOnSidePanel ?
-                        <Menu.Item
-                            as={ NavLink }
-                            to={ route.path }
-                            name={ route.name }
-                            className={ `side-panel-item ${ activeRoute(route.path) }` }
-                            active={ activeRoute(route.path) === "active" }
-                            onClick={ onSidePanelItemClick }
-                            key={ index }
-                        >
-                            <ThemeIcon
-                                icon={ SidePanelIcons[ route.icon ] }
-                                size="micro"
-                                floated="left"
-                                spaced="right"
-                                transparent
-                            />
-                            <span className="route-name">{ t(route.name) }</span>
-                        </Menu.Item>
+                    route.showOnSidePanel && (route.scope ? hasScope(route.scope) : true)
+                        ? (
+                            <Menu.Item
+                                as={ NavLink }
+                                to={ route.path }
+                                name={ route.name }
+                                className={ `side-panel-item ${ activeRoute(route.path) }` }
+                                active={ activeRoute(route.path) === "active" }
+                                onClick={ onSidePanelItemClick }
+                                key={ index }
+                            >
+                                <ThemeIcon
+                                    icon={ SidePanelIcons[ route.icon ] }
+                                    size="micro"
+                                    floated="left"
+                                    spaced="right"
+                                    transparent
+                                />
+                                <span className="route-name">{ t(route.name) }</span>
+                            </Menu.Item>
+                        )
                         : null
                 ))
             }

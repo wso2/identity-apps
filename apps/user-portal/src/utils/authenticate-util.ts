@@ -52,6 +52,16 @@ export const endUserSession = () => {
  * @return {boolean}
  */
 export const hasLoginPermission = (): boolean => {
-    const scopes = AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.SCOPE);
+    const scopes = AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.SCOPE).split(" ");
     return scopes.includes(TokenConstants.LOGIN_SCOPE);
+};
+
+/**
+ * Checks if the logged in user has a specific scope.
+ *
+ * @return {boolean}
+ */
+export const hasScope = (scope: string): boolean => {
+    const scopes = AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.SCOPE).split(" ");
+    return scopes.includes(scope);
 };
