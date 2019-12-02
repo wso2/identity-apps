@@ -95,11 +95,9 @@
         }
     %>
 </head>
-
 <body>
-<main class="center-segment">
-    <div class="ui container medium center aligned middle aligned">
-        <div class="ui segment">
+    <main class="center-segment">
+        <div class="ui container medium center aligned middle aligned">
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -109,174 +107,168 @@
             <% } else { %>
             <jsp:directive.include file="includes/product-title.jsp"/>
             <% } %>
-
-            <!-- page content -->
-
-            <h2>
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.password")%>
-            </h2>
-
-
-            <% if (error) { %>
-            <div class="ui visible negative message" id="server-error-msg">
-                <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
-            </div>
-            <% } %>
-            <div class="ui negative message" id="error-msg" hidden="hidden"></div>
-
-            <p>
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.detail.to.recover.pwd")%>
-            </p>
-            <div class="ui divider hidden"></div>
-
-            <div class="segment-form">
-                <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
-
-                    <%
-                        if (StringUtils.isNotEmpty(username) && !error) {
-                    %>
-                    <div class="field">
-                        <input type="hidden" name="username" value="<%=Encode.forHtmlAttribute(username)%>"/>
-                    </div>
-                    <%
-                    } else {
-                    %>
-
-                    <div class="field">
-                        <input id="username" name="username" type="text" tabindex="0"
-                               placeholder=
-                                   <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")%> required>
-                    </div>
-
-                    <%
-                        }
-                    %>
-                    <%
-                        if (isEmailNotificationEnabled) {
-                    %>
-                    <div class="ui secondary segment" style="text-align: left;">
+            <div class="ui segment">
+                <!-- page content -->
+                <h2>
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.password")%>
+                </h2>
+                <% if (error) { %>
+                <div class="ui visible negative message" id="server-error-msg">
+                    <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
+                </div>
+                <% } %>
+                <div class="ui negative message" id="error-msg" hidden="hidden"></div>
+                <p>
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.detail.to.recover.pwd")%>
+                </p>
+                <div class="ui divider hidden"></div>
+                <div class="segment-form">
+                    <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
+                        <%
+                            if (StringUtils.isNotEmpty(username) && !error) {
+                        %>
                         <div class="field">
-                            <div class="ui radio checkbox">
-                                <input type="radio" name="recoveryOption" value="EMAIL" checked/>
-                                <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.with.mail")%>
-                                </label>
+                            <input type="hidden" name="username" value="<%=Encode.forHtmlAttribute(username)%>"/>
+                        </div>
+                        <%
+                        } else {
+                        %>
+
+                        <div class="field">
+                            <input id="username" name="username" type="text" tabindex="0"
+                                   placeholder=
+                                       <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")%> required>
+                        </div>
+
+                        <%
+                            }
+                        %>
+                        <%
+                            if (isEmailNotificationEnabled) {
+                        %>
+                        <div class="ui secondary segment" style="text-align: left;">
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <input type="radio" name="recoveryOption" value="EMAIL" checked/>
+                                    <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.with.mail")%>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <input type="radio" name="recoveryOption" value="SECURITY_QUESTIONS"/>
+                                    <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.with.question")%>
+                                    </label>
+                                </div>
                             </div>
                         </div>
+                        <%
+                        } else {
+                        %>
                         <div class="field">
-                            <div class="ui radio checkbox">
-                                <input type="radio" name="recoveryOption" value="SECURITY_QUESTIONS"/>
-                                <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.with.question")%>
-                                </label>
+                            <input type="hidden" name="recoveryOption" value="SECURITY_QUESTIONS"/>
+                        </div>
+                        <%
+                            }
+                        %>
+
+                        <%
+                            String callback = request.getParameter("callback");
+                            if (callback != null) {
+                        %>
+                        <div>
+                            <input type="hidden" name="callback" value="<%=Encode.forHtmlAttribute(callback) %>"/>
+                        </div>
+                        <%
+                            }
+                        %>
+
+                        <%
+                            if (reCaptchaEnabled) {
+                        %>
+                        <div class="field">
+                            <div class="g-recaptcha"
+                                 data-sitekey=
+                                         "<%=Encode.forHtmlContent((String)request.getAttribute("reCaptchaKey"))%>">
                             </div>
                         </div>
-                    </div>
-                    <%
-                    } else {
-                    %>
-                    <div class="field">
-                        <input type="hidden" name="recoveryOption" value="SECURITY_QUESTIONS"/>
-                    </div>
-                    <%
-                        }
-                    %>
-
-                    <%
-                        String callback = request.getParameter("callback");
-                        if (callback != null) {
-                    %>
-                    <div>
-                        <input type="hidden" name="callback" value="<%=Encode.forHtmlAttribute(callback) %>"/>
-                    </div>
-                    <%
-                        }
-                    %>
-
-                    <%
-                        if (reCaptchaEnabled) {
-                    %>
-                    <div class="field">
-                        <div class="g-recaptcha"
-                             data-sitekey=
-                                     "<%=Encode.forHtmlContent((String)request.getAttribute("reCaptchaKey"))%>">
+                        <%
+                            }
+                        %>
+                        <div class="ui divider hidden"></div>
+                        <div class="align-right buttons">
+                            <button type="button" id="recoveryCancel"
+                                    class="ui button"
+                                    onclick="location.href='<%=Encode.forJavaScript(IdentityManagementEndpointUtil.getURLEncodedCallback(callback))%>';">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
+                            </button>
+                            <button id="recoverySubmit"
+                                    class="ui primary button"
+                                    type="submit">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
+                            </button>
                         </div>
-                    </div>
-                    <%
-                        }
-                    %>
-                    <div class="ui divider hidden"></div>
-                    <div class="align-right buttons">
-                        <button type="button" id="recoveryCancel"
-                                class="ui button"
-                                onclick="location.href='<%=Encode.forJavaScript(IdentityManagementEndpointUtil.getURLEncodedCallback(callback))%>';">
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
-                        </button>
-                        <button id="recoverySubmit"
-                                class="ui primary button"
-                                type="submit">
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
-                        </button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</main>
-<!-- /content/body -->
-<!-- product-footer -->
-<%
-    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-    if (productFooterFile.exists()) {
-%>
-<jsp:include page="extensions/product-footer.jsp"/>
-<% } else { %>
-<jsp:directive.include file="includes/product-footer.jsp"/>
-<% } %>
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
-<jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
-<jsp:directive.include file="includes/footer.jsp"/>
-<% } %>
+    </main>
+    <!-- /content/body -->
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+    <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+    <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/footer.jsp"/>
+    <% } %>
 
-<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
-<script type="text/javascript">
+    <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
+    <script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
 
-    $(document).ready(function () {
+        $(document).ready(function () {
 
-        $("#recoverDetailsForm").submit(function (e) {
-            var errorMessage = $("#error-msg");
-            errorMessage.hide();
+            $("#recoverDetailsForm").submit(function (e) {
+                var errorMessage = $("#error-msg");
+                errorMessage.hide();
 
-            var firstName = $("#username").val();
-            if (firstName == '') {
-                errorMessage.text("Please fill the first name.");
-                errorMessage.show();
-                $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
-                return false;
-            }
+                var firstName = $("#username").val();
+                if (firstName == '') {
+                    errorMessage.text("Please fill the first name.");
+                    errorMessage.show();
+                    $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+                    return false;
+                }
 
-            <%
-            if (reCaptchaEnabled) {
-            %>
-            var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
-            if (reCaptchaResponse.trim() == '') {
-                errorMessage.text("Please select reCaptcha.");
-                errorMessage.show();
-                $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
-                return false;
-            }
-            <%
-            }
-            %>
+                <%
+                if (reCaptchaEnabled) {
+                %>
+                var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
+                if (reCaptchaResponse.trim() == '') {
+                    errorMessage.text("Please select reCaptcha.");
+                    errorMessage.show();
+                    $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+                    return false;
+                }
+                <%
+                }
+                %>
 
-            return true;
+                return true;
+            });
         });
-    });
 
-</script>
+    </script>
 </body>
 </html>

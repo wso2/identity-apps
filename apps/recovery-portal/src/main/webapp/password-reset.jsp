@@ -51,11 +51,9 @@
     <script src="js/respond.min.js"></script>
     <![endif]-->
 </head>
-
 <body>
-<main class="center-segment">
-    <div class="ui container medium center aligned middle aligned">
-        <div class="ui segment">
+    <main class="center-segment">
+        <div class="ui container medium center aligned middle aligned">
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -65,121 +63,121 @@
             <% } else { %>
             <jsp:directive.include file="includes/product-title.jsp"/>
             <% } %>
+            <div class="ui segment">
+                <!-- content -->
+                <h2>
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Reset.Password")%>
+                </h2>
 
-            <!-- content -->
-            <h2>
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Reset.Password")%>
-            </h2>
+                <% if (error) { %>
+                <div class="ui visible negative message">
+                    <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
+                </div>
+                <% } %>
+                <div id="ui visible negative message" hidden="hidden"></div>
 
-            <% if (error) { %>
-            <div class="ui visible negative message">
-                <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
-            </div>
-            <% } %>
-            <div id="ui visible negative message" hidden="hidden"></div>
+                <div class="segment-form">
+                    <form class="ui large form" method="post" action="completepasswordreset.do" id="passwordResetForm">
+                        <div class="field">
+                            <label>
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.new.password")%>
+                            </label>
+                            <input id="reset-password" name="reset-password" type="password"
+                                   required="">
+                        </div>
 
-            <div class="segment-form">
-                <form class="ui large form" method="post" action="completepasswordreset.do" id="passwordResetForm">
-                    <div class="field">
-                        <label>
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.new.password")%>
-                        </label>
-                        <input id="reset-password" name="reset-password" type="password"
-                               required="">
-                    </div>
+                        <%
+                            if (callback != null) {
+                        %>
+                        <div>
+                            <input type="hidden" name="callback" value="<%=Encode.forHtmlAttribute(callback) %>"/>
+                        </div>
+                        <%
+                            }
+                        %>
+                        <%
+                            if (tenantDomain != null) {
+                        %>
+                        <div>
+                            <input type="hidden" name="tenantdomain" value="<%=Encode.forHtmlAttribute(tenantDomain) %>"/>
+                        </div>
+                        <%
+                            }
+                        %>
+                        <div class="field">
+                            <label>
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Confirm.password")%>
+                            </label>
+                            <input id="reset-password2" name="reset-password2" type="password"
+                                   data-match="reset-password" required="">
+                        </div>
+                        <div class="ui divider hidden"></div>
 
-                    <%
-                        if (callback != null) {
-                    %>
-                    <div>
-                        <input type="hidden" name="callback" value="<%=Encode.forHtmlAttribute(callback) %>"/>
-                    </div>
-                    <%
-                        }
-                    %>
-                    <%
-                        if (tenantDomain != null) {
-                    %>
-                    <div>
-                        <input type="hidden" name="tenantdomain" value="<%=Encode.forHtmlAttribute(tenantDomain) %>"/>
-                    </div>
-                    <%
-                        }
-                    %>
-                    <div class="field">
-                        <label>
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Confirm.password")%>
-                        </label>
-                        <input id="reset-password2" name="reset-password2" type="password"
-                               data-match="reset-password" required="">
-                    </div>
-                    <div class="ui divider hidden"></div>
-
-                    <div class="align-right buttons">
-                        <button id="submit"
-                                class="ui primary button"
-                                type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
-                        </button>
-                    </div>
-                </form>
+                        <div class="align-right buttons">
+                            <button id="submit"
+                                    class="ui primary button"
+                                    type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</main>
-<!-- /content/body -->
-<!-- product-footer -->
-<%
-    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-    if (productFooterFile.exists()) {
-%>
-<jsp:include page="extensions/product-footer.jsp"/>
-<% } else { %>
-<jsp:directive.include file="includes/product-footer.jsp"/>
-<% } %>
+    </main>
+    <!-- /content/body -->
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+    <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
 
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
-<jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
-<jsp:directive.include file="includes/footer.jsp"/>
-<% } %>
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+    <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/footer.jsp"/>
+    <% } %>
 
-<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
+    <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
+    <script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
 
-<script type="text/javascript">
-    $(document).ready(function () {
+    <script type="text/javascript">
+        $(document).ready(function () {
 
-        $("#passwordResetForm").submit(function (e) {
+            $("#passwordResetForm").submit(function (e) {
 
-            $("#server-error-msg").remove();
-            var password = $("#reset-password").val();
-            var password2 = $("#reset-password2").val();
-            var error_msg = $("#error-msg");
+                $("#server-error-msg").remove();
+                var password = $("#reset-password").val();
+                var password2 = $("#reset-password2").val();
+                var error_msg = $("#error-msg");
 
-            if (!password || 0 === password.length) {
-                error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                "Password.cannot.be.empty")%>");
-                error_msg.show();
-                $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
-                return false;
-            }
+                if (!password || 0 === password.length) {
+                    error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                    "Password.cannot.be.empty")%>");
+                    error_msg.show();
+                    $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
+                    return false;
+                }
 
-            if (password != password2) {
-                error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                 "Passwords.did.not.match.please.try.again")%>");
-                error_msg.show();
-                $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
-                return false;
-            }
+                if (password != password2) {
+                    error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                     "Passwords.did.not.match.please.try.again")%>");
+                    error_msg.show();
+                    $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
+                    return false;
+                }
 
-            return true;
+                return true;
+            });
         });
-    });
 
-</script>
+    </script>
 </body>
 </html>

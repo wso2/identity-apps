@@ -164,6 +164,7 @@
         reCaptchaEnabled = true;
     }
 %>
+
 <!doctype html>
 <html>
 <head>
@@ -189,12 +190,9 @@
         }
     %>
 </head>
-
 <body>
-
-<main class="center-segment">
-    <div class="ui container large center aligned middle aligned">
-        <div class="ui segment">
+    <main class="center-segment">
+        <div class="ui container large center aligned middle aligned">
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -204,17 +202,19 @@
             <% } else { %>
             <jsp:directive.include file="includes/product-title.jsp"/>
             <% } %>
-            <h2>
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Create.account")%>
-            </h2>
-            <div class="ui divider hidden"></div>
-            <!-- content -->
-            <div class="segment-form">
-                <% if (skipSignUpEnableCheck) { %>
-                <form class="ui large form" action="../commonauth" method="post" id="register">
-                        <% } else { %>
-                    <form class="ui large form" action="processregistration.do" method="post" id="register">
-                        <% } %>
+            <div class="ui segment">
+
+                <h2>
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Create.account")%>
+                </h2>
+                <div class="ui divider hidden"></div>
+                <!-- content -->
+                <div class="segment-form">
+                    <% if (skipSignUpEnableCheck) { %>
+                    <form class="ui large form" action="../commonauth" method="post" id="register">
+                            <% } else { %>
+                        <form class="ui large form" action="processregistration.do" method="post" id="register">
+                            <% } %>
 
                             <div class="">
                                 <% if (error) { %>
@@ -243,33 +243,33 @@
                                         String firstNameValue = request.getParameter(IdentityManagementEndpointConstants.ClaimURIs.FIRST_NAME_CLAIM);
                                 %>
                                 <div class="two fields">
-                                <div class="field">
-                                    <label class="control-label">
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "First.name")%>
-                                    </label>
-                                    <input type="text" name="http://wso2.org/claims/givenname" class="form-control"
-                                        <% if (firstNamePII.getRequired() || !piisConfigured) {%> required <%}%>
-                                        <% if (skipSignUpEnableCheck && StringUtils.isNotEmpty(firstNameValue)) { %>
-                                           value="<%= Encode.forHtmlAttribute(firstNameValue)%>" disabled <% } %>>
-                                </div>
-                                <%}%>
+                                    <div class="field">
+                                        <label class="control-label">
+                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "First.name")%>
+                                        </label>
+                                        <input type="text" name="http://wso2.org/claims/givenname" class="form-control"
+                                            <% if (firstNamePII.getRequired() || !piisConfigured) {%> required <%}%>
+                                            <% if (skipSignUpEnableCheck && StringUtils.isNotEmpty(firstNameValue)) { %>
+                                               value="<%= Encode.forHtmlAttribute(firstNameValue)%>" disabled <% } %>>
+                                    </div>
+                                    <%}%>
 
-                                <% Claim lastNamePII =
-                                        uniquePIIs.get(IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM);
-                                    if (lastNamePII != null) {
-                                        String lastNameValue =
-                                                request.getParameter(IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM);
-                                %>
-                                <div class="field">
-                                    <label class="control-label">
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Last.name")%>
-                                    </label>
-                                    <input type="text" name="http://wso2.org/claims/lastname" class="form-control"
-                                        <% if (lastNamePII.getRequired() || !piisConfigured) {%> required <%}%>
-                                        <% if (skipSignUpEnableCheck && StringUtils.isNotEmpty(lastNameValue)) { %>
-                                           value="<%= Encode.forHtmlAttribute(lastNameValue)%>" disabled <% } %>>
+                                    <% Claim lastNamePII =
+                                            uniquePIIs.get(IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM);
+                                        if (lastNamePII != null) {
+                                            String lastNameValue =
+                                                    request.getParameter(IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM);
+                                    %>
+                                    <div class="field">
+                                        <label class="control-label">
+                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Last.name")%>
+                                        </label>
+                                        <input type="text" name="http://wso2.org/claims/lastname" class="form-control"
+                                            <% if (lastNamePII.getRequired() || !piisConfigured) {%> required <%}%>
+                                            <% if (skipSignUpEnableCheck && StringUtils.isNotEmpty(lastNameValue)) { %>
+                                               value="<%= Encode.forHtmlAttribute(lastNameValue)%>" disabled <% } %>>
 
-                                </div>
+                                    </div>
                                 </div>
                                 <%}%>
                                 <div class="field">
@@ -278,20 +278,20 @@
                                            class="form-control required usrName usrNameLength">
                                 </div>
                                 <div class="two fields">
-                                <div class="field">
-                                    <label class="control-label">
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Password")%>
-                                    </label>
-                                    <input id="password" name="password" type="password"
-                                           class="form-control" required>
-                                </div>
-                                <div class="field">
-                                    <label class="control-label">
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Confirm.password")%>
-                                    </label>
-                                    <input id="password2" name="password2" type="password" class="form-control"
-                                           data-match="reg-password" required>
-                                </div>
+                                    <div class="field">
+                                        <label class="control-label">
+                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Password")%>
+                                        </label>
+                                        <input id="password" name="password" type="password"
+                                               class="form-control" required>
+                                    </div>
+                                    <div class="field">
+                                        <label class="control-label">
+                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Confirm.password")%>
+                                        </label>
+                                        <input id="password2" name="password2" type="password" class="form-control"
+                                               data-match="reg-password" required>
+                                    </div>
                                 </div>
 
                                 <% Claim emailNamePII =
@@ -308,7 +308,7 @@
                                            data-validate="email"
                                         <% if (emailNamePII.getRequired() || !piisConfigured) {%> required <%}%>
                                         <% if
-                                        (skipSignUpEnableCheck && StringUtils.isNotEmpty(emailValue)) {%>
+                                            (skipSignUpEnableCheck && StringUtils.isNotEmpty(emailValue)) {%>
                                            value="<%= Encode.forHtmlAttribute(emailValue)%>"
                                            disabled<%}%>>
                                 </div>
@@ -406,12 +406,12 @@
                             <% if (skipSignUpEnableCheck) { %>
                             <div class="field">
                                 <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute
-                                    (request.getParameter("sessionDataKey"))%>'/>
+                                        (request.getParameter("sessionDataKey"))%>'/>
                             </div>
                             <div class="field">
                                 <input type="hidden" name="policy" value='<%=Encode.forHtmlAttribute
-                                    (IdentityManagementServiceUtil.getInstance().getServiceContextURL().replace("/services",
-                                    "/authenticationendpoint/privacy_policy.do"))%>'/>
+                                        (IdentityManagementServiceUtil.getInstance().getServiceContextURL().replace("/services",
+                                        "/authenticationendpoint/privacy_policy.do"))%>'/>
                             </div>
                             <% }
 
@@ -424,9 +424,9 @@
                                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                                     "Need.consent.for.following.purposes")%>
                                             <span>
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                                "I.consent.to.use.them")%>
-                                    </span>
+                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                                    "I.consent.to.use.them")%>
+                                        </span>
                                         </p>
                                     </div>
                                     <%
@@ -509,9 +509,9 @@
                                             <input type="checkbox"/>
                                             <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                                     "I.confirm.that.read.and.understood")%>
-                                            <a href="/authenticationendpoint/privacy_policy.do" target="policy-pane">
-                                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Privacy.policy")%>
-                                            </a></label>
+                                                <a href="/authenticationendpoint/privacy_policy.do" target="policy-pane">
+                                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Privacy.policy")%>
+                                                </a></label>
                                         </div>
                                     </div>
                                     <!--End Terms/Privacy Policy-->
@@ -533,370 +533,422 @@
                                 </div>
                                 <% if (!skipSignUpEnableCheck) { %>
                                 <div>
-                                    <span>
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Already.have.account")%></span>
+                                        <span>
+                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Already.have.account")%></span>
                                     <a href="<%=Encode.forHtmlAttribute(IdentityManagementEndpointUtil.getUserPortalUrl(
-                                        application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL)))%>"
+                                            application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL)))%>"
                                        id="signInLink">
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Sign.in")%>
                                     </a>
                                 </div>
                                 <% } %>
                             </div>
-                    </form>
+                        </form>
+                </div>
             </div>
+        </div>
+    </main>
+    <!-- /content/body -->
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+    <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
+
+
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+    <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/footer.jsp"/>
+    <% } %>
+
+
+    <div id="attribute_selection_validation" class="ui modal tiny">
+        <div class="header">
+            <h4>
+                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Consent.selection")%>
+            </h4>
+        </div>
+        <div class="content">
+            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "You.need.consent.all.claims")%>
+        </div>
+        <div class="actions">
+            <button type="button" class="ui primary button" data-dismiss="modal">
+                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Ok")%>
+            </button>
         </div>
     </div>
-</main>
-<!-- /content/body -->
-<!-- product-footer -->
-<%
-    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-    if (productFooterFile.exists()) {
-%>
-<jsp:include page="extensions/product-footer.jsp"/>
-<% } else { %>
-<jsp:directive.include file="includes/product-footer.jsp"/>
-<% } %>
 
 
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
-<jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
-<jsp:directive.include file="includes/footer.jsp"/>
-<% } %>
-
-
-        <div id="attribute_selection_validation" class="ui modal tiny">
-            <div class="header">
-                <h4>
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Consent.selection")%>
-                </h4>
-            </div>
-            <div class="content">
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "You.need.consent.all.claims")%>
-            </div>
-            <div class="actions">
-                <button type="button" class="ui primary button" data-dismiss="modal">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Ok")%>
-                </button>
-            </div>
+    <div id="mandetory_pii_selection_validation" class="ui tiny modal">
+        <div class="header">
+            <h4>
+                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Consent.selection")%>
+            </h4>
         </div>
-
-
-        <div id="mandetory_pii_selection_validation" class="ui tiny modal">
-            <div class="header">
-                <h4>
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Consent.selection")%>
-                </h4>
-            </div>
-            <div class="content">
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Need.to.select.all.mandatory.attributes")%>
-            </div>
-            <div class="actions">
-                <button type="button" class="ui primary button cancel" data-dismiss="modal">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Ok")%>
-                </button>
-            </div>
+        <div class="content">
+            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Need.to.select.all.mandatory.attributes")%>
         </div>
+        <div class="actions">
+            <button type="button" class="ui primary button cancel" data-dismiss="modal">
+                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Ok")%>
+            </button>
+        </div>
+    </div>
 
 
-<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/theme/semantic.js"></script>
-<script type="text/javascript" src="libs/handlebars-v4.0.11.js"></script>
-<script type="text/javascript" src="libs/jstree/dist/jstree.min.js"></script>
-<script type="text/javascript" src="libs/jstree/src/jstree-actions.js"></script>
-<script type="text/javascript" src="assets/js/consent_template_1.js"></script>
-<script type="text/javascript" src="assets/js/consent_template_2.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        var container;
-        var allAttributes = [];
-        var canSubmit;
+    <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
+    <script src="libs/theme/semantic.js"></script>
+    <script type="text/javascript" src="libs/handlebars-v4.0.11.js"></script>
+    <script type="text/javascript" src="libs/jstree/dist/jstree.min.js"></script>
+    <script type="text/javascript" src="libs/jstree/src/jstree-actions.js"></script>
+    <script type="text/javascript" src="assets/js/consent_template_1.js"></script>
+    <script type="text/javascript" src="assets/js/consent_template_2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var container;
+            var allAttributes = [];
+            var canSubmit;
 
-        var agreementChk = $(".agreement-checkbox input");
-        var registrationBtn = $("#registrationSubmit");
+            var agreementChk = $(".agreement-checkbox input");
+            var registrationBtn = $("#registrationSubmit");
 
-        if (agreementChk.length > 0) {
-            registrationBtn.prop("disabled", true).addClass("disabled");
-        }
-        agreementChk.click(function () {
-            if ($(this).is(":checked")) {
-                registrationBtn.prop("disabled", false).removeClass("disabled");
-            } else {
+            if (agreementChk.length > 0) {
                 registrationBtn.prop("disabled", true).addClass("disabled");
             }
-        });
+            agreementChk.click(function () {
+                if ($(this).is(":checked")) {
+                    registrationBtn.prop("disabled", false).removeClass("disabled");
+                } else {
+                    registrationBtn.prop("disabled", true).addClass("disabled");
+                }
+            });
 
-        $(".form-info").tooltip();
+            $(".form-info").tooltip();
 
-        $("#register").submit(function (e) {
-            var unsafeCharPattern = /[<>`\"]/;
-            var elements = document.getElementsByTagName("input");
-            var invalidInput = false;
-            var error_msg = $("#error-msg");
+            $("#register").submit(function (e) {
+                var unsafeCharPattern = /[<>`\"]/;
+                var elements = document.getElementsByTagName("input");
+                var invalidInput = false;
+                var error_msg = $("#error-msg");
 
-            for (i = 0; i < elements.length; i++) {
-                if (elements[i].type === 'text' && elements[i].value != null
-                    && elements[i].value.match(unsafeCharPattern) != null) {
-                    error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                        "For.security.following.characters.restricted")%>");
-                    error_msg.show();
-                    $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
-                    invalidInput = true;
+                for (i = 0; i < elements.length; i++) {
+                    if (elements[i].type === 'text' && elements[i].value != null
+                        && elements[i].value.match(unsafeCharPattern) != null) {
+                        error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                            "For.security.following.characters.restricted")%>");
+                        error_msg.show();
+                        $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
+                        invalidInput = true;
+                        return false;
+                    }
+                }
+
+                if (invalidInput) {
                     return false;
                 }
+
+                var password = $("#password").val();
+                var password2 = $("#password2").val();
+
+                if (password != password2) {
+                    error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                        "Passwords.did.not.match.please.try.again")%>");
+                    error_msg.show();
+                    $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
+                    return false;
+                }
+
+                <%
+                if(reCaptchaEnabled) {
+                %>
+                var resp = $("[name='g-recaptcha-response']")[0].value;
+                if (resp.trim() == '') {
+                    error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                        "Please.select.reCaptcha")%>");
+                    error_msg.show();
+                    $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
+                    return false;
+                }
+                <%
+                }
+                %>
+
+                <%
+                if (hasPurposes) {
+                %>
+                var self = this;
+                var receipt;
+                e.preventDefault();
+                <%
+                if (consentDisplayType == "template") {
+                %>
+                receipt = addReciptInformationFromTemplate();
+                <%
+                } else if (consentDisplayType == "tree") {
+                %>
+                receipt = addReciptInformation(container);
+                <%
+                } else if (consentDisplayType == "row")  {
+                %>
+                receipt = addReciptInformationFromRows();
+                <%
+                }
+                %>
+
+                $('<input />').attr('type', 'hidden')
+                    .attr('name', "consent")
+                    .attr('value', JSON.stringify(receipt))
+                    .appendTo('#register');
+                if (canSubmit) {
+                    self.submit();
+                }
+
+                <%
+                }
+                %>
+
+                return true;
+            });
+
+
+            function compareArrays(arr1, arr2) {
+                return $(arr1).not(arr2).length == 0 && $(arr2).not(arr1).length == 0
             }
 
-            if (invalidInput) {
-                return false;
-            }
+            String.prototype.replaceAll = function (str1, str2, ignore) {
+                return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g, "\\$&"), (ignore ? "gi" : "g")), (typeof (str2) == "string") ? str2.replace(/\$/g, "$$$$") : str2);
+            };
 
-            var password = $("#password").val();
-            var password2 = $("#password2").val();
-
-            if (password != password2) {
-                error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                    "Passwords.did.not.match.please.try.again")%>");
-                error_msg.show();
-                $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
-                return false;
-            }
-
-            <%
-            if(reCaptchaEnabled) {
-            %>
-            var resp = $("[name='g-recaptcha-response']")[0].value;
-            if (resp.trim() == '') {
-                error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                    "Please.select.reCaptcha")%>");
-                error_msg.show();
-                $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
-                return false;
-            }
-            <%
-            }
-            %>
+            Handlebars.registerHelper('grouped_each', function (every, context, options) {
+                var out = "", subcontext = [], i;
+                if (context && context.length > 0) {
+                    for (i = 0; i < context.length; i++) {
+                        if (i > 0 && i % every === 0) {
+                            out += options.fn(subcontext);
+                            subcontext = [];
+                        }
+                        subcontext.push(context[i]);
+                    }
+                    out += options.fn(subcontext);
+                }
+                return out;
+            });
 
             <%
             if (hasPurposes) {
-            %>
-            var self = this;
-            var receipt;
-            e.preventDefault();
+                if(consentDisplayType == "template") {
+                    %>
+            renderReceiptDetailsFromTemplate(<%=purposes%>);
             <%
-            if (consentDisplayType == "template") {
+                } else if (consentDisplayType == "tree") {
             %>
-            receipt = addReciptInformationFromTemplate();
+            renderReceiptDetails(<%=purposes%>);
             <%
-            } else if (consentDisplayType == "tree") {
+                } else if (consentDisplayType == "row"){
             %>
-            receipt = addReciptInformation(container);
+            renderReceiptDetailsFromRows(<%=purposes%>);
             <%
-            } else if (consentDisplayType == "row")  {
-            %>
-            receipt = addReciptInformationFromRows();
-            <%
+                }
             }
             %>
 
-            $('<input />').attr('type', 'hidden')
-                .attr('name', "consent")
-                .attr('value', JSON.stringify(receipt))
-                .appendTo('#register');
-            if (canSubmit) {
-                self.submit();
+            function renderReceiptDetails(data) {
+
+                var treeTemplate =
+                    '<div id="html1">' +
+                    '<ul><li class="jstree-open" data-jstree=\'{"icon":"icon-book"}\'>All' +
+                    '<ul>' +
+                    '{{#purposes}}' +
+                    '<li data-jstree=\'{"icon":"icon-book"}\' purposeid="{{purposeId}}" mandetorypurpose={{mandatory}}>' +
+                    '{{purpose}}{{#if mandatory}}<span class="required_consent">*</span>{{/if}} {{#if description}}<img src="images/info.png" class="form-info" data-toggle="tooltip" title="{{description}}" data-placement="right"/>{{/if}}<ul>' +
+                    '{{#piiCategories}}' +
+                    '<li data-jstree=\'{"icon":"icon-user"}\' piicategoryid="{{piiCategoryId}}" mandetorypiicatergory={{mandatory}}>{{#if displayName}}{{displayName}}{{else}}{{piiCategory}}{{/if}}{{#if mandatory}}<span class="required_consent">*</span>{{/if}}</li>' +
+                    '</li>' +
+                    '{{/piiCategories}}' +
+                    '</ul>' +
+                    '{{/purposes}}' +
+                    '</ul></li>' +
+                    '</ul>' +
+                    '</div>';
+
+                var tree = Handlebars.compile(treeTemplate);
+                var treeRendered = tree(data);
+
+                $("#tree-table").html(treeRendered);
+
+                container = $("#html1").jstree({
+                    plugins: ["table", "sort", "checkbox", "actions"],
+                    checkbox: {"keep_selected_style": false},
+                });
+
+                container.bind('hover_node.jstree', function () {
+                    var bar = $(this).find('.jstree-wholerow-hovered');
+                    bar.css('height',
+                        bar.parent().children('a.jstree-anchor').height() + 'px');
+                });
+
+                container.on('ready.jstree', function (event, data) {
+                    var $tree = $(this);
+                    $($tree.jstree().get_json($tree, {
+                        flat: true
+                    }))
+                        .each(function (index, value) {
+                            var node = container.jstree().get_node(this.id);
+                            allAttributes.push(node.id);
+                        });
+                    container.jstree('open_all');
+                });
+
             }
 
-            <%
-            }
-            %>
+            function addReciptInformation(container) {
+                // var oldReceipt = receiptData.receipts;
+                var newReceipt = {};
+                var services = [];
+                var service = {};
+                var mandatoryPiis = [];
+                var selectedMandatoryPiis = [];
 
-            return true;
-        });
+                var selectedNodes = container.jstree(true).get_selected('full', true);
+                var undeterminedNodes = container.jstree(true).get_undetermined('full', true);
+                var allTreeNodes = container.jstree(true).get_json('#', {flat: true});
 
-
-        function compareArrays(arr1, arr2) {
-            return $(arr1).not(arr2).length == 0 && $(arr2).not(arr1).length == 0
-        }
-
-        String.prototype.replaceAll = function (str1, str2, ignore) {
-            return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g, "\\$&"), (ignore ? "gi" : "g")), (typeof (str2) == "string") ? str2.replace(/\$/g, "$$$$") : str2);
-        };
-
-        Handlebars.registerHelper('grouped_each', function (every, context, options) {
-            var out = "", subcontext = [], i;
-            if (context && context.length > 0) {
-                for (i = 0; i < context.length; i++) {
-                    if (i > 0 && i % every === 0) {
-                        out += options.fn(subcontext);
-                        subcontext = [];
+                $.each(allTreeNodes, function (i, val) {
+                    if (typeof (val.li_attr.mandetorypiicatergory) != "undefined" &&
+                        val.li_attr.mandetorypiicatergory == "true") {
+                        mandatoryPiis.push(val.li_attr.piicategoryid);
                     }
-                    subcontext.push(context[i]);
+                });
+
+                $.each(selectedNodes, function (i, val) {
+                    if (val.hasOwnProperty('li_attr')) {
+                        selectedMandatoryPiis.push(selectedNodes[i].li_attr.piicategoryid);
+                    }
+                });
+
+                var allMandatoryPiisSelected = mandatoryPiis.every(function (val) {
+                    return selectedMandatoryPiis.indexOf(val) >= 0;
+                });
+
+                if (!allMandatoryPiisSelected) {
+                    $("#mandetory_pii_selection_validation").modal({blurring: true}).modal("show");
+                    canSubmit = false;
+                } else {
+                    canSubmit = true;
                 }
-                out += options.fn(subcontext);
+
+                if (!selectedNodes || selectedNodes.length < 1) {
+                    //revokeReceipt(oldReceipt.consentReceiptID);
+                    return;
+                }
+                selectedNodes = selectedNodes.concat(undeterminedNodes);
+                var relationshipTree = unflatten(selectedNodes); //Build relationship tree
+                var purposes = relationshipTree[0].children;
+                var newPurposes = [];
+
+                for (var i = 0; i < purposes.length; i++) {
+                    var purpose = purposes[i];
+                    var newPurpose = {};
+                    newPurpose["purposeId"] = purpose.li_attr.purposeid;
+                    newPurpose['piiCategory'] = [];
+                    newPurpose['purposeCategoryId'] = [<%=defaultPurposeCatId%>];
+
+                    var piiCategory = [];
+                    var categories = purpose.children;
+                    for (var j = 0; j < categories.length; j++) {
+                        var category = categories[j];
+                        var c = {};
+                        c['piiCategoryId'] = category.li_attr.piicategoryid;
+                        piiCategory.push(c);
+                    }
+                    newPurpose['piiCategory'] = piiCategory;
+                    newPurposes.push(newPurpose);
+                }
+                service['purposes'] = newPurposes;
+                services.push(service);
+                newReceipt['services'] = services;
+
+                return newReceipt;
             }
-            return out;
-        });
 
-        <%
-        if (hasPurposes) {
-            if(consentDisplayType == "template") {
-                %>
-        renderReceiptDetailsFromTemplate(<%=purposes%>);
-        <%
-            } else if (consentDisplayType == "tree") {
-        %>
-        renderReceiptDetails(<%=purposes%>);
-        <%
-            } else if (consentDisplayType == "row"){
-        %>
-        renderReceiptDetailsFromRows(<%=purposes%>);
-        <%
-            }
-        }
-        %>
+            function addReciptInformationFromTemplate() {
+                var newReceipt = {};
+                var services = [];
+                var service = {};
+                var newPurposes = [];
 
-        function renderReceiptDetails(data) {
+                $('.consent-statement input[type="checkbox"], .consent-statement strong label')
+                    .each(function (i, element) {
+                        var checked = $(element).prop('checked');
+                        var isLable = $(element).is("lable");
+                        var newPurpose = {};
+                        var piiCategories = [];
+                        var isExistingPurpose = false;
 
-            var treeTemplate =
-                '<div id="html1">' +
-                '<ul><li class="jstree-open" data-jstree=\'{"icon":"icon-book"}\'>All' +
-                '<ul>' +
-                '{{#purposes}}' +
-                '<li data-jstree=\'{"icon":"icon-book"}\' purposeid="{{purposeId}}" mandetorypurpose={{mandatory}}>' +
-                '{{purpose}}{{#if mandatory}}<span class="required_consent">*</span>{{/if}} {{#if description}}<img src="images/info.png" class="form-info" data-toggle="tooltip" title="{{description}}" data-placement="right"/>{{/if}}<ul>' +
-                '{{#piiCategories}}' +
-                '<li data-jstree=\'{"icon":"icon-user"}\' piicategoryid="{{piiCategoryId}}" mandetorypiicatergory={{mandatory}}>{{#if displayName}}{{displayName}}{{else}}{{piiCategory}}{{/if}}{{#if mandatory}}<span class="required_consent">*</span>{{/if}}</li>' +
-                '</li>' +
-                '{{/piiCategories}}' +
-                '</ul>' +
-                '{{/purposes}}' +
-                '</ul></li>' +
-                '</ul>' +
-                '</div>';
+                        if (!isLable && checked) {
+                            var purposeId = element.data("purposeid");
 
-            var tree = Handlebars.compile(treeTemplate);
-            var treeRendered = tree(data);
+                            if (newPurposes.length != 0) {
+                                for (var i = 0; i < newPurposes.length; i++) {
+                                    var selectedPurpose = newPurposes[i];
+                                    if (selectedPurpose.purposeId == purposeId) {
+                                        newPurpose = selectedPurpose;
+                                        piiCategories = newPurpose.piiCategory;
+                                        isExistingPurpose = true;
+                                    }
+                                }
+                            }
+                        }
 
-            $("#tree-table").html(treeRendered);
+                        var newPiiCategory = {};
 
-            container = $("#html1").jstree({
-                plugins: ["table", "sort", "checkbox", "actions"],
-                checkbox: {"keep_selected_style": false},
-            });
-
-            container.bind('hover_node.jstree', function () {
-                var bar = $(this).find('.jstree-wholerow-hovered');
-                bar.css('height',
-                    bar.parent().children('a.jstree-anchor').height() + 'px');
-            });
-
-            container.on('ready.jstree', function (event, data) {
-                var $tree = $(this);
-                $($tree.jstree().get_json($tree, {
-                    flat: true
-                }))
-                    .each(function (index, value) {
-                        var node = container.jstree().get_node(this.id);
-                        allAttributes.push(node.id);
+                        newPurpose["purposeId"] = element.data("purposeid");
+                        newPiiCategory['piiCategoryId'] = element.data("piicategoryid");
+                        piiCategories.push(newPiiCategory);
+                        newPurpose['piiCategory'] = piiCategories;
+                        newPurpose['purposeCategoryId'] = [<%=defaultPurposeCatId%>];
+                        if (!isExistingPurpose) {
+                            newPurposes.push(newPurpose);
+                        }
                     });
-                container.jstree('open_all');
-            });
+                service['purposes'] = newPurposes;
+                services.push(service);
+                newReceipt['services'] = services;
 
-        }
-
-        function addReciptInformation(container) {
-            // var oldReceipt = receiptData.receipts;
-            var newReceipt = {};
-            var services = [];
-            var service = {};
-            var mandatoryPiis = [];
-            var selectedMandatoryPiis = [];
-
-            var selectedNodes = container.jstree(true).get_selected('full', true);
-            var undeterminedNodes = container.jstree(true).get_undetermined('full', true);
-            var allTreeNodes = container.jstree(true).get_json('#', {flat: true});
-
-            $.each(allTreeNodes, function (i, val) {
-                if (typeof (val.li_attr.mandetorypiicatergory) != "undefined" &&
-                    val.li_attr.mandetorypiicatergory == "true") {
-                    mandatoryPiis.push(val.li_attr.piicategoryid);
-                }
-            });
-
-            $.each(selectedNodes, function (i, val) {
-                if (val.hasOwnProperty('li_attr')) {
-                    selectedMandatoryPiis.push(selectedNodes[i].li_attr.piicategoryid);
-                }
-            });
-
-            var allMandatoryPiisSelected = mandatoryPiis.every(function (val) {
-                return selectedMandatoryPiis.indexOf(val) >= 0;
-            });
-
-            if (!allMandatoryPiisSelected) {
-                $("#mandetory_pii_selection_validation").modal({blurring:true}).modal("show");
-                canSubmit = false;
-            } else {
-                canSubmit = true;
+                return newReceipt;
             }
 
-            if (!selectedNodes || selectedNodes.length < 1) {
-                //revokeReceipt(oldReceipt.consentReceiptID);
-                return;
-            }
-            selectedNodes = selectedNodes.concat(undeterminedNodes);
-            var relationshipTree = unflatten(selectedNodes); //Build relationship tree
-            var purposes = relationshipTree[0].children;
-            var newPurposes = [];
+            function addReciptInformationFromRows() {
+                var newReceipt = {};
+                var services = [];
+                var service = {};
+                var newPurposes = [];
+                var mandatoryPiis = [];
+                var selectedMandatoryPiis = [];
 
-            for (var i = 0; i < purposes.length; i++) {
-                var purpose = purposes[i];
-                var newPurpose = {};
-                newPurpose["purposeId"] = purpose.li_attr.purposeid;
-                newPurpose['piiCategory'] = [];
-                newPurpose['purposeCategoryId'] = [<%=defaultPurposeCatId%>];
-
-                var piiCategory = [];
-                var categories = purpose.children;
-                for (var j = 0; j < categories.length; j++) {
-                    var category = categories[j];
-                    var c = {};
-                    c['piiCategoryId'] = category.li_attr.piicategoryid;
-                    piiCategory.push(c);
-                }
-                newPurpose['piiCategory'] = piiCategory;
-                newPurposes.push(newPurpose);
-            }
-            service['purposes'] = newPurposes;
-            services.push(service);
-            newReceipt['services'] = services;
-
-            return newReceipt;
-        }
-
-        function addReciptInformationFromTemplate() {
-            var newReceipt = {};
-            var services = [];
-            var service = {};
-            var newPurposes = [];
-
-            $('.consent-statement input[type="checkbox"], .consent-statement strong label')
-                .each(function (i, element) {
-                    var checked = $(element).prop('checked');
-                    var isLable = $(element).is("lable");
+                $('#row-container input[type="checkbox"]').each(function (i, checkbox) {
+                    var checkboxLabel = $(checkbox).next();
+                    var checked = $(checkbox).prop('checked');
                     var newPurpose = {};
                     var piiCategories = [];
                     var isExistingPurpose = false;
 
-                    if (!isLable && checked) {
-                        var purposeId = element.data("purposeid");
+                    if (checkboxLabel.data("mandetorypiicatergory")) {
+                        mandatoryPiis.push(checkboxLabel.data("piicategoryid"));
+                    }
 
+                    if (checked) {
+                        var purposeId = checkboxLabel.data("purposeid");
+                        selectedMandatoryPiis.push(checkboxLabel.data("piicategoryid"));
                         if (newPurposes.length != 0) {
                             for (var i = 0; i < newPurposes.length; i++) {
                                 var selectedPurpose = newPurposes[i];
@@ -907,177 +959,125 @@
                                 }
                             }
                         }
-                    }
+                        var newPiiCategory = {};
 
-                    var newPiiCategory = {};
-
-                    newPurpose["purposeId"] = element.data("purposeid");
-                    newPiiCategory['piiCategoryId'] = element.data("piicategoryid");
-                    piiCategories.push(newPiiCategory);
-                    newPurpose['piiCategory'] = piiCategories;
-                    newPurpose['purposeCategoryId'] = [<%=defaultPurposeCatId%>];
-                    if (!isExistingPurpose) {
-                        newPurposes.push(newPurpose);
-                    }
-                });
-            service['purposes'] = newPurposes;
-            services.push(service);
-            newReceipt['services'] = services;
-
-            return newReceipt;
-        }
-
-        function addReciptInformationFromRows() {
-            var newReceipt = {};
-            var services = [];
-            var service = {};
-            var newPurposes = [];
-            var mandatoryPiis = [];
-            var selectedMandatoryPiis = [];
-
-            $('#row-container input[type="checkbox"]').each(function (i, checkbox) {
-                var checkboxLabel = $(checkbox).next();
-                var checked = $(checkbox).prop('checked');
-                var newPurpose = {};
-                var piiCategories = [];
-                var isExistingPurpose = false;
-
-                if (checkboxLabel.data("mandetorypiicatergory")) {
-                    mandatoryPiis.push(checkboxLabel.data("piicategoryid"));
-                }
-
-                if (checked) {
-                    var purposeId = checkboxLabel.data("purposeid");
-                    selectedMandatoryPiis.push(checkboxLabel.data("piicategoryid"));
-                    if (newPurposes.length != 0) {
-                        for (var i = 0; i < newPurposes.length; i++) {
-                            var selectedPurpose = newPurposes[i];
-                            if (selectedPurpose.purposeId == purposeId) {
-                                newPurpose = selectedPurpose;
-                                piiCategories = newPurpose.piiCategory;
-                                isExistingPurpose = true;
-                            }
+                        newPurpose["purposeId"] = checkboxLabel.data("purposeid");
+                        newPiiCategory['piiCategoryId'] = checkboxLabel.data("piicategoryid");
+                        piiCategories.push(newPiiCategory);
+                        newPurpose['piiCategory'] = piiCategories;
+                        newPurpose['purposeCategoryId'] = [<%=defaultPurposeCatId%>];
+                        if (!isExistingPurpose) {
+                            newPurposes.push(newPurpose);
                         }
                     }
-                    var newPiiCategory = {};
-
-                    newPurpose["purposeId"] = checkboxLabel.data("purposeid");
-                    newPiiCategory['piiCategoryId'] = checkboxLabel.data("piicategoryid");
-                    piiCategories.push(newPiiCategory);
-                    newPurpose['piiCategory'] = piiCategories;
-                    newPurpose['purposeCategoryId'] = [<%=defaultPurposeCatId%>];
-                    if (!isExistingPurpose) {
-                        newPurposes.push(newPurpose);
-                    }
-                }
-            });
-            service['purposes'] = newPurposes;
-            services.push(service);
-            newReceipt['services'] = services;
-
-            var allMandatoryPiisSelected = mandatoryPiis.every(function (val) {
-                return selectedMandatoryPiis.indexOf(val) >= 0;
-            });
-
-            if (!allMandatoryPiisSelected) {
-                $("#mandetory_pii_selection_validation").modal({blurring:true}).modal("show");
-                canSubmit = false;
-            } else {
-                canSubmit = true;
-            }
-
-            return newReceipt;
-        }
-
-        function unflatten(arr) {
-            var tree = [],
-                mappedArr = {},
-                arrElem,
-                mappedElem;
-
-            // First map the nodes of the array to an object -> create a hash table.
-            for (var i = 0, len = arr.length; i < len; i++) {
-                arrElem = arr[i];
-                mappedArr[arrElem.id] = arrElem;
-                mappedArr[arrElem.id]['children'] = [];
-            }
-
-            for (var id in mappedArr) {
-                if (mappedArr.hasOwnProperty(id)) {
-                    mappedElem = mappedArr[id];
-                    // If the element is not at the root level, add it to its parent array of children.
-                    if (mappedElem.parent && mappedElem.parent != "#" && mappedArr[mappedElem['parent']]) {
-                        mappedArr[mappedElem['parent']]['children'].push(mappedElem);
-                    }
-                    // If the element is at the root level, add it to first level elements array.
-                    else {
-                        tree.push(mappedElem);
-                    }
-                }
-            }
-            return tree;
-        }
-
-        function renderReceiptDetailsFromTemplate(receipt) {
-            /*
-             *   Available when consentDisplayType is set to "template"
-             *   customConsentTempalte1 is from the js file which is loaded as a normal js resource
-             *   also try customConsentTempalte2 located at assets/js/consent_template_2.js
-             */
-            var templateString = customConsentTempalte1;
-            var purp, purpose, piiCategory, piiCategoryInputTemplate;
-            $(receipt.purposes).each(function (i, e) {
-                purp = e.purpose;
-                purpose = "{{purpose:" + purp + "}}";
-                var purposeInputTemplate = '<strong data-id="' + purpose + '">' + purp + '</strong>';
-                templateString = templateString.replaceAll(purpose, purposeInputTemplate);
-                $(e.piiCategories).each(function (i, ee) {
-                    piiCategory = "{{pii:" + purp + ":" + ee.displayName + "}}";
-                    var piiCategoryMin = piiCategory.replace(/\s/g, '');
-                    if (ee.mandatory == true) {
-                        piiCategoryInputTemplate = '<strong><label id="' + piiCategoryMin + '" data-id="' +
-                            piiCategory + '" data-piiCategoryId="' + ee.piiCategoryId + '" data-purposeId="' +
-                            e.purposeId + '" data-mandetoryPiiCategory="' + ee.mandatory + '">' + ee.displayName +
-                            '<span class="required_consent">*</span></label></strong>';
-                    } else {
-                        piiCategoryInputTemplate = '<span><label for="' + piiCategoryMin + '"><input type="checkbox" id="' + piiCategoryMin + '" data-id="' +
-                            piiCategory + '" data-piiCategoryId="' + ee.piiCategoryId + '" data-purposeId="' + e.purposeId + '"' +
-                            'data-mandetoryPiiCategory="' + ee.mandatory + '" name="" value="">' + ee.displayName + '</label></span>';
-                    }
-                    templateString = templateString.replaceAll(piiCategory, piiCategoryInputTemplate);
                 });
-            });
+                service['purposes'] = newPurposes;
+                services.push(service);
+                newReceipt['services'] = services;
 
-            $(".consent-statement").html(templateString);
-        }
+                var allMandatoryPiisSelected = mandatoryPiis.every(function (val) {
+                    return selectedMandatoryPiis.indexOf(val) >= 0;
+                });
 
-        function renderReceiptDetailsFromRows(data) {
-            var rowTemplate =
-                '{{#purposes}}' +
-                '<div class="consent-container-3 box clearfix"><ul class="consent-ul">' +
-                '<li><span>{{purpose}} {{#if description}}<img src="images/info.png" class="form-info" data-toggle="tooltip" title="{{description}}" data-placement="right"/>{{/if}}</span></li></ul>' +
-                '{{#grouped_each 2 piiCategories}}' +
-                '<div class="row">' +
-                '{{#each this }}' +
-                '<div class="col-xs-6">' +
-                '<input type="checkbox" name="switch" class="custom-checkbox" id="consent-checkbox-{{../../purposeId}}-{{piiCategoryId}}" {{#if mandatory}}required{{/if}} />' +
-                '<label for="consent-checkbox-{{../../purposeId}}-{{piiCategoryId}}" data-piicategoryid="{{piiCategoryId}}" data-mandetorypiicatergory="{{mandatory}}" data-purposeid="{{../../purposeId}}">' +
-                '<span>{{#if displayName}}{{displayName}}{{else}}{{piiCategory}}{{/if}}{{#if mandatory}}' +
-                '<span class="required_consent">*</span>{{/if}}</span>' +
-                '</label></div>' +
-                '{{/each}}' +
-                '</div>' +
-                '{{/grouped_each}}' +
-                '</div>' +
-                '{{/purposes}}';
+                if (!allMandatoryPiisSelected) {
+                    $("#mandetory_pii_selection_validation").modal({blurring: true}).modal("show");
+                    canSubmit = false;
+                } else {
+                    canSubmit = true;
+                }
 
-            var rows = Handlebars.compile(rowTemplate);
-            var rowsRendered = rows(data);
+                return newReceipt;
+            }
 
-            $("#row-container").html(rowsRendered);
-        }
+            function unflatten(arr) {
+                var tree = [],
+                    mappedArr = {},
+                    arrElem,
+                    mappedElem;
 
-    });
-</script>
+                // First map the nodes of the array to an object -> create a hash table.
+                for (var i = 0, len = arr.length; i < len; i++) {
+                    arrElem = arr[i];
+                    mappedArr[arrElem.id] = arrElem;
+                    mappedArr[arrElem.id]['children'] = [];
+                }
+
+                for (var id in mappedArr) {
+                    if (mappedArr.hasOwnProperty(id)) {
+                        mappedElem = mappedArr[id];
+                        // If the element is not at the root level, add it to its parent array of children.
+                        if (mappedElem.parent && mappedElem.parent != "#" && mappedArr[mappedElem['parent']]) {
+                            mappedArr[mappedElem['parent']]['children'].push(mappedElem);
+                        }
+                        // If the element is at the root level, add it to first level elements array.
+                        else {
+                            tree.push(mappedElem);
+                        }
+                    }
+                }
+                return tree;
+            }
+
+            function renderReceiptDetailsFromTemplate(receipt) {
+                /*
+                 *   Available when consentDisplayType is set to "template"
+                 *   customConsentTempalte1 is from the js file which is loaded as a normal js resource
+                 *   also try customConsentTempalte2 located at assets/js/consent_template_2.js
+                 */
+                var templateString = customConsentTempalte1;
+                var purp, purpose, piiCategory, piiCategoryInputTemplate;
+                $(receipt.purposes).each(function (i, e) {
+                    purp = e.purpose;
+                    purpose = "{{purpose:" + purp + "}}";
+                    var purposeInputTemplate = '<strong data-id="' + purpose + '">' + purp + '</strong>';
+                    templateString = templateString.replaceAll(purpose, purposeInputTemplate);
+                    $(e.piiCategories).each(function (i, ee) {
+                        piiCategory = "{{pii:" + purp + ":" + ee.displayName + "}}";
+                        var piiCategoryMin = piiCategory.replace(/\s/g, '');
+                        if (ee.mandatory == true) {
+                            piiCategoryInputTemplate = '<strong><label id="' + piiCategoryMin + '" data-id="' +
+                                piiCategory + '" data-piiCategoryId="' + ee.piiCategoryId + '" data-purposeId="' +
+                                e.purposeId + '" data-mandetoryPiiCategory="' + ee.mandatory + '">' + ee.displayName +
+                                '<span class="required_consent">*</span></label></strong>';
+                        } else {
+                            piiCategoryInputTemplate = '<span><label for="' + piiCategoryMin + '"><input type="checkbox" id="' + piiCategoryMin + '" data-id="' +
+                                piiCategory + '" data-piiCategoryId="' + ee.piiCategoryId + '" data-purposeId="' + e.purposeId + '"' +
+                                'data-mandetoryPiiCategory="' + ee.mandatory + '" name="" value="">' + ee.displayName + '</label></span>';
+                        }
+                        templateString = templateString.replaceAll(piiCategory, piiCategoryInputTemplate);
+                    });
+                });
+
+                $(".consent-statement").html(templateString);
+            }
+
+            function renderReceiptDetailsFromRows(data) {
+                var rowTemplate =
+                    '{{#purposes}}' +
+                    '<div class="consent-container-3 box clearfix"><ul class="consent-ul">' +
+                    '<li><span>{{purpose}} {{#if description}}<img src="images/info.png" class="form-info" data-toggle="tooltip" title="{{description}}" data-placement="right"/>{{/if}}</span></li></ul>' +
+                    '{{#grouped_each 2 piiCategories}}' +
+                    '<div class="row">' +
+                    '{{#each this }}' +
+                    '<div class="col-xs-6">' +
+                    '<input type="checkbox" name="switch" class="custom-checkbox" id="consent-checkbox-{{../../purposeId}}-{{piiCategoryId}}" {{#if mandatory}}required{{/if}} />' +
+                    '<label for="consent-checkbox-{{../../purposeId}}-{{piiCategoryId}}" data-piicategoryid="{{piiCategoryId}}" data-mandetorypiicatergory="{{mandatory}}" data-purposeid="{{../../purposeId}}">' +
+                    '<span>{{#if displayName}}{{displayName}}{{else}}{{piiCategory}}{{/if}}{{#if mandatory}}' +
+                    '<span class="required_consent">*</span>{{/if}}</span>' +
+                    '</label></div>' +
+                    '{{/each}}' +
+                    '</div>' +
+                    '{{/grouped_each}}' +
+                    '</div>' +
+                    '{{/purposes}}';
+
+                var rows = Handlebars.compile(rowTemplate);
+                var rowsRendered = rows(data);
+
+                $("#row-container").html(rowsRendered);
+            }
+
+        });
+    </script>
 </body>
 </html>

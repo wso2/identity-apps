@@ -59,11 +59,9 @@
         }
     %>
 </head>
-
 <body>
-<main class="center-segment">
-    <div class="ui container medium center aligned middle aligned">
-        <div class="ui segment">
+    <main class="center-segment">
+        <div class="ui container medium center aligned middle aligned">
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -73,81 +71,78 @@
             <% } else { %>
             <jsp:directive.include file="includes/product-title.jsp"/>
             <% } %>
-            <div class="ui divider hidden"></div>
 
-            <!-- page content -->
+            <div class="ui segment">
+                <!-- page content -->
+                <%
+                    if (errorResponse != null) {
+                %>
+                <div class="ui visible negative message" id="server-error-msg">
+                    <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorResponse.getDescription())%>
+                </div>
+                <div class="ui divider hidden"></div>
 
-            <%
-                if (errorResponse != null) {
-            %>
-            <div class="ui visible negative message" id="server-error-msg">
-                <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorResponse.getDescription())%>
-            </div>
-            <div class="ui divider hidden"></div>
+                <%
+                    }
+                %>
 
-            <%
-                }
-            %>
-
-
-            <div class="segment-form">
-                <form class="ui large form" method="post" action="processsecurityquestions.do"
-                      id="securityQuestionForm">
-                    <div class="field">
-                        <label class="control-label"><%=initiateQuestionResponse.getQuestion().getQuestion()%>
-                        </label>
-                    </div>
-                    <div class="field">
-                        <input id="securityQuestionAnswer" name="securityQuestionAnswer" type="password"
-                               class="form-control"
-                               tabindex="0" autocomplete="off" required/>
-                    </div>
-                    <div class="field">
-                        <input type="hidden" name="step"
-                               value="<%=Encode.forHtmlAttribute(request.getParameter("step"))%>"/>
-                    </div>
-                    <%
-                        if (reCaptchaEnabled) {
-                    %>
-                    <div class="field">
-                        <div class="g-recaptcha"
-                             data-sitekey="<%=Encode.forHtmlContent((String)request.getAttribute("reCaptchaKey"))%>">
+                <div class="segment-form">
+                    <form class="ui large form" method="post" action="processsecurityquestions.do"
+                          id="securityQuestionForm">
+                        <div class="field">
+                            <label class="control-label"><%=initiateQuestionResponse.getQuestion().getQuestion()%>
+                            </label>
                         </div>
-                    </div>
-                    <%
-                        }
-                    %>
-                    <div class="ui divider hidden"></div>
-                    <div class="align-right buttons">
-                        <button id="answerSubmit"
-                                class="ui primary button"
-                                type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
-                        </button>
-                    </div>
-                </form>
+                        <div class="field">
+                            <input id="securityQuestionAnswer" name="securityQuestionAnswer" type="password"
+                                   class="form-control"
+                                   tabindex="0" autocomplete="off" required/>
+                        </div>
+                        <div class="field">
+                            <input type="hidden" name="step"
+                                   value="<%=Encode.forHtmlAttribute(request.getParameter("step"))%>"/>
+                        </div>
+                        <%
+                            if (reCaptchaEnabled) {
+                        %>
+                        <div class="field">
+                            <div class="g-recaptcha"
+                                 data-sitekey="<%=Encode.forHtmlContent((String)request.getAttribute("reCaptchaKey"))%>">
+                            </div>
+                        </div>
+                        <%
+                            }
+                        %>
+                        <div class="ui divider hidden"></div>
+                        <div class="align-right buttons">
+                            <button id="answerSubmit"
+                                    class="ui primary button"
+                                    type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</main>
-<!-- /content/body -->
-<!-- product-footer -->
-<%
-    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-    if (productFooterFile.exists()) {
-%>
-<jsp:include page="extensions/product-footer.jsp"/>
-<% } else { %>
-<jsp:directive.include file="includes/product-footer.jsp"/>
-<% } %>
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
-<jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
-<jsp:directive.include file="includes/footer.jsp"/>
-<% } %>
-
+    </main>
+    <!-- /content/body -->
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+    <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+    <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/footer.jsp"/>
+    <% } %>
 </body>
 </html>

@@ -116,6 +116,7 @@
     session.invalidate();
 %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <!doctype html>
 <html>
 <head>
@@ -129,52 +130,52 @@
     <% } %>
 </head>
 <body>
-<div class="ui tiny modal notify">
-    <div class="header">
-        <h4>
-            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Information")%>
-        </h4>
-    </div>
-    <div class="content">
-        <p class="ui success message">
-            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Updated.the.password.successfully")%>
-        </p>
-    </div>
-    <div class="actions">
-        <div id="closeButton" class="ui primary button cancel">
-            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Close")%>
+    <div class="ui tiny modal notify">
+        <div class="header">
+            <h4>
+                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Information")%>
+            </h4>
+        </div>
+        <div class="content">
+            <p class="ui success message">
+                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Updated.the.password.successfully")%>
+            </p>
+        </div>
+        <div class="actions">
+            <div id="closeButton" class="ui primary button cancel">
+                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Close")%>
+            </div>
         </div>
     </div>
-</div>
 
-<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/theme/semantic.js"></script>
+    <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
+    <script src="libs/theme/semantic.js"></script>
 
-<script type="application/javascript">
-    $(document).ready(function () {
+    <script type="application/javascript">
+        $(document).ready(function () {
 
-        $('.notify').modal({
-            onHide: function () {
-                <%
-                   try {
-                %>
-                location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>";
-                <%
-                } catch (URISyntaxException e) {
-                    request.setAttribute("error", true);
-                    request.setAttribute("errorMsg", "Invalid callback URL found in the request.");
-                    request.getRequestDispatcher("error.jsp").forward(request, response);
-                    return;
-                }
-                %>
-            },
-            blurring: true,
-            detachable:true,
-            closable: false,
-            centered: true,
-        }).modal("show");
+            $('.notify').modal({
+                onHide: function () {
+                    <%
+                       try {
+                    %>
+                    location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>";
+                    <%
+                    } catch (URISyntaxException e) {
+                        request.setAttribute("error", true);
+                        request.setAttribute("errorMsg", "Invalid callback URL found in the request.");
+                        request.getRequestDispatcher("error.jsp").forward(request, response);
+                        return;
+                    }
+                    %>
+                },
+                blurring: true,
+                detachable:true,
+                closable: false,
+                centered: true,
+            }).modal("show");
 
-    });
-</script>
+        });
+    </script>
 </body>
 </html>

@@ -31,8 +31,6 @@
 <jsp:directive.include file="localize.jsp"/>
 
 <%
-
-
     boolean isPasswordRecoveryEmailConfirmation =
             Boolean.parseBoolean(request.getParameter("isPasswordRecoveryEmailConfirmation"));
     boolean isUsernameRecovery = Boolean.parseBoolean(request.getParameter("isUsernameRecovery"));

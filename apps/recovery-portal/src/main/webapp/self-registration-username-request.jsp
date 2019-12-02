@@ -72,12 +72,9 @@
     <script src="js/respond.min.js"></script>
     <![endif]-->
 </head>
-
 <body>
-
-<main class="center-segment">
-    <div class="ui container medium center aligned middle aligned">
-        <div class="ui segment">
+    <main class="center-segment">
+        <div class="ui container medium center aligned middle aligned">
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -87,96 +84,95 @@
             <% } else { %>
             <jsp:directive.include file="includes/product-title.jsp"/>
             <% } %>
-            <div class="ui divider hidden"></div>
-            <h2>
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Start.signing.up")%>
-            </h2>
+            <div class="ui segment">
+                <div class="ui divider hidden"></div>
+                <h2>
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Start.signing.up")%>
+                </h2>
 
-            <div class="ui negative message" id="error-msg" hidden="hidden">
-            </div>
-            <% if (error) { %>
-            <div class="ui negative message" id="server-error-msg">
-                <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
-            </div>
-            <% } %>
-            <!-- validation -->
-            <p>
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.your.username.here")%>
-            </p>
-            <div class="ui divider hidden"></div>
-            <div class="segment-form">
-                <form class="ui large form" action="signup.do" method="post" id="register">
+                <div class="ui negative message" id="error-msg" hidden="hidden">
+                </div>
+                <% if (error) { %>
+                <div class="ui negative message" id="server-error-msg">
+                    <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
+                </div>
+                <% } %>
+                <!-- validation -->
+                <p>
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.your.username.here")%>
+                </p>
+                <div class="ui divider hidden"></div>
+                <div class="segment-form">
+                    <form class="ui large form" action="signup.do" method="post" id="register">
 
-                    <div class="field">
-                        <label class="control-label"
-                               for="username"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")%>
-                        </label>
-                        <input id="username" name="username" type="text"
-                               required class="form-control"
-                            <% if(skipSignUpEnableCheck) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
-                    </div>
-                    <p class="ui tiny compact info message">
-                        <i class="icon info circle"></i>
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                "If.you.specify.tenant.domain.you.registered.under.super.tenant")%>
-                    </p>
-                    <input id="callback" name="callback" type="hidden" value="<%=callback%>"
-                           class="form-control" required>
-
-                    <% Map<String, String[]> requestMap = request.getParameterMap();
-                        for (Map.Entry<String, String[]> entry : requestMap.entrySet()) {
-                            String key = Encode.forHtmlAttribute(entry.getKey());
-                            String value = Encode.forHtmlAttribute(entry.getValue()[0]); %>
-                    <div class="field">
-                        <input id="<%= key%>" name="<%= key%>" type="hidden"
-                               value="<%=value%>" class="form-control">
-                    </div>
-                    <% } %>
-
-                    <div class="ui divider hidden"></div>
-
-                    <div class="align-right buttons">
-                        <a href="<%=Encode.forHtmlAttribute(IdentityManagementEndpointUtil.getUserPortalUrl(
-                                    application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL)))%>"
-                           class="ui button"
-                        >
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
-                        </a>
-                        <button id="registrationSubmit"
-                                class="ui primary button"
-                                type="submit">
+                        <div class="field">
+                            <label class="control-label"
+                                   for="username"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")%>
+                            </label>
+                            <input id="username" name="username" type="text"
+                                   required class="form-control"
+                                <% if(skipSignUpEnableCheck) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
+                        </div>
+                        <p class="ui tiny compact info message">
+                            <i class="icon info circle"></i>
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                    "Proceed.to.self.register")%>
-                        </button>
-                    </div>
-                </form>
+                                    "If.you.specify.tenant.domain.you.registered.under.super.tenant")%>
+                        </p>
+                        <input id="callback" name="callback" type="hidden" value="<%=callback%>"
+                               class="form-control" required>
+
+                        <% Map<String, String[]> requestMap = request.getParameterMap();
+                            for (Map.Entry<String, String[]> entry : requestMap.entrySet()) {
+                                String key = Encode.forHtmlAttribute(entry.getKey());
+                                String value = Encode.forHtmlAttribute(entry.getValue()[0]); %>
+                        <div class="field">
+                            <input id="<%= key%>" name="<%= key%>" type="hidden"
+                                   value="<%=value%>" class="form-control">
+                        </div>
+                        <% } %>
+
+                        <div class="ui divider hidden"></div>
+
+                        <div class="align-right buttons">
+                            <a href="<%=Encode.forHtmlAttribute(IdentityManagementEndpointUtil.getUserPortalUrl(
+                                        application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL)))%>"
+                               class="ui button"
+                            >
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
+                            </a>
+                            <button id="registrationSubmit"
+                                    class="ui primary button"
+                                    type="submit">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                        "Proceed.to.self.register")%>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</main>
-<!-- product-footer -->
-<%
-    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-    if (productFooterFile.exists()) {
-%>
-<jsp:include page="extensions/product-footer.jsp"/>
-<% } else { %>
-<jsp:directive.include file="includes/product-footer.jsp"/>
-<% } %>
+    </main>
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+    <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
 
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
-<jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
-<jsp:directive.include file="includes/footer.jsp"/>
-<% } %>
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+    <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/footer.jsp"/>
+    <% } %>
 
-<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
-
-
+    <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
+    <script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>
