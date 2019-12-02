@@ -87,6 +87,7 @@
                     <artifactId>org.eclipse.osgi.services</artifactId>
                 </exclusion>
             </exclusions>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon.identity.framework</groupId>
