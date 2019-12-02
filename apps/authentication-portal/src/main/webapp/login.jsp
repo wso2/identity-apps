@@ -155,17 +155,17 @@
                 <div class="segment-form">
                     <%
                         if (localAuthenticatorNames.size() > 0) {
-                            if (localAuthenticatorNames.size() > 0 && localAuthenticatorNames.contains(OPEN_ID_AUTHENTICATOR)) {
+                            if (localAuthenticatorNames.contains(OPEN_ID_AUTHENTICATOR)) {
                                 hasLocalLoginOptions = true;
                     %>
                         <%@ include file="openid.jsp" %>
                     <%
-                        } else if (localAuthenticatorNames.size() > 0 && localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)) {
+                        } else if (localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)) {
                             hasLocalLoginOptions = true;
                     %>
                         <%@ include file="identifierauth.jsp" %>
                     <%
-                        } else if (localAuthenticatorNames.size() > 0 && localAuthenticatorNames.contains(JWT_BASIC_AUTHENTICATOR) ||
+                        } else if (localAuthenticatorNames.contains(JWT_BASIC_AUTHENTICATOR) ||
                             localAuthenticatorNames.contains(BASIC_AUTHENTICATOR)) {
                             hasLocalLoginOptions = true;
                             boolean includeBasicAuth = true;
@@ -201,7 +201,7 @@
                 
                     <%} %>
                     <%
-                        if ((hasLocalLoginOptions && localAuthenticatorNames.size() > 1) || (!hasLocalLoginOptions)
+                        if ((hasLocalLoginOptions) || (!hasLocalLoginOptions)
                                 || (hasLocalLoginOptions && idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1)) {
                     %>
                     <div class="field">
