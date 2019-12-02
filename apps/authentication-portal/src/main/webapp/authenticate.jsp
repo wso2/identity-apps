@@ -14,33 +14,28 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
+--%>
+
 <%@ page import="org.apache.commons.collections.MapUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page
-        import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.AuthAPIServiceClient" %>
-<%@ page
-        import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.model.AuthenticationErrorResponse" %>
-<%@ page
-        import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.model.AuthenticationResponse" %>
-<%@ page
-        import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.model.AuthenticationSuccessResponse" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.AuthAPIServiceClient" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.model.AuthenticationErrorResponse" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.model.AuthenticationResponse" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.model.AuthenticationSuccessResponse" %>
 <%@ page import="java.util.HashMap" %>
-<%@ page
-        import="java.util.Map" %>
+<%@ page import="java.util.Map" %>
 <%@ page import="java.util.StringTokenizer" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS" %>
-<%@ page
-        import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.AUTHENTICATION_MECHANISM_NOT_CONFIGURED" %>
+<%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.AUTHENTICATION_MECHANISM_NOT_CONFIGURED" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS_MSG" %>
-<%@ page
-        import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.CONFIGURATION_ERROR" %>
+<%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.CONFIGURATION_ERROR" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ERROR_CODE" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ERROR_MSG" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.SESSION_DATA_KEY" %>
-<%@ page
-        import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.AUTHENTICATION_REST_ENDPOINT_URL" %>
-<jsp:directive.include file="init-url.jsp"/>
+<%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.AUTHENTICATION_REST_ENDPOINT_URL" %>
+<%@ page import="java.io.File" %>
+
+<jsp:directive.include file="includes/init-url.jsp"/>
 
 <%
     String sessionDataKey = request.getParameter(SESSION_DATA_KEY);
@@ -106,21 +101,67 @@
     }
 %>
 
+<!doctype html>
 <html>
+<head>
+    <!-- header -->
+    <%
+        File headerFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+        if (headerFile.exists()) {
+    %>
+        <jsp:include page="extensions/header.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/header.jsp"/>
+    <% } %>
+</head>
 <body>
-<p>You are now redirected to <%=commonauthURL%>
-   If the redirection fails, please click the post button.</p>
+    <main class="center-segment">
+        <div class="ui container large center aligned middle aligned">
+            <div class="ui segment">
+                <!-- product-title -->
+                <%
+                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                    if (productTitleFile.exists()) {
+                %>
+                    <jsp:include page="extensions/product-title.jsp"/>
+                <% } else { %>
+                    <jsp:directive.include file="includes/product-title.jsp"/>
+                <% } %>
 
-<form method='post' action='<%=commonauthURL%>'>
-    <p>
-        <input id="token" name="token" type="hidden" value="<%=Encode.forHtmlAttribute(token)%>">
-        <input id="sessionDataKey" name="sessionDataKey" type="hidden"
-               value="<%=Encode.forHtmlAttribute(sessionDataKey)%>">
-        <button type='submit'>POST</button>
-    </p>
-</form>
-<script type='text/javascript'>
-    document.forms[0].submit();
-</script>
+                <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.are.redirected.back.to")%> <%=commonauthURL%>
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "if.the.redirection.fails.please.click")%>.</p>
+
+                <form method="post" action="<%=commonauthURL%>">
+                    <input id="token" name="token" type="hidden" value="<%=Encode.forHtmlAttribute(token)%>">
+                    <input id="sessionDataKey" name="sessionDataKey" type="hidden" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>">
+                    <button type="submit" class="ui primary large button"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "post")%></button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+        <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
+
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+        <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/footer.jsp"/>
+    <% } %>
+
+    <script type='text/javascript'>
+        document.forms[0].submit();
+    </script>
 </body>
 </html>
