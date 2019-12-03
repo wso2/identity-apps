@@ -22,6 +22,7 @@ export * from "./language-switcher";
 export * from "./advanced-search";
 export * from "./edit-section";
 export * from "./empty-placeholder";
+export * from "./error-boundary";
 export * from "./global-loader";
 export * from "./icon";
 export * from "./notification";
