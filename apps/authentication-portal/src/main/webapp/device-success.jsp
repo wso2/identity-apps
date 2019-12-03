@@ -47,8 +47,8 @@
             <% } else { %>
             <jsp:directive.include file="includes/product-title.jsp"/>
             <% } %>
-            <%if(request.getParameter("app_name") != null) { %>
-                <div class="field">
+            <div class="ui segment">
+                <%if(request.getParameter("app_name") != null) { %>
                     <div class="ui positive message">
                         <div class="ui header center aligned">
                             Successful
@@ -57,17 +57,15 @@
                             <%= request.getParameter("app_name")%>.Please close the browser and
                             return to your device.</p>
                     </div>
-                </div>
-            <% } else { %>
-                <div class="field">
+                <% } else { %>
                     <div class="ui negative message">
                         <div class="ui header center aligned">
                             Error
                         </div>
                     <p>Requested parameter application name is not present.</p>
                     </div>
-                </div>
-            <% } %>
+                <% } %>
+            </div>
         </div>
     </main>
 
