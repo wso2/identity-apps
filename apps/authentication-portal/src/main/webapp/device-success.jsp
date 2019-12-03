@@ -47,24 +47,26 @@
             <% } else { %>
             <jsp:directive.include file="includes/product-title.jsp"/>
             <% } %>
-            <div class="ui segment">
-                <%if(request.getParameter("app_name") != null) { %>
-                    <div class="ui positive message">
-                        <div class="header">
-                            Successful
+            <div class="ui segment left aligned">
+                <div class="field">
+                    <%if(request.getParameter("app_name") != null) { %>
+                        <div class="ui positive message">
+                            <div class="header">
+                                Successful
+                            </div>
+                            <p>Login successful for application:
+                                <%= request.getParameter("app_name")%>.Please close the browser and
+                                return to your device.</p>
                         </div>
-                        <p>Login successful for application:
-                            <%= request.getParameter("app_name")%>.Please close the browser and
-                            return to your device.</p>
-                    </div>
-                <% } else { %>
-                    <div class="ui negative message">
-                        <div class="header">
-                            Authentication Error!
+                    <% } else { %>
+                        <div class="ui negative message">
+                            <div class="header">
+                                Authentication Error!
+                            </div>
+                        <p>Something went wrong during authentication process. Please sign in again.</p>
                         </div>
-                    <p>Something went wrong during authentication process. Please sign in again.</p>
-                    </div>
-                <% } %>
+                    <% } %>
+                </div>
             </div>
         </div>
     </main>
