@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/webapps",
-    "version": "0.1.113-SNAPSHOT",
+    "version": "0.1.122-SNAPSHOT",
     "description": "WSO2 Identity Server Web Applications",
     "keywords": [
         "WSO2",
@@ -73,7 +73,6 @@
         "awesome-typescript-loader": "^5.2.1",
         "babel-loader": "^8.0.4",
         "child_process": "^1.0.2",
-        "classnames": "^2.2.6",
         "copy-webpack-plugin": "^5.0.4",
         "css-loader": "^1.0.0",
         "extract-text-webpack-plugin": "^4.0.0-beta.0",
@@ -105,7 +104,6 @@
         "tslint-react": "^4.1.0",
         "typescript": "^3.5.3",
         "uglifyjs-webpack-plugin": "^2.2.0",
-        "url-loader": "^1.1.1",
         "watch": "^1.0.2",
         "webpack": "^4.39.3",
         "webpack-cli": "^3.3.7",
