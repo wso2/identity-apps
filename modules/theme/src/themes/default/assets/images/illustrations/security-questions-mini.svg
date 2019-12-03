@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <!--
  * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
@@ -7,7 +8,7 @@
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -16,6 +17,7 @@
  * specific language governing permissions and limitations
  * under the License.
 -->
+
 <svg version="1.1" class="icon" id="security-questions-mini" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="108.99px" height="100.167px" viewBox="0 0 108.99 100.167" xml:space="preserve">
 	<g id="lock">
 		<path id="upper" fill="#999FA6" d="M54.494,12.226c-10.933,0.013-19.792,8.873-19.806,19.806v12.189   c0,0.841,0.682,1.523,1.523,1.523h6.094c0.842,0,1.524-0.683,1.524-1.523V32.032c0-5.89,4.774-10.665,10.664-10.665   c5.89,0,10.666,4.774,10.666,10.665v12.189c0,0.841,0.683,1.523,1.523,1.523h6.094c0.841,0,1.523-0.683,1.523-1.523V32.032   C74.287,21.099,65.428,12.239,54.494,12.226z" />

@@ -47,8 +47,7 @@ export const PageNotFound = (): JSX.Element => {
                 imageSize="tiny"
                 subtitle={ [
                     t("views:placeholders.404.subtitles.0"),
-                    t("views:placeholders.404.subtitles.1"),
-                    t("views:placeholders.404.subtitles.2"),
+                    t("views:placeholders.404.subtitles.1")
                 ] }
                 title={ t("views:placeholders.404.title") }
             />

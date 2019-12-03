@@ -989,8 +989,7 @@ export const views: Views = {
             action: "Voltar para casa",
             subtitles: {
                 0: "Não foi possível encontrar a página que você estava procurando.",
-                1: "Por favor, verifique o URL ou clique no botão abaixo",
-                2: "para ser redirecionado de volta à página inicial."
+                1: "Por favor, verifique o URL ou clique no botão abaixo para ser redirecionado de volta à página inicial."
             },
             title: "página não encontrada"
         },

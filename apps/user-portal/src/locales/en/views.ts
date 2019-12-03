@@ -975,8 +975,7 @@ export const views: Views = {
             action: "Back to home",
             subtitles: {
                 0: "We couldn't find the page you are looking for.",
-                1: "Please check the URL or click on the button below",
-                2: "to be redirected back to the home page."
+                1: "Please check the URL or click on the button below to be redirected back to the home page."
             },
             title: "Page not found"
         },
