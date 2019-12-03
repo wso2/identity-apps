@@ -20,8 +20,9 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@include file="localize.jsp" %>
-<%@include file="init-url.jsp" %>
+
+<%@include file="includes/localize.jsp" %>
+<%@include file="includes/init-url.jsp" %>
 
 <%
     String[] missingClaimList = null;
@@ -36,131 +37,88 @@
 
 %>
 
-<script>
-</script>
-
+<!doctype html>
 <html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-    <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-    <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/Roboto.css" rel="stylesheet">
-    <link href="css/custom-common.css" rel="stylesheet">
-
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
-</head>
-
-<body>
-
-<!-- header -->
-<%
-    File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-    if (headerFile.exists()) {
-%>
+    <!-- header -->
+    <%
+        File headerFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+        if (headerFile.exists()) {
+    %>
         <jsp:include page="extensions/header.jsp"/>
-<% } else { %>
+    <% } else { %>
         <jsp:directive.include file="includes/header.jsp"/>
-<% } %>
+    <% } %>
+</head>
+<body>
+    <main class="center-segment">
+        <div class="ui container medium center aligned middle aligned">
+            <div class="ui segment">
+                <!-- product-title -->
+                <%
+                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                    if (productTitleFile.exists()) {
+                %>
+                    <jsp:include page="extensions/product-title.jsp"/>
+                <% } else { %>
+                    <jsp:directive.include file="includes/product-title.jsp"/>
+                <% } %>
 
-<div class="container-fluid body-wrapper">
+                <h3><%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.mandatory.details")%></h3>
 
-    <div class="row">
-        <!-- content -->
-        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-5 col-centered wr-login">
-            <form action="<%=commonauthURL%>" method="post" id="claimForm">
-                <h2 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none">
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.mandatory.details")%>
-                </h2>
+                <form class="ui large form" action="<%=commonauthURL%>" method="post" id="claimForm">
+                    <div class="ui divider hidden"></div>
+                    <p>
+                        <strong><%=Encode.forHtmlContent(appName)%></strong>
+                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.claims.recommendation")%>
+                    </p>
+                    
+                    <div class="segment-form">
+                        <div>
+                            <h3><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.attributes")%> :</h3>
 
-                <div class="clearfix"></div>
-                <div class="boarder-all ">
-
-                    <div class="padding-double font-large">
-                        <%=Encode.forHtmlContent(appName)%> <%=AuthenticationEndpointUtil.i18n(resourceBundle,
-                            "requested.claims.recommendation")%>
-                    </div>
-
-                    <!-- validation -->
-                    <div class="padding-double">
-                        <% for (String claim : missingClaimList) { %>
-                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 form-group required">
-                            <label class="control-label"><%=Encode.forHtmlContent(claim)%>
-                            </label>
-                            <input type="text" name="claim_mand_<%=Encode.forHtmlAttribute(claim)%>" id="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
-                                   class="form-control" required="required">
-                        </div>
-                        <%}%>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
+                            <% for (String claim : missingClaimList) { %>
+                            <div class="field">
+                                <label"><%=Encode.forHtmlContent(claim)%></label>
+                                <input type="text" name="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
+                                    id="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"  required="required" />
+                            </div>
+                            <% } %>
                             <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute
                                 (request.getParameter("sessionDataKey"))%>'/>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
-                            <br/>
-                            <button class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large"
+
+                        <div class="align-right buttons">
+                            <button class="ui primary large button"
                                     type="submit">
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login")%>
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>
                             </button>
                         </div>
-
-                        <div class="clearfix"></div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
-    <!-- /content/body -->
+    </main>
 
-</div>
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+        <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
 
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
         <jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
+    <% } else { %>
         <jsp:directive.include file="includes/footer.jsp"/>
-<% } %>
-
-<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
-
-<script>
-    $(document).ready(function () {
-        $('.main-link').click(function () {
-            $('.main-link').next().hide();
-            $(this).next().toggle('fast');
-            var w = $(document).width();
-            var h = $(document).height();
-            $('.overlay').css("width", w + "px").css("height", h + "px").show();
-        });
-        $('[data-toggle="popover"]').popover();
-        $('.overlay').click(function () {
-            $(this).hide();
-            $('.main-link').next().hide();
-        });
-
-
-    });
-
-    $('#popover').popover({
-        html: true,
-        title: function () {
-            return $("#popover-head").html();
-        },
-        content: function () {
-            return $("#popover-content").html();
-        }
-    });
-
-</script>
+    <% } %>
 
 </body>
 </html>

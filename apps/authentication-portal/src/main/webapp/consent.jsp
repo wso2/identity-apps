@@ -6,7 +6,7 @@
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing,
   ~ software distributed under the License is distributed on an
@@ -14,7 +14,7 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
+--%>
 
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
@@ -66,17 +66,17 @@
 
                 <form class="ui large form" action="<%=commonauthURL%>" method="post" id="profile" name="">
                     <div class="ui divider hidden"></div>
-                    <p class="margin-bottom-double">
+                    <p>
                         <strong><%=Encode.forHtml(request.getParameter("sp"))%></strong>
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile")%>
                     </p>
                     
                     <div class="segment-form">
-                        <div class="ui secondary segment" style="text-align: left;">
+                        <div class="ui secondary segment">
                             <h3><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.attributes")%> :</h3>
-                            <div class="border-gray margin-bottom-double">
+                            <div>
                                 <div class="claim-alert" role="alert">
-                                    <p class="margin-bottom-double">
+                                    <p>
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "by.selecting.following.attributes")%>
                                     </p>
                                 </div>
@@ -144,7 +144,7 @@
                             </div>
                         </div>
                         <div class="align-right buttons">
-                            <input class="ui large button" type="reset"
+                            <input class="ui large button link-button" type="reset"
                                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"cancel")%>"
                                 onclick="javascript: deny(); return false;"/>
                             <input type="button" class="ui primary large button" id="approve"
@@ -156,7 +156,6 @@
                             <input type="hidden" name="<%="sessionDataKey"%>"
                                     value="<%=Encode.forHtmlAttribute(request.getParameter(Constants.SESSION_DATA_KEY))%>"/>
                             <input type="hidden" name="consent" id="consent" value="deny"/>
-                            </div>
                         </div>
                     </div>
                 </form>

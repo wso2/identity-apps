@@ -47,20 +47,25 @@
 </head>
 <body>
     <main class="center-segment">
-        <div class="ui container large center aligned middle aligned">
-            <div class="ui segment">
-                <!-- product-title -->
-                <%
-                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                    if (productTitleFile.exists()) {
-                %>
-                    <jsp:include page="extensions/product-title.jsp"/>
-                <% } else { %>
-                    <jsp:directive.include file="includes/product-title.jsp"/>
-                <% } %>
+        <div class="ui container medium center aligned middle">
 
-                <h1><%=Encode.forHtml(stat)%></h1>
-                <p><%=Encode.forHtmlContent(statusMessage)%></p> 
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>
+
+            <div class="ui segment">
+                <div class="segment-form">
+                    <div class="ui visible negative message">
+                        <div class="header"><%=Encode.forHtml(stat)%></div>
+                        <p><%=Encode.forHtmlContent(statusMessage)%></p>
+                    </div>
+                </div>
             </div>
         </div>
     </main>

@@ -132,17 +132,18 @@
 <body onload="checkSessionKey()">
     <main class="center-segment">
         <div class="ui container medium center aligned middle aligned">
-            <div class="ui segment">
-                <!-- product-title -->
-                <%
-                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                    if (productTitleFile.exists()) {
-                %>
-                    <jsp:include page="extensions/product-title.jsp"/>
-                <% } else { %>
-                    <jsp:directive.include file="includes/product-title.jsp"/>
-                <% } %>
 
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>
+
+            <div class="ui segment">
                 <h3 class="ui header">
                     <% if (isIdentifierFirstLogin(inputType)) { %>
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "welcome") + " " + username%>
@@ -154,17 +155,17 @@
                 <div class="segment-form">
                     <%
                         if (localAuthenticatorNames.size() > 0) {
-                            if (localAuthenticatorNames.size() > 0 && localAuthenticatorNames.contains(OPEN_ID_AUTHENTICATOR)) {
+                            if (localAuthenticatorNames.contains(OPEN_ID_AUTHENTICATOR)) {
                                 hasLocalLoginOptions = true;
                     %>
                         <%@ include file="openid.jsp" %>
                     <%
-                        } else if (localAuthenticatorNames.size() > 0 && localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)) {
+                        } else if (localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)) {
                             hasLocalLoginOptions = true;
                     %>
                         <%@ include file="identifierauth.jsp" %>
                     <%
-                        } else if (localAuthenticatorNames.size() > 0 && localAuthenticatorNames.contains(JWT_BASIC_AUTHENTICATOR) ||
+                        } else if (localAuthenticatorNames.contains(JWT_BASIC_AUTHENTICATOR) ||
                             localAuthenticatorNames.contains(BASIC_AUTHENTICATOR)) {
                             hasLocalLoginOptions = true;
                             boolean includeBasicAuth = true;
@@ -186,7 +187,7 @@
                             }
                         }
                 
-                        if (includeBasicAuth) {
+                                if (includeBasicAuth) {
                                     %>
                                         <%@ include file="basicauth.jsp" %>
                                     <%
@@ -194,7 +195,6 @@
                             }
                         }
                     %>
-                
                     <%if (idpAuthenticatorMapping != null &&
                             idpAuthenticatorMapping.get(Constants.RESIDENT_IDP_RESERVED_NAME) != null) { %>
                 
@@ -203,131 +203,123 @@
                         if ((hasLocalLoginOptions && localAuthenticatorNames.size() > 1) || (!hasLocalLoginOptions)
                                 || (hasLocalLoginOptions && idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1)) {
                     %>
-                    <div class="field">
-                        <% if (hasLocalLoginOptions) { %>
-                        <label class="font-large"><%=AuthenticationEndpointUtil.i18n(resourceBundle,
-                                "other.login.options")%>:</label>
-                        <%} %>
+                    <div class="ui divider hidden"></div>
+                    <div class="ui horizontal divider">
+                        Or
                     </div>
+                    
                     <div class="field">
-                        <%
-                            int iconId = 0;
-                            if (idpAuthenticatorMapping != null) {
-                            for (Map.Entry<String, String> idpEntry : idpAuthenticatorMapping.entrySet()) {
-                                iconId++;
-                                if (!idpEntry.getKey().equals(Constants.RESIDENT_IDP_RESERVED_NAME)) {
-                                    String idpName = idpEntry.getKey();
-                                    boolean isHubIdp = false;
-                                    if (idpName.endsWith(".hub")) {
-                                        isHubIdp = true;
-                                        idpName = idpName.substring(0, idpName.length() - 4);
-                                    }
-                        %>
-                            <% if (isHubIdp) { %>
-                                <div>
-                                    <a href="#" data-toggle="popover" data-placement="bottom"
-                                        title="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"sign.in.with")%>
-                                        <%=Encode.forHtmlAttribute(idpName)%>" id="popover" id="icon-<%=iconId%>">
-                                        <img class="idp-image" src="images/login-icon.png"
-                                                title="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"sign.in.with")%>
-                                                <%=Encode.forHtmlAttribute(idpName)%>"/>
-                
-                                        <div id="popover-head" class="hide">
-                                            <label class="font-large"><%=AuthenticationEndpointUtil.i18n(resourceBundle,"sign.in.with")%>
-                                                <%=Encode.forHtmlContent(idpName)%></label>
-                                        </div>
-                                        <div id="popover-content" class="hide">
-                                            <form class="form-inline">
-                                                <div class="form-group">
-                                                    <input id="domainName" class="form-control" type="text"
-                                                            placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle,
-                                                            "domain.name")%>">
-                                                </div>
-                                                <input type="button" class="btn btn-primary go-btn"
+                        <div class="ui vertical ui center aligned segment form" style="max-width: 300px; margin: 0 auto;">
+                            <%
+                                int iconId = 0;
+                                if (idpAuthenticatorMapping != null) {
+                                for (Map.Entry<String, String> idpEntry : idpAuthenticatorMapping.entrySet()) {
+                                    iconId++;
+                                    if (!idpEntry.getKey().equals(Constants.RESIDENT_IDP_RESERVED_NAME)) {
+                                        String idpName = idpEntry.getKey();
+                                        boolean isHubIdp = false;
+                                        if (idpName.endsWith(".hub")) {
+                                            isHubIdp = true;
+                                            idpName = idpName.substring(0, idpName.length() - 4);
+                                        }
+                            %>
+                                <% if (isHubIdp) { %>
+                                    <div class="field">
+                                        <button class="ui labeled icon button fluid isHubIdpPopupButton" id="icon-<%=iconId%>">
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <strong><%=Encode.forHtmlContent(idpName)%></strong>
+                                        </button>
+                                        <div class="ui flowing popup transition hidden isHubIdpPopup">
+                                            <h5 class="font-large"><%=AuthenticationEndpointUtil.i18n(resourceBundle,"sign.in.with")%>
+                                                <%=Encode.forHtmlContent(idpName)%></h5>
+                                            <div id="content" class="hide">
+                                                <form class="ui form">
+                                                    <div class="field">
+                                                        <input id="domainName" class="form-control" type="text"
+                                                            placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "domain.name")%>">
+                                                    </div>
+                                                    <input type="button" class="ui button primary"
                                                         onClick="javascript: myFunction('<%=idpName%>','<%=idpEntry.getValue()%>','domainName')"
                                                         value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"go")%>"/>
-                                            </form>
-                
+                                                </form>
+                                            </div>
                                         </div>
-                                    </a>
-                                    <label for="icon-<%=iconId%>"><%=Encode.forHtmlContent(idpName)%></label>
-                                </div>
-                            <% } else { %>
-                                <div>
-                                    <a onclick="javascript: handleNoDomain(this, '<%=Encode.forJavaScriptAttribute(Encode.
-                                    forUriComponent(idpName))%>',
-                                            '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
-                                        href="#" id="icon-<%=iconId%>">
-                                        <img class="idp-image" src="images/login-icon.png" data-toggle="tooltip"
-                                                data-placement="top" title="<%=AuthenticationEndpointUtil.i18n(resourceBundle,
-                                                            "sign.in.with")%> <%=Encode.forHtmlAttribute(idpName)%>"/>
-                                    </a>
-                                    <label for="icon-<%=iconId%>"><%=Encode.forHtmlContent(idpName)%></label>
-                                </div>
-                            <% } %>
-                        <% } else if (localAuthenticatorNames.size() > 0) {
-                            if (localAuthenticatorNames.contains(IWA_AUTHENTICATOR)) {
-                        %>
-                        <div>
-                            <a onclick="javascript: handleNoDomain(this, '<%=Encode.forJavaScriptAttribute(Encode.
-                                forUriComponent(idpEntry.getKey()))%>',
-                                        'IWAAuthenticator')" class="main-link" style="cursor:pointer" id="icon-<%=iconId%>">
-                                    <img class="idp-image" src="images/login-icon.png" data-toggle="tooltip"
-                                            data-placement="top" title="<%=AuthenticationEndpointUtil.i18n(resourceBundle,
-                                                        "sign.in.with")%> IWA"/>
-                            </a>
-                            <label for="icon-<%=iconId%>">IWA</label>
-                        </div>
-                        <%
-                            }
-                            if (localAuthenticatorNames.contains(X509_CERTIFICATE_AUTHENTICATOR)) {
-                        %>
-                        <div>
-                            <a onclick="javascript: handleNoDomain(this, '<%=Encode.forJavaScriptAttribute(Encode.
-                                forUriComponent(idpEntry.getKey()))%>',
-                                    'x509CertificateAuthenticator')" class="main-link" style="cursor:pointer" id="icon-<%=iconId%>">
-                                <img class="idp-image" src="images/login-icon.png" data-toggle="tooltip"
-                                        data-placement="top" title="<%=AuthenticationEndpointUtil.i18n(resourceBundle,
-                                                "sign.in.with")%> X509 Certificate"/>
-                            </a>
-                            <label for="icon-<%=iconId%>">x509CertificateAuthenticator</label>
-                
-                        </div>
-                        <%
-                            }
-                            if (localAuthenticatorNames.contains(FIDO_AUTHENTICATOR)) {
-                        %>
-                        <div>
-                            <a onclick="javascript: handleNoDomain(this, '<%=Encode.forJavaScriptAttribute(Encode.
-                                    forUriComponent(idpEntry.getKey()))%>',
-                                    'FIDOAuthenticator')" class="main-link" style="cursor:pointer" id="icon-<%=iconId%>">
-                                <img class="idp-image" src="images/login-icon.png" data-toggle="tooltip"
-                                        data-placement="top" title="<%=AuthenticationEndpointUtil.i18n(resourceBundle,
-                                                    "sign.in.with")%> FIDO"/>
-                            </a>
-                            <label for="icon-<%=iconId%>">FIDO</label>
-                        </div>
-                        <%
-                                    }
-                            if (localAuthenticatorNames.contains("totp")) {
-                        %>
-                        <div>
-                            <a onclick="javascript: handleNoDomain(this, '<%=Encode.forJavaScriptAttribute(Encode.
-                                forUriComponent(idpEntry.getKey()))%>',
-                                    'totp')" class="main-link" style="cursor:pointer" id="icon-<%=iconId%>">
-                                <img class="idp-image" src="images/login-icon.png" data-toggle="tooltip"
-                                        data-placement="top" title="<%=AuthenticationEndpointUtil.i18n(resourceBundle,
-                                                    "sign.in.with")%> TOTP"/>
-                            </a>
-                            <label for="icon-<%=iconId%>">TOTP</label>
-                        </div>
-                        <%
-                                    }
+                                    </div>
+                                <% } else { %>
+                                    <div class="field">
+                                        <button class="ui labeled icon button fluid" 
+                                            onclick="handleNoDomain(this,
+                                                '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
+                                                '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
+                                            id="icon-<%=iconId%>"
+                                            title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlAttribute(idpName)%>"/>">
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <strong><%=Encode.forHtmlContent(idpName)%></strong>
+                                        </button>
+                                    </div>
+                                <% } %>
+                            <% } else if (localAuthenticatorNames.size() > 0) {
+                                if (localAuthenticatorNames.contains(IWA_AUTHENTICATOR)) {
+                            %>
+                            <div class="field">
+                                <button class="ui blue labeled icon button fluid" 
+                                    onclick="handleNoDomain(this,
+                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
+                                        'IWAAuthenticator')"
+                                    id="icon-<%=iconId%>"
+                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> IWA">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <strong>IWA</strong>
+                                </button>
+                            </div>
+                            <%
                                 }
-                
-                            }
-                        } %>
-                
+                                if (localAuthenticatorNames.contains(X509_CERTIFICATE_AUTHENTICATOR)) {
+                            %>
+                            <div class="field">
+                                <button class="ui grey labeled icon button fluid" 
+                                    onclick="handleNoDomain(this,
+                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
+                                        'x509CertificateAuthenticator')"
+                                    id="icon-<%=iconId%>"
+                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> X509 Certificate">
+                                    <i class="certificate icon"></i>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <strong>x509 Certificate</strong>
+                                </button>
+                            </div>
+                            <%
+                                }
+                                if (localAuthenticatorNames.contains(FIDO_AUTHENTICATOR)) {
+                            %>
+                            <div class="field">
+                                <button class="ui grey basic labeled icon button fluid" 
+                                    onclick="handleNoDomain(this,
+                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
+                                        'FIDOAuthenticator')"
+                                    id="icon-<%=iconId%>"
+                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> FIDO">
+                                    <i class="usb icon"></i>
+                                    <img src="libs/theme/assets/images/icons/fido-logo.png" height="13px" /> Key
+                                </button>
+                            </div>
+                            <%
+                                        }
+                                if (localAuthenticatorNames.contains("totp")) {
+                            %>
+                            <div class="field">
+                                <button class="ui brown labeled icon button fluid" 
+                                    onclick="handleNoDomain(this,
+                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
+                                        'totp')"
+                                    id="icon-<%=iconId%>"
+                                    title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> TOTP">
+                                    <i class="key icon"></i> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <strong>TOTP</strong>
+                                </button>
+                            </div>
+                            <%
+                                        }
+                                    }
+                    
+                                }
+                            } %>
+                            </div>
                         </div>
                     <% } %>
                 </div>
@@ -390,8 +382,6 @@
                 $('.overlay').css("width", w + "px").css("height", h + "px").show();
             });
             
-            $('[data-toggle="popover"]').popup();
-            
             $('.overlay').click(function () {
                 $(this).hide();
                 $('.main-link').next().hide();
@@ -450,22 +440,22 @@
                     "<%=multiOptionURIParam%>";
             }
         }
-
-        $('#popover').popup({
-            html: true,
-            title: function () {
-                return $("#popover-head").html();
-            },
-            content: function () {
-                return $("#popover-content").html();
-            }
-        });
     
         window.onunload = function(){};
 
         function changeUsername (e) {
             document.getElementById("changeUserForm").submit();
         }
+
+        $('.isHubIdpPopupButton').popup({
+            popup: '.isHubIdpPopup',
+            on: 'click',
+            position: 'top left',
+            delay: {
+                show: 300,
+                hide: 800
+            }
+        });
     </script>
 
     <%!

@@ -95,6 +95,10 @@
                     line-height: 28px;
                     padding: 6px 20px;
                     color: #666;
+
+                    &, &:hover {
+                        text-decoration: none;
+                    }
                 }
             }
         }

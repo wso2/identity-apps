@@ -269,16 +269,16 @@ export const views: Views = {
                     validations: {
                         genericError: {
                             description: "Algo deu errado. Por favor, tente novamente",
-                            message: "Erro de redefinição de senha"
+                            message: "Alterar erro de senha"
                         },
                         invalidCurrentPassword: {
                             description: "A senha atual que você digitou parece ser inválida. Por favor, tente " +
                                 "novamente",
-                            message: "Erro de redefinição de senha"
+                            message: "Alterar erro de senha"
                         },
                         submitError: {
                             description: "{{description}}",
-                            message: "Erro de redefinição de senha"
+                            message: "Alterar erro de senha"
                         },
                         submitSuccess: {
                             description: "A senha foi alterada com sucesso",
@@ -785,10 +785,11 @@ export const views: Views = {
                     inputs: {
                         email: {
                             label: "O email",
+                            note: "NOTA: Isso mudará o endereço de email no seu perfil",
                             placeholder: "Insira o seu endereço de email",
                             validations: {
                                 empty: "O endereço de email é um campo obrigatório",
-                                invalidFormat: "O endereço de email não está no formato correto"
+                                invalidFormat: "O endereço de email não está no formato correto",
                             }
                         }
                     }

@@ -14,17 +14,22 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
+--%>
 
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
-<%@include file="localize.jsp" %>
+
+<%@ page import="java.io.File" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@include file="includes/localize.jsp" %>
 
 <%! private static final String INVALID_MESSAGE_MESSAGE =
         "The message was not recognized by the SAML 2.0 SSO Provider. Please check the logs for more details";
     private static final String EXCEPTION_MESSAGE = "Please try login again.";
     private static final String INVALID_MESSAGE_STATUS = "Not a valid SAML 2.0 Request Message!";
     private static final String EXCEPTION_STATUS = "Error when processing the authentication request!";
-%><%
+%>
+<%
     String stat = request.getParameter(Constants.STATUS);
     String statusMessage = request.getParameter(Constants.STATUS_MSG);
     
@@ -49,31 +54,59 @@
     }
     session.invalidate();
 %>
-<style>
-    .info-box {
-        background-color: #EEF3F6;
-        border: 1px solid #ABA7A7;
-        font-size: 13px;
-        font-weight: bold;
-        margin-bottom: 10px;
-        padding: 10px;
-    }
-</style>
 
-    <div id="middle">
-        <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "saml.sso")%></h2>
+<!doctype html>
+<html>
+<head>
+    <!-- header -->
+    <%
+        File headerFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+        if (headerFile.exists()) {
+    %>
+        <jsp:include page="extensions/header.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/header.jsp"/>
+    <% } %>
+</head>
+<body>
+    <main class="center-segment">
+        <div class="ui container large center aligned middle aligned">
+            <div class="ui segment">
+                <!-- product-title -->
+                <%
+                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                    if (productTitleFile.exists()) {
+                %>
+                    <jsp:include page="extensions/product-title.jsp"/>
+                <% } else { %>
+                    <jsp:directive.include file="includes/product-title.jsp"/>
+                <% } %>
 
-        <div id="workArea">
-            <div class="info-box">
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, errorStat)%>
+                <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "saml.sso")%></h2>
+                <h4><%=AuthenticationEndpointUtil.i18n(resourceBundle, errorStat)%></h4>
+                <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, errorMsg)%></p>
             </div>
-            <table class="styledLeft">
-                <tbody>
-                <tr>
-                    <td><%=AuthenticationEndpointUtil.i18n(resourceBundle, errorMsg)%>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
         </div>
-    </div>
+    </main>
+
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+        <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
+
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+        <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/footer.jsp"/>
+    <% } %>
+</body>
+</html>

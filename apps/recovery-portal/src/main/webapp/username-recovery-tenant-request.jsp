@@ -21,13 +21,12 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="java.io.File" %>
-<jsp:directive.include file="localize.jsp"/>
+<jsp:directive.include file="includes/localize.jsp"/>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
 %>
-
 
 <html>
 <head>

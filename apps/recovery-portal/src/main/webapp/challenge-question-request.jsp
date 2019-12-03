@@ -28,7 +28,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.RetryError" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="java.util.Map" %>
-<jsp:directive.include file="localize.jsp"/>
+<jsp:directive.include file="includes/localize.jsp"/>
 
 <%
     String username = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("username"));

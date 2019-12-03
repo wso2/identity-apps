@@ -20,60 +20,52 @@
 <%@ page import="org.apache.commons.collections.map.HashedMap" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.SelfRegisterApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.SelfRegistrationUser" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.SelfUserRegistrationRequest" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.*" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
-<jsp:directive.include file="localize.jsp"/>
+<jsp:directive.include file="includes/localize.jsp"/>
 
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- title -->
+    <%
+        File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
+        if (titleFile.exists()) {
+    %>
+    <jsp:include page="extensions/title.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/title.jsp"/>
+    <% } %>
 
-    <html>
-    <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- title -->
-        <%
-            File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-            if (titleFile.exists()) {
-        %>
-                <jsp:include page="extensions/title.jsp"/>
-        <% } else { %>
-                <jsp:directive.include file="includes/title.jsp"/>
-        <% } %>
+    <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
+    <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/Roboto.css" rel="stylesheet">
+    <link href="css/custom-common.css" rel="stylesheet">
 
-        <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-        <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/Roboto.css" rel="stylesheet">
-        <link href="css/custom-common.css" rel="stylesheet">
-
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.min.js"></script>
-        <script src="js/respond.min.js"></script>
-        <![endif]-->
-    </head>
-
-    <body>
-
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.min.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
     <!-- header -->
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
     %>
-            <jsp:include page="extensions/header.jsp"/>
+    <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/header.jsp"/>
+    <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
 
     <!-- page content -->
@@ -83,11 +75,11 @@
             String ERROR_MESSAGE = "errorMsg";
             String ERROR_CODE = "errorCode";
             String SELF_REGISTRATION_WITH_VERIFICATION_PAGE = "self-registration-with-verification.jsp";
-            String SELF_REGISTRATION_WITHOUT_VERIFICATION_PAGE = "self-registration-without-verification.jsp";
+            String SELF_REGISTRATION_WITHOUT_VERIFICATION_PAGE = "* self-registration-without-verification.jsp";
             String passwordPatternErrorCode = "20035";
             boolean isSelfRegistrationWithVerification =
                     Boolean.parseBoolean(request.getParameter("isSelfRegistrationWithVerification"));
-            
+
             String userLocale = request.getHeader("Accept-Language");
             String username = request.getParameter("username");
             String password = request.getParameter("password");
@@ -115,7 +107,7 @@
                 if (isSelfRegistrationWithVerification) {
                     request.getRequestDispatcher("self-registration-with-verification.jsp").forward(request, response);
                 } else {
-                    request.getRequestDispatcher("self-registration-without-verification.jsp").forward(request, response);
+                    request.getRequestDispatcher("* self-registration-without-verification.jsp").forward(request, response);
                 }
             }
 
@@ -126,7 +118,7 @@
                 if (isSelfRegistrationWithVerification) {
                     request.getRequestDispatcher("self-registration-with-verification.jsp").forward(request, response);
                 } else {
-                    request.getRequestDispatcher("self-registration-without-verification.jsp").forward(request, response);
+                    request.getRequestDispatcher("* self-registration-without-verification.jsp").forward(request, response);
                 }
             }
 
@@ -167,7 +159,7 @@
 
                         Claim localeClaim = new Claim();
                         localeClaim.setUri(claim.getUri());
-                        localeClaim.setValue(userLocale.split(",")[0].replace('-','_'));
+                        localeClaim.setValue(userLocale.split(",")[0].replace('-', '_'));
                         userClaimList.add(localeClaim);
 
                     }
@@ -184,7 +176,7 @@
                 Property sessionKey = new Property();
                 sessionKey.setKey("callback");
                 sessionKey.setValue(URLEncoder.encode(callback, "UTF-8"));
-                
+
                 Property consentProperty = new Property();
                 consentProperty.setKey("consent");
                 consentProperty.setValue(consent);
@@ -197,7 +189,7 @@
                 selfUserRegistrationRequest.setProperties(properties);
 
                 Map<String, String> requestHeaders = new HashedMap();
-                if(request.getParameter("g-recaptcha-response") != null) {
+                if (request.getParameter("g-recaptcha-response") != null) {
                     requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
                 }
 
@@ -221,7 +213,7 @@
                         request.getRequestDispatcher(SELF_REGISTRATION_WITHOUT_VERIFICATION_PAGE).forward(request,
                                 response);
                     }
-        
+
                     return;
                 }
             }
@@ -236,14 +228,10 @@
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {
     %>
-            <jsp:include page="extensions/footer.jsp"/>
+    <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/footer.jsp"/>
+    <jsp:directive.include file="includes/footer.jsp"/>
     <% } %>
 
-    <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-    <script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
-
-
-    </body>
-    </html>
+</body>
+</html>

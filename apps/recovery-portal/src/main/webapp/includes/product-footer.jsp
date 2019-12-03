@@ -1,10 +1,10 @@
 <%--
   ~ Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
   ~
-  ~  WSO2 Inc. licenses this file to you under the Apache License,
-  ~  Version 2.0 (the "License"); you may not use this file except
-  ~  in compliance with the License.
-  ~  You may obtain a copy of the License at
+  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
   ~
   ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
@@ -24,12 +24,6 @@
     <div class="container-fluid">
         <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Wso2.identity.server")%> | &copy;
             <script>document.write(new Date().getFullYear());</script>
-            <a href="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "business.homepage")%>"
-               target="_blank">
-               WSO2
-               <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "inc")%>
-            </a>
-            . <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "all.rights.reserved")%>
         </p>
     </div>
 </footer>

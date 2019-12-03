@@ -6,7 +6,7 @@
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing,
   ~ software distributed under the License is distributed on an
@@ -14,7 +14,7 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
+--%>
 
 <!-- localize.jsp MUST already be included in the calling script -->
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
@@ -22,14 +22,8 @@
 <!-- footer -->
 <footer class="footer" style="text-align: center">
     <div class="container-fluid">
-        <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%> | &copy;
+        <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%> &copy;
             <script>document.write(new Date().getFullYear());</script>
-            <a href="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "business.homepage")%>"
-               target="_blank">
-               WSO2
-               <%=AuthenticationEndpointUtil.i18n(resourceBundle, "inc")%>
-            </a>
-            . <%=AuthenticationEndpointUtil.i18n(resourceBundle, "all.rights.reserved")%>
         </p>
     </div>
 </footer>

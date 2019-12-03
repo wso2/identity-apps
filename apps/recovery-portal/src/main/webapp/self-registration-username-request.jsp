@@ -20,13 +20,12 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.constants.SelfRegistrationStatusCodes" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 
-<jsp:directive.include file="localize.jsp"/>
+<jsp:directive.include file="includes/localize.jsp"/>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -34,10 +33,10 @@
     User user = IdentityManagementServiceUtil.getInstance().getUser(username);
     Object errorCodeObj = request.getAttribute("errorCode");
     Object errorMsgObj = request.getAttribute("errorMsg");
-    String callback =  Encode.forHtmlAttribute(request.getParameter("callback"));
+    String callback = Encode.forHtmlAttribute(request.getParameter("callback"));
     String errorCode = null;
     String errorMsg = null;
-    
+
     if (errorCodeObj != null) {
         errorCode = errorCodeObj.toString();
     }
@@ -55,128 +54,118 @@
     boolean skipSignUpEnableCheck = Boolean.parseBoolean(request.getParameter("skipsignupenablecheck"));
 %>
 
-
-    <html>
-    <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- title -->
-        <%
-            File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-            if (titleFile.exists()) {
-        %>
-                <jsp:include page="extensions/title.jsp"/>
-        <% } else { %>
-                <jsp:directive.include file="includes/title.jsp"/>
-        <% } %>
-
-        <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-        <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/Roboto.css" rel="stylesheet">
-        <link href="css/custom-common.css" rel="stylesheet">
-
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.min.js"></script>
-        <script src="js/respond.min.js"></script>
-        <![endif]-->
-    </head>
-
-    <body>
-
+<!doctype html>
+<html>
+<head>
     <!-- header -->
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
     %>
-            <jsp:include page="extensions/header.jsp"/>
+    <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/header.jsp"/>
+    <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
+</head>
+<body>
+    <main class="center-segment">
+        <div class="ui container medium center aligned middle aligned">
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+            <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+            <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>
+            <div class="ui segment">
+                <div class="ui divider hidden"></div>
+                <h2>
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Start.signing.up")%>
+                </h2>
 
-    <!-- page content -->
-    <div class="container-fluid body-wrapper">
-    
-        <div class="row">
-            <!-- content -->
-            <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 col-centered wr-login">
-                <form action="signup.do" method="post" id="register">
-                    <h2
-                            class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none">
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Start.signing.up")%>
-                    </h2>
-                
-                    <div class="clearfix"></div>
-                    <div class="boarder-all ">
-                        <div class="alert alert-danger margin-left-double margin-right-double margin-top-double" id="error-msg" hidden="hidden">
+                <div class="ui negative message" id="error-msg" hidden="hidden">
+                </div>
+                <% if (error) { %>
+                <div class="ui negative message" id="server-error-msg">
+                    <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
+                </div>
+                <% } %>
+                <!-- validation -->
+                <p>
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.your.username.here")%>
+                </p>
+                <div class="ui divider hidden"></div>
+                <div class="segment-form">
+                    <form class="ui large form" action="signup.do" method="post" id="register">
+
+                        <div class="field">
+                            <label class="control-label"
+                                   for="username"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")%>
+                            </label>
+                            <input id="username" name="username" type="text"
+                                   required class="form-control"
+                                <% if(skipSignUpEnableCheck) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
                         </div>
-                        <% if (error) { %>
-                        <div class="alert alert-danger margin-left-double margin-right-double margin-top-double" id="server-error-msg">
-                            <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
+                        <p class="ui tiny compact info message">
+                            <i class="icon info circle"></i>
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                    "If.you.specify.tenant.domain.you.registered.under.super.tenant")%>
+                        </p>
+                        <input id="callback" name="callback" type="hidden" value="<%=callback%>"
+                               class="form-control" required>
+
+                        <% Map<String, String[]> requestMap = request.getParameterMap();
+                            for (Map.Entry<String, String[]> entry : requestMap.entrySet()) {
+                                String key = Encode.forHtmlAttribute(entry.getKey());
+                                String value = Encode.forHtmlAttribute(entry.getValue()[0]); %>
+                        <div class="field">
+                            <input id="<%= key%>" name="<%= key%>" type="hidden"
+                                   value="<%=value%>" class="form-control">
                         </div>
                         <% } %>
-                        <!-- validation -->
-                        <div class="padding-double">
-                        
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group required">
-                                <div class="margin-bottom-double">
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.your.username.here")%>
-                                </div>
-                                <label class="control-label">
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")%></label>
-                                
-                                <input id="username" name="username" type="text"
-                                       class="form-control required usrName usrNameLength" required
-                                    <% if(skipSignUpEnableCheck) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
-                                <div class="font-small help-block">
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                            "If.you.specify.tenant.domain.you.registered.under.super.tenant")%></div>
-                                <input id="callback" name="callback" type="hidden" value="<%=callback%>"
-                                       class="form-control required usrName usrNameLength" required>
-                            </div>
-                            <%  Map<String, String[]> requestMap = request.getParameterMap();
-                                for (Map.Entry<String, String[]> entry : requestMap.entrySet()) {
-                                    String key = Encode.forHtmlAttribute(entry.getKey());
-                                    String value = Encode.forHtmlAttribute(entry.getValue()[0]); %>
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group ">
-                                    <input id="<%= key%>" name="<%= key%>" type="hidden"
-                                           value="<%=value%>" class="form-control">
-                                </div>
-                            <% } %>
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group username-proceed">
-                                <button id="registrationSubmit"
-                                        class="wr-btn grey-bg uppercase font-large full-width-xs"
-                                        type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+
+                        <div class="ui divider hidden"></div>
+
+                        <div class="align-right buttons">
+                            <a href="<%=Encode.forHtmlAttribute(IdentityManagementEndpointUtil.getUserPortalUrl(
+                                        application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL)))%>"
+                               class="ui button"
+                            >
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
+                            </a>
+                            <button id="registrationSubmit"
+                                    class="ui primary button"
+                                    type="submit">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                         "Proceed.to.self.register")%>
-                                </button>
-                                <a href="<%=Encode.forHtmlAttribute(IdentityManagementEndpointUtil.getUserPortalUrl(
-                                    application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL)))%>"
-                                   class="light-btn uppercase font-large full-width-xs">
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
-                                </a>
-                            </div>
-                            <div class="clearfix"></div>
+                            </button>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-
+    </main>
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+    <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
 
     <!-- footer -->
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {
     %>
-            <jsp:include page="extensions/footer.jsp"/>
+    <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/footer.jsp"/>
+    <jsp:directive.include file="includes/footer.jsp"/>
     <% } %>
 
-    <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-    <script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
-
-
-    </body>
-    </html>
+</body>
+</html>

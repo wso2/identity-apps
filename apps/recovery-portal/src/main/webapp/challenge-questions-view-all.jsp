@@ -24,7 +24,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.RetryError" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.List" %>
-<jsp:directive.include file="localize.jsp"/>
+<jsp:directive.include file="includes/localize.jsp"/>
 
 <%
     InitiateAllQuestionResponse initiateAllQuestionResponse = (InitiateAllQuestionResponse)
@@ -70,9 +70,7 @@
         }
     %>
 </head>
-
 <body>
-
 <!-- header -->
 <%
     File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));

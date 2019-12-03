@@ -6,7 +6,7 @@
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing,
   ~ software distributed under the License is distributed on an
@@ -14,20 +14,21 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
+--%>
+
 <!-- page content -->
 <div class="ui grid">
     <div class="two column row"></div>
         <div class="four wide computer four wide tablet column">
-            <div id="toc"></div>
+            <div id="toc" class="ui segment toc"></div>
         </div>
         <div class="twelve wide computer twelve wide tablet column">
             <!-- content -->
-        <div>
+            <div>
                 <div>
-                    <h2>
+                    <h1>
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "wso2.identity.server")%> - <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.cookies")%>
-                    </h2>
+                    </h1>
                 </div>
                 <div>
                     <%-- Customizable content. Due to this nature, i18n is not implemented for this section --%>
@@ -55,18 +56,26 @@
                         </ol>
 
                         <p>WSO2 IS uses cookies for the following purposes listed below.</p>
-                        <h3>Preferences</h3>
+                        <h3 id="preferences">Preferences</h3>
                         <p>WSO2 IS uses these cookies to remember your settings and preferences, and to auto-fill the form fields to make your interactions with the site easier. </p>
                         <p>These cookies can not be used to personally identify you.</p>
-                        <h3>Security</h3>
-                  <ul>
-                        <li>WSO2 IS uses selected cookies to identify and prevent security risks.
-                         For example, WSO2 IS may use these cookies to store your session information in order to prevent others from changing your password without your username and password.</li>
-                    </br><li>WSO2 IS uses session cookies to maintain your active session.</li>
-                      </br>   <li>WSO2 IS may use temporary cookies when performing multi-factor authentication and federated authentication.</li>
-                  </br>   <li>WSO2 IS may use permanent cookies to detect that you have previously used the same device to log in. This is to to calculate the &ldquo;risk level&rdquo; associated with your current login attempt. This is primarily to protect you and your account from possible attack.</li>
-                  </ul>
-                        <h3>Performance</h3>
+                        <h3 id="security">Security</h3>
+                        <ul>
+                            <li>WSO2 IS uses selected cookies to identify and prevent security risks.
+                                For example, WSO2 IS may use these cookies to store your session information in order 
+                                to prevent others from changing your password without your username and password.<br><br>
+                            </li>
+                            <li>WSO2 IS uses session cookies to maintain your active session.<br><br></li>
+                            <li>WSO2 IS may use temporary cookies when performing multi-factor authentication and 
+                                federated authentication.<br><br>
+                            </li>
+                            <li>WSO2 IS may use permanent cookies to detect that you have previously used the same 
+                                device to log in. This is to to calculate the &ldquo;risk level&rdquo; associated 
+                                with your current login attempt. This is primarily to protect you and your account 
+                                from possible attack.
+                            </li>
+                        </ul>
+                        <h3 id="performance">Performance</h3>
                         <p>WSO2 IS may use cookies to allow &ldquo;Remember Me&rdquo; functionalities.</p>
 
                         <h3 id="analytics">Analytics</h3>
