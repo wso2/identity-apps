@@ -69,7 +69,7 @@ export const BoxIcon = require("../lib/assets/images/icons/box-icon.svg");
 export const ForbiddenIcon = require("../lib/assets/images/icons/forbidden-icon.svg");
 export const BlockedMagnifierIcon = require("../lib/assets/images/icons/blocked-magnifier-icon.svg");
 export const CloseIcon = require("../lib/assets/images/icons/close-icon.svg");
-export const GDPRIcon = require("../lib/assets/images/icons/gdpr-icon.svg");
+export const ConsentIcon = require("../lib/assets/images/icons/consent-icon.svg");
 
 export const EmptySearchResultsIllustration = require("../lib/assets/images/illustrations/no-search-results.svg");
 

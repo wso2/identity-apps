@@ -22,11 +22,11 @@ import {
     BoxIcon,
     CloseIcon,
     CodeIcon,
+    ConsentIcon,
     CrossIcon,
     DummyUser,
     EmptySearchResultsIllustration,
     ForbiddenIcon,
-    GDPRIcon,
     HomeTileIcons,
     Logo,
     MFAIconSet,
@@ -69,7 +69,7 @@ export const AccountStatusShields = {
 };
 export const WidgetIcons = {
     accountSecurity: Padlock,
-    consents: GDPRIcon
+    consents: ConsentIcon
 };
 
 export const TitleText: TitleTextType = "User Portal";

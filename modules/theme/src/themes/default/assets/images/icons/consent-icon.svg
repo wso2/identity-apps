@@ -18,7 +18,7 @@
  * under the License.
 -->
 
-<svg id="gdpr-icon" class="icon" height="14px" width="14px" viewBox="-31 0 463 464" xmlns="http://www.w3.org/2000/svg">
+<svg id="consent-icon" class="icon" height="14px" width="14px" viewBox="-31 0 463 464" xmlns="http://www.w3.org/2000/svg">
     <path d="m96.5 400v64h272c17.601562 0 32-14.398438 32-32v-32zm0 0" fill="#b4b4b5"/>
     <path d="m328.5 0h-296c17.601562 0 32 14.398438 32 32v400c0 17.601562 14.398438 32 32 32s32-14.398438 32-32v-32h232v-368c0-17.601562-14.398438-32-32-32zm0 0" fill="#e9e9e9"/>
     <g fill="#c4c4c4">

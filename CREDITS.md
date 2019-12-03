@@ -15,5 +15,5 @@
 ![magnifier](modules/theme/src/themes/default/assets/images/icons/blocked-magnifier-icon.svg) | Icon made by Freepik from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/not-found_1178479?term=page%20not%20found&page=1&position=1)
 ![box](modules/theme/src/themes/default/assets/images/icons/box-icon.svg) | Icon made by Freepik from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/box_1380641?term=empty%20box&page=1&position=1)
 ![close](modules/theme/src/themes/default/assets/images/icons/close-icon.svg) | Icon made by Smashicons from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/close_402715)
-![gdpr](modules/theme/src/themes/default/assets/images/icons/gdpr-icon.svg) | Icon made by Wichai.wi from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/gdpr_1355236?term=gdpr&page=1&position=3)
+![consent](modules/theme/src/themes/default/assets/images/icons/consent-icon.svg) | Icon made by Wichai.wi from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/gdpr_1355236?term=gdpr&page=1&position=3)
 ![forbidden](modules/theme/src/themes/default/assets/images/icons/forbidden-icon.svg) | Icon made by Freepik from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/prohibition-symbol_12572?term=not%20permitted&page=1&position=2)
