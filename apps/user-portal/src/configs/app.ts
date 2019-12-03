@@ -32,11 +32,11 @@ interface ServiceResourcesType {
     logout: string;
     me: string;
     pendingApprovals: string;
+    profileSchemas: string;
     receipts: string;
     sessions: string;
     token: string;
     user: string;
-    userMeta: string;
     revoke: string;
     wellKnown: string;
 }
@@ -56,11 +56,11 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     logout: `${ServiceEndpoint}/oidc/logout`,
     me: `${ServiceEndpoint}/scim2/Me`,
     pendingApprovals: `${ServiceEndpoint}/t/carbon.super/api/users/v1/me/approval-tasks`,
+    profileSchemas: `${ServiceEndpoint}/scim2/Schemas`,
     receipts: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents/receipts`,
     revoke: `${ServiceEndpoint}/oauth2/revoke`,
     sessions: `${ServiceEndpoint}/t/carbon.super/api/users/v1/me/sessions`,
     token: `${ServiceEndpoint}/oauth2/token`,
     user: `${ServiceEndpoint}/api/identity/user/v1.0/me`,
-    userMeta: `${ServiceEndpoint}/scim2/Schemas`,
     wellKnown: `${ServiceEndpoint}/oauth2/oidcdiscovery/.well-known/openid-configuration`
 };
