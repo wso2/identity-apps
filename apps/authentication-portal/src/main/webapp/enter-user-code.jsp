@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
   ~
   ~ WSO2 Inc. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -35,10 +35,9 @@
     <% } %>
 </head>
 <body onload="loadFunc()">
-<main class="center-segment">
-    <div class="ui container medium center aligned middle">
+    <main class="center-segment">
+        <div class="ui container medium center aligned middle">
     
-        <div class="ui segment">
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -49,70 +48,70 @@
             <jsp:directive.include file="includes/product-title.jsp"/>
             <% } %>
         
-            <h3 class="ui header">
-                Device Flow Sign In
-            </h3>
-            
-            <div class="segment-form">
-                <form class="ui large form" action="../oauth2/device" method="post" id="loginForm">
-                    <div class="field">
-                        <div class="ui fluid left icon input">
-                            <input
-                                    type="text"
-                                    id="user_code"
-                                    value=""
-                                    name="user_code"
-                                    tabindex="0"
-                                    placeholder="user code"
-                                    required>
-                            <i aria-hidden="true" class="user icon"></i>
+            <div class="ui segment">
+                <h3 class="ui header">
+                    Device Flow Sign In
+                </h3>
+                
+                <div class="segment-form">
+                    <form class="ui large form" action="../oauth2/device" method="post" id="loginForm">
+                        <div class="field">
+                            <div class="ui fluid left icon input">
+                                <input
+                                        type="text"
+                                        id="user_code"
+                                        value=""
+                                        name="user_code"
+                                        tabindex="0"
+                                        placeholder="user code"
+                                        required>
+                                <i aria-hidden="true" class="user icon"></i>
+                            </div>
                         </div>
-                    </div>
-                    <div class="align-right buttons">
-                        <button
-                                type="submit"
-                                onclick="submitCredentials(event)"
-                                class="ui primary large button"
-                                role="button">
-                            Continue
-                        </button>
-                    </div>
-                </form>
+                        <div class="column align-right buttons">
+                            <button
+                                    type="submit"
+                                    onclick="submitCredentials(event)"
+                                    class="ui primary large button"
+                                    role="button">
+                                Continue
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</main>
-
-<!-- product-footer -->
-<%
-    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-    if (productFooterFile.exists()) {
-%>
-<jsp:include page="extensions/product-footer.jsp"/>
-<% } else { %>
-<jsp:directive.include file="includes/product-footer.jsp"/>
-<% } %>
-
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
-<jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
-<jsp:directive.include file="includes/footer.jsp"/>
-<% } %>
-
-<script type="text/javascript">
-
-    var userCode;
-
-    function loadFunc() {
-
-        const urlParams = new URLSearchParams(window.location.search);
-        userCode = urlParams.get('user_code');
-        document.getElementById("user_code").value = userCode;
-    }
-</script>
+    </main>
+    
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+    <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
+    
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+    <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/footer.jsp"/>
+    <% } %>
+    
+    <script type="text/javascript">
+        var userCode;
+    
+        function loadFunc() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            userCode = urlParams.get('user_code');
+            document.getElementById("user_code").value = userCode;
+        }
+    </script>
 </body>
 </html>

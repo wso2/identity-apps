@@ -38,33 +38,34 @@
     <main class="center-segment">
         <div class="ui container medium center aligned middle">
             
-            <div class="ui segment">
-                <!-- product-title -->
-                <%
-                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                    if (productTitleFile.exists()) {
-                %>
-                <jsp:include page="extensions/product-title.jsp"/>
-                <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
-                <% } %>
-        
-                <h3 class="ui header">
-                    Successful
-                </h3>
-                
-                <div class="segment-form">
-                    <div class="field">
-                        <div class="ui fluid left icon input">
-                            <p id="Para1">
-                                Login successful for application:
-                                <%= request.getParameter("app_name")%>. Please close the browser and return to your
-                                device.
-                            </p>
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+            <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+            <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>
+            <%if(request.getParameter("app_name") != null) { %>
+                <div class="field">
+                    <div class="ui positive message">
+                        <div class="ui header center aligned">
+                            Successful
                         </div>
+                        <p>Login successful for application:
+                            <%= request.getParameter("app_name")%>.Please close the browser and
+                            return to your device.</p>
                     </div>
                 </div>
-            </div>
+            <% } else { %>
+                <div class="ui negative message">
+                    <div class="header">
+                        Error
+                    </div>
+                <p>Requested parameter application name is not present.</p>
+                </div>
+            <% } %>
         </div>
     </main>
 
