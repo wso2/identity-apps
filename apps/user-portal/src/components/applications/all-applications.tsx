@@ -27,6 +27,7 @@ interface AllApplicationsProps {
     allApps: Application[];
     loading: boolean;
     onAppNavigate: (id: string, url: string) => void;
+    onListRefresh: () => void;
     onSearchQueryClear: () => void;
     searchQuery: string;
     showFavourites?: boolean;
@@ -40,7 +41,7 @@ interface AllApplicationsProps {
 export const AllApplications: FunctionComponent<AllApplicationsProps> = (
     props: AllApplicationsProps
 ): JSX.Element => {
-    const { allApps, onAppNavigate, onSearchQueryClear, loading, searchQuery, showFavourites } = props;
+    const { allApps, onAppNavigate, onListRefresh, onSearchQueryClear, loading, searchQuery, showFavourites } = props;
 
     return (
         <ApplicationList
@@ -49,6 +50,7 @@ export const AllApplications: FunctionComponent<AllApplicationsProps> = (
             searchQuery={ searchQuery }
             loading={ loading }
             onAppNavigate={ onAppNavigate }
+            onListRefresh={ onListRefresh }
             onSearchQueryClear={ onSearchQueryClear }
         />
     );

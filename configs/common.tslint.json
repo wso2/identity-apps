@@ -27,6 +27,7 @@
                 "esSpecCompliant": true
             }
         ],
+        "member-access": false,
         "no-implicit-dependencies": {
             "severity": "error",
             "options": [

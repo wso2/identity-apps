@@ -18,7 +18,7 @@
 
 import React, { FunctionComponent } from "react";
 import { Header } from "semantic-ui-react";
-import { ThemeIcon } from "./icon";
+import { ThemeIcon, ThemeIconSizes } from "./icon";
 
 /**
  * Proptypes for the placeholder component.
@@ -26,6 +26,7 @@ import { ThemeIcon } from "./icon";
 interface PlaceholderProps {
     action?: React.ReactNode;
     image?: any;
+    imageSize?: ThemeIconSizes;
     subtitle: string | string[];
     title: string;
 }
@@ -37,7 +38,7 @@ interface PlaceholderProps {
  * @return {JSX.Element}
  */
 export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: PlaceholderProps): JSX.Element => {
-    const { action, image, subtitle, title } = props;
+    const { action, image, imageSize, subtitle, title } = props;
 
     return (
         <div className="empty-placeholder">
@@ -45,7 +46,7 @@ export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: Pla
                 image
                     ? (
                         <div className="image-container">
-                            <ThemeIcon icon={ image } transparent/>
+                            <ThemeIcon icon={ image } size={ imageSize } transparent/>
                         </div>
                     )
                     : null
@@ -72,5 +73,6 @@ export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: Pla
  */
 EmptyPlaceholder.defaultProps = {
     action: null,
-    image: null
+    image: null,
+    imageSize: "auto"
 };
