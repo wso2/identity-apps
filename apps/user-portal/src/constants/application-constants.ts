@@ -22,7 +22,7 @@
  * @type {string}
  * @default
  */
-export const APPLICATION_SETTINGS_STORAGE_KEY: string = "application_settings";
+export const APPLICATION_SETTINGS_STORAGE_KEY = "application_settings";
 
 /**
  * Primary user store identifier.
@@ -30,20 +30,4 @@ export const APPLICATION_SETTINGS_STORAGE_KEY: string = "application_settings";
  * @type {string}
  * @default
  */
-export const PRIMARY_USER_STORE_IDENTIFIER: string = "PRIMARY";
-
-/**
- * Path to the login error page.
- * @constant
- * @type {string}
- * @default
- */
-export const LOGIN_ERROR_PAGE_PATH: string = "/login-error";
-
-/**
- * Path to the applications page.
- * @constant
- * @type {string}
- * @default
- */
-export const APPLICATIONS_PAGE_PATH: string = "/applications";
+export const PRIMARY_USER_STORE_IDENTIFIER = "PRIMARY";

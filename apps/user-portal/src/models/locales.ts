@@ -166,9 +166,6 @@ export interface Views {
             notifications: {
                 fetchApplications: Notification;
             }
-            placeholders: {
-                emptyList: Placeholder
-            }
             recent: {
                 heading: string;
             },
@@ -215,7 +212,7 @@ export interface Views {
                     dropdown: string;
                 },
                 resultsIndicator: string;
-            },
+            }
         },
         approvals: {
             notifications: {
@@ -657,12 +654,10 @@ export interface Views {
         personalInfo: Page;
         privacy: Page;
         security: Page;
+        404: Page;
     };
     placeholders: {
-        404: Placeholder,
-        emptySearchResult: Placeholder,
-        genericError: Placeholder,
-        loginError: Placeholder
+        emptySearchResult: Placeholder
     };
     sections: {
         accountRecovery: {

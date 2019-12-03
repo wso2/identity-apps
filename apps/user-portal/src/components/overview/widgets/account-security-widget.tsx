@@ -42,9 +42,6 @@ export const AccountSecurityWidget: FunctionComponent<{}> = (): JSX.Element => {
                 primaryAction={ t("views:components.overview.widgets.accountSecurity.actionTitles.update") }
                 onPrimaryActionClick={ navigate }
                 icon={ WidgetIcons.accountSecurity }
-                iconMini={ WidgetIcons.accountSecurity }
-                iconSize="tiny"
-                iconStyle="twoTone"
             />
         </div>
     );
