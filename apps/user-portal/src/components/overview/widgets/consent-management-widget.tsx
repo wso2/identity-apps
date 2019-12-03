@@ -42,8 +42,10 @@ export const ConsentManagementWidget: FunctionComponent<{}> = (): JSX.Element =>
                 primaryAction={ t("views:components.overview.widgets.consentManagement.actionTitles.manage") }
                 onPrimaryActionClick={ navigate }
                 icon={ WidgetIcons.consents }
-            >
-            </SettingsSection>
+                iconMini={ WidgetIcons.consents }
+                iconSize="tiny"
+                iconStyle="twoTone"
+            />
         </div>
     );
 };

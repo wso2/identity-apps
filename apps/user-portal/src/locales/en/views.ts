@@ -144,6 +144,17 @@ export const views: Views = {
                     }
                 }
             },
+            placeholders: {
+                emptyList: {
+                    action: "Refresh list",
+                    subtitles: {
+                        0: "The applications list returned empty.",
+                        1: "This could be due to having no discoverable applications.",
+                        2: "Please ask an admin to enable discoverability for applications."
+                    },
+                    title: "No Applications"
+                }
+            },
             recent: {
                 heading: "Recent Applications"
             },
@@ -957,13 +968,17 @@ export const views: Views = {
         security: {
             subTitle: "Secure your account by managing consents, sessions, and security settings",
             title: "Security"
-        },
-        404: {
-            subTitle: "The page you're looking for isn't here",
-            title: "It looks like you're lost. :("
-        },
+        }
     },
     placeholders: {
+        404: {
+            action: "Back to home",
+            subtitles: {
+                0: "We couldn't find the page you are looking for.",
+                1: "Please check the URL or click on the button below to be redirected back to the home page."
+            },
+            title: "Page not found"
+        },
         emptySearchResult: {
             action: "Clear search query",
             subtitles: {
@@ -971,6 +986,22 @@ export const views: Views = {
                 1: "Please try a different search term."
             },
             title: "No results found"
+        },
+        genericError: {
+            action: "Refresh the page",
+            subtitles: {
+                0: "Something went wrong while displaying this page.",
+                1: "See the browser console for technical details."
+            },
+            title: "Something went wrong"
+        },
+        loginError: {
+            action: "Continue logout",
+            subtitles: {
+                0: "It seems like you don't have permission to use this portal.",
+                1: "Please sign in with a different account."
+            },
+            title: "You are not authorized"
         }
     },
     sections: {

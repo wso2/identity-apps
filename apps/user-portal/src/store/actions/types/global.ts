@@ -47,7 +47,8 @@ export interface DismissNotificationAction {
  */
 export enum GlobalActionTypes {
     SHOW_GLOBAL_LOADER = "SHOW_GLOBAL_LOADER",
-    HIDE_GLOBAL_LOADER = "HIDE_GLOBAL_LOADER"
+    HIDE_GLOBAL_LOADER = "HIDE_GLOBAL_LOADER",
+    TOGGLE_APPLICATIONS_PAGE_VISIBILITY = "TOGGLE_APPLICATIONS_PAGE_VISIBILITY"
 }
 
 /**
@@ -72,6 +73,14 @@ export interface HideGlobalLoaderAction extends GlobalBaseAction {
 }
 
 /**
+ * Applications page visibility toggle action interface.
+ */
+export interface ToggleApplicationsPageVisibilityAction extends GlobalBaseAction {
+    payload: boolean;
+    type: GlobalActionTypes.TOGGLE_APPLICATIONS_PAGE_VISIBILITY;
+}
+
+/**
  * Export action interfaces.
  */
-export type GlobalActions = ShowGlobalLoaderAction | HideGlobalLoaderAction;
+export type GlobalActions = ShowGlobalLoaderAction | HideGlobalLoaderAction | ToggleApplicationsPageVisibilityAction;

@@ -16,6 +16,7 @@
  * under the License.
  */
 
- export interface GlobalInterface {
-     isGlobalLoaderVisible: boolean;
- }
+export interface GlobalInterface {
+    isApplicationsPageVisible: boolean;
+    isGlobalLoaderVisible: boolean;
+}

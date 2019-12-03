@@ -17,5 +17,6 @@
  */
 
 export * from "./default";
+export * from "./error";
 export * from "./inner";
 export * from "./login";

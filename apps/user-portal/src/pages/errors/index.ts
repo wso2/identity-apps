@@ -16,18 +16,5 @@
  * under the License.
  */
 
-export * from "./avatar";
-export * from "./app-avatar";
-export * from "./language-switcher";
-export * from "./advanced-search";
-export * from "./edit-section";
-export * from "./empty-placeholder";
-export * from "./error-boundary";
-export * from "./global-loader";
-export * from "./icon";
-export * from "./notification";
-export * from "./page-header";
-export * from "./protected-route";
-export * from "./settings-section";
-export * from "./ui";
-export * from "./user-avatar";
+export * from "./404";
+export * from "./login-error";

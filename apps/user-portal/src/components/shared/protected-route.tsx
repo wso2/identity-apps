@@ -19,15 +19,19 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
+import * as ApplicationConstants from "../../constants/application-constants";
 import { history } from "../../helpers";
 import { updateAuthenticationCallbackUrl } from "../../store/middleware";
 
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
     const isAuth = useSelector((state: any) => state.authenticationInformation.isAuth);
+
     /**
      * Update existing location path in the state to recall upon page refresh or authentication callback.
+     * The login path and the login error path have been skipped.
      */
-    if (history.location.pathname !== APP_LOGIN_PATH) {
+    if ((history.location.pathname !== APP_LOGIN_PATH)
+        && (history.location.pathname !== ApplicationConstants.LOGIN_ERROR_PAGE_PATH)) {
         updateAuthenticationCallbackUrl(history.location.pathname);
     }
 
