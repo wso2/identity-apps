@@ -59,11 +59,13 @@
                     </div>
                 </div>
             <% } else { %>
-                <div class="ui negative message">
-                    <div class="header">
-                        Error
+                <div class="field">
+                    <div class="ui negative message">
+                        <div class="ui header center aligned">
+                            Error
+                        </div>
+                    <p>Requested parameter application name is not present.</p>
                     </div>
-                <p>Requested parameter application name is not present.</p>
                 </div>
             <% } %>
         </div>
