@@ -59,6 +59,25 @@ export interface LinkedAccountInterface {
     username: string;
 }
 
+/**
+ * Profile schema interface.
+ */
+export interface ProfileSchema {
+    claimValue: string;
+    uniqueness: string;
+    displayName: string;
+    name: string;
+    displayOrder: string;
+    description: string;
+    mutability: string;
+    type: string;
+    multiValued: boolean;
+    caseExact: boolean;
+    returned: string;
+    required: boolean;
+    subAttributes?: any;
+}
+
 export const createEmptyProfile = (): BasicProfileInterface => ({
     associations: {},
     displayName: "",
