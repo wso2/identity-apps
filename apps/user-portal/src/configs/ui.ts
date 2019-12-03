@@ -18,13 +18,15 @@
 
 import {
     AccountRecoveryIconSet,
+    BlockedMagnifierIcon,
     BoxIcon,
+    CloseIcon,
     CodeIcon,
-    ConsentForm,
     CrossIcon,
     DummyUser,
     EmptySearchResultsIllustration,
     ForbiddenIcon,
+    GDPRIcon,
     HomeTileIcons,
     Logo,
     MFAIconSet,
@@ -35,8 +37,7 @@ import {
     SidePanelIconSet,
     StatusShieldDanger,
     StatusShieldGood,
-    StatusShieldWarning,
-    TrafficConeIcon
+    StatusShieldWarning
 } from "@wso2is/theme";
 
 type ImageType = string;
@@ -68,7 +69,7 @@ export const AccountStatusShields = {
 };
 export const WidgetIcons = {
     accountSecurity: Padlock,
-    consents: ConsentForm
+    consents: GDPRIcon
 };
 
 export const TitleText: TitleTextType = "User Portal";
@@ -87,8 +88,9 @@ export const AdvancedSearchIcons = {
 
 export const EmptyPlaceholderIllustrations = {
     emptyList: BoxIcon,
+    genericError: CloseIcon,
     loginError: ForbiddenIcon,
-    pageNotFound: TrafficConeIcon,
+    pageNotFound: BlockedMagnifierIcon,
     search: EmptySearchResultsIllustration
 };
 

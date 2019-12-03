@@ -643,6 +643,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             description={ t("views:sections.profile.description") }
             header={ t("views:sections.profile.heading") }
             icon={ <UserAvatar authState={ profileDetails } size="tiny" /> }
+            iconMini={ <UserAvatar authState={ profileDetails } size="tiny" /> }
         >
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">

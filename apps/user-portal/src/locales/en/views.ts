@@ -975,10 +975,10 @@ export const views: Views = {
             action: "Back to home",
             subtitles: {
                 0: "We couldn't find the page you are looking for.",
-                1: "Try to enter the path manually or press the button below",
-                2: "to navigate back to the home page."
+                1: "Please check the URL or click on the button below",
+                2: "to be redirected back to the home page."
             },
-            title: "404"
+            title: "Page not found"
         },
         emptySearchResult: {
             action: "Clear search query",
@@ -988,11 +988,19 @@ export const views: Views = {
             },
             title: "No results found"
         },
+        genericError: {
+            action: "Refresh the page",
+            subtitles: {
+                0: "Something went wrong while displaying this page.",
+                1: "See the browser console for technical details."
+            },
+            title: "Something went wrong"
+        },
         loginError: {
             action: "Continue logout",
             subtitles: {
                 0: "It seems like you don't have permission to use this portal.",
-                1: "Please logout and login with a different account."
+                1: "Please sign in with a different account."
             },
             title: "You are not authorized"
         }

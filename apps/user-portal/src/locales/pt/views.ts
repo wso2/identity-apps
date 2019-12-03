@@ -989,10 +989,10 @@ export const views: Views = {
             action: "Voltar para casa",
             subtitles: {
                 0: "Não foi possível encontrar a página que você estava procurando.",
-                1: "Tente inserir o caminho manualmente ou pressione o botão abaixo",
-                2: "para voltar à página inicial."
+                1: "Por favor, verifique o URL ou clique no botão abaixo",
+                2: "para ser redirecionado de volta à página inicial."
             },
-            title: "404"
+            title: "página não encontrada"
         },
         emptySearchResult: {
             action: "Limpar consulta de pesquisa",
@@ -1002,11 +1002,19 @@ export const views: Views = {
             },
             title: "Nenhum resultado encontrado"
         },
+        genericError: {
+            action: "Recarregue a página",
+            subtitles: {
+                0: "Ocorreu um erro ao exibir esta página.",
+                1: "Consulte o console do navegador para obter detalhes técnicos."
+            },
+            title: "Algo deu errado"
+        },
         loginError: {
             action: "Continuar logout",
             subtitles: {
                 0: "Parece que você não tem permissão para usar este portal.",
-                1: "Faça logout e faça login com uma conta diferente."
+                1: "Faça login com uma conta diferente."
             },
             title: "Você não está autorizado"
         }
