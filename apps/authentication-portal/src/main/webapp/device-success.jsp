@@ -50,7 +50,7 @@
             <div class="ui segment">
                 <%if(request.getParameter("app_name") != null) { %>
                     <div class="ui positive message">
-                        <div class="ui header center aligned">
+                        <div class="header">
                             Successful
                         </div>
                         <p>Login successful for application:
@@ -59,10 +59,10 @@
                     </div>
                 <% } else { %>
                     <div class="ui negative message">
-                        <div class="ui header center aligned">
-                            Error
+                        <div class="header">
+                            Authentication Error!
                         </div>
-                    <p>Requested parameter application name is not present.</p>
+                    <p>Something went wrong during authentication process. Please sign in again.</p>
                     </div>
                 <% } %>
             </div>
