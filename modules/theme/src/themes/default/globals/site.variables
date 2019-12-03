@@ -117,10 +117,3 @@
 @advancedSearchDropdownMinWidth: 260px;
 @advancedSearchDropdownMaxWidth: 520px;
 @advancedSearchBorder: 1px solid @borderColor;
-
-
-/*-------------------------
-   Overview page widgets
---------------------------*/
-
-@overviewPageWidgetHeaderMinHeight: 155px;

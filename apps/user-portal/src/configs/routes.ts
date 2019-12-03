@@ -16,12 +16,9 @@
  * under the License.
  */
 
-import * as ApplicationConstants from "../constants/application-constants";
-import * as TokenConstants from "../constants/token-constants";
 import {
     AccountSecurityPage,
     ApplicationsPage,
-    LoginErrorPage,
     OperationsPage,
     OverviewPage,
     PageNotFound,
@@ -38,7 +35,6 @@ interface Route {
     name: string;
     path: string;
     protected: boolean;
-    scope?: string;
     showOnSidePanel: boolean;
 }
 
@@ -58,7 +54,7 @@ const ROUTES: Route[] = [
         component: ApplicationsPage,
         icon: "apps",
         name: "common:applications",
-        path: ApplicationConstants.APPLICATIONS_PAGE_PATH,
+        path: "/applications",
         protected: true,
         showOnSidePanel: true,
     },
@@ -84,7 +80,6 @@ const ROUTES: Route[] = [
         name: "common:operations",
         path: "/operations",
         protected: true,
-        scope: TokenConstants.HUMAN_TASK_SCOPE,
         showOnSidePanel: true,
     },
     {
@@ -96,16 +91,9 @@ const ROUTES: Route[] = [
         showOnSidePanel: false,
     },
     {
-        component: LoginErrorPage,
-        name: "Login error",
-        path: ApplicationConstants.LOGIN_ERROR_PAGE_PATH,
-        protected: true,
-        showOnSidePanel: false,
-    },
-    {
         component: PageNotFound,
         name: "404",
-        path: "*",
+        path: null,
         protected: true,
         showOnSidePanel: false,
     },

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-
 <!--
  * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
@@ -8,7 +7,7 @@
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -17,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
 -->
-
 <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" id="email-icon" height="14" width="14" 
      version="1.1" xml:space="preserve" viewBox="0 0 420 420" y="0px" x="0px" version="1.1" class="icon">
    <path class="path primary" d="M 209.46992,91.817395 208.35184,93.095736 11.863524,319.59479 H 407.07633 Z m 0,4.532303 191.07445,220.281642 

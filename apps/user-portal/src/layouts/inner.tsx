@@ -17,19 +17,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import { Button } from "semantic-ui-react";
-import {
-    AppFooter,
-    EmptyPlaceholder,
-    ErrorBoundary,
-    GlobalLoader,
-    Header as AppHeader,
-    PageHeader,
-    SidePanelWrapper
-} from "../components";
-import { EmptyPlaceholderIllustrations } from "../configs";
+import { AppFooter, GlobalLoader, Header as AppHeader, PageHeader, SidePanelWrapper } from "../components";
 
 /**
  * Inner page layout component Prop types.
@@ -58,8 +46,6 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
 ): JSX.Element => {
     const { children, pageTitle, pageDescription, pageTitleTextAlign } = props;
 
-    const { t } = useTranslation();
-
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState(false);
     const [ headerHeight, setHeaderHeight ] = useState(DEFAULT_HEADER_HEIGHT);
 
@@ -82,10 +68,6 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
         setMobileSidePanelVisibility(false);
     };
 
-    const handlePageRefresh = (): void => {
-        window.location.reload();
-    };
-
     return (
         <>
             <GlobalLoader height={ 3 }/>
@@ -97,34 +79,12 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
                 >
-                    <ErrorBoundary
-                        fallback={ (
-                            <EmptyPlaceholder
-                                action={ (
-                                    <Button
-                                        className="link-button"
-                                        onClick={ handlePageRefresh }
-                                    >
-                                        { t("views:placeholders.genericError.action") }
-                                    </Button>
-                                ) }
-                                image={ EmptyPlaceholderIllustrations.genericError }
-                                imageSize="tiny"
-                                subtitle={ [
-                                    t("views:placeholders.genericError.subtitles.0"),
-                                    t("views:placeholders.genericError.subtitles.1")
-                                ] }
-                                title={ t("views:placeholders.genericError.title") }
-                            />
-                        ) }
-                    >
-                        <PageHeader
-                            title={ pageTitle }
-                            description={ pageDescription }
-                            titleTextAlign={ pageTitleTextAlign }
-                        />
-                        { children }
-                    </ErrorBoundary>
+                    <PageHeader
+                        title={ pageTitle }
+                        description={ pageDescription }
+                        titleTextAlign={ pageTitleTextAlign }
+                    />
+                    { children }
                 </SidePanelWrapper>
             </div>
             <AppFooter/>
