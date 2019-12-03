@@ -24,8 +24,9 @@ import {
     FireNotificationAction,
     GlobalActionTypes,
     HideGlobalLoaderAction,
-    ShowGlobalLoaderAction
+    ShowGlobalLoaderAction, ToggleApplicationsPageVisibilityAction
 } from "./types";
+
 /**
  * Show global loader action.
  *
@@ -42,6 +43,16 @@ export const showGlobalLoader = (): ShowGlobalLoaderAction => ({
  */
 export const hideGlobalLoader = (): HideGlobalLoaderAction => ({
     type: GlobalActionTypes.HIDE_GLOBAL_LOADER
+});
+
+/**
+ * Applications page visibility toggle action
+ *
+ * @returns An action of type `TOGGLE_APPLICATIONS_PAGE_VISIBILITY`
+ */
+export const toggleApplicationsPageVisibility = (visibility: boolean): ToggleApplicationsPageVisibilityAction => ({
+    payload: visibility,
+    type: GlobalActionTypes.TOGGLE_APPLICATIONS_PAGE_VISIBILITY
 });
 
 /**

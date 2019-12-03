@@ -25,11 +25,11 @@ import { EmptyPlaceholderIllustrations } from "../../configs";
 import { ErrorPageLayout } from "../../layouts";
 
 /**
- * 404 error page.
+ * Login error page.
  *
  * @return {JSX.Element}
  */
-export const PageNotFound = (): JSX.Element => {
+export const LoginErrorPage = (): JSX.Element => {
     const { t } = useTranslation();
     return (
         <ErrorPageLayout>
@@ -38,18 +38,18 @@ export const PageNotFound = (): JSX.Element => {
                     <Button
                         className="link-button"
                         as={ Link }
-                        to={ APP_HOME_PATH }
+                        to="/logout"
                     >
-                        { t("views:placeholders.404.action") }
+                        { t("views:placeholders.loginError.action") }
                     </Button>
                 ) }
-                image={ EmptyPlaceholderIllustrations.pageNotFound }
+                image={ EmptyPlaceholderIllustrations.loginError }
                 imageSize="tiny"
                 subtitle={ [
-                    t("views:placeholders.404.subtitles.0"),
-                    t("views:placeholders.404.subtitles.1")
+                    t("views:placeholders.loginError.subtitles.0"),
+                    t("views:placeholders.loginError.subtitles.1"),
                 ] }
-                title={ t("views:placeholders.404.title") }
+                title={ t("views:placeholders.loginError.title") }
             />
         </ErrorPageLayout>
     );

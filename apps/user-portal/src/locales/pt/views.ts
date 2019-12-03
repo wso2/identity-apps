@@ -144,6 +144,17 @@ export const views: Views = {
                     }
                 }
             },
+            placeholders: {
+                emptyList: {
+                    action: "Atualizar lista",
+                    subtitles: {
+                        0: "A lista de aplicativos retornou vazia.",
+                        1: "Isso pode ser devido a não ter aplicativos detectáveis.",
+                        2: "Peça a um administrador para ativar a capacidade de descoberta de aplicativos."
+                    },
+                    title: "Sem aplicações"
+                }
+            },
             recent: {
                 heading: "Aplicações recentes"
             },
@@ -971,13 +982,17 @@ export const views: Views = {
         security: {
             subTitle: "Atualize as configurações para tornar sua conta segura",
             title: "Segurança"
-        },
-        404: {
-            subTitle: "A página que você está procurando não está aqui",
-            title: "Parece que você está perdido. :("
-        },
+        }
     },
     placeholders: {
+        404: {
+            action: "Voltar para casa",
+            subtitles: {
+                0: "Não foi possível encontrar a página que você estava procurando.",
+                1: "Por favor, verifique o URL ou clique no botão abaixo para ser redirecionado de volta à página inicial."
+            },
+            title: "página não encontrada"
+        },
         emptySearchResult: {
             action: "Limpar consulta de pesquisa",
             subtitles: {
@@ -985,6 +1000,22 @@ export const views: Views = {
                 1: "Tente um termo de pesquisa diferente."
             },
             title: "Nenhum resultado encontrado"
+        },
+        genericError: {
+            action: "Recarregue a página",
+            subtitles: {
+                0: "Ocorreu um erro ao exibir esta página.",
+                1: "Consulte o console do navegador para obter detalhes técnicos."
+            },
+            title: "Algo deu errado"
+        },
+        loginError: {
+            action: "Continuar logout",
+            subtitles: {
+                0: "Parece que você não tem permissão para usar este portal.",
+                1: "Faça login com uma conta diferente."
+            },
+            title: "Você não está autorizado"
         }
     },
     sections: {

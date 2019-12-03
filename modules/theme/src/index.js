@@ -60,13 +60,17 @@ export const SettigsSectionIconSet = {
     securityQuestions: require("../lib/assets/images/illustrations/security-questions.svg"),
     securityQuestionsMini: require("../lib/assets/images/illustrations/security-questions-mini.svg")
 };
-export const Padlock = require("../lib/assets/images/icons/padlock.svg");
+export const Padlock = require("../lib/assets/images/icons/padlock-icon.svg");
 export const StatusShieldGood = require("../lib/assets/images/accounts-status-icons/good.svg");
 export const StatusShieldWarning = require("../lib/assets/images/accounts-status-icons/warning.svg");
 export const StatusShieldDanger = require("../lib/assets/images/accounts-status-icons/danger.svg");
-export const ConsentForm = require("../lib/assets/images/icons/consents.svg");
 export const CrossIcon = require("../lib/assets/images/icons/cross-icon.svg");
+export const BoxIcon = require("../lib/assets/images/icons/box-icon.svg");
+export const ForbiddenIcon = require("../lib/assets/images/icons/forbidden-icon.svg");
+export const BlockedMagnifierIcon = require("../lib/assets/images/icons/blocked-magnifier-icon.svg");
+export const CloseIcon = require("../lib/assets/images/icons/close-icon.svg");
+export const ConsentIcon = require("../lib/assets/images/icons/consent-icon.svg");
 
-export const EmptySearchResultsIllustration = require("../lib/assets/images/app-states/no-search-results.svg");
+export const EmptySearchResultsIllustration = require("../lib/assets/images/illustrations/no-search-results.svg");
 
 export const OrangeAppIconBackground = require("../lib/assets/images/app-icon-background.png");

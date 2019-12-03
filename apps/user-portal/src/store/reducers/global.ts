@@ -24,7 +24,8 @@ import { GlobalActions, GlobalActionTypes } from "../actions/types";
  * Initial state.
  */
 const initialState: GlobalInterface = {
-    isGlobalLoaderVisible: false,
+    isApplicationsPageVisible: undefined,
+    isGlobalLoaderVisible: false
 };
 
 /**
@@ -45,6 +46,11 @@ export const globalReducer = (state: GlobalInterface = initialState, action: Glo
             return {
                 ...state,
                 isGlobalLoaderVisible: false
+            };
+        case GlobalActionTypes.TOGGLE_APPLICATIONS_PAGE_VISIBILITY:
+            return {
+                ...state,
+                isApplicationsPageVisible: action.payload
             };
         default:
             return state;

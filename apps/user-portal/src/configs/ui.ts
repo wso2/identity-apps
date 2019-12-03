@@ -18,11 +18,15 @@
 
 import {
     AccountRecoveryIconSet,
+    BlockedMagnifierIcon,
+    BoxIcon,
+    CloseIcon,
     CodeIcon,
-    ConsentForm,
+    ConsentIcon,
     CrossIcon,
     DummyUser,
     EmptySearchResultsIllustration,
+    ForbiddenIcon,
     HomeTileIcons,
     Logo,
     MFAIconSet,
@@ -65,7 +69,7 @@ export const AccountStatusShields = {
 };
 export const WidgetIcons = {
     accountSecurity: Padlock,
-    consents: ConsentForm
+    consents: ConsentIcon
 };
 
 export const TitleText: TitleTextType = "User Portal";
@@ -83,6 +87,10 @@ export const AdvancedSearchIcons = {
 };
 
 export const EmptyPlaceholderIllustrations = {
+    emptyList: BoxIcon,
+    genericError: CloseIcon,
+    loginError: ForbiddenIcon,
+    pageNotFound: BlockedMagnifierIcon,
     search: EmptySearchResultsIllustration
 };
 
