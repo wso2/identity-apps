@@ -19,6 +19,11 @@
 // TODO: Fix theme load logic and enable this
 // import "@wso2is/theme/lib/wso2-default.css";
 import * as React from "react";
+// tslint:disable:no-submodule-imports
+import "react-app-polyfill/ie11";
+import "react-app-polyfill/ie9";
+import "react-app-polyfill/stable";
+// tslint:enable
 import * as ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";

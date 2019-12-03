@@ -17,6 +17,8 @@
  *
  */
 
+import "fastestsmallesttextencoderdecoder";
+// tslint:disable-next-line:ordered-imports
 import Joi from "@hapi/joi";
 
 export const email = (value: string): boolean => {
