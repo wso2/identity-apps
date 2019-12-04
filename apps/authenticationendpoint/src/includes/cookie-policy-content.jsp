@@ -42,7 +42,7 @@
                     <h2 id="how-wso2-is-5.8.0-processes-cookies">How does WSO2 IS process cookies?</h2>
                     <p>WSO2 IS stores and retrieves information on your browser using cookies. This information is used to provide a better experience. Some cookies serve the primary purposes of allowing a user to log in to the system, maintaining sessions, and keeping track of activities you do within the login session.</p>
                     <p>The primary purpose of some cookies used in WSO2 IS is to personally identify you as this is the main function of the WSO2 Identity Server. However the cookie lifetime ends once your session ends i.e., after you log-out, or after the session expiry time has elapsed.</p>
-                    <p>Some cookies are simply used to give you a more personalised web experience and these cookies can not be used to personally identify you or your activities.</p>
+                    <p>Some cookies are simply used to give you a more personalized web experience and these cookies can not be used to personally identify you or your activities.</p>
                     <p>This cookie policy is part of the <a href="privacy_policy.do">WSO2 IS Privacy Policy.</a></p>
                     <div class="margin-bottom-double"></div>
                     <h2 id="what-is-a-cookie">What is a cookie?</h2>
@@ -65,7 +65,7 @@
                      For example, WSO2 IS may use these cookies to store your session information in order to prevent others from changing your password without your username and password.</li>
                 </br><li>WSO2 IS uses session cookies to maintain your active session.</li>
                   </br>   <li>WSO2 IS may use temporary cookies when performing multi-factor authentication and federated authentication.</li>
-              </br>   <li>WSO2 IS may use permanent cookies to detect that you have previously used the same device to log in. This is to to calculate the &ldquo;risk level&rdquo; associated with your current login attempt. This is primarily to protect you and your account from possible attack.</li>
+              </br>   <li>WSO2 IS may use permanent cookies to detect that you have previously used the same device to log in. This is to calculate the &ldquo;risk level&rdquo; associated with your current login attempt. This is primarily to protect you and your account from possible attack.</li>
               </ul>
                     <h3>Performance</h3>
                     <p>WSO2 IS may use cookies to allow &ldquo;Remember Me&rdquo; functionalities.</p>

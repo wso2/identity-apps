@@ -52,18 +52,23 @@
                     <%if(request.getParameter("app_name") != null) { %>
                         <div class="ui positive message">
                             <div class="header">
-                                Successful
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "successful")%>
                             </div>
-                            <p>Login successful for application:
-                                <%= request.getParameter("app_name")%>.Please close the browser and
-                                return to your device.</p>
+                            <p>
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login.success.app")%>
+                                <%= request.getParameter("app_name")%>
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "close.browser")%>
+                            </p>
                         </div>
                     <% } else { %>
                         <div class="ui negative message">
                             <div class="header">
-                                Authentication Error!
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error")%>
                             </div>
-                        <p>Something went wrong during authentication process. Please sign in again.</p>
+                            <p>
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle,
+                                    "something.went.wrong.during.authentication")%>
+                            </p>
                         </div>
                     <% } %>
                 </div>

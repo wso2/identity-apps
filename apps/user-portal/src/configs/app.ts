@@ -16,8 +16,6 @@
  * under the License.
  */
 
-type ServiceEndpointURLType = string;
-
 interface ServiceResourcesType {
     applications: string;
     associations: string;
@@ -41,26 +39,40 @@ interface ServiceResourcesType {
     wellKnown: string;
 }
 
-export const ServiceEndpoint: ServiceEndpointURLType = SERVER_HOST;
+interface RuntimeConfigInterface {
+    clientHost?: string;
+    clientID?: string;
+    serverHost?: string;
+}
+
+// tslint:disable-next-line:no-string-literal
+const RUNTIME_CONFIG: RuntimeConfigInterface = window["runConfig"];
+
+export let GlobalConfig: RuntimeConfigInterface = {
+    clientHost: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.clientHost || CLIENT_HOST_DEFAULT) : CLIENT_HOST_DEFAULT,
+    clientID: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.clientID || CLIENT_ID_DEFAULT) : CLIENT_ID_DEFAULT,
+    serverHost: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.serverHost || SERVER_HOST_DEFAULT) : SERVER_HOST_DEFAULT
+};
+
 export const ServiceResourcesEndpoint: ServiceResourcesType = {
-    applications: `${ServiceEndpoint}/t/carbon.super/api/users/v1/me/applications`,
-    associations: `${ServiceEndpoint}/api/users/v1/me/associations`,
-    authorize: `${ServiceEndpoint}/oauth2/authorize`,
-    challengeAnswers: `${ServiceEndpoint}/api/users/v1/me/challenge-answers`,
-    challenges: `${ServiceEndpoint}/api/users/v1/me/challenges`,
-    consents: `${ServiceEndpoint}/t/carbon.super/api/identity/consent-mgt/v1.0/consents`,
-    fidoEnd: `${ServiceEndpoint}/api/users/v1/me/webauthn/finish-registration`,
-    fidoMetaData: `${ServiceEndpoint}/api/users/v1/me/webauthn`,
-    fidoStart: `${ServiceEndpoint}/api/users/v1/me/webauthn/start-registration`,
-    jwks: `${ServiceEndpoint}/oauth2/jwks`,
-    logout: `${ServiceEndpoint}/oidc/logout`,
-    me: `${ServiceEndpoint}/scim2/Me`,
-    pendingApprovals: `${ServiceEndpoint}/t/carbon.super/api/users/v1/me/approval-tasks`,
-    profileSchemas: `${ServiceEndpoint}/scim2/Schemas`,
-    receipts: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents/receipts`,
-    revoke: `${ServiceEndpoint}/oauth2/revoke`,
-    sessions: `${ServiceEndpoint}/t/carbon.super/api/users/v1/me/sessions`,
-    token: `${ServiceEndpoint}/oauth2/token`,
-    user: `${ServiceEndpoint}/api/identity/user/v1.0/me`,
-    wellKnown: `${ServiceEndpoint}/oauth2/oidcdiscovery/.well-known/openid-configuration`
+    applications: `${GlobalConfig.serverHost}/t/carbon.super/api/users/v1/me/applications`,
+    associations: `${GlobalConfig.serverHost}/api/users/v1/me/associations`,
+    authorize: `${GlobalConfig.serverHost}/oauth2/authorize`,
+    challengeAnswers: `${GlobalConfig.serverHost}/api/users/v1/me/challenge-answers`,
+    challenges: `${GlobalConfig.serverHost}/api/users/v1/me/challenges`,
+    consents: `${GlobalConfig.serverHost}/api/identity/consent-mgt/v1.0/consents`,
+    fidoEnd: `${GlobalConfig.serverHost}/api/users/v1/me/webauthn/finish-registration`,
+    fidoMetaData: `${GlobalConfig.serverHost}/api/users/v1/me/webauthn`,
+    fidoStart: `${GlobalConfig.serverHost}/api/users/v1/me/webauthn/start-registration`,
+    jwks: `${GlobalConfig.serverHost}/oauth2/jwks`,
+    logout: `${GlobalConfig.serverHost}/oidc/logout`,
+    me: `${GlobalConfig.serverHost}/scim2/Me`,
+    pendingApprovals: `${GlobalConfig.serverHost}/t/carbon.super/api/users/v1/me/approval-tasks`,
+    profileSchemas: `${GlobalConfig.serverHost}/scim2/Schemas`,
+    receipts: `${GlobalConfig.serverHost}/api/identity/consent-mgt/v1.0/consents/receipts`,
+    revoke: `${GlobalConfig.serverHost}/oauth2/revoke`,
+    sessions: `${GlobalConfig.serverHost}/t/carbon.super/api/users/v1/me/sessions`,
+    token: `${GlobalConfig.serverHost}/oauth2/token`,
+    user: `${GlobalConfig.serverHost}/api/identity/user/v1.0/me`,
+    wellKnown: `${GlobalConfig.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
 };

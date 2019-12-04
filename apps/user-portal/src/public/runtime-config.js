@@ -15,20 +15,3 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import { GlobalConfig } from "../configs";
-
-/**
- * Get OAuth2 token request header.
- *
- * @returns {{headers: {Accept: string; "Access-Control-Allow-Origin": string; "Content-Type": string}}}
- */
-export const getTokenRequestHeaders = () => {
-    return {
-        headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
-            "Content-Type": "application/x-www-form-urlencoded"
-        }
-    };
-};
