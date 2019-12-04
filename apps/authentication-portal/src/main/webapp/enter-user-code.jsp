@@ -50,7 +50,7 @@
         
             <div class="ui segment">
                 <h3 class="ui header">
-                    Device Flow Sign In
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "device.flow.sign.in")%>
                 </h3>
                 
                 <div class="segment-form">
@@ -74,7 +74,7 @@
                                     onclick="submitCredentials(event)"
                                     class="ui primary large button"
                                     role="button">
-                                Continue
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>
                             </button>
                         </div>
                     </form>
