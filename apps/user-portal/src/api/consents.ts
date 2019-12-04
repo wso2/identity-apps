@@ -16,28 +16,22 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authenticate";
+import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
 import { i18n, ServiceResourcesEndpoint } from "../configs";
 import {
-    ConsentInterface,
     ConsentReceiptInterface,
     ConsentState,
-    createEmptyNotification,
-    HttpError, HttpMethods,
-    HttpRequestConfig,
-    HttpResponse,
-    Notification,
+    HttpMethods,
     UpdateReceiptInterface
 } from "../models";
-import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "../utils";
 
 /**
  * Initialize an axios Http client.
  * @type {AxiosHttpClientInstance}
  */
 const httpClient = AxiosHttpClient.getInstance();
-httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
+
 /**
  * Fetches a list of consented applications of the currently authenticated user.
  *
@@ -98,29 +92,23 @@ export const fetchConsentReceipt = (receiptId: string): Promise<any> => {
  * @return {Promise<any>} A promise containing the response.
  */
 export const revokeConsentedApp = (appId: string): Promise<any> => {
-    return AuthenticateSessionUtil.getAccessToken()
-        .then((token) => {
-            const requestConfig = {
-                headers: {
-                    Accept: "application/json",
-                    Authorization: `Bearer ${ token }`
-                },
-                method: HttpMethods.DELETE,
-                url: ServiceResourcesEndpoint.receipts + `/${ appId }`
-            };
+    const requestConfig = {
+        headers: {
+            Accept: "application/json",
+        },
+        method: HttpMethods.DELETE,
+        url: ServiceResourcesEndpoint.receipts + `/${appId}`
+    };
 
-            return httpClient.request(requestConfig)
-                .then((response) => {
-                    // TODO: change the return type
-                    return response.data as ConsentReceiptInterface;
-                })
-                .catch((error) => {
-                    return Promise.reject(error);
-                });
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            // TODO: change the return type
+            return response.data as ConsentReceiptInterface;
         })
         .catch((error) => {
-            throw new Error(`Failed to retrieve the access token - ${error}`);
+            return Promise.reject(error);
         });
+
 };
 
 /**

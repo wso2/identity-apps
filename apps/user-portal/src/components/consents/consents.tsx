@@ -18,7 +18,7 @@
 
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Container, Grid, List, Modal, Placeholder } from "semantic-ui-react";
+import {Button, Container, Grid, List, Message, Modal, Placeholder} from "semantic-ui-react";
 import { fetchConsentedApps, fetchConsentReceipt, revokeConsentedApp, updateConsentedClaims } from "../../api/consents";
 import {
     ConsentInterface,
@@ -31,6 +31,7 @@ import {
 import { ConsentReceiptInterface } from "../../models/consents";
 import { SettingsSection } from "../shared";
 import { AppConsentList } from "./consents-list";
+import { endUserSession } from "../../utils";
 
 /**
  * Proptypes for the user sessions component.
@@ -224,10 +225,15 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
      * Revokes the consent of an already consented application.
      */
     const revokeConsent = (consent: ConsentInterface): void => {
+        const spName = "This is the user portal application.";
+        const compare = spName.localeCompare(consent.spDisplayName);
         revokeConsentedApp(consent.consentReceiptID)
             .then((response) => {
                 getConsentedApps();
                 setConsentRevokeModelView(false);
+                if (compare === 0) {
+                    endUserSession();
+                }
                 notification = {
                     description: t(
                         "views:components.consentManagement.notifications.revokeConsentedApp.success" +
@@ -400,6 +406,18 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         return placeholder;
     };
 
+    const consentRevokeMessage = () => {
+        const spName = "This is the user portal application.";
+        const compare = spName.localeCompare(editingConsent.spDisplayName);
+        if (compare === 0) {
+            return (
+                <Message warning>
+                    <p>Please note that you will be redirected to the login consent page.</p>
+                </Message>
+            );
+        }
+    }
+
     const consentRevokeModal =  editingConsent ? (
         <Modal
             size="mini"
@@ -416,6 +434,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                                 { appName: editingConsent.spDisplayName })
                         }
                     </h3>
+                    { consentRevokeMessage() }
                 </Container>
                 <br/>
                 <p>{ t("views:components.consentManagement.modals.consentRevokeModal.message") }</p>
