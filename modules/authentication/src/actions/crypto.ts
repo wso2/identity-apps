@@ -16,14 +16,12 @@
  * under the License.
  */
 
-// tslint:disable-next-line:no-submodule-imports
+// tslint:disable:no-submodule-imports
 import Base64 from "crypto-js/enc-base64";
-// tslint:disable-next-line:no-submodule-imports
 import WordArray from "crypto-js/lib-typedarrays";
-// tslint:disable-next-line:no-submodule-imports
 import MD5 from "crypto-js/md5";
-// tslint:disable-next-line:no-submodule-imports
 import sha256 from "crypto-js/sha256";
+// tslint:enable
 import { KEYUTIL, KJUR } from "jsrsasign";
 import { SERVICE_RESOURCES } from "../constants";
 import { JWKInterface } from "../models/crypto";
