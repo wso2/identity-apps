@@ -37,7 +37,7 @@ export const ConsentManagementWidget: FunctionComponent<{}> = (): JSX.Element =>
     return (
         <div className="widget consent-management">
             <SettingsSection
-                header={ t("views:components.overview.widgets.consentManagement.header")}
+                header={ t("views:components.overview.widgets.consentManagement.header") }
                 description={ t("views:components.overview.widgets.consentManagement.description") }
                 primaryAction={ t("views:components.overview.widgets.consentManagement.actionTitles.manage") }
                 onPrimaryActionClick={ navigate }

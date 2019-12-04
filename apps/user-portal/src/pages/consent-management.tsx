@@ -16,28 +16,31 @@
  * under the License.
  */
 
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { Consents, NotificationComponent } from "../components";
 import { InnerPageLayout } from "../layouts";
-import { AppState } from "../store";
-import { hideConsentManagementNotification } from "../store/actions";
+import { createEmptyNotification, Notification } from "../models";
 
 /**
- * Consent Management page.
+ * Consents Management page.
  *
  * @return {JSX.Element}
  */
 export const ConsentManagementPage = (): JSX.Element => {
-    const notification = useSelector((state: AppState) => state.consentManagement.consentManagementNotification);
-    const dispatch = useDispatch();
-
+    const [ notification, setNotification ] = useState(createEmptyNotification());
     const { t } = useTranslation();
 
+    const handleNotification = (firedNotification: Notification) => {
+        setNotification(firedNotification);
+    };
+
     const handleNotificationDismiss = () => {
-        dispatch(hideConsentManagementNotification());
+        setNotification({
+            ...notification,
+            visible: false
+        });
     };
 
     return (
@@ -47,18 +50,20 @@ export const ConsentManagementPage = (): JSX.Element => {
         >
             {
                 notification && notification.visible
-                    ? (<NotificationComponent
-                        message={ notification.message }
-                        description={ notification.description }
-                        onDismiss={ handleNotificationDismiss }
-                        { ...notification.otherProps }/>)
-                    : null
+                    ? (
+                        <NotificationComponent
+                            message={ notification.message }
+                            description={ notification.description }
+                            onDismiss={ handleNotificationDismiss }
+                            { ...notification.otherProps }
+                        />
+                    ) : null
             }
             <Divider hidden />
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
-                        <Consents />
+                        <Consents onNotificationFired={ handleNotification }/>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

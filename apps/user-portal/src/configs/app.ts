@@ -48,7 +48,7 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     authorize: `${ServiceEndpoint}/oauth2/authorize`,
     challengeAnswers: `${ServiceEndpoint}/api/users/v1/me/challenge-answers`,
     challenges: `${ServiceEndpoint}/api/users/v1/me/challenges`,
-    consents: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents`,
+    consents: `${ServiceEndpoint}/t/carbon.super/api/identity/consent-mgt/v1.0/consents`,
     fidoEnd: `${ServiceEndpoint}/api/users/v1/me/webauthn/finish-registration`,
     fidoMetaData: `${ServiceEndpoint}/api/users/v1/me/webauthn`,
     fidoStart: `${ServiceEndpoint}/api/users/v1/me/webauthn/start-registration`,
