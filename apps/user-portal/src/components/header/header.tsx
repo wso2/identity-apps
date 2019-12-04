@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } from "semantic-ui-react";
-import { switchAccount } from "../../api";
+import { getGravatarImage, switchAccount } from "../../api";
 import { resolveUserDisplayName, resolveUsername } from "../../helpers";
 import { AuthStateInterface, createEmptyNotification, LinkedAccountInterface, Notification } from "../../models";
 import { AppState } from "../../store";
@@ -180,6 +180,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                                             bordered
                                                             avatar
                                                             size="little"
+                                                            image={ getGravatarImage(association.email) }
                                                             name={ association.username }
                                                         />
                                                         <Item.Content verticalAlign="middle">

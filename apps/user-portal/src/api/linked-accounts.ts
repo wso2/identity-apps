@@ -52,7 +52,7 @@ export const getAssociations = (): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(`Failed to retrieve the linked accounts - ${ error }`);
+            return Promise.reject(error);
         });
 };
 
@@ -74,10 +74,10 @@ export const addAccountAssociation = (data: object): Promise<any> => {
 
     return httpClient.request(requestConfig)
         .then((response) => {
-            return Promise.resolve(response);
+            return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(`Failed to link the account - ${ error }`);
+            return Promise.reject(error);
         });
 };
 
@@ -128,6 +128,6 @@ export const switchAccount = (account: LinkedAccountInterface): Promise<any> => 
             return Promise.resolve(response);
         })
         .catch((error) => {
-            return Promise.reject(`Failed to switch the account - ${ error }`);
+            return Promise.reject(error);
         });
 };

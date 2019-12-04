@@ -33,14 +33,21 @@ export interface BasicProfileInterface {
     mobile?: string;
     userimage?: string;
     username?: string;
-    // TODO: Create an interface for associations
-    associations?: any;
+    associations?: LinkedAccountInterface[];
 }
 
 /**
  * Linked account interface.
  */
 export interface LinkedAccountInterface {
+    /**
+     * Associated user's email address.
+     */
+    email: string;
+    /**
+     * Associated user's last name.
+     */
+    lastName: string;
     /**
      * Tenant domain.
      */
@@ -79,7 +86,7 @@ export interface ProfileSchema {
 }
 
 export const createEmptyProfile = (): BasicProfileInterface => ({
-    associations: {},
+    associations: [],
     displayName: "",
     email: "",
     emails: [],

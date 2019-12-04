@@ -106,58 +106,50 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
         return name.charAt(0).toUpperCase();
     };
 
-    return (
-        <>
-            {
-                image
-                    ? (
-                        <Image
-                            className={ `${avatarType === "user" ? "user-image" : "app-image"} ${classes}` }
-                            bordered={ bordered }
-                            floated={ floated }
-                            circular={ avatarType === "user" }
-                            rounded={ avatarType === "app" }
-                            style={ style }
-                        >
-                            <img alt="avatar" src={ image as string } />
-                        </Image>
-                    )
-                    : null
-            }
-            {
-                avatar
-                    ? name
-                        ? (
-                            <Image
-                                className={ `${avatarType === "user" ? "user-image" : "app-image"} ${classes}` }
-                                bordered={ bordered }
-                                floated={ floated }
-                                verticalAlign="middle"
-                                circular={ avatarType === "user" }
-                                rounded={ avatarType === "app" }
-                                centered
-                                style={ style }
-                            >
-                                <span className="initials">{ generateInitials() }</span>
-                            </Image>
-                        )
-                        : (
+    if (image) {
+        return (
+            <Image
+                className={ `${avatarType === "user" ? "user-image" : "app-image"} ${classes}` }
+                bordered={ bordered }
+                floated={ floated }
+                circular={ avatarType === "user" }
+                rounded={ avatarType === "app" }
+                style={ style }
+            >
+                <img alt="avatar" src={ image as string } />
+            </Image>
+        );
+    }
 
-                            <Image
-                                className={ `${avatarType === "user" ? "user-image" : "app-image"} ${classes}` }
-                                src={ avatarType === "user" ? UserImageDummy : DefaultAppIcon.default }
-                                bordered={ bordered }
-                                floated={ floated }
-                                verticalAlign="middle"
-                                circular={ avatarType === "user" }
-                                rounded={ avatarType === "app" }
-                                centered
-                                style={ style }
-                            />
-                        )
-                    : null
-            }
-        </>
+    if (avatar && name) {
+        return (
+            <Image
+                className={ `${avatarType === "user" ? "user-image" : "app-image"} ${classes}` }
+                bordered={ bordered }
+                floated={ floated }
+                verticalAlign="middle"
+                circular={ avatarType === "user" }
+                rounded={ avatarType === "app" }
+                centered
+                style={ style }
+            >
+                <span className="initials">{ generateInitials() }</span>
+            </Image>
+        );
+    }
+
+    return (
+        <Image
+            className={ `${avatarType === "user" ? "user-image" : "app-image"} ${classes}` }
+            src={ avatarType === "user" ? UserImageDummy : DefaultAppIcon.default }
+            bordered={ bordered }
+            floated={ floated }
+            verticalAlign="middle"
+            circular={ avatarType === "user" }
+            rounded={ avatarType === "app" }
+            centered
+            style={ style }
+        />
     );
 };
 
