@@ -21,21 +21,26 @@ const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const WriteFilePlugin = require("write-file-webpack-plugin");
 
 module.exports = (env) => {
     const basename = "user-portal";
     const devServerPort = 9000;
 
     /**
-     * Runtime configurations
+     * Deployment configurations
+     */
+    const serverHostDefault = "https://localhost:9443";
+    const clientHostDefault = env.NODE_ENV === "prod" ? serverHostDefault : `https://localhost:${devServerPort}`;
+    const clientIdDefault = "USER_PORTAL";
+
+    /**
+     * App configurations
      */
     const loginPagePath = "/login";
     const homePagePath = "/overview";
-    const serverHost = "https://localhost:9443";
-    const clientHost = env.NODE_ENV === "prod" ? serverHost : `https://localhost:${devServerPort}`;
-    const externalLoginClientID = env.NODE_ENV === "prod" ? "USER_PORTAL" : "USER_PORTAL";
-    const externalLoginCallbackURL = `${clientHost}/${basename}/login`;
-    const externalLogoutCallbackURL = `${clientHost}/${basename}/logout`;
+    const externalLoginCallbackURL = `${clientHostDefault}/${basename}/login`;
+    const externalLogoutCallbackURL = `${clientHostDefault}/${basename}/logout`;
 
     /**
      * Build configurations
@@ -120,9 +125,10 @@ module.exports = (env) => {
             fs: "empty"
         },
         plugins: [
+            new WriteFilePlugin(),
             new CopyWebpackPlugin([
                 {
-                    context: path.resolve(__dirname, "node_modules", "@wso2is", "theme"),
+                    context: path.join(__dirname, "node_modules", "@wso2is", "theme"),
                     from: "lib",
                     to: "libs/styles/css"
                 },
@@ -138,14 +144,15 @@ module.exports = (env) => {
                 //     to: 'libs/styles/less/semantic-ui-less'
                 // },
                 {
-                    context: path.resolve(__dirname, "src"),
+                    context: path.join(__dirname, "src"),
                     from: "public",
-                    to: "."
+                    to: ".",
+                    force: true
                 }
             ]),
             new HtmlWebpackPlugin({
                 filename: path.join(distFolder, "index.html"),
-                template: path.resolve(__dirname, "src", "index.html"),
+                template: path.join(__dirname, "src", "index.html"),
                 hash: true,
                 favicon: faviconImage,
                 title: titleText
@@ -154,11 +161,11 @@ module.exports = (env) => {
                 APP_BASENAME: JSON.stringify(basename),
                 APP_HOME_PATH: JSON.stringify(homePagePath),
                 APP_LOGIN_PATH: JSON.stringify(loginPagePath),
-                CLIENT_ID: JSON.stringify(externalLoginClientID),
-                CLIENT_HOST: JSON.stringify(clientHost),
+                CLIENT_ID_DEFAULT: JSON.stringify(clientIdDefault),
+                CLIENT_HOST_DEFAULT: JSON.stringify(clientHostDefault),
                 LOGIN_CALLBACK_URL: JSON.stringify(externalLoginCallbackURL),
                 LOGOUT_CALLBACK_URL: JSON.stringify(externalLogoutCallbackURL),
-                SERVER_HOST: JSON.stringify(serverHost),
+                SERVER_HOST_DEFAULT: JSON.stringify(serverHostDefault),
                 "typeof window": JSON.stringify("object"),
                 "process.env": {
                     NODE_ENV: JSON.stringify(process.env.NODE_ENV)

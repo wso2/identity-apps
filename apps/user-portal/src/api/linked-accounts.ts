@@ -18,7 +18,7 @@
 
 import { AuthenticateSessionUtil, SignInUtil } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
-import { ServiceResourcesEndpoint } from "../configs";
+import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import * as TokenConstants from "../constants";
 import { HttpMethods, LinkedAccountInterface } from "../models";
 
@@ -37,7 +37,7 @@ const httpClient = AxiosHttpClient.getInstance();
 export const getAssociations = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -65,7 +65,7 @@ export const addAccountAssociation = (data: object): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -88,7 +88,7 @@ export const addAccountAssociation = (data: object): Promise<any> => {
 export const removeAssociation = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
@@ -114,14 +114,14 @@ export const removeAssociation = (): Promise<any> => {
  */
 export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
     const requestParams = {
-        "client_id": CLIENT_ID,
+        "client_id": GlobalConfig.clientID,
         "scope": [ TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE ],
         "tenant-domain": account.tenantDomain,
         "username": account.username,
         "userstore-domain": account.userStoreDomain
     };
 
-    return SignInUtil.sendAccountSwitchRequest(requestParams, CLIENT_HOST)
+    return SignInUtil.sendAccountSwitchRequest(requestParams, GlobalConfig.clientHost)
         .then((response) => {
             AuthenticateSessionUtil.initUserSession(response,
                 SignInUtil.getAuthenticatedUser(response.idToken));

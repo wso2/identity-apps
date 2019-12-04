@@ -17,7 +17,7 @@
  */
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
-import { i18n, ServiceResourcesEndpoint } from "../../configs";
+import { GlobalConfig, i18n, ServiceResourcesEndpoint } from "../../configs";
 import {
     ConsentReceiptInterface,
     ConsentState,
@@ -75,7 +75,7 @@ const handleFetchConsentedApps = ({ dispatch, getState }) => (next) => (action) 
                 dispatcher: FETCH_CONSENTED_APPS,
                 headers: {
                     "Accept": "application/json",
-                    "Access-Control-Allow-Origin": CLIENT_HOST,
+                    "Access-Control-Allow-Origin": GlobalConfig.clientHost,
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json"
                 },
@@ -180,7 +180,7 @@ const handleFetchConsentReceipt = ({ dispatch }) => (next) => (action) => {
                 dispatcher: FETCH_CONSENT_RECEIPT,
                 headers: {
                     "Accept": "application/json",
-                    "Access-Control-Allow-Origin": CLIENT_HOST,
+                    "Access-Control-Allow-Origin": GlobalConfig.clientHost,
                     "Authorization": `Bearer ${ token }`,
                     "Content-Type": "application/json"
                 },

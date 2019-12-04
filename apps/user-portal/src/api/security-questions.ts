@@ -17,7 +17,7 @@
  */
 
 import { AxiosHttpClient } from "@wso2is/http";
-import { ServiceResourcesEndpoint } from "../configs";
+import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { HttpMethods } from "../models";
 
 /**
@@ -35,7 +35,7 @@ const httpClient = AxiosHttpClient.getInstance();
 export const getSecurityQs = (): Promise<any> => {
     const headers = {
         "Accept": "application/json",
-        "Access-Control-Allow-Origin": CLIENT_HOST
+        "Access-Control-Allow-Origin": GlobalConfig.clientHost
     };
 
     const getQuestions = () => {
@@ -78,7 +78,7 @@ export const addSecurityQs = (data: object): Promise<any> => {
         data,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": CLIENT_HOST
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost
         },
         method: HttpMethods.POST,
         url: ServiceResourcesEndpoint.challengeAnswers
@@ -107,7 +107,7 @@ export const updateSecurityQs = (data: object): Promise<any> => {
         data,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": CLIENT_HOST
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost
         },
         method: HttpMethods.PUT,
         url: ServiceResourcesEndpoint.challengeAnswers
