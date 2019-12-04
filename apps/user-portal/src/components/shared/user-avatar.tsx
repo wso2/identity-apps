@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState } from "react";
 import { resolveUserDisplayName } from "../../helpers";
 import { AuthStateInterface } from "../../models";
 import { Avatar, AvatarProps } from "./avatar";
@@ -35,14 +35,26 @@ interface UserAvatarProps extends AvatarProps {
  * @return {JSX.Element}
  */
 export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatarProps): JSX.Element => {
-    const { authState, name } = props;
+    const { authState, name, image } = props;
+    const [ userImage, setUserImage ] = useState(null);
+
+    // Check if the image is a promise, and resolve.
+    if (image instanceof Promise) {
+        image
+            .then((response) => {
+                setUserImage(response);
+            })
+            .catch((error) => {
+                setUserImage(null);
+            });
+    }
 
     if (authState && authState.profileInfo && authState.profileInfo.userimage) {
         return (
             <Avatar
                 { ...props }
                 avatarType="user"
-                bordered
+                bordered={ false }
                 image={ authState.profileInfo && authState.profileInfo.userimage }
             />
         );
@@ -51,8 +63,9 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
     return (
         <Avatar
             { ...props }
+            image={ userImage }
             avatarType="user"
-            bordered
+            bordered={ false }
             avatar
             name={ authState ? resolveUserDisplayName(authState) : name }
         />
