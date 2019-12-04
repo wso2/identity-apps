@@ -41,7 +41,7 @@ interface ConsentComponentProps {
 }
 
 /**
- * Consents management component.
+ * Consent management component.
  *
  * @return {JSX.Element}
  */
@@ -418,6 +418,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         }
     }
 
+    const consentRevokeModal =  editingConsent ? (
     const consentRevokeModal =  editingConsent ? (
         <Modal
             size="mini"

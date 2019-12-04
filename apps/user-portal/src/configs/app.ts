@@ -16,6 +16,8 @@
  * under the License.
  */
 
+type ServiceEndpointURLType = string;
+
 interface ServiceResourcesType {
     applications: string;
     associations: string;
@@ -45,7 +47,7 @@ interface RuntimeConfigInterface {
     serverHost?: string;
 }
 
-// tslint:disable-next-line:no-string-literal
+// tslint: disable-next-line:no-string-literal
 const RUNTIME_CONFIG: RuntimeConfigInterface = window["runConfig"];
 
 export let GlobalConfig: RuntimeConfigInterface = {
