@@ -47,7 +47,7 @@ interface RuntimeConfigInterface {
     serverHost?: string;
 }
 
-// tslint: disable-next-line:no-string-literal
+// tslint:disable-next-line:no-string-literal
 const RUNTIME_CONFIG: RuntimeConfigInterface = window["runConfig"];
 
 export let GlobalConfig: RuntimeConfigInterface = {
