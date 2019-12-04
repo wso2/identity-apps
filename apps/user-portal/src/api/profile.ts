@@ -20,7 +20,7 @@ import { SignInUtil } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
 import axios from "axios";
 import { isEmpty } from "lodash";
-import { ServiceResourcesEndpoint } from "../configs";
+import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { BasicProfileInterface, HttpMethods, ProfileSchema } from "../models";
 
 /**
@@ -38,7 +38,7 @@ const httpClient = AxiosHttpClient.getInstance();
 export const getUserInfo = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -68,7 +68,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/scim+json"
         },
         method: HttpMethods.GET,
@@ -118,7 +118,7 @@ export const updateProfileInfo = (info: object): Promise<any> => {
     const requestConfig = {
         data: info,
         headers: {
-            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
@@ -166,7 +166,7 @@ export const getGravatarImage = (email: string): Promise<string> => {
 export const getProfileSchemas = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,

@@ -22,11 +22,11 @@
     "jest": {
         "globals": {
             "APP_BASENAME": "user-portal",
-            "SERVER_HOST": "https://localhost:9443",
+            "SERVER_HOST_DEFAULT": "https://localhost:9443",
             "APP_HOME_PATH": "/overview",
             "APP_LOGIN_PATH": "/login",
-            "CLIENT_ID": "USER_PORTAL",
-            "CLIENT_HOST": "https://localhost:9000",
+            "CLIENT_ID_DEFAULT": "USER_PORTAL",
+            "CLIENT_HOST_DEFAULT": "https://localhost:9000",
             "LOGIN_CALLBACK_URL": "https://localhost:9000/user-portal/login",
             "LOGOUT_CALLBACK_URL": "https://localhost:9000/user-portal/logout"
         },

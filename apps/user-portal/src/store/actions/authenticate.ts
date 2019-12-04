@@ -24,7 +24,7 @@ import {
     SignOutUtil
 } from "@wso2is/authentication";
 import { getAssociations, getProfileInfo } from "../../api";
-import { ServiceResourcesEndpoint } from "../../configs";
+import { GlobalConfig, ServiceResourcesEndpoint } from "../../configs";
 import * as TokenConstants from "../../constants";
 import { fireNotification } from "./global";
 import { authenticateActionTypes } from "./types";
@@ -125,8 +125,8 @@ export const handleSignIn = () => {
 
     const sendSignInRequest = (dispatch) => {
         const requestParams = {
-            clientHost: CLIENT_HOST,
-            clientId: CLIENT_ID,
+            clientHost: GlobalConfig.clientHost,
+            clientId: GlobalConfig.clientID,
             clientSecret: null,
             enablePKCE: true,
             redirectUri: LOGIN_CALLBACK_URL,

@@ -17,7 +17,7 @@
  */
 
 import { AxiosHttpClient } from "@wso2is/http";
-import { ServiceResourcesEndpoint } from "../configs";
+import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { ApplicationList, HttpMethods } from "../models";
 
 /**
@@ -40,7 +40,7 @@ export const fetchApplications = (
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,

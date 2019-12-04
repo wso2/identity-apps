@@ -18,7 +18,7 @@
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
-import { ServiceResourcesEndpoint } from "../configs";
+import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { Decode, Encode } from "../helpers/base64-utils";
 import { HttpMethods } from "../models";
 
@@ -37,7 +37,7 @@ const httpClient = AxiosHttpClient.getInstance();
 export const getMetaData = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
         },
         method: HttpMethods.GET,
@@ -69,7 +69,7 @@ export const deleteDevice = (credentialId): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": CLIENT_HOST
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost
         },
         method: HttpMethods.DELETE,
         url: `${ ServiceResourcesEndpoint.fidoMetaData }/${ credentialId }`
@@ -91,7 +91,7 @@ export const deleteDevice = (credentialId): Promise<any> => {
 export const startFidoFlow = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
         },
         method: HttpMethods.GET,
@@ -128,7 +128,7 @@ export const endFidoFlow = (clientResponse): Promise<any> => {
         data: clientResponse,
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
