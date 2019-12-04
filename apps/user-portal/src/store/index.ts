@@ -21,7 +21,6 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import { reducers } from "./combine-reducers";
 import { apiMiddleware } from "./middleware";
-import consentManagementMiddleware from "./middleware/consents";
 
 /**
  * Type of the Redux store.
@@ -37,7 +36,6 @@ export type AppState = ReturnType<typeof reducers>;
 const configureStore = (): any => {
     // Set of custom middleware.
     const middleware = [
-        ...consentManagementMiddleware,
         apiMiddleware,
         thunk
     ];

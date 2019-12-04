@@ -18,5 +18,4 @@
 
 export * from "./api";
 export * from "./authenticate";
-export * from "./consents";
 export * from "./global";
