@@ -419,7 +419,6 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     }
 
     const consentRevokeModal =  editingConsent ? (
-    const consentRevokeModal =  editingConsent ? (
         <Modal
             size="mini"
             className="link-button"
