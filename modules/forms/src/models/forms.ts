@@ -56,7 +56,7 @@ export interface Error {
 /**
  * Input field model
  */
-export interface InputField {
+export interface TextField {
     placeholder: string;
     name: string;
     type: "text" | "email" | "textarea" | "number";
@@ -214,7 +214,7 @@ export interface FormDivider {
  * FormField types
  */
 export type FormField =
-    | InputField
+    | TextField
     | PasswordField
     | FormSubmit
     | RadioField
