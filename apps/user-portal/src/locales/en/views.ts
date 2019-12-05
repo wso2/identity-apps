@@ -788,6 +788,9 @@ export const views: Views = {
                     default: "Add email",
                     label: "Email"
                 },
+                generic: {
+                    default: "Add {{fieldName}}"
+                },
                 mobile: {
                     default: "Add mobile number",
                     label: "Mobile number"
@@ -816,6 +819,15 @@ export const views: Views = {
                                 empty: "Email address is a required field",
                                 invalidFormat: "The email address is not of the correct format"
                             }
+                        }
+                    }
+                },
+                generic: {
+                    inputs: {
+                        placeholder: "Enter your {{fieldName}}",
+                        validations: {
+                            empty: "{{fieldName}} is a required field",
+                            invalidFormat: "The {{fieldName}} is not of the correct format"
                         }
                     }
                 },

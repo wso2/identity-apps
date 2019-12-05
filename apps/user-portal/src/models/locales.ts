@@ -545,6 +545,9 @@ export interface Views {
         },
         profile: {
             fields: {
+                generic: {
+                    default: string;
+                },
                 email: {
                     default: string;
                     label: string;
@@ -567,6 +570,15 @@ export interface Views {
                 }
             },
             forms: {
+                generic: {
+                    inputs: {
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                            invalidFormat: string;
+                        }
+                    }
+                },
                 emailChangeForm: {
                     inputs: {
                         email: {
