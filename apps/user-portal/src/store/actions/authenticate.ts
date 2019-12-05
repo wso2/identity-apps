@@ -129,7 +129,7 @@ export const handleSignIn = () => {
             clientId: GlobalConfig.clientID,
             clientSecret: null,
             enablePKCE: true,
-            redirectUri: LOGIN_CALLBACK_URL,
+            redirectUri: GlobalConfig.loginCallbackUrl,
             scope: [ TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE ],
         };
         if (SignInUtil.hasAuthorizationCode()) {

@@ -156,6 +156,15 @@ module.exports = (env) => {
                 favicon: faviconImage,
                 title: titleText
             }),
+            new HtmlWebpackPlugin({
+                filename: path.join(distFolder, "index.jsp"),
+                template: path.join(__dirname, "src", "index.jsp"),
+                hash: true,
+                favicon: faviconImage,
+                title: titleText,
+                importUtil: "<%@ page import=\"static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>",
+                serverUrl: "<%=getServerURL(\"\", true, true)%>"
+            }),
             new webpack.DefinePlugin({
                 APP_BASENAME: JSON.stringify(basename),
                 APP_HOME_PATH: JSON.stringify(homePagePath),
