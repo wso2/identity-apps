@@ -39,8 +39,7 @@ module.exports = (env) => {
      */
     const loginPagePath = "/login";
     const homePagePath = "/overview";
-    const externalLoginCallbackURL = `${clientHostDefault}/${basename}/login`;
-    const externalLogoutCallbackURL = `${clientHostDefault}/${basename}/logout`;
+    const externalLoginCallbackURL = `/${basename}/login`;
 
     /**
      * Build configurations
@@ -164,7 +163,6 @@ module.exports = (env) => {
                 CLIENT_ID_DEFAULT: JSON.stringify(clientIdDefault),
                 CLIENT_HOST_DEFAULT: JSON.stringify(clientHostDefault),
                 LOGIN_CALLBACK_URL: JSON.stringify(externalLoginCallbackURL),
-                LOGOUT_CALLBACK_URL: JSON.stringify(externalLogoutCallbackURL),
                 SERVER_HOST_DEFAULT: JSON.stringify(serverHostDefault),
                 "typeof window": JSON.stringify("object"),
                 "process.env": {
