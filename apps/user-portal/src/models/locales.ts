@@ -633,6 +633,9 @@ export interface Views {
                 downloadProfileInfo: Notification;
             }
         },
+        userAvatar: {
+            infoPopover: string;
+        },
         userSessions: {
             browserAndOS: string;
             lastAccessed: string;

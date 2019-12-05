@@ -951,6 +951,9 @@ export const views: Views = {
                 }
             }
         },
+        userAvatar: {
+            infoPopover: "இந்த படம் <1>Gravatar</1> சேவையிலிருந்து மீட்டெடுக்கப்பட்டது."
+        },
         userSessions: {
             browserAndOS: "{{os}} {{version}} இல் {{browser}}",
             lastAccessed: "இறுதியாக அணுகியது {{date}}",

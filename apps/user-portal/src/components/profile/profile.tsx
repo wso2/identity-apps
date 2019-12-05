@@ -20,10 +20,11 @@ import { Field, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
 import { updateProfileInfo } from "../../api";
+import * as UIConstants from "../../constants/ui-constants";
 import { AuthStateInterface, createEmptyProfile, Notification } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation } from "../../store/actions";
@@ -642,8 +643,32 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         <SettingsSection
             description={ t("views:sections.profile.description") }
             header={ t("views:sections.profile.heading") }
-            icon={ <UserAvatar authState={ profileDetails } size="tiny" /> }
-            iconMini={ <UserAvatar authState={ profileDetails } size="tiny" /> }
+            icon={ (
+                <UserAvatar
+                    authState={ profileDetails }
+                    size="tiny"
+                    showGravatarLabel
+                    gravatarInfoPopoverText={ (
+                        <Trans i18nKey="views:components.userAvatar.infoPopover">
+                            This image has been retrieved from
+                            <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener">Gravatar</a> service.
+                        </Trans>
+                    ) }
+                />
+            ) }
+            iconMini={ (
+                <UserAvatar
+                    authState={ profileDetails }
+                    size="tiny"
+                    showGravatarLabel
+                    gravatarInfoPopoverText={ (
+                        <Trans i18nKey="views:components.userAvatar.infoPopover">
+                            This image has been retrieved from
+                            <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener">Gravatar</a> service.
+                        </Trans>
+                    ) }
+                />
+            ) }
         >
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">

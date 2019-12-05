@@ -55,3 +55,11 @@ export const RECENT_APPLICATIONS_LIST_LIMIT: number = 3;
  * @default
  */
 export const ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER: string = "addLocalLinkedAccountForm";
+
+/**
+ * `Gravatar` website URL.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const GRAVATAR_URL: string = "https://www.gravatar.com";

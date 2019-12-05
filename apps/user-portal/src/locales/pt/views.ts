@@ -925,6 +925,9 @@ export const views: Views = {
                 }
             }
         },
+        userAvatar: {
+            infoPopover: "Esta imagem foi recuperada do serviço <1>Gravatar</1>."
+        },
         userSessions: {
             browserAndOS: "{{browser}} no {{os}} {{version}}",
             lastAccessed: "Último acesso {{date}}",

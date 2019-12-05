@@ -914,6 +914,9 @@ export const views: Views = {
                 }
             }
         },
+        userAvatar: {
+            infoPopover: "මෙම පින්තූරය <1>Gravatar</1> සේවාවෙන් ලබාගෙන ඇත."
+        },
         userSessions: {
             browserAndOS: "{{os}} {{version}} මත {{browser}}",
             lastAccessed: "අවසන් ප්‍රවේශය {{date}}",
