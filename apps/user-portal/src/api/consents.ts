@@ -18,7 +18,7 @@
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
-import {GlobalConfig, i18n, ServiceResourcesEndpoint} from "../configs";
+import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import {
     ConsentReceiptInterface,
     ConsentState,
