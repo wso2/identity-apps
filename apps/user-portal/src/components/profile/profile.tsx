@@ -75,18 +75,19 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         if (isEmpty(profileDetails.profileInfo)) {
             dispatch(getProfileInformation());
         }
-        getProfileSchemas().then((response: ProfileSchema[]) => {
-            setProfileSchema(flattenSchemas(response).sort((a: ProfileSchema, b: ProfileSchema) => {
-                if (!a.displayOrder) {
-                    return -1;
-                } else if (!b.displayOrder) {
-                    return 1;
-                } else {
-                    return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
-                }
-            }));
-        });
     }, []);
+
+    useEffect(() => {
+        setProfileSchema(flattenSchemas(profileDetails.profileSchemas).sort((a: ProfileSchema, b: ProfileSchema) => {
+            if (!a.displayOrder) {
+                return -1;
+            } else if (!b.displayOrder) {
+                return 1;
+            } else {
+                return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
+            }
+        }));
+    }, [profileDetails]);
 
     useEffect(() => {
         if (!isEmpty(profileSchema) && !isEmpty(profileDetails) && !isEmpty(profileDetails.profileInfo)) {
@@ -150,7 +151,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         }
                     });
                 } else if (typeof profileInfoPair[1] === "object" && profileInfoPair[1] !== null) {
-                    value[profileInfoPair[0]] = { [formName] : values.get(formName) };
+                    value[profileInfoPair[0]] = { [formName]: values.get(formName) };
                 }
             });
         } else if (Array.isArray(profileDetails.profileInfo[formName])) {

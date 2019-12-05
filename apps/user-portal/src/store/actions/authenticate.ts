@@ -23,9 +23,10 @@ import {
     SignInUtil,
     SignOutUtil
 } from "@wso2is/authentication";
-import { getAssociations, getProfileInfo } from "../../api";
+import { getAssociations, getProfileInfo, getProfileSchemas } from "../../api";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../../configs";
 import * as TokenConstants from "../../constants";
+import { ProfileSchema } from "../../models";
 import { fireNotification } from "./global";
 import { authenticateActionTypes } from "./types";
 
@@ -56,6 +57,15 @@ export const resetAuthentication = () => ({
 export const setProfileInfo = (details: any) => ({
     payload: details,
     type: authenticateActionTypes.SET_PROFILE_INFO
+});
+
+/**
+ * Dispatches an action of type `SET_SCHEMAS`
+ * @param schemas
+ */
+export const setScimSchemas = (schemas: ProfileSchema[]) => ({
+    payload: schemas,
+    type: authenticateActionTypes.SET_SCHEMAS
 });
 
 /**
@@ -184,7 +194,22 @@ export const handleSignOut = () => {
                 OPConfigurationUtil.resetOPConfiguration();
             })
             .catch
-            // TODO show error page.
+            // TODO: show error page.
             ();
     };
+};
+
+/**
+ * Get SCIM2 schemas
+ */
+export const getScimSchemas = () => {
+    return (dispatch) => {
+        getProfileSchemas().then((response: ProfileSchema[]) => {
+            dispatch(setScimSchemas(response));
+        })
+            .catch((error) => {
+                // TODO: show Error page
+            });
+    };
+
 };
