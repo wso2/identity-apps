@@ -438,6 +438,34 @@ export const views: Views = {
                         message: "Linked user accounts retrieved successfully"
                     }
                 },
+                removeAllAssociations: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error removing linked user accounts"
+                    },
+                    genericError: {
+                        description: "Error occurred while removing the linked user accounts",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "All the linked user accounts have been removed",
+                        message: "Linked accounts removed successfully"
+                    }
+                },
+                removeAssociation: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error removing the linked user account"
+                    },
+                    genericError: {
+                        description: "Error occurred while removing the linked user account",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The linked user accounts have been removed",
+                        message: "Linked account removed successfully"
+                    }
+                },
                 switchAccount: {
                     error: {
                         description: "{{description}}",

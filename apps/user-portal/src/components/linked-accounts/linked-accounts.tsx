@@ -19,22 +19,22 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid, Icon, List, Popup } from "semantic-ui-react";
 import {
     addAccountAssociation,
     getAssociations,
-    getGravatarImage,
     getProfileInfo,
+    removeAllLinkedAccounts,
+    removeLinkedAccount,
     switchAccount
 } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
 import * as UIConstants from "../../constants/ui-constants";
-import { resolveUsername } from "../../helpers";
 import { AuthStateInterface, createEmptyNotification, LinkedAccountInterface, Notification } from "../../models";
 import { AppState } from "../../store";
 import { setProfileInfo } from "../../store/actions";
-import { SettingsSection, UserAvatar } from "../shared";
+import { SettingsSection } from "../shared";
 import { LinkedAccountsEdit } from "./linked-accounts-edit";
+import { LinkedAccountsList } from "./linked-accounts-list";
 
 /**
  * Prop types for the liked accounts component.
@@ -50,7 +50,7 @@ interface LinkedAccountsProps {
  * @return {JSX.Element}
  */
 export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: LinkedAccountsProps): JSX.Element => {
-    const [ associations, setAssociations ] = useState<LinkedAccountInterface[]>([]);
+    const [ linkedAccounts, setLinkedAccounts ] = useState<LinkedAccountInterface[]>([]);
     const [ editingForm, setEditingForm ] = useState({
         [ UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER ]: false
     });
@@ -60,13 +60,13 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
     const dispatch = useDispatch();
 
     useEffect(() => {
-        fetchAssociations();
+        fetchLinkedAccounts();
     }, []);
 
     /**
-     * Fetches associations from the API.
+     * Fetches linked accounts from the API.
      */
-    const fetchAssociations = (): void => {
+    const fetchLinkedAccounts = (): void => {
         let notification: Notification = createEmptyNotification();
 
         if (!profileDetails.profileInfo || (profileDetails.profileInfo && !profileDetails.profileInfo.displayName)) {
@@ -74,7 +74,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 .then((infoResponse) => {
                     getAssociations()
                         .then((associationsResponse) => {
-                            setAssociations(associationsResponse);
+                            setLinkedAccounts(associationsResponse);
                             dispatch(
                                 setProfileInfo({
                                     ...infoResponse,
@@ -106,7 +106,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
 
         getAssociations()
             .then((response) => {
-                setAssociations(response);
+                setLinkedAccounts(response);
                 dispatch(
                     setProfileInfo({
                         ...profileDetails.profileInfo,
@@ -176,8 +176,8 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                     [ formName ]: false
                 });
 
-                // Re-fetch the associations list.
-                fetchAssociations();
+                // Re-fetch the linked accounts list.
+                fetchLinkedAccounts();
             })
             .catch((error) => {
                 notification = {
@@ -277,6 +277,122 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
             });
     };
 
+    /**
+     * Handles linked account remove action.
+     */
+    const handleLinkedAccountRemove = (id: string) => {
+        let notification: Notification = createEmptyNotification();
+
+        removeLinkedAccount(id)
+            .then(() => {
+                notification = {
+                    description: t(
+                        "views:components.linkedAccounts.notifications.removeAssociation.success.description"
+                    ),
+                    message: t(
+                        "views:components.linkedAccounts.notifications.removeAssociation.success.message"
+                    ),
+                    otherProps: {
+                        positive: true
+                    },
+                    visible: true
+                };
+
+                // Re-fetch the linked accounts list.
+                fetchLinkedAccounts();
+            })
+            .catch((error) => {
+                notification = {
+                    description: t(
+                        "views:components.linkedAccounts.notifications.removeAssociation.genericError.description"
+                    ),
+                    message: t(
+                        "views:components.linkedAccounts.notifications.removeAssociation.genericError.message"
+                    ),
+                    otherProps: {
+                        negative: true
+                    },
+                    visible: true
+                };
+
+                if (error.response && error.response.data && error.response.detail) {
+                    notification = {
+                        ...notification,
+                        description: t(
+                            "views:components.linkedAccounts.notifications.removeAssociation.error.description",
+                            { description: error.response.data.detail }
+                        ),
+                        message: t(
+                            "views:components.linkedAccounts.notifications.removeAssociation.error.message"
+                        ),
+                    };
+                }
+            })
+            .finally(() => {
+                onNotificationFired(notification);
+            });
+    };
+
+    /**
+     * Handles remove all linked accounts action.
+     *
+     * @remarks
+     * This feature has been temporarily removed.
+     * See {@link removeAllLinkedAccounts()} function for more details.
+     */
+    const handleAllLinkedAccountsRemove = () => {
+        let notification: Notification = createEmptyNotification();
+
+        removeAllLinkedAccounts()
+            .then(() => {
+                notification = {
+                    description: t(
+                        "views:components.linkedAccounts.notifications.removeAllAssociations.success.description"
+                    ),
+                    message: t(
+                        "views:components.linkedAccounts.notifications.removeAllAssociations.success.message"
+                    ),
+                    otherProps: {
+                        positive: true
+                    },
+                    visible: true
+                };
+
+                // Re-fetch the linked accounts list.
+                fetchLinkedAccounts();
+            })
+            .catch((error) => {
+                notification = {
+                    description: t(
+                        "views:components.linkedAccounts.notifications.removeAllAssociations.genericError.description"
+                    ),
+                    message: t(
+                        "views:components.linkedAccounts.notifications.removeAllAssociations.genericError.message"
+                    ),
+                    otherProps: {
+                        negative: true
+                    },
+                    visible: true
+                };
+
+                if (error.response && error.response.data && error.response.detail) {
+                    notification = {
+                        ...notification,
+                        description: t(
+                            "views:components.linkedAccounts.notifications.removeAllAssociations.error.description",
+                            { description: error.response.data.detail }
+                        ),
+                        message: t(
+                            "views:components.linkedAccounts.notifications.removeAllAssociations.error.message"
+                        ),
+                    };
+                }
+            })
+            .finally(() => {
+                onNotificationFired(notification);
+            });
+    };
+
     return (
         <SettingsSection
             description={ t("views:sections.linkedAccounts.description") }
@@ -295,54 +411,11 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 editingForm[ UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER ]
                     ? <LinkedAccountsEdit onFormEditViewHide={ hideFormEditView } onFormSubmit={ handleSubmit }/>
                     : (
-                        <List divided verticalAlign="middle" className="main-content-inner">
-                            { associations.map((association, index) => (
-                                <List.Item className="inner-list-item" key={ index }>
-                                    <Grid padded>
-                                        <Grid.Row columns={ 2 }>
-                                            <Grid.Column width={ 11 } className="first-column">
-                                                <UserAvatar
-                                                    floated="left"
-                                                    spaced="right"
-                                                    size="mini"
-                                                    image={ getGravatarImage(association.email) }
-                                                    name={ association.username }
-                                                />
-                                                <List.Header>
-                                                    {
-                                                        resolveUsername(
-                                                            association.username, association.userStoreDomain
-                                                        )
-                                                    }
-                                                </List.Header>
-                                                <List.Description>
-                                                    <p style={ { fontSize: "11px" } }>{ association.tenantDomain }</p>
-                                                </List.Description>
-                                            </Grid.Column>
-                                            <Grid.Column width={ 5 } className="last-column">
-                                                <List.Content floated="right">
-                                                    <Popup
-                                                        trigger={ (
-                                                            <Icon
-                                                                link
-                                                                className="list-icon"
-                                                                size="small"
-                                                                color="grey"
-                                                                name="exchange"
-                                                                onClick={ () => handleLinkedAccountSwitch(association) }
-                                                            />
-                                                        ) }
-                                                        position="top center"
-                                                        content={ t("common:switch") }
-                                                        inverted
-                                                    />
-                                                </List.Content>
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    </Grid>
-                                </List.Item>
-                            )) }
-                        </List>
+                        <LinkedAccountsList
+                            linkedAccounts={ linkedAccounts }
+                            onLinkedAccountRemove={ handleLinkedAccountRemove }
+                            onLinkedAccountSwitch={ handleLinkedAccountSwitch }
+                        />
                     )
             }
         </SettingsSection>

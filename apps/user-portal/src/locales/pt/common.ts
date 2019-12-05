@@ -67,6 +67,7 @@ export const common: Common = {
     reject: "Aprovar",
     release: "Liberação",
     remove: "Retirar",
+    removeAll: "Remover tudo",
     reserved: "Reservado",
     resetFilters: "Redefinir filtros",
     revoke: "Revogar",

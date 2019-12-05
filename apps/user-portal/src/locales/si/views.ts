@@ -439,6 +439,34 @@ export const views: Views = {
                         message: "සම්බන්ධිත පරිශීලක ගිණුම් සාර්ථකව ලබා ගන්නා ලදි"
                     }
                 },
+                removeAllAssociations: {
+                    error: {
+                        description: "{{description}}",
+                        message: "සම්බන්ධිත පරිශීලක ගිණුම් ඉවත් කිරීමේ දෝෂයකිs"
+                    },
+                    genericError: {
+                        description: "සම්බන්ධිත පරිශීලක ගිණුම් ඉවත් කිරීමේදී දෝෂයක් ඇතිවිය",
+                        message: "දෝෂයක් ඇතිවිය"
+                    },
+                    success: {
+                        description: "සම්බන්ධිත සියලුම පරිශීලක ගිණුම් ඉවත් කර ඇත",
+                        message: "සම්බන්ධිත ගිණුම් සාර්ථකව ඉවත් කරන ලදි"
+                    }
+                },
+                removeAssociation: {
+                    error: {
+                        description: "{{description}}",
+                        message: "සම්බන්ධිත පරිශීලක ගිණුම ඉවත් කිරීමේ දෝෂයකි"
+                    },
+                    genericError: {
+                        description: "සම්බන්ධිත පරිශීලක ගිණුම ඉවත් කිරීමේදී දෝෂයක් ඇතිවිය",
+                        message: "දෝෂයක් ඇතිවිය"
+                    },
+                    success: {
+                        description: "සම්බන්ධිත පරිශීලක ගිණුම් ඉවත් කර ඇත",
+                        message: "සම්බන්ධිත ගිණුම සාර්ථකව ඉවත් කරන ලදි"
+                    }
+                },
                 switchAccount: {
                     error: {
                         description: "{{description}}",

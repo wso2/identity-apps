@@ -439,6 +439,34 @@ export const views: Views = {
                         message: "Contas de usuário vinculadas recuperadas com sucesso"
                     }
                 },
+                removeAllAssociations: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Erro ao remover contas de usuário vinculadas"
+                    },
+                    genericError: {
+                        description: "O usuário vinculado é responsável por remover o erro",
+                        message: "Algo deu errado"
+                    },
+                    success: {
+                        description: "Todas as contas de usuário vinculadas foram removidas",
+                        message: "Contas vinculadas removidas"
+                    }
+                },
+                removeAssociation: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Erro ao remover a conta de usuário vinculada"
+                    },
+                    genericError: {
+                        description: "A conta do usuário vinculado que remove o erro ocorreu",
+                        message: "Algo deu errado"
+                    },
+                    success: {
+                        description: "As contas de usuário vinculadas foram removidas",
+                        message: "A conta vinculada foi removida"
+                    }
+                },
                 switchAccount: {
                     error: {
                         description: "{{description}}",

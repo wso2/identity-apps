@@ -82,26 +82,55 @@ export const addAccountAssociation = (data: object): Promise<any> => {
 };
 
 /**
- * Remove a user account association for the currently authenticated user.
- * @return {{Promise<AxiosResponse<any>>} a promise containing the response
+ * Remove a linked account for the currently authenticated user.
+ *
+ * @return {Promise<any>}
  */
-export const removeAssociation = (): Promise<any> => {
+export const removeLinkedAccount = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": CLIENT_HOST,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        params: {},
+        url: `ServiceResourcesEndpoint.associations/${ id }`
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Removes all linked accounts of the authenticated user.
+ *
+ * @remarks
+ * The API treats all the associations as a single entity and when you
+ * remove all the associations and add one again, already removed
+ * associations are also added again.
+ *
+ * @return {Promise<any>}
+ */
+export const removeAllLinkedAccounts = (): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
         url: ServiceResourcesEndpoint.associations
     };
 
     return httpClient.request(requestConfig)
         .then((response) => {
-            // TODO: handle response when API support is available.
+            return Promise.resolve(response.data);
         })
         .catch((error) => {
-            // TODO: handle error when API support is available.
+            return Promise.reject(error);
         });
 };
 
