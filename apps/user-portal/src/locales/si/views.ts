@@ -791,6 +791,9 @@ export const views: Views = {
                     default: "විද්‍යුත් තැපෑල එක් කරන්න",
                     label: "විද්‍යුත් තැපෑල"
                 },
+                generic: {
+                    default: "{{fieldName}} එක් කරන්න"
+                },
                 mobile: {
                     default: "ජංගම දුරකථන අංකය එක් කරන්න",
                     label: "ජංගම දුරකථන අංකය"
@@ -819,6 +822,15 @@ export const views: Views = {
                                 empty: "විද්‍යුත් තැපෑල අත්\u200Dයවශ්\u200Dය ක්ෂේත්\u200Dරයකි",
                                 invalidFormat: "ඊමේල් ලිපිනය නිවැරදි ආකෘතියෙන් නොවේ"
                             }
+                        }
+                    }
+                },
+                generic: {
+                    inputs: {
+                        placeholder: "{{fieldName}} ඇතුල් කරන්න",
+                        validations: {
+                            empty: "{{fieldName}} අත්\u200Dයවශ්\u200Dය ක්ෂේත්\u200Dරයකි",
+                            invalidFormat: "{{fieldName}} නිවැරදි ආකෘතියෙන් නොවේ"
                         }
                     }
                 },
