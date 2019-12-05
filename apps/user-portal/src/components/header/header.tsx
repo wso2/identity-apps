@@ -139,7 +139,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                             <Item.Group className="authenticated-user" unstackable>
                                 <Item
                                     className="header"
-                                    key={ `logged-in-user-${profileDetails.profileInfo.username}` }
+                                    key={ `logged-in-user-${profileDetails.profileInfo.userName}` }
                                 >
                                     <UserAvatar authState={ profileDetails } size="tiny" />
                                     <Item.Content verticalAlign="middle">

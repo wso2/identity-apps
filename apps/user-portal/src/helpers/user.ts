@@ -27,8 +27,8 @@ import { AuthStateInterface } from "../models";
  * @return {string} - Resolved display name.
  */
 export const resolveUserDisplayName = (state: AuthStateInterface): string => {
-    if (state.profileInfo.displayName || state.profileInfo.lastName) {
-        return `${state.profileInfo.displayName} ${state.profileInfo.lastName}`;
+    if (state.profileInfo.name.givenName || state.profileInfo.name.familyName) {
+        return `${state.profileInfo.name.givenName} ${state.profileInfo.name.familyName}`;
     }
     if (state.displayName) {
         return state.displayName;
