@@ -82,6 +82,11 @@
         border: @settingsCardBorder;
         box-shadow: none;
 
+        &.with-top-action-bar {
+            .ui.list {
+                margin-top: 0;
+            }
+        }
         // override the default the margin bottom
         &:last-child {
             margin-bottom: 0.3em;
@@ -103,8 +108,7 @@
             padding: 0 @settingsCardPadding;
             border-left: 0;
             border-right: 0;
-            border-top: @settingsCardTopActionPanelBorderTop;
-            border-bottom: @settingsCardTopActionPanelBorderBottom;
+            border-radius: 0;
 
             .description {
                 display: flex;
@@ -122,6 +126,10 @@
                 .inner-list-item {
                     padding: 0;
 
+                    .list-item-action {
+                        display: inline-block;
+                        padding-top: 10px;
+                    }
                     .first-column {
                         padding-left: @settingsCardPadding;
                     }
@@ -136,6 +144,7 @@
         }
         .extra-content {
             padding: 0;
+            border-top: 1px solid @borderColor !important;
 
             .action-button {
                 padding: 16px @settingsCardPadding;
