@@ -18,7 +18,7 @@
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
-import { i18n, ServiceResourcesEndpoint } from "../configs";
+import {GlobalConfig, i18n, ServiceResourcesEndpoint} from "../configs";
 import {
     ConsentReceiptInterface,
     ConsentState,
@@ -41,7 +41,7 @@ export const fetchConsentedApps = (state: ConsentState): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -70,7 +70,7 @@ export const fetchConsentReceipt = (receiptId: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": CLIENT_HOST,
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
