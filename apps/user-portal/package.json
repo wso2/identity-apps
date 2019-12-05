@@ -27,8 +27,7 @@
             "APP_LOGIN_PATH": "/login",
             "CLIENT_ID_DEFAULT": "USER_PORTAL",
             "CLIENT_HOST_DEFAULT": "https://localhost:9000",
-            "LOGIN_CALLBACK_URL": "https://localhost:9000/user-portal/login",
-            "LOGOUT_CALLBACK_URL": "https://localhost:9000/user-portal/logout"
+            "LOGIN_CALLBACK_URL": "https://localhost:9000/user-portal/login"
         },
         "transform": {
             "^.+\\.tsx$": "ts-jest",

@@ -67,7 +67,7 @@ export const handleSignIn = (state, dispatch) => {
             clientId: GlobalConfig.clientID,
             clientSecret: null,
             enablePKCE: true,
-            redirectUri: LOGIN_CALLBACK_URL,
+            redirectUri: GlobalConfig.loginCallbackUrl,
             scope: [ TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE ],
         };
         if (SignInUtil.hasAuthorizationCode()) {
@@ -115,7 +115,7 @@ export const handleSignIn = (state, dispatch) => {
  */
 export const handleSignOut = (state, dispatch) => {
     if (!state.logoutInit) {
-        SignOutUtil.sendSignOutRequest(LOGIN_CALLBACK_URL).then(() => {
+        SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl).then(() => {
             dispatch(setSignOut());
             AuthenticateSessionUtil.endAuthenticatedSession();
             OPConfigurationUtil.resetOPConfiguration();

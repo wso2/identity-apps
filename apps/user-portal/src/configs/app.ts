@@ -43,6 +43,7 @@ interface RuntimeConfigInterface {
     clientHost?: string;
     clientID?: string;
     serverHost?: string;
+    loginCallbackUrl: string;
 }
 
 // tslint:disable-next-line:no-string-literal
@@ -51,6 +52,7 @@ const RUNTIME_CONFIG: RuntimeConfigInterface = window["runConfig"];
 export let GlobalConfig: RuntimeConfigInterface = {
     clientHost: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.clientHost || CLIENT_HOST_DEFAULT) : CLIENT_HOST_DEFAULT,
     clientID: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.clientID || CLIENT_ID_DEFAULT) : CLIENT_ID_DEFAULT,
+    loginCallbackUrl: this.serverHost + LOGIN_CALLBACK_URL,
     serverHost: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.serverHost || SERVER_HOST_DEFAULT) : SERVER_HOST_DEFAULT
 };
 
