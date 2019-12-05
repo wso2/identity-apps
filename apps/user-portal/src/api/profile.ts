@@ -90,16 +90,15 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
                 }
             }
             const profileResponse: BasicProfileInterface = {
-                displayName: response.data.name.givenName || "",
                 emails: response.data.emails || "",
-                lastName: response.data.name.familyName || "",
+                name: response.data.name || { givenName: "", familyName: "" },
                 organisation: response.data[orgKey] ? response.data[orgKey].organization : "",
                 phoneNumbers: response.data.phoneNumbers || [],
-                proUrl: response.data.profileUrl || "",
+                profileUrl: response.data.profileUrl || "",
                 responseStatus: response.status || null,
                 roles: response.data.roles || [],
-                userimage: response.data.userImage || gravatar,
-                username: response.data.userName || ""
+                userName: response.data.userName || "",
+                userimage: response.data.userImage || gravatar
             };
             return Promise.resolve(profileResponse);
         })
