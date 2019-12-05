@@ -31,11 +31,11 @@
             "^.+\\.jsx$": "babel-jest"
         },
         "moduleNameMapper": {
-            "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test_configs/file_mock.js",
-            "\\.(css|less)$": "<rootDir>/test_configs/style_mock.js"
+            "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test-configs/file-mock.js",
+            "\\.(css|less)$": "<rootDir>/test-configs/style-mock.js"
         },
         "setupFilesAfterEnv": [
-            "<rootDir>/test_configs/setup_test.ts"
+            "<rootDir>/test-configs/setup-test.ts"
         ]
     }
 }
