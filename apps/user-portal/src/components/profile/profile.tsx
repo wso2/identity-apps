@@ -53,19 +53,53 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
 
     /**
-     *
+     * This function extracts the sub attributes from the schemas and appends them to the main schema iterable.
+     * The returned iterable will have all the schema attributes in a flat structure so that
+     * you can just iterate through them to display them.
      * @param schemas
      */
     const flattenSchemas = (schemas: ProfileSchema[]): ProfileSchema[] => {
         const tempSchemas: ProfileSchema[] = [];
         schemas.forEach((schema: ProfileSchema) => {
             if (schema.subAttributes && schema.subAttributes.length > 0) {
+                /**
+                 * If the schema has sub attributes, then this function will be recursively called.
+                 * The returned attributes are pushed into the `tempSchemas` array.
+                 */
                 tempSchemas.push(...flattenSchemas(schema.subAttributes));
             } else {
                 tempSchemas.push(schema);
             }
         });
         return tempSchemas;
+    };
+
+    /**
+     * This function traverses the whole schema array to find a certain attribute.
+     * The found attribute will be returned as a part of the object it belongs to with the who
+     * @param schemas
+     */
+    const parseSchemas = (
+        schemas: ProfileSchema[],
+        formName: string,
+        values: Map<string, string | string[]>,
+        value: {}
+    ): {} => {
+        let schema: ProfileSchema;
+        for (schema of schemas) {
+            value = {};
+            if (schema.name === formName) {
+                value[schema.name] = values.get(formName);
+                return value;
+            } else if (schema.subAttributes && schema.subAttributes.length > 0) {
+                const returnValue = { ...parseSchemas(schema.subAttributes, formName, values, value) };
+                if (!isEmpty(returnValue)) {
+                    value[schema.name] = { ...returnValue };
+                    return value;
+                }
+            }
+        }
+        return value;
     };
 
     /**
@@ -77,6 +111,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         }
     }, []);
 
+    /**
+     * Sort the elements of the profileSchema state according by the displayOrder attribute in the ascending order.
+     */
     useEffect(() => {
         setProfileSchema(flattenSchemas(profileDetails.profileSchemas).sort((a: ProfileSchema, b: ProfileSchema) => {
             if (!a.displayOrder) {
@@ -89,6 +126,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         }));
     }, [profileDetails]);
 
+    /**
+     * This adds key-value pairs to the `editingForm` state. This would be used to open and close
+     * editing forms.
+     * This also maps profile info to the schema.
+     */
     useEffect(() => {
         if (!isEmpty(profileSchema) && !isEmpty(profileDetails) && !isEmpty(profileDetails.profileInfo)) {
             const tempEditingForm: Map<string, boolean> = new Map<string, boolean>(editingForm);
@@ -136,8 +178,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
 
-        const value = {};
-        if (isEmpty(profileDetails.profileInfo[formName])) {
+        let value = {};
+        if (typeof (profileDetails.profileInfo[formName]) === "undefined") {
             Object.entries(profileDetails.profileInfo).forEach((profileInfoPair) => {
                 if (Array.isArray(profileInfoPair[1])) {
                     profileInfoPair[1].forEach((subProfileInfo, index: number) => {
@@ -151,14 +193,27 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         }
                     });
                 } else if (typeof profileInfoPair[1] === "object" && profileInfoPair[1] !== null) {
-                    value[profileInfoPair[0]] = { [formName]: values.get(formName) };
+                    Object.entries(profileInfoPair[1]).forEach((subPair) => {
+                        if (subPair[0] === formName) {
+                            value[profileInfoPair[0]] = {
+                                [formName]: Array.isArray(subPair[1])
+                                    ? [values.get(formName)]
+                                    : values.get(formName)
+                            };
+                        }
+                    });
                 }
             });
         } else if (Array.isArray(profileDetails.profileInfo[formName])) {
             value[formName] = [values.get(formName)];
         } else {
-            value[formName] = values.get(formName);
+            value[formName] = formName === "emails" ? [values.get(formName)] : values.get(formName);
         }
+
+        if (isEmpty(value)) {
+            value = { ...parseSchemas(profileDetails.profileSchemas, formName, values, {}) };
+        }
+
         data.Operations[0].value = { ...value };
         updateProfileInfo(data).then((response) => {
             if (response.status === 200) {
@@ -209,7 +264,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const generateSchemaForm = (schema: ProfileSchema): JSX.Element => {
         if (editingForm && editingForm.size > 0 && editingForm.get(schema.name)) {
             return (
-                < EditSection >
+                <EditSection>
                     <Grid>
                         <Grid.Row columns={ 2 }>
                             <Grid.Column width={ 4 }>{ schema.displayName }</Grid.Column>
@@ -225,7 +280,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                         placeholder={ t("views:components.profile.forms.generic.inputs.placeholder", {
                                             fieldName: schema.displayName
                                         }) }
-                                        required={ false }
+                                        required={ schema.required }
                                         requiredErrorMessage={ t(
                                             "views:components.profile.forms." +
                                             "generic.inputs.validations.empty",
@@ -394,11 +449,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 {
                     profileSchema && profileSchema.map((schema: ProfileSchema, index: number) => {
-                        return (
-                            <List.Item key={ index } className="inner-list-item">
-                                { generateSchemaForm(schema) }
-                            </List.Item>
-                        );
+                        if (schema.name !== "default") {
+                            return (
+                                <List.Item key={ index } className="inner-list-item">
+                                    { generateSchemaForm(schema) }
+                                </List.Item>
+                            );
+                        }
                     })
                 }
             </List>
