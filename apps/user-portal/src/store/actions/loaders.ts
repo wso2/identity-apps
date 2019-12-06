@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { LoaderAction, SET_PROFILE_SCHEMA_LOADER } from "./types";
+import { LoaderAction, SET_PROFILE_INFO_LOADER, SET_PROFILE_SCHEMA_LOADER } from "./types";
 
 /**
  * Sets the state of the profile schema loader
@@ -33,5 +33,5 @@ export const setProfileSchemaLoader = (state: boolean): LoaderAction => ({
  */
 export const setProfileInfoLoader = (state: boolean): LoaderAction => ({
     payload: state,
-    type: SET_PROFILE_SCHEMA_LOADER
+    type: SET_PROFILE_INFO_LOADER
 });

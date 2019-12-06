@@ -22,7 +22,7 @@ import { isEmpty } from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
+import { Form, Grid, Icon, List, Placeholder, Popup, Responsive } from "semantic-ui-react";
 import { updateProfileInfo } from "../../api";
 import * as UIConstants from "../../constants/ui-constants";
 import { AuthStateInterface, createEmptyProfile, Notification } from "../../models";
@@ -51,6 +51,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+    const profileInfoLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
+    const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
 
     /**
      * This function extracts the sub attributes from the schemas and appends them to the main schema iterable.
@@ -369,7 +371,18 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                             <List.Content>
                                 <List.Description>
-                                    { profileInfo.get(schema.name) }
+                                    {
+                                        profileInfoLoader || profileSchemaLoader
+                                            ? (
+                                                <Placeholder>
+                                                    <Placeholder.Line />
+                                                </Placeholder>
+                                            )
+                                            : profileInfo.get(schema.name)
+                                            || t("views:components.profile.forms." +
+                                                "generic.inputs.placeholder",
+                                                { fieldName: schema.displayName })
+                                    }
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>

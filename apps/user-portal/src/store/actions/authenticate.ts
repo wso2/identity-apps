@@ -212,7 +212,6 @@ export const getScimSchemas = (dispatch) => {
     getProfileSchemas()
         .then((response: ProfileSchema[]) => {
             dispatch(setProfileSchemaLoader(false));
-
             dispatch(setScimSchemas(response));
         })
         .catch((error) => {
