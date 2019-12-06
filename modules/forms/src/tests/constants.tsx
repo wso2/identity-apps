@@ -68,7 +68,7 @@ const constants = {
     TEXT_BOX_VALID_MESSAGE: "Text box Validated",
     TEXT_BOX_VALUE: "Text box value",
     onClick: jest.fn(),
-    onSubmit: jest.fn((value) => value),
+    onSubmit: () => jest.fn((value) => value),
 };
 
 export default constants;
