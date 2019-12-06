@@ -46,7 +46,7 @@ export const RecentApplications: FunctionComponent<RecentApplicationsProps> = (
                 {
                     (recentApps && recentApps.length && recentApps.length > 0)
                         ? recentApps.map((app) => (
-                            <Grid.Column width={ 5 } key={ app.id }>
+                            <Grid.Column computer={ 5 } tablet={ 16 } mobile={ 16 } key={ app.id }>
                                 <RecentApplicationCard
                                     app={ app }
                                     showFavouriteIcon={ showFavourites }
