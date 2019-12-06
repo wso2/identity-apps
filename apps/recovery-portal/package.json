@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/recovery-portal",
-    "version": "0.1.122-SNAPSHOT",
+    "version": "0.1.130-SNAPSHOT",
     "description": "WSO2 Identity Server Recovery Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -12,6 +12,6 @@
         "clean": "rm -rf node_modules build npm"
     },
     "dependencies": {
-        "@wso2is/theme": "^0.1.122-SNAPSHOT"
+        "@wso2is/theme": "^0.1.130-SNAPSHOT"
     }
 }

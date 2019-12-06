@@ -57,20 +57,11 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     }, []);
 
     const trigger = (
-        profileInfoLoader
-            ? (
-                <Placeholder>
-                    <Placeholder.Header image>
-                        <Placeholder.Line />
-                    </Placeholder.Header>
-                </Placeholder>
-            )
-            : (
-                <span className="user-dropdown-trigger">
-                    <div className="username">{ resolveUserDisplayName(profileDetails) }</div>
-                    <UserAvatar authState={ profileDetails } size="mini" />
-                </span >
-            )
+        <span className="user-dropdown-trigger">
+            <div className="username">{ resolveUserDisplayName(profileDetails) }</div>
+            <UserAvatar authState={ profileDetails } size="mini" />
+        </span >
+
     );
 
     /**
@@ -193,43 +184,43 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                                     <Item
                                                         className="linked-account"
                                                         key={ `${association.userId}-${index}` }
-                                                        onClick={ () => handleLinkedAccountSwitch(association) }
-                                                    >
-                                                        <UserAvatar
-                                                            bordered
-                                                            avatar
-                                                            size="little"
-                                                            image={ getGravatarImage(association.email) }
-                                                            name={ association.username }
-                                                        />
-                                                        <Item.Content verticalAlign="middle">
-                                                            <Item.Description>
-                                                                <div className="name">
-                                                                    {
-                                                                        resolveUsername(
-                                                                            association.username,
-                                                                            association.userStoreDomain
-                                                                        )
                                                                     }
-                                                                </div>
-                                                                <div className="email">
-                                                                    { association.tenantDomain }
-                                                                </div>
-                                                            </Item.Description>
-                                                        </Item.Content>
-                                                    </Item>
-                                                ))
-                                            }
-                                        </Item.Group>
-                                    )
-                                    : null
-                            }
-                            <Dropdown.Item className="action-panel">
-                                <Link className="action-button" to="/logout">{ t("common:logout") }</Link>
-                            </Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </Menu.Menu>
+                                                                >
+                                                                    <UserAvatar
+                                                                        bordered
+                                                                        avatar
+                                                                        size="little"
+                                                                        name={ association.username }
+                                                                    />
+                                                                    <Item.Content verticalAlign="middle">
+                                                                        <Item.Description>
+                                                                            <div className="name">
+                                                                                {
+                                                                                    resolveUsername(
+                                                                                        association.username,
+                                                                                        association.userStoreDomain
+                                                                                    )
+                                                                                }
+                                                                            </div>
+                                                                            <div className="email">
+                                                                                { association.tenantDomain }
+                                                                            </div>
+                                                                        </Item.Description>
+                                                                    </Item.Content>
+                                                                </Item>
+                                                            ))
+                                                    }
+                                                </Item.Group>
+                                            )
+                                            : null
+                                    }
+                                    <Dropdown.Item className="action-panel">
+                                        <Link className="action-button" to="/logout">{ t("common:logout") }</Link>
+                                    </Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </Menu.Menu>
+                    ) }
             </Container>
         </Menu>
     );

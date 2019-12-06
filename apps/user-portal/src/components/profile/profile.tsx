@@ -22,7 +22,8 @@ import { isEmpty } from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Grid, Icon, List, Placeholder, Popup, Responsive } from "semantic-ui-react";
+import Skeleton from "react-skeleton-loader";
+import { Form, Grid, Icon, List, Placeholder, PlaceholderImage, Popup, Responsive } from "semantic-ui-react";
 import { updateProfileInfo } from "../../api";
 import * as UIConstants from "../../constants/ui-constants";
 import { AuthStateInterface, createEmptyProfile, Notification } from "../../models";
@@ -374,9 +375,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     {
                                         profileInfoLoader || profileSchemaLoader
                                             ? (
-                                                <Placeholder>
-                                                    <Placeholder.Line />
-                                                </Placeholder>
+                                                <Skeleton width="100%" widthRandomness={ 0.25 } />
                                             )
                                             : profileInfo.get(schema.name)
                                             || t("views:components.profile.forms." +
@@ -432,32 +431,16 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         < SettingsSection
             description={ t("views:sections.profile.description") }
             header={ t("views:sections.profile.heading") }
-            icon={ (
-                <UserAvatar
-                    authState={ profileDetails }
-                    size="tiny"
-                    showGravatarLabel
-                    gravatarInfoPopoverText={ (
-                        <Trans i18nKey="views:components.userAvatar.infoPopover">
-                            This image has been retrieved from
-                            <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener">Gravatar</a> service.
-                        </Trans>
-                    ) }
-                />
-            ) }
-            iconMini={ (
-                <UserAvatar
-                    authState={ profileDetails }
-                    size="tiny"
-                    showGravatarLabel
-                    gravatarInfoPopoverText={ (
-                        <Trans i18nKey="views:components.userAvatar.infoPopover">
-                            This image has been retrieved from
-                            <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener">Gravatar</a> service.
-                        </Trans>
-                    ) }
-                />
-            ) }
+            icon={ profileInfoLoader
+                ? (
+                    <Skeleton height="75px" width="100px" borderRadius="50%" />
+                )
+                : <UserAvatar authState={ profileDetails } size="tiny" /> }
+            iconMini={ profileInfoLoader
+                ? (
+                    <Skeleton height="75px" width="100px" borderRadius="50%" />
+                )
+                : <UserAvatar authState={ profileDetails } size="tiny" /> }
         >
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 {
