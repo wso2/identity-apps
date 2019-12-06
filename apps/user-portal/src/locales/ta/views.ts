@@ -828,6 +828,9 @@ export const views: Views = {
                     default: "மின்னஞ்சலை சேர்க்க",
                     label: "மின்னஞ்சல்"
                 },
+                generic: {
+                    default: "{{fieldName}} ஐ சேர்க்க"
+                },
                 mobile: {
                     default: "கையடக்க தொலைபேசி இலக்கத்தை சேர்க்க",
                     label: "கையடக்க தொலைபேசி இலக்கம்"
@@ -856,6 +859,15 @@ export const views: Views = {
                                 empty: "மின்னஞ்சல் முகவரி ஒரு கட்டாயா களமாகும்",
                                 invalidFormat: "மின்னஞ்சல் முகவரி சரியான வடிவத்தில் இல்லை"
                             }
+                        }
+                    }
+                },
+                generic: {
+                    inputs: {
+                        placeholder: "{{fieldName}} ஐ உள்ளிடவும்",
+                        validations: {
+                            empty: "{{fieldName}} ஒரு கட்டாயா களமாகும்",
+                            invalidFormat: "{{fieldName}} சரியான வடிவத்தில் இல்லை"
                         }
                     }
                 },
