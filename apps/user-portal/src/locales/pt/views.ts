@@ -803,7 +803,7 @@ export const views: Views = {
                     label: "O email"
                 },
                 generic: {
-                    default: "Adicione {{fieldName}}ß"
+                    default: "Adicione {{fieldName}}"
                 },
                 mobile: {
                     default: "Adicionar número de celular",
