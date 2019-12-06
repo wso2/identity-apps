@@ -433,12 +433,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             header={ t("views:sections.profile.heading") }
             icon={ profileInfoLoader
                 ? (
-                    <Skeleton height="75px" width="100px" borderRadius="50%" />
+                    <Skeleton height="75px" width="75px" widthRandomness={ 0 } borderRadius="50%" />
                 )
                 : <UserAvatar authState={ profileDetails } size="tiny" /> }
             iconMini={ profileInfoLoader
                 ? (
-                    <Skeleton height="75px" width="100px" borderRadius="50%" />
+                    <Skeleton height="75px" width="75px" widthRandomness={ 0 } borderRadius="50%" />
                 )
                 : <UserAvatar authState={ profileDetails } size="tiny" /> }
         >
