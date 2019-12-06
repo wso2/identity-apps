@@ -54,10 +54,20 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
     props: ConsentsListProps
 ): JSX.Element => {
 
-    const { consentReceipt, consentedApps, onConsentEditClick, onConsentRevokeClick,
-            onClaimUpdateClick, onEditViewCloseClick, editingConsent,
-            editConsentedApps, editingConsentReceipt,
-            activeIndex, revokePIICategory, undoRevokePIICategory, revokedPIICatList
+    const {
+        consentReceipt,
+        consentedApps,
+        onConsentEditClick,
+        onConsentRevokeClick,
+        onClaimUpdateClick,
+        onEditViewCloseClick,
+        editingConsent,
+        editConsentedApps,
+        editingConsentReceipt,
+        activeIndex,
+        revokePIICategory,
+        undoRevokePIICategory,
+        revokedPIICatList
     } = props;
     const { t } = useTranslation();
 

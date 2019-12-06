@@ -32,6 +32,7 @@ import { ConsentReceiptInterface } from "../../models/consents";
 import { SettingsSection } from "../shared";
 import { AppConsentList } from "./consents-list";
 import { endUserSession } from "../../utils";
+import {APPLICATION_NAME} from "../../constants";
 
 /**
  * Proptypes for the user sessions component.
@@ -109,9 +110,10 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                         ),
                     };
                 }
+            })
+            .finally(() => {
+                onNotificationFired(notification);
             });
-
-        onNotificationFired(notification);
     };
 
     const getConsentReceipt = (receiptId) => {
@@ -159,9 +161,10 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                         ),
                     };
                 }
+            })
+            .finally(() => {
+                onNotificationFired(notification);
             });
-
-        onNotificationFired(notification);
     };
 
     /**
@@ -225,8 +228,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
      * Revokes the consent of an already consented application.
      */
     const revokeConsent = (consent: ConsentInterface): void => {
-        const spName = "This is the user portal application.";
-        const compare = spName.localeCompare(consent.spDisplayName);
+        const compare = APPLICATION_NAME.localeCompare(consent.spDisplayName);
         revokeConsentedApp(consent.consentReceiptID)
             .then((response) => {
                 getConsentedApps();
@@ -273,9 +275,10 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                         ),
                     };
                 }
+            })
+            .finally(() => {
+                onNotificationFired(notification);
             });
-
-        onNotificationFired(notification);
     };
 
     /**
@@ -354,9 +357,10 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                             ),
                         };
                     }
+                })
+                .finally(() => {
+                    onNotificationFired(notification);
                 });
-
-            onNotificationFired(notification);
         }
     };
 
@@ -407,8 +411,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     };
 
     const consentRevokeMessage = () => {
-        const spName = "This is the user portal application.";
-        const compare = spName.localeCompare(editingConsent.spDisplayName);
+        const compare = APPLICATION_NAME.localeCompare(editingConsent.spDisplayName);
         if (compare === 0) {
             return (
                 <Message warning>

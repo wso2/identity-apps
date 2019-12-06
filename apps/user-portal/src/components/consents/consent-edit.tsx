@@ -48,8 +48,14 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
 ): JSX.Element => {
 
     const {
-        onClaimUpdateClick, onEditViewCloseClick, state, spDescription, revokePIICategory, revokedPIICatList,
-        undoRevokePIICategory, services
+        onClaimUpdateClick,
+        onEditViewCloseClick,
+        state,
+        spDescription,
+        revokePIICategory,
+        revokedPIICatList,
+        undoRevokePIICategory,
+        services
     } = props;
     const { t } = useTranslation();
 
