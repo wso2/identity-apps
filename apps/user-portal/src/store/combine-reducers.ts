@@ -17,7 +17,7 @@
  */
 
 import { combineReducers } from "redux";
-import { authenticateReducer, consentManagementReducer, globalReducer } from "./reducers";
+import { authenticateReducer, globalReducer } from "./reducers";
 
 /**
  * Combines all the reducers.
@@ -26,6 +26,5 @@ import { authenticateReducer, consentManagementReducer, globalReducer } from "./
  */
 export const reducers = combineReducers({
     authenticationInformation: authenticateReducer,
-    consentManagement: consentManagementReducer,
     global: globalReducer
 });

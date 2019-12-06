@@ -27,6 +27,7 @@ export interface ConsentInterface {
     spDisplayName: string;
     state: ConsentState;
     tenantDomain: string;
+    consentReceipt?: ConsentReceiptInterface;
 }
 
 /**
@@ -69,12 +70,22 @@ interface PurposeInterface {
 /**
  * PIICategory Model
  */
-interface PIICategory {
+export interface PIICategory {
     piiCategoryDisplayName: string;
     piiCategoryId: number;
     piiCategoryName: string;
     validity: string;
 }
+
+/**
+ * PIICategory Model
+ */
+export const creatPIICategory = (): PIICategory => ({
+    piiCategoryDisplayName: "",
+    piiCategoryId: 0,
+    piiCategoryName: "",
+    validity: ""
+});
 
 /**
  * This model will be used map the payload of the
@@ -134,13 +145,14 @@ export enum ConsentState {
  * @return {ConsentInterface} an empty consent object.
  */
 export const createEmptyConsent = (): ConsentInterface => ({
+    consentReceipt: createEmptyConsentReceipt(),
     consentReceiptID: "",
     language: "",
     piiPrincipalId: "",
     spDescription: "",
     spDisplayName: "",
     state: ConsentState.ACTIVE,
-    tenantDomain: ""
+    tenantDomain: "",
 });
 
 /**

@@ -353,7 +353,7 @@ export const views: Views = {
                 revokeConsentedApp: {
                     error: {
                         description: "{{description}}",
-                        message: "Consent Revoke Error"
+                        message: "Consents Revoke Error"
                     },
                     genericError: {
                         description: "Couldn't revoke consent for the application",
@@ -361,7 +361,7 @@ export const views: Views = {
                     },
                     success: {
                         description: "The consent has been successfully revoked for the application",
-                        message: "Consent Revoke Success"
+                        message: "Consents Revoke Success"
                     }
                 },
                 updateConsentedClaims: {
@@ -542,7 +542,7 @@ export const views: Views = {
                         manage: "Manage consents"
                     },
                     description: "Control the data you want to share with applications",
-                    header: "Consent control"
+                    header: "Consents control"
                 }
             }
         },

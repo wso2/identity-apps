@@ -16,6 +16,8 @@
  * under the License.
  */
 
+type ServiceEndpointURLType = string;
+
 interface ServiceResourcesType {
     applications: string;
     associations: string;
