@@ -16,20 +16,7 @@
  * under the License.
  */
 
-export * from "./api";
-export * from "./applications";
-export * from "./approvals";
-export * from "./auth";
-export * from "./authenticated-user";
-export * from "./consents";
-export * from "./locales";
-export * from "./login";
-export * from "./notifications";
-export * from "./profile";
-export * from "./security-questions";
-export * from "./session";
-export * from "./storage";
-export * from "./tokens";
-export * from "./user-sessions";
-export * from "./global";
-export * from "./loaders";
+export interface LoadersInterface {
+    isProfileInfoLoading: boolean;
+    isProfileSchemaLoading: boolean;
+}

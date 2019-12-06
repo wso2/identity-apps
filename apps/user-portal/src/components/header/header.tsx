@@ -24,7 +24,7 @@ import { Link } from "react-router-dom";
 import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } from "semantic-ui-react";
 import { getGravatarImage, switchAccount } from "../../api";
 import { resolveUserDisplayName, resolveUsername } from "../../helpers";
-import { AuthStateInterface, createEmptyNotification, LinkedAccountInterface, Notification } from "../../models";
+import { AuthStateInterface, createEmptyNotification, LinkedAccountInterface, LoadersInterface, Notification } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation } from "../../store/actions";
 import { Title, UserAvatar } from "../shared";
@@ -47,6 +47,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     const { t } = useTranslation();
     const { onSidePanelToggleClick, showSidePanelToggle } = props;
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+    const profileInfoLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -56,10 +57,20 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     }, []);
 
     const trigger = (
-        <span className="user-dropdown-trigger">
-            <div className="username">{ resolveUserDisplayName(profileDetails) }</div>
-            <UserAvatar authState={ profileDetails } size="mini" />
-        </span>
+        profileInfoLoader
+            ? (
+                <Placeholder>
+                    <Placeholder.Header image>
+                        <Placeholder.Line />
+                    </Placeholder.Header>
+                </Placeholder>
+            )
+            : (
+                <span className="user-dropdown-trigger">
+                    <div className="username">{ resolveUserDisplayName(profileDetails) }</div>
+                    <UserAvatar authState={ profileDetails } size="mini" />
+                </span >
+            )
     );
 
     /**
@@ -141,7 +152,15 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                     className="header"
                                     key={ `logged-in-user-${profileDetails.profileInfo.userName}` }
                                 >
-                                    <UserAvatar authState={ profileDetails } size="tiny" />
+                                    { profileInfoLoader
+                                        ? (
+                                            <Placeholder>
+                                                <Placeholder.Header image>
+                                                    <Placeholder.Line />
+                                                </Placeholder.Header>
+                                            </Placeholder>
+                                        )
+                                        : <UserAvatar authState={ profileDetails } size="tiny" /> }
                                     <Item.Content verticalAlign="middle">
                                         <Item.Description>
                                             <div className="name">{ resolveUserDisplayName(profileDetails) }</div>

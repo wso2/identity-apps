@@ -16,20 +16,22 @@
  * under the License.
  */
 
-export * from "./api";
-export * from "./applications";
-export * from "./approvals";
-export * from "./auth";
-export * from "./authenticated-user";
-export * from "./consents";
-export * from "./locales";
-export * from "./login";
-export * from "./notifications";
-export * from "./profile";
-export * from "./security-questions";
-export * from "./session";
-export * from "./storage";
-export * from "./tokens";
-export * from "./user-sessions";
-export * from "./global";
-export * from "./loaders";
+import { LoaderAction, SET_PROFILE_SCHEMA_LOADER } from "./types";
+
+/**
+ * Sets the state of the profile schema loader
+ * @param state
+ */
+export const setProfileSchemaLoader = (state: boolean): LoaderAction => ({
+    payload: state,
+    type: SET_PROFILE_SCHEMA_LOADER
+});
+
+/**
+ * Sets the state of the profile info loader
+ * @param state
+ */
+export const setProfileInfoLoader = (state: boolean): LoaderAction => ({
+    payload: state,
+    type: SET_PROFILE_SCHEMA_LOADER
+});

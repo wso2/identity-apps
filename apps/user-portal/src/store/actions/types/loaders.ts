@@ -1,3 +1,6 @@
+import { Action } from "history";
+import { any } from "prop-types";
+
 /**
  * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
@@ -16,20 +19,25 @@
  * under the License.
  */
 
-export * from "./api";
-export * from "./applications";
-export * from "./approvals";
-export * from "./auth";
-export * from "./authenticated-user";
-export * from "./consents";
-export * from "./locales";
-export * from "./login";
-export * from "./notifications";
-export * from "./profile";
-export * from "./security-questions";
-export * from "./session";
-export * from "./storage";
-export * from "./tokens";
-export * from "./user-sessions";
-export * from "./global";
-export * from "./loaders";
+/**
+ * Action type to set the loader for profile schema
+ */
+export const SET_PROFILE_SCHEMA_LOADER: ActionTypes = "SET_PROFILE_SCHEMA_LOADER";
+
+/**
+ * Action type to set the loader for profile info
+ */
+export const SET_PROFILE_INFO_LOADER: ActionTypes = "SET_PROFILE_INFO_LOADER";
+
+/**
+ * Type for loader action types
+ */
+export type ActionTypes = "SET_PROFILE_SCHEMA_LOADER" | "SET_PROFILE_INFO_LOADER";
+
+/**
+ * Loader action model
+ */
+export interface LoaderAction {
+    payload: boolean;
+    type: ActionTypes;
+}
