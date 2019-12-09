@@ -71,17 +71,18 @@
 <body>
     <main class="center-segment">
         <div class="ui container large center aligned middle aligned">
-            <div class="ui segment">
-                <!-- product-title -->
-                <%
-                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                    if (productTitleFile.exists()) {
-                %>
-                    <jsp:include page="extensions/product-title.jsp"/>
-                <% } else { %>
-                    <jsp:directive.include file="includes/product-title.jsp"/>
-                <% } %>
 
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>
+
+            <div class="ui segment">
                 <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "saml.sso")%></h2>
                 <h4><%=AuthenticationEndpointUtil.i18n(resourceBundle, errorStat)%></h4>
                 <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, errorMsg)%></p>

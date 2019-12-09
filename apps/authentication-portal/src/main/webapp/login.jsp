@@ -182,7 +182,7 @@
                             if (TenantDataManager.isTenantListEnabled() && Boolean.parseBoolean(request.getParameter(IS_SAAS_APP))) {
                                 includeBasicAuth = false;
                     %>
-                        <%@ include file="tenantauth.jsp" %>
+                                <%@ include file="tenantauth.jsp" %>
                     <%
                             }
                         }
@@ -231,7 +231,7 @@
                                         <div class="ui flowing popup transition hidden isHubIdpPopup">
                                             <h5 class="font-large"><%=AuthenticationEndpointUtil.i18n(resourceBundle,"sign.in.with")%>
                                                 <%=Encode.forHtmlContent(idpName)%></h5>
-                                            <div id="content" class="hide">
+                                            <div class="content">
                                                 <form class="ui form">
                                                     <div class="field">
                                                         <input id="domainName" class="form-control" type="text"
