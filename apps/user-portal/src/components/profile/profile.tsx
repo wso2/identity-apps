@@ -92,12 +92,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         for (schema of schemas) {
             value = {};
             if (schema.name === formName) {
-                value[schema.name] = values.get(formName);
+                if (formName === "givenName" || formName === "familyName") {
+                    value[schema.name] = values.get(formName);
+                } else {
+                    value = [{ type: formName, value: values.get(formName) }];
+                }
+
                 return value;
             } else if (schema.subAttributes && schema.subAttributes.length > 0) {
-                const returnValue = { ...parseSchemas(schema.subAttributes, formName, values, value) };
+                const returnValue = parseSchemas(schema.subAttributes, formName, values, value);
                 if (!isEmpty(returnValue)) {
-                    value[schema.name] = { ...returnValue };
+                    value[schema.name] = returnValue;
                     return value;
                 }
             }
@@ -151,7 +156,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                 }
                             });
                         } else if (typeof profileInfoPair[1] === "object" && profileInfoPair[1] !== null) {
-                            tempProfileInfo.set(schema.name, profileInfoPair[1][schema.name]);
+                            if (profileInfoPair[1][schema.name]) {
+                                tempProfileInfo.set(schema.name, profileInfoPair[1][schema.name]);
+                            } else if (schema.name === "givenName" || schema.name === "familyName") {
+                                tempProfileInfo.set(schema.name, "");
+                            }
                         }
                     });
                 } else if (Array.isArray(profileDetails.profileInfo[schema.name])) {

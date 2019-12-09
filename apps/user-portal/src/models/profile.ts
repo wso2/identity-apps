@@ -17,17 +17,9 @@
  */
 
  /**
-  * Phone number model
+  * Multi-valued attribute model
   */
-export interface PhoneNumbers {
-    type: string;
-    value: number;
-}
-
-/**
- * Roles model
- */
-export interface Roles {
+export interface MultiValue {
     type: string;
     value: string;
 }
@@ -39,16 +31,17 @@ export interface Name {
     givenName: string;
     familyName: string;
 }
+
 /**
  * Profile Model
  */
 export interface BasicProfileInterface {
-    emails: string[];
+    emails: string[] | MultiValue[];
     email?: string;
-    phoneNumbers: PhoneNumbers[];
+    phoneNumbers: MultiValue[];
     organisation: string;
     responseStatus: number;
-    roles?: Roles[];
+    roles?: MultiValue[];
     name: Name;
     profileUrl: string;
     isSecurity?: boolean;
