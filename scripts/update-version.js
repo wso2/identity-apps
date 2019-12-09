@@ -29,7 +29,7 @@ const getProjectVersion = function() {
     const fileContent = fs.readFileSync(pomXml);
     const pom = XmlParser.parse(fileContent.toString());
 
-    return pom.project.version;
+    return pom.project.version.replace("-SNAPSHOT", "");
 };
 
 let packageJsonContent = require(packageJson);
@@ -41,4 +41,4 @@ execSync("npx lerna version " + getProjectVersion() + " --yes --no-git-tag-versi
     { cwd: path.join(__dirname, "..") }
 );
 
-console.log("lerna update project version to " + getProjectVersion());
+console.log("update packages version to " + getProjectVersion());
