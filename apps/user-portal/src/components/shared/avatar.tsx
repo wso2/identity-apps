@@ -18,7 +18,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { Image, Label, SemanticSIZES } from "semantic-ui-react";
+import { Image, SemanticSIZES } from "semantic-ui-react";
 import { DefaultAppIcon } from "../../configs";
 import { UserImageDummy } from "./ui";
 
@@ -27,19 +27,20 @@ import { UserImageDummy } from "./ui";
  */
 export interface AvatarProps {
     avatar?: boolean;
+    avatarInitialsLimit?: 1 | 2;
     avatarType?: "user" | "app";
     bordered?: boolean;
     className?: string;
     floated?: "left" | "right";
     image?: React.ReactNode;
     inline?: boolean;
+    label?: string;
     name?: string;
     relaxed?: boolean | "very";
     showTopLabel?: boolean;
     size?: AvatarSizes;
     spaced?: "left" | "right";
     style?: object;
-    topLabel?: string;
     transparent?: boolean;
 }
 
@@ -57,20 +58,20 @@ export type AvatarSizes = SemanticSIZES | "little";
 export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element => {
     const {
         avatar,
+        avatarInitialsLimit,
         avatarType,
         bordered,
         className,
         floated,
         image,
         inline,
+        label,
         name,
         relaxed,
         size,
         spaced,
         style,
-        topLabel,
-        transparent,
-        ...rest
+        transparent
     } = props;
     const relaxLevel = (relaxed && relaxed === true) ? "" : relaxed;
 
@@ -97,35 +98,23 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
      * @return {string}
      */
     const generateInitials = (): string => {
-        const nameParts = name.split(" ");
-
         // App avatar only requires one letter.
         if (avatarType === "app") {
             return name.charAt(0).toUpperCase();
         }
 
-        if (nameParts.length >= 2) {
+        const nameParts = name.split(" ");
+
+        if (avatarInitialsLimit === 2 && nameParts.length >= 2) {
             return (nameParts[ 0 ].charAt(0) + nameParts[ 1 ].charAt(0)).toUpperCase();
         }
+
         return name.charAt(0).toUpperCase();
     };
 
     if (image) {
         return (
             <>
-                {
-                    topLabel
-                        ? (
-                            <Label circular floating size="mini" className="custom-label">
-                                <Image
-                                    avatar
-                                    circular
-                                    src={ topLabel }
-                                />
-                            </Label>
-                        )
-                        : null
-                }
                 <Image
                     className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
                     bordered={ bordered }
@@ -133,10 +122,23 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
                     circular={ avatarType === "user" }
                     rounded={ avatarType === "app" }
                     style={ style }
-                    { ...rest }
                 >
                     <img alt="avatar" src={ image as string }/>
                 </Image>
+                {
+                    label
+                        ? (
+                            <div className="custom-label">
+                                <Image
+                                    avatar
+                                    circular
+                                    size="mini"
+                                    src={ label }
+                                />
+                            </div>
+                        )
+                        : null
+                }
             </>
         );
     }
@@ -152,7 +154,6 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
                 rounded={ avatarType === "app" }
                 centered
                 style={ style }
-                { ...rest }
             >
                 <span className="initials">{ generateInitials() }</span>
             </Image>
@@ -170,7 +171,6 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
             rounded={ avatarType === "app" }
             centered
             style={ style }
-            { ...rest }
         />
     );
 };
@@ -180,14 +180,15 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
  */
 Avatar.defaultProps = {
     avatar: false,
+    avatarInitialsLimit: 1,
     avatarType: "user",
     bordered: true,
     className: "",
     inline: false,
+    label: null,
     relaxed: false,
     size: "mini",
     spaced: null,
     style: {},
-    topLabel: null,
     transparent: false,
 };
