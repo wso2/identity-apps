@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
 import * as ApplicationConstants from "../constants/application-constants";
 import { AuthStateInterface } from "../models";
 
@@ -28,16 +27,12 @@ import { AuthStateInterface } from "../models";
  */
 export const resolveUserDisplayName = (state: AuthStateInterface): string => {
     if (state.profileInfo.name.givenName || state.profileInfo.name.familyName) {
-        return `${state.profileInfo.name.givenName} ${state.profileInfo.name.familyName}`;
+        const givenName = state.profileInfo.name.givenName + " " || "";
+        const familyName = state.profileInfo.name.familyName || "";
+        return givenName + familyName;
     }
-    if (state.displayName) {
-        return state.displayName;
-    }
-    if (state.username) {
-        return state.username;
-    }
-    if (AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME)) {
-        return AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME);
+    if (state.profileInfo.userName) {
+        return state.profileInfo.userName;
     }
     return null;
 };
@@ -58,7 +53,7 @@ export const resolveUsername = (username: string, userStoreDomain: string) => {
         return username;
     }
 
-    return `${ userStoreDomain }/${ username }`;
+    return `${userStoreDomain}/${username}`;
 };
 
 /**
