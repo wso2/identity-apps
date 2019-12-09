@@ -36,6 +36,8 @@ export interface AvatarProps {
     inline?: boolean;
     label?: string;
     name?: string;
+    onMouseOut?: (e: MouseEvent) => void;
+    onMouseOver?: (e: MouseEvent) => void;
     relaxed?: boolean | "very";
     showTopLabel?: boolean;
     size?: AvatarSizes;
@@ -67,6 +69,8 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
         inline,
         label,
         name,
+        onMouseOver,
+        onMouseOut,
         relaxed,
         size,
         spaced,
@@ -122,6 +126,8 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
                     circular={ avatarType === "user" }
                     rounded={ avatarType === "app" }
                     style={ style }
+                    onMouseOver={ onMouseOver }
+                    onMouseOut={ onMouseOut }
                 >
                     <img alt="avatar" src={ image as string }/>
                 </Image>
@@ -154,6 +160,8 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
                 rounded={ avatarType === "app" }
                 centered
                 style={ style }
+                onMouseOver={ onMouseOver }
+                onMouseOut={ onMouseOut }
             >
                 <span className="initials">{ generateInitials() }</span>
             </Image>
@@ -171,6 +179,8 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
             rounded={ avatarType === "app" }
             centered
             style={ style }
+            onMouseOver={ onMouseOver }
+            onMouseOut={ onMouseOut }
         />
     );
 };
@@ -186,9 +196,11 @@ Avatar.defaultProps = {
     className: "",
     inline: false,
     label: null,
+    onMouseOut: null,
+    onMouseOver: null,
     relaxed: false,
     size: "mini",
     spaced: null,
     style: {},
-    transparent: false,
+    transparent: false
 };

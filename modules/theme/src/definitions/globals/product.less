@@ -250,10 +250,13 @@ body {
     &.floated-left {
         float: left;
     }
-    .ui.circular.label {
-        &.custom-label {
-            padding: 0 !important;
-            margin-top: 12px !important;
+    .custom-label {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+
+        img {
+            padding: 3px;
         }
     }
 }
