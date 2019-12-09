@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { isEmpty } from "lodash";
 import * as ApplicationConstants from "../constants/application-constants";
 import { AuthStateInterface } from "../models";
 
@@ -27,8 +28,8 @@ import { AuthStateInterface } from "../models";
  */
 export const resolveUserDisplayName = (state: AuthStateInterface): string => {
     if (state.profileInfo.name.givenName || state.profileInfo.name.familyName) {
-        const givenName = state.profileInfo.name.givenName + " " || "";
-        const familyName = state.profileInfo.name.familyName || "";
+        const givenName = isEmpty(state.profileInfo.name.givenName) ? "" : state.profileInfo.name.givenName + " ";
+        const familyName = isEmpty(state.profileInfo.name.familyName) ? "" : state.profileInfo.name.familyName;
         return givenName + familyName;
     }
     if (state.profileInfo.userName) {
