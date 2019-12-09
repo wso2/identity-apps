@@ -14,12 +14,14 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
-  --%>
+--%>
 
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
-<%@include file="localize.jsp" %>
-<%@include file="init-url.jsp" %>
+
+<%@include file="includes/localize.jsp" %>
+<%@include file="includes/init-url.jsp" %>
 
 <%
     String domainUnknown = AuthenticationEndpointUtil.i18n(resourceBundle, "domain.unknown");
@@ -36,111 +38,86 @@
         }
     }
 %>
-<script type="text/javascript">
-	function doLogin() {
-		var loginForm = document.getElementById('loginForm');
-		loginForm.submit();
-	}
-</script>
 
+<!doctype html>
 <html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- title -->
+    <!-- header -->
     <%
-        File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-        if (titleFile.exists()) {
+        File headerFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+        if (headerFile.exists()) {
     %>
-            <jsp:include page="extensions/title.jsp"/>
+        <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/title.jsp"/>
+        <jsp:directive.include file="includes/header.jsp"/>
+    <% } %>
+</head>
+<body>
+    <main class="center-segment">
+        <div class="ui container large center aligned middle aligned">
+
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>
+
+            <div class="ui segment">
+                <h3 class="ui header">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "federated.login")%>
+                </h3>
+
+                <form action="<%=commonauthURL%>" method="post" id="loginForm" class="segment-form">
+                    <% if (loginFailed) { %>
+                    <div class="ui visible negative message" id="error-msg" ><%=Encode.forHtml(errorMessage)%></div>
+                    <% } %>
+
+                    <div class="field">
+                        <input id="fidp" name="fidp" type="text" tabindex="0"
+                                placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "domain")%>">
+                    </div>
+
+                    <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
+
+                    <div class="buttons right aligned">
+                        <button class="ui primary large button" type="submit">
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "submit")%>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+        <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/product-footer.jsp"/>
     <% } %>
 
-    <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-    <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/Roboto.css" rel="stylesheet">
-    <link href="css/custom-common.css" rel="stylesheet">
-
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
-</head>
-
-<body>
-
-<!-- header -->
-<%
-    File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-    if (headerFile.exists()) {
-%>
-        <jsp:include page="extensions/header.jsp"/>
-<% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
-<% } %>
-
-<!-- page content -->
-<div class="container-fluid body-wrapper">
-
-    <div class="row">
-        <div class="col-md-12">
-
-            <!-- content -->
-            <div class="container col-xs-10 col-sm-6 col-md-6 col-lg-3 col-centered wr-content wr-login col-centered">
-                <div>
-                    <h2 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "federated.login")%>
-                    </h2>
-
-
-                </div>
-                <div class="boarder-all ">
-                    <div class="clearfix"></div>
-                    <form action="<%=commonauthURL%>" method="post" id="loginForm" class="form-horizontal" >
-                        <div class="padding-double login-form">
-                            <% if (loginFailed) { %>
-                            <div class="alert alert-erro" id="error-msg" ><%=Encode.forHtml(errorMessage)%></div>
-                            <% } %>
-
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
-                                <input id="fidp" name="fidp" type="text" class="form-control" tabindex="0"
-                                       placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "domain")%>">
-                            </div>
-                            <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
-
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
-                                <button class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large"
-                                        type="submit">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "submit")%>
-                                </button>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-            <!-- /content -->
-
-        </div>
-    </div>
-    <!-- /content/body -->
-
-</div>
-
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
         <jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
+    <% } else { %>
         <jsp:directive.include file="includes/footer.jsp"/>
-<% } %>
+    <% } %>
 
-<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        function doLogin() {
+            var loginForm = document.getElementById('loginForm');
+            loginForm.submit();
+        }
+    </script>
 </body>
 </html>
