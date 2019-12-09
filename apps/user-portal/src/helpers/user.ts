@@ -53,7 +53,6 @@ export const resolveUsername = (username: string, userStoreDomain: string) => {
     if (userStoreDomain === ApplicationConstants.PRIMARY_USER_STORE_IDENTIFIER) {
         return username;
     }
-
     return `${userStoreDomain}/${username}`;
 };
 

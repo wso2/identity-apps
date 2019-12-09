@@ -84,7 +84,11 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
             }
             if (isEmpty(response.data.userImage)) {
                 try {
-                    gravatar = await getGravatarImage(response.data.emails[0]);
+                    gravatar = await getGravatarImage(
+                        typeof response.data.emails[0] === "string"
+                            ? response.data.emails[0]
+                            : response.data.emails[0].value
+                    );
                 } catch (error) {
                     gravatar = "";
                 }
@@ -172,13 +176,15 @@ export const getProfileSchemas = (): Promise<any> => {
         url: ServiceResourcesEndpoint.profileSchemas
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient
+        .request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed get user schemas"));
             }
-            return Promise.resolve(response.data[ 0 ].attributes as ProfileSchema[]);
-        }).catch((error) => {
+            return Promise.resolve(response.data[0].attributes as ProfileSchema[]);
+        })
+        .catch((error) => {
             return Promise.reject(error);
         });
 };
