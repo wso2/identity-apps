@@ -15,6 +15,7 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   --%>
+
 <%@ page import="com.google.gson.Gson" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
@@ -25,10 +26,12 @@
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.io.File" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@include file="localize.jsp" %>
-<%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
-<jsp:directive.include file="init-url.jsp"/>
-<jsp:directive.include file="template-mapper.jsp"/>
+
+<%@include file="includes/localize.jsp" %>
+<jsp:directive.include file="includes/init-url.jsp"/>
+<jsp:directive.include file="includes/template-mapper.jsp"/>
+
+<%@ taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
@@ -51,102 +54,88 @@
     Map data = gson.fromJson(contextProperties, Map.class);
     String templatePath = templateMap.get(templateId);
 %>
+
+<!doctype html>
 <html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- title -->
+    <!-- header -->
     <%
-        File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-        if (titleFile.exists()) {
+        File headerFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+        if (headerFile.exists()) {
     %>
-            <jsp:include page="extensions/title.jsp"/>
+        <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/title.jsp"/>
+        <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
 
-    <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-    <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/Roboto.css" rel="stylesheet">
-    <link href="css/custom-common.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
+    <script type="text/javascript">
+        var data = JSON.parse("<%=Encode.forJavaScript(contextProperties)%>");
+        var prompt_id = "<%=promptId%>";
+    </script>
 </head>
 <body>
-<script type="text/javascript">
-    var data = JSON.parse("<%=Encode.forJavaScript(contextProperties)%>");
-    var prompt_id = "<%=promptId%>";
-</script>
+    <main class="center-segment">
+        <div class="ui container large center aligned middle aligned">
 
-<!-- header -->
-<%
-    File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-    if (headerFile.exists()) {
-%>
-        <jsp:include page="extensions/header.jsp"/>
-<% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
-<% } %>
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>
 
-<!-- page content -->
-<div class="container-fluid body-wrapper">
-    
-    <div class="row">
-        <div class="col-md-12">
-            
-            <%
-                if (templatePath != null) {
-            %>
-            <div class="container col-xs-10 col-sm-6 col-md-6 col-lg-4 col-centered wr-content wr-login col-centered">
-                            <c:set var="data" value="<%=data%>" scope="request"/>
-                            <c:set var="promptId" value="<%=URLEncoder.encode(promptId, StandardCharsets.UTF_8.name())%>"
-                            scope="request"/>
-                            <jsp:include page="<%=templatePath%>"/>
-                        </div>
-            
-            <%
-            } else {
-            %>
-            <div class="container col-xs-7 col-sm-5 col-md-4 col-lg-3 col-centered wr-content wr-login col-centered">
+            <div class="ui segment">
+                <%
+                    if (templatePath != null) {
+                %>
                 <div>
-                    <h2 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none"><%=Encode.forHtmlContent("Incorrect Request")%>
-                    </h2>
+                    <c:set var="data" value="<%=data%>" scope="request"/>
+                    <c:set var="promptId" value="<%=URLEncoder.encode(promptId, StandardCharsets.UTF_8.name())%>"
+                    scope="request"/>
+                    <jsp:include page="<%=templatePath%>"/>
                 </div>
-                
-                <div class="boarder-all col-lg-12 padding-top-double padding-bottom-double error-alert  ">
-                    <div class="font-medium">
-                        <strong>
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "attention")%> :
-                        </strong>
-                    </div>
-                    <div class="padding-bottom-double">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.template.found")%>
-                    </div>
+                <% } else { %>
+                <h3 class="ui header">
+                        <%=Encode.forHtmlContent("Incorrect Request")%>
+                </h3>
+
+                <div class="ui visible negative message">
+                    <div class="header"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "attention")%> :</div>
+                    <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.template.found")%></p>
                 </div>
+                <% } %>
             </div>
-            <%
-                }
-            %>
-        
         </div>
-    </div>
-</div>
+    </main>
 
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+        <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
+
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
         <jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
+    <% } else { %>
         <jsp:directive.include file="includes/footer.jsp"/>
-<% } %>
+    <% } %>
 
-<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
-
+    <script type="text/javascript">
+        function doLogin() {
+            var loginForm = document.getElementById('loginForm');
+            loginForm.submit();
+        }
+    </script>
 </body>
 </html>
