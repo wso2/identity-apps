@@ -16,206 +16,170 @@
   ~ under the License.
   --%>
 
-<%@page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@include file="localize.jsp" %>
-<%@include file="init-url.jsp" %>
+
+<%@include file="includes/localize.jsp" %>
+<%@include file="includes/init-url.jsp" %>
 
 <%
     String authRequest = request.getParameter("data");
 %>
 
+<!doctype html>
 <html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- title -->
+    <!-- header -->
     <%
-        File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-        if (titleFile.exists()) {
+        File headerFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+        if (headerFile.exists()) {
     %>
-            <jsp:include page="extensions/title.jsp"/>
+    <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/title.jsp"/>
+    <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
-
-    <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-    <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/Roboto.css" rel="stylesheet">
-    <link href="css/custom-common.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
 </head>
+<body onload="talkToDevice();">
+    <main class="center-segment">
+        <div class="ui container medium center aligned middle">
+            
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>
 
-<body onload='talkToDevice();'>
+            <div class="ui segment left aligned">
+                <h3 class="ui header">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification")%>
+                </h3>
 
-<!-- header -->
-<%
-    File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-    if (headerFile.exists()) {
-%>
-        <jsp:include page="extensions/header.jsp"/>
-<% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
-<% } %>
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "touch.your.u2f.device")%>
+                
+                <div class="ui divider hidden"></div>
+                
+                <div> <img class="img-responsive" src="images/U2F.png"> </div>
 
-<!-- page content -->
-<div class="container-fluid body-wrapper">
-
-    <div class="row">
-        <div class="col-md-12">
-            <!-- content -->
-            <div class="container col-xs-7 col-sm-5 col-md-4 col-lg-3 col-centered wr-content wr-login col-centered">
-                <div>
-                    <h2 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification")%>
-                    </h2>
-                </div>
-
-                <div class="boarder-all col-lg-12 padding-top-double padding-bottom-double">
-                    <div class="padding-bottom-double font-large">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "touch.your.u2f.device")%>
-                    </div>
-                    <div> <img class="img-responsive" src="images/U2F.png"> </div>
-                </div>
+                <form method="POST" action="<%=commonauthURL%>" id="form" onsubmit="return false;">
+                    <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
+                    <input type="hidden" name="tokenResponse" id="tokenResponse" value="tmp val"/>
+                </form>
             </div>
-            <!-- /content -->
-
         </div>
-    </div>
-</div>
+    </main>
 
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
-        <jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
-<% } %>
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+    <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
+    
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+    <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/footer.jsp"/>
+    <% } %>
+    
+    <script type="text/javascript" src="js/u2f-api.js"></script>
+    <script type="text/javascript" src="libs/base64js/base64js-1.3.0.min.js"></script>
+    <script type="text/javascript" src="libs/base64url.js"></script>
 
-<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
 
-<script>
-
-
-    $('#popover').popover({
-        html: true,
-        title: function () {
-            return $("#popover-head").html();
-        },
-        content: function () {
-            return $("#popover-content").html();
-        }
-    });
-
-</script>
-
-<script type="text/javascript" src="js/u2f-api.js"></script>
-<script type="text/javascript" src="libs/base64js/base64js-1.3.0.min.js"></script>
-<script type="text/javascript" src="libs/base64url.js"></script>
-
-
-<script type="text/javascript">
-
-    function responseToObject(response) {
-
-        if (response.u2fResponse) {
-            return response;
-        } else {
-            var clientExtensionResults = {};
-
-            try {
-                clientExtensionResults = response.getClientExtensionResults();
-            } catch (e) {
-                console.error('getClientExtensionResults failed', e);
-            }
-
-            if (response.response.attestationObject) {
-                return {
-                    id: response.id,
-                    response: {
-                        attestationObject: base64url.fromByteArray(response.response.attestationObject),
-                        clientDataJSON: base64url.fromByteArray(response.response.clientDataJSON)
-                    },
-                    clientExtensionResults,
-                    type: response.type
-                };
+        function responseToObject(response) {
+            if (response.u2fResponse) {
+                return response;
             } else {
-                return {
-                    id: response.id,
-                    response: {
-                        authenticatorData: base64url.fromByteArray(response.response.authenticatorData),
-                        clientDataJSON: base64url.fromByteArray(response.response.clientDataJSON),
-                        signature: base64url.fromByteArray(response.response.signature),
-                        userHandle: response.response.userHandle && base64url.fromByteArray(response.response.userHandle)
-                    },
-                    clientExtensionResults,
-                    type: response.type
-                };
+                var clientExtensionResults = {};
+
+                try {
+                    clientExtensionResults = response.getClientExtensionResults();
+                } catch (e) {
+                    console.error('getClientExtensionResults failed', e);
+                }
+
+                if (response.response.attestationObject) {
+                    return {
+                        id: response.id,
+                        response: {
+                            attestationObject: base64url.fromByteArray(response.response.attestationObject),
+                            clientDataJSON: base64url.fromByteArray(response.response.clientDataJSON)
+                        },
+                        clientExtensionResults,
+                        type: response.type
+                    };
+                } else {
+                    return {
+                        id: response.id,
+                        response: {
+                            authenticatorData: base64url.fromByteArray(response.response.authenticatorData),
+                            clientDataJSON: base64url.fromByteArray(response.response.clientDataJSON),
+                            signature: base64url.fromByteArray(response.response.signature),
+                            userHandle: response.response.userHandle && base64url.fromByteArray(response.response.userHandle)
+                        },
+                        clientExtensionResults,
+                        type: response.type
+                    };
+                }
             }
         }
-    }
 
+        function extend(obj, more) {
+            return Object.assign({}, obj, more);
+        }
 
-    function extend(obj, more) {
+        function decodePublicKeyCredentialRequestOptions(request) {
+            const allowCredentials = request.allowCredentials && request.allowCredentials.map(credential => extend(
+                credential, {
+                    id: base64url.toByteArray(credential.id),
+                }));
 
-        return Object.assign({}, obj, more);
-    }
+            const publicKeyCredentialRequestOptions = extend(
+                request, {
+                    allowCredentials,
+                    challenge: base64url.toByteArray(request.challenge),
+                });
 
-    function decodePublicKeyCredentialRequestOptions(request) {
+            return publicKeyCredentialRequestOptions;
+        }
 
-        const allowCredentials = request.allowCredentials && request.allowCredentials.map(credential => extend(
-            credential, {
-                id: base64url.toByteArray(credential.id),
-            }));
+        function talkToDevice(){
+            var authRequest = '<%=Encode.forJavaScriptBlock(authRequest)%>';
+            var jsonAuthRequest = JSON.parse(authRequest);
 
-        const publicKeyCredentialRequestOptions = extend(
-            request, {
-                allowCredentials,
-                challenge: base64url.toByteArray(request.challenge),
+            navigator.credentials.get({
+                publicKey: decodePublicKeyCredentialRequestOptions(jsonAuthRequest.publicKeyCredentialRequestOptions),
+            })
+            .then(function(data) {
+                payload = {};
+                payload.requestId = jsonAuthRequest.requestId;
+                payload.credential = responseToObject(data);
+                var form = document.getElementById('form');
+                var reg = document.getElementById('tokenResponse');
+                reg.value = JSON.stringify(payload);
+                form.submit();
+            })
+            .catch(function(err) {
+                var form = document.getElementById('form');
+                var reg = document.getElementById('tokenResponse');
+                reg.value = JSON.stringify({errorCode : 400, message : err});
+                form.submit();
             });
+        }
 
-        return publicKeyCredentialRequestOptions;
-    }
-
-    function talkToDevice(){
-
-        var authRequest = '<%=Encode.forJavaScriptBlock(authRequest)%>';
-        var jsonAuthRequest = JSON.parse(authRequest);
-        console.log(jsonAuthRequest);
-        navigator.credentials.get({
-          publicKey: decodePublicKeyCredentialRequestOptions(jsonAuthRequest.publicKeyCredentialRequestOptions),
-      })
-        .then(function(data) {
-            payload = {};
-            payload.requestId = jsonAuthRequest.requestId;
-            payload.credential = responseToObject(data);
-            var form = document.getElementById('form');
-            var reg = document.getElementById('tokenResponse');
-            reg.value = JSON.stringify(payload);
-            form.submit();
-        })
-        .catch(function(err) {
-            var form = document.getElementById('form');
-            var reg = document.getElementById('tokenResponse');
-            reg.value = JSON.stringify({errorCode : 400, message : err});
-            form.submit();
-        });
-    }
-
-</script>
-
-<form method="POST" action="<%=commonauthURL%>" id="form" onsubmit="return false;">
-    <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
-    <input type="hidden" name="tokenResponse" id="tokenResponse" value="tmp val"/>
-</form>
-
+    </script>
 </body>
 </html>
