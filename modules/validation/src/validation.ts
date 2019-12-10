@@ -17,10 +17,8 @@
  *
  */
 
-import "fastestsmallesttextencoderdecoder";
-// tslint:disable-next-line:ordered-imports
 import Joi from "@hapi/joi";
-import { bool, string } from "prop-types";
+import "fastestsmallesttextencoderdecoder";
 
 type ValidationFunction = (value: string) => boolean;
 
