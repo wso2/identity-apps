@@ -176,17 +176,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     }
                                 }
                             });
-                        // Check if the attribute is an object. Name is returned as an object
+                            // Check if the attribute is an object. Name is returned as an object
                         } else if (typeof profileInfoPair[1] === "object" && profileInfoPair[1] !== null) {
                             if (profileInfoPair[1][schema.name]) {
                                 tempProfileInfo.set(schema.name, profileInfoPair[1][schema.name]);
                             }
                         }
                     });
-                /**
-                 * If a value exists in `profileInfo` for the schema attribute, then first check
-                 * if it's an array. When multiple email addresses are not set, email is returned as an array
-                 */
+                    /**
+                     * If a value exists in `profileInfo` for the schema attribute, then first check
+                     * if it's an array. When multiple email addresses are not set, email is returned as an array
+                     */
                 } else if (Array.isArray(profileDetails.profileInfo[schema.name])) {
                     tempProfileInfo.set(schema.name, profileDetails.profileInfo[schema.name][0]);
                 } else {
@@ -318,8 +318,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                         }) }
                                         required={ schema.required }
                                         requiredErrorMessage={ t(
-                                            "views:components.profile.forms." +
-                                            "generic.inputs.validations.empty",
+                                            "views:components.profile.forms.generic.inputs.validations.empty",
                                             {
                                                 fieldName: schema.displayName
                                             }
@@ -411,9 +410,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                 <Skeleton width="100%" widthRandomness={ 0.25 } />
                                             )
                                             : profileInfo.get(schema.name)
-                                            || t("views:components.profile.forms." +
-                                                "generic.inputs.placeholder",
-                                                { fieldName: schema.displayName })
+                                            || (
+                                                <a onClick={ () => { showFormEditView(schema.name); } }>
+                                                    { t("views:components.profile.forms.generic.inputs.placeholder",
+                                                        { fieldName: schema.displayName }) }
+                                                </a>
+                                            )
                                     }
                                 </List.Description>
                             </List.Content>
@@ -441,7 +443,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                         onClick={ () => showFormEditView(schema.name) }
                                                         name={ !isEmpty(profileInfo.get(schema.name))
                                                             ? "pencil alternate"
-                                                            : "add" }
+                                                            : null }
                                                     />
                                                 )
                                             }
