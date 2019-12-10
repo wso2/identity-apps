@@ -87,9 +87,9 @@ export const getProfileInformation = () => {
                 } else {
                     dispatch(
                         fireNotification({
-                            description:
-                                "views:components.profile.notifications.getProfileInfo.genericError" + ".description",
-                            message: "views:components.profile.notifications.getProfileInfo.genericError" + ".message",
+                            description: "views:components.profile.notifications.getProfileInfo.genericError" +
+                                ".description",
+                            message: "views:components.profile.notifications.getProfileInfo.genericError.message",
                             otherProps: {
                                 negative: true
                             },
@@ -198,9 +198,9 @@ export const handleSignOut = () => {
                 AuthenticateSessionUtil.endAuthenticatedSession();
                 OPConfigurationUtil.resetOPConfiguration();
             })
-            .catch
-            // TODO: show error page.
-            ();
+            .catch((error) => {
+                // TODO: show error page
+            });
     };
 };
 
@@ -215,6 +215,6 @@ export const getScimSchemas = (dispatch) => {
             dispatch(setScimSchemas(response));
         })
         .catch((error) => {
-            // TODO: show Error page
+            // TODO: show error page
         });
 };
