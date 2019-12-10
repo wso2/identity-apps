@@ -79,7 +79,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
 
     /**
      * This function traverses the whole schema array to find a certain attribute.
-     * The found attribute will be returned as a part of the object it belongs to with the who
+     * The found attribute will be returned as a part of the object tree it belongs to.
+     * This function is called only when the schema attribute is not found in the `profileInfo` object
+     * since there is no way the structure of the attribute to be saved can be known.
      * @param schemas
      */
     const parseSchemas = (
@@ -141,35 +143,56 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
      */
     useEffect(() => {
         if (!isEmpty(profileSchema) && !isEmpty(profileDetails) && !isEmpty(profileDetails.profileInfo)) {
-            const tempEditingForm: Map<string, boolean> = new Map<string, boolean>(editingForm);
-            const tempProfileInfo: Map<string, string> = new Map<string, string>(profileInfo);
+            const tempProfileInfo: Map<string, string> = new Map<string, string>();
+
+            /**
+             * Traverse every schema attribute in the `profileSchema` array and map
+             * the relevant field from the `profileDetails.profileInfo` object to the schema name and store in
+             * the `profileInfo` state.
+             */
             profileSchema.forEach((schema: ProfileSchema) => {
-                tempEditingForm.set(schema.name, false);
+
+                /**
+                 * Check if an attribute by the schema name exists in `profileInfo`.
+                 * If it doesn't, then search the sub attributes for the schema.
+                 */
                 if (isEmpty(profileDetails.profileInfo[schema.name])) {
+
+                    // Turn the `profileInfo` into an iterable and iterate over each key-value pair
                     Object.entries(profileDetails.profileInfo).forEach((profileInfoPair) => {
+                        // Check if the profileInfo attribute is an array
                         if (Array.isArray(profileInfoPair[1])) {
+                            // iterate over array elements
                             profileInfoPair[1].forEach((subProfileInfo, index: number) => {
+
+                                /**
+                                 * Check if the element is an object.
+                                 * Multi-valued schemas are returned as an array of objects
+                                 * consisting of attributes `type` and `value`.
+                                 */
                                 if (typeof subProfileInfo === "object" && subProfileInfo !== null) {
                                     if (subProfileInfo.type === schema.name) {
                                         tempProfileInfo.set(schema.name, subProfileInfo.value);
                                     }
                                 }
                             });
+                        // Check if the attribute is an object. Name is returned as an object
                         } else if (typeof profileInfoPair[1] === "object" && profileInfoPair[1] !== null) {
                             if (profileInfoPair[1][schema.name]) {
                                 tempProfileInfo.set(schema.name, profileInfoPair[1][schema.name]);
-                            } else if (schema.name === "givenName" || schema.name === "familyName") {
-                                tempProfileInfo.set(schema.name, "");
                             }
                         }
                     });
+                /**
+                 * If a value exists in `profileInfo` for the schema attribute, then first check
+                 * if it's an array. When multiple email addresses are not set, email is returned as an array
+                 */
                 } else if (Array.isArray(profileDetails.profileInfo[schema.name])) {
                     tempProfileInfo.set(schema.name, profileDetails.profileInfo[schema.name][0]);
                 } else {
                     tempProfileInfo.set(schema.name, profileDetails.profileInfo[schema.name]);
                 }
             });
-            setEditingForm(tempEditingForm);
             setProfileInfo(tempProfileInfo);
         }
     }, [profileSchema, profileDetails]);
@@ -177,7 +200,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     /**
      * The following method handles the `onSubmit` event of forms.
      *
-     * @param formName - Name of the form
+     * @param values
+     * @param formName
      */
     const handleSubmit = (values: Map<string, string | string[]>, formName: string): void => {
         const data = {
