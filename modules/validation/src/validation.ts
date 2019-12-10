@@ -23,6 +23,7 @@ import Joi from "@hapi/joi";
 import { bool, string } from "prop-types";
 
 type ValidationFunction = (value: string) => boolean;
+
 /**
  * This validates email addresses. Returns true if valid. False if not valid.
  * Doesn't check for the validity of the top level domain.
