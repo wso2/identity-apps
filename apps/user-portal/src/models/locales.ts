@@ -65,6 +65,7 @@ export interface Common {
     privacy: string;
     properties: string;
     ready: string;
+    removeAll: string;
     reject: string;
     release: string;
     remove: string;
@@ -334,6 +335,8 @@ export interface Views {
             notifications: {
                 addAssociation: Notification;
                 getAssociations: Notification;
+                removeAllAssociations: Notification;
+                removeAssociation: Notification;
                 switchAccount: Notification;
             }
         },
@@ -629,6 +632,9 @@ export interface Views {
             notifications: {
                 downloadProfileInfo: Notification;
             }
+        },
+        userAvatar: {
+            infoPopover: string;
         },
         userSessions: {
             browserAndOS: string;

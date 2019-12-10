@@ -67,6 +67,7 @@ export const common: Common = {
     reject: " ிராகரி",
     release: "விடுவி",
     remove: "நீக்கு",
+    removeAll: "அனைத்து நீக்க",
     reserved: "ஒதுக்கப்பட்டவை",
     resetFilters: "வடிகட்டல்களை மீட்டடமை",
     revoke: "நீக்கு",

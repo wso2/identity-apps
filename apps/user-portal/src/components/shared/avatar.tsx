@@ -27,14 +27,19 @@ import { UserImageDummy } from "./ui";
  */
 export interface AvatarProps {
     avatar?: boolean;
+    avatarInitialsLimit?: 1 | 2;
     avatarType?: "user" | "app";
     bordered?: boolean;
     className?: string;
     floated?: "left" | "right";
     image?: React.ReactNode;
     inline?: boolean;
+    label?: string;
     name?: string;
+    onMouseOut?: (e: MouseEvent) => void;
+    onMouseOver?: (e: MouseEvent) => void;
     relaxed?: boolean | "very";
+    showTopLabel?: boolean;
     size?: AvatarSizes;
     spaced?: "left" | "right";
     style?: object;
@@ -55,31 +60,35 @@ export type AvatarSizes = SemanticSIZES | "little";
 export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element => {
     const {
         avatar,
+        avatarInitialsLimit,
         avatarType,
         bordered,
         className,
         floated,
         image,
         inline,
+        label,
         name,
+        onMouseOver,
+        onMouseOut,
         relaxed,
         size,
         spaced,
         style,
-        transparent,
+        transparent
     } = props;
     const relaxLevel = (relaxed && relaxed === true) ? "" : relaxed;
 
     const classes = classNames({
         bordered,
-        [`floated-${floated}`]: floated,
+        [ `floated-${ floated }` ]: floated,
         inline,
         relaxed,
-        [`${size}`]: size, // Size is used as a class to support the custom size "little"
-        [`spaced-${spaced}`]: spaced,
+        [ `${ size }` ]: size, // Size is used as a class to support the custom size "little"
+        [ `spaced-${ spaced }` ]: spaced,
         transparent,
-        [`${avatarType === "user" ? "user-avatar" : "app-avatar"}`]: avatar,
-        [`${relaxLevel}`]: relaxLevel,
+        [ `${ avatarType === "user" ? "user-avatar" : "app-avatar" }` ]: avatar,
+        [ `${ relaxLevel }` ]: relaxLevel,
     }, className);
 
     /**
@@ -93,71 +102,86 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
      * @return {string}
      */
     const generateInitials = (): string => {
-        const nameParts = name.split(" ");
-
         // App avatar only requires one letter.
         if (avatarType === "app") {
             return name.charAt(0).toUpperCase();
         }
 
-        if (nameParts.length >= 2) {
-            return (nameParts[0].charAt(0) + nameParts[1].charAt(0)).toUpperCase();
+        const nameParts = name.split(" ");
+
+        if (avatarInitialsLimit === 2 && nameParts.length >= 2) {
+            return (nameParts[ 0 ].charAt(0) + nameParts[ 1 ].charAt(0)).toUpperCase();
         }
+
         return name.charAt(0).toUpperCase();
     };
 
-    return (
-        <>
-            {
-                image
-                    ? (
-                        <Image
-                            className={ `${avatarType === "user" ? "user-image" : "app-image"} ${classes}` }
-                            bordered={ bordered }
-                            floated={ floated }
-                            circular={ avatarType === "user" }
-                            rounded={ avatarType === "app" }
-                            style={ style }
-                        >
-                            <img alt="avatar" src={ image as string } />
-                        </Image>
-                    )
-                    : null
-            }
-            {
-                avatar
-                    ? name
+    if (image) {
+        return (
+            <>
+                <Image
+                    className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
+                    bordered={ bordered }
+                    floated={ floated }
+                    circular={ avatarType === "user" }
+                    rounded={ avatarType === "app" }
+                    style={ style }
+                    onMouseOver={ onMouseOver }
+                    onMouseOut={ onMouseOut }
+                >
+                    <img alt="avatar" src={ image as string }/>
+                </Image>
+                {
+                    label
                         ? (
-                            <Image
-                                className={ `${avatarType === "user" ? "user-image" : "app-image"} ${classes}` }
-                                bordered={ bordered }
-                                floated={ floated }
-                                verticalAlign="middle"
-                                circular={ avatarType === "user" }
-                                rounded={ avatarType === "app" }
-                                centered
-                                style={ style }
-                            >
-                                <span className="initials">{ generateInitials() }</span>
-                            </Image>
+                            <div className="custom-label">
+                                <Image
+                                    avatar
+                                    circular
+                                    size="mini"
+                                    src={ label }
+                                />
+                            </div>
                         )
-                        : (
+                        : null
+                }
+            </>
+        );
+    }
 
-                            <Image
-                                className={ `${avatarType === "user" ? "user-image" : "app-image"} ${classes}` }
-                                src={ avatarType === "user" ? UserImageDummy : DefaultAppIcon.default }
-                                bordered={ bordered }
-                                floated={ floated }
-                                verticalAlign="middle"
-                                circular={ avatarType === "user" }
-                                rounded={ avatarType === "app" }
-                                centered
-                                style={ style }
-                            />
-                        )
-                    : null
-            }
-        </>
+    if (avatar && name) {
+        return (
+            <Image
+                className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
+                bordered={ bordered }
+                floated={ floated }
+                verticalAlign="middle"
+                circular={ avatarType === "user" }
+                rounded={ avatarType === "app" }
+                centered
+                style={ style }
+                onMouseOver={ onMouseOver }
+                onMouseOut={ onMouseOut }
+            >
+                <span className="initials">{ generateInitials() }</span>
+            </Image>
+        );
+    }
+
+    return (
+        <Image
+            className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
+            src={ avatarType === "user" ? UserImageDummy : DefaultAppIcon.default }
+            bordered={ bordered }
+            floated={ floated }
+            verticalAlign="middle"
+            circular={ avatarType === "user" }
+            rounded={ avatarType === "app" }
+            centered
+            style={ style }
+            onMouseOver={ onMouseOver }
+            onMouseOut={ onMouseOut }
+        />
     );
 };
 
@@ -166,13 +190,17 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
  */
 Avatar.defaultProps = {
     avatar: false,
+    avatarInitialsLimit: 1,
     avatarType: "user",
     bordered: true,
     className: "",
     inline: false,
+    label: null,
+    onMouseOut: null,
+    onMouseOver: null,
     relaxed: false,
     size: "mini",
     spaced: null,
     style: {},
-    transparent: false,
+    transparent: false
 };

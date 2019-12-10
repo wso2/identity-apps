@@ -16,7 +16,10 @@
  * under the License.
  */
 
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState } from "react";
+import { Popup } from "semantic-ui-react";
+import { ThirdPartyLogos } from "../../configs";
+import * as UIConstants from "../../constants/ui-constants";
 import { resolveUserDisplayName } from "../../helpers";
 import { AuthStateInterface } from "../../models";
 import { Avatar, AvatarProps } from "./avatar";
@@ -26,6 +29,8 @@ import { Avatar, AvatarProps } from "./avatar";
  */
 interface UserAvatarProps extends AvatarProps {
     authState?: AuthStateInterface;
+    gravatarInfoPopoverText?: React.ReactNode;
+    showGravatarLabel?: boolean;
 }
 
 /**
@@ -35,26 +40,111 @@ interface UserAvatarProps extends AvatarProps {
  * @return {JSX.Element}
  */
 export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatarProps): JSX.Element => {
-    const { authState, name } = props;
+    const { authState, gravatarInfoPopoverText, name, image, showGravatarLabel } = props;
+    const [ userImage, setUserImage ] = useState(null);
+    const [ showPopup, setShowPopup ] = useState(false);
 
+    // Check if the image is a promise, and resolve.
+    if (image instanceof Promise) {
+        image
+            .then((response) => {
+                setUserImage(response);
+            })
+            .catch(() => {
+                setUserImage(null);
+            });
+    }
+
+    /**
+     * Resolves the top label image.
+     *
+     * @return {string}
+     */
+    const resolveTopLabel = (): string => {
+        if (isGravatarURL()) {
+            return ThirdPartyLogos.gravatar;
+        }
+
+        return null;
+    };
+
+    /**
+     * Checks if the image is from `Gravatar`.
+     *
+     * @return {boolean}
+     */
+    const isGravatarURL = (): boolean => {
+        return (userImage && userImage.includes(UIConstants.GRAVATAR_URL))
+            || (authState && authState.profileInfo && authState.profileInfo.userimage
+                && authState.profileInfo.userimage.includes(UIConstants.GRAVATAR_URL));
+    };
+
+    /**
+     * Handles the mouse over event.
+     *
+     * @param {MouseEvent} e - Mouse event.
+     */
+    const handleOnMouseOver = (e: MouseEvent) => {
+        setShowPopup(true);
+    };
+
+    /**
+     * Handles the mouse out event.
+     *
+     * @param {MouseEvent} e - Mouse event.
+     */
+    const handleOnMouseOut = (e: MouseEvent) => {
+        setShowPopup(false);
+    };
+
+    // Avatar for the authenticated user.
     if (authState && authState.profileInfo && authState.profileInfo.userimage) {
         return (
-            <Avatar
-                { ...props }
-                avatarType="user"
-                bordered
-                image={ authState.profileInfo && authState.profileInfo.userimage }
+            <Popup
+                content={ gravatarInfoPopoverText }
+                position="bottom center"
+                siz="mini"
+                disabled={ !(showGravatarLabel && isGravatarURL()) }
+                inverted
+                hoverable
+                open={ showPopup }
+                trigger={ (
+                    <Avatar
+                        { ...props }
+                        avatarType="user"
+                        bordered={ false }
+                        image={ authState.profileInfo && authState.profileInfo.userimage }
+                        label={ showGravatarLabel ? resolveTopLabel() : null }
+                        onMouseOver={ handleOnMouseOver }
+                        onMouseOut={ handleOnMouseOut }
+                    />
+                ) }
             />
         );
     }
 
     return (
-        <Avatar
-            { ...props }
-            avatarType="user"
-            bordered
-            avatar
-            name={ authState ? resolveUserDisplayName(authState) : name }
+        <Popup
+            content={ gravatarInfoPopoverText }
+            position="bottom center"
+            siz="mini"
+            disabled={ !(showGravatarLabel && isGravatarURL()) }
+            inverted
+            hoverable
+            open={ showPopup }
+            trigger={ (
+                <Avatar
+                    { ...props }
+                    image={ userImage }
+                    avatarType="user"
+                    bordered={ false }
+                    avatar
+                    name={ authState ? resolveUserDisplayName(authState) : name }
+                    label={ showGravatarLabel ? resolveTopLabel() : null }
+                    onMouseOver={ handleOnMouseOver }
+                    onMouseOut={ handleOnMouseOut }
+                />
+            ) }
         />
     );
 };
@@ -64,5 +154,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
  */
 UserAvatar.defaultProps = {
     authState: null,
-    name: null
+    gravatarInfoPopoverText: null,
+    name: null,
+    showGravatarLabel: false
 };

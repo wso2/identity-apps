@@ -49,6 +49,7 @@
                 }
             }
             &.tiny {
+                width: @tinyWidth;
                 height: @tinyWidth;
 
                 .initials {
@@ -57,6 +58,7 @@
                 }
             }
             &.small {
+                width: @smallWidth;
                 height: @smallWidth;
 
                 .initials {
@@ -65,6 +67,7 @@
                 }
             }
             &.medium {
+                width: @mediumWidth;
                 height: @mediumWidth;
 
                 .initials {
@@ -73,6 +76,7 @@
                 }
             }
             &.large {
+                width: @largeWidth;
                 height: @largeWidth;
 
                 .initials {
@@ -81,6 +85,7 @@
                 }
             }
             &.big {
+                width: @bigWidth;
                 height: @bigWidth;
 
                 .initials {
@@ -89,6 +94,7 @@
                 }
             }
             &.huge {
+                width: @hugeWidth;
                 height: @hugeWidth;
 
                 .initials {
@@ -97,6 +103,7 @@
                 }
             }
             &.massive {
+                width: @massiveWidth;
                 height: @massiveWidth;
 
                 .initials {

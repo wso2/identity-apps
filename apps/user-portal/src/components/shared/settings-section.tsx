@@ -16,14 +16,16 @@
  * under the License.
  */
 
-import React, { Fragment, FunctionComponent, MouseEvent } from "react";
-import { Card, Grid, Header, Icon, List, Message, Responsive, SemanticICONS } from "semantic-ui-react";
+import classNames from "classnames";
+import React, { Fragment, FunctionComponent, MouseEvent, PropsWithChildren } from "react";
+import { Card, Grid, Header, Icon, List, Menu, Message, Responsive, SemanticICONS } from "semantic-ui-react";
 import { ThemeIcon, ThemeIconSizes } from "./icon";
 
 /**
  * Proptypes for the settings section component.
  */
 interface SettingsSectionProps {
+    className?: string;
     contentPadding?: boolean;
     description?: string;
     header: string;
@@ -42,6 +44,7 @@ interface SettingsSectionProps {
     secondaryActionDisabled?: boolean;
     secondaryActionIcon?: SemanticICONS;
     showActionBar?: boolean;
+    topActionBar?: React.ReactNode;
 }
 
 /**
@@ -50,8 +53,12 @@ interface SettingsSectionProps {
  * @param {PropsWithChildren<any>} props
  * @return {any}
  */
-export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props): JSX.Element => {
+export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectionProps>> = (
+    props: PropsWithChildren<SettingsSectionProps>
+): JSX.Element => {
     const {
+        children,
+        className,
         contentPadding,
         description,
         header,
@@ -70,7 +77,12 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
         secondaryActionDisabled,
         secondaryActionIcon,
         showActionBar,
+        topActionBar
     } = props;
+
+    const classes = classNames({
+        "with-top-action-bar": topActionBar
+    }, className);
 
     /**
      * Construct the action element.
@@ -124,7 +136,7 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
     };
 
     return (
-        <Card className="settings-card" fluid padded="very">
+        <Card className={ `settings-card ${ classes }` } fluid padded="very">
             <Card.Content>
                 <Grid>
                     <Grid.Row className="header-section" columns={ 2 }>
@@ -174,7 +186,18 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
                     </Grid.Row>
                     <Grid.Row className={ `main-content ${ contentPadding ? "" : "no-padding" }` } columns={ 1 }>
                         <Grid.Column className="no-padding" width={ 16 }>
-                            { props.children }
+                            {
+                                topActionBar
+                                ? (
+                                        <Menu className="top-action-panel no-margin-bottom">
+                                            <Menu.Menu position="right">
+                                                { topActionBar }
+                                            </Menu.Menu>
+                                        </Menu>
+                                    )
+                                : null
+                            }
+                            { children }
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
@@ -247,6 +270,7 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
  * Default proptypes for the settings section component.
  */
 SettingsSection.defaultProps = {
+    className: "",
     contentPadding: false,
     description: "",
     header: "",
@@ -254,5 +278,6 @@ SettingsSection.defaultProps = {
     iconStyle: "colored",
     primaryAction: "",
     primaryActionDisabled: false,
-    showActionBar: true
+    showActionBar: true,
+    topActionBar: null
 };

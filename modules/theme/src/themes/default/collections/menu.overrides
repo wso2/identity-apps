@@ -212,6 +212,11 @@
     .ui.menu.fixed {
         &.app-header {
             .user-dropdown {
+                .authenticated-user {
+                    .ui.image.user-image.user-avatar.tiny {
+                        width: 80px !important;
+                    }
+                }
                 .linked-accounts-list {
                     .ui.image.user-image.user-avatar.little {
                         width: @littleWidth !important;

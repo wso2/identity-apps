@@ -27,6 +27,7 @@ import {
     DummyUser,
     EmptySearchResultsIllustration,
     ForbiddenIcon,
+    GravatarLogo,
     HomeTileIcons,
     Logo,
     MFAIconSet,
@@ -96,4 +97,8 @@ export const EmptyPlaceholderIllustrations = {
 
 export const AppIconBackgrounds = {
     orange: OrangeAppIconBackground
+};
+
+export const ThirdPartyLogos = {
+    gravatar: GravatarLogo
 };

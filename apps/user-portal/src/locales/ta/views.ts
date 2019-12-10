@@ -440,6 +440,34 @@ export const views: Views = {
                         message: "இணைக்கப்பட்ட பயனர் கணக்குகள் பெறப்பட்டுவிட்டன"
                     }
                 },
+                removeAllAssociations: {
+                    error: {
+                        description: "{{description}}",
+                        message: "இணைக்கப்பட்ட பயனர் கணக்குகளை அகற்றுவதில் பிழை"
+                    },
+                    genericError: {
+                        description: "இணைக்கப்பட்ட பயனர் கணக்குகளை அகற்றும்போது பிழை ஏற்பட்டது",
+                        message: "ஏதோ தவறேற்பட்டுவிட்டது"
+                    },
+                    success: {
+                        description: "இணைக்கப்பட்ட அனைத்து பயனர் கணக்குகளும் அகற்றப்பட்டுள்ளன",
+                        message: "இணைக்கப்பட்ட கணக்குகள் வெற்றிகரமாக அகற்றப்பட்டன"
+                    }
+                },
+                removeAssociation: {
+                    error: {
+                        description: "{{description}}",
+                        message: "இணைக்கப்பட்ட பயனர் கணக்கை அகற்றுவதில் பிழை"
+                    },
+                    genericError: {
+                        description: "இணைக்கப்பட்ட பயனர் கணக்கை அகற்றும்போது பிழை ஏற்பட்டது",
+                        message: "ஏதோ தவறு நடைபெற்றிருக்கிறது"
+                    },
+                    success: {
+                        description: "இணைக்கப்பட்ட பயனர் கணக்குகள் அகற்றப்பட்டன",
+                        message: "இணைக்கப்பட்ட கணக்கு வெற்றிகரமாக அகற்றப்பட்டது"
+                    }
+                },
                 switchAccount: {
                     error: {
                         description: "{{description}}",
@@ -922,6 +950,9 @@ export const views: Views = {
                     }
                 }
             }
+        },
+        userAvatar: {
+            infoPopover: "இந்த படம் <1>Gravatar</1> சேவையிலிருந்து மீட்டெடுக்கப்பட்டது."
         },
         userSessions: {
             browserAndOS: "{{os}} {{version}} இல் {{browser}}",

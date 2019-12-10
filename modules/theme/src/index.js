@@ -71,6 +71,8 @@ export const BlockedMagnifierIcon = require("../lib/assets/images/icons/blocked-
 export const CloseIcon = require("../lib/assets/images/icons/close-icon.svg");
 export const ConsentIcon = require("../lib/assets/images/icons/consent-icon.svg");
 
+export const GravatarLogo = require("../lib/assets/images/gravatar-logo.png");
+
 export const EmptySearchResultsIllustration = require("../lib/assets/images/illustrations/no-search-results.svg");
 
 export const OrangeAppIconBackground = require("../lib/assets/images/app-icon-background.png");
