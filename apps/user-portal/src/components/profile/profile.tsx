@@ -23,10 +23,10 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import Skeleton from "react-skeleton-loader";
-import { Form, Grid, Icon, List, Placeholder, PlaceholderImage, Popup, Responsive } from "semantic-ui-react";
+import { Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
 import { updateProfileInfo } from "../../api";
 import * as UIConstants from "../../constants/ui-constants";
-import { AuthStateInterface, createEmptyProfile, Notification } from "../../models";
+import { AuthStateInterface, Notification, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation } from "../../store/actions";
 import { EditSection, SettingsSection, UserAvatar } from "../shared";
@@ -444,12 +444,36 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 ? (
                     <Skeleton height="75px" width="75px" widthRandomness={ 0 } borderRadius="50%" />
                 )
-                : <UserAvatar authState={ profileDetails } size="tiny" /> }
+                : (
+                    <UserAvatar
+                        authState={ profileDetails }
+                        size="tiny"
+                        showGravatarLabel
+                        gravatarInfoPopoverText={ (
+                            <Trans i18nKey="views:components.userAvatar.infoPopover">
+                                This image has been retrieved from
+                            <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener">Gravatar</a> service.
+                        </Trans>
+                        ) }
+                    />
+                ) }
             iconMini={ profileInfoLoader
                 ? (
                     <Skeleton height="75px" width="75px" widthRandomness={ 0 } borderRadius="50%" />
                 )
-                : <UserAvatar authState={ profileDetails } size="tiny" /> }
+                : (
+                    <UserAvatar
+                        authState={ profileDetails }
+                        size="tiny"
+                        showGravatarLabel
+                        gravatarInfoPopoverText={ (
+                            <Trans i18nKey="views:components.userAvatar.infoPopover">
+                                This image has been retrieved from
+                            <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener">Gravatar</a> service.
+                        </Trans>
+                        ) }
+                    />
+                ) }
         >
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 {
