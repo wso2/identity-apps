@@ -24,41 +24,28 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
-import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
-import org.wso2.carbon.identity.application.common.model.Claim;
-import org.wso2.carbon.identity.application.common.model.ClaimConfig;
-import org.wso2.carbon.identity.application.common.model.ClaimMapping;
-import org.wso2.carbon.identity.application.common.model.InboundAuthenticationConfig;
-import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
-import org.wso2.carbon.identity.application.common.model.Property;
-import org.wso2.carbon.identity.application.common.model.ServiceProvider;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.core.util.IdentityCoreInitializedEvent;
-import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
 import org.wso2.carbon.identity.oauth.OAuthUtil;
-import org.wso2.carbon.identity.oauth.dto.OAuthConsumerAppDTO;
 import org.wso2.carbon.registry.core.exceptions.RegistryException;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
 import org.wso2.identity.apps.common.util.AppPortalConstants;
+import org.wso2.identity.apps.common.util.AppPortalUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.GrantTypes.AUTHORIZATION_CODE;
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.GrantTypes.REFRESH_TOKEN;
-import static org.wso2.carbon.identity.oauth.common.OAuthConstants.OAuthVersions.VERSION_2;
 import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
 import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_ID;
-import static org.wso2.identity.apps.common.util.AppPortalConstants.DISPLAY_NAME_CLAIM_URI;
-import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_URI;
-import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
-import static org.wso2.identity.apps.common.util.AppPortalConstants.TOKEN_BINDING_TYPE;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ACCOUNT_SWITCH;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.TOKEN_BINDING_TYPE_COOKIE;
 
 /***
  * OSGi service component which configure the service providers for portals.
@@ -71,7 +58,6 @@ import static org.wso2.identity.apps.common.util.AppPortalConstants.TOKEN_BINDIN
 public class AppsCommonServiceComponent {
 
     private static Log log = LogFactory.getLog(AppsCommonServiceComponent.class);
-    public static final String GRANT_TYPE_ACCOUNT_SWITCH = "account_switch";
 
     @Activate
     protected void activate(BundleContext bundleContext) {
@@ -175,7 +161,6 @@ public class AppsCommonServiceComponent {
 
         ApplicationManagementService applicationMgtService = AppsCommonDataHolder.getInstance()
                 .getApplicationManagementService();
-        OAuthAdminServiceImpl oAuthAdminService = AppsCommonDataHolder.getInstance().getOAuthAdminService();
 
         UserRealm userRealm = AppsCommonDataHolder.getInstance().getRegistryService().getUserRealm(SUPER_TENANT_ID);
         String adminUsername = userRealm.getRealmConfiguration().getAdminUserName();
@@ -185,123 +170,14 @@ public class AppsCommonServiceComponent {
                     == null) {
                 // Initiate portal
                 String consumerSecret = OAuthUtil.getRandomNumber();
-                createOAuth2Application(oAuthAdminService, appPortal.getName(), appPortal.getPath(),
-                        appPortal.getConsumerKey(), consumerSecret, adminUsername);
-                createApplication(applicationMgtService, appPortal.getName(), adminUsername, appPortal.getDescription(),
-                        appPortal.getConsumerKey(), consumerSecret);
+                List<String> grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH);
+                AppPortalUtils
+                        .createOAuth2Application(appPortal.getName(), appPortal.getPath(), appPortal.getConsumerKey(),
+                                consumerSecret, adminUsername, SUPER_TENANT_ID, SUPER_TENANT_DOMAIN_NAME,
+                                TOKEN_BINDING_TYPE_COOKIE, grantTypes);
+                AppPortalUtils.createApplication(appPortal.getName(), adminUsername, appPortal.getDescription(),
+                        appPortal.getConsumerKey(), consumerSecret, SUPER_TENANT_DOMAIN_NAME);
             }
         }
-    }
-
-    /**
-     * Create portal application.
-     *
-     * @param applicationMgtService Application management service instant.
-     * @param appName               Application name.
-     * @param appOwner              Application owner.
-     * @param appDescription        Application description.
-     * @param consumerKey           Consumer key.
-     * @param consumerSecret        Consumer secret.
-     * @throws IdentityApplicationManagementException IdentityApplicationManagementException.
-     */
-    private void createApplication(ApplicationManagementService applicationMgtService, String appName, String appOwner,
-            String appDescription, String consumerKey, String consumerSecret)
-            throws IdentityApplicationManagementException {
-
-        ServiceProvider serviceProvider = new ServiceProvider();
-        serviceProvider.setApplicationName(appName);
-        serviceProvider.setDescription(appDescription);
-        applicationMgtService.createApplicationWithTemplate(serviceProvider, SUPER_TENANT_DOMAIN_NAME, appOwner, null);
-
-        InboundAuthenticationRequestConfig inboundAuthenticationRequestConfig = new
-                InboundAuthenticationRequestConfig();
-        inboundAuthenticationRequestConfig.setInboundAuthKey(consumerKey);
-        inboundAuthenticationRequestConfig.setInboundAuthType(INBOUND_AUTH2_TYPE);
-        Property property = new Property();
-        property.setName("oauthConsumerSecret");
-        property.setValue(consumerSecret);
-        Property[] properties = { property };
-        inboundAuthenticationRequestConfig.setProperties(properties);
-
-        serviceProvider = applicationMgtService.getApplicationExcludingFileBasedSPs(appName, SUPER_TENANT_DOMAIN_NAME);
-        InboundAuthenticationConfig inboundAuthenticationConfig = serviceProvider.getInboundAuthenticationConfig();
-
-        List<InboundAuthenticationRequestConfig> inboundAuthenticationRequestConfigs = new ArrayList<>();
-        if (inboundAuthenticationConfig.getInboundAuthenticationRequestConfigs() != null
-                && inboundAuthenticationConfig.getInboundAuthenticationRequestConfigs().length > 0) {
-            inboundAuthenticationRequestConfigs
-                    .addAll(Arrays.asList(inboundAuthenticationConfig.getInboundAuthenticationRequestConfigs()));
-        }
-        inboundAuthenticationRequestConfigs.add(inboundAuthenticationRequestConfig);
-        inboundAuthenticationConfig.setInboundAuthenticationRequestConfigs(
-                inboundAuthenticationRequestConfigs.toArray(new InboundAuthenticationRequestConfig[0]));
-
-        // Set requested claim mappings for the SP.
-        ClaimConfig claimConfig = new ClaimConfig();
-        claimConfig.setClaimMappings(getRequestedClaimMappings());
-        claimConfig.setLocalClaimDialect(true);
-        serviceProvider.setClaimConfig(claimConfig);
-
-        applicationMgtService.updateApplication(serviceProvider, SUPER_TENANT_DOMAIN_NAME, appOwner);
-    }
-
-    /**
-     * Create OAuth2 application.
-     *
-     * @param oAuthAdminService OAuthAdminService instance.
-     * @param applicationName   Application name.
-     * @param portalPath        Portal path.
-     * @param consumerKey       Consumer key.
-     * @throws IdentityOAuthAdminException IdentityOAuthAdminException.
-     */
-    private void createOAuth2Application(OAuthAdminServiceImpl oAuthAdminService, String applicationName,
-            String portalPath, String consumerKey, String consumerSecret, String appOwner)
-            throws IdentityOAuthAdminException {
-
-        OAuthConsumerAppDTO oAuthConsumerAppDTO = new OAuthConsumerAppDTO();
-        oAuthConsumerAppDTO.setApplicationName(applicationName);
-        oAuthConsumerAppDTO.setOAuthVersion(VERSION_2);
-        oAuthConsumerAppDTO.setOauthConsumerKey(consumerKey);
-        oAuthConsumerAppDTO.setOauthConsumerSecret(consumerSecret);
-        oAuthConsumerAppDTO.setCallbackUrl(IdentityUtil.getServerURL(portalPath, false, true));
-        oAuthConsumerAppDTO.setBypassClientCredentials(true);
-        oAuthConsumerAppDTO.setGrantTypes(AUTHORIZATION_CODE + " " + REFRESH_TOKEN + " " + GRANT_TYPE_ACCOUNT_SWITCH);
-        oAuthConsumerAppDTO.setPkceMandatory(true);
-        oAuthConsumerAppDTO.setTokenBindingType(TOKEN_BINDING_TYPE);
-
-        try {
-            PrivilegedCarbonContext.startTenantFlow();
-            PrivilegedCarbonContext privilegedCarbonContext = PrivilegedCarbonContext.getThreadLocalCarbonContext();
-            privilegedCarbonContext.setTenantId(SUPER_TENANT_ID);
-            privilegedCarbonContext.setTenantDomain(SUPER_TENANT_DOMAIN_NAME);
-            privilegedCarbonContext.setUsername(appOwner);
-            oAuthAdminService.registerOAuthApplicationData(oAuthConsumerAppDTO);
-        } finally {
-            PrivilegedCarbonContext.endTenantFlow();
-        }
-    }
-
-    /**
-     * Get requested claim mappings.
-     *
-     * @return array of claim mappings.
-     */
-    private ClaimMapping[] getRequestedClaimMappings() {
-
-        Claim emailClaim = new Claim();
-        emailClaim.setClaimUri(EMAIL_CLAIM_URI);
-        ClaimMapping emailClaimMapping = new ClaimMapping();
-        emailClaimMapping.setRequested(true);
-        emailClaimMapping.setLocalClaim(emailClaim);
-        emailClaimMapping.setRemoteClaim(emailClaim);
-
-        Claim roleClaim = new Claim();
-        roleClaim.setClaimUri(DISPLAY_NAME_CLAIM_URI);
-        ClaimMapping roleClaimMapping = new ClaimMapping();
-        roleClaimMapping.setRequested(true);
-        roleClaimMapping.setLocalClaim(roleClaim);
-        roleClaimMapping.setRemoteClaim(roleClaim);
-
-        return new ClaimMapping[] { emailClaimMapping, roleClaimMapping };
     }
 }
