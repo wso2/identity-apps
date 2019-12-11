@@ -47,6 +47,8 @@
         }
         .revoked-label {
             margin-left: 8px;
+            background: transparent;
+            color: @negativeColor;
         }
     }
 }

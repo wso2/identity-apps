@@ -140,7 +140,6 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
                                                                             ? (
                                                                                 <Label
                                                                                     className="revoked-label"
-                                                                                    color="red"
                                                                                     horizontal
                                                                                 >
                                                                                     { t("common:revoked") }

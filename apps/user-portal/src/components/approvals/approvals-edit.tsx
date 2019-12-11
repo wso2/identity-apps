@@ -118,7 +118,7 @@ export const ApprovalsEdit: FunctionComponent<ApprovalsEditProps> = (
      * @return {JSX.Element} A table containing the list of properties.
      */
     const propertiesTable = (properties): JSX.Element => (
-        <Table celled compact className="edit-segment-table" unstackable>
+        <Table celled compact className="edit-segment-table" verticalAlign="top">
             <Table.Body>
                 {
                     properties.map((property, i) => (
