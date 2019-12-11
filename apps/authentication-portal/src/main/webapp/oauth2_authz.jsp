@@ -67,12 +67,11 @@
                 </h3>
 
                 <form action="<%=oauth2AuthorizeURL%>" method="post" id="profile" name="oauth2_authz" class="segment-form">
-                    <% if (loginFailed) { %>
-                        <div class="ui visible warning message">
-                            <strong><%=Encode.forHtml(request.getParameter("application"))%></strong>
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile")%>
-                        </div>
-                    <% } %>
+
+                    <div class="ui visible warning message">
+                        <strong><%=Encode.forHtml(request.getParameter("application"))%></strong>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile")%>
+                    </div>
 
                     <div class="field"> 
                         <%
@@ -114,13 +113,13 @@
                                     <div class="field">
                                         <div class="ui radio checkbox">
                                             <input type="radio" class="hidden" name="scope-approval" id="approveCb" value="approve">
-                                            <label for="approveCb">Approve Once</label>
+                                            <label for="approveCb"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "approve.once")%></label>
                                         </div>
                                     </div>
                                     <div class="field">
                                         <div class="ui radio checkbox">
                                             <input type="radio" class="hidden" name="scope-approval" id="approveAlwaysCb" value="approveAlways">
-                                            <label for="approveAlwaysCb">Approve Always</label>
+                                            <label for="approveAlwaysCb"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "approve.always")%></label>
                                         </div>
                                     </div>
                                 </div>

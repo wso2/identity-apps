@@ -14,7 +14,7 @@
   ~ KIND, either express or implied.  See the License for the
   ~ specific language governing permissions and limitations
   ~ under the License.
---%>
+  --%>
 
 <!-- localize.jsp MUST already be included in the calling script -->
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
@@ -147,3 +147,5 @@
         color: #ff5000;
     }
 </style>
+
+<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
