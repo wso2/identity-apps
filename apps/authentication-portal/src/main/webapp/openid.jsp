@@ -17,8 +17,43 @@
   --%>
 
 <%@ page import="org.owasp.encoder.Encode" %>
-<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
+
+<form action="<%=commonauthURL%>" method="post" id="loginForm" class="segment-form">
+    <%
+        loginFailed = request.getParameter("loginFailed");
+        if (loginFailed != null) {
+
+    %>
+    <div class="ui visible negative message">
+         <%=AuthenticationEndpointUtil.i18nBase64(resourceBundle,request.getParameter("errorMessage"))%>
+    </div>
+    <% } %>
+
+    <div class="field">
+        <input type="text" id="claimed_id" name="claimed_id" size='30'
+               placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "openid")%>"/>
+        <input type="hidden" name="sessionDataKey"
+               value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
+    </div>
+
+    <div class="field">
+        <div class="ui checkbox">
+            <input type="checkbox" id="chkRemember" name="chkRemember">
+            <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "remember.me")%></label>
+        </div>
+    </div>
+
+    <div class="buttons right aligned">
+        <button
+            class="ui primary large button"
+            type="submit">
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login")%>
+        </button>
+    </div>
+</form>
+
 <script>
+
     // Handle form submission preventing double submission.
     $(document).ready(function(){
         $.fn.preventDoubleSubmission = function() {
@@ -38,43 +73,5 @@
         };
         $('#loginForm').preventDoubleSubmission();
     });
+
 </script>
-<form action="<%=commonauthURL%>" method="post" id="loginForm" class="form-horizontal">
-    <%
-        loginFailed = request.getParameter("loginFailed");
-        if (loginFailed != null) {
-
-    %>
-    <div class="alert alert-danger">
-         <%=AuthenticationEndpointUtil.i18nBase64(resourceBundle,request.getParameter("errorMessage"))%>
-    </div>
-    <% } %>
-
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
-        <input class="input-large" type="text" id="claimed_id" name="claimed_id" size='30'
-               placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "openid")%>"/>
-        <input type="hidden" name="sessionDataKey"
-               value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
-    </div>
-
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" id="chkRemember" name="chkRemember">
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "remember.me")%>
-            </label>
-        </div>
-        <br>
-
-        <div class="form-actions">
-            <button
-                    class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-extra-large"
-                    type="submit">
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login")%>
-            </button>
-        </div>
-    </div>
-
-
-    <div class="clearfix"></div>
-</form>
