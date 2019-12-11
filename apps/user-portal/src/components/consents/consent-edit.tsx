@@ -18,7 +18,7 @@
 
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Checkbox, Grid, Label, List } from "semantic-ui-react";
+import { Button, Checkbox, Divider, Grid, Label, List } from "semantic-ui-react";
 import { ConsentInterface, RevokedClaimInterface } from "../../models";
 import { toTitleCase } from "../../utils";
 import { DangerZone, DangerZoneGroup, EditSection } from "../shared";
@@ -173,6 +173,7 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
                         </Button>
                     </Grid.Column>
                 </Grid.Row>
+                <Divider />
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>

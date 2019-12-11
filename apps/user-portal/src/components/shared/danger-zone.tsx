@@ -71,7 +71,7 @@ export const DangerZoneGroup: React.FunctionComponent<PropsWithChildren<DangerZo
 
     return (
         <>
-            <Header as="h5" className="group-header">{ sectionHeader }</Header>
+            <Header as="h5" className="bold-text">{ sectionHeader }</Header>
             <Segment.Group className="danger-zone-group">
                 { children }
             </Segment.Group>

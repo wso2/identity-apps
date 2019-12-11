@@ -653,6 +653,9 @@ export interface Views {
         },
         userSessions: {
             browserAndOS: string;
+            dangerZones: {
+                terminate: DangerZone;
+            }
             lastAccessed: string;
             modals: {
                 terminateAllUserSessionsModal: {

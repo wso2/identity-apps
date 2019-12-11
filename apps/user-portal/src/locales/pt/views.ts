@@ -952,6 +952,13 @@ export const views: Views = {
         },
         userSessions: {
             browserAndOS: "{{browser}} no {{os}} {{version}}",
+            dangerZones: {
+                terminate: {
+                    actionTitle: "Terminar",
+                    header: "Encerrar sessão",
+                    subheader: "Você será desconectado da sessão no dispositivo específico."
+                }
+            },
             lastAccessed: "Último acesso {{date}}",
             modals: {
                 terminateAllUserSessionsModal: {

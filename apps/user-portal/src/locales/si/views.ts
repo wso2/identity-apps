@@ -939,6 +939,13 @@ export const views: Views = {
         },
         userSessions: {
             browserAndOS: "{{os}} {{version}} මත {{browser}}",
+            dangerZones: {
+                terminate: {
+                    actionTitle: "අවසන් කරන්න",
+                    header: "සැසිය අවසන් කරන්න",
+                    subheader: "විශේෂිත උපාංගයේ සැසියෙන් ඔබ ඉවත් වනු ඇත."
+                }
+            },
             lastAccessed: "අවසන් ප්‍රවේශය {{date}}",
             modals: {
                 terminateAllUserSessionsModal: {
