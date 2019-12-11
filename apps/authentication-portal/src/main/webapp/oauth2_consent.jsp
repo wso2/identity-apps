@@ -134,13 +134,13 @@
                                         <div class="field">
                                             <div class="ui radio checkbox">
                                                 <input type="radio" class="hidden" name="scope-approval" id="approveCb" value="approve">
-                                                <label for="approveCb">Approve Once</label>
+                                                <label for="approveCb"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "approve.once")%></label>
                                             </div>
                                         </div>
                                         <div class="field">
                                             <div class="ui radio checkbox">
                                                 <input type="radio" class="hidden" name="scope-approval" id="approveAlwaysCb" value="approveAlways">
-                                                <label for="approveAlwaysCb">Approve Always</label>
+                                                <label for="approveAlwaysCb"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "approve.always")%></label>
                                             </div>
                                         </div>
                                     </div>
@@ -179,10 +179,10 @@
                                                 String claimId = mandatoryClaimData[0];
                                                 String displayName = mandatoryClaimData[1];
                                         %>
-                                        <div class="field">
-                                            <div class="ui checkbox claim-cb">
-                                                <input type="checkbox" class="mandatory-claim hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" required />
-                                                <label for="consent_<%=Encode.forHtmlAttribute(claimId)%>"><%=Encode.forHtml(displayName)%> <span class="required font-medium">*</span></label>
+                                        <div class="field required">
+                                            <div class="ui checkbox checked disabled claim-cb">
+                                                <input type="checkbox" class="mandatory-claim hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" required checked disabled />
+                                                <label for="consent_<%=Encode.forHtmlAttribute(claimId)%>"><%=Encode.forHtml(displayName)%></label>
                                             </div>
                                         </div>
                                         <%
@@ -348,18 +348,20 @@
         $(document).ready(function () {
             $("#consent_select_all").click(function () {
                 if (this.checked) {
-                    $('.checkbox input:checkbox').each(function () {
+                    $('.checkbox input:checkbox:not(:disabled)').each(function () {
                         $(this).prop("checked", true);
                     });
                 } else {
-                    $('.checkbox :checkbox').each(function () {
+                    $('.checkbox input:checkbox:not(:disabled)').each(function () {
                         $(this).prop("checked", false);
                     });
                 }
             });
+
             $(".checkbox input").click(function () {
                 var claimCheckedCheckboxes = $(".claim-cb input:checked").length;
                 var claimCheckboxes = $(".claim-cb input").length;
+
                 if (claimCheckedCheckboxes !== claimCheckboxes) {
                     $("#consent_select_all").prop("checked", false);
                 } else {
