@@ -38,6 +38,7 @@ export const common: Common = {
     contains: "கொண்டுள்ளது",
     continue: "தொடர்",
     createdOn: "உருவாக்கப்பட்ட தினம்",
+    dangerZone: "ஆபத்து மண்டலம்",
     delete: "அழி",
     description: "விபரம்",
     deviceModel: "கருவி மாதிரி",

@@ -68,6 +68,14 @@ interface PurposeInterface {
 }
 
 /**
+ * Model to map revoked claims.
+ */
+export interface RevokedClaimInterface {
+    id: string;
+    revoked: number[];
+}
+
+/**
  * PIICategory Model
  */
 export interface PIICategory {

@@ -49,9 +49,9 @@ export const LOGIN_ERROR_PAGE_PATH: string = "/login-error";
 export const APPLICATIONS_PAGE_PATH: string = "/applications";
 
 /**
- * Name of the user portal application.
+ * User portal application identifier.
  * @constant
  * @type {string}
  * @default
  */
-export const APPLICATION_NAME: string = "This is the user portal application.";
+export const USER_PORTAL_IDENTIFIER: string = "This is the user portal application.";

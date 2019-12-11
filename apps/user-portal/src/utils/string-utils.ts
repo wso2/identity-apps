@@ -1,4 +1,4 @@
-/*!
+/**
  * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -17,36 +17,20 @@
  *
  */
 
-.ui.list {
-    &.settings-section-inner-list {
-        .item {
-            .header {
-                &.with-left-padding {
-                    padding-left: @settingsSectionInnerListHeaderPaddingLeft;
-                }
-            }
+export const toTitleCase = (raw: string): string => {
+    const parts = raw.split(" ");
+    let newStr = "";
+
+    parts.forEach((part, index) => {
+        part = part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+
+        if (index === 0) {
+            newStr = part;
+            return; // forEach doesn't support `continue`.
         }
-    }
-}
 
-/*******************************
-     Claim List Variation
-*******************************/
+        newStr = newStr + " " + part;
+    });
 
-.ui.list {
-    &.claim-list {
-        padding-top: 0;
-        padding-left: 0;
-
-        .ui.checkbox {
-            margin: 5px 0px;
-
-            &.revoked {
-                text-decoration: line-through;
-            }
-        }
-        .revoked-label {
-            margin-left: 8px;
-        }
-    }
-}
+    return newStr;
+};

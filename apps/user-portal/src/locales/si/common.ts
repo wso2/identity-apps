@@ -38,6 +38,7 @@ export const common: Common = {
     contains: "අඩංගු වේ",
     continue: "පවත්වාගෙන යන්න",
     createdOn: "නිර්මාණය කරන ලද්දේ",
+    dangerZone: "අන්තරා කලාපය",
     delete: "මකන්න",
     description: "විස්තරය",
     deviceModel: "උපාංග ආකෘතිය",

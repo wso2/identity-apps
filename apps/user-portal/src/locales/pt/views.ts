@@ -307,19 +307,29 @@ export const views: Views = {
             }
         },
         consentManagement: {
+            editConsent: {
+                collectionMethod: "Método de Coleta",
+                dangerZones: {
+                    revoke: {
+                        actionTitle: "Revogar",
+                        header: "Revogar consentimento",
+                        subheader: "Você precisará fornecer o consentimento para este aplicativo novamente."
+                    }
+                },
+                description: "Descrição",
+                piiCategoryHeading: "Gerencie o consentimento para a coleta e o compartilhamento de suas informações " +
+                    "pessoais com o aplicativo. Desmarque os atributos que você precisa revogar e pressione o botão " +
+                    "atualizar para salvar as alterações ou pressione o botão revogar para remover o consentimento " +
+                    "para todos os atributos.",
+                state: "Estado",
+                version: "Versão"
+            },
             modals: {
                 consentRevokeModal: {
-                    heading: "Revogar {{appName}}?",
-                    message: "Tem certeza de que deseja revogar este consentimento? Esta operação não é reversível."
-                },
-                editConsentModal: {
-                    description: {
-                        collectionMethod: "Método de Coleta",
-                        description: "Descrição",
-                        piiCategoryHeading: "Informações que você compartilhou com o aplicativo",
-                        state: "Estado",
-                        version: "Versão"
-                    }
+                    heading: "Você tem certeza?",
+                    message: "Esta operação não é reversível. Isso revogará permanentemente o consentimento para " +
+                        "todos os atributos. Tem certeza de que deseja continuar?",
+                    warning: "Observe que você será redirecionado para a página de consentimento de login"
                 }
             },
             notifications: {

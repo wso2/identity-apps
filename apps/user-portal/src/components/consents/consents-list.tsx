@@ -16,11 +16,12 @@
  * under the License.
  */
 
-import React, { FunctionComponent, MouseEvent, useState } from "react";
+import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List } from "semantic-ui-react";
 import { ConsentedAppIcon } from "../../configs";
-import { ConsentInterface, ConsentReceiptInterface, PIICategory } from "../../models";
+import { ConsentInterface, ConsentState, RevokedClaimInterface } from "../../models";
+import { toTitleCase } from "../../utils";
 import { ThemeIcon } from "../shared";
 import { AppConsentEdit } from "./consent-edit";
 
@@ -29,19 +30,12 @@ import { AppConsentEdit } from "./consent-edit";
  */
 interface ConsentsListProps {
     consentedApps: ConsentInterface[];
-    onConsentEditClick?: (e: MouseEvent<HTMLButtonElement>, element: HTMLButtonElement) => void;
-    onConsentRevokeClick?: (consent: ConsentInterface) => void;
-    onClaimUpdateClick?: () => void;
-    onEditViewCloseClick?: () => void;
-    editingConsent: ConsentInterface;
-    consentReceipt: ConsentReceiptInterface;
-    revokeConsent?: (consent: ConsentInterface) => void;
-    editingConsentReceipt: ConsentReceiptInterface;
-    editConsentedApps: ConsentInterface[];
-    activeIndex: string;
-    revokePIICategory: (category: PIICategory) => void;
-    undoRevokePIICategory: (e: MouseEvent<HTMLButtonElement>, element: HTMLButtonElement) => void;
-    revokedPIICatList: number[];
+    consentListActiveIndexes?: number[];
+    onAppConsentRevoke: (consent: ConsentInterface) => void;
+    onConsentDetailClick: (index: number, id: string) => void;
+    onClaimUpdate: (receiptId: string) => void;
+    onClaimRevokeToggle: (receiptId: string, claimId: number) => void;
+    revokedClaimList: RevokedClaimInterface[];
 }
 
 /**
@@ -55,96 +49,117 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
 ): JSX.Element => {
 
     const {
-        consentReceipt,
         consentedApps,
-        onConsentEditClick,
-        onConsentRevokeClick,
-        onClaimUpdateClick,
-        onEditViewCloseClick,
-        editingConsent,
-        editConsentedApps,
-        editingConsentReceipt,
-        activeIndex,
-        revokePIICategory,
-        undoRevokePIICategory,
-        revokedPIICatList
+        consentListActiveIndexes,
+        onAppConsentRevoke,
+        onClaimUpdate,
+        onClaimRevokeToggle,
+        revokedClaimList,
+        onConsentDetailClick
     } = props;
     const { t } = useTranslation();
 
+    const resolveStateClassname = (state: ConsentState): string => {
+        if (state === ConsentState.ACTIVE) {
+            return "positive";
+        }
+        return "";
+    };
+
     return (
         <>
-        <List divided verticalAlign="middle" className="main-content-inner">
-            {
-                editConsentedApps && editConsentedApps.map((consent: ConsentInterface, index: number) => {
-                    return (
-                        <List.Item className="inner-list-item" key={ consent.consentReceiptID }>
-                            <Grid padded>
-                                <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 11 } className="first-column">
-                                        <List.Content verticalAlign="middle">
-                                            <ThemeIcon
-                                                icon={ ConsentedAppIcon }
-                                                size="micro"
-                                                bordered
-                                                defaultIcon
-                                                relaxed
-                                                rounded
-                                                spaced="right"
-                                                square
-                                                floated="left"
-                                            />
-                                            <List.Header>{ consent.spDisplayName }</List.Header>
-                                            <List.Description>
-                                                <p style={ { fontSize: "10px" } }>
-                                                    { consent.consentReceiptID }
-                                                </p>
-                                            </List.Description>
-                                        </List.Content>
-                                    </Grid.Column>
-                                    <Grid.Column width={ 5 } className="last-column">
-                                        <List.Content floated="right">
-                                            <Icon
-                                                id={ consent.consentReceiptID }
-                                                link
-                                                className="list-icon"
-                                                size="large"
-                                                name="pencil alternate"
-                                                onClick={ onConsentEditClick }
-                                            />
-                                            <Button
-                                                basic
-                                                compact
-                                                color="red"
-                                                size="tiny"
-                                                onClick={ () => onConsentRevokeClick(consent) }
-                                            >
-                                                { t("common:revoke") }
-                                            </Button>
-                                        </List.Content>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                            {
-                                    activeIndex === consent.consentReceiptID
-                                    ? (
-                                        <AppConsentEdit
-                                            editingConsent={ editingConsent }
-                                            onClaimUpdateClick={ onClaimUpdateClick }
-                                            onEditViewCloseClick={ onEditViewCloseClick }
-                                            state={ consent.state }
-                                            spDescription={ consent.spDescription }
-                                            services={ consentReceipt.services }
-                                            revokePIICategory={ revokePIICategory }
-                                            undoRevokePIICategory={ undoRevokePIICategory }
-                                            revokedPIICatList={ revokedPIICatList }
-                                        />
-                                    ) : null
-                            }
-                        </List.Item>
-                    );
-                })
-            }
-        </List>
+            <List divided verticalAlign="middle" className="main-content-inner">
+                {
+                    (consentedApps && consentedApps.length && consentedApps.length > 0)
+                        ? consentedApps.map((consent: ConsentInterface, index) => {
+                            return (
+                                <List.Item className="inner-list-item" key={ consent.consentReceiptID }>
+                                    <Grid padded>
+                                        <Grid.Row columns={ 2 }>
+                                            <Grid.Column width={ 11 } className="first-column">
+                                                <List.Content verticalAlign="middle">
+                                                    <ThemeIcon
+                                                        icon={ ConsentedAppIcon }
+                                                        size="micro"
+                                                        bordered
+                                                        defaultIcon
+                                                        relaxed
+                                                        rounded
+                                                        spaced="right"
+                                                        square
+                                                        floated="left"
+                                                    />
+                                                    <List.Header>{ consent.spDisplayName }</List.Header>
+                                                    <List.Description>
+                                                        <p className="small-text">
+                                                    <span
+                                                        className={ `active-label ${ resolveStateClassname(
+                                                            consent.state) }` }
+                                                    />
+                                                            { toTitleCase(consent.state) }
+                                                        </p>
+                                                    </List.Description>
+                                                </List.Content>
+                                            </Grid.Column>
+                                            {
+                                                consentListActiveIndexes
+                                                    ? (
+                                                        <Grid.Column width={ 5 } className="last-column">
+                                                            <List.Content floated="right">
+                                                                <Button
+                                                                    icon
+                                                                    basic
+                                                                    labelPosition="right"
+                                                                    size="mini"
+                                                                    onClick={
+                                                                        () => onConsentDetailClick(
+                                                                            index, consent.consentReceiptID
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    {
+                                                                        consentListActiveIndexes.includes(index)
+                                                                            ? (
+                                                                                <>
+                                                                                    { t("common:showLess") }
+                                                                                    <Icon
+                                                                                        name="arrow down"
+                                                                                        flipped="vertically"
+                                                                                    />
+                                                                                </>
+                                                                            )
+                                                                            : (
+                                                                                <>
+                                                                                    { t("common:showMore") }
+                                                                                    <Icon name="arrow down"/>
+                                                                                </>
+                                                                            )
+                                                                    }
+                                                                </Button>
+                                                            </List.Content>
+                                                        </Grid.Column>
+                                                    ) : null
+                                            }
+                                        </Grid.Row>
+                                        {
+                                            consentListActiveIndexes && consentListActiveIndexes.includes(index)
+                                                ? (
+                                                    <AppConsentEdit
+                                                        editingConsent={ consent }
+                                                        onAppConsentRevoke={ onAppConsentRevoke }
+                                                        onClaimUpdate={ onClaimUpdate }
+                                                        onClaimRevokeToggle={ onClaimRevokeToggle }
+                                                        revokedClaimList={ revokedClaimList }
+                                                    />
+                                                ) : null
+                                        }
+                                    </Grid>
+                                </List.Item>
+                            );
+                        })
+                        : null
+                }
+            </List>
         </>
     );
 };
