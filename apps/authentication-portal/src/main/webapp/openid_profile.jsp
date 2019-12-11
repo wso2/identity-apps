@@ -15,10 +15,12 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   --%>
+
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
-<%@include file="localize.jsp" %>
-<%@include file="init-url.jsp" %>
+
+<%@include file="includes/localize.jsp" %>
+<%@include file="includes/init-url.jsp" %>
 
 <%
     String[] profiles = request.getParameterValues("profile");

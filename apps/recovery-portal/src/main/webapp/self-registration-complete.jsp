@@ -23,7 +23,7 @@
 <%@ page import="java.net.MalformedURLException" %>
 <%@ page import="java.io.File" %>
 
-<jsp:directive.include file="localize.jsp"/>
+<jsp:directive.include file="includes/localize.jsp"/>
 <%
     boolean isEmailNotificationEnabled = false;
 
