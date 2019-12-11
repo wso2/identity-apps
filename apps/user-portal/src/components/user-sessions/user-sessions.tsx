@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Container, Menu, Modal } from "semantic-ui-react";
@@ -29,7 +28,6 @@ import {
     UserSession,
     UserSessions
 } from "../../models";
-import { endUserSession } from "../../utils";
 import { SettingsSection } from "../shared";
 import { UserSessionsList } from "./user-sessions-list";
 
@@ -62,15 +60,6 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
     useEffect(() => {
         getUserSessions();
     }, []);
-
-    /**
-     * Ends the user session when the session list is empty.
-     */
-    useEffect(() => {
-        if (_.isEmpty(userSessions) || userSessions.sessions === []) {
-            endUserSession();
-        }
-    }, [ userSessions ]);
 
     /**
      * Retrieves the user sessions.
