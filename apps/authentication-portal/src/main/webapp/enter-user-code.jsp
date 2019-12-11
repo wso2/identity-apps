@@ -43,9 +43,9 @@
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                 if (productTitleFile.exists()) {
             %>
-            <jsp:include page="extensions/product-title.jsp"/>
+                <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-            <jsp:directive.include file="includes/product-title.jsp"/>
+                <jsp:directive.include file="includes/product-title.jsp"/>
             <% } %>
         
             <div class="ui segment">

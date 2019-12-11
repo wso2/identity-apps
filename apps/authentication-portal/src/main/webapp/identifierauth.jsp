@@ -20,8 +20,7 @@
 <%@ page import="org.apache.cxf.jaxrs.provider.json.JSONProvider" %>
 <%@ page import="org.apache.http.HttpStatus" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page
-        import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.SelfUserRegistrationResource" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.SelfUserRegistrationResource" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.bean.ResendCodeRequestDTO" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.bean.UserDTO" %>
@@ -31,7 +30,7 @@
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isRecoveryEPAvailable" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
 
-<jsp:directive.include file="init-loginform-action-url.jsp"/>
+<jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 
 <script>
     function submitIdentifier () {

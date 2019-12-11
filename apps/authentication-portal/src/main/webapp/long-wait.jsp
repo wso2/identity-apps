@@ -16,99 +16,124 @@
   ~ under the License.
   --%>
 
-<%@page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AdaptiveAuthUtil" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AdaptiveAuthUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@include file="localize.jsp" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<jsp:directive.include file="init-url.jsp"/>
+
+<%@include file="includes/localize.jsp" %>
+<jsp:directive.include file="includes/init-url.jsp"/>
 
 <%
     String sessionDataKey = request.getParameter("sessionDataKey");
 %>
+
+<!doctype html>
 <html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- title -->
+    <!-- header -->
     <%
-        File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-        if (titleFile.exists()) {
+        File headerFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+        if (headerFile.exists()) {
     %>
-            <jsp:include page="extensions/title.jsp"/>
+        <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/title.jsp"/>
+        <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
-    
-    <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-    <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/Roboto.css" rel="stylesheet">
-    <link href="css/custom-common.css" rel="stylesheet">
+
     <link href="css/longwait-loader.css" rel="stylesheet">
-    
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
-    <script language="JavaScript" type="text/javascript" src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-    <script language="JavaScript" type="text/javascript" src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
-
 </head>
-
 <body>
+    <main class="center-segment">
+        <div class="ui container medium center aligned middle aligned">
 
-<div id="loader-wrapper">
-    <div id="loader"></div>
-    <form id="toCommonAuth" action="<%=commonauthURL%>" method="POST" style="display:none;">
-        <input id="sessionDataKey" type="hidden" name="sessionDataKey" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>">
-    </form>
-</div>
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>
 
-<script type="text/javascript">
-    var sessionDataKey = '<%=Encode.forJavaScriptBlock(sessionDataKey)%>';
-    var refreshInterval = '<%=AdaptiveAuthUtil.getRefreshInterval()%>';
-    var timeout = '<%=AdaptiveAuthUtil.getRequestTimeout()%>';
-    $(document).ready(function () {
-        var intervalListener = window.setInterval(function () {
-            checkLongWaitStatus();
-        }, refreshInterval);
+            <div id="loader-wrapper">
+                <div id="loader"></div>
+                <form id="toCommonAuth" action="<%=commonauthURL%>" method="POST" style="display:none;">
+                    <input id="sessionDataKey" type="hidden" name="sessionDataKey" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>">
+                </form>
+            </div>
+        </div>
+    </main>
 
-        var timeoutListenerListener = window.setTimeout(function () {
-            window.clearInterval(intervalListener);
-            window.location.replace("retry.do");
-        }, timeout);
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+        <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
 
-        function checkLongWaitStatus() {
-            $.ajax("/longwaitstatus", {
-                async: false,
-                data: {waitingId: sessionDataKey},
-                success: function (res) {
-                    handleStatusResponse(res);
-                },
-                error: function (res) {
-                    window.clearInterval(intervalListener);
-                    window.location.replace("retry.do");
-                },
-                failure: function (res) {
-                    window.clearInterval(intervalListener);
-                    window.location.replace("retry.do");
-                }
-            });
-        }
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+        <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/footer.jsp"/>
+    <% } %>
 
-        function handleStatusResponse(res) {
-            if (res.status === 'COMPLETED') {
-                continueAuthentication();
+    <script type="text/javascript">
+
+        var sessionDataKey = '<%=Encode.forJavaScriptBlock(sessionDataKey)%>';
+        var refreshInterval = '<%=AdaptiveAuthUtil.getRefreshInterval()%>';
+        var timeout = '<%=AdaptiveAuthUtil.getRequestTimeout()%>';
+    
+        $(document).ready(function () {
+            var intervalListener = window.setInterval(function () {
+                checkLongWaitStatus();
+            }, refreshInterval);
+    
+            var timeoutListenerListener = window.setTimeout(function () {
+                window.clearInterval(intervalListener);
+                window.location.replace("retry.do");
+            }, timeout);
+    
+            function checkLongWaitStatus() {
+                $.ajax("/longwaitstatus", {
+                    async: false,
+                    data: {waitingId: sessionDataKey},
+                    success: function (res) {
+                        handleStatusResponse(res);
+                    },
+                    error: function (res) {
+                        window.clearInterval(intervalListener);
+                        window.location.replace("retry.do");
+                    },
+                    failure: function (res) {
+                        window.clearInterval(intervalListener);
+                        window.location.replace("retry.do");
+                    }
+                });
             }
-        }
-
-        function continueAuthentication() {
-            //Redirect to common auth
-            window.clearInterval(intervalListener);
-            document.getElementById("toCommonAuth").submit();
-        }
-    });
-</script>
+    
+            function handleStatusResponse(res) {
+                if (res.status === 'COMPLETED') {
+                    continueAuthentication();
+                }
+            }
+    
+            function continueAuthentication() {
+                //Redirect to common auth
+                window.clearInterval(intervalListener);
+                document.getElementById("toCommonAuth").submit();
+            }
+        });
+    
+    </script>
+    
 </body>
 </html>

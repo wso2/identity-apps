@@ -15,6 +15,7 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   --%>
+
 <%@ page import="com.google.gson.Gson" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
@@ -22,10 +23,12 @@
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@include file="localize.jsp" %>
-<%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
-<jsp:directive.include file="init-url.jsp"/>
-<jsp:directive.include file="template-mapper.jsp"/>
+
+<%@include file="includes/localize.jsp" %>
+<jsp:directive.include file="includes/init-url.jsp"/>
+<jsp:directive.include file="includes/template-mapper.jsp"/>
+
+<%@ taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -46,96 +49,64 @@
     Gson gson = new Gson();
     Map data = gson.fromJson(contextProperties, Map.class);
 %>
+
+<!doctype html>
 <html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- title -->
+    <!-- header -->
     <%
-        File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-        if (titleFile.exists()) {
+        File headerFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+        if (headerFile.exists()) {
     %>
-            <jsp:include page="extensions/title.jsp"/>
+        <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/title.jsp"/>
+        <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
-
-    <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-    <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/Roboto.css" rel="stylesheet">
-    <link href="css/custom-common.css" rel="stylesheet">
 </head>
 <body>
-<script>
-    function getDateFromTimestamp(timestamp) {
-        var date = new Date(Number(timestamp));
-        var options = {
-            month: "2-digit",
-            day: "2-digit",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-        };
-        document.getElementById(timestamp).innerText = date.toLocaleDateString(undefined, options);
-    }
-</script>
+    <main class="center-segment">
+        <div class="ui container medium center aligned middle">
 
-<!-- header -->
-<%
-    File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-    if (headerFile.exists()) {
-%>
-        <jsp:include page="extensions/header.jsp"/>
-<% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
-<% } %>
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>
 
-<!-- page content -->
-<div class="container-fluid body-wrapper">
-    
-    <div class="row">
-        <div class="col-md-12">
-            
-            <div class="container col-xs-10 col-sm-6 col-md-6 col-lg-4 col-centered wr-content wr-login col-centered">
-                <c:set var="data" value="<%=data%>" scope="request"/>
-                <c:set var="promptId" value="<%=URLEncoder.encode(promptId, StandardCharsets.UTF_8.name())%>"
-                       scope="request"/>
+            <div class="ui segment">
+                <div class="segment-form">
+                    <c:set var="data" value="<%=data%>" scope="request"/>
+                    <c:set var="promptId" value="<%=URLEncoder.encode(promptId, StandardCharsets.UTF_8.name())%>"
+                            scope="request"/>
+              
+                    <h3 class="ui header">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "multiple.active.sessions.found")%>
+                    </h3>
                 
-                <div>
-                    <h2 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none">
-                        Multiple Active Session(s) Found
-                    </h2>
-                </div>
-                
-                <div class="boarder-all ">
-                    <div class="clearfix"></div>
-                    <div class="padding-double login-form">
-                        
-                        <form name="sessionsForm" action="<%=commonauthURL%>" method="POST"
-                              onsubmit="return validateForm(this.submitted)">
-                            <h4 class="text-center padding-double">
-                                You currently have <fmt:formatNumber>
-                                <e:forHtmlContent value='${fn:length(requestScope.data["sessions"])}'/>
-                            </fmt:formatNumber>
-                                active session(s).
-                                You are not allowed to have more than <fmt:formatNumber>
-                                <e:forHtmlContent value='${requestScope.data["MaxSessionCount"]}'/>
-                            </fmt:formatNumber> active session(s).
-                            </h4>
-                            <table class="table table-striped table-bordered">
-                                <thead>
+                    <form class="segment-form" name="sessionsForm" action="<%=commonauthURL%>" method="POST"
+                            onsubmit="return validateForm(this.submitted)">
+
+                        <h4>
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.currently.have.x.active.sessions.1")%> <fmt:formatNumber><e:forHtmlContent value='${fn:length(requestScope.data["sessions"])}'/></fmt:formatNumber>
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.currently.have.x.active.sessions.2")%>. <%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.currently.have.x.active.sessions.3")%>
+                            <fmt:formatNumber><e:forHtmlContent value='${requestScope.data["MaxSessionCount"]}'/></fmt:formatNumber> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.currently.have.x.active.sessions.2")%>.
+                        </h4>
+
+                        <table class="ui celled table">
+                            <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Browser</th>
-                                    <th>Platform</th>
-                                    <th>Last Accessed</th>
-                                    <th><input type="checkbox" onchange="toggleSessionCheckboxes()" id="masterCheckbox"
-                                               checked></th>
+                                    <th><%=AuthenticationEndpointUtil.i18n(resourceBundle, "browser")%></th>
+                                    <th><%=AuthenticationEndpointUtil.i18n(resourceBundle, "platform")%></th>
+                                    <th><%=AuthenticationEndpointUtil.i18n(resourceBundle, "last.accessed")%></th>
+                                    <th><input type="checkbox" onchange="toggleSessionCheckboxes()" id="masterCheckbox" checked></th>
                                 </tr>
-                                </thead>
-                                <tbody>
+                            </thead>
+                            <tbody>
                                 <c:forEach items='${requestScope.data["sessions"]}' var="session" varStatus="loop">
                                     <tr>
                                         <td><e:forHtmlContent value="${loop.index + 1}"/></td>
@@ -145,143 +116,154 @@
                                             <script>getDateFromTimestamp(<e:forJavaScript value="${session[1]}"/>);</script>
                                         </td>
                                         <td><input type="checkbox" onchange="toggleMasterCheckbox()"
-                                                   value="<e:forHtmlAttribute value="${session[0]}"/>"
-                                                   name="sessionsToTerminate" checked></td>
+                                                    value="<e:forHtmlAttribute value="${session[0]}"/>"
+                                                    name="sessionsToTerminate" checked></td>
                                     </tr>
                                 </c:forEach>
-                                </tbody>
-                            </table>
-                            <h4 class="text-center padding-double">
-                                You need to either terminate unwanted active session(s) & proceed, or deny the login.
-                                <br>
-                                Please select your option.
-                            </h4>
-                            
-                            <input type="hidden" name="promptResp" value="true">
-                            <input type="hidden" name="promptId"
-                                   value="<e:forHtmlAttribute value="${requestScope.promptId}"/>">
-                            
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group required">
-                                <input name="terminateActiveSessionsAction" type="submit"
-                                       onclick="this.form.submitted='terminateActiveSessionsAction';"
-                                       class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-medium"
-                                       value="Terminate Selected Active Sessions & Proceed">
-                            </div>
-                            
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-group required">
-                                <input name="denyLimitActiveSessionsAction" type="submit"
-                                       onclick="this.form.submitted='denyLimitActiveSessionsAction';"
-                                       class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-medium"
-                                       value="Deny Login">
-                            </div>
-                            
-                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-group required">
-                                <input name="refreshActiveSessionsAction" type="submit"
-                                       onclick="this.form.submitted='refreshActiveSessionsAction';"
-                                       class="wr-btn grey-bg col-xs-12 col-md-12 col-lg-12 uppercase font-medium"
-                                       value="Refresh Sessions">
-                            </div>
+                            </tbody>
+                        </table>
+
+                        <h4>
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "terminate.unwanted.sessions.message.1")%>.
+                            <br>
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "terminate.unwanted.sessions.message.2")%>.
+                        </h4>
+                        
+                        <input type="hidden" name="promptResp" value="true">
+                        <input type="hidden" name="promptId" value="<e:forHtmlAttribute value="${requestScope.promptId}"/>">
+                        
+                        <div class="align-right buttons">
+                            <input name="terminateActiveSessionsAction" type="submit"
+                                    onclick="this.form.submitted='terminateActiveSessionsAction';"
+                                    class="ui large button"
+                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "terminate.selected.active.sessions.and.proceed")%>">
+                    
+                            <input name="denyLimitActiveSessionsAction" type="submit"
+                                    onclick="this.form.submitted='denyLimitActiveSessionsAction';"
+                                    class="ui large button"
+                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "deny.login")%>">
+                    
+                            <input name="refreshActiveSessionsAction" type="submit"
+                                    onclick="this.form.submitted='refreshActiveSessionsAction';"
+                                    class="ui large primary button"
+                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "refresh.sessions")%>">
+
                             <input id="ActiveSessionsLimitAction" type="hidden" name="ActiveSessionsLimitAction"/>
-                        </form>
-                        <div class="clearfix"></div>
-                    </div>
+                        </div>
+                    </form>             
                 </div>
-            
-            
             </div>
-        
+        </div>
+    </main>
+
+    <div class="ui modal mini" id="selected_sessions_validation" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="header">
+            <h4 class="modal-title"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.sessions.selected")%></h4>
+        </div>
+        <div class="content">
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "mandatory.sessions.warning.msg.1")%>
+            <span id="minimumSessionsElement" class="mandatory-msg"> <%=AuthenticationEndpointUtil.i18n(resourceBundle, "mandatory.sessions.warning.msg.2")%> </span>
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "mandatory.sessions.warning.msg.3")%>.
+        </div>
+        <div class="actions">
+            <button type="button" class="ui primary button"  onclick="hideModal(this)">
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "ok")%>
+            </button>
         </div>
     </div>
-</div>
 
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+        <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
+
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
         <jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
+    <% } else { %>
         <jsp:directive.include file="includes/footer.jsp"/>
-<% } %>
+    <% } %>
 
-<div id="selected_sessions_validation" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="mySmallModalLabel">
-    <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Not Enough Sessions Selected</h4>
-            </div>
-            <div class="modal-body">
-                You need to select
-                <span id="minimumSessionsElement" class="mandatory-msg"> at lest 1 session </span>
-                in order to proceed.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
-
-<script>
-    function toggleSessionCheckboxes() {
-        var isMasterCheckboxChecked = document.getElementById("masterCheckbox").checked;
-        var checkboxes = document.sessionsForm.sessionsToTerminate;
-
-        if (checkboxes instanceof RadioNodeList) {
-            for (i = 0; i < checkboxes.length; i++) {
-                checkboxes[i].checked = isMasterCheckboxChecked;
-            }
-        } else {
-            checkboxes.checked = isMasterCheckboxChecked;
+    <script>
+        function hideModal(elem) {
+            $(elem).closest('.modal').modal('hide');
         }
-    }
 
-    function toggleMasterCheckbox() {
-        var masterCheckbox = document.getElementById("masterCheckbox");
-        var checkboxes = document.sessionsForm.sessionsToTerminate;
+        function getDateFromTimestamp(timestamp) {
+            var date = new Date(Number(timestamp));
+            var options = {
+                month: "2-digit",
+                day: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+            };
+            document.getElementById(timestamp).innerText = date.toLocaleDateString(undefined, options);
+        }
 
-        if (checkboxes instanceof RadioNodeList) {
-            for (var i = 0; i < checkboxes.length; i++) {
-                if (!checkboxes[i].checked) {
-                    masterCheckbox.checked = false;
-                    return;
+        function toggleSessionCheckboxes() {
+            var isMasterCheckboxChecked = document.getElementById("masterCheckbox").checked;
+            var checkboxes = document.sessionsForm.sessionsToTerminate;
+
+            if (checkboxes instanceof RadioNodeList) {
+                for (i = 0; i < checkboxes.length; i++) {
+                    checkboxes[i].checked = isMasterCheckboxChecked;
                 }
+            } else {
+                checkboxes.checked = isMasterCheckboxChecked;
             }
-            masterCheckbox.checked = true;
-        } else {
-            masterCheckbox.checked = checkboxes.checked;
         }
-    }
 
-    function validateForm(submittedAction) {
-        document.getElementById("ActiveSessionsLimitAction").setAttribute("value", submittedAction);
-
-        if (submittedAction === "terminateActiveSessionsAction") {
+        function toggleMasterCheckbox() {
+            var masterCheckbox = document.getElementById("masterCheckbox");
             var checkboxes = document.sessionsForm.sessionsToTerminate;
 
             if (checkboxes instanceof RadioNodeList) {
                 for (var i = 0; i < checkboxes.length; i++) {
-                    if (checkboxes[i].checked) {
-                        return true;
+                    if (!checkboxes[i].checked) {
+                        masterCheckbox.checked = false;
+                        return;
                     }
                 }
-            } else if (checkboxes.checked) {
+                masterCheckbox.checked = true;
+            } else {
+                masterCheckbox.checked = checkboxes.checked;
+            }
+        }
+
+        function validateForm(submittedAction) {
+            document.getElementById("ActiveSessionsLimitAction").setAttribute("value", submittedAction);
+
+            if (submittedAction === "terminateActiveSessionsAction") {
+                var checkboxes = document.sessionsForm.sessionsToTerminate;
+
+                if (checkboxes instanceof RadioNodeList) {
+                    for (var i = 0; i < checkboxes.length; i++) {
+                        if (checkboxes[i].checked) {
+                            return true;
+                        }
+                    }
+                } else if (checkboxes.checked) {
+                    return true;
+                }
+
+            } else if (submittedAction === "denyLimitActiveSessionsAction" || submittedAction === "refreshActiveSessionsAction") {
                 return true;
             }
 
-        } else if (submittedAction === "denyLimitActiveSessionsAction" || submittedAction === "refreshActiveSessionsAction") {
-            return true;
-        }
-        $('#selected_sessions_validation').modal();
-        return false;
-    }
-</script>
+            $('#selected_sessions_validation').modal("show");
 
+            return false;
+        }
+    </script>
 </body>
 </html>

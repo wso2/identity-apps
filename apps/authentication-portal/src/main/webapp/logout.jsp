@@ -37,17 +37,18 @@
 <body>
     <main class="center-segment">
         <div class="ui container medium center aligned middle aligned">
-            <div class="ui segment">
-                <!-- product-title -->
-                <%
-                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                    if (productTitleFile.exists()) {
-                %>
-                    <jsp:include page="extensions/product-title.jsp"/>
-                <% } else { %>
-                    <jsp:directive.include file="includes/product-title.jsp"/>
-                <% } %>
 
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>
+
+            <div class="ui segment">
                 <h1><%=AuthenticationEndpointUtil.i18n(resourceBundle, "logged.out")%></h1>
             </div>
         </div>
@@ -72,7 +73,6 @@
     <% } else { %>
         <jsp:directive.include file="includes/footer.jsp"/>
     <% } %>
-
     
 </body>
 </html>

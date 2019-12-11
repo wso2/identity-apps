@@ -54,6 +54,7 @@
     <main class="center-segment">
         <div class="ui container medium center aligned middle aligned">
             <div class="ui segment">
+
                 <!-- product-title -->
                 <%
                     File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -185,7 +186,7 @@
 
     <div class="ui modal mini" id="modal_claim_validation" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
         <div class="header">
-                <h4 class="modal-title"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "mandatory.claims")%></h4>
+            <h4 class="modal-title"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "mandatory.claims")%></h4>
         </div>
         <div class="content">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "mandatory.claims.warning.msg.1")%>

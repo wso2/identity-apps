@@ -35,6 +35,7 @@
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.AUTHENTICATION_REST_ENDPOINT_URL" %>
 <%@ page import="java.io.File" %>
 
+<%@include file="includes/localize.jsp" %>
 <jsp:directive.include file="includes/init-url.jsp"/>
 
 <%
@@ -117,17 +118,18 @@
 <body>
     <main class="center-segment">
         <div class="ui container large center aligned middle aligned">
-            <div class="ui segment">
-                <!-- product-title -->
-                <%
-                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                    if (productTitleFile.exists()) {
-                %>
-                    <jsp:include page="extensions/product-title.jsp"/>
-                <% } else { %>
-                    <jsp:directive.include file="includes/product-title.jsp"/>
-                <% } %>
 
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>
+
+            <div class="ui segment">
                 <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.are.redirected.back.to")%> <%=commonauthURL%>
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "if.the.redirection.fails.please.click")%>.</p>
 

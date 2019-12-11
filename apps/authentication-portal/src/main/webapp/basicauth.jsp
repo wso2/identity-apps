@@ -36,7 +36,7 @@
 <%@ page import="org.wso2.carbon.base.ServerConfiguration" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EndpointConfigManager" %>
 
-<jsp:directive.include file="init-loginform-action-url.jsp"/>
+<jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 
 <script>
     function goBack() {
@@ -237,10 +237,10 @@
             }
         } 
     %>
-
-    <% if (isRecoveryEPAvailable) { %>
+    
     <div class="buttons">
-        <div class="form-actions">
+        <% if (isRecoveryEPAvailable) { %>
+        <div class="field">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
             <% if (!isIdentifierFirstLogin(inputType)) { %>
                 <a id="usernameRecoverLink" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true)%>">
@@ -253,18 +253,18 @@
             </a>
             ?
         </div>
+        <% } %>
 
-        <div class="form-actions">
-            <% if (isIdentifierFirstLogin(inputType)) { %>
+        <% if (isIdentifierFirstLogin(inputType)) { %>
+        <div class="field">
             <a id="backLink" onclick="goBack()">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.different.account")%>
             </a>
-            <% } %>
         </div>
+        <% } %>
     </div>
     
     <div class="ui divider hidden"></div>
-    <% } %>
 
     <div class="field">
         <div class="ui checkbox">
