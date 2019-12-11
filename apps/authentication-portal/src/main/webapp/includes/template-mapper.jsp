@@ -18,6 +18,7 @@
 
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
+
 <%
     Map<String, String> templateMap = new HashMap<>();
     templateMap.put("genericForm", "templates/genericForm.jsp");

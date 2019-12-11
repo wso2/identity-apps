@@ -50,9 +50,8 @@
             <% } %>
 
             <div class="ui segment">
-                
-
                 <h3 class="ui header"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "do.you.want.to.logout")%></h3>
+
                 <form action="<%=oidcLogoutURL%>" method="post" id="oidc_logout_consent_form"
                     name="oidc_logout_consent_form">
 
