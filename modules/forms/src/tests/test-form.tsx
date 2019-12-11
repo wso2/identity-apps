@@ -169,7 +169,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
     });
 
     return (
-        <Forms onSubmit={ (value) => constants.onSubmit(value) }>
+        <Forms onSubmit={ (value) => constants.onSubmit()(value) }>
             {
                 isGroup
                     ? (

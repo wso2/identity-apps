@@ -45,6 +45,12 @@ const RESET_AUTHENTICATION = "RESET_AUTHENTICATION";
 const SET_PROFILE_INFO = "SET_PROFILE_INFO";
 
 /**
+ * Action type to set the schemas
+ * @type {string}
+ */
+const SET_SCHEMAS = "SET_SCHEMAS";
+
+/**
  * Export action types
  *
  * @type {object}
@@ -52,6 +58,7 @@ const SET_PROFILE_INFO = "SET_PROFILE_INFO";
 export const authenticateActionTypes = {
     RESET_AUTHENTICATION,
     SET_PROFILE_INFO,
+    SET_SCHEMAS,
     SET_SIGN_IN,
     SET_SIGN_OUT
 };

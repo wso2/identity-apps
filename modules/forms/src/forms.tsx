@@ -24,7 +24,7 @@ import {
     Error,
     FormField,
     FormValue,
-    InputField,
+    TextField,
     Validation
 } from "./models";
 
@@ -221,7 +221,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormProps>> 
         const tempRequiredFields: Map<string, boolean> = new Map(requiredFields);
         const tempValidFields: Map<string, Validation> = new Map(validFields);
 
-        formFields.forEach((inputField: InputField) => {
+        formFields.forEach((inputField: FormField) => {
             if (isInputField(inputField)) {
                 if (!tempForm.has(inputField.name) || isReset) {
                     inputField.value && !isReset
@@ -234,10 +234,11 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormProps>> 
                 }
 
                 ((!inputField.value && (!tempForm.get(inputField.name) || !(tempForm.get(inputField.name).length > 0)))
-                    || isReset) && inputField.required
+                    || isReset) && (!isRadioField(inputField) && inputField.required)
                     ? tempRequiredFields.set(inputField.name, false)
                     : tempRequiredFields.set(inputField.name, true);
-                tempValidFields.set(name, { isValid: true, errorMessages: [] });
+
+                tempValidFields.set(inputField.name, { isValid: true, errorMessages: [] });
             }
         });
 
@@ -263,14 +264,16 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormProps>> 
             return isInputField(formField) && formField.name === name;
         });
 
-        if (!isCheckBoxField(inputField)) {
-            form.get(name) !== null && form.get(name) !== ""
-                ? requiredFieldsParam.set(name, true)
-                : requiredFieldsParam.set(name, false);
-        } else {
-            form.get(name) !== null && form.get(name).length > 0
-                ? requiredFieldsParam.set(name, true)
-                : requiredFieldsParam.set(name, false);
+        if (isInputField(inputField) && !isRadioField(inputField) && inputField.required) {
+            if (!isCheckBoxField(inputField)) {
+                form.get(name) !== null && form.get(name) !== ""
+                    ? requiredFieldsParam.set(name, true)
+                    : requiredFieldsParam.set(name, false);
+            } else {
+                form.get(name) !== null && form.get(name).length > 0
+                    ? requiredFieldsParam.set(name, true)
+                    : requiredFieldsParam.set(name, false);
+            }
         }
 
         const validation: Validation = {
@@ -281,6 +284,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormProps>> 
         if (
             isTextField(inputField)
             && inputField.validation
+            && !(form.get(name) === null || form.get(name) === "")
         ) {
             inputField.validation(form.get(name) as string, validation, new Map(form));
         }

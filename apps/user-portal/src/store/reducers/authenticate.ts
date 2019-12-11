@@ -32,6 +32,7 @@ const authenticateInitialState: AuthStateInterface = {
     loginInit: false,
     logoutInit: false,
     profileInfo: createEmptyProfile(),
+    profileSchemas: [],
     username: ""
 };
 
@@ -71,6 +72,11 @@ const authenticateReducer = (state = authenticateInitialState, action) => {
             return {
                 ...state,
                 profileInfo: action.payload
+            };
+        case authenticateActionTypes.SET_SCHEMAS:
+            return {
+                ...state,
+                profileSchemas: action.payload
             };
         default:
             return state;

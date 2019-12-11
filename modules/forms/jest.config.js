@@ -15,18 +15,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import { BasicProfileInterface, ProfileSchema } from "./profile";
-
-export interface AuthStateInterface {
-    children?: any;
-    displayName: string;
-    emails: string;
-    isAuth: boolean;
-    location: string;
-    loginInit: boolean;
-    logoutInit: boolean;
-    profileSchemas: ProfileSchema[];
-    profileInfo: BasicProfileInterface;
-    username: string;
+module.exports = {
+        transform: {
+            "^.+\\.tsx$": "ts-jest",
+            "^.+\\.ts$": "ts-jest",
+            "^.+\\.js$": "babel-jest",
+            "^.+\\.jsx$": "babel-jest"
+        },
+        moduleNameMapper: {
+            "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$"
+                : "<rootDir>/test-configs/file-mock.js",
+            "\\.(css|less)$": "<rootDir>/test-configs/style-mock.js"
+        },
+        setupFilesAfterEnv: [
+            "<rootDir>/test-configs/setup-test.ts"
+        ]
 }

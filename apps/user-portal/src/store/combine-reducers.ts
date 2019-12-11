@@ -18,6 +18,7 @@
 
 import { combineReducers } from "redux";
 import { authenticateReducer, globalReducer } from "./reducers";
+import { LoadersReducer } from "./reducers/loaders";
 
 /**
  * Combines all the reducers.
@@ -26,5 +27,6 @@ import { authenticateReducer, globalReducer } from "./reducers";
  */
 export const reducers = combineReducers({
     authenticationInformation: authenticateReducer,
-    global: globalReducer
+    global: globalReducer,
+    loaders: LoadersReducer
 });

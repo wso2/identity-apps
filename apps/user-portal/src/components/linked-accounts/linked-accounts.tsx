@@ -69,38 +69,35 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
     const fetchLinkedAccounts = (): void => {
         let notification: Notification = createEmptyNotification();
 
-        if (!profileDetails.profileInfo || (profileDetails.profileInfo && !profileDetails.profileInfo.displayName)) {
-            getProfileInfo()
-                .then((infoResponse) => {
-                    getAssociations()
-                        .then((associationsResponse) => {
-                            setLinkedAccounts(associationsResponse);
-                            dispatch(
-                                setProfileInfo({
-                                    ...infoResponse,
-                                    associations: associationsResponse
-                                })
-                            );
-                        })
-                        .catch((error) => {
-                            notification = {
-                                description: t(
-                                    "views:components.linkedAccounts.notifications.getAssociations.error.description",
-                                    { description: error }
-                                ),
-                                message: t(
-                                    "views:components.linkedAccounts.notifications.getAssociations.error.message"
-                                ),
-                                otherProps: {
-                                    negative: true
-                                },
-                                visible: true
-                            };
-                        })
-                        .finally(() => {
-                            onNotificationFired(notification);
-                        });
-                });
+        if (!profileDetails.profileInfo
+            || (profileDetails.profileInfo
+                && !profileDetails.profileInfo.name.givenName)) {
+            getProfileInfo().then((infoResponse) => {
+                getAssociations()
+                    .then((associationsResponse) => {
+                        setLinkedAccounts(associationsResponse);
+                        dispatch(
+                            setProfileInfo({
+                                ...infoResponse,
+                                associations: associationsResponse
+                            })
+                        );
+                    })
+                    .catch((error) => {
+                        notification = {
+                            description: t(
+                                "views:components.linkedAccounts.notifications.getAssociations.error.description",
+                                { description: error }
+                            ),
+                            message: t("views:components.linkedAccounts.notifications.getAssociations.error.message"),
+                            otherProps: {
+                                negative: true
+                            },
+                            visible: true
+                        };
+                    });
+            });
+            onNotificationFired(notification);
             return;
         }
 

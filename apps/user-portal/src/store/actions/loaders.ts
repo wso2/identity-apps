@@ -16,17 +16,22 @@
  * under the License.
  */
 
-import { BasicProfileInterface, ProfileSchema } from "./profile";
+import { LoaderAction, SET_PROFILE_INFO_LOADER, SET_PROFILE_SCHEMA_LOADER } from "./types";
 
-export interface AuthStateInterface {
-    children?: any;
-    displayName: string;
-    emails: string;
-    isAuth: boolean;
-    location: string;
-    loginInit: boolean;
-    logoutInit: boolean;
-    profileSchemas: ProfileSchema[];
-    profileInfo: BasicProfileInterface;
-    username: string;
-}
+/**
+ * Sets the state of the profile schema loader
+ * @param state
+ */
+export const setProfileSchemaLoader = (state: boolean): LoaderAction => ({
+    payload: state,
+    type: SET_PROFILE_SCHEMA_LOADER
+});
+
+/**
+ * Sets the state of the profile info loader
+ * @param state
+ */
+export const setProfileInfoLoader = (state: boolean): LoaderAction => ({
+    payload: state,
+    type: SET_PROFILE_INFO_LOADER
+});

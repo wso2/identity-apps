@@ -16,23 +16,37 @@
  * under the License.
  */
 
+ /**
+  * Multi-valued attribute model
+  */
+export interface MultiValue {
+    type: string;
+    value: string;
+}
+
+/**
+ * Name model
+ */
+export interface Name {
+    givenName: string;
+    familyName: string;
+}
+
 /**
  * Profile Model
  */
 export interface BasicProfileInterface {
-    displayName: string;
-    emails: string[];
+    emails: string[] | MultiValue[];
     email?: string;
-    lastName: string;
-    phoneNumbers: number[];
+    phoneNumbers: MultiValue[];
     organisation: string;
     responseStatus: number;
-    roles?: string[];
-    proUrl: string;
+    roles?: MultiValue[];
+    name: Name;
+    profileUrl: string;
     isSecurity?: boolean;
-    mobile?: string;
     userimage?: string;
-    username?: string;
+    userName?: string;
     associations?: LinkedAccountInterface[];
 }
 
@@ -82,22 +96,20 @@ export interface ProfileSchema {
     caseExact: boolean;
     returned: string;
     required: boolean;
-    subAttributes?: any;
+    subAttributes?: ProfileSchema[];
 }
 
 export const createEmptyProfile = (): BasicProfileInterface => ({
     associations: [],
-    displayName: "",
     email: "",
     emails: [],
     isSecurity: false,
-    lastName: "",
-    mobile: "",
+    name: { givenName: "", familyName: "" },
     organisation: "",
     phoneNumbers: [],
-    proUrl: "",
+    profileUrl: "",
     responseStatus: null,
     roles: [],
-    userimage: "",
-    username: ""
+    userName: "",
+    userimage: ""
 });

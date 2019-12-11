@@ -16,17 +16,7 @@
  * under the License.
  */
 
-import { BasicProfileInterface, ProfileSchema } from "./profile";
-
-export interface AuthStateInterface {
-    children?: any;
-    displayName: string;
-    emails: string;
-    isAuth: boolean;
-    location: string;
-    loginInit: boolean;
-    logoutInit: boolean;
-    profileSchemas: ProfileSchema[];
-    profileInfo: BasicProfileInterface;
-    username: string;
+export interface LoadersInterface {
+    isProfileInfoLoading: boolean;
+    isProfileSchemaLoading: boolean;
 }

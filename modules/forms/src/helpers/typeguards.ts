@@ -24,23 +24,23 @@ import {
     FormDivider,
     FormField,
     FormSubmit,
-    InputField,
     PasswordField,
     RadioField,
-    Reset
+    Reset,
+    TextField
 } from "../../src";
 
 /**
  * Type guard to check if an input element is a text field
  * @param toBeDetermined
  */
-export const isTextField = (toBeDetermined: FormField): toBeDetermined is InputField | PasswordField => {
+export const isTextField = (toBeDetermined: FormField): toBeDetermined is TextField | PasswordField => {
     return (
-        (toBeDetermined as InputField).type === "email" ||
+        (toBeDetermined as TextField).type === "email" ||
         (toBeDetermined as PasswordField).type === "password" ||
-        (toBeDetermined as InputField).type === "number" ||
-        (toBeDetermined as InputField).type === "text" ||
-        (toBeDetermined as InputField).type === "textarea"
+        (toBeDetermined as TextField).type === "number" ||
+        (toBeDetermined as TextField).type === "text" ||
+        (toBeDetermined as TextField).type === "textarea"
     );
 };
 
@@ -122,11 +122,12 @@ export const isCustomField = (toBeDetermined: FormField): toBeDetermined is Cust
  */
 export const isInputField = (
     toBeDetermined: FormField
-): toBeDetermined is InputField | CheckboxField | DropdownField | RadioField | PasswordField => {
+): toBeDetermined is TextField | CheckboxField | DropdownField | RadioField | PasswordField => {
     return (
         isTextField(toBeDetermined) ||
         isCheckBoxField(toBeDetermined) ||
         isDropdownField(toBeDetermined) ||
-        isRadioField(toBeDetermined)
+        isRadioField(toBeDetermined) ||
+        isPasswordField(toBeDetermined)
     );
 };

@@ -73,9 +73,10 @@ describe("Test if the Forms is working fine", () => {
         fireEvent.change(textBox, { target: { value: constants.TEXT_BOX_VALID_MESSAGE } });
         fireEvent.blur(textBox);
         fireEvent.click(getByText(constants.SUBMIT));
-        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
-        expect(constants.onSubmit.mock.calls[0][0].get(constants.TEXT_BOX_NAME)).toBe(constants.TEXT_BOX_VALID_MESSAGE);
-        constants.onSubmit.mockReset();
+        expect(constants.onSubmit()).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit().mock.calls[0][0].get(constants.TEXT_BOX_NAME))
+            .toBe(constants.TEXT_BOX_VALID_MESSAGE);
+        constants.onSubmit().mockReset();
     });
 
     test("Test if input type text is empty by default when no value is passed", () => {
@@ -209,9 +210,10 @@ describe("Test if the Forms is working fine", () => {
         fireEvent.change(passwordBox, { target: { value: constants.PASSWORD_VALID_MESSAGE } });
         fireEvent.blur(passwordBox);
         fireEvent.click(getByText(constants.SUBMIT));
-        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
-        expect(constants.onSubmit.mock.calls[0][0].get(constants.PASSWORD_NAME)).toBe(constants.PASSWORD_VALID_MESSAGE);
-        constants.onSubmit.mockReset();
+        expect(constants.onSubmit()).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit().mock.calls[0][0].get(constants.PASSWORD_NAME))
+            .toBe(constants.PASSWORD_VALID_MESSAGE);
+        constants.onSubmit().mockReset();
     });
 
     test("Test if the basic functions of a checkbox are working fine", () => {
@@ -257,9 +259,9 @@ describe("Test if the Forms is working fine", () => {
         fireEvent.click(getByDisplayValue(constants.CHECKBOX_CHILD_2_VALUE));
         fireEvent.blur(getByDisplayValue(constants.CHECKBOX_CHILD_1_VALUE));
         fireEvent.click(getByText(constants.SUBMIT));
-        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
-        expect(constants.onSubmit.mock.calls[0][0].get(constants.CHECKBOX_NAME)).toHaveLength(2);
-        constants.onSubmit.mockReset();
+        expect(constants.onSubmit()).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit().mock.calls[0][0].get(constants.CHECKBOX_NAME)).toHaveLength(2);
+        constants.onSubmit().mockReset();
 
     });
 
@@ -280,9 +282,9 @@ describe("Test if the Forms is working fine", () => {
         ]));
         fireEvent.click(getByText(constants.SUBMIT));
         expect(queryByText(constants.CHECKBOX_REQUIRED_MESSAGE)).not.toBeInTheDocument();
-        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
-        expect(constants.onSubmit.mock.calls[0][0].get(constants.CHECKBOX_NAME)).toHaveLength(0);
-        constants.onSubmit.mockReset();
+        expect(constants.onSubmit()).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit().mock.calls[0][0].get(constants.CHECKBOX_NAME)).toHaveLength(0);
+        constants.onSubmit().mockReset();
     });
 
     test("Test if the basic functions of the radio field are working fine", () => {
@@ -317,9 +319,9 @@ describe("Test if the Forms is working fine", () => {
 
         // check if submission is working fine
         fireEvent.click(getByText(constants.SUBMIT));
-        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
-        expect(constants.onSubmit.mock.calls[0][0].get(constants.RADIO_NAME)).toBe(constants.RADIO_CHILD_2_VALUE);
-        constants.onSubmit.mockReset();
+        expect(constants.onSubmit()).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit().mock.calls[0][0].get(constants.RADIO_NAME)).toBe(constants.RADIO_CHILD_2_VALUE);
+        constants.onSubmit().mockReset();
 
     });
 
@@ -379,9 +381,10 @@ describe("Test if the Forms is working fine", () => {
 
         // check if submission works fine
         fireEvent.click(getByText(constants.SUBMIT));
-        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
-        expect(constants.onSubmit.mock.calls[0][0].get(constants.DROPDOWN_NAME)).toBe(constants.DROPDOWN_CHILD_2_VALUE);
-        constants.onSubmit.mockReset();
+        expect(constants.onSubmit()).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit().mock.calls[0][0].get(constants.DROPDOWN_NAME))
+            .toBe(constants.DROPDOWN_CHILD_2_VALUE);
+        constants.onSubmit().mockReset();
     });
 
     test("Test if the default value is selected in a dropdown", () => {
@@ -442,9 +445,9 @@ describe("Test if the Forms is working fine", () => {
 
         fireEvent.click(getByText(constants.SUBMIT));
         expect(queryByText(constants.DROPDOWN_REQUIRED_MESSAGE)).not.toBeInTheDocument();
-        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
-        expect(constants.onSubmit.mock.calls[0][0].get(constants.DROPDOWN_NAME)).toBe("");
-        constants.onSubmit.mockReset();
+        expect(constants.onSubmit()).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit().mock.calls[0][0].get(constants.DROPDOWN_NAME)).toBe("");
+        constants.onSubmit().mockReset();
     });
 
     test("Test if the reset button is working fine", () => {
@@ -571,9 +574,10 @@ describe("Test if the Forms is working fine", () => {
         fireEvent.change(textBox, { target: { value: constants.TEXT_BOX_VALID_MESSAGE } });
         fireEvent.blur(textBox);
         fireEvent.click(getByText(constants.SUBMIT));
-        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
-        expect(constants.onSubmit.mock.calls[0][0].get(constants.TEXT_BOX_NAME)).toBe(constants.TEXT_BOX_VALID_MESSAGE);
-        constants.onSubmit.mockReset();
+        expect(constants.onSubmit()).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit().mock.calls[0][0].get(constants.TEXT_BOX_NAME))
+            .toBe(constants.TEXT_BOX_VALID_MESSAGE);
+        constants.onSubmit().mockReset();
     });
 
 });

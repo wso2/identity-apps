@@ -17,18 +17,42 @@
  *
  */
 
-import "fastestsmallesttextencoderdecoder";
-// tslint:disable-next-line:ordered-imports
 import Joi from "@hapi/joi";
+import "fastestsmallesttextencoderdecoder";
 
-export const email = (value: string): boolean => {
+type ValidationFunction = (value: string) => boolean;
+
+/**
+ * This validates email addresses. Returns true if valid. False if not valid.
+ * Doesn't check for the validity of the top level domain.
+ * @param value
+ */
+export const email: ValidationFunction = (value: string): boolean => {
     if (Joi.string().email({ tlds: false }).validate(value).error) {
         return false;
     }
     return true;
 };
-export const mobileNumber = (value: string): boolean => {
+
+/**
+ * This validates mobile numbers. Returns true if valid. False if not valid.
+ * Checks if the mobile number input has only numbers, '-', and '+'.
+ * @param value
+ */
+export const mobileNumber: ValidationFunction = (value: string): boolean => {
     if (Joi.string().pattern(/^[\d-\+]+$/).validate(value).error) {
+        return false;
+    }
+    return true;
+};
+
+/**
+ * This validates URLs. Returns true if valid. False if not valid.
+ * Check is the satisfies RFC 3986 specifications
+ * @param value
+ */
+export const url: ValidationFunction = (value: string): boolean => {
+    if (Joi.string().uri().validate(value).error) {
         return false;
     }
     return true;

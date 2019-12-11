@@ -23,10 +23,12 @@ import {
     SignInUtil,
     SignOutUtil
 } from "@wso2is/authentication";
-import { getAssociations, getProfileInfo } from "../../api";
+import { getAssociations, getProfileInfo, getProfileSchemas } from "../../api";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../../configs";
 import * as TokenConstants from "../../constants";
+import { ProfileSchema } from "../../models";
 import { fireNotification } from "./global";
+import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
 import { authenticateActionTypes } from "./types";
 
 /**
@@ -59,12 +61,23 @@ export const setProfileInfo = (details: any) => ({
 });
 
 /**
+ * Dispatches an action of type `SET_SCHEMAS`
+ * @param schemas
+ */
+export const setScimSchemas = (schemas: ProfileSchema[]) => ({
+    payload: schemas,
+    type: authenticateActionTypes.SET_SCHEMAS
+});
+
+/**
  *  Gets profile information by making an API call
  */
 export const getProfileInformation = () => {
     return (dispatch) => {
+        dispatch(setProfileInfoLoader(true));
         getProfileInfo()
             .then((infoResponse) => {
+                dispatch(setProfileInfoLoader(false));
                 if (infoResponse.responseStatus === 200) {
                     dispatch(
                         setProfileInfo({
@@ -74,11 +87,9 @@ export const getProfileInformation = () => {
                 } else {
                     dispatch(
                         fireNotification({
-                            description:
-                                "views:components.profile.notifications.getProfileInfo.genericError" +
+                            description: "views:components.profile.notifications.getProfileInfo.genericError" +
                                 ".description",
-                            message: "views:components.profile.notifications.getProfileInfo.genericError" +
-                                ".message",
+                            message: "views:components.profile.notifications.getProfileInfo.genericError.message",
                             otherProps: {
                                 negative: true
                             },
@@ -111,7 +122,9 @@ export const handleSignIn = () => {
      * to set the associations in the context.
      */
     const setProfileDetails = (dispatch) => {
+        dispatch(setProfileInfoLoader(true));
         getProfileInfo().then((infoResponse) => {
+            dispatch(setProfileInfoLoader(false));
             getAssociations().then((associationsResponse) => {
                 dispatch(
                     setProfileInfo({
@@ -130,7 +143,7 @@ export const handleSignIn = () => {
             clientSecret: null,
             enablePKCE: true,
             redirectUri: GlobalConfig.loginCallbackUrl,
-            scope: [ TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE ],
+            scope: [TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE]
         };
         if (SignInUtil.hasAuthorizationCode()) {
             SignInUtil.sendTokenRequest(requestParams)
@@ -141,6 +154,7 @@ export const handleSignIn = () => {
                     );
                     dispatch(setSignIn());
                     setProfileDetails(dispatch);
+                    getScimSchemas(dispatch);
                 })
                 .catch((error) => {
                     throw error;
@@ -153,6 +167,7 @@ export const handleSignIn = () => {
         if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
             dispatch(setSignIn());
             setProfileDetails(dispatch);
+            getScimSchemas(dispatch);
         } else {
             OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false)
                 .then(() => {
@@ -177,14 +192,29 @@ export const handleSignIn = () => {
  */
 export const handleSignOut = () => {
     return (dispatch) => {
-        SignOutUtil.sendSignOutRequest(LOGIN_CALLBACK_URL)
+        SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl)
             .then(() => {
                 dispatch(setSignOut());
                 AuthenticateSessionUtil.endAuthenticatedSession();
                 OPConfigurationUtil.resetOPConfiguration();
             })
-            .catch
-            // TODO show error page.
-            ();
+            .catch((error) => {
+                // TODO: show error page
+            });
     };
+};
+
+/**
+ * Get SCIM2 schemas
+ */
+export const getScimSchemas = (dispatch) => {
+    dispatch(setProfileSchemaLoader(true));
+    getProfileSchemas()
+        .then((response: ProfileSchema[]) => {
+            dispatch(setProfileSchemaLoader(false));
+            dispatch(setScimSchemas(response));
+        })
+        .catch((error) => {
+            // TODO: show error page
+        });
 };

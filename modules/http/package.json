@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/http",
-    "version": "0.1.122-SNAPSHOT",
+    "version": "0.1.130-SNAPSHOT",
     "description": "HTTP module for WSO2 Identity Server web-apps.",
     "keywords": [
         "WSO2",
@@ -26,7 +26,7 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/authentication": "^0.1.122-SNAPSHOT"
+        "@wso2is/authentication": "^0.1.130-SNAPSHOT"
     },
     "peerDependencies": {
         "axios": "*"

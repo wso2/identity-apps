@@ -5,5 +5,5 @@
         "declaration": true
     },
     "extends": "../../configs/common.tsconfig.json",
-    "exclude": ["src/tests","test_configs"]
+    "exclude": ["src/tests","test-configs"]
 }

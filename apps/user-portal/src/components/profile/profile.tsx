@@ -22,10 +22,11 @@ import { isEmpty } from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import Skeleton from "react-skeleton-loader";
 import { Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
 import { updateProfileInfo } from "../../api";
 import * as UIConstants from "../../constants/ui-constants";
-import { AuthStateInterface, createEmptyProfile, Notification } from "../../models";
+import { AuthStateInterface, Notification, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation } from "../../store/actions";
 import { EditSection, SettingsSection, UserAvatar } from "../shared";
@@ -44,18 +45,72 @@ interface ProfileProps {
  * @return {JSX.Element}
  */
 export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): JSX.Element => {
-    const [profileInfo, setProfileInfo] = useState(createEmptyProfile());
-    const [editingProfileInfo, setEditingProfileInfo] = useState(createEmptyProfile());
-    const [editingForm, setEditingForm] = useState({
-        emailChangeForm: false,
-        mobileChangeForm: false,
-        nameChangeForm: false,
-        organizationChangeForm: false
-    });
+    const [profileInfo, setProfileInfo] = useState(new Map<string, string>());
+    const [profileSchema, setProfileSchema] = useState<ProfileSchema[]>();
+    const [editingForm, setEditingForm] = useState(new Map<string, boolean>());
     const { onNotificationFired } = props;
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+    const profileInfoLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
+    const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
+
+    /**
+     * This function extracts the sub attributes from the schemas and appends them to the main schema iterable.
+     * The returned iterable will have all the schema attributes in a flat structure so that
+     * you can just iterate through them to display them.
+     * @param schemas
+     */
+    const flattenSchemas = (schemas: ProfileSchema[]): ProfileSchema[] => {
+        const tempSchemas: ProfileSchema[] = [];
+        schemas.forEach((schema: ProfileSchema) => {
+            if (schema.subAttributes && schema.subAttributes.length > 0) {
+                /**
+                 * If the schema has sub attributes, then this function will be recursively called.
+                 * The returned attributes are pushed into the `tempSchemas` array.
+                 */
+                tempSchemas.push(...flattenSchemas(schema.subAttributes));
+            } else {
+                tempSchemas.push(schema);
+            }
+        });
+        return tempSchemas;
+    };
+
+    /**
+     * This function traverses the whole schema array to find a certain attribute.
+     * The found attribute will be returned as a part of the object tree it belongs to.
+     * This function is called only when the schema attribute is not found in the `profileInfo` object
+     * since there is no way the structure of the attribute to be saved can be known.
+     * @param schemas
+     */
+    const parseSchemas = (
+        schemas: ProfileSchema[],
+        formName: string,
+        values: Map<string, string | string[]>,
+        value: {}
+    ): {} => {
+        let schema: ProfileSchema;
+        for (schema of schemas) {
+            value = {};
+            if (schema.name === formName) {
+                if (formName === "givenName" || formName === "familyName") {
+                    value[schema.name] = values.get(formName);
+                } else {
+                    value = [{ type: formName, value: values.get(formName) }];
+                }
+
+                return value;
+            } else if (schema.subAttributes && schema.subAttributes.length > 0) {
+                const returnValue = parseSchemas(schema.subAttributes, formName, values, value);
+                if (!isEmpty(returnValue)) {
+                    value[schema.name] = returnValue;
+                    return value;
+                }
+            }
+        }
+        return value;
+    };
 
     /**
      * dispatch getProfileInformation action if the profileDetails object is empty
@@ -67,18 +122,86 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     }, []);
 
     /**
-     * If the profileDetails object changes call the setBasicDetails function
+     * Sort the elements of the profileSchema state according by the displayOrder attribute in the ascending order.
      */
     useEffect(() => {
-        if (!isEmpty(profileDetails.profileInfo)) {
-            setBasicDetails(profileDetails.profileInfo);
+        setProfileSchema(flattenSchemas(profileDetails.profileSchemas).sort((a: ProfileSchema, b: ProfileSchema) => {
+            if (!a.displayOrder) {
+                return -1;
+            } else if (!b.displayOrder) {
+                return 1;
+            } else {
+                return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
+            }
+        }));
+    }, [profileDetails]);
+
+    /**
+     * This adds key-value pairs to the `editingForm` state. This would be used to open and close
+     * editing forms.
+     * This also maps profile info to the schema.
+     */
+    useEffect(() => {
+        if (!isEmpty(profileSchema) && !isEmpty(profileDetails) && !isEmpty(profileDetails.profileInfo)) {
+            const tempProfileInfo: Map<string, string> = new Map<string, string>();
+
+            /**
+             * Traverse every schema attribute in the `profileSchema` array and map
+             * the relevant field from the `profileDetails.profileInfo` object to the schema name and store in
+             * the `profileInfo` state.
+             */
+            profileSchema.forEach((schema: ProfileSchema) => {
+
+                /**
+                 * Check if an attribute by the schema name exists in `profileInfo`.
+                 * If it doesn't, then search the sub attributes for the schema.
+                 */
+                if (isEmpty(profileDetails.profileInfo[schema.name])) {
+
+                    // Turn the `profileInfo` into an iterable and iterate over each key-value pair
+                    Object.entries(profileDetails.profileInfo).forEach((profileInfoPair) => {
+                        // Check if the profileInfo attribute is an array
+                        if (Array.isArray(profileInfoPair[1])) {
+                            // iterate over array elements
+                            profileInfoPair[1].forEach((subProfileInfo, index: number) => {
+
+                                /**
+                                 * Check if the element is an object.
+                                 * Multi-valued schemas are returned as an array of objects
+                                 * consisting of attributes `type` and `value`.
+                                 */
+                                if (typeof subProfileInfo === "object" && subProfileInfo !== null) {
+                                    if (subProfileInfo.type === schema.name) {
+                                        tempProfileInfo.set(schema.name, subProfileInfo.value);
+                                    }
+                                }
+                            });
+                            // Check if the attribute is an object. Name is returned as an object
+                        } else if (typeof profileInfoPair[1] === "object" && profileInfoPair[1] !== null) {
+                            if (profileInfoPair[1][schema.name]) {
+                                tempProfileInfo.set(schema.name, profileInfoPair[1][schema.name]);
+                            }
+                        }
+                    });
+                    /**
+                     * If a value exists in `profileInfo` for the schema attribute, then first check
+                     * if it's an array. When multiple email addresses are not set, email is returned as an array
+                     */
+                } else if (Array.isArray(profileDetails.profileInfo[schema.name])) {
+                    tempProfileInfo.set(schema.name, profileDetails.profileInfo[schema.name][0]);
+                } else {
+                    tempProfileInfo.set(schema.name, profileDetails.profileInfo[schema.name]);
+                }
+            });
+            setProfileInfo(tempProfileInfo);
         }
-    }, [profileDetails.profileInfo]);
+    }, [profileSchema, profileDetails]);
 
     /**
      * The following method handles the `onSubmit` event of forms.
      *
-     * @param formName - Name of the form
+     * @param values
+     * @param formName
      */
     const handleSubmit = (values: Map<string, string | string[]>, formName: string): void => {
         const data = {
@@ -91,43 +214,43 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
 
-        switch (formName) {
-            case "nameChangeForm": {
-                data.Operations[0].value = {
-                    name: {
-                        familyName: values.get("lastName"),
-                        givenName: values.get("displayName")
-                    }
-                };
-                break;
-            }
-            case "emailChangeForm": {
-                data.Operations[0].value = {
-                    emails: [values.get("email")]
-                };
-                break;
-            }
-            case "organizationChangeForm": {
-                data.Operations[0].value = {
-                    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
-                        organization: values.get("organisation")
-                    }
-                };
-                break;
-            }
-            case "mobileChangeForm": {
-                data.Operations[0].value = {
-                    phoneNumbers: [
-                        {
-                            type: "mobile",
-                            value: values.get("mobile")
+        let value = {};
+        if (typeof (profileDetails.profileInfo[formName]) === "undefined") {
+            Object.entries(profileDetails.profileInfo).forEach((profileInfoPair) => {
+                if (Array.isArray(profileInfoPair[1])) {
+                    profileInfoPair[1].forEach((subProfileInfo, index: number) => {
+                        if (typeof subProfileInfo === "object" && subProfileInfo !== null) {
+                            if (subProfileInfo.type === formName) {
+                                value[profileInfoPair[0]] = [{
+                                    type: formName,
+                                    value: values.get(formName)
+                                }];
+                            }
                         }
-                    ]
-                };
-                break;
-            }
+                    });
+                } else if (typeof profileInfoPair[1] === "object" && profileInfoPair[1] !== null) {
+                    Object.entries(profileInfoPair[1]).forEach((subPair) => {
+                        if (subPair[0] === formName) {
+                            value[profileInfoPair[0]] = {
+                                [formName]: Array.isArray(subPair[1])
+                                    ? [values.get(formName)]
+                                    : values.get(formName)
+                            };
+                        }
+                    });
+                }
+            });
+        } else if (Array.isArray(profileDetails.profileInfo[formName])) {
+            value[formName] = [values.get(formName)];
+        } else {
+            value[formName] = formName === "emails" ? [values.get(formName)] : values.get(formName);
         }
 
+        if (isEmpty(value)) {
+            value = { ...parseSchemas(profileDetails.profileSchemas, formName, values, {}) };
+        }
+
+        data.Operations[0].value = { ...value };
         updateProfileInfo(data).then((response) => {
             if (response.status === 200) {
                 onNotificationFired({
@@ -154,10 +277,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
      * @param formName - Name of the form
      */
     const showFormEditView = (formName: string): void => {
-        setEditingForm({
-            ...editingForm,
-            [formName]: true
-        });
+        const tempEditingForm: Map<string, boolean> = new Map<string, boolean>(editingForm);
+        tempEditingForm.set(formName, true);
+        setEditingForm(tempEditingForm);
     };
 
     /**
@@ -166,529 +288,231 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
      * @param formName - Name of the form
      */
     const hideFormEditView = (formName: string): void => {
-        setEditingForm({
-            ...editingForm,
-            [formName]: false
-        });
+        const tempEditingForm: Map<string, boolean> = new Map<string, boolean>(editingForm);
+        tempEditingForm.set(formName, false);
+        setEditingForm(tempEditingForm);
     };
 
     /**
-     * Set the fetched basic profile details to the state.
-     *
-     * @param profile - Response from the API request.
+     * This function generates the Edit Section based on the input Profile Schema
+     * @param {Profile Schema} schema
      */
-    const setBasicDetails = (profile) => {
-        let mobileNumber = "";
-
-        profile.phoneNumbers.map((mobile) => {
-            mobileNumber = mobile.value;
-        });
-
-        setEditingProfileInfo({
-            ...editingProfileInfo,
-            displayName: profile.displayName,
-            email: profile.emails[0],
-            emails: profile.emails,
-            lastName: profile.lastName,
-            mobile: mobileNumber,
-            organisation: profile.organisation,
-            phoneNumbers: profile.phoneNumbers,
-            userimage: profile.userimage,
-            username: profile.username
-        });
-        setProfileInfo({
-            ...profileInfo,
-            displayName: profile.displayName,
-            email: profile.emails[0],
-            emails: profile.emails,
-            lastName: profile.lastName,
-            mobile: mobileNumber,
-            organisation: profile.organisation,
-            phoneNumbers: profile.phoneNumbers,
-            userimage: profile.userimage,
-            username: profile.username
-        });
-    };
-
-    const handleNameChange = editingForm.nameChangeForm ? (
-        <EditSection>
-            <Grid>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column width={ 4 }>{ t("views:components.profile.fields.name.label") }</Grid.Column>
-                    <Grid.Column width={ 12 }>
-                        <Forms
-                            onSubmit={ (values) => {
-                                handleSubmit(values, "nameChangeForm");
-                            } }
-                        >
-                            <Field
-                                label={ t(
-                                    "views:components.profile.forms.nameChangeForm." +
-                                    "inputs.firstName.label"
-                                ) }
-                                name="displayName"
-                                placeholder={ t(
-                                    "views:components.profile.forms.nameChangeForm.inputs" +
-                                    ".firstName.placeholder"
-                                ) }
-                                required={ true }
-                                requiredErrorMessage={ t(
-                                    "views:components.profile.forms." +
-                                    "nameChangeForm.inputs.firstName.validations.empty"
-                                ) }
-                                type="text"
-                                value={ editingProfileInfo.displayName }
-                            />
-                            <Field
-                                label={ t(
-                                    "views:components.profile.forms.nameChangeForm.inputs.lastName.label"
-                                ) }
-                                name="lastName"
-                                placeholder={ t(
-                                    "views:components.profile.forms.nameChangeForm.inputs" +
-                                    ".lastName.placeholder"
-                                ) }
-                                required={ true }
-                                requiredErrorMessage={ t(
-                                    "views:components.profile.forms." +
-                                    "nameChangeForm.inputs.lastName.validations.empty"
-                                ) }
-                                type="text"
-                                value={ editingProfileInfo.lastName }
-                            />
-                            <Field
-                                hidden={ true }
-                                type="divider"
-                            />
-                            <Form.Group>
-                                <Field
-                                    size="small"
-                                    type="submit"
-                                    value={ t("common:save").toString() }
-                                />
-                                <Field
-                                    className="link-button"
-                                    onClick={ () => {
-                                        hideFormEditView("nameChangeForm");
+    const generateSchemaForm = (schema: ProfileSchema): JSX.Element => {
+        if (editingForm && editingForm.size > 0 && editingForm.get(schema.name)) {
+            return (
+                <EditSection>
+                    <Grid>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column width={ 4 }>{ schema.displayName }</Grid.Column>
+                            <Grid.Column width={ 12 }>
+                                <Forms
+                                    onSubmit={ (values) => {
+                                        handleSubmit(values, schema.name);
                                     } }
-                                    size="small"
-                                    type="button"
-                                    value={ t("common:cancel").toString() }
-                                />
-                            </Form.Group>
-                        </Forms>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        </EditSection>
-    ) : (
-            <Grid padded={ true }>
-                <Grid.Row columns={ 3 }>
-                    <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
-                        <List.Content>{ t("views:components.profile.fields.name.label") }</List.Content>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                        <List.Content>
-                            <List.Description>
-                                { profileInfo.displayName || profileInfo.lastName
-                                    ? profileInfo.displayName + " " + profileInfo.lastName
-                                    : t("views:components.profile.fields.name.default") }
-                            </List.Description>
-                        </List.Content>
-                    </Grid.Column>
-                    <Grid.Column
-                        mobile={ 2 }
-                        tablet={ 2 }
-                        computer={ 2 }
-                        className={ window.innerWidth > Responsive.onlyTablet.minWidth ? "last-column" : "" }
-                    >
-                        <List.Content floated="right">
-                            <Popup
-                                trigger={
-                                    (
-                                        <Icon
-                                            link={ true }
-                                            className="list-icon"
+                                >
+                                    <Field
+                                        label={ schema.displayName }
+                                        name={ schema.name }
+                                        placeholder={ t("views:components.profile.forms.generic.inputs.placeholder", {
+                                            fieldName: schema.displayName
+                                        }) }
+                                        required={ schema.required }
+                                        requiredErrorMessage={ t(
+                                            "views:components.profile.forms.generic.inputs.validations.empty",
+                                            {
+                                                fieldName: schema.displayName
+                                            }
+                                        ) }
+                                        type="text"
+                                        validation={ (value: string, validation: Validation) => {
+                                            switch (schema.name) {
+                                                case "emails":
+                                                    if (!FormValidation.email(value)) {
+                                                        validation.errorMessages.push(
+                                                            t(
+                                                                "views:components.profile.forms." +
+                                                                "generic.inputs.validations.invalidFormat",
+                                                                {
+                                                                    fieldName: schema.displayName
+                                                                }
+                                                            )
+                                                        );
+                                                        validation.isValid = false;
+                                                    }
+                                                    break;
+                                                case "mobile":
+                                                    if (!FormValidation.mobileNumber(value)) {
+                                                        validation.errorMessages.push(t(
+                                                            "views:components.profile.forms." +
+                                                            "generic.inputs.validations.invalidFormat",
+                                                            {
+                                                                fieldName: schema.displayName
+                                                            }
+                                                        ));
+                                                        validation.isValid = false;
+                                                    }
+                                                    break;
+                                                case "profileUrl":
+                                                    if (!FormValidation.url(value)) {
+                                                        validation.errorMessages.push(t(
+                                                            "views:components.profile.forms." +
+                                                            "generic.inputs.validations.invalidFormat",
+                                                            {
+                                                                fieldName: schema.displayName
+                                                            }
+                                                        ));
+                                                        validation.isValid = false;
+                                                    }
+                                                    break;
+                                            }
+                                        } }
+                                        value={ profileInfo.get(schema.name) }
+                                    />
+                                    <Field
+                                        hidden={ true }
+                                        type="divider"
+                                    />
+                                    <Form.Group>
+                                        <Field
                                             size="small"
-                                            color="grey"
-                                            onClick={ () => showFormEditView("nameChangeForm") }
-                                            name={ profileInfo.displayName || profileInfo.lastName
-                                                ? "pencil alternate"
-                                                : "add" }
+                                            type="submit"
+                                            value={ t("common:save").toString() }
                                         />
-                                    )
-                                }
-                                position="top center"
-                                content={
-                                    profileInfo.displayName || profileInfo.lastName ? t("common:edit") : t("common:add")
-                                }
-                                inverted={ true }
-                            />
-                        </List.Content>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        );
-
-    const handleEmailChange = editingForm.emailChangeForm ? (
-        <EditSection>
-            <Grid>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column width={ 4 }>{ t("views:components.profile.fields.email.label") }</Grid.Column>
-                    <Grid.Column width={ 12 }>
-                        <Forms
-                            onSubmit={ (values) => {
-                                handleSubmit(values, "emailChangeForm");
-                            } }
-                        >
-                            <Field
-                                label={ t("views:components.profile.fields.email.label") }
-
-                                name="email"
-                                placeholder={ t(
-                                    "views:components.profile.forms.emailChangeForm.inputs" +
-                                    ".email.placeholder"
-                                ) }
-                                required={ true }
-                                requiredErrorMessage={ t(
-                                    "views:components.profile.forms." +
-                                    "emailChangeForm.inputs.email.validations.empty"
-                                ) }
-                                type="text"
-                                validation={ (value: string, validation: Validation) => {
-                                    if (!FormValidation.email(value)) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(t(
-                                            "views:components.profile.forms." +
-                                            "emailChangeForm.inputs.email.validations.invalidFormat"
-                                        ));
-                                    }
-                                } }
-                                value={ editingProfileInfo.email }
-                            />
-                            <Field
-                                hidden={ true }
-                                type="divider"
-                            />
-                            <Form.Group>
-                                <Field
-                                    size="small"
-                                    type="submit"
-                                    value={ t("common:save").toString() }
-                                />
-                                <Field
-                                    className="link-button"
-                                    onClick={ () => {
-                                        hideFormEditView("emailChangeForm");
-                                    } }
-                                    size="small"
-                                    type="button"
-                                    value={ t("common:cancel").toString() }
-                                />
-                            </Form.Group>
-                        </Forms>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        </EditSection>
-    ) : (
-            <Grid padded={ true }>
-                <Grid.Row columns={ 3 }>
-                    <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
-                        <List.Content>{ t("views:components.profile.fields.email.label") }</List.Content>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                        <List.Content>
-                            <List.Description>
-                                { profileInfo.email
-                                    ? profileInfo.email
-                                    : t("views:components.profile.fields.email.default") }
-                            </List.Description>
-                        </List.Content>
-                    </Grid.Column>
-                    <Grid.Column
-                        mobile={ 2 }
-                        tablet={ 2 }
-                        computer={ 2 }
-                        className={ window.innerWidth > Responsive.onlyTablet.minWidth ? "last-column" : "" }
-                    >
-                        <List.Content floated="right">
-                            <Popup
-                                trigger={
-                                    (
-                                        <Icon
-                                            link={ true }
-                                            className="list-icon"
+                                        <Field
+                                            className="link-button"
+                                            onClick={ () => {
+                                                hideFormEditView(schema.name);
+                                            } }
                                             size="small"
-                                            color="grey"
-                                            id="emailEdit"
-                                            onClick={ () => showFormEditView("emailChangeForm") }
-                                            name={ profileInfo.email ? "pencil alternate" : "add" }
+                                            type="button"
+                                            value={ t("common:cancel").toString() }
                                         />
-                                    )
-                                }
-                                position="top center"
-                                content={ profileInfo.email ? t("common:edit") : t("common:add") }
-                                inverted={ true }
-                            />
-                        </List.Content>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        );
-
-    const handleOrganisationChange = editingForm.organizationChangeForm ? (
-        <EditSection>
-            <Grid>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column width={ 4 }>{ t("views:components.profile.fields.organization.label") }</Grid.Column>
-                    <Grid.Column width={ 12 }>
-                        <Forms
-                            onSubmit={ (values) => {
-                                handleSubmit(values, "organizationChangeForm");
-                            } }
-                        >
-                            <Field
-                                label={ t("views:components.profile.fields.organization.label") }
-                                name="organisation"
-                                placeholder={ t(
-                                    "views:components.profile.forms.organizationChangeForm" +
-                                    ".inputs.organization.placeholder"
-                                ) }
-                                required={ true }
-                                requiredErrorMessage={ t(
-                                    "views:components.profile.forms." +
-                                    "organizationChangeForm.inputs.organization.validations.empty"
-                                ) }
-                                type="text"
-                                value={ editingProfileInfo.organisation }
-                            />
-                            <Field
-                                hidden={ true }
-                                type="divider"
-                            />
-                            <Form.Group>
-                                <Field
-                                    size="small"
-                                    type="submit"
-                                    value={ t("common:save").toString() }
-                                />
-                                <Field
-                                    className="link-button"
-                                    onClick={ () => {
-                                        hideFormEditView("organizationChangeForm");
-                                    } }
-                                    size="small"
-                                    type="button"
-                                    value={ t("common:cancel").toString() }
-                                />
-                            </Form.Group>
-                        </Forms>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        </EditSection>
-    ) : (
-            <Grid padded={ true }>
-                <Grid.Row columns={ 3 }>
-                    <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
-                        <List.Content>{ t("views:components.profile.fields.organization.label") }</List.Content>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                        <List.Content>
-                            <List.Description>
-                                { profileInfo.organisation
-                                    ? profileInfo.organisation
-                                    : t("views:components.profile.fields.organization.default") }
-                            </List.Description>
-                        </List.Content>
-                    </Grid.Column>
-                    <Grid.Column
-                        tablet={ 2 }
-                        mobile={ 2 }
-                        computer={ 2 }
-                        className={ window.innerWidth > Responsive.onlyTablet.minWidth ? "last-column" : "" }
-                    >
-                        <List.Content floated="right">
-                            <Popup
-                                trigger={
-                                    (
-                                        <Icon
-                                            link={ true }
-                                            className="list-icon"
-                                            size="small"
-                                            color="grey"
-                                            id="organizationEdit"
-                                            onClick={ () => showFormEditView("organizationChangeForm") }
-                                            name={ profileInfo.organisation ? "pencil alternate" : "add" }
-                                        />
-                                    )
-                                }
-                                position="top center"
-                                content={ profileInfo.organisation ? t("common:edit") : t("common:add") }
-                                inverted={ true }
-                            />
-                        </List.Content>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        );
-
-    const handleMobileChange = editingForm.mobileChangeForm ? (
-        <EditSection>
-            <Grid>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column width={ 4 }>{ t("views:components.profile.fields.mobile.label") }</Grid.Column>
-                    <Grid.Column width={ 12 }>
-                        <Forms
-                            onSubmit={ (values) => {
-                                handleSubmit(values, "mobileChangeForm");
-                            } }
-                        >
-                            <Field
-                                label={ t("views:components.profile.fields.mobile.label") }
-                                name="mobile"
-                                placeholder={ t(
-                                    "views:components.profile.forms.mobileChangeForm"
-                                    + ".inputs.mobile.placeholder"
-                                ) }
-                                required={ true }
-                                requiredErrorMessage={ t(
-                                    "views:components.profile.forms." +
-                                    "mobileChangeForm.inputs.mobile.validations.empty"
-                                ) }
-                                type="text"
-                                validation={ (value: string, validation: Validation) => {
-                                    if (!FormValidation.mobileNumber(value)) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(t(
-                                            "views:components.profile.forms." +
-                                            "mobileChangeForm.inputs.mobile.validations.invalidFormat"
-                                        ));
-                                    }
-                                } }
-                                value={ editingProfileInfo.mobile }
-                            />
-                            <Field
-                                hidden={ true }
-                                type="divider"
-                            />
-                            <Form.Group>
-                                <Field
-                                    size="small"
-                                    type="submit"
-                                    value={ t("common:save").toString() }
-                                />
-                                <Field
-                                    className="link-button"
-                                    onClick={ () => {
-                                        hideFormEditView("mobileChangeForm");
-                                    } }
-                                    size="small"
-                                    type="button"
-                                    value={ t("common:cancel").toString() }
-                                />
-                            </Form.Group>
-                        </Forms>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        </EditSection>
-    ) : (
-            <Grid padded={ true }>
-                <Grid.Row columns={ 3 }>
-                    <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
-                        <List.Content>{ t("views:components.profile.fields.mobile.label") }</List.Content>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                        <List.Content>
-                            <List.Description>
-                                { profileInfo.mobile
-                                    ? profileInfo.mobile
-                                    : t("views:components.profile.fields.mobile.default") }
-                            </List.Description>
-                        </List.Content>
-                    </Grid.Column>
-                    <Grid.Column
-                        mobile={ 2 }
-                        tablet={ 2 }
-                        computer={ 2 }
-                        className={ window.innerWidth > Responsive.onlyTablet.minWidth ? "last-column" : "" }
-                    >
-                        <List.Content floated="right">
-                            <Popup
-                                trigger={
-                                    (
-                                        <Icon
-                                            link={ true }
-                                            className="list-icon"
-                                            size="small"
-                                            color="grey"
-                                            onClick={ () => showFormEditView("mobileChangeForm") }
-                                            name={ profileInfo.mobile ? "pencil alternate" : "add" }
-                                        />
-                                    )
-                                }
-                                position="top center"
-                                content={ profileInfo.mobile ? t("common:edit") : t("common:add") }
-                                inverted={ true }
-                            />
-                        </List.Content>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        );
-
-    return (
-        <SettingsSection
-            description={ t("views:sections.profile.description") }
-            header={ t("views:sections.profile.heading") }
-            icon={ (
-                <UserAvatar
-                    authState={ profileDetails }
-                    size="tiny"
-                    showGravatarLabel
-                    gravatarInfoPopoverText={ (
-                        <Trans i18nKey="views:components.userAvatar.infoPopover">
-                            This image has been retrieved from
-                            <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener">Gravatar</a> service.
-                        </Trans>
-                    ) }
-                />
-            ) }
-            iconMini={ (
-                <UserAvatar
-                    authState={ profileDetails }
-                    size="tiny"
-                    showGravatarLabel
-                    gravatarInfoPopoverText={ (
-                        <Trans i18nKey="views:components.userAvatar.infoPopover">
-                            This image has been retrieved from
-                            <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener">Gravatar</a> service.
-                        </Trans>
-                    ) }
-                />
-            ) }
-        >
-            <List divided={ true } verticalAlign="middle" className="main-content-inner">
-                <List.Item className="inner-list-item">
-                    <Grid padded={ true }>
-                        <Grid.Row columns={ 3 }>
-                            <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
-                                <List.Content>{ t("views:components.profile.fields.username.label") }</List.Content>
-                            </Grid.Column>
-                            <Grid.Column mobile={ 10 } tablet={ 10 } computer={ 12 }>
-                                <List.Content>
-                                    <List.Description>{ profileInfo.username }</List.Description>
-                                </List.Content>
+                                    </Form.Group>
+                                </ Forms>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
-                </List.Item>
-                <List.Item className="inner-list-item">{ handleNameChange }</List.Item>
-                <List.Item className="inner-list-item">{ handleEmailChange }</List.Item>
-                <List.Item className="inner-list-item">{ handleOrganisationChange }</List.Item>
-                <List.Item className="inner-list-item">{ handleMobileChange }</List.Item>
+                </EditSection >
+            );
+        } else {
+            return (
+                <Grid padded={ true }>
+                    <Grid.Row columns={ 3 }>
+                        < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
+                            <List.Content>{ schema.displayName }</List.Content>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                            <List.Content>
+                                <List.Description>
+                                    {
+                                        profileInfoLoader || profileSchemaLoader
+                                            ? (
+                                                <Skeleton width="100%" widthRandomness={ 0.25 } />
+                                            )
+                                            : profileInfo.get(schema.name)
+                                            || (
+                                                <a onClick={ () => { showFormEditView(schema.name); } }>
+                                                    { t("views:components.profile.forms.generic.inputs.placeholder",
+                                                        { fieldName: schema.displayName }) }
+                                                </a>
+                                            )
+                                    }
+                                </List.Description>
+                            </List.Content>
+                        </Grid.Column>
+                        <Grid.Column
+                            mobile={ 2 }
+                            tablet={ 2 }
+                            computer={ 2 }
+                            className={
+                                window.innerWidth > Responsive.onlyTablet.minWidth ? "last-column" : ""
+                            }
+                        >
+                            <List.Content floated="right">
+                                { schema.mutability !== "READ_ONLY" && schema.name !== "userName"
+                                    ?
+                                    (
+                                        < Popup
+                                            trigger={
+                                                (
+                                                    <Icon
+                                                        link={ true }
+                                                        className="list-icon"
+                                                        size="small"
+                                                        color="grey"
+                                                        onClick={ () => showFormEditView(schema.name) }
+                                                        name={ !isEmpty(profileInfo.get(schema.name))
+                                                            ? "pencil alternate"
+                                                            : null }
+                                                    />
+                                                )
+                                            }
+                                            position="top center"
+                                            content={ !isEmpty(profileInfo.get(schema.name))
+                                                ? t("common:edit")
+                                                : t("common:add") }
+                                            inverted={ true }
+                                        />
+                                    ) : null }
+                            </List.Content>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid >
+            );
+        }
+    };
+
+    return (
+        < SettingsSection
+            description={ t("views:sections.profile.description") }
+            header={ t("views:sections.profile.heading") }
+            icon={ profileInfoLoader
+                ? (
+                    <Skeleton height="75px" width="75px" widthRandomness={ 0 } borderRadius="50%" />
+                )
+                : (
+                    <UserAvatar
+                        authState={ profileDetails }
+                        size="tiny"
+                        showGravatarLabel
+                        gravatarInfoPopoverText={ (
+                            <Trans i18nKey="views:components.userAvatar.infoPopover">
+                                This image has been retrieved from
+                            <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener">Gravatar</a> service.
+                        </Trans>
+                        ) }
+                    />
+                ) }
+            iconMini={ profileInfoLoader
+                ? (
+                    <Skeleton height="75px" width="75px" widthRandomness={ 0 } borderRadius="50%" />
+                )
+                : (
+                    <UserAvatar
+                        authState={ profileDetails }
+                        size="tiny"
+                        showGravatarLabel
+                        gravatarInfoPopoverText={ (
+                            <Trans i18nKey="views:components.userAvatar.infoPopover">
+                                This image has been retrieved from
+                            <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener">Gravatar</a> service.
+                        </Trans>
+                        ) }
+                    />
+                ) }
+        >
+            <List divided={ true } verticalAlign="middle" className="main-content-inner">
+                {
+                    profileSchema && profileSchema.map((schema: ProfileSchema, index: number) => {
+                        if (schema.name !== "default") {
+                            return (
+                                <List.Item key={ index } className="inner-list-item">
+                                    { generateSchemaForm(schema) }
+                                </List.Item>
+                            );
+                        }
+                    })
+                }
             </List>
         </SettingsSection>
     );
