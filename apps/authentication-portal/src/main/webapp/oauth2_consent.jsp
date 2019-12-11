@@ -91,19 +91,20 @@
                     
                     <div class="segment-form">
                         <div class="feild">
-                        <% if (userClaimsConsentOnly) {
-                            // If we are getting consent for user claims only we don't need to display OIDC
-                            // scopes in the consent page
-                        } else {%>
-                        <%
-                            if (displayScopes && StringUtils.isNotBlank(scopeString)) {
-                                // Remove "openid" from the scope list to display.
-                                List<String> openIdScopes = Stream.of(scopeString.split(" "))
-                                        .filter(x -> !StringUtils.equalsIgnoreCase(x, "openid"))
-                                        .collect(Collectors.toList());
-                
-                                if (CollectionUtils.isNotEmpty(openIdScopes)) {
-                        %>
+                            <% if (userClaimsConsentOnly) {
+                                // If we are getting consent for user claims only we don't need to display OIDC
+                                // scopes in the consent page
+                            } else {%>
+                            <%
+                                if (displayScopes && StringUtils.isNotBlank(scopeString)) {
+                                    // Remove "openid" from the scope list to display.
+                                    List<String> openIdScopes = Stream.of(scopeString.split(" "))
+                                            .filter(x -> !StringUtils.equalsIgnoreCase(x, "openid"))
+                                            .collect(Collectors.toList());
+                    
+                                    if (CollectionUtils.isNotEmpty(openIdScopes)) {
+                            %>
+
                             <div class="ui segment" style="text-align: left;">
                                 <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.scopes")%></h5>
                                 <div class="scopes-list ui list">
@@ -121,30 +122,34 @@
                                     %>
                                 </div>
                             </div>
-                        <%
+
+                            <%
                                     }
-                                } %>
-                        <div class="ui secondary segment" style="text-align: left;">
-                            <div class="ui form">
-                                <div class="grouped fields">
-                                    <div class="field">
-                                        <div class="ui radio checkbox">
-                                            <input type="radio" class="hidden" name="scope-approval" id="approveCb" value="approve">
-                                            <label for="approveCb">Approve Once</label>
+                                }
+                            %>
+
+                            <div class="ui secondary segment" style="text-align: left;">
+                                <div class="ui form">
+                                    <div class="grouped fields">
+                                        <div class="field">
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" class="hidden" name="scope-approval" id="approveCb" value="approve">
+                                                <label for="approveCb">Approve Once</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="field">
-                                        <div class="ui radio checkbox">
-                                            <input type="radio" class="hidden" name="scope-approval" id="approveAlwaysCb" value="approveAlways">
-                                            <label for="approveAlwaysCb">Approve Always</label>
+                                        <div class="field">
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" class="hidden" name="scope-approval" id="approveAlwaysCb" value="approveAlways">
+                                                <label for="approveAlwaysCb">Approve Always</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <%
-                            }
-                        %>
+
+                            <%
+                                }
+                            %>
                         </div>
                         <!-- Prompting for consent is only needed if we have mandatory or requested claims without any consent -->
                         <% if (ArrayUtils.isNotEmpty(mandatoryClaimList) || ArrayUtils.isNotEmpty(requestedClaimList)) { %>
