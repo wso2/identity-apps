@@ -33,3 +33,14 @@
 --------------------*/
 
 @inputAddOnBorder: 1px solid rgba(34, 36, 38, 0.15);
+
+/*--------------------
+ Modal primary button
+----------------------*/
+
+@positivePrimaryButtonColor: @positiveColor;
+@negativePrimaryButtonColor: @negativeColor;
+@warningPrimaryButtonColor: @warningColor;
+@infoPrimaryButtonColor: @infoColor;
+
+@modalPrimaryButtonFontColor: #FFFFFF;
