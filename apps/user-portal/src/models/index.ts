@@ -25,7 +25,6 @@ export * from "./authenticated-user";
 export * from "./consents";
 export * from "./locales";
 export * from "./login";
-export * from "./notifications";
 export * from "./profile";
 export * from "./security-questions";
 export * from "./session";
