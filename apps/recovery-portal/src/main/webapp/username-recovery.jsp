@@ -280,7 +280,7 @@
 
                         <div class="align-right buttons">
                             <button id="recoveryCancel"
-                                class="ui large button"
+                                class="ui large button link-button"
                                 type="button"
                                 onclick="location.href='<%=Encode.forJavaScript(IdentityManagementEndpointUtil.getURLEncodedCallback(callback))%>';">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
