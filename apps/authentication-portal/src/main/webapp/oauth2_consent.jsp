@@ -180,8 +180,8 @@
                                                 String displayName = mandatoryClaimData[1];
                                         %>
                                         <div class="field required">
-                                            <div class="ui checkbox checked disabled claim-cb">
-                                                <input type="checkbox" class="mandatory-claim hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" required checked readonly/>
+                                            <div class="ui checkbox checked read-only disabled claim-cb">
+                                                <input type="checkbox" class="mandatory-claim hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" required checked readonly />
                                                 <label for="consent_<%=Encode.forHtmlAttribute(claimId)%>"><%=Encode.forHtml(displayName)%></label>
                                             </div>
                                         </div>
@@ -344,15 +344,19 @@
         function hideModal(elem) {
             $(elem).closest('.modal').modal('hide');
         }
+
+        $('.checkbox.read-only').checkbox({
+            uncheckable: false
+        });
         
         $(document).ready(function () {
             $("#consent_select_all").click(function () {
                 if (this.checked) {
-                    $('.checkbox input:checkbox:not(:read-only)').each(function () {
+                    $('.checkbox:not(.read-only) input:checkbox').each(function () {
                         $(this).prop("checked", true);
                     });
                 } else {
-                    $('.checkbox input:checkbox:not(:read-only)').each(function () {
+                    $('.checkbox:not(.read-only) input:checkbox').each(function () {
                         $(this).prop("checked", false);
                     });
                 }
