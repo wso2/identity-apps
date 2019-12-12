@@ -795,29 +795,24 @@ export const views: Views = {
         },
         profile: {
             fields: {
-                email: {
-                    default: "විද්‍යුත් තැපෑල එක් කරන්න",
-                    label: "විද්‍යුත් තැපෑල"
-                },
+                addresses_home: "නිවසේ ලිපිනය",
+                addresses_work: "වැඩ ලිපිනය",
+                emails: "විද්යුත් තැපෑල",
+                emails_home: "නිවසේ විද්‍යුත් තැපෑල",
+                emails_other: "වෙනත් විද්‍යුත් තැපෑල",
+                emails_work: "වැඩ ඊමේල්",
                 generic: {
-                    default: "{{fieldName}} එක් කරන්න"
+                    default: "එකතු කරන්න {{fieldName}}"
                 },
-                mobile: {
-                    default: "ජංගම දුරකථන අංකය එක් කරන්න",
-                    label: "ජංගම දුරකථන අංකය"
-                },
-                name: {
-                    default: "නම එක් කරන්න",
-                    label: "නම"
-                },
-                organization: {
-                    default: "සංවිධානය එක් කරන්න",
-                    label: "සංවිධානය"
-                },
-                username: {
-                    default: "පරිශීලක නාමය එක් කරන්න",
-                    label: "පරිශීලක නාමය"
-                }
+                name_familyName: "අවසන් නම",
+                name_givenName: "මුල් නම",
+                phoneNumbers: "දුරකතන අංකය",
+                phoneNumbers_home: "නිවසේ දුරකථන අංකය",
+                phoneNumbers_mobile: "ජංගම දූරකථන අංකය",
+                phoneNumbers_other: "වෙනත් දුරකථන අංකය",
+                phoneNumbers_work: "රැකියා දුරකථන අංකය",
+                profileUrl: "URL",
+                userName: "පරිශීලක නාමය"
             },
             forms: {
                 emailChangeForm: {
