@@ -25,6 +25,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 module.exports = env => {
     const basename = 'admin-portal';
     const devServerPort = 9001;
+    const publicPath = `/${basename}`;
 
     /**
      * Runtime configurations
@@ -138,7 +139,8 @@ module.exports = env => {
                 template: path.resolve(__dirname, 'src', 'index.html'),
                 hash: true,
                 favicon: faviconImage,
-                title: titleText
+                title: titleText,
+                publicPath: publicPath
             }),
             new webpack.DefinePlugin({
                 APP_BASENAME: JSON.stringify(basename),
