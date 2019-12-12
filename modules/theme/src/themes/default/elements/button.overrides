@@ -31,6 +31,75 @@
             }
         }
     }
+    &.positive-modal-link-button {
+        background: transparent;
+        color: @positivePrimaryButtonColor;
+
+        &.with-hover {
+            &:hover {
+                background: @backgroundColor;
+            }
+            &:active {
+                background: @downBackgroundColor;
+            }
+        }
+    }
+    &.negative-modal-link-button {
+        background: transparent;
+        color: @negativePrimaryButtonColor;
+
+        &.with-hover {
+            &:hover {
+                background: @backgroundColor;
+            }
+            &:active {
+                background: @downBackgroundColor;
+            }
+        }
+    }
+    &.warning-modal-link-button {
+        background: transparent;
+        color: @warningPrimaryButtonColor;
+
+        &.with-hover {
+            &:hover {
+                background: @backgroundColor;
+            }
+            &:active {
+                background: @downBackgroundColor;
+            }
+        }
+    }
+    &.info-modal-link-button {
+        background: transparent;
+        color: @infoPrimaryButtonColor;
+
+        &.with-hover {
+            &:hover {
+                background: @backgroundColor;
+            }
+            &:active {
+                background: @downBackgroundColor;
+            }
+        }
+    }
+    &.positive-modal-primary-button {
+        background-color: @positivePrimaryButtonColor;
+        color: @modalPrimaryButtonFontColor;
+    }
+    &.negative-modal-primary-button {
+        background-color: @negativePrimaryButtonColor;
+        color: @modalPrimaryButtonFontColor;
+    }
+    &.warning-modal-primary-button {
+        background-color: @warningPrimaryButtonColor;
+        color: @modalPrimaryButtonFontColor;
+
+    }
+    &.info-modal-primary-button {
+        background-color: @infoPrimaryButtonColor;
+        color: @modalPrimaryButtonFontColor;
+    }
 }
 
 .ui.basic.button {
