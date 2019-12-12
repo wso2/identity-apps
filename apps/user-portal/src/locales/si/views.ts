@@ -306,20 +306,28 @@ export const views: Views = {
             }
         },
         consentManagement: {
+            editConsent: {
+                collectionMethod: "ගොනුකිරීමේ ක්\u200Dරමය",
+                dangerZones: {
+                    revoke: {
+                        actionTitle: "අවලංගු කරන්න",
+                        header: "කැමැත්ත අවලංගු කරන්න",
+                        subheader: "ඔබට මෙම ඇප් එක සඳහා නැවත කැමැත්ත ලබා දීමට සිදුවේ."
+                    }
+                },
+                description: "සටහන",
+                piiCategoryHeading: "ඇප් එක සමඟ ඔබේ පුද්ගලික තොරතුරු එකතු කිරීම සහ බෙදා ගැනීම සඳහා කැමැත්ත කළමනාකරණය කරන්න. " +
+                    "ඔබට අවලංගු කිරීමට අවශ්‍ය ගුණාංග ඉවත් කර යාවත්කාලීන සුරැකීමට යාවත්කාලීන බොත්තම ඔබන්න. සියලු ගුණාංග සඳහා කැමැත්ත ඉවත් " +
+                    "කිරීමට අවලංගු කිරීමේ බොත්තම ඔබන්න.",
+                state: "තත්වය",
+                version: "පිටපත"
+            },
             modals: {
                 consentRevokeModal: {
-                    heading: "{{appName}} අවලංගු කිරීමට අවශ්\u200Dයද?",
-                    message: "ඔබට මෙම අනුමැතිය අවලංගු කිරීමට අවශ්\u200Dය බව ඔබට විශ්වාසද? " +
-                        "මෙම මෙහෙයුම ආපසු හැරවිය නොහැක."
-                },
-                editConsentModal: {
-                    description: {
-                        collectionMethod: "ගොනුකිරීමේ ක්\u200Dරමය",
-                        description: "සටහන",
-                        piiCategoryHeading: "ඔබ යෙදුමට සැපයු තොරතුරු",
-                        state: "තත්වය",
-                        version: "පිටපත"
-                    }
+                    heading: "ඔබට විශ්වාසද?",
+                    message: "මෙම මෙහෙයුම ආපසු හැරවිය නොහැක. මෙය සියලු ගුණාංග සඳහා වන කැමැත්ත ස්ථිරවම අවලංගු කරනු ඇත. ඔබට " +
+                        "ඉදිරියට යාමට අවශ්‍ය බව ඔබට විශ්වාසද?",
+                    warning: "ඔබ පිවිසුම් කැමැත්ත පිටුවට හරවා යවන බව කරුණාවෙන් සලකන්න"
                 }
             },
             notifications: {
@@ -931,6 +939,13 @@ export const views: Views = {
         },
         userSessions: {
             browserAndOS: "{{os}} {{version}} මත {{browser}}",
+            dangerZones: {
+                terminate: {
+                    actionTitle: "අවසන් කරන්න",
+                    header: "සැසිය අවසන් කරන්න",
+                    subheader: "විශේෂිත උපාංගයේ සැසියෙන් ඔබ ඉවත් වනු ඇත."
+                }
+            },
             lastAccessed: "අවසන් ප්‍රවේශය {{date}}",
             modals: {
                 terminateAllUserSessionsModal: {

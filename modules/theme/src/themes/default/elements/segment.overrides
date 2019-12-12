@@ -17,6 +17,10 @@
  *
  */
 
+/*******************************
+    Edit Segment Variation
+*******************************/
+
 .ui.segment {
     &.edit-segment {
         background: @editSegmentBackgroundColor;
@@ -25,6 +29,62 @@
 
         &.top-margin {
             margin-top: @editSegmentMarginTop;
+        }
+        .edit-segment-table {
+            .values-cell {
+                max-width: @editSegmentTableValueMaxWidth;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+
+                .values-list {
+                    .item {
+                         max-width: @editSegmentTableValueMaxWidth;
+                         overflow: hidden;
+                         text-overflow: ellipsis;
+                         white-space: nowrap
+                     }
+                }
+            }
+        }
+    }
+}
+
+/*******************************
+     Danger Zone Variation
+*******************************/
+
+.ui.segments {
+    &.danger-zone-group {
+        box-shadow: none;
+        border: 1px solid @red;
+        border-radius: @defaultBorderRadius;
+
+        .group-header {
+            font-weight: 500;
+        }
+        .ui.segment {
+            &.danger-zone {
+                border: none;
+                border-bottom: 1px solid @red;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+        }
+    }
+}
+
+.ui.segment {
+    &.danger-zone {
+        background: transparent;
+        box-shadow: none;
+        border: 1px solid @red;
+        border-radius: @defaultBorderRadius;
+
+        .sub-header {
+            margin-top: 5px;
         }
     }
 }

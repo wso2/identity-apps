@@ -47,7 +47,8 @@ export const ApprovalsEdit: FunctionComponent<ApprovalsEditProps> = (
     const { t } = useTranslation();
 
     /**
-     * Removes unnecessary commas at the end of property values.
+     * Removes unnecessary commas at the end of property values and splits
+     * up the claim values.
      *
      * @remarks
      * The API returns properties as key value pairs and these values often contains
@@ -57,11 +58,21 @@ export const ApprovalsEdit: FunctionComponent<ApprovalsEditProps> = (
      * @param {string} value - Property value.
      * @return {string} A cleaned up string.
      */
-    const cleanupPropertyValues = (value: string): string => {
+    const cleanupPropertyValues = (key: string, value: string): string | JSX.Element => {
+        if (key === "Claims") {
+            const claims = value.split(",");
+
+            return (
+                <List className="values-list" items={ claims } />
+            );
+        }
+
         const lastChar = value.substr(value.length - 1);
+
         if (lastChar !== ",") {
             return value;
         }
+
         return value.slice(0, -1);
     };
 
@@ -72,7 +83,7 @@ export const ApprovalsEdit: FunctionComponent<ApprovalsEditProps> = (
      * @return {JSX.Element} - A table containing the list of assignees.
      */
     const assigneesTable = (assignees): JSX.Element => (
-        <Table celled compact>
+        <Table celled compact className="edit-segment-table">
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>
@@ -87,10 +98,10 @@ export const ApprovalsEdit: FunctionComponent<ApprovalsEditProps> = (
                 {
                     assignees.map((assignee, i) => (
                         <Table.Row key={ i }>
-                            <Table.Cell>
+                            <Table.Cell className="key-cell">
                                 { assignee.key }
                             </Table.Cell>
-                            <Table.Cell>
+                            <Table.Cell className="values-cell">
                                 { assignee.value }
                             </Table.Cell>
                         </Table.Row>
@@ -107,18 +118,18 @@ export const ApprovalsEdit: FunctionComponent<ApprovalsEditProps> = (
      * @return {JSX.Element} A table containing the list of properties.
      */
     const propertiesTable = (properties): JSX.Element => (
-        <Table celled compact>
+        <Table celled compact className="edit-segment-table" verticalAlign="top">
             <Table.Body>
                 {
                     properties.map((property, i) => (
                         property.key && property.value
                             ? (
                                 <Table.Row key={ i }>
-                                    <Table.Cell>
+                                    <Table.Cell className="key-cell">
                                         { property.key }
                                     </Table.Cell>
-                                    <Table.Cell>
-                                        { cleanupPropertyValues(property.value) }
+                                    <Table.Cell className="values-cell">
+                                        { cleanupPropertyValues(property.key, property.value) }
                                     </Table.Cell>
                                 </Table.Row>
                             )

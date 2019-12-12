@@ -39,6 +39,7 @@ export interface Common {
     contains: string;
     continue: string;
     createdOn: string;
+    dangerZone: string;
     delete: string;
     description: string;
     deviceModel: string;
@@ -281,19 +282,21 @@ export interface Views {
             }
         },
         consentManagement: {
+            editConsent: {
+                collectionMethod: string;
+                dangerZones: {
+                    revoke: DangerZone;
+                };
+                description: string;
+                piiCategoryHeading: string;
+                state: string;
+                version: string;
+            }
             modals: {
                 consentRevokeModal: {
                     heading: string;
                     message: string;
-                },
-                editConsentModal: {
-                    description: {
-                        collectionMethod: string;
-                        description: string;
-                        piiCategoryHeading: string;
-                        state: string;
-                        version: string;
-                    }
+                    warning: string;
                 }
             },
             notifications: {
@@ -650,6 +653,9 @@ export interface Views {
         },
         userSessions: {
             browserAndOS: string;
+            dangerZones: {
+                terminate: DangerZone;
+            }
             lastAccessed: string;
             modals: {
                 terminateAllUserSessionsModal: {
@@ -751,6 +757,15 @@ export interface Views {
             },
         }
     };
+}
+
+/**
+ * Model for danger zones.
+ */
+interface DangerZone {
+    actionTitle: string;
+    header: string;
+    subheader: string;
 }
 
 /**

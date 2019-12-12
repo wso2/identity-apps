@@ -19,9 +19,9 @@
 import moment from "moment";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid, Icon, List, SemanticICONS, Table } from "semantic-ui-react";
+import { Divider, Grid, Icon, List, SemanticICONS, Table } from "semantic-ui-react";
 import { UserSession } from "../../models";
-import { EditSection } from "../shared";
+import { DangerZone, DangerZoneGroup, EditSection } from "../shared";
 import IBrowser = IUAParser.IBrowser;
 import IDevice = IUAParser.IDevice;
 import IOS = IUAParser.IOS;
@@ -241,15 +241,20 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                                     </List.Description>
                                 </Grid.Column>
                             </Grid.Row>
-                            <Grid.Row columns={ 2 }>
-                                <Grid.Column width={ 5 }>{ " " }</Grid.Column>
-                                <Grid.Column width={ 11 }>
-                                    <Button
-                                        negative
-                                        onClick={ () => onTerminateUserSessionClick(userSession) }
-                                    >
-                                        { t("common:terminateSession") }
-                                    </Button>
+                            <Divider />
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column width={ 16 }>
+                                    <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                                        <DangerZone
+                                            actionTitle={ t("views:components.userSessions.dangerZones.terminate." +
+                                                "actionTitle") }
+                                            header={ t("views:components.userSessions.dangerZones.terminate." +
+                                                "header") }
+                                            subheader={ t("views:components.userSessions.dangerZones.terminate." +
+                                                "subheader") }
+                                            onActionClick={ () => onTerminateUserSessionClick(userSession) }
+                                        />
+                                    </DangerZoneGroup>
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>

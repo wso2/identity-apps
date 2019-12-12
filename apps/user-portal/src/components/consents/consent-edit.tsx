@@ -16,25 +16,22 @@
  * under the License.
  */
 
-import React, { FunctionComponent, MouseEvent, useState } from "react";
+import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid, Icon, Label, List } from "semantic-ui-react";
-import { ConsentInterface, ConsentReceiptInterface, PIICategory, ServiceInterface } from "../../models";
-import { EditSection } from "../shared";
+import { Button, Checkbox, Divider, Grid, Label, List } from "semantic-ui-react";
+import { ConsentInterface, RevokedClaimInterface } from "../../models";
+import { toTitleCase } from "../../utils";
+import { DangerZone, DangerZoneGroup, EditSection } from "../shared";
 
 /**
  * Proptypes for the application consent edit component.
  */
 interface EditConsentProps {
     editingConsent: ConsentInterface;
-    onClaimUpdateClick: () => void;
-    onEditViewCloseClick: () => void;
-    state: string;
-    spDescription: string;
-    services: ServiceInterface[];
-    revokePIICategory: (category: PIICategory) => void;
-    undoRevokePIICategory: (e: MouseEvent<HTMLButtonElement>, element: HTMLButtonElement) => void;
-    revokedPIICatList: number[];
+    onAppConsentRevoke: (consent: ConsentInterface) => void;
+    onClaimUpdate: (receiptId: string) => void;
+    onClaimRevokeToggle: (receiptId: string, claimId: number) => void;
+    revokedClaimList: RevokedClaimInterface[];
 }
 
 /**
@@ -48,130 +45,150 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
 ): JSX.Element => {
 
     const {
-        onClaimUpdateClick,
-        onEditViewCloseClick,
-        state,
-        spDescription,
-        revokePIICategory,
-        revokedPIICatList,
-        undoRevokePIICategory,
-        services
+        editingConsent,
+        onAppConsentRevoke,
+        onClaimUpdate,
+        onClaimRevokeToggle,
+        revokedClaimList
     } = props;
     const { t } = useTranslation();
 
+    /**
+     * Checks if the PII category is revoked.
+     *
+     * @param {number} claimId - claim id ie. piiCategoryId.
+     */
+    const isRevoked = (claimId: number): boolean => {
+        for (const item of revokedClaimList) {
+            if (item.id === editingConsent.consentReceiptID) {
+                return !!item.revoked.includes(claimId);
+            }
+        }
+    };
+
+    /**
+     * Checks if the consent is updatable.
+     *
+     * @return {boolean}
+     */
+    const isUpdatable = (): boolean => {
+        for (const item of revokedClaimList) {
+            if (item.id === editingConsent.consentReceiptID) {
+                return item.revoked && item.revoked.length && item.revoked.length > 0;
+            }
+        }
+    };
+
     return (
         <EditSection>
-            <Grid>
-                <Grid.Column width={ 8 }>
-                <List>
-                    <List.Item className="inner-list-item">
-                        <List.Content>
-                            <List.Description>
-                                <div className="meta">
-                                    <strong>
-                                        {
-                                            t("views:components.consentManagement.modals." +
-                                                "editConsentModal.description.state")
-                                        }
-                                        :
-                                    </strong>
-                                    { " " }
-                                    <Label circular color="green" empty/>
-                                    { state }
-                                </div>
-                                <div className="meta">
-                                    <strong>
-                                        {
-                                            t("views:components.consentManagement.modals.editConsentModal." +
-                                                "description.description")
-                                        }:
-                                    </strong>
-                                    { " " }
-                                    { spDescription }
-                                </div>
-                            </List.Description>
-                        </List.Content>
-                    </List.Item>
-                    <br/>
-                    <List.Item className="inner-list-item">
-                        <p>
-                            <strong>
-                                {
-                                    t("views:components.consentManagement.modals.editConsentModal." +
-                                        "description.piiCategoryHeading")
-                                }:
-                            </strong>
-                        </p>
-                        {
-                            services.map((service) =>
-                                service &&
-                                service.purposes &&
-                                service.purposes.map((purpose) => {
-                                    return (
-                                        <div key={ purpose.purposeId }>
-                                            <strong>{ purpose.purpose }</strong>
-                                            <List verticalAlign="middle">
-                                                { purpose.piiCategory &&
-                                                purpose.piiCategory.map((category) => (
-                                                    <List.Item key={ category.piiCategoryId }>
-                                                        <List.Content floated="right">
-                                                            {
-                                                                revokedPIICatList && revokedPIICatList
-                                                                    .includes(category.piiCategoryId) ? (
-                                                                    <Button
-                                                                        id={ category.piiCategoryId }
-                                                                        icon
-                                                                        basic
-                                                                        size="mini"
-                                                                        labelPosition="right"
-                                                                        onClick={ undoRevokePIICategory }
-                                                                    >
-                                                                        <Icon name="undo"/>
-                                                                        revoked
-                                                                    </Button>
-                                                                ) : (
-                                                                    <Icon
-                                                                        id={ category.piiCategoryId }
-                                                                        link={ true }
-                                                                        className="list-icon"
-                                                                        size="large"
-                                                                        color="red"
-                                                                        name="trash alternate outline"
-                                                                        onClick={ () => revokePIICategory(category) }
+            <Grid padded>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 16 }>
+                        <List.Description>
+                            { t("views:components.consentManagement.editConsent.piiCategoryHeading") }
+                        </List.Description>
+                    </Grid.Column>
+                </Grid.Row>
+                {
+                    (editingConsent
+                        && editingConsent.consentReceipt
+                        && editingConsent.consentReceipt.services
+                        && editingConsent.consentReceipt.services.length
+                        && editingConsent.consentReceipt.services.length > 0)
+                        ? editingConsent.consentReceipt.services.map((service) =>
+                        service &&
+                        service.purposes &&
+                        service.purposes.map((purpose) => {
+                            return (
+                                <React.Fragment key={ purpose.purposeId }>
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column width={ 16 }>
+                                            <strong>{ toTitleCase(purpose.purpose) }</strong>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column width={ 16 }>
+                                            <List
+                                                key={ purpose.purposeId }
+                                                className="claim-list"
+                                                verticalAlign="middle"
+                                                relaxed="very"
+                                            >
+                                                {
+                                                    purpose.piiCategory && purpose.piiCategory.map((category) => (
+                                                        <List.Item key={ category.piiCategoryId }>
+                                                            <List.Content>
+                                                                <List.Header>
+                                                                    <Checkbox
+                                                                        className={
+                                                                            isRevoked(category.piiCategoryId)
+                                                                                ? "revoked"
+                                                                                : ""
+                                                                        }
+                                                                        checked={
+                                                                            !isRevoked(category.piiCategoryId)
+                                                                        }
+                                                                        label={ category.piiCategoryDisplayName }
+                                                                        onChange={
+                                                                            () => onClaimRevokeToggle(
+                                                                                editingConsent.consentReceiptID,
+                                                                                category.piiCategoryId)
+                                                                        }
                                                                     />
-                                                                )
-                                                            }
-                                                        </List.Content>
-                                                        <List.Content>
-                                                            { category.piiCategoryDisplayName }
-                                                        </List.Content>
-                                                    </List.Item>
-                                                )) }
+                                                                    {
+                                                                        isRevoked(category.piiCategoryId)
+                                                                            ? (
+                                                                                <Label
+                                                                                    className="revoked-label"
+                                                                                    horizontal
+                                                                                >
+                                                                                    { t("common:revoked") }
+                                                                                </Label>
+                                                                            )
+                                                                            : null
+                                                                    }
+
+                                                                </List.Header>
+                                                            </List.Content>
+                                                        </List.Item>
+                                                    ))
+                                                }
                                             </List>
-                                        </div>
-                                    );
-                                }))
-                        }
-                    </List.Item>
-                    <br/>
-                    <List.Item className="inner-list-item">
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </React.Fragment>
+                            );
+                        }))
+                        : null
+                }
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 16 }>
                         <Button
                             primary
-                            onClick={ onClaimUpdateClick }
+                            onClick={ () => onClaimUpdate(editingConsent.consentReceiptID) }
+                            disabled={ !isUpdatable() }
                         >
                             { t("common:update") }
                         </Button>
-                        <Button
-                            className="link-button"
-                            onClick={ onEditViewCloseClick }
-                        >
-                            { t("common:cancel") }
-                        </Button>
-                    </List.Item>
-                </List>
-                </Grid.Column>
+                    </Grid.Column>
+                </Grid.Row>
+                <Divider />
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 16 }>
+                        <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                            <DangerZone
+                                actionTitle={ t("views:components.consentManagement.editConsent.dangerZones." +
+                                    "revoke.actionTitle") }
+                                header={ t("views:components.consentManagement.editConsent.dangerZones." +
+                                    "revoke.header") }
+                                subheader={ t("views:components.consentManagement.editConsent.dangerZones." +
+                                    "revoke.subheader") }
+                                onActionClick={ () => onAppConsentRevoke(editingConsent) }
+                            />
+                        </DangerZoneGroup>
+                    </Grid.Column>
+                </Grid.Row>
             </Grid>
-            <br/>
         </EditSection>
     );
 };

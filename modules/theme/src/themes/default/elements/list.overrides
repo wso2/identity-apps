@@ -28,3 +28,27 @@
         }
     }
 }
+
+/*******************************
+     Claim List Variation
+*******************************/
+
+.ui.list {
+    &.claim-list {
+        padding-top: 0;
+        padding-left: 0;
+
+        .ui.checkbox {
+            margin: 5px 0px;
+
+            &.revoked {
+                text-decoration: line-through;
+            }
+        }
+        .revoked-label {
+            margin-left: 8px;
+            background: transparent;
+            color: @negativeColor;
+        }
+    }
+}

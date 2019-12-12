@@ -38,6 +38,7 @@ export const common: Common = {
     contains: "Contains",
     continue: "Continue",
     createdOn: "Created on",
+    dangerZone: "Danger Zone",
     delete: "Delete",
     description: "Description",
     deviceModel: "Device model",

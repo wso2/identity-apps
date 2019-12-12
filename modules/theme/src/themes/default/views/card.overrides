@@ -128,6 +128,11 @@
                 .inner-list-item {
                     padding: 0;
 
+                    .description {
+                        .small-text {
+                            font-size: 11px;
+                        }
+                    }
                     .list-item-action {
                         display: inline-block;
                         padding-top: 10px;

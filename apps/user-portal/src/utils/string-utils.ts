@@ -17,8 +17,26 @@
  *
  */
 
-export * from "./authenticate-util";
-export * from "./http-utils";
-export * from "./search-utils";
-export * from "./storage-utils";
-export * from "./string-utils";
+/**
+ * Transforms a string to title case.
+ *
+ * @param {string} raw - Raw string.
+ * @return {string}
+ */
+export const toTitleCase = (raw: string): string => {
+    const parts = raw.split(" ");
+    let newStr = "";
+
+    parts.forEach((part, index) => {
+        part = part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+
+        if (index === 0) {
+            newStr = part;
+            return; // forEach doesn't support `continue`.
+        }
+
+        newStr = newStr + " " + part;
+    });
+
+    return newStr;
+};

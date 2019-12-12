@@ -16,23 +16,23 @@
  * under the License.
  */
 
+import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {Button, Container, Grid, List, Message, Modal, Placeholder} from "semantic-ui-react";
+import { Button, Container, Message, Modal } from "semantic-ui-react";
 import { fetchConsentedApps, fetchConsentReceipt, revokeConsentedApp, updateConsentedClaims } from "../../api/consents";
+import * as ApplicationConstants from "../../constants/application-constants";
 import {
     ConsentInterface,
     ConsentState,
-    createEmptyConsentReceipt,
     createEmptyNotification,
     Notification,
+    RevokedClaimInterface,
     ServiceInterface
 } from "../../models";
-import { ConsentReceiptInterface } from "../../models/consents";
+import { endUserSession } from "../../utils";
 import { SettingsSection } from "../shared";
 import { AppConsentList } from "./consents-list";
-import { endUserSession } from "../../utils";
-import {APPLICATION_NAME} from "../../constants";
 
 /**
  * Proptypes for the user sessions component.
@@ -47,14 +47,11 @@ interface ConsentComponentProps {
  * @return {JSX.Element}
  */
 export const Consents: FunctionComponent<ConsentComponentProps> = (props: ConsentComponentProps): JSX.Element => {
-    const [consentedApps, setConsentedApps] = useState<ConsentInterface[]>([]);
-    const [editConsentedApps, setEditConsentedApps] = useState<ConsentInterface[]>([]);
-    const [consentReceipt, setConsentReceipt] = useState<ConsentReceiptInterface>(createEmptyConsentReceipt);
-    const [editingConsentReceipt, setEditingConsentReceipt] = useState<ConsentReceiptInterface>();
-    const [editingConsent, setEditingConsent] = useState<ConsentInterface>();
-    const [activeIndex, setActiveIndex] = useState("");
-    const [isConsentRevokeModalVisible, setConsentRevokeModelView] = useState(false);
-    const [revokedPIICatList, setRevokedPIICatList] = useState<number[]>([]);
+    const [ consentedApps, setConsentedApps ] = useState<ConsentInterface[]>([]);
+    const [ revokingConsent, setRevokingConsent ] = useState<ConsentInterface>();
+    const [ isConsentRevokeModalVisible, setConsentRevokeModalVisibility ] = useState(false);
+    const [ revokedClaimList, setRevokedClaimList ] = useState<RevokedClaimInterface[]>([]);
+    const [ consentListActiveIndexes, setConsentListActiveIndexes ] = useState([]);
 
     const { onNotificationFired } = props;
     const { t } = useTranslation();
@@ -71,18 +68,6 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         fetchConsentedApps(ConsentState.ACTIVE)
             .then((response) => {
                 setConsentedApps(response);
-                setEditConsentedApps(response);
-                notification = {
-                    description: t(
-                        "views:components.consentManagement.notifications.consentedAppsFetch.success.description"
-                    ),
-                    message: t("views:components.consentManagement.notifications.consentedAppsFetch.success" +
-                        ".message"),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
             })
             .catch((error) => {
                 notification = {
@@ -97,6 +82,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                     },
                     visible: true
                 };
+
                 if (error.response && error.response.data && error.response.detail) {
                     notification = {
                         ...notification,
@@ -116,23 +102,23 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
             });
     };
 
-    const getConsentReceipt = (receiptId) => {
+    /**
+     * Fetches the consent receipt for the corresponding id.
+     *
+     * @param receiptId - Consent receipt id.
+     */
+    const getConsentReceipt = (receiptId): void => {
         fetchConsentReceipt(receiptId)
             .then((response) => {
-                setConsentReceipt(response);
-                setEditingConsentReceipt(response);
-                notification = {
-                    description: t(
-                        "views:components.consentManagement.notifications.consentReceiptFetch.success" +
-                        ".description"
-                    ),
-                    message: t("views:components.consentManagement.notifications.consentReceiptFetch" +
-                        ".success.message"),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
+                const apps = [ ...consentedApps ];
+
+                for (const app of apps) {
+                    if (app.consentReceiptID === receiptId) {
+                        app.consentReceipt = response;
+                    }
+                }
+
+                setConsentedApps(apps);
             })
             .catch((error) => {
                 notification = {
@@ -147,6 +133,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                     },
                     visible: true
                 };
+
                 if (error.response && error.response.data && error.response.detail) {
                     notification = {
                         ...notification,
@@ -168,74 +155,67 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     };
 
     /**
-     * The following method handles the revoke claim button click. This retrieves the
-     * pii category id of the revoked claim and stores it in the state.
-     * @param piiCategory
+     * The following method handles the revoke claim checkbox toggle event.
+     *
+     * @param {string} receiptId - consent receipt id.
+     * @param {number} claimId - claim id ie. piiCategoryId.
      */
-    const revokePIICategory = (piiCategory) => {
-        const indexes = [ ...revokedPIICatList ];
+    const handleClaimRevokeToggle = (receiptId: string, claimId: number): void => {
+        const list = [ ...revokedClaimList ];
+        let found: boolean = false;
 
-        if (!revokedPIICatList.includes(piiCategory.piiCategoryId)) {
-            indexes.push(piiCategory.piiCategoryId);
-        } else if (revokedPIICatList.includes(piiCategory.piiCategoryId)) {
-            const removingIndex = revokedPIICatList.indexOf(piiCategory.piiCategoryId);
-            if (removingIndex !== -1) {
-                indexes.splice(removingIndex, 1);
+        for (const item of list) {
+            if (item.id === receiptId) {
+                found = true;
+                if (item.revoked.includes(claimId)) {
+                    const removingIndex = item.revoked.indexOf(claimId);
+                    if (removingIndex !== -1) {
+                        item.revoked.splice(removingIndex, 1);
+                    }
+                    continue;
+                }
+                item.revoked.push(claimId);
             }
         }
-        setRevokedPIICatList(indexes);
-    };
 
-    /**
-     * The following method handles the undo claim revoke button click. This retrieves the
-     * pii category id of the revoked claim and remove it from the state.
-     * @param piiCategory
-     */
-    const undoRevokePIICategory = (e, { id }) => {
-        const indexes = [ ...revokedPIICatList ];
-
-        if (revokedPIICatList.includes(id)) {
-            const removingIndex = revokedPIICatList.indexOf(id);
-            if (removingIndex !== -1) {
-                indexes.splice(removingIndex, 1);
-            }
+        if (!found) {
+            list.push({ id: receiptId, revoked: [ claimId ] });
         }
-        setRevokedPIICatList(indexes);
-    };
 
-    /**
-     * Handles the consent edit button click. Retrieves the the receipt information
-     * and stores it in the state and sets the current consent object as the editing
-     * consent. And finally toggles the consent edit modal visibility.
-     * @param {ConsentInterface} consent corresponding consent object
-     */
-    const handleConsentEditClick = (e, { id }): void => {
-        getConsentReceipt(id);
-        setActiveIndex(id);
+        setRevokedClaimList(list);
     };
 
     /**
      * Handles the consent revoke button click. Sets the current consent object as
      * the editing consent and toggles the visibility of the consent revoke modal.
-     * @param {ConsentInterface} consent corresponding consent object
+     *
+     * @param {ConsentInterface} consent - Corresponding consent object
      */
-    const handleConsentRevokeClick = (consent: ConsentInterface): void => {
-        setEditingConsent(consent);
-        setConsentRevokeModelView(true);
+    const handleAppConsentRevoke = (consent: ConsentInterface): void => {
+        setRevokingConsent(consent);
+        setConsentRevokeModalVisibility(true);
     };
 
     /**
      * Revokes the consent of an already consented application.
+     *
+     * @param {ConsentInterface} consent - Consent which needs to be revoked.
      */
-    const revokeConsent = (consent: ConsentInterface): void => {
-        const compare = APPLICATION_NAME.localeCompare(consent.spDisplayName);
+    const revokeAppConsent = (consent: ConsentInterface): void => {
+        const isUserPortal: number = ApplicationConstants.USER_PORTAL_IDENTIFIER.localeCompare(consent.spDisplayName);
+
         revokeConsentedApp(consent.consentReceiptID)
-            .then((response) => {
-                getConsentedApps();
-                setConsentRevokeModelView(false);
-                if (compare === 0) {
+            .then(() => {
+                // Reset the list
+                resetConsentedAppList(true);
+
+                setConsentRevokeModalVisibility(false);
+
+                // If the revoked app is user portal, end the session.
+                if (isUserPortal === 0) {
                     endUserSession();
                 }
+
                 notification = {
                     description: t(
                         "views:components.consentManagement.notifications.revokeConsentedApp.success" +
@@ -244,7 +224,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                     message: t("views:components.consentManagement.notifications.revokeConsentedApp" +
                         ".success.message"),
                     otherProps: {
-                        negative: true
+                        positive: true
                     },
                     visible: true
                 };
@@ -262,6 +242,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                     },
                     visible: true
                 };
+
                 if (error.response && error.response.data && error.response.detail) {
                     notification = {
                         ...notification,
@@ -285,19 +266,23 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
      * Handles the claims update button click action event. The revoked claims are taken
      * out of the existing receipt object and are passed on to the `updateConsentedClaims`
      * which executes the API request and updates the consented claims.
+     *
+     * @param {string} receiptId - consent receipt id.
      */
-    const handleClaimUpdateClick = (): void => {
-        const receipt = { ...editingConsentReceipt };
+    const handleClaimUpdate = (receiptId: string): void => {
+        // clone deep is needed to avoid mutations.
+        const updatingConsent = _.cloneDeep(consentedApps).find((consent) => consent.consentReceiptID === receiptId);
+        const claimList = [ ...revokedClaimList ].find((item) => item.id === receiptId);
 
         let isPIIEmpty: boolean = false;
 
         // If the `piiCategory` id is in the `revokedClaimIds`,
         // then the category is removed from the list.
-        receipt.services.map((service: ServiceInterface) => {
+        updatingConsent.consentReceipt.services.map((service: ServiceInterface) => {
             service.purposes.map((purpose) => {
-                purpose.piiCategory = purpose.piiCategory.filter((cat) => {
-                    if (!revokedPIICatList.includes(cat.piiCategoryId)) {
-                        return cat;
+                purpose.piiCategory = purpose.piiCategory.filter((category) => {
+                    if (!claimList.revoked.includes(category.piiCategoryId)) {
+                        return category;
                     }
                 });
                 // If consent to all the pii categories are revoked
@@ -311,147 +296,159 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         // If the PII category list is empty, show the consent revoke modal.
         // Else, perform the usual consented claims updating process.
         if (isPIIEmpty) {
-            setConsentRevokeModelView(true);
-        } else {
-            updateConsentedClaims(receipt)
-                .then(() => {
-                    setActiveIndex("");
-                    getConsentedApps();
-                    notification = {
-                        description: t(
-                            "views:components.consentManagement.notifications.updateConsentedClaims.success" +
-                            ".description"
-                        ),
-                        message: t("views:components.consentManagement.notifications.updateConsentedClaims." +
-                            "success.message"),
-                        otherProps: {
-                            negative: true
-                        },
-                        visible: true
-                    };
-                })
-                .catch((error) => {
-                    notification = {
-                        description: t(
-                            "views:components.consentManagement.notifications.updateConsentedClaims.genericError" +
-                            ".description"
-                        ),
-                        message: t("views:components.consentManagement.notifications.updateConsentedClaims." +
-                            "genericError.message"),
-                        otherProps: {
-                            negative: true
-                        },
-                        visible: true
-                    };
-                    if (error.response && error.response.data && error.response.detail) {
-                        notification = {
-                            ...notification,
-                            description: t(
-                                "views:components.consentManagement.notifications.updateConsentedClaims.error" +
-                                ".description",
-                                { description: error.response.data.detail }
-                            ),
-                            message: t(
-                                "views:components.consentManagement.notifications.updateConsentedClaims" +
-                                ".error.message"
-                            ),
-                        };
-                    }
-                })
-                .finally(() => {
-                    onNotificationFired(notification);
-                });
+            setRevokingConsent(updatingConsent);
+            setConsentRevokeModalVisibility(true);
+            return;
         }
+
+        updateConsentedClaims(updatingConsent.consentReceipt)
+            .then(() => {
+                // Reset the list
+                resetConsentedAppList(true);
+
+                notification = {
+                    description: t(
+                        "views:components.consentManagement.notifications.updateConsentedClaims.success" +
+                        ".description"
+                    ),
+                    message: t("views:components.consentManagement.notifications.updateConsentedClaims." +
+                        "success.message"),
+                    otherProps: {
+                        positive: true
+                    },
+                    visible: true
+                };
+            })
+            .catch((error) => {
+                notification = {
+                    description: t(
+                        "views:components.consentManagement.notifications.updateConsentedClaims.genericError" +
+                        ".description"
+                    ),
+                    message: t("views:components.consentManagement.notifications.updateConsentedClaims." +
+                        "genericError.message"),
+                    otherProps: {
+                        negative: true
+                    },
+                    visible: true
+                };
+
+                if (error.response && error.response.data && error.response.detail) {
+                    notification = {
+                        ...notification,
+                        description: t(
+                            "views:components.consentManagement.notifications.updateConsentedClaims.error" +
+                            ".description",
+                            { description: error.response.data.detail }
+                        ),
+                        message: t(
+                            "views:components.consentManagement.notifications.updateConsentedClaims" +
+                            ".error.message"
+                        ),
+                    };
+                }
+            })
+            .finally(() => {
+                onNotificationFired(notification);
+            });
     };
 
     /**
-     * Handles the consent modal close action.
+     * Handler for the consent detail button click.
+     *
+     * @param {number} index - Index of the clicked item.
+     * @param {string} receiptId - Consent receipt id.
      */
-    const handleEditViewClose = (): void => {
-        setActiveIndex("");
-        setRevokedPIICatList([]);
+    const handleConsentDetailClick = (index: number, receiptId: string): void => {
+        const indexes = [ ...consentListActiveIndexes ];
+
+        if (consentListActiveIndexes.includes(index)) {
+            const list = [ ...revokedClaimList ];
+            const removingIndex = consentListActiveIndexes.indexOf(index);
+
+            if (removingIndex !== -1) {
+                indexes.splice(removingIndex, 1);
+            }
+
+            // Reset the revoked list.
+            setRevokedClaimList(list.filter((item) => item.id !== receiptId));
+        } else {
+            indexes.push(index);
+
+            // Fetch the consent receipt.
+            getConsentReceipt(receiptId);
+        }
+
+        setConsentListActiveIndexes(indexes);
     };
 
     /**
      * Handles the consent revoke modal close action.
      */
     const handleConsentRevokeModalClose = (): void => {
-        setConsentRevokeModelView(false);
+        setConsentRevokeModalVisibility(false);
     };
 
     /**
-     * Generates an empty placeholder to be shown until the consented
-     * application list is fetched from the API.
+     * Resets the consented apps list.
      *
-     * @return {JSX.Element[]}
+     * @param {boolean} refetch - Flag to set the if re-fetch is enabled.
      */
-    const createConsentedAppsListPlaceholder = (): JSX.Element[] => {
-        const placeholder = [];
-        for (let i = 0; i < 2; i++) {
-            placeholder.push(
-                <List.Item className="inner-list-item" key={ i }>
-                    <Grid padded>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column width={ 16 } className="first-column">
-                                <List.Content verticalAlign="middle">
-                                    <Placeholder>
-                                        <Placeholder.Header image>
-                                            <Placeholder.Line/>
-                                            <Placeholder.Line/>
-                                        </Placeholder.Header>
-                                    </Placeholder>
-                                </List.Content>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </List.Item>
-            );
+    const resetConsentedAppList = (refetch: boolean = true): void => {
+        // Close all the opened drawers.
+        setConsentListActiveIndexes([]);
+
+        if (refetch) {
+            // Re-fetch the consented apps list
+            getConsentedApps();
         }
-        return placeholder;
     };
 
-    const consentRevokeMessage = () => {
-        const compare = APPLICATION_NAME.localeCompare(editingConsent.spDisplayName);
-        if (compare === 0) {
-            return (
-                <Message warning>
-                    <p>Please note that you will be redirected to the login consent page.</p>
-                </Message>
-            );
-        }
-    }
+    /**
+     * Consent revoke modal.
+     *
+     * @return {JSX.Element}
+     */
+    const consentRevokeModal = (): JSX.Element => {
+        const isUserPortal: number = ApplicationConstants.USER_PORTAL_IDENTIFIER.localeCompare(
+            revokingConsent.spDisplayName);
 
-    const consentRevokeModal =  editingConsent ? (
-        <Modal
-            size="mini"
-            className="link-button"
-            open={ isConsentRevokeModalVisible }
-            onClose={ handleConsentRevokeModalClose }
-            dimmer="blurring"
-        >
-            <Modal.Content>
-                <Container>
-                    <h3>
+        return (
+            <Modal
+                size="mini"
+                className="link-button"
+                open={ isConsentRevokeModalVisible }
+                onClose={ handleConsentRevokeModalClose }
+                dimmer="blurring"
+            >
+                <Modal.Content>
+                    <Container>
+                        <h3>{ t("views:components.consentManagement.modals.consentRevokeModal.heading") }</h3>
                         {
-                            t("views:components.consentManagement.modals.consentRevokeModal.heading",
-                                { appName: editingConsent.spDisplayName })
+                            (isUserPortal === 0)
+                                ? (
+                                    <Message warning>
+                                        <p>{ t("views:components.consentManagement.modals." +
+                                            "consentRevokeModal.warning") }</p>
+                                    </Message>
+                                )
+                                : null
                         }
-                    </h3>
-                    { consentRevokeMessage() }
-                </Container>
-                <br/>
-                <p>{ t("views:components.consentManagement.modals.consentRevokeModal.message") }</p>
-            </Modal.Content>
-            <Modal.Actions>
-                <Button className="link-button" onClick={ handleConsentRevokeModalClose }>
-                    { t("common:cancel") }
-                </Button>
-                <Button primary onClick={ () => revokeConsent(editingConsent) }>
-                    { t("common:revoke") }
-                </Button>
-            </Modal.Actions>
-        </Modal>
-    ) : null;
+                    </Container>
+                    <br/>
+                    <p>{ t("views:components.consentManagement.modals.consentRevokeModal.message") }</p>
+                </Modal.Content>
+                <Modal.Actions>
+                    <Button className="link-button" onClick={ handleConsentRevokeModalClose }>
+                        { t("common:cancel") }
+                    </Button>
+                    <Button primary onClick={ () => revokeAppConsent(revokingConsent) }>
+                        { t("common:revoke") }
+                    </Button>
+                </Modal.Actions>
+            </Modal>
+        );
+    };
 
     return (
         <>
@@ -467,22 +464,15 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
             >
                 <AppConsentList
                     consentedApps={ consentedApps }
-                    editConsentedApps={ editConsentedApps }
-                    onConsentEditClick={ handleConsentEditClick }
-                    onConsentRevokeClick={ handleConsentRevokeClick }
-                    onClaimUpdateClick={ handleClaimUpdateClick }
-                    onEditViewCloseClick={ handleEditViewClose }
-                    editingConsent={ editingConsent }
-                    editingConsentReceipt={ editingConsentReceipt }
-                    consentReceipt={ consentReceipt }
-                    revokeConsent={ revokeConsent }
-                    activeIndex={ activeIndex }
-                    revokePIICategory={ revokePIICategory }
-                    undoRevokePIICategory={ undoRevokePIICategory }
-                    revokedPIICatList={ revokedPIICatList }
+                    onClaimUpdate={ handleClaimUpdate }
+                    onAppConsentRevoke={ handleAppConsentRevoke }
+                    onClaimRevokeToggle={ handleClaimRevokeToggle }
+                    revokedClaimList={ revokedClaimList }
+                    consentListActiveIndexes={ consentListActiveIndexes }
+                    onConsentDetailClick={ handleConsentDetailClick }
                 />
-                { consentRevokeModal }
+                { revokingConsent && consentRevokeModal() }
             </SettingsSection>
-            </>
+        </>
     );
 };

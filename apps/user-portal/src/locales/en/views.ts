@@ -306,19 +306,28 @@ export const views: Views = {
             }
         },
         consentManagement: {
+            editConsent: {
+                collectionMethod: "Collection Method",
+                dangerZones: {
+                    revoke: {
+                        actionTitle: "Revoke",
+                        header: "Revoke consent",
+                        subheader: "You will have to provide consent for this application again."
+                    }
+                },
+                description: "Description",
+                piiCategoryHeading: "Manage consent for the collection and sharing of your personal information " +
+                    "with the application. Uncheck the attributes that you need to revoke and press the update " +
+                    "button to save the changes or press the revoke button to remove the consent for all the attributes.",
+                state: "State",
+                version: "Version"
+            },
             modals: {
                 consentRevokeModal: {
-                    heading: "Revoke {{appName}}?",
-                    message: "Are you sure you want to revoke this consent? This operation is not reversible."
-                },
-                editConsentModal: {
-                    description: {
-                        collectionMethod: "Collection Method",
-                        description: "Description",
-                        piiCategoryHeading: "Information that you've shared with the application",
-                        state: "State",
-                        version: "Version"
-                    }
+                    heading: "Are you sure?",
+                    message: "This operation is not reversible. This will permanently revoke consent for all the " +
+                        "attributes. Are you sure you want to proceed?",
+                    warning: "Please note that you will be redirected to the login consent page"
                 }
             },
             notifications: {
@@ -928,6 +937,13 @@ export const views: Views = {
         },
         userSessions: {
             browserAndOS: "{{browser}} on {{os}} {{version}}",
+            dangerZones: {
+                terminate: {
+                    actionTitle: "Terminate",
+                    header: "Terminate session",
+                    subheader: "You will be logged out of the session on the particular device."
+                }
+            },
             lastAccessed: "Last accessed {{date}}",
             modals: {
                 terminateAllUserSessionsModal: {

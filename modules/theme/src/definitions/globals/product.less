@@ -364,4 +364,37 @@ body {
     }
 }
 
+/*****************************************
+                Active Label
+*****************************************/
+
+.active-label {
+    display: inline-block;
+    border-radius: 50%;
+    width: 9px;
+    height: 9px;
+    margin-right: 5px;
+
+    &.positive {
+        background: @positiveColor;
+    }
+    &.negative {
+        background: @negativeColor;
+    }
+    &.info {
+        background: @infoColor;
+    }
+    &.warning {
+        background: @warningColor;
+    }
+}
+
+/*****************************************
+            Helper Classes
+*****************************************/
+
+.bold-text {
+    font-weight: 500 !important;
+}
+
 .loadUIOverrides();
