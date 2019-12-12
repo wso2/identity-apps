@@ -181,7 +181,7 @@
                                         %>
                                         <div class="field required">
                                             <div class="ui checkbox checked disabled claim-cb">
-                                                <input type="checkbox" class="mandatory-claim hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" required checked disabled />
+                                                <input type="checkbox" class="mandatory-claim hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" required checked readonly/>
                                                 <label for="consent_<%=Encode.forHtmlAttribute(claimId)%>"><%=Encode.forHtml(displayName)%></label>
                                             </div>
                                         </div>
@@ -348,11 +348,11 @@
         $(document).ready(function () {
             $("#consent_select_all").click(function () {
                 if (this.checked) {
-                    $('.checkbox input:checkbox:not(:disabled)').each(function () {
+                    $('.checkbox input:checkbox:not(:read-only)').each(function () {
                         $(this).prop("checked", true);
                     });
                 } else {
-                    $('.checkbox input:checkbox:not(:disabled)').each(function () {
+                    $('.checkbox input:checkbox:not(:read-only)').each(function () {
                         $(this).prop("checked", false);
                     });
                 }
