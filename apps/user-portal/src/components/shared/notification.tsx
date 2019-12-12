@@ -30,9 +30,9 @@ const NotificationComponentInner = (props: NotificationProps) => {
     const { description, message, ...otherProps } = props;
 
     return (
-        <Message {...otherProps}>
-            <Message.Header>{message}</Message.Header>
-            <p>{description}</p>
+        <Message { ...otherProps }>
+            <Message.Header>{ message }</Message.Header>
+            <p>{ description }</p>
         </Message>
     );
 };
