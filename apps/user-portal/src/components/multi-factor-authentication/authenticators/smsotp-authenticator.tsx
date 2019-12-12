@@ -99,11 +99,11 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                 setIsEdit(false);
             })
             .catch((error) => {
-                if (error && error.data && error.data.details) {
+                if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
                             "views:components.mfa.smsOtp.notifications.updateMobile.error.description",
-                            { description: error.data.details }
+                            { description: error.response.data.details }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
