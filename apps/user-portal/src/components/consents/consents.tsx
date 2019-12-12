@@ -19,7 +19,7 @@
 import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Container, Message, Modal } from "semantic-ui-react";
+import { Message, Modal } from "semantic-ui-react";
 import { fetchConsentedApps, fetchConsentReceipt, revokeConsentedApp, updateConsentedClaims } from "../../api/consents";
 import * as ApplicationConstants from "../../constants/application-constants";
 import {
@@ -32,8 +32,8 @@ import {
 } from "../../models";
 import { endUserSession } from "../../utils";
 import { SettingsSection } from "../shared";
+import { ModalComponent } from "../shared/modal";
 import { AppConsentList } from "./consents-list";
-import {ModalComponent} from "../shared/modal";
 
 /**
  * Proptypes for the user sessions component.
