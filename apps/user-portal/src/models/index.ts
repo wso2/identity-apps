@@ -16,6 +16,7 @@
  * under the License.
  */
 
+export * from "./alert";
 export * from "./api";
 export * from "./applications";
 export * from "./approvals";

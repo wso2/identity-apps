@@ -16,20 +16,23 @@
  * under the License.
  */
 
-export * from "./avatar";
-export * from "./alert";
-export * from "./app-avatar";
-export * from "./language-switcher";
-export * from "./advanced-search";
-export * from "./danger-zone";
-export * from "./edit-section";
-export * from "./empty-placeholder";
-export * from "./error-boundary";
-export * from "./global-loader";
-export * from "./icon";
-export * from "./notification";
-export * from "./page-header";
-export * from "./protected-route";
-export * from "./settings-section";
-export * from "./ui";
-export * from "./user-avatar";
+import { Notification } from "react-notification-system";
+
+/**
+ * Alert interface.
+ */
+export interface AlertInterface extends Notification {
+    description?: string;
+}
+
+/**
+ * Enum for Alert levels.
+ * @readonly
+ * @enum {string}
+ */
+export enum AlertLevels {
+    SUCCESS = "success",
+    ERROR = "error",
+    INFO = "info",
+    WARNING = "warning"
+}

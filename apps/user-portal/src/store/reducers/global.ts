@@ -24,6 +24,8 @@ import { GlobalActions, GlobalActionTypes } from "../actions/types";
  * Initial state.
  */
 const initialState: GlobalInterface = {
+    alert: null,
+    alertSystem: null,
     isApplicationsPageVisible: undefined,
     isGlobalLoaderVisible: false
 };
@@ -51,6 +53,16 @@ export const globalReducer = (state: GlobalInterface = initialState, action: Glo
             return {
                 ...state,
                 isApplicationsPageVisible: action.payload
+            };
+        case GlobalActionTypes.INITIALIZE_ALERT_SYSTEM:
+            return {
+                ...state,
+                alertSystem: action.payload,
+            };
+        case GlobalActionTypes.ADD_ALERT:
+            return {
+                ...state,
+                alert: action.payload,
             };
         default:
             return state;

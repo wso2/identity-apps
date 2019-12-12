@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Notification } from "../../../models";
+import { AlertInterface, Notification } from "../../../models";
 
 /**
  * Action type that fires a notification
@@ -48,7 +48,9 @@ export interface DismissNotificationAction {
 export enum GlobalActionTypes {
     SHOW_GLOBAL_LOADER = "SHOW_GLOBAL_LOADER",
     HIDE_GLOBAL_LOADER = "HIDE_GLOBAL_LOADER",
-    TOGGLE_APPLICATIONS_PAGE_VISIBILITY = "TOGGLE_APPLICATIONS_PAGE_VISIBILITY"
+    TOGGLE_APPLICATIONS_PAGE_VISIBILITY = "TOGGLE_APPLICATIONS_PAGE_VISIBILITY",
+    INITIALIZE_ALERT_SYSTEM = "INITIALIZE_ALERT_SYSTEM",
+    ADD_ALERT = "ADD_ALERT"
 }
 
 /**
@@ -81,6 +83,26 @@ export interface ToggleApplicationsPageVisibilityAction extends GlobalBaseAction
 }
 
 /**
+ * Alert system initialize action interface.
+ */
+export interface InitializeAlertSystemAction extends GlobalBaseAction {
+    payload: any;
+    type: GlobalActionTypes.INITIALIZE_ALERT_SYSTEM;
+}
+
+/**
+ * Add alert action interface.
+ */
+export interface AddAlertAction extends GlobalBaseAction {
+    payload: AlertInterface;
+    type: GlobalActionTypes.ADD_ALERT;
+}
+
+/**
  * Export action interfaces.
  */
-export type GlobalActions = ShowGlobalLoaderAction | HideGlobalLoaderAction | ToggleApplicationsPageVisibilityAction;
+export type GlobalActions = ShowGlobalLoaderAction
+    | HideGlobalLoaderAction
+    | ToggleApplicationsPageVisibilityAction
+    | InitializeAlertSystemAction
+    | AddAlertAction;

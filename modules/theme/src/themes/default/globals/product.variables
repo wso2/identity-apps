@@ -44,3 +44,12 @@
 @advancedSearchOptionsHeaderBorderBottom: 1px solid #dededf;
 @advancedSearchDropdownMaxWidth: 520px;
 @advancedSearchBorder: 1px solid @borderColor;
+
+/*-------------------
+       Alert
+--------------------*/
+
+@alertBackgroundColor: @white;
+@alertWidth: 420px;
+@alertMessageMaxWidth: 350px;
+@alertBoxShadow: @floatingShadow;
