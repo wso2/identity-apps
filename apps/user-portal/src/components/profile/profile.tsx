@@ -432,33 +432,33 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             }
                         >
                             <List.Content floated="right">
-                                { schema.mutability !== "READ_ONLY" && schema.name !== "userName"
-                                    ?
-                                    (
-                                        <Popup
-                                            trigger={
-                                                (
-                                                    <Icon
-                                                        link={ true }
-                                                        className="list-icon"
-                                                        size="small"
-                                                        color="grey"
-                                                        onClick={ () => showFormEditView(schema.name) }
-                                                        name={
-                                                            !isEmpty(profileInfo.get(schema.name))
+                                { schema.mutability !== "READ_ONLY"
+                                    && schema.name !== "userName"
+                                    && !isEmpty(profileInfo.get(schema.name))
+                                        ? (
+                                            < Popup
+                                                trigger={
+                                                    (
+                                                        <Icon
+                                                            link={ true }
+                                                            className="list-icon"
+                                                            size="small"
+                                                            color="grey"
+                                                            onClick={ () => showFormEditView(schema.name) }
+                                                            name={ !isEmpty(profileInfo.get(schema.name))
                                                                 ? "pencil alternate"
-                                                                : "add"
-                                                        }
-                                                    />
-                                                )
-                                            }
-                                            position="top center"
-                                            content={ !isEmpty(profileInfo.get(schema.name))
-                                                ? t("common:edit")
-                                                : t("common:add") }
-                                            inverted={ true }
-                                        />
-                                    ) : null }
+                                                                : null }
+                                                        />
+                                                    )
+                                                }
+                                                position="top center"
+                                                content={ !isEmpty(profileInfo.get(schema.name))
+                                                    ? t("common:edit")
+                                                    : t("common:add") }
+                                                inverted={ true }
+                                            />
+                                        )
+                                        : null }
                             </List.Content>
                         </Grid.Column>
                     </Grid.Row>
