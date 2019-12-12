@@ -26,6 +26,7 @@ const WriteFilePlugin = require("write-file-webpack-plugin");
 module.exports = (env) => {
     const basename = "user-portal";
     const devServerPort = 9000;
+    const publicPath = `/${basename}`;
 
     /**
      * Deployment configurations
@@ -39,7 +40,7 @@ module.exports = (env) => {
      */
     const loginPagePath = "/login";
     const homePagePath = "/overview";
-    const externalLoginCallbackURL = `/${basename}${loginPagePath}`;
+    const externalLoginCallbackURL = `${publicPath}${loginPagePath}`;
 
     /**
      * Build configurations
@@ -53,7 +54,7 @@ module.exports = (env) => {
         output: {
             path: distFolder,
             filename: "[name].js",
-            publicPath: `/${basename}/`
+            publicPath: `${publicPath}/`
         },
         resolve: {
             extensions: [".tsx", ".ts", ".js", ".json"]
@@ -154,7 +155,8 @@ module.exports = (env) => {
                 template: path.join(__dirname, "src", "index.html"),
                 hash: true,
                 favicon: faviconImage,
-                title: titleText
+                title: titleText,
+                publicPath: publicPath
             }),
             new HtmlWebpackPlugin({
                 filename: path.join(distFolder, "index.jsp"),
@@ -162,6 +164,7 @@ module.exports = (env) => {
                 hash: true,
                 favicon: faviconImage,
                 title: titleText,
+                publicPath: publicPath,
                 importUtil: "<%@ page import=\"static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>",
                 serverUrl: "<%=getServerURL(\"\", true, true)%>"
             }),

@@ -21,12 +21,12 @@
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-        <link href="/libs/styles/css/wso2-default.css" rel="stylesheet" type="text/css"/>
+        <link href="<%= htmlWebpackPlugin.options.publicPath %>/libs/styles/css/wso2-default.css" rel="stylesheet" type="text/css"/>
         
         <title><%= htmlWebpackPlugin.options.title %></title>
 
         <!-- runtime config -->
-        <script src="/runtime-config.js"></script>
+        <script src="<%= htmlWebpackPlugin.options.publicPath %>/runtime-config.js"></script>
         <!-- runtime config -->
     </head>
     <body>
