@@ -47,6 +47,14 @@
                     margin-right: 0.7em;
                 }
             }
+            .username-placeholder{
+                display:flex;
+                align-items:center;
+                .username {
+                    display: inline-block;
+                    margin-right: 0.7em;
+                }
+            }
             .header {
                 .name {
                     font-weight: bold;
