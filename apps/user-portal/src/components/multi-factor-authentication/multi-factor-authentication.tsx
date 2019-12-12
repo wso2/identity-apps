@@ -19,7 +19,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { List } from "semantic-ui-react";
-import { Notification } from "../../models";
+import { AlertInterface } from "../../models";
 import { SettingsSection } from "../shared";
 import { FIDOAuthenticator, SMSOTPAuthenticator } from "./authenticators";
 
@@ -27,21 +27,21 @@ import { FIDOAuthenticator, SMSOTPAuthenticator } from "./authenticators";
  * Prop types for the basic details component.
  */
 interface MfaProps {
-    onNotificationFired: (notification: Notification) => void;
+    onAlertFired: (alert: AlertInterface) => void;
 }
 
 export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (props: MfaProps): JSX.Element => {
     const { t } = useTranslation();
-    const { onNotificationFired } = props;
+    const { onAlertFired } = props;
 
     return (
         <SettingsSection description={ t("views:sections.mfa.description") } header={ t("views:sections.mfa.heading") }>
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">
-                    <SMSOTPAuthenticator onNotificationFired={ onNotificationFired } />
+                    <SMSOTPAuthenticator onAlertFired={ onAlertFired } />
                 </List.Item>
                 <List.Item className="inner-list-item">
-                    <FIDOAuthenticator onNotificationFired={ onNotificationFired } />
+                    <FIDOAuthenticator onAlertFired={ onAlertFired } />
                 </List.Item>
             </List>
         </SettingsSection>

@@ -16,12 +16,14 @@
  * under the License.
  */
 
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { Applications, NotificationComponent } from "../components";
+import { Applications } from "../components";
 import { InnerPageLayout } from "../layouts";
-import { createEmptyNotification, Notification } from "../models";
+import { AlertInterface } from "../models";
+import { addAlert } from "../store/actions";
 
 /**
  * Applications page.
@@ -30,17 +32,14 @@ import { createEmptyNotification, Notification } from "../models";
  */
 export const ApplicationsPage = (): JSX.Element => {
     const { t } = useTranslation();
-    const [ notification, setNotification ] = useState(createEmptyNotification());
+    const dispatch = useDispatch();
 
-    const handleNotification = (firedNotification: Notification) => {
-        setNotification(firedNotification);
-    };
-
-    const handleNotificationDismiss = () => {
-        setNotification({
-            ...notification,
-            visible: false
-        });
+    /**
+     * Dispatches the alert object to the redux store.
+     * @param {AlertInterface} alert - Alert object.
+     */
+    const handleAlerts = (alert: AlertInterface) => {
+        dispatch(addAlert(alert));
     };
 
     return (
@@ -48,22 +47,10 @@ export const ApplicationsPage = (): JSX.Element => {
             pageTitle={ t("views:pages.applications.title") }
             pageDescription={ t("views:pages.applications.subTitle") }
         >
-            {
-                notification && notification.visible
-                    ? (
-                        <NotificationComponent
-                            message={ notification.message }
-                            description={ notification.description }
-                            onDismiss={ handleNotificationDismiss }
-                            { ...notification.otherProps }
-                        />
-                    )
-                    : null
-            }
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
-                        <Applications onNotificationFired={ handleNotification }/>
+                        <Applications onAlertFired={ handleAlerts }/>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

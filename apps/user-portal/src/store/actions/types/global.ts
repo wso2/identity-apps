@@ -16,32 +16,8 @@
  * under the License.
  */
 
-import { AlertInterface, Notification } from "../../../models";
+import { AlertInterface } from "../../../models";
 
-/**
- * Action type that fires a notification
- */
-export const FIRE_NOTIFICATION = "FIRE_NOTIFICATION";
-
-/**
- * Interface for the action that fores notifications
- */
-export interface FireNotificationAction {
-    payload: Notification;
-    type: typeof FIRE_NOTIFICATION;
-}
-
-/**
- * Action type that dismisses a notification
- */
-export const DISMISS_NOTIFICATION = "DISMISS_NOTIFICATION";
-
-/**
- *  Interface for the action that dismisses notifications
- */
-export interface DismissNotificationAction {
-    type: typeof DISMISS_NOTIFICATION;
-}
 /**
  * Global action types.
  */

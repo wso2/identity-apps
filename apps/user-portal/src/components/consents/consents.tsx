@@ -23,10 +23,10 @@ import { Button, Container, Message, Modal } from "semantic-ui-react";
 import { fetchConsentedApps, fetchConsentReceipt, revokeConsentedApp, updateConsentedClaims } from "../../api/consents";
 import * as ApplicationConstants from "../../constants/application-constants";
 import {
+    AlertInterface,
+    AlertLevels,
     ConsentInterface,
     ConsentState,
-    createEmptyNotification,
-    Notification,
     RevokedClaimInterface,
     ServiceInterface
 } from "../../models";
@@ -38,7 +38,7 @@ import { AppConsentList } from "./consents-list";
  * Proptypes for the user sessions component.
  */
 interface ConsentComponentProps {
-    onNotificationFired: (notification: Notification) => void;
+    onAlertFired: (alert: AlertInterface) => void;
 }
 
 /**
@@ -53,9 +53,8 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     const [ revokedClaimList, setRevokedClaimList ] = useState<RevokedClaimInterface[]>([]);
     const [ consentListActiveIndexes, setConsentListActiveIndexes ] = useState([]);
 
-    const { onNotificationFired } = props;
+    const { onAlertFired } = props;
     const { t } = useTranslation();
-    let notification: Notification = createEmptyNotification();
 
     useEffect(() => {
         getConsentedApps();
@@ -70,35 +69,31 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 setConsentedApps(response);
             })
             .catch((error) => {
-                notification = {
-                    description: t(
-                        "views:components.consentManagement.notifications.consentedAppsFetch.genericError" +
-                        ".description"
-                    ),
-                    message: t("views:components.consentManagement.notifications.consentedAppsFetch" +
-                        ".genericError.message"),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
-
                 if (error.response && error.response.data && error.response.detail) {
-                    notification = {
-                        ...notification,
+                    onAlertFired({
                         description: t(
                             "views:components.consentManagement.notifications.consentedAppsFetch.error" +
                             ".description",
                             { description: error.response.data.detail }
                         ),
+                        level: AlertLevels.ERROR,
                         message: t(
                             "views:components.consentManagement.notifications.consentedAppsFetch.error.message"
                         ),
-                    };
+                    });
+
+                    return;
                 }
-            })
-            .finally(() => {
-                onNotificationFired(notification);
+
+                onAlertFired({
+                    description: t(
+                        "views:components.consentManagement.notifications.consentedAppsFetch.genericError" +
+                        ".description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t("views:components.consentManagement.notifications.consentedAppsFetch" +
+                        ".genericError.message")
+                });
             });
     };
 
@@ -121,36 +116,33 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 setConsentedApps(apps);
             })
             .catch((error) => {
-                notification = {
-                    description: t(
-                        "views:components.consentManagement.notifications.consentReceiptFetch" +
-                        ".genericError.description"
-                    ),
-                    message: t("views:components.consentManagement.notifications.consentReceiptFetch" +
-                        ".genericError.message"),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
-
                 if (error.response && error.response.data && error.response.detail) {
-                    notification = {
-                        ...notification,
+                    onAlertFired({
                         description: t(
                             "views:components.consentManagement.notifications.consentReceiptFetch.error" +
                             ".description",
                             { description: error.response.data.detail }
                         ),
+                        level: AlertLevels.ERROR,
                         message: t(
                             "views:components.consentManagement.notifications.consentReceiptFetch.error" +
                             ".message"
                         ),
-                    };
+                    });
+
+                    return;
                 }
-            })
-            .finally(() => {
-                onNotificationFired(notification);
+
+                onAlertFired({
+                    description: t(
+                        "views:components.consentManagement.notifications.consentReceiptFetch" +
+                        ".genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.consentManagement.notifications.consentReceiptFetch" +
+                        ".genericError.message")
+                });
             });
     };
 
@@ -216,49 +208,44 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                     endUserSession();
                 }
 
-                notification = {
+                onAlertFired({
                     description: t(
                         "views:components.consentManagement.notifications.revokeConsentedApp.success" +
                         ".description"
                     ),
-                    message: t("views:components.consentManagement.notifications.revokeConsentedApp" +
-                        ".success.message"),
-                    otherProps: {
-                        positive: true
-                    },
-                    visible: true
-                };
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "views:components.consentManagement.notifications.revokeConsentedApp" +
+                        ".success.message")
+                });
             })
             .catch((error) => {
-                notification = {
-                    description: t(
-                        "views:components.consentManagement.notifications.revokeConsentedApp.genericError" +
-                        ".description"
-                    ),
-                    message: t("views:components.consentManagement.notifications.revokeConsentedApp" +
-                        ".genericError.message"),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
-
                 if (error.response && error.response.data && error.response.detail) {
-                    notification = {
-                        ...notification,
+                    onAlertFired({
                         description: t(
                             "views:components.consentManagement.notifications.revokeConsentedApp.error" +
                             ".description",
                             { description: error.response.data.detail }
                         ),
+                        level: AlertLevels.ERROR,
                         message: t(
                             "views:components.consentManagement.notifications.revokeConsentedApp.error.message"
-                        ),
-                    };
+                        )
+                    });
+
+                    return;
                 }
-            })
-            .finally(() => {
-                onNotificationFired(notification);
+
+                onAlertFired({
+                    description: t(
+                        "views:components.consentManagement.notifications.revokeConsentedApp.genericError" +
+                        ".description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.consentManagement.notifications.revokeConsentedApp" +
+                        ".genericError.message")
+                });
             });
     };
 
@@ -306,50 +293,44 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 // Reset the list
                 resetConsentedAppList(true);
 
-                notification = {
+                onAlertFired({
                     description: t(
                         "views:components.consentManagement.notifications.updateConsentedClaims.success" +
                         ".description"
                     ),
+                    level: AlertLevels.SUCCESS,
                     message: t("views:components.consentManagement.notifications.updateConsentedClaims." +
-                        "success.message"),
-                    otherProps: {
-                        positive: true
-                    },
-                    visible: true
-                };
+                        "success.message")
+                });
             })
             .catch((error) => {
-                notification = {
-                    description: t(
-                        "views:components.consentManagement.notifications.updateConsentedClaims.genericError" +
-                        ".description"
-                    ),
-                    message: t("views:components.consentManagement.notifications.updateConsentedClaims." +
-                        "genericError.message"),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
-
                 if (error.response && error.response.data && error.response.detail) {
-                    notification = {
-                        ...notification,
+                    onAlertFired({
                         description: t(
                             "views:components.consentManagement.notifications.updateConsentedClaims.error" +
                             ".description",
                             { description: error.response.data.detail }
                         ),
+                        level: AlertLevels.ERROR,
                         message: t(
                             "views:components.consentManagement.notifications.updateConsentedClaims" +
                             ".error.message"
                         ),
-                    };
+                    });
+
+                    return;
                 }
-            })
-            .finally(() => {
-                onNotificationFired(notification);
+
+                onAlertFired({
+                    description: t(
+                        "views:components.consentManagement.notifications.updateConsentedClaims.genericError" +
+                        ".description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.consentManagement.notifications.updateConsentedClaims." +
+                        "genericError.message")
+                });
             });
     };
 

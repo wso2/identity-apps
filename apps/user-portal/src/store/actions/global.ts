@@ -16,13 +16,9 @@
  * under the License.
  */
 
-import { AlertInterface, Notification } from "../../models";
+import { AlertInterface } from "../../models";
 import {
     AddAlertAction,
-    DISMISS_NOTIFICATION,
-    DismissNotificationAction,
-    FIRE_NOTIFICATION,
-    FireNotificationAction,
     GlobalActionTypes,
     HideGlobalLoaderAction,
     InitializeAlertSystemAction,
@@ -56,19 +52,6 @@ export const hideGlobalLoader = (): HideGlobalLoaderAction => ({
 export const toggleApplicationsPageVisibility = (visibility: boolean): ToggleApplicationsPageVisibilityAction => ({
     payload: visibility,
     type: GlobalActionTypes.TOGGLE_APPLICATIONS_PAGE_VISIBILITY
-});
-
-/**
- * Dispatches an action that fires a notification
- * @param notification
- */
-export const fireNotification = (notification: Notification): FireNotificationAction => ({
-    payload: notification,
-    type: FIRE_NOTIFICATION
-});
-
-export const dismissNotification = (): DismissNotificationAction => ({
-    type: DISMISS_NOTIFICATION
 });
 
 /**

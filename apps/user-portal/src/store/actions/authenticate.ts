@@ -24,10 +24,10 @@ import {
     SignOutUtil
 } from "@wso2is/authentication";
 import { getAssociations, getProfileInfo, getProfileSchemas } from "../../api";
-import { GlobalConfig, ServiceResourcesEndpoint } from "../../configs";
+import { GlobalConfig, i18n, ServiceResourcesEndpoint } from "../../configs";
 import * as TokenConstants from "../../constants";
-import { ProfileSchema } from "../../models";
-import { fireNotification } from "./global";
+import { AlertLevels, ProfileSchema } from "../../models";
+import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
 import { authenticateActionTypes } from "./types";
 
@@ -86,27 +86,46 @@ export const getProfileInformation = () => {
                     );
                 } else {
                     dispatch(
-                        fireNotification({
-                            description: "views:components.profile.notifications.getProfileInfo.genericError" +
-                                ".description",
-                            message: "views:components.profile.notifications.getProfileInfo.genericError.message",
-                            otherProps: {
-                                negative: true
-                            },
-                            visible: true
+                        addAlert({
+                            description: i18n.t(
+                                "views:components.profile.notifications.getProfileInfo.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: i18n.t(
+                                "views:components.profile.notifications.getProfileInfo.genericError.message"
+                            )
                         })
                     );
                 }
             })
             .catch((error) => {
+                if (error.response && error.response.data && error.response.data.detail) {
+                    dispatch(
+                        addAlert({
+                            description:  i18n.t(
+                                "views:components.profile.notifications.getProfileInfo.error.description",
+                                { description: error.response.data.detail }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: i18n.t(
+                                "views:components.profile.notifications.getProfileInfo.error.message"
+                            )
+                        })
+                    );
+
+                    return;
+                }
+
                 dispatch(
-                    fireNotification({
-                        description: error && error.data && error.data.details,
-                        message: "views:components.profile.notifications.getProfileInfo.error.message",
-                        otherProps: {
-                            negative: true
-                        },
-                        visible: true
+                    addAlert({
+                        description:  i18n.t(
+                            "views:components.profile.notifications.getProfileInfo.genericError.description",
+                            { description: error.response.data.detail }
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: i18n.t(
+                            "views:components.profile.notifications.getProfileInfo.genericError.message"
+                        )
                     })
                 );
             });

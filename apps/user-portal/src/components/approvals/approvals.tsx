@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 import { Icon, Menu, SemanticCOLORS, Tab } from "semantic-ui-react";
 import { fetchPendingApprovalDetails, fetchPendingApprovals, updatePendingApprovalStatus } from "../../api";
 import * as UIConstants from "../../constants/ui-constants";
-import { ApprovalStatus, ApprovalTaskDetails, Notification } from "../../models";
+import { AlertInterface, AlertLevels, ApprovalStatus, ApprovalTaskDetails } from "../../models";
 import { SettingsSection } from "../shared";
 import { ApprovalsList } from "./approvals-list";
 
@@ -29,7 +29,7 @@ import { ApprovalsList } from "./approvals-list";
  * Proptypes for the approvals component.
  */
 interface ApprovalsProps {
-    onNotificationFired: (notification: Notification) => void;
+    onAlertFired: (alert: AlertInterface) => void;
 }
 
 /**
@@ -54,7 +54,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
         [ ApprovalStatus.COMPLETED ]: false,
         [ ApprovalStatus.ALL ]: false
     });
-    const { onNotificationFired } = props;
+    const { onAlertFired } = props;
     const { t } = useTranslation();
 
     /**
@@ -116,31 +116,28 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                 setApprovals(filteredApprovals);
             })
             .catch((error) => {
-                let notification = {
-                    description: t(
-                        "views:components.approvals.notifications.fetchPendingApprovals.genericError.description"
-                    ),
-                    message: t(
-                        "views:components.approvals.notifications.fetchPendingApprovals.genericError.message"
-                    ),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
                 if (error.response && error.response.data && error.response.detail) {
-                    notification = {
-                        ...notification,
+                    onAlertFired({
                         description: t(
                             "views:components.approvals.notifications.fetchPendingApprovals.error.description",
                             { description: error.response.data.detail }
                         ),
+                        level: AlertLevels.ERROR,
                         message: t(
                             "views:components.approvals.notifications.fetchPendingApprovals.error.message"
                         ),
-                    };
+                    });
                 }
-                onNotificationFired(notification);
+
+                onAlertFired({
+                    description: t(
+                        "views:components.approvals.notifications.fetchPendingApprovals.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.approvals.notifications.fetchPendingApprovals.genericError.message"
+                    )
+                });
             });
     };
 
@@ -185,31 +182,30 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                 removeApprovalsListIndex(id);
             })
             .catch((error) => {
-                let notification = {
-                    description: t(
-                        "views:components.approvals.notifications.updatePendingApprovals.genericError.description"
-                    ),
-                    message: t(
-                        "views:components.approvals.notifications.updatePendingApprovals.genericError.message"
-                    ),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
                 if (error.response && error.response.data && error.response.detail) {
-                    notification = {
-                        ...notification,
+                    onAlertFired({
                         description: t(
                             "views:components.approvals.notifications.updatePendingApprovals.error.description",
                             { description: error.response.data.detail }
                         ),
+                        level: AlertLevels.ERROR,
                         message: t(
                             "views:components.approvals.notifications.updatePendingApprovals.error.message"
-                        ),
-                    };
+                        )
+                    });
+
+                    return;
                 }
-                onNotificationFired(notification);
+
+                onAlertFired({
+                    description: t(
+                        "views:components.approvals.notifications.updatePendingApprovals.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.approvals.notifications.updatePendingApprovals.genericError.message"
+                    )
+                });
             });
     };
 
@@ -277,31 +273,30 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                 setApprovals(approvalsClone);
             })
             .catch((error) => {
-                let notification = {
-                    description: t(
-                        "views:components.approvals.notifications.fetchApprovalDetails.genericError.description"
-                    ),
-                    message: t(
-                        "views:components.approvals.notifications.fetchApprovalDetails.genericError.message"
-                    ),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
                 if (error.response && error.response.data && error.response.detail) {
-                    notification = {
-                        ...notification,
+                    onAlertFired({
                         description: t(
                             "views:components.approvals.notifications.fetchApprovalDetails.error.description",
                             { description: error.response.data.detail }
                         ),
+                        level: AlertLevels.ERROR,
                         message: t(
                             "views:components.approvals.notifications.fetchApprovalDetails.error.message"
                         ),
-                    };
+                    });
+
+                    return;
                 }
-                onNotificationFired(notification);
+
+                onAlertFired({
+                    description: t(
+                        "views:components.approvals.notifications.fetchApprovalDetails.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.approvals.notifications.fetchApprovalDetails.genericError.message"
+                    )
+                });
             });
     };
 

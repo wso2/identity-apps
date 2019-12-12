@@ -25,7 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { updateProfileInfo } from "../../../api";
 import { MFAIcons } from "../../../configs";
-import { BasicProfileInterface, Notification } from "../../../models";
+import { AlertInterface, AlertLevels, BasicProfileInterface } from "../../../models";
 import { getProfileInformation } from "../../../store/actions";
 import { EditSection, ThemeIcon } from "../../shared";
 
@@ -33,7 +33,7 @@ import { EditSection, ThemeIcon } from "../../shared";
  * Prop types for the SMS OTP component.
  */
 interface SMSOTPProps {
-    onNotificationFired: (notification: Notification) => void;
+    onAlertFired: (alert: AlertInterface) => void;
 }
 
 /**
@@ -45,7 +45,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
     const [mobile, setMobile] = useState("");
     const [isEdit, setIsEdit] = useState(false);
     const { t } = useTranslation();
-    const { onNotificationFired } = props;
+    const { onAlertFired } = props;
     const dispatch = useDispatch();
     const profileInfo: BasicProfileInterface = useSelector(
         (state: any) => state.authenticationInformation.profileInfo
@@ -83,35 +83,45 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
             ]
         };
 
-        updateProfileInfo(data).then((response) => {
-            onNotificationFired({
-                description: t("views:components.mfa.smsOtp.notifications.updateMobile.success.description"),
-                message: t("views:components.mfa.smsOtp.notifications.updateMobile.success.message"),
-                otherProps: {
-                    positive: true
-                },
-                visible: true
-            });
-            dispatch(getProfileInformation());
-            setIsEdit(false);
+        updateProfileInfo(data)
+            .then((response) => {
+                onAlertFired({
+                    description: t(
+                        "views:components.mfa.smsOtp.notifications.updateMobile.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "views:components.mfa.smsOtp.notifications.updateMobile.success.message"
+                    ),
+                });
 
-        })
+                dispatch(getProfileInformation());
+                setIsEdit(false);
+            })
             .catch((error) => {
-                onNotificationFired({
-                    description: error && error.data && error.data.details
-                        ? t("views:components.mfa.smsOtp.notifications.updateMobile.error.description",
-                            {
-                                description: error.data.details
-                            }
+                if (error && error.data && error.data.details) {
+                    onAlertFired({
+                        description: t(
+                            "views:components.mfa.smsOtp.notifications.updateMobile.error.description",
+                            { description: error.data.details }
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "views:components.mfa.smsOtp.notifications.updateMobile.error.message"
                         )
-                        : t("views:components.mfa.smsOtp.notifications.updateMobile.genericError.description"),
-                    message: error && error.data && error.data.details
-                        ? t("views:components.mfa.smsOtp.notifications.updateMobile.error.message")
-                        : t("views:components.mfa.smsOtp.notifications.updateMobile.genericError.message"),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
+                    });
+
+                    return;
+                }
+
+                onAlertFired({
+                    description: t(
+                        "views:components.mfa.smsOtp.notifications.updateMobile.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.mfa.smsOtp.notifications.updateMobile.genericError.message"
+                    )
                 });
             });
     };

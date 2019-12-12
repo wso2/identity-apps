@@ -20,14 +20,14 @@ import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { getUserInfo } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
-import { Notification } from "../../models";
+import { AlertInterface, AlertLevels } from "../../models";
 import { SettingsSection } from "../shared";
 
 /**
  * Prop types for the profile export component.
  */
 interface ProfileExportProps {
-    onNotificationFired: (notification: Notification) => void;
+    onAlertFired: (alert: AlertInterface) => void;
 }
 
 /**
@@ -39,7 +39,7 @@ interface ProfileExportProps {
 export const ProfileExport: FunctionComponent<ProfileExportProps> = (
     props: ProfileExportProps
 ): JSX.Element => {
-    const { onNotificationFired } = props;
+    const { onAlertFired } = props;
     const { t } = useTranslation();
 
     /**
@@ -63,56 +63,51 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
                     window.URL.revokeObjectURL(url);
 
                     // Sets a success notification.
-                    onNotificationFired({
+                    onAlertFired({
                         description: t(
                             "views:components.profileExport.notifications.downloadProfileInfo.success.description"
                         ),
+                        level: AlertLevels.SUCCESS,
                         message: t(
                             "views:components.profileExport.notifications.downloadProfileInfo.success.message"
-                        ),
-                        otherProps: {
-                            positive: true
-                        },
-                        visible: true
+                        )
                     });
                 } else {
-                    onNotificationFired({
+                    onAlertFired({
                         description: t(
                             "views:components.profileExport.notifications.downloadProfileInfo.genericError.description"
                         ),
+                        level: AlertLevels.ERROR,
                         message: t(
                             "views:components.profileExport.notifications.downloadProfileInfo.genericError.message"
-                        ),
-                        otherProps: {
-                            negative: true
-                        },
-                        visible: true
+                        )
                     });
                 }
             })
             .catch((error) => {
-                onNotificationFired({
-                    description: error && error.data && error.data.details
-                        ? t(
+                if (error.response && error.response.data && error.response.data.detail) {
+                    onAlertFired({
+                        description: t(
                             "views:components.profileExport.notifications.downloadProfileInfo.error.description",
-                            {
-                                description: error.data.details
-                            }
-                        )
-                        : t(
-                            "views:components.profileExport.notifications.downloadProfileInfo.genericError.description"
+                            { description: error.data.details }
                         ),
-                    message: error && error.data && error.data.details
-                        ? t(
+                        level: AlertLevels.ERROR,
+                        message: t(
                             "views:components.profileExport.notifications.downloadProfileInfo.error.message"
                         )
-                        : t(
-                            "views:components.profileExport.notifications.downloadProfileInfo.genericError.message"
-                        ),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
+                    });
+
+                    return;
+                }
+
+                onAlertFired({
+                    description: t(
+                        "views:components.profileExport.notifications.downloadProfileInfo.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.profileExport.notifications.downloadProfileInfo.genericError.message"
+                    )
                 });
             });
     };

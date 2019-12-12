@@ -16,12 +16,14 @@
  * under the License.
  */
 
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { LinkedAccounts, NotificationComponent, Profile, ProfileExport } from "../components";
+import { LinkedAccounts, Profile, ProfileExport } from "../components";
 import { InnerPageLayout } from "../layouts";
-import { createEmptyNotification, Notification } from "../models";
+import { AlertInterface } from "../models";
+import { addAlert } from "../store/actions";
 
 /**
  * Personal Info page.
@@ -30,47 +32,36 @@ import { createEmptyNotification, Notification } from "../models";
  */
 export const PersonalInfoPage = (): JSX.Element => {
     const { t } = useTranslation();
-    const [ notification, setNotification ] = useState(createEmptyNotification());
+    const dispatch = useDispatch();
 
-    const handleNotification = (firedNotification: Notification) => {
-        setNotification(firedNotification);
-    };
-
-    const handleNotificationDismiss = () => {
-        setNotification({
-            ...notification,
-            visible: false
-        });
+    /**
+     * Dispatches the alert object to the redux store.
+     * @param {AlertInterface} alert - Alert object.
+     */
+    const handleAlerts = (alert: AlertInterface) => {
+        dispatch(addAlert(alert));
     };
 
     return (
         <InnerPageLayout
             pageTitle={ t("views:pages.personalInfo.title") }
-            pageDescription={ t("views:pages.personalInfo.subTitle") }>
+            pageDescription={ t("views:pages.personalInfo.subTitle") }
+        >
             <Divider hidden/>
-            {
-                notification && notification.visible
-                    ? (<NotificationComponent
-                        message={ notification.message }
-                        description={ notification.description }
-                        onDismiss={ handleNotificationDismiss }
-                        { ...notification.otherProps }/>)
-                    : null
-            }
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
-                        <Profile onNotificationFired={ handleNotification } />
+                        <Profile onAlertFired={ handleAlerts } />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
-                        <LinkedAccounts onNotificationFired={ handleNotification } />
+                        <LinkedAccounts onAlertFired={ handleAlerts } />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
-                        <ProfileExport onNotificationFired={ handleNotification } />
+                        <ProfileExport onAlertFired={ handleAlerts } />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

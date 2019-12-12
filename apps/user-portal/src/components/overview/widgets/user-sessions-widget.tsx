@@ -18,9 +18,11 @@
 
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { fetchUserSessions } from "../../../api";
 import { history } from "../../../helpers";
-import { createEmptyNotification, emptyUserSessions, Notification, UserSessions } from "../../../models";
+import { AlertLevels, emptyUserSessions, UserSessions } from "../../../models";
+import { addAlert } from "../../../store/actions";
 import { SettingsSection } from "../../shared";
 import { UserSessionsList } from "../../user-sessions";
 
@@ -32,6 +34,7 @@ import { UserSessionsList } from "../../user-sessions";
 export const UserSessionsWidget: FunctionComponent<{}> = (): JSX.Element => {
     const [ userSessions, setUserSessions ] = useState<UserSessions>(emptyUserSessions);
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         getUserSessions();
@@ -41,35 +44,39 @@ export const UserSessionsWidget: FunctionComponent<{}> = (): JSX.Element => {
      * Retrieves the user sessions.
      */
     const getUserSessions = (): void => {
-        let notification: Notification = createEmptyNotification();
-
         fetchUserSessions()
             .then((response) => {
                 setUserSessions(response);
             })
             .catch((error) => {
-                notification = {
-                    description: t(
-                        "views:components.userSessions.notifications.fetchSessions.genericError.description"
-                    ),
-                    message: t("views:components.userSessions.notifications.fetchSessions.genericError.message"),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
                 if (error.response && error.response.data && error.response.detail) {
-                    notification = {
-                        ...notification,
-                        description: t(
-                            "views:components.userSessions.notifications.fetchSessions.error.description",
-                            { description: error.response.data.detail }
-                        ),
-                        message: t(
-                            "views:components.userSessions.notifications.fetchSessions.error.message"
-                        ),
-                    };
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "views:components.userSessions.notifications.fetchSessions.error.description",
+                                { description: error.response.data.detail }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "views:components.userSessions.notifications.fetchSessions.error.message"
+                            ),
+                        })
+                    );
+
+                    return;
                 }
+
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "views:components.userSessions.notifications.fetchSessions.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "views:components.userSessions.notifications.fetchSessions.genericError.message"
+                        ),
+                    })
+                );
             });
     };
 

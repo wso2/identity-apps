@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { updateProfileInfo } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
-import { BasicProfileInterface, Notification } from "../../../models";
+import { AlertInterface, AlertLevels, BasicProfileInterface } from "../../../models";
 import { AppState } from "../../../store";
 import { getProfileInformation } from "../../../store/actions";
 import { EditSection, ThemeIcon } from "../../shared";
@@ -33,7 +33,7 @@ import { EditSection, ThemeIcon } from "../../shared";
  * Prop types for the EmailRecoveryComponent component.
  */
 interface EmailRecoveryProps {
-    onNotificationFired: (notification: Notification) => void;
+    onAlertFired: (alert: AlertInterface) => void;
 }
 
 /**
@@ -47,7 +47,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
     const [editedEmail, setEditedEmail] = useState("");
     const [isEdit, setIsEdit] = useState(false);
     const { t } = useTranslation();
-    const { onNotificationFired } = props;
+    const { onAlertFired } = props;
     const dispatch = useDispatch();
     const profileInfo: BasicProfileInterface = useSelector(
         (state: AppState) => state.authenticationInformation.profileInfo
@@ -81,50 +81,49 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
         };
 
         updateProfileInfo(data)
-            .then((response) => {
-                onNotificationFired({
+            .then(() => {
+                onAlertFired({
                     description: t(
                         "views:components.accountRecovery.emailRecovery.notifications.updateEmail" +
                         ".success.description"
                     ),
+                    level: AlertLevels.SUCCESS,
                     message: t(
                         "views:components.accountRecovery.emailRecovery.notifications.updateEmail.success.message"
-                    ),
-                    otherProps: {
-                        positive: true
-                    },
-                    visible: true
+                    )
                 });
+
                 dispatch(getProfileInformation());
                 setIsEdit(false);
             })
             .catch((error) => {
-                onNotificationFired({
-                    description: error && error.data && error.data.details
-                        ? t(
+                if (error.response && error.response.data && error.response.data.detail) {
+                    onAlertFired({
+                        description: t(
                             "views:components.accountRecovery.emailRecovery." +
                             "notifications.updateEmail.error.description",
-                            {
-                                description: error.data.details
-                            }
-                        )
-                        : t(
-                            "views:components.accountRecovery.emailRecovery." +
-                            "notifications.updateEmail.genericError.description"
+                            { description: error.response.data.details }
                         ),
-                    message: error && error.data && error.data.details
-                        ? t(
+                        level: AlertLevels.ERROR,
+                        message: t(
                             "views:components.accountRecovery.emailRecovery." +
                             "notifications.updateEmail.error.message"
                         )
-                        : t(
-                            "views:components.accountRecovery.emailRecovery." +
-                            "notifications.updateEmail.genericError.message"
-                        ),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
+                    });
+
+                    return;
+                }
+
+                onAlertFired({
+                    description:  t(
+                        "views:components.accountRecovery.emailRecovery." +
+                        "notifications.updateEmail.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.accountRecovery.emailRecovery." +
+                        "notifications.updateEmail.genericError.message"
+                    )
                 });
             });
     };

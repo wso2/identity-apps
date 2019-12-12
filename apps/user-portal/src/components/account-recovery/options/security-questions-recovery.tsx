@@ -19,14 +19,15 @@
 import { Field, Forms } from "@wso2is/forms";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, Form, Grid, Icon, List } from "semantic-ui-react";
+import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { addSecurityQs, getSecurityQs, updateSecurityQs } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
 import {
+    AlertInterface,
+    AlertLevels,
     AnswersInterface,
     ChallengesQuestionsInterface,
     createEmptyChallenge,
-    Notification,
     QuestionSetsInterface,
     QuestionsInterface,
 } from "../../../models";
@@ -36,7 +37,7 @@ import { EditSection, ThemeIcon } from "../../shared";
  * Prop types for SecurityQuestionsComponent
  */
 interface SecurityQuestionsProps {
-    onNotificationFired: (notification: Notification) => void;
+    onAlertFired: (alert: AlertInterface) => void;
 }
 
 /**
@@ -53,7 +54,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     const [isEdit, setIsEdit] = useState<number | string>(-1);
     const [isInit, setIsInit] = useState(false);
     const [questionIndex, setQuestionIndex] = useState(-1);
-    const { onNotificationFired } = props;
+    const { onAlertFired } = props;
 
     const { t } = useTranslation();
 
@@ -108,32 +109,33 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
      * @param error
      */
     const fireNotificationOnError = (error: any) => {
-        onNotificationFired({
-            description: error && error.data && error.data.details
-                ? t(
-                    "views:components.accountRecovery.questionRecovery.notifications." +
-                    "updateQuestions.error.description",
-                    {
-                        description: error.data.details
-                    }
-                )
-                : t(
-                    "views:components.accountRecovery.questionRecovery.notifications" +
-                    ".updateQuestions.genericError.description"
+        if (error.response && error.response.data && error.response.data.detail) {
+            onAlertFired({
+                description: t(
+                    "views:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
+                    "error.description",
+                    { description: error.response.data.details }
                 ),
-            message: error && error.data && error.data.details
-                ? t(
-                    "views:components.accountRecovery.questionRecovery.notifications" +
-                    ".updateQuestions.error.message"
+                level: AlertLevels.ERROR,
+                message: t(
+                    "views:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
+                    "error.message"
                 )
-                : t(
-                    "views:components.accountRecovery.questionRecovery.notifications" +
-                    ".updateQuestions.genericError.message"
-                ),
-            otherProps: {
-                negative: true
-            },
-            visible: true
+            });
+
+            return;
+        }
+
+        onAlertFired({
+            description: t(
+                "views:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
+                "genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: t(
+                "views:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
+                "genericError.message"
+            )
         });
     };
 
@@ -173,51 +175,52 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
         });
 
         if (challenges.answers && challenges.answers.length > 0 && isEdit !== -1) {
-            updateSecurityQs(data).then((response) => {
-                getSecurityQs().then((res) => {
-                    setSecurityDetails(res);
-                });
-                setIsEdit(-1);
+            updateSecurityQs(data)
+                .then((response) => {
+                    // Re-fetch the security questions.
+                    getSecurityQs()
+                        .then((res) => {
+                            setSecurityDetails(res);
+                        });
 
-                onNotificationFired({
-                    description: t(
-                        "views:components.accountRecovery.questionRecovery.notifications" +
-                        ".updateQuestions.success.description"
-                    ),
-                    message: t("views:components.accountRecovery.questionRecovery.notifications" +
-                        ".updateQuestions.success.message"),
-                    otherProps: {
-                        positive: true
-                    },
-                    visible: true
-                });
-
-            })
+                    setIsEdit(-1);
+                    onAlertFired({
+                        description: t(
+                            "views:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
+                            "success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t("views:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
+                            "success.message"),
+                    });
+                })
                 .catch((error) => {
                     fireNotificationOnError(error);
                 });
         } else {
-            addSecurityQs(data).then((status) => {
-                getSecurityQs().then((response) => {
-                    setSecurityDetails(response);
-                });
+            addSecurityQs(data)
+                .then((status) => {
+                    // Re-fetch the security questions.
+                    getSecurityQs()
+                        .then((response) => {
+                            setSecurityDetails(response);
+                        });
 
-                setIsEdit(-1);
+                    setIsEdit(-1);
 
-                onNotificationFired({
-                    description: t(
-                        "views:components.accountRecovery.questionRecovery.notifications" +
-                        ".addQuestions.success.description"
-                    ),
-                    message: t("views:components.accountRecovery.questionRecovery.notifications" +
-                        ".addQuestions.success.message"),
-                    otherProps: {
-                        positive: true
-                    },
-                    visible: true
-                });
+                    onAlertFired({
+                        description: t(
+                            "views:components.accountRecovery.questionRecovery.notifications" +
+                            ".addQuestions.success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "views:components.accountRecovery.questionRecovery.notifications." +
+                            "addQuestions.success.message"
+                        )
+                    });
 
-            })
+                })
                 .catch((error) => {
                     fireNotificationOnError(error);
                 });

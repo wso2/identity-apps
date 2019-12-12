@@ -22,7 +22,7 @@ import { Notification } from "react-notification-system";
  * Alert interface.
  */
 export interface AlertInterface extends Notification {
-    description?: string;
+    description: string;
 }
 
 /**
