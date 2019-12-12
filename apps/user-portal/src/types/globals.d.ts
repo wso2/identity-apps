@@ -24,3 +24,4 @@ declare const CLIENT_HOST_DEFAULT: string;
 declare const LOGIN_CALLBACK_URL: string;
 declare const LOGOUT_CALLBACK_URL: string;
 declare const SERVER_HOST_DEFAULT: string;
+declare const COPYRIGHT_TEXT: string;

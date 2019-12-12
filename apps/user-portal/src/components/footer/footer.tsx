@@ -63,5 +63,5 @@ export const AppFooter: React.FunctionComponent<AppFooterProps> = (
  * Default proptypes for the footer component.
  */
 AppFooter.defaultProps = {
-    copyright: `WSO2 Identity Server © ${ new Date().getFullYear() }`
+    copyright: COPYRIGHT_TEXT
 };
