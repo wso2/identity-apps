@@ -106,8 +106,8 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
                 profileUrl: response.data.profileUrl || "",
                 responseStatus: response.status || null,
                 roles: response.data.roles || [],
-                userName: response.data.userName || "",
-                userimage: response.data.userImage || profileImage
+                userImage: response.data.userImage || gravatar,
+                userName: response.data.userName || ""
             };
             return Promise.resolve(profileResponse);
         })

@@ -45,7 +45,7 @@ export interface BasicProfileInterface {
     name: Name;
     profileUrl: string;
     isSecurity?: boolean;
-    userimage?: string;
+    userImage?: string;
     userName?: string;
     associations?: LinkedAccountInterface[];
 }
@@ -110,6 +110,6 @@ export const createEmptyProfile = (): BasicProfileInterface => ({
     profileUrl: "",
     responseStatus: null,
     roles: [],
-    userName: "",
-    userimage: ""
+    userImage: "",
+    userName: ""
 });

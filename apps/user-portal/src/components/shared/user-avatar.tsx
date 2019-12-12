@@ -75,8 +75,8 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
      */
     const isGravatarURL = (): boolean => {
         return (userImage && userImage.includes(UIConstants.GRAVATAR_URL))
-            || (authState && authState.profileInfo && authState.profileInfo.userimage
-                && authState.profileInfo.userimage.includes(UIConstants.GRAVATAR_URL))
+            || (authState && authState.profileInfo && authState.profileInfo.userImage
+                && authState.profileInfo.userImage.includes(UIConstants.GRAVATAR_URL))
             || (authState && authState.profileInfo && authState.profileInfo.profileUrl
                 && authState.profileInfo.profileUrl.includes(UIConstants.GRAVATAR_URL));
     };
@@ -100,7 +100,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
     };
 
     // Avatar for the authenticated user.
-    if (authState && authState.profileInfo && (authState.profileInfo.profileUrl || authState.profileInfo.userimage)) {
+    if (authState && authState.profileInfo && (authState.profileInfo.profileUrl || authState.profileInfo.userImage)) {
         return (
             <Popup
                 content={ gravatarInfoPopoverText }
@@ -118,7 +118,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
                         image={
                             authState.profileInfo.profileUrl
                                 ? authState.profileInfo.profileUrl
-                                : authState.profileInfo.userimage
+                                : authState.profileInfo.userImage
                         }
                         label={ showGravatarLabel ? resolveTopLabel() : null }
                         onMouseOver={ handleOnMouseOver }
