@@ -22,8 +22,7 @@ import { isEmpty } from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import Skeleton from "react-skeleton-loader";
-import { Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
+import { Form, Grid, Icon, List, Placeholder, Popup, Responsive } from "semantic-ui-react";
 import { updateProfileInfo } from "../../api";
 import * as UIConstants from "../../constants/ui-constants";
 import { AlertInterface, AlertLevels, AuthStateInterface, ProfileSchema } from "../../models";
@@ -339,7 +338,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     {
                                         profileInfoLoader || profileSchemaLoader
                                             ? (
-                                                <Skeleton width="100%" widthRandomness={ 0.25 } />
+                                                <Placeholder><Placeholder.Line/></Placeholder>
                                             )
                                             : profileInfo.get(schema.name)
                                             || (
@@ -403,11 +402,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         <SettingsSection
             description={ t("views:sections.profile.description") }
             header={ t("views:sections.profile.heading") }
-            icon={ profileInfoLoader
-                ? (
-                    <Skeleton height="75px" width="75px" widthRandomness={ 0 } borderRadius="50%" />
-                )
-                : (
+            icon={ (
                     <UserAvatar
                         authState={ profileDetails }
                         size="tiny"
@@ -420,11 +415,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         ) }
                     />
                 ) }
-            iconMini={ profileInfoLoader
-                ? (
-                    <Skeleton height="75px" width="75px" widthRandomness={ 0 } borderRadius="50%" />
-                )
-                : (
+            iconMini={
+                (
                     <UserAvatar
                         authState={ profileDetails }
                         size="tiny"
