@@ -31,8 +31,7 @@ import {
     ServiceInterface
 } from "../../models";
 import { endUserSession } from "../../utils";
-import { SettingsSection } from "../shared";
-import { ModalComponent } from "../shared/modal";
+import { ModalComponent, SettingsSection } from "../shared";
 import { AppConsentList } from "./consents-list";
 
 /**
@@ -397,7 +396,6 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
 
         return (
             <ModalComponent
-                size="mini"
                 primaryAction={ t("common:revoke") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ handleConsentRevokeModalClose }

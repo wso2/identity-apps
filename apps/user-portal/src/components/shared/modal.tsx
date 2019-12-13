@@ -27,7 +27,7 @@ interface ModalComponentProps extends ModalProps {
     onSecondaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
 }
 
-const ModalComponentInner = (props: ModalComponentProps) => {
+export const ModalComponent = (props: ModalComponentProps) => {
     const {
         children,
         type,
@@ -37,7 +37,6 @@ const ModalComponentInner = (props: ModalComponentProps) => {
         onClose,
         primaryAction,
         secondaryAction,
-        size,
         onPrimaryActionClick,
         onSecondaryActionClick
     } = props;
@@ -90,9 +89,8 @@ const ModalComponentInner = (props: ModalComponentProps) => {
 
     return (
         <Modal
-            size={ size }
+            { ...props }
             className="custom-modal"
-            dimmer="blurring"
             open={ open }
             onClose={ onClose }
         >
@@ -124,4 +122,10 @@ const ModalComponentInner = (props: ModalComponentProps) => {
     );
 };
 
-export const ModalComponent = (ModalComponentInner);
+/**
+ * Default proptypes for the settings section component.
+ */
+ModalComponent.defaultProps = {
+    dimmer: "blurring",
+    size: "mini"
+};
