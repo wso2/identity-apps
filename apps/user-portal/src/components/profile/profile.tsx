@@ -71,10 +71,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                  */
                 tempSchemas.push(...flattenSchemas(schema.subAttributes, schema.name));
             } else {
+                const tempSchema = { ...schema };
                 if (parentSchemaName) {
-                    schema.name = parentSchemaName + "." + schema.name;
+                    tempSchema.name = parentSchemaName + "." + schema.name;
                 }
-                tempSchemas.push(schema);
+                tempSchemas.push(tempSchema);
             }
         });
         return tempSchemas;
@@ -93,15 +94,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
      * Sort the elements of the profileSchema state according by the displayOrder attribute in the ascending order.
      */
     useEffect(() => {
-        setProfileSchema(flattenSchemas(profileDetails.profileSchemas).sort((a: ProfileSchema, b: ProfileSchema) => {
-            if (!a.displayOrder) {
-                return -1;
-            } else if (!b.displayOrder) {
-                return 1;
-            } else {
-                return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
-            }
-        }));
+        const sortedSchemas = flattenSchemas([...profileDetails.profileSchemas])
+            .sort((a: ProfileSchema, b: ProfileSchema) => {
+                if (!a.displayOrder) {
+                    return -1;
+                } else if (!b.displayOrder) {
+                    return 1;
+                } else {
+                    return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
+                }
+            });
+        setProfileSchema(sortedSchemas);
     }, [profileDetails.profileSchemas]);
 
     /**
@@ -338,7 +341,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     {
                                         profileInfoLoader || profileSchemaLoader
                                             ? (
-                                                <Placeholder><Placeholder.Line/></Placeholder>
+                                                <Placeholder><Placeholder.Line /></Placeholder>
                                             )
                                             : profileInfo.get(schema.name)
                                             || (
@@ -403,18 +406,18 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             description={ t("views:sections.profile.description") }
             header={ t("views:sections.profile.heading") }
             icon={ (
-                    <UserAvatar
-                        authState={ profileDetails }
-                        size="tiny"
-                        showGravatarLabel
-                        gravatarInfoPopoverText={ (
-                            <Trans i18nKey="views:components.userAvatar.infoPopover">
-                                This image has been retrieved from
+                <UserAvatar
+                    authState={ profileDetails }
+                    size="tiny"
+                    showGravatarLabel
+                    gravatarInfoPopoverText={ (
+                        <Trans i18nKey="views:components.userAvatar.infoPopover">
+                            This image has been retrieved from
                             <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener">Gravatar</a> service.
                         </Trans>
-                        ) }
-                    />
-                ) }
+                    ) }
+                />
+            ) }
             iconMini={
                 (
                     <UserAvatar
