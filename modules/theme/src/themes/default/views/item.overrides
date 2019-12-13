@@ -20,9 +20,14 @@
 .ui.items > .item {
     &.application-list-item {
         margin-bottom: 25px;
+        padding: @applicationListItemPadding;
+        border: @dividedBorder;
+        border-color: transparent;
+        border-radius: @defaultBorderRadius;
 
         &:hover {
             cursor: pointer;
+            border-color: @borderColor;
 
             .app-avatar {
                 &.bg-image {
