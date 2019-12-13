@@ -25,6 +25,7 @@ import org.wso2.carbon.identity.application.common.model.ClaimConfig;
 import org.wso2.carbon.identity.application.common.model.ClaimMapping;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationConfig;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
+import org.wso2.carbon.identity.application.common.model.LocalAndOutboundAuthenticationConfig;
 import org.wso2.carbon.identity.application.common.model.Property;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
@@ -119,11 +120,15 @@ public class AppPortalUtils {
         inboundAuthenticationRequestConfig.setProperties(properties);
         List<InboundAuthenticationRequestConfig> inboundAuthenticationRequestConfigs = Arrays
                 .asList(inboundAuthenticationRequestConfig);
-
         InboundAuthenticationConfig inboundAuthenticationConfig = new InboundAuthenticationConfig();
         inboundAuthenticationConfig.setInboundAuthenticationRequestConfigs(
                 inboundAuthenticationRequestConfigs.toArray(new InboundAuthenticationRequestConfig[0]));
         serviceProvider.setInboundAuthenticationConfig(inboundAuthenticationConfig);
+
+        LocalAndOutboundAuthenticationConfig localAndOutboundAuthenticationConfig =
+                new LocalAndOutboundAuthenticationConfig();
+        localAndOutboundAuthenticationConfig.setUseUserstoreDomainInLocalSubjectIdentifier(true);
+        serviceProvider.setLocalAndOutBoundAuthenticationConfig(localAndOutboundAuthenticationConfig);
 
         // Set requested claim mappings for the SP.
         ClaimConfig claimConfig = new ClaimConfig();
