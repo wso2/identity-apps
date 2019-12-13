@@ -47,6 +47,8 @@
             }
         }
         .icon-container {
+            margin: auto 0;
+
             .ui.mini.image {
                 width: @littleWidth; // Make the image larger than the default `mini` size
             }

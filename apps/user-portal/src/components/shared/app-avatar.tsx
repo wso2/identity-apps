@@ -46,6 +46,8 @@ export const AppAvatar: FunctionComponent<AppAvatarProps> = (props: AppAvatarPro
         return (
             <Avatar
                 avatarType="app"
+                avatar
+                className="with-app-image"
                 image={ image }
                 bordered={ false }
                 { ...props }
