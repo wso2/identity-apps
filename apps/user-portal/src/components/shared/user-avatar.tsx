@@ -105,7 +105,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
             <Popup
                 content={ gravatarInfoPopoverText }
                 position="bottom center"
-                siz="mini"
+                size="mini"
                 disabled={ !(showGravatarLabel && isGravatarURL()) }
                 inverted
                 hoverable
@@ -133,7 +133,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
         <Popup
             content={ gravatarInfoPopoverText }
             position="bottom center"
-            siz="mini"
+            size="mini"
             disabled={ !(showGravatarLabel && isGravatarURL()) }
             inverted
             hoverable
