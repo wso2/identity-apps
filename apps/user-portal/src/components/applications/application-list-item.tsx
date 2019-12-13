@@ -44,7 +44,7 @@ export const ApplicationListItem: FunctionComponent<ApplicationListItemProps> = 
         <Item.Group unstackable onClick={ () => onAppNavigate(app.id, app.accessUrl) }>
             <Item className="application-list-item">
                 <List.Content className="icon-container" floated="left">
-                    <AppAvatar spaced="right" size="little" name={ app.name } image={ app.logo }/>
+                    <AppAvatar spaced="right" size="little" name={ app.name } image={ app.image } />
                 </List.Content>
                 <Item.Content className="text-content-container">
                     <Item.Header as="a">

@@ -42,13 +42,13 @@ export const RecentApplicationCard: FunctionComponent<RecentApplicationCardProps
     const { app, onAppNavigate, showFavouriteIcon } = props;
 
     const appImageContainerClassNames = classNames({
-        [ "default" ]: !app.logo,
+        [ "default" ]: !app.image,
     }, "application-image");
 
     return (
         <Card className="application-card recent" onClick={ () => onAppNavigate(app.id, app.accessUrl) } link={ false }>
             <Card.Content className={ appImageContainerClassNames }>
-                <AppAvatar spaced="right" size="small" name={ app.name } image={ app.logo } onCard/>
+                <AppAvatar spaced="right" size="small" name={ app.name } image={ app.image } onCard/>
             </Card.Content>
             <Card.Content className="application-content">
                 <div className="text-content-container">

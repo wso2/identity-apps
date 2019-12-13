@@ -61,7 +61,7 @@ export interface Application {
     /**
      * Image to represent the application.
      */
-    logo: string;
+    image: string;
     /**
      * URL to access the application.
      */
