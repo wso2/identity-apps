@@ -41,6 +41,11 @@
                 color: @headerColor;
             }
         }
+        .icon-container {
+            .ui.mini.image {
+                width: @littleWidth; // Make the image larger than the default `mini` size
+            }
+        }
         .text-content-container {
             margin-top: 5px;
             margin-left: 5px;

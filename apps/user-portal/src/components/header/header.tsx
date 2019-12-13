@@ -149,7 +149,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                 className="user-dropdown"
                             >
                                 <Dropdown.Menu onClick={ handleUserDropdownClick }>
-                                    <Item.Group unstackable>
+                                    <Item.Group className="authenticated-user" unstackable>
                                         <Item
                                             className="header"
                                             key={ `logged-in-user-${profileDetails.profileInfo.userName}` }
