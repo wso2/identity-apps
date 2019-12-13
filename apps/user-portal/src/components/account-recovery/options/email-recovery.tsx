@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { updateProfileInfo } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
-import { AlertInterface, AlertLevels, BasicProfileInterface } from "../../../models";
+import { AlertInterface, AlertLevels, BasicProfileInterface, ProfileSchema } from "../../../models";
 import { AppState } from "../../../store";
 import { getProfileInformation } from "../../../store/actions";
 import { EditSection, ThemeIcon } from "../../shared";
