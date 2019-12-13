@@ -71,6 +71,11 @@ export const BlockedMagnifierIcon = require("../lib/assets/images/icons/blocked-
 export const CloseIcon = require("../lib/assets/images/icons/close-icon.svg");
 export const ConsentIcon = require("../lib/assets/images/icons/consent-icon.svg");
 
+export const ErrorIcon = require("../lib/assets/images/icons/error-icon.svg");
+export const SuccessIcon = require("../lib/assets/images/icons/success-icon.svg");
+export const WarningIcon = require("../lib/assets/images/icons/warning-icon.svg");
+export const InfoIcon = require("../lib/assets/images/icons/info-icon.svg");
+
 export const GravatarLogo = require("../lib/assets/images/gravatar-logo.png");
 
 export const EmptySearchResultsIllustration = require("../lib/assets/images/illustrations/no-search-results.svg");

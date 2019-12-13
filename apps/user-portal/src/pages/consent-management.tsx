@@ -16,12 +16,14 @@
  * under the License.
  */
 
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { Consents, NotificationComponent } from "../components";
+import { Consents } from "../components";
 import { InnerPageLayout } from "../layouts";
-import { createEmptyNotification, Notification } from "../models";
+import { AlertInterface } from "../models";
+import { addAlert } from "../store/actions";
 
 /**
  * Consents Management page.
@@ -29,18 +31,15 @@ import { createEmptyNotification, Notification } from "../models";
  * @return {JSX.Element}
  */
 export const ConsentManagementPage = (): JSX.Element => {
-    const [ notification, setNotification ] = useState(createEmptyNotification());
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
-    const handleNotification = (firedNotification: Notification) => {
-        setNotification(firedNotification);
-    };
-
-    const handleNotificationDismiss = () => {
-        setNotification({
-            ...notification,
-            visible: false
-        });
+    /**
+     * Dispatches the alert object to the redux store.
+     * @param {AlertInterface} alert - Alert object.
+     */
+    const handleAlerts = (alert: AlertInterface) => {
+        dispatch(addAlert(alert));
     };
 
     return (
@@ -48,22 +47,11 @@ export const ConsentManagementPage = (): JSX.Element => {
             pageTitle={ t("views:pages.consentManagement.title") }
             pageDescription={ t("views:pages.consentManagement.subTitle") }
         >
-            {
-                notification && notification.visible
-                    ? (
-                        <NotificationComponent
-                            message={ notification.message }
-                            description={ notification.description }
-                            onDismiss={ handleNotificationDismiss }
-                            { ...notification.otherProps }
-                        />
-                    ) : null
-            }
             <Divider hidden />
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
-                        <Consents onNotificationFired={ handleNotification }/>
+                        <Consents onAlertFired={ handleAlerts }/>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

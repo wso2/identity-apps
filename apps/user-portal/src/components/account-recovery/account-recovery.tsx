@@ -19,7 +19,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { List } from "semantic-ui-react";
-import { Notification } from "../../models";
+import { AlertInterface } from "../../models";
 import { SettingsSection } from "../shared";
 import { EmailRecovery, SecurityQuestionsComponent } from "./options";
 
@@ -27,7 +27,7 @@ import { EmailRecovery, SecurityQuestionsComponent } from "./options";
  * Prop types for AccountRecoveryComponent component.
  */
 interface AccountRecoveryProps {
-    onNotificationFired: (notification: Notification) => void;
+    onAlertFired: (alert: AlertInterface) => void;
 }
 
 /**
@@ -40,7 +40,7 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
     props: AccountRecoveryProps
 ): JSX.Element => {
     const { t } = useTranslation();
-    const { onNotificationFired } = props;
+    const { onAlertFired } = props;
 
     return (
         <SettingsSection
@@ -49,10 +49,10 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
         >
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">
-                    <SecurityQuestionsComponent onNotificationFired={ onNotificationFired } />
+                    <SecurityQuestionsComponent onAlertFired={ onAlertFired } />
                 </List.Item>
                 <List.Item className="inner-list-item">
-                    <EmailRecovery onNotificationFired={ onNotificationFired } />
+                    <EmailRecovery onAlertFired={ onAlertFired } />
                 </List.Item>
             </List>
         </SettingsSection>

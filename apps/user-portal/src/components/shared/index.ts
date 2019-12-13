@@ -17,6 +17,7 @@
  */
 
 export * from "./avatar";
+export * from "./alert";
 export * from "./app-avatar";
 export * from "./language-switcher";
 export * from "./advanced-search";
@@ -26,7 +27,6 @@ export * from "./empty-placeholder";
 export * from "./error-boundary";
 export * from "./global-loader";
 export * from "./icon";
-export * from "./notification";
 export * from "./page-header";
 export * from "./protected-route";
 export * from "./settings-section";

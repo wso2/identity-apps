@@ -24,9 +24,10 @@ import { fetchApplications } from "../../api";
 import * as ApplicationConstants from "../../constants/application-constants";
 import * as UIConstants from "../../constants/ui-constants";
 import {
+    AlertInterface,
+    AlertLevels,
     Application,
     emptyStorageApplicationSettingsItem,
-    Notification,
     StorageApplicationSettingsInterface
 } from "../../models";
 import { getValueFromLocalStorage, setValueInLocalStorage } from "../../utils";
@@ -38,7 +39,7 @@ import { RecentApplications } from "./recent-applications";
  * Proptypes for the applications component.
  */
 interface ApplicationsProps {
-    onNotificationFired: (notification: Notification) => void;
+    onAlertFired: (alert: AlertInterface) => void;
 }
 
 /**
@@ -49,7 +50,7 @@ interface ApplicationsProps {
 export const Applications: FunctionComponent<ApplicationsProps> = (
     props: ApplicationsProps
 ): JSX.Element => {
-    const { onNotificationFired } = props;
+    const { onAlertFired } = props;
     const [ applications, setApplications ] = useState<Application[]>([]);
     const [ recentApplications, setRecentApplications ] = useState<Application[]>([]);
     const [ searchQuery, setSearchQuery ] = useState("");
@@ -87,31 +88,30 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
                 setIsRequestLoading(false);
             })
             .catch((error) => {
-                let notification = {
-                    description: t(
-                        "views:components.applications.notifications.fetchApplications.genericError.description"
-                    ),
-                    message: t(
-                        "views:components.applications.notifications.fetchApplications.genericError.message"
-                    ),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
                 if (error.response && error.response.data && error.response.detail) {
-                    notification = {
-                        ...notification,
+                    onAlertFired({
                         description: t(
                             "views:components.applications.notifications.fetchApplications.error.description",
                             { description: error.response.data.detail }
                         ),
+                        level: AlertLevels.ERROR,
                         message: t(
                             "views:components.applications.notifications.fetchApplications.error.message"
                         ),
-                    };
+                    });
+
+                    return;
                 }
-                onNotificationFired(notification);
+
+                onAlertFired({
+                    description: t(
+                        "views:components.applications.notifications.fetchApplications.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.applications.notifications.fetchApplications.genericError.message"
+                    )
+                });
             });
     };
 

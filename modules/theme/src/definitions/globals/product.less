@@ -234,7 +234,25 @@ body {
     &.colored {
         svg.icon {
             .primary {
-                fill: @iconWrapperColoredPrimaryColor;
+                fill: @iconWrapperTwoTonePrimaryColor;
+            }
+            .secondary {
+                fill: @iconWrapperTwoToneSecondaryColor;
+            }
+            .white {
+                fill: @white;
+            }
+            .positive {
+                fill: @positiveColor;
+            }
+            .negative {
+                fill: @negativeColor;
+            }
+            .info {
+                fill: @infoColor;
+            }
+            .warning {
+                fill: @warningColor;
             }
         }
     }
@@ -395,6 +413,72 @@ body {
 
 .bold-text {
     font-weight: 500 !important;
+}
+
+/*****************************************
+    Alert Component Style Overrides
+*****************************************/
+
+.alert-wrapper {
+    .notifications-wrapper {
+        .notifications-br {
+            width: @alertWidth !important;
+        }
+
+        .notification {
+            background-color: @alertBackgroundColor !important;
+            box-shadow: @alertBoxShadow !important;
+            height: unset !important;
+
+            &.notification-error {
+                border-top-color: @negativeColor !important;
+            }
+
+            &.notification-info {
+                border-top-color: @infoColor !important;
+            }
+
+            &.notification-warning {
+                border-top-color: @warningColor !important;
+            }
+
+            &.notification-success {
+                border-top-color: @positiveColor !important;
+            }
+
+            .notification-message {
+                .alert-message {
+                    max-width: @alertMessageMaxWidth;
+
+                    .header {
+                        font-size: 1.2em;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
+                    }
+
+                    .description {
+                        display: block;
+                        text-overflow: ellipsis;
+                        word-wrap: break-word;
+                        overflow: hidden;
+                        max-height: 3.6em;
+                        line-height: 1.8em;
+                    }
+                }
+            }
+
+            .notification-dismiss {
+                background-color: transparent !important;
+                color: @black !important;
+                opacity: 0.4;
+
+                &:hover {
+                    opacity: 0.6;
+                }
+            }
+        }
+    }
 }
 
 .loadUIOverrides();

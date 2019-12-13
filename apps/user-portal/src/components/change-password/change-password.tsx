@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
 import { updatePassword } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
-import { Notification } from "../../models";
+import { AlertInterface, AlertLevels } from "../../models";
 import { endUserSession } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
 /**
@@ -35,7 +35,7 @@ const CHANGE_PASSWORD_FORM_IDENTIFIER: string = "changePasswordForm";
  * Prop types for the change password component.
  */
 interface ChangePasswordProps {
-    onNotificationFired: (notification: Notification) => void;
+    onAlertFired: (alert: AlertInterface) => void;
 }
 
 /**
@@ -72,7 +72,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
      * Calls the API and updates the user password.
      */
     const changePassword = () => {
-        const { onNotificationFired } = props;
+        const { onAlertFired } = props;
 
         updatePassword(currentPassword, newPassword)
             .then((response) => {
@@ -82,18 +82,15 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     // hide the change password form
                     hideFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER);
 
-                    onNotificationFired({
+                    onAlertFired({
                         description: t(
                             "views:components.changePassword.forms.passwordResetForm.validations.submitSuccess." +
                             "description"
                         ),
+                        level: AlertLevels.SUCCESS,
                         message: t(
                             "views:components.changePassword.forms.passwordResetForm.validations.submitSuccess.message"
-                        ),
-                        otherProps: {
-                            positive: true
-                        },
-                        visible: true
+                        )
                     });
 
                     // Terminate the user session.
@@ -114,19 +111,16 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         )
                     });
 
-                    onNotificationFired({
+                    onAlertFired({
                         description: t(
                             "views:components.changePassword.forms.passwordResetForm.validations." +
                             "invalidCurrentPassword.description"
                         ),
+                        level: AlertLevels.ERROR,
                         message: t(
                             "views:components.changePassword.forms.passwordResetForm.validations." +
                             "invalidCurrentPassword.message"
-                        ),
-                        otherProps: {
-                            negative: true
-                        },
-                        visible: true
+                        )
                     });
                 } else if (error.response && error.response.data && error.response.data.detail) {
                     // reset the form.
@@ -134,19 +128,16 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     // hide the change password form
                     hideFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER);
 
-                    onNotificationFired({
+                    onAlertFired({
                         description: t(
                             "views:components.changePassword.forms.passwordResetForm.validations." +
                             "submitError.description",
                             { description: error.response.data.detail }
                         ),
+                        level: AlertLevels.ERROR,
                         message: t(
                             "views:components.changePassword.forms.passwordResetForm.validations.submitError.message"
-                        ),
-                        otherProps: {
-                            negative: true
-                        },
-                        visible: true
+                        )
                     });
                 } else {
                     // reset the form.
@@ -155,18 +146,15 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     hideFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER);
 
                     // Generic error message
-                    onNotificationFired({
+                    onAlertFired({
                         description: t(
                             "views:components.changePassword.forms.passwordResetForm.validations." +
                             "genericError.description"
                         ),
+                        level: AlertLevels.ERROR,
                         message: t(
                             "views:components.changePassword.forms.passwordResetForm.validations.genericError.message"
-                        ),
-                        otherProps: {
-                            negative: true
-                        },
-                        visible: true
+                        )
                     });
                 }
             });

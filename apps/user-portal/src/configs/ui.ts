@@ -26,9 +26,11 @@ import {
     CrossIcon,
     DummyUser,
     EmptySearchResultsIllustration,
+    ErrorIcon,
     ForbiddenIcon,
     GravatarLogo,
     HomeTileIcons,
+    InfoIcon,
     Logo,
     MFAIconSet,
     OrangeAppIconBackground,
@@ -38,7 +40,9 @@ import {
     SidePanelIconSet,
     StatusShieldDanger,
     StatusShieldGood,
-    StatusShieldWarning
+    StatusShieldWarning,
+    SuccessIcon,
+    WarningIcon
 } from "@wso2is/theme";
 
 type ImageType = string;
@@ -101,4 +105,11 @@ export const AppIconBackgrounds = {
 
 export const ThirdPartyLogos = {
     gravatar: GravatarLogo
+};
+
+export const AlertIcons = {
+    error: ErrorIcon,
+    info: InfoIcon,
+    success: SuccessIcon,
+    warning: WarningIcon
 };

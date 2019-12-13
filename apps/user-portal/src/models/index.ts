@@ -16,6 +16,7 @@
  * under the License.
  */
 
+export * from "./alert";
 export * from "./api";
 export * from "./applications";
 export * from "./approvals";
@@ -24,7 +25,6 @@ export * from "./authenticated-user";
 export * from "./consents";
 export * from "./locales";
 export * from "./login";
-export * from "./notifications";
 export * from "./profile";
 export * from "./security-questions";
 export * from "./session";

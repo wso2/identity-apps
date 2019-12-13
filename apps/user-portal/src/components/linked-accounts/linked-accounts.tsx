@@ -29,7 +29,12 @@ import {
 } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
 import * as UIConstants from "../../constants/ui-constants";
-import { AuthStateInterface, createEmptyNotification, LinkedAccountInterface, Notification } from "../../models";
+import {
+    AlertInterface,
+    AlertLevels,
+    AuthStateInterface,
+    LinkedAccountInterface
+} from "../../models";
 import { AppState } from "../../store";
 import { setProfileInfo } from "../../store/actions";
 import { SettingsSection } from "../shared";
@@ -40,7 +45,7 @@ import { LinkedAccountsList } from "./linked-accounts-list";
  * Prop types for the liked accounts component.
  */
 interface LinkedAccountsProps {
-    onNotificationFired: (notification: Notification) => void;
+    onAlertFired: (alert: AlertInterface) => void;
 }
 
 /**
@@ -54,7 +59,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
     const [ editingForm, setEditingForm ] = useState({
         [ UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER ]: false
     });
-    const { onNotificationFired } = props;
+    const { onAlertFired } = props;
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -67,11 +72,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
      * Fetches linked accounts from the API.
      */
     const fetchLinkedAccounts = (): void => {
-        let notification: Notification = createEmptyNotification();
-
-        if (!profileDetails.profileInfo
-            || (profileDetails.profileInfo
-                && !profileDetails.profileInfo.name.givenName)) {
+        if (!profileDetails.profileInfo || (profileDetails.profileInfo && !profileDetails.profileInfo.name.givenName)) {
             getProfileInfo().then((infoResponse) => {
                 getAssociations()
                     .then((associationsResponse) => {
@@ -84,20 +85,33 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                         );
                     })
                     .catch((error) => {
-                        notification = {
+                        if (error.response && error.response.data && error.response.data.detail) {
+                            onAlertFired({
+                                description: t(
+                                    "views:components.linkedAccounts.notifications.getAssociations.error.description",
+                                    { description: error.response.data.detail }
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "views:components.linkedAccounts.notifications.getAssociations.error.message"
+                                )
+                            });
+
+                            return;
+                        }
+
+                        onAlertFired({
                             description: t(
-                                "views:components.linkedAccounts.notifications.getAssociations.error.description",
-                                { description: error }
+                                "views:components.linkedAccounts.notifications.getAssociations.genericError.description"
                             ),
-                            message: t("views:components.linkedAccounts.notifications.getAssociations.error.message"),
-                            otherProps: {
-                                negative: true
-                            },
-                            visible: true
-                        };
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "views:components.linkedAccounts.notifications.getAssociations.genericError.message"
+                            )
+                        });
                     });
             });
-            onNotificationFired(notification);
+
             return;
         }
 
@@ -112,22 +126,30 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 );
             })
             .catch((error) => {
-                notification = {
+                if (error.response && error.response.data && error.response.data.detail) {
+                    onAlertFired({
+                        description: t(
+                            "views:components.linkedAccounts.notifications.getAssociations.error.description",
+                            { description: error.response.data.detail }
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "views:components.linkedAccounts.notifications.getAssociations.error.message"
+                        )
+                    });
+
+                    return;
+                }
+
+                onAlertFired({
                     description: t(
-                        "views:components.linkedAccounts.notifications.getAssociations.error.description",
-                        { description: error }
+                        "views:components.linkedAccounts.notifications.getAssociations.genericError.description"
                     ),
+                    level: AlertLevels.ERROR,
                     message: t(
-                        "views:components.linkedAccounts.notifications.getAssociations.error.message"
-                    ),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
-            })
-            .finally(() => {
-                onNotificationFired(notification);
+                        "views:components.linkedAccounts.notifications.getAssociations.genericError.message"
+                    )
+                });
             });
     };
 
@@ -138,7 +160,6 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
      * @param formName - Name of the form
      */
     const handleSubmit = (values: Map<string, string | string[]>, formName: string): void => {
-        let notification: Notification = createEmptyNotification();
         const username = values.get("username");
         const password = values.get("password");
         const data = {
@@ -154,18 +175,15 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
 
         addAccountAssociation(data)
             .then(() => {
-                notification = {
+                onAlertFired({
                     description: t(
                         "views:components.linkedAccounts.notifications.addAssociation.success.description"
                     ),
+                    level: AlertLevels.SUCCESS,
                     message: t(
                         "views:components.linkedAccounts.notifications.addAssociation.success.message"
-                    ),
-                    otherProps: {
-                        positive: true
-                    },
-                    visible: true
-                };
+                    )
+                });
 
                 // Hide form
                 setEditingForm({
@@ -177,34 +195,30 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 fetchLinkedAccounts();
             })
             .catch((error) => {
-                notification = {
-                    description: t(
-                        "views:components.linkedAccounts.notifications.addAssociation.genericError.description"
-                    ),
-                    message: t(
-                        "views:components.linkedAccounts.notifications.addAssociation.genericError.message"
-                    ),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
-
                 if (error.response && error.response.data && error.response.data.detail) {
-                    notification = {
-                        ...notification,
+                    onAlertFired({
                         description: t(
                             "views:components.linkedAccounts.notifications.addAssociation.error.description",
                             { description: error.response.data.detail }
                         ),
+                        level: AlertLevels.ERROR,
                         message: t(
                             "views:components.linkedAccounts.notifications.addAssociation.error.message"
-                        ),
-                    };
+                        )
+                    });
+
+                    return;
                 }
-            })
-            .finally(() => {
-                onNotificationFired(notification);
+
+                onAlertFired({
+                    description: t(
+                        "views:components.linkedAccounts.notifications.addAssociation.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.linkedAccounts.notifications.addAssociation.genericError.message"
+                    )
+                });
             });
     };
 
@@ -238,39 +252,36 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
      * @param {LinkedAccountInterface} account - Target account.
      */
     const handleLinkedAccountSwitch = (account: LinkedAccountInterface) => {
-        let notification: Notification = createEmptyNotification();
-
         switchAccount(account)
             .then(() => {
                 // reload the page on successful account switch.
                 window.location.reload();
             })
             .catch((error) => {
-                notification = {
-                    description: t(
-                        "views:components.linkedAccounts.notifications.switchAccount.genericError.description"
-                    ),
-                    message: t(
-                        "views:components.linkedAccounts.notifications.switchAccount.genericError.message"
-                    ),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
                 if (error.response && error.response.data && error.response.detail) {
-                    notification = {
-                        ...notification,
+                    onAlertFired({
                         description: t(
                             "views:components.linkedAccounts.notifications.switchAccount.error.description",
                             { description: error.response.data.detail }
                         ),
+                        level: AlertLevels.ERROR,
                         message: t(
                             "views:components.linkedAccounts.notifications.switchAccount.error.message"
-                        ),
-                    };
+                        )
+                    });
+
+                    return;
                 }
-                // TODO: Fire the notification.
+
+                onAlertFired({
+                    description: t(
+                        "views:components.linkedAccounts.notifications.switchAccount.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.linkedAccounts.notifications.switchAccount.genericError.message"
+                    )
+                });
             });
     };
 
@@ -278,55 +289,46 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
      * Handles linked account remove action.
      */
     const handleLinkedAccountRemove = (id: string) => {
-        let notification: Notification = createEmptyNotification();
-
         removeLinkedAccount(id)
             .then(() => {
-                notification = {
+                onAlertFired({
                     description: t(
                         "views:components.linkedAccounts.notifications.removeAssociation.success.description"
                     ),
+                    level: AlertLevels.SUCCESS,
                     message: t(
                         "views:components.linkedAccounts.notifications.removeAssociation.success.message"
-                    ),
-                    otherProps: {
-                        positive: true
-                    },
-                    visible: true
-                };
+                    )
+                });
 
                 // Re-fetch the linked accounts list.
                 fetchLinkedAccounts();
             })
             .catch((error) => {
-                notification = {
-                    description: t(
-                        "views:components.linkedAccounts.notifications.removeAssociation.genericError.description"
-                    ),
-                    message: t(
-                        "views:components.linkedAccounts.notifications.removeAssociation.genericError.message"
-                    ),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
-
                 if (error.response && error.response.data && error.response.detail) {
-                    notification = {
-                        ...notification,
+                    onAlertFired({
                         description: t(
                             "views:components.linkedAccounts.notifications.removeAssociation.error.description",
                             { description: error.response.data.detail }
                         ),
+                        level: AlertLevels.ERROR,
                         message: t(
                             "views:components.linkedAccounts.notifications.removeAssociation.error.message"
-                        ),
-                    };
+                        )
+                    });
+
+                    return;
                 }
-            })
-            .finally(() => {
-                onNotificationFired(notification);
+
+                onAlertFired({
+                    description: t(
+                        "views:components.linkedAccounts.notifications.removeAssociation.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.linkedAccounts.notifications.removeAssociation.genericError.message"
+                    ),
+                });
             });
     };
 
@@ -338,55 +340,46 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
      * See {@link removeAllLinkedAccounts()} function for more details.
      */
     const handleAllLinkedAccountsRemove = () => {
-        let notification: Notification = createEmptyNotification();
-
         removeAllLinkedAccounts()
             .then(() => {
-                notification = {
+                onAlertFired({
                     description: t(
                         "views:components.linkedAccounts.notifications.removeAllAssociations.success.description"
                     ),
+                    level: AlertLevels.SUCCESS,
                     message: t(
                         "views:components.linkedAccounts.notifications.removeAllAssociations.success.message"
-                    ),
-                    otherProps: {
-                        positive: true
-                    },
-                    visible: true
-                };
+                    )
+                });
 
                 // Re-fetch the linked accounts list.
                 fetchLinkedAccounts();
             })
             .catch((error) => {
-                notification = {
-                    description: t(
-                        "views:components.linkedAccounts.notifications.removeAllAssociations.genericError.description"
-                    ),
-                    message: t(
-                        "views:components.linkedAccounts.notifications.removeAllAssociations.genericError.message"
-                    ),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
-
                 if (error.response && error.response.data && error.response.detail) {
-                    notification = {
-                        ...notification,
+                    onAlertFired({
                         description: t(
                             "views:components.linkedAccounts.notifications.removeAllAssociations.error.description",
                             { description: error.response.data.detail }
                         ),
+                        level: AlertLevels.ERROR,
                         message: t(
                             "views:components.linkedAccounts.notifications.removeAllAssociations.error.message"
                         ),
-                    };
+                    });
+
+                    return;
                 }
-            })
-            .finally(() => {
-                onNotificationFired(notification);
+
+                onAlertFired({
+                    description: t(
+                        "views:components.linkedAccounts.notifications.removeAllAssociations.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.linkedAccounts.notifications.removeAllAssociations.genericError.message"
+                    ),
+                });
             });
     };
 

@@ -16,19 +16,19 @@
  * under the License.
  */
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid, Icon, List, Modal } from "semantic-ui-react";
+import { Grid, Icon, List } from "semantic-ui-react";
 import { deleteDevice, getMetaData, startFidoFlow } from "../../../api";
 import { MFAIcons } from "../../../configs";
-import { Notification } from "../../../models";
+import { AlertInterface, AlertLevels } from "../../../models";
 import { ThemeIcon } from "../../shared";
 
 /**
  * Proptypes for the associated accounts component.
  */
 interface FIDOAuthenticatorProps {
-    onNotificationFired: (notification: Notification) => void;
+    onAlertFired: (alert: AlertInterface) => void;
 }
 
 /**
@@ -40,7 +40,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     JSX.Element => {
     const { t } = useTranslation();
     const [ deviceList, setDeviceList ] = useState([]);
-    const { onNotificationFired } = props;
+    const { onAlertFired } = props;
 
     useEffect(() => {
         getFidoMetaData();
@@ -66,30 +66,25 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         startFidoFlow()
             .then(() => {
                 getFidoMetaData();
-                onNotificationFired({
+
+                onAlertFired({
                     description: t(
                         "views:components.mfa.fido.notifications.startFidoFlow.success.description"
                     ),
+                    level: AlertLevels.SUCCESS,
                     message: t(
                         "views:components.mfa.fido.notifications.startFidoFlow.success.message"
-                    ),
-                    otherProps: {
-                        positive: true
-                    },
-                    visible: true
+                    )
                 });
             }).catch(() => {
-                onNotificationFired({
+                onAlertFired({
                     description: t(
-                        "views:components.mfa.fido.notifications.startFidoFlow.error.description"
+                        "views:components.mfa.fido.notifications.startFidoFlow.genericError.description"
                     ),
+                    level: AlertLevels.ERROR,
                     message: t(
-                        "views:components.mfa.fido.notifications.startFidoFlow.error.message"
-                    ),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
+                        "views:components.mfa.fido.notifications.startFidoFlow.genericError.message"
+                    )
             });
         });
     };
@@ -98,30 +93,24 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         deleteDevice(event.target.id)
             .then(() => {
                 getFidoMetaData();
-                onNotificationFired({
+                onAlertFired({
                     description: t(
                         "views:securityPage.multiFactor.fido.notification.removeDevice.success.description"
                     ),
+                    level: AlertLevels.SUCCESS,
                     message: t(
                         "views:securityPage.multiFactor.fido.notification.removeDevice.success.message"
-                    ),
-                    otherProps: {
-                        success: true
-                    },
-                    visible: true
+                    )
                 });
             }).catch(() => {
-                onNotificationFired({
+                onAlertFired({
                     description: t(
-                    "views:securityPage.multiFactor.fido.notification.removeDevice.error.description"
+                    "views:securityPage.multiFactor.fido.notification.removeDevice.genericError.description"
                     ),
+                    level: AlertLevels.ERROR,
                     message: t(
-                    "views:securityPage.multiFactor.fido.notification.removeDevice.error.message"
-                    ),
-                    otherProps: {
-                    negative: true
-                    },
-                    visible: true
+                    "views:securityPage.multiFactor.fido.notification.removeDevice.genericError.message"
+                    )
                 });
             });
     };

@@ -25,9 +25,9 @@ import Skeleton from "react-skeleton-loader";
 import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } from "semantic-ui-react";
 import { getGravatarImage, switchAccount } from "../../api";
 import { resolveUserDisplayName, resolveUsername } from "../../helpers";
-import { AuthStateInterface, createEmptyNotification, LinkedAccountInterface, Notification } from "../../models";
+import { AlertLevels, AuthStateInterface, LinkedAccountInterface } from "../../models";
 import { AppState } from "../../store";
-import { getProfileInformation } from "../../store/actions";
+import { addAlert, getProfileInformation } from "../../store/actions";
 import { Title, UserAvatar } from "../shared";
 
 /**
@@ -80,39 +80,40 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
      * @param {LinkedAccountInterface} account - Target account.
      */
     const handleLinkedAccountSwitch = (account: LinkedAccountInterface) => {
-        let notification: Notification = createEmptyNotification();
-
         switchAccount(account)
             .then(() => {
                 // reload the page on successful account switch.
                 window.location.reload();
             })
             .catch((error) => {
-                notification = {
-                    description: t(
-                        "views:components.linkedAccounts.notifications.switchAccount.genericError.description"
-                    ),
-                    message: t(
-                        "views:components.linkedAccounts.notifications.switchAccount.genericError.message"
-                    ),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
                 if (error.response && error.response.data && error.response.detail) {
-                    notification = {
-                        ...notification,
-                        description: t(
-                            "views:components.linkedAccounts.notifications.switchAccount.error.description",
-                            { description: error.response.data.detail }
-                        ),
-                        message: t(
-                            "views:components.linkedAccounts.notifications.switchAccount.error.message"
-                        ),
-                    };
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "views:components.linkedAccounts.notifications.switchAccount.error.description",
+                                { description: error.response.data.detail }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "views:components.linkedAccounts.notifications.switchAccount.error.message"
+                            )
+                        })
+                    );
+
+                    return;
                 }
-                // TODO: Fire the notification.
+
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "views:components.linkedAccounts.notifications.switchAccount.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "views:components.linkedAccounts.notifications.switchAccount.genericError.message"
+                        )
+                    })
+                );
             });
     };
 

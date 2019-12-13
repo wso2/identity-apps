@@ -21,10 +21,10 @@ import { useTranslation } from "react-i18next";
 import { Button, Container, Menu, Modal } from "semantic-ui-react";
 import { fetchUserSessions, terminateAllUserSessions, terminateUserSession } from "../../api";
 import {
-    createEmptyNotification,
+    AlertInterface,
+    AlertLevels,
     emptyUserSession,
     emptyUserSessions,
-    Notification,
     UserSession,
     UserSessions
 } from "../../models";
@@ -35,7 +35,7 @@ import { UserSessionsList } from "./user-sessions-list";
  * Proptypes for the user sessions component.
  */
 interface UserSessionsComponentProps {
-    onNotificationFired: (notification: Notification) => void;
+    onAlertFired: (alert: AlertInterface) => void;
 }
 
 /**
@@ -51,7 +51,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
     const [ isRevokeAllUserSessionsModalVisible, setRevokeAllUserSessionsModalVisibility ] = useState(false);
     const [ isRevokeUserSessionModalVisible, setRevokeUserSessionModalVisibility ] = useState(false);
     const [ sessionsListActiveIndexes, setSessionsListActiveIndexes ] = useState([]);
-    const { onNotificationFired } = props;
+    const { onAlertFired } = props;
     const { t } = useTranslation();
 
     /**
@@ -65,38 +65,36 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
      * Retrieves the user sessions.
      */
     const getUserSessions = (): void => {
-        let notification: Notification = createEmptyNotification();
-
         fetchUserSessions()
             .then((response) => {
                 setUserSessions(response);
             })
             .catch((error) => {
-                notification = {
-                    description: t(
-                        "views:components.userSessions.notifications.fetchSessions.genericError.description"
-                    ),
-                    message: t("views:components.userSessions.notifications.fetchSessions.genericError.message"),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
                 if (error.response && error.response.data && error.response.detail) {
-                    notification = {
-                        ...notification,
+                    onAlertFired({
                         description: t(
                             "views:components.userSessions.notifications.fetchSessions.error.description",
                             { description: error.response.data.detail }
                         ),
+                        level: AlertLevels.ERROR,
                         message: t(
                             "views:components.userSessions.notifications.fetchSessions.error.message"
                         ),
-                    };
-                }
-            });
+                    });
 
-        onNotificationFired(notification);
+                    return;
+                }
+
+                onAlertFired({
+                    description: t(
+                        "views:components.userSessions.notifications.fetchSessions.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.userSessions.notifications.fetchSessions.genericError.message"
+                    )
+                });
+            });
     };
 
     /**
@@ -123,47 +121,45 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
      * Terminate a single user session.
      */
     const handleTerminateUserSession = () => {
-        let notification: Notification = createEmptyNotification();
-
         terminateUserSession(editingUserSession.id)
             .then((response) => {
-                notification = {
+                onAlertFired({
                     description: t(
                         "views:components.userSessions.notifications.terminateUserSession.success.description"
                     ),
+                    level: AlertLevels.SUCCESS,
                     message: t(
                         "views:components.userSessions.notifications.terminateUserSession.success.message"
-                    ),
-                    otherProps: {
-                        positive: true
-                    },
-                    visible: true
-                };
+                    )
+                });
             })
             .catch((error) => {
-                notification = {
-                    description: t(
-                        "views:components.userSessions.notifications.revokeUserSession.genericError.description"
-                    ),
-                    message: t("views:components.userSessions.notifications.revokeUserSession.genericError.message"),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
                 if (error.response && error.response.data && error.response.detail) {
-                    notification = {
-                        ...notification,
+                    onAlertFired({
                         description: t(
                             "views:components.userSessions.notifications.revokeUserSession.error.description",
                             { description: error.response.data.detail }
                         ),
-                        message: t("views:components.userSessions.notifications.revokeUserSession.error.message"),
-                    };
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "views:components.userSessions.notifications.revokeUserSession.error.message"
+                        ),
+                    });
+
+                    return;
                 }
+
+                onAlertFired({
+                    description: t(
+                        "views:components.userSessions.notifications.revokeUserSession.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.userSessions.notifications.revokeUserSession.genericError.message"
+                    )
+                });
             });
 
-        onNotificationFired(notification);
         setRevokeUserSessionModalVisibility(false);
         getUserSessions();
     };
@@ -172,51 +168,45 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
      * Terminates all the user sessions.
      */
     const handleTerminateAllUserSessions = () => {
-        let notification: Notification = createEmptyNotification();
-
         terminateAllUserSessions()
-            .then((response) => {
-                notification = {
+            .then(() => {
+                onAlertFired({
                     description: t(
                         "views:components.userSessions.notifications.terminateAllUserSessions.success.description"
                     ),
+                    level: AlertLevels.SUCCESS,
                     message: t(
                         "views:components.userSessions.notifications.terminateAllUserSessions.success.message"
-                    ),
-                    otherProps: {
-                        positive: true
-                    },
-                    visible: true
-                };
+                    )
+                });
             })
             .catch((error) => {
-                notification = {
-                    description: t(
-                        "views:components.userSessions.notifications.terminateAllUserSessions.genericError.description"
-                    ),
-                    message: t(
-                        "views:components.userSessions.notifications.terminateAllUserSessions.genericError.message"
-                    ),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
-                };
                 if (error.response && error.response.data && error.response.detail) {
-                    notification = {
-                        ...notification,
+                    onAlertFired({
                         description: t(
                             "views:components.userSessions.notifications.terminateAllUserSessions.error.description",
                             { description: error.response.data.detail }
                         ),
+                        level: AlertLevels.ERROR,
                         message: t(
                             "views:components.userSessions.notifications.terminateAllUserSessions.error.message"
                         ),
-                    };
+                    });
+
+                    return;
                 }
+
+                onAlertFired({
+                    description: t(
+                        "views:components.userSessions.notifications.terminateAllUserSessions.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.userSessions.notifications.terminateAllUserSessions.genericError.message"
+                    )
+                });
             });
 
-        onNotificationFired(notification);
         setRevokeAllUserSessionsModalVisibility(false);
         getUserSessions();
     };

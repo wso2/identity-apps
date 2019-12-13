@@ -16,25 +16,23 @@
  * under the License.
  */
 
+import { Notification } from "react-notification-system";
+
 /**
- * Notification action payload interface.
+ * Alert interface.
  */
-export interface Notification {
+export interface AlertInterface extends Notification {
     description: string;
-    message: string;
-    otherProps: object;
-    visible: boolean;
 }
 
 /**
- * Creates an empty notification action payload object.
- * This can be used to initializations.
- *
- * @returns {Notification} an empty notification action payload object.
+ * Enum for Alert levels.
+ * @readonly
+ * @enum {string}
  */
-export const createEmptyNotification = (): Notification => ({
-    description: "",
-    message: "",
-    otherProps: {},
-    visible: false
-});
+export enum AlertLevels {
+    SUCCESS = "success",
+    ERROR = "error",
+    INFO = "info",
+    WARNING = "warning"
+}

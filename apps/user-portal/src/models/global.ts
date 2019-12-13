@@ -16,7 +16,11 @@
  * under the License.
  */
 
+import { AlertInterface } from "./alert";
+
 export interface GlobalInterface {
+    alert: AlertInterface;
+    alertSystem: any;
     isApplicationsPageVisible: boolean;
     isGlobalLoaderVisible: boolean;
 }

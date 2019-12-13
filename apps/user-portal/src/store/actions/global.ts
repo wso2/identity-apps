@@ -16,15 +16,14 @@
  * under the License.
  */
 
-import { Notification } from "../../models";
+import { AlertInterface } from "../../models";
 import {
-    DISMISS_NOTIFICATION,
-    DismissNotificationAction,
-    FIRE_NOTIFICATION,
-    FireNotificationAction,
+    AddAlertAction,
     GlobalActionTypes,
     HideGlobalLoaderAction,
-    ShowGlobalLoaderAction, ToggleApplicationsPageVisibilityAction
+    InitializeAlertSystemAction,
+    ShowGlobalLoaderAction,
+    ToggleApplicationsPageVisibilityAction
 } from "./types";
 
 /**
@@ -56,14 +55,21 @@ export const toggleApplicationsPageVisibility = (visibility: boolean): ToggleApp
 });
 
 /**
- * Dispatches an action that fires a notification
- * @param notification
+ * Dispatches an action to initialize the alerting system.
+ * @param alertSystem - Alert system object.
+ * @return {InitializeAlertSystemAction}
  */
-export const fireNotification = (notification: Notification): FireNotificationAction => ({
-    payload: notification,
-    type: FIRE_NOTIFICATION
+export const initializeAlertSystem = (alertSystem: any): InitializeAlertSystemAction => ({
+    payload: alertSystem,
+    type: GlobalActionTypes.INITIALIZE_ALERT_SYSTEM
 });
 
-export const dismissNotification = (): DismissNotificationAction => ({
-    type: DISMISS_NOTIFICATION
+/**
+ * Dispatches an action to add a new alert.
+ * @param {AlertInterface} alert - Alert
+ * @return {AddAlertAction}
+ */
+export const addAlert = (alert: AlertInterface): AddAlertAction => ({
+    payload: alert,
+    type: GlobalActionTypes.ADD_ALERT
 });

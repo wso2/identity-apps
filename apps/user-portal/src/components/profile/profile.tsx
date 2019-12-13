@@ -26,7 +26,7 @@ import Skeleton from "react-skeleton-loader";
 import { Form, Grid, Icon, List, Popup, Responsive } from "semantic-ui-react";
 import { updateProfileInfo } from "../../api";
 import * as UIConstants from "../../constants/ui-constants";
-import { AuthStateInterface, Notification, ProfileSchema } from "../../models";
+import { AlertInterface, AlertLevels, AuthStateInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation } from "../../store/actions";
 import { EditSection, SettingsSection, UserAvatar } from "../shared";
@@ -35,7 +35,7 @@ import { EditSection, SettingsSection, UserAvatar } from "../shared";
  * Prop types for the basic details component.
  */
 interface ProfileProps {
-    onNotificationFired: (notification: Notification) => void;
+    onAlertFired: (alert: AlertInterface) => void;
 }
 
 /**
@@ -48,7 +48,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const [profileInfo, setProfileInfo] = useState(new Map<string, string>());
     const [profileSchema, setProfileSchema] = useState<ProfileSchema[]>();
     const [editingForm, setEditingForm] = useState(new Map<string, boolean>());
-    const { onNotificationFired } = props;
+    const { onAlertFired } = props;
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
@@ -253,13 +253,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         data.Operations[0].value = { ...value };
         updateProfileInfo(data).then((response) => {
             if (response.status === 200) {
-                onNotificationFired({
-                    description: t("views:components.profile.notifications.updateProfileInfo.success.description"),
-                    message: t("views:components.profile.notifications.updateProfileInfo.success.message"),
-                    otherProps: {
-                        positive: true
-                    },
-                    visible: true
+                onAlertFired({
+                    description: t(
+                        "views:components.profile.notifications.updateProfileInfo.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "views:components.profile.notifications.updateProfileInfo.success.message"
+                    )
                 });
 
                 // Re-fetch the profile information

@@ -93,7 +93,7 @@ export const removeLinkedAccount = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `ServiceResourcesEndpoint.associations/${ id }`
+        url: `${ ServiceResourcesEndpoint.associations }/${ id }`
     };
 
     return httpClient.request(requestConfig)
