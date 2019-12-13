@@ -17,31 +17,27 @@
  */
 
 import React, { MouseEvent } from "react";
-import { Button, Icon, Modal } from "semantic-ui-react";
+import { Button, Icon, Modal, ModalProps } from "semantic-ui-react";
 
-interface ModalProps {
+interface ModalComponentProps extends ModalProps {
     type: "positive" | "negative" | "warning" | "info";
-    heading?: string;
-    description: string;
-    children?: React.ReactNode;
-    open: any;
-    onClose: any;
     primaryAction?: string;
     secondaryAction?: string;
     onPrimaryActionClick?: () => void;
     onSecondaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
 }
 
-const ModalComponentInner = (props: ModalProps) => {
+const ModalComponentInner = (props: ModalComponentProps) => {
     const {
         children,
         type,
-        heading,
-        description,
+        header,
+        content,
         open,
         onClose,
         primaryAction,
         secondaryAction,
+        size,
         onPrimaryActionClick,
         onSecondaryActionClick
     } = props;
@@ -94,7 +90,7 @@ const ModalComponentInner = (props: ModalProps) => {
 
     return (
         <Modal
-            size="mini"
+            size={ size }
             className="custom-modal"
             dimmer="blurring"
             open={ open }
@@ -103,11 +99,11 @@ const ModalComponentInner = (props: ModalProps) => {
             { iconName() }
             <Modal.Content>
                 <h3 className="modal-heading">
-                    { heading }
+                    { header }
                 </h3>
             </Modal.Content>
             <p className="modal-description">
-                { description }
+                { content }
             </p>
             { children }
             <Modal.Actions>

@@ -397,6 +397,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
 
         return (
             <ModalComponent
+                size="mini"
                 primaryAction={ t("common:revoke") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ handleConsentRevokeModalClose }
@@ -404,11 +405,11 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 open={ isConsentRevokeModalVisible }
                 onClose={ handleConsentRevokeModalClose }
                 type="negative"
-                heading={
+                header={
                     t("views:components.consentManagement.modals.consentRevokeModal.heading",
                         { appName: revokingConsent.spDisplayName })
                 }
-                description={ t("views:components.consentManagement.modals.consentRevokeModal.message") }
+                content={ t("views:components.consentManagement.modals.consentRevokeModal.message") }
             >
                 <Modal.Content>
                     {

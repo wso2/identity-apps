@@ -36,7 +36,8 @@
 .sa {
     width: 140px;
     height: 140px;
-    padding: 26px 26px 26px 125px;
+    padding: 26px;
+    display: inline-block;
     margin-bottom: -25px;
     background-color: #fff;
     &-success {
