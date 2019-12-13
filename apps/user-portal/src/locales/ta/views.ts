@@ -329,7 +329,7 @@ export const views: Views = {
                 consentRevokeModal: {
                     heading: "நீ சொல்வது உறுதியா?",
                     message:
-                        "இந்த செயல்பாடு மீளக்கூடியதல்ல. இது அனைத்து பண்புகளுக்கான ஒப்புதலை நிரந்தரமாக ரத்து "   +
+                        "இந்த செயல்பாடு மீளக்கூடியதல்ல. இது அனைத்து பண்புகளுக்கான ஒப்புதலை நிரந்தரமாக ரத்து " +
                         "செய்யும். நீங்கள் நிச்சயமாக தொடர விரும்புகிறீர்களா?",
                     warning: "உள்நுழைவு ஒப்புதல் பக்கத்திற்கு நீங்கள் திருப்பி விடப்படுவீர்கள் என்பதை நினைவில் கொள்க"
                 }
@@ -590,246 +590,255 @@ export const views: Views = {
                 }
             }
         },
-        // TODO: Translate to Tamil
         privacy: {
             about: {
                 description:
-                    "WSO2 Identity Server (referred to as “WSO2 IS” within this policy) is an open source " +
-                    "Identity Management and Entitlement Server that is based on open standards " +
-                    "and specifications.",
-                heading: "About WSO2 Identity Server"
+                    "WSO2 Identity Server (இக் கொள்கையில் “WSO2 IS” என குறிப்பிடப்படும்) திறந்த தரநிலைகள் மற்றும் குறிப்புகளை " +
+                    "அடிப்படையாகக் கொண்ட ஒரு திறந்த மூல அடையாள முகாமைத்துவம் மற்றும் உரிமம் வழங்கி ஆகும்.",
+                heading: "WSO2 Identity Server ஐ பற்றி"
             },
             privacyPolicy: {
                 collectionOfPersonalInfo: {
                     description: {
                         list1: {
                             0:
-                                "WSO2 IS uses your IP address to detect any suspicious login attempts" +
-                                " to your account.",
+                                "சந்தேகத்துக்குரிய முறையில் உங்கள் கணக்கிற்குள் உள்நுழைய மேற்கொள்ளப்படும் முயற்சிகளை கண்டரிய" +
+                                " WSO2 IS உங்கள் IP முகவரியினை பயன்படுத்துகின்றது.",
                             1:
-                                "WSO2 IS uses attributes like your first name, last name, etc., " +
-                                "to provide a rich and personalized user experience.",
-                            2: "WSO2 IS uses your security questions and answers only to allow account recovery."
+                                "உங்களது முதற் பெயர், இறுதிப் பெயர் போன்ற விவரங்களை WSO2 IS உங்களுக்கு சிறப்பான, தனிப்பட்ட " +
+                                "அனுபவத்தை தர பயன்படுத்துகின்றது.",
+                            2:
+                                "உங்களது கணக்கினை மீட்க மட்டுமே WSO2 IS உங்களது பாதுகாப்பு வினாக்களையும் அவற்றிற்கான " +
+                                "விடைகளையும் பயன்படுத்துகின்றது."
                         },
                         para1:
-                            "WSO2 IS collects your information only to serve your access requirements. " +
-                            "For example:"
+                            "உங்கள் அணுகல் தேவைகளை பூர்த்தி செய்ய மட்டுமே WSO2 IS உங்களது தகவல்களை சேகரிக்கின்றது." +
+                            "உதாரணத்திற்கு"
                     },
-                    heading: "Collection of personal information",
+                    heading: "தனிப்பட்ட தகவல் சேகரிப்பு",
                     trackingTechnologies: {
                         description: {
                             list1: {
                                 0:
-                                    "Collecting information from the user profile page where you enter " +
-                                    "your personal data.",
-                                1: "Tracking your IP address with HTTP request, HTTP headers, and TCP/IP.",
-                                2: "Tracking your geographic information with the IP address.",
-                                3:
-                                    "Tracking your login history with browser cookies. Please see our" +
-                                    " {{cookiePolicyLink}} for more information."
+                                    "நீங்கள் உங்களது தனிப்பட்ட தகவல்களை உள்ளிடும் சுய விவரப் பக்கத்திலிருந்து" +
+                                    " தகவல்களை சேகரிப்பதனூடாகவும்",
+                                1:
+                                    "உங்களது IP முகவரியினை HTTP கோரிக்கைகள், HTTP headers, மற்றும் TCP/IPயினூடாக " +
+                                    "கண்காணிப்பதனூடாகவும்",
+                                2: "உங்களது பூகோளவியல் தகவல்களை IP முகவரியினூடாக கண்காணிப்பதனூடகவும்",
+                                3: "மேலதிக தகவல்களுக்காக உங்களது உள்நுழைவு வரலாறு மற்றும் உலாவி குக்கீகளை கண்காணிப்பதனூடாகவும்"
                             },
-                            para1: "WSO2 IS collects your information by:"
+                            para1: "WSO2 IS உங்கள் தகவல்களை பின்வருமாறு சேகரிக்கின்றது:"
                         },
-                        heading: "Tracking Technologies"
+                        heading: "கண்காணிப்பு தொழில்நுட்பங்கள்"
                     }
                 },
                 description: {
                     para1:
-                        "This policy describes how WSO2 IS captures your personal information, the purposes of" +
-                        " collection, and information about the retention of your personal information.",
+                        "இக் கொள்கை, WSO2 IS எவ்வாறு உங்கள் தகவல்களை பெறுகின்றது, தகவல்களை பெறும் நோக்கம், மற்றும் " +
+                        "உங்கள் தகவல்களை வைத்திருத்தல் பற்றிய விவரங்களை விவரிக்கின்றது.",
                     para2:
-                        "Please note that this policy is for reference only, and is applicable for the software " +
-                        "as a product. WSO2 Inc. and its developers have no access to the information held within " +
-                        "WSO2 IS. Please see the <1>disclaimer</1> section for more information.",
+                        "இக் கொள்கை வெறுமனே குறிப்பிற்காக மட்டுமே. அத்துடன், இக்கொள்கை உற்பத்தியாக " +
+                        "வழங்கப்படும் மென்பொருளுக்கு மட்டும் பொருந்தும்." +
+                        "WSO2 Inc. இனாலோ அதனது மென்பொருள் பொறியியலாளர்களினாலோ WSO2 IS இல் வைத்திருக்கப்பட்டிருக்கும் " +
+                        "தகவல்களை பெற முடியாது. மேலதிக தகவல்களுக்கு <i>பொறுப்புத் துறப்பு</i> பகுதியினை பார்வையிடவும்.",
                     para3:
-                        "Entities, organisations or individuals controlling the use and administration of WSO2 IS " +
-                        "should create their own privacy policies setting out the manner in which data is controlled " +
-                        "or processed by the respective entity, organisation or individual."
+                        "WSO2 IS ஐ நிர்வாகம் செய்யும் அல்லது அதனது பாவனையை கட்டுபடுத்தும் நிறுவனங்களோ, அல்லது தனிப்பட்ட " +
+                        "நபர்களோ, அந் நபரினால் அல்லது அந் நிறுவனத்தினால் தகவல்கள் எவ்வாறு கட்டுபடுத்தப்படுகின்றன அல்லது " +
+                        "செயாலாக்கப்படுகின்றன போன்றவற்றை விவரிக்கும் தமக்கானதொரு பொறுப்புத் துறப்பு கொள்கையினை உருவாக்கிக் கொள்ள" +
+                        "வேண்டும்."
                 },
                 disclaimer: {
                     description: {
                         list1: {
                             0:
-                                "WSO2, its employees, partners, and affiliates do not have access to and do not " +
-                                "require, store, process or control any of the data, including personal data " +
-                                "contained in WSO2 IS. All data, including personal data is controlled and " +
-                                "processed by the entity or individual running WSO2 IS. WSO2, its employees partners " +
-                                "and affiliates are not a data processor or a data controller within the meaning of " +
-                                "any data privacy regulations. WSO2 does not provide any warranties or undertake any " +
-                                "responsibility or liability in connection with the lawfulness or the manner and " +
-                                "purposes for which WSO2 IS is used by such entities or persons.",
+                                "WSO2 இற்கு, அதன் ஊழியர்களிற்கு, கூட்டாளர்களிற்கு மற்றும் துணை நிறுவனங்களிற்கு WSO2 IS " +
+                                "இல் உள்ள தனிப்பட்ட தரவு உட்பட எந்தவொரு தரவையும் அணுகவோ, சேமிக்கவோ, " +
+                                "செயலாக்கவோ அல்லது கட்டுப்படுத்தவோ இயாலது மற்றும் இவற்றிற்கான தேவையும் கிடையாது. " +
+                                "தனிப்பட்ட தரவு உட்பட அனைத்து தரவும் WSO2 IS ஐ இயக்கும் நிறுவனம் அல்லது தனிநபரால் " +
+                                "கட்டுப்படுத்தப்பட்டு செயலாக்கப்படுகிறது. WSO2, அதன் பணியாளர்கள், கூட்டாளர்கள் மற்றும் " +
+                                "துணை நிறுவனங்கள் எந்தவொரு தரவு தனியுரிமை விதிமுறைகளின் அர்த்தத்திற்குட்பட்ட ஒரு தரவு " +
+                                "செயலி அல்லது தரவுக் கட்டுப்படுத்தி அல்ல. WSO2 எந்தவொரு உத்தரவாதத்தையும் வழங்காது " +
+                                "என்பதுடன் நிறுவனங்களோ, தனி நபர்களோ WSO2 IS ஐ பயன்படுத்தும் முறை மற்றும் நோக்கம், " +
+                                "அத்துடன் அவற்றின் சட்டபூர்வ தன்மை என்பனவற்றிற்கு எவ்வித பொறுப்பும் எடுக்காது.",
                             1:
-                                "This privacy policy is for the informational purposes of the entity or persons " +
-                                "running WSO2 IS and sets out the processes and functionality contained within " +
-                                "WSO2 IS regarding personal data protection. It is the responsibility of entities " +
-                                "and persons running WSO2 IS to create and administer its own rules and processes " +
-                                "governing users' personal data, and such rules and processes may change the use, " +
-                                "storage and disclosure policies contained herein. Therefore users should consult " +
-                                "the entity or persons running WSO2 IS for its own privacy policy for details " +
-                                "governing users' personal data."
+                                "இந்த தனியுரிமைக் கொள்கை WSO2 IS ஐ இயக்கும் நிறுவனம் அல்லது நபர்களின் தகவல் " +
+                                "நோக்கங்களுக்காகவும், தனிப்பட்ட தரவு பாதுகாப்பு தொடர்பாக WSO2 IS இல் உள்ள " +
+                                "செயல்முறைகள் மற்றும் செயல்பாடுகளை விளக்குவற்காகவும் அமைக்கப்பட்டுள்ளது. " +
+                                "பயனர்களின் தனிப்பட்ட தரவை நிர்வகிக்கும் அதன் சொந்த விதிகள் மற்றும் செயல்முறைகளை " +
+                                "உருவாக்கி நிர்வகிப்பது WSO2 IS ஐ இயக்கும் நிறுவனங்கள் மற்றும் நபர்களின் பொறுப்பாகும், " +
+                                "மேலும் இதுபோன்ற விதிகள் மற்றும் செயல்முறைகள் இங்கு உள்ள பயன்பாடு, சேமிப்பு மற்றும் " +
+                                "வெளிப்படுத்தல் கொள்கைகளை மாற்றக்கூடும். எனவே பயனர்களின் தனிப்பட்ட தரவை நிர்வகிக்கும் " +
+                                "விவரங்களுக்கு பயனர்கள் அதன் சொந்த தனியுரிமைக் கொள்கைக்காக நிறுவனம் அல்லது WSO2 IS ஐ " +
+                                "இயக்கும் நபர்களை அணுக வேண்டும்."
                         }
                     },
-                    heading: "Disclaimer"
+                    heading: "பொறுப்புத்துறப்பு"
                 },
                 disclosureOfPersonalInfo: {
                     description:
-                        "WSO2 IS only discloses personal information to the relevant applications (also " +
-                        "known as Service Provider) that are registered with WSO2 IS. These applications are " +
-                        "registered by the identity administrator of your entity or organization. Personal " +
-                        "information is disclosed only for the purposes for which it was collected (or for a " +
-                        "use identified as consistent with that purpose), as controlled by such Service Providers, " +
-                        "unless you have consented otherwise or where it is required by law.",
-                    heading: "Disclosure of personal information",
+                        "WSO2 IS உடன் பதிவுசெய்யப்பட்ட தொடர்புடைய செயலிகளிற்கு (சேவை வழங்குநர் என்றும் " +
+                        "அழைக்கப்படுகிறது) மட்டுமே தனிப்பட்ட தகவல்களை WSO2 IS வெளியிடுகிறது. இந்த செயலிகள் உங்கள் " +
+                        "நிறுவனம் அல்லது நிறுவனத்தின் அடையாள நிர்வாகியால் பதிவு செய்யப்பட்டுள்ளன. தனிப்பட்ட தகவல்கள், " +
+                        "நீங்கள் வேறுவிதமாக ஒப்புக் கொள்ளாவிட்டால் அல்லது சட்டத்தால் தேவைப்படும் இடத்தில் ஒழிய, சேகரிக்கப்பட்ட " +
+                        "நோக்கங்களுக்காக மட்டுமே (அல்லது அந்த நோக்கத்துடன் ஒத்துப்போகும் என அடையாளம் " +
+                        "காணப்பட்ட ஒரு பயன்பாட்டிற்காக), அத்தகைய சேவை வழங்குநர்களால் கட்டுப்படுத்தப்படும் விதத்திற்கு அமைய " +
+                        "வெளிப்படுத்தப்படுகிறது. Personal ",
+                    heading: "தனிப்பட்ட தகவல்களை வெளிப்படுத்தல்",
                     legalProcess: {
                         description:
-                            "Please note that the organisation, entity or individual running WSO2 IS may " +
-                            "be compelled to disclose your personal information with or without your consent when " +
-                            "it is required by law following due and lawful process.",
-                        heading: "Legal process"
+                            "WSO2 ISஐ இயக்கும் அமைப்பு, நிறுவனம் அல்லது தனிநபர் உங்கள் தனிப்பட்ட தகவல்களை உங்கள் " +
+                            "அனுமதியுடன் அல்லது இல்லாமல் சட்டத்தால் நிர்ப்பந்திக்கப்படும் இடத்து உரிய மற்றும் சட்டபூர்வமான " +
+                            "செயல்முறைகளின் பிற்பாடு வெளியிட நிர்ப்பந்திக்கப்படலாம் என்பதை நினைவில் கொள்க.",
+                        heading: "சட்ட செயல்முறை"
                     }
                 },
-                heading: "Privacy Policy",
+                heading: "தனியுரிமைக் கொள்கை",
                 moreInfo: {
                     changesToPolicy: {
                         description: {
                             para1:
-                                "Upgraded versions of WSO2 IS may contain changes to this policy and " +
-                                "revisions to this policy will be packaged within such upgrades. Such changes " +
-                                "would only apply to users who choose to use upgraded versions.",
+                                "WSO2 IS இன் மேம்படுத்தப்பட்ட பதிப்புகள் இந்தக் கொள்கையில் மாற்றங்களைக் கொண்டிருக்கலாம் " +
+                                "மற்றும் இந்தக் கொள்கைக்கான திருத்தங்கள் அத்தகைய மேம்பாடுகளுக்குள் தொகுக்கப்படும். " +
+                                "மேம்படுத்தப்பட்ட பதிப்புகளைப் பயன்படுத்தத் தேர்ந்தெடுக்கும் பயனர்களுக்கு மட்டுமே இத்தகைய " +
+                                "மாற்றங்கள் பொருந்தும்.",
                             para2:
-                                "The organization running WSO2 IS may revise the Privacy Policy from time to " +
-                                "time. You can find the most recent governing policy with the respective link " +
-                                "provided by the organization running WSO2 IS 5.5. The organization will notify " +
-                                "any changes to the privacy policy over our official public channels."
+                                "WSO2 IS ஐ இயக்கும் அமைப்பு அவ்வப்போது தனியுரிமைக் கொள்கையைத் " +
+                                "திருத்தக்கூடும். WSO2 IS ஐ இயக்கும் அமைப்பு வழங்கிய அந்தந்த இணைப்பைக் கொண்டு மிக " +
+                                "சமீபத்திய நிர்வாகக் கொள்கையை நீங்கள் காணலாம். எங்கள் அதிகாரப்பூர்வ பொது தடங்களின் " +
+                                "ஊடாக தனியுரிமைக் கொள்கையில் மேற்கொள்ள்ப்படும் மாற்றங்களை அமைப்பு அறிவிக்கும்."
                         },
-                        heading: "Changes to this policy"
+                        heading: "கொள்கை மாற்றங்கள்"
                     },
                     contactUs: {
                         description: {
                             para1:
-                                "Please contact WSO2 if you have any question or concerns regarding this privacy " +
-                                "policy."
+                                "இந்த தனியுரிமைக் கொள்கை தொடர்பாக உங்களுக்கு ஏதேனும் கேள்வி அல்லது " +
+                                "வருத்தங்கள் இருந்தால் WSO2 ஐ தொடர்பு கொள்ளவும்."
                         },
-                        heading: "Contact us"
+                        heading: "எங்களை தொடர்பு கொள்ள"
                     },
-                    heading: "More information",
+                    heading: "மேலதிக தகவல்கள்",
                     yourChoices: {
                         description: {
                             para1:
-                                "If you are already have a user account within WSO2 IS, you have the right to " +
-                                "deactivate your account if you find that this privacy policy is unacceptable to you.",
+                                "WSO2 IS க்குள் உங்களிடம் ஏற்கனவே ஒரு பயனர் கணக்கு இருந்தால், இந்த " +
+                                "தனியுரிமைக் கொள்கை உங்களுக்கு ஏற்றுக்கொள்ள முடியாதது எனக் கண்டால் உங்கள் " +
+                                "கணக்கை செயலிழக்கச் செய்ய உங்களுக்கு உரிமை உண்டு.",
                             para2:
-                                "If you do not have an account and you do not agree with our privacy policy, " +
-                                "you can chose not to create one."
+                                "உங்களிடம் கணக்கு இல்லாமல், எங்கள் தனியுரிமைக் கொள்கையுடன் நீங்கள் " +
+                                "உடன்படவில்லை என்றால், கணக்கு ஒன்றினை நீங்கள் உருவாக்கமலிருக்க நீங்கள் தீர்மானிக்க முடியும்."
                         },
-                        heading: "Your choices"
+                        heading: "உங்கள் தேர்வுகள்"
                     }
                 },
                 storageOfPersonalInfo: {
-                    heading: "Storage of personal information",
+                    heading: "தனிப்பட்ட தகவல் சேமிப்பு",
                     howLong: {
                         description: {
                             list1: {
-                                0: "Current password",
-                                1: "Previously used passwords"
+                                0: "நிகழ்கால கடவுச்சொல்",
+                                1: "முன்பு பயன்படுத்திய கடவுச்சொல்"
                             },
                             para1:
-                                "WSO2 IS retains your personal data as long as you are an active user of our " +
-                                "system. You can update your personal data at any time using the given self-care " +
-                                "user portals.",
+                                "நீங்கள் எங்கள் சேவையின் செயலிலுள்ள பயனராக இருக்கும் வரை WSO2 IS உங்கள் தனிப்பட்ட " +
+                                "தரவைத் தக்க வைத்துக் கொள்ளும்.கொடுக்கப்பட்ட பயனர் தளங்களைப் " +
+                                "பயன்படுத்தி எந்த நேரத்திலும் உங்கள் தனிப்பட்ட தரவைப் புதுப்பிக்கலாம்.",
                             para2:
-                                "WSO2 IS may keep hashed secrets to provide you with an added level of security. " +
-                                "This includes:"
+                                "WSO2 IS உங்களுக்கு கூடுதல் பாதுகாப்பு அளிக்க சுருக்கப்பட்ட ரகசியங்களை வைத்திருக்கலாம். " +
+                                "இதில் பின்வருவன அடங்கும்:"
                         },
-                        heading: "How long your personal information is retained"
+                        heading: "எவ்வளவு காலத்திற்கு உங்கள் தகவல்கள் வைத்திருக்கப்படும்?"
                     },
                     requestRemoval: {
                         description: {
                             para1:
-                                "You can request the administrator to delete your account. The administrator is " +
-                                "the administrator of the tenant you are registered under, or the " +
-                                "super-administrator if you do not use the tenant feature.",
+                                "உங்கள் கணக்கை நீக்க நிர்வாகியிடம் கோரலாம். நிர்வாகி என்பது நீங்கள் " +
+                                "பதிவுசெய்த குத்தகைதாரரின் நிர்வாகி அல்லது நீங்கள் குத்தகைதாரர் அம்சத்தைப் பயன்படுத்தாவிட்டால் " +
+                                "சூப்பர் நிர்வாகி.",
                             para2:
-                                "Additionally, you can request to anonymize all traces of your activities " +
-                                "that WSO2 IS may have retained in logs, databases or analytical storage."
+                                "கூடுதலாக, பதிவுகள், தரவுத்தளங்கள் அல்லது பகுப்பாய்வு சேமிப்பகத்தில் WSO2 IS தக்கவைத்துள்ள " +
+                                "உங்கள் செயல்பாடுகளின் அனைத்து தடயங்களையும் அநாமதேயமாக்க நீங்கள் கோரலாம்."
                         },
-                        heading: "How to request removal of your personal information"
+                        heading: "உங்கள் தனிப்பட்ட தகவல்களை நீக்க கோருவது எப்படி?"
                     },
                     where: {
                         description: {
                             para1:
-                                "WSO2 IS stores your personal information in secured databases. WSO2 IS " +
-                                "exercises proper industry accepted security measures to protect the database " +
-                                "where your personal information is held. WSO2 IS as a product does not transfer " +
-                                "or share your data with any third parties or locations.",
+                                "WSO2 IS உங்கள் தனிப்பட்ட தகவல்களை பாதுகாப்பான தரவுத்தளங்களில் சேமிக்கிறது. உங்கள் " +
+                                "தனிப்பட்ட தகவல்கள் வைத்திருக்கும் தரவுத்தளத்தைப் பாதுகாக்க WSO2 IS சரியான துறையில் " +
+                                "ஏற்றுக்கொள்ளப்பட்ட பாதுகாப்பு நடவடிக்கைகளைப் பயன்படுத்துகிறது. WSO2 IS ஒரு " +
+                                "தயாரிப்பாக உங்கள் தரவை எந்த மூன்றாம் தரப்பினருடனோ அல்லது இருப்பிடங்களுடனோ மாற்றவோ " +
+                                "பகிரவோ இல்லை.",
                             para2:
-                                "WSO2 IS may use encryption to keep your personal data with an added level " +
-                                "of security."
+                                "WSO2 IS உங்கள் தனிப்பட்ட தரவை கூடுதல் பாதுகாப்புடன் வைத்திருக்க குறியாக்கத்தைப் " +
+                                "பயன்படுத்தலாம்."
                         },
-                        heading: "Where your personal information is stored"
+                        heading: "உங்கள் தனிப்பட்ட தகவல்கள் எங்கு சேகரிக்கப்படுகின்றன?"
                     }
                 },
                 useOfPersonalInfo: {
                     description: {
                         list1: {
                             0:
-                                "To provide you with a personalized user experience. WSO2 IS uses your name and " +
-                                "uploaded profile pictures for this purpose.",
+                                "தனிப்பயனாக்கப்பட்ட பயனர் அனுபவத்தை உங்களுக்கு வழங்க, WSO2 IS உங்கள் பெயரைப் " +
+                                "மற்றும் பதிவேற்றிய உங்கள் படங்களை பயன்படுத்துகிறது",
                             1:
-                                "To protect your account from unauthorized access or potential hacking attempts. " +
-                                "WSO2 IS uses HTTP or TCP/IP Headers for this purpose.",
+                                "அங்கீகரிக்கப்படாத அணுகல் அல்லது சாத்தியமான ஹேக்கிங் முயற்சிகளிலிருந்து உங்கள் கணக்கைப் " +
+                                "பாதுகாக்க, WSO2 IS இந்த நோக்கத்திற்காக HTTP அல்லது TCP / IP தலைப்புகளைப் " +
+                                "பயன்படுத்துகிறது.",
                             2:
-                                "Derive statistical data for analytical purposes on system performance improvements. " +
-                                "WSO2 IS will not keep any personal information after statistical calculations. " +
-                                "Therefore, the statistical report has no means of identifying an individual person."
+                                "கணினி செயல்திறன் மேம்பாடுகள் குறித்த பகுப்பாய்வு நோக்கங்களுக்காக புள்ளிவிவர தரவைப் " +
+                                "பெறப்படுகின்றது. WSO2 IS புள்ளிவிவர கணக்கீடுகளுக்குப் பிறகு எந்த தனிப்பட்ட தகவலையும் " +
+                                "வைத்திருக்காது. எனவே, புள்ளிவிவர அறிக்கையில் ஒரு தனி நபரை அடையாளம் காண வழி இல்லை."
                         },
                         para1:
-                            "WSO2 IS will only use your personal information for the purposes for which it was " +
-                            "collected (or for a use identified as consistent with that purpose).",
-                        para2: "WSO2 IS uses your personal information only for the following purposes.",
+                            "WSO2 IS உங்கள் தனிப்பட்ட தகவல்களை சேகரிக்கப்பட்ட நோக்கங்களுக்காக மட்டுமே பயன்படுத்தும் " +
+                            "(அல்லது அந்த நோக்கத்துடன் ஒத்துப்போகும் அடையாளம் காணப்பட்ட பயன்பாட்டிற்கு).",
+                        para2: "WSO2 IS உங்கள் தனிப்பட்ட தகவல்களை பின்வரும் நோக்கங்களுக்காக மட்டுமே பயன்படுத்துகிறது.",
                         subList1: {
-                            heading: "This includes:",
+                            heading: "இதில் பின்வருவன அடங்கும்:",
                             list: {
-                                0: "IP address",
-                                1: "Browser fingerprinting",
-                                2: "Cookies"
+                                0: "IP முகவரி",
+                                1: "உலாவி கைரேகை",
+                                2: "குக்கிகள்"
                             }
                         },
                         subList2: {
-                            heading: "WSO2 IS may use:",
+                            heading: "WSO2 IS பின்வருவனவற்றை பயன்படத்தலாம்:",
                             list: {
-                                0: "IP Address to derive geographic information",
-                                1: "Browser fingerprinting to determine the browser technology or/and version"
+                                0: "புவியியல் தகவல்களைப் பெற IP முகவரி",
+                                1: "உலாவி தொழில்நுட்பம் அல்லது / மற்றும் பதிப்பைத் தீர்மானிக்க உலாவி கைரேகை"
                             }
                         }
                     },
-                    heading: "Use of personal information"
+                    heading: "தனிப்பட்ட தகவல்களின் பாவனை"
                 },
                 whatIsPersonalInfo: {
                     description: {
                         list1: {
-                            0:
-                                "Your user name (except in cases where the user name created by your employer is " +
-                                "under contract)",
-                            1: "Your date of birth/age",
-                            2: "IP address used to log in",
-                            3: "Your device ID if you use a device (e.g., phone or tablet) to log in"
+                            0: "உங்கள் பயனர் பெயர் (உங்கள் முதலாளியால் உருவாக்கப்பட்ட பயனர் பெயர் ஒப்பந்தத்தின் கீழ் தவிர)",
+                            1: "உங்கள் பிறந்த தேதி / வயது",
+                            2: "உள்நுழைய பயன்படும் IP முகவரி",
+                            3:
+                                "உள்நுழைய ஒரு சாதனத்தை (எ.கா., தொலைபேசி அல்லது டேப்லெட்) பயன்படுத்தினால் " +
+                                "உங்கள் சாதன ID"
                         },
                         list2: {
-                            0: "City/Country from which you originated the TCP/IP connection",
-                            1: "Time of the day that you logged in (year, month, week, hour or minute)",
-                            2: "Type of device that you used to log in (e.g., phone or tablet)",
-                            3: "Operating system and generic browser information"
+                            0: "நீங்கள் TCP / IP இணைப்பை உருவாக்கிய நகரம் / நாடு",
+                            1: "நீங்கள் உள்நுழைந்த நாளின் நேரம் (ஆண்டு, மாதம், வாரம், மணிநேரம் அல்லது நிமிடம்)",
+                            2: "நீங்கள் உள்நுழைய பயன்படுத்திய சாதன வகை (எ.கா., தொலைபேசி அல்லது டேப்லெட்)",
+                            3: "இயங்கு தளம் மற்றும் பொதுவான உலாவி தகவல்"
                         },
                         para1:
-                            "WSO2 IS considers anything related to you, and by which you may be identified, as " +
-                            "your personal information. This includes, but is not limited to:",
+                            "உங்கள் தனிப்பட்ட தகவலாக உங்களை அடையாளம் காணும் எதையும் WSO2 IS கருதுகிறது. " +
+                            "இது பின்வருவனவற்றை உள்ளடக்குகிறது, ஆனால் இவை மட்டும் அல்ல:",
                         para2:
-                            "However, WSO2 IS also collects the following information that is not considered " +
-                            "personal information, but is used only for <1>statistical</1> purposes. The reason " +
-                            "for this is that this information can not be used to track you."
+                            "இருப்பினும், WSO2 IS தனிப்பட்ட தகவல்களாக கருதப்படாத பின்வரும் தகவல்களையும் சேகரிக்கிறது, " +
+                            "ஆனால் இது <1> புள்ளிவிவர </ 1> நோக்கங்களுக்காக மட்டுமே பயன்படுத்தப்படுகிறது. இதற்கான " +
+                            "காரணம், உங்களைக் கண்காணிக்க இந்த தகவலைப் பயன்படுத்த முடியாது என்பதே."
                     },
-                    heading: "What is personal information?"
+                    heading: "தனிப்பட்ட தகவல்கள் என்றால் என்ன?"
                 }
             }
         },
