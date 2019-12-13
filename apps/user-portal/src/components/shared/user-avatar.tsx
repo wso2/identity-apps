@@ -98,7 +98,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
     };
 
     // Avatar for the authenticated user.
-    if (authState && authState.profileInfo && authState.profileInfo.userimage) {
+    if (authState && authState.profileInfo && (authState.profileInfo.profileUrl || authState.profileInfo.userimage)) {
         return (
             <Popup
                 content={ gravatarInfoPopoverText }
@@ -113,7 +113,11 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
                         { ...props }
                         avatarType="user"
                         bordered={ false }
-                        image={ authState.profileInfo && authState.profileInfo.userimage }
+                        image={
+                            authState.profileInfo.profileUrl
+                                ? authState.profileInfo.profileUrl
+                                : authState.profileInfo.userimage
+                        }
                         label={ showGravatarLabel ? resolveTopLabel() : null }
                         onMouseOver={ handleOnMouseOver }
                         onMouseOut={ handleOnMouseOut }
