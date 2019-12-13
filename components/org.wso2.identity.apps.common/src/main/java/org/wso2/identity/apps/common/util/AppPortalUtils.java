@@ -28,18 +28,28 @@ import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRe
 import org.wso2.carbon.identity.application.common.model.LocalAndOutboundAuthenticationConfig;
 import org.wso2.carbon.identity.application.common.model.Property;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
+import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
+import org.wso2.carbon.identity.oauth.OAuthUtil;
 import org.wso2.carbon.identity.oauth.dto.OAuthConsumerAppDTO;
+import org.wso2.carbon.registry.core.exceptions.RegistryException;
+import org.wso2.carbon.user.core.UserRealm;
+import org.wso2.carbon.user.core.UserStoreException;
 import org.wso2.identity.apps.common.internal.AppsCommonDataHolder;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static org.wso2.carbon.identity.oauth.common.OAuthConstants.GrantTypes.AUTHORIZATION_CODE;
+import static org.wso2.carbon.identity.oauth.common.OAuthConstants.GrantTypes.REFRESH_TOKEN;
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.OAuthVersions.VERSION_2;
+import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.DISPLAY_NAME_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_URI;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ACCOUNT_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.TOKEN_BINDING_TYPE_COOKIE;
 
 /**
  * App portal utils.
@@ -72,7 +82,11 @@ public class AppPortalUtils {
         oAuthConsumerAppDTO.setOAuthVersion(VERSION_2);
         oAuthConsumerAppDTO.setOauthConsumerKey(consumerKey);
         oAuthConsumerAppDTO.setOauthConsumerSecret(consumerSecret);
-        oAuthConsumerAppDTO.setCallbackUrl(IdentityUtil.getServerURL(portalPath, false, true));
+        String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
+        if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
+            callbackUrl = callbackUrl.replace(portalPath, "/t/" + tenantDomain.trim() + portalPath);
+        }
+        oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
         oAuthConsumerAppDTO.setBypassClientCredentials(true);
         if (grantTypes != null && !grantTypes.isEmpty()) {
             oAuthConsumerAppDTO.setGrantTypes(String.join(" ", grantTypes));
@@ -109,8 +123,8 @@ public class AppPortalUtils {
         serviceProvider.setApplicationName(appName);
         serviceProvider.setDescription(appDescription);
 
-        InboundAuthenticationRequestConfig inboundAuthenticationRequestConfig =
-                new InboundAuthenticationRequestConfig();
+        InboundAuthenticationRequestConfig inboundAuthenticationRequestConfig
+                = new InboundAuthenticationRequestConfig();
         inboundAuthenticationRequestConfig.setInboundAuthKey(consumerKey);
         inboundAuthenticationRequestConfig.setInboundAuthType(INBOUND_AUTH2_TYPE);
         Property property = new Property();
@@ -125,8 +139,8 @@ public class AppPortalUtils {
                 inboundAuthenticationRequestConfigs.toArray(new InboundAuthenticationRequestConfig[0]));
         serviceProvider.setInboundAuthenticationConfig(inboundAuthenticationConfig);
 
-        LocalAndOutboundAuthenticationConfig localAndOutboundAuthenticationConfig =
-                new LocalAndOutboundAuthenticationConfig();
+        LocalAndOutboundAuthenticationConfig localAndOutboundAuthenticationConfig
+                = new LocalAndOutboundAuthenticationConfig();
         localAndOutboundAuthenticationConfig.setUseUserstoreDomainInLocalSubjectIdentifier(true);
         serviceProvider.setLocalAndOutBoundAuthenticationConfig(localAndOutboundAuthenticationConfig);
 
@@ -162,5 +176,43 @@ public class AppPortalUtils {
         roleClaimMapping.setRemoteClaim(roleClaim);
 
         return new ClaimMapping[] { emailClaimMapping, roleClaimMapping };
+    }
+
+    /**
+     * Initiate portal applications.
+     *
+     * @param tenantDomain tenant domain.
+     * @param tenantId     tenant id.
+     * @throws IdentityApplicationManagementException in case of failure during application creation.
+     * @throws IdentityOAuthAdminException            in case of failure during OAuth2 application creation.
+     * @throws RegistryException                      in case of failure while getting the user realm.
+     * @throws UserStoreException
+     */
+    public static void initiatePortals(String tenantDomain, int tenantId)
+            throws IdentityApplicationManagementException, IdentityOAuthAdminException, RegistryException,
+            UserStoreException {
+
+        ApplicationManagementService applicationMgtService = AppsCommonDataHolder.getInstance()
+                .getApplicationManagementService();
+
+        UserRealm userRealm = AppsCommonDataHolder.getInstance().getRegistryService().getUserRealm(tenantId);
+        String adminUsername = userRealm.getRealmConfiguration().getAdminUserName();
+
+        for (AppPortalConstants.AppPortal appPortal : AppPortalConstants.AppPortal.values()) {
+            if (applicationMgtService.getApplicationExcludingFileBasedSPs(appPortal.getName(), tenantDomain) == null) {
+                // Initiate portal
+                String consumerSecret = OAuthUtil.getRandomNumber();
+                List<String> grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH);
+                String consumerKey = appPortal.getConsumerKey();
+                if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
+                    consumerKey = consumerKey + "_" + tenantDomain;
+                }
+                AppPortalUtils
+                        .createOAuth2Application(appPortal.getName(), appPortal.getPath(), consumerKey, consumerSecret,
+                                adminUsername, tenantId, tenantDomain, TOKEN_BINDING_TYPE_COOKIE, grantTypes);
+                AppPortalUtils.createApplication(appPortal.getName(), adminUsername, appPortal.getDescription(),
+                        consumerKey, consumerSecret, tenantDomain);
+            }
+        }
     }
 }
