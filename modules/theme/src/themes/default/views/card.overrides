@@ -129,6 +129,9 @@
                     padding: 0;
 
                     .description {
+                        .placeholder-text {
+                            color: lighten(@black, 40);
+                        }
                         .small-text {
                             font-size: 11px;
                         }
