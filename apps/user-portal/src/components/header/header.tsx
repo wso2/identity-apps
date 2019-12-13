@@ -21,8 +21,7 @@ import React, { SyntheticEvent, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import Skeleton from "react-skeleton-loader";
-import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } from "semantic-ui-react";
+import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Placeholder, PlaceholderLine, Responsive } from "semantic-ui-react";
 import { getGravatarImage, switchAccount } from "../../api";
 import { resolveUserDisplayName, resolveUsername } from "../../helpers";
 import { AlertLevels, AuthStateInterface, LinkedAccountInterface } from "../../models";
@@ -58,25 +57,26 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     }, []);
 
     const trigger = (
-        profileInfoLoader
-            ? (
-                <span className="username-placeholder">
-                    <div className="username"><Skeleton height="10px" width="150px" /></div>
-                    <Skeleton height="33px" width="33px" widthRandomness={ 0 } borderRadius="50%" />
-                </span>
-            )
-            : (
-                <span className="user-dropdown-trigger">
-                    <div className="username">{ resolveUserDisplayName(profileDetails) }</div>
-                    <UserAvatar authState={ profileDetails } size="mini" />
-                </span >
-            )
+
+        <span className="user-dropdown-trigger">
+            <div className="username">{
+                profileInfoLoader
+                ? (
+                    <Placeholder>
+                        <Placeholder.Line />
+                    </Placeholder>
+                )
+                : resolveUserDisplayName(profileDetails)
+            }</div>
+            <UserAvatar authState={ profileDetails } size="mini" />
+        </span >
+
     );
 
     /**
      * Stops the dropdown from closing on click.
      *
-     * @param {React.SyntheticEvent<HTMLElement>} e - Click event.
+     * @param { React.SyntheticEvent<HTMLElement> } e - Click event.
      */
     const handleUserDropdownClick = (e: SyntheticEvent<HTMLElement>) => {
         e.stopPropagation();
@@ -85,7 +85,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     /**
      * Handles the account switch click event.
      *
-     * @param {LinkedAccountInterface} account - Target account.
+     * @param { LinkedAccountInterface } account - Target account.
      */
     const handleLinkedAccountSwitch = (account: LinkedAccountInterface) => {
         switchAccount(account)
@@ -155,31 +155,24 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                         className="header"
                                         key={ `logged-in-user-${profileDetails.profileInfo.userName}` }
                                     >
-                                        { profileInfoLoader
-                                            ? (
-                                                <Skeleton
-                                                    borderRadius="50%"
-                                                    height="80px"
-                                                    width="80px"
-                                                    widthRandomness={ 0 }
-                                                />
-                                            )
-                                            : <UserAvatar authState={ profileDetails } size="tiny" /> }
+                                        { <UserAvatar authState={ profileDetails } size="tiny" /> }
                                         <Item.Content verticalAlign="middle">
                                             <Item.Description>
-                                                { profileInfoLoader
-                                                    ? <Skeleton />
-                                                    : (
-                                                        < div className="name">
-                                                            { resolveUserDisplayName(profileDetails) }
-                                                        </div>
-                                                    ) }
+
+                                                < div className="name">
+                                                    {
+                                                        profileInfoLoader
+                                                            ? <Placeholder><Placeholder.Line /></Placeholder>
+                                                            : resolveUserDisplayName(profileDetails)
+                                                    }
+                                                </div>
+
                                                 { (profileDetails.profileInfo.emails !== undefined
                                                     && profileDetails.profileInfo.emails !== null) &&
                                                     (
                                                         <div className="email">
                                                             { profileInfoLoader
-                                                                ? <Skeleton />
+                                                                ? <Placeholder><Placeholder.Line /></Placeholder>
                                                                 : typeof profileDetails.profileInfo
                                                                     .emails[0] === "string"
                                                                     ? profileDetails.profileInfo.emails[0]
