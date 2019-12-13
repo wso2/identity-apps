@@ -52,6 +52,17 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
     const profileInfo: BasicProfileInterface = useSelector(
         (state: AppState) => state.authenticationInformation.profileInfo
     );
+    const emailSchema: ProfileSchema = useSelector((state: AppState) => {
+        const emailSchemas: ProfileSchema = state.authenticationInformation.profileSchemas.find((profileSchema) => {
+            return profileSchema.name === "emails";
+        });
+        if (emailSchemas && emailSchemas.subAttributes) {
+            return emailSchemas.subAttributes[0];
+        }
+        return emailSchemas;
+    });
+
+    let emailType: string;
 
     useEffect(() => {
         if (isEmpty(profileInfo)) {
@@ -75,9 +86,15 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
             ],
             schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
-
         data.Operations[0].value = {
-            emails: [emailAddress]
+            emails: emailType || emailSchema
+                ? [
+                    {
+                        type: emailType || emailSchema.name,
+                        value: emailAddress
+                    }
+                ]
+                : [emailAddress]
         };
 
         updateProfileInfo(data)
@@ -136,9 +153,15 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
      * In the future, we need to decide whether or not to allow multiple recovery emails
      */
     const setEmailAddress = (response) => {
-        let emailAddress = "";
+        let emailAddress: string = "";
         if (response.emails) {
-            emailAddress = response.emails[0];
+            if (typeof response.emails[0] === "object" && response.emails[0] !== null) {
+                emailAddress = response.emails[0].value;
+                emailType = response.emails[0].type;
+            } else {
+                emailAddress = response.emails[0];
+                emailType = "array";
+            }
         }
         setEmail(emailAddress);
         setEditedEmail(emailAddress);
