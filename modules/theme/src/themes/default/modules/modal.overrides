@@ -33,271 +33,168 @@
     }
 }
 
-.sa {
-    width: 140px;
-    height: 140px;
-    padding: 26px;
-    display: inline-block;
-    margin-bottom: -25px;
-    background-color: #fff;
-    &-success {
-        border-radius: 50%;
-        border: 4px solid #A5DC86;
-        box-sizing: content-box;
-        height: 80px;
-        padding: 0;
-        position: relative;
-        background-color: #fff;
-        width: 80px;
-    &:after, &:before {
-        background: #fff;
-        content: '';
-        height: 120px;
-        position: absolute;
-        transform: rotate(45deg);
-        width: 60px;
-    }
-    &:before {
-        border-radius: 40px 0 0 40px;
-        width: 26px;
-        height: 80px;
-        top: -17px;
-        left: 5px;
-        transform-origin: 60px 60px;
-        transform: rotate(-45deg);
-    }
-    &:after {
-        border-radius: 0 120px 120px 0;
-        left: 30px;
-        top: -11px;
-        transform-origin: 0 60px;
-        transform: rotate(-45deg);
-        animation: rotatePlaceholder 4.25s ease-in;
-    }
-    &-placeholder {
-        border-radius: 50%;
-        border: 4px solid rgba(165, 220, 134, 0.25);
-        box-sizing: content-box;
-        height: 80px;
-        left: -4px;
-        position: absolute;
-        top: -4px;
-        width: 80px;
-        z-index: 2;
-    }
-    &-fix {
-        background-color: #fff;
-        height: 90px;
-        left: 28px;
-        position: absolute;
-        top: 8px;
-        transform: rotate(-45deg);
-        width: 5px;
-        z-index: 1;
-    }
-    &-tip, &-long {
-        background-color: #A5DC86;
-        border-radius: 2px;
-        height: 5px;
-        position: absolute;
-        z-index: 2;
-    }
-    &-tip {
-        left: 14px;
-        top: 46px;
-        transform: rotate(45deg);
-        width: 25px;
-        animation: animateSuccessTip .75s;
-    }
-    &-long {
-        right: 8px;
-        top: 38px;
-        transform: rotate(-45deg);
-        width: 47px;
-        animation: animateSuccessLong .75s;
-    }
-    }
-    &-error {
-        border-radius: 50%;
-        border: 4px solid #F27474;
-        box-sizing: content-box;
-        height: 80px;
-        padding: 0;
-        position: relative;
-        background-color: #fff;
-        width: 80px;
-        animation: animateErrorIcon .5s;
-    &:after, &:before {
-        background: #fff;
-        content: '';
-        height: 120px;
-        position: absolute;
-        transform: rotate(45deg);
-        width: 60px;
-     }
-    &:before {
-        border-radius: 40px 0 0 40px;
-        width: 26px;
-        height: 80px;
-        top: -17px;
-        left: 5px;
-        transform-origin: 60px 60px;
-        transform: rotate(-45deg);
-    }
-    &:after {
-        border-radius: 0 120px 120px 0;
-        left: 30px;
-        top: -11px;
-        transform-origin: 0 60px;
-        transform: rotate(-45deg);
-        animation: rotatePlaceholder 4.25s ease-in;
-    }
-    &-x {
-        display: block;
-            position: relative;
-            z-index: 2;
-    }
-      &-placeholder {
-              border-radius: 50%;
-        border: 4px solid rgba(200, 0, 0, .2);
-              box-sizing: content-box;
-              height: 80px;
-              left: -4px;
-              position: absolute;
-              top: -4px;
-              width: 80px;
-              z-index: 2;
-      }
-      &-fix {
-              background-color: #fff;
-              height: 90px;
-              left: 28px;
-              position: absolute;
-              top: 8px;
-              transform: rotate(-45deg);
-              width: 5px;
-              z-index: 1;
-      }
-      &-left, &-right {
-              border-radius: 2px;
-              display: block;
-              height: 5px;
-              position: absolute;
-              z-index: 2;
-        background-color: #F27474;
-              top: 37px;
-              width: 47px;
-      }
-      &-left {
-              left: 17px;
-              transform: rotate(45deg);
-          animation: animateXLeft .75s;
-      }
-      &-right {
-              right: 16px;
-              transform: rotate(-45deg);
-          animation: animateXRight .75s;
-      }
-    }
+.svg-box {
+    display:inline-block;
+    position: relative;
+    width:150px;
+    margin-bottom: -25px !important;
 }
 
-@keyframes animateSuccessTip {
-  0%, 54% {
-    width: 0;
-    left: 1px;
-    top: 19px;
-  }
-  70% {
-    width: 50px;
-    left: -8px;
-    top: 37px;
-  }
-  84% {
-    width: 17px;
-    left: 21px;
-    top: 48px;
-  }
-  100% {
-    width: 25px;
-    left: 14px;
-    top: 45px;
-  }
-}
-@keyframes animateSuccessLong {
-    0%, 65% {
-        width: 0;
-        right: 46px;
-        top: 54px;
-    }
-    84% {
-        width: 55px;
-        right: 0;
-        top: 35px;
-    }
-    100% {
-        width: 47px;
-        right: 8px;
-        top: 38px;
-    }
-}
-@keyframes rotatePlaceholder {
-    0%, 5% {
-        transform: rotate(-45deg);
-    }
-    100%, 12% {
-        transform: rotate(-405deg);
-    }
+.green-stroke {
+    stroke:#7CB342;
 }
 
-@keyframes rotatePlaceholder {
-    0%, 5% {
-        transform: rotate(-45deg);
-    }
-    100%,12% {
-        transform: rotate(-405deg);
-    }
+.red-stroke {
+    stroke: #FF6245;
 }
-@keyframes animateErrorIcon {
+
+.yellow-stroke {
+    stroke: #FFC107;
+}
+
+
+.circular circle.path {
+    stroke-dasharray: 330;
+    stroke-dashoffset: 0;
+    stroke-linecap: round;
+    opacity: 0.4;
+    animation: 0.7s draw-circle ease-out;
+}
+
+/*------- Checkmark ---------*/
+.checkmark{
+	stroke-width: 6.25;
+    stroke-linecap: round;
+	position:absolute;
+    top: 56px;
+    left: 49px;
+    width: 52px;
+    height: 40px;
+}
+
+.checkmark path {
+    animation: 1s draw-check ease-out;
+}
+
+@keyframes draw-circle {
     0% {
-        transform: rotateX(100deg);
-        opacity: 0;
-    }
-    100% {
-        transform: rotateX(0deg);
+        stroke-dasharray: 0,330;
+        stroke-dashoffset: 0;
         opacity: 1;
     }
-}
-@keyframes animateXLeft {
-    0%, 65% {
-        left: 82px;
-        top: 95px;
-        width: 0;
+
+    80% {
+        stroke-dasharray: 330,330;
+        stroke-dashoffset: 0;
+        opacity: 1;
     }
-    84% {
-        left: 14px;
-        top: 33px;
-        width: 47px;
-    }
-    100% {
-        left: 17px;
-        top: 37px;
-        width: 47px;
+
+    100%{
+        opacity: 0.4;
     }
 }
-@keyframes animateXRight {
-    0%, 65% {
-        right: 82px;
-        top: 95px;
-        width: 0;
+
+@keyframes draw-check {
+    0% {
+        stroke-dasharray: 49,80;
+        stroke-dashoffset: 48;
+        opacity: 0;
     }
-    84% {
-        right: 14px;
-        top: 33px;
-        width: 47px;
+
+    50% {
+        stroke-dasharray: 49,80;
+        stroke-dashoffset: 48;
+        opacity: 1;
     }
+
     100% {
-        right: 16px;
-        top: 37px;
-        width: 47px;
+        stroke-dasharray: 130,80;
+        stroke-dashoffset: 48;
+    }
+}
+
+/*---------- Cross ----------*/
+
+.cross {
+    stroke-width:6.25;
+    stroke-linecap: round;
+    position: absolute;
+    top: 54px;
+    left: 54px;
+    width: 40px;
+    height: 40px;
+}
+
+.cross .first-line {
+    animation: 0.7s draw-first-line ease-out;
+}
+
+.cross .second-line {
+    animation: 0.7s draw-second-line ease-out;
+}
+
+@keyframes draw-first-line {
+    0% {
+        stroke-dasharray: 0,56;
+        stroke-dashoffset: 0;
+    }
+
+    50% {
+        stroke-dasharray: 0,56;
+        stroke-dashoffset: 0;
+    }
+
+    100% {
+        stroke-dasharray: 56,330;
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes draw-second-line {
+    0% {
+        stroke-dasharray: 0,55;
+        stroke-dashoffset: 1;
+    }
+
+    50% {
+        stroke-dasharray: 0,55;
+        stroke-dashoffset: 1;
+    }
+
+    100% {
+        stroke-dasharray: 55,0;
+        stroke-dashoffset: 70;
+    }
+}
+
+.alert-sign {
+    stroke-width:6.25;
+    stroke-linecap: round;
+    position: absolute;
+    top: 40px;
+    left: 68px;
+    width: 15px;
+    height: 70px;
+    animation: 0.5s alert-sign-bounce cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.alert-sign .dot {
+    stroke:none;
+    fill: #FFC107;
+}
+
+@keyframes alert-sign-bounce {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
     }
 }
