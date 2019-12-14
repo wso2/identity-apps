@@ -18,7 +18,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { Image, SemanticSIZES } from "semantic-ui-react";
+import { Image, Placeholder, SemanticSIZES } from "semantic-ui-react";
 import { DefaultAppIcon } from "../../configs";
 import { UserImageDummy } from "./ui";
 
@@ -34,6 +34,7 @@ export interface AvatarProps {
     floated?: "left" | "right";
     image?: React.ReactNode;
     inline?: boolean;
+    isLoading?: boolean;
     label?: string;
     name?: string;
     onMouseOut?: (e: MouseEvent) => void;
@@ -67,6 +68,7 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
         floated,
         image,
         inline,
+        isLoading,
         label,
         name,
         onMouseOver,
@@ -90,6 +92,24 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
         [ `${ avatarType === "user" ? "user-avatar" : "app-avatar" }` ]: avatar,
         [ `${ relaxLevel }` ]: relaxLevel,
     }, className);
+
+    // If loading, show the placeholder.
+    if (isLoading) {
+        return (
+            <Image
+                className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
+                bordered={ bordered }
+                floated={ floated }
+                circular={ avatarType === "user" }
+                rounded={ avatarType === "app" }
+                style={ style }
+            >
+                <Placeholder>
+                    <Placeholder.Image square />
+                </Placeholder>
+            </Image>
+        );
+    }
 
     /**
      * Generates the initials for the avatar. If the name
@@ -195,6 +215,7 @@ Avatar.defaultProps = {
     bordered: true,
     className: "",
     inline: false,
+    isLoading: false,
     label: null,
     onMouseOut: null,
     onMouseOver: null,

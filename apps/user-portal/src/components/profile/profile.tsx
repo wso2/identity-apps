@@ -412,10 +412,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             )
                                             : profileInfo.get(schema.name)
                                             || (
-                                                <a onClick={ () => { showFormEditView(schema.name); } }>
-                                                    { t("views:components.profile.forms.generic.inputs.placeholder",
-                                                        { fieldName: schema.displayName }) }
-                                                </a>
+                                                <div className="placeholder-text">
+                                                    {
+                                                        t("views:components.profile.forms.generic.inputs.placeholder",
+                                                        { fieldName: schema.displayName })
+                                                    }
+                                                </div>
                                             )
                                     }
                                 </List.Description>
@@ -433,7 +435,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                 { schema.mutability !== "READ_ONLY" && schema.name !== "userName"
                                     ?
                                     (
-                                        < Popup
+                                        <Popup
                                             trigger={
                                                 (
                                                     <Icon
@@ -442,9 +444,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                         size="small"
                                                         color="grey"
                                                         onClick={ () => showFormEditView(schema.name) }
-                                                        name={ !isEmpty(profileInfo.get(schema.name))
-                                                            ? "pencil alternate"
-                                                            : null }
+                                                        name={
+                                                            !isEmpty(profileInfo.get(schema.name))
+                                                                ? "pencil alternate"
+                                                                : "add"
+                                                        }
                                                     />
                                                 )
                                             }
@@ -464,7 +468,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     };
 
     return (
-        < SettingsSection
+        <SettingsSection
             description={ t("views:sections.profile.description") }
             header={ t("views:sections.profile.heading") }
             icon={ profileInfoLoader

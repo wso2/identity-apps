@@ -73,6 +73,14 @@ const authenticateReducer = (state = authenticateInitialState, action) => {
                 ...state,
                 profileInfo: action.payload
             };
+        case authenticateActionTypes.SET_ASSOCIATED_ACCOUNTS:
+            return {
+                ...state,
+                profileInfo: {
+                    ...state.profileInfo,
+                    associations: action.payload
+                }
+            };
         case authenticateActionTypes.SET_SCHEMAS:
             return {
                 ...state,

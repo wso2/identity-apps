@@ -213,12 +213,12 @@
         &.app-header {
             .user-dropdown {
                 .authenticated-user {
-                    .ui.image.user-image.user-avatar.tiny {
+                    .ui.image.user-image.tiny {
                         width: 80px !important;
                     }
                 }
                 .linked-accounts-list {
-                    .ui.image.user-image.user-avatar.little {
+                    .ui.image.user-image.little {
                         width: @littleWidth !important;
                     }
                 }
