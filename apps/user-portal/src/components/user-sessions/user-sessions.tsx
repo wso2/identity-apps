@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Container, Menu, Modal } from "semantic-ui-react";
@@ -67,7 +68,15 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
     const getUserSessions = (): void => {
         fetchUserSessions()
             .then((response) => {
-                setUserSessions(response);
+                let sessions = [ ...response.sessions ];
+
+                // Sort the array by last access time
+                sessions = _.reverse(_.sortBy(sessions, (session) => session.lastAccessTime));
+
+                setUserSessions({
+                    ...response,
+                    sessions
+                });
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.detail) {
