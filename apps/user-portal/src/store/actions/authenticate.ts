@@ -61,6 +61,14 @@ export const setProfileInfo = (details: any) => ({
 });
 
 /**
+ * Dispatches an action of type `SET_ASSOCIATED_ACCOUNTS`.
+ */
+export const setAssociatedAccounts = (data: any) => ({
+    payload: data,
+    type: authenticateActionTypes.SET_ASSOCIATED_ACCOUNTS
+});
+
+/**
  * Dispatches an action of type `SET_SCHEMAS`
  * @param schemas
  */
@@ -75,28 +83,73 @@ export const setScimSchemas = (schemas: ProfileSchema[]) => ({
 export const getProfileInformation = () => {
     return (dispatch) => {
         dispatch(setProfileInfoLoader(true));
+
+        // Get the profile info
         getProfileInfo()
             .then((infoResponse) => {
                 dispatch(setProfileInfoLoader(false));
+
                 if (infoResponse.responseStatus === 200) {
                     dispatch(
                         setProfileInfo({
                             ...infoResponse
                         })
                     );
-                } else {
-                    dispatch(
-                        addAlert({
-                            description: i18n.t(
-                                "views:components.profile.notifications.getProfileInfo.genericError.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: i18n.t(
-                                "views:components.profile.notifications.getProfileInfo.genericError.message"
-                            )
+
+                    // Get the associations from the API
+                    getAssociations()
+                        .then((associationsResponse) => {
+                            dispatch(setAssociatedAccounts(associationsResponse));
                         })
-                    );
+                        .catch((error) => {
+                            if (error.response && error.response.data && error.response.data.detail) {
+                                dispatch(
+                                    addAlert({
+                                        description: i18n.t(
+                                            "views:components.linkedAccounts.notifications.getAssociations." +
+                                            "error.description",
+                                            { description: error.response.data.detail }
+                                        ),
+                                        level: AlertLevels.ERROR,
+                                        message: i18n.t(
+                                            "views:components.linkedAccounts.notifications.getAssociations." +
+                                            "error.message"
+                                        )
+                                    })
+                                );
+
+                                return;
+                            }
+
+                            dispatch(
+                                addAlert({
+                                    description: i18n.t(
+                                        "views:components.linkedAccounts.notifications.getAssociations." +
+                                        "genericError.description"
+                                    ),
+                                    level: AlertLevels.ERROR,
+                                    message: i18n.t(
+                                        "views:components.linkedAccounts.notifications.getAssociations." +
+                                        "genericError.message"
+                                    )
+                                })
+                            );
+                        });
+
+                    return;
                 }
+
+                dispatch(
+                    addAlert({
+                        description: i18n.t(
+                            "views:components.profile.notifications.getProfileInfo.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: i18n.t(
+                            "views:components.profile.notifications.getProfileInfo.genericError.message"
+                        )
+                    })
+                );
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.detail) {
@@ -135,34 +188,15 @@ export const getProfileInformation = () => {
 /**
  * Handle user sign-in
  */
-export const handleSignIn = () => {
-    /**
-     * Get profile info and associations from the API
-     * to set the associations in the context.
-     */
-    const setProfileDetails = (dispatch) => {
-        dispatch(setProfileInfoLoader(true));
-        getProfileInfo().then((infoResponse) => {
-            dispatch(setProfileInfoLoader(false));
-            getAssociations().then((associationsResponse) => {
-                dispatch(
-                    setProfileInfo({
-                        ...infoResponse,
-                        associations: associationsResponse
-                    })
-                );
-            });
-        });
-    };
-
-    const sendSignInRequest = (dispatch) => {
+export const handleSignIn = () => (dispatch) => {
+    const sendSignInRequest = () => {
         const requestParams = {
             clientHost: GlobalConfig.clientHost,
             clientId: GlobalConfig.clientID,
             clientSecret: null,
             enablePKCE: true,
             redirectUri: GlobalConfig.loginCallbackUrl,
-            scope: [TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE]
+            scope: [ TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE ]
         };
         if (SignInUtil.hasAuthorizationCode()) {
             SignInUtil.sendTokenRequest(requestParams)
@@ -172,8 +206,8 @@ export const handleSignIn = () => {
                         SignInUtil.getAuthenticatedUser(response.idToken)
                     );
                     dispatch(setSignIn());
-                    setProfileDetails(dispatch);
-                    getScimSchemas(dispatch);
+                    dispatch(getProfileInformation());
+                    dispatch(getScimSchemas());
                 })
                 .catch((error) => {
                     throw error;
@@ -182,52 +216,50 @@ export const handleSignIn = () => {
             SignInUtil.sendAuthorizationRequest(requestParams);
         }
     };
-    return (dispatch) => {
-        if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
-            dispatch(setSignIn());
-            setProfileDetails(dispatch);
-            getScimSchemas(dispatch);
-        } else {
-            OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false)
-                .then(() => {
-                    sendSignInRequest(dispatch);
-                })
-                .catch(() => {
-                    OPConfigurationUtil.setAuthorizeEndpoint(ServiceResourcesEndpoint.authorize);
-                    OPConfigurationUtil.setTokenEndpoint(ServiceResourcesEndpoint.token);
-                    OPConfigurationUtil.setRevokeTokenEndpoint(ServiceResourcesEndpoint.revoke);
-                    OPConfigurationUtil.setEndSessionEndpoint(ServiceResourcesEndpoint.logout);
-                    OPConfigurationUtil.setJwksUri(ServiceResourcesEndpoint.jwks);
-                    OPConfigurationUtil.setOPConfigInitiated();
 
-                    sendSignInRequest(dispatch);
-                });
-        }
-    };
+    if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
+        dispatch(setSignIn());
+        dispatch(getProfileInformation());
+        dispatch(getScimSchemas());
+    } else {
+        OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false)
+            .then(() => {
+                sendSignInRequest();
+            })
+            .catch(() => {
+                OPConfigurationUtil.setAuthorizeEndpoint(ServiceResourcesEndpoint.authorize);
+                OPConfigurationUtil.setTokenEndpoint(ServiceResourcesEndpoint.token);
+                OPConfigurationUtil.setRevokeTokenEndpoint(ServiceResourcesEndpoint.revoke);
+                OPConfigurationUtil.setEndSessionEndpoint(ServiceResourcesEndpoint.logout);
+                OPConfigurationUtil.setJwksUri(ServiceResourcesEndpoint.jwks);
+                OPConfigurationUtil.setOPConfigInitiated();
+
+                sendSignInRequest();
+            });
+    }
 };
 
 /**
  * Handle user sign-out
  */
-export const handleSignOut = () => {
-    return (dispatch) => {
-        SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl)
-            .then(() => {
-                dispatch(setSignOut());
-                AuthenticateSessionUtil.endAuthenticatedSession();
-                OPConfigurationUtil.resetOPConfiguration();
-            })
-            .catch((error) => {
-                // TODO: show error page
-            });
-    };
+export const handleSignOut = () => (dispatch) => {
+    SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl)
+        .then(() => {
+            dispatch(setSignOut());
+            AuthenticateSessionUtil.endAuthenticatedSession();
+            OPConfigurationUtil.resetOPConfiguration();
+        })
+        .catch((error) => {
+            // TODO: show error page
+        });
 };
 
 /**
  * Get SCIM2 schemas
  */
-export const getScimSchemas = (dispatch) => {
+export const getScimSchemas = () => (dispatch) => {
     dispatch(setProfileSchemaLoader(true));
+
     getProfileSchemas()
         .then((response: ProfileSchema[]) => {
             dispatch(setProfileSchemaLoader(false));
