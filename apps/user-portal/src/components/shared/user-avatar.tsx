@@ -76,7 +76,9 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
     const isGravatarURL = (): boolean => {
         return (userImage && userImage.includes(UIConstants.GRAVATAR_URL))
             || (authState && authState.profileInfo && authState.profileInfo.userimage
-                && authState.profileInfo.userimage.includes(UIConstants.GRAVATAR_URL));
+                && authState.profileInfo.userimage.includes(UIConstants.GRAVATAR_URL))
+            || (authState && authState.profileInfo && authState.profileInfo.profileUrl
+                && authState.profileInfo.profileUrl.includes(UIConstants.GRAVATAR_URL));
     };
 
     /**

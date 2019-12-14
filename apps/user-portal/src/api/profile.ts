@@ -79,10 +79,12 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
         .request(requestConfig)
         .then(async (response) => {
             let gravatar = "";
+            let profileImage: string;
+
             if (response.status !== 200) {
                 return Promise.reject(new Error(`Failed get user profile info from: ${ServiceResourcesEndpoint.me}`));
             }
-            if (isEmpty(response.data.userImage)) {
+            if (isEmpty(response.data.userImage) && !response.data.profileUrl) {
                 try {
                     gravatar = await getGravatarImage(
                         typeof response.data.emails[0] === "string"
@@ -93,6 +95,9 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
                     gravatar = "";
                 }
             }
+
+            profileImage = response.data.profileUrl ? response.data.profileUrl : gravatar;
+
             const profileResponse: BasicProfileInterface = {
                 emails: response.data.emails || "",
                 name: response.data.name || { givenName: "", familyName: "" },
@@ -102,7 +107,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
                 responseStatus: response.status || null,
                 roles: response.data.roles || [],
                 userName: response.data.userName || "",
-                userimage: response.data.userImage || gravatar
+                userimage: response.data.userImage || profileImage
             };
             return Promise.resolve(profileResponse);
         })
