@@ -47,15 +47,21 @@ export const UserSessionsWidget: FunctionComponent<{}> = (): JSX.Element => {
     const getUserSessions = (): void => {
         fetchUserSessions()
             .then((response) => {
-                let sessions = [ ...response.sessions ];
+                if (response && response.sessions && response.sessions.length && response.sessions.length > 0) {
+                    let sessions = [ ...response.sessions ];
 
-                // Sort the array by last access time
-                sessions = _.reverse(_.sortBy(sessions, (session) => session.lastAccessTime));
+                    // Sort the array by last access time
+                    sessions = _.reverse(_.sortBy(sessions, (session) => session.lastAccessTime));
 
-                setUserSessions({
-                    ...response,
-                    sessions
-                });
+                    setUserSessions({
+                        ...response,
+                        sessions
+                    });
+
+                    return;
+                }
+
+                setUserSessions(response);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.detail) {
