@@ -481,4 +481,81 @@ body {
     }
 }
 
+/*****************************************
+            Vertical Steps
+*****************************************/
+
+.vertical-step-progress {
+    position: relative;
+    padding-left: 38px;
+    list-style: none;
+
+    &::before {
+        display: inline-block;
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 6px;
+        width: 10px;
+        height: 100%;
+        border-left: 2px solid @lightGray;
+    }
+
+    .progress-item {
+        position: relative;
+        counter-increment: list;
+        font-size: 11px;
+
+        &:not(:last-child) {
+            padding-bottom: 20px;
+        }
+
+        &::before {
+            display: inline-block;
+            content: '';
+            position: absolute;
+            left: -32px;
+            height: 100%;
+            width: 10px;
+        }
+
+        &::after {
+            content: '';
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: -37px;
+            width: 12px;
+            height: 12px;
+            border: 2px solid @lightGray;
+            border-radius: 50%;
+            background-color: @white;
+        }
+
+        &:last-child {
+            &::after {
+                top: 7px;
+            }
+        }
+
+        &.success {
+            &::after {
+                background-color: @positiveColor;
+            }
+        }
+
+        &.error {
+            &::after {
+                background-color: @negativeColor;
+            }
+        }
+
+        &.warning {
+            &::after {
+                background-color: @warningColor;
+            }
+        }
+    }
+}
+
 .loadUIOverrides();

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { isEmpty } from "lodash";
+import _ from "lodash";
 import React, { SyntheticEvent, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,7 +27,7 @@ import { getGravatarImage, switchAccount } from "../../api";
 import { resolveUserDisplayName, resolveUsername } from "../../helpers";
 import { AlertLevels, AuthStateInterface, LinkedAccountInterface } from "../../models";
 import { AppState } from "../../store";
-import { addAlert, getProfileInformation } from "../../store/actions";
+import { addAlert, getProfileInformation, getProfileLinkedAccounts } from "../../store/actions";
 import { Title, UserAvatar } from "../shared";
 
 /**
@@ -48,12 +48,17 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     const { t } = useTranslation();
     const { onSidePanelToggleClick, showSidePanelToggle } = props;
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+    const linkedAccounts: LinkedAccountInterface[] = useSelector((state: AppState) => state.profile.linkedAccounts);
     const profileInfoLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (isEmpty(profileDetails)) {
+        if (_.isEmpty(profileDetails)) {
             dispatch(getProfileInformation());
+        }
+
+        if (_.isEmpty(linkedAccounts)) {
+            dispatch(getProfileLinkedAccounts());
         }
     }, []);
 
@@ -189,45 +194,42 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                     </Item.Group>
                                     <Dropdown.Divider />
                                     {
-                                        (profileDetails.profileInfo
-                                            && profileDetails.profileInfo.associations
-                                            && profileDetails.profileInfo.associations.length > 0)
+                                        (linkedAccounts && linkedAccounts.length && linkedAccounts.length > 0)
                                             ? (
                                                 <Item.Group className="linked-accounts-list" unstackable>
                                                     {
-                                                        profileDetails.profileInfo.associations
-                                                            .map((association, index) => (
-                                                                <Item
-                                                                    className="linked-account"
-                                                                    key={ `${association.userId}-${index}` }
-                                                                    onClick={
-                                                                        () => handleLinkedAccountSwitch(association)
-                                                                    }
-                                                                >
-                                                                    <UserAvatar
-                                                                        bordered
-                                                                        avatar
-                                                                        size="little"
-                                                                        image={ getGravatarImage(association.email) }
-                                                                        name={ association.username }
-                                                                    />
-                                                                    <Item.Content verticalAlign="middle">
-                                                                        <Item.Description>
-                                                                            <div className="name">
-                                                                                {
-                                                                                    resolveUsername(
-                                                                                        association.username,
-                                                                                        association.userStoreDomain
-                                                                                    )
-                                                                                }
-                                                                            </div>
-                                                                            <div className="email">
-                                                                                { association.tenantDomain }
-                                                                            </div>
-                                                                        </Item.Description>
-                                                                    </Item.Content>
-                                                                </Item>
-                                                            ))
+                                                        linkedAccounts.map((association, index) => (
+                                                            <Item
+                                                                className="linked-account"
+                                                                key={ `${ association.userId }-${ index }` }
+                                                                onClick={
+                                                                    () => handleLinkedAccountSwitch(association)
+                                                                }
+                                                            >
+                                                                <UserAvatar
+                                                                    bordered
+                                                                    avatar
+                                                                    size="little"
+                                                                    image={ getGravatarImage(association.email) }
+                                                                    name={ association.username }
+                                                                />
+                                                                <Item.Content verticalAlign="middle">
+                                                                    <Item.Description>
+                                                                        <div className="name">
+                                                                            {
+                                                                                resolveUsername(
+                                                                                    association.username,
+                                                                                    association.userStoreDomain
+                                                                                )
+                                                                            }
+                                                                        </div>
+                                                                        <div className="email">
+                                                                            { association.tenantDomain }
+                                                                        </div>
+                                                                    </Item.Description>
+                                                                </Item.Content>
+                                                            </Item>
+                                                        ))
                                                     }
                                                 </Item.Group>
                                             )

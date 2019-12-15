@@ -29,6 +29,7 @@ import * as UIConstants from "../../constants/ui-constants";
 import { AlertInterface, AlertLevels, AuthStateInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation } from "../../store/actions";
+import { flattenSchemas } from "../../utils";
 import { EditSection, SettingsSection, UserAvatar } from "../shared";
 
 /**
@@ -54,28 +55,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const profileInfoLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
-
-    /**
-     * This function extracts the sub attributes from the schemas and appends them to the main schema iterable.
-     * The returned iterable will have all the schema attributes in a flat structure so that
-     * you can just iterate through them to display them.
-     * @param schemas
-     */
-    const flattenSchemas = (schemas: ProfileSchema[]): ProfileSchema[] => {
-        const tempSchemas: ProfileSchema[] = [];
-        schemas.forEach((schema: ProfileSchema) => {
-            if (schema.subAttributes && schema.subAttributes.length > 0) {
-                /**
-                 * If the schema has sub attributes, then this function will be recursively called.
-                 * The returned attributes are pushed into the `tempSchemas` array.
-                 */
-                tempSchemas.push(...flattenSchemas(schema.subAttributes));
-            } else {
-                tempSchemas.push(schema);
-            }
-        });
-        return tempSchemas;
-    };
 
     /**
      * This function traverses the whole schema array to find a certain attribute.
@@ -264,7 +243,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 });
 
                 // Re-fetch the profile information
-                dispatch(getProfileInformation());
+                dispatch(getProfileInformation(true));
             }
         });
 

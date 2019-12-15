@@ -567,12 +567,13 @@ export const views: Views = {
                     header: "ගිණුම් ආරක්ෂාව"
                 },
                 accountStatus: {
-                    header: "ඔබගේ ගිණුමේ තත්වය සතුටුදායකයි!",
-                    list: {
-                        0: "මුරපද සෞඛ්\u200Dයය",
-                        1: "ගිණුම සම්පූර්ණ කිරීම",
-                        2: "පුරනය වී ඇති ක්\u200Dරියාකාරකම්"
-                    }
+                    complete: "ඔබගේ ගිණුම සම්පූර්ණයි",
+                    completedFields: "සම්පුර්ණ කළ ක්ෂේත්‍ර",
+                    completionPercentage: "ඔබගේ ගිණුම සම්පුර්ණ කිරීමේ ප්‍රතිශතය {{percentage}}%",
+                    inComplete: "ඔබගේ ගිණුම සම්පූර්ණ කරන්න",
+                    inCompleteFields: "අසම්පූර්ණ ක්ෂේත්‍ර",
+                    mandatoryFieldsCompletion: "අනිවාර්ය ක්ෂේත්‍රයන් {{total}} ගෙන් {{completed}} සම්පූර්ණ කර ඇත",
+                    optionalFieldsCompletion: "විකල්ප ක්ෂේත්‍රයන් {{total}} ගෙන් {{completed}} සම්පූර්ණ කර ඇත",
                 },
                 consentManagement: {
                     actionTitles: {

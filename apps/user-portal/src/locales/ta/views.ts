@@ -572,12 +572,13 @@ export const views: Views = {
                     header: "கணக்கின் பாதுகாப்பு"
                 },
                 accountStatus: {
-                    header: "உங்கள் கணக்கின் ஆரோக்கியம் சிறப்பாக உள்ளது!",
-                    list: {
-                        0: "கடவுச்சொல்லின் ஆரோக்கியம்",
-                        1: "கணக்கின் பூரணத்துவம்",
-                        2: "உள்நுழைந்திருக்கும் செயற்பாடுகள்"
-                    }
+                    complete: "உங்கள் சுயவிவரம் முடிந்தது",
+                    completedFields: "பூர்த்தி செய்யப்பட்ட புலங்கள்",
+                    completionPercentage: "உங்கள் சுயவிவர நிறைவு {{percentage}}%",
+                    inComplete: "உங்கள் சுயவிவரத்தை முடிக்கவும்",
+                    inCompleteFields: "முழுமையற்ற புலங்கள்",
+                    mandatoryFieldsCompletion: "{{total}} கட்டாய புலங்களில் {{completed}} முடிந்தது",
+                    optionalFieldsCompletion: "{{total}} விருப்ப புலங்களில் {{completed}} முடிந்தது"
                 },
                 consentManagement: {
                     actionTitles: {

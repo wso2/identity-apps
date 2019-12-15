@@ -567,12 +567,13 @@ export const views: Views = {
                     header: "Account security"
                 },
                 accountStatus: {
-                    header: "Your account status looks good!",
-                    list: {
-                        0: "Password health",
-                        1: "Account completion",
-                        2: "Signed in activities"
-                    }
+                    complete: "Your profile is complete",
+                    completedFields: "Completed fields",
+                    completionPercentage: "Your profile completion is at {{percentage}}%",
+                    inComplete: "Complete your profile",
+                    inCompleteFields: "Incomplete fields",
+                    mandatoryFieldsCompletion: "{{completed}} out of {{total}} mandatory fields completed",
+                    optionalFieldsCompletion: "{{completed}} out of {{total}} optional fields completed"
                 },
                 consentManagement: {
                     actionTitles: {

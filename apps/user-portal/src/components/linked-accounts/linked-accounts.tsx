@@ -16,13 +16,12 @@
  * under the License.
  */
 
+import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
     addAccountAssociation,
-    getAssociations,
-    getProfileInfo,
     removeAllLinkedAccounts,
     removeLinkedAccount,
     switchAccount
@@ -32,11 +31,10 @@ import * as UIConstants from "../../constants/ui-constants";
 import {
     AlertInterface,
     AlertLevels,
-    AuthStateInterface,
     LinkedAccountInterface
 } from "../../models";
 import { AppState } from "../../store";
-import { setProfileInfo } from "../../store/actions";
+import { getProfileLinkedAccounts } from "../../store/actions";
 import { SettingsSection } from "../shared";
 import { LinkedAccountsEdit } from "./linked-accounts-edit";
 import { LinkedAccountsList } from "./linked-accounts-list";
@@ -55,103 +53,19 @@ interface LinkedAccountsProps {
  * @return {JSX.Element}
  */
 export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: LinkedAccountsProps): JSX.Element => {
-    const [ linkedAccounts, setLinkedAccounts ] = useState<LinkedAccountInterface[]>([]);
     const [ editingForm, setEditingForm ] = useState({
         [ UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER ]: false
     });
     const { onAlertFired } = props;
-    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+    const linkedAccounts: LinkedAccountInterface[] = useSelector((state: AppState) => state.profile.linkedAccounts);
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
     useEffect(() => {
-        fetchLinkedAccounts();
-    }, []);
-
-    /**
-     * Fetches linked accounts from the API.
-     */
-    const fetchLinkedAccounts = (): void => {
-        if (!profileDetails.profileInfo || (profileDetails.profileInfo && !profileDetails.profileInfo.name.givenName)) {
-            getProfileInfo().then((infoResponse) => {
-                getAssociations()
-                    .then((associationsResponse) => {
-                        setLinkedAccounts(associationsResponse);
-                        dispatch(
-                            setProfileInfo({
-                                ...infoResponse,
-                                associations: associationsResponse
-                            })
-                        );
-                    })
-                    .catch((error) => {
-                        if (error.response && error.response.data && error.response.data.detail) {
-                            onAlertFired({
-                                description: t(
-                                    "views:components.linkedAccounts.notifications.getAssociations.error.description",
-                                    { description: error.response.data.detail }
-                                ),
-                                level: AlertLevels.ERROR,
-                                message: t(
-                                    "views:components.linkedAccounts.notifications.getAssociations.error.message"
-                                )
-                            });
-
-                            return;
-                        }
-
-                        onAlertFired({
-                            description: t(
-                                "views:components.linkedAccounts.notifications.getAssociations.genericError.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "views:components.linkedAccounts.notifications.getAssociations.genericError.message"
-                            )
-                        });
-                    });
-            });
-
-            return;
+        if (_.isEmpty(linkedAccounts)) {
+            dispatch(getProfileLinkedAccounts());
         }
-
-        getAssociations()
-            .then((response) => {
-                setLinkedAccounts(response);
-                dispatch(
-                    setProfileInfo({
-                        ...profileDetails.profileInfo,
-                        associations: response
-                    })
-                );
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.detail) {
-                    onAlertFired({
-                        description: t(
-                            "views:components.linkedAccounts.notifications.getAssociations.error.description",
-                            { description: error.response.data.detail }
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "views:components.linkedAccounts.notifications.getAssociations.error.message"
-                        )
-                    });
-
-                    return;
-                }
-
-                onAlertFired({
-                    description: t(
-                        "views:components.linkedAccounts.notifications.getAssociations.genericError.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t(
-                        "views:components.linkedAccounts.notifications.getAssociations.genericError.message"
-                    )
-                });
-            });
-    };
+    }, []);
 
     /**
      * The following method handles the `onSubmit` event of forms.
@@ -192,7 +106,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 });
 
                 // Re-fetch the linked accounts list.
-                fetchLinkedAccounts();
+                dispatch(getProfileLinkedAccounts());
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.detail) {
@@ -302,7 +216,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 });
 
                 // Re-fetch the linked accounts list.
-                fetchLinkedAccounts();
+                dispatch(getProfileLinkedAccounts());
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.detail) {
@@ -353,7 +267,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 });
 
                 // Re-fetch the linked accounts list.
-                fetchLinkedAccounts();
+                dispatch(getProfileLinkedAccounts());
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.detail) {

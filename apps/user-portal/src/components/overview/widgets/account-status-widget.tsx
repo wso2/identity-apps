@@ -18,8 +18,12 @@
 
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import { Header, Icon } from "semantic-ui-react";
+import { useSelector } from "react-redux";
+import { Divider, Header, Icon, Popup, Progress } from "semantic-ui-react";
 import { AccountStatusShields } from "../../../configs";
+import * as UIConstants from "../../../constants/ui-constants";
+import { ProfileCompletion, ProfileCompletionStatus } from "../../../models";
+import { AppState } from "../../../store";
 import { ThemeIcon } from "../../shared";
 
 /**
@@ -29,28 +33,236 @@ import { ThemeIcon } from "../../shared";
  */
 export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
     const { t } = useTranslation();
+    const profileCompletion: ProfileCompletion = useSelector((state: AppState) => state.profile.completion);
+
+    /**
+     * Get the profile status based on the profile completion percentage.
+     *
+     * @return {ProfileCompletionStatus}
+     */
+    const getProfileStatus = (): ProfileCompletionStatus => {
+
+        const percentage = getProfileCompletionPercentage();
+
+        if (percentage <= UIConstants.ERROR_ACCOUNT_STATUS_UPPER_LIMIT) {
+            return ProfileCompletionStatus.ERROR;
+        } else if (percentage <= UIConstants.WARNING_ACCOUNT_STATUS_UPPER_LIMIT) {
+            return ProfileCompletionStatus.WARNING;
+        }
+
+        return ProfileCompletionStatus.SUCCESS;
+    };
+
+    /**
+     * Return the profile completion percentage.
+     *
+     * @return {number}
+     */
+    const getProfileCompletionPercentage = (): number => {
+        return profileCompletion && profileCompletion.percentage ? profileCompletion.percentage : 0;
+    };
+
+    /**
+     * Get the completion percentage based on the completion status of
+     * required and optional fields.
+     *
+     * @param field - Field to check.
+     * @return {ProfileCompletionStatus}
+     */
+    const getFiledCompletionStatus = (field: any): ProfileCompletionStatus => {
+
+        const percentage = (field.completedCount / field.totalCount) * 100;
+
+        if (percentage <= UIConstants.ERROR_ACCOUNT_STATUS_UPPER_LIMIT) {
+            return ProfileCompletionStatus.ERROR;
+        } else if (percentage <= UIConstants.WARNING_ACCOUNT_STATUS_UPPER_LIMIT) {
+            return ProfileCompletionStatus.WARNING;
+        }
+
+        return ProfileCompletionStatus.SUCCESS;
+    };
+
+    /**
+     * Resolved the type of account status shield based on the completion status.
+     *
+     * @return {any}
+     */
+    const resolveStatusShield = () => {
+        const status = getProfileStatus();
+
+        if (status === ProfileCompletionStatus.SUCCESS) {
+            return AccountStatusShields.good;
+        } else if (status === ProfileCompletionStatus.ERROR) {
+            return AccountStatusShields.danger;
+        } else if (status === ProfileCompletionStatus.WARNING) {
+            return AccountStatusShields.warning;
+        }
+
+        return AccountStatusShields.good;
+    };
+
+    /**
+     * Generates the more info popup.
+     *
+     * @param attributes - Relevant attributes.
+     * @return {JSX.Element}
+     */
+    const generatePopup = (attributes: any): JSX.Element => (
+        ((attributes.completedAttributes
+            && attributes.completedAttributes.length
+            && attributes.completedAttributes.length > 0)
+            || (attributes.incompleteAttributes
+                && attributes.incompleteAttributes.length
+                && attributes.incompleteAttributes.length > 0))
+            ? (
+                <Popup
+                    trigger={ <Icon color="grey" name="info circle"/> }
+                    position="bottom center"
+                    className="list-content-popup"
+                    hoverable
+                    pinned
+                    content={ (
+                        <>
+                            {
+                                (attributes.completedAttributes
+                                    && attributes.completedAttributes.length
+                                    && attributes.completedAttributes.length > 0)
+                                    ? (
+                                        <>
+                                            <div className="header">
+                                                <Icon color="green" name="check circle"/>
+                                                { t("views:components.overview.widgets.accountStatus." +
+                                                    "completedFields") }
+                                            </div>
+                                            <ul>
+                                                {
+                                                    attributes.completedAttributes
+                                                        .map((attr, index) => (
+                                                            <li key={ index }>{ attr }</li>
+                                                        ))
+                                                }
+                                            </ul>
+                                        </>
+                                    )
+                                    : null
+                            }
+
+                            {
+                                (attributes.incompleteAttributes
+                                    && attributes.incompleteAttributes.length
+                                    && attributes.incompleteAttributes.length > 0)
+                                    ? (
+                                        <>
+                                            <div className="header">
+                                                <Icon color="red" name="cancel"/>
+                                                { t("views:components.overview.widgets.accountStatus." +
+                                                    "inCompleteFields") }
+                                            </div>
+                                            <ul>
+                                                {
+                                                    attributes.incompleteAttributes
+                                                        .map((attr, index) => (
+                                                            <li key={ index }>{ attr }</li>
+                                                        ))
+                                                }
+                                            </ul>
+                                        </>
+                                    )
+                                    : null
+                            }
+                        </>
+                    ) }
+                    inverted={ true }
+                />
+            )
+            : null
+    );
 
     return (
         <div className="widget account-status">
             <div className="shield">
-                <ThemeIcon icon={ AccountStatusShields.good } size="auto" transparent/>
+                <ThemeIcon icon={ resolveStatusShield() } size="auto" transparent/>
             </div>
             <div className="description">
                 <Header className="status-header" as="h3">
-                    { t("views:components.overview.widgets.accountStatus.header") }
+                    {
+                        (getProfileCompletionPercentage() === 100)
+                            ? t("views:components.overview.widgets.accountStatus.complete")
+                            : t("views:components.overview.widgets.accountStatus.inComplete")
+                    }
                 </Header>
-                <div className="meta">
-                    <Icon className="meta-icon" name="check circle outline" />
-                    { t("views:components.overview.widgets.accountStatus.list.0") }
-                </div>
-                <div className="meta">
-                    <Icon className="meta-icon" name="check circle outline" />
-                    { t("views:components.overview.widgets.accountStatus.list.1") }
-                </div>
-                <div className="meta">
-                    <Icon className="meta-icon" name="check circle outline" />
-                    { t("views:components.overview.widgets.accountStatus.list.2") }
-                </div>
+                <Progress
+                    percent={ profileCompletion && profileCompletion.percentage ? profileCompletion.percentage : 0 }
+                    size="tiny"
+                    className="account-status-progress"
+                    success={ getProfileStatus() === ProfileCompletionStatus.SUCCESS }
+                    warning={ getProfileStatus() === ProfileCompletionStatus.WARNING }
+                    error={ getProfileStatus() === ProfileCompletionStatus.ERROR }
+                >
+                    {
+                        t("views:components.overview.widgets.accountStatus.completionPercentage",
+                            {
+                                percentage: profileCompletion && profileCompletion.percentage
+                                    ? profileCompletion.percentage
+                                    : 0
+                            })
+                    }
+                </Progress>
+                <Divider hidden/>
+                {
+                    profileCompletion && (profileCompletion.required || profileCompletion.optional)
+                        ? (
+                            <ul className="vertical-step-progress">
+                                {
+                                    (profileCompletion.required
+                                        && profileCompletion.required.totalCount
+                                        && profileCompletion.required.completedCount)
+                                        ? (
+                                            <li
+                                                className={ `progress-item ${ getFiledCompletionStatus(
+                                                    profileCompletion.required) }` }
+                                            >
+                                                {
+                                                    t("views:components.overview.widgets.accountStatus" +
+                                                        ".mandatoryFieldsCompletion",
+                                                        {
+                                                            completed: profileCompletion.required.completedCount,
+                                                            total: profileCompletion.required.totalCount
+                                                        })
+                                                }
+                                                { " " }
+                                                { generatePopup(profileCompletion.required) }
+                                            </li>
+                                        )
+                                        : null
+                                }
+                                {
+                                    (profileCompletion.optional
+                                        && profileCompletion.optional.totalCount
+                                        && profileCompletion.optional.completedCount)
+                                        ? (
+                                            <li
+                                                className={ `progress-item ${ getFiledCompletionStatus(
+                                                    profileCompletion.optional) }` }
+                                            >
+                                                {
+                                                    t("views:components.overview.widgets.accountStatus" +
+                                                        ".optionalFieldsCompletion",
+                                                        {
+                                                            completed: profileCompletion.optional.completedCount,
+                                                            total: profileCompletion.optional.totalCount
+                                                        })
+                                                }
+                                                { " " }
+                                                { generatePopup(profileCompletion.optional) }
+                                            </li>
+                                        )
+                                        : null
+                                }
+                            </ul>
+                        )
+                        : null
+                }
             </div>
         </div>
     );
