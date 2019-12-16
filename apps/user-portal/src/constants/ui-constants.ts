@@ -70,7 +70,7 @@ export const GRAVATAR_URL: string = "https://www.gravatar.com";
  * @type {number}
  * @default
  */
-export const WARNING_ACCOUNT_STATUS_UPPER_LIMIT: number = 66;
+export const WARNING_ACCOUNT_STATUS_UPPER_LIMIT: number = 70;
 
 /**
  * Error Account status upper limit.
@@ -78,4 +78,4 @@ export const WARNING_ACCOUNT_STATUS_UPPER_LIMIT: number = 66;
  * @type {number}
  * @default
  */
-export const ERROR_ACCOUNT_STATUS_UPPER_LIMIT: number = 33;
+export const ERROR_ACCOUNT_STATUS_UPPER_LIMIT: number = 40;

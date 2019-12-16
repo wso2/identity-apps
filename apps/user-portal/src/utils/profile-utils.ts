@@ -53,16 +53,16 @@ export const getProfileCompletion = (
                     if (schema.required) {
                         if (value) {
                             completion.required.completedCount++;
-                            completion.required.completedAttributes.push(key);
+                            completion.required.completedAttributes.push(schema.displayName);
                         } else {
-                            completion.required.incompleteAttributes.push(key);
+                            completion.required.incompleteAttributes.push(schema.displayName);
                         }
                     } else {
                         if (value) {
                             completion.optional.completedCount++;
-                            completion.optional.completedAttributes.push(key);
+                            completion.optional.completedAttributes.push(schema.displayName);
                         } else {
-                            completion.optional.incompleteAttributes.push(key);
+                            completion.optional.incompleteAttributes.push(schema.displayName);
                         }
                     }
 
@@ -74,9 +74,9 @@ export const getProfileCompletion = (
         // If the schema couldn't be mapped, add it to in-completed list.
         if (!isMapped) {
             if (schema.required) {
-                completion.required.incompleteAttributes.push(schema.name);
+                completion.required.incompleteAttributes.push(schema.displayName);
             } else {
-                completion.optional.incompleteAttributes.push(schema.name);
+                completion.optional.incompleteAttributes.push(schema.displayName);
             }
         }
     }

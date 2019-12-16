@@ -45,8 +45,35 @@
         &.account-status {
             display: flex;
 
-            & > .shield {
+            & > .status-shield-container {
                 padding-top: 15px;
+
+                .status-shield {
+                    &.good {
+                        .lighter-side {
+                            fill: @positiveColor;
+                        }
+                        .darker-side {
+                            fill: darken(@positiveColor, 16);
+                        }
+                    }
+                    &.warning {
+                        .lighter-side {
+                            fill: @warningColor;
+                        }
+                        .darker-side {
+                            fill: darken(@warningColor, 16);
+                        }
+                    }
+                    &.danger {
+                        .lighter-side {
+                            fill: @negativeColor;
+                        }
+                        .darker-side {
+                            fill: darken(@negativeColor, 16);
+                        }
+                    }
+                }
             }
 
             .description {

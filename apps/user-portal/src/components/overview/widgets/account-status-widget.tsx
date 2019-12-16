@@ -66,14 +66,19 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
      * Get the completion percentage based on the completion status of
      * required and optional fields.
      *
+     * @remarks
+     * We are not showing optional field incompletion as errors. The `isOptional` param is
+     * used to distinguish if the field we're calculating the status for is optional.
+     *
      * @param field - Field to check.
+     * @param {boolean} isOptional - Flag to check if the calculation is for the optional field.
      * @return {ProfileCompletionStatus}
      */
-    const getFiledCompletionStatus = (field: any): ProfileCompletionStatus => {
+    const getFieldCompletionStatus = (field: any, isOptional: boolean): ProfileCompletionStatus => {
 
         const percentage = (field.completedCount / field.totalCount) * 100;
 
-        if (percentage <= UIConstants.ERROR_ACCOUNT_STATUS_UPPER_LIMIT) {
+        if ((percentage <= UIConstants.ERROR_ACCOUNT_STATUS_UPPER_LIMIT) && !isOptional) {
             return ProfileCompletionStatus.ERROR;
         } else if (percentage <= UIConstants.WARNING_ACCOUNT_STATUS_UPPER_LIMIT) {
             return ProfileCompletionStatus.WARNING;
@@ -120,7 +125,6 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                     position="bottom center"
                     className="list-content-popup"
                     hoverable
-                    pinned
                     content={ (
                         <>
                             {
@@ -154,7 +158,7 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                     ? (
                                         <>
                                             <div className="header">
-                                                <Icon color="red" name="cancel"/>
+                                                <Icon color="red" name="times circle"/>
                                                 { t("views:components.overview.widgets.accountStatus." +
                                                     "inCompleteFields") }
                                             </div>
@@ -180,7 +184,7 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
 
     return (
         <div className="widget account-status">
-            <div className="shield">
+            <div className="status-shield-container">
                 <ThemeIcon icon={ resolveStatusShield() } size="auto" transparent/>
             </div>
             <div className="description">
@@ -219,8 +223,8 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                         && profileCompletion.required.completedCount)
                                         ? (
                                             <li
-                                                className={ `progress-item ${ getFiledCompletionStatus(
-                                                    profileCompletion.required) }` }
+                                                className={ `progress-item ${ getFieldCompletionStatus(
+                                                    profileCompletion.required, false) }` }
                                             >
                                                 {
                                                     t("views:components.overview.widgets.accountStatus" +
@@ -242,8 +246,8 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                         && profileCompletion.optional.completedCount)
                                         ? (
                                             <li
-                                                className={ `progress-item ${ getFiledCompletionStatus(
-                                                    profileCompletion.optional) }` }
+                                                className={ `progress-item ${ getFieldCompletionStatus(
+                                                    profileCompletion.optional, true) }` }
                                             >
                                                 {
                                                     t("views:components.overview.widgets.accountStatus" +
