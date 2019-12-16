@@ -14,6 +14,19 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ */
+
+/*
+ * Shell script for Jenkins (Post script in the build pipeline):
+ *
+ * #!/usr/bin/env bash
+ * npm i
+ *
+ * # Update package version to parent pom version
+ * npm run update-version -- jenkins=true
+ *
+ * git commit -m "[WSO2 Release] [Jenkins ${BUILD_DISPLAY_NAME}] 
+                    [Release ${POM_VERSION/-SNAPSHOT/}] update package versions"
  *
  */
 
@@ -24,6 +37,9 @@ const { execSync } = require('child_process');
 
 const packageJson =  path.join(__dirname, "..", "package.json");
 const pomXml = path.join(__dirname, "..", "pom.xml");
+const workingDir = path.join(__dirname, "..");
+
+const git = require('simple-git/promise')(workingDir);
 
 const getProjectVersion = function() {
     const fileContent = fs.readFileSync(pomXml);
@@ -35,10 +51,47 @@ const getProjectVersion = function() {
 let packageJsonContent = require(packageJson);
 packageJsonContent.version = getProjectVersion();
 
+
+/**
+ * Update package, package-lock, lerna json files
+ */
 fs.writeFileSync(packageJson, JSON.stringify(packageJsonContent, null, 4)+"\n");
 
-execSync("npx lerna version " + getProjectVersion() + " --yes --no-git-tag-version",
+execSync("npx lerna version " + getProjectVersion() + 
+         " --yes --no-git-tag-version --force-publish && npm i",
     { cwd: path.join(__dirname, "..") }
 );
 
-console.log("update packages version to " + getProjectVersion());
+console.log("lerna info update packages version to " + getProjectVersion());
+
+
+/**
+ * Collect args
+ */
+const processArgs = process.argv.slice(2);
+let args = {};
+
+processArgs.map((arg, index) => {
+    const argSplit = arg.split("=");
+    args[argSplit[0]] = argSplit[1];
+});
+
+const packageFiles = ["package.json", "package-lock.json", "lerna.json"]
+
+/**
+ * Stage changed files
+ */
+if (args.jenkins){
+    console.log("stage version updated files");
+    
+    git.status().then((status) => {
+        status.files.map((file) => {
+            const filePath = file.path;
+            const fileName = filePath.split("/").slice(-1)[0];
+            
+            if(packageFiles.includes(fileName)) {
+                git.add(filePath);
+            }
+        });
+    });
+}
