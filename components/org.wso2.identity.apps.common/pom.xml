@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps</artifactId>
-        <version>0.1.144-SNAPSHOT</version>
+        <version>0.1.145-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -63,6 +63,11 @@
             <groupId>org.wso2.carbon.identity.inbound.auth.oauth2</groupId>
             <artifactId>org.wso2.carbon.identity.oauth.common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.commons</groupId>
+            <artifactId>org.wso2.carbon.tenant.common</artifactId>
+            <version>${carbon.commons.version}</version>
+        </dependency>
     </dependencies>
 
     <properties>
@@ -84,6 +89,7 @@
             org.wso2.carbon.utils.multitenancy.*; version="${carbon.kernel.imp.pkg.version.range}",
             org.wso2.carbon.registry.core.*;
             version="${carbon.kernel.registry.imp.pkg.version.range}",
+            org.wso2.carbon.stratos.common.*; version="${carbon.commons.imp.pkg.version.range}",
 
             org.wso2.carbon.identity.oauth.*; version="${carbon.identity.oauth.imp.pkg.version.range}",
             org.wso2.carbon.identity.base.*; version="${carbon.identity.framework.imp.pkg.version.range}",

@@ -246,12 +246,12 @@
                                     </div>
                                 <% } else { %>
                                     <div class="field">
-                                        <button class="ui labeled icon button fluid" 
+                                        <button class="ui icon button fluid" 
                                             onclick="handleNoDomain(this,
                                                 '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
                                                 '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
                                             id="icon-<%=iconId%>"
-                                            title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlAttribute(idpName)%>"/>">
+                                            title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlAttribute(idpName)%>">
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <strong><%=Encode.forHtmlContent(idpName)%></strong>
                                         </button>
                                     </div>

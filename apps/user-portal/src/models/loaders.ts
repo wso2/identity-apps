@@ -16,6 +16,9 @@
  * under the License.
  */
 
+ /**
+  * Model of the Loaders state
+  */
 export interface LoadersInterface {
     isProfileInfoLoading: boolean;
     isProfileSchemaLoading: boolean;

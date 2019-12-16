@@ -794,29 +794,24 @@ export const views: Views = {
         },
         profile: {
             fields: {
-                email: {
-                    default: "Add email",
-                    label: "Email"
-                },
+                addresses_home: "Home address",
+                addresses_work: "Work address",
+                emails: "Email",
+                emails_home: "Home email",
+                emails_other: "Other email",
+                emails_work: "Work email",
                 generic: {
                     default: "Add {{fieldName}}"
                 },
-                mobile: {
-                    default: "Add mobile number",
-                    label: "Mobile number"
-                },
-                name: {
-                    default: "Add name",
-                    label: "Name"
-                },
-                organization: {
-                    default: "Add organization",
-                    label: "Organization"
-                },
-                username: {
-                    default: "Add username",
-                    label: "Username"
-                }
+                name_familyName: "Last name",
+                name_givenName: "First name",
+                phoneNumbers: "Phone number",
+                phoneNumbers_home: "Home phone number",
+                phoneNumbers_mobile: "Mobile number",
+                phoneNumbers_other: "Other phone number",
+                phoneNumbers_work: "Work phone number",
+                profileUrl: "URL",
+                userName: "Username"
             },
             forms: {
                 emailChangeForm: {
