@@ -1,4 +1,4 @@
-/**
+/*!
  * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -16,31 +16,12 @@
  * under the License.
  *
  */
- 
-/*******************************
-            Button
-*******************************/
 
-/*-------------------
-       Element
---------------------*/
+ /*******************************
+             Modal
+ *******************************/
 
-/* Text */
-@fontWeight: 500;
-
-/*-------------------
- Input add on button
---------------------*/
-
-@inputAddOnBorder: 1px solid rgba(34, 36, 38, 0.15);
-
-/*--------------------
- Modal primary button
-----------------------*/
-
-@positivePrimaryButtonColor: @positiveColor;
-@negativePrimaryButtonColor: @negativeColor;
-@warningPrimaryButtonColor: @warningColor;
-@infoPrimaryButtonColor: @infoColor;
-
-@modalPrimaryButtonFontColor: @white;
+@customModalContentAlignment: center;
+@customModalIconMarginTop: 0.5em;
+@customModalDescriptionMarginTop: 0em 1.5em 0em 1.5em;
+@customModalHeadingMarginTop: -1.25em 1.5em 0em 1.5em;

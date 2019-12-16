@@ -19,7 +19,7 @@
 import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Container, Message, Modal } from "semantic-ui-react";
+import { Message, Modal } from "semantic-ui-react";
 import { fetchConsentedApps, fetchConsentReceipt, revokeConsentedApp, updateConsentedClaims } from "../../api/consents";
 import * as ApplicationConstants from "../../constants/application-constants";
 import {
@@ -31,7 +31,7 @@ import {
     ServiceInterface
 } from "../../models";
 import { endUserSession } from "../../utils";
-import { SettingsSection } from "../shared";
+import { ModalComponent, SettingsSection } from "../shared";
 import { AppConsentList } from "./consents-list";
 
 /**
@@ -395,39 +395,33 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
             revokingConsent.spDisplayName);
 
         return (
-            <Modal
-                size="mini"
-                className="link-button"
+            <ModalComponent
+                primaryAction={ t("common:revoke") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ handleConsentRevokeModalClose }
+                onPrimaryActionClick={ () => revokeAppConsent(revokingConsent) }
                 open={ isConsentRevokeModalVisible }
                 onClose={ handleConsentRevokeModalClose }
-                dimmer="blurring"
+                type="negative"
+                header={
+                    t("views:components.consentManagement.modals.consentRevokeModal.heading",
+                        { appName: revokingConsent.spDisplayName })
+                }
+                content={ t("views:components.consentManagement.modals.consentRevokeModal.message") }
             >
                 <Modal.Content>
-                    <Container>
-                        <h3>{ t("views:components.consentManagement.modals.consentRevokeModal.heading") }</h3>
-                        {
-                            (isUserPortal === 0)
-                                ? (
-                                    <Message warning>
-                                        <p>{ t("views:components.consentManagement.modals." +
-                                            "consentRevokeModal.warning") }</p>
-                                    </Message>
-                                )
-                                : null
-                        }
-                    </Container>
-                    <br/>
-                    <p>{ t("views:components.consentManagement.modals.consentRevokeModal.message") }</p>
+                    {
+                        (isUserPortal === 0)
+                            ? (
+                                <Message warning>
+                                    <p>{ t("views:components.consentManagement.modals." +
+                                        "consentRevokeModal.warning") }</p>
+                                </Message>
+                            )
+                            : null
+                    }
                 </Modal.Content>
-                <Modal.Actions>
-                    <Button className="link-button" onClick={ handleConsentRevokeModalClose }>
-                        { t("common:cancel") }
-                    </Button>
-                    <Button primary onClick={ () => revokeAppConsent(revokingConsent) }>
-                        { t("common:revoke") }
-                    </Button>
-                </Modal.Actions>
-            </Modal>
+            </ModalComponent>
         );
     };
 
