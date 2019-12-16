@@ -43,16 +43,20 @@
             }
             .user-dropdown-trigger {
                 .username {
+                    min-width: 100px;
                     display: inline-block;
                     margin-right: 0.7em;
+                    text-align: right;
                 }
             }
             .header {
                 .name {
                     font-weight: bold;
+                    min-width: 100px;
                 }
                 .email {
                     color: @nobel;
+                    min-width: 100px;
                 }
             }
             .linked-accounts-list {

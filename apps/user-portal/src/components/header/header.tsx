@@ -21,8 +21,7 @@ import React, { SyntheticEvent, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import Skeleton from "react-skeleton-loader";
-import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Responsive } from "semantic-ui-react";
+import { Button, Container, Divider, Dropdown, Icon, Item, Menu, Placeholder, PlaceholderLine, Responsive } from "semantic-ui-react";
 import { getGravatarImage, switchAccount } from "../../api";
 import { resolveUserDisplayName, resolveUsername } from "../../helpers";
 import { AlertLevels, AuthStateInterface, LinkedAccountInterface } from "../../models";
@@ -58,8 +57,17 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     }, []);
 
     const trigger = (
+
         <span className="user-dropdown-trigger">
-            <div className="username">{ resolveUserDisplayName(profileDetails) }</div>
+            <div className="username">{
+                profileInfoLoader
+                ? (
+                    <Placeholder>
+                        <Placeholder.Line />
+                    </Placeholder>
+                )
+                : resolveUserDisplayName(profileDetails)
+            }</div>
             <UserAvatar authState={ profileDetails } size="mini" />
         </span >
 
@@ -68,7 +76,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     /**
      * Stops the dropdown from closing on click.
      *
-     * @param {React.SyntheticEvent<HTMLElement>} e - Click event.
+     * @param { React.SyntheticEvent<HTMLElement> } e - Click event.
      */
     const handleUserDropdownClick = (e: SyntheticEvent<HTMLElement>) => {
         e.stopPropagation();
@@ -77,7 +85,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     /**
      * Handles the account switch click event.
      *
-     * @param {LinkedAccountInterface} account - Target account.
+     * @param { LinkedAccountInterface } account - Target account.
      */
     const handleLinkedAccountSwitch = (account: LinkedAccountInterface) => {
         switchAccount(account)
@@ -131,115 +139,117 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                 <Menu.Item as={ Link } to={ APP_HOME_PATH } header>
                     <Title style={ { marginTop: 0 } } />
                 </Menu.Item>
-                { profileInfoLoader
-                    ? (
-                        <Menu.Item position="right">
-                            <Skeleton height="10px" width="150px" />
-                            <Skeleton height="33px" width="33px" widthRandomness={ 0 } borderRadius="50%" />
-                        </Menu.Item>
-                    )
-                    : (
-                        <Menu.Menu position="right">
+                { (
+                    <Menu.Menu position="right">
 
-                            <Dropdown
-                                item
-                                trigger={ trigger }
-                                floating
-                                icon={ null }
-                                className="user-dropdown"
-                            >
-                                <Dropdown.Menu onClick={ handleUserDropdownClick }>
-                                    <Item.Group className="authenticated-user" unstackable>
-                                        <Item
-                                            className="header"
-                                            key={ `logged-in-user-${profileDetails.profileInfo.userName}` }
-                                        >
-                                            <UserAvatar authState={ profileDetails } size="tiny" />
-                                            <Item.Content verticalAlign="middle">
-                                                <Item.Description>
-                                                    <div className="name">
-                                                        { resolveUserDisplayName(profileDetails) }
-                                                    </div>
-                                                    { (profileDetails.profileInfo.emails !== undefined
-                                                        && profileDetails.profileInfo.emails !== null) &&
-                                                        (
-                                                            <div className="email">
-                                                                { typeof profileDetails.profileInfo
+                        <Dropdown
+                            item
+                            trigger={ trigger }
+                            floating
+                            icon={ null }
+                            className="user-dropdown"
+                        >
+                            <Dropdown.Menu onClick={ handleUserDropdownClick }>
+                                <Item.Group className="authenticated-user" unstackable>
+                                    <Item
+                                        className="header"
+                                        key={ `logged-in-user-${profileDetails.profileInfo.userName}` }
+                                    >
+                                        { <UserAvatar authState={ profileDetails } size="tiny" /> }
+                                        <Item.Content verticalAlign="middle">
+                                            <Item.Description>
+
+                                                < div className="name">
+                                                    {
+                                                        profileInfoLoader
+                                                            ? <Placeholder><Placeholder.Line /></Placeholder>
+                                                            : resolveUserDisplayName(profileDetails)
+                                                    }
+                                                </div>
+
+                                                { (profileDetails.profileInfo.emails !== undefined
+                                                    && profileDetails.profileInfo.emails !== null) &&
+                                                    (
+                                                        <div className="email">
+                                                            { profileInfoLoader
+                                                                ? <Placeholder><Placeholder.Line /></Placeholder>
+                                                                : typeof profileDetails.profileInfo
                                                                     .emails[0] === "string"
                                                                     ? profileDetails.profileInfo.emails[0]
                                                                     : typeof profileDetails.profileInfo
                                                                         .emails[0] === "object"
                                                                         ? profileDetails.profileInfo.emails[0].value
-                                                                        : "" }
-                                                            </div>
-                                                        )
-                                                    }
-                                                    <Divider hidden />
-                                                    <Button
-                                                        as={ Link }
-                                                        to="/personal-info"
-                                                        size="tiny"
-                                                        primary
-                                                    >
-                                                        { t("common:personalInfo") }
-                                                    </Button>
-                                                </Item.Description>
-                                            </Item.Content>
-                                        </Item>
-                                    </Item.Group>
-                                    <Dropdown.Divider />
-                                    {
-                                        (profileDetails.profileInfo
-                                            && profileDetails.profileInfo.associations
-                                            && profileDetails.profileInfo.associations.length > 0)
-                                            ? (
-                                                <Item.Group className="linked-accounts-list" unstackable>
-                                                    {
-                                                        profileDetails.profileInfo.associations
-                                                            .map((association, index) => (
-                                                                <Item
-                                                                    className="linked-account"
-                                                                    key={ `${association.userId}-${index}` }
-                                                                    onClick={
-                                                                        () => handleLinkedAccountSwitch(association)
-                                                                    }
-                                                                >
-                                                                    <UserAvatar
-                                                                        bordered
-                                                                        avatar
-                                                                        size="little"
-                                                                        image={ getGravatarImage(association.email) }
-                                                                        name={ association.username }
-                                                                    />
-                                                                    <Item.Content verticalAlign="middle">
-                                                                        <Item.Description>
-                                                                            <div className="name">
-                                                                                {
-                                                                                    resolveUsername(
-                                                                                        association.username,
-                                                                                        association.userStoreDomain
-                                                                                    )
-                                                                                }
-                                                                            </div>
-                                                                            <div className="email">
-                                                                                { association.tenantDomain }
-                                                                            </div>
-                                                                        </Item.Description>
-                                                                    </Item.Content>
-                                                                </Item>
-                                                            ))
-                                                    }
-                                                </Item.Group>
-                                            )
-                                            : null
-                                    }
-                                    <Dropdown.Item className="action-panel">
-                                        <Link className="action-button" to="/logout">{ t("common:logout") }</Link>
-                                    </Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </Menu.Menu>
-                    ) }
+                                                                        : ""
+                                                            }
+                                                        </div>
+                                                    )
+                                                }
+                                                <Divider hidden />
+                                                <Button
+                                                    as={ Link }
+                                                    to="/personal-info"
+                                                    size="tiny"
+                                                    primary
+                                                >
+                                                    { t("common:personalInfo") }
+                                                </Button>
+                                            </Item.Description>
+                                        </Item.Content>
+                                    </Item>
+                                </Item.Group>
+                                <Dropdown.Divider />
+                                {
+                                    (profileDetails.profileInfo
+                                        && profileDetails.profileInfo.associations
+                                        && profileDetails.profileInfo.associations.length > 0)
+                                        ? (
+                                            <Item.Group className="linked-accounts-list" unstackable>
+                                                {
+                                                    profileDetails.profileInfo.associations
+                                                        .map((association, index) => (
+                                                            <Item
+                                                                className="linked-account"
+                                                                key={ `${association.userId}-${index}` }
+                                                                onClick={
+                                                                    () => handleLinkedAccountSwitch(association)
+                                                                }
+                                                            >
+                                                                <UserAvatar
+                                                                    bordered
+                                                                    avatar
+                                                                    size="little"
+                                                                    image={ getGravatarImage(association.email) }
+                                                                    name={ association.username }
+                                                                />
+                                                                <Item.Content verticalAlign="middle">
+                                                                    <Item.Description>
+                                                                        <div className="name">
+                                                                            {
+                                                                                resolveUsername(
+                                                                                    association.username,
+                                                                                    association.userStoreDomain
+                                                                                )
+                                                                            }
+                                                                        </div>
+                                                                        <div className="email">
+                                                                            { association.tenantDomain }
+                                                                        </div>
+                                                                    </Item.Description>
+                                                                </Item.Content>
+                                                            </Item>
+                                                        ))
+                                                }
+                                            </Item.Group>
+                                        )
+                                        : null
+                                }
+                                <Dropdown.Item className="action-panel">
+                                    <Link className="action-button" to="/logout">{ t("common:logout") }</Link>
+                                </Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Menu.Menu>
+                ) }
             </Container>
         </Menu>
     );
