@@ -519,7 +519,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                 )
                 : (
                     <Card fluid>
-                        <Card.Content header>
+                        <Card.Content>
                             { generateIcons() }
                             <Dropdown
                                 value={ activeIndexTab }
