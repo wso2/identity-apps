@@ -33,7 +33,7 @@ export const getProfileCompletion = (
 
     const completion: ProfileCompletion = emptyProfileCompletion();
 
-    for (const schema of flattenSchemas(profileSchemas)) {
+    for (const schema of flattenSchemas([ ...profileSchemas ])) {
         // Skip `Roles`
         if (schema.displayName === "Role") {
             continue;
@@ -97,20 +97,28 @@ export const getProfileCompletion = (
  * you can just iterate through them to display them.
  *
  * @param schemas - Array of Profile schemas
+ * @param parentSchemaName - Name of the parent attribute.
  */
-export const flattenSchemas = (schemas: ProfileSchema[]): ProfileSchema[] => {
+export const flattenSchemas = (schemas: ProfileSchema[], parentSchemaName?: string): ProfileSchema[] => {
 
     const tempSchemas: ProfileSchema[] = [];
 
     schemas.forEach((schema: ProfileSchema) => {
         if (schema.subAttributes && schema.subAttributes.length > 0) {
+
             /**
              * If the schema has sub attributes, then this function will be recursively called.
              * The returned attributes are pushed into the `tempSchemas` array.
              */
-            tempSchemas.push(...flattenSchemas(schema.subAttributes));
+            tempSchemas.push(...flattenSchemas(schema.subAttributes, schema.name));
         } else {
-            tempSchemas.push(schema);
+            const tempSchema = { ...schema };
+
+            if (parentSchemaName) {
+                tempSchema.name = parentSchemaName + "." + schema.name;
+            }
+
+            tempSchemas.push(tempSchema);
         }
     });
 
@@ -123,14 +131,19 @@ export const flattenSchemas = (schemas: ProfileSchema[]): ProfileSchema[] => {
  * @param profileInfo - Profile information.
  * @return {any[]}
  */
-export const flattenProfileInfo = (profileInfo: any) => {
+export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: string) => {
 
     const tempProfile = [];
 
-    for (const [ key, value ] of Object.entries(profileInfo)) {
+    for (let [ key, value ] of Object.entries(profileInfo)) {
         // Skip `associations`, `responseStatus` & `roles`.
         if (key === "associations" || key === "responseStatus") {
             continue;
+        }
+
+        // If `parentAttributeName` param is available, append it to the existing attribute key.
+        if (parentAttributeName) {
+            key = parentAttributeName + "." + key;
         }
 
         // Check if the value is an array and if it's a string array
@@ -147,7 +160,7 @@ export const flattenProfileInfo = (profileInfo: any) => {
                 }
             }
 
-            tempProfile.push(...flattenProfileInfo(value));
+            tempProfile.push(...flattenProfileInfo(value, key));
 
             continue;
         }
@@ -163,7 +176,7 @@ export const flattenProfileInfo = (profileInfo: any) => {
 
         // If the value is of type object, recursively call the function.
         if (typeof value === "object") {
-            tempProfile.push(...flattenProfileInfo(value));
+            tempProfile.push(...flattenProfileInfo(value, key));
 
             continue;
         }
@@ -177,7 +190,7 @@ export const flattenProfileInfo = (profileInfo: any) => {
 };
 
 /**
- * Typeguard to check if the passed in attribute is of type `MultiValue`.
+ * Type Guard to check if the passed in attribute is of type `MultiValue`.
  *
  * @param attribute - Profile attribute.
  * @return {attribute is MultiValue}
