@@ -63,3 +63,19 @@ export const ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER: string = "addLocalLinkedA
  * @default
  */
 export const GRAVATAR_URL: string = "https://www.gravatar.com";
+
+/**
+ * Warning Account status upper limit.
+ * @constant
+ * @type {number}
+ * @default
+ */
+export const WARNING_ACCOUNT_STATUS_UPPER_LIMIT: number = 70;
+
+/**
+ * Error Account status upper limit.
+ * @constant
+ * @type {number}
+ * @default
+ */
+export const ERROR_ACCOUNT_STATUS_UPPER_LIMIT: number = 40;

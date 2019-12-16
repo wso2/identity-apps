@@ -14,20 +14,18 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- */
-
-import { combineReducers } from "redux";
-import { authenticateReducer, globalReducer, profileReducer } from "./reducers";
-import { LoadersReducer } from "./reducers/loaders";
-
-/**
- * Combines all the reducers.
  *
- * @type {Reducer<any>} Root reducer to be used when creating the store.
  */
-export const reducers = combineReducers({
-    authenticationInformation: authenticateReducer,
-    global: globalReducer,
-    loaders: LoadersReducer,
-    profile: profileReducer
-});
+
+/*******************************************
+      Profile Status Progress Variation
+*******************************************/
+
+.ui.progress {
+    &.account-status-progress {
+        .label {
+            text-align: left;
+            padding-top: 4px;
+        }
+    }
+}

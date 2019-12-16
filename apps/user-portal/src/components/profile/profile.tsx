@@ -28,6 +28,7 @@ import * as UIConstants from "../../constants/ui-constants";
 import { AlertInterface, AlertLevels, AuthStateInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation } from "../../store/actions";
+import { flattenSchemas } from "../../utils";
 import { EditSection, SettingsSection, UserAvatar } from "../shared";
 
 /**
@@ -53,33 +54,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const profileInfoLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
-
-    /**
-     * This function extracts the sub attributes from the schemas and appends them to the main schema iterable.
-     * The returned iterable will have all the schema attributes in a flat structure so that
-     * you can just iterate through them to display them.
-     * @param schemas
-     */
-    const flattenSchemas = (schemas: ProfileSchema[], parentSchemaName?: string): ProfileSchema[] => {
-        const tempSchemas: ProfileSchema[] = [];
-        schemas.forEach((schema: ProfileSchema) => {
-            if (schema.subAttributes && schema.subAttributes.length > 0) {
-
-                /**
-                 * If the schema has sub attributes, then this function will be recursively called.
-                 * The returned attributes are pushed into the `tempSchemas` array.
-                 */
-                tempSchemas.push(...flattenSchemas(schema.subAttributes, schema.name));
-            } else {
-                const tempSchema = { ...schema };
-                if (parentSchemaName) {
-                    tempSchema.name = parentSchemaName + "." + schema.name;
-                }
-                tempSchemas.push(tempSchema);
-            }
-        });
-        return tempSchemas;
-    };
 
     /**
      * dispatch getProfileInformation action if the profileDetails object is empty
@@ -191,7 +165,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 });
 
                 // Re-fetch the profile information
-                dispatch(getProfileInformation());
+                dispatch(getProfileInformation(true));
             }
         });
 
@@ -345,7 +319,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             )
                                             : profileInfo.get(schema.name)
                                             || (
-                                                <a className="placeholder-text" onClick={ () => { showFormEditView(schema.name); } }>
+                                                <a
+                                                    className="placeholder-text"
+                                                    onClick={ () => { showFormEditView(schema.name); } }
+                                                >
                                                     { t("views:components.profile.forms.generic.inputs.placeholder",
                                                         {
                                                             fieldName
@@ -367,8 +344,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         >
                             <List.Content floated="right">
                                 { schema.mutability !== "READ_ONLY"
-                                    && schema.name !== "userName"
-                                    && !isEmpty(profileInfo.get(schema.name))
+                                && schema.name !== "userName"
+                                && !isEmpty(profileInfo.get(schema.name))
                                     ? (
                                         < Popup
                                             trigger={
@@ -427,8 +404,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         gravatarInfoPopoverText={ (
                             <Trans i18nKey="views:components.userAvatar.infoPopover">
                                 This image has been retrieved from
-                            <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener">Gravatar</a> service.
-                        </Trans>
+                                <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener">
+                                    Gravatar
+                                </a> service.
+                            </Trans>
                         ) }
                     />
                 ) }

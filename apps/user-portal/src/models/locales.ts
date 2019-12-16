@@ -379,12 +379,13 @@ export interface Views {
                     header: string;
                 };
                 accountStatus: {
-                    header: string;
-                    list: {
-                        0: string;
-                        1: string;
-                        2: string;
-                    };
+                    complete: string;
+                    completedFields: string;
+                    completionPercentage: string;
+                    inComplete: string;
+                    inCompleteFields: string;
+                    mandatoryFieldsCompletion: string;
+                    optionalFieldsCompletion: string;
                 };
                 consentManagement: {
                     actionTitles: {

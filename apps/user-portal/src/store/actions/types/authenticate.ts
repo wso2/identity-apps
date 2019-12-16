@@ -51,19 +51,12 @@ const SET_PROFILE_INFO = "SET_PROFILE_INFO";
 const SET_SCHEMAS = "SET_SCHEMAS";
 
 /**
- * Action type to set the associated accounts.
- * @type {string}
- */
-const SET_ASSOCIATED_ACCOUNTS = "SET_ASSOCIATED_ACCOUNTS";
-
-/**
  * Export action types
  *
  * @type {object}
  */
 export const authenticateActionTypes = {
     RESET_AUTHENTICATION,
-    SET_ASSOCIATED_ACCOUNTS,
     SET_PROFILE_INFO,
     SET_SCHEMAS,
     SET_SIGN_IN,

@@ -47,7 +47,6 @@ export interface BasicProfileInterface {
     isSecurity?: boolean;
     userImage?: string;
     userName?: string;
-    associations?: LinkedAccountInterface[];
 }
 
 /**
@@ -99,8 +98,67 @@ export interface ProfileSchema {
     subAttributes?: ProfileSchema[];
 }
 
+/**
+ * Enum for profile completion statuses.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum ProfileCompletionStatus {
+    ERROR = "error",
+    WARNING = "warning",
+    SUCCESS = "success"
+}
+
+/**
+ * Profile completion interface.
+ */
+export interface ProfileCompletion {
+    optional: ProfileCompletionResult;
+    required: ProfileCompletionResult;
+    percentage: number;
+}
+
+/**
+ * Interface to handle individual profile status types.
+ */
+interface ProfileCompletionResult {
+    completedAttributes: string[];
+    completedCount: number;
+    incompleteAttributes: string[];
+    totalCount: number;
+}
+
+/**
+ * Interface for Profile resucer state.
+ */
+export interface ProfileReducerStateInterface {
+    linkedAccounts: LinkedAccountInterface[];
+    completion: ProfileCompletion;
+}
+
+/**
+ * Empty profile completion object.
+ *
+ * @return {ProfileCompletion}
+ */
+export const emptyProfileCompletion = (): ProfileCompletion => ({
+    optional: {
+        completedAttributes: [],
+        completedCount: 0,
+        incompleteAttributes: [],
+        totalCount: 0
+    },
+    percentage: 0,
+    required: {
+        completedAttributes: [],
+        completedCount: 0,
+        incompleteAttributes: [],
+        totalCount: 0
+    },
+});
+
 export const createEmptyProfile = (): BasicProfileInterface => ({
-    associations: [],
     email: "",
     emails: [],
     isSecurity: false,
