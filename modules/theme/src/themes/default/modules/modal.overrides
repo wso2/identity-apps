@@ -38,20 +38,19 @@
     position: relative;
     width:150px;
     margin-bottom: -25px !important;
-}
 
-.green-stroke {
-    stroke:#7CB342;
-}
+    .positive-stroke {
+        stroke:#7CB342;
+    }
 
-.red-stroke {
-    stroke: #FF6245;
-}
+    .negative-stroke {
+        stroke: #FF6245;
+    }
 
-.yellow-stroke {
-    stroke: #FFC107;
+    .warning-stroke {
+        stroke: #FFC107;
+    }
 }
-
 
 .circular circle.path {
     stroke-dasharray: 330;
@@ -61,18 +60,18 @@
     animation: 0.7s draw-circle ease-out;
 }
 
-/*------- Checkmark ---------*/
-.checkmark{
-	stroke-width: 6.25;
+/*------- Positive Icon ---------*/
+.positive-icon {
+    stroke-width: 6.25;
     stroke-linecap: round;
-	position:absolute;
+    position:absolute;
     top: 56px;
     left: 49px;
     width: 52px;
     height: 40px;
 }
 
-.checkmark path {
+.positive-icon path {
     animation: 1s draw-check ease-out;
 }
 
@@ -113,9 +112,9 @@
     }
 }
 
-/*---------- Cross ----------*/
+/*---------- Negative Icon ----------*/
 
-.cross {
+.negative-icon {
     stroke-width:6.25;
     stroke-linecap: round;
     position: absolute;
@@ -125,11 +124,11 @@
     height: 40px;
 }
 
-.cross .first-line {
+.negative-icon .first-line {
     animation: 0.7s draw-first-line ease-out;
 }
 
-.cross .second-line {
+.negative-icon .second-line {
     animation: 0.7s draw-second-line ease-out;
 }
 
@@ -167,7 +166,9 @@
     }
 }
 
-.alert-sign {
+/*---------- Warning Icon ----------*/
+
+.warning-icon {
     stroke-width:6.25;
     stroke-linecap: round;
     position: absolute;
@@ -178,12 +179,12 @@
     animation: 0.5s alert-sign-bounce cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.alert-sign .dot {
+.warning-icon .dot {
     stroke:none;
     fill: #FFC107;
 }
 
-@keyframes alert-sign-bounce {
+@keyframes warning-icon-bounce {
     0% {
         transform: scale(0);
         opacity: 0;

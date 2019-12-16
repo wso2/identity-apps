@@ -45,7 +45,7 @@ export const ModalComponent = (props: ModalComponentProps) => {
         if (type === "positive") {
             return (
                 <div className="svg-box">
-                    <svg className="circular green-stroke">
+                    <svg className="circular positive-stroke">
                         <circle
                             className="path"
                             cx="75"
@@ -56,10 +56,10 @@ export const ModalComponent = (props: ModalComponentProps) => {
                             stroke-miterlimit="10"
                         />
                     </svg>
-                    <svg className="checkmark green-stroke">
+                    <svg className="positive-icon positive-stroke">
                         <g transform="matrix(0.79961,8.65821e-32,8.39584e-32,0.79961,-489.57,-205.679)">
                             <path
-                                className="checkmark__check"
+                                className="positive-icon__check"
                                 fill="none"
                                 d="M616.306,283.025L634.087,300.805L673.361,261.53"
                             />
@@ -70,7 +70,7 @@ export const ModalComponent = (props: ModalComponentProps) => {
         } else if (type === "negative") {
             return (
                 <div className="svg-box">
-                    <svg className="circular red-stroke">
+                    <svg className="circular negative-stroke">
                         <circle
                             className="path"
                             cx="75"
@@ -81,7 +81,7 @@ export const ModalComponent = (props: ModalComponentProps) => {
                             stroke-miterlimit="10"
                         />
                     </svg>
-                    <svg className="cross red-stroke">
+                    <svg className="negative-icon negative-stroke">
                         <g transform="matrix(0.79961,8.65821e-32,8.39584e-32,0.79961,-502.652,-204.518)">
                             <path className="first-line" d="M634.087,300.805L673.361,261.53" fill="none"/>
                         </g>
@@ -94,7 +94,7 @@ export const ModalComponent = (props: ModalComponentProps) => {
         } else if (type === "warning") {
             return (
                 <div className="svg-box">
-                    <svg className="circular yellow-stroke">
+                    <svg className="circular warning-stroke">
                         <circle
                             className="path"
                             cx="75"
@@ -105,7 +105,7 @@ export const ModalComponent = (props: ModalComponentProps) => {
                             stroke-miterlimit="10"
                         />
                     </svg>
-                    <svg className="alert-sign yellow-stroke">
+                    <svg className="warning-icon warning-stroke">
                         <g transform="matrix(1,0,0,1,-615.516,-257.346)">
                             <g transform="matrix(0.56541,-0.56541,0.56541,0.56541,93.7153,495.69)">
                                 <path className="line" d="M634.087,300.805L673.361,261.53" fill="none"/>
