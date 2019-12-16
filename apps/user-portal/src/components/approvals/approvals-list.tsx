@@ -18,7 +18,7 @@
 
 import React, { FunctionComponent, MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid, Icon, List, SemanticCOLORS } from "semantic-ui-react";
+import { Button, Grid, Icon, Label, List, SemanticCOLORS } from "semantic-ui-react";
 import { ApprovalStatus, ApprovalTaskSummary } from "../../models";
 import { ApprovalsEdit } from "./approvals-edit";
 
@@ -66,7 +66,12 @@ export const ApprovalsList: FunctionComponent<ApprovalsListProps> = (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column width={ 11 } className="first-column">
                                         <List.Content>
-                                            <List.Header>{ approval.presentationSubject }</List.Header>
+                                            <List.Header>
+                                                { approval.id + " " + approval.presentationSubject + " " }
+                                                <Label circular size="mini">
+                                                     { approval.presentationName }
+                                                </Label>
+                                            </List.Header>
                                             <List.Description>
                                                 <p style={ { fontSize: "11px" } }>
                                                     <Icon
