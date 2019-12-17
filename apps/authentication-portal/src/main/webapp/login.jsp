@@ -203,11 +203,13 @@
                         if ((hasLocalLoginOptions && localAuthenticatorNames.size() > 1) || (!hasLocalLoginOptions)
                                 || (hasLocalLoginOptions && idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1)) {
                     %>
+                    <% if (localAuthenticatorNames.contains(BASIC_AUTHENTICATOR) || 
+                            localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)) { %>
                     <div class="ui divider hidden"></div>
                     <div class="ui horizontal divider">
                         Or
                     </div>
-                    
+                    <% } %>
                     <div class="field">
                         <div class="ui vertical ui center aligned segment form" style="max-width: 300px; margin: 0 auto;">
                             <%
