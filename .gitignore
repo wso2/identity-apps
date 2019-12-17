@@ -92,6 +92,7 @@ typings/
 
 # project build folders & files
 .project
+.repository
 modules/theme/lib/
 modules/http/dist
 modules/validation/dist
