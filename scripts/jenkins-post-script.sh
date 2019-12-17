@@ -18,15 +18,9 @@
 
 #!/usr/bin/env bash
 
-# Update package version to parent pom version without "-SNAPSHOT" surfix
-npm run update-version
+npm i
 
-# Update git repository with packages version update
-git add package.json
-git add package-lock.json
-git add lerna.json
-git add */\package.json
-git add */\package-lock.json
+# Update package version to parent pom version
+npm run update-version -- jenkins=true
 
-git commit -m "[Release] Update package with next development version"
-git push origin version-build
+git commit -m "[WSO2 Release] [Jenkins ${BUILD_DISPLAY_NAME}] [Release ${POM_VERSION/-SNAPSHOT/}] update package versions"

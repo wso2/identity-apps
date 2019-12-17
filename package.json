@@ -96,6 +96,7 @@
         "react-i18next": "^10.11.5",
         "redux-devtools-extension": "^2.13.8",
         "rimraf": "^3.0.0",
+        "simple-git": "^1.129.0",
         "source-map-loader": "^0.2.4",
         "style-loader": "^0.23.1",
         "ts-jest": "^24.1.0",
