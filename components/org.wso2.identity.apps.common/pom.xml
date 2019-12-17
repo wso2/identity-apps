@@ -68,6 +68,12 @@
             <artifactId>org.wso2.carbon.tenant.common</artifactId>
             <version>${carbon.commons.version}</version>
         </dependency>
+        <!-- To fix travis build -->
+        <dependency>
+            <groupId>xalan</groupId>
+            <artifactId>xalan</artifactId>
+            <version>2.7.2</version>
+        </dependency>
     </dependencies>
 
     <properties>
