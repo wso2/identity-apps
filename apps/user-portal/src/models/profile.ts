@@ -123,10 +123,18 @@ export interface ProfileCompletion {
  * Interface to handle individual profile status types.
  */
 interface ProfileCompletionResult {
-    completedAttributes: string[];
+    completedAttributes: ProfileAttribute[];
     completedCount: number;
-    incompleteAttributes: string[];
+    incompleteAttributes: ProfileAttribute[];
     totalCount: number;
+}
+
+/**
+ * Interface to map the `completed` or `incomplete` attributes.
+ */
+export interface ProfileAttribute {
+    displayName: string;
+    name: string;
 }
 
 /**

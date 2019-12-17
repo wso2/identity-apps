@@ -142,7 +142,13 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                                 {
                                                     attributes.completedAttributes
                                                         .map((attr, index) => (
-                                                            <li key={ index }>{ attr }</li>
+                                                            <li key={ index }>
+                                                                {
+                                                                    t("views:components.profile.fields."
+                                                                        + attr.name.replace(".", "_"),
+                                                                        { defaultValue: attr.displayName })
+                                                                }
+                                                            </li>
                                                         ))
                                                 }
                                             </ul>
@@ -166,7 +172,13 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                                 {
                                                     attributes.incompleteAttributes
                                                         .map((attr, index) => (
-                                                            <li key={ index }>{ attr }</li>
+                                                            <li key={ index }>
+                                                                {
+                                                                    t("views:components.profile.fields."
+                                                                        + attr.name.replace(".", "_"),
+                                                                        { defaultValue: attr.displayName })
+                                                                }
+                                                            </li>
                                                         ))
                                                 }
                                             </ul>

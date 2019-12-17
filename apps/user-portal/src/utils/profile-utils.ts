@@ -17,7 +17,14 @@
  *
  */
 
-import { BasicProfileInterface, emptyProfileCompletion, MultiValue, ProfileCompletion, ProfileSchema } from "../models";
+import {
+    BasicProfileInterface,
+    emptyProfileCompletion,
+    MultiValue,
+    ProfileAttribute,
+    ProfileCompletion,
+    ProfileSchema
+} from "../models";
 import { store } from "../store";
 import { setProfileCompletion } from "../store/actions";
 
@@ -39,6 +46,12 @@ export const getProfileCompletion = (
             continue;
         }
 
+        // Attribute to be stored as `completed` or `incomplete` attribute.
+        const attribute: ProfileAttribute = {
+            displayName: schema.displayName,
+            name: schema.name
+        };
+
         let isMapped: boolean = false;
 
         if (schema.required) {
@@ -53,16 +66,16 @@ export const getProfileCompletion = (
                     if (schema.required) {
                         if (value) {
                             completion.required.completedCount++;
-                            completion.required.completedAttributes.push(schema.displayName);
+                            completion.required.completedAttributes.push(attribute);
                         } else {
-                            completion.required.incompleteAttributes.push(schema.displayName);
+                            completion.required.incompleteAttributes.push(attribute);
                         }
                     } else {
                         if (value) {
                             completion.optional.completedCount++;
-                            completion.optional.completedAttributes.push(schema.displayName);
+                            completion.optional.completedAttributes.push(attribute);
                         } else {
-                            completion.optional.incompleteAttributes.push(schema.displayName);
+                            completion.optional.incompleteAttributes.push(attribute);
                         }
                     }
 
@@ -74,9 +87,9 @@ export const getProfileCompletion = (
         // If the schema couldn't be mapped, add it to in-completed list.
         if (!isMapped) {
             if (schema.required) {
-                completion.required.incompleteAttributes.push(schema.displayName);
+                completion.required.incompleteAttributes.push(attribute);
             } else {
-                completion.optional.incompleteAttributes.push(schema.displayName);
+                completion.optional.incompleteAttributes.push(attribute);
             }
         }
     }
