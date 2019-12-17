@@ -93,5 +93,7 @@ if (args.jenkins){
                 git.add(filePath);
             }
         });
+
+        git.clean("f");
     });
 }
