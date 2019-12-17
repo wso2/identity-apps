@@ -41,9 +41,6 @@ export const getMetaData = (): Promise<any> => {
             "Content-Type": "application/x-www-form-urlencoded"
         },
         method: HttpMethods.GET,
-        params: {
-            username: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME)
-        },
         url: ServiceResourcesEndpoint.fidoMetaData
     };
 
@@ -94,8 +91,8 @@ export const startFidoFlow = (): Promise<any> => {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
         },
-        method: HttpMethods.GET,
-        params: { appId: window.location.origin },
+        method: HttpMethods.POST,
+        data: { appId: window.location.origin },
         url: ServiceResourcesEndpoint.fidoStart
     };
 
