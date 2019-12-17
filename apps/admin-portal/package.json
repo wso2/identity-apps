@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/admin-portal",
-    "version": "0.1.155",
+    "version": "0.1.156",
     "description": "WSO2 Identity Server Admin Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -20,8 +20,8 @@
         "clean": "rm -rf node_modules build npm"
     },
     "dependencies": {
-        "@wso2is/authentication": "^0.1.155",
-        "@wso2is/theme": "^0.1.155"
+        "@wso2is/authentication": "^0.1.156",
+        "@wso2is/theme": "^0.1.156"
     },
     "devDependencies": {
         "run-script-os": "^1.0.7"
