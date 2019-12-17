@@ -82,7 +82,7 @@ const packageFiles = ["package.json", "package-lock.json", "lerna.json"]
  * Stage changed files
  */
 if (args.jenkins){
-    console.log("stage version updated files");
+    console.log("git info start staging version updated files");
     
     git.status().then((status) => {
         status.files.map((file) => {
@@ -91,9 +91,12 @@ if (args.jenkins){
             
             if(packageFiles.includes(fileName)) {
                 git.add(filePath);
+                console.log("git info stage " + filePath);
             }
         });
 
-        git.clean("f");
+        console.log("git info stage version updated file success");
+
+        git.clean("df");
     });
 }
