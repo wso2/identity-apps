@@ -58,7 +58,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     const { onSidePanelToggleClick, showSidePanelToggle } = props;
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const linkedAccounts: LinkedAccountInterface[] = useSelector((state: AppState) => state.profile.linkedAccounts);
-    const profileInfoLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
+    const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -74,7 +74,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
     const trigger = (
         <span className="user-dropdown-trigger">
             <div className="username">{
-                profileInfoLoader
+                isProfileInfoLoading
                     ? (
                         <Placeholder>
                             <Placeholder.Line/>
@@ -82,7 +82,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                     )
                     : resolveUserDisplayName(profileDetails)
             }</div>
-            <UserAvatar authState={ profileDetails } size="mini"/>
+            <UserAvatar isLoading={ isProfileInfoLoading } authState={ profileDetails } size="mini"/>
         </span>
     );
 
@@ -168,13 +168,16 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                         className="header"
                                         key={ `logged-in-user-${ profileDetails.profileInfo.userName }` }
                                     >
-                                        { <UserAvatar authState={ profileDetails } size="tiny"/> }
+                                        <UserAvatar
+                                            authState={ profileDetails }
+                                            isLoading={ isProfileInfoLoading }
+                                            size="tiny"
+                                        />
                                         <Item.Content verticalAlign="middle">
                                             <Item.Description>
-
                                                 < div className="name">
                                                     {
-                                                        profileInfoLoader
+                                                        isProfileInfoLoading
                                                             ? <Placeholder><Placeholder.Line/></Placeholder>
                                                             : resolveUserDisplayName(profileDetails)
                                                     }
@@ -185,7 +188,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                                         && profileDetails.profileInfo.emails !== null)
                                                     && (
                                                         <div className="email">
-                                                            { profileInfoLoader
+                                                            { isProfileInfoLoading
                                                                 ? <Placeholder><Placeholder.Line/></Placeholder>
                                                                 : typeof profileDetails.profileInfo
                                                                     .emails[ 0 ] === "string"

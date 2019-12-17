@@ -84,8 +84,6 @@ export const getProfileInformation = (updateProfileCompletion: boolean = false) 
     // Get the profile info
     getProfileInfo()
         .then((infoResponse) => {
-            dispatch(setProfileInfoLoader(false));
-
             if (infoResponse.responseStatus === 200) {
                 dispatch(
                     setProfileInfo({
@@ -148,6 +146,9 @@ export const getProfileInformation = (updateProfileCompletion: boolean = false) 
                     )
                 })
             );
+        })
+        .finally(() => {
+            dispatch(setProfileInfoLoader(false));
         });
 };
 

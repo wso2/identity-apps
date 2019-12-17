@@ -908,6 +908,11 @@ export const views: Views = {
                         message: "User profile updated successfully"
                     }
                 }
+            },
+            placeholders: {
+                SCIMDisabled: {
+                    heading: "This feature is not available for your account"
+                }
             }
         },
         profileExport: {

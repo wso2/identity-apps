@@ -910,6 +910,11 @@ export const views: Views = {
                         message: "පරිශීලක පැතිකඩ සාර්ථකව යාවත්කාලීන කරන ලදි"
                     }
                 }
+            },
+            placeholders: {
+                SCIMDisabled: {
+                    heading: "මෙම අංගය ඔබගේ ගිණුමට ලබා ගත නොහැක"
+                }
             }
         },
         profileExport: {

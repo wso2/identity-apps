@@ -141,8 +141,9 @@ export interface ProfileAttribute {
  * Interface for Profile resucer state.
  */
 export interface ProfileReducerStateInterface {
-    linkedAccounts: LinkedAccountInterface[];
     completion: ProfileCompletion;
+    isSCIMEnabled: boolean;
+    linkedAccounts: LinkedAccountInterface[];
 }
 
 /**

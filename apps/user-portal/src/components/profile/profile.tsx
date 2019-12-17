@@ -52,7 +52,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
-    const profileInfoLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
+    const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
+    const isSCIMEnabled: boolean = useSelector((state: AppState) => state.profile.isSCIMEnabled);
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
 
     /**
@@ -313,7 +314,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             <List.Content>
                                 <List.Description>
                                     {
-                                        profileInfoLoader || profileSchemaLoader
+                                        isProfileInfoLoading || profileSchemaLoader
                                             ? (
                                                 <Placeholder><Placeholder.Line /></Placeholder>
                                             )
@@ -411,6 +412,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         ) }
                     />
                 ) }
+            placeholder={
+                !isSCIMEnabled
+                    ? t("views:components.profile.placeholders.SCIMDisabled.heading")
+                    : null
+            }
         >
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 {
