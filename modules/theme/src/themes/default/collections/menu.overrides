@@ -212,7 +212,7 @@
 }
 
 // Fix for the unstackable list item images getting weird sizes on mobile.
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: @tabletBreakpoint) {
     .ui.menu.fixed {
         &.app-header {
             .user-dropdown {
