@@ -43,9 +43,7 @@
         margin-bottom: 3em;
 
         &.account-status {
-            display: flex;
-
-            & > .status-shield-container {
+            .status-shield-container {
                 padding-top: 15px;
 
                 .status-shield {
@@ -77,7 +75,7 @@
             }
 
             .description {
-                margin-left: 3em;
+                margin-left: 2em;
 
                 .status-header {
                     margin: 1.3em 0;
@@ -95,6 +93,30 @@
         &.account-security, &.consent-management {
             .header-section {
                 min-height: @overviewPageWidgetHeaderMinHeight;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: @tabletBreakpoint) {
+    .overview-page {
+        .widget {
+            &.account-status {
+                .description {
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: @largeMonitorBreakpoint) and (min-width: @computerBreakpoint) {
+    .overview-page {
+        .widget {
+            &.account-status {
+                .description {
+                    margin-left: 1em;
+                }
             }
         }
     }

@@ -23,7 +23,8 @@ import { LinkedAccountInterface, ProfileCompletion } from "../../../models";
 
 export enum ProfileActionTypes {
     SET_PROFILE_COMPLETION = "SET_PROFILE_COMPLETION",
-    SET_PROFILE_LINKED_ACCOUNTS = "SET_PROFILE_LINKED_ACCOUNTS"
+    SET_PROFILE_LINKED_ACCOUNTS = "SET_PROFILE_LINKED_ACCOUNTS",
+    TOGGLE_SCIM_ENABLED = "TOGGLE_SCIM_ENABLED"
 }
 
 /**
@@ -50,7 +51,16 @@ export interface SetProfileLinkedAccountsAction extends ProfileBaseAction {
 }
 
 /**
+ * Action interface to handle if SCIM is enabled.
+ */
+export interface ToggleSCIMEnabledAction extends ProfileBaseAction {
+    payload: boolean;
+    type: ProfileActionTypes.TOGGLE_SCIM_ENABLED;
+}
+
+/**
  * Export action interfaces.
  */
 export type ProfileActions = SetProfileCompletionAction
-    | SetProfileLinkedAccountsAction;
+    | SetProfileLinkedAccountsAction
+    | ToggleSCIMEnabledAction;

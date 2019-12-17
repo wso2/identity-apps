@@ -21,7 +21,11 @@ import { AxiosHttpClient } from "@wso2is/http";
 import axios from "axios";
 import { isEmpty } from "lodash";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
+import * as ApplicationConstants from "../constants/application-constants";
+import { history } from "../helpers";
 import { BasicProfileInterface, HttpMethods, ProfileSchema } from "../models";
+import { store } from "../store";
+import { toggleSCIMEnabled } from "../store/actions";
 
 /**
  * Get an axios instance.
@@ -45,8 +49,7 @@ export const getUserInfo = (): Promise<any> => {
         url: ServiceResourcesEndpoint.me
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient.request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error(`Failed get user info from: ${ServiceResourcesEndpoint.user}`));
@@ -54,7 +57,7 @@ export const getUserInfo = (): Promise<any> => {
             return Promise.resolve(response);
         })
         .catch((error) => {
-            return Promise.reject(`Failed to retrieve user information - ${error}`);
+            return Promise.reject(error);
         });
 };
 
@@ -75,8 +78,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
         url: ServiceResourcesEndpoint.me
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient.request(requestConfig)
         .then(async (response) => {
             let gravatar = "";
             let profileImage: string;
@@ -106,13 +108,27 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
                 profileUrl: response.data.profileUrl || "",
                 responseStatus: response.status || null,
                 roles: response.data.roles || [],
-                userImage: response.data.userImage || gravatar,
+                userImage: response.data.userImage || profileImage,
                 userName: response.data.userName || ""
             };
+
             return Promise.resolve(profileResponse);
         })
         .catch((error) => {
-            return Promise.reject(`Failed to retrieve user profile information - ${error}`);
+            // Check if the API responds with a `500` error, if it does,
+            // navigate the user to the login error page.
+            if (error.response
+                && error.response.data
+                && error.response.data.status
+                && error.response.data.status === "500") {
+
+                store.dispatch(toggleSCIMEnabled(false));
+
+                // Navigate to login error page.
+                history.push(ApplicationConstants.LOGIN_ERROR_PAGE_PATH);
+            }
+
+            return Promise.reject(error);
         });
 };
 
@@ -133,8 +149,7 @@ export const updateProfileInfo = (info: object): Promise<any> => {
         url: ServiceResourcesEndpoint.me
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient.request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
@@ -144,7 +159,7 @@ export const updateProfileInfo = (info: object): Promise<any> => {
             return Promise.resolve(response);
         })
         .catch((error) => {
-            return Promise.reject(`Failed to update the profile info - ${error}`);
+            return Promise.reject(error);
         });
 };
 
@@ -161,7 +176,7 @@ export const getGravatarImage = (email: string): Promise<string> => {
                 resolve(url.split("?")[0]);
             })
             .catch((error) => {
-                reject();
+                reject(error);
             });
     });
 };
@@ -181,8 +196,7 @@ export const getProfileSchemas = (): Promise<any> => {
         url: ServiceResourcesEndpoint.profileSchemas
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient.request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed get user schemas"));

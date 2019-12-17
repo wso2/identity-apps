@@ -31,10 +31,14 @@ export const resolveUserDisplayName = (state: AuthStateInterface): string => {
         const givenName = isEmpty(state.profileInfo.name.givenName) ? "" : state.profileInfo.name.givenName + " ";
         const familyName = isEmpty(state.profileInfo.name.familyName) ? "" : state.profileInfo.name.familyName;
         return givenName + familyName;
-    }
-    if (state.profileInfo.userName) {
+    } else if (state.profileInfo.userName) {
         return state.profileInfo.userName;
+    } else if (state.displayName) {
+        return state.displayName;
+    } else if (state.username) {
+        return state.username;
     }
+
     return null;
 };
 

@@ -25,6 +25,7 @@ import { ProfileActions, ProfileActionTypes } from "../actions/types/profile";
  */
 const initialState: ProfileReducerStateInterface = {
     completion: null,
+    isSCIMEnabled: true,
     linkedAccounts: []
 };
 
@@ -46,6 +47,11 @@ export const profileReducer = (state: ProfileReducerStateInterface = initialStat
             return {
                 ...state,
                 linkedAccounts: action.payload
+            };
+        case ProfileActionTypes.TOGGLE_SCIM_ENABLED:
+            return {
+                ...state,
+                isSCIMEnabled: action.payload
             };
         default:
             return state;

@@ -638,6 +638,11 @@ export interface Views {
                 getProfileInfo: Notification;
                 updateProfileInfo: Notification;
             };
+            placeholders: {
+                SCIMDisabled: {
+                    heading: string;
+                }
+            };
         };
         profileExport: {
             notifications: {

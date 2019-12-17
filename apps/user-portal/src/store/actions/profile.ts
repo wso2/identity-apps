@@ -20,7 +20,7 @@ import { getAssociations } from "../../api";
 import { i18n } from "../../configs/i18n";
 import { AlertLevels, LinkedAccountInterface, ProfileCompletion } from "../../models";
 import { addAlert } from "./global";
-import { ProfileActionTypes } from "./types/profile";
+import { ProfileActionTypes, ToggleSCIMEnabledAction } from "./types/profile";
 
 /**
  * Dispatches an action of type `SET_PROFILE_COMPLETION`.
@@ -36,6 +36,16 @@ export const setProfileCompletion = (completion: ProfileCompletion) => ({
 export const setProfileLinkedAccounts = (accounts: LinkedAccountInterface[]) => ({
     payload: accounts,
     type: ProfileActionTypes.SET_PROFILE_LINKED_ACCOUNTS
+});
+
+/**
+ * Action to handle if SCIM is enabled.
+ *
+ * @returns An action of type `TOGGLE_SCIM_ENABLED`
+ */
+export const toggleSCIMEnabled = (isEnabled: boolean): ToggleSCIMEnabledAction => ({
+    payload: isEnabled,
+    type: ProfileActionTypes.TOGGLE_SCIM_ENABLED
 });
 
 /**

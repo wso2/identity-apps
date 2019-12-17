@@ -44,3 +44,4 @@ Recent Application Card
 @recentApplicationCardDescMaxWidth: 160px;
 @recentApplicationCardHeaderColor: @darkTextColor;
 @recentApplicationCardDescColor: @mutedTextColor;
+@recentApplicationCardDescMinWidth: 20px;

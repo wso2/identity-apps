@@ -19,7 +19,7 @@
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider, Header, Icon, Popup, Progress } from "semantic-ui-react";
+import { Divider, Grid, Header, Icon, Popup, Progress } from "semantic-ui-react";
 import { AccountStatusShields } from "../../../configs";
 import * as UIConstants from "../../../constants/ui-constants";
 import { ProfileCompletion, ProfileCompletionStatus } from "../../../models";
@@ -142,7 +142,13 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                                 {
                                                     attributes.completedAttributes
                                                         .map((attr, index) => (
-                                                            <li key={ index }>{ attr }</li>
+                                                            <li key={ index }>
+                                                                {
+                                                                    t("views:components.profile.fields."
+                                                                        + attr.name.replace(".", "_"),
+                                                                        { defaultValue: attr.displayName })
+                                                                }
+                                                            </li>
                                                         ))
                                                 }
                                             </ul>
@@ -166,7 +172,13 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                                 {
                                                     attributes.incompleteAttributes
                                                         .map((attr, index) => (
-                                                            <li key={ index }>{ attr }</li>
+                                                            <li key={ index }>
+                                                                {
+                                                                    t("views:components.profile.fields."
+                                                                        + attr.name.replace(".", "_"),
+                                                                        { defaultValue: attr.displayName })
+                                                                }
+                                                            </li>
                                                         ))
                                                 }
                                             </ul>
@@ -182,92 +194,110 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
             : null
     );
 
+    /**
+     * Generates the profile completion pre=ogress bar and steps.
+     * @return {JSX.Element}
+     */
+    const generateCompletionProgress = (): JSX.Element => (
+        <ul className="vertical-step-progress">
+            {
+                (profileCompletion.required
+                    && profileCompletion.required.totalCount
+                    && profileCompletion.required.completedCount)
+                    ? (
+                        <li
+                            className={ `progress-item ${ getFieldCompletionStatus(
+                                profileCompletion.required, false) }` }
+                        >
+                            {
+                                t("views:components.overview.widgets.accountStatus" +
+                                    ".mandatoryFieldsCompletion",
+                                    {
+                                        completed: profileCompletion.required.completedCount,
+                                        total: profileCompletion.required.totalCount
+                                    })
+                            }
+                            { " " }
+                            { generatePopup(profileCompletion.required) }
+                        </li>
+                    )
+                    : null
+            }
+            {
+                (profileCompletion.optional
+                    && profileCompletion.optional.totalCount
+                    && profileCompletion.optional.completedCount)
+                    ? (
+                        <li
+                            className={ `progress-item ${ getFieldCompletionStatus(
+                                profileCompletion.optional, true) }` }
+                        >
+                            {
+                                t("views:components.overview.widgets.accountStatus" +
+                                    ".optionalFieldsCompletion",
+                                    {
+                                        completed: profileCompletion.optional.completedCount,
+                                        total: profileCompletion.optional.totalCount
+                                    })
+                            }
+                            { " " }
+                            { generatePopup(profileCompletion.optional) }
+                        </li>
+                    )
+                    : null
+            }
+        </ul>
+    );
+
     return (
         <div className="widget account-status">
-            <div className="status-shield-container">
-                <ThemeIcon icon={ resolveStatusShield() } size="auto" transparent/>
-            </div>
-            <div className="description">
-                <Header className="status-header" as="h3">
-                    {
-                        (getProfileCompletionPercentage() === 100)
-                            ? t("views:components.overview.widgets.accountStatus.complete")
-                            : t("views:components.overview.widgets.accountStatus.inComplete")
-                    }
-                </Header>
-                <Progress
-                    percent={ profileCompletion && profileCompletion.percentage ? profileCompletion.percentage : 0 }
-                    size="tiny"
-                    className="account-status-progress"
-                    success={ getProfileStatus() === ProfileCompletionStatus.SUCCESS }
-                    warning={ getProfileStatus() === ProfileCompletionStatus.WARNING }
-                    error={ getProfileStatus() === ProfileCompletionStatus.ERROR }
-                >
-                    {
-                        t("views:components.overview.widgets.accountStatus.completionPercentage",
+            <Grid>
+                <Grid.Row>
+                    <Grid.Column largeScreen={ 6 } computer={ 5 } tablet={ 5 } mobile={ 16 }>
+                        <div className="status-shield-container">
+                            <ThemeIcon icon={ resolveStatusShield() } size="auto" transparent/>
+                        </div>
+                    </Grid.Column>
+                    <Grid.Column largeScreen={ 10 } computer={ 11 } tablet={ 11 } mobile={ 16 }>
+                        <div className="description">
+                            <Header className="status-header" as="h3">
+                                {
+                                    (getProfileCompletionPercentage() === 100)
+                                        ? t("views:components.overview.widgets.accountStatus.complete")
+                                        : t("views:components.overview.widgets.accountStatus.inComplete")
+                                }
+                            </Header>
+                            <Progress
+                                percent={
+                                    (profileCompletion && profileCompletion.percentage)
+                                        ? profileCompletion.percentage
+                                        : 0
+                                }
+                                size="tiny"
+                                className="account-status-progress"
+                                success={ getProfileStatus() === ProfileCompletionStatus.SUCCESS }
+                                warning={ getProfileStatus() === ProfileCompletionStatus.WARNING }
+                                error={ getProfileStatus() === ProfileCompletionStatus.ERROR }
+                            >
+                                {
+                                    t("views:components.overview.widgets.accountStatus.completionPercentage",
+                                        {
+                                            percentage: profileCompletion && profileCompletion.percentage
+                                                ? profileCompletion.percentage
+                                                : 0
+                                        })
+                                }
+                            </Progress>
+                            <Divider hidden/>
                             {
-                                percentage: profileCompletion && profileCompletion.percentage
-                                    ? profileCompletion.percentage
-                                    : 0
-                            })
-                    }
-                </Progress>
-                <Divider hidden/>
-                {
-                    profileCompletion && (profileCompletion.required || profileCompletion.optional)
-                        ? (
-                            <ul className="vertical-step-progress">
-                                {
-                                    (profileCompletion.required
-                                        && profileCompletion.required.totalCount
-                                        && profileCompletion.required.completedCount)
-                                        ? (
-                                            <li
-                                                className={ `progress-item ${ getFieldCompletionStatus(
-                                                    profileCompletion.required, false) }` }
-                                            >
-                                                {
-                                                    t("views:components.overview.widgets.accountStatus" +
-                                                        ".mandatoryFieldsCompletion",
-                                                        {
-                                                            completed: profileCompletion.required.completedCount,
-                                                            total: profileCompletion.required.totalCount
-                                                        })
-                                                }
-                                                { " " }
-                                                { generatePopup(profileCompletion.required) }
-                                            </li>
-                                        )
-                                        : null
-                                }
-                                {
-                                    (profileCompletion.optional
-                                        && profileCompletion.optional.totalCount
-                                        && profileCompletion.optional.completedCount)
-                                        ? (
-                                            <li
-                                                className={ `progress-item ${ getFieldCompletionStatus(
-                                                    profileCompletion.optional, true) }` }
-                                            >
-                                                {
-                                                    t("views:components.overview.widgets.accountStatus" +
-                                                        ".optionalFieldsCompletion",
-                                                        {
-                                                            completed: profileCompletion.optional.completedCount,
-                                                            total: profileCompletion.optional.totalCount
-                                                        })
-                                                }
-                                                { " " }
-                                                { generatePopup(profileCompletion.optional) }
-                                            </li>
-                                        )
-                                        : null
-                                }
-                            </ul>
-                        )
-                        : null
-                }
-            </div>
+                                profileCompletion && (profileCompletion.required || profileCompletion.optional)
+                                    ? generateCompletionProgress()
+                                    : null
+                            }
+                        </div>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         </div>
     );
 };

@@ -17,7 +17,14 @@
  *
  */
 
-import { BasicProfileInterface, emptyProfileCompletion, MultiValue, ProfileCompletion, ProfileSchema } from "../models";
+import {
+    BasicProfileInterface,
+    emptyProfileCompletion,
+    MultiValue,
+    ProfileAttribute,
+    ProfileCompletion,
+    ProfileSchema
+} from "../models";
 import { store } from "../store";
 import { setProfileCompletion } from "../store/actions";
 
@@ -39,6 +46,12 @@ export const getProfileCompletion = (
             continue;
         }
 
+        // Attribute to be stored as `completed` or `incomplete` attribute.
+        const attribute: ProfileAttribute = {
+            displayName: schema.displayName,
+            name: schema.name
+        };
+
         let isMapped: boolean = false;
 
         if (schema.required) {
@@ -53,16 +66,16 @@ export const getProfileCompletion = (
                     if (schema.required) {
                         if (value) {
                             completion.required.completedCount++;
-                            completion.required.completedAttributes.push(schema.displayName);
+                            completion.required.completedAttributes.push(attribute);
                         } else {
-                            completion.required.incompleteAttributes.push(schema.displayName);
+                            completion.required.incompleteAttributes.push(attribute);
                         }
                     } else {
                         if (value) {
                             completion.optional.completedCount++;
-                            completion.optional.completedAttributes.push(schema.displayName);
+                            completion.optional.completedAttributes.push(attribute);
                         } else {
-                            completion.optional.incompleteAttributes.push(schema.displayName);
+                            completion.optional.incompleteAttributes.push(attribute);
                         }
                     }
 
@@ -74,9 +87,9 @@ export const getProfileCompletion = (
         // If the schema couldn't be mapped, add it to in-completed list.
         if (!isMapped) {
             if (schema.required) {
-                completion.required.incompleteAttributes.push(schema.displayName);
+                completion.required.incompleteAttributes.push(attribute);
             } else {
-                completion.optional.incompleteAttributes.push(schema.displayName);
+                completion.optional.incompleteAttributes.push(attribute);
             }
         }
     }
@@ -96,8 +109,9 @@ export const getProfileCompletion = (
  * The returned iterable will have all the schema attributes in a flat structure so that
  * you can just iterate through them to display them.
  *
- * @param schemas - Array of Profile schemas
- * @param parentSchemaName - Name of the parent attribute.
+ * @param {ProfileSchema[]} schemas - Array of Profile schemas
+ * @param {string} parentSchemaName - Name of the parent attribute.
+ * @return {ProfileSchema[]}
  */
 export const flattenSchemas = (schemas: ProfileSchema[], parentSchemaName?: string): ProfileSchema[] => {
 
@@ -129,6 +143,7 @@ export const flattenSchemas = (schemas: ProfileSchema[], parentSchemaName?: stri
  * Modifies the profile info object in to a flat level.
  *
  * @param profileInfo - Profile information.
+ * @param {string} parentAttributeName - Name of the parent attribute.
  * @return {any[]}
  */
 export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: string) => {
@@ -141,7 +156,8 @@ export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: strin
             continue;
         }
 
-        // If `parentAttributeName` param is available, append it to the existing attribute key.
+        // If `parentAttributeName` param is available,
+        // append it to the existing attribute key.
         if (parentAttributeName) {
             key = parentAttributeName + "." + key;
         }
@@ -167,8 +183,14 @@ export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: strin
 
         // Check if the value is of type `MultiValue`.
         if (isMultiValuedProfileAttribute(value)) {
+            // If `parentAttributeName` param is available,
+            // append it to the existing multi valued attribute key.
+            if (parentAttributeName) {
+                key = parentAttributeName + "." + value.type;
+            }
+
             tempProfile.push({
-                [ value.type ]: value.value
+                [ key ]: value.value
             });
 
             continue;

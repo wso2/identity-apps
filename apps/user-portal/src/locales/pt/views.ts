@@ -923,6 +923,11 @@ export const views: Views = {
                         message: "Perfil de usuário atualizado com sucesso"
                     }
                 }
+            },
+            placeholders: {
+                SCIMDisabled: {
+                    heading: "Este recurso não está disponível para sua conta."
+                }
             }
         },
         profileExport: {

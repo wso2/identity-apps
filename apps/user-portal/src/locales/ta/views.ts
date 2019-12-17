@@ -959,6 +959,11 @@ export const views: Views = {
                         message: "பயனர் சுயவிபரம் புதுப்பிக்கபட்டுவிட்டது"
                     }
                 }
+            },
+            placeholders: {
+                SCIMDisabled: {
+                    heading: "இந்த அம்சம் உங்கள் கணக்கிற்கு கிடைக்கவில்லை"
+                }
             }
         },
         profileExport: {

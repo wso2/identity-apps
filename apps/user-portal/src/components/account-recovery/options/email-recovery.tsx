@@ -119,7 +119,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                         description: t(
                             "views:components.accountRecovery.emailRecovery." +
                             "notifications.updateEmail.error.description",
-                            { description: error.response.data.details }
+                            { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(

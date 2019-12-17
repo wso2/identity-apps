@@ -73,6 +73,7 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                min-height: @applicationListItemDescMinWidth;
             }
             .tag {
                 margin: 0;
