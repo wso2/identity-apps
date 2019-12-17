@@ -98,7 +98,10 @@ if (args.jenkins){
 
             console.log("git success stage version updated files");
 
-            git.clean("df");
+            git.clean("dfx", (error) => {
+                console.log("git error failed clean: ");
+                console.log(error);
+             });
         }
     });
 }
