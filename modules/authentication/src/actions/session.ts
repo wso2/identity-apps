@@ -27,13 +27,18 @@ import {
     REQUEST_PARAMS,
     SCOPE,
     TOKEN_TYPE,
-    USERIMAGE,
     USERNAME
 } from "../constants";
 import { AuthenticatedUserInterface } from "../models/authenticated-user";
 import { SessionInterface } from "../models/session";
 import { TokenResponseInterface } from "../models/token-response";
 import { getAuthenticatedUser, sendRefreshTokenRequest } from "./sign-in";
+import { Semaphore } from "await-semaphore";
+
+/**
+ * Semaphore used for synchronizing the refresh token requests.
+ */
+let semaphore = new Semaphore(1);
 
 /**
  * Initialize authenticated user session.
@@ -133,23 +138,34 @@ export const getAccessToken = (): Promise<string> => {
     if (!accessToken || accessToken.trim().length === 0 || !expiresIn || expiresIn.length === 0 || !issuedAt
         || issuedAt.length === 0) {
         endAuthenticatedSession();
-        // TODO: logout.
-        Promise.reject(new Error("Invalid user session."));
+        return Promise.reject(new Error("Invalid user session."));
     }
 
-    const validityPeriod = (parseInt(issuedAt, 10) + parseInt(expiresIn, 10)) - Math.floor(Date.now() / 1000);
+    function getValidityPeriod() {
+        let currentExpiresIn = sessionStorage.getItem(ACCESS_TOKEN_EXPIRE_IN);
+        let currentIssuedAt = sessionStorage.getItem(ACCESS_TOKEN_ISSUED_AT);
+        return (parseInt(currentIssuedAt, 10) + parseInt(currentExpiresIn, 10)) - Math.floor(Date.now() / 1000);
+    }
+
+    let validityPeriod = getValidityPeriod();
     if (validityPeriod <= 300) {
 
-        const requestParams = JSON.parse(getSessionParameter(REQUEST_PARAMS));
-        return sendRefreshTokenRequest(requestParams, getSessionParameter(REFRESH_TOKEN))
-            .then((tokenResponse) => {
-                const authenticatedUser = getAuthenticatedUser(tokenResponse.idToken);
-                initUserSession(tokenResponse, authenticatedUser);
-                return Promise.resolve(tokenResponse.accessToken);
-            }).catch((error) => {
-                // TODO: logout.
-                return Promise.reject(error);
-            });
+        return semaphore.use(() => {
+            validityPeriod = getValidityPeriod();
+            if (validityPeriod <= 300) {
+                const requestParams = JSON.parse(getSessionParameter(REQUEST_PARAMS));
+                return sendRefreshTokenRequest(requestParams, getSessionParameter(REFRESH_TOKEN))
+                    .then((tokenResponse) => {
+                        const authenticatedUser = getAuthenticatedUser(tokenResponse.idToken);
+                        initUserSession(tokenResponse, authenticatedUser);
+                        return Promise.resolve(tokenResponse.accessToken);
+                    }).catch((error) => {
+                        return Promise.reject(error);
+                    })
+            } else {
+                return Promise.resolve(sessionStorage.getItem(ACCESS_TOKEN));
+            }
+        });
     } else {
         return Promise.resolve(accessToken);
     }
