@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { Popup } from "semantic-ui-react";
 import { ThirdPartyLogos } from "../../configs";
 import * as UIConstants from "../../constants/ui-constants";
@@ -45,15 +45,17 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
     const [ showPopup, setShowPopup ] = useState(false);
 
     // Check if the image is a promise, and resolve.
-    if (image instanceof Promise) {
-        image
-            .then((response) => {
-                setUserImage(response);
-            })
-            .catch(() => {
-                setUserImage(null);
-            });
-    }
+    useEffect(() => {
+        if (image instanceof Promise) {
+            image
+                .then((response) => {
+                    setUserImage(response);
+                })
+                .catch(() => {
+                    setUserImage(null);
+                });
+        }
+    }, [image]);
 
     /**
      * Resolves the top label image.

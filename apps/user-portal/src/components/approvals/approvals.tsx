@@ -18,7 +18,8 @@
 
 import React, { FunctionComponent, MouseEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Icon, Menu, SemanticCOLORS, Tab } from "semantic-ui-react";
+import { Card, Dropdown, Icon, Menu, Segment, SemanticCOLORS, Tab } from "semantic-ui-react";
+import { isUndefined } from "util";
 import { fetchPendingApprovalDetails, fetchPendingApprovals, updatePendingApprovalStatus } from "../../api";
 import * as UIConstants from "../../constants/ui-constants";
 import { AlertInterface, AlertLevels, ApprovalStatus, ApprovalTaskDetails } from "../../models";
@@ -41,42 +42,65 @@ interface ApprovalsProps {
 export const Approvals: FunctionComponent<ApprovalsProps> = (
     props: ApprovalsProps
 ): JSX.Element => {
-    const [ approvals, setApprovals ] = useState([]);
-    const [ approvalsListActiveIndexes, setApprovalsListActiveIndexes ] = useState([]);
-    const [ filterStatus, setFilterStatus ] =
+    const [approvals, setApprovals] = useState([]);
+    const [approvalsListActiveIndexes, setApprovalsListActiveIndexes] = useState([]);
+    const [filterStatus, setFilterStatus] =
         useState<ApprovalStatus.READY
             | ApprovalStatus.RESERVED
             | ApprovalStatus.COMPLETED
             | ApprovalStatus.ALL>(ApprovalStatus.READY);
-    const [ pagination, setPagination ] = useState({
-        [ ApprovalStatus.READY ]: false,
-        [ ApprovalStatus.RESERVED ]: false,
-        [ ApprovalStatus.COMPLETED ]: false,
-        [ ApprovalStatus.ALL ]: false
+    const [pagination, setPagination] = useState({
+        [ApprovalStatus.READY]: false,
+        [ApprovalStatus.RESERVED]: false,
+        [ApprovalStatus.COMPLETED]: false,
+        [ApprovalStatus.ALL]: false
     });
+    const [isMobile, setIsMobile] = useState(false);
+    const [activeIndexTab, setActiveIndexTab] = useState(0);
     const { onAlertFired } = props;
     const { t } = useTranslation();
+
+    /**
+     * Function that sets the `screenWidth` to be passed as a callback function into even listeners.
+     */
+    const updateScreenWidth = () => {
+        window.innerWidth <= 600 ? setIsMobile(true) : setIsMobile(false);
+    };
+
+    /**
+     * This adds an event listener on mount to listen to the change in screen width and sets the
+     * `isMobile` state. The event listener is removed when the component
+     * unmounts.
+     * This also sets the isMobile state on mount.
+     */
+    useEffect(() => {
+        window.innerWidth <= 600 ? setIsMobile(true) : setIsMobile(false);
+        window.addEventListener("resize", updateScreenWidth);
+        return () => {
+            window.removeEventListener("resize", updateScreenWidth);
+        };
+    }, []);
 
     /**
      * Updates the pending approvals list on change.
      */
     useEffect(() => {
         setApprovals(approvals);
-    }, [ approvals ]);
+    }, [approvals]);
 
     /**
      * Updates the approval list when the filter criteria changes.
      */
     useEffect(() => {
         getApprovals(false);
-    }, [ filterStatus ]);
+    }, [filterStatus]);
 
     /**
      * Updates the approvals list when the pagination buttons are being clicked.
      */
     useEffect(() => {
         getApprovals(false);
-    }, [ pagination ]);
+    }, [pagination]);
 
     /**
      * Fetches the list of pending approvals from the API.
@@ -85,7 +109,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
      */
     const getApprovals = (shallowUpdate: boolean = false): void => {
         fetchPendingApprovals(
-            pagination[ filterStatus ]
+            pagination[filterStatus]
                 ? 0
                 : UIConstants.SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT, 0, filterStatus
         )
@@ -95,8 +119,8 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                     return;
                 }
 
-                const approvalsFromState = [ ...approvals ];
-                const approvalsFromResponse = [ ...response ];
+                const approvalsFromState = [...approvals];
+                const approvalsFromResponse = [...response];
                 const filteredApprovals = [];
 
                 // Compare the approvals list in the state with the new response
@@ -146,8 +170,8 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
      * that are in the expanded state and updates the state.
      */
     const updateApprovalDetails = (): void => {
-        const indexes = [ ...approvalsListActiveIndexes ];
-        const approvalsClone = [ ...approvals ];
+        const indexes = [...approvalsListActiveIndexes];
+        const approvalsClone = [...approvals];
 
         indexes.forEach((index) => {
             fetchPendingApprovalDetails(index)
@@ -227,7 +251,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
      * @param {string} id
      */
     const removeApprovalsListIndex = (id: string): boolean => {
-        const indexes = [ ...approvalsListActiveIndexes ];
+        const indexes = [...approvalsListActiveIndexes];
 
         if (approvalsListActiveIndexes.includes(id)) {
             const removingIndex = approvalsListActiveIndexes.indexOf(id);
@@ -247,8 +271,8 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
      */
     const handleApprovalDetailClick = (e: MouseEvent<HTMLButtonElement>): void => {
         const id = e.currentTarget.id;
-        const indexes = [ ...approvalsListActiveIndexes ];
-        const approvalsClone = [ ...approvals ];
+        const indexes = [...approvalsListActiveIndexes];
+        const approvalsClone = [...approvals];
 
         // If the list item is already extended, remove it from the active indexes
         // array and update the active indexes state.
@@ -330,7 +354,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
     const handleShowMoreClick = (): void => {
         setPagination({
             ...pagination,
-            [ filterStatus ]: !pagination[ filterStatus ]
+            [filterStatus]: !pagination[filterStatus]
         });
     };
 
@@ -338,7 +362,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
         {
             tabHeader: (
                 <Menu.Item key="ready">
-                    <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.READY) }/>
+                    <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.READY) } />
                     { t("common:ready") }
                 </Menu.Item>
             )
@@ -346,7 +370,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
         {
             tabHeader: (
                 <Menu.Item key="reserved">
-                    <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.RESERVED) }/>
+                    <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.RESERVED) } />
                     { t("common:reserved") }
                 </Menu.Item>
             )
@@ -354,7 +378,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
         {
             tabHeader: (
                 <Menu.Item key="completed">
-                    <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.COMPLETED) }/>
+                    <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.COMPLETED) } />
                     { t("common:completed") }
                 </Menu.Item>
             )
@@ -362,10 +386,55 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
         {
             tabHeader: (
                 <Menu.Item key="all">
-                    <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.ALL) }/>
+                    <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.ALL) } />
                     { t("common:all") }
                 </Menu.Item>
             )
+        }
+    ];
+
+    /**
+     * This function generates a tag icon with a certain color based on the active tab
+     */
+    const generateIcons = (): JSX.Element => {
+        switch (activeIndexTab) {
+            case 0:
+                return <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.READY) } />;
+            case 1:
+                return <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.RESERVED) } />;
+            case 2:
+                return <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.COMPLETED) } />;
+            case 3:
+                return <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.ALL) } />;
+            default:
+                return <Icon name="tag" color="black" />;
+        }
+    };
+
+    const paneOptions = [
+        {
+            image: <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.READY) } />,
+            key: 0,
+            text: t("common:ready"),
+            value: 0
+        },
+        {
+            image: <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.RESERVED) } />,
+            key: 1,
+            text: t("common:reserved"),
+            value: 1
+        },
+        {
+            image: <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.COMPLETED) } />,
+            key: 2,
+            text: t("common:completed"),
+            value: 2
+        },
+        {
+            image: <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.ALL) } />,
+            key: 3,
+            text: t("common:all"),
+            value: 3
         }
     ];
 
@@ -376,9 +445,9 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
      * @param data - All props and proposed new activeIndex.
      */
     const handleApprovalsTabChange = (e: SyntheticEvent, data: any): void => {
-        const { activeIndex } = data;
-
-        switch (activeIndex) {
+        const { activeIndex, value } = data;
+        isUndefined(activeIndex) ? setActiveIndexTab(value) : setActiveIndexTab(activeIndex);
+        switch (isUndefined(activeIndex) ? value : activeIndex) {
             case 0:
                 setFilterStatus(ApprovalStatus.READY);
                 break;
@@ -407,42 +476,69 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                     && approvals.length
                     && approvals.length >= UIConstants.SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT
                 )
-                    ? pagination[ filterStatus ] ? t("common:showLess") : t("common:showMore")
+                    ? pagination[filterStatus] ? t("common:showLess") : t("common:showMore")
                     : null
             }
             onPrimaryActionClick={ handleShowMoreClick }
             placeholder={
                 !(approvals && (approvals.length > 0))
                     ? t(
-                    "views:sections.approvals.placeholders.emptyApprovalList.heading",
-                    { status: filterStatus !== ApprovalStatus.ALL ? filterStatus.toLocaleLowerCase() : "" }
+                        "views:sections.approvals.placeholders.emptyApprovalList.heading",
+                        { status: filterStatus !== ApprovalStatus.ALL ? filterStatus.toLocaleLowerCase() : "" }
                     )
                     : null
             }
         >
-            <Tab
-                className="settings-section-tab"
-                menu={ { secondary: true, pointing: true, attached: "top" } }
-                panes={
-                    panes.map((pane) => {
-                        return {
-                            menuItem: pane.tabHeader,
-                            render: () => (
-                                <Tab.Pane className="tab-pane" attached={ false }>
-                                    <ApprovalsList
-                                        approvals={ approvals }
-                                        approvalsListActiveIndexes={ approvalsListActiveIndexes }
-                                        onApprovalDetailClick={ handleApprovalDetailClick }
-                                        resolveApprovalTagColor={ resolveApprovalTagColor }
-                                        updateApprovalStatus={ updateApprovalStatus }
-                                    />
-                                </Tab.Pane>
-                            )
-                        };
-                    })
-                }
-                onTabChange={ handleApprovalsTabChange }
-            />
+
+            { !isMobile
+                ? (
+                    <Tab
+                        className="settings-section-tab"
+                        menu={ { secondary: true, pointing: true, attached: "top" } }
+                        panes={
+                            panes.map((pane) => {
+                                return {
+                                    menuItem: pane.tabHeader,
+                                    render: () => (
+                                        <Tab.Pane className="tab-pane" attached={ false }>
+                                            <ApprovalsList
+                                                approvals={ approvals }
+                                                approvalsListActiveIndexes={ approvalsListActiveIndexes }
+                                                onApprovalDetailClick={ handleApprovalDetailClick }
+                                                resolveApprovalTagColor={ resolveApprovalTagColor }
+                                                updateApprovalStatus={ updateApprovalStatus }
+                                            />
+                                        </Tab.Pane>
+                                    )
+                                };
+                            })
+                        }
+                        activeIndex={ activeIndexTab }
+                        onTabChange={ handleApprovalsTabChange }
+                    />
+                )
+                : (
+                    <Card fluid>
+                        <Card.Content>
+                            { generateIcons() }
+                            <Dropdown
+                                value={ activeIndexTab }
+                                onChange={ handleApprovalsTabChange }
+                                inline
+                                options={ paneOptions }
+                            />
+                        </Card.Content>
+                        <Card.Content>
+                            <ApprovalsList
+                                approvals={ approvals }
+                                approvalsListActiveIndexes={ approvalsListActiveIndexes }
+                                onApprovalDetailClick={ handleApprovalDetailClick }
+                                resolveApprovalTagColor={ resolveApprovalTagColor }
+                                updateApprovalStatus={ updateApprovalStatus }
+                            />
+                        </Card.Content>
+                    </Card>
+                ) }
         </SettingsSection>
     );
 };
