@@ -103,7 +103,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                     onAlertFired({
                         description: t(
                             "views:components.mfa.smsOtp.notifications.updateMobile.error.description",
-                            { description: error.response.data.details }
+                            { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(

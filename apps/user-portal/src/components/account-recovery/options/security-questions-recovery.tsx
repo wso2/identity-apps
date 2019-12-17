@@ -114,7 +114,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                 description: t(
                     "views:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
                     "error.description",
-                    { description: error.response.data.details }
+                    { description: error.response.data.detail }
                 ),
                 level: AlertLevels.ERROR,
                 message: t(

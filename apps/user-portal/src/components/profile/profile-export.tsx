@@ -89,7 +89,7 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
                     onAlertFired({
                         description: t(
                             "views:components.profileExport.notifications.downloadProfileInfo.error.description",
-                            { description: error.response.data.details }
+                            { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
