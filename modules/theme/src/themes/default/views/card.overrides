@@ -56,6 +56,7 @@
                     .application-description {
                         color: @recentApplicationCardDescColor;
                         max-width: @recentApplicationCardDescMaxWidth;
+                        min-height: @recentApplicationCardDescMinWidth;
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;

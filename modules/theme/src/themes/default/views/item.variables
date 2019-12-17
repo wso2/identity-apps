@@ -31,3 +31,4 @@ Application List Item
 @applicationListItemPadding: 8px 11px;
 @applicationListItemHeaderColor: @darkTextColor;
 @applicationListItemDescColor: @mutedTextColor;
+@applicationListItemDescMinWidth: 15px;
