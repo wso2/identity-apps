@@ -138,16 +138,19 @@ export const getAccessToken = (): Promise<string> => {
     if (!accessToken || accessToken.trim().length === 0 || !expiresIn || expiresIn.length === 0 || !issuedAt
         || issuedAt.length === 0) {
         endAuthenticatedSession();
+
         return Promise.reject(new Error("Invalid user session."));
     }
 
     function getValidityPeriod() {
         const currentExpiresIn = sessionStorage.getItem(ACCESS_TOKEN_EXPIRE_IN);
         const currentIssuedAt = sessionStorage.getItem(ACCESS_TOKEN_ISSUED_AT);
+
         return (parseInt(currentIssuedAt, 10) + parseInt(currentExpiresIn, 10)) - Math.floor(Date.now() / 1000);
     }
 
     let validityPeriod = getValidityPeriod();
+
     if (validityPeriod <= 300) {
 
         return semaphore.use(() => {
