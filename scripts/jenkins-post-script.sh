@@ -21,6 +21,4 @@
 npm i
 
 # Update package version to parent pom version
-npm run update-version -- jenkins=true
-
-git commit -m "[WSO2 Release] [Jenkins ${BUILD_DISPLAY_NAME}] [Release ${POM_VERSION/-SNAPSHOT/}] update package versions"
+npm run update-version -- jenkins=true build=${BUILD_DISPLAY_NAME} pom=${POM_VERSION/-SNAPSHOT/}
