@@ -23,11 +23,7 @@
  * npm i
  *
  * # Update package version to parent pom version
- * npm run update-version -- jenkins=true
- *
- * git commit -m "[WSO2 Release] [Jenkins ${BUILD_DISPLAY_NAME}] 
-                    [Release ${POM_VERSION/-SNAPSHOT/}] update package versions"
- *
+ * npm run update-version -- jenkins=true build=${BUILD_DISPLAY_NAME} pom=${POM_VERSION/-SNAPSHOT/}
  */
 
 const path = require('path');
@@ -82,6 +78,9 @@ const packageFiles = ["package.json", "package-lock.json", "lerna.json"]
  * Stage changed files
  */
 if (args.jenkins){
+    const BUILD = (args.build) ? "[Jenkins " + args.build + "] " : "";	
+    const RELEASE = (args.pom) ? "[Release " + args.pom + "] " : "";
+
     git.status().then((status) => {
         if(status.files.length > 0) {
             console.log("git info start staging version updated files");
@@ -102,6 +101,9 @@ if (args.jenkins){
                 console.log("git error failed clean: ");
                 console.log(error);
             });
+            
+            git.commit("[WSO2 Release]"+ BUILD +" "+ RELEASE +	
+               " update package versions");
         }
     });
 }
