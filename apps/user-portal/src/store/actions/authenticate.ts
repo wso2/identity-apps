@@ -166,9 +166,11 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
             redirectUri: GlobalConfig.loginCallbackUrl,
             scope: [TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE]
         };
+
         if (consentDenied) {
             requestParams.prompt = "login";
         }
+
         if (SignInUtil.hasAuthorizationCode()) {
             SignInUtil.sendTokenRequest(requestParams)
                 .then((response) => {
