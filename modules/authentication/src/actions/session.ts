@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Semaphore } from "await-semaphore";
 import {
     ACCESS_TOKEN,
     ACCESS_TOKEN_EXPIRE_IN,
@@ -33,12 +34,11 @@ import { AuthenticatedUserInterface } from "../models/authenticated-user";
 import { SessionInterface } from "../models/session";
 import { TokenResponseInterface } from "../models/token-response";
 import { getAuthenticatedUser, sendRefreshTokenRequest } from "./sign-in";
-import { Semaphore } from "await-semaphore";
 
 /**
  * Semaphore used for synchronizing the refresh token requests.
  */
-let semaphore = new Semaphore(1);
+const semaphore = new Semaphore(1);
 
 /**
  * Initialize authenticated user session.
@@ -142,8 +142,8 @@ export const getAccessToken = (): Promise<string> => {
     }
 
     function getValidityPeriod() {
-        let currentExpiresIn = sessionStorage.getItem(ACCESS_TOKEN_EXPIRE_IN);
-        let currentIssuedAt = sessionStorage.getItem(ACCESS_TOKEN_ISSUED_AT);
+        const currentExpiresIn = sessionStorage.getItem(ACCESS_TOKEN_EXPIRE_IN);
+        const currentIssuedAt = sessionStorage.getItem(ACCESS_TOKEN_ISSUED_AT);
         return (parseInt(currentIssuedAt, 10) + parseInt(currentExpiresIn, 10)) - Math.floor(Date.now() / 1000);
     }
 
@@ -161,7 +161,7 @@ export const getAccessToken = (): Promise<string> => {
                         return Promise.resolve(tokenResponse.accessToken);
                     }).catch((error) => {
                         return Promise.reject(error);
-                    })
+                    });
             } else {
                 return Promise.resolve(sessionStorage.getItem(ACCESS_TOKEN));
             }
