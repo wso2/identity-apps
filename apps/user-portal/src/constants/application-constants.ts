@@ -55,3 +55,19 @@ export const APPLICATIONS_PAGE_PATH: string = "/applications";
  * @default
  */
 export const USER_PORTAL_IDENTIFIER: string = "This is the user portal application.";
+
+/**
+ * Error description when the user selects no in the logout prompt
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const USER_DENIED_LOGOUT_REQUEST: string = "End User denied the logout request";
+
+/**
+ * Error description when the user denies consent to the app
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const USER_DENIED_CONSENT: string = "User denied the consent";
