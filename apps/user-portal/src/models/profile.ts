@@ -47,6 +47,7 @@ export interface BasicProfileInterface {
     isSecurity?: boolean;
     userImage?: string;
     userName?: string;
+    [key: string]: any;
 }
 
 /**
