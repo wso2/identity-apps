@@ -42,8 +42,8 @@ export const App = (): JSX.Element => {
                             <Redirect exact={ true } path="/" to={ APP_LOGIN_PATH } />
                             <Route
                                 path={ APP_LOGIN_PATH }
-                                render={ () => {
-                                    return <SignIn />;
+                                render={ (props) => {
+                                    return <SignIn { ...props }/>;
                                 } }
                             />
                             <Route

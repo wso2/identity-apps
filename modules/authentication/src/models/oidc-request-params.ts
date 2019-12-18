@@ -26,6 +26,7 @@ export interface OIDCRequestParamsInterface {
     enablePKCE: boolean;
     redirectUri: string;
     scope?: string[];
+    prompt?: string;
 }
 
 /**

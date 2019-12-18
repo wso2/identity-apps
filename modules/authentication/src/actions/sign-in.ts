@@ -41,6 +41,7 @@ export const hasAuthorizationCode = () => {
  */
 export const sendAuthorizationRequest = (requestParams: OIDCRequestParamsInterface) => {
     const authorizeEndpoint = getAuthorizeEndpoint();
+
     if (!authorizeEndpoint || authorizeEndpoint.trim().length === 0) {
         return Promise.reject(new Error("Invalid authorize endpoint found."));
     }
@@ -49,12 +50,14 @@ export const sendAuthorizationRequest = (requestParams: OIDCRequestParamsInterfa
         + requestParams.clientId;
 
     let scope = OIDC_SCOPE;
+
     if (requestParams.scope && requestParams.scope.length > 0) {
         if (!requestParams.scope.includes(OIDC_SCOPE)) {
             requestParams.scope.push(OIDC_SCOPE);
         }
         scope = requestParams.scope.join(" ");
     }
+
     authorizeRequest += "&scope=" + scope;
     authorizeRequest += "&redirect_uri=" + requestParams.redirectUri;
 
@@ -63,6 +66,10 @@ export const sendAuthorizationRequest = (requestParams: OIDCRequestParamsInterfa
         const codeChallenge = getCodeChallenge(codeVerifier);
         setSessionParameter(PKCE_CODE_VERIFIER, codeVerifier);
         authorizeRequest += "&code_challenge_method=S256&code_challenge=" + codeChallenge;
+    }
+
+    if (requestParams.prompt) {
+        authorizeRequest += "&prompt=" + requestParams.prompt;
     }
 
     window.location.href = authorizeRequest;
@@ -76,16 +83,20 @@ export const sendAuthorizationRequest = (requestParams: OIDCRequestParamsInterfa
  */
 export const sendTokenRequest = (requestParams: OIDCRequestParamsInterface): Promise<TokenResponseInterface> => {
     const tokenEndpoint = getTokenEndpoint();
+
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
         return Promise.reject(new Error("Invalid token endpoint found."));
     }
+
     const code = new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE);
 
     const body = [];
     body.push(`client_id=${requestParams.clientId}`);
+
     if (requestParams.clientSecret && requestParams.clientSecret.trim().length > 0) {
         body.push(`client_secret=${requestParams.clientSecret}`);
     }
+
     body.push(`code=${code}`);
     body.push("grant_type=authorization_code");
     body.push(`redirect_uri=${requestParams.redirectUri}`);
@@ -131,6 +142,7 @@ export const sendTokenRequest = (requestParams: OIDCRequestParamsInterface): Pro
 export const sendRefreshTokenRequest = (requestParams: OIDCRequestParamsInterface, refreshToken: string):
     Promise<TokenResponseInterface> => {
     const tokenEndpoint = getTokenEndpoint();
+
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
         return Promise.reject("Invalid token endpoint found.");
     }
@@ -157,6 +169,7 @@ export const sendRefreshTokenRequest = (requestParams: OIDCRequestParamsInterfac
                             scope: response.data.scope,
                             tokenType: response.data.token_type
                         };
+
                         return Promise.resolve(tokenResponse);
                     }
                     return Promise.reject(new Error("Invalid id_token in the token response: " +
@@ -176,6 +189,7 @@ export const sendRefreshTokenRequest = (requestParams: OIDCRequestParamsInterfac
  */
 export const sendRevokeTokenRequest = (requestParams: OIDCRequestParamsInterface, accessToken: string) => {
     const revokeTokenEndpoint = getRevokeTokenEndpoint();
+
     if (!revokeTokenEndpoint || revokeTokenEndpoint.trim().length === 0) {
         return Promise.reject("Invalid revoke token endpoint found.");
     }
@@ -192,6 +206,7 @@ export const sendRevokeTokenRequest = (requestParams: OIDCRequestParamsInterface
                 return Promise.reject(new Error("Invalid status code received in the revoke token response: "
                     + response.status));
             }
+
             return Promise.resolve(response);
         }).catch((error) => {
             return Promise.reject(error);
@@ -237,11 +252,13 @@ export const sendAccountSwitchRequest = (
     clientHost: string
 ): Promise<TokenResponseInterface> => {
     const tokenEndpoint = getTokenEndpoint();
+
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
         return Promise.reject(new Error("Invalid token endpoint found."));
     }
 
     let scope = OIDC_SCOPE;
+
     if (requestParams.scope && requestParams.scope.length > 0) {
         if (!requestParams.scope.includes(OIDC_SCOPE)) {
             requestParams.scope.push(OIDC_SCOPE);
@@ -264,6 +281,7 @@ export const sendAccountSwitchRequest = (
                 return Promise.reject(new Error("Invalid status code received in the token response: "
                     + response.status));
             }
+
             return validateIdToken(requestParams.client_id, response.data.id_token)
                 .then((valid) => {
                     if (valid) {
@@ -277,6 +295,7 @@ export const sendAccountSwitchRequest = (
                         };
                         return Promise.resolve(tokenResponse);
                     }
+
                     return Promise.reject(new Error("Invalid id_token in the token response: "
                         + response.data.id_token));
                 });
@@ -295,6 +314,7 @@ export const sendAccountSwitchRequest = (
  */
 const validateIdToken = (clientId: string, idToken: string): Promise<any> => {
     const jwksEndpoint = getJwksUri();
+
     if (!jwksEndpoint || jwksEndpoint.trim().length === 0) {
         return Promise.reject("Invalid JWKS URI found.");
     }
@@ -305,7 +325,9 @@ const validateIdToken = (clientId: string, idToken: string): Promise<any> => {
                 return Promise.reject(new Error("Failed to load public keys from JWKS URI: "
                     + jwksEndpoint));
             }
+
             const jwk = getJWKForTheIdToken(idToken.split(".")[0], response.data.keys);
+
             return Promise.resolve(isValidIdToken(idToken, jwk, clientId));
         }).catch((error) => {
             return Promise.reject(error);

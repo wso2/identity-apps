@@ -15,21 +15,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { USER_DENIED_CONSENT } from "../../constants";
 import { history } from "../../helpers";
 import { AppState } from "../../store";
 import { handleSignIn } from "../../store/actions";
+
 /**
  * This component handles the sign-in function
  */
-export const SignIn = () => {
+export const SignIn = (props) => {
     const dispatch = useDispatch();
     const isAuth = useSelector((state: AppState) => state.authenticationInformation.isAuth);
 
+    const error = new URLSearchParams(props.location.search).get("error_description");
+
     useEffect(() => {
-        if (!isAuth) {
+        if (!isAuth && !error) {
             dispatch(handleSignIn());
+        } else if (error === USER_DENIED_CONSENT) {
+            dispatch(handleSignIn(true));
         } else {
             loginSuccessRedirect();
         }
