@@ -109,7 +109,8 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
                 responseStatus: response.status || null,
                 roles: response.data.roles || [],
                 userImage: response.data.userImage || profileImage,
-                userName: response.data.userName || ""
+                userName: response.data.userName || "",
+                ...response.data
             };
 
             return Promise.resolve(profileResponse);
