@@ -90,7 +90,7 @@
                     <div class="ui divider hidden"></div>
                     
                     <div class="segment-form">
-                        <div class="feild">
+                        <div class="field">
                             <% if (userClaimsConsentOnly) {
                                 // If we are getting consent for user claims only we don't need to display OIDC
                                 // scopes in the consent page
