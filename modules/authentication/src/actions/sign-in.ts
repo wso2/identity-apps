@@ -64,7 +64,9 @@ export const sendAuthorizationRequest = (requestParams: OIDCRequestParamsInterfa
         setSessionParameter(PKCE_CODE_VERIFIER, codeVerifier);
         authorizeRequest += "&code_challenge_method=S256&code_challenge=" + codeChallenge;
     }
-
+    if (requestParams.prompt) {
+        authorizeRequest += "&prompt=" + requestParams.prompt;
+    }
     window.location.href = authorizeRequest;
 };
 
