@@ -22,46 +22,61 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <jsp:directive.include file="includes/localize.jsp"/>
 
+<!doctype html>
 <html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/Roboto.css" rel="stylesheet">
-    <link href="css/custom-common.css" rel="stylesheet">
+    <%
+        File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
+        if (headerFile.exists()) {
+    %>
+    <jsp:include page="extensions/header.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/header.jsp"/>
+    <% } %>
 </head>
 <body>
-<div class="container">
-    <div id="infoModel" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                            "Information")%></h4>
-                </div>
-                <div class="modal-body">
-                    <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                            "Account.confirmation.sent.to.your.email")%></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Close")%>
-                    </button>
-                </div>
-            </div>
-        </div>
+<div class="ui tiny modal notify">
+    <div class="header">
+        <h4>
+            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Information")%>
+        </h4>
+    </div>
+    <div class="content">
+        <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                "Account.confirmation.sent.to.your.email")%>
+        </p>
+    </div>
+    <div class="actions">
+        <button type="button" class="ui primary button cancel" data-dismiss="modal">
+            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Close")%>
+        </button>
     </div>
 </div>
-<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
+
+<!-- footer -->
+<%
+    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+    if (footerFile.exists()) {
+%>
+<jsp:include page="extensions/footer.jsp"/>
+<% } else { %>
+<jsp:directive.include file="includes/footer.jsp"/>
+<% } %>
+
 <script type="application/javascript">
     $(document).ready(function () {
-        var infoModel = $("#infoModel");
-        infoModel.modal("show");
-        infoModel.on('hidden.bs.modal', function () {
-            location.href = "<%=Encode.forJavaScript(IdentityManagementEndpointUtil.getUserPortalUrl(
-                application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL)))%>";
-        })
+        $('.notify').modal({
+            onHide: function () {
+                location.href = "<%=Encode.forJavaScript(IdentityManagementEndpointUtil.getUserPortalUrl(
+                        application.getInitParameter(
+                            IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL)))%>";
+            },
+            blurring: true,
+            detachable: true,
+            closable: false,
+            centered: true,
+        }).modal("show");
+
     });
 </script>
 </body>
