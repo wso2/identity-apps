@@ -19,10 +19,11 @@
 import _ from "lodash";
 import React, { FunctionComponent, MouseEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Card, Dropdown, Icon, Menu, Responsive, SemanticCOLORS, Tab } from "semantic-ui-react";
+import { Button, Dropdown, Icon, Menu, Responsive, SemanticCOLORS, Tab } from "semantic-ui-react";
 import { fetchPendingApprovalDetails, fetchPendingApprovals, updatePendingApprovalStatus } from "../../api";
 import * as UIConstants from "../../constants/ui-constants";
 import { AlertInterface, AlertLevels, ApprovalStatus, ApprovalTaskDetails } from "../../models";
+import { toSentenceCase } from "../../utils";
 import { SettingsSection } from "../shared";
 import { ApprovalsList } from "./approvals-list";
 
@@ -460,6 +461,27 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                     )
                     : null
             }
+            topActionBar={
+                (window.innerWidth <= Responsive.onlyMobile.maxWidth)
+                    ? (
+                        <Dropdown
+                            value={ activeIndexTab }
+                            onChange={ handleApprovalsTabChange }
+                            icon={ <Icon name="caret down" color="grey" /> }
+                            trigger={ (
+                                <Button
+                                    className="borderless-button"
+                                    basic={ true }
+                                >
+                                    { generateIcons() }
+                                    { toSentenceCase(filterStatus) }
+                                </Button>
+                            ) }
+                            options={ paneOptions }
+                        />
+                    )
+                    : null
+            }
         >
             <Responsive
                 as={ Tab }
@@ -487,29 +509,14 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                 onTabChange={ handleApprovalsTabChange }
                 minWidth={ Responsive.onlyMobile.maxWidth }
             />
-            <Responsive
-                maxWidth={ Responsive.onlyMobile.maxWidth }
-            >
-                <Card fluid>
-                    <Card.Content>
-                        { generateIcons() }
-                        <Dropdown
-                            value={ activeIndexTab }
-                            onChange={ handleApprovalsTabChange }
-                            inline
-                            options={ paneOptions }
-                        />
-                    </Card.Content>
-                    <Card.Content>
-                        <ApprovalsList
-                            approvals={ approvals }
-                            approvalsListActiveIndexes={ approvalsListActiveIndexes }
-                            onApprovalDetailClick={ handleApprovalDetailClick }
-                            resolveApprovalTagColor={ resolveApprovalTagColor }
-                            updateApprovalStatus={ updateApprovalStatus }
-                        />
-                    </Card.Content>
-                </Card>
+            <Responsive maxWidth={ Responsive.onlyMobile.maxWidth }>
+                <ApprovalsList
+                    approvals={ approvals }
+                    approvalsListActiveIndexes={ approvalsListActiveIndexes }
+                    onApprovalDetailClick={ handleApprovalDetailClick }
+                    resolveApprovalTagColor={ resolveApprovalTagColor }
+                    updateApprovalStatus={ updateApprovalStatus }
+                />
             </Responsive>
         </SettingsSection>
     );

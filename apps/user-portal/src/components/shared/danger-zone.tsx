@@ -17,7 +17,7 @@
  */
 
 import React, { PropsWithChildren, SyntheticEvent } from "react";
-import { Button, Header, Segment } from "semantic-ui-react";
+import { Button, Header, Responsive, Segment } from "semantic-ui-react";
 
 /**
  * Danger zone component Prop types.
@@ -46,7 +46,19 @@ export const DangerZone: React.FunctionComponent<DangerZoneProps> = (
                 { header }
                 <Header.Subheader className="sub-header">{ subheader }</Header.Subheader>
             </Header>
-            <Button negative floated="right" onClick={ onActionClick }>{ actionTitle }</Button>
+            <Button
+                fluid={ window.innerWidth <= Responsive.onlyTablet.maxWidth }
+                negative
+                className={
+                    (window.innerWidth <= Responsive.onlyTablet.maxWidth)
+                        ? "mb-1x mt-1x"
+                        : ""
+                }
+                floated="right"
+                onClick={ onActionClick }
+            >
+                { actionTitle }
+            </Button>
         </Segment>
     );
 };

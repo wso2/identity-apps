@@ -17,12 +17,20 @@
  */
 
 /**
- * The maximum list item count on settings sections.
+ * The default list item count on settings sections.
  * @constant
  * @type {number}
  * @default
  */
-export const SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT: number = 5;
+export const SETTINGS_SECTION_LIST_ITEMS_DEFAULT_COUNT: number = 5;
+
+/**
+ * The max list item count on settings sections.
+ * @constant
+ * @type {number}
+ * @default
+ */
+export const SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT: number = 1000;
 
 /**
  * Desktop layout content top padding.
