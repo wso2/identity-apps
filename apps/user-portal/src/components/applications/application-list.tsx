@@ -19,7 +19,7 @@
 import React, { Fragment, FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations } from "../../configs";
+import { EmptyPlaceholderIllustrations, GlobalConfig } from "../../configs";
 import { Application } from "../../models";
 import { EmptyPlaceholder } from "../shared";
 import { ApplicationListItem } from "./application-list-item";
@@ -105,7 +105,7 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
                     (apps && apps.length && apps.length > 0)
                         ? apps.map((app) => (
                             <Fragment key={ app.id }>
-                                { app.name !== "USER_PORTAL" && (
+                                { app.name !== GlobalConfig.applicationName && (
                                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 5 }>
                                         <ApplicationListItem
                                             app={ app }

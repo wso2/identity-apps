@@ -34,6 +34,7 @@ module.exports = (env) => {
     const serverHostDefault = "https://localhost:9443";
     const clientHostDefault = env.NODE_ENV === "prod" ? serverHostDefault : `https://localhost:${devServerPort}`;
     const clientIdDefault = "USER_PORTAL";
+    const applicationName = "User Portal";
 
     /**
      * App configurations
@@ -48,7 +49,7 @@ module.exports = (env) => {
     const distFolder = path.resolve(__dirname, "build", basename);
     const faviconImage = path.resolve(__dirname, "node_modules", "@wso2is/theme/lib/assets/images/favicon.ico");
     const titleText = "WSO2 Identity Server";
-    const copyrightText = `WSO2 Identity Server \u00A9 ${ new Date().getFullYear() }`;
+    const copyrightText = `${titleText} \u00A9 ${ new Date().getFullYear() }`;
 
     return {
         entry: ["./src/index.tsx"],
@@ -174,11 +175,13 @@ module.exports = (env) => {
                 APP_BASENAME: JSON.stringify(basename),
                 APP_HOME_PATH: JSON.stringify(homePagePath),
                 APP_LOGIN_PATH: JSON.stringify(loginPagePath),
-                COPYRIGHT_TEXT: JSON.stringify(copyrightText),
+                APP_NAME: JSON.stringify(applicationName),
+                COPYRIGHT_TEXT_DEFAULT: JSON.stringify(copyrightText),
                 CLIENT_ID_DEFAULT: JSON.stringify(clientIdDefault),
                 CLIENT_HOST_DEFAULT: JSON.stringify(clientHostDefault),
                 LOGIN_CALLBACK_URL: JSON.stringify(externalLoginCallbackURL),
                 SERVER_HOST_DEFAULT: JSON.stringify(serverHostDefault),
+                TITLE_TEXT_DEFAULT: JSON.stringify(titleText),
                 "typeof window": JSON.stringify("object"),
                 "process.env": {
                     NODE_ENV: JSON.stringify(process.env.NODE_ENV)

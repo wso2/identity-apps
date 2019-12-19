@@ -16,7 +16,7 @@
  * under the License.
  */
 
-type ServiceEndpointURLType = string;
+import { GlobalConfig } from "./globals";
 
 interface ServiceResourcesType {
     applications: string;
@@ -40,25 +40,6 @@ interface ServiceResourcesType {
     revoke: string;
     wellKnown: string;
 }
-
-interface RuntimeConfigInterface {
-    clientHost?: string;
-    clientID?: string;
-    serverHost?: string;
-    loginCallbackUrl: string;
-}
-
-// tslint:disable-next-line:no-string-literal
-const RUNTIME_CONFIG: RuntimeConfigInterface = window["runConfig"];
-
-export let GlobalConfig: RuntimeConfigInterface = {
-    clientHost: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.clientHost || CLIENT_HOST_DEFAULT) : CLIENT_HOST_DEFAULT,
-    clientID: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.clientID || CLIENT_ID_DEFAULT) : CLIENT_ID_DEFAULT,
-    loginCallbackUrl: (RUNTIME_CONFIG) ?
-        ((RUNTIME_CONFIG.serverHost + LOGIN_CALLBACK_URL) || (CLIENT_HOST_DEFAULT + LOGIN_CALLBACK_URL)) :
-        (CLIENT_HOST_DEFAULT + LOGIN_CALLBACK_URL),
-    serverHost: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.serverHost || SERVER_HOST_DEFAULT) : SERVER_HOST_DEFAULT
-};
 
 export const ServiceResourcesEndpoint: ServiceResourcesType = {
     applications: `${GlobalConfig.serverHost}/t/carbon.super/api/users/v1/me/applications`,

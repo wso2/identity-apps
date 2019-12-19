@@ -20,6 +20,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Container, Menu } from "semantic-ui-react";
+import { GlobalConfig } from "../../configs";
 import { LanguageSwitcher } from "../shared";
 
 /**
@@ -63,5 +64,5 @@ export const AppFooter: React.FunctionComponent<AppFooterProps> = (
  * Default proptypes for the footer component.
  */
 AppFooter.defaultProps = {
-    copyright: COPYRIGHT_TEXT
+    copyright: GlobalConfig.copyrightText
 };

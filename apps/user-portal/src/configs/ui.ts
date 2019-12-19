@@ -46,7 +46,6 @@ import {
 } from "@wso2is/theme";
 
 type ImageType = string;
-type TitleTextType = string;
 
 interface StylesType {
     appPrimaryColor?: string;
@@ -77,7 +76,6 @@ export const WidgetIcons = {
     consents: ConsentIcon
 };
 
-export const TitleText: TitleTextType = "User Portal";
 export const customCSS: CustomCSSType = {
     dark: {
         appPrimaryColor: "#ff5000"
