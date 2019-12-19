@@ -18,11 +18,11 @@
 
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Icon, List } from "semantic-ui-react";
-import { deleteDevice, getMetaData, startFidoFlow } from "../../../api";
+import { Button, Grid, Icon, List, ModalContent } from "semantic-ui-react";
+import { deleteDevice, getMetaData, startFidoFlow, startFidoUsernamelessFlow } from "../../../api";
 import { MFAIcons } from "../../../configs";
 import { AlertInterface, AlertLevels } from "../../../models";
-import { ThemeIcon } from "../../shared";
+import { ModalComponent, ThemeIcon } from "../../shared";
 
 /**
  * Proptypes for the associated accounts component.
@@ -40,6 +40,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     JSX.Element => {
     const { t } = useTranslation();
     const [ deviceList, setDeviceList ] = useState([]);
+    const [ isDeviceErrorModalVisible, setDeviceErrorModalVisibility ] = useState(false);
     const { onAlertFired } = props;
 
     useEffect(() => {
@@ -62,7 +63,12 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             });
     };
 
+    /**
+     * This handles the initiation of device registration with
+     * passwordless authentication
+     */
     const addDevice = () => {
+        setDeviceErrorModalVisibility(false);
         startFidoFlow()
             .then(() => {
                 getFidoMetaData();
@@ -77,15 +83,39 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                     )
                 });
             }).catch(() => {
+            onAlertFired({
+                description: t(
+                    "views:components.mfa.fido.notifications.startFidoFlow.genericError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "views:components.mfa.fido.notifications.startFidoFlow.genericError.message"
+                )
+            });
+        });
+    };
+
+    /**
+     * This handles the initiation of device registration with
+     * usernameless authentication
+     */
+    const addUsernamelessDevice = () => {
+        setDeviceErrorModalVisibility(false);
+        startFidoUsernamelessFlow()
+            .then(() => {
+                getFidoMetaData();
+
                 onAlertFired({
                     description: t(
-                        "views:components.mfa.fido.notifications.startFidoFlow.genericError.description"
+                        "views:components.mfa.fido.notifications.startFidoFlow.success.description"
                     ),
-                    level: AlertLevels.ERROR,
+                    level: AlertLevels.SUCCESS,
                     message: t(
-                        "views:components.mfa.fido.notifications.startFidoFlow.genericError.message"
+                        "views:components.mfa.fido.notifications.startFidoFlow.success.message"
                     )
-            });
+                });
+            }).catch(() => {
+            setDeviceErrorModalVisibility(true);
         });
     };
 
@@ -95,27 +125,65 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                 getFidoMetaData();
                 onAlertFired({
                     description: t(
-                        "views:securityPage.multiFactor.fido.notification.removeDevice.success.description"
+                        "views:components.mfa.fido.notifications.removeDevice.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "views:securityPage.multiFactor.fido.notification.removeDevice.success.message"
+                        "views:components.mfa.fido.notifications.removeDevice.success.message"
                     )
                 });
             }).catch(() => {
-                onAlertFired({
-                    description: t(
-                    "views:securityPage.multiFactor.fido.notification.removeDevice.genericError.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t(
-                    "views:securityPage.multiFactor.fido.notification.removeDevice.genericError.message"
-                    )
-                });
+            onAlertFired({
+                description: t(
+                    "views:components.mfa.fido.notifications.removeDevice.genericError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "views:components.mfa.fido.notifications.removeDevice.genericError.description"
+                )
             });
+        });
+    };
+
+    /**
+     * Handles the device registration error modal close action.
+     */
+    const handleDeviceErrorModalClose = (): void => {
+        setDeviceErrorModalVisibility(false);
+    };
+
+    /**
+     * Device registration error modal.
+     *
+     * @return {JSX.Element}
+     */
+    const deviceErrorModal = (): JSX.Element => {
+        return (
+            <ModalComponent
+                primaryAction={ t("common:retry") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ handleDeviceErrorModalClose }
+                onPrimaryActionClick={ addUsernamelessDevice }
+                open={ isDeviceErrorModalVisible }
+                onClose={ handleDeviceErrorModalClose }
+                type="negative"
+                header={ t("views:components.mfa.fido.modals.deviceRegistrationErrorModal.heading") }
+                content={ t("views:components.mfa.fido.modals.deviceRegistrationErrorModal.description") }
+            >
+                <ModalContent>
+                    <Button
+                        className="negative-modal-link-button"
+                        onClick={ addDevice }
+                    >
+                        { t("views:components.mfa.fido.tryButton") }
+                    </Button>
+                </ModalContent>
+            </ModalComponent>
+        );
     };
 
     return (
+        <>
         <div>
             <Grid padded={ true }>
                 <Grid.Row columns={ 2 }>
@@ -146,7 +214,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                 size="small"
                                 color="grey"
                                 name="add"
-                                onClick={ addDevice }
+                                onClick={ addUsernamelessDevice }
                             />
                         </List.Content>
                     </Grid.Column>
@@ -211,5 +279,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                     )
             }
         </div>
+            <div>{ deviceErrorModal() }</div>
+        </>
     );
 };
