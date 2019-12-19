@@ -83,13 +83,20 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
     /**
      * Fetches the list of pending approvals from the API.
      *
+     * @remarks
+     * The API doesn't support a param to fetch all the available approvals at once.
+     * As a temporary workaround, 1000 approvals are fetched when the `Show all` button
+     * is fetched. TODO: Remove this once the API supports this functionality.
+     *
      * @param {boolean} shallowUpdate - A flag to specify if only the statuses should be updated.
      */
     const getApprovals = (shallowUpdate: boolean = false): void => {
         fetchPendingApprovals(
             pagination[filterStatus]
-                ? 0
-                : UIConstants.SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT, 0, filterStatus
+                ? UIConstants.SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT
+                : UIConstants.SETTINGS_SECTION_LIST_ITEMS_DEFAULT_COUNT,
+            0,
+            filterStatus
         )
             .then((response) => {
                 if (!shallowUpdate) {
@@ -439,9 +446,9 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                 (
                     approvals
                     && approvals.length
-                    && approvals.length >= UIConstants.SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT
+                    && approvals.length >= UIConstants.SETTINGS_SECTION_LIST_ITEMS_DEFAULT_COUNT
                 )
-                    ? pagination[filterStatus] ? t("common:showLess") : t("common:showMore")
+                    ? pagination[filterStatus] ? null : t("common:showAll")
                     : null
             }
             onPrimaryActionClick={ handleShowMoreClick }
