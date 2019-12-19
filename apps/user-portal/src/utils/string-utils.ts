@@ -18,12 +18,12 @@
  */
 
 /**
- * Transforms a string to title case.
+ * Transforms a string to sentence case.
  *
  * @param {string} raw - Raw string.
  * @return {string}
  */
-export const toTitleCase = (raw: string): string => {
+export const toSentenceCase = (raw: string): string => {
     const parts = raw.split(" ");
     let newStr = "";
 

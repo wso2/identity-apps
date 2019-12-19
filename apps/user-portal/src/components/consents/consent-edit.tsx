@@ -20,7 +20,7 @@ import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Checkbox, Divider, Grid, Label, List } from "semantic-ui-react";
 import { ConsentInterface, RevokedClaimInterface } from "../../models";
-import { toTitleCase } from "../../utils";
+import { toSentenceCase } from "../../utils";
 import { DangerZone, DangerZoneGroup, EditSection } from "../shared";
 
 /**
@@ -103,7 +103,7 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
                                 <React.Fragment key={ purpose.purposeId }>
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column width={ 16 }>
-                                            <strong>{ toTitleCase(purpose.purpose) }</strong>
+                                            <strong>{ toSentenceCase(purpose.purpose) }</strong>
                                         </Grid.Column>
                                     </Grid.Row>
                                     <Grid.Row columns={ 1 }>
