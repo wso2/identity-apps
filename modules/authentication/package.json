@@ -20,6 +20,7 @@
     },
     "peerDependencies": {
         "axios": "*",
+        "await-semaphore": "*",
         "crypto-js": "*"
     }
 }
