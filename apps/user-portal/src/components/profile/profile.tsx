@@ -55,6 +55,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
     const isSCIMEnabled: boolean = useSelector((state: AppState) => state.profile.isSCIMEnabled);
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
+    const [urlSchema, setUrlSchema] = useState<ProfileSchema>();
 
     /**
      * dispatch getProfileInformation action if the profileDetails object is empty
@@ -80,6 +81,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 }
             });
         setProfileSchema(sortedSchemas);
+        const url = sortedSchemas.filter((schema: ProfileSchema) => {
+            return schema.name === "profileUrl";
+        });
+        if (sortedSchemas.length > 0) {
+            setUrlSchema(url[0]);
+        }
     }, [profileDetails.profileSchemas]);
 
     /**
@@ -258,18 +265,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                         validation.isValid = false;
                                                     }
                                                     break;
-                                                case "profileUrl":
-                                                    if (!FormValidation.url(value)) {
-                                                        validation.errorMessages.push(t(
-                                                            "views:components.profile.forms." +
-                                                            "generic.inputs.validations.invalidFormat",
-                                                            {
-                                                                fieldName
-                                                            }
-                                                        ));
-                                                        validation.isValid = false;
-                                                    }
-                                                    break;
                                             }
                                         } }
                                         value={ profileInfo.get(schema.name) }
@@ -345,8 +340,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         >
                             <List.Content floated="right">
                                 { schema.mutability !== "READ_ONLY"
-                                && schema.name !== "userName"
-                                && !isEmpty(profileInfo.get(schema.name))
+                                    && schema.name !== "userName"
+                                    && !isEmpty(profileInfo.get(schema.name))
                                     ? (
                                         < Popup
                                             trigger={
@@ -387,6 +382,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 <UserAvatar
                     authState={ profileDetails }
                     size="tiny"
+                    showEdit={ true }
+                    profileUrl={ !isEmpty(urlSchema) ? profileInfo.get(urlSchema.name) : "" }
+                    urlSchema={ urlSchema }
+                    onAlertFired={ onAlertFired }
                     showGravatarLabel
                     gravatarInfoPopoverText={ (
                         <Trans i18nKey="views:components.userAvatar.infoPopover">
@@ -396,22 +395,25 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     ) }
                 />
             ) }
-            iconMini={
-                (
-                    <UserAvatar
-                        authState={ profileDetails }
-                        size="tiny"
-                        showGravatarLabel
-                        gravatarInfoPopoverText={ (
-                            <Trans i18nKey="views:components.userAvatar.infoPopover">
-                                This image has been retrieved from
+            iconMini={ (
+                <UserAvatar
+                    authState={ profileDetails }
+                    size="tiny"
+                    showEdit={ true }
+                    profileUrl={ !isEmpty(urlSchema) ? profileInfo.get(urlSchema.name) : "" }
+                    urlSchema={ urlSchema }
+                    onAlertFired={ onAlertFired }
+                    showGravatarLabel
+                    gravatarInfoPopoverText={ (
+                        <Trans i18nKey="views:components.userAvatar.infoPopover">
+                            This image has been retrieved from
                                 <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener">
-                                    Gravatar
+                                Gravatar
                                 </a> service.
                             </Trans>
-                        ) }
-                    />
-                ) }
+                    ) }
+                />
+            ) }
             placeholder={
                 !isSCIMEnabled
                     ? t("views:components.profile.placeholders.SCIMDisabled.heading")
@@ -421,7 +423,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 {
                     profileSchema && profileSchema.map((schema: ProfileSchema, index: number) => {
-                        if (schema.name !== "roles.default") {
+                        if (schema.name !== "roles.default" && schema.name !== "profileUrl") {
                             return (
                                 <List.Item key={ index } className="inner-list-item">
                                     { generateSchemaForm(schema) }
