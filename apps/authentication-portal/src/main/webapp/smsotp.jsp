@@ -109,39 +109,41 @@
                         <% } }  %>
                          <!-- Token Pin -->
                          <% if (request.getParameter("screenvalue") != null) { %>
-                          <div class="field">
-                           <h5 for="password">
-                           <%=AuthenticationEndpointUtil.i18n(resourceBundle, "smsotp.label")%>
-                           <%=Encode.forHtmlContent(request.getParameter("screenvalue"))%>
-                           </h5>
-                           <input type="password" id='OTPcode' name="OTPcode" size='30'
-                           placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle,
-                           "smsotp.placeholder")%>"/>
-                           </div>
-                           <% } else { %>
                            <div class="field">
-                           <h5 for="password">
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "smsotp.label")%>
-                           </h5>
-                           <input type="password" id='OTPcode' name="OTPcode" size='30'
-                           placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle,
-                           "smsotp.placeholder")%>"/>
-                           <% } %>
+                               <h5 for="password">
+                                   <%=AuthenticationEndpointUtil.i18n(resourceBundle, "smsotp.label")%>
+                                   <%=Encode.forHtmlContent(request.getParameter("screenvalue"))%>
+                               </h5>
+                               <input type="password" id='OTPcode' name="OTPcode" size='30'
+                               placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle,
+                               "smsotp.placeholder")%>"/>
+                           </div>
+                         <% } else { %>
+                           <div class="field">
+                               <h5 for="password">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "smsotp.label")%>
+                               </h5>
+                               <input type="password" id='OTPcode' name="OTPcode" size='30'
+                               placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle,
+                               "smsotp.placeholder")%>"/>
+                               <% } %>
                          </div>
                          <input type="hidden" name="sessionDataKey"
                             value=<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>/>
                             <br/>
-                         <div> <input type="button" name="authenticate" id="authenticate"
-                            value=<%=AuthenticationEndpointUtil.i18n(resourceBundle, "smsotp.button")%>
-                             class="ui right floated primary button"></div>
+                         <div>
+                             <input type="button" name="authenticate" id="authenticate"
+                                value=<%=AuthenticationEndpointUtil.i18n(resourceBundle, "smsotp.button")%>
+                                 class="ui right floated primary button">
+                         </div>
                          <%
                              if ("true".equals(authenticationFailed)) {
                              String reSendCode = request.getParameter("resendCode");
                              if ("true".equals(reSendCode)) {
                          %>
-                           <div id="resendCodeLinkDiv" style="display:inline-block; float:left">
-                              <a id="resend">Resend Code</a>
-                           </div>
+                       <div id="resendCodeLinkDiv" style="display:inline-block; float:left">
+                          <a id="resend">Resend Code</a>
+                       </div>
                          <% } } %>
                         <input type='hidden' name='resendCode' id='resendCode' value='false'/>
                     </form>

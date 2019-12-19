@@ -62,69 +62,69 @@
 <body onload="getLoginDiv()">
 <main class="center-segment">
     <div class="ui container medium center aligned middle aligned">
-    <!-- product-title -->
-            <%
-                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                if (productTitleFile.exists()) {
-            %>
-            <jsp:include page="extensions/product-title.jsp"/>
-            <% } else { %>
-            <jsp:directive.include file="includes/product-title.jsp"/>
-            <% } %>
-            <!-- page content -->
-            <div class="ui segment">
-            <!-- content -->
-            <div class="container col-xs-10 col-sm-6 col-md-6 col-lg-4 col-centered wr-content
-            wr-login col-centered">
-                <div>
-                    <h3 class="ui header">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "mobile.update.title")%>
-                    </h3>
+        <!-- product-title -->
+        <%
+            File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+            if (productTitleFile.exists()) {
+        %>
+        <jsp:include page="extensions/product-title.jsp"/>
+        <% } else { %>
+        <jsp:directive.include file="includes/product-title.jsp"/>
+        <% } %>
+        <!-- page content -->
+        <div class="ui segment">
+        <!-- content -->
+        <div class="container col-xs-10 col-sm-6 col-md-6 col-lg-4 col-centered wr-content
+        wr-login col-centered">
+            <div>
+                <h3 class="ui header">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "mobile.update.title")%>
+                </h3>
+            </div>
+            <br/>
+            <div class="boarder-all ">
+                <div class="clearfix"></div>
+                <div class="padding-double login-form">
+                    <div id="errorDiv"></div>
+                    <%
+                        if ("true".equals(authenticationFailed)) {
+                    %>
+                        <div class="ui visible negative message" id="failed-msg">
+                        <%=Encode.forHtmlContent(errorMessage)%></div>
+                    <% } %>
+                    <div id="alertDiv"></div>
+                    <form id="pin_form" name="pin_form" action="../../commonauth"  method="POST" class="ui form">
+                        <div id="loginTable1" class="identity-box">
+                            <%
+                                String loginFailed = request.getParameter("authFailure");
+                                if (loginFailed != null && "true".equals(loginFailed)) {
+                                    String authFailureMsg = request.getParameter("authFailureMsg");
+                                    if (authFailureMsg != null && "login.fail.message".equals(authFailureMsg)) {
+                            %>
+                                <div class="alert alert-error">Authentication Failed! Please Retry</div>
+                            <% } }  %>
+                             <!-- Token Pin -->
+                             <div class="field">
+                                <h5 for="password">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "mobile.update.label")%>
+                                </h5>
+                                <input type="text" id='MOBILE_NUMBER' name="MOBILE_NUMBER" size='30'
+                                placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "mobile.update.placeholder")%>"/>
+                             </div>
+                             <input type="hidden" name="sessionDataKey"
+                                value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
+                             <br>
+                             <div>
+                                  <input type="button" name="update" id="update"
+                                  value=<%=AuthenticationEndpointUtil.i18n(resourceBundle, "mobile.update.button")%>
+                                  class="ui primary button">
+                             </div>
+                        </div>
+                    </form>
+                   <div class="clearfix"></div>
                 </div>
-                <br/>
-                <div class="boarder-all ">
-                    <div class="clearfix"></div>
-                    <div class="padding-double login-form">
-                        <div id="errorDiv"></div>
-                        <%
-                            if ("true".equals(authenticationFailed)) {
-                        %>
-                                <div class="ui visible negative message" id="failed-msg">
-                                <%=Encode.forHtmlContent(errorMessage)%></div>
-                        <% } %>
-                        <div id="alertDiv"></div>
-                        <form id="pin_form" name="pin_form" action="../../commonauth"  method="POST" class="ui form">
-                            <div id="loginTable1" class="identity-box">
-                                <%
-                                    String loginFailed = request.getParameter("authFailure");
-                                    if (loginFailed != null && "true".equals(loginFailed)) {
-                                        String authFailureMsg = request.getParameter("authFailureMsg");
-                                        if (authFailureMsg != null && "login.fail.message".equals(authFailureMsg)) {
-                                %>
-                                            <div class="alert alert-error">Authentication Failed! Please Retry</div>
-                                <% } }  %>
-                                 <!-- Token Pin -->
-                                 <div class="field">
-                                    <h5 for="password">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "mobile.update.label")%>
-                                    </h5>
-                                    <input type="text" id='MOBILE_NUMBER' name="MOBILE_NUMBER" size='30'
-                                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "mobile.update.placeholder")%>"/>
-                                 </div>
-                                 <input type="hidden" name="sessionDataKey"
-                                    value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
-                                 <br>
-                                 <div>
-                                      <input type="button" name="update" id="update"
-                                      value=<%=AuthenticationEndpointUtil.i18n(resourceBundle, "mobile.update.button")%>
-                                      class="ui primary button">
-                                 </div>
-                            </div>
-                        </form>
-                       <div class="clearfix"></div>
-                    </div>
-                </div>
-                <!-- /content -->
+            </div>
+            <!-- /content -->
                </div>
         </div>
         <!-- /content/body -->
@@ -168,4 +168,3 @@
     </script>
 </body>
 </html>
-

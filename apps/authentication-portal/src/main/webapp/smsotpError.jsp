@@ -59,9 +59,7 @@
             }
         }
         if (request.getParameter(SMSOTPConstants.AUTH_FAILURE_INFO) != null) {
-            errorInfo = new
-                    String(getDecoder().decode(request.getParameter(SMSOTPConstants.AUTH_FAILURE_INFO)));
-
+            errorInfo = new String(getDecoder().decode(request.getParameter(SMSOTPConstants.AUTH_FAILURE_INFO)));
         }
     }
 %>
@@ -107,12 +105,12 @@
                         <%
                             if ("true".equals(authenticationFailed)) {
                         %>
-                                <div class="ui visible negative message" id="failed-msg">
-                                <%=Encode.forHtmlContent(errorMessage)%></div>
-                            <% if (StringUtils.isNotEmpty(errorInfo)){ %>
-                               <div class="ui visible negative message" id="failed-msg-info">
-                                   <p class="word-break-all"><%=Encode.forHtmlContent(errorInfo)%></p>
-                               </div>
+                            <div class="ui visible negative message" id="failed-msg">
+                            <%=Encode.forHtmlContent(errorMessage)%></div>
+                        <% if (StringUtils.isNotEmpty(errorInfo)){ %>
+                           <div class="ui visible negative message" id="failed-msg-info">
+                               <p class="word-break-all"><%=Encode.forHtmlContent(errorInfo)%></p>
+                           </div>
                         <% }
                          }
                         %>
@@ -149,4 +147,3 @@
     <% } %>
 </body>
 </html>
-
