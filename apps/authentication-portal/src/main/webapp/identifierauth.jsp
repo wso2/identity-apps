@@ -139,24 +139,22 @@
     <div class="ui two column stackable grid">
         <div class="column align-left buttons">
             <% if (isRecoveryEPAvailable) { %>
-            <button
-                type="submit"
-                onclick="window.location.href='<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL)%>';"   
+            <input
+                type="button"
+                onclick="window.location.href='<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL)%>';"
                 class="ui large button link-button"
                 id="registerLink"
-                role="button">
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.account")%>
-            </button>
+                role="button"
+                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.account")%>" />
             <% } %>
         </div>
         <div class="column align-right buttons">
-            <button
+            <input
                 type="submit"
-                onclick="submitIdentifier()"    
+                onclick="submitIdentifier()"
                 class="ui primary large button"
-                role="button">
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>
-            </button>
+                role="button"
+                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>" />
         </div>
     </div>
 </form>
