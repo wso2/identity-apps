@@ -51,13 +51,11 @@
             } else if (errorMessage.equalsIgnoreCase(SMSOTPConstants.ERROR_CODE_MISMATCH)) {
                 errorMessage = "The code entered is incorrect. Authentication Failed!";
             } else if (errorMessage.equalsIgnoreCase(SMSOTPConstants.ERROR_SMSOTP_DISABLE_MSG)) {
-                errorMessage = "Enable the SMS OTP in your Profile.
-                Cannot proceed further without SMS OTP authentication.";
+                errorMessage = "Enable the SMS OTP in your Profile. Cannot proceed further without SMS OTP authentication.";
             } else if (errorMessage.equalsIgnoreCase(SMSOTPConstants.TOKEN_EXPIRED_VALUE)) {
                 errorMessage = "The code entered is expired. Authentication Failed!";
             } else if (errorMessage.equalsIgnoreCase(SMSOTPConstants.SEND_OTP_DIRECTLY_DISABLE_MSG)) {
-                errorMessage = "User not found in the directory. Cannot
-                proceed further without SMS OTP authentication.";
+                errorMessage = "User not found in the directory. Cannot proceed further without SMS OTP authentication.";
             }
         }
         if (request.getParameter(SMSOTPConstants.AUTH_FAILURE_INFO) != null) {
@@ -82,18 +80,25 @@
 
 <body>
 <!-- page content -->
-<div class="container-fluid body-wrapper">
-
-    <div class="row">
-        <div class="col-md-12">
+<main class="center-segment">
+    <div class="ui container medium center aligned middle aligned">
+        <!-- product-title -->
+        <%
+            File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+            if (productTitleFile.exists()) {
+        %>
+        <jsp:include page="extensions/product-title.jsp"/>
+        <% } else { %>
+        <jsp:directive.include file="includes/product-title.jsp"/>
+        <% } %>
+        <div class="ui segment">
 
             <!-- content -->
-            <div class="container col-xs-10 col-sm-6 col-md-6 col-lg-4 col-centered wr-content
-            wr-login col-centered">
+            <div class="container col-xs-10 col-sm-6 col-md-6 col-lg-4 col-centered wr-content wr-login col-centered">
                 <div>
-                    <h2 class="wr-title blue-bg padding-double white boarder-bottom-blue margin-none">
-                        Failed Authentication with SMSOTP &nbsp;&nbsp;</h2>
-
+                    <h3 class="ui header">
+                        Failed Authentication with SMSOTP &nbsp;&nbsp;
+                    </h3>
                 </div>
                 <div class="boarder-all ">
                     <div class="clearfix"></div>
@@ -102,10 +107,10 @@
                         <%
                             if ("true".equals(authenticationFailed)) {
                         %>
-                                <div class="alert alert-danger" id="failed-msg">
+                                <div class="ui visible negative message" id="failed-msg">
                                 <%=Encode.forHtmlContent(errorMessage)%></div>
                             <% if (StringUtils.isNotEmpty(errorInfo)){ %>
-                               <div class="alert alert-warning" id="failed-msg-info">
+                               <div class="ui visible negative message" id="failed-msg-info">
                                    <p class="word-break-all"><%=Encode.forHtmlContent(errorInfo)%></p>
                                </div>
                         <% }
@@ -121,6 +126,7 @@
         <!-- /content/body -->
     </div>
 </div>
+</main>
 
 <!-- product-footer -->
     <%

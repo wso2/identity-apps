@@ -89,7 +89,7 @@
                         <%
                             if ("true".equals(authenticationFailed)) {
                         %>
-                                <div class="alert alert-danger" id="failed-msg">
+                                <div class="ui visible negative message" id="failed-msg">
                                 <%=Encode.forHtmlContent(errorMessage)%></div>
                         <% } %>
                         <div id="alertDiv"></div>
@@ -103,22 +103,22 @@
                                 %>
                                             <div class="alert alert-error">Authentication Failed! Please Retry</div>
                                 <% } }  %>
-                                         <!-- Token Pin -->
-                                         <div class="field">
-                                            <h5 for="password">
-                                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "mobile.update.label")%>
-                                            </h5>
-                                            <input type="text" id='MOBILE_NUMBER' name="MOBILE_NUMBER" size='30'
-                                            placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "mobile.update.placeholder")%>"/>
-                                         </div>
-                                         <input type="hidden" name="sessionDataKey"
-                                            value='<%=Encode.forHtmlAttribute(request.getParameter
-                                            ("sessionDataKey"))%>'/>
-                                         <br><div>
-                                              <input type="button" name="update" id="update"
-                                              value=<%=AuthenticationEndpointUtil.i18n(resourceBundle, "mobile.update.button")%>
-                                              class="ui primary button">
-                                         </div>
+                                 <!-- Token Pin -->
+                                 <div class="field">
+                                    <h5 for="password">
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "mobile.update.label")%>
+                                    </h5>
+                                    <input type="text" id='MOBILE_NUMBER' name="MOBILE_NUMBER" size='30'
+                                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "mobile.update.placeholder")%>"/>
+                                 </div>
+                                 <input type="hidden" name="sessionDataKey"
+                                    value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
+                                 <br>
+                                 <div>
+                                      <input type="button" name="update" id="update"
+                                      value=<%=AuthenticationEndpointUtil.i18n(resourceBundle, "mobile.update.button")%>
+                                      class="ui primary button">
+                                 </div>
                             </div>
                         </form>
                        <div class="clearfix"></div>
