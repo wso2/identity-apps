@@ -495,6 +495,13 @@ export const views: Views = {
             fido: {
                 description: "FIDO යතුරක් සම්බන්ධ කිරීමෙන් සත්\u200Dයාපනය කිරීම",
                 heading: "FIDO",
+                modals: {
+                    deviceRegistrationErrorModal: {
+                        description: "උපාංග ලියාපදිංචිය බාධා විය. මෙය හිතාමතා නොකළේ නම්, ඔබට එම ප්‍රවාහය නැවත උත්සාහ කළ හැකිය, " +
+                            "නැතහොත් පැරණි ආරක්ෂක යතුරක් සමඟ නැවත උත්සාහ කරන්න.",
+                        heading: "උපාංග ලියාපදිංචි කිරීම අසාර්ථක විය",
+                    }
+                },
                 notifications: {
                     removeDevice: {
                         error: {
@@ -525,7 +532,8 @@ export const views: Views = {
                             message: "ඔබගේ උපාංගය සාර්ථකව ලියාපදිංචි කර ඇත"
                         }
                     }
-                }
+                },
+                tryButton: "පැරණි උපාංගයක් සමඟ උත්සාහ කරන්න"
             },
             smsOtp: {
                 descriptions: {

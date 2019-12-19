@@ -497,6 +497,13 @@ export const views: Views = {
             fido: {
                 description: "Autentique-se conectando uma chave FIDO",
                 heading: "FIDO",
+                modals: {
+                    deviceRegistrationErrorModal: {
+                        description: "O registro do dispositivo foi interrompido. Se isso não foi intencional, tente " +
+                            "novamente o mesmo fluxo ou tente novamente com uma chave de segurança mais antiga.",
+                        heading: "Falha no registro do dispositivo",
+                    }
+                },
                 notifications: {
                     removeDevice: {
                         error: {
@@ -527,7 +534,8 @@ export const views: Views = {
                             message: "Seu dispositivo registrado com sucesso"
                         }
                     }
-                }
+                },
+                tryButton: "Tente com um dispositivo mais antigo"
             },
             smsOtp: {
                 descriptions: {

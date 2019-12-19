@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { Decode, Encode } from "../helpers/base64-utils";
@@ -101,6 +100,42 @@ export const startFidoFlow = (): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(
                     new Error(`Failed to start registration flow at: ${ ServiceResourcesEndpoint.fidoStart }`)
+                );
+            }
+            return connectToDevice(response.data.requestId,
+                decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions))
+                .then(() => {
+                    return Promise.resolve(response);
+                }).catch((error) => {
+                    return Promise.reject(`Failed to connect to device - ${ error }`);
+                });
+        }).catch((error) => {
+            return Promise.reject(`FIDO connection terminated - ${ error }`);
+        });
+};
+
+/**
+ * Start registration flow of the FIDO device which suppports usernameless flow
+ *
+ * @return {Promise<any>} a promise containing the response.
+ */
+export const startFidoUsernamelessFlow = (): Promise<any> => {
+    const requestConfig = {
+        data: { appId: window.location.origin },
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        method: HttpMethods.POST,
+        url: ServiceResourcesEndpoint.fidoStartUsernameless
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(
+                    new Error(`Failed to start registration flow at:
+                    ${ ServiceResourcesEndpoint.fidoStartUsernameless }`)
                 );
             }
             return connectToDevice(response.data.requestId,
