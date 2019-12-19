@@ -279,7 +279,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                     )
             }
         </div>
-            <div>{ deviceErrorModal() }</div>
+        <div>{ deviceErrorModal() }</div>
         </>
     );
 };
