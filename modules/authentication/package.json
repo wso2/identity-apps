@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/authentication",
-    "version": "0.1.163",
+    "version": "0.1.164",
     "description": "Authentication module for WSO2 Identity Server Webapps.",
     "keywords": [
         "WSO2",
@@ -19,8 +19,8 @@
         "jsrsasign": "^8.0.12"
     },
     "peerDependencies": {
-        "axios": "*",
         "await-semaphore": "*",
+        "axios": "*",
         "crypto-js": "*"
     }
 }
