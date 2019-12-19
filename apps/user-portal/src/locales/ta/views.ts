@@ -499,6 +499,13 @@ export const views: Views = {
             fido: {
                 description: "FIDO கருவியினை இணைப்பதானூடாக உங்களை உறுதிப்படுத்திக் கொள்ளுங்கள்",
                 heading: "FIDO",
+                modals: {
+                    deviceRegistrationErrorModal: {
+                        description: "அவர் சாதன பதிவு தடைப்பட்டது. இது வேண்டுமென்றே இல்லையென்றால், நீங்கள் அதே " +
+                            "ஓட்டத்தை மீண்டும் முயற்சிக்கலாம் அல்லது பழைய பாதுகாப்பு விசையுடன் மீண்டும் முயற்சி செய்யலாம்.",
+                        heading: "சாதன பதிவு தோல்வியுற்றது",
+                    }
+                },
                 notifications: {
                     removeDevice: {
                         error: {
@@ -530,7 +537,8 @@ export const views: Views = {
                             message: "உங்கள் கருவி பதிவு செய்யப்பட்டுவிட்டது."
                         }
                     }
-                }
+                },
+                tryButton: "பழைய சாதனத்துடன் முயற்சிக்கவும்"
             },
             smsOtp: {
                 descriptions: {

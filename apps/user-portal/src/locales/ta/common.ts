@@ -71,6 +71,7 @@ export const common: Common = {
     removeAll: "அனைத்து நீக்க",
     reserved: "ஒதுக்கப்பட்டவை",
     resetFilters: "வடிகட்டல்களை மீட்டடமை",
+    retry: "மீண்டும் முயற்சி செய்",
     revoke: "நீக்கு",
     revokeAll: "அனைத்தையும் நீக்கு",
     save: "சேமி",

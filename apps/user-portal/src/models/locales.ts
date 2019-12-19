@@ -72,6 +72,7 @@ export interface Common {
     remove: string;
     reserved: string;
     resetFilters: string;
+    retry: string;
     revoke: string;
     revokeAll: string;
     save: string;
@@ -347,10 +348,17 @@ export interface Views {
             fido: {
                 description: string;
                 heading: string;
+                modals: {
+                    deviceRegistrationErrorModal: {
+                        description: string;
+                        heading: string;
+                    }
+                }
                 notifications: {
                     removeDevice: Notification;
                     startFidoFlow: Notification;
                 };
+                tryButton: string;
             };
             smsOtp: {
                 descriptions: {

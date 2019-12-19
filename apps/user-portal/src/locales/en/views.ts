@@ -495,6 +495,13 @@ export const views: Views = {
             fido: {
                 description: "Authenticate yourself by connecting a biometric device or a FIDO key",
                 heading: "via Security Device",
+                modals: {
+                    deviceRegistrationErrorModal: {
+                        description: "The device registration was interrupted. If this was not intentional you may " +
+                            "retry the same flow or try again with an older security key.",
+                        heading: "Device Registration Failed",
+                    }
+                },
                 notifications: {
                     removeDevice: {
                         error: {
@@ -525,7 +532,8 @@ export const views: Views = {
                             message: "Your Device Registered Successfully"
                         }
                     }
-                }
+                },
+                tryButton: "Try with an older Device"
             },
             smsOtp: {
                 descriptions: {
