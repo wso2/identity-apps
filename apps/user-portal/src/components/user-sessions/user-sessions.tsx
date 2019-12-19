@@ -137,7 +137,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
      */
     const handleTerminateUserSession = () => {
         terminateUserSession(editingUserSession.id)
-            .then((response) => {
+            .then(() => {
                 onAlertFired({
                     description: t(
                         "views:components.userSessions.notifications.terminateUserSession.success.description"
@@ -160,23 +160,22 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                             "views:components.userSessions.notifications.revokeUserSession.error.message"
                         ),
                     });
-
-                    return;
+                } else {
+                    onAlertFired({
+                        description: t(
+                            "views:components.userSessions.notifications.revokeUserSession.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "views:components.userSessions.notifications.revokeUserSession.genericError.message"
+                        )
+                    });
                 }
-
-                onAlertFired({
-                    description: t(
-                        "views:components.userSessions.notifications.revokeUserSession.genericError.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t(
-                        "views:components.userSessions.notifications.revokeUserSession.genericError.message"
-                    )
-                });
+            })
+            .finally(() => {
+                setRevokeUserSessionModalVisibility(false);
+                getUserSessions();
             });
-
-        setRevokeUserSessionModalVisibility(false);
-        getUserSessions();
     };
 
     /**
@@ -207,23 +206,22 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                             "views:components.userSessions.notifications.terminateAllUserSessions.error.message"
                         ),
                     });
-
-                    return;
+                } else {
+                    onAlertFired({
+                        description: t(
+                            "views:components.userSessions.notifications.terminateAllUserSessions.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "views:components.userSessions.notifications.terminateAllUserSessions.genericError.message"
+                        )
+                    });
                 }
-
-                onAlertFired({
-                    description: t(
-                        "views:components.userSessions.notifications.terminateAllUserSessions.genericError.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t(
-                        "views:components.userSessions.notifications.terminateAllUserSessions.genericError.message"
-                    )
-                });
+            })
+            .finally(() => {
+                setRevokeAllUserSessionsModalVisibility(false);
+                getUserSessions();
             });
-
-        setRevokeAllUserSessionsModalVisibility(false);
-        getUserSessions();
     };
 
     /**
@@ -316,25 +314,21 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                     ? t("views:sections.userSessions.actionTitles.empty")
                     : null
             }
-        >
-            {
-                userSessions && userSessions.sessions && (userSessions.sessions.length > 0)
+            topActionBar={
+                (userSessions && userSessions.sessions && (userSessions.sessions.length > 0))
                     ? (
-                        <Menu className="top-action-panel no-margin-bottom" borderless>
-                            <Menu.Menu position="right">
-                                <Button
-                                    className="borderless-button"
-                                    basic={ true }
-                                    color="red"
-                                    onClick={ handleTerminateAllUserSessionsClick }
-                                >
-                                    { t("common:terminateAll") }
-                                </Button>
-                            </Menu.Menu>
-                        </Menu>
+                        <Button
+                            className="borderless-button"
+                            basic={ true }
+                            color="red"
+                            onClick={ handleTerminateAllUserSessionsClick }
+                        >
+                            { t("common:terminateAll") }
+                        </Button>
                     )
                     : null
             }
+        >
             <UserSessionsList
                 onTerminateUserSessionClick={ handleTerminateUserSessionClick }
                 onUserSessionDetailClick={ handleSessionDetailClick }

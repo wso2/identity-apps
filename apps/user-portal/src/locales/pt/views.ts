@@ -985,42 +985,42 @@ export const views: Views = {
                 fetchSessions: {
                     error: {
                         description: "{{description}}",
-                        message: "Erro ao recuperar a sessão do usuário"
+                        message: "Erro ao recuperar a sessão do IDP"
                     },
                     genericError: {
-                        description: "Não foi possível recuperar nenhuma sessão do usuário",
+                        description: "Não foi possível recuperar nenhuma sessão do IDP",
                         message: "Algo deu errado"
                     },
                     success: {
-                        description: "Recuperadas com sucesso as sessões do usuário",
-                        message: "Recuperação de sessão do usuário bem-sucedida"
+                        description: "Recuperadas com sucesso as sessões do IDP",
+                        message: "Recuperação de sessão IDP bem-sucedida"
                     }
                 },
                 terminateAllUserSessions: {
                     error: {
                         description: "{{description}}",
-                        message: "Não foi possível encerrar as sessões do usuário"
+                        message: "Não foi possível encerrar as sessões do IDP"
                     },
                     genericError: {
-                        description: "Ocorreu um erro ao encerrar as sessões do usuário",
-                        message: "Não foi possível encerrar as sessões do usuário"
+                        description: "Ocorreu um erro ao encerrar as sessões do IDP",
+                        message: "Não foi possível encerrar as sessões do IDP"
                     },
                     success: {
-                        description: "Terminou com êxito todas as sessões do usuário",
-                        message: "Terminou todas as sessões do usuário"
+                        description: "Terminou com êxito todas as sessões do IDP",
+                        message: "Terminou todas as sessões do IDP"
                     }
                 },
                 terminateUserSession: {
                     error: {
                         description: "{{description}}",
-                        message: "Não foi possível encerrar a sessão do usuário"
+                        message: "Não foi possível encerrar a sessão do IDP"
                     },
                     genericError: {
-                        description: "Ocorreu um erro ao encerrar a sessão do usuário",
-                        message: "Não foi possível encerrar a sessão do usuário"
+                        description: "Ocorreu um erro ao encerrar a sessão do IDP",
+                        message: "Não foi possível encerrar a sessão do IDP"
                     },
                     success: {
-                        description: "Encerrada com êxito a sessão do usuário",
+                        description: "Encerrada com êxito a sessão do IDP",
                         message: "Sessão finalizada com sucesso"
                     }
                 }
@@ -1145,14 +1145,14 @@ export const views: Views = {
         },
         userSessions: {
             actionTitles: {
-                empty: "Nenhuma sessão ativa",
+                empty: "Nenhuma sessão ativa do IDP",
                 terminateAll: "Terminar todas as sessões"
             },
-            description: "Esta é uma lista dos dispositivos que estão ativos em sua conta",
-            heading: "Sessões de usuário ativas",
+            description: "Revise todas as sessões IDP atualmente ativas em sua conta",
+            heading: "Sessões ativas do IDP",
             placeholders: {
                 emptySessionList: {
-                    heading: "Não há sessões ativas para este usuário"
+                    heading: "Não há sessões IDP ativas para este usuário"
                 }
             },
         }

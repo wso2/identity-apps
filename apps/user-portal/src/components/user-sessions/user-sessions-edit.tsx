@@ -19,7 +19,7 @@
 import moment from "moment";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, Grid, Icon, List, SemanticICONS, Table } from "semantic-ui-react";
+import { Divider, Grid, Icon, List, Responsive, SemanticICONS, Table } from "semantic-ui-react";
 import { UserSession } from "../../models";
 import { DangerZone, DangerZoneGroup, EditSection } from "../shared";
 import IBrowser = IUAParser.IBrowser;
@@ -150,7 +150,6 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                                             color="grey"
                                         />
                                         { browser.name }{ " " }{ browser.version }
-                                        { browser.name }{ " " }{ browser.version }
                                     </List.Description>
                                 </Grid.Column>
                             </Grid.Row>
@@ -185,8 +184,13 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                                             <Grid.Column width={ 5 }>
                                                 { t("common:applications") }
                                             </Grid.Column>
-                                            <Grid.Column width={ 11 }>
+                                            <Grid.Column mobile={ 16 } computer={ 11 }>
                                                 <List.Description>
+                                                    <Responsive
+                                                        maxWidth={ Responsive.onlyComputer.minWidth }
+                                                        as={ Divider }
+                                                        hidden
+                                                    />
                                                     <Table celled compact>
                                                         <Table.Header>
                                                             <Table.Row>

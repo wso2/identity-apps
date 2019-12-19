@@ -19,7 +19,7 @@
 import moment from "moment";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid, List, Table } from "semantic-ui-react";
+import { Button, Divider, Grid, List, Responsive, Table } from "semantic-ui-react";
 import { ApprovalStatus, ApprovalTaskSummary } from "../../models";
 import { EditSection } from "../shared";
 
@@ -154,6 +154,8 @@ export const ApprovalsEdit: FunctionComponent<ApprovalsEditProps> = (
                     ? (
                         <Button
                             default
+                            fluid={ window.innerWidth <= Responsive.onlyMobile.maxWidth }
+                            className="mb-1x"
                             onClick={ () => updateApprovalStatus(editingApproval.id, ApprovalStatus.CLAIM) }
                         >
                             { t("common:claim") }
@@ -162,16 +164,28 @@ export const ApprovalsEdit: FunctionComponent<ApprovalsEditProps> = (
                     : (
                         <Button
                             default
+                            fluid={ window.innerWidth <= Responsive.onlyMobile.maxWidth }
+                            className="mb-1x"
                             onClick={ () => updateApprovalStatus(editingApproval.id, ApprovalStatus.RELEASE) }
                         >
                             { t("common:release") }
                         </Button>
                     )
             }
-            <Button primary onClick={ () => updateApprovalStatus(editingApproval.id, ApprovalStatus.APPROVE) }>
+            <Button
+                primary
+                fluid={ window.innerWidth <= Responsive.onlyMobile.maxWidth }
+                className="mb-1x"
+                onClick={ () => updateApprovalStatus(editingApproval.id, ApprovalStatus.APPROVE) }
+            >
                 { t("common:approve") }
             </Button>
-            <Button negative onClick={ () => updateApprovalStatus(editingApproval.id, ApprovalStatus.REJECT) }>
+            <Button
+                negative
+                fluid={ window.innerWidth <= Responsive.onlyMobile.maxWidth }
+                className="mb-1x"
+                onClick={ () => updateApprovalStatus(editingApproval.id, ApprovalStatus.REJECT) }
+            >
                 { t("common:reject") }
             </Button>
         </>
@@ -280,8 +294,13 @@ export const ApprovalsEdit: FunctionComponent<ApprovalsEditProps> = (
                                             <Grid.Column width={ 5 }>
                                                 { t("common:assignees") }
                                             </Grid.Column>
-                                            <Grid.Column width={ 11 }>
+                                            <Grid.Column mobile={ 16 } computer={ 11 }>
                                                 <List.Description>
+                                                    <Responsive
+                                                        maxWidth={ Responsive.onlyComputer.minWidth }
+                                                        as={ Divider }
+                                                        hidden
+                                                    />
                                                     { assigneesTable(approval.details.assignees) }
                                                 </List.Description>
                                             </Grid.Column>
@@ -304,8 +323,13 @@ export const ApprovalsEdit: FunctionComponent<ApprovalsEditProps> = (
                                             <Grid.Column width={ 5 }>
                                                 { t("common:properties") }
                                             </Grid.Column>
-                                            <Grid.Column width={ 11 }>
+                                            <Grid.Column mobile={ 16 } computer={ 11 }>
                                                 <List.Description>
+                                                    <Responsive
+                                                        maxWidth={ Responsive.onlyComputer.minWidth }
+                                                        as={ Divider }
+                                                        hidden
+                                                    />
                                                     { propertiesTable(approval.details.properties) }
                                                 </List.Description>
                                             </Grid.Column>
@@ -328,7 +352,7 @@ export const ApprovalsEdit: FunctionComponent<ApprovalsEditProps> = (
                                             <Grid.Column width={ 5 }>
                                                 { " " }
                                             </Grid.Column>
-                                            <Grid.Column width={ 11 }>
+                                            <Grid.Column mobile={ 16 } computer={ 11 }>
                                                 { approvalActions(approval) }
                                             </Grid.Column>
                                         </Grid.Row>

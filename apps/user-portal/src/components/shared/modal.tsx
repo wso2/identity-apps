@@ -38,7 +38,8 @@ export const ModalComponent = (props: ModalComponentProps) => {
         primaryAction,
         secondaryAction,
         onPrimaryActionClick,
-        onSecondaryActionClick
+        onSecondaryActionClick,
+        ...rest
     } = props;
 
     const iconName = () => {
@@ -131,7 +132,7 @@ export const ModalComponent = (props: ModalComponentProps) => {
 
     return (
         <Modal
-            { ...props }
+            { ...rest }
             className="custom-modal"
             open={ open }
             onClose={ onClose }

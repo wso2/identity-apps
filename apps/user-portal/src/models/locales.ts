@@ -78,6 +78,7 @@ export interface Common {
     save: string;
     search: string;
     security: string;
+    showAll: string;
     showLess: string;
     showMore: string;
     showPassword: string;

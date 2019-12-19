@@ -24,6 +24,7 @@ import {
     Grid,
     Icon,
     List,
+    Responsive,
     SemanticICONS
 } from "semantic-ui-react";
 import { UserAgentParser } from "../../helpers";
@@ -144,7 +145,25 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
                                                 ? (
                                                     <Grid.Column width={ 5 } className="last-column">
                                                         <List.Content floated="right">
-                                                            <Button
+                                                            <Responsive
+                                                                as={ Button }
+                                                                maxWidth={ Responsive.onlyTablet.maxWidth }
+                                                                className="borderless-button"
+                                                                basic={ true }
+                                                                id={ index }
+                                                                onClick={ onUserSessionDetailClick }
+                                                            >
+                                                                <Icon
+                                                                    name={
+                                                                        userSessionsListActiveIndexes.includes(index)
+                                                                            ? "angle up"
+                                                                            : "angle down"
+                                                                    }
+                                                                />
+                                                            </Responsive>
+                                                            <Responsive
+                                                                as={ Button }
+                                                                minWidth={ Responsive.onlyTablet.maxWidth }
                                                                 icon
                                                                 basic
                                                                 id={ index }
@@ -170,7 +189,7 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
                                                                             </>
                                                                         )
                                                                 }
-                                                            </Button>
+                                                            </Responsive>
                                                         </List.Content>
                                                     </Grid.Column>
                                                 ) : null

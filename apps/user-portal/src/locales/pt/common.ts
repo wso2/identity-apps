@@ -77,6 +77,7 @@ export const common: Common = {
     save: "Salve",
     search: "Procurar",
     security: "Segurança",
+    showAll: "Mostre tudo",
     showLess: "Mostre menos",
     showMore: "Mostre mais",
     showPassword: "Mostrar senha",

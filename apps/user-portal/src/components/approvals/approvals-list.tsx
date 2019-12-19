@@ -18,7 +18,7 @@
 
 import React, { FunctionComponent, MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid, Icon, Label, List, SemanticCOLORS } from "semantic-ui-react";
+import { Button, Grid, Icon, Label, List, Responsive, SemanticCOLORS } from "semantic-ui-react";
 import { ApprovalStatus, ApprovalTaskSummary } from "../../models";
 import { ApprovalsEdit } from "./approvals-edit";
 
@@ -85,7 +85,25 @@ export const ApprovalsList: FunctionComponent<ApprovalsListProps> = (
                                     </Grid.Column>
                                     <Grid.Column width={ 5 } className="last-column">
                                         <List.Content floated="right">
-                                            <Button
+                                            <Responsive
+                                                as={ Button }
+                                                maxWidth={ Responsive.onlyTablet.maxWidth }
+                                                className="borderless-button"
+                                                basic={ true }
+                                                id={ approval.id }
+                                                onClick={ onApprovalDetailClick }
+                                            >
+                                                <Icon
+                                                    name={
+                                                        approvalsListActiveIndexes.includes(approval.id)
+                                                            ? "angle up"
+                                                            : "angle down"
+                                                    }
+                                                />
+                                            </Responsive>
+                                            <Responsive
+                                                as={ Button }
+                                                minWidth={ Responsive.onlyTablet.maxWidth }
                                                 icon
                                                 basic
                                                 id={ approval.id }
@@ -109,7 +127,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListProps> = (
                                                             </>
                                                         )
                                                 }
-                                            </Button>
+                                            </Responsive>
                                         </List.Content>
                                     </Grid.Column>
                                 </Grid.Row>

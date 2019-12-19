@@ -198,16 +198,6 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
 
         revokeConsentedApp(consent.consentReceiptID)
             .then(() => {
-                // Reset the list
-                resetConsentedAppList(true);
-
-                setConsentRevokeModalVisibility(false);
-
-                // If the revoked app is user portal, end the session.
-                if (isUserPortal === 0) {
-                    endUserSession();
-                }
-
                 onAlertFired({
                     description: t(
                         "views:components.consentManagement.notifications.revokeConsentedApp.success" +
@@ -218,6 +208,18 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                         "views:components.consentManagement.notifications.revokeConsentedApp" +
                         ".success.message")
                 });
+
+                // If the revoked app is user portal, end the session.
+                if (isUserPortal === 0) {
+                    endUserSession();
+
+                    return;
+                }
+
+                // Reset the list
+                resetConsentedAppList(true);
+
+                setConsentRevokeModalVisibility(false);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.detail) {

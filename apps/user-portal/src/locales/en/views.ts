@@ -970,42 +970,42 @@ export const views: Views = {
                 fetchSessions: {
                     error: {
                         description: "{{description}}",
-                        message: "Error retrieving user session"
+                        message: "Error retrieving IDP session"
                     },
                     genericError: {
-                        description: "Couldn't retrieve any user sessions",
+                        description: "Couldn't retrieve any IDP sessions",
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "Successfully retrieved the user sessions",
-                        message: "User session retrieval successful"
+                        description: "Successfully retrieved the IDP sessions",
+                        message: "IDP session retrieval successful"
                     }
                 },
                 terminateAllUserSessions: {
                     error: {
                         description: "{{description}}",
-                        message: "Couldn't terminate user sessions"
+                        message: "Couldn't terminate IDP sessions"
                     },
                     genericError: {
-                        description: "Something went wrong while terminating user sessions",
-                        message: "Couldn't terminate user sessions"
+                        description: "Something went wrong while terminating IDP sessions",
+                        message: "Couldn't terminate IDP sessions"
                     },
                     success: {
-                        description: "Successfully terminated all user sessions",
-                        message: "Terminated all user sessions"
+                        description: "Successfully terminated all IDP sessions",
+                        message: "Terminated all IDP sessions"
                     }
                 },
                 terminateUserSession: {
                     error: {
                         description: "{{description}}",
-                        message: "Couldn't terminate the user session"
+                        message: "Couldn't terminate the IDP session"
                     },
                     genericError: {
-                        description: "Something went wrong while terminating the user session",
-                        message: "Couldn't terminate the user session"
+                        description: "Something went wrong while terminating the IDP session",
+                        message: "Couldn't terminate the IDP session"
                     },
                     success: {
-                        description: "Successfully terminated the user session",
+                        description: "Successfully terminated the IDP session",
                         message: "Session terminate success"
                     }
                 }
@@ -1133,14 +1133,14 @@ export const views: Views = {
         },
         userSessions: {
             actionTitles: {
-                empty: "No active sessions",
+                empty: "No active IDP sessions",
                 terminateAll: "Terminate all sessions"
             },
-            description: "Review all devices that are currently active on your account",
-            heading: "Active user sessions",
+            description: "Review all the identity provider sessions that are currently active on your account",
+            heading: "Active IDP sessions",
             placeholders: {
                 emptySessionList: {
-                    heading: "There are no active sessions for this user"
+                    heading: "There are no active IDP sessions for this user"
                 }
             },
         }

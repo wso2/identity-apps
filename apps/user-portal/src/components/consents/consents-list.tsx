@@ -18,10 +18,10 @@
 
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid, Icon, List } from "semantic-ui-react";
+import { Button, Grid, Icon, List, Responsive } from "semantic-ui-react";
 import { ConsentedAppIcon } from "../../configs";
 import { ConsentInterface, ConsentState, RevokedClaimInterface } from "../../models";
-import { toTitleCase } from "../../utils";
+import { toSentenceCase } from "../../utils";
 import { ThemeIcon } from "../shared";
 import { AppConsentEdit } from "./consent-edit";
 
@@ -101,7 +101,7 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
                                                         className={ `active-label ${ resolveStateClassname(
                                                             consent.state) }` }
                                                     />
-                                                            { toTitleCase(consent.state) }
+                                                            { toSentenceCase(consent.state) }
                                                         </p>
                                                     </List.Description>
                                                 </List.Content>
@@ -111,7 +111,28 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
                                                     ? (
                                                         <Grid.Column width={ 5 } className="last-column">
                                                             <List.Content floated="right">
-                                                                <Button
+                                                                <Responsive
+                                                                    as={ Button }
+                                                                    maxWidth={ Responsive.onlyTablet.maxWidth }
+                                                                    className="borderless-button"
+                                                                    basic={ true }
+                                                                    onClick={
+                                                                        () => onConsentDetailClick(
+                                                                            index, consent.consentReceiptID
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <Icon
+                                                                        name={
+                                                                            consentListActiveIndexes.includes(index)
+                                                                                ? "angle up"
+                                                                                : "angle down"
+                                                                        }
+                                                                    />
+                                                                </Responsive>
+                                                                <Responsive
+                                                                    as={ Button }
+                                                                    minWidth={ Responsive.onlyTablet.maxWidth }
                                                                     icon
                                                                     basic
                                                                     labelPosition="right"
@@ -140,7 +161,7 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
                                                                                 </>
                                                                             )
                                                                     }
-                                                                </Button>
+                                                                </Responsive>
                                                             </List.Content>
                                                         </Grid.Column>
                                                     ) : null
