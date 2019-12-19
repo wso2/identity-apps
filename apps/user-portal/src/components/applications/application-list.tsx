@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { FunctionComponent } from "react";
+import React, { Fragment, FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
 import { EmptyPlaceholderIllustrations } from "../../configs";
@@ -104,19 +104,24 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
                 {
                     (apps && apps.length && apps.length > 0)
                         ? apps.map((app) => (
-                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 5 } key={ app.id }>
-                                <ApplicationListItem
-                                    app={ app }
-                                    showFavouriteIcon={ showFavourites }
-                                    onAppNavigate={ onAppNavigate }
-                                />
-                            </Grid.Column>
-                        ))
+                            <Fragment key={ app.id }>
+                                { app.name !== "USER_PORTAL" && (
+                                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 5 }>
+                                        <ApplicationListItem
+                                            app={ app }
+                                            showFavouriteIcon={ showFavourites }
+                                            onAppNavigate={ onAppNavigate }
+                                        />
+                                    </Grid.Column>
+                                ) }
+                            </Fragment>
+                            )
+                        )
                         : !loading && (
-                        <Grid.Column width={ 16 }>
-                            { showPlaceholders() }
-                        </Grid.Column>
-                    )
+                            <Grid.Column width={ 16 }>
+                                { showPlaceholders() }
+                            </Grid.Column>
+                        )
                 }
             </Grid.Row>
         </Grid>
