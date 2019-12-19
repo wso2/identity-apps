@@ -942,7 +942,8 @@ export const views: Views = {
             }
         },
         userAvatar: {
-            infoPopover: "This image has been retrieved from <1>Gravatar</1> service."
+            infoPopover: "This image has been retrieved from <1>Gravatar</1> service.",
+            urlUpdateHeader: "Enter an image URL to set your profile picture"
         },
         userSessions: {
             browserAndOS: "{{browser}} on {{os}} {{version}}",
