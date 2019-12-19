@@ -87,12 +87,12 @@ export const deleteDevice = (credentialId): Promise<any> => {
  */
 export const startFidoFlow = (): Promise<any> => {
     const requestConfig = {
+        data: { appId: window.location.origin },
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/x-www-form-urlencoded"
         },
         method: HttpMethods.POST,
-        data: { appId: window.location.origin },
         url: ServiceResourcesEndpoint.fidoStart
     };
 
