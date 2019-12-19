@@ -76,6 +76,7 @@ export const common: Common = {
     save: "සුරකින්න",
     search: "සොයන්න",
     security: "ආරක්ෂාව",
+    showAll: "සියල්ල පෙන්වන්න",
     showLess: "අඩුවෙන් පෙන්වන්න",
     showMore: "වැඩිදුර තොරතුරු",
     showPassword: "මුරපදය පෙන්වන්න",
