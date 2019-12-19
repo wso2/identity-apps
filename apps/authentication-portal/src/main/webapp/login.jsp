@@ -103,7 +103,12 @@
         String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
         Gson gson = new Gson();
         Map<String, Object> parameters = gson.fromJson(contextProperties, Map.class);
-        username = (String) parameters.get("username");
+        if (parameters != null) {
+            username = (String) parameters.get("username");
+        } else {
+            String redirectURL = "error.do";
+            response.sendRedirect(redirectURL);
+        }
     }
 %>
 
