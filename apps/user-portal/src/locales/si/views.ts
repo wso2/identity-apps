@@ -963,43 +963,43 @@ export const views: Views = {
                 fetchSessions: {
                     error: {
                         description: "{{description}}",
-                        message: "පරිශීලක සැසිය ලබා ගැනීමේ දෝෂයකි"
+                        message: "IDP සැසිය ලබා ගැනීමේ දෝෂයකි"
                     },
                     genericError: {
-                        description: "කිසිදු පරිශීලක සැසියක් ලබා ගැනීමට නොහැකි විය",
-                        message: "දෝෂයක් ඇතිවිය!!!"
+                        description: "කිසිදු IDP සැසියක් ලබා ගැනීමට නොහැකි විය",
+                        message: "දෝෂයක් ඇතිවිය"
                     },
                     success: {
-                        description: "පරිශීලක සැසි සාර්ථකව ලබා ගන්නා ලදි",
-                        message: "පරිශීලක සැසිය නැවත ලබා ගැනීම සාර්ථකයි"
+                        description: "IDP සැසි සාර්ථකව ලබා ගන්නා ලදි",
+                        message: "IDP සැසිය නැවත ලබා ගැනීම සාර්ථකයි"
                     }
                 },
                 terminateAllUserSessions: {
                     error: {
                         description: "{{description}}",
-                        message: "පරිශීලක සැසි අවසන් කිරීමට නොහැකි විය"
+                        message: "IDP සැසි අවසන් කිරීමට නොහැකි විය"
                     },
                     genericError: {
-                        description: "පරිශීලක සැසි අවසන් කිරීමේදී දෝෂයක් ඇතිවී ඇත.",
-                        message: "පරිශීලක සැසි අවසන් කිරීමට නොහැකි විය"
+                        description: "IDP සැසි අවසන් කිරීමේදී දෝෂයක් ඇතිවී ඇත.",
+                        message: "IDP සැසි අවසන් කිරීමට නොහැකි විය"
                     },
                     success: {
-                        description: "සියලුම පරිශීලක සැසි සාර්ථකව අවසන් කරන ලදි",
-                        message: "සියලුම පරිශීලක සැසි අවසන් කරන ලදි"
+                        description: "සියලුම IDP සැසි සාර්ථකව අවසන් කරන ලදි",
+                        message: "සියලුම IDP සැසි අවසන් කරන ලදි"
                     }
                 },
                 terminateUserSession: {
                     error: {
                         description: "{{description}}",
-                        message: "පරිශීලක සැසිය අවසන් කිරීමට නොහැකි විය"
+                        message: "IDP සැසිය අවසන් කිරීමට නොහැකි විය"
                     },
                     genericError: {
-                        description: "පරිශීලක සැසි අවසන් කිරීමේදී දෝෂයක් ඇතිවී ඇත.",
-                        message: "පරිශීලක සැසිය අවසන් කිරීමට නොහැකි විය"
+                        description: "IDP සැසි අවසන් කිරීමේදී දෝෂයක් ඇතිවී ඇත.",
+                        message: "IDP සැසිය අවසන් කිරීමට නොහැකි විය"
                     },
                     success: {
-                        description: "පරිශීලක සැසිය සාර්ථකව අවසන් කරන ලදි",
-                        message: "පරිශීලක සැසිය සාර්ථකයි"
+                        description: "IDP සැසිය සාර්ථකව අවසන් කරන ලදි",
+                        message: "සාර්ථකයි"
                     }
                 }
             }
@@ -1129,14 +1129,14 @@ export const views: Views = {
         },
         userSessions: {
             actionTitles: {
-                empty: "සක්‍රීය සැසි නොමැත",
-                terminateAll: "සියලුම සැසි අවසන් කරන්න"
+                empty: "සක්‍රීය IDP සැසි නොමැත",
+                terminateAll: "සියලුම IDP සැසි අවසන් කරන්න"
             },
-            description: "මෙය ඔබගේ ගිණුමේ සක්‍රියව ඇති උපාංග ලැයිස්තුවකි",
-            heading: "සක්‍රීය පරිශීලක සැසි",
+            description: "මෙය ඔබගේ ගිණුමේ සක්‍රියව IDP සැසි ලැයිස්තුවකි",
+            heading: "සක්‍රීය IDP සැසි",
             placeholders: {
                 emptySessionList: {
-                    heading: "මෙම පරිශීලකයා සඳහා සක්‍රීය සැසි නොමැත"
+                    heading: "සක්‍රීය IDP සැසි නොමැත"
                 }
             },
         }
