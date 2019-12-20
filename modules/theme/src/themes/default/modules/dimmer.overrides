@@ -20,6 +20,22 @@
 .dimmable{
      &.circular{
          border-radius:50%;
+
+         &.user-avatar {
+             .upload-button {
+                 box-shadow: none;
+                 margin-right: 0 !important;
+
+                 .icon {
+                    color: @white !important;
+                    margin-right: 0 !important;
+                 }
+
+                 &:hover, &:active, &:focus {
+                     background: transparent !important;
+                 }
+             }
+         }
      }
  }
  

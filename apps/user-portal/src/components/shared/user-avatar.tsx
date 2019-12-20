@@ -21,7 +21,7 @@ import { isEmpty } from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Dimmer, Form, Modal, Popup } from "semantic-ui-react";
+import { Button, Dimmer, Form, Icon, Modal, Popup } from "semantic-ui-react";
 import { updateProfileInfo } from "../../api";
 import { ThirdPartyLogos } from "../../configs";
 import * as UIConstants from "../../constants/ui-constants";
@@ -308,7 +308,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
                         showEdit
                             ? (
                                 <Dimmer.Dimmable
-                                    className="circular"
+                                    className="circular user-avatar"
                                     onMouseOver={ () => { setShowEditOverlay(true); } }
                                     onMouseOut={ () => { setShowEditOverlay(false); } }
                                     blurring
@@ -317,9 +317,12 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
                                     <Dimmer active={ showEditOverlay }>
                                         <Button
                                             circular
-                                            icon="pencil"
+                                            basic
+                                            className="upload-button"
                                             onClick={ () => { setShowEditModal(true); } }
-                                        />
+                                        >
+                                            <Icon name="camera" size="large" />
+                                        </Button>
                                     </Dimmer>
                                     { avatar }
                                 </Dimmer.Dimmable>
