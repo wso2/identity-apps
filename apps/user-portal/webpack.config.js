@@ -64,7 +64,10 @@ module.exports = (env) => {
                                 "pageEncoding=\"UTF-8\" %>",
                 importUtil: "<%@ page import=\"" + 
                                 "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>",
-                serverUrl: "<%=getServerURL(\"\", true, true)%>"
+                serverUrl: "<%=getServerURL(\"\", true, true)%>",
+                importTenantPrefix: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy.MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>",
+                tenantDelimiter: "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"",
+                tenantPrefix: '<%=TENANT_AWARE_URL_PREFIX%>'
             });
         }
         else {
