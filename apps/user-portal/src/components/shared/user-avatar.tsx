@@ -153,6 +153,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
      */
     const avatar = (
         <Avatar
+            avatar
             avatarType="user"
             bordered={ false }
             image={
