@@ -254,4 +254,23 @@
             }
         }
     }
+    &.circular.user-image {
+        .wrapper {
+            height: 0;
+            padding: 100% 0 0 0;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            background: @dustyGray;
+            
+            img {
+                position: absolute;
+                top: 0;
+                height: 100%;
+                width: auto;
+                max-width: max-content;
+            }
+        }
+    }
 }
