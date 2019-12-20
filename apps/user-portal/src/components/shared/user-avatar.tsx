@@ -41,7 +41,6 @@ interface UserAvatarProps extends AvatarProps {
     profileUrl?: string;
     urlSchema?: ProfileSchema;
     onAlertFired?: (alert: AlertInterface) => void;
-
 }
 
 /**
@@ -52,6 +51,7 @@ enum Error {
     VALIDATION,
     NONE
 }
+
 /**
  * User Avatar component.
  *
@@ -71,6 +71,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
         onAlertFired,
         ...rest
     } = props;
+
     const [userImage, setUserImage] = useState(null);
     const [showPopup, setShowPopup] = useState(false);
     const [showEditOverlay, setShowEditOverlay] = useState(false);
@@ -211,6 +212,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
      * @param event
      */
     const handleSubmit = (event: React.MouseEvent) => {
+
         if (isEmpty(url)) {
             setUrlError(Error.REQUIRED);
         } else if (!FormValidation.url(url)) {

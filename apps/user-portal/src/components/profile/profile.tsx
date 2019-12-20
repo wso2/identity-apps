@@ -80,13 +80,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
                 }
             });
+
         setProfileSchema(sortedSchemas);
+
         const url = sortedSchemas.filter((schema: ProfileSchema) => {
             return schema.name === "profileUrl";
         });
+
         if (sortedSchemas.length > 0) {
             setUrlSchema(url[0]);
         }
+
     }, [profileDetails.profileSchemas]);
 
     /**
@@ -95,8 +99,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     useEffect(() => {
         if (!isEmpty(profileSchema) && !isEmpty(profileDetails) && !isEmpty(profileDetails.profileInfo)) {
             const tempProfileInfo: Map<string, string> = new Map<string, string>();
+
             profileSchema.forEach((schema: ProfileSchema) => {
                 const schemaNames = schema.name.split(".");
+
                 if (schemaNames.length === 1) {
                     schemaNames[0] === "emails"
                         ? tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]][0] as string)
@@ -115,6 +121,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     }
                 }
             });
+
             setProfileInfo(tempProfileInfo);
         }
     }, [profileSchema, profileDetails.profileInfo]);
@@ -137,7 +144,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         };
 
         let value = {};
+
         const schemaNames = formName.split(".");
+
         if (schemaNames.length === 1) {
             value = schemaNames[0] === "emails"
                 ? { emails: [values.get(formName)] }
@@ -212,6 +221,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             const fieldName = t("views:components.profile.fields." + schema.name.replace(".", "_"),
                 { defaultValue: schema.displayName }
             );
+
             return (
                 <EditSection>
                     <Grid>
