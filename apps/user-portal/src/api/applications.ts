@@ -54,7 +54,20 @@ export const fetchApplications = (
 
     return httpClient.request(requestConfig)
         .then((response) => {
-            return Promise.resolve(response.data as ApplicationList);
+            let applications = [];
+
+            if (response
+                && response.data
+                && response.data.applications
+                && response.data.applications.length
+                && response.data.applications.length > 0) {
+                applications = response.data.applications.filter((app) => app.name !== GlobalConfig.applicationName);
+            }
+
+            return Promise.resolve({
+                ...response.data,
+                applications
+            });
         })
         .catch((error) => {
             return Promise.reject(error);
