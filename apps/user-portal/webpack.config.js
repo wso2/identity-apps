@@ -51,6 +51,34 @@ module.exports = (env) => {
     const titleText = "WSO2 Identity Server";
     const copyrightText = `${titleText} \u00A9 ${ new Date().getFullYear() }`;
 
+    const compileAppIndex = () => {
+        if (env.NODE_ENV === "prod") {
+            return new HtmlWebpackPlugin({
+                filename: path.join(distFolder, "index.jsp"),
+                template: path.join(__dirname, "src", "index.jsp"),
+                hash: true,
+                favicon: faviconImage,
+                title: titleText,
+                publicPath: publicPath,
+                contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"" + 
+                                "pageEncoding=\"UTF-8\" %>",
+                importUtil: "<%@ page import=\"" + 
+                                "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>",
+                serverUrl: "<%=getServerURL(\"\", true, true)%>"
+            });
+        }
+        else {
+            return new HtmlWebpackPlugin({
+                filename: path.join(distFolder, "index.html"),
+                template: path.join(__dirname, "src", "index.html"),
+                hash: true,
+                favicon: faviconImage,
+                title: titleText,
+                publicPath: publicPath
+            });
+        }
+    };
+
     return {
         entry: ["./src/index.tsx"],
         output: {
@@ -152,25 +180,7 @@ module.exports = (env) => {
                     force: true
                 }
             ]),
-            new HtmlWebpackPlugin({
-                filename: path.join(distFolder, "index.html"),
-                template: path.join(__dirname, "src", "index.html"),
-                hash: true,
-                favicon: faviconImage,
-                title: titleText,
-                publicPath: publicPath
-            }),
-            new HtmlWebpackPlugin({
-                filename: path.join(distFolder, "index.jsp"),
-                template: path.join(__dirname, "src", "index.jsp"),
-                hash: true,
-                favicon: faviconImage,
-                title: titleText,
-                publicPath: publicPath,
-                contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" pageEncoding=\"UTF-8\" %>",
-                importUtil: "<%@ page import=\"static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>",
-                serverUrl: "<%=getServerURL(\"\", true, true)%>"
-            }),
+            compileAppIndex(),
             new webpack.DefinePlugin({
                 APP_BASENAME: JSON.stringify(basename),
                 APP_HOME_PATH: JSON.stringify(homePagePath),
