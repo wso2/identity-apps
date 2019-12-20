@@ -993,7 +993,8 @@ export const views: Views = {
             }
         },
         userAvatar: {
-            infoPopover: "இந்த படம் <1>Gravatar</1> சேவையிலிருந்து மீட்டெடுக்கப்பட்டது."
+            infoPopover: "இந்த படம் <1>Gravatar</1> சேவையிலிருந்து மீட்டெடுக்கப்பட்டது.",
+            urlUpdateHeader: "உங்கள் சுயவிவரப் படத்தை அமைக்க பட URL ஐ உள்ளிடவும்"
         },
         userSessions: {
             browserAndOS: "{{os}} {{version}} இல் {{browser}}",

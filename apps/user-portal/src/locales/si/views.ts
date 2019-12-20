@@ -944,7 +944,8 @@ export const views: Views = {
             }
         },
         userAvatar: {
-            infoPopover: "මෙම පින්තූරය <1>Gravatar</1> සේවාවෙන් ලබාගෙන ඇත."
+            infoPopover: "මෙම පින්තූරය <1>Gravatar</1> සේවාවෙන් ලබාගෙන ඇත.",
+            urlUpdateHeader: "ඔබගේ පැතිකඩ පින්තූරය සැකසීමට රූප URL එකක් ඇතුළත් කරන්න"
         },
         userSessions: {
             browserAndOS: "{{os}} {{version}} මත {{browser}}",

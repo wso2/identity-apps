@@ -660,6 +660,7 @@ export interface Views {
         };
         userAvatar: {
             infoPopover: string;
+            urlUpdateHeader: string;
         };
         userSessions: {
             browserAndOS: string;
