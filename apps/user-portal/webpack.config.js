@@ -60,7 +60,7 @@ module.exports = (env) => {
                 favicon: faviconImage,
                 title: titleText,
                 publicPath: publicPath,
-                contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"" + 
+                contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
                                 "pageEncoding=\"UTF-8\" %>",
                 importUtil: "<%@ page import=\"" + 
                                 "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>",
