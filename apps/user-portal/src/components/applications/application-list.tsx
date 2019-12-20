@@ -105,15 +105,13 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
                     (apps && apps.length && apps.length > 0)
                         ? apps.map((app) => (
                             <Fragment key={ app.id }>
-                                { app.name !== GlobalConfig.applicationName && (
-                                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 5 }>
-                                        <ApplicationListItem
-                                            app={ app }
-                                            showFavouriteIcon={ showFavourites }
-                                            onAppNavigate={ onAppNavigate }
-                                        />
-                                    </Grid.Column>
-                                ) }
+                                <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 5 }>
+                                    <ApplicationListItem
+                                        app={ app }
+                                        showFavouriteIcon={ showFavourites }
+                                        onAppNavigate={ onAppNavigate }
+                                    />
+                                </Grid.Column>
                             </Fragment>
                             )
                         )
