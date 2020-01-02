@@ -17,6 +17,7 @@
 -->
 
 <%= htmlWebpackPlugin.options.importUtil %>
+<%= htmlWebpackPlugin.options.importTenantPrefix %>
 
 <!doctype html>
 <html>
@@ -29,9 +30,34 @@
         <title><%= htmlWebpackPlugin.options.title %></title>
 
         <script>
-            window["runConfig"] = {
-                serverHost: "<%=htmlWebpackPlugin.options.serverUrl%>"
-            };
+            function getTenantDomain() {
+                var url = window.location.href;
+                if (url.includes(<%= htmlWebpackPlugin.options.tenantDelimiter %>)){
+                    var index = url.indexOf(<%= htmlWebpackPlugin.options.tenantDelimiter %>);
+                    var endIndex = url.indexOf("/", index+3);
+                    var domain = (endIndex != -1) ? url.substring(index+3, endIndex) : url.substring(index+3);
+                    return domain;
+                }
+                return null;
+            }
+
+            function getServerHost() {
+                var serverURL = "<%= htmlWebpackPlugin.options.serverUrl %>";
+                var tenantDomain = (getTenantDomain()) ? getTenantDomain().toString(): null;
+                var tenantPrefix = "<%= htmlWebpackPlugin.options.tenantPrefix %>";
+                var serverHost = null;
+                if (serverURL != null) {
+                    serverHost = serverURL;
+                    if (tenantDomain != null && tenantPrefix != null) {
+                        serverHost = serverHost + "/" + tenantPrefix + "/" + tenantDomain;
+                    }
+                    window["runConfig"] = {
+                        serverHost: serverHost
+                    };
+                }
+            }
+
+            getServerHost();
         </script>
     </head>
     <body>
