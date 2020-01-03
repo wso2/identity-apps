@@ -96,15 +96,6 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
     }, [image]);
 
     /**
-     * Get the profileUrl from the props and set the url state
-     */
-    useEffect(() => {
-        if (profileUrl) {
-            setUrl(profileUrl);
-        }
-    }, [profileUrl]);
-
-    /**
      * Resolves the top label image.
      *
      * @return {string}
@@ -225,6 +216,23 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
     };
 
     /**
+     * This function is called when the modal is closed
+     */
+    const closeModal = () => {
+        setShowEditModal(false);
+        setUrlError(Error.NONE);
+    };
+
+    /**
+     * This function is called when the button inside dimmer is clicked
+     * This shows the modal and sets the profileUrl.
+     */
+    const openModal = () => {
+        setShowEditModal(true);
+        setUrl(profileUrl);
+    };
+
+    /**
      * Show Edit Modal
      */
     const editModal = () => {
@@ -238,7 +246,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
                 dimmer="blurring"
                 size="tiny"
                 open={ showEditModal }
-                onClose={ () => { setShowEditModal(false); } }
+                onClose={ closeModal }
             >
                 <Modal.Content>
                     <h3>{ t("views:components.userAvatar.urlUpdateHeader") }</h3>
@@ -279,7 +287,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
                     </Form>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button className="link-button" onClick={ () => { setShowEditModal(false); } } >
+                    <Button className="link-button" onClick={ closeModal } >
                         { t("common:cancel").toString() }
                     </Button>
                     <Button primary={ true } onClick={ handleSubmit }>
@@ -319,7 +327,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
                                             circular
                                             basic
                                             className="upload-button"
-                                            onClick={ () => { setShowEditModal(true); } }
+                                            onClick={ openModal }
                                         >
                                             <Icon name="camera" size="large" />
                                         </Button>
