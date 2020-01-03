@@ -19,30 +19,6 @@
         "test": "jest --passWithNoTests",
         "clean": "rm -rf node_modules build npm"
     },
-    "jest": {
-        "globals": {
-            "APP_BASENAME": "user-portal",
-            "SERVER_HOST_DEFAULT": "https://localhost:9443",
-            "APP_HOME_PATH": "/overview",
-            "APP_LOGIN_PATH": "/login",
-            "CLIENT_ID_DEFAULT": "USER_PORTAL",
-            "CLIENT_HOST_DEFAULT": "https://localhost:9000",
-            "LOGIN_CALLBACK_URL": "https://localhost:9000/user-portal/login"
-        },
-        "transform": {
-            "^.+\\.tsx$": "ts-jest",
-            "^.+\\.ts$": "ts-jest",
-            "^.+\\.js$": "babel-jest",
-            "^.+\\.jsx$": "babel-jest"
-        },
-        "moduleNameMapper": {
-            "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test_configs/file_mock.js",
-            "\\.(css|less)$": "<rootDir>/test_configs/style_mock.js"
-        },
-        "setupFilesAfterEnv": [
-            "<rootDir>/test_configs/setup_test.ts"
-        ]
-    },
     "dependencies": {
         "@wso2is/authentication": "^0.1.168",
         "@wso2is/forms": "^0.1.168",

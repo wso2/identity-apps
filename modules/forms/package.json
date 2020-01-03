@@ -22,20 +22,5 @@
         "test": "jest"
     },
     "author": "WSO2",
-    "license": "Apache-2.0",
-    "jest": {
-        "transform": {
-            "^.+\\.tsx$": "ts-jest",
-            "^.+\\.ts$": "ts-jest",
-            "^.+\\.js$": "babel-jest",
-            "^.+\\.jsx$": "babel-jest"
-        },
-        "moduleNameMapper": {
-            "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test-configs/file-mock.js",
-            "\\.(css|less)$": "<rootDir>/test-configs/style-mock.js"
-        },
-        "setupFilesAfterEnv": [
-            "<rootDir>/test-configs/setup-test.ts"
-        ]
-    }
+    "license": "Apache-2.0"
 }
