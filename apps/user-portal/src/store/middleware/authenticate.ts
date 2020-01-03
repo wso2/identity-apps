@@ -39,7 +39,8 @@ export const handleSignIn = (state, dispatch) => {
     const loginSuccessRedirect = () => {
         const AuthenticationCallbackUrl = getAuthenticationCallbackUrl();
         const location = ((!AuthenticationCallbackUrl)
-            || (AuthenticationCallbackUrl === APP_LOGIN_PATH)) ? APP_HOME_PATH : AuthenticationCallbackUrl;
+            || (AuthenticationCallbackUrl === GlobalConfig.appLoginPath)) ?
+                GlobalConfig.appHomePath : AuthenticationCallbackUrl;
 
         history.push(location);
     };
@@ -123,7 +124,7 @@ export const handleSignOut = (state, dispatch) => {
             // TODO show error page.
         );
     } else {
-        history.push(APP_LOGIN_PATH);
+        history.push(GlobalConfig.appLoginPath);
     }
 };
 

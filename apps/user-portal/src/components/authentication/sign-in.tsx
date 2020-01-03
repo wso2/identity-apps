@@ -17,6 +17,7 @@
  */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { GlobalConfig } from "../../configs";
 import { USER_DENIED_CONSENT } from "../../constants";
 import { history } from "../../helpers";
 import { AppState } from "../../store";
@@ -48,8 +49,8 @@ export const SignIn = (props) => {
     const loginSuccessRedirect = () => {
         const AuthenticationCallbackUrl = getAuthenticationCallbackUrl();
         const location =
-            !AuthenticationCallbackUrl || AuthenticationCallbackUrl === APP_LOGIN_PATH
-                ? APP_HOME_PATH
+            !AuthenticationCallbackUrl || AuthenticationCallbackUrl === GlobalConfig.appLoginPath
+                ? GlobalConfig.appHomePath
                 : AuthenticationCallbackUrl;
 
         history.push(location);

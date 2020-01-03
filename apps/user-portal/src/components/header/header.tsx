@@ -33,6 +33,7 @@ import {
     Responsive
 } from "semantic-ui-react";
 import { getGravatarImage, switchAccount } from "../../api";
+import { GlobalConfig } from "../../configs";
 import { resolveUserDisplayName, resolveUsername } from "../../helpers";
 import { AlertLevels, AuthStateInterface, LinkedAccountInterface } from "../../models";
 import { AppState } from "../../store";
@@ -149,7 +150,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                     )
                     : null
                 }
-                <Menu.Item as={ Link } to={ APP_HOME_PATH } header>
+                <Menu.Item as={ Link } to={ GlobalConfig.appHomePath } header>
                     <Title style={ { marginTop: 0 } }/>
                 </Menu.Item>
                 { (

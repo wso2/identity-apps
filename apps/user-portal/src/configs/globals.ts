@@ -17,6 +17,9 @@
  */
 
 interface RuntimeConfigInterface {
+    appBaseName?: string;
+    appHomePath?: string;
+    appLoginPath: string;
     applicationName: string;
     clientHost?: string;
     clientID?: string;
@@ -30,13 +33,17 @@ interface RuntimeConfigInterface {
 const RUNTIME_CONFIG: RuntimeConfigInterface = window["runConfig"];
 
 export let GlobalConfig: RuntimeConfigInterface = {
+    appBaseName: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.appBaseName || APP_BASENAME) : APP_BASENAME,
+    appHomePath: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.appHomePath || APP_HOME_PATH) : APP_HOME_PATH,
+    appLoginPath: APP_LOGIN_PATH,
     applicationName: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.clientHost || APP_NAME) : APP_NAME,
     clientHost: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.clientHost || CLIENT_HOST_DEFAULT) : CLIENT_HOST_DEFAULT,
     clientID: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.clientID || CLIENT_ID_DEFAULT) : CLIENT_ID_DEFAULT,
     copyrightText: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.copyrightText || COPYRIGHT_TEXT_DEFAULT) : COPYRIGHT_TEXT_DEFAULT,
     loginCallbackUrl: (RUNTIME_CONFIG) ?
-        ((RUNTIME_CONFIG.serverHost + LOGIN_CALLBACK_URL) || (CLIENT_HOST_DEFAULT + LOGIN_CALLBACK_URL)) :
-        (CLIENT_HOST_DEFAULT + LOGIN_CALLBACK_URL),
+        ((RUNTIME_CONFIG.clientHost + LOGIN_CALLBACK_URL) ||
+            (CLIENT_HOST_DEFAULT + LOGIN_CALLBACK_URL)) :
+            (CLIENT_HOST_DEFAULT + LOGIN_CALLBACK_URL),
     serverHost: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.serverHost || SERVER_HOST_DEFAULT) : SERVER_HOST_DEFAULT,
     titleText: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.copyrightText || TITLE_TEXT_DEFAULT) : TITLE_TEXT_DEFAULT
 };

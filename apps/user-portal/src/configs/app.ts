@@ -43,7 +43,7 @@ interface ServiceResourcesType {
 }
 
 export const ServiceResourcesEndpoint: ServiceResourcesType = {
-    applications: `${GlobalConfig.serverHost}/t/carbon.super/api/users/v1/me/applications`,
+    applications: `${GlobalConfig.serverHost}/api/users/v1/me/applications`,
     associations: `${GlobalConfig.serverHost}/api/users/v1/me/associations`,
     authorize: `${GlobalConfig.serverHost}/oauth2/authorize`,
     challengeAnswers: `${GlobalConfig.serverHost}/api/users/v1/me/challenge-answers`,
@@ -56,11 +56,11 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     jwks: `${GlobalConfig.serverHost}/oauth2/jwks`,
     logout: `${GlobalConfig.serverHost}/oidc/logout`,
     me: `${GlobalConfig.serverHost}/scim2/Me`,
-    pendingApprovals: `${GlobalConfig.serverHost}/t/carbon.super/api/users/v1/me/approval-tasks`,
+    pendingApprovals: `${GlobalConfig.serverHost}/api/users/v1/me/approval-tasks`,
     profileSchemas: `${GlobalConfig.serverHost}/scim2/Schemas`,
     receipts: `${GlobalConfig.serverHost}/api/identity/consent-mgt/v1.0/consents/receipts`,
     revoke: `${GlobalConfig.serverHost}/oauth2/revoke`,
-    sessions: `${GlobalConfig.serverHost}/t/carbon.super/api/users/v1/me/sessions`,
+    sessions: `${GlobalConfig.serverHost}/api/users/v1/me/sessions`,
     token: `${GlobalConfig.serverHost}/oauth2/token`,
     user: `${GlobalConfig.serverHost}/api/identity/user/v1.0/me`,
     wellKnown: `${GlobalConfig.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
