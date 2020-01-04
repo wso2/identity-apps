@@ -27,7 +27,8 @@ interface OIDCRequestParamsInterface {
     clientSecret?: string;
     enablePKCE: boolean;
     redirectUri: string;
-   scope?: string[];
+    scope?: string[];
+    serverHost: string;
 }
 ```
 * `clientId` Client id of the application.

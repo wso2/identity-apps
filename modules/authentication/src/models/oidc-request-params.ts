@@ -24,9 +24,10 @@ export interface OIDCRequestParamsInterface {
     clientHost: string;
     clientSecret?: string;
     enablePKCE: boolean;
+    prompt?: string;
     redirectUri: string;
     scope?: string[];
-    prompt?: string;
+    serverHost: string;
 }
 
 /**

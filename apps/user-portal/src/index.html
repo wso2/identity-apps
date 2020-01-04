@@ -25,8 +25,30 @@
         
         <title><%= htmlWebpackPlugin.options.title %></title>
 
+        <script>
+            const getTenantPath = () => {
+                const paths = window.location.pathname.split("/");
+                const tenantIndex = paths.indexOf("t");
+
+                if (tenantIndex > 0) {
+                    const tenantName = paths[tenantIndex + 1];
+                    return (tenantName) ? "/t/" + tenantName : "";
+                } else {
+                    return "";
+                }
+            };
+
+            // TODO: Added for testing purpose. Remove later
+            window["runConfig"] = {
+                appBaseName: getTenantPath() + "/user-portal",
+                clientHost: "https://localhost:9000" + getTenantPath(),
+                serverHost: "https://localhost:9443" + getTenantPath()
+            };
+        </script>
+
         <!-- runtime config -->
-        <script src="<%= htmlWebpackPlugin.options.publicPath %>/runtime-config.js"></script>
+        <!-- TODO: Re-enable when tenant support is fixed -->
+        <!-- <script src="<%= htmlWebpackPlugin.options.publicPath %>/runtime-config.js"></script> -->
         <!-- runtime config -->
     </head>
     <body>

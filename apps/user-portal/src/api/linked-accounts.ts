@@ -150,7 +150,7 @@ export const switchAccount = (account: LinkedAccountInterface): Promise<any> => 
         "userstore-domain": account.userStoreDomain
     };
 
-    return SignInUtil.sendAccountSwitchRequest(requestParams, GlobalConfig.clientHost)
+    return SignInUtil.sendAccountSwitchRequest(requestParams, GlobalConfig.clientHost, GlobalConfig.serverHost)
         .then((response) => {
             AuthenticateSessionUtil.initUserSession(response,
                 SignInUtil.getAuthenticatedUser(response.idToken));
