@@ -32,7 +32,9 @@ module.exports = (env) => {
      * Deployment configurations
      */
     const serverHostDefault = "https://localhost:9443";
+    const serverOriginDefault = serverHostDefault;
     const clientHostDefault = env.NODE_ENV === "prod" ? serverHostDefault : `https://localhost:${devServerPort}`;
+    const clientOriginDefault = clientHostDefault;
     const clientIdDefault = "USER_PORTAL";
     const applicationName = "User Portal";
 
@@ -192,8 +194,10 @@ module.exports = (env) => {
                 COPYRIGHT_TEXT_DEFAULT: JSON.stringify(copyrightText),
                 CLIENT_ID_DEFAULT: JSON.stringify(clientIdDefault),
                 CLIENT_HOST_DEFAULT: JSON.stringify(clientHostDefault),
+                CLIENT_ORIGIN_DEFAULT: JSON.stringify(clientOriginDefault),
                 LOGIN_CALLBACK_URL: JSON.stringify(externalLoginCallbackURL),
                 SERVER_HOST_DEFAULT: JSON.stringify(serverHostDefault),
+                SERVER_ORIGIN_DEFAULT: JSON.stringify(serverOriginDefault),
                 TITLE_TEXT_DEFAULT: JSON.stringify(titleText),
                 "typeof window": JSON.stringify("object"),
                 "process.env": {

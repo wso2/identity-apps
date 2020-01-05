@@ -26,29 +26,54 @@
         <title><%= htmlWebpackPlugin.options.title %></title>
 
         <script>
-            const getTenantPath = () => {
-                const paths = window.location.pathname.split("/");
-                const tenantIndex = paths.indexOf("t");
+            var getTenantPrefix = function(tenantName) {
+                return "t";
+            };
+
+            var getTenantName = function() {
+                var paths = window.location.pathname.split("/");
+                var tenantIndex = paths.indexOf(getTenantPrefix());
 
                 if (tenantIndex > 0) {
-                    const tenantName = paths[tenantIndex + 1];
-                    return (tenantName) ? "/t/" + tenantName : "";
+                    var tenantName = paths[tenantIndex + 1];
+                    return (tenantName) ? tenantName : "";
                 } else {
                     return "";
                 }
             };
 
-            // TODO: Added for testing purpose. Remove later
+            var getTenantPath = function(tenantName) {
+                return (tenantName !== "") ? "/" + getTenantPrefix() + "/" + tenantName : "";
+            };
+
+            /**
+             * =====================================================
+             * Update below details according to your configuration
+             * =====================================================
+             */
+
+            // Update below with tenant user-portal application/service-provider details
+            var serverOriginAddress = "https://localhost:9443";
+            var clientOriginAddress = "https://localhost:" + window.location.port;
+
+            // Update below with tenant user-portal application/service-provider details
+            var tenantName = getTenantName();
+            var tenantUserPortalClientID = "";
+
+            /** ===================================================== */
+
             window["runConfig"] = {
-                appBaseName: getTenantPath() + "/user-portal",
-                clientHost: "https://localhost:9000" + getTenantPath(),
-                serverHost: "https://localhost:9443" + getTenantPath()
+                appBaseName: getTenantPath(tenantName) + "/user-portal",
+                clientHost: clientOriginAddress + getTenantPath(tenantName),
+                clientOrigin: clientOriginAddress,
+                clientID: (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ? tenantUserPortalClientID : "USER_PORTAL",
+                serverHost: serverOriginAddress + getTenantPath(tenantName),
+                serverOrigin: serverOriginAddress
             };
         </script>
 
         <!-- runtime config -->
-        <!-- TODO: Re-enable when tenant support is fixed -->
-        <!-- <script src="<%= htmlWebpackPlugin.options.publicPath %>/runtime-config.js"></script> -->
+        <script src="<%= htmlWebpackPlugin.options.publicPath %>/runtime-config.js"></script>
         <!-- runtime config -->
     </head>
     <body>

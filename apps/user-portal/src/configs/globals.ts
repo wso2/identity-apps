@@ -23,9 +23,11 @@ interface RuntimeConfigInterface {
     applicationName: string;
     clientHost?: string;
     clientID?: string;
+    clientOrigin?: string;
     copyrightText?: string;
     loginCallbackUrl: string;
     serverHost?: string;
+    serverOrigin?: string;
     titleText?: string;
 }
 
@@ -36,13 +38,15 @@ export let GlobalConfig: RuntimeConfigInterface = {
     appBaseName: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.appBaseName || APP_BASENAME) : APP_BASENAME,
     appHomePath: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.appHomePath || APP_HOME_PATH) : APP_HOME_PATH,
     appLoginPath: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.appLoginPath || APP_LOGIN_PATH) : APP_LOGIN_PATH,
-    applicationName: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.clientHost || APP_NAME) : APP_NAME,
+    applicationName: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.applicationName || APP_NAME) : APP_NAME,
     clientHost: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.clientHost || CLIENT_HOST_DEFAULT) : CLIENT_HOST_DEFAULT,
     clientID: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.clientID || CLIENT_ID_DEFAULT) : CLIENT_ID_DEFAULT,
+    clientOrigin: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.clientOrigin || CLIENT_ORIGIN_DEFAULT) : CLIENT_ORIGIN_DEFAULT,
     copyrightText: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.copyrightText || COPYRIGHT_TEXT_DEFAULT) : COPYRIGHT_TEXT_DEFAULT,
     loginCallbackUrl: (RUNTIME_CONFIG) ?
         (RUNTIME_CONFIG.clientHost || CLIENT_HOST_DEFAULT) + (RUNTIME_CONFIG.loginCallbackUrl || LOGIN_CALLBACK_URL) :
         LOGIN_CALLBACK_URL,
     serverHost: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.serverHost || SERVER_HOST_DEFAULT) : SERVER_HOST_DEFAULT,
+    serverOrigin: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.serverOrigin || SERVER_ORIGIN_DEFAULT) : SERVER_ORIGIN_DEFAULT,
     titleText: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.copyrightText || TITLE_TEXT_DEFAULT) : TITLE_TEXT_DEFAULT
 };

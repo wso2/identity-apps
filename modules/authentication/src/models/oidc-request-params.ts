@@ -27,7 +27,7 @@ export interface OIDCRequestParamsInterface {
     prompt?: string;
     redirectUri: string;
     scope?: string[];
-    serverHost: string;
+    serverOrigin: string;
 }
 
 /**
@@ -42,4 +42,6 @@ export interface AccountSwitchRequestParams {
     token: string;
     scope: string[];
     client_id: string;
+    clientHost: string;
+    serverOrigin: string;
 }

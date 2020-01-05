@@ -115,7 +115,7 @@ export const sendTokenRequest = (
                 return Promise.reject(new Error("Invalid status code received in the token response: "
                     + response.status));
             }
-            return validateIdToken(requestParams.clientId, response.data.id_token, requestParams.serverHost)
+            return validateIdToken(requestParams.clientId, response.data.id_token, requestParams.serverOrigin)
                 .then((valid) => {
                 if (valid) {
                     setSessionParameter(REQUEST_PARAMS, JSON.stringify(requestParams));
@@ -165,7 +165,7 @@ export const sendRefreshTokenRequest = (
                 return Promise.reject(new Error("Invalid status code received in the refresh token response: "
                     + response.status));
             }
-            return validateIdToken(requestParams.clientId, response.data.id_token, requestParams.serverHost)
+            return validateIdToken(requestParams.clientId, response.data.id_token, requestParams.serverOrigin)
                 .then((valid) => {
                     if (valid) {
                         const tokenResponse: TokenResponseInterface = {
@@ -255,9 +255,7 @@ export const getAuthenticatedUser = (idToken: string): AuthenticatedUserInterfac
  * @returns {Promise<TokenResponseInterface>} token response data or error.
  */
 export const sendAccountSwitchRequest = (
-    requestParams: AccountSwitchRequestParams,
-    clientHost: string,
-    serverHost: string
+    requestParams: AccountSwitchRequestParams
 ): Promise<TokenResponseInterface> => {
     const tokenEndpoint = getTokenEndpoint();
 
@@ -283,14 +281,14 @@ export const sendAccountSwitchRequest = (
     body.push(`scope=${ scope }`);
     body.push(`client_id=${ requestParams.client_id }`);
 
-    return axios.post(tokenEndpoint, body.join("&"), getTokenRequestHeaders(clientHost))
+    return axios.post(tokenEndpoint, body.join("&"), getTokenRequestHeaders(requestParams.clientHost))
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Invalid status code received in the token response: "
                     + response.status));
             }
 
-            return validateIdToken(requestParams.client_id, response.data.id_token, serverHost)
+            return validateIdToken(requestParams.client_id, response.data.id_token, requestParams.serverOrigin)
                 .then((valid) => {
                     if (valid) {
                         const tokenResponse: TokenResponseInterface = {
@@ -320,7 +318,7 @@ export const sendAccountSwitchRequest = (
  * @param {string} idToken id_token received from the IdP.
  * @returns {Promise<boolean>} whether token is valid.
  */
-const validateIdToken = (clientId: string, idToken: string,  serverHost: string): Promise<any> => {
+const validateIdToken = (clientId: string, idToken: string,  serverOrigin: string): Promise<any> => {
     const jwksEndpoint = getJwksUri();
 
     if (!jwksEndpoint || jwksEndpoint.trim().length === 0) {
@@ -336,7 +334,7 @@ const validateIdToken = (clientId: string, idToken: string,  serverHost: string)
 
             const jwk = getJWKForTheIdToken(idToken.split(".")[0], response.data.keys);
 
-            return Promise.resolve(isValidIdToken(idToken, jwk, clientId, serverHost));
+            return Promise.resolve(isValidIdToken(idToken, jwk, clientId, serverOrigin));
         }).catch((error) => {
             return Promise.reject(error);
         });

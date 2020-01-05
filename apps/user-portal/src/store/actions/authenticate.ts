@@ -165,7 +165,7 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
             enablePKCE: true,
             redirectUri: GlobalConfig.loginCallbackUrl,
             scope: [TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE],
-            serverHost: GlobalConfig.serverHost
+            serverOrigin: GlobalConfig.serverOrigin
         };
 
         if (consentDenied) {

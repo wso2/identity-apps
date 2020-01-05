@@ -104,11 +104,11 @@ export const getJWKForTheIdToken = (jwtHeader: string, keys: JWKInterface[]) => 
  * @param {string} clientID app identification.
  * @returns {any} whether the id_token is valid.
  */
-export const isValidIdToken = (idToken, jwk, clientID: string, serverHost: string) => {
+export const isValidIdToken = (idToken, jwk, clientID: string, serverOrigin: string) => {
     return KJUR.jws.JWS.verifyJWT(idToken, jwk, {
         alg: getSupportedSignatureAlgorithms(),
         aud: clientID,
         gracePeriod: 3600,
-        iss: [serverHost + SERVICE_RESOURCES.token]
+        iss: [serverOrigin + SERVICE_RESOURCES.token]
     });
 };
