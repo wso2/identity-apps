@@ -16,13 +16,15 @@
  * under the License.
  */
 
+import { Field, Forms } from "@wso2is/forms";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid, Icon, List, ModalContent } from "semantic-ui-react";
+import { Button, Form, Grid, Icon, List, ListItem, ModalContent } from "semantic-ui-react";
 import { deleteDevice, getMetaData, startFidoFlow, startFidoUsernamelessFlow } from "../../../api";
 import { MFAIcons } from "../../../configs";
 import { AlertInterface, AlertLevels } from "../../../models";
-import { ModalComponent, ThemeIcon } from "../../shared";
+import { FIDODevice } from "../../../models/fido-authenticator";
+import { EditSection, ModalComponent, ThemeIcon } from "../../shared";
 
 /**
  * Prop types for the associated accounts component.
@@ -39,8 +41,9 @@ interface FIDOAuthenticatorProps {
 export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> = (props: FIDOAuthenticatorProps):
     JSX.Element => {
     const { t } = useTranslation();
-    const [deviceList, setDeviceList] = useState([]);
+    const [deviceList, setDeviceList] = useState<FIDODevice[]>([]);
     const [isDeviceErrorModalVisible, setDeviceErrorModalVisibility] = useState(false);
+    const [editFIDO, setEditFido] = useState<Map<string, boolean>>();
     const { onAlertFired } = props;
 
     useEffect(() => {
@@ -48,7 +51,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     }, []);
 
     const getFidoMetaData = () => {
-        let devices = [];
+        let devices: FIDODevice[] = [];
         getMetaData()
             .then((response) => {
                 if (response.status === 200) {
@@ -123,9 +126,10 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             });
     };
 
-    const removeDevice = (event) => {
-        deleteDevice(event.target.id)
+    const removeDevice = (id: string) => {
+        deleteDevice(id)
             .then(() => {
+                cancelEdit(id);
                 fireSuccessNotification();
             }).catch(() => {
                 fireFailureNotification();
@@ -137,6 +141,26 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
      */
     const handleDeviceErrorModalClose = (): void => {
         setDeviceErrorModalVisibility(false);
+    };
+
+    /**
+     * Shows the edit form for the clicked FIDO device
+     * @param id
+     */
+    const showEdit = (id: string) => {
+        const tempEditFido: Map<string, boolean> = new Map(editFIDO);
+        tempEditFido.set(id, true);
+        setEditFido(tempEditFido);
+    };
+
+    /**
+     * Closes the edit form of the concerned FIDO device.
+     * @param id
+     */
+    const cancelEdit = (id: string) => {
+        const tempEditFido: Map<string, boolean> = new Map(editFIDO);
+        tempEditFido.set(id, false);
+        setEditFido(tempEditFido);
     };
 
     /**
@@ -216,37 +240,119 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                         >
                             {
                                 deviceList.map((device, index) => (
-                                    <List.Item className="inner-list-item" key={ index }>
-                                        <Grid padded={ true }>
-                                            <Grid.Row columns={ 2 } className="first-column">
-                                                <Grid.Column width={ 11 }>
-                                                    <List.Header className="with-left-padding">
-                                                        <Icon
-                                                            floated="right"
-                                                            className="list-icon"
-                                                            size="small"
-                                                            color="grey"
-                                                            name="dot circle outline"
-                                                        />
-                                                        { device.registrationTime }
-                                                    </List.Header>
-                                                </Grid.Column>
-                                                <Grid.Column width={ 5 } className="last-column">
-                                                    <List.Content floated="right">
-                                                        <Icon
-                                                            id={ device.credential.credentialId }
-                                                            link={ true }
-                                                            className="list-icon"
-                                                            size="large"
-                                                            color="red"
-                                                            name="trash alternate outline"
-                                                            onClick={ removeDevice }
-                                                        />
-                                                    </List.Content>
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                        </Grid>
-                                    </List.Item>
+                                    editFIDO && editFIDO.get(device.credential.credentialId)
+                                        ? (
+                                            <EditSection key={ device.credential.credentialId }>
+                                                <Grid>
+                                                    <Grid.Row columns={ 3 }>
+                                                        <Grid.Column width={ 4 }>
+
+                                                            { device.registrationTime }
+
+                                                        </Grid.Column>
+                                                        <Grid.Column width={ 10 }>
+                                                            <List.Item>
+                                                                <List.Content>
+                                                                    <Forms
+                                                                        onSubmit={
+                                                                            (values: Map<string, string>) => {}
+                                                                        }
+                                                                    >
+                                                                        <Field
+                                                                            label="Name"
+                                                                            value=""
+                                                                            required={ false }
+                                                                            requiredErrorMessage=""
+                                                                            name="fidoName"
+                                                                            placeholder="Enter a name"
+                                                                            type="text"
+                                                                        />
+                                                                        <Field
+                                                                            hidden={ true }
+                                                                            type="divider"
+                                                                        />
+                                                                        <Form.Group inline={ true }>
+                                                                            <Field
+                                                                                size="small"
+                                                                                type="submit"
+                                                                                value={ t("common:update").toString() }
+                                                                            />
+                                                                            <Field
+                                                                                className="link-button"
+                                                                                onClick={
+                                                                                    () => {
+                                                                                        cancelEdit(
+                                                                                            device.credential
+                                                                                                .credentialId
+                                                                                        );
+                                                                                    }
+                                                                                }
+                                                                                size="small"
+                                                                                type="button"
+                                                                                value={ t("common:cancel").toString() }
+                                                                            />
+                                                                        </Form.Group>
+                                                                    </Forms>
+                                                                </List.Content>
+                                                            </List.Item>
+                                                        </Grid.Column>
+                                                        <Grid.Column width={ 2 } textAlign="right">
+                                                            <Icon
+                                                                link={ true }
+                                                                name="trash alternate outline"
+                                                                color="red"
+                                                                size="large"
+                                                                onClick={
+                                                                    () => {
+                                                                        removeDevice(
+                                                                            device.credential
+                                                                                .credentialId
+                                                                        );
+                                                                    }
+                                                                }
+                                                            />
+                                                        </Grid.Column>
+                                                    </Grid.Row>
+                                                </Grid>
+                                            </EditSection>
+                                        )
+                                        : (
+                                            <List.Item className="inner-list-item" key={ index }>
+                                                <Grid padded={ true }>
+                                                    <Grid.Row columns={ 2 } className="first-column">
+                                                        <Grid.Column width={ 11 }>
+                                                            <List.Header className="with-left-padding">
+                                                                <Icon
+                                                                    floated="right"
+                                                                    className="list-icon"
+                                                                    size="small"
+                                                                    color="grey"
+                                                                    name="dot circle outline"
+                                                                />
+                                                                { device.registrationTime }
+                                                            </List.Header>
+                                                        </Grid.Column>
+                                                        <Grid.Column width={ 5 } className="last-column">
+                                                            <List.Content floated="right">
+                                                                <Icon
+                                                                    id={ device.credential.credentialId }
+                                                                    link={ true }
+                                                                    className="list-icon"
+                                                                    size="large"
+                                                                    color="grey"
+                                                                    name="pencil alternate"
+                                                                    onClick={
+                                                                        () => {
+                                                                            showEdit(device.credential.credentialId);
+                                                                        }
+                                                                    }
+                                                                />
+                                                            </List.Content>
+                                                        </Grid.Column>
+                                                    </Grid.Row>
+                                                </Grid>
+                                            </List.Item>
+                                        )
                                 ))
                             }
                         </List>
