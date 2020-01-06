@@ -19,13 +19,13 @@
 interface RuntimeConfigInterface {
     appBaseName?: string;
     appHomePath?: string;
-    appLoginPath: string;
-    applicationName: string;
+    appLoginPath?: string;
+    applicationName?: string;
     clientHost?: string;
     clientID?: string;
     clientOrigin?: string;
     copyrightText?: string;
-    loginCallbackUrl: string;
+    loginCallbackUrl?: string;
     serverHost?: string;
     serverOrigin?: string;
     titleText?: string;
