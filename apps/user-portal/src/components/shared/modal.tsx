@@ -53,8 +53,8 @@ export const ModalComponent = (props: ModalComponentProps) => {
                             cy="75"
                             r="50"
                             fill="none"
-                            stroke-width="5"
-                            stroke-miterlimit="10"
+                            strokeWidth="5"
+                            strokeMiterlimit="10"
                         />
                     </svg>
                     <svg className="positive-icon positive-stroke">
@@ -78,8 +78,8 @@ export const ModalComponent = (props: ModalComponentProps) => {
                             cy="75"
                             r="50"
                             fill="none"
-                            stroke-width="5"
-                            stroke-miterlimit="10"
+                            strokeWidth="5"
+                            strokeMiterlimit="10"
                         />
                     </svg>
                     <svg className="negative-icon negative-stroke">
@@ -102,8 +102,8 @@ export const ModalComponent = (props: ModalComponentProps) => {
                             cy="75"
                             r="50"
                             fill="none"
-                            stroke-width="5"
-                            stroke-miterlimit="10"
+                            strokeWidth="5"
+                            strokeMiterlimit="10"
                         />
                     </svg>
                     <svg className="warning-icon warning-stroke">
