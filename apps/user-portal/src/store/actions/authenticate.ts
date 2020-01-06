@@ -164,7 +164,8 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
             clientSecret: null,
             enablePKCE: true,
             redirectUri: GlobalConfig.loginCallbackUrl,
-            scope: [TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE]
+            scope: [TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE],
+            serverOrigin: GlobalConfig.serverOrigin
         };
 
         if (consentDenied) {

@@ -24,9 +24,10 @@ export interface OIDCRequestParamsInterface {
     clientHost: string;
     clientSecret?: string;
     enablePKCE: boolean;
+    prompt?: string;
     redirectUri: string;
     scope?: string[];
-    prompt?: string;
+    serverOrigin: string;
 }
 
 /**
@@ -41,4 +42,6 @@ export interface AccountSwitchRequestParams {
     token: string;
     scope: string[];
     client_id: string;
+    clientHost: string;
+    serverOrigin: string;
 }

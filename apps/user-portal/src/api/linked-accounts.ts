@@ -143,14 +143,16 @@ export const removeAllLinkedAccounts = (): Promise<any> => {
  */
 export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
     const requestParams = {
+        "clientHost": GlobalConfig.clientHost,
         "client_id": GlobalConfig.clientID,
         "scope": [ TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE ],
+        "serverOrigin": GlobalConfig.serverOrigin,
         "tenant-domain": account.tenantDomain,
         "username": account.username,
         "userstore-domain": account.userStoreDomain
     };
 
-    return SignInUtil.sendAccountSwitchRequest(requestParams, GlobalConfig.clientHost)
+    return SignInUtil.sendAccountSwitchRequest(requestParams)
         .then((response) => {
             AuthenticateSessionUtil.initUserSession(response,
                 SignInUtil.getAuthenticatedUser(response.idToken));

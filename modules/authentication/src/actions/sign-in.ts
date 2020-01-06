@@ -81,7 +81,10 @@ export const sendAuthorizationRequest = (requestParams: OIDCRequestParamsInterfa
  * @param {OIDCRequestParamsInterface} requestParams request parameters required for token request.
  * @returns {Promise<TokenResponseInterface>} token response data or error.
  */
-export const sendTokenRequest = (requestParams: OIDCRequestParamsInterface): Promise<TokenResponseInterface> => {
+export const sendTokenRequest = (
+    requestParams: OIDCRequestParamsInterface
+): Promise<TokenResponseInterface> => {
+
     const tokenEndpoint = getTokenEndpoint();
 
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
@@ -112,7 +115,8 @@ export const sendTokenRequest = (requestParams: OIDCRequestParamsInterface): Pro
                 return Promise.reject(new Error("Invalid status code received in the token response: "
                     + response.status));
             }
-            return validateIdToken(requestParams.clientId, response.data.id_token).then((valid) => {
+            return validateIdToken(requestParams.clientId, response.data.id_token, requestParams.serverOrigin)
+                .then((valid) => {
                 if (valid) {
                     setSessionParameter(REQUEST_PARAMS, JSON.stringify(requestParams));
                     const tokenResponse: TokenResponseInterface = {
@@ -139,8 +143,11 @@ export const sendTokenRequest = (requestParams: OIDCRequestParamsInterface): Pro
  * @param {string} refreshToken
  * @returns {Promise<TokenResponseInterface>} refresh token response data or error.
  */
-export const sendRefreshTokenRequest = (requestParams: OIDCRequestParamsInterface, refreshToken: string):
-    Promise<TokenResponseInterface> => {
+export const sendRefreshTokenRequest = (
+    requestParams: OIDCRequestParamsInterface,
+    refreshToken: string
+): Promise<TokenResponseInterface> => {
+
     const tokenEndpoint = getTokenEndpoint();
 
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
@@ -158,7 +165,7 @@ export const sendRefreshTokenRequest = (requestParams: OIDCRequestParamsInterfac
                 return Promise.reject(new Error("Invalid status code received in the refresh token response: "
                     + response.status));
             }
-            return validateIdToken(requestParams.clientId, response.data.id_token)
+            return validateIdToken(requestParams.clientId, response.data.id_token, requestParams.serverOrigin)
                 .then((valid) => {
                     if (valid) {
                         const tokenResponse: TokenResponseInterface = {
@@ -248,8 +255,7 @@ export const getAuthenticatedUser = (idToken: string): AuthenticatedUserInterfac
  * @returns {Promise<TokenResponseInterface>} token response data or error.
  */
 export const sendAccountSwitchRequest = (
-    requestParams: AccountSwitchRequestParams,
-    clientHost: string
+    requestParams: AccountSwitchRequestParams
 ): Promise<TokenResponseInterface> => {
     const tokenEndpoint = getTokenEndpoint();
 
@@ -275,14 +281,14 @@ export const sendAccountSwitchRequest = (
     body.push(`scope=${ scope }`);
     body.push(`client_id=${ requestParams.client_id }`);
 
-    return axios.post(tokenEndpoint, body.join("&"), getTokenRequestHeaders(clientHost))
+    return axios.post(tokenEndpoint, body.join("&"), getTokenRequestHeaders(requestParams.clientHost))
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Invalid status code received in the token response: "
                     + response.status));
             }
 
-            return validateIdToken(requestParams.client_id, response.data.id_token)
+            return validateIdToken(requestParams.client_id, response.data.id_token, requestParams.serverOrigin)
                 .then((valid) => {
                     if (valid) {
                         const tokenResponse: TokenResponseInterface = {
@@ -312,7 +318,7 @@ export const sendAccountSwitchRequest = (
  * @param {string} idToken id_token received from the IdP.
  * @returns {Promise<boolean>} whether token is valid.
  */
-const validateIdToken = (clientId: string, idToken: string): Promise<any> => {
+const validateIdToken = (clientId: string, idToken: string,  serverOrigin: string): Promise<any> => {
     const jwksEndpoint = getJwksUri();
 
     if (!jwksEndpoint || jwksEndpoint.trim().length === 0) {
@@ -328,7 +334,7 @@ const validateIdToken = (clientId: string, idToken: string): Promise<any> => {
 
             const jwk = getJWKForTheIdToken(idToken.split(".")[0], response.data.keys);
 
-            return Promise.resolve(isValidIdToken(idToken, jwk, clientId));
+            return Promise.resolve(isValidIdToken(idToken, jwk, clientId, serverOrigin));
         }).catch((error) => {
             return Promise.reject(error);
         });

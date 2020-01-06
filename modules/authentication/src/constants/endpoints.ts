@@ -16,17 +16,14 @@
  * under the License.
  */
 
-type ServiceEndpointURLType = string;
-
 interface ServiceResourcesType {
     jwks: string;
     token: string;
 }
 
-export const SERVICE_ENDPOINT: ServiceEndpointURLType = "https://localhost:9443";
 export const SERVICE_RESOURCES: ServiceResourcesType = {
-    jwks: `${SERVICE_ENDPOINT}/oauth2/jwks`,
-    token: `${SERVICE_ENDPOINT}/oauth2/token`
+    jwks: "/oauth2/jwks",
+    token: "/oauth2/token"
 };
 
 export const AUTHORIZATION_ENDPOINT = "authorization_endpoint";

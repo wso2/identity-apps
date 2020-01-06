@@ -25,6 +25,54 @@
         
         <title><%= htmlWebpackPlugin.options.title %></title>
 
+        <script>
+            var getTenantPrefix = function(tenantName) {
+                return "t";
+            };
+
+            var getTenantName = function() {
+                var paths = window.location.pathname.split("/");
+                var tenantIndex = paths.indexOf(getTenantPrefix());
+
+                if (tenantIndex > 0) {
+                    var tenantName = paths[tenantIndex + 1];
+                    return (tenantName) ? tenantName : "";
+                } else {
+                    return "";
+                }
+            };
+
+            var getTenantPath = function(tenantName) {
+                return (tenantName !== "") ? "/" + getTenantPrefix() + "/" + tenantName : "";
+            };
+
+            /**
+             * =====================================================
+             * Update below details according to your configuration
+             * =====================================================
+             */
+
+            // Update below with tenant user-portal application/service-provider details
+            var serverOriginAddress = "https://localhost:9443";
+            var clientOriginAddress = window.location.origin;
+
+            // Update below with tenant user-portal application/service-provider details
+            var tenantName = getTenantName();
+            var tenantUserPortalClientID = "";
+
+            /** ===================================================== */
+
+            window["runConfig"] = {
+                appBaseName: getTenantPath(tenantName) + "/user-portal",
+                clientHost: clientOriginAddress + getTenantPath(tenantName),
+                clientOrigin: clientOriginAddress,
+                clientID: (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ? 
+                    tenantUserPortalClientID : "USER_PORTAL",
+                serverHost: serverOriginAddress + getTenantPath(tenantName),
+                serverOrigin: serverOriginAddress
+            };
+        </script>
+
         <!-- runtime config -->
         <script src="<%= htmlWebpackPlugin.options.publicPath %>/runtime-config.js"></script>
         <!-- runtime config -->
