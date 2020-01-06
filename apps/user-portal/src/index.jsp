@@ -30,34 +30,52 @@
         <title><%= htmlWebpackPlugin.options.title %></title>
 
         <script>
-            function getTenantDomain() {
-                var url = window.location.href;
-                if (url.includes(<%= htmlWebpackPlugin.options.tenantDelimiter %>)){
-                    var index = url.indexOf(<%= htmlWebpackPlugin.options.tenantDelimiter %>);
-                    var endIndex = url.indexOf("/", index+3);
-                    var domain = (endIndex != -1) ? url.substring(index+3, endIndex) : url.substring(index+3);
-                    return domain;
-                }
-                return null;
-            }
+            var getTenantPrefix = function(tenantName) {
+                return  "<%= htmlWebpackPlugin.options.tenantPrefix %>";
+            };
 
-            function getServerHost() {
-                var serverURL = "<%= htmlWebpackPlugin.options.serverUrl %>";
-                var tenantDomain = (getTenantDomain()) ? getTenantDomain().toString(): null;
-                var tenantPrefix = "<%= htmlWebpackPlugin.options.tenantPrefix %>";
-                var serverHost = null;
-                if (serverURL != null) {
-                    serverHost = serverURL;
-                    if (tenantDomain != null && tenantPrefix != null) {
-                        serverHost = serverHost + "/" + tenantPrefix + "/" + tenantDomain;
-                    }
-                    window["runConfig"] = {
-                        serverHost: serverHost
-                    };
-                }
-            }
+            var getTenantName = function() {
+                var paths = window.location.pathname.split("/");
+                var tenantIndex = paths.indexOf(getTenantPrefix());
 
-            getServerHost();
+                if (tenantIndex > 0) {
+                    var tenantName = paths[tenantIndex + 1];
+                    return (tenantName) ? tenantName : "";
+                } else {
+                    return "";
+                }
+            };
+
+            var getTenantPath = function(tenantName) {
+                return (tenantName !== "") ? "/" + getTenantPrefix() + "/" + tenantName : "";
+            };
+
+            /**
+             * =====================================================
+             * Update below details according to your configuration
+             * =====================================================
+             */
+
+            // Update below with tenant user-portal application/service-provider details
+            var serverOriginAddress = "<%= htmlWebpackPlugin.options.serverUrl %>";
+            var clientOriginAddress = window.location.origin;
+
+            // Update below with tenant user-portal application/service-provider details
+            var tenantName = getTenantName();
+            var defaultUserPortalClientID = "USER_PORTAL";
+            var tenantUserPortalClientID = defaultUserPortalClientID + "_" + tenantName;
+
+            /** ===================================================== */
+
+            window["runConfig"] = {
+                appBaseName: getTenantPath(tenantName) + "/user-portal",
+                clientHost: clientOriginAddress + getTenantPath(tenantName),
+                clientOrigin: clientOriginAddress,
+                clientID: (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ?
+                    tenantUserPortalClientID : defaultUserPortalClientID,
+                serverHost: serverOriginAddress + getTenantPath(tenantName),
+                serverOrigin: serverOriginAddress
+            };
         </script>
     </head>
     <body>
