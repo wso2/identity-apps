@@ -115,7 +115,7 @@ export const startFidoFlow = (): Promise<any> => {
 };
 
 /**
- * Start registration flow of the FIDO device which suppports usernameless flow
+ * Start registration flow of the FIDO device which supports usernameless flow
  *
  * @return {Promise<any>} a promise containing the response.
  */
@@ -258,7 +258,7 @@ const connectToDevice = (requestId, credentialCreationOptions) => {
 };
 
 /**
- * This function receive the response from start-registration endpoint and convert the user attributes
+ * This function receives the response from start-registration endpoint and converts the user attributes
  * and the challenge attribute from base64url to a buffer array.
  *
  * @param request
@@ -273,12 +273,11 @@ const decodePublicKeyCredentialCreationOptions = (request) => {
     return {
         ...request,
         attestation: "direct",
-        user: {
-            ...request.user,
-            id: Decode(request.user.id),
-        },
-        // tslint:disable-next-line:object-literal-sort-keys
         challenge: Decode(request.challenge),
         excludeCredentials,
+        user: {
+            ...request.user,
+            id: Decode(request.user.id)
+        }
     };
 };
