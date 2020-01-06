@@ -56,7 +56,7 @@ export const onHttpRequestSuccess = (response: any) => {
  * @remarks
  * Axios throws a generic `Network Error` for 401 errors.
  * As a temporary solution, a check to see if an error code
- * is available has be used.
+ * is available has been used.
  * @see {@link https://github.com/axios/axios/issues/383}
  *
  * @param error - Http error.
@@ -81,11 +81,11 @@ export const onHttpRequestError = (error: any) => {
         return;
     }
 
-    // Terminate the session if the requests returns an un-authorized status code (401)
+    // Terminate the session if the requests return an un-authorized status code (401)
     // or a forbidden status code (403). NOTE: Axios is unable to handle 401 errors.
     // `!error.response` will usually catch the `401` error. Check the link in the doc comment.
     if (!error.response || error.response.status === 403 || error.response.status === 401) {
-        endUserSession();
+        endUserSessionWithoutLoops();
     }
 };
 
@@ -94,4 +94,25 @@ export const onHttpRequestError = (error: any) => {
  */
 export const onHttpRequestFinish = () => {
     store.dispatch(hideGlobalLoader());
+};
+
+/**
+ * Sets the time at which an auth error occurs in the session storage and calls `endUserSession()
+ * only if the current error takes place 10 seconds after the previous one. This helps avoid entering
+ * an infinite loop when a faulty api keeps returning auth errors.
+ */
+const endUserSessionWithoutLoops = () => {
+    if (!sessionStorage.getItem(ApplicationConstants.AUTH_ERROR_TIME)) {
+        sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
+    } else {
+        const currentTime = new Date().getTime();
+        const errorTime = parseInt(sessionStorage.getItem(ApplicationConstants.AUTH_ERROR_TIME), 10);
+        if (currentTime - errorTime >= 10000) {
+            sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
+            endUserSession();
+        } else {
+            sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
+            return;
+        }
+    }
 };

@@ -25,7 +25,7 @@ import { AlertInterface, AlertLevels } from "../../../models";
 import { ModalComponent, ThemeIcon } from "../../shared";
 
 /**
- * Proptypes for the associated accounts component.
+ * Prop types for the associated accounts component.
  */
 interface FIDOAuthenticatorProps {
     onAlertFired: (alert: AlertInterface) => void;
@@ -39,8 +39,8 @@ interface FIDOAuthenticatorProps {
 export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> = (props: FIDOAuthenticatorProps):
     JSX.Element => {
     const { t } = useTranslation();
-    const [ deviceList, setDeviceList ] = useState([]);
-    const [ isDeviceErrorModalVisible, setDeviceErrorModalVisibility ] = useState(false);
+    const [deviceList, setDeviceList] = useState([]);
+    const [isDeviceErrorModalVisible, setDeviceErrorModalVisibility] = useState(false);
     const { onAlertFired } = props;
 
     useEffect(() => {
@@ -48,19 +48,51 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     }, []);
 
     const getFidoMetaData = () => {
-        const devices = [];
+        let devices = [];
         getMetaData()
             .then((response) => {
                 if (response.status === 200) {
                     if (response.data.length > 0) {
-                        // tslint:disable-next-line:prefer-for-of
-                        for (let i = 0; i < response.data.length; i++) {
-                            devices.push(response.data[i]);
-                        }
+                        devices = [...response.data];
                     }
                     setDeviceList(devices);
                 }
+            })
+            .catch((error) => {
+                fireFailureNotification();
             });
+    };
+
+    /**
+     * This function fires a notification on success
+     */
+    const fireSuccessNotification = () => {
+        getFidoMetaData();
+
+        onAlertFired({
+            description: t(
+                "views:components.mfa.fido.notifications.startFidoFlow.success.description"
+            ),
+            level: AlertLevels.SUCCESS,
+            message: t(
+                "views:components.mfa.fido.notifications.startFidoFlow.success.message"
+            )
+        });
+    };
+
+    /**
+     * This function fires a notification on failure.
+     */
+    const fireFailureNotification = () => {
+        onAlertFired({
+            description: t(
+                "views:components.mfa.fido.notifications.startFidoFlow.genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: t(
+                "views:components.mfa.fido.notifications.startFidoFlow.genericError.message"
+            )
+        });
     };
 
     /**
@@ -71,28 +103,10 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         setDeviceErrorModalVisibility(false);
         startFidoFlow()
             .then(() => {
-                getFidoMetaData();
-
-                onAlertFired({
-                    description: t(
-                        "views:components.mfa.fido.notifications.startFidoFlow.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "views:components.mfa.fido.notifications.startFidoFlow.success.message"
-                    )
-                });
+                fireSuccessNotification();
             }).catch(() => {
-            onAlertFired({
-                description: t(
-                    "views:components.mfa.fido.notifications.startFidoFlow.genericError.description"
-                ),
-                level: AlertLevels.ERROR,
-                message: t(
-                    "views:components.mfa.fido.notifications.startFidoFlow.genericError.message"
-                )
+                fireFailureNotification();
             });
-        });
     };
 
     /**
@@ -103,46 +117,19 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         setDeviceErrorModalVisibility(false);
         startFidoUsernamelessFlow()
             .then(() => {
-                getFidoMetaData();
-
-                onAlertFired({
-                    description: t(
-                        "views:components.mfa.fido.notifications.startFidoFlow.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "views:components.mfa.fido.notifications.startFidoFlow.success.message"
-                    )
-                });
+                fireSuccessNotification();
             }).catch(() => {
-            setDeviceErrorModalVisibility(true);
-        });
+                setDeviceErrorModalVisibility(true);
+            });
     };
 
     const removeDevice = (event) => {
         deleteDevice(event.target.id)
             .then(() => {
-                getFidoMetaData();
-                onAlertFired({
-                    description: t(
-                        "views:components.mfa.fido.notifications.removeDevice.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "views:components.mfa.fido.notifications.removeDevice.success.message"
-                    )
-                });
+                fireSuccessNotification();
             }).catch(() => {
-            onAlertFired({
-                description: t(
-                    "views:components.mfa.fido.notifications.removeDevice.genericError.description"
-                ),
-                level: AlertLevels.ERROR,
-                message: t(
-                    "views:components.mfa.fido.notifications.removeDevice.genericError.description"
-                )
+                fireFailureNotification();
             });
-        });
     };
 
     /**
@@ -184,44 +171,44 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
 
     return (
         <>
-        <div>
-            <Grid padded={ true }>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column width={ 11 } className="first-column">
-                        <List.Content floated="left">
-                            <ThemeIcon
-                                icon={ MFAIcons.fingerprint }
-                                size="mini"
-                                twoTone={ true }
-                                transparent={ true }
-                                rounded={ true }
-                                relaxed={ true }
-                            />
-                        </List.Content>
-                        <List.Content>
-                            <List.Header>{ t("views:components.mfa.fido.heading") }</List.Header>
-                            <List.Description>
-                                { t("views:components.mfa.fido.description") }
-                            </List.Description>
-                        </List.Content>
-                    </Grid.Column>
-                    <Grid.Column width={ 5 } className="last-column">
-                        <List.Content floated="right">
-                            <Icon
-                                floated="right"
-                                link={ true }
-                                className="list-icon"
-                                size="small"
-                                color="grey"
-                                name="add"
-                                onClick={ addUsernamelessDevice }
-                            />
-                        </List.Content>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-            {
-                deviceList ? (
+            <div>
+                <Grid padded={ true }>
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column width={ 11 } className="first-column">
+                            <List.Content floated="left">
+                                <ThemeIcon
+                                    icon={ MFAIcons.fingerprint }
+                                    size="mini"
+                                    twoTone={ true }
+                                    transparent={ true }
+                                    rounded={ true }
+                                    relaxed={ true }
+                                />
+                            </List.Content>
+                            <List.Content>
+                                <List.Header>{ t("views:components.mfa.fido.heading") }</List.Header>
+                                <List.Description>
+                                    { t("views:components.mfa.fido.description") }
+                                </List.Description>
+                            </List.Content>
+                        </Grid.Column>
+                        <Grid.Column width={ 5 } className="last-column">
+                            <List.Content floated="right">
+                                <Icon
+                                    floated="right"
+                                    link={ true }
+                                    className="list-icon"
+                                    size="small"
+                                    color="grey"
+                                    name="add"
+                                    onClick={ addUsernamelessDevice }
+                                />
+                            </List.Content>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+                {
+                    deviceList ? (
                         <List
                             divided={ true }
                             verticalAlign="middle"
@@ -264,22 +251,22 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                             }
                         </List>
                     )
-                    :
-                    (
-                        <>
-                            <p style={ { fontSize: "12px" } }>
-                                <Icon
-                                    color="grey"
-                                    floated="left"
-                                    name="info circle"
-                                />
-                                You don't have any devices registered yet.
+                        :
+                        (
+                            <>
+                                <p style={ { fontSize: "12px" } }>
+                                    <Icon
+                                        color="grey"
+                                        floated="left"
+                                        name="info circle"
+                                    />
+                                    You don't have any devices registered yet.
                             </p>
-                        </>
-                    )
-            }
-        </div>
-        <div>{ deviceErrorModal() }</div>
+                            </>
+                        )
+                }
+            </div>
+            <div>{ deviceErrorModal() }</div>
         </>
     );
 };
