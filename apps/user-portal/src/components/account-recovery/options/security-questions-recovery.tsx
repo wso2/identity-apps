@@ -196,33 +196,6 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                 })
                 .catch((error) => {
                     fireNotificationOnError(error);
-                    onNotificationFired({
-                        description: error && error.data && error.data.details
-                            ? t(
-                                "views:components.accountRecovery.questionRecovery.notifications." +
-                                "updateQuestions.error.description",
-                                {
-                                    description: error.data.details
-                                }
-                            )
-                            : t(
-                                "views:components.accountRecovery.questionRecovery.notifications" +
-                                ".updateQuestions.genericError.description"
-                            ),
-                        message: error && error.data && error.data.details
-                            ? t(
-                                "views:components.accountRecovery.questionRecovery.notifications" +
-                                ".updateQuestions.error.message"
-                            )
-                            : t(
-                                "views:components.questionRecovery.notifications.updateQuestions." +
-                                "genericError.message"
-                            ),
-                        otherProps: {
-                            negative: true
-                        },
-                        visible: true
-                    });
                 });
         } else {
             addSecurityQs(data)
@@ -246,44 +219,10 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                             "addQuestions.success.message"
                         )
                     });
-                onNotificationFired({
-                    description: t(
-                        "views:components.questionRecovery.notifications.addQuestions.success.description"
-                    ),
-                    message: t("views:components.questionRecovery.notifications.addQuestions.success.message"),
-                    otherProps: {
-                        positive: true
-                    },
-                    visible: true
-                });
 
                 })
                 .catch((error) => {
                     fireNotificationOnError(error);
-            })
-            .catch((error) => {
-                onNotificationFired({
-                    description: error && error.data && error.data.details
-                        ? t(
-                            "views:components.questionRecovery.notifications.addQuestions.error.description",
-                            {
-                                description: error.data.details
-                            }
-                        )
-                        : t(
-                            "views:components.questionRecovery.notifications.addQuestions.genericError.description"
-                        ),
-                    message: error && error.data && error.data.details
-                        ? t(
-                            "views:components.questionRecovery.notifications.addQuestions.error.message"
-                        )
-                        : t(
-                            "views:components.questionRecovery.notifications.addQuestions.genericError.message"
-                        ),
-                    otherProps: {
-                        negative: true
-                    },
-                    visible: true
                 });
         }
     };

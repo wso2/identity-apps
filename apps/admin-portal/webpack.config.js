@@ -21,11 +21,16 @@ const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const WriteFilePlugin = require("write-file-webpack-plugin");
 
 module.exports = env => {
     const basename = 'admin-portal';
     const devServerPort = 9001;
     const publicPath = `/${basename}`;
+
+    const serverHostDefault = "https://localhost:9443";
+    const clientHostDefault = env.NODE_ENV === "prod" ? serverHostDefault : `https://localhost:${devServerPort}`;
+    const clientIdDefault = "UX70QCZcrLfTnfbN0fiJagBtC6sa";
 
     /**
      * Runtime configurations
@@ -34,9 +39,8 @@ module.exports = env => {
     const homePagePath = '/overview';
     const serverHost = 'https://localhost:9443';
     const clientHost = (env.NODE_ENV === 'prod') ? serverHost : `https://localhost:${devServerPort}`;
-    const externalLoginClientID = (env.NODE_ENV === 'prod') ? 'ADMIN_PORTAL' : 'ADMIN_PORTAL';
-    const externalLoginCallbackURL = `${clientHost}/${basename}/login`;
-    const externalLogoutCallbackURL = `${clientHost}/${basename}/logout`;
+    const externalLoginClientID = (env.NODE_ENV === 'prod') ? 'ADMIN_PORTAL' : 'UX70QCZcrLfTnfbN0fiJagBtC6sa';
+    const externalLoginCallbackURL = `/${basename}/login`;
 
     /**
      * Build configurations
@@ -44,6 +48,7 @@ module.exports = env => {
     const distFolder = path.resolve(__dirname, 'build', basename);
     const faviconImage = path.resolve(__dirname, 'node_modules', '@wso2is/theme/lib/assets/images/favicon.ico');
     const titleText = 'WSO2 Identity Server';
+    const copyrightText = `WSO2 Identity Server \u00A9 ${ new Date().getFullYear() }`;
 
     return {
         entry: [
@@ -123,34 +128,48 @@ module.exports = env => {
             fs: 'empty'
         },
         plugins: [
+            new WriteFilePlugin(),
             new CopyWebpackPlugin([{
-                    context: path.resolve(__dirname, 'node_modules', '@wso2is', 'theme'),
+                    context: path.join(__dirname, 'node_modules', '@wso2is', 'theme'),
                     from: 'lib',
                     to: 'libs/styles/css'
                 },
                 {
-                    context: path.resolve(__dirname, 'src'),
+                    context: path.join(__dirname, 'src'),
                     from: 'public',
                     to: '.'
                 }
             ]),
             new HtmlWebpackPlugin({
                 filename: path.join(distFolder, 'index.html'),
-                template: path.resolve(__dirname, 'src', 'index.html'),
+                template: path.join(__dirname, 'src', 'index.html'),
                 hash: true,
                 favicon: faviconImage,
                 title: titleText,
                 publicPath: publicPath
+            }),
+            new HtmlWebpackPlugin({
+                filename: path.join(distFolder, "index.jsp"),
+                template: path.join(__dirname, "src", "index.jsp"),
+                hash: true,
+                favicon: faviconImage,
+                title: titleText,
+                publicPath: publicPath,
+                importUtil: "<%@ page import=\"static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>",
+                serverUrl: "<%=getServerURL(\"\", true, true)%>"
             }),
             new webpack.DefinePlugin({
                 APP_BASENAME: JSON.stringify(basename),
                 APP_HOME_PATH: JSON.stringify(homePagePath),
                 APP_LOGIN_PATH: JSON.stringify(loginPagePath),
                 CLIENT_ID: JSON.stringify(externalLoginClientID),
+                CLIENT_ID_DEFAULT: JSON.stringify(clientIdDefault),
+                CLIENT_HOST_DEFAULT: JSON.stringify(clientHostDefault),
                 CLIENT_HOST: JSON.stringify(clientHost),
                 LOGIN_CALLBACK_URL: JSON.stringify(externalLoginCallbackURL),
-                LOGOUT_CALLBACK_URL: JSON.stringify(externalLogoutCallbackURL),
+                COPYRIGHT_TEXT: JSON.stringify(copyrightText),
                 SERVER_HOST: JSON.stringify(serverHost),
+                SERVER_HOST_DEFAULT: JSON.stringify(serverHostDefault),
                 'typeof window': JSON.stringify('object'),
                 'process.env': {
                     NODE_ENV: JSON.stringify(process.env.NODE_ENV)
