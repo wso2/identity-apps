@@ -17,9 +17,10 @@
  */
 
 import { Field, Forms } from "@wso2is/forms";
+import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Form, Grid, Icon, List, ListItem, ModalContent } from "semantic-ui-react";
+import { Button, Form, Grid, Icon, List, ListItem, ModalContent, Popup } from "semantic-ui-react";
 import { deleteDevice, getMetaData, startFidoFlow, startFidoUsernamelessFlow } from "../../../api";
 import { MFAIcons } from "../../../configs";
 import { AlertInterface, AlertLevels } from "../../../models";
@@ -43,12 +44,20 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const { t } = useTranslation();
     const [deviceList, setDeviceList] = useState<FIDODevice[]>([]);
     const [isDeviceErrorModalVisible, setDeviceErrorModalVisibility] = useState(false);
+    const [recentlyAddedDevice, setRecentlyAddedDevice] = useState<string>();
     const [editFIDO, setEditFido] = useState<Map<string, boolean>>();
     const { onAlertFired } = props;
 
     useEffect(() => {
         getFidoMetaData();
     }, []);
+
+    useEffect(() => {
+        if (!_.isEmpty(recentlyAddedDevice)) {
+            fireSuccessNotification();
+
+        }
+    }, [recentlyAddedDevice]);
 
     const getFidoMetaData = () => {
         let devices: FIDODevice[] = [];
@@ -59,6 +68,13 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                         devices = [...response.data];
                     }
                     setDeviceList(devices);
+
+                    if (!_.isEmpty(recentlyAddedDevice)) {
+                        const tempEditFido: Map<string, boolean> = new Map(editFIDO);
+                        tempEditFido.set(recentlyAddedDevice, true);
+                        setEditFido(tempEditFido);
+                        setRecentlyAddedDevice("");
+                    }
                 }
             })
             .catch((error) => {
@@ -119,8 +135,8 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const addUsernamelessDevice = () => {
         setDeviceErrorModalVisibility(false);
         startFidoUsernamelessFlow()
-            .then(() => {
-                fireSuccessNotification();
+            .then(({ data }) => {
+                setRecentlyAddedDevice(data.credential.id);
             }).catch(() => {
                 setDeviceErrorModalVisibility(true);
             });
@@ -245,26 +261,28 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                             <EditSection key={ device.credential.credentialId }>
                                                 <Grid>
                                                     <Grid.Row columns={ 3 }>
-                                                        <Grid.Column width={ 4 }>
-
-                                                            { device.registrationTime }
-
-                                                        </Grid.Column>
+                                                        <Grid.Column width={ 4 } />
                                                         <Grid.Column width={ 10 }>
                                                             <List.Item>
                                                                 <List.Content>
                                                                     <Forms
                                                                         onSubmit={
-                                                                            (values: Map<string, string>) => {}
+                                                                            (values: Map<string, string>) => { }
                                                                         }
                                                                     >
                                                                         <Field
-                                                                            label="Name"
+                                                                            label={
+                                                                                t("views:components" +
+                                                                                    ".mfa.fido.form.label")
+                                                                            }
                                                                             value=""
                                                                             required={ false }
                                                                             requiredErrorMessage=""
                                                                             name="fidoName"
-                                                                            placeholder="Enter a name"
+                                                                            placeholder={
+                                                                                t("views:components" +
+                                                                                    ".mfa.fido.form.placeholder")
+                                                                            }
                                                                             type="text"
                                                                         />
                                                                         <Field
@@ -297,19 +315,25 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                             </List.Item>
                                                         </Grid.Column>
                                                         <Grid.Column width={ 2 } textAlign="right">
-                                                            <Icon
-                                                                link={ true }
-                                                                name="trash alternate outline"
-                                                                color="red"
-                                                                size="large"
-                                                                onClick={
-                                                                    () => {
-                                                                        removeDevice(
-                                                                            device.credential
-                                                                                .credentialId
-                                                                        );
-                                                                    }
-                                                                }
+                                                            <Popup
+                                                                content={ t("views:components.mfa.fido.form.remove") }
+                                                                inverted
+                                                                trigger={ (
+                                                                    <Icon
+                                                                        link={ true }
+                                                                        name="trash alternate outline"
+                                                                        color="red"
+                                                                        size="large"
+                                                                        onClick={
+                                                                            () => {
+                                                                                removeDevice(
+                                                                                    device.credential
+                                                                                        .credentialId
+                                                                                );
+                                                                            }
+                                                                        }
+                                                                    />
+                                                                ) }
                                                             />
                                                         </Grid.Column>
                                                     </Grid.Row>
