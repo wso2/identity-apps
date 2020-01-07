@@ -19,10 +19,10 @@
 import {
     Account,
     ArrowRight,
+    CodeIcon,
     Connection,
     Consent,
     DefaultAppIcon,
-    CodeIcon,
     DummyUser,
     HomeTileIcons,
     Logo,
@@ -52,8 +52,7 @@ interface CustomCSSType {
 export const LogoImage = Logo;
 export const UserImage: ImageType = DummyUser;
 export const HomeTileIconImages = HomeTileIcons;
-export const GenericAppIcon = DefaultAppIcon;
-export const SidePanelIcons = {
+export const SidePanelIcon = {
     account: Account,
     arrowRight: ArrowRight,
     connection: Connection,

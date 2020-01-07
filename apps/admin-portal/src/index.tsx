@@ -19,14 +19,18 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import App from "./app";
+import { App } from "./app";
 import { AuthProvider } from "./contexts/auth";
+import { setupHttpClient } from "./utils";
+
+// Set up the Http client.
+setupHttpClient();
 
 ReactDOM.render(
+    (
     <BrowserRouter>
-        <AuthProvider>
             <App />
-        </AuthProvider>
-    </BrowserRouter>,
+    </BrowserRouter>
+    ),
     document.getElementById("root")
 );

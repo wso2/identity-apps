@@ -46,3 +46,16 @@ export interface HttpResponse extends AxiosResponse {}
  */
 // tslint:disable-next-line:no-empty-interface
 export interface HttpError extends AxiosError {}
+
+/**
+ * Enum for HTTP methods.
+ * @readonly
+ * @enum {string}
+ */
+export enum HttpMethods {
+    GET = "GET",
+    POST = "POST",
+    PUT = "PUT",
+    PATCH = "PATCH",
+    DELETE = "DELETE"
+}

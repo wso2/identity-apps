@@ -20,7 +20,7 @@ import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
-import { DESKTOP_CONTENT_TOP_PADDING, routes, SidePanelIcons } from "../../configs";
+import { DESKTOP_CONTENT_TOP_PADDING, routes, SidePanelIcon } from "../../configs";
 import { ThemeIcon } from "../shared";
 
 /**
@@ -46,9 +46,6 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
     const activeRoute = (path: string) => {
         const pathname = window.location.pathname;
         const urlTokens = path.split("/");
-        console.log(pathname);
-        console.log(urlTokens);
-        console.log(pathname.indexOf(urlTokens[1]));
         return pathname.indexOf(urlTokens[1]) > -1 ? "active" : "";
     };
 
@@ -74,7 +71,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
                             key={ index }
                         >
                             <ThemeIcon
-                                icon={ SidePanelIcons[route.icon] }
+                                icon={ SidePanelIcon[route.icon] }
                                 size="micro"
                                 floated="left"
                                 spaced="right"
@@ -96,7 +93,8 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
                                         >
                                             { childItem.name }
                                             <ThemeIcon
-                                                icon={ SidePanelIcons[childItem.icon] }
+                                                icon={ SidePanelIcon[childItem.icon] }
+                                                className={ activeRoute(childItem.path) }
                                                 size="nano"
                                                 floated="left"
                                                 spaced="right"

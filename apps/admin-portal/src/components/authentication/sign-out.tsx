@@ -16,24 +16,25 @@
  * under the License.
  */
 
-import { BasicProfileInterface, ProfileSchema } from "./profile";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { history } from "../../helpers";
+import { AppState } from "../../store";
+import { handleSignOut } from "../../store/actions";
+/**
+ * This component handles the sign-out function
+ */
+export const SignOut = () => {
+    const dispatch = useDispatch();
+    const logoutInit = useSelector((state: AppState) => state.authenticationInformation.logoutInit);
 
-export interface AuthStateInterface {
-    children?: any;
-    displayName: string;
-    emails: string;
-    isAuth: boolean;
-    location: string;
-    loginInit: boolean;
-    logoutInit: boolean;
-    profileSchemas: ProfileSchema[];
-    profileInfo: BasicProfileInterface;
-    username: string;
-}
+    useEffect(() => {
+        if (!logoutInit) {
+            dispatch(handleSignOut());
+        } else {
+            history.push(APP_LOGIN_PATH);
+        }
+    }, [logoutInit]);
 
-export interface AuthContextInterface {
-    dispatch: ({ type }: {type: string}) => void;
-    signIn: () => void;
-    signOut: () => void;
-    state: AuthStateInterface;
-}
+    return null;
+};

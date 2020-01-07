@@ -16,24 +16,17 @@
  * under the License.
  */
 
-import { BasicProfileInterface, ProfileSchema } from "./profile";
+import { combineReducers } from "redux";
+import { authenticateReducer, globalReducer } from "./reducers";
+import { LoadersReducer } from "./reducers/loaders";
 
-export interface AuthStateInterface {
-    children?: any;
-    displayName: string;
-    emails: string;
-    isAuth: boolean;
-    location: string;
-    loginInit: boolean;
-    logoutInit: boolean;
-    profileSchemas: ProfileSchema[];
-    profileInfo: BasicProfileInterface;
-    username: string;
-}
-
-export interface AuthContextInterface {
-    dispatch: ({ type }: {type: string}) => void;
-    signIn: () => void;
-    signOut: () => void;
-    state: AuthStateInterface;
-}
+/**
+ * Combines all the reducers.
+ *
+ * @type {Reducer<any>} Root reducer to be used when creating the store.
+ */
+export const reducers = combineReducers({
+    authenticationInformation: authenticateReducer,
+    global: globalReducer,
+    loaders: LoadersReducer
+});

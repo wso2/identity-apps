@@ -18,11 +18,7 @@
 
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {Divider, Grid} from "semantic-ui-react";
-import {NotificationComponent} from "../../../user-portal/src/components";
-import {
-    Notification
-} from "../../../user-portal/src/models/notifications";
+import { Divider, Grid } from "semantic-ui-react";
 import { UsersList } from "../components/users/users-list";
 import UsersSearch from "../components/users/users-search";
 import { InnerPageLayout } from "../layouts";
@@ -65,7 +61,7 @@ export const UsersPage = (): JSX.Element => {
                     <UsersSearch/>
                 </Grid.Row>
                 <Grid.Row>
-                    <UsersList onNotificationFired={ handleNotification }/>
+                    <UsersList/>
                 </Grid.Row>
             </Grid>
         </InnerPageLayout>

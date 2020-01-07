@@ -16,24 +16,25 @@
  * under the License.
  */
 
-import { BasicProfileInterface, ProfileSchema } from "./profile";
+/**
+ * Action type to set the loader for profile schema
+ */
+export const SET_PROFILE_SCHEMA_LOADER: ActionTypes = "SET_PROFILE_SCHEMA_LOADER";
 
-export interface AuthStateInterface {
-    children?: any;
-    displayName: string;
-    emails: string;
-    isAuth: boolean;
-    location: string;
-    loginInit: boolean;
-    logoutInit: boolean;
-    profileSchemas: ProfileSchema[];
-    profileInfo: BasicProfileInterface;
-    username: string;
-}
+/**
+ * Action type to set the loader for profile info
+ */
+export const SET_PROFILE_INFO_LOADER: ActionTypes = "SET_PROFILE_INFO_LOADER";
 
-export interface AuthContextInterface {
-    dispatch: ({ type }: {type: string}) => void;
-    signIn: () => void;
-    signOut: () => void;
-    state: AuthStateInterface;
+/**
+ * Type for loader action types
+ */
+export type ActionTypes = "SET_PROFILE_SCHEMA_LOADER" | "SET_PROFILE_INFO_LOADER";
+
+/**
+ * Loader action model
+ */
+export interface LoaderAction {
+    payload: boolean;
+    type: ActionTypes;
 }

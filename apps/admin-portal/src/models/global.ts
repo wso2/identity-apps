@@ -16,24 +16,11 @@
  * under the License.
  */
 
-import { BasicProfileInterface, ProfileSchema } from "./profile";
+import { AlertInterface } from "./alert";
 
-export interface AuthStateInterface {
-    children?: any;
-    displayName: string;
-    emails: string;
-    isAuth: boolean;
-    location: string;
-    loginInit: boolean;
-    logoutInit: boolean;
-    profileSchemas: ProfileSchema[];
-    profileInfo: BasicProfileInterface;
-    username: string;
-}
-
-export interface AuthContextInterface {
-    dispatch: ({ type }: {type: string}) => void;
-    signIn: () => void;
-    signOut: () => void;
-    state: AuthStateInterface;
+export interface GlobalInterface {
+    alert: AlertInterface;
+    alertSystem: any;
+    isApplicationsPageVisible: boolean;
+    isGlobalLoaderVisible: boolean;
 }

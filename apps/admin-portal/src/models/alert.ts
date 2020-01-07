@@ -16,24 +16,23 @@
  * under the License.
  */
 
-import { BasicProfileInterface, ProfileSchema } from "./profile";
+import { Notification } from "react-notification-system";
 
-export interface AuthStateInterface {
-    children?: any;
-    displayName: string;
-    emails: string;
-    isAuth: boolean;
-    location: string;
-    loginInit: boolean;
-    logoutInit: boolean;
-    profileSchemas: ProfileSchema[];
-    profileInfo: BasicProfileInterface;
-    username: string;
+/**
+ * Alert interface.
+ */
+export interface AlertInterface extends Notification {
+    description: string;
 }
 
-export interface AuthContextInterface {
-    dispatch: ({ type }: {type: string}) => void;
-    signIn: () => void;
-    signOut: () => void;
-    state: AuthStateInterface;
+/**
+ * Enum for Alert levels.
+ * @readonly
+ * @enum {string}
+ */
+export enum AlertLevels {
+    SUCCESS = "success",
+    ERROR = "error",
+    INFO = "info",
+    WARNING = "warning"
 }

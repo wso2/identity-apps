@@ -20,14 +20,12 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Container, Divider, Table } from "semantic-ui-react";
 import { UserImagePlaceHolder } from "../../../../user-portal/src/components";
-import { Notification } from "../../../../user-portal/src/models/notifications";
-import { getUsersList } from "./users";
+import { getUsersList } from "../../api";
 
 /**
  * Proptypes for the SMS OTP component.
  */
 interface UsersListProps {
-    onNotificationFired: (notification: Notification) => void;
 }
 
 /**
@@ -38,7 +36,6 @@ interface UsersListProps {
 export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersListProps): JSX.Element => {
     const { t } = useTranslation();
     const [usersList, setUsersList] = useState([]);
-    const { onNotificationFired } = props;
 
     useEffect(() => {
         getList();
@@ -49,31 +46,31 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             .then((response) => {
                 if (response.status === 200) {
                 setUsersList(response.data.Resources);
-                onNotificationFired({
-                        description: t(
-                            "views:securityPage.multiFactor.smsOtp.notification.success.description"
-                        ),
-                        message: t(
-                            "views:securityPage.multiFactor.smsOtp.notification.success.message"
-                        ),
-                        otherProps: {
-                            positive: true
-                        },
-                        visible: true
-                    });
-                } else {
-                    onNotificationFired({
-                        description: t(
-                            "views:userProfile.notification.getProfileInfo.error.description"
-                        ),
-                        message: t(
-                            "views:userProfile.notification.getProfileInfo.error.message"
-                        ),
-                        otherProps: {
-                            negative: true
-                        },
-                        visible: true
-                    });
+                // onNotificationFired({
+                //         description: t(
+                //             "views:securityPage.multiFactor.smsOtp.notification.success.description"
+                //         ),
+                //         message: t(
+                //             "views:securityPage.multiFactor.smsOtp.notification.success.message"
+                //         ),
+                //         otherProps: {
+                //             positive: true
+                //         },
+                //         visible: true
+                //     });
+                // } else {
+                //     onNotificationFired({
+                //         description: t(
+                //             "views:userProfile.notification.getProfileInfo.error.description"
+                //         ),
+                //         message: t(
+                //             "views:userProfile.notification.getProfileInfo.error.message"
+                //         ),
+                //         otherProps: {
+                //             negative: true
+                //         },
+                //         visible: true
+                //     });
                 }
             });
     };
@@ -86,8 +83,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         <Table.HeaderCell>Name</Table.HeaderCell>
                         <Table.HeaderCell>Created On</Table.HeaderCell>
                         <Table.HeaderCell>Last Modified</Table.HeaderCell>
-                        <Table.HeaderCell>Logins</Table.HeaderCell>
-                        <Table.HeaderCell>Latest Login</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 
@@ -101,8 +96,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 </Table.Cell>
                                 <Table.Cell>{ user.meta.created }</Table.Cell>
                                 <Table.Cell>{ user.meta.lastModified }</Table.Cell>
-                                <Table.Cell>2</Table.Cell>
-                                <Table.Cell>today</Table.Cell>
                             </Table.Row>
                         ))
                     }

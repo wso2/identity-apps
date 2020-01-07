@@ -1,4 +1,3 @@
-
 /**
  * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
@@ -18,9 +17,8 @@
  */
 
 import { AuthenticateSessionUtil, AuthenticateTokenKeys, AuthenticateUserKeys } from "@wso2is/authentication";
+import { AuthStateInterface, createEmptyProfile } from "../../models";
 import { authenticateActionTypes } from "../actions/types";
-import { createEmptyProfile } from "../models";
-import { AuthStateInterface } from "../models/auth";
 
 /**
  * Initial authenticate state.
@@ -58,6 +56,7 @@ const authenticateReducer = (state = authenticateInitialState, action) => {
                     username: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME),
                 };
             }
+            break;
         case authenticateActionTypes.SET_SIGN_OUT:
             return {
                 ...state,
@@ -67,6 +66,16 @@ const authenticateReducer = (state = authenticateInitialState, action) => {
         case authenticateActionTypes.RESET_AUTHENTICATION:
             return {
                 ...authenticateInitialState
+            };
+        case authenticateActionTypes.SET_PROFILE_INFO:
+            return {
+                ...state,
+                profileInfo: action.payload
+            };
+        case authenticateActionTypes.SET_SCHEMAS:
+            return {
+                ...state,
+                profileSchemas: action.payload
             };
         default:
             return state;
