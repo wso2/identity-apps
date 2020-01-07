@@ -28,6 +28,8 @@ import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.core.util.IdentityCoreInitializedEvent;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
 import org.wso2.carbon.registry.core.service.RegistryService;
+import org.wso2.carbon.stratos.common.listeners.TenantMgtListener;
+import org.wso2.identity.apps.common.listner.AppPortalTenantMgtListener;
 import org.wso2.identity.apps.common.util.AppPortalUtils;
 
 import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
@@ -51,8 +53,7 @@ public class AppsCommonServiceComponent {
         try {
             // Initialize portal applications.
             AppPortalUtils.initiatePortals(SUPER_TENANT_DOMAIN_NAME, SUPER_TENANT_ID);
-            // TODO: Uncomment this when tenant qualified path is available.
-            //bundleContext.registerService(TenantMgtListener.class.getName(), new AppPortalTenantMgtListener(), null);
+            bundleContext.registerService(TenantMgtListener.class.getName(), new AppPortalTenantMgtListener(), null);
 
             log.info("Identity apps common service component activated successfully.");
         } catch (Throwable e) {
