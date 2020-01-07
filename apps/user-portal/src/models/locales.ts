@@ -360,6 +360,11 @@ export interface Views {
                     startFidoFlow: Notification;
                 };
                 tryButton: string;
+                form: {
+                    label: string;
+                    placeholder: string;
+                    remove: string;
+                }
             };
             smsOtp: {
                 descriptions: {

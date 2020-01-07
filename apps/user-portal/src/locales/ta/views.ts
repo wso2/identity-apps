@@ -498,6 +498,11 @@ export const views: Views = {
         mfa: {
             fido: {
                 description: "FIDO கருவியினை இணைப்பதானூடாக உங்களை உறுதிப்படுத்திக் கொள்ளுங்கள்",
+                form: {
+                    label: "கருவியின் பெயர்",
+                    placeholder: "கருவியின் பெயரை உள்ளிடுக",
+                    remove: "கருவியினை நீக்கு"
+                },
                 heading: "FIDO",
                 modals: {
                     deviceRegistrationErrorModal: {

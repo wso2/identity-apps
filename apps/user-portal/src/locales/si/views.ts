@@ -494,6 +494,11 @@ export const views: Views = {
         mfa: {
             fido: {
                 description: "FIDO යතුරක් සම්බන්ධ කිරීමෙන් සත්\u200Dයාපනය කිරීම",
+                form: {
+                    label: "උපාංගයේ නම",
+                    placeholder: "උපාංග නාමයක් ඇතුළත් කරන්න",
+                    remove: "උපාංගය ඉවත් කරන්න"
+                },
                 heading: "FIDO",
                 modals: {
                     deviceRegistrationErrorModal: {

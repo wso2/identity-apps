@@ -496,6 +496,11 @@ export const views: Views = {
         mfa: {
             fido: {
                 description: "Autentique-se conectando uma chave FIDO",
+                form: {
+                    label: "Nome do dispositivo",
+                    placeholder: "Digite o nome do dispositivo",
+                    remove: "Retire o dispositivo"
+                },
                 heading: "FIDO",
                 modals: {
                     deviceRegistrationErrorModal: {

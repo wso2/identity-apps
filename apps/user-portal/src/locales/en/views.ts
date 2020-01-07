@@ -36,7 +36,7 @@ export const views: Views = {
                     emailResetForm: {
                         inputs: {
                             email: {
-                                label:  "Email address",
+                                label: "Email address",
                                 placeholder: "Enter the recovery email address",
                                 validations: {
                                     empty: "Enter an email address",
@@ -182,7 +182,7 @@ export const views: Views = {
                                 validations: {
                                     empty: "Filter value is a required field"
                                 }
-                            },
+                            }
                         }
                     }
                 },
@@ -193,14 +193,14 @@ export const views: Views = {
                     }
                 },
                 options: {
-                    header: "Advanced search",
+                    header: "Advanced search"
                 },
                 placeholder: "Search by name",
                 popups: {
                     clear: "clear search",
                     dropdown: "show options"
                 },
-                resultsIndicator: "Showing results for the query \"{{query}}\""
+                resultsIndicator: 'Showing results for the query "{{query}}"'
             }
         },
         approvals: {
@@ -300,7 +300,8 @@ export const views: Views = {
             modals: {
                 confirmationModal: {
                     heading: "Confirmation",
-                    message: "Changing the password will result in the termination of the current session. You will " +
+                    message:
+                        "Changing the password will result in the termination of the current session. You will " +
                         "have to login with the newly changed password. Do you wish to continue?"
                 }
             }
@@ -316,7 +317,8 @@ export const views: Views = {
                     }
                 },
                 description: "Description",
-                piiCategoryHeading: "Manage consent for the collection and sharing of your personal information " +
+                piiCategoryHeading:
+                    "Manage consent for the collection and sharing of your personal information " +
                     "with the application. Uncheck the attributes that you need to revoke and press the update " +
                     "button to save the changes or press the revoke button to remove the consent for all the attributes.",
                 state: "State",
@@ -325,7 +327,8 @@ export const views: Views = {
             modals: {
                 consentRevokeModal: {
                     heading: "Are you sure?",
-                    message: "This operation is not reversible. This will permanently revoke consent for all the " +
+                    message:
+                        "This operation is not reversible. This will permanently revoke consent for all the " +
                         "attributes. Are you sure you want to proceed?",
                     warning: "Please note that you will be redirected to the login consent page"
                 }
@@ -494,12 +497,18 @@ export const views: Views = {
         mfa: {
             fido: {
                 description: "Authenticate yourself by connecting a biometric device or a FIDO key",
+                form: {
+                    label: "Device Name",
+                    placeholder: "Enter a device name",
+                    remove: "Remove the device"
+                },
                 heading: "via Security Device",
                 modals: {
                     deviceRegistrationErrorModal: {
-                        description: "The device registration was interrupted. If this was not intentional you may " +
+                        description:
+                            "The device registration was interrupted. If this was not intentional you may " +
                             "retry the same flow or try again with an older security key.",
-                        heading: "Device Registration Failed",
+                        heading: "Device Registration Failed"
                     }
                 },
                 notifications: {
@@ -527,8 +536,8 @@ export const views: Views = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "The device was successfully registered and now you can use it as a second " +
-                                "factor",
+                            description:
+                                "The device was successfully registered and now you can use it as a second " + "factor",
                             message: "Your Device Registered Successfully"
                         }
                     }
@@ -594,7 +603,8 @@ export const views: Views = {
         },
         privacy: {
             about: {
-                description: "WSO2 Identity Server (referred to as “WSO2 IS” within this policy) is an open source " +
+                description:
+                    "WSO2 Identity Server (referred to as “WSO2 IS” within this policy) is an open source " +
                     "Identity Management and Entitlement Server that is based on open standards and specifications.",
                 heading: "About WSO2 Identity Server"
             },
@@ -603,7 +613,8 @@ export const views: Views = {
                     description: {
                         list1: {
                             0: "WSO2 IS uses your IP address to detect any suspicious login attempts to your account.",
-                            1: "WSO2 IS uses attributes like your first name, last name, etc., to provide a rich and" +
+                            1:
+                                "WSO2 IS uses attributes like your first name, last name, etc., to provide a rich and" +
                                 " personalized user experience.",
                             2: "WSO2 IS uses your security questions and answers only to allow account recovery."
                         },
@@ -613,11 +624,13 @@ export const views: Views = {
                     trackingTechnologies: {
                         description: {
                             list1: {
-                                0: "Collecting information from the user profile page where you enter your personal" +
+                                0:
+                                    "Collecting information from the user profile page where you enter your personal" +
                                     " data.",
                                 1: "Tracking your IP address with HTTP request, HTTP headers, and TCP/IP.",
                                 2: "Tracking your geographic information with the IP address.",
-                                3: "Tracking your login history with browser cookies. Please see our" +
+                                3:
+                                    "Tracking your login history with browser cookies. Please see our" +
                                     " {{cookiePolicyLink}} for more information."
                             },
                             para1: "WSO2 IS collects your information by:"
@@ -626,19 +639,23 @@ export const views: Views = {
                     }
                 },
                 description: {
-                    para1: "This policy describes how WSO2 IS captures your personal information, the purposes of" +
+                    para1:
+                        "This policy describes how WSO2 IS captures your personal information, the purposes of" +
                         " collection, and information about the retention of your personal information.",
-                    para2: "Please note that this policy is for reference only, and is applicable for the software " +
+                    para2:
+                        "Please note that this policy is for reference only, and is applicable for the software " +
                         "as a product. WSO2 Inc. and its developers have no access to the information held within " +
                         "WSO2 IS. Please see the <1>disclaimer</1> section for more information.",
-                    para3: "Entities, organizations or individuals controlling the use and administration of WSO2 IS " +
+                    para3:
+                        "Entities, organizations or individuals controlling the use and administration of WSO2 IS " +
                         "should create their own privacy policies setting out the manner in which data is controlled " +
                         "or processed by the respective entity, organization or individual."
                 },
                 disclaimer: {
                     description: {
                         list1: {
-                            0: "WSO2, its employees, partners, and affiliates do not have access to and do not " +
+                            0:
+                                "WSO2, its employees, partners, and affiliates do not have access to and do not " +
                                 "require, store, process or control any of the data, including personal data " +
                                 "contained in WSO2 IS. All data, including personal data is controlled and " +
                                 "processed by the entity or individual running WSO2 IS. WSO2, its employees partners " +
@@ -646,7 +663,8 @@ export const views: Views = {
                                 "any data privacy regulations. WSO2 does not provide any warranties or undertake any " +
                                 "responsibility or liability in connection with the lawfulness or the manner and " +
                                 "purposes for which WSO2 IS is used by such entities or persons.",
-                            1: "This privacy policy is for the informational purposes of the entity or persons " +
+                            1:
+                                "This privacy policy is for the informational purposes of the entity or persons " +
                                 "running WSO2 IS and sets out the processes and functionality contained within " +
                                 "WSO2 IS regarding personal data protection. It is the responsibility of entities " +
                                 "and persons running WSO2 IS to create and administer its own rules and processes " +
@@ -659,7 +677,8 @@ export const views: Views = {
                     heading: "Disclaimer"
                 },
                 disclosureOfPersonalInfo: {
-                    description: "WSO2 IS only discloses personal information to the relevant applications (also " +
+                    description:
+                        "WSO2 IS only discloses personal information to the relevant applications (also " +
                         "known as Service Provider) that are registered with WSO2 IS. These applications are " +
                         "registered by the identity administrator of your entity or organization. Personal " +
                         "information is disclosed only for the purposes for which it was collected (or for a " +
@@ -667,7 +686,8 @@ export const views: Views = {
                         "unless you have consented otherwise or where it is required by law.",
                     heading: "Disclosure of personal information",
                     legalProcess: {
-                        description: "Please note that the organization, entity or individual running WSO2 IS may " +
+                        description:
+                            "Please note that the organization, entity or individual running WSO2 IS may " +
                             "be compelled to disclose your personal information with or without your consent when " +
                             "it is required by law following due and lawful process.",
                         heading: "Legal process"
@@ -677,10 +697,12 @@ export const views: Views = {
                 moreInfo: {
                     changesToPolicy: {
                         description: {
-                            para1: "Upgraded versions of WSO2 IS may contain changes to this policy and " +
+                            para1:
+                                "Upgraded versions of WSO2 IS may contain changes to this policy and " +
                                 "revisions to this policy will be packaged within such upgrades. Such changes " +
                                 "would only apply to users who choose to use upgraded versions.",
-                            para2: "The organization running WSO2 IS may revise the Privacy Policy from time to " +
+                            para2:
+                                "The organization running WSO2 IS may revise the Privacy Policy from time to " +
                                 "time. You can find the most recent governing policy with the respective link " +
                                 "provided by the organization running WSO2 IS 5.5. The organization will notify " +
                                 "any changes to the privacy policy over our official public channels."
@@ -689,7 +711,8 @@ export const views: Views = {
                     },
                     contactUs: {
                         description: {
-                            para1: "Please contact WSO2 if you have any question or concerns regarding this privacy " +
+                            para1:
+                                "Please contact WSO2 if you have any question or concerns regarding this privacy " +
                                 "policy."
                         },
                         heading: "Contact us"
@@ -697,9 +720,11 @@ export const views: Views = {
                     heading: "More information",
                     yourChoices: {
                         description: {
-                            para1: "If you are already have a user account within WSO2 IS, you have the right to " +
+                            para1:
+                                "If you are already have a user account within WSO2 IS, you have the right to " +
                                 "deactivate your account if you find that this privacy policy is unacceptable to you.",
-                            para2: "If you do not have an account and you do not agree with our privacy policy, " +
+                            para2:
+                                "If you do not have an account and you do not agree with our privacy policy, " +
                                 "you can choose not to create one."
                         },
                         heading: "Your choices"
@@ -713,31 +738,37 @@ export const views: Views = {
                                 0: "Current password",
                                 1: "Previously used passwords"
                             },
-                            para1: "WSO2 IS retains your personal data as long as you are an active user of our " +
+                            para1:
+                                "WSO2 IS retains your personal data as long as you are an active user of our " +
                                 "system. You can update your personal data at any time using the given self-care " +
                                 "user portals.",
-                            para2: "WSO2 IS may keep hashed secrets to provide you with an added level of security. " +
+                            para2:
+                                "WSO2 IS may keep hashed secrets to provide you with an added level of security. " +
                                 "This includes:"
                         },
                         heading: "How long your personal information is retained"
                     },
                     requestRemoval: {
                         description: {
-                            para1: "You can request the administrator to delete your account. The administrator is " +
+                            para1:
+                                "You can request the administrator to delete your account. The administrator is " +
                                 "the administrator of the tenant you are registered under, or the " +
                                 "super-administrator if you do not use the tenant feature.",
-                            para2: "Additionally, you can request to anonymize all traces of your activities " +
+                            para2:
+                                "Additionally, you can request to anonymize all traces of your activities " +
                                 "that WSO2 IS may have retained in logs, databases or analytical storage."
                         },
                         heading: "How to request removal of your personal information"
                     },
                     where: {
                         description: {
-                            para1: "WSO2 IS stores your personal information in secured databases. WSO2 IS " +
+                            para1:
+                                "WSO2 IS stores your personal information in secured databases. WSO2 IS " +
                                 "exercises proper industry accepted security measures to protect the database " +
                                 "where your personal information is held. WSO2 IS as a product does not transfer " +
                                 "or share your data with any third parties or locations.",
-                            para2: "WSO2 IS may use encryption to keep your personal data with an added level " +
+                            para2:
+                                "WSO2 IS may use encryption to keep your personal data with an added level " +
                                 "of security."
                         },
                         heading: "Where your personal information is stored"
@@ -746,15 +777,19 @@ export const views: Views = {
                 useOfPersonalInfo: {
                     description: {
                         list1: {
-                            0: "To provide you with a personalized user experience. WSO2 IS uses your name and " +
+                            0:
+                                "To provide you with a personalized user experience. WSO2 IS uses your name and " +
                                 "uploaded profile pictures for this purpose.",
-                            1: "To protect your account from unauthorized access or potential hacking attempts. " +
+                            1:
+                                "To protect your account from unauthorized access or potential hacking attempts. " +
                                 "WSO2 IS uses HTTP or TCP/IP Headers for this purpose.",
-                            2: "Derive statistical data for analytical purposes on system performance improvements. " +
+                            2:
+                                "Derive statistical data for analytical purposes on system performance improvements. " +
                                 "WSO2 IS will not keep any personal information after statistical calculations. " +
                                 "Therefore, the statistical report has no means of identifying an individual person."
                         },
-                        para1: "WSO2 IS will only use your personal information for the purposes for which it was " +
+                        para1:
+                            "WSO2 IS will only use your personal information for the purposes for which it was " +
                             "collected (or for a use identified as consistent with that purpose).",
                         para2: "WSO2 IS uses your personal information only for the following purposes.",
                         subList1: {
@@ -778,7 +813,8 @@ export const views: Views = {
                 whatIsPersonalInfo: {
                     description: {
                         list1: {
-                            0: "Your user name (except in cases where the user name created by your employer is " +
+                            0:
+                                "Your user name (except in cases where the user name created by your employer is " +
                                 "under contract)",
                             1: "Your date of birth/age",
                             2: "IP address used to log in",
@@ -790,9 +826,11 @@ export const views: Views = {
                             2: "Type of device that you used to log in (e.g., phone or tablet)",
                             3: "Operating system and generic browser information"
                         },
-                        para1: "WSO2 IS considers anything related to you, and by which you may be identified, as " +
+                        para1:
+                            "WSO2 IS considers anything related to you, and by which you may be identified, as " +
                             "your personal information. This includes, but is not limited to:",
-                        para2: "However, WSO2 IS also collects the following information that is not considered " +
+                        para2:
+                            "However, WSO2 IS also collects the following information that is not considered " +
                             "personal information, but is used only for <1>statistical</1> purposes. The reason " +
                             "for this is that this information can not be used to track you."
                     },
@@ -891,7 +929,7 @@ export const views: Views = {
                 getProfileInfo: {
                     error: {
                         description: "{{description}}",
-                        message: "Error occurred while retrieving the profile details",
+                        message: "Error occurred while retrieving the profile details"
                     },
                     genericError: {
                         description: "Error occurred while retrieving the profile details",
@@ -905,7 +943,7 @@ export const views: Views = {
                 updateProfileInfo: {
                     error: {
                         description: "{{description}}",
-                        message: "Error occurred while updating the profile details",
+                        message: "Error occurred while updating the profile details"
                     },
                     genericError: {
                         description: "Error occurred while updating the profile details",
@@ -958,12 +996,14 @@ export const views: Views = {
             modals: {
                 terminateAllUserSessionsModal: {
                     heading: "Confirmation",
-                    message: "This action will log you out of all the sessions on every device. Do you wish to " +
+                    message:
+                        "This action will log you out of all the sessions on every device. Do you wish to " +
                         "continue?"
                 },
                 terminateUserSessionModal: {
                     heading: "Confirmation",
-                    message: "This action will log you out of the session on the particular device. Do you wish to " +
+                    message:
+                        "This action will log you out of the session on the particular device. Do you wish to " +
                         "continue?"
                 }
             },
@@ -1011,7 +1051,7 @@ export const views: Views = {
                     }
                 }
             }
-        },
+        }
     },
     pages: {
         applications: {
@@ -1051,7 +1091,7 @@ export const views: Views = {
         emptySearchResult: {
             action: "Clear search query",
             subtitles: {
-                0: "We couldn't find any results for \"{{query}}\"",
+                0: 'We couldn\'t find any results for "{{query}}"',
                 1: "Please try a different search term."
             },
             title: "No results found"
@@ -1075,12 +1115,14 @@ export const views: Views = {
     },
     sections: {
         accountRecovery: {
-            description: "If you forget your password or username, recover your account " +
+            description:
+                "If you forget your password or username, recover your account " +
                 "using email, SMS, or challenge questions",
             heading: "Account recovery"
         },
         approvals: {
-            description: "Approve or deny tasks related to workflow operations like adding users, " +
+            description:
+                "Approve or deny tasks related to workflow operations like adding users, " +
                 "updating user claims, deleting user roles, etc.",
             heading: "Pending approvals",
             placeholders: {
@@ -1100,14 +1142,14 @@ export const views: Views = {
             actionTitles: {
                 empty: "You have not granted consent to any application"
             },
-            description: "Revoke any consent given to an application or personal detail that you " +
-                "have agreed to share",
+            description:
+                "Revoke any consent given to an application or personal detail that you " + "have agreed to share",
             heading: "Manage consents",
             placeholders: {
                 emptyConsentList: {
                     heading: "You have not granted consent to any application"
                 }
-            },
+            }
         },
         linkedAccounts: {
             actionTitles: {
@@ -1117,7 +1159,8 @@ export const views: Views = {
             heading: "Linked accounts"
         },
         mfa: {
-            description: "Add an extra layer of protection to your account by configuring multiple " +
+            description:
+                "Add an extra layer of protection to your account by configuring multiple " +
                 "steps of authentication. You can choose from options like SMS or a security device",
             heading: "Multi factor authentication"
         },
@@ -1143,7 +1186,7 @@ export const views: Views = {
                 emptySessionList: {
                     heading: "There are no active IDP sessions for this user"
                 }
-            },
+            }
         }
     }
 };
