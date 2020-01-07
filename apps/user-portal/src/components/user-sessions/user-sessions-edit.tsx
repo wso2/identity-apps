@@ -98,6 +98,10 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                 icon: "chrome",
                 values: [ "Chrome", "Chrome Headless", "Chrome WebView", "Chromium" ]
             },
+            edge: {
+                icon: "edge",
+                values: [ "Edge" ]
+            },
             firefox: {
                 icon: "firefox",
                 values: [ "Firefox" ]
