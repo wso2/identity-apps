@@ -20,7 +20,7 @@ import { Field, Forms } from "@wso2is/forms";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Form, Grid, Icon, List, ListItem, ModalContent, Popup } from "semantic-ui-react";
+import { Button, Form, Grid, Icon, Input, List, ModalContent, Popup } from "semantic-ui-react";
 import { deleteDevice, getMetaData, startFidoFlow, startFidoUsernamelessFlow } from "../../../api";
 import { MFAIcons } from "../../../configs";
 import { AlertInterface, AlertLevels } from "../../../models";
@@ -44,6 +44,8 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const { t } = useTranslation();
     const [deviceList, setDeviceList] = useState<FIDODevice[]>([]);
     const [isDeviceErrorModalVisible, setDeviceErrorModalVisibility] = useState(false);
+    const [isDeviceSuccessModalVisible, setIsDeviceSuccessModalVisibility] = useState(false);
+    const [recentFIDOName, setRecentFIDOName] = useState("");
     const [recentlyAddedDevice, setRecentlyAddedDevice] = useState<string>();
     const [editFIDO, setEditFido] = useState<Map<string, boolean>>();
     const { onAlertFired } = props;
@@ -52,10 +54,12 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         getFidoMetaData();
     }, []);
 
+    /**
+     * This calls `getFidoMetaData` every time a new device is registered
+     */
     useEffect(() => {
         if (!_.isEmpty(recentlyAddedDevice)) {
-            fireSuccessNotification();
-
+            getFidoMetaData();
         }
     }, [recentlyAddedDevice]);
 
@@ -70,10 +74,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                     setDeviceList(devices);
 
                     if (!_.isEmpty(recentlyAddedDevice)) {
-                        const tempEditFido: Map<string, boolean> = new Map(editFIDO);
-                        tempEditFido.set(recentlyAddedDevice, true);
-                        setEditFido(tempEditFido);
-                        setRecentlyAddedDevice("");
+                        setIsDeviceSuccessModalVisibility(true);
                     }
                 }
             })
@@ -83,18 +84,34 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     };
 
     /**
-     * This function fires a notification on success
+     * This function fires a notification on successful removal of a device.
      */
-    const fireSuccessNotification = () => {
-        getFidoMetaData();
-
+    const fireDeletionSuccessNotification = () => {
         onAlertFired({
             description: t(
-                "views:components.mfa.fido.notifications.startFidoFlow.success.description"
+                "views:components.mfa.fido.notifications.removeDevice.success.description"
             ),
             level: AlertLevels.SUCCESS,
             message: t(
-                "views:components.mfa.fido.notifications.startFidoFlow.success.message"
+                "views:components.mfa.fido.notifications.removeDevice.success.message"
+            )
+        });
+    };
+
+    /**
+     * This function fires a notification when removal of a device fails.
+     */
+    const fireDeletionFailureNotification = (error: string) => {
+        onAlertFired({
+            description: t(
+                "views:components.mfa.fido.notifications.removeDevice.error.description",
+                {
+                    description: error
+                }
+            ),
+            level: AlertLevels.ERROR,
+            message: t(
+                "views:components.mfa.fido.notifications.removeDevice.error.message"
             )
         });
     };
@@ -121,8 +138,8 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const addDevice = () => {
         setDeviceErrorModalVisibility(false);
         startFidoFlow()
-            .then(() => {
-                fireSuccessNotification();
+            .then(({ data }) => {
+                setRecentlyAddedDevice(data.credential.id);
             }).catch(() => {
                 fireFailureNotification();
             });
@@ -146,16 +163,43 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         deleteDevice(id)
             .then(() => {
                 cancelEdit(id);
-                fireSuccessNotification();
-            }).catch(() => {
-                fireFailureNotification();
+                fireDeletionSuccessNotification();
+            }).catch((error) => {
+                fireDeletionFailureNotification(error);
             });
+    };
+
+    /**
+     * This function posts the name of the FIDO device
+     */
+    const submitName = (name: string, id: string): void => {
+        setRecentFIDOName("");
+        setRecentlyAddedDevice("");
+    };
+
+    /**
+     * This is the `onChange` handler of the device-name textbox that is displayed
+     * in the modal following successful registration of a device.
+     * @param event
+     */
+    const handleDeviceNameChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        setRecentFIDOName(event.target.value);
+    };
+
+    /**
+     * Handles the device successful registration modal close action
+     */
+    const handleDeviceSuccessModalClose = (): void => {
+        setRecentlyAddedDevice("");
+        setIsDeviceSuccessModalVisibility(false);
     };
 
     /**
      * Handles the device registration error modal close action.
      */
     const handleDeviceErrorModalClose = (): void => {
+        setRecentlyAddedDevice("");
+        setIsDeviceSuccessModalVisibility(false);
         setDeviceErrorModalVisibility(false);
     };
 
@@ -204,6 +248,47 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                     >
                         { t("views:components.mfa.fido.tryButton") }
                     </Button>
+                </ModalContent>
+            </ModalComponent>
+        );
+    };
+
+    /**
+     * This modal is called soon after a device is successfully registered.
+     */
+    const deviceRegistrationSuccessModal = (): JSX.Element => {
+        return (
+            <ModalComponent
+                primaryAction={ t("common:update") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ handleDeviceSuccessModalClose }
+                onPrimaryActionClick={ () => {
+                    submitName(recentFIDOName, recentlyAddedDevice);
+                    handleDeviceSuccessModalClose();
+                } }
+                open={ isDeviceSuccessModalVisible }
+                onClose={ handleDeviceSuccessModalClose }
+                type="positive"
+                header={ t("views:components.mfa.fido.notifications.startFidoFlow.success.message") }
+                content={ t("views:components.mfa.fido.notifications.startFidoFlow.success.description") }
+            >
+                <ModalContent>
+                    <Form>
+                        <Form.Field>
+                            <Input
+                                type="text"
+                                label={
+                                    t("views:components" +
+                                        ".mfa.fido.form.label")
+                                }
+                                placeholder={
+                                    t("views:components" +
+                                        ".mfa.fido.form.placeholder")
+                                }
+                                onChange={ handleDeviceNameChange }
+                            />
+                        </Form.Field>
+                    </Form>
                 </ModalContent>
             </ModalComponent>
         );
@@ -267,7 +352,14 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                                 <List.Content>
                                                                     <Forms
                                                                         onSubmit={
-                                                                            (values: Map<string, string>) => { }
+                                                                            (values: Map<string, string>) => {
+                                                                                submitName(
+                                                                                    values.get(
+                                                                                        device.credential.credentialId
+                                                                                    ),
+                                                                                    device.credential.credentialId
+                                                                                );
+                                                                            }
                                                                         }
                                                                     >
                                                                         <Field
@@ -278,7 +370,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                                             value=""
                                                                             required={ false }
                                                                             requiredErrorMessage=""
-                                                                            name="fidoName"
+                                                                            name={ device.credential.credentialId }
                                                                             placeholder={
                                                                                 t("views:components" +
                                                                                     ".mfa.fido.form.placeholder")
@@ -396,7 +488,8 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                         )
                 }
             </div>
-            <div>{ deviceErrorModal() }</div>
+            <>{ deviceErrorModal() }</>
+            <>{ deviceRegistrationSuccessModal() }</>
         </>
     );
 };
