@@ -122,8 +122,6 @@ public class AppPortalUtils {
         ServiceProvider serviceProvider = new ServiceProvider();
         serviceProvider.setApplicationName(appName);
         serviceProvider.setDescription(appDescription);
-        // TODO: Remove this when tenant qualified path is available.
-        serviceProvider.setSaasApp(true);
 
         InboundAuthenticationRequestConfig inboundAuthenticationRequestConfig
                 = new InboundAuthenticationRequestConfig();
