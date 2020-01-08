@@ -54,7 +54,7 @@
                 <jsp:directive.include file="includes/product-title.jsp"/>
             <% } %>
 
-            <div class="ui segment left aligned">
+            <div class="ui segment center aligned">
                 <h3 class="ui header">
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification")%>
                 </h3>
