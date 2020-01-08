@@ -18,10 +18,10 @@
 
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, Grid } from "semantic-ui-react";
-import { UsersList } from "../components/users/users-list";
-import UsersSearch from "../components/users/users-search";
+import {Button, Divider, Grid} from "semantic-ui-react";
+import { UserSearch, UsersList } from "../components/users";
 import { InnerPageLayout } from "../layouts";
+import {RecentApplications} from "../../../user-portal/src/components/applications/recent-applications";
 
 /**
  * Users info page.
@@ -30,37 +30,34 @@ import { InnerPageLayout } from "../layouts";
  */
 export const UsersPage = (): JSX.Element => {
     const { t } = useTranslation();
-    // const [ notification, setNotification ] = useState(createEmptyNotificationActionPayload());
+    const [ searchQuery, setSearchQuery ] = useState("");
 
-    const handleNotification = (firedNotification: Notification) => {
-        // setNotification(firedNotification);
-    };
-
-    const handleNotificationDismiss = () => {
-        // setNotification({
-        //     ...notification,
-        //     visible: false
-        // });
+    /**
+     * Handles the `onFilter` callback action from the
+     * application search component.
+     *
+     * @param {string} query - Search query.
+     */
+    const handleApplicationFilter = (query: string): void => {
+        setSearchQuery(query);
     };
 
     return (
         <InnerPageLayout
-            pageTitle={ t("views:UsersPage.title") }
-            pageDescription={ t("views:UsersPage.subTitle") }>
-            {/*{*/}
-            {/*    notification && notification.visible*/}
-            {/*        ? (<NotificationComponent*/}
-            {/*            message={ notification.message }*/}
-            {/*            description={ notification.description }*/}
-            {/*            onDismiss={ handleNotificationDismiss }*/}
-            {/*            { ...notification.otherProps }/>)*/}
-            {/*        : null*/}
-            {/*}*/}
+            pageTitle={ t("views:components.users.all.heading") }
+            pageDescription={ t("views:components.users.all.subHeading") }
+        >
             <Grid>
-                <Grid.Row width={ 16 }>
-                    <UsersSearch/>
+                <Grid.Row width={ 16 } columns={ 2 }>
+                    <Grid.Column>
+                        <UserSearch onFilter={ handleApplicationFilter }/>
+                    </Grid.Column>
+                    <Grid.Column>
+                        <Button icon="ellipsis horizontal" size="medium" floated="right"/>
+                        <Button primary floated="right" size="medium">+ ADD USER</Button>
+                    </Grid.Column>
                 </Grid.Row>
-                <Grid.Row>
+                <Grid.Row width={ 16 }>
                     <UsersList/>
                 </Grid.Row>
             </Grid>
