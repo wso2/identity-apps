@@ -16,4 +16,5 @@
  * under the License.
  */
 
+export * from "./advanced-search";
 export * from "./icon";

@@ -46,38 +46,12 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             .then((response) => {
                 if (response.status === 200) {
                 setUsersList(response.data.Resources);
-                // onNotificationFired({
-                //         description: t(
-                //             "views:securityPage.multiFactor.smsOtp.notification.success.description"
-                //         ),
-                //         message: t(
-                //             "views:securityPage.multiFactor.smsOtp.notification.success.message"
-                //         ),
-                //         otherProps: {
-                //             positive: true
-                //         },
-                //         visible: true
-                //     });
-                // } else {
-                //     onNotificationFired({
-                //         description: t(
-                //             "views:userProfile.notification.getProfileInfo.error.description"
-                //         ),
-                //         message: t(
-                //             "views:userProfile.notification.getProfileInfo.error.message"
-                //         ),
-                //         otherProps: {
-                //             negative: true
-                //         },
-                //         visible: true
-                //     });
                 }
             });
     };
 
     return (
-        <Container>
-            <Table color="orange">
+            <Table color="orange" className="sub-section-table">
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell>Name</Table.HeaderCell>
@@ -101,6 +75,5 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     }
                 </Table.Body>
             </Table>
-        </Container>
     );
 };

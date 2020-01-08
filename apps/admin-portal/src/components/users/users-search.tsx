@@ -16,56 +16,227 @@
  * under the License.
  */
 
-import React, { Component, useState  } from "react";
+import { Field, Forms } from "@wso2is/forms";
+import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid, Header, Input, Search, Segment, Select } from "semantic-ui-react";
-// @ts-ignore
-import { InnerPageLayout } from "../layouts";
+import { Form, Grid } from "semantic-ui-react";
+import { buildSearchQuery } from "../../utils";
+import { AdvancedSearch } from "../shared";
 
-const initialState = { isLoading: false, results: [], value: "" };
+/**
+ * Filter attribute field identifier.
+ * @type {string}
+ */
+const FILTER_ATTRIBUTE_FIELD_IDENTIFIER: string = "filerAttribute";
 
-// const source = _.times(5, () => ({
-//     title: faker.company.companyName(),
-//     description: faker.company.catchPhrase(),
-//     image: faker.internet.avatar(),
-//     price: faker.finance.amount(0, 100, 2, '$'),
-// }))
+/**
+ * Filter condition field identifier.
+ * @type {string}
+ */
+const FILTER_CONDITION_FIELD_IDENTIFIER: string = "filerCondition";
 
-export default class UsersSearch extends Component {
-    public state = initialState;
+/**
+ * Filter value field identifier.
+ * @type {string}
+ */
+const FILTER_VALUES_FIELD_IDENTIFIER: string = "filerValues";
 
-    public handleResultSelect = (e, { result }) => this.setState({ value: result.title });
+/**
+ * The default search strategy. Search input will append the text
+ * field value to this.
+ * @type {string}
+ */
+const DEFAULT_SEARCH_STRATEGY: string = "name co";
 
-    public handleSearchChange = (e, { value }) => {
-        this.setState({ isLoading: true, value });
-
-        setTimeout(() => {
-            if (this.state.value.length < 1) { return this.setState(initialState); }
-
-            // const re = new RegExp(_.escapeRegExp(this.state.value), "i")
-            // const isMatch = (result) => re.test(result.title)
-
-            this.setState({
-                isLoading: false,
-                // results: _.filter(source, isMatch),
-            });
-        }, 300);
-    }
-
-    public render() {
-        const { isLoading, value, results } = this.state;
-        const options = [
-            { key: "all", text: "All", value: "all" },
-            { key: "Search by", text: "Search by", value: "Search by" },
-            { key: "username", text: "username", value: "username" },
-        ];
-
-        return (
-        <Input type="text" placeholder="Search..." action style={{ width: "870px"}} >
-            <input />
-            <Select compact options={ options } defaultValue="Search by"/>
-            <Button type="submit">Search</Button>
-        </Input>
-        );
-    }
+/**
+ * Prop types for the application search component.
+ */
+interface UserSearchProps {
+    onFilter: (query: string) => void;
 }
+
+/**
+ * Application search component.
+ *
+ * @return {JSX.Element}
+ */
+export const UserSearch: FunctionComponent<UserSearchProps> = (
+    props: UserSearchProps
+): JSX.Element => {
+    const { onFilter } = props;
+    const [ isFormSubmitted, setIsFormSubmitted ] = useState(false);
+    const [ externalSearchQuery, setExternalSearchQuery ] = useState("");
+    const { t } = useTranslation();
+
+    /**
+     * Filter attribute options.
+     *
+     * @remarks
+     * Only filter by `name` is supported in the current API implementation.
+     *
+     * @type {({text: string; value: string})[]}
+     */
+    const filterAttributeOptions = [
+        { value: "name", text: t("common:name") }
+    ];
+
+    /**
+     * Filter condition options.
+     *
+     * @type {({text: string; value: string})[]}
+     */
+    const filterConditionOptions = [
+        { value: "sw", text: t("common:startsWith") },
+        { value: "ew", text: t("common:endsWith") },
+        { value: "co", text: t("common:contains") },
+        { value: "eq", text: t("common:equals") },
+    ];
+
+    /**
+     * Handles the form submit.
+     *
+     * @param {Map<string, string | string[]>} values - Form values.
+     */
+    const handleFormSubmit = (values: Map<string, string | string[]>): void => {
+        const query = values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
+            + " "
+            + values.get(FILTER_CONDITION_FIELD_IDENTIFIER)
+            + " "
+            + values.get(FILTER_VALUES_FIELD_IDENTIFIER);
+
+        setExternalSearchQuery(query);
+        onFilter(query);
+        setIsFormSubmitted(true);
+    };
+
+    /**
+     * Handles the search query submit.
+     *
+     * @param {boolean} processQuery - Flag to enable query processing.
+     * @param {string} query - Search query.
+     */
+    const handleSearchQuerySubmit = (processQuery: boolean, query: string): void => {
+        if (!processQuery) {
+            onFilter(query);
+            return;
+        }
+
+        onFilter(buildSearchQuery(query));
+    };
+
+    /**
+     * Handles the submitted state reset action.
+     */
+    const handleResetSubmittedState = (): void => {
+        setIsFormSubmitted(false);
+    };
+
+    /**
+     * Handles the external search query clear action.
+     */
+    const handleExternalSearchQueryClear = (): void => {
+        setExternalSearchQuery("");
+    };
+
+    return (
+        <AdvancedSearch
+            aligned="left"
+            clearButtonPopupLabel={ t("views:components.users.search.popups.clear") }
+            defaultSearchStrategy={ DEFAULT_SEARCH_STRATEGY }
+            dropdownTriggerPopupLabel={ t("views:components.users.search.popups.dropdown") }
+            hintActionKeys={ t("views:components.users.search.hints.querySearch.actionKeys") }
+            hintLabel={ t("views:components.users.search.hints.querySearch.label") }
+            onExternalSearchQueryClear={ handleExternalSearchQueryClear }
+            onSearchQuerySubmit={ handleSearchQuerySubmit }
+            placeholder={ t("views:components.users.search.placeholder") }
+            resetSubmittedState={ handleResetSubmittedState }
+            searchOptionsHeader={ t("views:components.users.search.options.header") }
+            externalSearchQuery={ externalSearchQuery }
+            submitted={ isFormSubmitted }
+        >
+            <Grid>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 16 }>
+                        <Forms onSubmit={ (values) => handleFormSubmit(values) }>
+                            <Field
+                                children={ filterAttributeOptions.map((attribute, index) => {
+                                    return {
+                                        key: index,
+                                        text: attribute.text,
+                                        value: attribute.value
+                                    };
+                                }) }
+                                label={ t("views:components.users.search.forms.searchForm.inputs" +
+                                    ".filerAttribute.label") }
+                                name={ FILTER_ATTRIBUTE_FIELD_IDENTIFIER }
+                                placeholder={ t("views:components.users.search.forms.searchForm.inputs" +
+                                    ".filerAttribute.placeholder") }
+                                required={ true }
+                                requiredErrorMessage={ t("views:components.users.search.forms.searchForm" +
+                                    ".inputs.filerAttribute.validations.empty") }
+                                type="dropdown"
+                                width={ 16 }
+                            />
+                            <Grid>
+                                <Grid.Row columns={ 2 }>
+                                    <Grid.Column width={ 8 }>
+                                        <Field
+                                            children={ filterConditionOptions.map((condition, index) => {
+                                                return {
+                                                    key: index,
+                                                    text: condition.text,
+                                                    value: condition.value
+                                                };
+                                            }) }
+                                            label={ t("views:components.users.search.forms.searchForm.inputs" +
+                                                ".filterCondition.label") }
+                                            name={ FILTER_CONDITION_FIELD_IDENTIFIER }
+                                            placeholder={ t("views:components.users.search.forms." +
+                                                "searchForm.inputs.filterCondition.placeholder") }
+                                            required={ true }
+                                            requiredErrorMessage={ t("views:components.users.search.forms" +
+                                                ".searchForm.inputs.filterCondition.validations.empty") }
+                                            type="dropdown"
+                                            width={ 16 }
+                                        />
+                                    </Grid.Column>
+                                    <Grid.Column width={ 8 }>
+                                        <Field
+                                            label={ t("views:components.users.search.forms.searchForm.inputs" +
+                                                ".filterValue.label") }
+                                            name={ FILTER_VALUES_FIELD_IDENTIFIER }
+                                            placeholder={ t("views:components.users.search.forms." +
+                                                "searchForm.inputs.filterValue.placeholder") }
+                                            required={ true }
+                                            requiredErrorMessage={ t("views:components.users.search." +
+                                                "forms.searchForm.inputs.filterValue.validations.empty") }
+                                            type="text"
+                                            width={ 16 }
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                            <Field
+                                hidden={ true }
+                                type="divider"
+                            />
+                            <Form.Group inline={ true }>
+                                <Field
+                                    size="small"
+                                    type="submit"
+                                    value={ t("common:search").toString() }
+                                />
+                                <Field
+                                    className="link-button"
+                                    size="small"
+                                    type="reset"
+                                    value={ t("common:resetFilters").toString() }
+                                />
+                            </Form.Group>
+                        </Forms>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </AdvancedSearch>
+    );
+};
