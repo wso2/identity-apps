@@ -27,3 +27,4 @@ export * from "./tokens";
 export * from "./profile";
 export * from "./global";
 export * from "./loaders";
+export * from "./locales";

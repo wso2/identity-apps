@@ -22,6 +22,7 @@ import {
     CodeIcon,
     Connection,
     Consent,
+    CrossIcon,
     DefaultAppIcon,
     DummyUser,
     HomeTileIcons,
@@ -67,6 +68,10 @@ export const GenericAppIcon = CodeIcon;
 export const SidePanelIcons = SidePanelIconSet;
 export const SettingsSectionIcons = SettigsSectionIconSet;
 export const MFAIcons = MFAIconSet;
+
+export const AdvancedSearchIcons = {
+    clear: CrossIcon
+};
 
 export const TitleText: TitleTextType = "Identity Server";
 export const customCSS: CustomCSSType = {
