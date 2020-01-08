@@ -20,7 +20,6 @@ import { applyMiddleware, createStore, Store } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import { reducers } from "./combine-reducers";
-import { apiMiddleware } from "./middleware";
 
 /**
  * Type of the Redux store.
@@ -36,7 +35,6 @@ export type AppState = ReturnType<typeof reducers>;
 const configureStore = (): any => {
     // Set of custom middleware.
     const middleware = [
-        apiMiddleware,
         thunk
     ];
     const middleWareEnhancer = applyMiddleware(...middleware);
