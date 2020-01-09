@@ -17,10 +17,12 @@
 -->
 
 <%= htmlWebpackPlugin.options.importUtil %>
+<%= htmlWebpackPlugin.options.importTenantPrefix %>
 
 <!doctype html>
 <html>
     <head>
+        <%= htmlWebpackPlugin.options.contentType %>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <link href="<%= htmlWebpackPlugin.options.publicPath %>/libs/styles/css/wso2-default.css" rel="stylesheet" type="text/css"/>
@@ -28,8 +30,51 @@
         <title><%= htmlWebpackPlugin.options.title %></title>
 
         <script>
+            var getTenantPrefix = function(tenantName) {
+                return  "<%= htmlWebpackPlugin.options.tenantPrefix %>";
+            };
+
+            var getTenantName = function() {
+                var paths = window.location.pathname.split("/");
+                var tenantIndex = paths.indexOf(getTenantPrefix());
+
+                if (tenantIndex > 0) {
+                    var tenantName = paths[tenantIndex + 1];
+                    return (tenantName) ? tenantName : "";
+                } else {
+                    return "";
+                }
+            };
+
+            var getTenantPath = function(tenantName) {
+                return (tenantName !== "") ? "/" + getTenantPrefix() + "/" + tenantName : "";
+            };
+
+            /**
+             * =====================================================
+             * Update below details according to your configuration
+             * =====================================================
+             */
+
+            // Update below with tenant user-portal application/service-provider details
+            var serverOriginAddress = "<%= htmlWebpackPlugin.options.serverUrl %>";
+            var clientOriginAddress = window.location.origin;
+
+            // Update below with tenant user-portal application/service-provider details
+            var tenantName = getTenantName();
+            var defaultUserPortalClientID = "UX70QCZcrLfTnfbN0fiJagBtC6sa";
+            var tenantUserPortalClientID = defaultUserPortalClientID + "_" + tenantName;
+
+            /** ===================================================== */
+
             window["runConfig"] = {
-                serverHost: "<%=htmlWebpackPlugin.options.serverUrl%>"
+                appBaseName: getTenantPath(tenantName) + "/admin-portal",
+                clientHost: clientOriginAddress + getTenantPath(tenantName),
+                clientOrigin: clientOriginAddress,
+                clientID: (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ?
+                    tenantUserPortalClientID : defaultUserPortalClientID,
+                serverHost: serverOriginAddress + getTenantPath(tenantName),
+                serverOrigin: serverOriginAddress
             };
         </script>
     </head>
