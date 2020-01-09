@@ -19,14 +19,17 @@
 import {
     AuthenticateSessionUtil,
     AuthenticateTokenKeys,
+    OIDCRequestParamsInterface,
     OPConfigurationUtil,
     SignInUtil,
     SignOutUtil
 } from "@wso2is/authentication";
-import { getAssociations, getProfileInfo, getProfileSchemas } from "../../api";
+import _ from "lodash";
+import { getProfileInfo, getProfileSchemas } from "../../api";
 import { GlobalConfig, i18n, ServiceResourcesEndpoint } from "../../configs";
 import * as TokenConstants from "../../constants";
-import { AlertLevels, ProfileSchema } from "../../models";
+import { AlertLevels, BasicProfileInterface, ProfileSchema } from "../../models";
+import { store } from "../index";
 import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
 import { authenticateActionTypes } from "./types";
@@ -72,91 +75,84 @@ export const setScimSchemas = (schemas: ProfileSchema[]) => ({
 /**
  *  Gets profile information by making an API call
  */
-export const getProfileInformation = () => {
-    return (dispatch) => {
-        dispatch(setProfileInfoLoader(true));
-        getProfileInfo()
-            .then((infoResponse) => {
-                dispatch(setProfileInfoLoader(false));
-                if (infoResponse.responseStatus === 200) {
-                    dispatch(
-                        setProfileInfo({
-                            ...infoResponse
-                        })
-                    );
-                } else {
-                    dispatch(
-                        addAlert({
-                            description: i18n.t(
-                                "views:components.profile.notifications.getProfileInfo.genericError.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: i18n.t(
-                                "views:components.profile.notifications.getProfileInfo.genericError.message"
-                            )
-                        })
-                    );
-                }
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.detail) {
-                    dispatch(
-                        addAlert({
-                            description:  i18n.t(
-                                "views:components.profile.notifications.getProfileInfo.error.description",
-                                { description: error.response.data.detail }
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: i18n.t(
-                                "views:components.profile.notifications.getProfileInfo.error.message"
-                            )
-                        })
-                    );
+export const getProfileInformation = () => (dispatch) => {
 
-                    return;
+    let isCompletionCalculated: boolean = false;
+
+    dispatch(setProfileInfoLoader(true));
+
+    // Get the profile info
+    getProfileInfo()
+        .then((infoResponse) => {
+            if (infoResponse.responseStatus === 200) {
+                dispatch(
+                    setProfileInfo({
+                        ...infoResponse
+                    })
+                );
+
+                // If the schemas in the redux store is empty, fetch the SCIM schemas from the API.
+                if (_.isEmpty(store.getState().authenticationInformation.profileSchemas)) {
+                    isCompletionCalculated = true;
+                    dispatch(getScimSchemas(infoResponse));
                 }
 
+                return;
+            }
+
+            dispatch(
+                addAlert({
+                    description: i18n.t(
+                        "views:components.profile.notifications.getProfileInfo.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: i18n.t(
+                        "views:components.profile.notifications.getProfileInfo.genericError.message"
+                    )
+                })
+            );
+        })
+        .catch((error) => {
+            if (error.response && error.response.data && error.response.data.detail) {
                 dispatch(
                     addAlert({
-                        description:  i18n.t(
-                            "views:components.profile.notifications.getProfileInfo.genericError.description",
+                        description: i18n.t(
+                            "views:components.profile.notifications.getProfileInfo.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: i18n.t(
-                            "views:components.profile.notifications.getProfileInfo.genericError.message"
+                            "views:components.profile.notifications.getProfileInfo.error.message"
                         )
                     })
                 );
-            });
-    };
+
+                return;
+            }
+
+            dispatch(
+                addAlert({
+                    description: i18n.t(
+                        "views:components.profile.notifications.getProfileInfo.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: i18n.t(
+                        "views:components.profile.notifications.getProfileInfo.genericError.message"
+                    )
+                })
+            );
+        })
+        .finally(() => {
+            dispatch(setProfileInfoLoader(false));
+        });
 };
 
 /**
  * Handle user sign-in
  */
-export const handleSignIn = () => {
-    /**
-     * Get profile info and associations from the API
-     * to set the associations in the context.
-     */
-    const setProfileDetails = (dispatch) => {
-        dispatch(setProfileInfoLoader(true));
-        getProfileInfo().then((infoResponse) => {
-            dispatch(setProfileInfoLoader(false));
-            getAssociations().then((associationsResponse) => {
-                dispatch(
-                    setProfileInfo({
-                        ...infoResponse,
-                        associations: associationsResponse
-                    })
-                );
-            });
-        });
-    };
-
-    const sendSignInRequest = (dispatch) => {
-        const requestParams = {
+export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
+    const sendSignInRequest = () => {
+        const requestParams: OIDCRequestParamsInterface = {
             clientHost: GlobalConfig.clientHost,
             clientId: GlobalConfig.clientID,
             clientSecret: null,
@@ -172,7 +168,13 @@ export const handleSignIn = () => {
                 TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_LIST,
                 TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_CREATE
             ],
+            serverOrigin: GlobalConfig.serverOrigin
         };
+
+        if (consentDenied) {
+            requestParams.prompt = "login";
+        }
+
         if (SignInUtil.hasAuthorizationCode()) {
             SignInUtil.sendTokenRequest(requestParams)
                 .then((response) => {
@@ -181,8 +183,7 @@ export const handleSignIn = () => {
                         SignInUtil.getAuthenticatedUser(response.idToken)
                     );
                     dispatch(setSignIn());
-                    setProfileDetails(dispatch);
-                    getScimSchemas(dispatch);
+                    dispatch(getProfileInformation());
                 })
                 .catch((error) => {
                     throw error;
@@ -191,51 +192,47 @@ export const handleSignIn = () => {
             SignInUtil.sendAuthorizationRequest(requestParams);
         }
     };
-    return (dispatch) => {
-        if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
-            dispatch(setSignIn());
-            setProfileDetails(dispatch);
-            getScimSchemas(dispatch);
-        } else {
-            OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false)
-                .then(() => {
-                    sendSignInRequest(dispatch);
-                })
-                .catch(() => {
-                    OPConfigurationUtil.setAuthorizeEndpoint(ServiceResourcesEndpoint.authorize);
-                    OPConfigurationUtil.setTokenEndpoint(ServiceResourcesEndpoint.token);
-                    OPConfigurationUtil.setRevokeTokenEndpoint(ServiceResourcesEndpoint.revoke);
-                    OPConfigurationUtil.setEndSessionEndpoint(ServiceResourcesEndpoint.logout);
-                    OPConfigurationUtil.setJwksUri(ServiceResourcesEndpoint.jwks);
-                    OPConfigurationUtil.setOPConfigInitiated();
 
-                    sendSignInRequest(dispatch);
-                });
-        }
-    };
+    if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
+        dispatch(setSignIn());
+        dispatch(getProfileInformation());
+    } else {
+        OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false)
+            .then(() => {
+                sendSignInRequest();
+            })
+            .catch(() => {
+                OPConfigurationUtil.setAuthorizeEndpoint(ServiceResourcesEndpoint.authorize);
+                OPConfigurationUtil.setTokenEndpoint(ServiceResourcesEndpoint.token);
+                OPConfigurationUtil.setRevokeTokenEndpoint(ServiceResourcesEndpoint.revoke);
+                OPConfigurationUtil.setEndSessionEndpoint(ServiceResourcesEndpoint.logout);
+                OPConfigurationUtil.setJwksUri(ServiceResourcesEndpoint.jwks);
+                OPConfigurationUtil.setOPConfigInitiated();
+
+                sendSignInRequest();
+            });
+    }
 };
 
 /**
  * Handle user sign-out
  */
-export const handleSignOut = () => {
-    return (dispatch) => {
-        SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl)
-            .then(() => {
-                dispatch(setSignOut());
-                AuthenticateSessionUtil.endAuthenticatedSession();
-                OPConfigurationUtil.resetOPConfiguration();
-            })
-            .catch((error) => {
-                // TODO: show error page
-            });
-    };
+export const handleSignOut = () => (dispatch) => {
+    SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl)
+        .then(() => {
+            dispatch(setSignOut());
+            AuthenticateSessionUtil.endAuthenticatedSession();
+            OPConfigurationUtil.resetOPConfiguration();
+        })
+        .catch((error) => {
+            // TODO: show error page
+        });
 };
 
 /**
  * Get SCIM2 schemas
  */
-export const getScimSchemas = (dispatch) => {
+export const getScimSchemas = (profileInfo: BasicProfileInterface = null) => (dispatch) => {
     dispatch(setProfileSchemaLoader(true));
     getProfileSchemas()
         .then((response: ProfileSchema[]) => {

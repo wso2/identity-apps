@@ -354,6 +354,12 @@ export const views: Views = {
             }
         },
     },
+    pages: {
+        overView: {
+            subTitle: "The following section would give you an overview of the system statistics",
+            title: "Welcome, {{firstName}}"
+        }
+    },
     placeholders: {
         404: {
             action: "Back to home",

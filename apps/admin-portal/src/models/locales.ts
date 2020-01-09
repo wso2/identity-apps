@@ -359,6 +359,9 @@ export interface Views {
             }
         }
     };
+    pages: {
+        overView: Page
+    };
     placeholders: {
         404: Placeholder,
         emptySearchResult: Placeholder,
