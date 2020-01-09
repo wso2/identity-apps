@@ -499,7 +499,8 @@ export const views: Views = {
                 form: {
                     label: "Nome do dispositivo",
                     placeholder: "Digite o nome do dispositivo",
-                    remove: "Retire o dispositivo"
+                    remove: "Retire o dispositivo",
+                    required: "Digite um nome para o seu dispositivo de segurança"
                 },
                 heading: "FIDO",
                 modals: {
@@ -537,6 +538,21 @@ export const views: Views = {
                             description: "O dispositivo foi registrado com sucesso e agora você pode usá-lo como um " +
                                 "segundo fator",
                             message: "Seu dispositivo registrado com sucesso"
+                        }
+                    },
+                    updateDeviceName: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Ocorreu um erro ao atualizar o nome do dispositivo de segurança"
+                        },
+                        genericError: {
+                            description: "Erro ao atualizar o nome do dispositivo de segurança",
+                            message: "Algo deu errado"
+                        },
+                        success: {
+                            description:
+                                "O nome do seu dispositivo de segurança foi atualizado com sucesso",
+                            message: "Nome do dispositivo de segurança atualizado com sucesso"
                         }
                     }
                 },

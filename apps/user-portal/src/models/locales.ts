@@ -358,12 +358,14 @@ export interface Views {
                 notifications: {
                     removeDevice: Notification;
                     startFidoFlow: Notification;
+                    updateDeviceName: Notification;
                 };
                 tryButton: string;
                 form: {
                     label: string;
                     placeholder: string;
                     remove: string;
+                    required: string;
                 }
             };
             smsOtp: {

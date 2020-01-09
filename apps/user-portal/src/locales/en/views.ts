@@ -500,7 +500,8 @@ export const views: Views = {
                 form: {
                     label: "Device Name",
                     placeholder: "Enter a device name",
-                    remove: "Remove the device"
+                    remove: "Remove the device",
+                    required: "Please enter a name for your security device"
                 },
                 heading: "via Security Device",
                 modals: {
@@ -539,6 +540,21 @@ export const views: Views = {
                             description:
                                 "The device was successfully registered and now you can use it as a second " + "factor",
                             message: "Your Device Registered Successfully"
+                        }
+                    },
+                    updateDeviceName: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while updating the security device name"
+                        },
+                        genericError: {
+                            description: "Error occurred while updating the security device name",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description:
+                                "The name of your security device was successfully updated",
+                            message: "Security Device name updated successfully"
                         }
                     }
                 },
