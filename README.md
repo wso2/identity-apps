@@ -53,20 +53,11 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
 ```
-3. Add your hostname and port as a trusted FIDO2 origin in `repository/resources/conf/templates/repository/conf/identity/identity.xml.j2` as given below.
+3. Add your hostname and port as a trusted FIDO2 origin in `<PRODUCT_HOME>repository/conf/deployment.toml` as given below.
 
-```xml
-   <FIDO>
-        <WebAuthn>
-            <Enable>{{fido.webauthn.enable}}</Enable>
-        </WebAuthn>
-        <FIDO2TrustedOrigins>
-            {% for origin in fido.trusted.origins %}
-            <Origin>{{origin}}</Origin>
-            {% endfor %}
-            <Origin>https://localhost:9000</Origin>
-        </FIDO2TrustedOrigins>
-   </FIDO>
+```toml
+[fido.trusted] 
+origins=["https://<HOST>:<PORT>"]
 ```
 4. Execute `wso2server.sh` (For unix environment) or `wso2server.bat` (For windows environment) file from the `bin` directory to run WSO2 Identity Server.
 5. Navigate to `https://localhost:9443/carbon/` from the browser, and login to the system by entering an admin password.
