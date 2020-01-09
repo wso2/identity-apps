@@ -21,7 +21,7 @@ import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Form, Grid, Icon, Input, List, ModalContent, Popup } from "semantic-ui-react";
-import { deleteDevice, getMetaData, startFidoFlow, startFidoUsernamelessFlow } from "../../../api";
+import { deleteDevice, getMetaData, startFidoFlow, startFidoUsernamelessFlow, updateDeviceName } from "../../../api";
 import { MFAIcons } from "../../../configs";
 import { AlertInterface, AlertLevels } from "../../../models";
 import { FIDODevice } from "../../../models/fido-authenticator";
@@ -72,10 +72,6 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                         devices = [...response.data];
                     }
                     setDeviceList(devices);
-
-                    if (!_.isEmpty(recentlyAddedDevice)) {
-                        setIsDeviceSuccessModalVisibility(true);
-                    }
                 }
             })
             .catch((error) => {
@@ -132,6 +128,39 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     };
 
     /**
+     * This function fires a notification on the success of device name update.
+     */
+    const fireDeviceNameUpdateSuccessNotification = () => {
+        onAlertFired({
+            description: t(
+                "views:components.mfa.fido.notifications.updateDeviceName.success.description"
+            ),
+            level: AlertLevels.SUCCESS,
+            message: t(
+                "views:components.mfa.fido.notifications.updateDeviceName.success.message"
+            )
+        });
+    };
+
+    /**
+     * This function fires a notification on device name update failure.
+     */
+    const fireDeviceNameUpdateFailureNotification = (error: string) => {
+        onAlertFired({
+            description: t(
+                "views:components.mfa.fido.notifications.updateDeviceName.genericError.description",
+                {
+                    description: error
+                }
+            ),
+            level: AlertLevels.ERROR,
+            message: t(
+                "views:components.mfa.fido.notifications.updateDeviceName.error.message"
+            )
+        });
+    };
+
+    /**
      * This handles the initiation of device registration with
      * passwordless authentication
      */
@@ -140,6 +169,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         startFidoFlow()
             .then(({ data }) => {
                 setRecentlyAddedDevice(data.credential.id);
+                setIsDeviceSuccessModalVisibility(true);
             }).catch(() => {
                 fireFailureNotification();
             });
@@ -154,6 +184,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         startFidoUsernamelessFlow()
             .then(({ data }) => {
                 setRecentlyAddedDevice(data.credential.id);
+                setIsDeviceSuccessModalVisibility(true);
             }).catch(() => {
                 setDeviceErrorModalVisibility(true);
             });
@@ -163,6 +194,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         deleteDevice(id)
             .then(() => {
                 cancelEdit(id);
+                getFidoMetaData();
                 fireDeletionSuccessNotification();
             }).catch((error) => {
                 fireDeletionFailureNotification(error);
@@ -173,8 +205,20 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
      * This function posts the name of the FIDO device
      */
     const submitName = (name: string, id: string): void => {
-        setRecentFIDOName("");
         setRecentlyAddedDevice("");
+        setRecentFIDOName("");
+
+        updateDeviceName(id, name)
+            .then((response) => {
+                getFidoMetaData();
+                handleDeviceSuccessModalClose();
+                cancelEdit(id);
+                fireDeviceNameUpdateSuccessNotification();
+            })
+            .catch(((error) => {
+                fireDeviceNameUpdateFailureNotification(error);
+            }));
+
     };
 
     /**
@@ -264,7 +308,6 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                 onSecondaryActionClick={ handleDeviceSuccessModalClose }
                 onPrimaryActionClick={ () => {
                     submitName(recentFIDOName, recentlyAddedDevice);
-                    handleDeviceSuccessModalClose();
                 } }
                 open={ isDeviceSuccessModalVisible }
                 onClose={ handleDeviceSuccessModalClose }
@@ -367,9 +410,12 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                                                 t("views:components" +
                                                                                     ".mfa.fido.form.label")
                                                                             }
-                                                                            value=""
-                                                                            required={ false }
-                                                                            requiredErrorMessage=""
+                                                                            value={ device.displayName || "" }
+                                                                            required={ true }
+                                                                            requiredErrorMessage={
+                                                                                t("views:components" +
+                                                                                    ".mfa.fido.form.required")
+                                                                            }
                                                                             name={ device.credential.credentialId }
                                                                             placeholder={
                                                                                 t("views:components" +
@@ -445,7 +491,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                                     color="grey"
                                                                     name="dot circle outline"
                                                                 />
-                                                                { device.registrationTime }
+                                                                { device.displayName || device.registrationTime }
                                                             </List.Header>
                                                         </Grid.Column>
                                                         <Grid.Column width={ 5 } className="last-column">

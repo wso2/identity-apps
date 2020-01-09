@@ -32,5 +32,6 @@ export interface FIDODevice {
         publicKeyCose: string;
         signatureCount: number;
     };
+    displayName: string;
     registrationTime: string;
 }
