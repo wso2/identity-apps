@@ -53,7 +53,7 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
 ```
-3. Add your hostname and port as a trusted FIDO2 origin in `<PRODUCT_HOME>repository/conf/deployment.toml` as given below.
+3. Add your hostname and port as a trusted FIDO2 origin in `<PRODUCT_HOME>/repository/conf/deployment.toml` as given below.
 
 ```toml
 [fido.trusted] 
