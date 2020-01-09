@@ -93,6 +93,7 @@
                         </div>
                         <div class="ui divider hidden"></div>
                 <% } %>
+                <div class="error-msg"></div>
                 <div class="segment-form">
                     <form class="ui large form" id="pin_form" name="pin_form" action="../../commonauth"  method="POST">
                             <%
@@ -176,7 +177,7 @@
                 var OTPcode = document.getElementById("OTPcode").value;
                 if (OTPcode == "") {
                     document.getElementById('alertDiv').innerHTML
-                        = '<div id="error-msg" class="ui negative message">Please enter the code!</div>';
+                        = '<div id="error-msg" class="ui negative message">Please enter the code!</div><div class="ui divider hidden"></div>';
                 } else {
                     $('#pin_form').data("submitted", true);
                     $('#pin_form').submit();

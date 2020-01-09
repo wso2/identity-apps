@@ -74,7 +74,7 @@
     <body onload="getLoginDiv()">
 
     <main class="center-segment">
-        <div class="ui container large center aligned middle aligned">
+        <div class="ui container medium center aligned middle aligned">
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));

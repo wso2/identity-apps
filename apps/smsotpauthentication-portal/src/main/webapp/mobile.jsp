@@ -66,7 +66,7 @@
     <body onload="getLoginDiv()">
 
     <main class="center-segment">
-        <div class="ui container large center aligned middle aligned">
+        <div class="ui container medium center aligned middle aligned">
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -87,7 +87,7 @@
                         <div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%></div>
                         <div class="ui divider hidden"></div>
                 <% } %>
-                
+                <div id="error-msg"></div>
                 <div class="segment-form">
                     <form class="ui large form" id="pin_form" name="pin_form" action="../../commonauth"  method="POST">
                         <%
@@ -144,7 +144,7 @@
                 var mobileNumber = document.getElementById("MOBILE_NUMBER").value;
                 if (mobileNumber == "") {
                     document.getElementById('alertDiv').innerHTML
-                    = '<div id="error-msg" class="ui negative message">Please enter the mobile number!</div>';
+                    = '<div id="error-msg" class="ui negative message">Please enter the mobile number!</div><div class="ui divider hidden"></div>';
                 } else {
     	            $('#pin_form').submit();
     	        }
