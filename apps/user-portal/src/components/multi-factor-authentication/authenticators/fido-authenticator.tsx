@@ -389,7 +389,9 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                             <EditSection key={ device.credential.credentialId }>
                                                 <Grid>
                                                     <Grid.Row columns={ 3 }>
-                                                        <Grid.Column width={ 4 } />
+                                                        <Grid.Column width={ 4 }>
+                                                            { device.displayName || device.registrationTime }
+                                                        </Grid.Column>
                                                         <Grid.Column width={ 10 }>
                                                             <List.Item>
                                                                 <List.Content>
