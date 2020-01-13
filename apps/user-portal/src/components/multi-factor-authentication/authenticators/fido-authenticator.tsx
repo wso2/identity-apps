@@ -398,14 +398,14 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                         ? (
                                             <EditSection key={ device.credential.credentialId }>
                                                 <Grid>
-                                                    <Grid.Row columns={ 3 }>
+                                                    <Grid.Row columns={ 2 }>
                                                         <Grid.Column width={ 4 }>
                                                             {
                                                                 t("views:components.mfa.fido.form.label")
                                                                 + ` ${index + 1}`
                                                             }
                                                         </Grid.Column>
-                                                        <Grid.Column width={ 10 }>
+                                                        <Grid.Column width={ 12 }>
                                                             <List.Item>
                                                                 <List.Content>
                                                                     <Forms
@@ -464,28 +464,6 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                                 </List.Content>
                                                             </List.Item>
                                                         </Grid.Column>
-                                                        <Grid.Column width={ 2 } textAlign="right">
-                                                            <Popup
-                                                                content={ t("views:components.mfa.fido.form.remove") }
-                                                                inverted
-                                                                trigger={ (
-                                                                    <Icon
-                                                                        link={ true }
-                                                                        name="trash alternate outline"
-                                                                        color="red"
-                                                                        size="large"
-                                                                        onClick={
-                                                                            () => {
-                                                                                removeDevice(
-                                                                                    device.credential
-                                                                                        .credentialId
-                                                                                );
-                                                                            }
-                                                                        }
-                                                                    />
-                                                                ) }
-                                                            />
-                                                        </Grid.Column>
                                                     </Grid.Row>
                                                 </Grid>
                                             </EditSection>
@@ -524,6 +502,29 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                                             showEdit(device.credential.credentialId);
                                                                         }
                                                                     }
+                                                                />
+                                                                <Popup
+                                                                    content={
+                                                                        t("views:components.mfa.fido.form.remove")
+                                                                    }
+                                                                    inverted
+                                                                    trigger={ (
+                                                                        <Icon
+                                                                            link={ true }
+                                                                            name="trash alternate outline"
+                                                                            color="red"
+                                                                            size="small"
+                                                                            className="list-icon"
+                                                                            onClick={
+                                                                                () => {
+                                                                                    removeDevice(
+                                                                                        device.credential
+                                                                                            .credentialId
+                                                                                    );
+                                                                                }
+                                                                            }
+                                                                        />
+                                                                    ) }
                                                                 />
                                                             </List.Content>
                                                         </Grid.Column>
