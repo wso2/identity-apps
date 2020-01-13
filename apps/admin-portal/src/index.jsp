@@ -56,11 +56,11 @@
              * =====================================================
              */
 
-            // Update below with tenant user-portal application/service-provider details
+            // Update below with tenant admin-portal application/service-provider details
             var serverOriginAddress = "<%= htmlWebpackPlugin.options.serverUrl %>";
             var clientOriginAddress = window.location.origin;
 
-            // Update below with tenant user-portal application/service-provider details
+            // Update below with tenant admin-portal application/service-provider details
             var tenantName = getTenantName();
             var defaultAdminPortalClientID = "ADMIN_PORTAL";
             var tenantAdminPortalClientID = defaultAdminPortalClientID + "_" + tenantName;
