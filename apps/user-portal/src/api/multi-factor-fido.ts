@@ -47,7 +47,9 @@ export const getMetaData = (): Promise<any> => {
         .request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error(`Failed get meta info from: ${ServiceResourcesEndpoint.fidoMetaData}`));
+                return Promise.reject(
+                    new Error(`Failed get meta info from: ${ServiceResourcesEndpoint.fidoMetaData}`)
+                );
             }
             return Promise.resolve(response);
         })
