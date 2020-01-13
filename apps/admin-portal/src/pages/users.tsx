@@ -18,10 +18,9 @@
 
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {Button, Divider, Grid} from "semantic-ui-react";
+import { Button, Grid } from "semantic-ui-react";
 import { UserSearch, UsersList } from "../components/users";
 import { InnerPageLayout } from "../layouts";
-import {RecentApplications} from "../../../user-portal/src/components/applications/recent-applications";
 
 /**
  * Users info page.

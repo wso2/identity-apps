@@ -52,11 +52,11 @@
          * =====================================================
          */
 
-            // Update below with tenant user-portal application/service-provider details
+            // Update below with tenant admin-portal application/service-provider details
         var serverOriginAddress = "https://localhost:9443";
         var clientOriginAddress = window.location.origin;
 
-        // Update below with tenant user-portal application/service-provider details
+        // Update below with tenant admin-portal application/service-provider details
         var tenantName = getTenantName();
         var tenantAdminPortalClientID = "";
 
@@ -67,7 +67,7 @@
             clientHost: clientOriginAddress + getTenantPath(tenantName),
             clientOrigin: clientOriginAddress,
             clientID: (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ?
-                tenantAdminPortalClientID : "ADMIN_PORTAL",
+                tenantAdminPortalClientID : "UX70QCZcrLfTnfbN0fiJagBtC6sa",
             serverHost: serverOriginAddress + getTenantPath(tenantName),
             serverOrigin: serverOriginAddress
         };

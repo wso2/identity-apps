@@ -25,7 +25,9 @@ import {
     CrossIcon,
     DefaultAppIcon,
     DummyUser,
+    ErrorIcon,
     HomeTileIcons,
+    InfoIcon,
     Logo,
     MFAIconSet,
     Operations,
@@ -34,7 +36,9 @@ import {
     Security,
     Session,
     SettigsSectionIconSet,
-    SidePanelIconSet
+    SidePanelIconSet,
+    SuccessIcon,
+    WarningIcon
 } from "@wso2is/theme";
 
 type ImageType = string;
@@ -81,6 +85,13 @@ export const customCSS: CustomCSSType = {
     light: {
         appPrimaryColor: "#ff5000"
     }
+};
+
+export const AlertIcons = {
+    error: ErrorIcon,
+    info: InfoIcon,
+    success: SuccessIcon,
+    warning: WarningIcon
 };
 
 /**

@@ -62,8 +62,8 @@
 
             // Update below with tenant user-portal application/service-provider details
             var tenantName = getTenantName();
-            var defaultUserPortalClientID = "UX70QCZcrLfTnfbN0fiJagBtC6sa";
-            var tenantUserPortalClientID = defaultUserPortalClientID + "_" + tenantName;
+            var defaultAdminPortalClientID = "ADMIN_PORTAL";
+            var tenantAdminPortalClientID = defaultAdminPortalClientID + "_" + tenantName;
 
             /** ===================================================== */
 
@@ -72,7 +72,7 @@
                 clientHost: clientOriginAddress + getTenantPath(tenantName),
                 clientOrigin: clientOriginAddress,
                 clientID: (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ?
-                    tenantUserPortalClientID : defaultUserPortalClientID,
+                    tenantAdminPortalClientID : defaultAdminPortalClientID,
                 serverHost: serverOriginAddress + getTenantPath(tenantName),
                 serverOrigin: serverOriginAddress
             };

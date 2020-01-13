@@ -19,21 +19,15 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Container, Divider, Table } from "semantic-ui-react";
-import { UserImagePlaceHolder } from "../../../../user-portal/src/components";
 import { getUsersList } from "../../api";
-
-/**
- * Proptypes for the SMS OTP component.
- */
-interface UsersListProps {
-}
+import { UserImagePlaceHolder } from "../../components";
 
 /**
  * Users info page.
  *
  * @return {JSX.Element}
  */
-export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersListProps): JSX.Element => {
+export const UsersList: React.FunctionComponent<any> = (): JSX.Element => {
     const { t } = useTranslation();
     const [usersList, setUsersList] = useState([]);
 
@@ -51,29 +45,28 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     };
 
     return (
-            <Table color="orange" className="sub-section-table">
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell>Name</Table.HeaderCell>
-                        <Table.HeaderCell>Created On</Table.HeaderCell>
-                        <Table.HeaderCell>Last Modified</Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
-
-                <Table.Body>
-                    {
-                        usersList.map((user, index) => (
-                            <Table.Row key={ index }>
-                                <Table.Cell>
-                                    <UserImagePlaceHolder size="mini" floated="left"/>
-                                    <p style={ { padding: "10px 45px" } }>{ user.userName }</p>
-                                </Table.Cell>
-                                <Table.Cell>{ user.meta.created }</Table.Cell>
-                                <Table.Cell>{ user.meta.lastModified }</Table.Cell>
-                            </Table.Row>
-                        ))
-                    }
-                </Table.Body>
-            </Table>
+        <Table color="orange" className="sub-section-table">
+            <Table.Header>
+                <Table.Row>
+                    <Table.HeaderCell>Name</Table.HeaderCell>
+                    <Table.HeaderCell>Created On</Table.HeaderCell>
+                    <Table.HeaderCell>Last Modified</Table.HeaderCell>
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
+                {
+                    usersList.map((user, index) => (
+                        <Table.Row key={ index }>
+                            <Table.Cell>
+                                <UserImagePlaceHolder size="mini" floated="left"/>
+                                <p style={ { padding: "10px 45px" } }>{ user.userName }</p>
+                            </Table.Cell>
+                            <Table.Cell>{ user.meta.created }</Table.Cell>
+                            <Table.Cell>{ user.meta.lastModified }</Table.Cell>
+                        </Table.Row>
+                    ))
+                }
+            </Table.Body>
+        </Table>
     );
 };

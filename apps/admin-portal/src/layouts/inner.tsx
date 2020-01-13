@@ -17,8 +17,7 @@
  */
 
 import * as React from "react";
-import { AppFooter } from "../../../user-portal/src/components/footer";
-import { Header as AppHeader, PageHeader, SidePanelWrapper } from "../components";
+import { AppFooter, Header as AppHeader, PageHeader, SidePanelWrapper } from "../components";
 
 /**
  * Inner page layout component Prop types.
@@ -87,7 +86,7 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
                     { children }
                 </SidePanelWrapper>
             </div>
-            {/*<AppFooter />*/}
+            <AppFooter />
         </>
     );
 };

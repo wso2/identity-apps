@@ -18,3 +18,4 @@
 
 export * from "./advanced-search";
 export * from "./icon";
+export * from "./language-switcher";

@@ -18,9 +18,10 @@
 
 import {
     HomePage,
-    PageNotFound
+    PageNotFound,
+    PrivacyPage,
+    UsersPage
 } from "../pages";
-import { UsersPage } from "../pages/users";
 
 /**
  * Interface to handle route types.
@@ -388,6 +389,15 @@ const ROUTES: Route[] = [
         component: PageNotFound,
         name: "404",
         path: null,
+        protected: true,
+        showOnSidePanel: false,
+    },
+    {
+        children: [],
+        component: PrivacyPage,
+        icon: "security",
+        name: "common:privacy",
+        path: "/privacy",
         protected: true,
         showOnSidePanel: false,
     },
