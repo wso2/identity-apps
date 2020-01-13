@@ -46,7 +46,7 @@ export const getUserInfo = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.me
+        url: ServiceResourcesEndpoint.user
     };
 
     return httpClient.request(requestConfig)
