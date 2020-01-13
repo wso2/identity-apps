@@ -206,7 +206,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
      * This function posts the name of the FIDO device
      */
     const submitName = (name: string, id: string): void => {
-        if (!_.isEmpty(recentFIDOName)) {
+        if (!_.isEmpty(recentFIDOName) || _.isEmpty(recentlyAddedDevice)) {
             setRecentlyAddedDevice("");
             setRecentFIDOName("");
             setRecentFIDONameError(false);
