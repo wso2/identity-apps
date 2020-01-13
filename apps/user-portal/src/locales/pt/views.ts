@@ -535,8 +535,8 @@ export const views: Views = {
                             message: "Algo deu errado"
                         },
                         success: {
-                            description: "O dispositivo foi registrado com sucesso e agora você pode usá-lo como um " +
-                                "segundo fator",
+                            description: "O dispositivo foi registrado com sucesso e agora você pode usá-lo como" +
+                                " um fator de autenticação",
                             message: "Seu dispositivo registrado com sucesso"
                         }
                     },

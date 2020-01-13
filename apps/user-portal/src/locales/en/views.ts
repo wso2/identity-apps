@@ -538,7 +538,8 @@ export const views: Views = {
                         },
                         success: {
                             description:
-                                "The device was successfully registered and now you can use it as a second " + "factor",
+                                "The device was successfully registered and now you can use it as an" +
+                                " authentication factor",
                             message: "Your Device Registered Successfully"
                         }
                     },
