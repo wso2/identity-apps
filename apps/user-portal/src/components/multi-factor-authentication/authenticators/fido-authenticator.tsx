@@ -308,7 +308,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const deviceRegistrationSuccessModal = (): JSX.Element => {
         return (
             <ModalComponent
-                primaryAction={ t("common:update") }
+                primaryAction={ t("common:save") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ handleDeviceSuccessModalClose }
                 onPrimaryActionClick={ () => {
@@ -325,10 +325,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                         <Form.Field>
                             <Form.Input
                                 type="text"
-                                label={
-                                    t("views:components" +
-                                        ".mfa.fido.form.label") + ":"
-                                }
+                                label=""
                                 placeholder={
                                     t("views:components" +
                                         ".mfa.fido.form.placeholder")
@@ -403,7 +400,10 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                 <Grid>
                                                     <Grid.Row columns={ 3 }>
                                                         <Grid.Column width={ 4 }>
-                                                            { device.displayName || device.registrationTime }
+                                                            {
+                                                                t("views:components.mfa.fido.form.label")
+                                                                + ` ${index + 1}`
+                                                            }
                                                         </Grid.Column>
                                                         <Grid.Column width={ 10 }>
                                                             <List.Item>
@@ -421,10 +421,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                                         }
                                                                     >
                                                                         <Field
-                                                                            label={
-                                                                                t("views:components" +
-                                                                                    ".mfa.fido.form.label")
-                                                                            }
+                                                                            label=""
                                                                             value={ device.displayName || "" }
                                                                             required={ true }
                                                                             requiredErrorMessage={
@@ -506,7 +503,11 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                                     color="grey"
                                                                     name="dot circle outline"
                                                                 />
-                                                                { device.displayName || device.registrationTime }
+                                                                {
+                                                                    device.displayName
+                                                                    || t("views:components.mfa.fido.form.label")
+                                                                    + ` ${index + 1}`
+                                                                }
                                                             </List.Header>
                                                         </Grid.Column>
                                                         <Grid.Column width={ 5 } className="last-column">
