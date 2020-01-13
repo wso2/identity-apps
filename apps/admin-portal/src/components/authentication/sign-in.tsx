@@ -15,11 +15,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../../helpers";
 import { AppState } from "../../store";
 import { handleSignIn } from "../../store/actions";
+
 /**
  * This component handles the sign-in function
  */

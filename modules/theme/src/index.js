@@ -60,6 +60,8 @@ export const SettigsSectionIconSet = {
     securityQuestions: require("../lib/assets/images/illustrations/security-questions.svg"),
     securityQuestionsMini: require("../lib/assets/images/illustrations/security-questions-mini.svg")
 };
+
+// Icons of the admin portal side panel
 export const Account = require("../lib/assets/images/icons/controls-icon.svg");
 export const Consent = require("../lib/assets/images/icons/tick-circle-icon.svg");
 export const Operations = require("../lib/assets/images/icons/tools-icon.svg");
