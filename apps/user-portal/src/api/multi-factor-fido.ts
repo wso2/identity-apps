@@ -57,7 +57,7 @@ export const getMetaData = (): Promise<any> => {
 };
 
 /**
- * Retrieves FIDO device name
+ * Updates FIDO device name
  * @param credentialId
  * @param deviceName
  */
