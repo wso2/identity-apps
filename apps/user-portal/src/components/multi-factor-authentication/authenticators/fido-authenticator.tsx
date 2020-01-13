@@ -46,6 +46,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const [isDeviceErrorModalVisible, setDeviceErrorModalVisibility] = useState(false);
     const [isDeviceSuccessModalVisible, setIsDeviceSuccessModalVisibility] = useState(false);
     const [recentFIDOName, setRecentFIDOName] = useState("");
+    const [recentFIDONameError, setRecentFIDONameError] = useState(false);
     const [recentlyAddedDevice, setRecentlyAddedDevice] = useState<string>();
     const [editFIDO, setEditFido] = useState<Map<string, boolean>>();
     const { onAlertFired } = props;
@@ -205,20 +206,24 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
      * This function posts the name of the FIDO device
      */
     const submitName = (name: string, id: string): void => {
-        setRecentlyAddedDevice("");
-        setRecentFIDOName("");
+        if (!_.isEmpty(recentFIDOName)) {
+            setRecentlyAddedDevice("");
+            setRecentFIDOName("");
+            setRecentFIDONameError(false);
 
-        updateDeviceName(id, name)
-            .then((response) => {
-                getFidoMetaData();
-                handleDeviceSuccessModalClose();
-                cancelEdit(id);
-                fireDeviceNameUpdateSuccessNotification();
-            })
-            .catch(((error) => {
-                fireDeviceNameUpdateFailureNotification(error);
-            }));
-
+            updateDeviceName(id, name)
+                .then((response) => {
+                    getFidoMetaData();
+                    handleDeviceSuccessModalClose();
+                    cancelEdit(id);
+                    fireDeviceNameUpdateSuccessNotification();
+                })
+                .catch(((error) => {
+                    fireDeviceNameUpdateFailureNotification(error);
+                }));
+        } else {
+            setRecentFIDONameError(true);
+        }
     };
 
     /**
@@ -318,17 +323,25 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                 <ModalContent>
                     <Form>
                         <Form.Field>
-                            <Input
+                            <Form.Input
                                 type="text"
                                 label={
                                     t("views:components" +
-                                        ".mfa.fido.form.label")
+                                        ".mfa.fido.form.label") + ":"
                                 }
                                 placeholder={
                                     t("views:components" +
                                         ".mfa.fido.form.placeholder")
                                 }
                                 onChange={ handleDeviceNameChange }
+                                error={
+                                    recentFIDONameError
+                                        ? {
+                                            content: t("views:components.mfa.fido.form.required"),
+                                            pointing: "above"
+                                        }
+                                        : false
+                                }
                             />
                         </Form.Field>
                     </Form>
