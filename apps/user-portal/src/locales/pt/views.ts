@@ -497,7 +497,7 @@ export const views: Views = {
             fido: {
                 description: "Autentique-se conectando uma chave FIDO",
                 form: {
-                    label: "Nome do dispositivo",
+                    label: "Dispositivo de segurança",
                     placeholder: "Digite o nome do dispositivo",
                     remove: "Retire o dispositivo",
                     required: "Digite um nome para o seu dispositivo de segurança"

@@ -498,7 +498,7 @@ export const views: Views = {
             fido: {
                 description: "Authenticate yourself by connecting a biometric device or a FIDO key",
                 form: {
-                    label: "Device Name",
+                    label: "Security Device",
                     placeholder: "Enter a device name",
                     remove: "Remove the device",
                     required: "Please enter a name for your security device"

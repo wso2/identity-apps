@@ -495,7 +495,7 @@ export const views: Views = {
             fido: {
                 description: "FIDO යතුරක් සම්බන්ධ කිරීමෙන් සත්\u200Dයාපනය කිරීම",
                 form: {
-                    label: "උපාංගයේ නම",
+                    label: "ආරක්ෂක උපාංගය",
                     placeholder: "උපාංග නාමයක් ඇතුළත් කරන්න",
                     remove: "උපාංගය ඉවත් කරන්න",
                     required: "කරුණාකර ඔබගේ ආරක්ෂක උපාංගයේ නම ඇතුළත් කරන්න"
