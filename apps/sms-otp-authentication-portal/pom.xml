@@ -126,8 +126,8 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon.identity.framework</groupId>
-            <artifactId>org.wso2.carbon.identity.authenticator.smsotp</artifactId>
+            <groupId>org.wso2.carbon.extension.identity.authenticator</groupId>
+            <artifactId>org.wso2.carbon.extension.identity.authenticator.smsotp.connector</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
