@@ -130,20 +130,21 @@
                         <input id="sessionDataKey" type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>' />
                         <div class="ui divider hidden"></div>
                         <div class="align-right buttons">
-                            <%
-                                String multiOptionURI = request.getParameter("multiOptionURI");
-                                if (multiOptionURI != null) {
-                            %>
-                                <a class="ui button link-button" id="goBackLink" 
-                                href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>Choose a different authentication option</a>
-                            <%
-                                }
-                            %>
                             <a class="ui button link-button" id="genToken" href="#" onclick="return requestTOTPToken();">Get a Verification Code</a>
                             <input type="submit" value="Authenticate" class="ui primary button">
                         </div>
                     </form>
                 </div>
+                <div class="ui divider hidden"></div>
+                <%
+                        String multiOptionURI = request.getParameter("multiOptionURI");
+                        if (multiOptionURI != null) {
+                    %>
+                        <a class="ui button link-button" id="goBackLink" 
+                        href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>Choose a different authentication option</a>
+                    <%
+                        }
+                %>
             </div>
         </div>
     </main> 
