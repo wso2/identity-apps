@@ -48,6 +48,10 @@
         <module>apps/admin-portal</module>
         <module>apps/authentication-portal</module>
         <module>apps/recovery-portal</module>
+        <module>apps/email-otp-authentication-portal</module>
+        <module>apps/sms-otp-authentication-portal</module>
+        <module>apps/totp-authentication-portal</module>
+        <module>apps/x509-certificate-authentication-portal</module>
         <module>components/theme</module>
         <module>components/org.wso2.identity.apps.common</module>
         <module>features/org.wso2.identity.apps.common.server.feature</module>
@@ -281,6 +285,16 @@
             <dependency>
                 <groupId>org.wso2.carbon.identity.framework</groupId>
                 <artifactId>org.wso2.carbon.identity.application.authentication.endpoint.util</artifactId>
+                <version>${carbon.identity.framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.framework</groupId>
+                <artifactId>org.wso2.carbon.identity.application.authentication.endpoint.i18n</artifactId>
+                <version>${carbon.identity.framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.framework</groupId>
+                <artifactId>org.wso2.carbon.identity.authenticator.smsotp</artifactId>
                 <version>${carbon.identity.framework.version}</version>
             </dependency>
             <dependency>
