@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/admin-portal",
-    "version": "0.1.130-SNAPSHOT",
+    "version": "0.9.8",
     "description": "WSO2 Identity Server Admin Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
