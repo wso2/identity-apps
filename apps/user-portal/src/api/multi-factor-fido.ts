@@ -43,16 +43,53 @@ export const getMetaData = (): Promise<any> => {
         url: ServiceResourcesEndpoint.fidoMetaData
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient
+        .request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
-                    new Error(`Failed get meta info from: ${ ServiceResourcesEndpoint.fidoMetaData }`)
+                    new Error(`Failed get meta info from: ${ServiceResourcesEndpoint.fidoMetaData}`)
                 );
             }
             return Promise.resolve(response);
-        }).catch((error) => {
-            return Promise.reject(`Failed to retrieve FIDO metadata - ${ error }`);
+        })
+        .catch((error) => {
+            return Promise.reject(`Failed to retrieve FIDO metadata - ${error}`);
+        });
+};
+
+/**
+ * Updates FIDO device name
+ * @param credentialId
+ * @param deviceName
+ */
+export const updateDeviceName = (credentialId: string, deviceName: string): Promise<any> => {
+    const requestConfig = {
+        data: [{
+            operation: "REPLACE",
+            path: "/displayName",
+            value: deviceName
+        }],
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: `${ServiceResourcesEndpoint.fidoMetaData}/${credentialId}`
+    };
+
+    return httpClient
+        .request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(
+                    new Error(`Failed get device name from: ${ServiceResourcesEndpoint.fidoMetaData}`)
+                );
+            }
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(`Failed to retrieve FIDO device name - ${error}`);
         });
 };
 
@@ -68,14 +105,16 @@ export const deleteDevice = (credentialId): Promise<any> => {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost
         },
         method: HttpMethods.DELETE,
-        url: `${ ServiceResourcesEndpoint.fidoMetaData }/${ credentialId }`
+        url: `${ServiceResourcesEndpoint.fidoMetaData}/${credentialId}`
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient
+        .request(requestConfig)
         .then((response) => {
             return Promise.resolve(response);
-        }).catch((error) => {
-            return Promise.reject(`Failed to delete FIDO device - ${ error }`);
+        })
+        .catch((error) => {
+            return Promise.reject(`Failed to delete FIDO device - ${error}`);
         });
 };
 
@@ -95,27 +134,32 @@ export const startFidoFlow = (): Promise<any> => {
         url: ServiceResourcesEndpoint.fidoStart
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient
+        .request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
-                    new Error(`Failed to start registration flow at: ${ ServiceResourcesEndpoint.fidoStart }`)
+                    new Error(`Failed to start registration flow at: ${ServiceResourcesEndpoint.fidoStart}`)
                 );
             }
-            return connectToDevice(response.data.requestId,
-                decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions))
+            return connectToDevice(
+                response.data.requestId,
+                decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions)
+            )
                 .then(() => {
                     return Promise.resolve(response);
-                }).catch((error) => {
-                    return Promise.reject(`Failed to connect to device - ${ error }`);
+                })
+                .catch((error) => {
+                    return Promise.reject(`Failed to connect to device - ${error}`);
                 });
-        }).catch((error) => {
-            return Promise.reject(`FIDO connection terminated - ${ error }`);
+        })
+        .catch((error) => {
+            return Promise.reject(`FIDO connection terminated - ${error}`);
         });
 };
 
 /**
- * Start registration flow of the FIDO device which suppports usernameless flow
+ * Start registration flow of the FIDO device which supports usernameless flow
  *
  * @return {Promise<any>} a promise containing the response.
  */
@@ -130,23 +174,28 @@ export const startFidoUsernamelessFlow = (): Promise<any> => {
         url: ServiceResourcesEndpoint.fidoStartUsernameless
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient
+        .request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
                     new Error(`Failed to start registration flow at:
-                    ${ ServiceResourcesEndpoint.fidoStartUsernameless }`)
+                    ${ServiceResourcesEndpoint.fidoStartUsernameless}`)
                 );
             }
-            return connectToDevice(response.data.requestId,
-                decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions))
-                .then(() => {
-                    return Promise.resolve(response);
-                }).catch((error) => {
-                    return Promise.reject(`Failed to connect to device - ${ error }`);
+            return connectToDevice(
+                response.data.requestId,
+                decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions)
+            )
+                .then((responseAtCompletion) => {
+                    return Promise.resolve(responseAtCompletion);
+                })
+                .catch((error) => {
+                    return Promise.reject(`Failed to connect to device - ${error}`);
                 });
-        }).catch((error) => {
-            return Promise.reject(`FIDO connection terminated - ${ error }`);
+        })
+        .catch((error) => {
+            return Promise.reject(`FIDO connection terminated - ${error}`);
         });
 };
 
@@ -167,16 +216,18 @@ export const endFidoFlow = (clientResponse): Promise<any> => {
         url: ServiceResourcesEndpoint.fidoEnd
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient
+        .request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
-                    new Error(`Failed to end registration flow at: ${ ServiceResourcesEndpoint.fidoEnd }`)
+                    new Error(`Failed to end registration flow at: ${ServiceResourcesEndpoint.fidoEnd}`)
                 );
             }
             return Promise.resolve(response);
-        }).catch((error) => {
-            return Promise.reject(`Failed to finish the FIDO registration - ${ error }`);
+        })
+        .catch((error) => {
+            return Promise.reject(`Failed to finish the FIDO registration - ${error}`);
         });
 };
 
@@ -238,7 +289,8 @@ const responseToObject = (response) => {
  * @return {Promise<any>} a promise containing the response.
  */
 const connectToDevice = (requestId, credentialCreationOptions) => {
-    return navigator.credentials.create({ publicKey: credentialCreationOptions })
+    return navigator.credentials
+        .create({ publicKey: credentialCreationOptions })
         .then((credential) => {
             const payload = {
                 credential: {},
@@ -249,16 +301,18 @@ const connectToDevice = (requestId, credentialCreationOptions) => {
             return endFidoFlow(JSON.stringify(payload))
                 .then((response) => {
                     return Promise.resolve(response);
-                }).catch((error) => {
+                })
+                .catch((error) => {
                     return Promise.reject(error);
                 });
-        }).catch((error) => {
+        })
+        .catch((error) => {
             return Promise.reject(error);
         });
 };
 
 /**
- * This function receive the response from start-registration endpoint and convert the user attributes
+ * This function receives the response from start-registration endpoint and converts the user attributes
  * and the challenge attribute from base64url to a buffer array.
  *
  * @param request
@@ -273,12 +327,11 @@ const decodePublicKeyCredentialCreationOptions = (request) => {
     return {
         ...request,
         attestation: "direct",
-        user: {
-            ...request.user,
-            id: Decode(request.user.id),
-        },
-        // tslint:disable-next-line:object-literal-sort-keys
         challenge: Decode(request.challenge),
         excludeCredentials,
+        user: {
+            ...request.user,
+            id: Decode(request.user.id)
+        }
     };
 };

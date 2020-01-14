@@ -71,3 +71,11 @@ export const USER_DENIED_LOGOUT_REQUEST: string = "End User denied the logout re
  * @default
  */
 export const USER_DENIED_CONSENT: string = "User denied the consent";
+
+/**
+ * Key of the time at which an auth error occurred in the session storage
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const AUTH_ERROR_TIME: string = "authErrorTime";

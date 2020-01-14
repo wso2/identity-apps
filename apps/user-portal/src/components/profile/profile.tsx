@@ -234,7 +234,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     } }
                                 >
                                     <Field
-                                        label={ fieldName }
+                                        label=""
                                         name={ schema.name }
                                         placeholder={ t("views:components.profile.forms.generic.inputs.placeholder", {
                                             fieldName

@@ -496,6 +496,12 @@ export const views: Views = {
         mfa: {
             fido: {
                 description: "Autentique-se conectando uma chave FIDO",
+                form: {
+                    label: "Dispositivo de segurança",
+                    placeholder: "Digite o nome do dispositivo",
+                    remove: "Retire o dispositivo",
+                    required: "Digite um nome para o seu dispositivo de segurança"
+                },
                 heading: "FIDO",
                 modals: {
                     deviceRegistrationErrorModal: {
@@ -529,9 +535,24 @@ export const views: Views = {
                             message: "Algo deu errado"
                         },
                         success: {
-                            description: "O dispositivo foi registrado com sucesso e agora você pode usá-lo como um " +
-                                "segundo fator",
+                            description: "O dispositivo foi registrado com sucesso e agora você pode usá-lo como" +
+                                " um fator de autenticação",
                             message: "Seu dispositivo registrado com sucesso"
+                        }
+                    },
+                    updateDeviceName: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Ocorreu um erro ao atualizar o nome do dispositivo de segurança"
+                        },
+                        genericError: {
+                            description: "Erro ao atualizar o nome do dispositivo de segurança",
+                            message: "Algo deu errado"
+                        },
+                        success: {
+                            description:
+                                "O nome do seu dispositivo de segurança foi atualizado com sucesso",
+                            message: "Nome do dispositivo de segurança atualizado com sucesso"
                         }
                     }
                 },
