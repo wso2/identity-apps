@@ -72,7 +72,7 @@ export const App = (): JSX.Element => {
                                                             render={ (props) =>
                                                                 (<child.component { ...props } />)
                                                             }
-                                                            key={ index }
+                                                            key={ i }
                                                         />
                                                     )
                                             );
