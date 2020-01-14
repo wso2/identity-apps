@@ -19,7 +19,7 @@
 <%= htmlWebpackPlugin.options.importUtil %>
 <%= htmlWebpackPlugin.options.importTenantPrefix %>
 
-<!doctype html>
+<!DOCTYPE HTML>
 <html>
     <head>
         <%= htmlWebpackPlugin.options.contentType %>

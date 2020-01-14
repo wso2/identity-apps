@@ -20,7 +20,7 @@ import { AuthenticateSessionUtil, SignInUtil } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import * as TokenConstants from "../constants";
-import { HttpMethods, LinkedAccountInterface } from "../models";
+import { HttpCodes, HttpMethods, LinkedAccountInterface } from "../models";
 
 /**
  * Get an axios instance.
@@ -46,9 +46,6 @@ export const getAssociations = (): Promise<any> => {
 
     return httpClient.request(requestConfig)
         .then((response) => {
-            if (response.status !== 200) {
-                return Promise.reject(`Failed to retrieve the linked accounts`);
-            }
             return Promise.resolve(response.data);
         })
         .catch((error) => {

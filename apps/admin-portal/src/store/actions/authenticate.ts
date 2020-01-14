@@ -186,6 +186,7 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
                     dispatch(getProfileInformation());
                 })
                 .catch((error) => {
+                    // This error will be handled by the error handler in the http module.
                     throw error;
                 });
         } else {

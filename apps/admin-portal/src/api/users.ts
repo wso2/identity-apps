@@ -38,7 +38,7 @@ export const getUsersList = (): Promise<any> => {
 
     return httpClient.request(requestConfig)
         .then((response) => {
-            return response;
+            return Promise.resolve(response);
         })
         .catch((error) => {
             return Promise.reject(error);

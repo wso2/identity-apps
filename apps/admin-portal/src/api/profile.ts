@@ -48,9 +48,6 @@ export const getUserInfo = (): Promise<any> => {
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status !== 200) {
-                return Promise.reject(new Error(`Failed get user info from: ${ServiceResourcesEndpoint.user}`));
-            }
             return Promise.resolve(response);
         })
         .catch((error) => {
@@ -79,9 +76,6 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
         .request(requestConfig)
         .then(async (response) => {
             let gravatar = "";
-            if (response.status !== 200) {
-                return Promise.reject(new Error(`Failed get user profile info from: ${ServiceResourcesEndpoint.me}`));
-            }
             if (isEmpty(response.data.userImage)) {
                 try {
                     gravatar = await getGravatarImage(
@@ -131,11 +125,6 @@ export const updateProfileInfo = (info: object): Promise<any> => {
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status !== 200) {
-                return Promise.reject(
-                    new Error(`Failed update user profile info with: ${ServiceResourcesEndpoint.me}`)
-                );
-            }
             return Promise.resolve(response);
         })
         .catch((error) => {
@@ -179,9 +168,6 @@ export const getProfileSchemas = (): Promise<any> => {
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status !== 200) {
-                return Promise.reject(new Error("Failed get user schemas"));
-            }
             return Promise.resolve(response.data[0].attributes as ProfileSchema[]);
         })
         .catch((error) => {
