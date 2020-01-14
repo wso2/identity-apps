@@ -19,13 +19,18 @@
 import {
     Account,
     ArrowRight,
+    BlockedMagnifierIcon,
+    BoxIcon,
+    CloseIcon,
     CodeIcon,
     Connection,
     Consent,
     CrossIcon,
     DefaultAppIcon,
     DummyUser,
+    EmptySearchResultsIllustration,
     ErrorIcon,
+    ForbiddenIcon,
     HomeTileIcons,
     InfoIcon,
     Logo,
@@ -105,3 +110,11 @@ export const DESKTOP_CONTENT_TOP_PADDING: number = 50;
  * @type {string}
  */
 export const MOBILE_CONTENT_PADDING: string = "2rem 1rem";
+
+export const EmptyPlaceholderIllustrations = {
+    emptyList: BoxIcon,
+    genericError: CloseIcon,
+    loginError: ForbiddenIcon,
+    pageNotFound: BlockedMagnifierIcon,
+    search: EmptySearchResultsIllustration
+};

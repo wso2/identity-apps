@@ -16,7 +16,26 @@
  * under the License.
  */
 
-export * from "./advanced-search";
-export * from "./icon";
-export * from "./language-switcher";
-export * from "./empty-placeholder";
+import React, { PropsWithChildren } from "react";
+import { Container, Divider } from "semantic-ui-react";
+
+/**
+ * Error page layout.
+ *
+ * @param {React.PropsWithChildren<{}>} props - Props injected to the error page layout component.
+ * @return {JSX.Element}
+ * @constructor
+ */
+export const ErrorPageLayout: React.FunctionComponent<PropsWithChildren<{}>> = (
+    props: PropsWithChildren<{}>
+): JSX.Element => {
+    const { children } = props;
+
+    return (
+        <Container className="layout-content error-page-layout">
+            <Divider className="x4" hidden/>
+            { children }
+            <Divider className="x3" hidden/>
+        </Container>
+    );
+};

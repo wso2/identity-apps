@@ -42,6 +42,15 @@ interface Route {
 const ROUTES: Route[] = [
     {
         children: [],
+        component: PrivacyPage,
+        icon: "security",
+        name: "common:privacy",
+        path: "/privacy",
+        protected: true,
+        showOnSidePanel: false,
+    },
+    {
+        children: [],
         component: HomePage,
         icon: "overview",
         name: "Overview",
@@ -52,7 +61,7 @@ const ROUTES: Route[] = [
     {
         children: [
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "sso",
@@ -60,7 +69,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "Identity federation",
@@ -68,7 +77,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "Adaptive authentication",
@@ -76,7 +85,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "SSO with controlled access",
@@ -84,7 +93,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "Delegated access control",
@@ -102,7 +111,7 @@ const ROUTES: Route[] = [
     {
         children: [
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "User stores",
@@ -110,7 +119,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "sso",
@@ -118,7 +127,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "Claims",
@@ -126,7 +135,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "OIDC scopes",
@@ -134,7 +143,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "Identity Providers",
@@ -142,7 +151,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "Outbound provisioning",
@@ -150,7 +159,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "JIT provisioning",
@@ -173,15 +182,15 @@ const ROUTES: Route[] = [
                 level: "",
                 name: "Users",
                 path: "/users",
-                protected: ""
+                protected: true
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "Roles",
                 path: "/roles",
-                protected: ""
+                protected: true
             }
         ],
         component: UsersPage,
@@ -194,7 +203,7 @@ const ROUTES: Route[] = [
     {
         children: [
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "PAP",
@@ -202,7 +211,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "PDP",
@@ -220,7 +229,7 @@ const ROUTES: Route[] = [
     {
         children: [
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "Resident IDP",
@@ -228,7 +237,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "Resident SP",
@@ -236,7 +245,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "Workflow engagements",
@@ -244,7 +253,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "Workflow definitions",
@@ -252,7 +261,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "Challenge questions",
@@ -260,7 +269,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "Email templates",
@@ -268,7 +277,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "Keystore",
@@ -276,7 +285,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "Consent purposes",
@@ -284,7 +293,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "Function libraries",
@@ -292,7 +301,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "Workflow engine profiles",
@@ -310,7 +319,7 @@ const ROUTES: Route[] = [
     {
         children: [
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "System statistics",
@@ -318,7 +327,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "Workflow requests",
@@ -326,7 +335,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "SOAP tracer",
@@ -344,7 +353,7 @@ const ROUTES: Route[] = [
     {
         children: [
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "User",
@@ -352,7 +361,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "SAML",
@@ -360,7 +369,7 @@ const ROUTES: Route[] = [
                 protected: ""
             },
             {
-                component: "",
+                component: PageNotFound,
                 icon: "arrowRight",
                 level: "",
                 name: "XACML",
@@ -376,28 +385,10 @@ const ROUTES: Route[] = [
         showOnSidePanel: true,
     },
     {
-        children: [
-            {
-                component: "",
-                icon: "arrowRight",
-                level: "",
-                name: "sso",
-                path: "",
-                protected: ""
-            }
-        ],
+        children: [],
         component: PageNotFound,
         name: "404",
-        path: null,
-        protected: true,
-        showOnSidePanel: false,
-    },
-    {
-        children: [],
-        component: PrivacyPage,
-        icon: "security",
-        name: "common:privacy",
-        path: "/privacy",
+        path: "*",
         protected: true,
         showOnSidePanel: false,
     },
