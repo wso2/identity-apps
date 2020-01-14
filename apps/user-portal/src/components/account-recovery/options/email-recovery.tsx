@@ -309,8 +309,8 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                             <p style={ { fontSize: "12px" } }>
                                                 <Icon color="grey" floated="left" name="info circle" />
                                                 { t(
-                                                    "views:components.profile.forms.mobileChangeForm" +
-                                                    ".inputs.mobile.note"
+                                                    "views:components.profile.forms.emailChangeForm" +
+                                                    ".inputs.email.note"
                                                 ) }
                                             </p>
                                             <Field
