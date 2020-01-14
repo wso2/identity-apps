@@ -72,6 +72,7 @@ export const Session = require("../lib/assets/images/icons/monitor-icon.svg");
 export const ArrowRight = require("../lib/assets/images/icons/arrow-right.svg");
 export const Connection = require("../lib/assets/images/icons/connection.svg");
 
+// User portal icons
 export const Padlock = require("../lib/assets/images/icons/padlock-icon.svg");
 export const StatusShieldGood = require("../lib/assets/images/accounts-status-icons/good.svg");
 export const StatusShieldWarning = require("../lib/assets/images/accounts-status-icons/warning.svg");
