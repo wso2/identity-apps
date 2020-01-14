@@ -60,6 +60,19 @@ export const SettigsSectionIconSet = {
     securityQuestions: require("../lib/assets/images/illustrations/security-questions.svg"),
     securityQuestionsMini: require("../lib/assets/images/illustrations/security-questions-mini.svg")
 };
+
+// Icons of the admin portal side panel
+export const Account = require("../lib/assets/images/icons/controls-icon.svg");
+export const Consent = require("../lib/assets/images/icons/tick-circle-icon.svg");
+export const Operations = require("../lib/assets/images/icons/tools-icon.svg");
+export const Overview = require("../lib/assets/images/icons/dashboard-icon.svg")
+export const Personal = require("../lib/assets/images/icons/user-icon.svg");
+export const Security = require("../lib/assets/images/icons/lock-icon.svg");
+export const Session = require("../lib/assets/images/icons/monitor-icon.svg");
+export const ArrowRight = require("../lib/assets/images/icons/arrow-right.svg");
+export const Connection = require("../lib/assets/images/icons/connection.svg");
+
+// User portal icons
 export const Padlock = require("../lib/assets/images/icons/padlock-icon.svg");
 export const StatusShieldGood = require("../lib/assets/images/accounts-status-icons/good.svg");
 export const StatusShieldWarning = require("../lib/assets/images/accounts-status-icons/warning.svg");

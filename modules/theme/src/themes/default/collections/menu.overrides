@@ -172,8 +172,6 @@
                 display: inline-block;
                 vertical-align: middle;
                 line-height: 1;
-                width: 18px;
-                height: 18px;
 
                 .path {
                     fill: @sidePanelDefaultFontColor;

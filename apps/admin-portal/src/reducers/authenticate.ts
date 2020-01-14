@@ -19,6 +19,7 @@
 
 import { AuthenticateSessionUtil, AuthenticateTokenKeys, AuthenticateUserKeys } from "@wso2is/authentication";
 import { authenticateActionTypes } from "../actions/types";
+import { createEmptyProfile } from "../models";
 import { AuthStateInterface } from "../models/auth";
 
 /**
@@ -31,6 +32,8 @@ const authenticateInitialState: AuthStateInterface = {
     location: APP_HOME_PATH,
     loginInit: false,
     logoutInit: false,
+    profileInfo: createEmptyProfile(),
+    profileSchemas: [],
     username: ""
 };
 

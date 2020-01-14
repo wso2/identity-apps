@@ -17,9 +17,9 @@
  */
 
 import React, { createContext, useEffect, useReducer } from "react";
-import { handleSignIn, handleSignOut } from "../middlewares";
-import { AuthContextInterface } from "../models/auth";
+import { AuthContextInterface } from "../models";
 import { authenticateInitialState, authenticateReducer } from "../reducers/authenticate";
+import { handleSignIn, handleSignOut } from "../store/middleware";
 
 const AuthContext = createContext<AuthContextInterface>({
     dispatch: (() => 0) as React.Dispatch<any>,
@@ -45,8 +45,8 @@ const AuthProvider = ({ children }) => {
      * Render state, dispatch and special case actions
      */
     return (
-        <AuthContext.Provider value={{ state, dispatch, signIn, signOut }}>
-            {children}
+        <AuthContext.Provider value={ { state, dispatch, signIn, signOut } }>
+            { children }
         </AuthContext.Provider>
     );
 };

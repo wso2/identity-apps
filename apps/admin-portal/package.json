@@ -21,7 +21,10 @@
     },
     "dependencies": {
         "@wso2is/authentication": "^0.9.8",
-        "@wso2is/theme": "^0.9.8"
+        "@wso2is/forms": "^0.9.8",
+        "@wso2is/http": "^0.9.8",
+        "@wso2is/theme": "^0.9.8",
+        "@wso2is/validation": "^0.9.8"
     },
     "devDependencies": {
         "run-script-os": "^1.0.7"
@@ -31,10 +34,15 @@
         "history": "*",
         "i18next": "*",
         "i18next-browser-languagedetector": "*",
+        "lodash": "*",
         "log": "*",
         "react-i18next": "*",
+        "react-notification-system": "*",
+        "react-redux": "*",
+        "react-router-dom": "*",
         "redux": "*",
         "redux-devtools-extension": "*",
+        "redux-thunk": "*",
         "ua-parser-js": "*"
     }
 }

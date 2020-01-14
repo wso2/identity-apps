@@ -17,7 +17,7 @@
  */
 
 import * as React from "react";
-import { Header as AppHeader, PageHeader, SidePanelWrapper } from "../components";
+import { AppFooter, Header as AppHeader, PageHeader, SidePanelWrapper } from "../components";
 
 /**
  * Inner page layout component Prop types.
@@ -71,8 +71,9 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
     return (
         <>
             <AppHeader onSidePanelToggleClick={ handleSidePanelToggleClick }/>
-            <div style={ { paddingTop: `${headerHeight}px` } }>
+            <div style={ { paddingTop: `${ headerHeight }px` } } className="app-content">
                 <SidePanelWrapper
+                    headerHeight={ headerHeight }
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
@@ -85,6 +86,7 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
                     { children }
                 </SidePanelWrapper>
             </div>
+            <AppFooter />
         </>
     );
 };

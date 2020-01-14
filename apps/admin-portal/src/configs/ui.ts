@@ -17,13 +17,28 @@
  */
 
 import {
+    Account,
+    ArrowRight,
     CodeIcon,
+    Connection,
+    Consent,
+    CrossIcon,
+    DefaultAppIcon,
     DummyUser,
+    ErrorIcon,
     HomeTileIcons,
+    InfoIcon,
     Logo,
     MFAIconSet,
+    Operations,
+    Overview,
+    Personal,
+    Security,
+    Session,
     SettigsSectionIconSet,
-    SidePanelIconSet
+    SidePanelIconSet,
+    SuccessIcon,
+    WarningIcon
 } from "@wso2is/theme";
 
 type ImageType = string;
@@ -42,10 +57,25 @@ interface CustomCSSType {
 export const LogoImage = Logo;
 export const UserImage: ImageType = DummyUser;
 export const HomeTileIconImages = HomeTileIcons;
+export const SidePanelIcon = {
+    account: Account,
+    arrowRight: ArrowRight,
+    connection: Connection,
+    consent: Consent,
+    operations: Operations,
+    overview: Overview,
+    personal: Personal,
+    security: Security,
+    session: Session,
+};
 export const GenericAppIcon = CodeIcon;
 export const SidePanelIcons = SidePanelIconSet;
 export const SettingsSectionIcons = SettigsSectionIconSet;
 export const MFAIcons = MFAIconSet;
+
+export const AdvancedSearchIcons = {
+    clear: CrossIcon
+};
 
 export const TitleText: TitleTextType = "Identity Server";
 export const customCSS: CustomCSSType = {
@@ -56,3 +86,22 @@ export const customCSS: CustomCSSType = {
         appPrimaryColor: "#ff5000"
     }
 };
+
+export const AlertIcons = {
+    error: ErrorIcon,
+    info: InfoIcon,
+    success: SuccessIcon,
+    warning: WarningIcon
+};
+
+/**
+ * Constant to handle desktop layout content top padding.
+ * @type {number}
+ */
+export const DESKTOP_CONTENT_TOP_PADDING: number = 50;
+
+/**
+ * Constant to handle mobile layout content padding.
+ * @type {string}
+ */
+export const MOBILE_CONTENT_PADDING: string = "2rem 1rem";

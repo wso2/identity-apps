@@ -16,7 +16,7 @@
  * under the License.
  */
 
-type ServiceEndpointURLType = string;
+import { GlobalConfig } from "./globals";
 
 interface ServiceResourcesType {
     associations: string;
@@ -27,28 +27,31 @@ interface ServiceResourcesType {
     jwks: string;
     logout: string;
     me: string;
+    profileSchemas: string;
     receipts: string;
     sessions: string;
     token: string;
     user: string;
+    users: string;
     revoke: string;
     wellKnown: string;
 }
 
-export const ServiceEndpoint: ServiceEndpointURLType = SERVER_HOST;
 export const ServiceResourcesEndpoint: ServiceResourcesType = {
-    associations: `${ServiceEndpoint}/api/users/v1/me/associations`,
-    authorize: `${ServiceEndpoint}/oauth2/authorize`,
-    challengeAnswers: `${ServiceEndpoint}/api/users/v1/me/challenge-answers`,
-    challenges: `${ServiceEndpoint}/api/users/v1/me/challenges`,
-    consents: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents`,
-    jwks: `${ServiceEndpoint}/oauth2/jwks`,
-    logout: `${ServiceEndpoint}/oidc/logout`,
-    me: `${ServiceEndpoint}/scim2/Me`,
-    receipts: `${ServiceEndpoint}/api/identity/consent-mgt/v1.0/consents/receipts`,
-    revoke: `${ServiceEndpoint}/oauth2/revoke`,
-    sessions: `${ServiceEndpoint}/t/carbon.super/api/users/v1/me/sessions`,
-    token: `${ServiceEndpoint}/oauth2/token`,
-    user: `${ServiceEndpoint}/api/identity/user/v1.0/me`,
-    wellKnown: `${ServiceEndpoint}/oauth2/oidcdiscovery/.well-known/openid-configuration`
+    associations: `${GlobalConfig.serverHost}/api/users/v1/me/associations`,
+    authorize: `${GlobalConfig.serverHost}/oauth2/authorize`,
+    challengeAnswers: `${GlobalConfig.serverHost}/api/users/v1/me/challenge-answers`,
+    challenges: `${GlobalConfig.serverHost}/api/users/v1/me/challenges`,
+    consents: `${GlobalConfig}/api/identity/consent-mgt/v1.0/consents`,
+    jwks: `${GlobalConfig.serverHost}/oauth2/jwks`,
+    logout: `${GlobalConfig.serverHost}/oidc/logout`,
+    me: `${GlobalConfig.serverHost}/scim2/Me`,
+    profileSchemas: `${GlobalConfig.serverHost}/scim2/Schemas`,
+    receipts: `${GlobalConfig.serverHost}/api/identity/consent-mgt/v1.0/consents/receipts`,
+    revoke: `${GlobalConfig.serverHost}/oauth2/revoke`,
+    sessions: `${GlobalConfig.serverHost}/t/carbon.super/api/users/v1/me/sessions`,
+    token: `${GlobalConfig.serverHost}/oauth2/token`,
+    user: `${GlobalConfig.serverHost}/api/identity/user/v1.0/me`,
+    users: `${GlobalConfig.serverHost}/scim2/Users`,
+    wellKnown: `${GlobalConfig.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
 };

@@ -73,8 +73,14 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                             <div>{ state.emails }</div>
                                             }
                                             <Divider hidden/>
-                                            <Button as={ Link } to="/my-apps" size="tiny"
-                                                    primary>My Apps</Button>
+                                            <Button
+                                                as={ Link }
+                                                to="/my-apps"
+                                                size="tiny"
+                                                primary
+                                            >
+                                                My Apps
+                                            </Button>
                                         </Item.Description>
                                     </Item.Content>
                                 </Item>
@@ -84,7 +90,8 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                 icon="shield"
                                 as={ Link }
                                 to="/overview"
-                                text="Identity Server Account"/>
+                                text="Identity Server Account"
+                            />
                             <Dropdown.Divider/>
                             <Dropdown.Item as={ Link } to="/logout" text="Logout"/>
                         </Dropdown.Menu>

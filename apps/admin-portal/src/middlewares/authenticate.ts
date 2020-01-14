@@ -24,8 +24,9 @@ import {
     SignOutUtil
 } from "@wso2is/authentication";
 import { setSignIn, setSignOut } from "../actions";
-import { ServiceResourcesEndpoint } from "../configs";
-import history from "../helpers/history";
+import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
+import * as TokenConstants from "../constants";
+import { history } from "../helpers";
 
 /**
  * Handle user signout
@@ -44,12 +45,15 @@ export const handleSignIn = (state, dispatch) => {
 
     const sendSignInRequest = () => {
         const requestParams = {
-            clientHost: CLIENT_HOST,
-            clientId: CLIENT_ID,
+            clientHost: GlobalConfig.clientHost,
+            clientId: GlobalConfig.clientID,
             clientSecret: null,
             enablePKCE: true,
-            redirectUri: LOGIN_CALLBACK_URL,
-            scope: null,
+            redirectUri: GlobalConfig.loginCallbackUrl,
+            scope: [ TokenConstants.LOGIN_SCOPE, TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_VIEW,
+                TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_UPDATE,
+                TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_DELETE,
+                TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_CREATE],
         };
         if (SignInUtil.hasAuthorizationCode()) {
             SignInUtil.sendTokenRequest(requestParams)
@@ -94,7 +98,7 @@ export const handleSignIn = (state, dispatch) => {
  */
 export const handleSignOut = (state, dispatch) => {
     if (!state.logoutInit) {
-        SignOutUtil.sendSignOutRequest(LOGIN_CALLBACK_URL).then(() => {
+        SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl).then(() => {
             dispatch(setSignOut());
             AuthenticateSessionUtil.endAuthenticatedSession();
             OPConfigurationUtil.resetOPConfiguration();

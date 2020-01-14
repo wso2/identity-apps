@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { BasicProfileInterface, ProfileSchema } from "./profile";
+
 export interface AuthStateInterface {
     children?: any;
     displayName: string;
@@ -24,11 +26,13 @@ export interface AuthStateInterface {
     location: string;
     loginInit: boolean;
     logoutInit: boolean;
+    profileSchemas: ProfileSchema[];
+    profileInfo: BasicProfileInterface;
     username: string;
 }
 
 export interface AuthContextInterface {
-    dispatch: ({type}: {type: string}) => void;
+    dispatch: ({ type }: {type: string}) => void;
     signIn: () => void;
     signOut: () => void;
     state: AuthStateInterface;
