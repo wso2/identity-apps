@@ -273,6 +273,11 @@
                 </exclusions>
             </dependency>
             <dependency>
+                <groupId>org.wso2.carbon.identity.association.account</groupId>
+                <artifactId>org.wso2.carbon.identity.user.account.association</artifactId>
+                <version>${org.wso2.carbon.identity.association.account}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.wso2.carbon.extension.identity.authenticator</groupId>
                 <artifactId>org.wso2.carbon.extension.identity.authenticator.smsotp.connector</artifactId>
                 <version>${carbon.extension.identity.authenticator.version}</version>
@@ -300,6 +305,62 @@
             <dependency>
                 <groupId>org.wso2.carbon.identity.framework</groupId>
                 <artifactId>org.wso2.carbon.identity.core</artifactId>
+                <version>${carbon.identity.framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.framework</groupId>
+                <artifactId>org.wso2.carbon.identity.user.profile</artifactId>
+                <version>${carbon.identity.framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.framework</groupId>
+                <artifactId>org.wso2.carbon.identity.application.authentication.framework</artifactId>
+                <version>${carbon.identity.framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.framework</groupId>
+                <artifactId>org.wso2.carbon.identity.notification.mgt</artifactId>
+                <version>${carbon.identity.framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.framework</groupId>
+                <artifactId>org.wso2.carbon.identity.provisioning</artifactId>
+                <version>${carbon.identity.framework.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.core</artifactId>
+                <version>${carbon.kernel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.user.core</artifactId>
+                <version>${carbon.kernel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.outbound.auth.oidc</groupId>
+                <artifactId>org.wso2.carbon.identity.application.authenticator.oidc</artifactId>
+                <version>${org.wso2.carbon.identity.outbound.auth.oidc}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon</groupId>
+                <artifactId>org.wso2.carbon.ui</artifactId>
+                <version>${carbon.kernel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity</groupId>
+                <artifactId>org.wso2.carbon.identity.mgt</artifactId>
+                <version>5.0.7</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.extension.identity.authenticator.utils</groupId>
+                <artifactId>org.wso2.carbon.extension.identity.helper</artifactId>
+                <version>${identity.extension.utils}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.framework</groupId>
+                <artifactId>org.wso2.carbon.identity.event</artifactId>
                 <version>${carbon.identity.framework.version}</version>
             </dependency>
             <dependency>
@@ -557,8 +618,12 @@
         <carbon.commons.version>4.7.22</carbon.commons.version>
         <carbon.commons.imp.pkg.version.range>[4.7.0, 5.0.0)</carbon.commons.imp.pkg.version.range>
 
-        <carbon.extension.identity.authenticator.version>2.0.4</carbon.extension.identity.authenticator.version>
+        <carbon.kernel.version>4.4.35</carbon.kernel.version>
+        <org.wso2.carbon.identity.outbound.auth.oidc>5.1.20</org.wso2.carbon.identity.outbound.auth.oidc>
 
+        <carbon.extension.identity.authenticator.version>2.0.4</carbon.extension.identity.authenticator.version>
+        <org.wso2.carbon.identity.association.account>5.1.5</org.wso2.carbon.identity.association.account>
+        <identity.extension.utils>1.0.8</identity.extension.utils>
         <carbon.identity.framework.version>5.15.27</carbon.identity.framework.version>
         <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 6.0.0)</carbon.identity.framework.imp.pkg.version.range>
         <carbon.identity.oauth.version>6.2.41</carbon.identity.oauth.version>
