@@ -89,6 +89,8 @@ export const SuccessIcon = require("../lib/assets/images/icons/success-icon.svg"
 export const WarningIcon = require("../lib/assets/images/icons/warning-icon.svg");
 export const InfoIcon = require("../lib/assets/images/icons/info-icon.svg");
 
+export const AlertIcon = require("../lib/assets/images/icons/alert-icon.svg");
+
 export const GravatarLogo = require("../lib/assets/images/gravatar-logo.png");
 
 export const EmptySearchResultsIllustration = require("../lib/assets/images/illustrations/no-search-results.svg");

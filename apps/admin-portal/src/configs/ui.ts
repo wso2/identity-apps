@@ -18,6 +18,7 @@
 
 import {
     Account,
+    AlertIcon,
     ArrowRight,
     BlockedMagnifierIcon,
     BoxIcon,
@@ -112,6 +113,7 @@ export const DESKTOP_CONTENT_TOP_PADDING: number = 50;
 export const MOBILE_CONTENT_PADDING: string = "2rem 1rem";
 
 export const EmptyPlaceholderIllustrations = {
+    alert: AlertIcon,
     emptyList: BoxIcon,
     genericError: CloseIcon,
     loginError: ForbiddenIcon,
