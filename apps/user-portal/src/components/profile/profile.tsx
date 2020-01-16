@@ -104,9 +104,16 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 const schemaNames = schema.name.split(".");
 
                 if (schemaNames.length === 1) {
-                    schemaNames[0] === "emails"
-                        ? tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]][0] as string)
-                        : tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]]);
+                    if (schemaNames[0] === "emails") {
+                        profileDetails.profileInfo[schemaNames[0]][0] &&
+                        profileDetails.profileInfo[[schemaNames[0]][0]][0].value &&
+                        profileDetails.profileInfo[[schemaNames[0]][0]][0].value !== ""
+                        ? tempProfileInfo.set(schema.name,
+                            profileDetails.profileInfo[[schemaNames[0]][0]][0].value as string)
+                        : tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]][0] as string);
+                    } else {
+                        tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]]);
+                    }
                 } else {
                     if (schemaNames[0] === "name") {
                         tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]][schemaNames[1]]);
