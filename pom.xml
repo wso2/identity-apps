@@ -278,11 +278,6 @@
                 <version>${org.wso2.carbon.identity.association.account}</version>
             </dependency>
             <dependency>
-                <groupId>org.wso2.carbon.extension.identity.authenticator</groupId>
-                <artifactId>org.wso2.carbon.extension.identity.authenticator.smsotp.connector</artifactId>
-                <version>${carbon.extension.identity.authenticator.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.wso2.carbon.identity.framework</groupId>
                 <artifactId>org.wso2.carbon.identity.application.common</artifactId>
                 <version>${carbon.identity.framework.version}</version>
@@ -327,7 +322,11 @@
                 <artifactId>org.wso2.carbon.identity.provisioning</artifactId>
                 <version>${carbon.identity.framework.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.wso2.carbon.extension.identity.authenticator.outbound.smsotp</groupId>
+                <artifactId>org.wso2.carbon.extension.identity.authenticator.smsotp.connector</artifactId>
+                <version>${carbon.extension.identity.authenticator.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.wso2.carbon</groupId>
                 <artifactId>org.wso2.carbon.core</artifactId>
@@ -621,7 +620,7 @@
         <carbon.kernel.version>4.4.35</carbon.kernel.version>
         <org.wso2.carbon.identity.outbound.auth.oidc>5.1.20</org.wso2.carbon.identity.outbound.auth.oidc>
 
-        <carbon.extension.identity.authenticator.version>2.0.4</carbon.extension.identity.authenticator.version>
+        <carbon.extension.identity.authenticator.version>2.0.31</carbon.extension.identity.authenticator.version>
         <org.wso2.carbon.identity.association.account>5.1.5</org.wso2.carbon.identity.association.account>
         <identity.extension.utils>1.0.8</identity.extension.utils>
         <carbon.identity.framework.version>5.15.27</carbon.identity.framework.version>
