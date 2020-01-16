@@ -231,8 +231,8 @@
                             <div class="ui divider hidden"></div>
                             <!-- validation -->
                             <div>
-                                <div id="regFormError" class="alert alert-danger" style="display:none"></div>
-                                <div id="regFormSuc" class="alert alert-success" style="display:none"></div>
+                                <div id="regFormError" class="ui negative message" style="display:none"></div>
+                                <div id="regFormSuc" class="ui positive message" style="display:none"></div>
 
                                 <% Claim firstNamePII =
                                         uniquePIIs.get(IdentityManagementEndpointConstants.ClaimURIs.FIRST_NAME_CLAIM);
@@ -503,7 +503,7 @@
                                     <!--Terms/Privacy Policy-->
                                     <div class="field">
                                         <div class="ui checkbox">
-                                            <input type="checkbox"/>
+                                            <input id="termsCheckbox" type="checkbox"/>
                                             <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                                     "I.confirm.that.read.and.understood")%>
                                                 <a href="/authenticationendpoint/privacy_policy.do" target="policy-pane">
@@ -625,8 +625,8 @@
                     registrationBtn.prop("disabled", true).addClass("disabled");
                 }
             });
-
-            $(".form-info").tooltip();
+            
+            $(".form-info").popup();
 
             $("#register").submit(function (e) {
                 var unsafeCharPattern = /[<>`\"]/;
@@ -652,13 +652,21 @@
 
                 var password = $("#password").val();
                 var password2 = $("#password2").val();
-
-                if (password != password2) {
+                
+                if (password !== password2) {
                     error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                         "Passwords.did.not.match.please.try.again")%>");
                     error_msg.show();
                     $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
                     return false;
+                }
+                
+                if(!$("#termsCheckbox").checked){
+                        error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                            "Confirm.Privacy.Policy")%>");
+                        error_msg.show();
+                        $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
+                        return false;
                 }
 
                 <%
@@ -763,7 +771,7 @@
                     '<ul>' +
                     '{{#purposes}}' +
                     '<li data-jstree=\'{"icon":"icon-book"}\' purposeid="{{purposeId}}" mandetorypurpose={{mandatory}}>' +
-                    '{{purpose}}{{#if mandatory}}<span class="required_consent">*</span>{{/if}} {{#if description}}<img src="images/info.png" class="form-info" data-toggle="tooltip" title="{{description}}" data-placement="right"/>{{/if}}<ul>' +
+                    '{{purpose}}{{#if mandatory}}<span class="required_consent">*</span>{{/if}} {{#if description}}<img src="images/info.png" class="form-info" data-toggle="tooltip" data-content="{{description}}" data-placement="right"/>{{/if}}<ul>' +
                     '{{#piiCategories}}' +
                     '<li data-jstree=\'{"icon":"icon-user"}\' piicategoryid="{{piiCategoryId}}" mandetorypiicatergory={{mandatory}}>{{#if displayName}}{{displayName}}{{else}}{{piiCategory}}{{/if}}{{#if mandatory}}<span class="required_consent">*</span>{{/if}}</li>' +
                     '</li>' +
@@ -1049,7 +1057,7 @@
                 var rowTemplate =
                     '{{#purposes}}' +
                     '<div class="consent-container-3 box clearfix"><ul class="consent-ul">' +
-                    '<li><span>{{purpose}} {{#if description}}<img src="images/info.png" class="form-info" data-toggle="tooltip" title="{{description}}" data-placement="right"/>{{/if}}</span></li></ul>' +
+                    '<li><span>{{purpose}} {{#if description}}<img src="images/info.png" class="form-info" data-toggle="tooltip" data-content="{{description}}" data-placement="right"/>{{/if}}</span></li></ul>' +
                     '{{#grouped_each 2 piiCategories}}' +
                     '<div class="row">' +
                     '{{#each this }}' +
