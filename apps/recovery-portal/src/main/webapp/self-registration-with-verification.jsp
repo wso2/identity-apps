@@ -240,7 +240,7 @@
                                         String firstNameValue = request.getParameter(IdentityManagementEndpointConstants.ClaimURIs.FIRST_NAME_CLAIM);
                                 %>
                                 <div class="two fields">
-                                    <div class="field">
+                                    <div class="<% if (firstNamePII.getRequired() || !piisConfigured) {%> required <%}%> field">
                                         <label class="control-label">
                                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "First.name")%>
                                         </label>
@@ -257,7 +257,7 @@
                                             String lastNameValue =
                                                     request.getParameter(IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM);
                                     %>
-                                    <div class="field">
+                                    <div class="<% if (lastNamePII.getRequired() || !piisConfigured) {%> required <%}%> field">
                                         <label class="control-label">
                                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Last.name")%>
                                         </label>
@@ -275,14 +275,14 @@
                                            class="form-control required usrName usrNameLength">
                                 </div>
                                 <div class="two fields">
-                                    <div class="field">
+                                    <div class="required field">
                                         <label class="control-label">
                                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Password")%>
                                         </label>
                                         <input id="password" name="password" type="password"
                                                class="form-control" required>
                                     </div>
-                                    <div class="field">
+                                    <div class="required field">
                                         <label class="control-label">
                                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Confirm.password")%>
                                         </label>
@@ -297,7 +297,7 @@
                                         String emailValue =
                                                 request.getParameter(IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM);
                                 %>
-                                <div class="field">
+                                <div class="<% if (emailNamePII.getRequired() || !piisConfigured) {%> required <%}%> field">
                                     <label class="control-label">
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Email")%>
                                     </label>
@@ -325,7 +325,7 @@
                                             && !StringUtils
                                             .equals(claim, IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM)) {
                                 %>
-                                <div class="field">
+                                <div class="required field">
                                     <label class="control-label">
                                         <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claimDisplayName)%>
                                     </label>
@@ -354,7 +354,7 @@
                                             String claimURI = claim.getUri();
                                             String claimValue = request.getParameter(claimURI);
                                 %>
-                                <div class="field">
+                                <div class="<% if (claim.getRequired()) {%> required <%}%>field">
                                     <label <% if (claim.getRequired()) {%> class="control-label" <%}%>>
                                         <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claim.getDisplayName())%>
                                     </label>
@@ -501,7 +501,7 @@
                                 <div class="ui divider hidden"></div>
                                 <div>
                                     <!--Terms/Privacy Policy-->
-                                    <div class="field">
+                                    <div class="required field">
                                         <div class="ui checkbox">
                                             <input id="termsCheckbox" type="checkbox"/>
                                             <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
