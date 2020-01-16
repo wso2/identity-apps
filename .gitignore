@@ -107,6 +107,10 @@ apps/authenticationendpoint/src/main/
 apps/authenticationendpoint/src/libs/theme/
 apps/authentication-portal/src/main/webapp/libs/theme/
 apps/recovery-portal/src/main/webapp/libs/theme/
+apps/email-otp-authentication-portal/src/main/webapp/libs/theme/
+apps/sms-otp-authentication-portal/src/main/webapp/libs/theme/
+apps/totp-authentication-portal/src/main/webapp/libs/theme/
+apps/x509-certificate-authentication-portal/src/main/webapp/libs/theme/
 
 .classpath
 .settings
