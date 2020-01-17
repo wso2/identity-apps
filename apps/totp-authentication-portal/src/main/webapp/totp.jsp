@@ -94,7 +94,7 @@
             </script>
         </head>
 
-        <body onload="getLoginDiv()">
+        <body>
             <main class="center-segment">
                 <div class="ui container medium center aligned middle aligned">
                     <!-- product-title -->
