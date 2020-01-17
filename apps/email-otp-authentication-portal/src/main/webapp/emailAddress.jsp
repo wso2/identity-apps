@@ -69,9 +69,9 @@
 		<script src="js/scripts.js"></script>
 
 		<!--[if lt IE 9]>
-					<script src="js/html5shiv.min.js"></script>
-					<script src="js/respond.min.js"></script>
-					<![endif]-->
+		<script src="js/html5shiv.min.js"></script>
+		<script src="js/respond.min.js"></script>
+		<![endif]-->
 		</head>
 
 		<body onload="getLoginDiv()">
