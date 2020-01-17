@@ -15,6 +15,7 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   --%>
+
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.List" %>
@@ -25,8 +26,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.TenantDataManager" %>
 <%@ page import="java.util.ResourceBundle" %>
-<fmt:bundle basename="org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources">
 
+<fmt:bundle basename="org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources">
     <%
         String BUNDLE = "org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources";
         ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE, request.getLocale());
@@ -79,70 +80,68 @@
     %>
 
     <html>
-    <head>
-        <!-- header -->
-        <%
-            File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-            if (headerFile.exists()) {
-        %>
-        <jsp:include page="extensions/header.jsp"/>
-        <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
-        <% } %>
-        <script src="js/scripts.js"></script>
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.min.js"></script>
-        <script src="js/respond.min.js"></script>
-        <![endif]-->
-    </head>
-
-    <body>
-
-    <main class="center-segment">
-        <div class="ui container medium center aligned middle aligned">
-            <!-- product-title -->
+        <head>
+            <!-- header -->
             <%
-                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                if (productTitleFile.exists()) {
+                File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
+                if (headerFile.exists()) {
             %>
-            <jsp:include page="extensions/product-title.jsp"/>
+            <jsp:include page="extensions/header.jsp"/>
             <% } else { %>
-            <jsp:directive.include file="includes/product-title.jsp"/>
+            <jsp:directive.include file="includes/header.jsp"/>
+            <% } %>
+            <script src="js/scripts.js"></script>
+            <!--[if lt IE 9]>
+            <script src="js/html5shiv.min.js"></script>
+            <script src="js/respond.min.js"></script>
+            <![endif]-->
+        </head>
+
+        <body>
+            <main class="center-segment">
+                <div class="ui container medium center aligned middle aligned">
+                    <!-- product-title -->
+                    <%
+                        File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                        if (productTitleFile.exists()) {
+                    %>
+                    <jsp:include page="extensions/product-title.jsp"/>
+                    <% } else { %>
+                    <jsp:directive.include file="includes/product-title.jsp"/>
+                    <% } %>
+
+                    <div class="ui segment">
+                        <!-- page content -->
+                        <h2>Failed Authentication with X509Certificate</h2>
+                        <%
+                            if ("true".equals(authenticationFailed)) {
+                        %>
+                                <div class="ui negative message" id="failed-msg"><%=errorMessage%></div>
+                        <% } %>
+                        <div id="alertDiv"></div>
+                    </div>
+                </div>
+            </main> 
+
+            <!-- product-footer -->
+            <%
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
+            %>
+            <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+            <jsp:directive.include file="includes/product-footer.jsp"/>
             <% } %>
 
-            <div class="ui segment">
-                <!-- page content -->
-                <h2>Failed Authentication with X509Certificate</h2>
-                <%
-                    if ("true".equals(authenticationFailed)) {
-                %>
-                        <div class="ui negative message" id="failed-msg"><%=errorMessage%></div>
-                <% } %>
-                <div id="alertDiv"></div>
-            </div>
-        </div>
-    </main> 
-
-        <!-- product-footer -->
-    <%
-        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-        if (productFooterFile.exists()) {
-    %>
-    <jsp:include page="extensions/product-footer.jsp"/>
-    <% } else { %>
-    <jsp:directive.include file="includes/product-footer.jsp"/>
-    <% } %>
-
-
-    <!-- footer -->
-    <%
-        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-        if (footerFile.exists()) {
-    %>
-    <jsp:include page="extensions/footer.jsp"/>
-    <% } else { %>
-    <jsp:directive.include file="includes/footer.jsp"/>
-    <% } %>
-    </body>
+            <!-- footer -->
+            <%
+                File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+                if (footerFile.exists()) {
+            %>
+            <jsp:include page="extensions/footer.jsp"/>
+            <% } else { %>
+            <jsp:directive.include file="includes/footer.jsp"/>
+            <% } %>
+        </body>
     </html>
 </fmt:bundle>

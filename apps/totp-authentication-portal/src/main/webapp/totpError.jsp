@@ -15,18 +15,18 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   --%>
-<%@page import="java.util.ArrayList" %>
-<%@page import="java.util.Arrays" %>
+
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
-<%@page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.TenantDataManager" %>
 
 <fmt:bundle basename="org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources">
-
     <%
         request.getSession().invalidate();
         String queryString = request.getQueryString();
@@ -50,77 +50,76 @@
             }
         }
     %>
+
     <html>
-    <head>
-        <!-- header -->
-        <%
-            File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-            if (headerFile.exists()) {
-        %>
-        <jsp:include page="extensions/header.jsp"/>
-        <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
-        <% } %>
-
-        <script src="js/scripts.js"></script>
-        <script src="/totpauthenticationendpoint/js/scripts.js"></script>
-
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.min.js"></script>
-        <script src="js/respond.min.js"></script>
-        <![endif]-->
-    </head>
-
-    <body onload="getLoginDiv()">
-
-    <main class="center-segment">
-        <div class="ui container medium center aligned middle aligned">
-            <!-- product-title -->
+        <head>
+            <!-- header -->
             <%
-                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                if (productTitleFile.exists()) {
+                File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
+                if (headerFile.exists()) {
             %>
-            <jsp:include page="extensions/product-title.jsp"/>
+            <jsp:include page="extensions/header.jsp"/>
             <% } else { %>
-            <jsp:directive.include file="includes/product-title.jsp"/>
+            <jsp:directive.include file="includes/header.jsp"/>
             <% } %>
 
-            <div class="ui segment">
-                <!-- page content -->
-                <h2>Authentication Failed!</h2>
-                <div class="segment-form">
-                    <form class="ui large form">
-                        <div class="field">
+            <script src="js/scripts.js"></script>
+            <script src="/totpauthenticationendpoint/js/scripts.js"></script>
+
+            <!--[if lt IE 9]>
+            <script src="js/html5shiv.min.js"></script>
+            <script src="js/respond.min.js"></script>
+            <![endif]-->
+        </head>
+
+        <body onload="getLoginDiv()">
+            <main class="center-segment">
+                <div class="ui container medium center aligned middle aligned">
+                    <!-- product-title -->
+                    <%
+                        File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                        if (productTitleFile.exists()) {
+                    %>
+                    <jsp:include page="extensions/product-title.jsp"/>
+                    <% } else { %>
+                    <jsp:directive.include file="includes/product-title.jsp"/>
+                    <% } %>
+
+                    <div class="ui segment">
+                        <!-- page content -->
+                        <h2>Authentication Failed!</h2>
+                        <div class="segment-form">
+                            <form class="ui large form">
+                                <div class="field">
+                                </div>
+                                <div class="ui negative message" id="failed-msg">
+                                        Enable the TOTP in your Profile. Cannot proceed further without TOTP authentication.
+                                </div>                        
+                            </form>
                         </div>
-                        <div class="ui negative message" id="failed-msg">
-                                Enable the TOTP in your Profile. Cannot proceed further without TOTP authentication.
-                        </div>                        
-                    </form>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </main> 
+            </main> 
 
-        <!-- product-footer -->
-    <%
-        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-        if (productFooterFile.exists()) {
-    %>
-    <jsp:include page="extensions/product-footer.jsp"/>
-    <% } else { %>
-    <jsp:directive.include file="includes/product-footer.jsp"/>
-    <% } %>
+            <!-- product-footer -->
+            <%
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
+            %>
+            <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+            <jsp:directive.include file="includes/product-footer.jsp"/>
+            <% } %>
 
-
-    <!-- footer -->
-    <%
-        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-        if (footerFile.exists()) {
-    %>
-    <jsp:include page="extensions/footer.jsp"/>
-    <% } else { %>
-    <jsp:directive.include file="includes/footer.jsp"/>
-    <% } %>
-    </body>
+            <!-- footer -->
+            <%
+                File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+                if (footerFile.exists()) {
+            %>
+            <jsp:include page="extensions/footer.jsp"/>
+            <% } else { %>
+            <jsp:directive.include file="includes/footer.jsp"/>
+            <% } %>
+        </body>
     </html>
 </fmt:bundle>

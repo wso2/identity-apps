@@ -118,3 +118,4 @@ apps/x509-certificate-authentication-portal/src/main/webapp/libs/theme/
 *.iws
 *.ipr
 .DS_Store
+/.metadata/

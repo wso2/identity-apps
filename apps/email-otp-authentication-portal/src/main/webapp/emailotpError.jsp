@@ -15,112 +15,110 @@
   ~ specific language governing permissions and limitations
   ~ under the License.
   --%>
-<%@page import="org.owasp.encoder.Encode" %>
-<%@page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <%
-        request.getSession().invalidate();
-        String queryString = request.getQueryString();
-        Map<String, String> idpAuthenticatorMapping = null;
-        if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
-            idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
-        }
+    request.getSession().invalidate();
+    String queryString = request.getQueryString();
+    Map<String, String> idpAuthenticatorMapping = null;
+    if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
+        idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
+    }
 
-        String errorMessage = "Authentication Failed! Please Retry";
-        String authenticationFailed = "false";
+    String errorMessage = "Authentication Failed! Please Retry";
+    String authenticationFailed = "false";
 
-        if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
-            authenticationFailed = "true";
+    if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
+        authenticationFailed = "true";
 
-            if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
-                errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
+        if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
+            errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
-                if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-                    errorMessage = "Authentication Failed! Please Retry";
-                } else if (errorMessage.equalsIgnoreCase("unable.send.code")) {
-                    errorMessage = "Unable to send code to your email address";
-                } else if (errorMessage.equalsIgnoreCase("code.mismatch")) {
-                    errorMessage = "The code entered is incorrect. Authentication Failed!";
-                } else if (errorMessage.equalsIgnoreCase("emailotp.disable")) {
-                    errorMessage = "Enable the Email OTP in your Profile. Cannot proceed further without Email OTP authentication.";
-                } else if (errorMessage.equalsIgnoreCase("directly.send.otp.disable")) {
-                    errorMessage = "User not found in the directory. Cannot proceed further without Email OTP authentication.";
-                }
+            if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
+                errorMessage = "Authentication Failed! Please Retry";
+            } else if (errorMessage.equalsIgnoreCase("unable.send.code")) {
+                errorMessage = "Unable to send code to your email address";
+            } else if (errorMessage.equalsIgnoreCase("code.mismatch")) {
+                errorMessage = "The code entered is incorrect. Authentication Failed!";
+            } else if (errorMessage.equalsIgnoreCase("emailotp.disable")) {
+                errorMessage = "Enable the Email OTP in your Profile. Cannot proceed further without Email OTP authentication.";
+            } else if (errorMessage.equalsIgnoreCase("directly.send.otp.disable")) {
+                errorMessage = "User not found in the directory. Cannot proceed further without Email OTP authentication.";
             }
         }
-    %>
+    }
+%>
+
 <html>
-<head>
-    <!-- header -->
-    <%
-        File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-        if (headerFile.exists()) {
-    %>
-    <jsp:include page="extensions/header.jsp"/>
-    <% } else { %>
-    <jsp:directive.include file="includes/header.jsp"/>
-    <% } %>
-    
-    <script src="js/scripts.js"></script>
+    <head>
+      <!-- header -->
+      <%
+          File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
+          if (headerFile.exists()) {
+      %>
+      <jsp:include page="extensions/header.jsp" />
+      <% } else { %>
+      <jsp:directive.include file="includes/header.jsp" />
+      <% } %>
 
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
-</head>
+      <script src="js/scripts.js"></script>
 
-<body>
+      <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+      <script src="js/respond.min.js"></script>
+      <![endif]-->
+    </head>
 
-<main class="center-segment">
-    <div class="ui container medium center aligned middle aligned">
-        <!-- product-title -->
-        <%
-            File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-            if (productTitleFile.exists()) {
-        %>
-        <jsp:include page="extensions/product-title.jsp"/>
-        <% } else { %>
-        <jsp:directive.include file="includes/product-title.jsp"/>
-        <% } %>
+    <body>
+      <main class="center-segment">
+        <div class="ui container medium center aligned middle aligned">
+          <!-- product-title -->
+          <%
+              File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+              if (productTitleFile.exists()) {
+          %>
+          <jsp:include page="extensions/product-title.jsp" />
+          <% } else { %>
+          <jsp:directive.include file="includes/product-title.jsp" />
+          <% } %>
 
-        <div class="ui segment">
+          <div class="ui segment">
             <!-- page content -->
             <h2>Failed Authentication with EmailOTP</h2>
             <div class="ui divider hidden"></div>
-            <%
+              <%
                 if ("true".equals(authenticationFailed)) {
-            %>
-                    <div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%></div>
+              %>
+            <div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%></div>
             <% } %>
-            </div>
+          </div>
         </div>
-    </div>
-</main> 
+      </main>
 
-    <!-- product-footer -->
-<%
-    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-    if (productFooterFile.exists()) {
-%>
-<jsp:include page="extensions/product-footer.jsp"/>
-<% } else { %>
-<jsp:directive.include file="includes/product-footer.jsp"/>
-<% } %>
+      <!-- product-footer -->
+      <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+      %>
+      <jsp:include page="extensions/product-footer.jsp" />
+      <% } else { %>
+      <jsp:directive.include file="includes/product-footer.jsp" />
+      <% } %>
 
-
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
-<jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
-<jsp:directive.include file="includes/footer.jsp"/>
-<% } %>
-</body>
+      <!-- footer -->
+      <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+      %>
+      <jsp:include page="extensions/footer.jsp" />
+      <% } else { %>
+      <jsp:directive.include file="includes/footer.jsp" />
+      <% } %>
+    </body>
 </html>
- 
