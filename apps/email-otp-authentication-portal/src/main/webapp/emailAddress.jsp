@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
   ~
   ~ WSO2 Inc. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -123,7 +123,7 @@
                         <div class="ui divider hidden"></div>
                         <div class="align-right buttons">
                             <input type="button" name="update" id="update" value="Update"
-                                                  class="ui primary button">
+                                   class="ui primary button">
                         </div>
                     </form>
                 </div>
@@ -141,7 +141,6 @@
     <jsp:directive.include file="includes/product-footer.jsp"/>
     <% } %>
 
-
     <!-- footer -->
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
@@ -153,7 +152,6 @@
     <% } %>
     </body>
     </html>
-
 
      <script type="text/javascript">
         $(document).ready(function() {
@@ -168,6 +166,7 @@
         	});
         });
         </script>
+  
     </body>
     </html>
 </fmt:bundle>
