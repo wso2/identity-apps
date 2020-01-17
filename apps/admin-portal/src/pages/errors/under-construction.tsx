@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,11 +25,11 @@ import { EmptyPlaceholderIllustrations, GlobalConfig } from "../../configs";
 import { ErrorPageLayout } from "../../layouts";
 
 /**
- * 404 error page.
+ * Page under construction component.
  *
  * @return {JSX.Element}
  */
-export const PageNotFound = (): JSX.Element => {
+export const UnderConstruction = (): JSX.Element => {
     const { t } = useTranslation();
     return (
         <ErrorPageLayout>
@@ -40,16 +40,16 @@ export const PageNotFound = (): JSX.Element => {
                         as={ Link }
                         to={ GlobalConfig.appHomePath }
                     >
-                        { t("views:placeholders.404.action") }
+                        { t("views:placeholders.underConstruction.action") }
                     </Button>
                 ) }
-                image={ EmptyPlaceholderIllustrations.pageNotFound }
+                image={ EmptyPlaceholderIllustrations.alert }
                 imageSize="tiny"
                 subtitle={ [
-                    t("views:placeholders.404.subtitles.0"),
-                    t("views:placeholders.404.subtitles.1")
+                    t("views:placeholders.underConstruction.subtitles.0"),
+                    t("views:placeholders.underConstruction.subtitles.1")
                 ] }
-                title={ t("views:placeholders.404.title") }
+                title={ t("views:placeholders.underConstruction.title") }
             />
         </ErrorPageLayout>
     );

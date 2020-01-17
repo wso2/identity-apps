@@ -17,6 +17,7 @@
  */
 
 export * from "./errors/404";
+export * from "./errors/under-construction";
 export * from "./home";
 export * from "./privacy";
 export * from "./users";

@@ -366,7 +366,8 @@ export interface Views {
         404: Placeholder,
         emptySearchResult: Placeholder,
         genericError: Placeholder,
-        loginError: Placeholder
+        loginError: Placeholder,
+        underConstruction: Placeholder
     };
 }
 

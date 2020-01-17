@@ -54,6 +54,30 @@ export const App = (): JSX.Element => {
                             />
                             {
                                 routes.map((route, index) => {
+                                    if (route.children && route.children.length > 0) {
+                                        return route.children.map((child, i) => {
+                                            return (
+                                                child.protected ?
+                                                    (
+                                                        <ProtectedRoute
+                                                            component={ child.component }
+                                                            path={ child.path }
+                                                            key={ i }
+                                                        />
+                                                    )
+                                                    :
+                                                    (
+                                                        <Route
+                                                            path={ child.path }
+                                                            render={ (props) =>
+                                                                (<child.component { ...props } />)
+                                                            }
+                                                            key={ i }
+                                                        />
+                                                    )
+                                            );
+                                        });
+                                    }
                                     return (
                                         route.protected ?
                                             (

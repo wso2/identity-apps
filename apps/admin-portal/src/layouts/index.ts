@@ -18,3 +18,4 @@
 
 export * from "./default";
 export * from "./inner";
+export * from "./error";

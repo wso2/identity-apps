@@ -392,6 +392,14 @@ export const views: Views = {
                 1: "Please sign in with a different account."
             },
             title: "You are not authorized"
+        },
+        underConstruction: {
+            action: "Back to home",
+            subtitles: {
+                0: "We're doing some work on this page.",
+                1: "Please bare with us and come back later. Thank you for your patience."
+            },
+            title: "Page under construction"
         }
     },
 };
