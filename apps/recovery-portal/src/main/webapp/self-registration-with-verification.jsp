@@ -661,7 +661,7 @@
                     return false;
                 }
                 
-                if(!$("#termsCheckbox").checked){
+                if(!$("#termsCheckbox")[0].checked){
                         error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                             "Confirm.Privacy.Policy")%>");
                         error_msg.show();
