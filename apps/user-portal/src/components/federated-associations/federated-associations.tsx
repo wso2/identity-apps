@@ -16,10 +16,12 @@
  * under the License.
  */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { getFederatedAssociations } from "../../api/federated-associations";
 import { SettingsSectionIcons } from "../../configs";
-import { AlertInterface } from "../../models";
+import { AlertInterface, AlertLevels } from "../../models";
+import { FederatedAssociation } from "../../models/federated-associations";
 import { SettingsSection } from "../shared";
 
 /**
@@ -33,7 +35,25 @@ interface FederatedAssociationsProps {
  * @param props
  */
 export const FederatedAssociations = (props: FederatedAssociationsProps): JSX.Element => {
+    const { onAlertFired } = props;
     const { t } = useTranslation();
+
+    const [federatedAssociations, setFederatedAssociations] = useState<FederatedAssociation[]>();
+
+    useEffect(() => {
+        getFederatedAssociations()
+            .then((response) => {
+                setFederatedAssociations(response);
+            })
+            .catch((error) => {
+                onAlertFired({
+                    description: "",
+                    level: AlertLevels.ERROR,
+                    message: ""
+                });
+            });
+    }, []);
+
     return (
         <SettingsSection
             description={ t("views:sections.linkedAccounts.description") }
@@ -44,8 +64,6 @@ export const FederatedAssociations = (props: FederatedAssociationsProps): JSX.El
             iconStyle="colored"
             iconFloated="right"
             onPrimaryActionClick={ () => {} }
-            primaryAction={ t("views:sections.linkedAccounts.actionTitles.add") }
-            primaryActionIcon="add"
             showActionBar={ true }
         />
     );
