@@ -24,15 +24,29 @@
 	      version="2.4">
  
   <display-name>user-portal</display-name>
+
+  <filter>
+    <filter-name>SuperTenantFlowInitializer</filter-name>
+    <filter-class>
+        org.wso2.carbon.identity.core.filter.SuperTenantFlowInitializer
+    </filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>SuperTenantFlowInitializer</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
  
   <error-page>
     <error-code>404</error-code>
     <location>/index.jsp</location>
   </error-page>
 
-    <servlet>
-        <servlet-name>/</servlet-name>
-        <jsp-file>/index.jsp</jsp-file>
-    </servlet>
+  <servlet>
+    <servlet-name>/</servlet-name>
+    <jsp-file>/index.jsp</jsp-file>
+  </servlet>
   
 </web-app>
