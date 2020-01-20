@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/sms-otp-authentication-portal",
-    "version": "0.9.9",
+    "version": "0.9.11",
     "description": "WSO2 Identity Server SMS OTP Authentication Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
