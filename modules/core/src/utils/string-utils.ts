@@ -51,7 +51,7 @@ export class StringUtils {
             return raw.split(splitSeparator).join(separator);
         }
         return raw;
-    };
+    }
 
     /**
      * Transforms a string to sentence case.
@@ -75,5 +75,5 @@ export class StringUtils {
         });
 
         return newStr;
-    };
+    }
 }

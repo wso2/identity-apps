@@ -73,9 +73,9 @@ export interface GlobalReducerStateInterface {
 export interface CommonRequestLoadersReducerStateInterface {
     isProfileInfoRequestLoading: boolean;
     isProfileSchemaRequestLoading: boolean;
-    isSignOutRequestLoading: boolean,
-    isTokenRequestLoading: boolean,
-    isTokenRevokeRequestLoading: boolean
+    isSignOutRequestLoading: boolean;
+    isTokenRequestLoading: boolean;
+    isTokenRevokeRequestLoading: boolean;
 }
 
 /**
@@ -84,6 +84,6 @@ export interface CommonRequestLoadersReducerStateInterface {
 export interface CommonProfileReducerStateInterface {
     isSCIMEnabled: boolean;
     linkedAccounts: LinkedAccountInterface[];
-    profileInfo: ProfileInfoInterface,
-    profileSchemas: ProfileSchemaInterface[]
+    profileInfo: ProfileInfoInterface;
+    profileSchemas: ProfileSchemaInterface[];
 }

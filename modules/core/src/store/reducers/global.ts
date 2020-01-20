@@ -17,8 +17,8 @@
  * under the License.
  */
 
-import { GlobalActions, GlobalActionTypes } from "../actions/types";
 import { GlobalReducerStateInterface } from "../../models";
+import { GlobalActions, GlobalActionTypes } from "../actions/types";
 
 /**
  * Initial global state.

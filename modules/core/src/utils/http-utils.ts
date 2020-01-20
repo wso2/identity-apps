@@ -50,5 +50,5 @@ export class HttpUtils {
             requestErrorCallback,
             requestFinishCallback
         );
-    };
+    }
 }

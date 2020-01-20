@@ -19,13 +19,13 @@
 import _ from "lodash";
 import { getProfileInfo, getProfileSchemas } from "../../api";
 import { LinkedAccountInterface, ProfileInfoInterface, ProfileSchemaInterface } from "../../models";
+import { setProfileInfoRequestLoadingStatus, setProfileSchemaRequestLoadingStatus } from "./loaders";
 import {
     ProfileActionTypes,
     SetProfileInfoActionInterface,
     SetProfileSchemasActionInterface,
     ToggleSCIMEnabledActionInterface
 } from "./types";
-import { setProfileInfoRequestLoadingStatus, setProfileSchemaRequestLoadingStatus } from "./loaders";
 
 /**
  * Redux action to set profile info.

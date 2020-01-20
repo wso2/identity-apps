@@ -29,7 +29,6 @@ export class UIConstants {
      */
     private constructor() { }
 
-
     /**
      * `Gravatar` website URL.
      * @constant

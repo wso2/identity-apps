@@ -70,7 +70,7 @@ export interface SetProfileInfoActionInterface extends ProfileBaseActionInterfac
  * Set profile schemas action interface.
  */
 export interface SetProfileSchemasActionInterface extends ProfileBaseActionInterface {
-    payload: ProfileSchemaInterface[],
+    payload: ProfileSchemaInterface[];
     type: ProfileActionTypes.SET_PROFILE_SCHEMAS;
 }
 

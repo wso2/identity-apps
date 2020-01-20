@@ -16,19 +16,19 @@
  * under the License.
  */
 
-import { SignInUtil, AuthenticateSessionUtil } from "@wso2is/authentication";
+import { AuthenticateSessionUtil, SignInUtil } from "@wso2is/authentication";
 import { AxiosHttpClient, AxiosHttpClientInstance } from "@wso2is/http";
 import _ from "lodash";
+import { CommonServiceResourcesEndpoints } from "../configs";
 import { HTTPRequestHeaders } from "../helpers";
 import {
-    LinkedAccountInterface,
-    ProfileInfoInterface,
-    ProfileSchemaInterface,
     AcceptHeaderValues,
     ContentTypeHeaderValues,
-    HttpMethods
+    HttpMethods,
+    LinkedAccountInterface,
+    ProfileInfoInterface,
+    ProfileSchemaInterface
 } from "../models";
-import { CommonServiceResourcesEndpoints } from "../configs";
 import { ContextUtils } from "../utils";
 
 /**

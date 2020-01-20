@@ -65,5 +65,5 @@ export class SearchUtils {
         }
 
         return raw;
-    };
+    }
 }

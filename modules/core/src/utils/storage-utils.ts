@@ -38,7 +38,7 @@ export class LocalStorageUtils {
      */
     public static setValueInLocalStorage(key: string, value: string): void {
         localStorage.setItem(key, value);
-    };
+    }
 
     /**
      * Get a value from local storage.
@@ -48,5 +48,5 @@ export class LocalStorageUtils {
      */
     public static getValueFromLocalStorage(key: string): string {
         return localStorage.getItem(key);
-    };
+    }
 }

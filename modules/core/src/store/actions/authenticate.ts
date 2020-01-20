@@ -25,20 +25,20 @@ import {
     SignOutUtil
 } from "@wso2is/authentication";
 import { AxiosHttpClient, AxiosHttpClientInstance } from "@wso2is/http";
+import { CommonServiceResourcesEndpoints } from "../../configs";
+import { ContextUtils } from "../../utils";
+import {
+    setSignOutRequestLoadingStatus,
+    setTokenRequestLoadingStatus,
+    setTokenRevokeRequestLoadingStatus
+} from "./loaders";
+import { getProfileInformation } from "./profile";
 import {
     AuthenticateActionTypes,
     ResetAuthenticationActionInterface,
     SetSignInActionInterface,
     SetSignOutActionInterface
 } from "./types";
-import { getProfileInformation } from "./profile";
-import { CommonServiceResourcesEndpoints } from "../../configs";
-import {
-    setSignOutRequestLoadingStatus,
-    setTokenRequestLoadingStatus,
-    setTokenRevokeRequestLoadingStatus
-} from "./loaders";
-import { ContextUtils } from "../../utils";
 
 /**
  * Get a http client instance.
@@ -95,7 +95,7 @@ export const handleSignIn = (clientID: string,
     const sendSignInRequest = () => {
 
         const tokenRequestParams: OIDCRequestParamsInterface = {
-            clientHost: clientHost,
+            clientHost,
             clientId: clientID,
             clientSecret: null,
             enablePKCE: true,
