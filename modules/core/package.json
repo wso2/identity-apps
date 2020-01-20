@@ -1,0 +1,46 @@
+{
+    "name": "@wso2is/core",
+    "version": "0.9.1",
+    "description": "Commonly used configs, schemas, utilities and low level services for WSO2 Identity Server frontend apps",
+    "keywords": [
+        "WSO2",
+        "WSO2 IS",
+        "WSO2 Identity Server",
+        "WSO2 Identity Apps",
+        "core",
+        "common",
+        "utils"
+    ],
+    "main": "dist/src/index.js",
+    "types": "dist/typings/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "npm run clean && npm run compile",
+        "clean": "rimraf ./dist",
+        "compile": "tsc -p tsconfig.json",
+        "lint": "tslint -t stylish --project ."
+    },
+    "author": "WSO2",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "@wso2is/authentication": "^0.9.1",
+        "@wso2is/http": "^0.9.1"
+    },
+    "peerDependencies": {
+        "@types/history": "*",
+        "@types/lodash": "*",
+        "@types/react": "*",
+        "@types/react-notification-system": "*",
+        "@types/ua-parser-js": "*",
+        "history": "*",
+        "lodash": "*",
+        "react": "*",
+        "react-notification-system": "*",
+        "rimraf": "*",
+        "tslint": "*",
+        "typescript": "*",
+        "ua-parser-js": "*"
+    }
+}
