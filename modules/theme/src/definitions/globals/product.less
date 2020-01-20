@@ -220,39 +220,77 @@ body {
     }
     &.two-tone {
         svg.icon {
-            .primary {
-                fill: @iconWrapperTwoTonePrimaryColor;
+            .stroke {
+                &.primary {
+                    stroke: @iconWrapperTwoTonePrimaryColor;
+                }
+                &.secondary {
+                    stroke: @iconWrapperTwoToneSecondaryColor;
+                }
+                &.white {
+                    stroke: @white;
+                }
             }
-            .secondary {
-                fill: @iconWrapperTwoToneSecondaryColor;
-            }
-            .white {
-                fill: @white;
+            .fill{
+                &.primary {
+                    fill: @iconWrapperTwoTonePrimaryColor;
+                }
+                &.secondary {
+                    fill: @iconWrapperTwoToneSecondaryColor;
+                }
+                &.white {
+                    fill: @white;
+                }
             }
         }
     }
     &.colored {
         svg.icon {
-            .primary {
+            .stroke{
+                &.primary {
+                    stroke: @iconWrapperTwoTonePrimaryColor;
+                }
+                &.secondary {
+                    stroke: @iconWrapperTwoToneSecondaryColor;
+                }
+                &.white {
+                    stroke: @white;
+                }
+                &.positive {
+                    stroke: @positiveColor;
+                }
+                &.negative {
+                    stroke: @negativeColor;
+                }
+                &.info {
+                    stroke: @infoColor;
+                }
+                &.warning {
+                    stroke: @warningColor;
+                }
+            }
+            .fill{
+                &.primary {
                 fill: @iconWrapperTwoTonePrimaryColor;
-            }
-            .secondary {
-                fill: @iconWrapperTwoToneSecondaryColor;
-            }
-            .white {
-                fill: @white;
-            }
-            .positive {
-                fill: @positiveColor;
-            }
-            .negative {
-                fill: @negativeColor;
-            }
-            .info {
-                fill: @infoColor;
-            }
-            .warning {
-                fill: @warningColor;
+                }
+                &.secondary {
+                    fill: @iconWrapperTwoToneSecondaryColor;
+                }
+                &.white {
+                    fill: @white;
+                }
+                &.positive {
+                    fill: @positiveColor;
+                }
+                &.negative {
+                    fill: @negativeColor;
+                }
+                &.info {
+                    fill: @infoColor;
+                }
+                &.warning {
+                    fill: @warningColor;
+                }
             }
         }
     }
