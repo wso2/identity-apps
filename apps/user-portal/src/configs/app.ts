@@ -30,6 +30,7 @@ interface ServiceResourcesType {
     fidoMetaData: string;
     fidoStart: string;
     fidoStartUsernameless: string;
+    identityProviders: string;
     jwks: string;
     logout: string;
     me: string;
@@ -55,6 +56,7 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     fidoMetaData: `${GlobalConfig.serverHost}/api/users/v2/me/webauthn`,
     fidoStart: `${GlobalConfig.serverHost}/api/users/v2/me/webauthn/start-registration`,
     fidoStartUsernameless: `${GlobalConfig.serverHost}/api/users/v2/me/webauthn/start-usernameless-registration`,
+    identityProviders: `${GlobalConfig.serverHost}/t/carbon.super/api/server/v1/identity-providers`,
     jwks: `${GlobalConfig.serverHost}/oauth2/jwks`,
     logout: `${GlobalConfig.serverHost}/oidc/logout`,
     me: `${GlobalConfig.serverHost}/scim2/Me`,
