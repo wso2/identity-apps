@@ -20,8 +20,15 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, List, Popup } from "semantic-ui-react";
 import { deleteFederatedAssociation, getFederatedAssociations } from "../../api/federated-associations";
+import { getIdentityProviders } from "../../api/identity-providers";
 import { SettingsSectionIcons } from "../../configs";
-import { AlertInterface, AlertLevels } from "../../models";
+import {
+    AlertInterface,
+    AlertLevels,
+    IdentityProvidersList,
+    IdentityProvidersListItem,
+    IdentityProvidersRequestParameters
+} from "../../models";
 import { FederatedAssociation } from "../../models/federated-associations";
 import { SettingsSection, UserAvatar } from "../shared";
 
@@ -40,6 +47,7 @@ export const FederatedAssociations = (props: FederatedAssociationsProps): JSX.El
     const { t } = useTranslation();
 
     const [federatedAssociations, setFederatedAssociations] = useState<FederatedAssociation[]>();
+    const [identityProviders, setIdentityProviders] = useState<IdentityProvidersListItem[]>();
 
     /**
      * This calls the `getFederatedAssociationsList` function on component mount
@@ -49,12 +57,65 @@ export const FederatedAssociations = (props: FederatedAssociationsProps): JSX.El
     }, []);
 
     /**
+     * This returns an array of identity providers, accounts from which are linked to the users' account
+     * @param federatedAssociationList
+     */
+    const getIdentityProvidersListInFederatedAssociations = (
+        federatedAssociationList: FederatedAssociation[]
+    ): string[] => {
+        const identityProvidersList: string[] = [];
+
+        federatedAssociationList.forEach((identityProvider: FederatedAssociation) => {
+            identityProvidersList.push(identityProvider.idpId);
+        });
+
+        return identityProvidersList;
+    };
+
+    /**
+     * This constructs a scim filter from the provided array of identity providers
+     * @param identityProviders
+     */
+    const constructScimFilter = (identityProvidersList: string[]): string => {
+        let scimFilter = "";
+
+        identityProvidersList.forEach((identityProvider: string) => {
+            scimFilter += `id+eq+${identityProvider}+or+`;
+        });
+
+        return scimFilter;
+    };
+
+    /**
+     * This gets the list of identity servers by making an API call
+     * @param requestParams
+     */
+    const getIdentityProvidersDetails = (requestParams: IdentityProvidersRequestParameters) => {
+        getIdentityProviders(requestParams)
+            .then((response: IdentityProvidersList) => {
+                setIdentityProviders(response.identityProviders);
+            })
+            .catch((error) => {
+                throw error;
+            });
+    };
+
+    /**
      * This calls the `getFederatedAssociations` api call
      */
     const getFederatedAssociationsList = () => {
         getFederatedAssociations()
-            .then((response) => {
+            .then((response: FederatedAssociation[]) => {
                 setFederatedAssociations(response);
+
+                const requestParams: IdentityProvidersRequestParameters = {
+
+                    limit: 10,
+                    offset: 0,
+                    sortOrder: "ASC"
+                };
+
+                getIdentityProvidersDetails(requestParams);
             })
             .catch((error) => {
                 onAlertFired({
