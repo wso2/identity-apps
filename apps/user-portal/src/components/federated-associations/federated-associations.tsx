@@ -18,11 +18,12 @@
 
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getFederatedAssociations } from "../../api/federated-associations";
+import { Grid, Icon, List, Popup } from "semantic-ui-react";
+import { deleteFederatedAssociation, getFederatedAssociations } from "../../api/federated-associations";
 import { SettingsSectionIcons } from "../../configs";
 import { AlertInterface, AlertLevels } from "../../models";
 import { FederatedAssociation } from "../../models/federated-associations";
-import { SettingsSection } from "../shared";
+import { SettingsSection, UserAvatar } from "../shared";
 
 /**
  * Prop types for `FederatedAssociations` component
@@ -40,31 +41,137 @@ export const FederatedAssociations = (props: FederatedAssociationsProps): JSX.El
 
     const [federatedAssociations, setFederatedAssociations] = useState<FederatedAssociation[]>();
 
+    /**
+     * This calls the `getFederatedAssociationsList` function on component mount
+     */
     useEffect(() => {
+        getFederatedAssociationsList();
+    }, []);
+
+    /**
+     * This calls the `getFederatedAssociations` api call
+     */
+    const getFederatedAssociationsList = () => {
         getFederatedAssociations()
             .then((response) => {
                 setFederatedAssociations(response);
             })
             .catch((error) => {
                 onAlertFired({
-                    description: "",
+                    description:
+                        t("views:components.federatedAssociations.notifications.getFederatedAssociations."
+                            + "error.description",
+                            {
+                                description: error
+                            }
+                        ),
                     level: AlertLevels.ERROR,
-                    message: ""
+                    message:
+                        t("views:components.federatedAssociations.notifications.getFederatedAssociations.error.message")
                 });
             });
-    }, []);
+    };
+
+    /**
+     * This function calls the `deleteFederatedAssociation` api call
+     * @param id
+     */
+    const removeFederatedAssociation = (id: string) => {
+        deleteFederatedAssociation(id)
+            .then((response) => {
+                getFederatedAssociationsList();
+                onAlertFired({
+                    description: t("views:components.federatedAssociations.notifications"
+                        + ".removeFederatedAssociation.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("views:components.federatedAssociations.notifications"
+                        + ".removeFederatedAssociation.success.message")
+                });
+            })
+            .catch((error) => {
+                onAlertFired({
+                    description: t("views:components.federatedAssociations.notifications"
+                        + ".removeFederatedAssociation.error.description",
+                        {
+                            description: error
+                        }),
+                    level: AlertLevels.ERROR,
+                    message: t("views:components.federatedAssociations.notifications"
+                        + ".removeFederatedAssociation.error.message")
+                });
+            });
+    };
+
+    /**
+     * This returns the list of federated associations as a `List` component
+     */
+    const federatedAssociationsList = (): JSX.Element => {
+        return (
+            <List divided verticalAlign="middle" className="main-content-inner">
+                {
+                    federatedAssociations && federatedAssociations.map(
+                        (federatedAssociation: FederatedAssociation, index: number) => {
+                            return (
+                                <List.Item className="inner-list-item" key={ index }>
+                                    <Grid padded>
+                                        <Grid.Row columns={ 2 }>
+                                            <Grid.Column width={ 11 } className="first-column">
+                                                <UserAvatar
+                                                    floated="left"
+                                                    spaced="right"
+                                                    size="mini"
+                                                    name={ federatedAssociation.idpId }
+                                                />
+                                                <List.Header>
+                                                    { federatedAssociation.federatedUserId }
+                                                </List.Header>
+                                            </Grid.Column>
+                                            <Grid.Column width={ 5 } className="last-column">
+                                                <List.Content floated="right">
+                                                    <Popup
+                                                        trigger={ (
+                                                            <Icon
+                                                                link
+                                                                className="list-icon"
+                                                                size="small"
+                                                                color="red"
+                                                                name="trash alternate outline"
+                                                                onClick={ () => {
+                                                                    removeFederatedAssociation(
+                                                                        federatedAssociation.id
+                                                                    );
+                                                                } }
+                                                            />
+                                                        ) }
+                                                        inverted
+                                                        position="top center"
+                                                        content={ t("common:remove") }
+                                                    />
+                                                </List.Content>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                </List.Item>
+                            );
+                        }
+                    )
+                }
+            </List>
+        );
+    };
 
     return (
         <SettingsSection
-            description={ t("views:sections.linkedAccounts.description") }
-            header={ "External Logins" }
+            description={ t("views:sections.federatedAssociations.description") }
+            header={ t("views:sections.federatedAssociations.heading") }
             icon={ SettingsSectionIcons.federatedAssociations }
             iconMini={ SettingsSectionIcons.federatedAssociationsMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
-            onPrimaryActionClick={ () => {} }
             showActionBar={ true }
-        />
+        >
+            { federatedAssociationsList() }
+        </SettingsSection>
     );
 };
