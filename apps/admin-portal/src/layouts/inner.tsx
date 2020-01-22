@@ -34,7 +34,6 @@ interface InnerPageLayoutProps {
  * @type {string}
  */
 const DEFAULT_HEADER_HEIGHT = 59;
-
 const DEFAULT_FOOTER_HEIGHT = 60;
 
 /**
