@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -16,46 +16,47 @@
  * under the License.
  */
 
-$(document).ready(function(){
-    $('#authorizeLink').click(function(){
-        $('#loginForm').show('slow');
-    });
-	$('#loginBtn').click(function(){
-			var error = "";
-			if($('#oauth_user_name').val() == ""){
-				error += '<div>Username field is empty.</div>';
-			}
-			if($('#oauth_user_password').val() == ""){
-				error += '<div>Password field is empty.</div>';
-			}
-			if(error == ""){
-				$('#errorMsg').hide('slow');
-				$('#loginForm').submit();
-				
-			}else{				
-				$('#errorMsg').html(error).show('slow');
-			}
+$(document).ready(function() {
+	$("#authorizeLink").click(function() {
+		$("#loginForm").show("slow");
 	});
-	$('#denyLink').click(function(){
-			$('#denyForm').submit();
+	$("#loginBtn").click(function() {
+		var error = "";
+		if ($("#oauth_user_name").val() == "") {
+			error += "<div>Username field is empty.</div>";
+		}
+		if ($("#oauth_user_password").val() == "") {
+			error += "<div>Password field is empty.</div>";
+		}
+		if (error == "") {
+			$("#errorMsg").hide("slow");
+			$("#loginForm").submit();
+		} else {
+			$("#errorMsg")
+				.html(error)
+				.show("slow");
+		}
+	});
+	$("#denyLink").click(function() {
+		$("#denyForm").submit();
 	});
 });
 
-function requestTOTPToken(){
+function requestTOTPToken() {
 	var endpointURL = "../../commonauth";
 	$.ajax({
-			url:endpointURL,
-			type:"GET",
-			data:"&sessionDataKey="+document.getElementById("sessionDataKey").value+"&sendToken=true",
-			success: function(response){
-				if(response==""){
-			               alert("Verification is code sent to your email address");
-				}else{
-			               alert("Error while sending the code to the email address");
-				}
-				console.log(response);
-			},
-		error: function(request, error){
+		url: endpointURL,
+		type: "GET",
+		data: "&sessionDataKey=" + document.getElementById("sessionDataKey").value + "&sendToken=true",
+		success: function(response) {
+			if (response == "") {
+				alert("Verification is code sent to your email address");
+			} else {
+				alert("Error while sending the code to the email address");
+			}
+			console.log(response);
+		},
+		error: function(request, error) {
 			console.log("Error when generating the verification code ");
 		}
 	});

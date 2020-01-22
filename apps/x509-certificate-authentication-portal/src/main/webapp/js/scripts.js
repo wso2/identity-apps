@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -16,11 +16,11 @@
  * under the License.
  */
 
-$(document).ready(function(){
-    $('#authorizeLink').click(function(){
-        $('#loginForm').show('slow');
-    });
-	$('#denyLink').click(function(){
-			$('#denyForm').submit();
+$(document).ready(function() {
+	$("#authorizeLink").click(function() {
+		$("#loginForm").show("slow");
+	});
+	$("#denyLink").click(function() {
+		$("#denyForm").submit();
 	});
 });
