@@ -34,6 +34,7 @@ interface InnerPageLayoutProps {
  * @type {string}
  */
 const DEFAULT_HEADER_HEIGHT = 59;
+const DEFAULT_FOOTER_HEIGHT = 60;
 
 /**
  * Inner page layout.
@@ -48,6 +49,7 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
 
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = React.useState(false);
     const [ headerHeight, setHeaderHeight ] = React.useState(DEFAULT_HEADER_HEIGHT);
+    const [ footerHeight, setFooterHeight ] = React.useState(DEFAULT_FOOTER_HEIGHT);
 
     React.useEffect(() => {
         if (headerHeight === document.getElementById("app-header").offsetHeight) {
@@ -55,6 +57,13 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
         }
         setHeaderHeight(document.getElementById("app-header").offsetHeight);
     });
+
+    React.useEffect(() => {
+        if (footerHeight === document.getElementById("app-footer").offsetHeight) {
+            return;
+        }
+        setFooterHeight(document.getElementById("app-footer").offsetHeight);
+    })
 
     const handleSidePanelToggleClick = () => {
         setMobileSidePanelVisibility(!mobileSidePanelVisibility);
@@ -71,7 +80,7 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
     return (
         <>
             <AppHeader onSidePanelToggleClick={ handleSidePanelToggleClick }/>
-            <div style={ { paddingTop: `${ headerHeight }px` } } className="app-content">
+            <div style={ { paddingTop: `${ headerHeight }px`, paddingBottom: `${ footerHeight }px` } } className="app-content">
                 <SidePanelWrapper
                     headerHeight={ headerHeight }
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
