@@ -1,0 +1,96 @@
+/**
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import { Notification } from "react-notification-system";
+
+/**
+ * Alert interface.
+ */
+export interface AlertInterface extends Notification {
+    /**
+     * Description for the alert.
+     */
+    description: string;
+}
+
+/**
+ * Enum for Alert levels.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum AlertLevels {
+    /**
+     * Success alert level.
+     *
+     * @type {string}
+     */
+    SUCCESS = "success",
+    /**
+     * Error alert level.
+     *
+     * @type {string}
+     */
+    ERROR = "error",
+    /**
+     * Info alert level.
+     *
+     * @type {string}
+     */
+    INFO = "info",
+    /**
+     * Warning alert level.
+     *
+     * @type {string}
+     */
+    WARNING = "warning"
+}
+
+/**
+ * Interface for the runtime config.
+ */
+export interface RuntimeConfigInterface {
+    /**
+     * Name of the application. ex: "User Portal".
+     */
+    applicationName: string;
+    /**
+     * Client host. ex: "https://localhost:9000".
+     */
+    clientHost?: string;
+    /**
+     * Client ID. ex: "USER_PORTAL" or "OBkfXrmKCvulIt0fIs6UOYVZd34a".
+     */
+    clientID?: string;
+    /**
+     * Copyright text to be displayed on footer.
+     */
+    copyrightText?: string;
+    /**
+     * Login callback URL. ex: "https://localhost:9000/user-portal/login".
+     */
+    loginCallbackUrl: string;
+    /**
+     * Server host. ex: "https://localhost:9443".
+     */
+    serverHost?: string;
+    /**
+     * Product title. ex: "WSO2 Identity Server".
+     */
+    titleText?: string;
+}
