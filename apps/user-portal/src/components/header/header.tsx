@@ -233,7 +233,10 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                                                 bordered
                                                                 avatar
                                                                 size="little"
-                                                                image={ getGravatarImage(association.email) }
+                                                                image={
+                                                                    association.email
+                                                                    && getGravatarImage(association.email)
+                                                                }
                                                                 name={ association.username }
                                                             />
                                                             <Item.Content verticalAlign="middle">
