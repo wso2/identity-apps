@@ -26,40 +26,37 @@
  * npm run update-version -- jenkins=true build=${BUILD_DISPLAY_NAME} pom=${POM_VERSION/-SNAPSHOT/}
  */
 
-const path = require('path');
-const fs = require('fs-extra');
-const XmlParser = require('fast-xml-parser');
-const { execSync } = require('child_process');
+const path = require("path");
+const fs = require("fs-extra");
+const XmlParser = require("fast-xml-parser");
+const { execSync } = require("child_process");
 
-const packageJson =  path.join(__dirname, "..", "package.json");
+const packageJson = path.join(__dirname, "..", "package.json");
 const pomXml = path.join(__dirname, "..", "pom.xml");
 const workingDir = path.join(__dirname, "..");
 
-const git = require('simple-git/promise')(workingDir);
+const git = require("simple-git/promise")(workingDir);
 
 const getProjectVersion = function() {
-    const fileContent = fs.readFileSync(pomXml);
-    const pom = XmlParser.parse(fileContent.toString());
+	const fileContent = fs.readFileSync(pomXml);
+	const pom = XmlParser.parse(fileContent.toString());
 
-    return pom.project.version.replace("-SNAPSHOT", "");
+	return pom.project.version.replace("-SNAPSHOT", "");
 };
 
 let packageJsonContent = require(packageJson);
 packageJsonContent.version = getProjectVersion();
 
-
 /**
  * Update package, package-lock, lerna json files
  */
-fs.writeFileSync(packageJson, JSON.stringify(packageJsonContent, null, 4)+"\n");
+fs.writeFileSync(packageJson, JSON.stringify(packageJsonContent, null, 4) + "\n");
 
-execSync("npx lerna version " + getProjectVersion() + 
-         " --yes --no-git-tag-version --force-publish && npm i",
-    { cwd: path.join(__dirname, "..") }
-);
+execSync("npx lerna version " + getProjectVersion() + " --yes --no-git-tag-version --force-publish && npm i", {
+	cwd: path.join(__dirname, "..")
+});
 
 console.log("lerna info update packages version to " + getProjectVersion());
-
 
 /**
  * Collect args
@@ -68,42 +65,41 @@ const processArgs = process.argv.slice(2);
 let args = {};
 
 processArgs.map((arg) => {
-    const argSplit = arg.split("=");
-    args[argSplit[0]] = argSplit[1];
+	const argSplit = arg.split("=");
+	args[argSplit[0]] = argSplit[1];
 });
 
-const packageFiles = ["package.json", "package-lock.json", "lerna.json"]
+const packageFiles = ["package.json", "package-lock.json", "lerna.json"];
 
 /**
  * Stage changed files
  */
-if (args.jenkins){
-    const BUILD = (args.build) ? "[Jenkins " + args.build + "] " : "";	
-    const RELEASE = (args.pom) ? "[Release " + args.pom + "] " : "";
+if (args.jenkins) {
+	const BUILD = args.build ? "[Jenkins " + args.build + "] " : "";
+	const RELEASE = args.pom ? "[Release " + args.pom + "] " : "";
 
-    git.status().then((status) => {
-        if(status.files.length > 0) {
-            console.log("git info start staging version updated files");
+	git.status().then((status) => {
+		if (status.files.length > 0) {
+			console.log("git info start staging version updated files");
 
-            status.files.map((file) => {
-                const filePath = file.path;
-                const fileName = filePath.split("/").slice(-1)[0];
-                
-                if(packageFiles.includes(fileName)) {
-                    git.add(filePath);
-                    console.log("git info stage " + filePath);
-                }
-            });
+			status.files.map((file) => {
+				const filePath = file.path;
+				const fileName = filePath.split("/").slice(-1)[0];
 
-            console.log("git success stage version updated files");
+				if (packageFiles.includes(fileName)) {
+					git.add(filePath);
+					console.log("git info stage " + filePath);
+				}
+			});
 
-            git.clean("dfx", (error) => {
-                console.log("git error failed clean: ");
-                console.log(error);
-            });
-            
-            git.commit("[WSO2 Release]"+ BUILD +" "+ RELEASE +	
-               " update package versions");
-        }
-    });
+			console.log("git success stage version updated files");
+
+			git.clean("dfx", (error) => {
+				console.log("git error failed clean: ");
+				console.log(error);
+			});
+
+			git.commit("[WSO2 Release]" + BUILD + " " + RELEASE + " update package versions");
+		}
+	});
 }
