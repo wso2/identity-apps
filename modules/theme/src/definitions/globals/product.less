@@ -429,7 +429,12 @@ body {
 
 .alert-wrapper {
     .notifications-wrapper {
-        .notifications-br {
+        .notifications-br,
+        .notifications-bl,
+        .notifications-tr,
+        .notifications-tl,
+        .notifications-tc,
+        .notifications-bc {
             width: @alertWidth !important;
         }
 
@@ -485,6 +490,22 @@ body {
                     opacity: 0.6;
                 }
             }
+        }
+    }
+
+    &.absolute {
+        .notifications-br,
+        .notifications-bl,
+        .notifications-tr,
+        .notifications-tl,
+        .notifications-tc,
+        .notifications-bc {
+            right: unset !important;
+            top: unset !important;
+            left: unset !important;
+            bottom: unset !important;
+            font-family: inherit;
+            position: relative !important;
         }
     }
 }
