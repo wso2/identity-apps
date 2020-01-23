@@ -17,10 +17,10 @@
  */
 
 $(document).ready(function() {
-	$("#authorizeLink").click(function() {
-		$("#loginForm").show("slow");
-	});
-	$("#denyLink").click(function() {
-		$("#denyForm").submit();
-	});
+    $("#authorizeLink").click(function() {
+        $("#loginForm").show("slow");
+    });
+    $("#denyLink").click(function() {
+        $("#denyForm").submit();
+    });
 });
