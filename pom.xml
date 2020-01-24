@@ -635,7 +635,7 @@
         <commons-codec.version>1.10</commons-codec.version>
         <org.wso2.carbon.identity.association.account>5.1.5</org.wso2.carbon.identity.association.account>
         <identity.extension.utils>1.0.8</identity.extension.utils>
-        <carbon.identity.framework.version>5.15.27</carbon.identity.framework.version>
+        <carbon.identity.framework.version>5.16.29</carbon.identity.framework.version>
         <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 6.0.0)</carbon.identity.framework.imp.pkg.version.range>
         <carbon.identity.oauth.version>6.2.41</carbon.identity.oauth.version>
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)</carbon.identity.oauth.imp.pkg.version.range>

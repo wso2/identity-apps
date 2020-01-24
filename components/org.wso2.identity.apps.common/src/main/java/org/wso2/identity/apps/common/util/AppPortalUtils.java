@@ -142,6 +142,9 @@ public class AppPortalUtils {
         LocalAndOutboundAuthenticationConfig localAndOutboundAuthenticationConfig
                 = new LocalAndOutboundAuthenticationConfig();
         localAndOutboundAuthenticationConfig.setUseUserstoreDomainInLocalSubjectIdentifier(true);
+        localAndOutboundAuthenticationConfig.setUseTenantDomainInLocalSubjectIdentifier(true);
+        localAndOutboundAuthenticationConfig.setSkipConsent(true);
+        localAndOutboundAuthenticationConfig.setSkipLogoutConsent(true);
         serviceProvider.setLocalAndOutBoundAuthenticationConfig(localAndOutboundAuthenticationConfig);
 
         // Set requested claim mappings for the SP.
