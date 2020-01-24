@@ -20,7 +20,7 @@ const webpack = require("webpack");
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const TaserJSPlugin = require("terser-webpack-plugin");
 const WriteFilePlugin = require("write-file-webpack-plugin");
 
 module.exports = (env) => {
@@ -207,9 +207,10 @@ module.exports = (env) => {
         ],
         devtool: "source-map",
         optimization: {
+            minimize: true,
             minimizer: [
-                new UglifyJsPlugin({
-                    uglifyOptions: {
+                new TaserJSPlugin({
+                    terserOptions: {
                         keep_fnames: true
                     }
                 })
