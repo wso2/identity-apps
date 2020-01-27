@@ -292,8 +292,8 @@
     </div>
     <div class="ui divider hidden"></div>
 
-    <div class="ui two column stackable grid">
-        <div class="column align-left buttons">
+    <div class="space-between">
+        <div class="align-left buttons">
             <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType)) { %>
             <button
                 type="submit"
@@ -305,7 +305,7 @@
             </button>
             <% } %>
         </div>
-        <div class="column align-right buttons">
+        <div class="align-right buttons">
             <button
                 type="submit"
                 onclick="submitCredentials(event)"    
@@ -314,6 +314,7 @@
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>
             </button>
         </div>
+        <div></div>
     </div>
     
     <% if (Boolean.parseBoolean(loginFailed) && errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE) && request.getParameter("resend_username") == null) { %>

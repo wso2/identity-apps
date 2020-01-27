@@ -70,7 +70,9 @@
     }
 
     main.center-segment > .ui.container > .ui.segment .segment-form .column .buttons.align-left button.link-button,
-    main.center-segment > .ui.container > .ui.segment .segment-form .column .buttons.align-left input.link-button {
+    main.center-segment > .ui.container > .ui.segment .segment-form .column .buttons.align-left input.link-button,
+    main.center-segment > .ui.container > .ui.segment .segment-form .space-between button.link-button,
+    main.center-segment > .ui.container > .ui.segment .segment-form .space-between input.link-button {
         padding: .78571429em 1.5em .78571429em 0;
     }
 
@@ -84,6 +86,18 @@
 
     main.center-segment > .ui.container > .ui.segment .segment-form .align-right {
         text-align: right;
+    }
+
+    main.center-segment > .ui.container > .ui.segment .segment-form .space-between > div:first-child  {
+        float: left;
+    }
+
+    main.center-segment > .ui.container > .ui.segment .segment-form .space-between > div:nth-child(2)  {
+        float: right;
+    }
+
+    main.center-segment > .ui.container > .ui.segment .segment-form .space-between > div:nth-child(3)  {
+        clear: both;
     }
 
     footer {
