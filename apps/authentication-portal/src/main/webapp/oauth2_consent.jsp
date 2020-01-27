@@ -21,6 +21,7 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.oauth2.OAuth2ScopeService" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.stream.Collectors" %>
@@ -110,11 +111,14 @@
                                 <div class="scopes-list ui list">
                                     <%
                                         for (String scopeID : openIdScopes) {
+                                            String displayName = new OAuth2ScopeService()
+                                                                    .getScope(scopeID)
+                                                                    .getDisplayName();
                                     %>
                                     <div class="item">
                                         <i class="check circle outline icon"></i>
                                         <div class="content">
-                                            <%=Encode.forHtml(scopeID)%>
+                                            <%=Encode.forHtml(displayName)%>
                                         </div>
                                     </div>
                                     <%
