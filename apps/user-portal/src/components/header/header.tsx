@@ -78,12 +78,12 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                 isProfileInfoLoading
                     ? (
                         <Placeholder>
-                            <Placeholder.Line/>
+                            <Placeholder.Line />
                         </Placeholder>
                     )
                     : resolveUserDisplayName(profileDetails)
             }</div>
-            <UserAvatar isLoading={ isProfileInfoLoading } authState={ profileDetails } size="mini"/>
+            <UserAvatar isLoading={ isProfileInfoLoading } authState={ profileDetails } size="mini" />
         </span>
     );
 
@@ -145,13 +145,13 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                 { showSidePanelToggle ?
                     (
                         <Responsive as={ Menu.Item } maxWidth={ 767 }>
-                            <Icon name="bars" size="large" onClick={ onSidePanelToggleClick } link/>
+                            <Icon name="bars" size="large" onClick={ onSidePanelToggleClick } link />
                         </Responsive>
                     )
                     : null
                 }
                 <Menu.Item as={ Link } to={ GlobalConfig.appHomePath } header>
-                    <Title style={ { marginTop: 0 } }/>
+                    <Title style={ { marginTop: 0 } } />
                 </Menu.Item>
                 { (
                     <Menu.Menu position="right">
@@ -167,7 +167,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                 <Item.Group className="authenticated-user" unstackable>
                                     <Item
                                         className="header"
-                                        key={ `logged-in-user-${ profileDetails.profileInfo.userName }` }
+                                        key={ `logged-in-user-${profileDetails.profileInfo.userName}` }
                                     >
                                         <UserAvatar
                                             authState={ profileDetails }
@@ -179,7 +179,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                                 < div className="name">
                                                     {
                                                         isProfileInfoLoading
-                                                            ? <Placeholder><Placeholder.Line/></Placeholder>
+                                                            ? <Placeholder><Placeholder.Line /></Placeholder>
                                                             : resolveUserDisplayName(profileDetails)
                                                     }
                                                 </div>
@@ -190,19 +190,19 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                                     && (
                                                         <div className="email">
                                                             { isProfileInfoLoading
-                                                                ? <Placeholder><Placeholder.Line/></Placeholder>
+                                                                ? <Placeholder><Placeholder.Line /></Placeholder>
                                                                 : typeof profileDetails.profileInfo
-                                                                    .emails[ 0 ] === "string"
-                                                                    ? profileDetails.profileInfo.emails[ 0 ]
+                                                                    .emails[0] === "string"
+                                                                    ? profileDetails.profileInfo.emails[0]
                                                                     : typeof profileDetails.profileInfo
-                                                                        .emails[ 0 ] === "object"
-                                                                        ? profileDetails.profileInfo.emails[ 0 ].value
+                                                                        .emails[0] === "object"
+                                                                        ? profileDetails.profileInfo.emails[0].value
                                                                         : ""
                                                             }
                                                         </div>
                                                     )
                                                 }
-                                                <Divider hidden/>
+                                                <Divider hidden />
                                                 <Button
                                                     as={ Link }
                                                     to="/personal-info"
@@ -215,7 +215,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                         </Item.Content>
                                     </Item>
                                 </Item.Group>
-                                <Dropdown.Divider/>
+                                <Dropdown.Divider />
                                 {
                                     (linkedAccounts && linkedAccounts.length && linkedAccounts.length > 0)
                                         ? (
@@ -224,7 +224,7 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                                     linkedAccounts.map((association, index) => (
                                                         <Item
                                                             className="linked-account"
-                                                            key={ `${ association.userId }-${ index }` }
+                                                            key={ `${association.userId}-${index}` }
                                                             onClick={
                                                                 () => handleLinkedAccountSwitch(association)
                                                             }
@@ -233,7 +233,10 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                                                 bordered
                                                                 avatar
                                                                 size="little"
-                                                                image={ getGravatarImage(association.email) }
+                                                                image={
+                                                                    association.email
+                                                                    && getGravatarImage(association.email)
+                                                                }
                                                                 name={ association.username }
                                                             />
                                                             <Item.Content verticalAlign="middle">

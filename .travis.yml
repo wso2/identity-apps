@@ -3,3 +3,4 @@ cache:
   - .autoconf
   - $HOME/.m2
 script: mvn clean install
+sudo: true

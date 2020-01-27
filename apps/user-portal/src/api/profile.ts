@@ -19,11 +19,11 @@
 import { SignInUtil } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
 import axios from "axios";
-import { isEmpty } from "lodash";
+import _ from "lodash";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import * as ApplicationConstants from "../constants/application-constants";
 import { history } from "../helpers";
-import { BasicProfileInterface, HttpMethods, ProfileSchema } from "../models";
+import { BasicProfileInterface, HttpMethods, MultiValue, ProfileSchema } from "../models";
 import { store } from "../store";
 import { toggleSCIMEnabled } from "../store/actions";
 
@@ -49,7 +49,8 @@ export const getUserInfo = (): Promise<any> => {
         url: ServiceResourcesEndpoint.user
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient
+        .request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error(`Failed get user info from: ${ServiceResourcesEndpoint.user}`));
@@ -59,6 +60,25 @@ export const getUserInfo = (): Promise<any> => {
         .catch((error) => {
             return Promise.reject(error);
         });
+};
+
+/**
+ * This function iterates over all email addresses until it finds an email with a gravatar image
+ * @param emails
+ */
+const findGravatar = async (emails: string[] | MultiValue[]): Promise<string> => {
+    let gravatar: string = "";
+    if (!_.isEmpty(emails)) {
+        for (const email of emails) {
+            try {
+                gravatar = await getGravatarImage(typeof email === "string" ? email : email.value);
+                return gravatar;
+            } catch (error) {
+                continue;
+            }
+        }
+    }
+    return gravatar;
 };
 
 /**
@@ -78,7 +98,8 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
         url: ServiceResourcesEndpoint.me
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient
+        .request(requestConfig)
         .then(async (response) => {
             let gravatar = "";
             let profileImage: string;
@@ -86,16 +107,8 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
             if (response.status !== 200) {
                 return Promise.reject(new Error(`Failed get user profile info from: ${ServiceResourcesEndpoint.me}`));
             }
-            if (isEmpty(response.data.userImage) && !response.data.profileUrl) {
-                try {
-                    gravatar = await getGravatarImage(
-                        typeof response.data.emails[0] === "string"
-                            ? response.data.emails[0]
-                            : response.data.emails[0].value
-                    );
-                } catch (error) {
-                    gravatar = "";
-                }
+            if (_.isEmpty(response.data.userImage) && !response.data.profileUrl) {
+                gravatar = await findGravatar(response.data.emails);
             }
 
             profileImage = response.data.profileUrl ? response.data.profileUrl : gravatar;
@@ -118,11 +131,12 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
         .catch((error) => {
             // Check if the API responds with a `500` error, if it does,
             // navigate the user to the login error page.
-            if (error.response
-                && error.response.data
-                && error.response.data.status
-                && error.response.data.status === "500") {
-
+            if (
+                error.response &&
+                error.response.data &&
+                error.response.data.status &&
+                error.response.data.status === "500"
+            ) {
                 store.dispatch(toggleSCIMEnabled(false));
 
                 // Navigate to login error page.
@@ -150,7 +164,8 @@ export const updateProfileInfo = (info: object): Promise<any> => {
         url: ServiceResourcesEndpoint.me
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient
+        .request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
@@ -165,21 +180,25 @@ export const updateProfileInfo = (info: object): Promise<any> => {
 };
 
 /**
- *  Get gravatar image using email address
+ * Get gravatar image using email address
  * @param email
  */
 export const getGravatarImage = (email: string): Promise<string> => {
-    const url: string = SignInUtil.getGravatar(email);
-    return new Promise((resolve, reject) => {
-        axios
-            .get(url)
-            .then((response) => {
-                resolve(url.split("?")[0]);
-            })
-            .catch((error) => {
-                reject(error);
-            });
-    });
+    if (_.isEmpty(email)) {
+        return Promise.reject("Email is null");
+    } else {
+        const url: string = SignInUtil.getGravatar(email);
+        return new Promise((resolve, reject) => {
+            axios
+                .get(url)
+                .then((response) => {
+                    resolve(url.split("?")[0]);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
 };
 
 /**
@@ -197,7 +216,8 @@ export const getProfileSchemas = (): Promise<any> => {
         url: ServiceResourcesEndpoint.profileSchemas
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient
+        .request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed get user schemas"));
