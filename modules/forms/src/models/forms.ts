@@ -53,36 +53,102 @@ export interface Error {
     errorMessages: string[];
 }
 
+interface FormFieldModel {
+    name: string;
+    label: string;
+    listener: () => void;
+}
+
+interface FormRequiredFieldModel extends FormFieldModel {
+    required: boolean;
+    requiredErrorMessage: string;
+
+}
 /**
  * Input field model
  */
-export interface TextField {
-    placeholder: string;
-    name: string;
+export interface TextField extends FormRequiredFieldModel {
     type: "text" | "email" | "textarea" | "number";
-    required: boolean;
-    label: string;
     width?: SemanticWIDTHS;
     validation?: (value: string, validation: Validation, allValues?: Map<string, FormValue>) => void;
-    requiredErrorMessage: string;
     value?: string;
+    placeholder: string;
 }
 
 /**
  * Password field model
  */
-export interface PasswordField {
-    placeholder: string;
-    name: string;
+export interface PasswordField extends FormRequiredFieldModel {
     type: "password";
-    required: boolean;
-    label: string;
     width?: SemanticWIDTHS;
     validation?: (value: string, validation: Validation, allValues?: Map<string, FormValue>) => void;
-    requiredErrorMessage: string;
     value?: string;
     showPassword: string;
     hidePassword: string;
+    placeholder: string;
+}
+
+/**
+ * Radio field child model
+ */
+export interface RadioChild {
+    label: string;
+    value: string;
+}
+
+/**
+ * Radio field model
+ */
+export interface RadioField extends FormFieldModel {
+    type: "radio";
+    default: string;
+    children: RadioChild[];
+    value?: string;
+}
+
+/**
+ * Checkbox field child model
+ */
+export interface CheckboxChild {
+    label: string;
+    value: string;
+}
+
+/**
+ * Checkbox field model
+ */
+export interface CheckboxField extends FormRequiredFieldModel {
+    type: "checkbox";
+    children: CheckboxChild[];
+    value?: string[];
+}
+
+/**
+ * Dropdown field child model
+ */
+export interface DropdownChild {
+    text: string;
+    value: string;
+    key: number;
+}
+
+/**
+ * Dropdown field model
+ */
+export interface DropdownField extends FormRequiredFieldModel {
+    type: "dropdown";
+    default?: string;
+    children: DropdownChild[];
+    placeholder?: string;
+    value?: string;
+}
+
+/**
+ * Custom field model
+ */
+export interface CustomField {
+    type: Type;
+    element: JSX.Element;
 }
 
 /**
@@ -117,79 +183,6 @@ export interface FormButton {
     size?: SemanticSIZES;
     type: "button";
     value: string;
-}
-
-/**
- * Radio field child model
- */
-export interface RadioChild {
-    label: string;
-    value: string;
-}
-
-/**
- * Custom field model
- */
-export interface CustomField {
-    type: Type;
-    element: JSX.Element;
-}
-
-/**
- * Radio field model
- */
-export interface RadioField {
-    type: "radio";
-    label: string;
-    name: string;
-    default: string;
-    children: RadioChild[];
-    value?: string;
-}
-
-/**
- * Checkbox field child model
- */
-export interface CheckboxChild {
-    label: string;
-    value: string;
-}
-
-/**
- * Checkbox field model
- */
-export interface CheckboxField {
-    type: "checkbox";
-    label: string;
-    name: string;
-    children: CheckboxChild[];
-    value?: string[];
-    required: boolean;
-    requiredErrorMessage: string;
-}
-
-/**
- * Dropdown field child model
- */
-export interface DropdownChild {
-    text: string;
-    value: string;
-    key: number;
-}
-
-/**
- * Dropdown field model
- */
-export interface DropdownField {
-    type: "dropdown";
-    label: string;
-    name: string;
-    default?: string;
-    children: DropdownChild[];
-    placeholder?: string;
-    requiredErrorMessage: string;
-    required: boolean;
-    value?: string;
 }
 
 /**
