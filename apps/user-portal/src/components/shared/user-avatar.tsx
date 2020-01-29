@@ -29,6 +29,7 @@ import { resolveUserDisplayName } from "../../helpers";
 import { AlertInterface, AlertLevels, AuthStateInterface, ProfileSchema } from "../../models";
 import { getProfileInformation } from "../../store/actions";
 import { Avatar, AvatarProps } from "./avatar";
+import _ from "lodash";
 
 /**
  * Prop types for the user avatar component.
@@ -92,6 +93,8 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
                 .catch(() => {
                     setUserImage(null);
                 });
+        } else if (!_.isEmpty(image)) {
+            setUserImage(image);
         }
     }, [image]);
 
