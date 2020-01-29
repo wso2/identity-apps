@@ -21,6 +21,11 @@
  */
 export interface FederatedAssociation {
     id: string;
-    idpId: string;
+    idp: {
+        id: string;
+        name: string;
+        displayName: string;
+        imageUrl: string;
+    };
     federatedUserId: string;
 }
