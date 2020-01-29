@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import React from "react";
 
 const constants = {
@@ -67,8 +68,9 @@ const constants = {
     TEXT_BOX_VALIDATION_FAILED: "Validation failed",
     TEXT_BOX_VALID_MESSAGE: "Text box Validated",
     TEXT_BOX_VALUE: "Text box value",
+    listen: jest.fn((value) => console.log(value)),
     onClick: jest.fn(),
-    onSubmit: () => jest.fn((value) => value),
+    onSubmit: jest.fn((value) => value)
 };
 
 export default constants;
