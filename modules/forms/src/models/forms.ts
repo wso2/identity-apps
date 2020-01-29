@@ -56,13 +56,12 @@ export interface Error {
 interface FormFieldModel {
     name: string;
     label: string;
-    listener: () => void;
+    listen?: (values: Map<string, FormValue>) => void;
 }
 
 interface FormRequiredFieldModel extends FormFieldModel {
     required: boolean;
     requiredErrorMessage: string;
-
 }
 /**
  * Input field model
