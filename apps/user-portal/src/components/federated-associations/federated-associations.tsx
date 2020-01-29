@@ -123,11 +123,18 @@ export const FederatedAssociations = (props: FederatedAssociationsProps): JSX.El
                                                     floated="left"
                                                     spaced="right"
                                                     size="mini"
-                                                    name={ federatedAssociation.idpId }
+                                                    image={ federatedAssociation.idp.imageUrl }
+                                                    name={ federatedAssociation.federatedUserId }
                                                 />
                                                 <List.Header>
                                                     { federatedAssociation.federatedUserId }
                                                 </List.Header>
+                                                <List.Description>
+                                                    {
+                                                        federatedAssociation.idp.displayName
+                                                        || federatedAssociation.idp.name
+                                                    }
+                                                </List.Description>
                                             </Grid.Column>
                                             <Grid.Column width={ 5 } className="last-column">
                                                 <List.Content floated="right">
