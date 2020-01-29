@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "outDir": "./dist",
+        "declaration": true,
+        "rootDirs": ["src", "stories"],
+        "baseUrl": "."
+    },
+    "exclude": ["node_modules"],
+    "extends": "../../configs/common.tsconfig.json"
+}

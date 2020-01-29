@@ -30,6 +30,34 @@
             .initials {
                 color: @white;
             }
+            &.editable {
+                cursor: pointer;
+                animation-fill-mode: both;
+                animation-duration: 0.5s;
+                transition: background-color 0.5s linear;
+
+                .edit-icon {
+                    position: absolute;
+                    color: @white;
+                    display: none;
+                    z-index: 9;
+                    top: 0;
+                }
+            }
+            &:hover {
+                &.editable {
+                    .edit-icon {
+                        display: inline-block;
+                    }
+                    .initials, img {
+                        -webkit-filter: blur(4px);
+                        -moz-filter: blur(4px);
+                        -o-filter: blur(4px);
+                        -ms-filter: blur(4px);
+                        filter: blur(4px);
+                    }
+                }
+            }
             &.mini {
                 width: @miniWidth;
                 height: @miniWidth;
@@ -37,6 +65,13 @@
                 .initials {
                     font-size: 1.5em;
                     line-height: @miniWidth;
+                }
+                &.editable {
+                    .edit-icon {
+                        font-size: 1em;
+                        line-height: @miniWidth;
+                        margin-left: -1px;
+                    }
                 }
             }
             &.little {
@@ -47,6 +82,13 @@
                     font-size: 2em;
                     line-height: @littleWidth;
                 }
+                &.editable {
+                    .edit-icon {
+                        font-size: 1.2em;
+                        line-height: @littleWidth;
+                        margin-left: -1px;
+                    }
+                }
             }
             &.tiny {
                 width: @tinyWidth;
@@ -55,6 +97,13 @@
                 .initials {
                     font-size: 3em;
                     line-height: @tinyWidth;
+                }
+                &.editable {
+                    .edit-icon {
+                        font-size: 2.2em;
+                        line-height: @tinyWidth;
+                        margin-left: -4px;
+                    }
                 }
             }
             &.small {
@@ -65,6 +114,13 @@
                     font-size: 4em;
                     line-height: @smallWidth;
                 }
+                &.editable {
+                    .edit-icon {
+                        font-size: 3em;
+                        line-height: @smallWidth;
+                        margin-left: -6px;
+                    }
+                }
             }
             &.medium {
                 width: @mediumWidth;
@@ -73,6 +129,13 @@
                 .initials {
                     font-size: 8em;
                     line-height: @mediumWidth;
+                }
+                &.editable {
+                    .edit-icon {
+                        font-size: 7em;
+                        line-height: @mediumWidth;
+                        margin-left: -23px;
+                    }
                 }
             }
             &.large {
@@ -83,6 +146,13 @@
                     font-size: 11em;
                     line-height: @largeWidth;
                 }
+                &.editable {
+                    .edit-icon {
+                        font-size: 11em;
+                        line-height: @largeWidth;
+                        margin-left: -30px;
+                    }
+                }
             }
             &.big {
                 width: @bigWidth;
@@ -91,6 +161,13 @@
                 .initials {
                     font-size: 13em;
                     line-height: @bigWidth;
+                }
+                &.editable {
+                    .edit-icon {
+                        font-size: 13em;
+                        line-height: @bigWidth;
+                        margin-left: -52px;
+                    }
                 }
             }
             &.huge {
@@ -101,6 +178,13 @@
                     font-size: 16em;
                     line-height: @hugeWidth;
                 }
+                &.editable {
+                    .edit-icon {
+                        font-size: 15em;
+                        line-height: @hugeWidth;
+                        margin-left: -76px;
+                    }
+                }
             }
             &.massive {
                 width: @massiveWidth;
@@ -110,12 +194,27 @@
                     font-size: 17em;
                     line-height: @massiveWidth;
                 }
+                &.editable {
+                    .edit-icon {
+                        font-size: 16em;
+                        line-height: @massiveWidth;
+                        margin-left: -97px;
+                    }
+                }
             }
             &.spaced-right {
                 margin-right: @userAvatarSpacingRight;
             }
             &.spaced-left {
                 margin-left: @userAvatarSpacingLeft;
+            }
+            .custom-label {
+                position: fixed;
+                z-index: 999;
+                width: 1.5em;
+                height: 1.5em;
+                margin-left: 22px;
+                margin-top: -16px;
             }
         }
     }
@@ -263,8 +362,12 @@
             display: flex;
             justify-content: center;
             background: @dustyGray;
-            
-            img {
+
+            .edit-icon {
+                margin-left: unset !important;
+            }
+            // remove img once .inner-image class is added in the user portal.
+            img, .inner-image {
                 position: absolute;
                 top: 0;
                 height: 100%;

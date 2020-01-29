@@ -1,0 +1,68 @@
+{
+    "name": "@wso2is/react-components",
+    "version": "0.9.1",
+    "description": "A React component library for WSO2 Identity Server frontend apps implementing Semantic UI Framework",
+    "keywords": [
+        "WSO2",
+        "WSO2 IS",
+        "WSO2 Identity Server",
+        "WSO2 Identity Apps",
+        "react",
+        "react-components",
+        "component-library"
+    ],
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "start:storybook": "NODE_PATH=src start-storybook -p 6006 -c .storybook -s ./dist",
+        "build:storybook": "build-storybook",
+        "clean": "rimraf ./dist",
+        "compile": "tsc -p tsconfig.json",
+        "start": "npm run start:storybook",
+        "lint": "tslint -t stylish --project ."
+    },
+    "author": "WSO2",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "@wso2is/core": "^0.9.1",
+        "@wso2is/theme": "^0.9.1"
+    },
+    "peerDependencies": {
+        "@babel/core": "*",
+        "@svgr/webpack": "*",
+        "@types/jest": "*",
+        "@types/react": "*",
+        "@types/react-dom": "*",
+        "@types/react-notification-system": "*",
+        "awesome-typescript-loader": "*",
+        "babel-loader": "*",
+        "classnames": "*",
+        "storybook": "^1.0.0",
+        "jest": "*",
+        "react": "*",
+        "react-dom": "*",
+        "react-notification-system": "*",
+        "react-top-loading-bar": "*",
+        "rimraf": "*",
+        "semantic-ui-react": "*",
+        "tslint": "*",
+        "ts-jest": "*",
+        "typescript": "*"
+    },
+    "devDependencies": {
+        "@storybook/addons": "^5.3.3",
+        "@storybook/addon-actions": "^5.3.3",
+        "@storybook/addon-centered": "^5.3.6",
+        "@storybook/addon-docs": "^5.3.3",
+        "@storybook/addon-knobs": "^5.3.3",
+        "@storybook/theming": "^5.3.3",
+        "@storybook/react": "^5.3.3",
+        "@types/node": "^13.1.4",
+        "react-docgen-typescript-loader": "^3.6.0",
+        "tsconfig-paths-webpack-plugin": "^3.2.0",
+        "ts-node": "^8.5.4"
+    }
+}
