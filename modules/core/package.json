@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/core",
-    "version": "0.9.1",
+    "version": "0.9.13",
     "description": "Commonly used configs, schemas, utilities and low level services for WSO2 Identity Server frontend apps",
     "keywords": [
         "WSO2",
@@ -25,8 +25,8 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/authentication": "^0.9.1",
-        "@wso2is/http": "^0.9.1"
+        "@wso2is/authentication": "^0.9.13",
+        "@wso2is/http": "^0.9.13"
     },
     "peerDependencies": {
         "@types/history": "*",
