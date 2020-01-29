@@ -33,4 +33,3 @@ export * from "./tokens";
 export * from "./user-sessions";
 export * from "./global";
 export * from "./loaders";
-export * from "./identity-providers";
