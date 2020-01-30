@@ -22,7 +22,7 @@
 	 xmlns="http://www.w3.org/2000/svg"
 	 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 507.425 507.425" width="14px" height="14px" xml:space="preserve">
-	<path class="path warning" d="M329.312,129.112l13.6,22l150.8,242.4c22.4,36,6,65.2-36.8,65.2h-406.4c-42.4,0-59.2-29.6-36.8-65.6
+	<path class="path fill warning" d="M329.312,129.112l13.6,22l150.8,242.4c22.4,36,6,65.2-36.8,65.2h-406.4c-42.4,0-59.2-29.6-36.8-65.6
 		l198.8-320.8c22.4-36,58.8-36,81.2,0L329.312,129.112z"/>
 	<g>
 		<path class="path fill white" d="M253.712,343.512c-10.8,0-20-8.8-20-20v-143.2c0-10.8,9.2-20,20-20s20,8.8,20,20v143.2

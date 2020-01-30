@@ -22,7 +22,7 @@
 	 xmlns="http://www.w3.org/2000/svg"
 	 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 506.4 506.4" width="14px" height="14px" xml:space="preserve">
-	<circle class="path positive" cx="253.2" cy="253.2" r="249.2"/>
+	<circle class="path fill positive" cx="253.2" cy="253.2" r="249.2"/>
 	<path class="path fill white" d="M372.8,200.4l-11.2-11.2c-4.4-4.4-12-4.4-16.4,0L232,302.4l-69.6-69.6c-4.4-4.4-12-4.4-16.4,0
 		L134.4,244c-4.4,4.4-4.4,12,0,16.4l89.2,89.2c4.4,4.4,12,4.4,16.4,0l0,0l0,0l10.4-10.4l0.8-0.8l121.6-121.6
 		C377.2,212.4,377.2,205.2,372.8,200.4z"/>
