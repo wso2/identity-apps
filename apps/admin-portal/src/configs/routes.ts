@@ -42,7 +42,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         component: ApplicationsPage,
         icon: "applications",
         name: "Applications",
-        path: "/applications-group",
+        path: "/applications",
         protected: true,
         showOnSidePanel: true,
     },

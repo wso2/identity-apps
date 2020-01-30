@@ -166,7 +166,11 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
                 TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_UPDATE,
                 TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_DELETE,
                 TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_LIST,
-                TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_CREATE
+                TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_CREATE,
+                TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_CREATE,
+                TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_DELETE,
+                TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_VIEW,
+                TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_UPDATE
             ],
             serverOrigin: GlobalConfig.serverOrigin
         };
@@ -243,4 +247,13 @@ export const getScimSchemas = (profileInfo: BasicProfileInterface = null) => (di
         .catch((error) => {
             // TODO: show error page
         });
+};
+
+/**
+ * Update sessionStorage with location history path
+ *
+ * @param {string} location - history path.
+ */
+export const updateAuthenticationCallbackUrl = (location) => {
+    window.sessionStorage.setItem("auth_callback_url", location);
 };
