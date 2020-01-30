@@ -19,32 +19,20 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { ProtectedRoute } from "../components";
-import { defaultLayoutRoutes } from "../configs";
+import { authLayoutRoutes } from "../configs";
 
 /**
- * Default page layout component Prop types.
- */
-interface DefaultPageLayoutPropsInterface {
-    children?: React.ReactNode;
-    pageTitle: string;
-    pageDescription?: string;
-    pageTitleTextAlign?: "left" | "center" | "right" | "justified";
-}
-
-/**
- * Default page layout.
+ * Auth layout.
+ * Used to render the authentication related components.
  *
- * @param {DefaultPageLayoutPropsInterface} props - Props injected to the default page layout component.
  * @return {JSX.Element}
  */
-export const DefaultPageLayout: React.FunctionComponent<DefaultPageLayoutPropsInterface> = (
-    props: DefaultPageLayoutPropsInterface
-): JSX.Element => {
-    const { children, pageTitle, pageDescription, pageTitleTextAlign } = props;
+export const AuthLayout: React.FunctionComponent<{}> = (): JSX.Element => {
+
     return (
         <Switch>
             {
-                defaultLayoutRoutes.map((route, index) => (
+                authLayoutRoutes.map((route, index) => (
                     route.protected ?
                         (
                             <ProtectedRoute

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,21 +16,24 @@
  * under the License.
  */
 
+import { ContextUtils, HttpUtils } from "@wso2is/core/utils";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";
-import { AuthProvider } from "./contexts/auth";
-import { setupHttpClient } from "./utils";
+import { GlobalConfig } from "./configs";
+
+// Set the runtime config in the context.
+ContextUtils.setRuntimeConfig(GlobalConfig);
 
 // Set up the Http client.
-setupHttpClient();
+HttpUtils.setupHttpClient();
 
 ReactDOM.render(
     (
-    <BrowserRouter>
-            <App />
-    </BrowserRouter>
+        <BrowserRouter>
+            <App/>
+        </BrowserRouter>
     ),
     document.getElementById("root")
 );

@@ -21,8 +21,10 @@
     },
     "dependencies": {
         "@wso2is/authentication": "^0.9.14",
+        "@wso2is/core": "^0.9.14",
         "@wso2is/forms": "^0.9.14",
         "@wso2is/http": "^0.9.14",
+        "@wso2is/react-components": "^0.9.14",
         "@wso2is/theme": "^0.9.14",
         "@wso2is/validation": "^0.9.14"
     },
@@ -30,6 +32,7 @@
         "run-script-os": "^1.0.7"
     },
     "peerDependencies": {
+        "@svgr/webpack": "*",
         "axios": "*",
         "history": "*",
         "i18next": "*",

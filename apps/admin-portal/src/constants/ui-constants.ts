@@ -16,27 +16,23 @@
  * under the License.
  */
 
-import * as React from "react";
-import { SidePanelItems } from "./side-panel-items";
-
 /**
- * Side panel base component Prop types.
+ * Class containing ui constants.
  */
-export interface SidePanelProps {
-    headerHeight: number;
-    onSidePanelItemClick: () => void;
+export class UIConstants {
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    private constructor() { }
+
+    /**
+     * Constant to handle dashboard layout's desktop content top spacing.
+     * @constant
+     * @type {number}
+     */
+    public static readonly DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING: number = 0;
 }
-
-/**
- * Side panel base component.
- *
- * @return {JSX.Element}
- */
-export const SidePanel: React.FunctionComponent<SidePanelProps> = (
-    props: SidePanelProps
-): JSX.Element => {
-    const { headerHeight, onSidePanelItemClick } = props;
-    return (
-        <SidePanelItems type="desktop" onSidePanelItemClick={ onSidePanelItemClick } headerHeight={ headerHeight } />
-    );
-};

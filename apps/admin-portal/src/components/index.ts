@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,15 +17,9 @@
  */
 
 export * from "./page-header";
-export * from "./header";
 export * from "./notification";
 export * from "./protected-route";
 export * from "./ui";
 export * from "./shared/icon";
-export * from "./side-panel/side-panel";
-export * from "./side-panel/side-panel-items";
-export * from "./side-panel/side-panel-mobile";
-export * from "./side-panel/side-panel-wrapper";
 export * from "./users/users-search";
 export * from "./users/users-list";
-export * from "./footer";

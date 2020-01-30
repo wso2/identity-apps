@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,17 +17,16 @@
  */
 
 import {
-    Account,
     AlertIcon,
-    ArrowRight,
+    AppIcon,
     BlockedMagnifierIcon,
     BoxIcon,
+    CaretRightIcon,
     CloseIcon,
     CodeIcon,
-    Connection,
-    Consent,
     CrossIcon,
-    DefaultAppIcon,
+    DashboardIcon,
+    DotIcon,
     DummyUser,
     EmptySearchResultsIllustration,
     ErrorIcon,
@@ -36,14 +35,10 @@ import {
     InfoIcon,
     Logo,
     MFAIconSet,
-    Operations,
-    Overview,
-    Personal,
-    Security,
-    Session,
+    PlugIcon,
     SettigsSectionIconSet,
-    SidePanelIconSet,
     SuccessIcon,
+    UserIcon,
     WarningIcon
 } from "@wso2is/theme";
 
@@ -63,19 +58,21 @@ interface CustomCSSType {
 export const LogoImage = Logo;
 export const UserImage: ImageType = DummyUser;
 export const HomeTileIconImages = HomeTileIcons;
-export const SidePanelIcon = {
-    account: Account,
-    arrowRight: ArrowRight,
-    connection: Connection,
-    consent: Consent,
-    operations: Operations,
-    overview: Overview,
-    personal: Personal,
-    security: Security,
-    session: Session,
+
+// Icon set for the side panel.
+export const SidePanelIcons = {
+    applications: AppIcon,
+    childIcon: DotIcon,
+    connections: PlugIcon,
+    overview: DashboardIcon,
+    usersAndRoles: UserIcon
 };
+
+export const SidePanelMiscIcons = {
+    caretRight: CaretRightIcon
+};
+
 export const GenericAppIcon = CodeIcon;
-export const SidePanelIcons = SidePanelIconSet;
 export const SettingsSectionIcons = SettigsSectionIconSet;
 export const MFAIcons = MFAIconSet;
 

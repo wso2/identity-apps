@@ -16,4 +16,22 @@
  * under the License.
  */
 
-export * from "./footer";
+import React from "react";
+import { Grid } from "semantic-ui-react";
+
+/**
+ * Overview page.
+ *
+ * @return {JSX.Element}
+ */
+export const ApplicationsPage = (): JSX.Element => {
+    return (
+        <Grid>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column width={ 16 }>
+                    <h1>Applications</h1>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
+    );
+};
