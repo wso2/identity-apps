@@ -48,31 +48,31 @@
             </g>
             <g id="cross" transform="translate(53.481 44.038)">
                 <rect id="Rectangle_10" width="19.144" height="3.046" rx="1.523"
-                      transform="translate(2.154 0) rotate(45)" fill="#d6d6d6"/>
+                      transform="translate(2.154 0) rotate(45)" class="path fill tertiary"/>
                 <rect id="Rectangle_11" width="19.144" height="3.046" rx="1.523"
-                      transform="translate(15.691 2.154) rotate(135)" fill="#d6d6d6"/>
+                      transform="translate(15.691 2.154) rotate(135)" class="path fill tertiary"/>
             </g>
             <rect id="Rectangle_12" width="46.277" height="3.515" rx="1.757" transform="translate(153.023 3.568)"
-                  fill="#d6d6d6"/>
+                  class="path fill tertiary"/>
             <rect id="Rectangle_8" width="22.574" height="3.386" rx="1.693" transform="translate(326.179 94.06)"
-                  fill="#d6d6d6"/>
-            <g id="Ellipse_6" transform="translate(287.803 87.297)" fill="none" stroke="#d6d6d6" stroke-width="4">
+                  class="path fill tertiary"/>
+            <g id="Ellipse_6" transform="translate(287.803 87.297)" fill="none" class="path stroke tertiary" stroke-width="4">
                 <circle cx="7.901" cy="7.901" r="7.901" stroke="none"/>
                 <circle cx="7.901" cy="7.901" r="5.901" fill="none"/>
             </g>
             <g id="cross-2" transform="translate(265.921 32.991)">
                 <rect id="Rectangle_10-2" width="27.029" height="4.3" rx="2.15"
-                      transform="translate(3.041 0) rotate(45)" fill="#d6d6d6"/>
+                      transform="translate(3.041 0) rotate(45)" class="path fill tertiary"/>
                 <rect id="Rectangle_11-2" width="27.029" height="4.3" rx="2.15"
-                      transform="translate(22.153 3.041) rotate(135)" fill="#d6d6d6"/>
+                      transform="translate(22.153 3.041) rotate(135)" class="path fill tertiary"/>
             </g>
-            <g id="Ellipse_5" transform="translate(14.656 146.434)" fill="none" stroke="#d6d6d6" stroke-width="4">
+            <g id="Ellipse_5" transform="translate(14.656 146.434)" fill="none" class="path stroke tertiary" stroke-width="4">
                 <circle cx="9.594" cy="9.594" r="9.594" stroke="none"/>
                 <circle cx="9.594" cy="9.594" r="7.594" fill="none"/>
             </g>
             <rect id="Rectangle_9" width="44.02" height="3.386" rx="1.693" transform="translate(39.487 154.388)"
-                  fill="#d6d6d6"/>
-            <g id="Ellipse_7" transform="translate(153.142 179.956)" fill="none" stroke="#d6d6d6" stroke-width="5">
+                  class="path fill tertiary"/>
+            <g id="Ellipse_7" transform="translate(153.142 179.956)" fill="none" class="path stroke tertiary" stroke-width="5">
                 <circle cx="7.901" cy="7.901" r="7.901" stroke="none"/>
                 <circle cx="7.901" cy="7.901" r="5.401" fill="none"/>
             </g>
