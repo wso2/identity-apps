@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,34 +17,23 @@
  */
 
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { ProtectedRoute } from "../components";
-import { defaultLayoutRoutes } from "../configs";
+import { appRoutes } from "../configs";
 
 /**
- * Default page layout component Prop types.
- */
-interface DefaultPageLayoutPropsInterface {
-    children?: React.ReactNode;
-    pageTitle: string;
-    pageDescription?: string;
-    pageTitleTextAlign?: "left" | "center" | "right" | "justified";
-}
-
-/**
- * Default page layout.
+ * Main app layout.
+ * Used to render all the layouts that's being used inside the app.
  *
- * @param {DefaultPageLayoutPropsInterface} props - Props injected to the default page layout component.
  * @return {JSX.Element}
  */
-export const DefaultPageLayout: React.FunctionComponent<DefaultPageLayoutPropsInterface> = (
-    props: DefaultPageLayoutPropsInterface
-): JSX.Element => {
-    const { children, pageTitle, pageDescription, pageTitleTextAlign } = props;
+export const AppLayout: React.FunctionComponent<{}> = (): JSX.Element => {
+
     return (
         <Switch>
+            <Redirect exact={ true } path="/" to={ APP_LOGIN_PATH } />
             {
-                defaultLayoutRoutes.map((route, index) => (
+                appRoutes.map((route, index) => (
                     route.protected ?
                         (
                             <ProtectedRoute

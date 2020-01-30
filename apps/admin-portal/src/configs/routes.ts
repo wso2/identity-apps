@@ -16,42 +16,21 @@
  * under the License.
  */
 
+import { RouteInterface } from "@wso2is/core/models";
+import { SignIn, SignOut } from "../components/authentication";
+import { AppLayout, AuthLayout, DashboardLayout, DefaultPageLayout } from "../layouts";
 import {
+    ApplicationsPage,
     HomePage,
-    PageNotFound,
     PrivacyPage,
-    UnderConstruction,
     UsersPage
 } from "../pages";
 
 /**
- * Interface to handle route types.
+ * Dashboard Layout Routes array.
  */
-interface Route {
-    component: any;
-    children: any;
-    icon?: string;
-    name: string;
-    path: string;
-    protected: boolean;
-    showOnSidePanel: boolean;
-}
-
-/**
- * Routes array.
- */
-const ROUTES: Route[] = [
+const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
-        children: [],
-        component: PrivacyPage,
-        icon: "security",
-        name: "common:privacy",
-        path: "/privacy",
-        protected: true,
-        showOnSidePanel: false,
-    },
-    {
-        children: [],
         component: HomePage,
         icon: "overview",
         name: "Overview",
@@ -60,339 +39,122 @@ const ROUTES: Route[] = [
         showOnSidePanel: true,
     },
     {
-        children: [
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "sso",
-                path: "/sso",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "Identity federation",
-                path: "/identity-federation",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "Adaptive authentication",
-                path: "/adaptive-authentication",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "SSO with controlled access",
-                path: "/sso-controlled-access",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "Delegated access control",
-                path: "sso-delegated-access",
-                protected: ""
-            },
-            ],
-        component: HomePage,
-        icon: "security",
+        component: ApplicationsPage,
+        icon: "applications",
         name: "Applications",
-        path: "/applications",
+        path: "/applications-group",
         protected: true,
         showOnSidePanel: true,
     },
     {
-        children: [
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "User stores",
-                path: "/user-stores",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "sso",
-                path: "/sso",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "Claims",
-                path: "/claims",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "OIDC scopes",
-                path: "/oidc-scopes",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "Identity Providers",
-                path: "/identity-providers",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "Outbound provisioning",
-                path: "/outbound-provisioning",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "JIT provisioning",
-                path: "/jit",
-                protected: ""
-            }
-        ],
-        component: HomePage,
-        icon: "consent",
-        name: "Connections",
-        path: "/connections",
-        protected: true,
-        showOnSidePanel: true,
-    },
-    {
-        children: [
-            {
-                component: UsersPage,
-                icon: "arrowRight",
-                level: "",
-                name: "Users",
-                path: "/users",
-                protected: true
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "Roles",
-                path: "/roles",
-                protected: true
-            }
-        ],
         component: UsersPage,
-        icon: "personal",
+        icon: "usersAndRoles",
         name: "Users & Roles",
         path: "/users",
         protected: true,
         showOnSidePanel: true,
     },
     {
-        children: [
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "PAP",
-                path: "/pap",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "PDP",
-                path: "/pdp",
-                protected: ""
-            }
-        ],
-        component: HomePage,
-        icon: "operations",
-        name: "Entitlements",
-        path: "/entitlements",
+        component: PrivacyPage,
+        icon: null,
+        name: "common:privacy",
+        path: "/privacy",
         protected: true,
-        showOnSidePanel: true,
+        showOnSidePanel: false,
+    }
+];
+
+/**
+ * Default page layout routes array.
+ */
+const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
+    {
+        component: PrivacyPage,
+        icon: null,
+        name: "Privacy",
+        path: "/privacy",
+        protected: true,
+        showOnSidePanel: false,
+    }
+];
+
+/**
+ * Default page layout routes array.
+ */
+const AUTH_LAYOUT_ROUTES: RouteInterface[] = [
+    {
+        component: SignIn,
+        icon: null,
+        name: "Login",
+        path: APP_LOGIN_PATH,
+        protected: false,
+        showOnSidePanel: false
     },
     {
-        children: [
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "Resident IDP",
-                path: "/resident-idp",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "Resident SP",
-                path: "/resident-sp",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "Workflow engagements",
-                path: "/workflow-engagements",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "Workflow definitions",
-                path: "/workflow-definitions",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "Challenge questions",
-                path: "/challenge-questions",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "Email templates",
-                path: "/email-templates",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "Keystore",
-                path: "/keystore",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "Consent purposes",
-                path: "/consent-purposes",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "Function libraries",
-                path: "/function-libraries",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "Workflow engine profiles",
-                path: "/workflow-profiles",
-                protected: ""
-            }
-        ],
-        component: HomePage,
-        icon: "session",
-        name: "Manage",
-        path: "/manage",
-        protected: true,
-        showOnSidePanel: true,
+        component: SignOut,
+        icon: null,
+        name: "Logout",
+        path: "/logout",
+        protected: false,
+        showOnSidePanel: false
+    }
+];
+
+/**
+ * Default page layout routes array.
+ */
+const APP_ROUTES: RouteInterface[] = [
+    {
+        component: AuthLayout,
+        icon: null,
+        name: "Login",
+        path: APP_LOGIN_PATH,
+        protected: false,
+        showOnSidePanel: false
     },
     {
-        children: [
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "System statistics",
-                path: "/system-statistics",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "Workflow requests",
-                path: "/workflow-requests",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "SOAP tracer",
-                path: "/soap-tracer",
-                protected: ""
-            }
-        ],
-        component: HomePage,
-        icon: "session",
-        name: "Monitor",
-        path: "/monitor",
-        protected: true,
-        showOnSidePanel: true,
+        component: AuthLayout,
+        icon: null,
+        name: "Logout",
+        path: "/logout",
+        protected: false,
+        showOnSidePanel: false
     },
     {
-        children: [
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "User",
-                path: "/user-tool",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "SAML",
-                path: "/saml",
-                protected: ""
-            },
-            {
-                component: UnderConstruction,
-                icon: "arrowRight",
-                level: "",
-                name: "XACML",
-                path: "/xacml",
-                protected: ""
-            }
-        ],
-        component: HomePage,
-        icon: "session",
-        name: "Tools",
-        path: "/tools",
-        protected: true,
-        showOnSidePanel: true,
-    },
-    {
-        children: [],
-        component: PageNotFound,
-        name: "404",
-        path: "*",
+        component: DefaultPageLayout,
+        icon: null,
+        name: "Privacy",
+        path: "/privacy",
         protected: true,
         showOnSidePanel: false,
     },
+    {
+        component: DashboardLayout,
+        icon: null,
+        name: "Dashboard",
+        path: "/",
+        protected: true,
+        showOnSidePanel: false
+    }
 ];
 
-export const routes = ROUTES;
+/**
+ * Default page layout routes array.
+ */
+const BASE_ROUTES: RouteInterface[] = [
+    {
+        component: AppLayout,
+        icon: null,
+        name: "App",
+        path: "/",
+        protected: false,
+        showOnSidePanel: false
+    }
+];
+
+export const appRoutes = APP_ROUTES;
+export const baseRoutes = BASE_ROUTES;
+export const authLayoutRoutes = AUTH_LAYOUT_ROUTES;
+export const dashboardLayoutRoutes = DASHBOARD_LAYOUT_ROUTES;
+export const defaultLayoutRoutes = DEFAULT_LAYOUT_ROUTES;
+export const routes = [ ...DASHBOARD_LAYOUT_ROUTES, ...DEFAULT_LAYOUT_ROUTES ];

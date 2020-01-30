@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import * as React from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { PageHeader } from "../components";
 import { resolveUserDisplayName } from "../helpers";
-import { InnerPageLayout } from "../layouts";
 import { AuthStateInterface } from "../models";
 import { AppState } from "../store";
 
@@ -34,13 +34,13 @@ export const HomePage = (): JSX.Element => {
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
 
     return (
-        <InnerPageLayout
-            pageTitle={ t(
+        <PageHeader
+            title={ t(
                 "views:pages.overView.title",
                 { firstName: resolveUserDisplayName(profileDetails) }
-                ) }
-            pageDescription={ t("views:pages.overView.subTitle") }
-            pageTitleTextAlign="left"
+            ) }
+            description={ t("views:pages.overView.subTitle") }
+            titleTextAlign="left"
         />
     );
 };

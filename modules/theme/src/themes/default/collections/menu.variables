@@ -34,3 +34,6 @@
 @sidePanelDefaultFontColor: @black;
 @sidePanelActiveFontColor: @primaryColor;
 @sidePanelHoverFontColor: @primaryColor;
+
+@sidePanelChildItemGroupLeftPadding: 15px;
+@sidePanelChildItemPadding: @itemVerticalPadding @itemHorizontalPadding;

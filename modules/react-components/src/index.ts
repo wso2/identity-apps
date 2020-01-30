@@ -19,8 +19,11 @@
 
 export * from "./alert";
 export * from "./avatar";
+export * from "./brand";
 export * from "./danger-zone";
 export * from "./error";
+export * from "./footer";
+export * from "./header";
 export * from "./icon";
 export * from "./language-switcher";
 export * from "./loader";
@@ -28,4 +31,5 @@ export * from "./modal";
 export * from "./placeholder";
 export * from "./route";
 export * from "./section";
+export * from "./side-panel";
 export * from "./typography";

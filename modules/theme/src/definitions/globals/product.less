@@ -54,6 +54,78 @@ body {
 }
 
 /*****************************************
+                Layout
+*****************************************/
+
+.layout {
+    &.dashboard-layout {
+        .layout-content {
+            min-height: 100vh;
+
+            .desktop-container {
+                max-width: 100%;
+                display: flex;
+
+                .side-panel-wrapper {
+                    width: @dashboardLayoutSidePanelWidth;
+                    padding: @fluidDashboardLayoutSidePanelPadding;
+
+                    &.bordered {
+                        &.all {
+                            border: @defaultBorderRadius solid @defaultBorderColor;
+                        }
+
+                        &.right {
+                            border-right: @defaultBorderRadius solid @defaultBorderColor;
+                        }
+
+                        &.left {
+                            border-left: @defaultBorderRadius solid @defaultBorderColor;
+                        }
+
+                        &.top {
+                            border-top: @defaultBorderRadius solid @defaultBorderColor;
+                        }
+
+                        &.bottom {
+                            border-bottom: @defaultBorderRadius solid @defaultBorderColor;
+                        }
+                    }
+                }
+
+                .content-wrapper {
+                    width: 100%;
+                }
+            }
+
+            .mobile-container {
+                .content-wrapper {
+                    padding: @dashboardLayoutMobileContentPadding;
+                }
+            }
+        }
+
+        &.fluid-dashboard-layout {
+            .app-header {
+                padding: @fluidDashboardLayoutHeaderPadding;
+            }
+
+            .layout-content {
+                .desktop-container {
+                    .content-wrapper {
+                        padding: @fluidDashboardLayoutDesktopContentPadding;
+                    }
+                }
+            }
+
+            .app-footer {
+                padding: @fluidDashboardLayoutFooterPadding;
+            }
+        }
+    }
+}
+
+/*****************************************
                 Theme Icon
 *****************************************/
 

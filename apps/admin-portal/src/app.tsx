@@ -19,10 +19,9 @@
 import React from "react";
 import { I18nextProvider } from "react-i18next";
 import { Provider } from "react-redux";
-import { Redirect, Route, Router, Switch } from "react-router-dom";
+import { Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
-import { SignIn, SignOut } from "./components/authentication";
-import { i18n, routes } from "./configs";
+import { baseRoutes, i18n } from "./configs";
 import { history } from "./helpers";
 import { store } from "./store";
 
@@ -39,45 +38,8 @@ export const App = (): JSX.Element => {
                 <I18nextProvider i18n={ i18n }>
                     <Provider store={ store }>
                         <Switch>
-                            <Redirect exact={ true } path="/" to={ APP_LOGIN_PATH } />
-                            <Route
-                                path={ APP_LOGIN_PATH }
-                                render={ () => {
-                                    return <SignIn />;
-                                } }
-                            />
-                            <Route
-                                path="/logout"
-                                render={ () => {
-                                    return <SignOut />;
-                                } }
-                            />
                             {
-                                routes.map((route, index) => {
-                                    if (route.children && route.children.length > 0) {
-                                        return route.children.map((child, i) => {
-                                            return (
-                                                child.protected ?
-                                                    (
-                                                        <ProtectedRoute
-                                                            component={ child.component }
-                                                            path={ child.path }
-                                                            key={ i }
-                                                        />
-                                                    )
-                                                    :
-                                                    (
-                                                        <Route
-                                                            path={ child.path }
-                                                            render={ (props) =>
-                                                                (<child.component { ...props } />)
-                                                            }
-                                                            key={ i }
-                                                        />
-                                                    )
-                                            );
-                                        });
-                                    }
+                                baseRoutes.map((route, index) => {
                                     return (
                                         route.protected ?
                                             (

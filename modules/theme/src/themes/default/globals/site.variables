@@ -32,14 +32,15 @@
 @bold              : 400;
 
 /*-------------------
-    Border Radius
+     Borders
 --------------------*/
 
 @relativeBorderRadius: 3px;
 @absoluteBorderRadius: 3px;
-
 @defaultBorderRadius: @absoluteBorderRadius;
 
+@defaultBorderRadius: 1px;
+@defaultBorderColor: @borderColor;
 
 /*-------------------
     Brand Colors

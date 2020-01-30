@@ -20,3 +20,4 @@ export * from "./global";
 export * from "./http";
 export * from "./profile";
 export * from "./reducer-state";
+export * from "./route";

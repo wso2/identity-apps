@@ -14,29 +14,8 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- */
-
-import * as React from "react";
-import { SidePanelItems } from "./side-panel-items";
-
-/**
- * Side panel base component Prop types.
- */
-export interface SidePanelProps {
-    headerHeight: number;
-    onSidePanelItemClick: () => void;
-}
-
-/**
- * Side panel base component.
  *
- * @return {JSX.Element}
  */
-export const SidePanel: React.FunctionComponent<SidePanelProps> = (
-    props: SidePanelProps
-): JSX.Element => {
-    const { headerHeight, onSidePanelItemClick } = props;
-    return (
-        <SidePanelItems type="desktop" onSidePanelItemClick={ onSidePanelItemClick } headerHeight={ headerHeight } />
-    );
-};
+
+export * from "./logo";
+export * from "./product-brand";

@@ -16,21 +16,24 @@
  * under the License.
  */
 
+import { ContextUtils, HttpUtils } from "@wso2is/core/utils";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";
-import { AuthProvider } from "./contexts/auth";
-import { setupHttpClient } from "./utils";
+import { GlobalConfig } from "./configs";
+
+// Set the runtime config in the context.
+ContextUtils.setRuntimeConfig(GlobalConfig);
 
 // Set up the Http client.
-setupHttpClient();
+HttpUtils.setupHttpClient();
 
 ReactDOM.render(
     (
-    <BrowserRouter>
-            <App />
-    </BrowserRouter>
+        <BrowserRouter>
+            <App/>
+        </BrowserRouter>
     ),
     document.getElementById("root")
 );
