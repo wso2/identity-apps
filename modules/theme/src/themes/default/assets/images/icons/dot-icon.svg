@@ -1,5 +1,7 @@
-/**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -14,26 +16,12 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
- */
- 
-/*******************************
-            Menu
-*******************************/
+-->
 
-/*-------------------
-      App Footer
---------------------*/
-
-@appFooterMinHeight: 60px;
-
-/*-------------------
-    Side Panel Menu
---------------------*/
-
-@sidePanelDefaultFontColor: @black;
-@sidePanelActiveFontColor: @primaryColor;
-@sidePanelHoverFontColor: @primaryColor;
-
-@sidePanelChildItemGroupLeftPadding: 15px;
-@sidePanelChildItemPadding: @itemVerticalPadding @itemHorizontalPadding;
+<svg version="1.1" class="icon" id="dot-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="14px" height="14px" viewBox="0 0 512 512" xml:space="preserve">
+	<g>
+		<g>
+			<path class="path primary" d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z" />
+		</g>
+	</g>
+</svg>

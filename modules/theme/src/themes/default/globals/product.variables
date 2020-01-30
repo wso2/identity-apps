@@ -53,3 +53,17 @@
 @alertWidth: 420px;
 @alertMessageMaxWidth: 350px;
 @alertBoxShadow: @floatingShadow;
+
+/*-------------------
+       Layouts
+--------------------*/
+
+@dashboardLayoutSidePanelWidth: 300px;
+@dashboardLayoutMobileContentPadding: 20px 14px;
+
+@fluidDashboardLayoutTopPadding: 25px;
+@fluidDashboardLayoutHorizontalPadding: 15px;
+@fluidDashboardLayoutHeaderPadding: 0 @fluidDashboardLayoutHorizontalPadding;
+@fluidDashboardLayoutFooterPadding: 0 @fluidDashboardLayoutHorizontalPadding;
+@fluidDashboardLayoutSidePanelPadding: @fluidDashboardLayoutTopPadding @fluidDashboardLayoutHorizontalPadding;
+@fluidDashboardLayoutDesktopContentPadding: @fluidDashboardLayoutTopPadding 30px;

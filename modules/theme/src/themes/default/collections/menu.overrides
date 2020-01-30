@@ -33,8 +33,6 @@
         box-shadow: none;
 
         .user-dropdown {
-            padding-right: 0;
-
             &:hover {
                 background: transparent;
             }
@@ -106,6 +104,11 @@
                 }
             }
         }
+        &:not(.fluid-header) {
+            .user-dropdown {
+                padding-right: 0;
+            }
+        }
         .ui.dropdown.item.user-dropdown .menu .item.linked-account {
             &, &:not(.filtered) {
                 display: flex;
@@ -159,6 +162,12 @@
             border-top: none;
             border-left: none;
             border-right: none;
+
+            .side-panel-item {
+                .caret {
+                    margin-right: 0;
+                }
+            }
         }
 
         .side-panel-item {
@@ -175,6 +184,24 @@
 
                 .path {
                     fill: @sidePanelDefaultFontColor;
+                }
+            }
+
+            .left-icon {
+                margin-top: -2px;
+            }
+
+            .caret {
+                margin-right: -15px;
+                margin-top: 2px;
+                transition: transform .3s ease-in-out;
+
+                svg.icon {
+                    height: 10px;
+                    width: 10px;
+                }
+                &.down {
+                    transform: rotate(90deg);
                 }
             }
 
@@ -203,6 +230,28 @@
                     .path {
                         fill: @sidePanelHoverFontColor;
                     }
+                }
+            }
+        }
+
+        .child-routes {
+            padding-left: @sidePanelChildItemGroupLeftPadding;
+            max-height: 0;
+            visibility: hidden;
+            overflow: hidden;
+            transition: max-height 0.5s ease 0s, visibility 0.5s ease 0s;
+
+            &.open {
+                visibility: visible;
+            }
+            .item {
+                font-size: inherit;
+                padding: @sidePanelChildItemPadding;
+
+                .left-icon {
+                    height: 8px;
+                    width: 8px;
+                    margin-top: 3px;
                 }
             }
         }
