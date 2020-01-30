@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -39,10 +39,30 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true,
     },
     {
+        children: [
+            {
+                children: [
+                    {
+                        component: ApplicationsPage,
+                        icon: "childIcon",
+                        name: "Level 2",
+                        path: "/applications",
+                        protected: true,
+                        showOnSidePanel: true,
+                    }
+                ],
+                component: UsersPage,
+                icon: "childIcon",
+                name: "Level 1",
+                path: "/applications-level-1",
+                protected: true,
+                showOnSidePanel: true,
+            },
+        ],
         component: ApplicationsPage,
         icon: "applications",
         name: "Applications",
-        path: "/applications",
+        path: "/applications-group",
         protected: true,
         showOnSidePanel: true,
     },
