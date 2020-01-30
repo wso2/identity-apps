@@ -39,26 +39,6 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true,
     },
     {
-        children: [
-            {
-                children: [
-                    {
-                        component: ApplicationsPage,
-                        icon: "childIcon",
-                        name: "Level 2",
-                        path: "/applications",
-                        protected: true,
-                        showOnSidePanel: true,
-                    }
-                ],
-                component: UsersPage,
-                icon: "childIcon",
-                name: "Level 1",
-                path: "/applications-level-1",
-                protected: true,
-                showOnSidePanel: true,
-            },
-        ],
         component: ApplicationsPage,
         icon: "applications",
         name: "Applications",
