@@ -68,7 +68,7 @@ const constants = {
     TEXT_BOX_VALIDATION_FAILED: "Validation failed",
     TEXT_BOX_VALID_MESSAGE: "Text box Validated",
     TEXT_BOX_VALUE: "Text box value",
-    listen: jest.fn((value) => console.log(value)),
+    listen: jest.fn((value) => value),
     onClick: jest.fn(),
     onSubmit: jest.fn((value) => value)
 };
