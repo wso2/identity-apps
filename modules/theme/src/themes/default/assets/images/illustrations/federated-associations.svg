@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 
 <!--
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -37,7 +37,21 @@
         <path d="M35.036+72.536C35.036+73.025+34.624+73.423+34.117+73.423L18.687+73.423C18.18+73.423+17.769+73.025+17.769+72.536L17.769+69.577C17.769+69.087+18.18+68.689+18.687+68.689L34.117+68.689C34.624+68.689+35.036+69.086+35.036+69.577L35.036+72.536Z" opacity="1" fill="#d6d6d6"/>
         <path d="M96.457+2.691L5.046+2.691C3.317+2.691+1.914+4.093+1.914+5.823L1.914+79.662C1.914+81.392+3.316+82.794+5.046+82.794L96.457+82.794C98.187+82.794+99.589+81.392+99.589+79.662L99.589+5.823C99.588+4.093+98.187+2.691+96.457+2.691ZM97.709+77.988C97.709+79.64+96.36+80.977+94.698+80.977L6.803+80.977C5.141+80.977+3.793+79.64+3.793+77.988L3.793+7.497C3.793+5.846+5.141+4.508+6.803+4.508L94.698+4.508C96.36+4.508+97.709+5.846+97.709+7.497C97.709+7.497+97.709+77.988+97.709+77.988Z" opacity="1" fill="#d6d6d6"/>
     </g>
-    <g id="account_primary">
+    <defs>
+        <filter id="f1" x="0" y="0" width="200%" height="200%">
+            <feOffset result="offOut" in="SourceAlpha" dx="1" dy="1"/>
+            <feBlend in="SourceGraphic" in2="blurOut" mode="normal"/>
+            <feGaussianBlur result="blurOut" in="offOut" stdDeviation="1"/>
+            <feComponentTransfer>
+                <feFuncA type="linear" slope="0.3"/>
+            </feComponentTransfer>
+            <feMerge>
+                <feMergeNode></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g  filter="url(#f1)" id="account_primary">
         <use opacity="0.13" xlink:href="#Image" transform="matrix(0.0576 0 0 0.0576 104.382 12.79)"/>
         <g opacity="1">
             <path class="path fill primary" d="M150.251+28.189L118.928+11.499C118.463+11.25+117.907+11.254+117.445+11.508L86.989+28.198C86.49+28.471+86.179+28.995+86.179+29.565L86.179+51.367C86.197+69.29+96.816+85.502+113.236+92.683L117.465+94.525C117.859+94.697+118.31+94.697+118.705+94.526L123.469+92.469C140.195+85.444+151.075+69.074+151.077+50.934L151.077+29.564C151.077+28.99+150.758+28.459+150.251+28.189Z" opacity="1" fill="#000000"/>
