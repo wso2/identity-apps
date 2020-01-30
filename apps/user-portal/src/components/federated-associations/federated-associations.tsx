@@ -31,18 +31,19 @@ import { SettingsSection, UserAvatar } from "../shared";
 /**
  * Prop types for `FederatedAssociations` component
  */
-interface FederatedAssociationsProps {
+interface FederatedAssociationsPropsInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
+
 /**
  * This renders the federated associations component
  * @param props
  */
-export const FederatedAssociations = (props: FederatedAssociationsProps): JSX.Element => {
+export const FederatedAssociations = (props: FederatedAssociationsPropsInterface): JSX.Element => {
     const { onAlertFired } = props;
     const { t } = useTranslation();
 
-    const [federatedAssociations, setFederatedAssociations] = useState<FederatedAssociation[]>();
+    const [federatedAssociations, setFederatedAssociations] = useState<FederatedAssociation[]>([]);
 
     /**
      * This calls the `getFederatedAssociationsList` function on component mount

@@ -31,7 +31,7 @@ import {
 /**
  * Prop types for Form component
  */
-interface FormProps {
+interface FormPropsInterface {
     onSubmit: (values: Map<string, FormValue>) => void;
     triggerReset?: (reset: () => void) => void;
 
@@ -40,8 +40,8 @@ interface FormProps {
 /**
  * This is a Forms component
  */
-export const Forms: React.FunctionComponent<React.PropsWithChildren<FormProps>> = (
-    props: React.PropsWithChildren<FormProps>
+export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInterface>> = (
+    props: React.PropsWithChildren<FormPropsInterface>
 ): JSX.Element => {
 
     const { onSubmit, triggerReset, children } = props;

@@ -23,7 +23,7 @@ import { FormField, FormValue } from "../models";
 /**
  * prop types for the Group component
  */
-interface InnerGroupFieldsProps {
+interface InnerGroupFieldsPropsInterface {
         wrapper: React.ComponentType;
         wrapperProps: any;
         children: React.ReactNode;
@@ -32,7 +32,7 @@ interface InnerGroupFieldsProps {
  * This function generates a Group component
  * @param props
  */
-export const InnerGroupFields = (props: React.PropsWithChildren<InnerGroupFieldsProps>): JSX.Element => {
+export const InnerGroupFields = (props: React.PropsWithChildren<InnerGroupFieldsPropsInterface>): JSX.Element => {
 
     const { wrapper, wrapperProps, children } = props;
     const Wrapper = wrapper;
