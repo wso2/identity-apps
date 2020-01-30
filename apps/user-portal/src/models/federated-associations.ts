@@ -21,11 +21,16 @@
  */
 export interface FederatedAssociation {
     id: string;
-    idp: {
-        id: string;
-        name: string;
-        displayName: string;
-        imageUrl: string;
-    };
+    idp: IDP ;
     federatedUserId: string;
+}
+
+/**
+ * Model of the IDP attribute in FederatedAssociation
+ */
+export interface IDP {
+    id: string;
+    name: string;
+    displayName: string;
+    imageUrl: string;
 }
