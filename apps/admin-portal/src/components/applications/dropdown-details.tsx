@@ -31,10 +31,9 @@ interface AppDetailsProps {
 export const AppDetails: FunctionComponent<AppDetailsProps> = (props): JSX.Element => {
 
     /**
-     * Create the tab menu
+     * Create the tab menu.
      */
     const panes = () => {
-
         return [
             {
                 menuItem: "General",
@@ -50,7 +49,6 @@ export const AppDetails: FunctionComponent<AppDetailsProps> = (props): JSX.Eleme
             },
             {
                 menuItem: "Settings",
-
                 render: () => <Tab.Pane attached={ false }>settings</Tab.Pane>,
             },
             {

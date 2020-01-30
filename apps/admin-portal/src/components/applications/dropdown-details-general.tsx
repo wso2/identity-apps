@@ -24,6 +24,10 @@ interface GeneralDetailsProps {
     description: string;
 }
 
+/**
+ * Shows the brief general details of the application.
+ * @param props Pass the application name and description.
+ */
 export const GeneralDetails: FunctionComponent<GeneralDetailsProps> = (props): JSX.Element => {
     return (
         <div>
@@ -52,5 +56,4 @@ export const GeneralDetails: FunctionComponent<GeneralDetailsProps> = (props): J
             </Form>
         </div>
     );
-
 };

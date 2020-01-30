@@ -17,7 +17,7 @@
  */
 
 import { AxiosHttpClient } from "@wso2is/http";
-import { GlobalConfig } from "../configs";
+import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { ApplicationBasic, ApplicationList, Claim, ClaimDialect, ExternalClaim, HttpMethods } from "../models";
 
 /**
@@ -40,7 +40,7 @@ export const getLocalClaims = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: "https://localhost:9443/api/server/v1/claim-dialects/local/claims"
+        url: ServiceResourcesEndpoint.claims + "/local/claims"
     };
 
     return httpClient.request(requestConfig)
@@ -67,7 +67,7 @@ export const getClaimDialect = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: "https://localhost:9443/t/carbon.super/api/server/v1/claim-dialects"
+        url: ServiceResourcesEndpoint.claims
     };
 
     return httpClient.request(requestConfig)
@@ -96,7 +96,7 @@ export const getExternalClaims = (dialectID: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: "https://localhost:9443/t/carbon.super/api/server/v1/claim-dialects/" + dialectID + "/claims"
+        url: ServiceResourcesEndpoint.claims + "/" + dialectID + "/claims"
     };
 
     return httpClient.request(requestConfig)
@@ -125,10 +125,9 @@ export const getApplicationDetails = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: "https://localhost:9443/t/carbon.super/api/server/v1/applications/" + id
+        url: ServiceResourcesEndpoint.applications + "/" + id
     };
 
-    // tslint:disable-next-line:max-line-length
     return httpClient.get(requestConfig.url, { headers: requestConfig.headers })
         .then((response) => {
             if (response.status !== 200) {
@@ -161,7 +160,7 @@ export const updateApplicationDetails = (app: ApplicationBasic): Promise<any> =>
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: "https://localhost:9443/t/carbon.super/api/server/v1/applications/" + app.id
+        url: ServiceResourcesEndpoint.applications + "/" + app.id
     };
 
     return httpClient.request(requestConfig)
@@ -191,7 +190,7 @@ export const getApplicationList = (limit: string, offset: string): Promise<any> 
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: "https://localhost:9443/t/carbon.super/api/server/v1/applications?limit=" + limit + "&offset=" + offset
+        url: ServiceResourcesEndpoint.applications + "?limit=" + limit + "&offset=" + offset
     };
 
     return httpClient.request(requestConfig)

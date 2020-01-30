@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Button, Divider, Dropdown, Grid, Input, List } from "semantic-ui-react";
 import { getApplicationList } from "../../api";
@@ -59,7 +60,6 @@ export const ApplicationListParent = () => {
         },
     ];
     return (
-
         <>
             { appList ? (
                     <Grid>

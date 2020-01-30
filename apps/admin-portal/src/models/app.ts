@@ -20,7 +20,6 @@
  *  Main application interface.
  */
 export interface Application {
-
     id: string;
     name: string;
     description: string;
@@ -34,7 +33,6 @@ export interface Application {
  *  Captures the basic details in the applications.
  */
 export interface ApplicationBasic {
-
     id?: string;
     name: string;
     description?: string;

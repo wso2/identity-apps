@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import React, { FunctionComponent, useEffect, useState } from "react";
-import { Grid, Icon, Image, List } from "semantic-ui-react";
+import React, { FunctionComponent, useState } from "react";
+import { Grid, Icon, List } from "semantic-ui-react";
 import { history } from "../../helpers/history";
 import { ApplicationBasic } from "../../models";
 import { AppDetails } from "./dropdown-details";
@@ -27,7 +27,6 @@ import { AppDetails } from "./dropdown-details";
  * @param props Gets the basic details about the application.
  * @constructor maps the props to Application Basic interface properties
  */
-
 export const ApplicationListItem: FunctionComponent<ApplicationBasic> = (props): JSX.Element => {
 
     const {
@@ -72,11 +71,6 @@ export const ApplicationListItem: FunctionComponent<ApplicationBasic> = (props):
                                 <p style={ { fontSize: "10px" } }>type</p>
                             </List.Content>
                         </Grid.Column>
-                        {/*<Grid.Column width={2} className={"app-toggle"}>*/ }
-                        {/*            <List.Content className="action-bar" floated="right">*/ }
-                        {/*                <Radio toggle defaultChecked={true} className="enable-toggle" onClick={onChecked}/>*/ }
-                        {/*            </List.Content>*/ }
-                        {/*</Grid.Column>*/ }
                         <Grid.Column width={ 1 } className={ "app-toggle" }>
                             <List.Content className="action-bar" floated="right">
                                 <Icon
@@ -113,23 +107,25 @@ export const ApplicationListItem: FunctionComponent<ApplicationBasic> = (props):
                             }
                         </Grid.Column>
                     </Grid.Row>
-                    { viewDetails.visible ? <Grid.Row className={ "app-details" }>
-                        <Grid.Column width={ 15 }><AppDetails appName={ name } appDescription={ description }/>
-                        </Grid.Column>
-                        <Grid.Column width={ 1 } className={ "app-actions" }>
-                            <List.Content className="delete-icon" floated="right">
-                                <Icon
-                                    link
-                                    className=""
-                                    size="large"
-                                    onClick={ " " }
-                                    color="grey"
-                                    name="trash alternate outline"
-                                />
-                            </List.Content>
-                        </Grid.Column>
-                    </Grid.Row> : null }
-
+                    { viewDetails.visible ?
+                        (
+                            <Grid.Row className={ "app-details" }>
+                                <Grid.Column width={ 15 }><AppDetails appName={ name } appDescription={ description }/>
+                                </Grid.Column>
+                                <Grid.Column width={ 1 } className={ "app-actions" }>
+                                    <List.Content className="delete-icon" floated="right">
+                                        <Icon
+                                            link
+                                            className=""
+                                            size="large"
+                                            onClick={ " " }
+                                            color="grey"
+                                            name="trash alternate outline"
+                                        />
+                                    </List.Content>
+                                </Grid.Column>
+                            </Grid.Row>
+                        ) : null }
                 </Grid>
             </List.Item>
         </>

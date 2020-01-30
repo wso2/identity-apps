@@ -19,10 +19,12 @@
 import { GlobalConfig } from "./globals";
 
 interface ServiceResourcesType {
+    applications: string;
     associations: string;
     authorize: string;
     challenges: string;
     challengeAnswers: string;
+    claims: string;
     consents: string;
     jwks: string;
     logout: string;
@@ -38,10 +40,12 @@ interface ServiceResourcesType {
 }
 
 export const ServiceResourcesEndpoint: ServiceResourcesType = {
+    applications: `${GlobalConfig.serverHost}/api/server/v1/applications`,
     associations: `${GlobalConfig.serverHost}/api/users/v1/me/associations`,
     authorize: `${GlobalConfig.serverHost}/oauth2/authorize`,
     challengeAnswers: `${GlobalConfig.serverHost}/api/users/v1/me/challenge-answers`,
     challenges: `${GlobalConfig.serverHost}/api/users/v1/me/challenges`,
+    claims: `${GlobalConfig.serverHost}/api/server/v1/claim-dialects`,
     consents: `${GlobalConfig}/api/identity/consent-mgt/v1.0/consents`,
     jwks: `${GlobalConfig.serverHost}/oauth2/jwks`,
     logout: `${GlobalConfig.serverHost}/oidc/logout`,
@@ -49,7 +53,7 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     profileSchemas: `${GlobalConfig.serverHost}/scim2/Schemas`,
     receipts: `${GlobalConfig.serverHost}/api/identity/consent-mgt/v1.0/consents/receipts`,
     revoke: `${GlobalConfig.serverHost}/oauth2/revoke`,
-    sessions: `${GlobalConfig.serverHost}/t/carbon.super/api/users/v1/me/sessions`,
+    sessions: `${GlobalConfig.serverHost}/api/users/v1/me/sessions`,
     token: `${GlobalConfig.serverHost}/oauth2/token`,
     user: `${GlobalConfig.serverHost}/api/identity/user/v1.0/me`,
     users: `${GlobalConfig.serverHost}/scim2/Users`,

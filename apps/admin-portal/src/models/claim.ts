@@ -20,7 +20,6 @@
  *  Captures claim management properties.
  */
 export interface Claim {
-
     id: string;
     claimURI: string;
     dialectURI: string;

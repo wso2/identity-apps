@@ -20,7 +20,6 @@ import React from "react";
 import { Grid } from "semantic-ui-react";
 import { ApplicationListParent } from "../components";
 
-
 /**
  * Overview page.
  *
