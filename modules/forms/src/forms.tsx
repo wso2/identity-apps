@@ -19,20 +19,15 @@
 import React, { useEffect, useState } from "react";
 import { Form } from "semantic-ui-react";
 import { Field, GroupFields, InnerField, InnerGroupFields } from "./components";
-import { isCheckBoxField, isDropdownField, isInputField, isRadioField, isTextField } from "./helpers/typeguards";
-import {
-    Error,
-    FormField,
-    FormValue,
-    TextField,
-    Validation
-} from "./models";
+import { isCheckBoxField, isDropdownField, isInputField, isRadioField, isTextField } from "./helpers";
+import { Error, FormField, FormValue, Validation } from "./models";
 
 /**
  * Prop types for Form component
  */
 interface FormProps {
     onSubmit: (values: Map<string, FormValue>) => void;
+    onChange?: (isPure: boolean, values: Map<string, FormValue>) => void;
     triggerReset?: (reset: () => void) => void;
 
 }
@@ -44,14 +39,34 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormProps>> 
     props: React.PropsWithChildren<FormProps>
 ): JSX.Element => {
 
-    const { onSubmit, triggerReset, children } = props;
+    const { onSubmit, triggerReset, onChange, children } = props;
 
     const [form, setForm] = useState(new Map<string, FormValue>());
+    const [isPure, setIsPure] = useState(true);
     const [validFields, setValidFields] = useState(new Map<string, Validation>());
     const [requiredFields, setRequiredFields] = useState(new Map<string, boolean>());
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const formFields: FormField[] = [];
+    const flatReactChildren: React.ReactElement[] = [];
+
+    /**
+     * This function calls the listener prop of the field that is calling the `handleChange` function
+     * @param name
+     * @param newForm
+     */
+    const listener = (name: string, newForm: Map<string, FormValue>) => {
+        React.Children.map(flatReactChildren, (element: React.ReactElement) => {
+            if (
+                element.props.name
+                && element.props.name === name
+                && element.props.listen
+                && typeof element.props.listen === "function"
+            ) {
+                element.props.listen(newForm);
+            }
+        });
+    };
 
     /**
      * Handler for the onChange event
@@ -62,7 +77,10 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormProps>> 
         const tempForm: Map<string, FormValue> = new Map(form);
 
         tempForm.set(name, value);
+        listener(name, tempForm);
+        propagateOnChange(tempForm);
         setForm(tempForm);
+        setIsPure(false);
     };
 
     /**
@@ -81,8 +99,12 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormProps>> 
             }
         });
         itemIndex === -1 ? selectedItems.push(value) : selectedItems.splice(itemIndex, 1);
+
         tempForm.set(name, selectedItems);
+        listener(name, tempForm);
+        propagateOnChange(tempForm);
         setForm(tempForm);
+        setIsPure(false);
     };
 
     /**
@@ -141,6 +163,15 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormProps>> 
     };
 
     /**
+     * Calls the onChange prop
+     */
+    const propagateOnChange = (formValue: Map<string, FormValue>) => {
+        if (onChange && typeof onChange === "function") {
+            onChange(isPure, formValue);
+        }
+    };
+
+    /**
      * Handles reset button click
      * @param event
      */
@@ -160,6 +191,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormProps>> 
         return React.Children.map(elements, (element: React.ReactElement) => {
             if (element.type === Field) {
                 fields.push(element.props);
+                flatReactChildren.push(element);
                 return React.createElement(InnerField, {
                     formProps: {
                         checkError,
