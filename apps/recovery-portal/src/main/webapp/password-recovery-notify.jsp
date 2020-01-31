@@ -26,6 +26,8 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.NotificationApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.SelfRegistrationMgtClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.constants.SelfRegistrationStatusCodes" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.RecoveryInitiatingRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="java.io.File" %>
@@ -39,7 +41,9 @@
 
 <%
     String username = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("username"));
+    Integer userNameValidityStatusCode = null;
 
+    SelfRegistrationMgtClient selfRegistrationMgtClient = new SelfRegistrationMgtClient();
     User user = IdentityManagementServiceUtil.getInstance().getUser(username);
 
     NotificationApi notificationApi = new NotificationApi();
@@ -58,6 +62,28 @@
     properties.add(property);
     recoveryInitiatingRequest.setProperties(properties);
 
+    try{
+        userNameValidityStatusCode = selfRegistrationMgtClient
+                .checkUsernameValidity(username, false);
+        if (!SelfRegistrationStatusCodes.ERROR_CODE_USER_ALREADY_EXISTS.
+            equalsIgnoreCase(userNameValidityStatusCode.toString())) {
+                request.setAttribute("error", true);
+                request.setAttribute("errorMsg", IdentityManagementEndpointUtil
+                .i18n(recoveryResourceBundle, "Username.doesnt.exist"));
+
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+                return;
+            }
+    } catch (Exception e){
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", IdentityManagementEndpointUtil
+                .i18n(recoveryResourceBundle, "Password.Recovery.Error") + 
+                 IdentityManagementEndpointUtil
+                .i18n(recoveryResourceBundle, "Please.contact.administrator"));
+
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
     try {
         Map<String, String> requestHeaders = new HashedMap();
         if (request.getParameter("g-recaptcha-response") != null) {
@@ -94,7 +120,7 @@
             <p>
                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                         "Password.recovery.information.sent.to.the.email.registered.with.account")%>
-                &nbsp; <%=Encode.forHtml(username)%>
+                <%=Encode.forHtml(username)%>
             </p>
         </div>
         <div class="actions">
