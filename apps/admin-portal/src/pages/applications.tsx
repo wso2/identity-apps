@@ -18,6 +18,7 @@
 
 import React from "react";
 import { Grid } from "semantic-ui-react";
+import { ApplicationListParent } from "../components";
 
 /**
  * Overview page.
@@ -30,6 +31,11 @@ export const ApplicationsPage = (): JSX.Element => {
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 16 }>
                     <h1>Applications</h1>
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column width={ 16 }>
+                    <ApplicationListParent/>
                 </Grid.Column>
             </Grid.Row>
         </Grid>

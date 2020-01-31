@@ -21,7 +21,7 @@ import { useSelector } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
 import * as ApplicationConstants from "../constants/application-constants";
 import { history } from "../helpers";
-import { updateAuthenticationCallbackUrl } from "../store/middleware";
+import { updateAuthenticationCallbackUrl } from "../store/actions";
 
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
     const isAuth = useSelector((state: any) => state.authenticationInformation.isAuth);

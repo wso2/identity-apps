@@ -16,6 +16,7 @@
  * under the License.
  */
 
+export * from "./applications/index";
 export * from "./page-header";
 export * from "./notification";
 export * from "./protected-route";

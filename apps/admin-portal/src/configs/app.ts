@@ -19,39 +19,35 @@
 import { GlobalConfig } from "./globals";
 
 interface ServiceResourcesType {
+    applications: string;
     associations: string;
     authorize: string;
     challenges: string;
     challengeAnswers: string;
-    consents: string;
+    claims: string;
     jwks: string;
     logout: string;
     me: string;
-    profileSchemas: string;
-    receipts: string;
     sessions: string;
     token: string;
-    user: string;
     users: string;
     revoke: string;
     wellKnown: string;
 }
 
 export const ServiceResourcesEndpoint: ServiceResourcesType = {
+    applications: `${GlobalConfig.serverHost}/api/server/v1/applications`,
     associations: `${GlobalConfig.serverHost}/api/users/v1/me/associations`,
     authorize: `${GlobalConfig.serverHost}/oauth2/authorize`,
     challengeAnswers: `${GlobalConfig.serverHost}/api/users/v1/me/challenge-answers`,
     challenges: `${GlobalConfig.serverHost}/api/users/v1/me/challenges`,
-    consents: `${GlobalConfig}/api/identity/consent-mgt/v1.0/consents`,
+    claims: `${GlobalConfig.serverHost}/api/server/v1/claim-dialects`,
     jwks: `${GlobalConfig.serverHost}/oauth2/jwks`,
     logout: `${GlobalConfig.serverHost}/oidc/logout`,
-    me: `${GlobalConfig.serverHost}/scim2/Me`,
-    profileSchemas: `${GlobalConfig.serverHost}/scim2/Schemas`,
-    receipts: `${GlobalConfig.serverHost}/api/identity/consent-mgt/v1.0/consents/receipts`,
+    me: `${GlobalConfig.serverHost}/scim2/Me`, // TODO  Remove this endpoint and use ID token to get the details
     revoke: `${GlobalConfig.serverHost}/oauth2/revoke`,
-    sessions: `${GlobalConfig.serverHost}/t/carbon.super/api/users/v1/me/sessions`,
+    sessions: `${GlobalConfig.serverHost}/api/users/v1/me/sessions`,
     token: `${GlobalConfig.serverHost}/oauth2/token`,
-    user: `${GlobalConfig.serverHost}/api/identity/user/v1.0/me`,
     users: `${GlobalConfig.serverHost}/scim2/Users`,
     wellKnown: `${GlobalConfig.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
 };

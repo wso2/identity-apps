@@ -58,3 +58,13 @@ export const INTERNAL_USER_MGT = {
  * @default
  */
 export const HUMAN_TASK_SCOPE = "internal_humantask_view";
+
+/**
+ *  Application management scope
+ */
+export const INTERNAL_APP_MGT = {
+    INTERNAL_APP_MGT_CREATE: "internal_application_mgt_create",
+    INTERNAL_APP_MGT_DELETE: "internal_application_mgt_delete",
+    INTERNAL_APP_MGT_UPDATE: "internal_application_mgt_update",
+    INTERNAL_APP_MGT_VIEW: "internal_application_mgt_view"
+};
