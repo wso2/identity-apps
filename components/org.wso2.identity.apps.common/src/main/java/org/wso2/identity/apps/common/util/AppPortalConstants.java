@@ -42,7 +42,8 @@ public class AppPortalConstants {
      */
     public enum AppPortal {
 
-        USER_PORTAL("User Portal", "This is the user portal application.", "USER_PORTAL", "/user-portal/login");
+        USER_PORTAL("User Portal", "This is the user portal application.", "USER_PORTAL", "/user-portal/login"),
+        ADMIN_PORTAL("Admin Portal", "This is the admin portal application.", "ADMIN_PORTAL", "/admin-portal/login");
 
         private final String name;
 
