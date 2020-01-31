@@ -59,6 +59,7 @@ export const ApplicationListParent = () => {
             value: "Usage",
         },
     ];
+
     return (
         <>
             { appList ? (

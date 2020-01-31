@@ -149,28 +149,3 @@ export const getGravatarImage = (email: string): Promise<string> => {
             });
     });
 };
-
-/**
- * Retrieve the profile schemas of the user claims of the currently authenticated user.
- *
- * @return {Promise<any>} a promise containing the response.
- */
-export const getProfileSchemas = (): Promise<any> => {
-    const requestConfig = {
-        headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.profileSchemas
-    };
-
-    return httpClient
-        .request(requestConfig)
-        .then((response) => {
-            return Promise.resolve(response.data[0].attributes as ProfileSchema[]);
-        })
-        .catch((error) => {
-            return Promise.reject(error);
-        });
-};
