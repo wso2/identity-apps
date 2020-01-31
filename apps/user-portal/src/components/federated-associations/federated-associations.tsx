@@ -42,7 +42,6 @@ interface FederatedAssociationsPropsInterface {
 export const FederatedAssociations = (props: FederatedAssociationsPropsInterface): JSX.Element => {
     const { onAlertFired } = props;
     const { t } = useTranslation();
-
     const [federatedAssociations, setFederatedAssociations] = useState<FederatedAssociation[]>([]);
 
     /**
