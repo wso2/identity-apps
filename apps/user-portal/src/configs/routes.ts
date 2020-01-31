@@ -18,6 +18,7 @@
 
 import * as ApplicationConstants from "../constants/application-constants";
 import * as TokenConstants from "../constants/token-constants";
+import { Routes } from "../models";
 import {
     AccountSecurityPage,
     ApplicationsPage,
@@ -30,22 +31,9 @@ import {
 } from "../pages";
 
 /**
- * Interface to handle route types.
- */
-interface Route {
-    component: any;
-    icon?: string;
-    name: string;
-    path: string;
-    protected: boolean;
-    scope?: string;
-    showOnSidePanel: boolean;
-}
-
-/**
  * Routes array.
  */
-const ROUTES: Route[] = [
+const ROUTES: Routes[] = [
     {
         component: OverviewPage,
         icon: "overview",
