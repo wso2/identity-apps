@@ -38,10 +38,15 @@
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
- 
+
   <error-page>
     <error-code>404</error-code>
-    <location>/index.html</location>
+    <location>/index.jsp</location>
   </error-page>
+
+  <servlet>
+    <servlet-name>/</servlet-name>
+    <jsp-file>/index.jsp</jsp-file>
+  </servlet>
   
 </web-app>
