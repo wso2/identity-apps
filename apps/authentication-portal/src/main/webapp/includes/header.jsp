@@ -85,6 +85,10 @@
     main.center-segment > .ui.container > .ui.segment .segment-form .align-right {
         text-align: right;
     }
+    
+    .cookie-policy-message {
+        font-size: 14px;
+    }
 
     footer {
         padding: 2rem 0;
@@ -101,10 +105,6 @@
 
     .ui.menu.fixed.app-header .product-logo {
         padding-left: 0;
-    }
-
-    .cookie-policy-message {
-        font-size: 14px;
     }
 
     /* Table of content styling */
