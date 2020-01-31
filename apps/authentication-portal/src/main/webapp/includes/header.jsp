@@ -103,6 +103,10 @@
         padding-left: 0;
     }
 
+    .cookie-policy-message {
+        font-size: 14px;
+    }
+
     /* Table of content styling */
 
     main #toc {
