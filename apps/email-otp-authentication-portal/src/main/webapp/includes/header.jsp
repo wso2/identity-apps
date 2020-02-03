@@ -85,6 +85,10 @@
     main.center-segment > .ui.container > .ui.segment .segment-form .align-right {
         text-align: right;
     }
+    
+    .cookie-policy-message {
+        font-size: 14px;
+    }
 
     footer {
         padding: 2rem 0;
