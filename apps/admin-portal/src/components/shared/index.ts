@@ -20,3 +20,4 @@ export * from "./advanced-search";
 export * from "./icon";
 export * from "./language-switcher";
 export * from "./empty-placeholder";
+export * from "./modal";
