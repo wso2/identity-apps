@@ -17,7 +17,7 @@
  */
 
 import * as React from "react";
-import { SemanticSIZES, SemanticWIDTHS } from "semantic-ui-react";
+import { SemanticFLOATS, SemanticICONS, SemanticSIZES, SemanticWIDTHS } from "semantic-ui-react";
 
 /**
  * Form Field Types
@@ -141,6 +141,7 @@ export interface DropdownField extends FormRequiredFieldModel {
     children: DropdownChild[];
     placeholder?: string;
     value?: string;
+    width?: SemanticWIDTHS;
 }
 
 /**
