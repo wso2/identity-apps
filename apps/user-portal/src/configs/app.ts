@@ -25,7 +25,7 @@ interface ServiceResourcesType {
     challenges: string;
     challengeAnswers: string;
     consents: string;
-    federatedAssociation: string;
+    federatedAssociations: string;
     fidoEnd: string;
     fidoMetaData: string;
     fidoStart: string;
@@ -50,7 +50,7 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     challengeAnswers: `${GlobalConfig.serverHost}/api/users/v1/me/challenge-answers`,
     challenges: `${GlobalConfig.serverHost}/api/users/v1/me/challenges`,
     consents: `${GlobalConfig.serverHost}/api/identity/consent-mgt/v1.0/consents`,
-    federatedAssociation: `${GlobalConfig.serverHost}/api/users/v1/me/federated-associations`,
+    federatedAssociations: `${GlobalConfig.serverHost}/api/users/v1/me/federated-associations`,
     fidoEnd: `${GlobalConfig.serverHost}/api/users/v2/me/webauthn/finish-registration`,
     fidoMetaData: `${GlobalConfig.serverHost}/api/users/v2/me/webauthn`,
     fidoStart: `${GlobalConfig.serverHost}/api/users/v2/me/webauthn/start-registration`,
