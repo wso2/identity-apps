@@ -22,6 +22,8 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.oauth2.OAuth2ScopeService" %>
+<%@ page import="org.wso2.carbon.identity.oauth2.bean.Scope" %>
+<%@ page import="org.wso2.carbon.identity.oauth2.IdentityOAuth2ScopeException" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.stream.Collectors" %>
@@ -111,9 +113,10 @@
                                 <div class="scopes-list ui list">
                                     <%
                                         for (String scopeID : openIdScopes) {
-                                            String displayName = new OAuth2ScopeService()
-                                                                    .getScope(scopeID)
-                                                                    .getDisplayName();
+                                            try {
+                                                Scope scope = new OAuth2ScopeService().getScope(scopeID);
+                                                if (scope != null) {
+                                                    String displayName = scope.getDisplayName();
                                     %>
                                     <div class="item">
                                         <i class="check circle outline icon"></i>
@@ -122,6 +125,11 @@
                                         </div>
                                     </div>
                                     <%
+                                                }
+                                            } catch (IdentityOAuth2ScopeException e) {
+                                                // Ignore the error since the scope might be an open ID scope
+                                                // so can't view it via scope binding layer.
+                                            }
                                         }
                                     %>
                                 </div>
