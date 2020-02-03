@@ -169,7 +169,12 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
                 TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_CREATE,
                 TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_DELETE,
                 TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_VIEW,
-                TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_UPDATE
+                TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_UPDATE,
+                TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_CREATE,
+                TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_DELETE,
+                TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_LIST,
+                TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_UPDATE,
+                TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_VIEW
             ],
             serverOrigin: GlobalConfig.serverOrigin
         };

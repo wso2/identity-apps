@@ -51,7 +51,8 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
         onSidePanelItemClick,
         route,
         selected,
-        translationHook
+        translationHook,
+        sidePanelItemHeight
     } = props;
 
     return (
@@ -105,6 +106,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                             onSidePanelItemClick={ onSidePanelItemClick }
                             selected={ selected }
                             open={ route.open }
+                            sidePanelItemHeight={ sidePanelItemHeight }
                         />
                     )
                     : null

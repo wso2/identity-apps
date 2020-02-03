@@ -87,5 +87,6 @@ export const common: Common = {
     terminateSession: "Terminate session",
     type: "Type",
     update: "Update",
-    user: "User"
+    user: "User",
+    userRole: "User Role"
 };

@@ -89,6 +89,7 @@ export interface Common {
     type: string;
     update: string;
     user: string;
+    userRole: string;
 }
 
 /**

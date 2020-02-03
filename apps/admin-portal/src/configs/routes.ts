@@ -23,7 +23,8 @@ import {
     ApplicationsPage,
     HomePage,
     PrivacyPage,
-    UsersPage
+    UsersPage,
+    UserRoles
 } from "../pages";
 
 /**
@@ -50,9 +51,23 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         component: UsersPage,
         icon: "usersAndRoles",
         name: "Users & Roles",
-        path: "/users",
         protected: true,
         showOnSidePanel: true,
+        children: [{
+            component: UsersPage,
+            icon: "usersAndRoles",
+            name: "Users",
+            path: "/users",
+            showOnSidePanel: true,
+            level: 1
+        },{
+            component: UserRoles,
+            icon: "usersAndRoles",
+            name: "User Roles",
+            path: "/roles",
+            showOnSidePanel: true,
+            level: 2
+        }],
     },
     {
         component: PrivacyPage,
