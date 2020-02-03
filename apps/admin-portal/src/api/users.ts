@@ -26,6 +26,11 @@ import { HttpMethods } from "../models";
  */
 const httpClient = AxiosHttpClient.getInstance();
 
+/**
+ * Retrieve the list of users that are currently in the system.
+ *
+ * @returns {Promise<BasicProfileInterface>} a promise containing the user list.
+ */
 export const getUsersList = (): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -34,6 +39,79 @@ export const getUsersList = (): Promise<any> => {
         },
         method: HttpMethods.GET,
         url: ServiceResourcesEndpoint.users
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Retrieve the list of user stores that are currently in the system.
+ *
+ * @returns {Promise<BasicProfileInterface>} a promise containing the user store list.
+ */
+export const getUserStoreList = (): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: ServiceResourcesEndpoint.userStores
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Add new user.
+ *
+ * @returns {Promise<BasicProfileInterface>} a promise containing the response.
+ */
+export const addUser = (data: object): Promise<any> => {
+    const requestConfig = {
+        data,
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: ServiceResourcesEndpoint.users
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Add role to new user.
+ *
+ * @returns {Promise<BasicProfileInterface>} a promise containing the response.
+ */
+export const addUserRole = (data: object, groupId: string): Promise<any> => {
+    const requestConfig = {
+        data,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: ServiceResourcesEndpoint.groups + "/" + groupId
     };
 
     return httpClient.request(requestConfig)

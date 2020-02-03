@@ -93,9 +93,9 @@ export const views: Views = {
                 resultsIndicator: 'Showing results for the query "{{query}}"'
             }
         },
-        changePassword: {
+        user: {
             forms: {
-                passwordResetForm: {
+                addUserForm: {
                     inputs: {
                         confirmPassword: {
                             label: "Confirm password",
@@ -105,19 +105,19 @@ export const views: Views = {
                                 mismatch: "The password confirmation doesn't match"
                             }
                         },
-                        currentPassword: {
-                            label: "Current password",
-                            placeholder: "Enter the current password",
-                            validations: {
-                                empty: "Current password is a required field",
-                                invalid: "Current password is invalid"
-                            }
-                        },
                         newPassword: {
                             label: "New password",
                             placeholder: "Enter the new password",
                             validations: {
                                 empty: "New password is a required field"
+                            }
+                        },
+                        username: {
+                            label: "Username",
+                            placeholder: "Enter the username",
+                            validations: {
+                                empty: "Username is a required field",
+                                invalid: "Username is invalid"
                             }
                         }
                     },
@@ -142,10 +142,10 @@ export const views: Views = {
                 }
             },
             modals: {
-                confirmationModal: {
-                    heading: "Confirmation",
-                    message: "Changing the password will result in the termination of the current session. You will " +
-                        "have to login with the newly changed password. Do you wish to continue?"
+                addUserWarnModal: {
+                    heading: "Warning",
+                    message: "Please note that this created user will not be assigned with a role. If you wish to " +
+                        "assign roles to this user please click on the button below."
                 }
             }
         },
@@ -363,9 +363,26 @@ export const views: Views = {
         users: {
             all: {
                 heading: "Users",
-                subHeading: "Manage users and their identities..."
+                subHeading: "Add and manage user accounts, assign roles to the users and maintain user identities."
+            },
+            buttons: {
+                assignUserRoleBtn: "Assign roles"
             },
             notifications: {
+                addUser: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error adding the new user"
+                    },
+                    genericError: {
+                        description: "Couldn't add the new user",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The new user was added successfully.",
+                        message: "User added successfully"
+                    }
+                },
                 fetchUsers: {
                     error: {
                         description: "{{description}}",
