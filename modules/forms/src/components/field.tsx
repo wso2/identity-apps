@@ -161,6 +161,8 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                 <Button
                     size={ inputField.size }
                     className={ inputField.className }
+                    floated={ inputField.floated }
+                    icon={ inputField.icon }
                     onClick={ (event) => {
                         event.preventDefault();
                         inputField.onClick();
