@@ -151,16 +151,13 @@ export const getProfileInformation = () => (dispatch) => {
  * Handle user sign-in
  */
 export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
-
     const requestParams: OIDCRequestParamsInterface = {
         clientHost: GlobalConfig.clientHost,
         clientId: GlobalConfig.clientID,
         clientSecret: null,
         enablePKCE: true,
         redirectUri: GlobalConfig.loginCallbackUrl,
-        scope: [
-            TokenConstants.LOGIN_SCOPE,
-            TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_VIEW,
+        scope: [TokenConstants.LOGIN_SCOPE, TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_VIEW,
             TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_UPDATE,
             TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_DELETE,
             TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_CREATE,
@@ -168,6 +165,12 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
             TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_UPDATE,
             TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_DELETE,
             TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_LIST,
+            TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_CREATE,
+            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_VIEW,
+            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_UPDATE,
+            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_DELETE,
+            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_LIST,
+            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_CREATE,
             TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_CREATE,
             TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_CREATE,
             TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_DELETE,
