@@ -16,30 +16,13 @@
  * under the License.
  *
  */
- 
+
 /*******************************
-            Menu
+            Dropdown
 *******************************/
 
 /*-------------------
-      App Footer
+   Labeled Dropdown
 --------------------*/
 
-@appFooterMinHeight: 60px;
-
-/*-------------------
-    Side Panel Menu
---------------------*/
-
-@sidePanelDefaultFontColor: @black;
-@sidePanelActiveFontColor: @primaryColor;
-@sidePanelHoverFontColor: @primaryColor;
-
-@sidePanelChildItemGroupLeftPadding: 15px;
-@sidePanelChildItemPadding: @itemVerticalPadding @itemHorizontalPadding;
-
-/*-------------------
-      Pagination
---------------------*/
-
-@listPaginationMarginRight: 10px;
+@labeledDropdownHorizontalSpacing: 15px;

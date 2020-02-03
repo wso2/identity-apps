@@ -21,3 +21,5 @@ export * from "./auth";
 export * from "./default";
 export * from "./error";
 export * from "./dashboard";
+export * from "./list";
+export * from "./page";

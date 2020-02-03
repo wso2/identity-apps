@@ -16,30 +16,20 @@
  * under the License.
  *
  */
- 
-/*******************************
-            Menu
-*******************************/
 
-/*-------------------
-      App Footer
---------------------*/
+/*******************************************
+        Labeled Dropdown Variation
+*******************************************/
 
-@appFooterMinHeight: 60px;
-
-/*-------------------
-    Side Panel Menu
---------------------*/
-
-@sidePanelDefaultFontColor: @black;
-@sidePanelActiveFontColor: @primaryColor;
-@sidePanelHoverFontColor: @primaryColor;
-
-@sidePanelChildItemGroupLeftPadding: 15px;
-@sidePanelChildItemPadding: @itemVerticalPadding @itemHorizontalPadding;
-
-/*-------------------
-      Pagination
---------------------*/
-
-@listPaginationMarginRight: 10px;
+.ui.dropdown {
+    &.labeled {
+        &.horizontal {
+            &.right {
+                margin-left: @labeledDropdownHorizontalSpacing;
+            }
+            &.left {
+                margin-right: @labeledDropdownHorizontalSpacing;
+            }
+        }
+    }
+}

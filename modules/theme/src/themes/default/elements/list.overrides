@@ -30,6 +30,39 @@
 }
 
 /*******************************
+  Admin Portal List Variation
+*******************************/
+
+.ui.list {
+    &.admin-list {
+        > .item > .image:not(:only-child):not(img) {
+            padding-right: unset;
+        }
+
+        > .item {
+            padding: @veryRelaxedItemVerticalPadding 0.5em !important;
+
+            .list-item-description {
+                max-width: 300px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .list-item-action-panel {
+                .list-item-action {
+                    display: inline-block;
+                    margin-top: 10px;
+                }
+                > .list-item-action:not(:last-child) {
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+}
+
+/*******************************
      Claim List Variation
 *******************************/
 
