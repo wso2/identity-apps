@@ -37,7 +37,7 @@ export const getFederatedAssociations = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.federatedAssociation
+        url: ServiceResourcesEndpoint.federatedAssociations
     };
 
     return httpClient
@@ -65,7 +65,7 @@ export const deleteFederatedAssociation = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${ServiceResourcesEndpoint.federatedAssociation}/${id}`
+        url: `${ServiceResourcesEndpoint.federatedAssociations}/${id}`
     };
 
     return httpClient
@@ -88,7 +88,7 @@ export const deleteAllFederatedAssociation = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: ServiceResourcesEndpoint.federatedAssociation
+        url: ServiceResourcesEndpoint.federatedAssociations
     };
 
     return httpClient
