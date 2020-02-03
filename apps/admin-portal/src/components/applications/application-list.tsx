@@ -16,110 +16,83 @@
  * under the License.
  */
 
-import React, { FunctionComponent, useEffect, useState } from "react";
-import { Button, Divider, Dropdown, Grid, Input, List } from "semantic-ui-react";
-import { getApplicationList } from "../../api";
-import { history } from "../../helpers/history";
-import { ApplicationList } from "../../models";
-import { ApplicationListItem } from "./application-list-item";
+import { AppAvatar } from "@wso2is/react-components";
+import React, { FunctionComponent } from "react";
+import { ApplicationListInterface } from "../../models";
+import { AdminList, AdminListItem } from "../shared";
 
 /**
- * Renders the application lists. This has the listing, sorting searching features related application listing.
+ *
+ * Proptypes for the applications list component.
  */
-export const ApplicationListParent = () => {
+interface ApplicationListPropsInterface {
+    list: ApplicationListInterface;
+}
 
-    const [appList, setAppList] = useState<ApplicationList>();
+/**
+ * Application list component.
+ *
+ * @param {ApplicationListPropsInterface} props - Props injected to the component.
+ * @return {JSX.Element}
+ */
+export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> = (
+    props: ApplicationListPropsInterface
+): JSX.Element => {
 
-    const getAppLists = (limit: string, offset: string) => {
-        getApplicationList(limit, offset)
-            .then((response) => {
-                setAppList(response);
-            })
-            .catch((error) => {
-                // TODO add notifications
-            });
+    const {
+        list
+    } = props;
+
+    const handleApplicationEdit = () => {
+        // Open up edit view.
     };
 
-    useEffect(() => {
-        getAppLists("10", "0");
-    }, []);
-
-    const navigate = () => {
-        history.push("/application/new/template");
+    const handleApplicationDelete = () => {
+        // Delete the application.
     };
-    const sort = [
-        {
-            key: "Name",
-            text: "Name",
-            value: "Name",
-        },
-        {
-            key: "Usage",
-            text: "Usage",
-            value: "Usage",
-        },
-    ];
 
     return (
-        <>
-            { appList ? (
-                    <Grid>
-                        <Grid.Row divided>
-                            <Grid.Column width={ 3 }>
-                            <span>Sort By <Divider vertical hidden/>
-                            <Dropdown
-                                inline
-                                options={ sort }
-                                defaultValue={ sort[0].value }
-                            />
-                            </span>
-                            </Grid.Column>
-                            <Grid.Column width={ 3 }>
-                                <span> Total Applications { appList.totalResults } </span>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column width={ 7 }/>
-                            <Grid.Column width={ 6 }>
-                                <Input icon="search" placeholder="Search Application ..."/>
-                            </Grid.Column>
-                            <Grid.Column width={ 3 } className="last-column">
-                                <Button onClick={ navigate }> +APPLICATION </Button>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column>
-                                <Divider hidden/>
-                                <List divided verticalAlign="middle" className="application-list">
-                                    {
-                                        appList.applications.map((apps) => (
-                                            <ApplicationListItem
-                                                key={ apps.id }
-                                                name={ apps.name }
-                                                id={ apps.id }
-                                                accessUrl={ apps.accessUrl }
-                                                imageUrl={ apps.imageUrl }
-                                                description={ apps.description }
-                                                self={ apps.self }
-                                            />
-                                        ))
-                                    }
-                                </List>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                )
-                :
-                (
-                    <Grid>
-                        <Grid.Row divided>
-                            <Grid.Column width={ 10 }>
-                                <p>No application found</p>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                )
+        <AdminList className="applications-list">
+            {
+                (list.applications && list.applications.length && list.applications.length > 0)
+                    ? list.applications.map((app, index) => (
+                       <AdminListItem
+                           key={ index }
+                           actions={ [
+                               {
+                                   icon: "pencil alternate",
+                                   onClick: handleApplicationEdit,
+                                   popupText: "edit",
+                                   type: "button"
+                               },
+                               {
+                                   icon: "ellipsis vertical",
+                                   onClick: null,
+                                   popupText: "more",
+                                   subActions: [
+                                       {
+                                           key: "1",
+                                           onClick: handleApplicationDelete,
+                                           text: "Delete"
+                                       }
+                                   ],
+                                   type: "dropdown"
+                               }
+                           ] }
+                           avatar={ (
+                               <AppAvatar
+                                   name={ app.name }
+                                   image={ app.image }
+                                   size="mini"
+                                   floated="left"
+                               />
+                           ) }
+                           itemName={ app.name }
+                           itemDescription={ app.description }
+                       />
+                    ))
+                    : null
             }
-        </>
+        </AdminList>
     );
 };

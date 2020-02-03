@@ -20,6 +20,79 @@ import { Views } from "../../models";
 
 export const views: Views = {
     components: {
+        applications: {
+            notifications: {
+                fetchApplications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error retrieving applications"
+                    },
+                    genericError: {
+                        description: "Couldn't retrieve applications",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully retrieved the applications.",
+                        message: "Applications retrieval successful"
+                    }
+                }
+            },
+            placeholders: {
+                emptyList: {
+                    action: "Refresh list",
+                    subtitles: {
+                        0: "The applications list returned empty.",
+                        1: "This could be due to having no discoverable applications.",
+                        2: "Please ask an admin to enable discoverability for applications."
+                    },
+                    title: "No Applications"
+                }
+            },
+            search: {
+                forms: {
+                    searchForm: {
+                        inputs: {
+                            filerAttribute: {
+                                label: "Filter attribute",
+                                placeholder: "ex: name, description etc.",
+                                validations: {
+                                    empty: "Filter attribute is a required field"
+                                }
+                            },
+                            filterCondition: {
+                                label: "Filter condition",
+                                placeholder: "ex: Starts with etc.",
+                                validations: {
+                                    empty: "Filter condition is a required field"
+                                }
+                            },
+                            filterValue: {
+                                label: "Filter value",
+                                placeholder: "ex: facebook, slack etc.",
+                                validations: {
+                                    empty: "Filter value is a required field"
+                                }
+                            }
+                        }
+                    }
+                },
+                hints: {
+                    querySearch: {
+                        actionKeys: "Shift + Enter",
+                        label: "To search as a query"
+                    }
+                },
+                options: {
+                    header: "Advanced search"
+                },
+                placeholder: "Search by name",
+                popups: {
+                    clear: "clear search",
+                    dropdown: "show options"
+                },
+                resultsIndicator: 'Showing results for the query "{{query}}"'
+            }
+        },
         changePassword: {
             forms: {
                 passwordResetForm: {
