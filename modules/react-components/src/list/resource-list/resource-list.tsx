@@ -21,12 +21,12 @@ import React, { FunctionComponent } from "react";
 import { List , ListProps } from "semantic-ui-react";
 
 /**
- * Admin list component.
+ * Resource list component.
  *
  * @param {ListProps} props - Props injected to the component.
  * @return {JSX.Element}
  */
-export const AdminList: FunctionComponent<ListProps> = (
+export const ResourceList: FunctionComponent<ListProps> = (
     props: ListProps
 ): JSX.Element => {
 
@@ -37,7 +37,7 @@ export const AdminList: FunctionComponent<ListProps> = (
     } = props;
 
     const classes = classNames(
-        "admin-list"
+        "resource-list"
         , className
     );
 

@@ -16,5 +16,4 @@
  * under the License.
  */
 
-export * from "./admin-list";
-export * from "./admin-list-item";
+export * from "./resource-list";

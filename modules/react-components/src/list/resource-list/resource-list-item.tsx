@@ -30,23 +30,48 @@ import {
 } from "semantic-ui-react";
 
 /**
- * Proptypes for the admin list item component.
+ * Proptypes for the resource list item component.
  */
-interface AdminListItemPropsInterface extends ListItemProps {
-    actions?: ListAction[];
+interface ResourceListItemPropsInterface extends ListItemProps {
+    /**
+     * List items actions.
+     */
+    actions?: ResourceListAction[];
+    /**
+     * Width of the action panel column.
+     */
     actionsColumnWidth?: SemanticWIDTHS;
+    /**
+     * Avatar to be displayed on the list item.
+     * Can be either {@link UserAvatar} or {@link AppAvatar}
+     */
     avatar?: React.ReactNode;
-    itemName: string;
+    /**
+     * List item header.
+     */
+    itemHeader: string;
+    /**
+     * List item description
+     */
     itemDescription?: string;
+    /**
+     * Width of the description area.
+     */
     descriptionColumnWidth?: SemanticWIDTHS;
+    /**
+     * Meta info about the list item.
+     */
     metaContent?: React.ReactNode;
+    /**
+     * Width of the meta info area.
+     */
     metaColumnWidth?: SemanticWIDTHS;
 }
 
 /**
- * List action interface.
+ * Resource list action interface.
  */
-interface ListAction {
+interface ResourceListAction {
     icon: SemanticICONS;
     onClick?: () => void;
     popupText?: string;
@@ -55,13 +80,13 @@ interface ListAction {
 }
 
 /**
- * Admin list item component.
+ * Resource list item component.
  *
- * @param {AdminListItemPropsInterface} props - Props injected to the component.
+ * @param {ResourceListItemPropsInterface} props - Props injected to the component.
  * @return {JSX.Element}
  */
-export const AdminListItem: FunctionComponent<AdminListItemPropsInterface> = (
-    props: AdminListItemPropsInterface
+export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface> = (
+    props: ResourceListItemPropsInterface
 ): JSX.Element => {
 
     const {
@@ -69,8 +94,8 @@ export const AdminListItem: FunctionComponent<AdminListItemPropsInterface> = (
         actionsColumnWidth,
         avatar,
         descriptionColumnWidth,
-        itemName,
         itemDescription,
+        itemHeader,
         metaContent,
         metaColumnWidth
     } = props;
@@ -82,7 +107,7 @@ export const AdminListItem: FunctionComponent<AdminListItemPropsInterface> = (
                     <Grid.Column width={ descriptionColumnWidth }>
                         { avatar }
                         <List.Content>
-                            <List.Header className="list-item-name">{ itemName }</List.Header>
+                            <List.Header className="list-item-name">{ itemHeader }</List.Header>
                             <List.Description className="list-item-description">{ itemDescription }</List.Description>
                         </List.Content>
                     </Grid.Column>
@@ -152,9 +177,9 @@ export const AdminListItem: FunctionComponent<AdminListItemPropsInterface> = (
 };
 
 /**
- * Default proptypes for the admin list item component.
+ * Default proptypes for the resource list item component.
  */
-AdminListItem.defaultProps = {
+ResourceListItem.defaultProps = {
     actionsColumnWidth: 5,
     descriptionColumnWidth: 7,
     metaColumnWidth: 4

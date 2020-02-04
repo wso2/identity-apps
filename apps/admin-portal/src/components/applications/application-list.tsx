@@ -16,10 +16,9 @@
  * under the License.
  */
 
-import { AppAvatar } from "@wso2is/react-components";
+import { AppAvatar, ResourceList, ResourceListItem } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
 import { ApplicationListInterface } from "../../models";
-import { AdminList, AdminListItem } from "../shared";
 
 /**
  *
@@ -52,11 +51,11 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     };
 
     return (
-        <AdminList className="applications-list">
+        <ResourceList className="applications-list">
             {
                 (list.applications && list.applications.length && list.applications.length > 0)
                     ? list.applications.map((app, index) => (
-                       <AdminListItem
+                       <ResourceListItem
                            key={ index }
                            actions={ [
                                {
@@ -87,12 +86,12 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                    floated="left"
                                />
                            ) }
-                           itemName={ app.name }
+                           itemHeader={ app.name }
                            itemDescription={ app.description }
                        />
                     ))
                     : null
             }
-        </AdminList>
+        </ResourceList>
     );
 };

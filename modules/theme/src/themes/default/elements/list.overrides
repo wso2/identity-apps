@@ -30,11 +30,11 @@
 }
 
 /*******************************
-  Admin Portal List Variation
+    Resource List Variation
 *******************************/
 
 .ui.list {
-    &.admin-list {
+    &.resource-list {
         > .item > .image:not(:only-child):not(img) {
             padding-right: unset;
         }

@@ -28,6 +28,7 @@ export * from "./header";
 export * from "./icon";
 export * from "./input";
 export * from "./language-switcher";
+export * from "./list";
 export * from "./loader";
 export * from "./modal";
 export * from "./page-header";
