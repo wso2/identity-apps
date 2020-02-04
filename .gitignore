@@ -100,6 +100,7 @@ modules/http/dist
 modules/validation/dist
 modules/forms/dist
 modules/core/dist
+modules/i18n/dist
 modules/react-components/dist
 modules/react-components/storybook-static
 modules/react-components/.cache
