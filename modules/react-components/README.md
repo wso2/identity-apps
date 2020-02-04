@@ -2,7 +2,7 @@
 
 A React component library for WSO2 Identity Server frontend apps implementing Semantic UI Framework.
 
-[![Storybook](https://cdn.jsdelivr.net/gh/storybookjs/brand@master/badge/badge-storybook.svg)](link to site)
+![Storybook](https://cdn.jsdelivr.net/gh/storybookjs/brand@master/badge/badge-storybook.svg)
 
 ## Install
 Add following dependency in your package.json file.
