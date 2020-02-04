@@ -353,7 +353,7 @@ export const views: Views = {
                 resultsIndicator: "Showing results for the query \"{{query}}\""
             }
         },
-        roles: {
+        userRole: {
             all: {
                 heading: "User Roles",
                 subHeading: "Manage user roles and their permissions..."

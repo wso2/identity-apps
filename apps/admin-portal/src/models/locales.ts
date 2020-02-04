@@ -150,6 +150,12 @@ export interface Views {
                 resultsIndicator: string;
             },
         },
+        userRole: {
+            all: {
+                heading: string;
+                subHeading: string;
+            },
+        },
         changePassword: {
             forms: {
                 passwordResetForm: {

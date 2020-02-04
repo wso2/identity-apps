@@ -34,7 +34,7 @@ export const UserRoles = (): JSX.Element => {
                 </Grid.Column>
                 <Grid.Column>
                     <Button icon="ellipsis horizontal" size="medium" floated="right"/>
-                    <Button primary floated="right" size="medium">+ ADD USER</Button>
+                    <Button primary floated="right" size="medium">+ ADD ROLE</Button>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row width={ 16 }>

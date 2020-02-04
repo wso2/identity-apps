@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { getRolestList } from "../../api";
 import { useTranslation } from "react-i18next";
-import { Container, Divider, Table } from "semantic-ui-react";
+import { Table, Button, Icon } from "semantic-ui-react";
 import { UserImagePlaceHolder } from "../../components";
 
 export const RolesList: React.FunctionComponent<any> = (): JSX.Element => {
@@ -27,23 +27,26 @@ export const RolesList: React.FunctionComponent<any> = (): JSX.Element => {
     const [rolesList, setRolesList] = useState([]);
 
     useEffect(() => {
-        getList();
-    }, []);
+        let didCancel = false;
 
-    const getList = () => {
         getRolestList()
-            .then((response) => {
-                if (response.status === 200) {
-                    setRolesList(response.data.Resources);
-                }
-            });
-    };
+        .then((response) => {
+            if (response.status === 200 && !didCancel) {
+                setRolesList(response.data.Resources);
+            }
+        });
+
+        return () => {
+            didCancel = true;
+        };
+    }, [rolesList, setRolesList]);
+
     return (
         <Table color="orange" className="sub-section-table">
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>Name</Table.HeaderCell>
-                    <Table.HeaderCell>Created On</Table.HeaderCell>
+                    <Table.HeaderCell>Actions</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -52,9 +55,30 @@ export const RolesList: React.FunctionComponent<any> = (): JSX.Element => {
                         <Table.Row key={ index }>
                             <Table.Cell>
                                 <UserImagePlaceHolder size="mini" floated="left"/>
-                                <p style={ { padding: "10px 45px" } }>{ role.userName }</p>
+                                <p style={ { padding: "10px 45px" } }>{ role.displayName }</p>
                             </Table.Cell>
-                            <Table.Cell>{ role.meta.created }</Table.Cell>
+                            <Table.Cell width={8}>
+                                <Button size='mini' icon labelPosition='left'>
+                                    <Icon name='edit outline' />
+                                    Rename
+                                </Button>
+                                <Button size='mini' icon labelPosition='left'>
+                                    <Icon name='pause' />
+                                    Permissions
+                                </Button>
+                                <Button size='mini' icon labelPosition='left'>
+                                    <Icon name='user plus' />
+                                    Asign Users
+                                </Button>
+                                <Button size='mini' icon labelPosition='left'>
+                                    <Icon name='users' />
+                                    View Users
+                                </Button>
+                                <Button size='mini' icon labelPosition='left'>
+                                    <Icon name='delete' />
+                                    Delete
+                                </Button>
+                            </Table.Cell>
                         </Table.Row>
                     ))
                 }
