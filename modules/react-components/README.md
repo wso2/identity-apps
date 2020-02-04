@@ -31,13 +31,13 @@ Once the dev server is fired up, it'll automatically open up a new tab. If not, 
 
 Import the relevant component.
 
-```js
+```jsx
 import { UserAvatar } from "@wso2is/react-components";
 ```
 
 Use the component along with your other react components.
 
-```js
+```jsx
 <UserAvatar
     spaced="right"
     size="tiny"
