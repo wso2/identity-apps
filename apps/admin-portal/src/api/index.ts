@@ -21,3 +21,4 @@ export * from "./profile";
 export * from "./linked-accounts";
 export * from "./application";
 export * from "./roles";
+export * from "./permissions";

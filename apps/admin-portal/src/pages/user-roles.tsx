@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { useState } from "react";
+import React from "react";
 import { Button, Grid } from "semantic-ui-react";
 import { RolesList } from "../components/roles";
 

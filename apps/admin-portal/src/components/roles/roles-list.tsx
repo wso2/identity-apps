@@ -42,9 +42,7 @@ export const RolesList: React.FunctionComponent<any> = (): JSX.Element => {
     }, [rolesList, setRolesList]);
 
     const showUserPermission = (event: MouseEvent<HTMLButtonElement>, data: ButtonProps) => {
-        console.log(data)
-        //history.push(`roles/${ data.id }/permissions`);
-        history.push(`roles/new/template`);
+        history.push(`roles/${ data.id }/permission`);
     };
 
     return (

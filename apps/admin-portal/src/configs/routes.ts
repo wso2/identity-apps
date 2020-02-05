@@ -24,8 +24,10 @@ import {
     HomePage,
     PrivacyPage,
     UsersPage,
-    UserRoles
+    UserRoles,
+    UserPermission
 } from "../pages";
+import { Children } from "react";
 
 /**
  * Dashboard Layout Routes array.
@@ -65,8 +67,18 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             icon: "usersAndRoles",
             name: "User Roles",
             path: "/roles",
+            exact: true,
             showOnSidePanel: true,
             level: 2
+        },{
+            component: UserPermission,
+            icon: "applications",
+            name: "User Pemission",
+            path: "/roles/:id/permission",
+            exact: true,
+            protected: true,
+            showOnSidePanel: false,
+            level: 3
         }],
     },
     {

@@ -16,12 +16,14 @@
  * under the License.
  */
 
-export * from "./applications/index";
-export * from "./page-header";
-export * from "./notification";
-export * from "./protected-route";
-export * from "./ui";
-export * from "./shared/icon";
-export * from "./users/users-search";
-export * from "./users/users-list";
-export * from "./permissions/permissions-list";
+import React from "react";
+import { useParams } from "react-router-dom";
+import { PermissionsList } from "../components/permissions";
+
+export const UserPermission = (): JSX.Element => {
+    let { id } = useParams();
+
+    return (
+        <PermissionsList />
+    );
+}

@@ -40,5 +40,22 @@ export const getAllPermission = (): Promise<any> => {
         return Promise.resolve(response);
     }).catch((error) => {
         return Promise.reject(error);
+    });
+}
+
+export const getRolePermission = (id: string): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${ServiceResourcesEndpoint.roles}/${id}/permissions`
+    };
+
+    return httpClient.request(requestConfig).then((response) => {
+        return Promise.resolve(response);
+    }).catch((error) => {
+        return Promise.reject(error);
     })
 }

@@ -18,8 +18,12 @@
 
 import React from "react";
 
-export const PermissionsList: React.FunctionComponent<any> = (): JSX.Element => {
+interface PermissionsListProps {
+    roleId?: string;
+}
+
+export const PermissionsList: React.FunctionComponent<PermissionsListProps> = (props): JSX.Element => {
     return (
-        <div></div>
+        <h3>ID</h3>
     );
 }
