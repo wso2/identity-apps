@@ -10,6 +10,7 @@
         "enabled":true,
         "profile":true,
         "linkedAccounts":true,
+        "externalLogins":true,
         "exportProfile":true
     },
     "applications":true,
