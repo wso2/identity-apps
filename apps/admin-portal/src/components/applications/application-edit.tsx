@@ -49,7 +49,7 @@ export const EditApplication: FunctionComponent<{}> = (props): JSX.Element => {
                 setBasic(response);
             })
             .catch((error) => {
-               // TODO add to notifications
+                // TODO add to notifications
             });
     };
 
@@ -95,6 +95,7 @@ export const EditApplication: FunctionComponent<{}> = (props): JSX.Element => {
             render: () => <Tab.Pane attached={ false }>SignOnMethod</Tab.Pane>,
         },
     ]);
+
     return (
         <>
             { application &&

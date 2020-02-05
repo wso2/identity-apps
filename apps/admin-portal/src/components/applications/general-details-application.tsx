@@ -33,7 +33,7 @@ interface GeneralSettingsProps {
 /**
  * Component to edit general details of the application.
  *
- * @param props
+ * @param props GeneralSettingsProps.
  */
 export const GeneralDetailsApplication: FunctionComponent<GeneralSettingsProps> = (props): JSX.Element => {
     const {
