@@ -1,6 +1,6 @@
 {
     "overview":{
-        "enabled":false,
+        "enabled":true,
         "accountStatus":true,
         "accountActivity":true,
         "accountSecurity":true,
