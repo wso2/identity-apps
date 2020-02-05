@@ -140,10 +140,12 @@
                         <div class="ui divider hidden"></div>
                         <div class="feild">
                             <div class="cookie-policy-message">
+                                <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving.head")%> <%=Encode.forHtml(request.getParameter("application"))%></h5>
+
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving")%>
-                                <a href="privacy_policy.do" target="policy-pane">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%>
-                                </a>
+                                <%=Encode.forHtml(request.getParameter("application"))%>
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving2")%>
+                                <a href="privacy_policy.do" target="policy-pane"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%></a>.
                             </div>
                         </div>
                         <div class="align-right buttons">
