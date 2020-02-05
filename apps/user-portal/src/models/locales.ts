@@ -345,6 +345,13 @@ export interface Views {
                 switchAccount: Notification;
             };
         };
+        federatedAssociations: {
+            notifications: {
+                getFederatedAssociations: Notification;
+                removeFederatedAssociation: Notification;
+                removeAllFederatedAssociations: Notification;
+            }
+        };
         mfa: {
             fido: {
                 description: string;
@@ -743,6 +750,10 @@ export interface Views {
             actionTitles: {
                 add: string;
             };
+            description: string;
+            heading: string;
+        };
+        federatedAssociations: {
             description: string;
             heading: string;
         };

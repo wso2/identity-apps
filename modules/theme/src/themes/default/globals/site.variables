@@ -68,6 +68,8 @@
 @dustyGray        : #9c9c9c;
 @galleryGray      : #eeeeee;
 @doveGray         : #666666;
+@dullGreen        : #34a850;
+@paleGray         : #D6D6D6;
 
 /*-------------------
      Image Sizes

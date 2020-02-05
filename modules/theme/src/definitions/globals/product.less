@@ -292,39 +292,123 @@ body {
     }
     &.two-tone {
         svg.icon {
-            .primary {
-                fill: @iconWrapperTwoTonePrimaryColor;
+            .stroke {
+                &.primary {
+                    stroke: @iconWrapperTwoTonePrimaryColor;
+                }
+                &.secondary {
+                    stroke: @iconWrapperTwoToneSecondaryColor;
+                }
+                &.white {
+                    stroke: @white;
+                }
+                &.tertiary {
+                    stroke: @paleGray;
+                }
+                &.blue {
+                    stroke: @blue;
+                }
+                &.green {
+                    stroke: @dullGreen;
+                }
             }
-            .secondary {
-                fill: @iconWrapperTwoToneSecondaryColor;
-            }
-            .white {
-                fill: @white;
+            .fill{
+                &.primary {
+                    fill: @iconWrapperTwoTonePrimaryColor;
+                }
+                &.secondary {
+                    fill: @iconWrapperTwoToneSecondaryColor;
+                }
+                &.white {
+                    fill: @white;
+                }
+                &.tertiary {
+                    fill: @paleGray;
+                }
+                &.blue {
+                    fill: @blue;
+                }
+                &.green {
+                    fill: @dullGreen;
+                }
             }
         }
     }
     &.colored {
         svg.icon {
-            .primary {
+            .stroke{
+                &.primary {
+                    stroke: @iconWrapperTwoTonePrimaryColor;
+                }
+                &.secondary {
+                    stroke: @iconWrapperTwoToneSecondaryColor;
+                }
+                &.white {
+                    stroke: @white;
+                }
+                &.positive {
+                    stroke: @positiveColor;
+                }
+                &.negative {
+                    stroke: @negativeColor;
+                }
+                &.info {
+                    stroke: @infoColor;
+                }
+                &.warning {
+                    stroke: @warningColor;
+                }
+                &.tertiary {
+                    stroke: @paleGray;
+                }
+                &.blue {
+                    stroke: @blue;
+                }
+                &.green {
+                    stroke: @dullGreen;
+                }
+            }
+            .fill{
+                &.primary {
                 fill: @iconWrapperTwoTonePrimaryColor;
-            }
-            .secondary {
-                fill: @iconWrapperTwoToneSecondaryColor;
-            }
-            .white {
-                fill: @white;
-            }
-            .positive {
-                fill: @positiveColor;
-            }
-            .negative {
-                fill: @negativeColor;
-            }
-            .info {
-                fill: @infoColor;
-            }
-            .warning {
-                fill: @warningColor;
+                }
+                &.secondary {
+                    fill: @iconWrapperTwoToneSecondaryColor;
+                }
+                &.white {
+                    fill: @white;
+                }
+                &.positive {
+                    fill: @positiveColor;
+                }
+                &.negative {
+                    fill: @negativeColor;
+                }
+                &.info {
+                    fill: @infoColor;
+                }
+                &.warning {
+                    fill: @warningColor;
+                }
+                &.tertiary {
+                    fill: @paleGray;
+                }
+                &.blue {
+                    fill: @blue;
+                    &.stroke {
+                        &.white {
+                            stroke: @white;
+                        }
+                    }
+                }
+                &.green {
+                    fill: @dullGreen;
+                    &.stroke {
+                        &.white {
+                            stroke: @white;
+                        }
+                    }
+                }
             }
         }
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,18 +16,21 @@
  * under the License.
  */
 
-export * from "./applications";
-export * from "./account-recovery";
-export * from "./approvals";
-export * from "./change-password";
-export * from "./consents";
-export * from "./footer";
-export * from "./header";
-export * from "./linked-accounts";
-export * from "./multi-factor-authentication";
-export * from "./overview";
-export * from "./profile";
-export * from "./shared";
-export * from "./side-panel";
-export * from "./user-sessions";
-export * from "./federated-associations";
+/**
+ * Model for federated association
+ */
+export interface FederatedAssociation {
+    id: string;
+    idp: IDP ;
+    federatedUserId: string;
+}
+
+/**
+ * Model of the IDP attribute in FederatedAssociation
+ */
+export interface IDP {
+    id: string;
+    name: string;
+    displayName: string;
+    imageUrl: string;
+}

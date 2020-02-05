@@ -20,7 +20,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { LinkedAccounts, Profile, ProfileExport } from "../components";
+import { FederatedAssociations, LinkedAccounts, Profile, ProfileExport } from "../components";
 import { InnerPageLayout } from "../layouts";
 import { AlertInterface } from "../models";
 import { addAlert } from "../store/actions";
@@ -57,6 +57,11 @@ export const PersonalInfoPage = (): JSX.Element => {
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         <LinkedAccounts onAlertFired={ handleAlerts } />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 16 }>
+                        <FederatedAssociations onAlertFired={ handleAlerts } />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>

@@ -4,7 +4,7 @@ import { Form, Icon, Popup, SemanticWIDTHS } from "semantic-ui-react";
 /**
  * Password prop types
  */
-interface PasswordProps {
+interface PasswordPropsInterface {
     label: string;
     value: string;
     error: false | { content: JSX.Element[] };
@@ -22,8 +22,8 @@ interface PasswordProps {
  * Password component
  * @param props
  */
-export const Password: React.FunctionComponent<PasswordProps> = (
-    props: PasswordProps
+export const Password: React.FunctionComponent<PasswordPropsInterface> = (
+    props: PasswordPropsInterface
 ): JSX.Element => {
     const [isShow, setIsShow] = useState(false);
 
