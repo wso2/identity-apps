@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/admin-portal",
-    "version": "0.9.23",
+    "version": "0.9.24",
     "description": "WSO2 Identity Server Admin Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -20,13 +20,13 @@
         "clean": "rm -rf node_modules build npm"
     },
     "dependencies": {
-        "@wso2is/authentication": "^0.9.23",
-        "@wso2is/core": "^0.9.23",
-        "@wso2is/forms": "^0.9.23",
-        "@wso2is/http": "^0.9.23",
-        "@wso2is/react-components": "^0.9.23",
-        "@wso2is/theme": "^0.9.23",
-        "@wso2is/validation": "^0.9.23"
+        "@wso2is/authentication": "^0.9.24",
+        "@wso2is/core": "^0.9.24",
+        "@wso2is/forms": "^0.9.24",
+        "@wso2is/http": "^0.9.24",
+        "@wso2is/react-components": "^0.9.24",
+        "@wso2is/theme": "^0.9.24",
+        "@wso2is/validation": "^0.9.24"
     },
     "devDependencies": {
         "run-script-os": "^1.0.7"
