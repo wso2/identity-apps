@@ -26,26 +26,19 @@ import { HttpMethods } from "../models";
  */
 const httpClient = AxiosHttpClient.getInstance();
 
-/**
- * Retrieve the roles information for the current authenticated user.
- *
- * @return {Promise<any>} a promise containing the response.
- */
-export const getRolestList = (): Promise<any> => {
+export const getAllPermission = (): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.roles
+        url: ServiceResourcesEndpoint.permission
     };
 
-    return httpClient.request(requestConfig)
-        .then((response) => {
-            return Promise.resolve(response);
-        })
-        .catch((error) => {
-            return Promise.reject(error);
-        });
-};
+    return httpClient.request(requestConfig).then((response) => {
+        return Promise.resolve(response);
+    }).catch((error) => {
+        return Promise.reject(error);
+    })
+}

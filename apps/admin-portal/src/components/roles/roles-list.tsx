@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, MouseEvent } from "react";
 import { getRolestList } from "../../api";
+import { history } from "../../helpers/history";
 import { useTranslation } from "react-i18next";
-import { Table, Button, Icon } from "semantic-ui-react";
+import { Table, Button, Icon, ButtonProps } from "semantic-ui-react";
 import { UserImagePlaceHolder } from "../../components";
 
 export const RolesList: React.FunctionComponent<any> = (): JSX.Element => {
-    const { t } = useTranslation();
     const [rolesList, setRolesList] = useState([]);
 
     useEffect(() => {
@@ -40,6 +40,12 @@ export const RolesList: React.FunctionComponent<any> = (): JSX.Element => {
             didCancel = true;
         };
     }, [rolesList, setRolesList]);
+
+    const showUserPermission = (event: MouseEvent<HTMLButtonElement>, data: ButtonProps) => {
+        console.log(data)
+        //history.push(`roles/${ data.id }/permissions`);
+        history.push(`roles/new/template`);
+    };
 
     return (
         <Table color="orange" className="sub-section-table">
@@ -58,23 +64,23 @@ export const RolesList: React.FunctionComponent<any> = (): JSX.Element => {
                                 <p style={ { padding: "10px 45px" } }>{ role.displayName }</p>
                             </Table.Cell>
                             <Table.Cell width={8}>
-                                <Button size='mini' icon labelPosition='left'>
+                                <Button id={role.id} size='mini' icon labelPosition='left'>
                                     <Icon name='edit outline' />
                                     Rename
                                 </Button>
-                                <Button size='mini' icon labelPosition='left'>
+                                <Button id={role.id} onClick={showUserPermission} size='mini' icon labelPosition='left'>
                                     <Icon name='pause' />
                                     Permissions
                                 </Button>
-                                <Button size='mini' icon labelPosition='left'>
+                                <Button id={role.id} size='mini' icon labelPosition='left'>
                                     <Icon name='user plus' />
                                     Asign Users
                                 </Button>
-                                <Button size='mini' icon labelPosition='left'>
+                                <Button id={role.id} size='mini' icon labelPosition='left'>
                                     <Icon name='users' />
                                     View Users
                                 </Button>
-                                <Button size='mini' icon labelPosition='left'>
+                                <Button id={role.id} size='mini' icon labelPosition='left'>
                                     <Icon name='delete' />
                                     Delete
                                 </Button>

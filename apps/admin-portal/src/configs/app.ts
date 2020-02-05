@@ -34,6 +34,7 @@ interface ServiceResourcesType {
     revoke: string;
     wellKnown: string;
     roles: string;
+    permission: string
 }
 
 export const ServiceResourcesEndpoint: ServiceResourcesType = {
@@ -51,5 +52,6 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     token: `${GlobalConfig.serverHost}/oauth2/token`,
     users: `${GlobalConfig.serverHost}/scim2/Users`,
     roles: `${GlobalConfig.serverHost}/scim2/Groups`,
-    wellKnown: `${GlobalConfig.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
+    wellKnown: `${GlobalConfig.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`,
+    permission: `${GlobalConfig.serverHost}/api/server/v1/permission-management/permissions`
 };
