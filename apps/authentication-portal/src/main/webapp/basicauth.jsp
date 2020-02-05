@@ -277,14 +277,13 @@
 
     <div class="ui divider hidden"></div>
 
-    <div class="ui visible warning message">
+    <div class="cookie-policy-message">
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.cookies.short.description")%>
         <a href="cookie_policy.do" target="policy-pane">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.cookies")%>
         </a>
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.for.more.details")%>
-    </div>
-    <div class="ui visible warning message">
+        <br><br>
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description")%>
         <a href="privacy_policy.do" target="policy-pane">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%>
@@ -293,7 +292,7 @@
     <div class="ui divider hidden"></div>
 
     <div class="ui two column stackable grid">
-        <div class="column align-left buttons">
+        <div class="column mobile center aligned tablet left aligned computer left aligned buttons tablet no-padding-left-first-child computer no-padding-left-first-child">
             <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType)) { %>
             <button
                 type="submit"
@@ -305,7 +304,7 @@
             </button>
             <% } %>
         </div>
-        <div class="column align-right buttons">
+        <div class="column mobile center aligned tablet right aligned computer right aligned buttons tablet no-margin-right-last-child computer no-margin-right-last-child">
             <button
                 type="submit"
                 onclick="submitCredentials(event)"    
