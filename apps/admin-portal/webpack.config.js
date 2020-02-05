@@ -36,7 +36,7 @@ module.exports = (env) => {
     const clientHostDefault = env.NODE_ENV === "prod" ? serverHostDefault : `https://localhost:${devServerPort}`;
     const clientOriginDefault = clientHostDefault;
     const clientIdDefault = "ADMIN_PORTAL";
-    const applicationName = "Admin Portal";
+    const applicationName = "ADMIN_PORTAL";
 
     /**
      * App configurations

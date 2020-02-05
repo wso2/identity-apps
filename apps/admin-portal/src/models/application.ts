@@ -38,9 +38,9 @@ export interface ApplicationListItemInterface extends ApplicationBasicInterface 
  *  Main application interface.
  */
 export interface ApplicationInterface extends ApplicationBasicInterface {
-    imageUrl: string;
-    claimConfiguration: ClaimConfigurationInterface;
-    advanceConfiguration: AdvanceConfigurationInterface;
+    imageUrl?: string;
+    claimConfiguration?: ClaimConfigurationInterface;
+    advancedConfigurations?: AdvancedConfigurationsInterface;
 }
 
 /**
@@ -126,15 +126,23 @@ export interface ClaimConfigurationInterface {
     role: RoleConfigInterface;
 }
 
+/**
+ *  Acceptable certificate types.
+ */
+enum CertificateTypeInterface {
+    JWKS = "JWKS",
+    PEM = "PEM"
+}
+
 export interface CertificateInterface {
     value?: string;
-    type?: string; // TODO  Add in the ENUM types
+    type?: CertificateTypeInterface; // TODO  Check for upload option.
 }
 
 /**
  *  Captures application related configuration.
  */
-export interface AdvanceConfigurationInterface {
+export interface AdvancedConfigurationsInterface {
     saas?: boolean;
     discoverableByEndUsers?: boolean;
     certificate?: CertificateInterface;
