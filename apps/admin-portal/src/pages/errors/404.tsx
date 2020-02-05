@@ -16,13 +16,12 @@
  * under the License.
  */
 
-import * as React from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import { EmptyPlaceholder } from "../../components/shared";
 import { EmptyPlaceholderIllustrations, GlobalConfig } from "../../configs";
-import { ErrorPageLayout } from "../../layouts";
 
 /**
  * 404 error page.
@@ -32,25 +31,23 @@ import { ErrorPageLayout } from "../../layouts";
 export const PageNotFound = (): JSX.Element => {
     const { t } = useTranslation();
     return (
-        <ErrorPageLayout>
-            <EmptyPlaceholder
-                action={ (
-                    <Button
-                        className="link-button"
-                        as={ Link }
-                        to={ GlobalConfig.appHomePath }
-                    >
-                        { t("views:placeholders.404.action") }
-                    </Button>
-                ) }
-                image={ EmptyPlaceholderIllustrations.pageNotFound }
-                imageSize="tiny"
-                subtitle={ [
-                    t("views:placeholders.404.subtitles.0"),
-                    t("views:placeholders.404.subtitles.1")
-                ] }
-                title={ t("views:placeholders.404.title") }
-            />
-        </ErrorPageLayout>
+        <EmptyPlaceholder
+            action={ (
+                <Button
+                    className="link-button"
+                    as={ Link }
+                    to={ GlobalConfig.appHomePath }
+                >
+                    { t("views:placeholders.404.action") }
+                </Button>
+            ) }
+            image={ EmptyPlaceholderIllustrations.pageNotFound }
+            imageSize="tiny"
+            subtitle={ [
+                t("views:placeholders.404.subtitles.0"),
+                t("views:placeholders.404.subtitles.1")
+            ] }
+            title={ t("views:placeholders.404.title") }
+        />
     );
 };

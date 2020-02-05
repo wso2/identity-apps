@@ -18,10 +18,11 @@
 
 import { RouteInterface } from "@wso2is/core/models";
 import { SignIn, SignOut } from "../components/authentication";
-import { AppLayout, AuthLayout, DashboardLayout, DefaultPageLayout } from "../layouts";
+import { AppLayout, AuthLayout, DashboardLayout, DefaultPageLayout, ErrorPageLayout } from "../layouts";
 import {
     ApplicationsPage,
     HomePage,
+    PageNotFound,
     PrivacyPage,
     UsersPage
 } from "../pages";
@@ -61,6 +62,15 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         path: "/privacy",
         protected: true,
         showOnSidePanel: false,
+    },
+    {
+        component: null,
+        icon: null,
+        name: "404",
+        path: "*",
+        protected: true,
+        redirectTo: "/404",
+        showOnSidePanel: false,
     }
 ];
 
@@ -73,6 +83,20 @@ const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
         icon: null,
         name: "Privacy",
         path: "/privacy",
+        protected: true,
+        showOnSidePanel: false,
+    },
+];
+
+/**
+ * Error page layout routes array.
+ */
+const ERROR_LAYOUT_ROUTES: RouteInterface[] = [
+    {
+        component: PageNotFound,
+        icon: null,
+        name: "404",
+        path: "/404",
         protected: true,
         showOnSidePanel: false,
     }
@@ -129,6 +153,15 @@ const APP_ROUTES: RouteInterface[] = [
         showOnSidePanel: false,
     },
     {
+        component: ErrorPageLayout,
+        exact: true,
+        icon: null,
+        name: "Error",
+        path: "/404",
+        protected: true,
+        showOnSidePanel: false,
+    },
+    {
         component: DashboardLayout,
         icon: null,
         name: "Dashboard",
@@ -157,4 +190,5 @@ export const baseRoutes = BASE_ROUTES;
 export const authLayoutRoutes = AUTH_LAYOUT_ROUTES;
 export const dashboardLayoutRoutes = DASHBOARD_LAYOUT_ROUTES;
 export const defaultLayoutRoutes = DEFAULT_LAYOUT_ROUTES;
-export const routes = [ ...DASHBOARD_LAYOUT_ROUTES, ...DEFAULT_LAYOUT_ROUTES ];
+export const errorLayoutRoutes = ERROR_LAYOUT_ROUTES;
+export const routes = [ ...DASHBOARD_LAYOUT_ROUTES ];

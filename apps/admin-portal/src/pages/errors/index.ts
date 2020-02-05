@@ -16,8 +16,5 @@
  * under the License.
  */
 
-export * from "./applications";
-export * from "./errors";
-export * from "./home";
-export * from "./privacy";
-export * from "./users";
+export * from "./404";
+export * from "./under-construction";
