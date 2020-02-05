@@ -22,8 +22,6 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.oauth2.OAuth2ScopeService" %>
-<%@ page import="org.wso2.carbon.identity.oauth2.bean.Scope" %>
-<%@ page import="org.wso2.carbon.identity.oauth2.IdentityOAuth2ScopeException" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.stream.Collectors" %>
@@ -91,52 +89,6 @@
                     <div class="ui divider hidden"></div>
                     
                     <div class="segment-form">
-                        <div class="field">
-                            <% if (userClaimsConsentOnly) {
-                                // If we are getting consent for user claims only we don't need to display OIDC
-                                // scopes in the consent page
-                            } else {%>
-                            <%
-                                if (displayScopes && StringUtils.isNotBlank(scopeString)) {
-                                    // Remove "openid" from the scope list to display.
-                                    List<String> openIdScopes = Stream.of(scopeString.split(" "))
-                                            .filter(x -> !StringUtils.equalsIgnoreCase(x, "openid"))
-                                            .collect(Collectors.toList());
-                    
-                                    if (CollectionUtils.isNotEmpty(openIdScopes)) {
-                            %>
-
-                            <div class="ui segment" style="text-align: left;">
-                                <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.scopes")%></h5>
-                                <div class="scopes-list ui list">
-                                    <%
-                                        for (String scopeID : openIdScopes) {
-                                            try {
-                                                Scope scope = new OAuth2ScopeService().getScope(scopeID);
-                                                if (scope != null) {
-                                                    String displayName = scope.getDisplayName();
-                                    %>
-                                    <div class="item">
-                                        <i class="check circle outline icon"></i>
-                                        <div class="content">
-                                            <%=Encode.forHtml(displayName)%>
-                                        </div>
-                                    </div>
-                                    <%
-                                                }
-                                            } catch (IdentityOAuth2ScopeException e) {
-                                                // Ignore the error since the scope might be an open ID scope
-                                                // so can't view it via scope binding layer.
-                                            }
-                                        }
-                                    %>
-                                </div>
-                            </div>
-
-                            <%
-                                    }
-                                }
-                            %>
 
                         <!-- Prompting for consent is only needed if we have mandatory or requested claims without any consent -->
                         <% if (ArrayUtils.isNotEmpty(mandatoryClaimList) || ArrayUtils.isNotEmpty(requestedClaimList)) { %>
