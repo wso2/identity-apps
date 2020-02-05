@@ -28,4 +28,5 @@ declare const LOGIN_CALLBACK_URL: string;
 declare const LOGOUT_CALLBACK_URL: string;
 declare const SERVER_HOST_DEFAULT: string;
 declare const SERVER_ORIGIN_DEFAULT: string;
+declare const TENANT_DEFAULT: string; 
 declare const TITLE_TEXT_DEFAULT: string;
