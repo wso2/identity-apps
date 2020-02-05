@@ -96,6 +96,58 @@ export interface Common {
  */
 export interface Views {
     components: {
+        applications: {
+            notifications: {
+                fetchApplications: Notification;
+            };
+            placeholders: {
+                emptyList: Placeholder;
+            };
+            search: {
+                forms: {
+                    searchForm: {
+                        inputs: {
+                            filerAttribute: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            filterCondition: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            filterValue: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                        };
+                    };
+                };
+                hints: {
+                    querySearch: {
+                        actionKeys: string;
+                        label: string;
+                    };
+                };
+                options: {
+                    header: string;
+                };
+                placeholder: string;
+                popups: {
+                    clear: string;
+                    dropdown: string;
+                };
+                resultsIndicator: string;
+            };
+        };
         users: {
             all: {
                 heading: string;

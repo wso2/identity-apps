@@ -223,6 +223,12 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
                 basicProfileInfo={ profileDetails }
                 fluid={ !isMobileViewport ? fluid : false }
                 isProfileInfoLoading={ isProfileInfoLoading }
+                userDropdownLinks={ [
+                    {
+                        name: "Logout",
+                        to: "/logout"
+                    }
+                ] }
                 profileInfo={ profileDetails.profileInfo }
                 showUserDropdown={ true }
                 onSidePanelToggleClick={ handleSidePanelToggleClick }

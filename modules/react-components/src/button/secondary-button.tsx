@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -16,7 +16,19 @@
  * under the License.
  */
 
-export * from "./application-list";
-export * from "./application-search";
-export * from "./dropdown-details";
-export * from "./dropdown-details-general";
+import React from "react";
+import { Button as SemanticButton, ButtonProps } from "semantic-ui-react";
+
+/**
+ * Secondary button component.
+ *
+ * @param {ButtonProps} props - Props injected to the component.
+ * @return {JSX.Element}
+ */
+export const SecondaryButton: React.FunctionComponent<ButtonProps> = (
+    props: ButtonProps
+): JSX.Element => {
+    return (
+        <SemanticButton { ...props } secondary />
+    );
+};

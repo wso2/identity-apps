@@ -16,7 +16,19 @@
  * under the License.
  */
 
-export * from "./application-list";
-export * from "./application-search";
-export * from "./dropdown-details";
-export * from "./dropdown-details-general";
+import React from "react";
+import { Button as SemanticButton, ButtonProps } from "semantic-ui-react";
+
+/**
+ * Default button component.
+ *
+ * @param {ButtonProps} props - Props injected to the component.
+ * @return {JSX.Element}
+ */
+export const Button: React.FunctionComponent<ButtonProps> = (
+    props: ButtonProps
+): JSX.Element => {
+    return (
+        <SemanticButton { ...props } />
+    );
+};

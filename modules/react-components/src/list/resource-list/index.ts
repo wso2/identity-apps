@@ -16,7 +16,5 @@
  * under the License.
  */
 
-export * from "./application-list";
-export * from "./application-search";
-export * from "./dropdown-details";
-export * from "./dropdown-details-general";
+export * from "./resource-list";
+export * from "./resource-list-item";

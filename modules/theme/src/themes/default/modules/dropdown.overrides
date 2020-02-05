@@ -14,9 +14,22 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
 
-export * from "./application-list";
-export * from "./application-search";
-export * from "./dropdown-details";
-export * from "./dropdown-details-general";
+/*******************************************
+        Labeled Dropdown Variation
+*******************************************/
+
+.ui.dropdown {
+    &.labeled {
+        &.horizontal {
+            &.right {
+                margin-left: @labeledDropdownHorizontalSpacing;
+            }
+            &.left {
+                margin-right: @labeledDropdownHorizontalSpacing;
+            }
+        }
+    }
+}

@@ -16,7 +16,25 @@
  * under the License.
  */
 
-export * from "./application-list";
-export * from "./application-search";
-export * from "./dropdown-details";
-export * from "./dropdown-details-general";
+import classNames from "classnames";
+import React from "react";
+import { Button as SemanticButton, ButtonProps } from "semantic-ui-react";
+
+/**
+ * Link button component.
+ *
+ * @param {ButtonProps} props - Props injected to the component.
+ * @return {JSX.Element}
+ */
+export const LinkButton: React.FunctionComponent<ButtonProps> = (
+    props: ButtonProps
+): JSX.Element => {
+
+    const { className } = props;
+
+    const classes = classNames("link-button", className);
+
+    return (
+        <SemanticButton { ...props } className={ classes } />
+    );
+};

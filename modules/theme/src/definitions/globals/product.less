@@ -72,23 +72,23 @@ body {
 
                     &.bordered {
                         &.all {
-                            border: @defaultBorderRadius solid @defaultBorderColor;
+                            border: @defaultBorderWidth solid @defaultBorderColor;
                         }
 
                         &.right {
-                            border-right: @defaultBorderRadius solid @defaultBorderColor;
+                            border-right: @defaultBorderWidth solid @defaultBorderColor;
                         }
 
                         &.left {
-                            border-left: @defaultBorderRadius solid @defaultBorderColor;
+                            border-left: @defaultBorderWidth solid @defaultBorderColor;
                         }
 
                         &.top {
-                            border-top: @defaultBorderRadius solid @defaultBorderColor;
+                            border-top: @defaultBorderWidth solid @defaultBorderColor;
                         }
 
                         &.bottom {
-                            border-bottom: @defaultBorderRadius solid @defaultBorderColor;
+                            border-bottom: @defaultBorderWidth solid @defaultBorderColor;
                         }
                     }
                 }
@@ -120,6 +120,23 @@ body {
 
             .app-footer {
                 padding: @fluidDashboardLayoutFooterPadding;
+            }
+        }
+    }
+
+    &.list-layout {
+        .top-action-panel {
+            .left-aligned-actions {
+                float: left;
+            }
+
+            .right-aligned-actions {
+                float: right;
+                display: flex;
+
+                > div :not(:last-child), > button :not(:last-child) {
+                    margin-right: 10px;
+                }
             }
         }
     }
@@ -740,6 +757,24 @@ body {
                 background-color: @warningColor;
             }
         }
+    }
+}
+
+/*****************************************
+            Pagination
+*****************************************/
+
+.pagination-bar {
+    margin-top: 20px;
+
+    .list-summary {
+        font-size: 0.8em;
+        color: @doveGray;
+        float: left;
+    }
+
+    .list-pagination {
+        float: right;
     }
 }
 
