@@ -19,12 +19,7 @@
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
-import {
-    ConsentReceiptInterface,
-    ConsentState,
-    HttpMethods,
-    UpdateReceiptInterface
-} from "../models";
+import { ConsentReceiptInterface, ConsentState, HttpMethods, UpdateReceiptInterface } from "../models";
 
 /**
  * Initialize an axios Http client.
@@ -38,6 +33,12 @@ const httpClient = AxiosHttpClient.getInstance();
  * @return {Promise<any>} A promise containing the response.
  */
 export const fetchConsentedApps = (state: ConsentState): Promise<any> => {
+    const userName = AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME).split("@");
+
+    if (userName.length > 1) {
+        userName.pop();
+    }
+
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -46,13 +47,14 @@ export const fetchConsentedApps = (state: ConsentState): Promise<any> => {
         },
         method: HttpMethods.GET,
         params: {
-            piiPrincipalId: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME),
+            piiPrincipalId: userName.join("@"),
             state
         },
         url: ServiceResourcesEndpoint.consents
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient
+        .request(requestConfig)
         .then((response) => {
             return response.data;
         })
@@ -77,7 +79,8 @@ export const fetchConsentReceipt = (receiptId: string): Promise<any> => {
         url: ServiceResourcesEndpoint.receipts + `/${receiptId}`
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient
+        .request(requestConfig)
         .then((response) => {
             return response.data as ConsentReceiptInterface;
         })
@@ -94,13 +97,14 @@ export const fetchConsentReceipt = (receiptId: string): Promise<any> => {
 export const revokeConsentedApp = (appId: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            Accept: "application/json",
+            Accept: "application/json"
         },
         method: HttpMethods.DELETE,
         url: ServiceResourcesEndpoint.receipts + `/${appId}`
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient
+        .request(requestConfig)
         .then((response) => {
             // TODO: change the return type
             return response.data as ConsentReceiptInterface;
@@ -108,7 +112,6 @@ export const revokeConsentedApp = (appId: string): Promise<any> => {
         .catch((error) => {
             return Promise.reject(error);
         });
-
 };
 
 /**
@@ -117,7 +120,7 @@ export const revokeConsentedApp = (appId: string): Promise<any> => {
  * @param {any} dispatch - `dispatch` function from redux.
  * @returns {(next) => (action) => any} Passes the action to the next middleware
  */
-export const updateConsentedClaims = (receipt: ConsentReceiptInterface): Promise<any>  => {
+export const updateConsentedClaims = (receipt: ConsentReceiptInterface): Promise<any> => {
     const body: UpdateReceiptInterface = {
         collectionMethod: "Web Form - User Portal",
         jurisdiction: receipt.jurisdiction,
@@ -154,7 +157,8 @@ export const updateConsentedClaims = (receipt: ConsentReceiptInterface): Promise
         url: ServiceResourcesEndpoint.consents
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient
+        .request(requestConfig)
         .then((response) => {
             return response.data as ConsentReceiptInterface;
         })
