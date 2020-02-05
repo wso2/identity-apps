@@ -17,7 +17,10 @@
  */
 
 import React, { PropsWithChildren } from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { Container, Divider } from "semantic-ui-react";
+import { ProtectedRoute } from "../components";
+import { errorLayoutRoutes } from "../configs";
 
 /**
  * Error page layout.
@@ -29,12 +32,35 @@ import { Container, Divider } from "semantic-ui-react";
 export const ErrorPageLayout: React.FunctionComponent<PropsWithChildren<{}>> = (
     props: PropsWithChildren<{}>
 ): JSX.Element => {
-    const { children } = props;
 
     return (
         <Container className="layout-content error-page-layout">
             <Divider className="x4" hidden/>
-            { children }
+            <Switch>
+                {
+                    errorLayoutRoutes.map((route, index) => (
+                        route.redirectTo
+                            ? <Redirect to={ route.redirectTo } />
+                            : route.protected
+                                ? (
+                                    <ProtectedRoute
+                                        component={ route.component }
+                                        path={ route.path }
+                                        key={ index }
+                                    />
+                                )
+                                : (
+                                    <Route
+                                        path={ route.path }
+                                        render={ (renderProps) =>
+                                            (<route.component { ...renderProps } />)
+                                        }
+                                        key={ index }
+                                    />
+                                )
+                    ))
+                }
+            </Switch>
             <Divider className="x3" hidden/>
         </Container>
     );

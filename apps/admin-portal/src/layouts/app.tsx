@@ -33,26 +33,29 @@ export const AppLayout: React.FunctionComponent<{}> = (): JSX.Element => {
         <Switch>
             {
                 appRoutes.map((route, index) => (
-                    route.protected ?
-                        (
-                            <ProtectedRoute
-                                component={ route.component }
-                                path={ route.path }
-                                key={ index }
-                                exact={ route.exact }
-                            />
-                        )
-                        :
-                        (
-                            <Route
-                                path={ route.path }
-                                render={ (renderProps) =>
-                                    (<route.component { ...renderProps } />)
-                                }
-                                key={ index }
-                                exact={ route.exact }
-                            />
-                        )
+                    route.redirectTo
+                        ? <Redirect to={ route.redirectTo } />
+                        : route.protected
+                            ? (
+                                <ProtectedRoute
+                                    component={ route.component ? route.component : null }
+                                    path={ route.path }
+                                    key={ index }
+                                    exact={ route.exact }
+                                />
+                            )
+                            : (
+                                <Route
+                                    path={ route.path }
+                                    render={ (renderProps) =>
+                                        route.component
+                                            ? <route.component { ...renderProps } />
+                                            : null
+                                    }
+                                    key={ index }
+                                    exact={ route.exact }
+                                />
+                            )
                 ))
             }
         </Switch>
