@@ -19,7 +19,6 @@
 import appConfig from "../../app.config.json";
 import * as ApplicationConstants from "../constants/application-constants";
 import * as TokenConstants from "../constants/token-constants";
-import { Routes } from "../models";
 import {
     AccountSecurityPage,
     ApplicationsPage,
@@ -33,9 +32,22 @@ import {
 import { checkEnabled, getRouteName } from "../utils/filter-utils";
 
 /**
+ * Interface to handle route types.
+ */
+export interface Route {
+    component: any;
+    icon?: string;
+    name: string;
+    path: string;
+    protected: boolean;
+    scope?: string;
+    showOnSidePanel: boolean;
+}
+
+/**
  * Routes array.
  */
-const ROUTES: Routes[] = [
+const ROUTES: Route[] = [
     {
         component: OverviewPage,
         icon: "overview",
@@ -101,7 +113,7 @@ const ROUTES: Routes[] = [
     },
 ];
 
-const filteredRoutes: Routes[] = ROUTES.filter((route: Routes) => {
+const filteredRoutes: Route[] = ROUTES.filter((route: Route) => {
     const routeName = getRouteName(route.name);
     return checkEnabled(appConfig, routeName);
 });

@@ -22,7 +22,7 @@ import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import appConfig from "../../app.config.json";
 import { FederatedAssociations, LinkedAccounts, Profile, ProfileExport } from "../components";
-import { EXPORT_PROFILE, LINKED_ACCOUNTS, PERSONAL_INFO, PROFILE } from "../constants";
+import { EXPORT_PROFILE, EXTERNAL_LOGINS, LINKED_ACCOUNTS, PERSONAL_INFO, PROFILE } from "../constants";
 import { InnerPageLayout } from "../layouts";
 import { AlertInterface } from "../models";
 import { addAlert } from "../store/actions";
