@@ -31,7 +31,6 @@ export const AppLayout: React.FunctionComponent<{}> = (): JSX.Element => {
 
     return (
         <Switch>
-            <Redirect exact={ true } path="/" to={ APP_LOGIN_PATH } />
             {
                 appRoutes.map((route, index) => (
                     route.protected ?
@@ -40,6 +39,7 @@ export const AppLayout: React.FunctionComponent<{}> = (): JSX.Element => {
                                 component={ route.component }
                                 path={ route.path }
                                 key={ index }
+                                exact={ route.exact }
                             />
                         )
                         :
@@ -50,6 +50,7 @@ export const AppLayout: React.FunctionComponent<{}> = (): JSX.Element => {
                                     (<route.component { ...renderProps } />)
                                 }
                                 key={ index }
+                                exact={ route.exact }
                             />
                         )
                 ))

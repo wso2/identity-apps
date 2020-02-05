@@ -72,23 +72,23 @@ body {
 
                     &.bordered {
                         &.all {
-                            border: @defaultBorderRadius solid @defaultBorderColor;
+                            border: @defaultBorderWidth solid @defaultBorderColor;
                         }
 
                         &.right {
-                            border-right: @defaultBorderRadius solid @defaultBorderColor;
+                            border-right: @defaultBorderWidth solid @defaultBorderColor;
                         }
 
                         &.left {
-                            border-left: @defaultBorderRadius solid @defaultBorderColor;
+                            border-left: @defaultBorderWidth solid @defaultBorderColor;
                         }
 
                         &.top {
-                            border-top: @defaultBorderRadius solid @defaultBorderColor;
+                            border-top: @defaultBorderWidth solid @defaultBorderColor;
                         }
 
                         &.bottom {
-                            border-bottom: @defaultBorderRadius solid @defaultBorderColor;
+                            border-bottom: @defaultBorderWidth solid @defaultBorderColor;
                         }
                     }
                 }
@@ -120,6 +120,23 @@ body {
 
             .app-footer {
                 padding: @fluidDashboardLayoutFooterPadding;
+            }
+        }
+    }
+
+    &.list-layout {
+        .top-action-panel {
+            .left-aligned-actions {
+                float: left;
+            }
+
+            .right-aligned-actions {
+                float: right;
+                display: flex;
+
+                > div :not(:last-child), > button :not(:last-child) {
+                    margin-right: 10px;
+                }
             }
         }
     }
@@ -292,39 +309,123 @@ body {
     }
     &.two-tone {
         svg.icon {
-            .primary {
-                fill: @iconWrapperTwoTonePrimaryColor;
+            .stroke {
+                &.primary {
+                    stroke: @iconWrapperTwoTonePrimaryColor;
+                }
+                &.secondary {
+                    stroke: @iconWrapperTwoToneSecondaryColor;
+                }
+                &.white {
+                    stroke: @white;
+                }
+                &.tertiary {
+                    stroke: @paleGray;
+                }
+                &.blue {
+                    stroke: @blue;
+                }
+                &.green {
+                    stroke: @dullGreen;
+                }
             }
-            .secondary {
-                fill: @iconWrapperTwoToneSecondaryColor;
-            }
-            .white {
-                fill: @white;
+            .fill{
+                &.primary {
+                    fill: @iconWrapperTwoTonePrimaryColor;
+                }
+                &.secondary {
+                    fill: @iconWrapperTwoToneSecondaryColor;
+                }
+                &.white {
+                    fill: @white;
+                }
+                &.tertiary {
+                    fill: @paleGray;
+                }
+                &.blue {
+                    fill: @blue;
+                }
+                &.green {
+                    fill: @dullGreen;
+                }
             }
         }
     }
     &.colored {
         svg.icon {
-            .primary {
+            .stroke{
+                &.primary {
+                    stroke: @iconWrapperTwoTonePrimaryColor;
+                }
+                &.secondary {
+                    stroke: @iconWrapperTwoToneSecondaryColor;
+                }
+                &.white {
+                    stroke: @white;
+                }
+                &.positive {
+                    stroke: @positiveColor;
+                }
+                &.negative {
+                    stroke: @negativeColor;
+                }
+                &.info {
+                    stroke: @infoColor;
+                }
+                &.warning {
+                    stroke: @warningColor;
+                }
+                &.tertiary {
+                    stroke: @paleGray;
+                }
+                &.blue {
+                    stroke: @blue;
+                }
+                &.green {
+                    stroke: @dullGreen;
+                }
+            }
+            .fill{
+                &.primary {
                 fill: @iconWrapperTwoTonePrimaryColor;
-            }
-            .secondary {
-                fill: @iconWrapperTwoToneSecondaryColor;
-            }
-            .white {
-                fill: @white;
-            }
-            .positive {
-                fill: @positiveColor;
-            }
-            .negative {
-                fill: @negativeColor;
-            }
-            .info {
-                fill: @infoColor;
-            }
-            .warning {
-                fill: @warningColor;
+                }
+                &.secondary {
+                    fill: @iconWrapperTwoToneSecondaryColor;
+                }
+                &.white {
+                    fill: @white;
+                }
+                &.positive {
+                    fill: @positiveColor;
+                }
+                &.negative {
+                    fill: @negativeColor;
+                }
+                &.info {
+                    fill: @infoColor;
+                }
+                &.warning {
+                    fill: @warningColor;
+                }
+                &.tertiary {
+                    fill: @paleGray;
+                }
+                &.blue {
+                    fill: @blue;
+                    &.stroke {
+                        &.white {
+                            stroke: @white;
+                        }
+                    }
+                }
+                &.green {
+                    fill: @dullGreen;
+                    &.stroke {
+                        &.white {
+                            stroke: @white;
+                        }
+                    }
+                }
             }
         }
     }
@@ -656,6 +757,24 @@ body {
                 background-color: @warningColor;
             }
         }
+    }
+}
+
+/*****************************************
+            Pagination
+*****************************************/
+
+.pagination-bar {
+    margin-top: 20px;
+
+    .list-summary {
+        font-size: 0.8em;
+        color: @doveGray;
+        float: left;
+    }
+
+    .list-pagination {
+        float: right;
     }
 }
 

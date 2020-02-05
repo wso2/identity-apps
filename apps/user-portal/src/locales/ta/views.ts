@@ -393,6 +393,52 @@ export const views: Views = {
                 }
             }
         },
+        federatedAssociations: {
+            notifications: {
+                getFederatedAssociations: {
+                    error: {
+                        description: "{{description}}",
+                        message: "ஏதோ தவறேற்பட்டுவிட்டது"
+                    },
+                    genericError: {
+                        description: "வெளிப்புற உள்நுழைவுகளை பெற முடியவில்லை",
+                        message: "ஏதோ தவறேற்பட்டுவிட்டது"
+                    },
+                    success: {
+                        description: "வெளிப்புற உள்நுழைவுகள் வெற்றிகரமாக பெறப்பட்டுவிட்டன",
+                        message: "வெளிப்புற உள்நுழைவுகள் வெற்றிகரமாக பெறப்பட்டுவிட்டன"
+                    }
+                },
+                removeAllFederatedAssociations: {
+                    error: {
+                        description: "{{description}}",
+                        message: "ஏதோ தவறேற்பட்டுவிட்டது"
+                    },
+                    genericError: {
+                        description: "வெளிப்புற உள்நுழைவுகளை அகற்ற முடியவில்லை",
+                        message: "ஏதோ தவறேற்பட்டுவிட்டது"
+                    },
+                    success: {
+                        description: "அனைத்து வெளிப்புற உள்நுழைவுகளும் வெற்றிகரமாக அகற்றப்பட்டன",
+                        message: "வெளிப்புற உள்நுழைவுகள் வெற்றிகரமாக அகற்றப்பட்டன"
+                    }
+                },
+                removeFederatedAssociation: {
+                    error: {
+                        description: "{{description}}",
+                        message: "ஏதோ தவறேற்பட்டுவிட்டது"
+                    },
+                    genericError: {
+                        description: "வெளிப்புற உள்நுழைவை அகற்ற முடியவில்லை",
+                        message: "ஏதோ தவறேற்பட்டுவிட்டது"
+                    },
+                    success: {
+                        description: "வெளிப்புற உள்நுழைவு வெற்றிகரமாக அகற்றப்பட்டது",
+                        message: "வெளிப்புற உள்நுழைவு வெற்றிகரமாக அகற்றப்பட்டது"
+                    }
+                }
+            }
+        },
         footer: {
             copyright: "WSO2 Identity Server © {{year}}"
         },
@@ -1180,6 +1226,10 @@ export const views: Views = {
                     heading: "நீங்கள் எந்தவொரு செயலிற்கும் அனுமதி அளிக்கவில்லை."
                 }
             }
+        },
+        federatedAssociations: {
+            description: "இந்தக் கணக்குடன் இணைக்கப்பட்டுள்ள பிற அடையாள வழங்குநர்களிடமிருந்து வழங்கப்பட்ட உங்கள் கணக்குகளைக் காண்க",
+            heading: "வெளிப்புற உள்நுழைவுகள்"
         },
         linkedAccounts: {
             actionTitles: {

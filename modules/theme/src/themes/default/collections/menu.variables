@@ -37,3 +37,9 @@
 
 @sidePanelChildItemGroupLeftPadding: 15px;
 @sidePanelChildItemPadding: @itemVerticalPadding @itemHorizontalPadding;
+
+/*-------------------
+      Pagination
+--------------------*/
+
+@listPaginationMarginRight: 10px;

@@ -18,7 +18,15 @@
 
 import { AxiosHttpClient } from "@wso2is/http";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
-import { ApplicationBasic, ApplicationList, Claim, ClaimDialect, ExternalClaim, HttpMethods } from "../models";
+import {
+    ApplicationBasicInterface,
+    ApplicationInterface,
+    ApplicationListInterface,
+    Claim,
+    ClaimDialect,
+    ExternalClaim,
+    HttpMethods
+} from "../models";
 
 /**
  * Get an axios instance.
@@ -133,7 +141,7 @@ export const getApplicationDetails = (id: string): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed get app from: "));
             }
-            return Promise.resolve(response.data as ApplicationBasic);
+            return Promise.resolve(response.data as ApplicationBasicInterface);
         }).catch((error) => {
             return Promise.reject(error);
         });
@@ -146,7 +154,7 @@ export const getApplicationDetails = (id: string): Promise<any> => {
  *
  * @return {Promise<any>} A promise containing the response.
  */
-export const updateApplicationDetails = (app: ApplicationBasic): Promise<any> => {
+export const updateApplicationDetails = (app: ApplicationInterface): Promise<any> => {
     const requestConfig = {
         data: {
             accessUrl: app.accessUrl,
@@ -168,7 +176,7 @@ export const updateApplicationDetails = (app: ApplicationBasic): Promise<any> =>
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update application from: "));
             }
-            return Promise.resolve(response.data as ApplicationBasic);
+            return Promise.resolve(response.data as ApplicationBasicInterface);
         }).catch((error) => {
             return Promise.reject(error);
         });
@@ -182,7 +190,7 @@ export const updateApplicationDetails = (app: ApplicationBasic): Promise<any> =>
  *
  * @return {Promise<any>} A promise containing the response.
  */
-export const getApplicationList = (limit: string, offset: string): Promise<any> => {
+export const getApplicationList = (limit: number, offset: number): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -198,7 +206,7 @@ export const getApplicationList = (limit: string, offset: string): Promise<any> 
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed get application list from: "));
             }
-            return Promise.resolve(response.data as ApplicationList);
+            return Promise.resolve(response.data as ApplicationListInterface);
         }).catch((error) => {
             return Promise.reject(error);
         });

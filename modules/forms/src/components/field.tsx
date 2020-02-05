@@ -36,7 +36,7 @@ import { Password } from "./password";
 /**
  * prop types for the Field component
  */
-interface InnerFieldProps {
+interface InnerFieldPropsInterface {
     passedProps: FormField;
     formProps: {
         checkError: (inputField: FormField) => { isError: boolean, errorMessages: string[] };
@@ -52,7 +52,7 @@ interface InnerFieldProps {
  * This produces a InnerField component
  * @param props
  */
-export const InnerField = (props: InnerFieldProps): JSX.Element => {
+export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
 
     const {
         passedProps,

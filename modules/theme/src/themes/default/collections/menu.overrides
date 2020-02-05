@@ -277,3 +277,29 @@
         }
     }
 }
+
+/*******************************************
+               Pagination
+*******************************************/
+
+.ui.pagination.menu {
+    &.list-pagination {
+         box-shadow: none;
+         border: none;
+
+         > .item {
+            border: @defaultBorderWidth solid @defaultBorderColor;
+            border-radius: @defaultBorderRadius;
+
+            &:not(:last-child) {
+                margin-right: @listPaginationMarginRight;
+            }
+            &:before {
+                display: none;
+            }
+            &:focus {
+                outline: none;
+            }
+         }
+    }
+}
