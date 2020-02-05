@@ -20,6 +20,7 @@ import { RouteInterface } from "@wso2is/core/models";
 import { SignIn, SignOut } from "../components/authentication";
 import { AppLayout, AuthLayout, DashboardLayout, DefaultPageLayout } from "../layouts";
 import {
+    ApplicationEditPage,
     ApplicationsPage,
     HomePage,
     PrivacyPage,
@@ -40,11 +41,21 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     },
     {
         component: ApplicationsPage,
+        exact: true,
         icon: "applications",
         name: "Applications",
         path: "/applications",
         protected: true,
         showOnSidePanel: true,
+    },
+    {
+        component: ApplicationEditPage,
+        exact: true,
+        icon: "applications",
+        name: "Application-Edit",
+        path: "/applications/:id",
+        protected: true,
+        showOnSidePanel: false,
     },
     {
         component: UsersPage,

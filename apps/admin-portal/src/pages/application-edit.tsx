@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,10 +16,23 @@
  * under the License.
  */
 
-export * from "./errors/404";
-export * from "./applications";
-export * from "./errors/under-construction";
-export * from "./home";
-export * from "./privacy";
-export * from "./users";
-export * from "./application-edit";
+import React from "react";
+import { EditApplication } from "../components/applications";
+import { PageLayout } from "../layouts";
+
+/**
+ * Application Edit page.
+ *
+ * @return {JSX.Element}
+ */
+export const ApplicationEditPage = (): JSX.Element => {
+
+    return (
+        <PageLayout
+            title=" "
+            description=" "
+        >
+            <EditApplication/>
+        </PageLayout>
+    );
+};
