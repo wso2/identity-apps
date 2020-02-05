@@ -28,6 +28,7 @@ import _ from "lodash";
 import { getProfileInfo, getProfileSchemas } from "../../api";
 import { GlobalConfig, i18n, ServiceResourcesEndpoint } from "../../configs";
 import * as TokenConstants from "../../constants";
+import { history } from "../../helpers";
 import { AlertLevels, BasicProfileInterface, ProfileSchema } from "../../models";
 import { getProfileCompletion } from "../../utils";
 import { store } from "../index";
@@ -157,17 +158,17 @@ export const getProfileInformation = (updateProfileCompletion: boolean = false) 
  * Handle user sign-in
  */
 export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
-    const sendSignInRequest = () => {
-        const requestParams: OIDCRequestParamsInterface = {
-            clientHost: GlobalConfig.clientHost,
-            clientId: GlobalConfig.clientID,
-            clientSecret: null,
-            enablePKCE: true,
-            redirectUri: GlobalConfig.loginCallbackUrl,
-            scope: [TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE],
-            serverOrigin: GlobalConfig.serverOrigin
-        };
+    const requestParams: OIDCRequestParamsInterface = {
+        clientHost: GlobalConfig.clientHost,
+        clientId: GlobalConfig.clientID,
+        clientSecret: null,
+        enablePKCE: true,
+        redirectUri: GlobalConfig.loginCallbackUrl,
+        scope: [TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE],
+        serverOrigin: GlobalConfig.serverOrigin
+    };
 
+    const sendSignInRequest = () => {
         if (consentDenied) {
             requestParams.prompt = "login";
         }
@@ -194,7 +195,7 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
         dispatch(setSignIn());
         dispatch(getProfileInformation());
     } else {
-        OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false)
+        OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false, requestParams.clientHost)
             .then(() => {
                 sendSignInRequest();
             })
@@ -215,15 +216,17 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
  * Handle user sign-out
  */
 export const handleSignOut = () => (dispatch) => {
-    SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl)
-        .then(() => {
-            dispatch(setSignOut());
-            AuthenticateSessionUtil.endAuthenticatedSession();
-            OPConfigurationUtil.resetOPConfiguration();
-        })
-        .catch((error) => {
-            // TODO: show error page
-        });
+    if (sessionStorage.length === 0) {
+        history.push(GlobalConfig.appLoginPath);
+    } else {
+        SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl, () => {
+                dispatch(setSignOut());
+                AuthenticateSessionUtil.endAuthenticatedSession();
+                OPConfigurationUtil.resetOPConfiguration();
+            }).catch(() => {
+                history.push(GlobalConfig.appLoginPath);
+            });
+    }
 };
 
 /**
