@@ -34,7 +34,10 @@ const httpClient = AxiosHttpClient.getInstance();
  */
 export const fetchConsentedApps = (state: ConsentState): Promise<any> => {
     const userName = AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME).split("@");
-    userName.pop();
+
+    if (userName.length > 1) {
+        userName.pop();
+    }
 
     const requestConfig = {
         headers: {
