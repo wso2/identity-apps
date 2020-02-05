@@ -54,21 +54,21 @@ export const views: Views = {
                         inputs: {
                             filerAttribute: {
                                 label: "Filter attribute",
-                                placeholder: "ex: name, description etc.",
+                                placeholder: "e.g. name, description etc.",
                                 validations: {
                                     empty: "Filter attribute is a required field"
                                 }
                             },
                             filterCondition: {
                                 label: "Filter condition",
-                                placeholder: "ex: Starts with etc.",
+                                placeholder: "e.g. Starts with etc.",
                                 validations: {
                                     empty: "Filter condition is a required field"
                                 }
                             },
                             filterValue: {
                                 label: "Filter value",
-                                placeholder: "ex: facebook, slack etc.",
+                                placeholder: "e.g. facebook, slack etc.",
                                 validations: {
                                     empty: "Filter value is a required field"
                                 }
@@ -387,21 +387,21 @@ export const views: Views = {
                         inputs: {
                             filerAttribute: {
                                 label: "Filter attribute",
-                                placeholder: "ex: name, description etc.",
+                                placeholder: "e.g. name, description etc.",
                                 validations: {
                                     empty: "Filter attribute is a required field"
                                 }
                             },
                             filterCondition: {
                                 label: "Filter condition",
-                                placeholder: "ex: Starts with etc.",
+                                placeholder: "e.g. Starts with etc.",
                                 validations: {
                                     empty: "Filter condition is a required field"
                                 }
                             },
                             filterValue: {
                                 label: "Filter value",
-                                placeholder: "ex: facebook, slack etc.",
+                                placeholder: "e.g. facebook, slack etc.",
                                 validations: {
                                     empty: "Filter value is a required field"
                                 }
