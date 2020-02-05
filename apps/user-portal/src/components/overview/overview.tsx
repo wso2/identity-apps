@@ -18,6 +18,15 @@
 
 import React, { FunctionComponent } from "react";
 import { Divider, Grid } from "semantic-ui-react";
+import appConfig from "../../../app.config.json";
+import {
+    ACCOUNT_ACTIVITY,
+    ACCOUNT_SECURITY,
+    ACCOUNT_STATUS,
+    CONSENTS_CONTROL,
+    OVERVIEW
+} from "../../constants";
+import { checkEnabled } from "../../utils";
 import {
     AccountSecurityWidget,
     AccountStatusWidget,
@@ -31,21 +40,47 @@ import {
  * @return {JSX.Element}
  */
 export const Overview: FunctionComponent<{}> = (): JSX.Element => {
+    const overViewConfig = appConfig[OVERVIEW];
+
     return (
         <Grid className="overview-page">
-            <Divider hidden/>
+            <Divider hidden />
             <Grid.Row>
                 <Grid.Column computer={ 9 } mobile={ 16 }>
-                    <AccountStatusWidget />
+                    {
+                        checkEnabled(overViewConfig, ACCOUNT_STATUS)
+                            ? (
+                                <AccountStatusWidget />
+                            )
+                            : null
+                    }
                 </Grid.Column>
                 <Grid.Column computer={ 7 } mobile={ 16 }>
-                    <UserSessionsWidget />
+                    {
+                        checkEnabled(overViewConfig, ACCOUNT_ACTIVITY)
+                            ? (
+                                <UserSessionsWidget />
+                            )
+                            : null
+                    }
                 </Grid.Column>
                 <Grid.Column computer={ 8 } mobile={ 16 }>
-                    <AccountSecurityWidget />
+                    {
+                        checkEnabled(overViewConfig, ACCOUNT_SECURITY)
+                            ? (
+                                <AccountSecurityWidget />
+                            )
+                            : null
+                    }
                 </Grid.Column>
                 <Grid.Column computer={ 8 } mobile={ 16 }>
-                    <ConsentManagementWidget />
+                    {
+                        checkEnabled(overViewConfig, CONSENTS_CONTROL)
+                            ? (
+                                <ConsentManagementWidget />
+                            )
+                            : null
+                    }
                 </Grid.Column>
             </Grid.Row>
         </Grid>

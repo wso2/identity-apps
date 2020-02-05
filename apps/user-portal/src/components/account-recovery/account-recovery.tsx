@@ -19,7 +19,10 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { List } from "semantic-ui-react";
+import appConfig from "../../../app.config.json";
+import { ACCOUNT_RECOVERY, EMAIL_RECOVERY, SECURITY, SECURITY_QUESTIONS } from "../../constants";
 import { AlertInterface } from "../../models";
+import { checkEnabled } from "../../utils";
 import { SettingsSection } from "../shared";
 import { EmailRecovery, SecurityQuestionsComponent } from "./options";
 
@@ -41,6 +44,7 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
 ): JSX.Element => {
     const { t } = useTranslation();
     const { onAlertFired } = props;
+    const accountRecoveryConfig = appConfig[SECURITY][ACCOUNT_RECOVERY];
 
     return (
         <SettingsSection
@@ -49,10 +53,22 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
         >
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">
-                    <SecurityQuestionsComponent onAlertFired={ onAlertFired } />
+                    {
+                        checkEnabled(accountRecoveryConfig, SECURITY_QUESTIONS)
+                            ? (
+                                <SecurityQuestionsComponent onAlertFired={ onAlertFired } />
+                            )
+                            : null
+                    }
                 </List.Item>
                 <List.Item className="inner-list-item">
-                    <EmailRecovery onAlertFired={ onAlertFired } />
+                    {
+                        checkEnabled(accountRecoveryConfig, EMAIL_RECOVERY)
+                            ? (
+                                <EmailRecovery onAlertFired={ onAlertFired } />
+                            )
+                            : null
+                    }
                 </List.Item>
             </List>
         </SettingsSection>

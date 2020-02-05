@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import appConfig from "../../app.config.json";
 import * as ApplicationConstants from "../constants/application-constants";
 import * as TokenConstants from "../constants/token-constants";
 import {
@@ -28,11 +29,12 @@ import {
     PersonalInfoPage,
     PrivacyPage
 } from "../pages";
+import { checkEnabled, getRouteName } from "../utils/filter-utils";
 
 /**
  * Interface to handle route types.
  */
-interface Route {
+export interface Route {
     component: any;
     icon?: string;
     name: string;
@@ -111,4 +113,9 @@ const ROUTES: Route[] = [
     },
 ];
 
-export const routes = ROUTES;
+const filteredRoutes: Route[] = ROUTES.filter((route: Route) => {
+    const routeName = getRouteName(route.name);
+    return checkEnabled(appConfig, routeName);
+});
+
+export const routes = filteredRoutes;

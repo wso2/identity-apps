@@ -19,7 +19,10 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { List } from "semantic-ui-react";
+import appConfig from "../../../app.config.json";
+import { FIDO, MULTI_FACTOR_AUTHENTICATION, SECURITY, SMS } from "../../constants";
 import { AlertInterface } from "../../models";
+import { checkEnabled } from "../../utils";
 import { SettingsSection } from "../shared";
 import { FIDOAuthenticator, SMSOTPAuthenticator } from "./authenticators";
 
@@ -33,15 +36,28 @@ interface MfaProps {
 export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (props: MfaProps): JSX.Element => {
     const { t } = useTranslation();
     const { onAlertFired } = props;
+    const multiFactorConfig = appConfig[SECURITY][MULTI_FACTOR_AUTHENTICATION];
 
     return (
         <SettingsSection description={ t("views:sections.mfa.description") } header={ t("views:sections.mfa.heading") }>
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">
-                    <SMSOTPAuthenticator onAlertFired={ onAlertFired } />
+                    {
+                        checkEnabled(multiFactorConfig, SMS)
+                            ? (
+                                <SMSOTPAuthenticator onAlertFired={ onAlertFired } />
+                            )
+                            : null
+                    }
                 </List.Item>
                 <List.Item className="inner-list-item">
-                    <FIDOAuthenticator onAlertFired={ onAlertFired } />
+                    {
+                        checkEnabled(multiFactorConfig, FIDO)
+                            ? (
+                                <FIDOAuthenticator onAlertFired={ onAlertFired } />
+                            )
+                            : null
+                    }
                 </List.Item>
             </List>
         </SettingsSection>
