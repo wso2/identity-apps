@@ -33,3 +33,7 @@ export const FIDO = "fido";
 export const ACTIVE_SESSIONS = "activeSessions";
 export const MANAGE_CONSENTS = "manageConsents";
 export const OPERATIONS = "operations";
+export const ACCOUNT_STATUS = "accountStatus";
+export const ACCOUNT_ACTIVITY = "accountActivity";
+export const ACCOUNT_SECURITY = "accountSecurity";
+export const CONSENTS_CONTROL = "consentsControl";
