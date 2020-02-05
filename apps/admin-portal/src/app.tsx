@@ -19,7 +19,7 @@
 import React from "react";
 import { I18nextProvider } from "react-i18next";
 import { Provider } from "react-redux";
-import { Route, Router, Switch } from "react-router-dom";
+import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
 import { baseRoutes, i18n } from "./configs";
 import { history } from "./helpers";
@@ -38,6 +38,7 @@ export const App = (): JSX.Element => {
                 <I18nextProvider i18n={ i18n }>
                     <Provider store={ store }>
                         <Switch>
+                            <Redirect exact={ true } path="/" to={ APP_LOGIN_PATH } />
                             {
                                 baseRoutes.map((route, index) => {
                                     return (

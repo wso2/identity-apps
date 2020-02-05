@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?> 
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg class="icon" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" width="101px" height="100px" viewBox="0 0 101 100">
+<g id="account-shadow">
+<defs>
+    <filter id="f1" x="0" y="0" width="200%" height="200%">
+        <feOffset result="offOut" in="SourceAlpha" dx="1" dy="1"/>
+        <feBlend in="SourceGraphic" in2="blurOut" mode="normal"/>
+        <feGaussianBlur result="blurOut" in="offOut" stdDeviation="1"/>
+        <feComponentTransfer>
+            <feFuncA type="linear" slope="0.3"/>
+        </feComponentTransfer>
+        <feMerge>
+            <feMergeNode></feMergeNode>
+            <feMergeNode in="SourceGraphic"></feMergeNode>
+        </feMerge>
+    </filter>
+</defs>
+<g opacity="1">
+<path filter="url(#f1)" class="path fill primary" d="M67.7852+28.1904L36.4622+11.5004C35.9972+11.2514+35.4412+11.2554+34.9792+11.5094L4.52317+28.1994C4.02417+28.4724+3.71317+28.9964+3.71317+29.5664L3.71317+51.3684C3.73117+69.2914+14.3502+85.5034+30.7702+92.6844L34.9992+94.5264C35.3932+94.6984+35.8442+94.6984+36.2392+94.5274L41.0032+92.4704C57.7292+85.4454+68.6092+69.0754+68.6112+50.9354L68.6112+29.5654C68.6112+28.9914+68.2922+28.4604+67.7852+28.1904Z" opacity="1" fill="#000000"/>
+<path d="M48.1792+55.1674C46.3262+53.3174+44.1252+51.9464+41.7212+51.1174C44.2962+49.3444+45.9872+46.3764+45.9872+43.0204C45.9872+37.6024+41.5802+33.1964+36.1622+33.1964C30.7452+33.1964+26.3382+37.6024+26.3382+43.0204C26.3382+46.3764+28.0302+49.3444+30.6042+51.1174C28.2012+51.9464+25.9972+53.3174+24.1452+55.1674C20.9362+58.3774+19.1682+62.6464+19.1682+67.1854L21.8232+67.1854C21.8232+59.2784+28.2552+52.8464+36.1612+52.8464C44.0682+52.8464+50.5012+59.2784+50.5012+67.1854L53.1562+67.1854C53.1562+62.6454+51.3892+58.3764+48.1792+55.1674ZM36.1612+50.1894C32.2082+50.1894+28.9922+46.9734+28.9922+43.0194C28.9922+39.0654+32.2082+35.8504+36.1612+35.8504C40.1152+35.8504+43.3322+39.0654+43.3322+43.0194C43.3322+46.9734+40.1162+50.1894+36.1612+50.1894Z" opacity="1" fill="#ffffff"/>
+</g>
+<path class="path fill blue stroke white" stroke-width="1" d="M72.504+46.7711C68.0737+46.7711+64.3812+49.7029+63.098+53.7071C61.9099+52.0547+60.0716+50.9011+57.8811+50.9011C54.2663+50.9011+51.3404+53.827+51.3404+57.4418C51.3404+58.192+51.5428+58.8851+51.7751+59.5562C49.3617+61.1347+47.7637+63.8476+47.7637+66.9467C47.7637+71.8294+51.714+75.7797+56.5967+75.7797L80.6059+75.7797C85.4886+75.7797+89.4586+71.8294+89.4586+66.9467C89.4586+62.6408+86.3615+59.0789+82.2855+58.2915C82.3679+57.7765+82.4436+57.2489+82.4436+56.7107C82.4436+51.2214+77.9933+46.7711+72.504+46.7711Z"  stroke-linecap="round" opacity="1" stroke-linejoin="round"/>
+<path class="path fill green stroke white" stroke-width="2" d="M65.0021+55.8037C60.5718+55.8037+56.8793+58.7355+55.596+62.7397C54.4079+61.0873+52.5697+59.9336+50.3792+59.9336C46.7644+59.9336+43.8384+62.8596+43.8384+66.4744C43.8384+67.2246+44.0408+67.9177+44.2732+68.5888C41.8597+70.1673+40.2618+72.8802+40.2618+75.9793C40.2617+80.862+44.2121+84.8123+49.0948+84.8123L73.1039+84.8123C77.9866+84.8123+81.9567+80.862+81.9567+75.9793C81.9567+71.6733+78.8595+68.1115+74.7836+67.3241C74.8659+66.8091+74.9416+66.2815+74.9416+65.7433C74.9417+60.254+70.4913+55.8037+65.0021+55.8037Z" stroke-linecap="round" opacity="1" stroke-linejoin="round"/>
+</g>
+</svg>

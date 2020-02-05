@@ -17,6 +17,6 @@
  */
 
 export * from "./application-list";
-export * from "./application-list-item";
+export * from "./application-search";
 export * from "./dropdown-details";
 export * from "./dropdown-details-general";

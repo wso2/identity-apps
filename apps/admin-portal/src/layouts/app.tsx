@@ -31,7 +31,6 @@ export const AppLayout: React.FunctionComponent<{}> = (): JSX.Element => {
 
     return (
         <Switch>
-            <Redirect exact={ true } path="/" to={ APP_LOGIN_PATH } />
             {
                 appRoutes.map((route, index) => (
                     route.protected ?

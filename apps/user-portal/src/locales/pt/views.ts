@@ -391,6 +391,52 @@ export const views: Views = {
                 }
             }
         },
+        federatedAssociations: {
+            notifications: {
+                getFederatedAssociations: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Algo deu errado"
+                    },
+                    genericError: {
+                        description: "Não foi possível recuperar logons externos",
+                        message: "Algo deu errado"
+                    },
+                    success: {
+                        description: "Logins externos foram recuperados com sucesso",
+                        message: "Logins externos recuperados com sucesso"
+                    }
+                },
+                removeAllFederatedAssociations: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Algo deu errado"
+                    },
+                    genericError: {
+                        description: "Federated Associations couldn't be removed",
+                        message: "Algo deu errado"
+                    },
+                    success: {
+                        description: "Todos os logins externos foram removidos com sucesso",
+                        message: "Logins externos removidos com sucesso"
+                    }
+                },
+                removeFederatedAssociation: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Algo deu errado"
+                    },
+                    genericError: {
+                        description: "Não foi possível remover o logon externo",
+                        message: "Algo deu errado"
+                    },
+                    success: {
+                        description: "O logon externo foi removido com sucesso",
+                        message: "O logon externo removido com sucesso"
+                    }
+                }
+            }
+        },
         footer: {
             copyright: "Servidor de Identidade WSO2 © {{year}}"
         },
@@ -1141,6 +1187,10 @@ export const views: Views = {
                     heading: "Você não concedeu consentimento a nenhum aplicativo"
                 }
             },
+        },
+        federatedAssociations: {
+            description: "Veja suas contas de outros provedores de identidade que estão vinculados a esta conta",
+            heading: "Logins externos"
         },
         linkedAccounts: {
             actionTitles: {

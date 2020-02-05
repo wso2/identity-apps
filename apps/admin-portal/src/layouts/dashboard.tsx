@@ -175,9 +175,15 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
      * @return {boolean} If the route is active or not.
      */
     const isActiveRoute = (route: RouteInterface | ChildRouteInterface): boolean => {
-        const pathname = window.location.pathname;
-        const urlTokens = route.path.split("/");
-        return pathname.indexOf(urlTokens[ 1 ]) > -1;
+        const pathname = window.location.pathname.split("/").pop();
+        if (route.path) {
+            const urlTokens = route.path.split("/");
+            return pathname === urlTokens[1];
+        } else if (!route.path && route.children && route.children.length > 0) {
+            return route.children.some((childRoute) => {
+                return pathname === childRoute.path
+            })
+        }
     };
 
     /**
@@ -217,6 +223,12 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
                 basicProfileInfo={ profileDetails }
                 fluid={ !isMobileViewport ? fluid : false }
                 isProfileInfoLoading={ isProfileInfoLoading }
+                userDropdownLinks={ [
+                    {
+                        name: "Logout",
+                        to: "/logout"
+                    }
+                ] }
                 profileInfo={ profileDetails.profileInfo }
                 showUserDropdown={ true }
                 onSidePanelToggleClick={ handleSidePanelToggleClick }

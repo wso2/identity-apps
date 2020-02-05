@@ -16,9 +16,39 @@
  * under the License.
  */
 
-import React from "react";
-import { Grid } from "semantic-ui-react";
-import { ApplicationListParent } from "../components";
+import { PrimaryButton } from "@wso2is/react-components";
+import _ from "lodash";
+import React, { useEffect, useState } from "react";
+import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { getApplicationList } from "../api";
+import { ApplicationList, ApplicationSearch } from "../components";
+import { ListLayout, PageLayout } from "../layouts";
+import { ApplicationListInterface } from "../models";
+
+const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
+    {
+        key: 1,
+        text: "Name",
+        value: "name"
+    },
+    {
+        key: 2,
+        text: "Type",
+        value: "type"
+    },
+    {
+        key: 3,
+        text: "Created date",
+        value: "createdDate"
+    },
+    {
+        key: 4,
+        text: "Last updated",
+        value: "lastUpdated"
+    }
+];
+
+const DEFAULT_APP_LIST_ITEM_LIMIT: number = 10;
 
 /**
  * Overview page.
@@ -26,18 +56,75 @@ import { ApplicationListParent } from "../components";
  * @return {JSX.Element}
  */
 export const ApplicationsPage = (): JSX.Element => {
+
+    const [ searchQuery, setSearchQuery ] = useState("");
+    const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
+        APPLICATIONS_LIST_SORTING_OPTIONS[ 0 ]
+    );
+    const [ appList, setAppList ] = useState<ApplicationListInterface>({});
+    const [ listOffset, setListOffset ] = useState<number>(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(DEFAULT_APP_LIST_ITEM_LIMIT);
+
+    const getAppLists = (limit: number, offset: number) => {
+        getApplicationList(limit, offset)
+            .then((response) => {
+                setAppList(response);
+            })
+            .catch((error) => {
+                // TODO add notifications
+            });
+    };
+
+    useEffect(() => {
+        getAppLists(listItemLimit, listOffset);
+    }, [ listOffset, listItemLimit ]);
+
+    const handleListSortingStrategyOnChange = (event: React.SyntheticEvent<HTMLElement>,
+                                               data: DropdownProps) => {
+        setListSortingStrategy(_.find(APPLICATIONS_LIST_SORTING_OPTIONS, (option) => {
+            return data.value === option.value;
+        }));
+    };
+
+    /**
+     * Handles the `onFilter` callback action from the
+     * application search component.
+     *
+     * @param {string} query - Search query.
+     */
+    const handleApplicationFilter = (query: string): void => {
+        setSearchQuery(query);
+    };
+
+    const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
+        setListOffset((data.activePage as number - 1) * listItemLimit);
+    };
+
+    const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+        setListItemLimit(data.value as number);
+    };
+
     return (
-        <Grid>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column width={ 16 }>
-                    <h1>Applications</h1>
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column width={ 16 }>
-                    <ApplicationListParent/>
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
+        <PageLayout
+            title="Applications"
+            description="Create applications based on templates and configure authentication."
+        >
+            <ListLayout
+                advancedSearch={ <ApplicationSearch onFilter={ handleApplicationFilter }/> }
+                currentListSize={ appList.count }
+                listItemLimit={ listItemLimit }
+                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                onPageChange={ handlePaginationChange }
+                onSortStrategyChange={ handleListSortingStrategyOnChange }
+                rightActionPanel={ <PrimaryButton><Icon name="add"/>Add application</PrimaryButton> }
+                showPagination={ true }
+                sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
+                sortStrategy={ listSortingStrategy }
+                totalPages={ Math.ceil(appList.totalResults / listItemLimit) }
+                totalListSize={ appList.totalResults }
+            >
+                <ApplicationList list={ appList } />
+            </ListLayout>
+        </PageLayout>
     );
 };

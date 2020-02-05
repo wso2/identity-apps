@@ -18,7 +18,7 @@
 
 export * from "./alert";
 export * from "./api";
-export * from "./app";
+export * from "./application";
 export * from "./auth";
 export * from "./authenticated-user";
 export * from "./claim";

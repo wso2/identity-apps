@@ -29,7 +29,7 @@ export const Field = (props: FormField): JSX.Element => {
 /**
  * Prop types for the GroupFields component
  */
-interface GroupFieldsProps {
+interface GroupFieldsPropsInterface {
     wrapper: React.ComponentType;
     wrapperProps: any;
 }
@@ -37,6 +37,6 @@ interface GroupFieldsProps {
  * This component is a syntactic sugar for the InnerGroupFields component
  * @param props
  */
-export const GroupFields = (props: React.PropsWithChildren<GroupFieldsProps>): JSX.Element => {
+export const GroupFields = (props: React.PropsWithChildren<GroupFieldsPropsInterface>): JSX.Element => {
     return null;
 };
