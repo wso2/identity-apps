@@ -18,6 +18,7 @@
 
 import { AppAvatar, ResourceList, ResourceListItem } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
+import { history } from "../../helpers";
 import { ApplicationListInterface } from "../../models";
 
 /**
@@ -42,8 +43,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         list
     } = props;
 
-    const handleApplicationEdit = () => {
-        // Open up edit view.
+    const handleApplicationEdit = (appId: string) => {
+        history.push(`applications/${ appId }`);
     };
 
     const handleApplicationDelete = () => {
@@ -60,7 +61,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                            actions={ [
                                {
                                    icon: "pencil alternate",
-                                   onClick: handleApplicationEdit,
+                                   onClick: () => handleApplicationEdit(app.id),
                                    popupText: "edit",
                                    type: "button"
                                },
