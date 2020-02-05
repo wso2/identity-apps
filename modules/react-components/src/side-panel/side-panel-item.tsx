@@ -62,8 +62,10 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                     ? (
                         <Menu.Item
                             name={ route.name }
-                            className={ `side-panel-item ${ selected.path === route.path ? "active" : "" }` }
-                            active={ selected.path === route.path }
+                            className={ `side-panel-item ${
+                                selected && (selected.path === route.path) ? "active" : ""
+                            }` }
+                            active={ selected && (selected.path === route.path) }
                             onClick={ () => onSidePanelItemClick(route) }
                         >
                             <GenericIcon
@@ -106,7 +108,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                             onSidePanelItemClick={ onSidePanelItemClick }
                             selected={ selected }
                             open={ route.open }
-                            sidePanelItemHeight = { sidePanelItemHeight }
+                            sidePanelItemHeight={ sidePanelItemHeight }
                         />
                     )
                     : null
