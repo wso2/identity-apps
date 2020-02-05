@@ -83,150 +83,157 @@
 
             <div class="ui segment">
                 <form class="ui large form" action="<%=oauth2AuthorizeURL%>" method="post" id="profile" name="oauth2_authz">
-                    <p class="margin-bottom-double">
-                        <strong><%=Encode.forHtml(request.getParameter("application"))%></strong>
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile")%>
-                    </p>
+                    <h4><%=Encode.forHtml(request.getParameter("application"))%> 
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile")%>:</h4>
 
                     <div class="ui divider hidden"></div>
                     
                     <div class="segment-form">
+
+                        <!-- Prompting for consent is only needed if we have mandatory or requested claims without any consent -->
+                        <% if (ArrayUtils.isNotEmpty(mandatoryClaimList) || ArrayUtils.isNotEmpty(requestedClaimList)) { %>
+                            <input type="hidden" name="user_claims_consent" id="user_claims_consent" value="true"/>
+                            <!-- validation -->
+                            <div class="ui secondary segment" style="text-align: left;">
+                                <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.attributes")%>:</h5>
+
+                                <div class="border-gray margin-bottom-double">
+                                    <div class="claim-alert" role="alert">
+                                        <p class="margin-bottom-double">
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "by.selecting.following.attributes")%>
+                                            <%=Encode.forHtml(request.getParameter("application"))%>.
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <div class="ui divider hidden"></div>
+                                        <div class="select-all">
+                                            <div class="ui checkbox claim-cb">
+                                                <input type="checkbox" class="hidden" name="consent_select_all" id="consent_select_all" />
+                                                <label for="consent_select_all"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "select.all")%></label>
+                                            </div>
+                                        </div>
+                                        <div class="ui divider"></div>
+                                        <div class="claim-list">
+                                            <% for (String claim : mandatoryClaimList) {
+                                                String[] mandatoryClaimData = claim.split("_", 2);
+                                                if (mandatoryClaimData.length == 2) {
+                                                    String claimId = mandatoryClaimData[0];
+                                                    String displayName = mandatoryClaimData[1];
+                                            %>
+                                            <div class="field required">
+                                                <div class="ui checkbox checked read-only disabled claim-cb">
+                                                    <input type="checkbox" class="mandatory-claim hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" required checked readonly />
+                                                    <label for="consent_<%=Encode.forHtmlAttribute(claimId)%>"><%=Encode.forHtml(displayName)%></label>
+                                                </div>
+                                            </div>
+                                            <%
+                                                    }
+                                                }
+                                            %>
+                                            <% for (String claim : requestedClaimList) {
+                                                String[] requestedClaimData = claim.split("_", 2);
+                                                if (requestedClaimData.length == 2) {
+                                                    String claimId = requestedClaimData[0];
+                                                    String displayName = requestedClaimData[1];
+                                            %>
+                                            <div class="field">
+                                                <div class="ui checkbox claim-cb">
+                                                    <input type="checkbox" class="hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" />
+                                                    <label for="consent_<%=Encode.forHtmlAttribute(claimId)%>"><%=Encode.forHtml(displayName)%></label>
+                                                </div>
+                                            </div>
+                                            <%
+                                                    }
+                                                }
+                                            %>
+                                        </div>
+                                        <div class="ui divider hidden"></div>
+                                        <div class="text-left padding-top-double">
+                                            <span class="mandatory"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "mandatory.claims.recommendation")%></span>
+                                            <span class="required font-medium">( * )</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+
                         <div class="field">
                             <% if (userClaimsConsentOnly) {
                                 // If we are getting consent for user claims only we don't need to display OIDC
                                 // scopes in the consent page
-                            } else {%>
-                            <%
-                                if (displayScopes && StringUtils.isNotBlank(scopeString)) {
-                                    // Remove "openid" from the scope list to display.
-                                    List<String> openIdScopes = Stream.of(scopeString.split(" "))
-                                            .filter(x -> !StringUtils.equalsIgnoreCase(x, "openid"))
-                                            .collect(Collectors.toList());
-                    
-                                    if (CollectionUtils.isNotEmpty(openIdScopes)) {
-                            %>
+                            } else { %>
+                                <%
+                                    if (displayScopes && StringUtils.isNotBlank(scopeString)) {
+                                        // Remove "openid" from the scope list to display.
+                                        List<String> openIdScopes = Stream.of(scopeString.split(" "))
+                                                .filter(x -> !StringUtils.equalsIgnoreCase(x, "openid"))
+                                                .collect(Collectors.toList());
+                        
+                                        if (CollectionUtils.isNotEmpty(openIdScopes)) {
+                                %>
 
-                            <div class="ui segment" style="text-align: left;">
-                                <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.scopes")%></h5>
-                                <div class="scopes-list ui list">
-                                    <%
-                                        for (String scopeID : openIdScopes) {
-                                            String displayName = new OAuth2ScopeService()
-                                                                    .getScope(scopeID)
-                                                                    .getDisplayName();
-                                    %>
-                                    <div class="item">
-                                        <i class="check circle outline icon"></i>
-                                        <div class="content">
-                                            <%=Encode.forHtml(displayName)%>
+                                <div class="ui segment" style="text-align: left;">
+                                    <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.scopes")%>:</h5>
+                                    <div class="scopes-list ui list">
+                                        <%
+                                            for (String scopeID : openIdScopes) {
+                                                String displayName = new OAuth2ScopeService()
+                                                                        .getScope(scopeID)
+                                                                        .getDisplayName();
+                                        %>
+                                        <div class="item">
+                                            <i class="check circle outline icon"></i>
+                                            <div class="content">
+                                                <%=Encode.forHtml(displayName)%>
+                                            </div>
+                                        </div>
+                                        <%
+                                            }
+                                        %>
+                                    </div>
+
+                                    <div class="ui divider hidden"></div>
+                                    <div class="feild">
+                                        <div class="cookie-policy-message">
+                                            <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving.head")%> <%=Encode.forHtml(request.getParameter("application"))%></h5>
+
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving")%>
+                                            <%=Encode.forHtml(request.getParameter("application"))%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving2")%>
+                                            <a href="privacy_policy.do" target="policy-pane"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%></a>.
                                         </div>
                                     </div>
-                                    <%
+                                </div>
+
+                                <%
                                         }
-                                    %>
-                                </div>
-                            </div>
-
-                            <%
                                     }
-                                }
-                            %>
+                                %>
 
-                            <div class="ui secondary segment" style="text-align: left;">
-                                <div class="ui form">
-                                    <div class="grouped fields">
-                                        <div class="field">
-                                            <div class="ui radio checkbox">
-                                                <input type="radio" class="hidden" name="scope-approval" id="approveCb" value="approve">
-                                                <label for="approveCb"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "approve.once")%></label>
+                                <div class="ui divider hidden"></div>
+
+                                <div tyle="text-align: left;">
+                                    <div class="ui form">
+                                        <div class="grouped fields">
+                                            <div class="field">
+                                                <div class="ui radio checkbox">
+                                                    <input type="radio" class="hidden" name="scope-approval" id="approveCb" value="approve">
+                                                    <label for="approveCb"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "approve.once")%></label>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="field">
-                                            <div class="ui radio checkbox">
-                                                <input type="radio" class="hidden" name="scope-approval" id="approveAlwaysCb" value="approveAlways">
-                                                <label for="approveAlwaysCb"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "approve.always")%></label>
+                                            <div class="field">
+                                                <div class="ui radio checkbox">
+                                                    <input type="radio" class="hidden" name="scope-approval" id="approveAlwaysCb" value="approveAlways">
+                                                    <label for="approveAlwaysCb"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "approve.always")%></label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
                             <%
                                 }
                             %>
-                        </div>
-                        <!-- Prompting for consent is only needed if we have mandatory or requested claims without any consent -->
-                        <% if (ArrayUtils.isNotEmpty(mandatoryClaimList) || ArrayUtils.isNotEmpty(requestedClaimList)) { %>
-                        <input type="hidden" name="user_claims_consent" id="user_claims_consent" value="true"/>
-                        <!-- validation -->
-                        <div class="ui secondary segment" style="text-align: left;">
-                            <h3><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.attributes")%> :</h3>
-                            <div class="border-gray margin-bottom-double">
-                                <div class="claim-alert" role="alert">
-                                    <p class="margin-bottom-double">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "by.selecting.following.attributes")%>
-                                    </p>
-                                </div>
-                                <div>
-                                    <div class="ui divider hidden"></div>
-                                    <div class="select-all">
-                                        <div class="ui checkbox claim-cb">
-                                            <input type="checkbox" class="hidden" name="consent_select_all" id="consent_select_all" />
-                                            <label for="consent_select_all"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "select.all")%></label>
-                                        </div>
-                                    </div>
-                                    <div class="ui divider"></div>
-                                    <div class="claim-list">
-                                        <% for (String claim : mandatoryClaimList) {
-                                            String[] mandatoryClaimData = claim.split("_", 2);
-                                            if (mandatoryClaimData.length == 2) {
-                                                String claimId = mandatoryClaimData[0];
-                                                String displayName = mandatoryClaimData[1];
-                                        %>
-                                        <div class="field required">
-                                            <div class="ui checkbox checked read-only disabled claim-cb">
-                                                <input type="checkbox" class="mandatory-claim hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" required checked readonly />
-                                                <label for="consent_<%=Encode.forHtmlAttribute(claimId)%>"><%=Encode.forHtml(displayName)%></label>
-                                            </div>
-                                        </div>
-                                        <%
-                                                }
-                                            }
-                                        %>
-                                        <% for (String claim : requestedClaimList) {
-                                            String[] requestedClaimData = claim.split("_", 2);
-                                            if (requestedClaimData.length == 2) {
-                                                String claimId = requestedClaimData[0];
-                                                String displayName = requestedClaimData[1];
-                                        %>
-                                        <div class="field">
-                                            <div class="ui checkbox claim-cb">
-                                                <input type="checkbox" class="hidden" name="consent_<%=Encode.forHtmlAttribute(claimId)%>" id="consent_<%=Encode.forHtmlAttribute(claimId)%>" />
-                                                <label for="consent_<%=Encode.forHtmlAttribute(claimId)%>"><%=Encode.forHtml(displayName)%></label>
-                                            </div>
-                                        </div>
-                                        <%
-                                                }
-                                            }
-                                        %>
-                                    </div>
-                                    <div class="ui divider hidden"></div>
-                                    <div class="text-left padding-top-double">
-                                        <span class="mandatory"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "mandatory.claims.recommendation")%></span>
-                                        <span class="required font-medium">( * )</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <% } %>
-                        <div class="ui divider hidden"></div>
-                        <div class="feild">
-                            <div class="cookie-policy-message">
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving")%>
-                                <a href="privacy_policy.do" target="policy-pane">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%>
-                                </a>
-                            </div>
                         </div>
 
                         <div class="ui divider hidden"></div>

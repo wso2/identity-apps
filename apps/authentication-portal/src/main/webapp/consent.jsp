@@ -53,32 +53,36 @@
 <body>
     <main class="center-segment">
         <div class="ui container medium center aligned middle aligned">
+
+            <!-- product-title -->
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:directive.include file="includes/product-title.jsp"/>
+            <% } %>
+
+
             <div class="ui segment">
-
-                <!-- product-title -->
-                <%
-                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                    if (productTitleFile.exists()) {
-                %>
-                    <jsp:include page="extensions/product-title.jsp"/>
-                <% } else { %>
-                    <jsp:directive.include file="includes/product-title.jsp"/>
-                <% } %>
-
                 <form class="ui large form" action="<%=commonauthURL%>" method="post" id="profile" name="">
+                    <h4>
+                        <%=Encode.forHtml(request.getParameter("sp"))%>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile")%>:
+                    </h4>
+
                     <div class="ui divider hidden"></div>
-                    <p>
-                        <strong><%=Encode.forHtml(request.getParameter("sp"))%></strong>
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile")%>
-                    </p>
                     
                     <div class="segment-form">
                         <div class="ui secondary segment">
-                            <h3><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.attributes")%> :</h3>
+                            <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.attributes")%> :</h5>
+
                             <div>
                                 <div class="claim-alert" role="alert">
-                                    <p>
+                                    <p class="margin-bottom-double">
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "by.selecting.following.attributes")%>
+                                        <%=Encode.forHtml(request.getParameter("application"))%>.
                                     </p>
                                 </div>
                                 <div>
