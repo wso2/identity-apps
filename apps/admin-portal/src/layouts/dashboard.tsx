@@ -247,6 +247,7 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
                                                     component={ child.component }
                                                     path={ child.path }
                                                     key={ i }
+                                                    exact={ child.exact }
                                                 />
                                             )
                                             :
@@ -257,6 +258,7 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
                                                         (<child.component { ...renderProps } />)
                                                     }
                                                     key={ i }
+                                                    exact={ child.exact }
                                                 />
                                             )
                                     );
