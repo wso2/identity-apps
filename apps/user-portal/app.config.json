@@ -1,5 +1,11 @@
 {
-    "overview":true,
+    "overview":{
+        "enabled":false,
+        "accountStatus":true,
+        "accountActivity":true,
+        "accountSecurity":true,
+        "consentsControl":true
+    },
     "personalInfo":{
         "enabled":true,
         "profile":true,
