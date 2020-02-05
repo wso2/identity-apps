@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import "@testing-library/jest-dom/extend-expect";
 import { fireEvent, render } from "@testing-library/react";
 import constants from "./constants";
 import getForm from "./test-form";
@@ -57,6 +58,10 @@ describe("Test if the Forms is working fine", () => {
         fireEvent.change(textBox, { target: { value: NEW_VALUE } });
         expect(getByDisplayValue(NEW_VALUE)).toBeInTheDocument();
 
+        // check if the listen function was called
+        expect(constants.listen).toHaveBeenCalledTimes(1);
+        expect(constants.listen.mock.calls[0][0].get(constants.TEXT_BOX_NAME)).toBe(NEW_VALUE);
+
         // check if required error message is correctly displayed
         fireEvent.change(textBox, { target: { value: "" } });
         fireEvent.blur(textBox);
@@ -73,10 +78,10 @@ describe("Test if the Forms is working fine", () => {
         fireEvent.change(textBox, { target: { value: constants.TEXT_BOX_VALID_MESSAGE } });
         fireEvent.blur(textBox);
         fireEvent.click(getByText(constants.SUBMIT));
-        expect(constants.onSubmit()).toHaveBeenCalledTimes(1);
-        expect(constants.onSubmit().mock.calls[0][0].get(constants.TEXT_BOX_NAME))
+        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit.mock.calls[0][0].get(constants.TEXT_BOX_NAME))
             .toBe(constants.TEXT_BOX_VALID_MESSAGE);
-        constants.onSubmit().mockReset();
+        constants.onSubmit.mockReset();
     });
 
     test("Test if input type text is empty by default when no value is passed", () => {
@@ -159,9 +164,14 @@ describe("Test if the Forms is working fine", () => {
         expect(passwordBox).toBeInTheDocument();
 
         // check if the value of the password box changes
+        constants.listen.mockReset();
         const NEW_VALUE = "new value";
         fireEvent.change(passwordBox, { target: { value: NEW_VALUE } });
         expect(getByDisplayValue(NEW_VALUE)).toBeInTheDocument();
+
+        // check if the listen function was called
+        expect(constants.listen).toHaveBeenCalledTimes(1);
+        expect(constants.listen.mock.calls[0][0].get(constants.PASSWORD_NAME)).toBe(NEW_VALUE);
 
         // check if validation is working fine
         fireEvent.change(passwordBox, { target: { value: "wrong value" } });
@@ -207,13 +217,13 @@ describe("Test if the Forms is working fine", () => {
         expect(getByText(constants.PASSWORD_REQUIRED_MESSAGE)).toBeInTheDocument();
 
         // check if submit is working fine
+        constants.onSubmit.mockReset();
         fireEvent.change(passwordBox, { target: { value: constants.PASSWORD_VALID_MESSAGE } });
         fireEvent.blur(passwordBox);
         fireEvent.click(getByText(constants.SUBMIT));
-        expect(constants.onSubmit()).toHaveBeenCalledTimes(1);
-        expect(constants.onSubmit().mock.calls[0][0].get(constants.PASSWORD_NAME))
+        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit.mock.calls[0][0].get(constants.PASSWORD_NAME))
             .toBe(constants.PASSWORD_VALID_MESSAGE);
-        constants.onSubmit().mockReset();
     });
 
     test("Test if the basic functions of a checkbox are working fine", () => {
@@ -244,8 +254,15 @@ describe("Test if the Forms is working fine", () => {
         expect(getByDisplayValue(constants.CHECKBOX_VALUE[0]).parentElement).toHaveClass("checked");
 
         // check if the checkbox selection is working fine
+        constants.listen.mockReset();
         fireEvent.click(getByDisplayValue(constants.CHECKBOX_CHILD_1_VALUE));
         expect(getByText(constants.CHECKBOX_CHILD_1_LABEL).parentElement).toHaveClass("checked");
+
+        // check if the listen function was called
+        expect(constants.listen).toHaveBeenCalledTimes(1);
+        expect(constants.listen.mock.calls[0][0].get(constants.CHECKBOX_NAME)[1])
+            .toBe(constants.CHECKBOX_CHILD_1_VALUE);
+
 
         // check if required validation is working fine
         fireEvent.click(getByDisplayValue(constants.CHECKBOX_CHILD_1_VALUE));
@@ -258,10 +275,10 @@ describe("Test if the Forms is working fine", () => {
         fireEvent.click(getByDisplayValue(constants.CHECKBOX_CHILD_1_VALUE));
         fireEvent.click(getByDisplayValue(constants.CHECKBOX_CHILD_2_VALUE));
         fireEvent.blur(getByDisplayValue(constants.CHECKBOX_CHILD_1_VALUE));
+        constants.onSubmit.mockReset();
         fireEvent.click(getByText(constants.SUBMIT));
-        expect(constants.onSubmit()).toHaveBeenCalledTimes(1);
-        expect(constants.onSubmit().mock.calls[0][0].get(constants.CHECKBOX_NAME)).toHaveLength(2);
-        constants.onSubmit().mockReset();
+        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit.mock.calls[0][0].get(constants.CHECKBOX_NAME)).toHaveLength(2);
 
     });
 
@@ -280,11 +297,11 @@ describe("Test if the Forms is working fine", () => {
                 type: "submit"
             }
         ]));
+        constants.onSubmit.mockReset();
         fireEvent.click(getByText(constants.SUBMIT));
         expect(queryByText(constants.CHECKBOX_REQUIRED_MESSAGE)).not.toBeInTheDocument();
-        expect(constants.onSubmit()).toHaveBeenCalledTimes(1);
-        expect(constants.onSubmit().mock.calls[0][0].get(constants.CHECKBOX_NAME)).toHaveLength(0);
-        constants.onSubmit().mockReset();
+        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit.mock.calls[0][0].get(constants.CHECKBOX_NAME)).toHaveLength(0);
     });
 
     test("Test if the basic functions of the radio field are working fine", () => {
@@ -314,14 +331,19 @@ describe("Test if the Forms is working fine", () => {
         expect(getByDisplayValue(constants.RADIO_VALUE).parentElement).toHaveClass("checked");
 
         // check if radio selection is working fine
+        constants.listen.mockReset();
         fireEvent.click(getByDisplayValue(constants.RADIO_CHILD_2_VALUE));
         expect(getByDisplayValue(constants.RADIO_CHILD_2_VALUE).parentElement).toHaveClass("checked");
 
+        // check if the listen function was called
+        expect(constants.listen).toHaveBeenCalledTimes(1);
+        expect(constants.listen.mock.calls[0][0].get(constants.RADIO_NAME)).toBe(constants.RADIO_CHILD_2_VALUE);
+
         // check if submission is working fine
+        constants.onSubmit.mockReset();
         fireEvent.click(getByText(constants.SUBMIT));
-        expect(constants.onSubmit()).toHaveBeenCalledTimes(1);
-        expect(constants.onSubmit().mock.calls[0][0].get(constants.RADIO_NAME)).toBe(constants.RADIO_CHILD_2_VALUE);
-        constants.onSubmit().mockReset();
+        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit.mock.calls[0][0].get(constants.RADIO_NAME)).toBe(constants.RADIO_CHILD_2_VALUE);
 
     });
 
@@ -374,17 +396,23 @@ describe("Test if the Forms is working fine", () => {
         expect(getByText(constants.DROPDOWN_REQUIRED_MESSAGE)).toBeInTheDocument();
 
         // check if selection works properly
+        constants.listen.mockReset();
         fireEvent.click(getByRole("alert"));
         fireEvent.click(getByText(constants.DROPDOWN_CHILD_2_VALUE).parentElement);
         fireEvent.blur(getAllByText(constants.DROPDOWN_CHILD_2_VALUE)[1].parentElement);
         expect(getByRole("alert").firstChild.nodeValue).toBe(constants.DROPDOWN_CHILD_2_VALUE);
 
-        // check if submission works fine
-        fireEvent.click(getByText(constants.SUBMIT));
-        expect(constants.onSubmit()).toHaveBeenCalledTimes(1);
-        expect(constants.onSubmit().mock.calls[0][0].get(constants.DROPDOWN_NAME))
+        // check if the listen function was called
+        expect(constants.listen).toHaveBeenCalledTimes(1);
+        expect(constants.listen.mock.calls[0][0].get(constants.DROPDOWN_NAME))
             .toBe(constants.DROPDOWN_CHILD_2_VALUE);
-        constants.onSubmit().mockReset();
+
+        // check if submission works fine
+        constants.onSubmit.mockReset();
+        fireEvent.click(getByText(constants.SUBMIT));
+        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit.mock.calls[0][0].get(constants.DROPDOWN_NAME))
+            .toBe(constants.DROPDOWN_CHILD_2_VALUE);
     });
 
     test("Test if the default value is selected in a dropdown", () => {
@@ -443,11 +471,11 @@ describe("Test if the Forms is working fine", () => {
             }
         ]));
 
+        constants.onSubmit.mockReset();
         fireEvent.click(getByText(constants.SUBMIT));
         expect(queryByText(constants.DROPDOWN_REQUIRED_MESSAGE)).not.toBeInTheDocument();
-        expect(constants.onSubmit()).toHaveBeenCalledTimes(1);
-        expect(constants.onSubmit().mock.calls[0][0].get(constants.DROPDOWN_NAME)).toBe("");
-        constants.onSubmit().mockReset();
+        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit.mock.calls[0][0].get(constants.DROPDOWN_NAME)).toBe("");
     });
 
     test("Test if the reset button is working fine", () => {
@@ -473,7 +501,7 @@ describe("Test if the Forms is working fine", () => {
     });
 
     test("Test if the button works fine", () => {
-        const{ getByText } = render(getForm([
+        const { getByText } = render(getForm([
             {
                 isDefault: false,
                 isRequired: false,
@@ -554,9 +582,14 @@ describe("Test if the Forms is working fine", () => {
         expect(getByDisplayValue(constants.TEXT_BOX_VALUE)).toBeInTheDocument();
 
         // check if the value of the text box changes
+        constants.listen.mockReset();
         const NEW_VALUE = "new value";
         fireEvent.change(textBox, { target: { value: NEW_VALUE } });
         expect(getByDisplayValue(NEW_VALUE)).toBeInTheDocument();
+
+        // check if the listen function was called
+        expect(constants.listen).toHaveBeenCalledTimes(1);
+        expect(constants.listen.mock.calls[0][0].get(constants.TEXT_BOX_NAME)).toBe(NEW_VALUE);
 
         // check if required error message is correctly displayed
         fireEvent.change(textBox, { target: { value: "" } });
@@ -573,11 +606,10 @@ describe("Test if the Forms is working fine", () => {
         // check if submit is working fine
         fireEvent.change(textBox, { target: { value: constants.TEXT_BOX_VALID_MESSAGE } });
         fireEvent.blur(textBox);
+        constants.onSubmit.mockReset();
         fireEvent.click(getByText(constants.SUBMIT));
-        expect(constants.onSubmit()).toHaveBeenCalledTimes(1);
-        expect(constants.onSubmit().mock.calls[0][0].get(constants.TEXT_BOX_NAME))
+        expect(constants.onSubmit).toHaveBeenCalledTimes(1);
+        expect(constants.onSubmit.mock.calls[0][0].get(constants.TEXT_BOX_NAME))
             .toBe(constants.TEXT_BOX_VALID_MESSAGE);
-        constants.onSubmit().mockReset();
     });
-
 });

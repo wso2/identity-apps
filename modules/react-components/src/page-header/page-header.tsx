@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import * as React from "react";
+import React from "react";
 import { Divider, Header } from "semantic-ui-react";
 
 /**
  * Page header component Prop types.
  */
-export interface PageHeaderProps {
+export interface PageHeaderPropsInterface {
     title: string;
     description?: string;
     titleTextAlign?: "left" | "center" | "right" | "justified";
@@ -31,26 +31,28 @@ export interface PageHeaderProps {
 /**
  * Page header component.
  *
- * @param {PageHeaderProps} props - Props injected to the page header component.
+ * @param {PageHeaderPropsInterface} props - Props injected to the component.
  * @return {JSX.Element}
  */
-export const PageHeader: React.FunctionComponent<PageHeaderProps> = (props: PageHeaderProps): JSX.Element => {
-    const { title, description, titleTextAlign } = props;
+export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
+    props: PageHeaderPropsInterface
+): JSX.Element => {
+
+    const {
+        description,
+        title,
+        titleTextAlign
+    } = props;
+
     return (
-        <>
-            { (title || description) &&
-                <>
+        (title || description) && (
+            <>
                 <Header className="page-header" as="h1" textAlign={ titleTextAlign }>
-                    { title &&
-                        title
-                    }
-                    { description &&
-                        <Header.Subheader className="sub-header">{ description }</Header.Subheader>
-                    }
+                    { title && title }
+                    { description && <Header.Subheader className="sub-header">{ description }</Header.Subheader> }
                 </Header>
-                <Divider hidden />
-                </>
-            }
-        </>
+                <Divider hidden/>
+            </>
+        )
     );
 };

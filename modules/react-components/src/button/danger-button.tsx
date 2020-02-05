@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+/*
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,5 +16,19 @@
  * under the License.
  */
 
-export * from "./api";
-export * from "./authenticate";
+import React from "react";
+import { Button as SemanticButton, ButtonProps } from "semantic-ui-react";
+
+/**
+ * Danger button component.
+ *
+ * @param {ButtonProps} props - Props injected to the component.
+ * @return {JSX.Element}
+ */
+export const DangerButton: React.FunctionComponent<ButtonProps> = (
+    props: ButtonProps
+): JSX.Element => {
+    return (
+        <SemanticButton { ...props } negative />
+    );
+};

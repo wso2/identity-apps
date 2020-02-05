@@ -39,6 +39,7 @@ export const AuthLayout: React.FunctionComponent<{}> = (): JSX.Element => {
                                 component={ route.component }
                                 path={ route.path }
                                 key={ index }
+                                exact={ route.exact }
                             />
                         )
                         :
@@ -49,6 +50,7 @@ export const AuthLayout: React.FunctionComponent<{}> = (): JSX.Element => {
                                     (<route.component { ...renderProps } />)
                                 }
                                 key={ index }
+                                exact={ route.exact }
                             />
                         )
                 ))

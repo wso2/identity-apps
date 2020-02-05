@@ -392,6 +392,52 @@ export const views: Views = {
                 }
             }
         },
+        federatedAssociations: {
+            notifications: {
+                getFederatedAssociations: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Something went wrong"
+                    },
+                    genericError: {
+                        description: "Couldn't retrieve External Logins",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "External Logins have been retrieved successfully",
+                        message: "External Logins retrieved successfully"
+                    }
+                },
+                removeAllFederatedAssociations: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Something went wrong"
+                    },
+                    genericError: {
+                        description: "External Logins couldn't be removed",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "All the External Logins have been removed successfully",
+                        message: "External Logins removed successfully"
+                    }
+                },
+                removeFederatedAssociation: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Something went wrong"
+                    },
+                    genericError: {
+                        description: "The External Login couldn't be removed",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The External Login has been removed successfully",
+                        message: "The External Login removed successfully"
+                    }
+                }
+            }
+        },
         footer: {
             copyright: "WSO2 Identity Server © {{year}}"
         },
@@ -1167,6 +1213,10 @@ export const views: Views = {
                     heading: "You have not granted consent to any application"
                 }
             }
+        },
+        federatedAssociations: {
+            description: "View your accounts from other identity providers that are linked with this account",
+            heading: "External Logins"
         },
         linkedAccounts: {
             actionTitles: {

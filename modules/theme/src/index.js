@@ -116,6 +116,8 @@ export const SettigsSectionIconSet = {
     associatedAccountsMini: require("../lib/assets/images/illustrations/associated-accounts-mini.svg"),
     changePassword: require("../lib/assets/images/illustrations/change-password.svg"),
     changePasswordMini: require("../lib/assets/images/illustrations/change-password-mini.svg"),
+    federatedAssociations: require("../lib/assets/images/illustrations/federated-associations.svg"),
+    federatedAssociationsMini: require("../lib/assets/images/illustrations/federated-associations-mini.svg"),
     profileExport: require("../lib/assets/images/illustrations/profile-export.svg"),
     profileExportMini: require("../lib/assets/images/illustrations/profile-export-mini.svg"),
     securityQuestions: require("../lib/assets/images/illustrations/security-questions.svg"),

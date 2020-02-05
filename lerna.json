@@ -4,5 +4,5 @@
         "components/theme",
         "modules/*"
     ],
-    "version": "0.9.16"
+    "version": "0.9.26"
 }

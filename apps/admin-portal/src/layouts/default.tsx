@@ -51,6 +51,7 @@ export const DefaultPageLayout: React.FunctionComponent<DefaultPageLayoutPropsIn
                                 component={ route.component }
                                 path={ route.path }
                                 key={ index }
+                                exact={ route.exact }
                             />
                         )
                         :
@@ -61,6 +62,7 @@ export const DefaultPageLayout: React.FunctionComponent<DefaultPageLayoutPropsIn
                                     (<route.component { ...renderProps } />)
                                 }
                                 key={ index }
+                                exact={ route.exact }
                             />
                         )
                 ))

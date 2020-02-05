@@ -25,13 +25,13 @@ import {
     SignOutUtil
 } from "@wso2is/authentication";
 import _ from "lodash";
-import { getProfileInfo, getProfileSchemas } from "../../api";
+import { getProfileInfo } from "../../api";
 import { GlobalConfig, i18n, ServiceResourcesEndpoint } from "../../configs";
 import * as TokenConstants from "../../constants";
 import { AlertLevels, BasicProfileInterface, ProfileSchema } from "../../models";
 import { store } from "../index";
 import { addAlert } from "./global";
-import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
+import { setProfileInfoLoader } from "./loaders";
 import { authenticateActionTypes } from "./types";
 
 /**
@@ -94,7 +94,6 @@ export const getProfileInformation = () => (dispatch) => {
                 // If the schemas in the redux store is empty, fetch the SCIM schemas from the API.
                 if (_.isEmpty(store.getState().authenticationInformation.profileSchemas)) {
                     isCompletionCalculated = true;
-                    dispatch(getScimSchemas(infoResponse));
                 }
 
                 return;
@@ -166,7 +165,11 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
                 TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_UPDATE,
                 TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_DELETE,
                 TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_LIST,
-                TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_CREATE
+                TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_CREATE,
+                TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_CREATE,
+                TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_DELETE,
+                TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_VIEW,
+                TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_UPDATE
             ],
             serverOrigin: GlobalConfig.serverOrigin
         };
@@ -231,16 +234,10 @@ export const handleSignOut = () => (dispatch) => {
 };
 
 /**
- * Get SCIM2 schemas
+ * Update sessionStorage with location history path
+ *
+ * @param {string} location - history path.
  */
-export const getScimSchemas = (profileInfo: BasicProfileInterface = null) => (dispatch) => {
-    dispatch(setProfileSchemaLoader(true));
-    getProfileSchemas()
-        .then((response: ProfileSchema[]) => {
-            dispatch(setProfileSchemaLoader(false));
-            dispatch(setScimSchemas(response));
-        })
-        .catch((error) => {
-            // TODO: show error page
-        });
+export const updateAuthenticationCallbackUrl = (location) => {
+    window.sessionStorage.setItem("auth_callback_url", location);
 };

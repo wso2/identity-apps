@@ -18,7 +18,6 @@
 
 export * from "./history";
 export * from "./http-headers";
-export * from "./store";
 export * from "./image";
 export * from "./user-agent-parser";
 export * from "./user";

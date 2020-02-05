@@ -53,6 +53,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
                 }
             ],
             label: constants.CHECKBOX_LABEL,
+            listen: (value) => { constants.listen(value); },
             name: constants.CHECKBOX_NAME,
             required: true,
             requiredErrorMessage: constants.CHECKBOX_REQUIRED_MESSAGE,
@@ -82,6 +83,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
             ],
             default: constants.DROPDOWN_DEFAULT,
             label: constants.DROPDOWN_LABEL,
+            listen: (value) => { constants.listen(value); },
             name: constants.DROPDOWN_NAME,
             placeholder: constants.DROPDOWN_PLACEHOLDER,
             required: true,
@@ -91,6 +93,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
         password: {
             hidePassword: constants.HIDE_PASSWORD,
             label: constants.PASSWORD_LABEL,
+            listen: (value) => { constants.listen(value); },
             name: constants.PASSWORD_NAME,
             placeholder: constants.PASSWORD_PLACEHOLDER,
             required: true,
@@ -121,6 +124,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
             ],
             default: constants.RADIO_DEFAULT,
             label: constants.RADIO_LABEL,
+            listen: (value) => { constants.listen(value); },
             name: constants.RADIO_NAME,
             type: "radio" as const,
             value: constants.RADIO_VALUE
@@ -135,6 +139,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
         },
         text: {
             label: constants.TEXT_BOX_LABEL,
+            listen: (value) => { constants.listen(value); },
             name: constants.TEXT_BOX_NAME,
             placeholder: constants.TEXT_BOX_PLACEHOLDER,
             required: true,
@@ -169,7 +174,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
     });
 
     return (
-        <Forms onSubmit={ (value) => constants.onSubmit()(value) }>
+        <Forms onSubmit={ (value) => constants.onSubmit(value) }>
             {
                 isGroup
                     ? (
