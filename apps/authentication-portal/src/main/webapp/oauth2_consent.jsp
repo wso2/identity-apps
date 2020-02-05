@@ -221,13 +221,11 @@
                         <% } %>
                         <div class="ui divider hidden"></div>
                         <div class="feild">
-                            <div class="ui visible warning message" role="alert">
-                                <div>
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving")%>
-                                    <a href="privacy_policy.do" target="policy-pane">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%>
-                                    </a>
-                                </div>
+                            <div class="cookie-policy-message">
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving")%>
+                                <a href="privacy_policy.do" target="policy-pane">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%>
+                                </a>
                             </div>
                         </div>
 
