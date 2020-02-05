@@ -25,17 +25,22 @@ import { getSessionParameter } from "./session";
  *
  * @returns {}
  */
-export const sendSignOutRequest =  (redirectUri: string): Promise<any> => {
+export const sendSignOutRequest =  (redirectUri: string, sessionClearCallback): Promise<any> => {
     const logoutEndpoint = getEndSessionEndpoint();
+
     if (!logoutEndpoint || logoutEndpoint.trim().length === 0) {
         return Promise.reject(new Error("Invalid logout endpoint found."));
     }
+
     const idToken = getSessionParameter(ID_TOKEN);
+
     if (!idToken || idToken.trim().length === 0) {
         return Promise.reject(new Error("Invalid id_token found."));
     }
 
+    sessionClearCallback();
+    Promise.resolve("Logout sucess!");
+
     window.location.href = `${logoutEndpoint}?` + `id_token_hint=${idToken}` +
         `&post_logout_redirect_uri=${redirectUri}`;
-    return Promise.resolve("success");
 };

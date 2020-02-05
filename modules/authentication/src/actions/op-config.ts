@@ -22,6 +22,7 @@ import {
     END_SESSION_ENDPOINT,
     JWKS_ENDPOINT,
     OP_CONFIG_INITIATED,
+    REQUEST_PARAMS,
     REVOKE_TOKEN_ENDPOINT,
     TOKEN_ENDPOINT
 } from "../constants";
@@ -34,8 +35,16 @@ import { getSessionParameter, removeSessionParameter, setSessionParameter } from
  * @param {boolean} forceInit whether to initialize the configuration again.
  * @returns {Promise<any>} promise.
  */
-export const initOPConfiguration = (wellKnownEndpoint: string, forceInit: boolean): Promise<any> => {
+export const initOPConfiguration = (
+        wellKnownEndpoint: string,
+        forceInit: boolean,
+        clientHost
+    ): Promise<any> => {
     if (!forceInit && isOPConfigInitiated()) {
+        if (!isValidOPConfig(clientHost)) {
+            return Promise.reject(new Error("Invalid configuration."));
+        }
+
         return Promise.resolve("success");
     }
 
@@ -49,13 +58,14 @@ export const initOPConfiguration = (wellKnownEndpoint: string, forceInit: boolea
                 return Promise.reject(new Error("Failed to load OpenID provider configuration from: "
                     + wellKnownEndpoint));
             }
-            setSessionParameter(AUTHORIZATION_ENDPOINT, response.data.authorization_endpoint);
-            setSessionParameter(TOKEN_ENDPOINT, response.data.token_endpoint);
-            setSessionParameter(END_SESSION_ENDPOINT, response.data.end_session_endpoint);
-            setSessionParameter(JWKS_ENDPOINT, response.data.jwks_uri);
-            setSessionParameter(REVOKE_TOKEN_ENDPOINT, response.data.token_endpoint
+            setAuthorizeEndpoint(response.data.authorization_endpoint);
+            setTokenEndpoint(response.data.token_endpoint);
+            setEndSessionEndpoint(response.data.end_session_endpoint);
+            setJwksUri(response.data.jwks_uri);
+            setRevokeTokenEndpoint(response.data.token_endpoint
                 .substring(0, response.data.token_endpoint.lastIndexOf("token")) + "revoke");
-            setSessionParameter(OP_CONFIG_INITIATED, "true");
+            setOPConfigInitiated();
+
             return Promise.resolve("success");
         }).catch((error) => {
             return Promise.reject(error);
@@ -170,7 +180,7 @@ export const setJwksUri = (jwksEndpoint) => {
  * @returns {boolean}
  */
 export const isOPConfigInitiated = (): boolean => {
-    return getSessionParameter(OP_CONFIG_INITIATED) && "true" === getSessionParameter(OP_CONFIG_INITIATED);
+    return getSessionParameter(OP_CONFIG_INITIATED) && getSessionParameter(OP_CONFIG_INITIATED) === "true";
 };
 
 /**
@@ -178,4 +188,15 @@ export const isOPConfigInitiated = (): boolean => {
  */
 export const setOPConfigInitiated = () => {
     setSessionParameter(OP_CONFIG_INITIATED, "true");
+};
+
+/**
+ * Checks whether openid configuration initiated is valid.
+ *
+ * @returns {boolean}
+ */
+export const isValidOPConfig = (clientHost): boolean => {
+    return isOPConfigInitiated() &&
+    getSessionParameter(REQUEST_PARAMS) !== null &&
+    JSON.parse(getSessionParameter(REQUEST_PARAMS)).clientHost === clientHost;
 };
