@@ -16,24 +16,178 @@
  * under the License.
  */
 
+/**
+ * Overview key.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const OVERVIEW = "overview";
+
+/**
+ * Personal info key.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const PERSONAL_INFO = "personalInfo";
+
+/**
+ * Profile key.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const PROFILE = "profile";
+
+/**
+ * Linked Accounts key.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const LINKED_ACCOUNTS = "linkedAccounts";
+
+/**
+ * Export Profile key.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const EXPORT_PROFILE = "exportProfile";
+
+/**
+ * Applications key.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const APPLICATIONS = "applications";
+
+/**
+ * Security key.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const SECURITY = "security";
+
+/**
+ * Change password key.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const CHANGE_PASSWORD = "changePassword";
+
+/**
+ * Account Recovery key.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const ACCOUNT_RECOVERY = "accountRecovery";
+
+/**
+ * Security Questions key.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const SECURITY_QUESTIONS = "securityQuestions";
+
+/**
+ * Email Recovery.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const EMAIL_RECOVERY = "emailRecovery";
+
+/**
+ * MFA key.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const MULTI_FACTOR_AUTHENTICATION = "multiFactorAuthentication";
+
+/**
+ * SMS OTP key.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const SMS = "sms";
+
+/**
+ * FIDO key.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const FIDO = "fido";
+
+/**
+ * ACtive Sessions key.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const ACTIVE_SESSIONS = "activeSessions";
+
+/**
+ * Manage Consents key.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const MANAGE_CONSENTS = "manageConsents";
+
+/**
+ * Operations key.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const OPERATIONS = "operations";
+
+/**
+ * Account Status.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const ACCOUNT_STATUS = "accountStatus";
+
+/**
+ * Account Activity.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const ACCOUNT_ACTIVITY = "accountActivity";
+
+/**
+ * Account Security.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const ACCOUNT_SECURITY = "accountSecurity";
+
+/**
+ * Consents Control key.
+ * @constant
+ * @type {string}
+ * @default
+ */
 export const CONSENTS_CONTROL = "consentsControl";
+
+/**
+ * External Logins key.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const EXTERNAL_LOGINS = "externalLogins";
