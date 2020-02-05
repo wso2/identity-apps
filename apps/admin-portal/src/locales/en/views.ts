@@ -54,21 +54,21 @@ export const views: Views = {
                         inputs: {
                             filerAttribute: {
                                 label: "Filter attribute",
-                                placeholder: "e.g. name, description etc.",
+                                placeholder: "E.g. name, description etc.",
                                 validations: {
                                     empty: "Filter attribute is a required field"
                                 }
                             },
                             filterCondition: {
                                 label: "Filter condition",
-                                placeholder: "e.g. Starts with etc.",
+                                placeholder: "E.g. Starts with etc.",
                                 validations: {
                                     empty: "Filter condition is a required field"
                                 }
                             },
                             filterValue: {
                                 label: "Filter value",
-                                placeholder: "e.g. facebook, slack etc.",
+                                placeholder: "E.g. facebook, slack etc.",
                                 validations: {
                                     empty: "Filter value is a required field"
                                 }
@@ -342,12 +342,12 @@ export const views: Views = {
                                 "under contract)",
                             1: "Your date of birth/age",
                             2: "IP address used to log in",
-                            3: "Your device ID if you use a device (e.g., phone or tablet) to log in"
+                            3: "Your device ID if you use a device (E.g., phone or tablet) to log in"
                         },
                         list2: {
                             0: "City/Country from which you originated the TCP/IP connection",
                             1: "Time of the day that you logged in (year, month, week, hour or minute)",
-                            2: "Type of device that you used to log in (e.g., phone or tablet)",
+                            2: "Type of device that you used to log in (E.g., phone or tablet)",
                             3: "Operating system and generic browser information"
                         },
                         para1: "WSO2 IS considers anything related to you, and by which you may be identified, as " +
@@ -387,21 +387,21 @@ export const views: Views = {
                         inputs: {
                             filerAttribute: {
                                 label: "Filter attribute",
-                                placeholder: "e.g. name, description etc.",
+                                placeholder: "E.g. name, description etc.",
                                 validations: {
                                     empty: "Filter attribute is a required field"
                                 }
                             },
                             filterCondition: {
                                 label: "Filter condition",
-                                placeholder: "e.g. Starts with etc.",
+                                placeholder: "E.g. Starts with etc.",
                                 validations: {
                                     empty: "Filter condition is a required field"
                                 }
                             },
                             filterValue: {
                                 label: "Filter value",
-                                placeholder: "e.g. facebook, slack etc.",
+                                placeholder: "E.g. facebook, slack etc.",
                                 validations: {
                                     empty: "Filter value is a required field"
                                 }
