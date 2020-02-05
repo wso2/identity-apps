@@ -191,17 +191,17 @@
                                             }
                                         %>
                                     </div>
+                                </div>
 
-                                    <div class="ui divider hidden"></div>
-                                    <div class="feild">
-                                        <div class="cookie-policy-message">
-                                            <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving.head")%> <%=Encode.forHtml(request.getParameter("application"))%></h5>
+                                <div class="ui divider hidden"></div>
+                                <div class="feild">
+                                    <div class="cookie-policy-message">
+                                        <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving.head")%> <%=Encode.forHtml(request.getParameter("application"))%></h5>
 
-                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving")%>
-                                            <%=Encode.forHtml(request.getParameter("application"))%>
-                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving2")%>
-                                            <a href="privacy_policy.do" target="policy-pane"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%></a>.
-                                        </div>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving")%>
+                                        <%=Encode.forHtml(request.getParameter("application"))%>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving2")%>
+                                        <a href="privacy_policy.do" target="policy-pane"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%></a>.
                                     </div>
                                 </div>
 
@@ -217,7 +217,7 @@
                                         <div class="grouped fields">
                                             <div class="field">
                                                 <div class="ui radio checkbox">
-                                                    <input type="radio" class="hidden" name="scope-approval" id="approveCb" value="approve">
+                                                    <input type="radio" class="hidden" name="scope-approval" id="approveCb" value="approve" checked>
                                                     <label for="approveCb"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "approve.once")%></label>
                                                 </div>
                                             </div>
