@@ -18,12 +18,23 @@
 
 import React from "react";
 import { useSelector } from "react-redux";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, RouteProps } from "react-router-dom";
 import * as ApplicationConstants from "../constants/application-constants";
 import { history } from "../helpers";
 import { updateAuthenticationCallbackUrl } from "../store/actions";
 
-export const ProtectedRoute = ({ component: Component, ...rest }) => {
+/**
+ * Protected route component.
+ *
+ * @return {JSX.Element}
+ */
+export const ProtectedRoute = (props: RouteProps): JSX.Element => {
+
+    const {
+        component: Component,
+        ...rest
+    } = props;
+
     const isAuth = useSelector((state: any) => state.authenticationInformation.isAuth);
 
     /**
@@ -37,10 +48,12 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
 
     return (
         <Route
-            render={ (props) =>
-                isAuth ?
-                    <Component { ...props } /> :
-                    <Redirect to={ APP_LOGIN_PATH } />
+            render={ (renderProps) =>
+                isAuth
+                    ? Component
+                        ? <Component { ...renderProps } />
+                        : null
+                    : <Redirect to={ APP_LOGIN_PATH }/>
             }
             { ...rest }
         />
