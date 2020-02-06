@@ -24,7 +24,7 @@ import { getOIDCData, getOIDCMetadata, updateOIDCData } from "../../api/applicat
 import {
     MetadataPropertyInterface,
     OAuth2PKCEConfigurationInterface,
-    OIDCdataInterface,
+    OIDCDataInterface,
     OIDCMetadataInterface
 } from "../../models";
 
@@ -47,7 +47,7 @@ export const OIDCForm: FunctionComponent<OIDCFormProps> = (props): JSX.Element =
 
     const [metadata, setMetadata] = useState<OIDCMetadataInterface>();
 
-    const [inboundData, setInboundData] = useState<OIDCdataInterface>();
+    const [inboundData, setInboundData] = useState<OIDCDataInterface>();
 
     const getMetadata = () => {
         getOIDCMetadata()

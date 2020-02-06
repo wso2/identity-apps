@@ -44,20 +44,16 @@ export const AdvanceConfigurations: FunctionComponent<AdvanceConfigurationExtent
     } = props;
 
     const findSelectedConfiguration = (): string[] => {
-        const selectedValues = []
+        const selectedValues = [];
         if (saas) {
             selectedValues.push("saas");
-        }
-        if (discoverableByEndUsers) {
+        } else if (discoverableByEndUsers) {
             selectedValues.push("discoverableByEndUsers");
-        }
-        if (skipConsent) {
+        } else if (skipConsent) {
             selectedValues.push("skipConsent");
-        }
-        if (returnAuthenticatedIdpList) {
+        } else if (returnAuthenticatedIdpList) {
             selectedValues.push("returnAuthenticatedIdpList");
-        }
-        if (enableAuthorization) {
+        } else if (enableAuthorization) {
             selectedValues.push("enableAuthorization");
         }
         return selectedValues;
@@ -85,13 +81,13 @@ export const AdvanceConfigurations: FunctionComponent<AdvanceConfigurationExtent
                 skipConsent: (values.get("advanceConfiguration").includes("skipConsent") ? true : false)
             }
         };
-    }
+    };
 
     return (
         <>
             <Card className="connection-card" fluid padded="very">
                 <Card.Content>
-                    <Header as="h3" className={ " " }> Advance Configurations </Header>
+                    <Header as="h3" className={ " " }>Advance Configurations</Header>
                 </Card.Content>
                 <Card.Content>
                     <Forms onSubmit={ (values) => handleSubmit(values) }>
@@ -179,4 +175,4 @@ export const AdvanceConfigurations: FunctionComponent<AdvanceConfigurationExtent
             </Card>
         </>
     );
-}
+};

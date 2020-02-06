@@ -85,7 +85,7 @@ interface OIDCLogoutConfigurationInterface {
 /**
  * Captures OIDC properties
  */
-export interface OIDCdataInterface {
+export interface OIDCDataInterface {
     clientId?: string;
     clientSecret?: string;
     state?: State;

@@ -17,7 +17,7 @@
  */
 
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { Button, Divider, Form, Grid, Icon, Tab } from "semantic-ui-react";
+import { Button, Divider, Grid, Icon, Tab } from "semantic-ui-react";
 import { getApplicationDetails } from "../../api/application";
 import { history } from "../../helpers";
 import { ApplicationInterface } from "../../models";
@@ -79,14 +79,11 @@ export const EditApplication: FunctionComponent<{}> = (props): JSX.Element => {
         {
             menuItem: "Settings",
             render: () => (
-                <Tab.Pane attached={ false }>{
-                    (
-                        <ApplicationSettings
-                            appId={ application.id }
-                            advancedConfigurations={ application.advancedConfigurations }
-                        />
-                    )
-                }
+                <Tab.Pane attached={ false }>
+                    <ApplicationSettings
+                        appId={ application.id }
+                        advancedConfigurations={ application.advancedConfigurations }
+                    />
                 </Tab.Pane>
             ),
         },
@@ -127,4 +124,4 @@ export const EditApplication: FunctionComponent<{}> = (props): JSX.Element => {
             }
         </>
     );
-}
+};

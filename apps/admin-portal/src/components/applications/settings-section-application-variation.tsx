@@ -131,7 +131,6 @@ export const SettingsSection: FunctionComponent<SettingsSectionProps> = (props):
                         <Grid.Column width={ 2 } className="no-padding">
                             <Responsive as={ Fragment } { ...Responsive.onlyComputer }>
                                 {
-                                    // tslint:disable-next-line:max-line-length
                                     toggle && <Radio toggle checked={ toggleValue } onClick={ onToggle }/>
                                 }
                             </Responsive>

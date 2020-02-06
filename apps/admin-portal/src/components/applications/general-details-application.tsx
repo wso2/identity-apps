@@ -45,24 +45,21 @@ export const GeneralDetailsApplication: FunctionComponent<GeneralSettingsProps> 
     } = props;
 
     const handleSubmit = (values) => {
-        console.log(values);
         const submit: ApplicationInterface = {
             accessUrl: values.get("accessUrl").toString(),
             description: values.get("description").toString(),
             id: appId,
             imageUrl: values.get("imageUrl").toString(),
             name: values.get("name").toString(),
-        }
+        };
         updateApplicationDetails(submit)
             .then((response) => {
-                console.log(response);
+                //  TODO Add to Notification.
             })
             .catch((error) => {
-                // tslint:disable-next-line:no-console
-                console.log("error", error);
+                //  TODO Add to Notification.
             });
-        ;
-    }
+    };
 
     return (
         <>
@@ -140,5 +137,4 @@ export const GeneralDetailsApplication: FunctionComponent<GeneralSettingsProps> 
             }
         </>
     );
-
-}
+};

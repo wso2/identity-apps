@@ -21,11 +21,14 @@ import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import {
     ApplicationBasicInterface,
     ApplicationInterface,
-    ApplicationListInterface, AuthProtocolMetadataInterface,
+    ApplicationListInterface,
+    AuthProtocolMetadataInterface,
     Claim,
     ClaimDialect,
     ExternalClaim,
-    HttpMethods, OIDCdataInterface, OIDCMetadataInterface
+    HttpMethods,
+    OIDCDataInterface,
+    OIDCMetadataInterface
 } from "../models";
 
 /**
@@ -289,7 +292,7 @@ export const getOIDCData = (id: string): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed retrieve OIDC data from: "));
             }
-            return Promise.resolve(response.data as OIDCdataInterface);
+            return Promise.resolve(response.data as OIDCDataInterface);
         }).catch((error) => {
             return Promise.reject(error);
         });
