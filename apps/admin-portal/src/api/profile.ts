@@ -155,7 +155,7 @@ export const getGravatarImage = (email: string): Promise<string> => {
  *
  * @return {Promise<any>} a promise containing the response.
  */
-export const getScimSchemas = (): Promise<any> => {
+export const getProfileSchemas = (): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
