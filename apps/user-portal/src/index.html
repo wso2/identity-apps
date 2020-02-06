@@ -72,7 +72,7 @@
                 clientHost: clientOriginAddress + getTenantPath(tenantName),
                 clientOrigin: clientOriginAddress,
                 clientID: (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ? 
-                    tenantUserPortalClientID : "USER_PORTAL",
+                    tenantUserPortalClientID : defaultUserPortalClientID,
                 serverHost: serverOriginAddress + getTenantPath(tenantName),
                 serverOrigin: serverOriginAddress,
                 tenant: (tenantName === "") ? "carbon.super" : tenantName
