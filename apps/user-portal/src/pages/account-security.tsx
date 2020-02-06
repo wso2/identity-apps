@@ -20,6 +20,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
+import appConfig from "../../app.config.json";
 import {
     AccountRecoveryComponent,
     ChangePassword,
@@ -27,9 +28,18 @@ import {
     MultiFactorAuthentication,
     UserSessionsComponent
 } from "../components";
+import {
+    ACCOUNT_RECOVERY,
+    ACTIVE_SESSIONS,
+    CHANGE_PASSWORD,
+    MANAGE_CONSENTS,
+    MULTI_FACTOR_AUTHENTICATION,
+    SECURITY
+} from "../constants";
 import { InnerPageLayout } from "../layouts";
 import { AlertInterface } from "../models";
 import { addAlert } from "../store/actions";
+import { checkEnabled } from "../utils";
 
 /**
  * Account security page.
@@ -39,6 +49,7 @@ import { addAlert } from "../store/actions";
 export const AccountSecurityPage = (): JSX.Element => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
+    const securityConfig = appConfig[SECURITY];
 
     /**
      * Dispatches the alert object to the redux store.
@@ -56,27 +67,57 @@ export const AccountSecurityPage = (): JSX.Element => {
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
-                        <ChangePassword onAlertFired={ handleAlerts } />
+                        {
+                            checkEnabled(securityConfig, CHANGE_PASSWORD)
+                                ? (
+                                    <ChangePassword onAlertFired={ handleAlerts } />
+                                )
+                                : null
+                        }
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
-                        <AccountRecoveryComponent onAlertFired={ handleAlerts } />
+                        {
+                            checkEnabled(securityConfig, ACCOUNT_RECOVERY)
+                                ? (
+                                    <AccountRecoveryComponent onAlertFired={ handleAlerts } />
+                                )
+                                : null
+                        }
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
-                        <MultiFactorAuthentication onAlertFired={ handleAlerts }/>
+                        {
+                            checkEnabled(securityConfig, MULTI_FACTOR_AUTHENTICATION)
+                                ? (
+                                    <MultiFactorAuthentication onAlertFired={ handleAlerts } />
+                                )
+                                : null
+                        }
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
-                        <UserSessionsComponent onAlertFired={ handleAlerts } />
+                        {
+                            checkEnabled(securityConfig, ACTIVE_SESSIONS)
+                                ? (
+                                    <UserSessionsComponent onAlertFired={ handleAlerts } />
+                                )
+                                : null
+                        }
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
-                        <Consents onAlertFired={ handleAlerts } />
+                        {
+                            checkEnabled(securityConfig, MANAGE_CONSENTS)
+                                ? (
+                                    <Consents onAlertFired={ handleAlerts } />
+                                )
+                                : null
+                        }
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

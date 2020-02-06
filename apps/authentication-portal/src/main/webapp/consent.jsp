@@ -148,6 +148,9 @@
                                 <a href="privacy_policy.do" target="policy-pane"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%></a>.
                             </div>
                         </div>
+
+                        <div class="ui divider hidden"></div>
+
                         <div class="align-right buttons">
                             <input class="ui large button link-button" type="reset"
                                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"cancel")%>"

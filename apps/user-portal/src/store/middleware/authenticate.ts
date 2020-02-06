@@ -84,6 +84,8 @@ export const handleSignIn = (state, dispatch) => {
                     throw error;
                 });
         } else {
+            AuthenticateSessionUtil.endAuthenticatedSession();
+            OPConfigurationUtil.resetOPConfiguration();
             SignInUtil.sendAuthorizationRequest(requestParams);
         }
     };

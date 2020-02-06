@@ -22,10 +22,13 @@ import {
     ApplicationBasicInterface,
     ApplicationInterface,
     ApplicationListInterface,
+    AuthProtocolMetadataInterface,
     Claim,
     ClaimDialect,
     ExternalClaim,
-    HttpMethods
+    HttpMethods,
+    OIDCDataInterface,
+    OIDCMetadataInterface
 } from "../models";
 
 /**
@@ -207,6 +210,147 @@ export const getApplicationList = (limit: number, offset: number): Promise<any> 
                 return Promise.reject(new Error("Failed get application list from: "));
             }
             return Promise.resolve(response.data as ApplicationListInterface);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Gets the available inbound protocols.
+ *
+ * @param customOnly If true only returns custom protocols.
+ */
+export const getAvailableInboundProtocols = (customOnly: boolean): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: ServiceResourcesEndpoint.applications + "/meta/inbound-protocols?customOnly=" + customOnly
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed get Inbound protocols from: "));
+            }
+            return Promise.resolve(response.data as AuthProtocolMetadataInterface);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Gets the OIDC protocol's meta data.
+ *
+ * @return {Promise<any>} A promise containing the response.
+ */
+export const getOIDCMetadata = (): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: ServiceResourcesEndpoint.applications + "/meta/inbound-protocols/oidc"
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status === 404) {
+                return Promise.reject(new Error("Inbound protocol not configured"));
+            } else if (response.status !== 200) {
+                return Promise.reject(new Error("Failed get OIDC meta data from: "));
+            }
+            return Promise.resolve(response.data as OIDCMetadataInterface);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Gets the application's OIDC data.
+ *
+ * @param id Application ID
+ */
+export const getOIDCData = (id: string): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: ServiceResourcesEndpoint.applications + "/" + id + "/inbound-protocols/oidc"
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed retrieve OIDC data from: "));
+            }
+            return Promise.resolve(response.data as OIDCDataInterface);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Updates the OIDC configuration.
+ *
+ * @param id Application ID
+ * @param OIDC OIDC configuration data.
+ */
+export const updateOIDCData = (id: string, OIDC: object): Promise<any> => {
+    const requestConfig = {
+        data: OIDC,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: ServiceResourcesEndpoint.applications + "/" + id + "/inbound-protocols/oidc"
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed update inbound configuration"));
+            }
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Updates the application configuration.
+ *
+ * @param id Application ID
+ * @param advancedConfigs Application's advanced configurations.
+ */
+export const updateAdvanceConfigurations = (id: string, advancedConfigs: object): Promise<any> => {
+    const requestConfig = {
+        data: advancedConfigs,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: ServiceResourcesEndpoint.applications + "/" + id
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed update advance configuration"));
+            }
+            return Promise.resolve(response);
         }).catch((error) => {
             return Promise.reject(error);
         });

@@ -16,11 +16,11 @@
  * under the License.
  */
 
-export * from "./errors/404";
 export * from "./applications";
-export * from "./errors/under-construction";
+export * from "./errors";
 export * from "./home";
 export * from "./privacy";
 export * from "./users";
 export * from "./user-roles";
 export * from "./user-permission";
+export * from "./application-edit";

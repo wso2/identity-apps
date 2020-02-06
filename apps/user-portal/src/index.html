@@ -25,6 +25,10 @@
         
         <title><%= htmlWebpackPlugin.options.title %></title>
 
+        <!-- runtime config -->
+        <script src="<%= htmlWebpackPlugin.options.publicPath %>/runtime-config.js"></script>
+        <!-- runtime config -->
+
         <script>
             var getTenantPrefix = function(tenantName) {
                 return "t";
@@ -73,9 +77,6 @@
             };
         </script>
 
-        <!-- runtime config -->
-        <script src="<%= htmlWebpackPlugin.options.publicPath %>/runtime-config.js"></script>
-        <!-- runtime config -->
     </head>
     <body>
         <noscript>

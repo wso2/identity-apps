@@ -72,7 +72,9 @@ export const sendAuthorizationRequest = (requestParams: OIDCRequestParamsInterfa
         authorizeRequest += "&prompt=" + requestParams.prompt;
     }
 
-    window.location.href = authorizeRequest;
+    document.location.href = authorizeRequest;
+
+    return false;
 };
 
 /**

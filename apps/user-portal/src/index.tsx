@@ -16,8 +16,6 @@
  * under the License.
  */
 
-// TODO: Fix theme load logic and enable this
-// import "@wso2is/theme/lib/wso2-default.css";
 import * as React from "react";
 // tslint:disable:no-submodule-imports
 import "react-app-polyfill/ie11";
@@ -35,7 +33,7 @@ setupHttpClient();
 ReactDOM.render(
     (
         <BrowserRouter>
-                <App />
+            <App />
         </BrowserRouter>
     ),
     document.getElementById("root")
