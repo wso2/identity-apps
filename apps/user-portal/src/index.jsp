@@ -74,7 +74,8 @@
                 clientID: (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ?
                     tenantUserPortalClientID : defaultUserPortalClientID,
                 serverHost: serverOriginAddress + getTenantPath(tenantName),
-                serverOrigin: serverOriginAddress
+                serverOrigin: serverOriginAddress,
+                tenant: (tenantName === "") ? "carbon.super" : tenantName
             };
         </script>
     </head>
