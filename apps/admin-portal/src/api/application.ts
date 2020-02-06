@@ -151,6 +151,34 @@ export const getApplicationDetails = (id: string): Promise<any> => {
 };
 
 /**
+ * Deletes an application when the relevant id is passed in.
+ *
+ * @param id ID of the application.
+ * @return {Promise<any>} A promise containing the response.
+ */
+export const deleteApplication = (id: string): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: ServiceResourcesEndpoint.applications + "/" + id
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 204) {
+                return Promise.reject(new Error("Failed to delete the application."));
+            }
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
  * Updates the application with basic details.
  *
  * @param app Basic info about the application.
