@@ -155,7 +155,7 @@ export interface Views {
             },
             buttons: {
                 assignUserRoleBtn: string;
-            }
+            },
             notifications: {
                 addUser: Notification;
                 fetchUsers: Notification;
@@ -231,7 +231,22 @@ export interface Views {
                             validations: {
                                 empty: string;
                             }
-                        }
+                        },
+                        domain: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                            }
+                        },
+                        email: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                invalid: string;
+                            }
+                        },
                     },
                     validations: {
                         genericError: {

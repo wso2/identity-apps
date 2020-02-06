@@ -105,6 +105,21 @@ export const views: Views = {
                                 mismatch: "The password confirmation doesn't match"
                             }
                         },
+                        domain: {
+                            label: "Domain name",
+                            placeholder: "Select domain",
+                            validations: {
+                                empty: "User store domain cannot be empty.",
+                            }
+                        },
+                        email: {
+                            label: "Email address",
+                            placeholder: "Enter the email address",
+                            validations: {
+                                empty: "Email address cannot be empty",
+                                invalid: "Please enter a valid email address"
+                            }
+                        },
                         newPassword: {
                             label: "New password",
                             placeholder: "Enter the new password",
