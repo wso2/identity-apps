@@ -408,10 +408,12 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         if (passwordOption === "createPw") {
                             setPassword(value.get("newPassword").toString());
                         }
+                        if (passwordOption === "askPw") {
+                            setEmail(value.get("email").toString());
+                        }
                         setUsername(value.get("username").toString());
                         setDomain(value.get("domain").toString());
                         setRoleIds(value.get("role") as string[]);
-                        setEmail(value.get("email").toString());
                     } }
                     triggerReset={ (reset) => {
                         resetForm = reset;
