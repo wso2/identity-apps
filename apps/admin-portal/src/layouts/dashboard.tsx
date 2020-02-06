@@ -34,17 +34,6 @@ import { history } from "../helpers";
 import { AppState } from "../store";
 
 /**
- * Default header height to be used in state initialisations
- * @type {number}
- */
-const DEFAULT_HEADER_HEIGHT: number = 59;
-/**
- * Default footer height to be used in state initialisations
- * @type {number}
- */
-const DEFAULT_FOOTER_HEIGHT: number = 60;
-
-/**
  * Dashboard layout Prop types.
  */
 interface DashboardLayoutPropsInterface {
@@ -54,6 +43,7 @@ interface DashboardLayoutPropsInterface {
 /**
  * Dashboard layout.
  *
+ * @param {DashboardLayoutPropsInterface} props - Props injected to the component.
  * @return {JSX.Element}
  */
 export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterface> = (
@@ -69,8 +59,8 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
 
     const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(routes[0]);
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = React.useState<boolean>(false);
-    const [ headerHeight, setHeaderHeight ] = React.useState<number>(DEFAULT_HEADER_HEIGHT);
-    const [ footerHeight, setFooterHeight ] = React.useState<number>(DEFAULT_FOOTER_HEIGHT);
+    const [ headerHeight, setHeaderHeight ] = React.useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
+    const [ footerHeight, setFooterHeight ] = React.useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
     const [ isMobileViewport, setIsMobileViewport ] = React.useState<boolean>(false);
 
     const classes = classNames(
@@ -188,8 +178,8 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
             return pathname === urlTokens[1];
         } else if (!route.path && route.children && route.children.length > 0) {
             return route.children.some((childRoute) => {
-                return pathname === childRoute.path
-            })
+                return pathname === childRoute.path;
+            });
         }
     };
 

@@ -30,6 +30,20 @@ export class UIConstants {
     private constructor() { }
 
     /**
+     * Default header height to be used in state initialisations
+     * @constant
+     * @type {number}
+     */
+    public static readonly DEFAULT_HEADER_HEIGHT: number = 59;
+
+    /**
+     * Default footer height to be used in state initialisations
+     * @constant
+     * @type {number}
+     */
+    public static readonly DEFAULT_FOOTER_HEIGHT: number = 60;
+
+    /**
      * Constant to handle dashboard layout's desktop content top spacing.
      * @constant
      * @type {number}
