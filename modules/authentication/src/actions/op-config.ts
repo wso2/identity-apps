@@ -22,9 +22,9 @@ import {
     END_SESSION_ENDPOINT,
     JWKS_ENDPOINT,
     OP_CONFIG_INITIATED,
-    REQUEST_PARAMS,
     REVOKE_TOKEN_ENDPOINT,
-    TOKEN_ENDPOINT
+    TOKEN_ENDPOINT,
+    USERNAME
 } from "../constants";
 import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
 
@@ -37,15 +37,11 @@ import { getSessionParameter, removeSessionParameter, setSessionParameter } from
  */
 export const initOPConfiguration = (
         wellKnownEndpoint: string,
-        forceInit: boolean,
-        clientHost
+        forceInit: boolean
     ): Promise<any> => {
-    if (!forceInit && isOPConfigInitiated()) {
-        if (!isValidOPConfig(clientHost)) {
-            return Promise.reject(new Error("Invalid configuration."));
-        }
 
-        return Promise.resolve("success");
+    if (!forceInit && isOPConfigInitiated()) {
+        Promise.resolve("success");
     }
 
     if (!wellKnownEndpoint || wellKnownEndpoint.trim().length === 0) {
@@ -191,12 +187,36 @@ export const setOPConfigInitiated = () => {
 };
 
 /**
+ * Get authenticated user's username
+ *
+ * @returns {any}
+ */
+export const getUsername = () => {
+    return getSessionParameter(USERNAME);
+};
+
+/**
+ * Get tenant name
+ *
+ * @returns {any}
+ */
+export const getTenant = () => {
+    if (getUsername()) {
+        const usernameSplit = getUsername().split("@");
+
+        if (usernameSplit.length > 1) {
+            return usernameSplit[usernameSplit.length - 1];
+        }
+    }
+
+    return "";
+};
+
+/**
  * Checks whether openid configuration initiated is valid.
  *
  * @returns {boolean}
  */
-export const isValidOPConfig = (clientHost): boolean => {
-    return isOPConfigInitiated() &&
-    getSessionParameter(REQUEST_PARAMS) !== null &&
-    JSON.parse(getSessionParameter(REQUEST_PARAMS)).clientHost === clientHost;
+export const isValidOPConfig = (tenant): boolean => {
+    return isOPConfigInitiated() && ((getTenant() !== "") && (getTenant() !== tenant));
 };
