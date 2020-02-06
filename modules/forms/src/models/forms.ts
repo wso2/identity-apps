@@ -57,6 +57,7 @@ interface FormFieldModel {
     name: string;
     label: string;
     listen?: (values: Map<string, FormValue>) => void;
+    autoFocus?: boolean;
 }
 
 interface FormRequiredFieldModel extends FormFieldModel {

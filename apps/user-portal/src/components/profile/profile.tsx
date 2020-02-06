@@ -241,6 +241,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     } }
                                 >
                                     <Field
+                                        autoFocus={ true }
                                         label=""
                                         name={ schema.name }
                                         placeholder={ t("views:components.profile.forms.generic.inputs.placeholder", {

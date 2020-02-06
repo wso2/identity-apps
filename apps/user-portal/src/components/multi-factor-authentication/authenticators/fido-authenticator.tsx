@@ -324,6 +324,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                     <Form>
                         <Form.Field>
                             <Form.Input
+                                autoFocus={ true }
                                 type="text"
                                 label=""
                                 placeholder={
@@ -421,6 +422,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                                                         }
                                                                     >
                                                                         <Field
+                                                                            autoFocus={ true }
                                                                             label=""
                                                                             value={ device.displayName || "" }
                                                                             required={ true }

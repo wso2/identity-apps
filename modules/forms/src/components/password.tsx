@@ -16,6 +16,7 @@ interface PasswordPropsInterface {
     onChange: (event) => void;
     showPassword: string;
     hidePassword: string;
+    autoFocus?: boolean;
 }
 
 /**
@@ -63,6 +64,7 @@ export const Password: React.FunctionComponent<PasswordPropsInterface> = (
                     />
                 )
             }
+            autoFocus={ props.autoFocus || false }
         />
     );
 };
