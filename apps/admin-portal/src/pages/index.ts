@@ -22,3 +22,4 @@ export * from "./errors/under-construction";
 export * from "./home";
 export * from "./privacy";
 export * from "./users";
+export * from "./application-edit";

@@ -16,13 +16,23 @@
  * under the License.
  */
 
-export * from "./application-list";
-export * from "./application-search";
-export * from "./dropdown-details";
-export * from "./dropdown-details-general";
-export * from "./general-details-application";
-export * from "./inbound-form-oidc";
-export * from "./settings-application";
-export * from "./settings-section-application-variation";
-export * from "./advanced-configurations";
-export * from "./application-edit";
+import React from "react";
+import { EditApplication } from "../components/applications";
+import { PageLayout } from "../layouts";
+
+/**
+ * Application Edit page.
+ *
+ * @return {JSX.Element}
+ */
+export const ApplicationEditPage = (): JSX.Element => {
+
+    return (
+        <PageLayout
+            title=" "
+            description=" "
+        >
+            <EditApplication/>
+        </PageLayout>
+    );
+};
