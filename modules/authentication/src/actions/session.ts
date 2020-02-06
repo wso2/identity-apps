@@ -71,7 +71,6 @@ export const endAuthenticatedSession = () => {
     sessionStorage.removeItem(DISPLAY_NAME);
     sessionStorage.removeItem(EMAIL);
     sessionStorage.removeItem(ID_TOKEN);
-    sessionStorage.removeItem(REFRESH_TOKEN);
     sessionStorage.removeItem(REQUEST_PARAMS);
     sessionStorage.removeItem(SCOPE);
     sessionStorage.removeItem(TOKEN_TYPE);

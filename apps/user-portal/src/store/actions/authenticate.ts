@@ -185,6 +185,10 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
                     dispatch(getProfileInformation());
                 })
                 .catch((error) => {
+                    if (error.response.status === 400) {
+                        SignInUtil.sendAuthorizationRequest(requestParams);
+                    }
+
                     throw error;
                 });
         } else {
@@ -194,7 +198,9 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
 
     if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
         if (OPConfigurationUtil.isValidOPConfig(requestParams.tenant)) {
-            handleSignOut(true);
+            AuthenticateSessionUtil.endAuthenticatedSession();
+            OPConfigurationUtil.resetOPConfiguration();
+            handleSignOut();
         }
 
         dispatch(setSignIn());
@@ -220,8 +226,8 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
 /**
  * Handle user sign-out
  */
-export const handleSignOut = (force: boolean) => (dispatch) => {
-    if ((sessionStorage.length === 0) && (!force || false)) {
+export const handleSignOut = () => (dispatch) => {
+    if (sessionStorage.length === 0) {
         history.push(GlobalConfig.appLoginPath);
     } else {
         SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl, () => {
