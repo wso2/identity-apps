@@ -19,8 +19,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { Button, Divider, Dropdown, Grid } from "semantic-ui-react";
+import { Button, Divider, Grid } from "semantic-ui-react";
 import { getUsersList } from "../api";
 import { AddUser, UserSearch, UsersList } from "../components/users";
 import { AlertInterface, AlertLevels } from "../models";

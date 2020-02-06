@@ -16,27 +16,18 @@
  * under the License.
  */
 
-import { CheckboxChild, Field, Forms, FormValue, Validation } from "@wso2is/forms";
+import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { Field, Forms, Validation } from "@wso2is/forms";
+import { EditSection } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 import {
-    Button,
-    Checkbox,
-    Container,
-    Divider,
-    Dropdown,
     Form,
     Grid,
-    Header,
     Icon,
     Modal,
-    ModalContent
 } from "semantic-ui-react";
 import { addUser, addUserRole, getGroupsList, getUserStoreList } from "../../api";
-import { AlertInterface, AlertLevels } from "../../models";
-import { EditSection } from "../edit-section";
-import { ModalComponent } from "../shared";
 
 /**
  * Proptypes for the application consents list component.
@@ -63,10 +54,10 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const [ username, setUsername ] = useState("");
     const [ password, setPassword ] = useState("");
     const [ domain, setDomain ] = useState("");
-    const [ isUserWarnModalOpen, setUserWarnModalOpen] = useState(false);
     const [ roleIds, setRoleIds ] = useState([]);
     const [ userId, setUserId ] = useState("");
-    const [ passwordOption, setPasswordOption ] = useState("askPw");
+    const [ passwordOption, setPasswordOption ] = useState("");
+    const [ email, setEmail ] = useState("");
 
     const {
         getUserList,
@@ -83,17 +74,34 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         { label: "Create password", value: "createPw" },
     ];
 
+    /**
+     * Fetch the list of available groups.
+     */
     useEffect(() => {
         getGroups();
     }, []);
 
+    /**
+     * Fetch the list of available user stores.
+     */
     useEffect(() => {
         getUserStores();
     }, []);
 
+    // TODO: enable this function with roles feature.
+    // useEffect(() => {
+    //     assignUserRole();
+    // }, [roleIds]);
+
+    /**
+     * The api request to add the user will be sent
+     * depending on the state change of the username.
+     */
     useEffect(() => {
-        assignUserRole();
-    }, [roleIds]);
+        if (username !== "") {
+            addUserBasic();
+        }
+    }, [username]);
 
     const getGroups = () => {
         getGroupsList()
@@ -102,15 +110,111 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             });
     };
 
+    const handlePasswordOptions = () => {
+        if (passwordOption && passwordOption === "createPw") {
+            return (
+                <EditSection>
+                    <Field
+                        hidePassword={ t("common:hidePassword") }
+                        label={ t(
+                            "views:components.user.forms.addUserForm.inputs.newPassword.label"
+                        ) }
+                        name="newPassword"
+                        placeholder={ t(
+                            "views:components.user.forms.addUserForm.inputs." +
+                            "newPassword.placeholder"
+                        ) }
+                        required={ true }
+                        requiredErrorMessage={ t(
+                            "views:components.user.forms.addUserForm." +
+                            "inputs.newPassword.validations.empty"
+                        ) }
+                        showPassword={ t("common:showPassword") }
+                        type="password"
+                        width={ 9 }
+                    />
+                    <Field
+                        hidePassword={ t("common:hidePassword") }
+                        label={ t(
+                            "views:components.user.forms.addUserForm.inputs.confirmPassword.label"
+                        ) }
+                        name="confirmPassword"
+                        placeholder={ t(
+                            "views:components.user.forms.addUserForm.inputs." +
+                            "confirmPassword.placeholder"
+                        ) }
+                        required={ true }
+                        requiredErrorMessage={ t(
+                            "views:components.user.forms.addUserForm." +
+                            "inputs.confirmPassword.validations.empty"
+                        ) }
+                        showPassword={ t("common:showPassword") }
+                        type="password"
+                        validation={ (value: string, validation: Validation, formValues) => {
+                            if (formValues.get("newPassword") !== value) {
+                                validation.isValid = false;
+                                validation.errorMessages.push(
+                                    t("views:components.user.forms.addUserForm.inputs" +
+                                        ".confirmPassword.validations.mismatch"));
+                            }
+                        } }
+                        width={ 9 }
+                    />
+                    <Field
+                        hidden={ true }
+                        type="divider"
+                    />
+                </EditSection>
+            );
+        } else if (passwordOption && passwordOption === "askPw") {
+            return (
+                <EditSection>
+                    <Field
+                        label="Email address"
+                        name="email"
+                        placeholder={ t(
+                            "views:components.user.forms.addUserForm.inputs." +
+                            "newPassword.placeholder"
+                        ) }
+                        required={ true }
+                        requiredErrorMessage={ t(
+                            "views:components.user.forms.addUserForm." +
+                            "inputs.newPassword.validations.empty"
+                        ) }
+                        type="text"
+                        width={ 9 }
+                    />
+                    <p style={ { fontSize: "12px" } }>
+                        <Icon color="grey" floated="left" name="info circle" />
+                        An email requesting a password will be set to this address
+                    </p>
+                    <Field
+                        hidden={ true }
+                        type="divider"
+                    />
+                </EditSection>
+            );
+        } else {
+            return "";
+        }
+    };
+
+    const handleBasicModalClose = () => {
+        setPasswordOption("");
+        handleModalClose();
+    };
+
     /**
      * The following function handles the functionality of
      * the user roles modal.
      */
     const handleRoleModal = () => {
         handleRoleModalOpen();
-        handleAddUserWarnModalClose();
     };
 
+    /**
+     * This function handles assigning the roles to the user.
+     */
     const assignUserRole = () => {
         const data = {
             Operations: [
@@ -182,69 +286,36 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         });
     };
 
-    const handleAddUserWarnModalClose = (): void => {
-        setUserWarnModalOpen(false);
-    };
-
     /**
-     * Device registration error modal.
-     *
-     * @return {JSX.Element}
-     */
-    const addUserWarnModal = (): JSX.Element => {
-        return (
-            <ModalComponent
-                primaryAction={ t("common:save") }
-                secondaryAction={ t("common:cancel") }
-                onSecondaryActionClick={ handleAddUserWarnModalClose }
-                onPrimaryActionClick={ addUserBasic }
-                open={ isUserWarnModalOpen }
-                onClose={ handleAddUserWarnModalClose }
-                type="warning"
-                header={ t("views:components.user.modals.addUserWarnModal.heading") }
-                content={ t("views:components.user.modals.addUserWarnModal.message") }
-            >
-                <Modal.Content>
-                    <Button
-                        className="warning-modal-link-button"
-                        onClick={ handleRoleModal }
-                    >
-                        { t("views:components.users.buttons.assignUserRoleBtn") }
-                    </Button>
-                </Modal.Content>
-            </ModalComponent>
-        );
-    };
-
-    /**
-     * This function handles adding the user
+     * This function handles adding the user.
      */
     const addUserBasic = () => {
         let userName = "";
         domain !== "primary" ? userName = domain + "/" + username : userName = username;
         let data = {};
 
-        if (passwordOption && passwordOption !== "askPw") {
-            data = {
-                password,
-                userName
-            };
-        }
-
-        data = {
-            "emails":
-                [{
-                    primary: true,
-                    value: "nipunib@wso2.com"
-
-                }],
-            password,
-            "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User":
-                {
-                    askPassword: "true"
-                },
-            userName
-        };
+        passwordOption && passwordOption !== "askPw" ?
+            (
+                data = {
+                    password,
+                    userName
+                }
+            ) :
+            (
+                data = {
+                    "emails":
+                        [{
+                            primary: true,
+                            value: email
+                        }],
+                    "password": "password",
+                    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User":
+                        {
+                            askPassword: "true"
+                        },
+                    userName
+                }
+            );
 
         addUser(data)
             .then((response) => {
@@ -258,7 +329,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         "views:components.users.notifications.addUser.success.message"
                     )
                 });
-                handleAddUserWarnModalClose();
+                handleBasicModalClose();
                 getUserList();
             })
             .catch((error) => {
@@ -316,6 +387,9 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      */
     let resetForm: () => void = () => undefined;
 
+    /**
+     * The modal to add new user.
+     */
     const addUserBasicForm = () => (
         <Modal open={ isBasicModalOpen } size="small">
             <Modal.Header>
@@ -331,12 +405,13 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             <Modal.Content>
                 <Forms
                     onSubmit={ (value) => {
+                        if (passwordOption === "createPw") {
+                            setPassword(value.get("newPassword").toString());
+                        }
                         setUsername(value.get("username").toString());
-                        setPassword(value.get("newPassword").toString());
                         setDomain(value.get("domain").toString());
                         setRoleIds(value.get("role") as string[]);
-                        setUserWarnModalOpen(true);
-                        handleModalClose();
+                        setEmail(value.get("email").toString());
                     } }
                     triggerReset={ (reset) => {
                         resetForm = reset;
@@ -344,17 +419,23 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 >
                     <Field
                         type="dropdown"
-                        label="Domain name"
+                        label={ t(
+                            "views:components.user.forms.addUserForm.inputs.domain.label"
+                        ) }
                         name="domain"
                         children={ userStoreOptions }
-                        placeholder="Select domain"
-                        requiredErrorMessage="Domain should not be empty"
+                        placeholder={ t(
+                            "views:components.user.forms.addUserForm.inputs.domain.placeholder"
+                        ) }
+                        requiredErrorMessage={ t(
+                            "views:components.user.forms.addUserForm.inputs.domain.validations.empty"
+                        ) }
                         required={ true }
                         width={ 9 }
                     />
                     <Field
                         label={ t(
-                            "views:components.user.forms.addUserForm.inputs" + ".username.label"
+                            "views:components.user.forms.addUserForm.inputs.username.label"
                         ) }
                         name="username"
                         placeholder={ t(
@@ -379,101 +460,17 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     />
                     <Field
                         type="radio"
-                        label="Select option"
-                        name="option"
+                        label="Password options"
+                        name="pwOption"
                         default="Ask password"
+                        listen={ (values) => { setPasswordOption(values.get("pwOption").toString()); } }
                         children={ passwordOptions }
                     />
                     <Field
                         hidden={ true }
                         type="divider"
                     />
-                    {
-                        passwordOption && passwordOption === "createPw" ?
-                            (
-                                <EditSection>
-                                <Field
-                                    hidePassword={ t("common:hidePassword") }
-                                    label={ t(
-                                        "views:components.user.forms.addUserForm.inputs" + ".newPassword.label"
-                                    ) }
-                                    name="newPassword"
-                                    placeholder={ t(
-                                        "views:components.user.forms.addUserForm.inputs." +
-                                        "newPassword.placeholder"
-                                    ) }
-                                    required={ true }
-                                    requiredErrorMessage={ t(
-                                        "views:components.user.forms.addUserForm." +
-                                        "inputs.newPassword.validations.empty"
-                                    ) }
-                                    showPassword={ t("common:showPassword") }
-                                    type="password"
-                                    width={ 9 }
-                                />
-                                <Field
-                                    hidePassword={ t("common:hidePassword") }
-                                    label={ t(
-                                    "views:components.user.forms.addUserForm.inputs" + ".confirmPassword.label"
-                                    ) }
-                                    name="confirmPassword"
-                                    placeholder={ t(
-                                    "views:components.user.forms.addUserForm.inputs." +
-                                    "confirmPassword.placeholder"
-                                    ) }
-                                    required={ true }
-                                    requiredErrorMessage={ t(
-                                    "views:components.user.forms.addUserForm." +
-                                    "inputs.confirmPassword.validations.empty"
-                                    ) }
-                                    showPassword={ t("common:showPassword") }
-                                    type="password"
-                                    validation={ (value: string, validation: Validation, formValues) => {
-                                        if (formValues.get("newPassword") !== value) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push(
-                                            t("views:components.user.forms.addUserForm.inputs" +
-                                            ".confirmPassword.validations.mismatch"));
-                                        }
-                                    } }
-                                    width={ 9 }
-                                />
-                                <Field
-                                    hidden={ true }
-                                    type="divider"
-                                />
-                                </EditSection>
-                            ) :
-                            (
-                                <EditSection>
-                                <Field
-                                    hidePassword={ t("common:hidePassword") }
-                                    label="Email address"
-                                    name="newPassword"
-                                    placeholder={ t(
-                                        "views:components.user.forms.addUserForm.inputs." +
-                                        "newPassword.placeholder"
-                                    ) }
-                                    required={ true }
-                                    requiredErrorMessage={ t(
-                                        "views:components.user.forms.addUserForm." +
-                                        "inputs.newPassword.validations.empty"
-                                    ) }
-                                    showPassword={ t("common:showPassword") }
-                                    type="text"
-                                    width={ 9 }
-                                />
-                                <p style={ { fontSize: "12px" } }>
-                                    <Icon color="grey" floated="left" name="info circle" />
-                                    An email requesting a password will be set to this address
-                                </p>
-                                <Field
-                                    hidden={ true }
-                                    type="divider"
-                                />
-                                </EditSection>
-                            )
-                    }
+                    { handlePasswordOptions() }
                     <Form.Group>
                         <Field
                             size="small"
@@ -482,15 +479,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         />
                         <Field
                             className="link-button"
-                            size="small"
-                            type="button"
-                            value="Assign roles"
-                            floated="right"
-                            onClick={ handleRoleModalOpen }
-                        />
-                        <Field
-                            className="link-button"
-                            onClick={ handleModalClose }
+                            onClick={ handleBasicModalClose }
                             size="small"
                             type="button"
                             value={ t("common:cancel").toString() }
@@ -501,6 +490,9 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         </Modal>
     );
 
+    /**
+     * The modal to add user roles.
+     */
     const addUserRoles = () => (
         <Modal open={ isRoleModalOpen } size="small">
             <Modal.Header>
@@ -535,7 +527,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         />
                         <Field
                             className="link-button"
-                            onClick={ handleRoleModalClose }
+                            onClick={ handleBasicModalClose }
                             size="small"
                             type="button"
                             value={ t("common:cancel").toString() }
@@ -550,7 +542,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         <>
             { addUserBasicForm() }
             { addUserRoles() }
-            { addUserWarnModal() }
         </>
     );
 };

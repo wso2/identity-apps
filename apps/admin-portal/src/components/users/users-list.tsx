@@ -35,7 +35,6 @@ interface UsersListProps {
  */
 export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersListProps): JSX.Element => {
     const { usersList } = props;
-    const { t } = useTranslation();
 
     return (
         <Table basic="very" className="sub-section-table" selectable stackable>
@@ -44,6 +43,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     <Table.HeaderCell>Name</Table.HeaderCell>
                     <Table.HeaderCell>Created On</Table.HeaderCell>
                     <Table.HeaderCell>Last Modified</Table.HeaderCell>
+                    <Table.HeaderCell />
                 </Table.Row>
             </Table.Header>
             <Table.Body>
