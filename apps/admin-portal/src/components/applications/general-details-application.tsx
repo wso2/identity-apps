@@ -16,10 +16,15 @@
  * under the License.
  */
 
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Field, Forms } from "@wso2is/forms";
+import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
+import { useDispatch } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
-import { updateApplicationDetails } from "../../api";
+import { deleteApplication, updateApplicationDetails } from "../../api";
+import { history } from "../../helpers";
 import { ApplicationInterface } from "../../models";
 
 interface GeneralSettingsProps {
@@ -36,6 +41,9 @@ interface GeneralSettingsProps {
  * @param props GeneralSettingsProps.
  */
 export const GeneralDetailsApplication: FunctionComponent<GeneralSettingsProps> = (props): JSX.Element => {
+
+    const dispatch = useDispatch();
+
     const {
         appId,
         name,
@@ -52,89 +60,125 @@ export const GeneralDetailsApplication: FunctionComponent<GeneralSettingsProps> 
             imageUrl: values.get("imageUrl").toString(),
             name: values.get("name").toString(),
         };
+
         updateApplicationDetails(submit)
             .then((response) => {
-                //  TODO Add to Notification.
+                dispatch(addAlert({
+                    description: "Successfully updated the application",
+                    level: AlertLevels.SUCCESS,
+                    message: "Update successful"
+                }));
             })
             .catch((error) => {
-                //  TODO Add to Notification.
+                dispatch(addAlert({
+                    description: "An error occurred while updating the application",
+                    level: AlertLevels.ERROR,
+                    message: "Update Error"
+                }));
+            });
+    };
+
+    const handleApplicationDelete = () => {
+        deleteApplication(appId)
+            .then((response) => {
+                dispatch(addAlert({
+                    description: "Successfully deleted the application",
+                    level: AlertLevels.SUCCESS,
+                    message: "Delete successful"
+                }));
+
+                history.push("/applications");
+            })
+            .catch((error) => {
+                dispatch(addAlert({
+                    description: "An error occurred while deleting the application",
+                    level: AlertLevels.ERROR,
+                    message: "Delete Error"
+                }));
             });
     };
 
     return (
         <>
-            { appId &&
-            (
-                <Forms
-                    onSubmit={ (values) => {
-                        handleSubmit(values);
-                    } }
-                >
-                    <Grid className={ "protocolForm" }>
-                        <Grid.Row columns={ 1 } className={ "protocolRow" }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 } className="protocolColumn">
-                                <Field
-                                    name="name"
-                                    label="Name"
-                                    required={ true }
-                                    requiredErrorMessage="Application name is required"
-                                    placeholder={ name }
-                                    type="text"
-                                    value={ name }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 } className={ "protocolRow" }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 } className="protocolColumn">
-                                <Field
-                                    name="description"
-                                    label="Description"
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    placeholder="Provide the description of the application"
-                                    type="text"
-                                    value={ description }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 } className={ "protocolRow" }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 } className="protocolColumn">
-                                <Field
-                                    name="imageUrl"
-                                    label="ImageUrl"
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    placeholder="Provide the image url for the application"
-                                    type="text"
-                                    value={ imageUrl }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 } className={ "protocolRow" }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 } className="protocolColumn">
-                                <Field
-                                    name="accessUrl"
-                                    label="AccessUrl"
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    placeholder="Provide the access url for the application login page"
-                                    type="text"
-                                    value={ accessUrl }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 } className={ "protocolRow" }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 } className="protocolColumn">
-                                <Button primary type="submit" size="small" className="form-button">
-                                    Update
-                                </Button>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </Forms
-                >
-            )
-            }
+            { appId && (
+                <>
+                    <Forms
+                        onSubmit={ (values) => {
+                            handleSubmit(values);
+                        } }
+                    >
+                        <Grid>
+                            <Grid.Row columns={ 1 } className={ "protocolRow" }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 } className="protocolColumn">
+                                    <Field
+                                        name="name"
+                                        label="Application Name"
+                                        required={ true }
+                                        requiredErrorMessage="Application name is required"
+                                        placeholder={ name }
+                                        type="text"
+                                        value={ name }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 1 } className={ "protocolRow" }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 } className="protocolColumn">
+                                    <Field
+                                        name="description"
+                                        label="Description"
+                                        required={ false }
+                                        requiredErrorMessage=""
+                                        placeholder="Enter a description for the application"
+                                        type="textarea"
+                                        value={ description }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 1 } className={ "protocolRow" }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 } className="protocolColumn">
+                                    <Field
+                                        name="imageUrl"
+                                        label="Application Image"
+                                        required={ false }
+                                        requiredErrorMessage=""
+                                        placeholder="Enter a image url for the application"
+                                        type="text"
+                                        value={ imageUrl }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 1 } className={ "protocolRow" }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 } className="protocolColumn">
+                                    <Field
+                                        name="accessUrl"
+                                        label="Access URL"
+                                        required={ false }
+                                        requiredErrorMessage=""
+                                        placeholder="Provide the access url for the application login page"
+                                        type="text"
+                                        value={ accessUrl }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 1 } className={ "protocolRow" }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 } className="protocolColumn">
+                                    <Button primary type="submit" size="small" className="form-button">
+                                        Update
+                                    </Button>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    </Forms>
+                    <DangerZoneGroup sectionHeader="Danger Zone">
+                        <DangerZone
+                            actionTitle="Delete application"
+                            header="Delete the application"
+                            subheader="This action is irreversible. Please proceed with caution."
+                            onActionClick={ handleApplicationDelete }
+                        />
+                    </DangerZoneGroup>
+                </>
+            ) }
         </>
     );
 };

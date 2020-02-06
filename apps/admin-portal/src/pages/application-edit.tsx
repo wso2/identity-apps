@@ -16,23 +16,73 @@
  * under the License.
  */
 
-import React from "react";
-import { EditApplication } from "../components/applications";
+import { AppAvatar } from "@wso2is/react-components";
+import React, { useEffect, useState } from "react";
+import { getApplicationDetails } from "../api";
+import { EditApplication } from "../components";
+import { history } from "../helpers";
 import { PageLayout } from "../layouts";
+import { ApplicationInterface } from "../models";
 
 /**
  * Application Edit page.
  *
  * @return {JSX.Element}
  */
-export const ApplicationEditPage = (): JSX.Element => {
+export const ApplicationEditPage: React.FunctionComponent<{}> = (): JSX.Element => {
+
+    const [ application, setApplication ] = useState<ApplicationInterface>({
+        accessUrl: "",
+        advancedConfigurations: undefined,
+        claimConfiguration: undefined,
+        description: "",
+        id: "",
+        imageUrl: "",
+        name: ""
+    });
+
+    const getApplication = (id: string) => {
+        getApplicationDetails(id)
+            .then((response) => {
+                setApplication(response);
+            })
+            .catch((error) => {
+                // TODO add to notifications
+            });
+    };
+
+    useEffect(() => {
+        const path = history.location.pathname.split("/");
+        const id = path[ path.length - 1 ];
+
+        getApplication(id);
+    }, []);
+
+    const handleBackButtonClick = () => {
+        history.push("/applications");
+    };
 
     return (
         <PageLayout
-            title=" "
-            description=" "
+            title={ application.name }
+            contentTopMargin={ true }
+            description={ application.description }
+            image={ (
+                <AppAvatar
+                    name={ application.name }
+                    image={ application.imageUrl }
+                    size="tiny"
+                    spaced="right"
+                />
+            ) }
+            backButton={ {
+                onClick: handleBackButtonClick,
+                text: "Go back to applications"
+            } }
+            titleTextAlign="left"
+            bottomMargin={ false }
         >
-            <EditApplication/>
+            <EditApplication application={ application } />
         </PageLayout>
     );
 };
