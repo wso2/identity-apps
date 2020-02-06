@@ -274,6 +274,12 @@
                     }
                 }
             }
+            // Fix for username and avatar in the header being pushed right to the right edge in tablet view
+            &:not(.fluid-header) {
+                .user-dropdown {
+                    padding-right: 0.92857143em;
+                }
+            }
         }
     }
 }
