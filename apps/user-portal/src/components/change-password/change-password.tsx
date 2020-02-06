@@ -232,6 +232,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                 } }
             >
                 <Field
+                    autoFocus={ true }
                     hidePassword={ t("common:hidePassword") }
                     label={ t(
                         "views:components.changePassword.forms.passwordResetForm.inputs" + ".currentPassword.label"

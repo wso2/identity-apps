@@ -57,6 +57,7 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
                             } }
                         >
                             <Field
+                                autoFocus={ true }
                                 label={ t(
                                     "views:components.linkedAccounts.forms.addAccountForm" +
                                     ".inputs.username.label"
