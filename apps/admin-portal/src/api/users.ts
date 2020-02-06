@@ -77,6 +77,8 @@ export const getUserStoreList = (): Promise<any> => {
 /**
  * Add new user.
  *
+ * @param data request payload
+ *
  * @returns {Promise<BasicProfileInterface>} a promise containing the response.
  */
 export const addUser = (data: object): Promise<any> => {
@@ -101,6 +103,9 @@ export const addUser = (data: object): Promise<any> => {
 
 /**
  * Add role to new user.
+ *
+ * @param id group ID
+ * @param data request payload
  *
  * @returns {Promise<BasicProfileInterface>} a promise containing the response.
  */

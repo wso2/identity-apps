@@ -225,7 +225,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             {
                                 display: username,
                                 value: userId
-
                             }
                         ]
                     }
@@ -268,6 +267,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
     /**
      * The following function set the role list to the state.
+     *
      * @param resources
      */
     const setRoleListItem = (resources) => {
