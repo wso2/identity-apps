@@ -287,11 +287,6 @@ export const Header: React.FunctionComponent<HeaderPropsInterface> = (
                                                 ))
                                                 : null
                                         }
-                                        <Dropdown.Item className="action-panel">
-                                            <Link className="action-button" to="/logout">
-                                                { t("common:logout") }
-                                            </Link>
-                                        </Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             )

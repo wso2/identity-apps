@@ -61,6 +61,7 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
 
     /**
      * Dispatches the alert object to the redux store.
+     *
      * @param {AlertInterface} alert - Alert object.
      */
     const handleAlerts = (alert: AlertInterface) => {
@@ -73,7 +74,7 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
      *
      * @param {string} query - Search query.
      */
-    const handleApplicationFilter = (query: string): void => {
+    const handleUsersFilter = (query: string): void => {
         setSearchQuery(query);
     };
 
@@ -103,7 +104,7 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
             <Grid>
                 <Grid.Row width={ 16 } columns={ 2 }>
                     <Grid.Column>
-                        <UserSearch onFilter={ handleApplicationFilter }/>
+                        <UserSearch onFilter={ handleUsersFilter }/>
                     </Grid.Column>
                     <Grid.Column>
                         <Button

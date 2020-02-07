@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import { UserAvatar } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Container, Divider, Grid, Icon, List, Popup, Table } from "semantic-ui-react";
-import { UserAvatar } from "../../../../user-portal/src/components/shared";
 
 /**
  * Prop types for the liked accounts component.
