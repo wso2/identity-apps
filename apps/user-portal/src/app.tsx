@@ -24,7 +24,7 @@ import { ProtectedRoute } from "./components";
 import { SignIn, SignOut } from "./components/authentication";
 import { GlobalConfig, i18n } from "./configs";
 import { AppConfig, history } from "./helpers";
-import { AppConfigInterface } from "./models/app-config";
+import { AppConfigInterface } from "./models";
 import { store } from "./store";
 import { filteredRoutes, getAppConfig } from "./utils";
 
