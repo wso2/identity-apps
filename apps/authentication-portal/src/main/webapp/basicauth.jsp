@@ -168,7 +168,7 @@
                     id="username"
                     value=""
                     name="username"
-                    tabindex="0"
+                    tabindex="1"
                     placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "username")%>"
                     required>
                 <i aria-hidden="true" class="user icon"></i>
@@ -185,6 +185,7 @@
                     name="password"
                     value=""
                     autocomplete="off"
+                    tabindex="2"
                     placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "password")%>">
                 <i aria-hidden="true" class="lock icon"></i>
             </div>
@@ -243,12 +244,12 @@
         <div class="field">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
             <% if (!isIdentifierFirstLogin(inputType)) { %>
-                <a id="usernameRecoverLink" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true)%>">
+                <a id="usernameRecoverLink" tabindex="5" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true)%>">
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
                 </a>
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
             <% } %>
-            <a id="passwordRecoverLink" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false)%>">
+            <a id="passwordRecoverLink" tabindex="6" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false)%>">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
             </a>
             ?
@@ -257,7 +258,7 @@
 
         <% if (isIdentifierFirstLogin(inputType)) { %>
         <div class="field">
-            <a id="backLink" onclick="goBack()">
+            <a id="backLink" tabindex="7" onclick="goBack()">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.different.account")%>
             </a>
         </div>
@@ -268,7 +269,7 @@
 
     <div class="field">
         <div class="ui checkbox">
-            <input type="checkbox" id="chkRemember" name="chkRemember">
+            <input tabindex="3" type="checkbox" id="chkRemember" name="chkRemember">
             <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "remember.me")%></label>
         </div>
     </div>
@@ -295,10 +296,11 @@
         <div class="column mobile center aligned tablet left aligned computer left aligned buttons tablet no-padding-left-first-child computer no-padding-left-first-child">
             <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType)) { %>
             <button
-                type="submit"
+                type="button"
                 onclick="window.location.href='<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL)%>';"   
                 class="ui large button link-button"
                 id="registerLink"
+                tabindex="8"
                 role="button">
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.account")%>
             </button>
@@ -309,6 +311,7 @@
                 type="submit"
                 onclick="submitCredentials(event)"    
                 class="ui primary large button"
+                tabindex="4"
                 role="button">
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>
             </button>

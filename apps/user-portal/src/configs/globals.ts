@@ -28,6 +28,7 @@ interface RuntimeConfigInterface {
     loginCallbackUrl?: string;
     serverHost?: string;
     serverOrigin?: string;
+    tenant: string;
     titleText?: string;
 }
 
@@ -48,5 +49,6 @@ export let GlobalConfig: RuntimeConfigInterface = {
         LOGIN_CALLBACK_URL,
     serverHost: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.serverHost || SERVER_HOST_DEFAULT) : SERVER_HOST_DEFAULT,
     serverOrigin: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.serverOrigin || SERVER_ORIGIN_DEFAULT) : SERVER_ORIGIN_DEFAULT,
+    tenant: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.tenant || TENANT_DEFAULT) : TENANT_DEFAULT,
     titleText: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.copyrightText || TITLE_TEXT_DEFAULT) : TITLE_TEXT_DEFAULT
 };

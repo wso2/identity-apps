@@ -98,6 +98,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                         } }
                         showPassword={ inputField.showPassword }
                         hidePassword={ inputField.hidePassword }
+                        autoFocus={ inputField.autoFocus || false }
                     />
                 );
             } else {
@@ -124,6 +125,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                         onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
                             handleChange(event.target.value, inputField.name);
                         } }
+                        autoFocus={ inputField.autoFocus || false }
                     />
                 );
             }
@@ -186,6 +188,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                                     onBlur={ (event: React.KeyboardEvent) => {
                                         handleBlur(event, inputField.name);
                                     } }
+                                    autoFocus={ inputField.autoFocus || false }
                                 />
                             </Form.Field>
                         );
@@ -214,6 +217,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                             }
                             : false
                     }
+                    autoFocus={ inputField.autoFocus || false }
                 />
             );
         } else if (isCheckBoxField(inputField)) {
@@ -251,6 +255,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                                                 : false
                                             : isError
                                     }
+                                    autoFocus={ inputField.autoFocus || false }
                                 />
                             </Form.Field>
                         );

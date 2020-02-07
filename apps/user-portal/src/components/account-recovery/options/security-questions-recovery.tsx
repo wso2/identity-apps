@@ -300,6 +300,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                         </Grid.Column>
                         <Grid.Column width={ 12 }>
                             <Field
+                                autoFocus={ index === 0 }
                                 children={ questionSet.questions.map((ques, i) => {
                                     return {
                                         key: i,

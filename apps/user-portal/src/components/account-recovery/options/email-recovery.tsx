@@ -275,6 +275,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                             } }
                                         >
                                             <Field
+                                                autoFocus={ true }
                                                 label={ t(
                                                     "views:components.accountRecovery.emailRecovery.forms" +
                                                     ".emailResetForm.inputs.email.label"

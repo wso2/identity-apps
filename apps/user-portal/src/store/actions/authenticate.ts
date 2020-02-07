@@ -165,7 +165,8 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
         enablePKCE: true,
         redirectUri: GlobalConfig.loginCallbackUrl,
         scope: [TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE],
-        serverOrigin: GlobalConfig.serverOrigin
+        serverOrigin: GlobalConfig.serverOrigin,
+        tenant: GlobalConfig.tenant
     };
 
     const sendSignInRequest = () => {
@@ -184,6 +185,10 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
                     dispatch(getProfileInformation());
                 })
                 .catch((error) => {
+                    if (error.response.status === 400) {
+                        SignInUtil.sendAuthorizationRequest(requestParams);
+                    }
+
                     throw error;
                 });
         } else {
@@ -192,10 +197,16 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
     };
 
     if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
+        if (OPConfigurationUtil.isValidOPConfig(requestParams.tenant)) {
+            AuthenticateSessionUtil.endAuthenticatedSession();
+            OPConfigurationUtil.resetOPConfiguration();
+            handleSignOut();
+        }
+
         dispatch(setSignIn());
         dispatch(getProfileInformation());
     } else {
-        OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false, requestParams.clientHost)
+        OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false)
             .then(() => {
                 sendSignInRequest();
             })
