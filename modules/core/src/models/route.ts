@@ -34,9 +34,15 @@ export interface RouteInterface {
      * Icon to be displayed on the side panel.
      */
     icon?: any;
+
+    /**
+     * A key to uniquely identify the route with
+     */
+    id: string;
     /**
      * Name to be displayed on the side panel.
      */
+
     name: string;
     /**
      * Router path.
