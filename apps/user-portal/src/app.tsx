@@ -23,15 +23,10 @@ import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
 import { SignIn, SignOut } from "./components/authentication";
 import { GlobalConfig, i18n } from "./configs";
-import { history } from "./helpers";
+import { AppConfig, history } from "./helpers";
 import { AppConfigInterface } from "./models/app-config";
 import { store } from "./store";
 import { filteredRoutes, getAppConfig } from "./utils";
-
-/**
- * This creates a React context that will hold the application configuration
- */
-export const AppConfig = React.createContext<AppConfigInterface>(null);
 
 /**
  * Main App component.
@@ -91,7 +86,7 @@ export const App = (): JSX.Element => {
                                                 )
                                         );
                                     })
-                                    : null
+                                        : null
                                 }
                             </Switch>
                         </AppConfig.Provider>

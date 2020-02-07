@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import React from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { List } from "semantic-ui-react";
-import appConfig from "../../../app.config.json";
 import { FIDO, MULTI_FACTOR_AUTHENTICATION, SECURITY, SMS } from "../../constants";
+import { AppConfig } from "../../helpers";
 import { AlertInterface } from "../../models";
 import { checkEnabled } from "../../utils";
 import { SettingsSection } from "../shared";
@@ -36,7 +36,7 @@ interface MfaProps {
 export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (props: MfaProps): JSX.Element => {
     const { t } = useTranslation();
     const { onAlertFired } = props;
-    const multiFactorConfig = appConfig[SECURITY][MULTI_FACTOR_AUTHENTICATION];
+    const multiFactorConfig = useContext(AppConfig)[SECURITY][MULTI_FACTOR_AUTHENTICATION];
 
     return (
         <SettingsSection description={ t("views:sections.mfa.description") } header={ t("views:sections.mfa.heading") }>

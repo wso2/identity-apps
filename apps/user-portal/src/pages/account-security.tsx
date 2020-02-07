@@ -16,11 +16,10 @@
  * under the License.
  */
 
-import React from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import appConfig from "../../app.config.json";
 import {
     AccountRecoveryComponent,
     ChangePassword,
@@ -36,6 +35,7 @@ import {
     MULTI_FACTOR_AUTHENTICATION,
     SECURITY
 } from "../constants";
+import { AppConfig } from "../helpers";
 import { InnerPageLayout } from "../layouts";
 import { AlertInterface } from "../models";
 import { addAlert } from "../store/actions";
@@ -49,7 +49,7 @@ import { checkEnabled } from "../utils";
 export const AccountSecurityPage = (): JSX.Element => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const securityConfig = appConfig[SECURITY];
+    const securityConfig = useContext(AppConfig)[SECURITY];
 
     /**
      * Dispatches the alert object to the redux store.
