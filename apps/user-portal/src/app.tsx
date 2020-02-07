@@ -16,15 +16,22 @@
  * under the License.
  */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { I18nextProvider } from "react-i18next";
 import { Provider } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
 import { SignIn, SignOut } from "./components/authentication";
-import { GlobalConfig, i18n, routes } from "./configs";
+import { GlobalConfig, i18n } from "./configs";
 import { history } from "./helpers";
+import { AppConfigInterface } from "./models/app-config";
 import { store } from "./store";
+import { filteredRoutes, getAppConfig } from "./utils";
+
+/**
+ * This creates a React context that will hold the application configuration
+ */
+export const AppConfig = React.createContext<AppConfigInterface>(null);
 
 /**
  * Main App component.
@@ -33,50 +40,61 @@ import { store } from "./store";
  */
 export const App = (): JSX.Element => {
 
+    const [appConfig, setAppConfig] = useState<AppConfigInterface>(null);
+
+    useEffect(() => {
+        getAppConfig().then((appConfigModule) => {
+            setAppConfig(appConfigModule);
+        });
+    }, []);
+
     return (
         <Router history={ history }>
             <div className="container-fluid">
                 <I18nextProvider i18n={ i18n }>
                     <Provider store={ store }>
-                        <Switch>
-                            <Redirect exact={ true } path="/" to={ GlobalConfig.appLoginPath } />
-                            <Route
-                                path={ GlobalConfig.appLoginPath }
-                                render={ (props) => {
-                                    return <SignIn { ...props }/>;
-                                } }
-                            />
-                            <Route
-                                path="/logout"
-                                render={ () => {
-                                    return <SignOut />;
-                                } }
-                            />
-                            {
-                                routes.map((route, index) => {
-                                    return (
-                                        route.protected ?
-                                            (
-                                                <ProtectedRoute
-                                                    component={ route.component }
-                                                    path={ route.path }
-                                                    key={ index }
-                                                />
-                                            )
-                                            :
-                                            (
-                                                <Route
-                                                    path={ route.path }
-                                                    render={ (props) =>
-                                                        (<route.component { ...props } />)
-                                                    }
-                                                    key={ index }
-                                                />
-                                            )
-                                    );
-                                })
-                            }
-                        </Switch>
+                        <AppConfig.Provider value={ appConfig }>
+                            <Switch>
+                                <Redirect exact={ true } path="/" to={ GlobalConfig.appLoginPath } />
+                                <Route
+                                    path={ GlobalConfig.appLoginPath }
+                                    render={ (props) => {
+                                        return <SignIn { ...props } />;
+                                    } }
+                                />
+                                <Route
+                                    path="/logout"
+                                    render={ () => {
+                                        return <SignOut />;
+                                    } }
+                                />
+                                {
+                                    appConfig ? filteredRoutes(appConfig).map((route, index) => {
+                                        return (
+                                            route.protected ?
+                                                (
+                                                    <ProtectedRoute
+                                                        component={ route.component }
+                                                        path={ route.path }
+                                                        key={ index }
+                                                    />
+                                                )
+                                                :
+                                                (
+                                                    <Route
+                                                        path={ route.path }
+                                                        render={ (props) =>
+                                                            (<route.component { ...props } />)
+                                                        }
+                                                        key={ index }
+                                                    />
+                                                )
+                                        );
+                                    })
+                                    : null
+                                }
+                            </Switch>
+                        </AppConfig.Provider>
                     </Provider>
                 </I18nextProvider>
             </div>
