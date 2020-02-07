@@ -33,6 +33,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: HomePage,
         icon: "overview",
+        id: "overview",
         name: "Overview",
         path: "/overview",
         protected: true,
@@ -41,6 +42,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: ApplicationsPage,
         icon: "applications",
+        id: "applications",
         name: "Applications",
         path: "/applications",
         protected: true,
@@ -49,6 +51,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: UsersPage,
         icon: "usersAndRoles",
+        id: "usersAndRoles",
         name: "Users & Roles",
         path: "/users",
         protected: true,
@@ -57,6 +60,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: PrivacyPage,
         icon: null,
+        id: "privacy",
         name: "common:privacy",
         path: "/privacy",
         protected: true,
@@ -71,6 +75,7 @@ const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: PrivacyPage,
         icon: null,
+        id: "privacy",
         name: "Privacy",
         path: "/privacy",
         protected: true,
@@ -85,6 +90,7 @@ const AUTH_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: SignIn,
         icon: null,
+        id: "login",
         name: "Login",
         path: APP_LOGIN_PATH,
         protected: false,
@@ -93,6 +99,7 @@ const AUTH_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: SignOut,
         icon: null,
+        id: "logout",
         name: "Logout",
         path: "/logout",
         protected: false,
@@ -107,6 +114,7 @@ const APP_ROUTES: RouteInterface[] = [
     {
         component: AuthLayout,
         icon: null,
+        id: "login",
         name: "Login",
         path: APP_LOGIN_PATH,
         protected: false,
@@ -115,6 +123,7 @@ const APP_ROUTES: RouteInterface[] = [
     {
         component: AuthLayout,
         icon: null,
+        id: "logout",
         name: "Logout",
         path: "/logout",
         protected: false,
@@ -123,6 +132,7 @@ const APP_ROUTES: RouteInterface[] = [
     {
         component: DefaultPageLayout,
         icon: null,
+        id: "privacy",
         name: "Privacy",
         path: "/privacy",
         protected: true,
@@ -131,6 +141,7 @@ const APP_ROUTES: RouteInterface[] = [
     {
         component: DashboardLayout,
         icon: null,
+        id: "dashboard",
         name: "Dashboard",
         path: "/",
         protected: true,
@@ -145,6 +156,7 @@ const BASE_ROUTES: RouteInterface[] = [
     {
         component: AppLayout,
         icon: null,
+        id: "app",
         name: "App",
         path: "/",
         protected: false,
