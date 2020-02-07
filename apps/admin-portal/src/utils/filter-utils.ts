@@ -38,21 +38,12 @@ export const checkEnabled = (appConfig: any, key: string): boolean => {
 };
 
 /**
- * This removes the `common:` part from the route names
- * @param name
- */
-export const getRouteName = (name: string): string => {
-    const names: string[] = name.split(":");
-    return names.length > 1 ? names[1] : names[0];
-};
-
-/**
  * This filters the routes based on the application configuration
  * @param appConfig
  */
 export const filteredRoutes = (appConfig): RouteInterface[] => {
     return dashboardLayoutRoutes.filter((route: RouteInterface) => {
-        return checkEnabled(appConfig, getRouteName(route.name));
+        return checkEnabled(appConfig, route.id);
     });
 };
 
