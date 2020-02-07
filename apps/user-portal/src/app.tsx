@@ -37,6 +37,9 @@ export const App = (): JSX.Element => {
 
     const [appConfig, setAppConfig] = useState<AppConfigInterface>(null);
 
+    /**
+     * Obtain app.config.json from the server root when the app mounts.
+     */
     useEffect(() => {
         getAppConfig().then((appConfigModule) => {
             setAppConfig(appConfigModule);
@@ -64,28 +67,29 @@ export const App = (): JSX.Element => {
                                     } }
                                 />
                                 {
-                                    appConfig ? filteredRoutes(appConfig).map((route, index) => {
-                                        return (
-                                            route.protected ?
-                                                (
-                                                    <ProtectedRoute
-                                                        component={ route.component }
-                                                        path={ route.path }
-                                                        key={ index }
-                                                    />
-                                                )
-                                                :
-                                                (
-                                                    <Route
-                                                        path={ route.path }
-                                                        render={ (props) =>
-                                                            (<route.component { ...props } />)
-                                                        }
-                                                        key={ index }
-                                                    />
-                                                )
-                                        );
-                                    })
+                                    appConfig
+                                        ? filteredRoutes(appConfig).map((route, index) => {
+                                            return (
+                                                route.protected ?
+                                                    (
+                                                        <ProtectedRoute
+                                                            component={ route.component }
+                                                            path={ route.path }
+                                                            key={ index }
+                                                        />
+                                                    )
+                                                    :
+                                                    (
+                                                        <Route
+                                                            path={ route.path }
+                                                            render={ (props) =>
+                                                                (<route.component { ...props } />)
+                                                            }
+                                                            key={ index }
+                                                        />
+                                                    )
+                                            );
+                                        })
                                         : null
                                 }
                             </Switch>
