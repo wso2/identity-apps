@@ -18,7 +18,7 @@
 
 import { RouteInterface } from "@wso2is/core/models";
 import Axios from "axios";
-import { baseRoutes } from "../configs";
+import { dashboardLayoutRoutes } from "../configs";
 
 /**
  * Returns true if a given key in the JSON object is set to true
@@ -51,7 +51,7 @@ export const getRouteName = (name: string): string => {
  * @param appConfig
  */
 export const filteredRoutes = (appConfig): RouteInterface[] => {
-    return baseRoutes.filter((route: RouteInterface) => {
+    return dashboardLayoutRoutes.filter((route: RouteInterface) => {
         return checkEnabled(appConfig, getRouteName(route.name));
     });
 };
