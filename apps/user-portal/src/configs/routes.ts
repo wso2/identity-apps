@@ -35,6 +35,7 @@ import {
 export interface Route {
     component: any;
     icon?: string;
+    id: string;
     name: string;
     path: string;
     protected: boolean;
@@ -49,66 +50,74 @@ const ROUTES: Route[] = [
     {
         component: OverviewPage,
         icon: "overview",
+        id: "overview",
         name: "common:overview",
         path: "/overview",
         protected: true,
-        showOnSidePanel: true,
+        showOnSidePanel: true
     },
     {
         component: ApplicationsPage,
         icon: "apps",
+        id: "applications",
         name: "common:applications",
         path: ApplicationConstants.APPLICATIONS_PAGE_PATH,
         protected: true,
-        showOnSidePanel: true,
+        showOnSidePanel: true
     },
     {
         component: PersonalInfoPage,
         icon: "personal",
+        id: "personalInfo",
         name: "common:personalInfo",
         path: "/personal-info",
         protected: true,
-        showOnSidePanel: true,
+        showOnSidePanel: true
     },
     {
         component: AccountSecurityPage,
         icon: "security",
+        id: "security",
         name: "common:security",
         path: "/security",
         protected: true,
-        showOnSidePanel: true,
+        showOnSidePanel: true
     },
     {
         component: OperationsPage,
         icon: "operations",
+        id: "operations",
         name: "common:operations",
         path: "/operations",
         protected: true,
         scope: TokenConstants.HUMAN_TASK_SCOPE,
-        showOnSidePanel: true,
+        showOnSidePanel: true
     },
     {
         component: PrivacyPage,
         icon: "security",
+        id: "privacy",
         name: "common:privacy",
         path: "/privacy",
         protected: true,
-        showOnSidePanel: false,
+        showOnSidePanel: false
     },
     {
         component: LoginErrorPage,
+        id: "loginError",
         name: "Login error",
         path: ApplicationConstants.LOGIN_ERROR_PAGE_PATH,
         protected: true,
-        showOnSidePanel: false,
+        showOnSidePanel: false
     },
     {
         component: PageNotFound,
+        id: "404",
         name: "404",
         path: "*",
         protected: true,
-        showOnSidePanel: false,
-    },
+        showOnSidePanel: false
+    }
 ];
 
 export const routes = ROUTES;
