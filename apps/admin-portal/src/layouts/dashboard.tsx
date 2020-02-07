@@ -22,7 +22,7 @@ import { ContextUtils } from "@wso2is/core/utils";
 import { Footer, Header, Logo, ProductBrand, SidePanel } from "@wso2is/react-components";
 import classNames from "classnames";
 import _ from "lodash";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
@@ -30,8 +30,9 @@ import { Responsive } from "semantic-ui-react";
 import { ProtectedRoute } from "../components";
 import { dashboardLayoutRoutes, LogoImage, routes, SidePanelIcons, SidePanelMiscIcons } from "../configs";
 import { UIConstants } from "../constants";
-import { history } from "../helpers";
+import { AppConfig, history } from "../helpers";
 import { AppState } from "../store";
+import { filteredRoutes } from "../utils";
 
 /**
  * Default header height to be used in state initialisations
@@ -67,17 +68,19 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
     const profileDetails: AuthReducerStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
 
-    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(routes[0]);
-    const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = React.useState<boolean>(false);
-    const [ headerHeight, setHeaderHeight ] = React.useState<number>(DEFAULT_HEADER_HEIGHT);
-    const [ footerHeight, setFooterHeight ] = React.useState<number>(DEFAULT_FOOTER_HEIGHT);
-    const [ isMobileViewport, setIsMobileViewport ] = React.useState<boolean>(false);
+    const [selectedRoute, setSelectedRoute] = useState<RouteInterface | ChildRouteInterface>(routes[0]);
+    const [mobileSidePanelVisibility, setMobileSidePanelVisibility] = React.useState<boolean>(false);
+    const [headerHeight, setHeaderHeight] = React.useState<number>(DEFAULT_HEADER_HEIGHT);
+    const [footerHeight, setFooterHeight] = React.useState<number>(DEFAULT_FOOTER_HEIGHT);
+    const [isMobileViewport, setIsMobileViewport] = React.useState<boolean>(false);
+
+    const appConfig = useContext(AppConfig);
 
     const classes = classNames(
         "layout",
         "dashboard-layout",
         {
-            [ "fluid-dashboard-layout" ]: fluid
+            ["fluid-dashboard-layout"]: fluid
         }
     );
 
@@ -181,8 +184,8 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
             return pathname === urlTokens[1];
         } else if (!route.path && route.children && route.children.length > 0) {
             return route.children.some((childRoute) => {
-                return pathname === childRoute.path
-            })
+                return pathname === childRoute.path;
+            });
         }
     };
 
@@ -215,7 +218,7 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
                 brand={ (
                     <ProductBrand
                         style={ { marginTop: 0 } }
-                        logo={ <Logo image={ LogoImage }  /> }
+                        logo={ <Logo image={ LogoImage } /> }
                         name={ ContextUtils.getRuntimeConfig().applicationName }
                     />
                 ) }
@@ -249,56 +252,58 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
             >
                 <Switch>
                     {
-                        dashboardLayoutRoutes.map((route, index) => {
-                            if (route.children && route.children.length > 0) {
-                                return route.children.map((child, i) => {
-                                    return (
-                                        child.protected ?
-                                            (
-                                                <ProtectedRoute
-                                                    component={ child.component }
-                                                    path={ child.path }
-                                                    key={ i }
-                                                    exact={ child.exact }
-                                                />
-                                            )
-                                            :
-                                            (
-                                                <Route
-                                                    path={ child.path }
-                                                    render={ (renderProps) =>
-                                                        (<child.component { ...renderProps } />)
-                                                    }
-                                                    key={ i }
-                                                    exact={ child.exact }
-                                                />
-                                            )
-                                    );
-                                });
-                            }
-                            return (
-                                route.protected ?
-                                    (
-                                        <ProtectedRoute
-                                            component={ route.component }
-                                            path={ route.path }
-                                            key={ index }
-                                            exact={ route.exact }
-                                        />
-                                    )
-                                    :
-                                    (
-                                        <Route
-                                            path={ route.path }
-                                            render={ (renderProps) =>
-                                                (<route.component { ...renderProps } />)
-                                            }
-                                            key={ index }
-                                            exact={ route.exact }
-                                        />
-                                    )
-                            );
-                        })
+                        appConfig
+                            ? filteredRoutes(appConfig).map((route, index) => {
+                                if (route.children && route.children.length > 0) {
+                                    return route.children.map((child, i) => {
+                                        return (
+                                            child.protected ?
+                                                (
+                                                    <ProtectedRoute
+                                                        component={ child.component }
+                                                        path={ child.path }
+                                                        key={ i }
+                                                        exact={ child.exact }
+                                                    />
+                                                )
+                                                :
+                                                (
+                                                    <Route
+                                                        path={ child.path }
+                                                        render={ (renderProps) =>
+                                                            (<child.component { ...renderProps } />)
+                                                        }
+                                                        key={ i }
+                                                        exact={ child.exact }
+                                                    />
+                                                )
+                                        );
+                                    });
+                                }
+                                return (
+                                    route.protected ?
+                                        (
+                                            <ProtectedRoute
+                                                component={ route.component }
+                                                path={ route.path }
+                                                key={ index }
+                                                exact={ route.exact }
+                                            />
+                                        )
+                                        :
+                                        (
+                                            <Route
+                                                path={ route.path }
+                                                render={ (renderProps) =>
+                                                    (<route.component { ...renderProps } />)
+                                                }
+                                                key={ index }
+                                                exact={ route.exact }
+                                            />
+                                        )
+                                );
+                            })
+                            : null
                     }
                 </Switch>
             </SidePanel>
