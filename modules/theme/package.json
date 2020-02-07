@@ -11,12 +11,12 @@
     ],
     "main": "src/index.js",
     "scripts": {
-        "build": "node scripts/build-theme.js",
-        "test": "echo \"Error: no test specified\"",
+        "prebuild": "npm run clean",
+        "build": "npm run compile",
+        "clean": "rimraf ./lib",
+        "compile": "node scripts/build-theme.js",
         "lint": "tslint -t stylish --project .",
-        "test-coverage": "echo \"Error: no test coverage specified\"",
-        "watch": "watch \"npm run build\" src",
-        "clean": "rm -rf node_modules lib npm"
+        "watch": "watch \"npm run build\" src"
     },
     "author": "WSO2",
     "license": "Apache-2.0",

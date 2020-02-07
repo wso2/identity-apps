@@ -15,7 +15,8 @@
         "dist"
     ],
     "scripts": {
-        "build": "npm run clean && npm run compile",
+        "prebuild": "npm run clean",
+        "build": "npm run compile",
         "clean": "rimraf ./dist",
         "compile": "tsc -p tsconfig.json",
         "lint": "tslint -t stylish --project .",

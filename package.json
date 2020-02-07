@@ -17,13 +17,13 @@
         "clean-all": "npm run remove-package-lock && npm run remove-maven-folders && npm run remove-node-modules",
         "remove-node-modules": "lerna exec -- rm -rf node_modules && rm -rf node_modules",
         "remove-package-lock": "lerna exec -- rm -rf package-lock.json && rm -rf package-lock.json",
-        "remove-maven-folders": "lerna exec -- rm -rf target npm && rm -rf target npm",
+        "remove-maven-folders": "lerna exec -- rm -rf target npm user-portal/src/main admin-portal/src/main && rm -rf target npm user-portal/src/main admin-portal/src/main",
         "update-version": "node scripts/update-version.js"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@hapi/joi": "^16.1.7",
+        "@hapi/joi": "^17.1.0",
         "@storybook/addon-actions": "^5.3.3",
         "@storybook/addon-centered": "^5.3.6",
         "@storybook/addon-docs": "^5.3.3",

@@ -161,7 +161,10 @@ module.exports = (env) => {
             fs: "empty"
         },
         plugins: [
-            new WriteFilePlugin(),
+            new WriteFilePlugin({
+                // Exclude hot-update files
+                test: /^(?!.*(hot-update)).*/
+            }),
             new CopyWebpackPlugin([
                 {
                     context: path.join(__dirname, "node_modules", "@wso2is", "theme"),
