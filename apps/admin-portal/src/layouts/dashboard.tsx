@@ -28,7 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
 import { ProtectedRoute } from "../components";
-import { dashboardLayoutRoutes, LogoImage, routes, SidePanelIcons, SidePanelMiscIcons } from "../configs";
+import { LogoImage, routes, SidePanelIcons, SidePanelMiscIcons } from "../configs";
 import { UIConstants } from "../constants";
 import { AppConfig, history } from "../helpers";
 import { AppState } from "../store";
@@ -247,7 +247,7 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
                 onSidePanelItemClick={ handleSidePanelItemClick }
                 onSidePanelPusherClick={ handleSidePanelPusherClick }
                 icons={ SidePanelIcons }
-                routes={ routes }
+                routes={ appConfig && filteredRoutes(appConfig) }
                 selected={ selectedRoute }
             >
                 <Switch>
