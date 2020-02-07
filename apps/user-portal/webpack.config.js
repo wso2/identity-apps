@@ -128,7 +128,7 @@ module.exports = (env) => {
                 {
                     test: /\.tsx?$/,
                     use: "ts-loader",
-                    exclude: /(node_modules|diagram)/
+                    exclude: /(node_modules)/
                 },
                 {
                     test: /\.ts$/,
