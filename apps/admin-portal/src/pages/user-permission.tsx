@@ -24,6 +24,6 @@ export const UserPermission = (): JSX.Element => {
     let { id } = useParams();
 
     return (
-        <PermissionsList />
+        <PermissionsList roleId={id} />
     );
 }

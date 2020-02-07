@@ -53,5 +53,5 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     users: `${GlobalConfig.serverHost}/scim2/Users`,
     roles: `${GlobalConfig.serverHost}/scim2/Groups`,
     wellKnown: `${GlobalConfig.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`,
-    permission: `${GlobalConfig.serverHost}/api/server/v1/permission-management/permissions`,
+    permission: `${GlobalConfig.serverHost}/api/server/v1/permission-management/permissions`
 };

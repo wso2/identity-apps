@@ -16,14 +16,46 @@
  * under the License.
  */
 
-import React from "react";
+import React, { useState, useEffect} from "react";
+import { getRolePermission, getAllPermission } from "../../api";
 
 interface PermissionsListProps {
     roleId?: string;
 }
 
 export const PermissionsList: React.FunctionComponent<PermissionsListProps> = (props): JSX.Element => {
+
+    const [permissionList, setPermissionList] = useState([]);
+    const [rolePermissionList, setRolePermissionList] = useState([]);
+
+    useEffect(() => {
+        let didCancel = false;
+        let roleId = props.roleId;
+
+        getAllPermission().then((response) => {
+            console.log(response.data);
+            setPermissionList(response.data)
+        })
+
+        if (roleId && roleId !== '') {
+            getRolePermission(roleId).then((response) => {
+                if (response.status === 200 && !didCancel) {
+                    setPermissionList(response.data.Resources);
+                    console.log(response);
+                }
+            })
+        }
+
+        return () => {
+            didCancel = true;
+        };
+    }, [])
+
     return (
-        <h3>ID</h3>
+        <div>
+            {permissionList? permissionList.map((perm) => {
+                return <li>{perm.displayName}</li>
+            }) : <div>no permissions</div> }
+        </div>
     );
 }
