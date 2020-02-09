@@ -55,7 +55,7 @@ export interface Error {
 
 interface FormFieldModel {
     name: string;
-    label: string;
+    label?: string;
     listen?: (values: Map<string, FormValue>) => void;
 }
 
