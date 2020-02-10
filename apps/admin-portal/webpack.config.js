@@ -51,11 +51,12 @@ module.exports = (env) => {
      */
     const distFolder = path.resolve(__dirname, "build", basename);
     const faviconImage = path.resolve(__dirname, "node_modules", "@wso2is/theme/lib/assets/images/favicon.ico");
+    const isProd = process.env.NODE_ENV === 'prod';
     const titleText = "WSO2 Identity Server";
     const copyrightText = `${titleText} \u00A9 ${ new Date().getFullYear() }`;
 
     const compileAppIndex = () => {
-        if (env.NODE_ENV === "prod") {
+        if (isProd) {
             return new HtmlWebpackPlugin({
                 filename: path.join(distFolder, "index.jsp"),
                 template: path.join(__dirname, "src", "index.jsp"),
@@ -224,12 +225,12 @@ module.exports = (env) => {
         optimization: {
             minimize: true,
             minimizer: [
-                new TaserJSPlugin({
-                    terserOptions: {
-                        keep_fnames: true
-                    }
+                isProd && new TaserJSPlugin({
+                     terserOptions: {
+                         keep_fnames: true
+                     }
                 })
-            ]
+            ].filter(Boolean)
         }
     };
 };

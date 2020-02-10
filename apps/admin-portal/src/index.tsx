@@ -37,3 +37,8 @@ ReactDOM.render(
     ),
     document.getElementById("root")
 );
+
+//Accept HMR for updated modules
+if (module && module.hot) {
+    module.hot.accept();
+}
