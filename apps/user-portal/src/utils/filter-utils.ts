@@ -50,8 +50,7 @@ export const filteredRoutes = (appConfig): Route[] => {
  * This obtains the app.config.json file from the server
  */
 export const getAppConfig = (): Promise<any> => {
-    return Axios.get("/app.config.json")
-        .then((response) => {
-            return Promise.resolve(response.data);
-        });
+    return Axios.get(`/${APP_BASENAME}/app.config.json`).then((response) => {
+        return Promise.resolve(response.data);
+    });
 };
