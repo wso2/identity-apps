@@ -22,8 +22,10 @@
     },
     "author": "WSO2",
     "license": "Apache-2.0",
+    "dependencies": {
+        "textencoderpolyfill": "*"
+    },
     "peerDependencies": {
-        "@hapi/joi": "*",
-        "fastestsmallesttextencoderdecoder": "*"
+        "@hapi/joi": "*"
     }
 }
