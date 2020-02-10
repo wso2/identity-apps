@@ -14,7 +14,7 @@
         "build-prod:default": "../../node_modules/.bin/webpack --env.NODE_ENV=prod",
         "build": "run-script-os",
         "build:win32": "..\\..\\node_modules\\.bin\\webpack --env.NODE_ENV=prod --mode development && npm run test",
-        "build:default": "../../node_modules/.bin/webpack --env.NODE_ENV=prod --mode development && npm run test",
+        "build:default": "../../node_modules/.bin/webpack --env.NODE_ENV=prod --mode development",
         "lint": "tslint -t stylish --project .",
         "test": "jest --passWithNoTests",
         "clean": "rm -rf node_modules build npm"
@@ -29,7 +29,9 @@
         "@wso2is/validation": "^1.0.2"
     },
     "devDependencies": {
-        "run-script-os": "^1.0.7"
+        "fork-ts-checker-webpack-plugin": "^4.0.3",
+        "run-script-os": "^1.0.7",
+        "thread-loader": "^2.1.3"
     },
     "peerDependencies": {
         "@svgr/webpack": "*",

@@ -22,6 +22,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TaserJSPlugin = require("terser-webpack-plugin");
 const WriteFilePlugin = require("write-file-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 module.exports = (env) => {
     const basename = "admin-portal";
@@ -98,14 +99,6 @@ module.exports = (env) => {
         module: {
             rules: [
                 {
-                    test: /\.css$/,
-                    use: ["style-loader", "css-loader"]
-                },
-                {
-                    test: /\.less$/,
-                    use: ["style-loader", "css-loader", "less-loader"]
-                },
-                {
                     test: /\.(png|jpg|cur|gif|eot|ttf|woff|woff2)$/,
                     use: ["url-loader"]
                 },
@@ -127,17 +120,37 @@ module.exports = (env) => {
                 },
                 {
                     test: /\.tsx?$/,
-                    use: "ts-loader",
-                    exclude: /(node_modules|diagram)/
+                    use: [{
+                        loader: 'thread-loader',
+                        options: {
+                            // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                            workers: require('os').cpus().length - 1,
+                        },
+                    },{
+                        loader: "ts-loader",
+                        options: {
+                            happyPackMode: true,
+                            transpileOnly: false
+                        }
+                    }],
+                    exclude: /(node_modules)/
                 },
                 {
                     test: /\.ts$/,
                     enforce: "pre",
-                    use: [
-                        {
-                            loader: "tslint-loader"
+                    use: [{
+                        loader: 'thread-loader',
+                        options: {
+                            // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                            workers: require('os').cpus().length - 1,
+                        },
+                    },{
+                        loader:"tslint-loader",
+                        options: {
+                            happyPackMode: true,
+                            transpileOnly: false
                         }
-                    ]
+                    }]
                 },
                 {
                     test: /\.js$/,
@@ -161,6 +174,7 @@ module.exports = (env) => {
             fs: "empty"
         },
         plugins: [
+            new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
             new WriteFilePlugin(),
             new CopyWebpackPlugin([
                 {
