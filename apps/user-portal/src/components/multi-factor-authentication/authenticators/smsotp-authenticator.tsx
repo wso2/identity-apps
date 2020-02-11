@@ -196,6 +196,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                             } }
                                         >
                                             <Field
+                                                autoFocus={ true }
                                                 label={ t(
                                                     "views:components.profile.forms.mobileChangeForm.inputs" +
                                                     ".mobile.label"

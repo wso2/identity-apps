@@ -22,6 +22,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TaserJSPlugin = require("terser-webpack-plugin");
 const WriteFilePlugin = require("write-file-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 module.exports = (env) => {
     const basename = "admin-portal";
@@ -50,11 +51,12 @@ module.exports = (env) => {
      */
     const distFolder = path.resolve(__dirname, "build", basename);
     const faviconImage = path.resolve(__dirname, "node_modules", "@wso2is/theme/lib/assets/images/favicon.ico");
+    const isProd = process.env.NODE_ENV === 'prod';
     const titleText = "WSO2 Identity Server";
     const copyrightText = `${titleText} \u00A9 ${ new Date().getFullYear() }`;
 
     const compileAppIndex = () => {
-        if (env.NODE_ENV === "prod") {
+        if (isProd) {
             return new HtmlWebpackPlugin({
                 filename: path.join(distFolder, "index.jsp"),
                 template: path.join(__dirname, "src", "index.jsp"),
@@ -98,14 +100,6 @@ module.exports = (env) => {
         module: {
             rules: [
                 {
-                    test: /\.css$/,
-                    use: ["style-loader", "css-loader"]
-                },
-                {
-                    test: /\.less$/,
-                    use: ["style-loader", "css-loader", "less-loader"]
-                },
-                {
                     test: /\.(png|jpg|cur|gif|eot|ttf|woff|woff2)$/,
                     use: ["url-loader"]
                 },
@@ -127,17 +121,37 @@ module.exports = (env) => {
                 },
                 {
                     test: /\.tsx?$/,
-                    use: "ts-loader",
-                    exclude: /(node_modules|diagram)/
+                    use: [{
+                        loader: 'thread-loader',
+                        options: {
+                            // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                            workers: require('os').cpus().length - 1,
+                        },
+                    },{
+                        loader: "ts-loader",
+                        options: {
+                            happyPackMode: true,
+                            transpileOnly: false
+                        }
+                    }],
+                    exclude: /(node_modules)/
                 },
                 {
                     test: /\.ts$/,
                     enforce: "pre",
-                    use: [
-                        {
-                            loader: "tslint-loader"
+                    use: [{
+                        loader: 'thread-loader',
+                        options: {
+                            // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                            workers: require('os').cpus().length - 1,
+                        },
+                    },{
+                        loader:"tslint-loader",
+                        options: {
+                            happyPackMode: true,
+                            transpileOnly: false
                         }
-                    ]
+                    }]
                 },
                 {
                     test: /\.js$/,
@@ -161,6 +175,7 @@ module.exports = (env) => {
             fs: "empty"
         },
         plugins: [
+            new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
             new WriteFilePlugin(),
             new CopyWebpackPlugin([
                 {
@@ -210,12 +225,12 @@ module.exports = (env) => {
         optimization: {
             minimize: true,
             minimizer: [
-                new TaserJSPlugin({
-                    terserOptions: {
-                        keep_fnames: true
-                    }
+                isProd && new TaserJSPlugin({
+                     terserOptions: {
+                         keep_fnames: true
+                     }
                 })
-            ]
+            ].filter(Boolean)
         }
     };
 };
