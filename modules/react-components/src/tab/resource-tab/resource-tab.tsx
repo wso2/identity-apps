@@ -21,6 +21,9 @@ import React, { FunctionComponent } from "react";
 import { Tab, TabProps } from "semantic-ui-react";
 import { ResourceTabPane } from "./resource-tab-pane";
 
+/**
+ * Interface for the resource tab sub components.
+ */
 interface ResourceTabSubComponentsInterface {
     Pane: typeof ResourceTabPane;
 }
@@ -32,7 +35,7 @@ interface ResourceTabSubComponentsInterface {
  * @return {JSX.Element}
  */
 export const ResourceTab: FunctionComponent<TabProps> & ResourceTabSubComponentsInterface = (
-    props
+    props: TabProps
 ): JSX.Element => {
 
     const {

@@ -21,6 +21,9 @@ import React, { FunctionComponent } from "react";
 import { List , ListProps } from "semantic-ui-react";
 import { ResourceListItem } from "./resource-list-item";
 
+/**
+ * Interface for the resource tab sub component.
+ */
 interface ResourceListSubComponentsInterface {
     Item: typeof ResourceListItem;
 }
