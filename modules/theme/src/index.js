@@ -25,6 +25,7 @@ export const Theme = require("./theme");
 // );
 
 // Icons
+export const AlertIcon = require("../lib/assets/images/icons/alert-icon.svg");
 export const AppIcon = require("../lib/assets/images/icons/app-icon.svg");
 export const BlockedMagnifierIcon = require("../lib/assets/images/icons/blocked-magnifier-icon.svg");
 export const BoxIcon = require("../lib/assets/images/icons/box-icon.svg");
