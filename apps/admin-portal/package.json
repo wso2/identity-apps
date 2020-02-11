@@ -29,11 +29,11 @@
         "@wso2is/validation": "^1.0.2"
     },
     "devDependencies": {
-        "fork-ts-checker-webpack-plugin": "^4.0.3",
-        "run-script-os": "^1.0.7",
-        "thread-loader": "^2.1.3"
+        "run-script-os": "^1.0.7"
     },
     "peerDependencies": {
+        "fork-ts-checker-webpack-plugin": "*",
+        "thread-loader": "*",
         "@svgr/webpack": "*",
         "axios": "*",
         "history": "*",
