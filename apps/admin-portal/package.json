@@ -32,6 +32,8 @@
         "run-script-os": "^1.0.7"
     },
     "peerDependencies": {
+        "fork-ts-checker-webpack-plugin": "*",
+        "thread-loader": "*",
         "@svgr/webpack": "*",
         "axios": "*",
         "history": "*",
