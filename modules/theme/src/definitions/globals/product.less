@@ -787,6 +787,7 @@ body {
         margin-bottom: 15px;
         cursor: pointer;
         color: @doveGray;
+        display: inline-block;
 
         &:hover {
             color: darken(@doveGray, 30);
@@ -802,6 +803,15 @@ body {
             }
         }
     }
+}
+
+/*****************************************
+            UI Hints
+*****************************************/
+
+.ui-hint {
+    color: @inputAddonColor;
+    font-size: @inputAddonFontSize;
 }
 
 .loadUIOverrides();

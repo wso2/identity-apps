@@ -67,3 +67,10 @@
 @fluidDashboardLayoutFooterPadding: 0 @fluidDashboardLayoutHorizontalPadding;
 @fluidDashboardLayoutSidePanelPadding: @fluidDashboardLayoutTopPadding @fluidDashboardLayoutHorizontalPadding;
 @fluidDashboardLayoutDesktopContentPadding: @fluidDashboardLayoutTopPadding 30px;
+
+/*-------------------
+    Input Addons
+--------------------*/
+
+@inputAddonColor: @doveGray;
+@inputAddonFontSize: 12px;

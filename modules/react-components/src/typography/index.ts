@@ -1,5 +1,5 @@
-/*!
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+/**
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -14,25 +14,7 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-/*******************************
-         Theme Overrides
-*******************************/
-
-.ui.header {
-    &.page-header {
-        .sub-header {
-            margin-top: @pageHeaderInnerMargin;
-        }
-    }
-}
-
-.ui.header {
-    &.ellipsis {
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-}
+export * from "./heading";
+export * from "./hint";

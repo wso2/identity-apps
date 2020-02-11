@@ -1,5 +1,5 @@
-/*!
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+/**
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,22 +17,21 @@
  *
  */
 
-/*******************************
-         Theme Overrides
-*******************************/
+import { StoryCategories } from "../../hierarchy";
+import { StoryMetaInterface } from "../../models";
 
-.ui.header {
-    &.page-header {
-        .sub-header {
-            margin-top: @pageHeaderInnerMargin;
+export const meta: StoryMetaInterface = {
+    components: [ "Hint" ],
+    description: "Component to render UI hints.",
+    stories: [
+        {
+            description: "Default Hint.",
+            title: "Default",
+        },
+        {
+            description: "Hint with an icon.",
+            title: "With Icon",
         }
-    }
-}
-
-.ui.header {
-    &.ellipsis {
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-}
+    ],
+    title: `${ StoryCategories.COMPONENTS }/Hint`,
+};
