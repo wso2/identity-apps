@@ -18,7 +18,7 @@
  */
 
 export const Theme = require("./theme");
-// TODO: Revist default theme loading
+// TODO: Revisit default theme loading
 // export const DefaultTheme = Theme.compile(
 //     "./libs/styles/less/theme-module/themes/default/index.less",
 //     "./libs/styles/less/theme-module/themes/default", {}
