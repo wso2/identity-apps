@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/admin-portal",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "WSO2 Identity Server Admin Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -20,13 +20,13 @@
         "clean": "rm -rf node_modules build npm"
     },
     "dependencies": {
-        "@wso2is/authentication": "^1.0.2",
-        "@wso2is/core": "^1.0.2",
-        "@wso2is/forms": "^1.0.2",
-        "@wso2is/http": "^1.0.2",
-        "@wso2is/react-components": "^1.0.2",
-        "@wso2is/theme": "^1.0.2",
-        "@wso2is/validation": "^1.0.2"
+        "@wso2is/authentication": "^1.0.3",
+        "@wso2is/core": "^1.0.3",
+        "@wso2is/forms": "^1.0.3",
+        "@wso2is/http": "^1.0.3",
+        "@wso2is/react-components": "^1.0.3",
+        "@wso2is/theme": "^1.0.3",
+        "@wso2is/validation": "^1.0.3"
     },
     "devDependencies": {
         "run-script-os": "^1.0.7"
@@ -34,6 +34,7 @@
     "peerDependencies": {
         "@svgr/webpack": "*",
         "axios": "*",
+        "fork-ts-checker-webpack-plugin": "*",
         "history": "*",
         "i18next": "*",
         "i18next-browser-languagedetector": "*",
@@ -46,6 +47,7 @@
         "redux": "*",
         "redux-devtools-extension": "*",
         "redux-thunk": "*",
+        "thread-loader": "*",
         "ua-parser-js": "*"
     }
 }
