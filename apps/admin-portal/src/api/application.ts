@@ -414,7 +414,7 @@ export const updateAdvanceConfigurations = (id: string, advancedConfigs: object)
 };
 
 /**
- * Creates a new application
+ * Creates a new application.
  *
  * @param application Application settings data.
  */

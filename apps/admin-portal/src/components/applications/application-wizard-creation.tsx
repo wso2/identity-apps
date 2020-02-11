@@ -67,8 +67,6 @@ export const ApplicationWizardCreation: FunctionComponent<AppCreationProps> = (p
         if (applicationData !== application) {
             setApplication(applicationData);
         }
-        // tslint:disable-next-line:no-console
-        console.log(application);
     };
 
     // Stages order for application creation.
@@ -105,24 +103,21 @@ export const ApplicationWizardCreation: FunctionComponent<AppCreationProps> = (p
     };
 
     // Load data from the templates.
-    const loadTemplateData = (): MainApplicationInterface => {
+    const loadTemplateData = () => {
         let applicationData: MainApplicationInterface = { ...application };
         if (templateID === "SPApplication") {
             applicationData = { ...SPApplication };
         } else if (templateID === "OAuthWebApplication") {
             applicationData = { ...OAuthWebApplication };
         }
-        // updateGeneralDetails(applicationData);
-        // updateOIDCProtocolDetails(applicationData);
         updateMainApplication(applicationData);
-        return applicationData;
-        // console.log(application);
     };
 
     // Update the template data with user data.
     const updateTemplateData = () => {
         const applicationData: MainApplicationInterface = { ...application };
         updateGeneralDetails(applicationData);
+        // TODO update protocol settings based on the protocol.
         updateOIDCProtocolDetails(applicationData);
         updateMainApplication(applicationData);
     };

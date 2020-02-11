@@ -42,7 +42,7 @@ export const OAuthWebApplication: MainApplicationInterface = {
     inboundProtocolConfiguration: {
         oidc: {
             grantTypes: [
-                "code"
+                "authorization_code"
             ],
             publicClient: false,
             state: State.ACTIVE
