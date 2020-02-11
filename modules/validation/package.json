@@ -15,7 +15,7 @@
         "dist"
     ],
     "scripts": {
-        "build": "npm run clean && npm run compile",
+        "build": "npm run clean && node scripts/build-module.js && npm run compile",
         "clean": "rimraf ./dist",
         "compile": "tsc -p tsconfig.json",
         "lint": "tslint -t stylish --project ."
