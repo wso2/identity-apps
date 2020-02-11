@@ -22,7 +22,7 @@ import { getApplicationDetails } from "../api";
 import { EditApplication } from "../components";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
-import { ApplicationInterface } from "../models";
+import { ApplicationInterface, emptyApplication } from "../models";
 
 /**
  * Application Edit page.
@@ -31,15 +31,7 @@ import { ApplicationInterface } from "../models";
  */
 export const ApplicationEditPage: React.FunctionComponent<{}> = (): JSX.Element => {
 
-    const [ application, setApplication ] = useState<ApplicationInterface>({
-        accessUrl: "",
-        advancedConfigurations: undefined,
-        claimConfiguration: undefined,
-        description: "",
-        id: "",
-        imageUrl: "",
-        name: ""
-    });
+    const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
 
     const getApplication = (id: string) => {
         getApplicationDetails(id)
@@ -71,6 +63,7 @@ export const ApplicationEditPage: React.FunctionComponent<{}> = (): JSX.Element 
                 <AppAvatar
                     name={ application.name }
                     image={ application.imageUrl }
+                    isLoading={ !application.name || !application.imageUrl }
                     size="tiny"
                     spaced="right"
                 />

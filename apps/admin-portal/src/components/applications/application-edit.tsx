@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
-import { Tab } from "semantic-ui-react";
 import { ApplicationInterface } from "../../models";
 import { GeneralDetailsApplication } from "./general-details-application";
 import { ApplicationSettings } from "./settings-application";
@@ -43,31 +43,33 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         {
             menuItem: "General",
             render: () => (
-                <Tab.Pane attached={ false }>
+                <ResourceTab.Pane attached={ false }>
                     <GeneralDetailsApplication
-                        appId={ application.id }
-                        name={ application.name }
-                        description={ application.description }
-                        imageUrl={ application.imageUrl }
                         accessUrl={ application.accessUrl }
+                        appId={ application.id }
+                        description={ application.description }
+                        discoverability={ application.advancedConfigurations.discoverableByEndUsers }
+                        imageUrl={ application.imageUrl }
+                        name={ application.name }
                     />
-                </Tab.Pane>
+                </ResourceTab.Pane>
             ),
         },
         {
             menuItem: "Settings",
             render: () => (
-                <Tab.Pane attached={ false }>
+                <ResourceTab.Pane attached={ false }>
                     <ApplicationSettings
                         appId={ application.id }
                         advancedConfigurations={ application.advancedConfigurations }
+                        inboundProtocols={ application.inboundProtocols }
                     />
-                </Tab.Pane>
+                </ResourceTab.Pane>
             ),
         },
         {
-            menuItem: "SignOnMethods",
-            render: () => <Tab.Pane attached={ false }>SignOnMethod</Tab.Pane>,
+            menuItem: "Sign-on Methods",
+            render: () => <ResourceTab.Pane attached={ false }>SignOnMethod</ResourceTab.Pane>,
         },
     ]);
 
@@ -75,9 +77,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         <>
             {
                 application && (
-                    <Tab
-                        className="tabs resource-tabs"
-                        menu={ { secondary: true, pointing: true } }
+                    <ResourceTab
                         panes={ panes() }
                     />
                 )

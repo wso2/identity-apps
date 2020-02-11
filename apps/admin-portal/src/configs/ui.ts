@@ -35,11 +35,16 @@ import {
     InfoIcon,
     Logo,
     MFAIconSet,
+    OIDCLogo,
+    OpenIDLogo,
     PlugIcon,
+    SamlLogo,
     SettigsSectionIconSet,
     SuccessIcon,
     UserIcon,
-    WarningIcon
+    WarningIcon,
+    WSFedLogo,
+    WSTrustLogo
 } from "@wso2is/theme";
 
 type ImageType = string;
@@ -116,4 +121,12 @@ export const EmptyPlaceholderIllustrations = {
     loginError: ForbiddenIcon,
     pageNotFound: BlockedMagnifierIcon,
     search: EmptySearchResultsIllustration
+};
+
+export const InboundProtocolLogos = {
+    oidc: OIDCLogo,
+    openid: OpenIDLogo,
+    saml: SamlLogo,
+    wsFed: WSFedLogo,
+    wsTrust: WSTrustLogo
 };
