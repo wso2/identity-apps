@@ -14,29 +14,27 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-export * from "./alert";
-export * from "./avatar";
-export * from "./brand";
-export * from "./button";
-export * from "./card";
-export * from "./danger-zone";
-export * from "./error";
-export * from "./footer";
-export * from "./header";
-export * from "./icon";
-export * from "./input";
-export * from "./language-switcher";
-export * from "./list";
-export * from "./loader";
-export * from "./modal";
-export * from "./page-header";
-export * from "./pagination";
-export * from "./placeholder";
-export * from "./route";
-export * from "./section";
-export * from "./side-panel";
-export * from "./tab";
-export * from "./typography";
+import React, { FunctionComponent, PropsWithChildren } from "react";
+import { Tab, TabPaneProps } from "semantic-ui-react";
+
+/**
+ * Resource tab pane component.
+ *
+ * @param {TabPaneProps} props - Props injected to the component.
+ * @return {JSX.Element}
+ */
+export const ResourceTabPane: FunctionComponent<PropsWithChildren<TabPaneProps>> = (
+    props: PropsWithChildren<TabPaneProps>
+): JSX.Element => {
+
+    const {
+        children,
+        rest
+    } = props;
+
+    return (
+        <Tab.Pane attached={ false } { ...rest }>{ children }</Tab.Pane>
+    );
+};
