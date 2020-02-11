@@ -17,7 +17,7 @@
  */
 
 import { FormValidation } from "@wso2is/validation";
-import { isEmpty } from "lodash";
+import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -29,7 +29,6 @@ import { resolveUserDisplayName } from "../../helpers";
 import { AlertInterface, AlertLevels, AuthStateInterface, ProfileSchema } from "../../models";
 import { getProfileInformation } from "../../store/actions";
 import { Avatar, AvatarProps } from "./avatar";
-import _ from "lodash";
 
 /**
  * Prop types for the user avatar component.
@@ -208,7 +207,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
      */
     const handleSubmit = (event: React.MouseEvent) => {
 
-        if (isEmpty(url)) {
+        if (_.isEmpty(url)) {
             setUrlError(Error.REQUIRED);
         } else if (!FormValidation.url(url)) {
             setUrlError(Error.VALIDATION);
@@ -305,7 +304,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
 
     return (
         <>
-            { !isEmpty(urlSchema) && showEditModal ? editModal() : null }
+            { !_.isEmpty(urlSchema) && showEditModal ? editModal() : null }
             <Popup
                 content={ gravatarInfoPopoverText }
                 position="bottom center"
