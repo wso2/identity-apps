@@ -37,6 +37,7 @@ module.exports = (env) => {
     const clientOriginDefault = clientHostDefault;
     const clientIdDefault = "USER_PORTAL";
     const applicationName = "User Portal";
+    const tenantDefault = "carbon.super";
 
     /**
      * App configurations
@@ -203,6 +204,7 @@ module.exports = (env) => {
                 LOGIN_CALLBACK_URL: JSON.stringify(externalLoginCallbackURL),
                 SERVER_HOST_DEFAULT: JSON.stringify(serverHostDefault),
                 SERVER_ORIGIN_DEFAULT: JSON.stringify(serverOriginDefault),
+                TENANT_DEFAULT: JSON.stringify(tenantDefault),
                 TITLE_TEXT_DEFAULT: JSON.stringify(titleText),
                 "typeof window": JSON.stringify("object"),
                 "process.env": {

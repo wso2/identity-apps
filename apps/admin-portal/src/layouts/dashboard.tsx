@@ -34,6 +34,7 @@ import { AppConfig, history } from "../helpers";
 import { AppState } from "../store";
 import { filteredRoutes } from "../utils";
 
+
 /**
  * Dashboard layout Prop types.
  */
@@ -265,8 +266,7 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
                                                         exact={ child.exact }
                                                     />
                                                 )
-                                                :
-                                                (
+                                                : (
                                                     <Route
                                                         path={ child.path }
                                                         render={ (renderProps) =>
@@ -287,14 +287,13 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
                                     : route.protected
                                         ? (
                                             <ProtectedRoute
-                                                component={ route.component }
+                                                component={ route.component ? route.component : null }
                                                 path={ route.path }
                                                 key={ index }
                                                 exact={ route.exact }
                                             />
                                         )
-                                        :
-                                        (
+                                        : (
                                             <Route
                                                 path={ route.path }
                                                 render={ (renderProps) =>

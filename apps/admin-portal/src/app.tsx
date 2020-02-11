@@ -62,6 +62,7 @@ export const App = (): JSX.Element => {
                                                         component={ route.component }
                                                         path={ route.path }
                                                         key={ index }
+                                                        exact={ route.exact }
                                                     />
                                                 )
                                                 :
@@ -72,6 +73,7 @@ export const App = (): JSX.Element => {
                                                             (<route.component { ...props } />)
                                                         }
                                                         key={ index }
+                                                        exact={ route.exact }
                                                     />
                                                 )
                                         );
@@ -79,6 +81,7 @@ export const App = (): JSX.Element => {
                                 }
                             </Switch>
                         </AppConfig.Provider>
+
                     </Provider>
                 </I18nextProvider>
             </div>

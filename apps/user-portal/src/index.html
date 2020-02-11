@@ -62,7 +62,8 @@
 
             // Update below with tenant user-portal application/service-provider details
             var tenantName = getTenantName();
-            var tenantUserPortalClientID = "";
+            var defaultUserPortalClientID = "USER_PORTAL";
+            var tenantUserPortalClientID = defaultUserPortalClientID + "_" + tenantName;
 
             /** ===================================================== */
 
@@ -71,9 +72,10 @@
                 clientHost: clientOriginAddress + getTenantPath(tenantName),
                 clientOrigin: clientOriginAddress,
                 clientID: (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ? 
-                    tenantUserPortalClientID : "USER_PORTAL",
+                    tenantUserPortalClientID : defaultUserPortalClientID,
                 serverHost: serverOriginAddress + getTenantPath(tenantName),
-                serverOrigin: serverOriginAddress
+                serverOrigin: serverOriginAddress,
+                tenant: (tenantName === "") ? "carbon.super" : tenantName
             };
         </script>
 

@@ -17,7 +17,7 @@
  */
 
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { ProtectedRoute } from "../components";
 import { defaultLayoutRoutes } from "../configs";
 
@@ -45,26 +45,29 @@ export const DefaultPageLayout: React.FunctionComponent<DefaultPageLayoutPropsIn
         <Switch>
             {
                 defaultLayoutRoutes.map((route, index) => (
-                    route.protected ?
-                        (
-                            <ProtectedRoute
-                                component={ route.component }
-                                path={ route.path }
-                                key={ index }
-                                exact={ route.exact }
-                            />
-                        )
-                        :
-                        (
-                            <Route
-                                path={ route.path }
-                                render={ (renderProps) =>
-                                    (<route.component { ...renderProps } />)
-                                }
-                                key={ index }
-                                exact={ route.exact }
-                            />
-                        )
+                    route.redirectTo
+                        ? <Redirect to={ route.redirectTo } />
+                        : route.protected
+                            ? (
+                                <ProtectedRoute
+                                    component={ route.component ? route.component : null }
+                                    path={ route.path }
+                                    key={ index }
+                                    exact={ route.exact }
+                                />
+                            )
+                            : (
+                                <Route
+                                    path={ route.path }
+                                    render={ (renderProps) =>
+                                        route.component
+                                            ? <route.component { ...renderProps } />
+                                            : null
+                                    }
+                                    key={ index }
+                                    exact={ route.exact }
+                                />
+                            )
                 ))
             }
         </Switch>

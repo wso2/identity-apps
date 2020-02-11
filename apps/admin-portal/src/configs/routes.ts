@@ -18,10 +18,12 @@
 
 import { RouteInterface } from "@wso2is/core/models";
 import { SignIn, SignOut } from "../components/authentication";
-import { AppLayout, AuthLayout, DashboardLayout, DefaultPageLayout } from "../layouts";
+import { AppLayout, AuthLayout, DashboardLayout, DefaultPageLayout, ErrorPageLayout } from "../layouts";
 import {
+    ApplicationEditPage,
     ApplicationsPage,
     HomePage,
+    PageNotFound,
     PrivacyPage,
     UsersPage
 } from "../pages";
@@ -41,12 +43,22 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     },
     {
         component: ApplicationsPage,
+        exact: true,
         icon: "applications",
         id: "applications",
         name: "Applications",
         path: "/applications",
         protected: true,
         showOnSidePanel: true,
+    },
+    {
+        component: ApplicationEditPage,
+        exact: true,
+        icon: "applications",
+        name: "Application-Edit",
+        path: "/applications/:id",
+        protected: true,
+        showOnSidePanel: false,
     },
     {
         component: UsersPage,
@@ -65,6 +77,15 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         path: "/privacy",
         protected: true,
         showOnSidePanel: false,
+    },
+    {
+        component: null,
+        icon: null,
+        name: "404",
+        path: "*",
+        protected: true,
+        redirectTo: "/404",
+        showOnSidePanel: false,
     }
 ];
 
@@ -78,6 +99,20 @@ const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
         id: "privacy",
         name: "Privacy",
         path: "/privacy",
+        protected: true,
+        showOnSidePanel: false,
+    },
+];
+
+/**
+ * Error page layout routes array.
+ */
+const ERROR_LAYOUT_ROUTES: RouteInterface[] = [
+    {
+        component: PageNotFound,
+        icon: null,
+        name: "404",
+        path: "/404",
         protected: true,
         showOnSidePanel: false,
     }
@@ -139,6 +174,15 @@ const APP_ROUTES: RouteInterface[] = [
         showOnSidePanel: false,
     },
     {
+        component: ErrorPageLayout,
+        exact: true,
+        icon: null,
+        name: "Error",
+        path: "/404",
+        protected: true,
+        showOnSidePanel: false,
+    },
+    {
         component: DashboardLayout,
         icon: null,
         id: "dashboard",
@@ -169,4 +213,5 @@ export const baseRoutes = BASE_ROUTES;
 export const authLayoutRoutes = AUTH_LAYOUT_ROUTES;
 export const dashboardLayoutRoutes = DASHBOARD_LAYOUT_ROUTES;
 export const defaultLayoutRoutes = DEFAULT_LAYOUT_ROUTES;
-export const routes = [ ...DASHBOARD_LAYOUT_ROUTES, ...DEFAULT_LAYOUT_ROUTES ];
+export const errorLayoutRoutes = ERROR_LAYOUT_ROUTES;
+export const routes = [ ...DASHBOARD_LAYOUT_ROUTES ];

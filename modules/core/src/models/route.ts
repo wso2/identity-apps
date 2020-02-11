@@ -53,6 +53,10 @@ export interface RouteInterface {
      */
     protected: boolean;
     /**
+     * Redirect path.
+     */
+    redirectTo?: string;
+    /**
      * Should the item be displayed on the side panel.
      */
     showOnSidePanel: boolean;
