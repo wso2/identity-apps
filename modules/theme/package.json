@@ -15,7 +15,6 @@
         "build": "npm run compile",
         "clean": "rimraf ./lib",
         "compile": "node scripts/build-theme.js",
-        "lint": "tslint -t stylish --project .",
         "watch": "watch \"npm run build\" src"
     },
     "author": "WSO2",
@@ -23,6 +22,11 @@
     "devDependencies": {
         "clean-css": "^4.2.1",
         "less-plugin-npm-import": "^2.1.0",
-        "less-plugin-rewrite-import": "^0.1.1"
+        "less-plugin-rewrite-import": "^0.1.1",
+        "rimraf": "^3.0.2"
+    },
+    "peerDependencies": {
+        "fs-extra": "*",
+        "less": "*"
     }
 }

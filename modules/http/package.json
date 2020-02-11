@@ -29,6 +29,9 @@
     "dependencies": {
         "@wso2is/authentication": "^1.0.3"
     },
+    "devDependencies": {
+        "rimraf": "^3.0.2"
+    },
     "peerDependencies": {
         "axios": "*"
     }

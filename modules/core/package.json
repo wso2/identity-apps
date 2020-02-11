@@ -29,6 +29,9 @@
         "@wso2is/authentication": "^1.0.3",
         "@wso2is/http": "^1.0.3"
     },
+    "devDependencies": {
+        "rimraf": "^3.0.2"
+    },
     "peerDependencies": {
         "@types/history": "*",
         "@types/lodash": "*",
@@ -39,7 +42,6 @@
         "lodash": "*",
         "react": "*",
         "react-notification-system": "*",
-        "rimraf": "*",
         "tslint": "*",
         "typescript": "*",
         "ua-parser-js": "*"

@@ -18,6 +18,9 @@
     "dependencies": {
         "jsrsasign": "^8.0.12"
     },
+    "devDependencies": {
+        "rimraf": "^3.0.2"
+    },
     "peerDependencies": {
         "await-semaphore": "*",
         "axios": "*",
