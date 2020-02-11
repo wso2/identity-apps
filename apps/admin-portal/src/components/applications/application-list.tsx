@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppAvatar, ResourceList, ResourceListItem } from "@wso2is/react-components";
+import { AppAvatar, ResourceList } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
 import { history } from "../../helpers";
 import { ApplicationListInterface } from "../../models";
@@ -56,7 +56,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             {
                 (list.applications && list.applications.length && list.applications.length > 0)
                     ? list.applications.map((app, index) => (
-                       <ResourceListItem
+                       <ResourceList.Item
                            key={ index }
                            actions={ [
                                {

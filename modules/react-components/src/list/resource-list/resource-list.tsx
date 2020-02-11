@@ -19,6 +19,11 @@
 import classNames from "classnames";
 import React, { FunctionComponent } from "react";
 import { List , ListProps } from "semantic-ui-react";
+import { ResourceListItem } from "./resource-list-item";
+
+interface ResourceListSubComponentsInterface {
+    Item: typeof ResourceListItem;
+}
 
 /**
  * Resource list component.
@@ -26,7 +31,7 @@ import { List , ListProps } from "semantic-ui-react";
  * @param {ListProps} props - Props injected to the component.
  * @return {JSX.Element}
  */
-export const ResourceList: FunctionComponent<ListProps> = (
+export const ResourceList: FunctionComponent<ListProps> & ResourceListSubComponentsInterface = (
     props: ListProps
 ): JSX.Element => {
 
@@ -52,3 +57,5 @@ export const ResourceList: FunctionComponent<ListProps> = (
         </List>
     );
 };
+
+ResourceList.Item = ResourceListItem;
