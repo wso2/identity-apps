@@ -412,3 +412,31 @@ export const updateAdvanceConfigurations = (id: string, advancedConfigs: object)
             return Promise.reject(error);
         });
 };
+
+/**
+ * Creates a new application
+ *
+ * @param application Application settings data.
+ */
+export const createApplication = (application: object): Promise<any> => {
+    const requestConfig = {
+        data: application,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: ServiceResourcesEndpoint.applications
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed create the application."));
+            }
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
