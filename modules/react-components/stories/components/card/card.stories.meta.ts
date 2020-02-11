@@ -17,24 +17,21 @@
  *
  */
 
-export * from "./alert";
-export * from "./avatar";
-export * from "./brand";
-export * from "./button";
-export * from "./card";
-export * from "./danger-zone";
-export * from "./error";
-export * from "./footer";
-export * from "./header";
-export * from "./icon";
-export * from "./input";
-export * from "./language-switcher";
-export * from "./list";
-export * from "./loader";
-export * from "./modal";
-export * from "./page-header";
-export * from "./pagination";
-export * from "./placeholder";
-export * from "./route";
-export * from "./section";
-export * from "./side-panel";
+import { StoryCategories } from "../../hierarchy";
+import { StoryMetaInterface } from "../../models";
+
+export const meta: StoryMetaInterface = {
+    components: [ "SelectionCard" ],
+    description: "Component to cards.",
+    stories: [
+        {
+            description: "Default Card.",
+            title: "Card",
+        },
+        {
+            description: "Card to represent selections.",
+            title: "Selection Card",
+        }
+    ],
+    title: `${ StoryCategories.COMPONENTS }/Card`,
+};
