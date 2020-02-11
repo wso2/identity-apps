@@ -6,6 +6,7 @@
     "license": "Apache-2.0",
     "main": "index.js",
     "scripts": {
+        "prebuild": "npm run clean",
         "start": "run-script-os",
         "start:win32": "..\\..\\node_modules\\.bin\\webpack-dev-server --env.NODE_ENV=local --mode development --inline --hot --open",
         "start:default": "../../node_modules/.bin/webpack-dev-server --env.NODE_ENV=local --mode development --inline --hot --open",
@@ -17,7 +18,7 @@
         "build:default": "../../node_modules/.bin/webpack --env.NODE_ENV=prod --mode development && npm run test",
         "lint": "tslint -t stylish --project .",
         "test": "jest --passWithNoTests",
-        "clean": "rm -rf node_modules build npm"
+        "clean": "rm -rf build"
     },
     "dependencies": {
         "@wso2is/authentication": "^1.0.3",

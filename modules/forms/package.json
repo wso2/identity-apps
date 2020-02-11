@@ -15,11 +15,15 @@
         "dist"
     ],
     "scripts": {
-        "build": "npm run clean && npm run compile",
+        "prebuild": "npm run clean",
+        "build": "npm run compile",
         "clean": "rimraf ./dist",
         "compile": "tsc -p tsconfig.json",
         "lint": "tslint -t stylish --project .",
         "test": "jest"
+    },
+    "devDependencies": {
+        "rimraf": "^3.0.2"
     },
     "author": "WSO2",
     "license": "Apache-2.0"
