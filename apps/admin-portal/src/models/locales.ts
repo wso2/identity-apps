@@ -158,6 +158,7 @@ export interface Views {
             },
             notifications: {
                 addUser: Notification;
+                deleteUser: Notification;
                 fetchUsers: Notification;
             },
             search: {
@@ -215,6 +216,20 @@ export interface Views {
                             validations: {
                                 empty: string;
                                 mismatch: string;
+                            }
+                        },
+                        firstName: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                            }
+                        },
+                        lastName: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
                             }
                         },
                         username: {

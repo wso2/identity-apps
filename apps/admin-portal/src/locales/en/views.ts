@@ -331,6 +331,20 @@ export const views: Views = {
                                 invalid: "Please enter a valid email address"
                             }
                         },
+                        firstName: {
+                            label: "First name",
+                            placeholder: "Enter your first name",
+                            validations: {
+                                empty: "First name is a required field"
+                            }
+                        },
+                        lastName: {
+                            label: "Last name",
+                            placeholder: "Enter your last name",
+                            validations: {
+                                empty: "Last name is a required field"
+                            }
+                        },
                         newPassword: {
                             label: "New password",
                             placeholder: "Enter the new password",
@@ -396,6 +410,20 @@ export const views: Views = {
                     success: {
                         description: "The new user was added successfully.",
                         message: "User added successfully"
+                    }
+                },
+                deleteUser: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error deleting the user"
+                    },
+                    genericError: {
+                        description: "Couldn't delete the user",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The user was deleted successfully.",
+                        message: "User deleted successfully"
                     }
                 },
                 fetchUsers: {
