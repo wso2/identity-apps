@@ -26,14 +26,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { Responsive } from "semantic-ui-react";
+import { Button, Responsive } from "semantic-ui-react";
 import { ProtectedRoute } from "../components";
 import { LogoImage, routes, SidePanelIcons, SidePanelMiscIcons } from "../configs";
 import { UIConstants } from "../constants";
 import { AppConfig, history } from "../helpers";
+import { AppConfigInterface } from "../models";
 import { AppState } from "../store";
 import { filteredRoutes } from "../utils";
-
 
 /**
  * Dashboard layout Prop types.
@@ -65,7 +65,7 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
     const [ footerHeight, setFooterHeight ] = React.useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
     const [ isMobileViewport, setIsMobileViewport ] = React.useState<boolean>(false);
 
-    const appConfig = useContext(AppConfig);
+    const appConfig: AppConfigInterface = useContext(AppConfig);
 
     const classes = classNames(
         "layout",
@@ -224,6 +224,19 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
                 basicProfileInfo={ profileDetails }
                 fluid={ !isMobileViewport ? fluid : false }
                 isProfileInfoLoading={ isProfileInfoLoading }
+                userDropdownInfoAction={ (
+                    <Button
+                        size="tiny"
+                        primary
+                        onClick={
+                            () => {
+                                window.open(`${SERVER_HOST_DEFAULT}/user-portal`);
+                            }
+                        }
+                    >
+                        { t("common:personalInfo") }
+                    </Button>
+                ) }
                 userDropdownLinks={ [
                     {
                         name: "Logout",
