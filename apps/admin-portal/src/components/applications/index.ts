@@ -27,3 +27,8 @@ export * from "./settings-application";
 export * from "./settings-section-application-variation";
 export * from "./advanced-configurations";
 export * from "./application-edit";
+export * from "./wizard-general-settings";
+export * from "./wizard-protocol-oauth-settings";
+export * from "./wizard-summary";
+export * from "./application-wizard-creation";
+export * from "./application-templates";

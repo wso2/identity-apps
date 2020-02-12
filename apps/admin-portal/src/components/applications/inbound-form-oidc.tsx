@@ -79,19 +79,20 @@ export const OIDCForm: FunctionComponent<OIDCFormProps> = (props): JSX.Element =
     };
 
     // Add regexp to multiple callbackUrls and update configs
-    const buildCallBackUrl = (urls: string): string => {
-        let callbackURL = urls.replace(/['"]+/g, "");
+    const buildCallBackUrlWithRegExp = (urls: string): string => {
+        let callbackURL = urls;
         if (callbackURL.split(",").length > 1) {
-            callbackURL = "regexp=(" + callbackURL + ")";
+            callbackURL = "regexp=(" + callbackURL.split(",").join("|") + ")";
         }
         return callbackURL;
     };
 
     // Remove regexp from incoming data and show the callbackUrls.
-    const buildFormCallBackURL = (url: string): string => {
+    const buildCallBackURLWithSeparator = (url: string): string => {
         if (url.includes("regexp=(")) {
             url = url.replace("regexp=(", "");
             url = url.replace(")", "");
+            url = url.split("|").join(",");
         }
         return url;
     }
@@ -220,7 +221,7 @@ export const OIDCForm: FunctionComponent<OIDCFormProps> = (props): JSX.Element =
                     <Forms
                         onSubmit={ (values) => {
                             const newValues = new Map(values)
-                            newValues.set("callbackURL", buildCallBackUrl(values.get("callbackURL").toString()))
+                            newValues.set("callbackURL", buildCallBackUrlWithRegExp(values.get("callbackURL").toString()))
                             handleSubmit(newValues);
                         } }
                     >
@@ -275,7 +276,7 @@ export const OIDCForm: FunctionComponent<OIDCFormProps> = (props): JSX.Element =
                                         requiredErrorMessage="this is needed"
                                         placeholder="Enter the CallbackURL"
                                         type="text"
-                                        value={ buildFormCallBackURL(inboundData.callbackURLs.toString()) }
+                                        value={ buildCallBackURLWithSeparator(inboundData.callbackURLs.toString()) }
                                     />
                                 </Grid.Column>
                             </Grid.Row>

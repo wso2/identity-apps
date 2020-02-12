@@ -24,6 +24,7 @@ import { getApplicationList } from "../api";
 import { ApplicationList, ApplicationSearch } from "../components";
 import { ListLayout, PageLayout } from "../layouts";
 import { ApplicationListInterface } from "../models";
+import { history } from "../helpers/history";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -117,7 +118,17 @@ export const ApplicationsPage = (): JSX.Element => {
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
                 onSortStrategyChange={ handleListSortingStrategyOnChange }
-                rightActionPanel={ <PrimaryButton><Icon name="add"/>Add application</PrimaryButton> }
+                rightActionPanel={
+                    (
+                        <PrimaryButton
+                            onClick={ () => {
+                                history.push("/applications/templates");
+                            } }
+                        >
+                            <Icon name="add"/>Add application
+                        </PrimaryButton>
+                    )
+                }
                 showPagination={ true }
                 sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
                 sortStrategy={ listSortingStrategy }

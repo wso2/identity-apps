@@ -46,7 +46,7 @@ export interface OIDCMetadataInterface {
     accessTokenType?: MetadataPropertyInterface;
 }
 
-enum State {
+export enum State {
     ACTIVE = "ACTIVE",
     REVOKED = "REVOKED"
 }
