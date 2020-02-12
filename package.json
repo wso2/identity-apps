@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/webapps",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "WSO2 Identity Server Web Applications",
     "keywords": [
         "WSO2",
@@ -15,15 +15,15 @@
         "build": "lerna run build --stream",
         "clean": "lerna run clean --stream",
         "clean-all": "npm run remove-package-lock && npm run remove-maven-folders && npm run remove-node-modules",
-        "remove-node-modules": "lerna exec -- rm -rf node_modules && rm -rf node_modules",
-        "remove-package-lock": "lerna exec -- rm -rf package-lock.json && rm -rf package-lock.json",
-        "remove-maven-folders": "lerna exec -- rm -rf target npm && rm -rf target npm",
+        "remove-node-modules": "npx lerna exec -- rm -rf node_modules && rm -rf node_modules",
+        "remove-package-lock": "npx lerna exec -- rm -rf package-lock.json && rm -rf package-lock.json",
+        "remove-maven-folders": "npx lerna exec -- rm -rf target npm ./apps/user-portal/src/main ./apps/admin-portal/src/main && rm -rf target npm ./apps/user-portal/src/main ./apps/admin-portal/src/main",
         "update-version": "node scripts/update-version.js"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@hapi/joi": "^16.1.7",
+        "@hapi/joi": "^17.1.0",
         "@storybook/addon-actions": "^5.3.3",
         "@storybook/addon-centered": "^5.3.6",
         "@storybook/addon-docs": "^5.3.3",
@@ -92,7 +92,7 @@
         "glob": "^7.1.3",
         "html-webpack-plugin": "^3.2.0",
         "jest": "^24.0.0",
-        "lerna": "^3.4.3",
+        "lerna": "^3.20.2",
         "less": "^3.10.3",
         "less-loader": "^5.0.0",
         "less-plugin-inline-urls": "^1.2.0",
