@@ -16,7 +16,7 @@
     ],
     "scripts": {
         "prebuild": "npm run clean",
-        "build": "npm run compile",
+        "build": "node scripts/build-module.js && npm run compile",
         "clean": "rimraf ./dist",
         "compile": "tsc -p tsconfig.json",
         "lint": "tslint -t stylish --project ."
@@ -24,8 +24,7 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "peerDependencies": {
-        "@hapi/joi": "*",
-        "fastestsmallesttextencoderdecoder": "*"
+        "@hapi/joi": "*"
     },
     "devDependencies": {
         "rimraf": "^3.0.2"
