@@ -25,13 +25,18 @@ interface ServiceResourcesType {
     base: string;
     challenges: string;
     challengeAnswers: string;
+    consents: string;
+    groups: string;
     claims: string;
     jwks: string;
     logout: string;
     me: string;
+    profileSchemas: string;
     sessions: string;
     token: string;
+    user: string;
     users: string;
+    userStores: string;
     revoke: string;
     wellKnown: string;
 }
@@ -44,12 +49,17 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     challengeAnswers: `${GlobalConfig.serverHost}/api/users/v1/me/challenge-answers`,
     challenges: `${GlobalConfig.serverHost}/api/users/v1/me/challenges`,
     claims: `${GlobalConfig.serverHost}/api/server/v1/claim-dialects`,
+    consents: `${GlobalConfig}/api/identity/consent-mgt/v1.0/consents`,
+    groups: `${GlobalConfig.serverHost}/scim2/Groups`,
     jwks: `${GlobalConfig.serverHost}/oauth2/jwks`,
     logout: `${GlobalConfig.serverHost}/oidc/logout`,
     me: `${GlobalConfig.serverHost}/scim2/Me`, // TODO  Remove this endpoint and use ID token to get the details
+    profileSchemas: `${GlobalConfig.serverHost}/scim2/Schemas`,
     revoke: `${GlobalConfig.serverHost}/oauth2/revoke`,
     sessions: `${GlobalConfig.serverHost}/api/users/v1/me/sessions`,
     token: `${GlobalConfig.serverHost}/oauth2/token`,
+    user: `${GlobalConfig.serverHost}/api/identity/user/v1.0/me`,
+    userStores: `${GlobalConfig.serverHost}/api/server/v1/userstores`,
     users: `${GlobalConfig.serverHost}/scim2/Users`,
     wellKnown: `${GlobalConfig.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
 };

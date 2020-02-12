@@ -153,7 +153,11 @@ export interface Views {
                 heading: string;
                 subHeading: string;
             },
+            buttons: {
+                assignUserRoleBtn: string;
+            },
             notifications: {
+                addUser: Notification;
                 fetchUsers: Notification;
             },
             search: {
@@ -201,9 +205,9 @@ export interface Views {
                 resultsIndicator: string;
             },
         },
-        changePassword: {
+        user: {
             forms: {
-                passwordResetForm: {
+                addUserForm: {
                     inputs: {
                         confirmPassword: {
                             label: string;
@@ -213,7 +217,7 @@ export interface Views {
                                 mismatch: string;
                             }
                         },
-                        currentPassword: {
+                        username: {
                             label: string;
                             placeholder: string;
                             validations: {
@@ -227,7 +231,22 @@ export interface Views {
                             validations: {
                                 empty: string;
                             }
-                        }
+                        },
+                        domain: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                            }
+                        },
+                        email: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                invalid: string;
+                            }
+                        },
                     },
                     validations: {
                         genericError: {
@@ -250,7 +269,7 @@ export interface Views {
                 }
             },
             modals: {
-                confirmationModal: {
+                addUserWarnModal: {
                     heading: string;
                     message: string;
                 }

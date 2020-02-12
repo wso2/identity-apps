@@ -59,6 +59,17 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: false,
     },
     {
+        children: [
+            {
+                component: UsersPage,
+                icon: "usersAndRoles",
+                level: 2,
+                name: "Users",
+                path: "/users",
+                protected: true,
+                showOnSidePanel: true,
+            }
+        ],
         component: UsersPage,
         icon: "usersAndRoles",
         name: "Users & Roles",

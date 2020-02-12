@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,44 +16,126 @@
  * under the License.
  */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid } from "semantic-ui-react";
-import { UserSearch, UsersList } from "../components/users";
+import { useDispatch } from "react-redux";
+import { Button, Divider, Grid } from "semantic-ui-react";
+import { getUsersList } from "../api";
+import { AddUser, UserSearch, UsersList } from "../components/users";
+import { AlertInterface, AlertLevels } from "../models";
+import { addAlert } from "../store/actions";
 
 /**
  * Users info page.
  *
  * @return {JSX.Element}
  */
-export const UsersPage = (): JSX.Element => {
+export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+
     const [ searchQuery, setSearchQuery ] = useState("");
+    const [ isBasicModalOpen, setModalOpen ] = useState(false);
+    const [ isRoleModalOpen, setRoleModalOpen] = useState(false);
+    const [ usersList, setUsersList ] = useState([]);
+
+    useEffect(() => {
+        getList();
+    }, []);
+
+    const getList = () => {
+        getUsersList()
+            .then((response) => {
+                handleAlerts({
+                    description: t(
+                        "views:components.users.notifications.fetchUsers.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "views:components.users.notifications.fetchUsers.success.message"
+                    )
+                });
+                setUsersList(response.data.Resources);
+            });
+    };
+
+    /**
+     * Dispatches the alert object to the redux store.
+     *
+     * @param {AlertInterface} alert - Alert object.
+     */
+    const handleAlerts = (alert: AlertInterface) => {
+        dispatch(addAlert(alert));
+    };
 
     /**
      * Handles the `onFilter` callback action from the
-     * application search component.
+     * users search component.
      *
      * @param {string} query - Search query.
      */
-    const handleApplicationFilter = (query: string): void => {
+    const handleUsersFilter = (query: string): void => {
         setSearchQuery(query);
     };
 
+    const handleModalOpen = (): void => {
+        setModalOpen(true);
+    };
+
+    const handleModalClose = (): void => {
+        setModalOpen(false);
+    };
+
+    const handleRoleModalOpen = (): void => {
+        setRoleModalOpen(true);
+        setModalOpen(false);
+    };
+
+    const handleRoleModalClose = (): void => {
+        setRoleModalOpen(false);
+    };
+
+    const options = [
+        { key: "import", icon: "download", text: "Import users", value: "import" },
+        { key: "export", icon: "upload", text: "Export users", value: "export" },
+    ];
+
     return (
-        <Grid>
-            <Grid.Row width={ 16 } columns={ 2 }>
-                <Grid.Column>
-                    <UserSearch onFilter={ handleApplicationFilter }/>
-                </Grid.Column>
-                <Grid.Column>
-                    <Button icon="ellipsis horizontal" size="medium" floated="right"/>
-                    <Button primary floated="right" size="medium">+ ADD USER</Button>
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row width={ 16 }>
-                <UsersList/>
-            </Grid.Row>
-        </Grid>
+            <Grid>
+                <Grid.Row width={ 16 } columns={ 2 }>
+                    <Grid.Column>
+                        <UserSearch onFilter={ handleUsersFilter }/>
+                    </Grid.Column>
+                    <Grid.Column>
+                        <Button
+                            trigger={ <React.Fragment /> }
+                            icon="ellipsis horizontal"
+                            size="medium"
+                            floated="right"
+                        />
+                        <Button
+                            primary
+                            floated="right"
+                            size="medium"
+                            onClick={ handleModalOpen }
+                        >
+                            + ADD USER
+                        </Button>
+                        <AddUser
+                            getUserList={ getList }
+                            isBasicModalOpen={ isBasicModalOpen }
+                            handleModalClose={ handleModalClose }
+                            isRoleModalOpen={ isRoleModalOpen }
+                            handleRoleModalOpen={ handleRoleModalOpen }
+                            handleRoleModalClose={ handleRoleModalClose }
+                            onAlertFired={ handleAlerts }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                <Divider/>
+                <Grid.Row width={ 16 }>
+                    <UsersList usersList={ usersList }/>
+                </Grid.Row>
+            </Grid>
     );
 };

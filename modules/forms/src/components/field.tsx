@@ -206,6 +206,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                     placeholder={ inputField.placeholder }
                     options={ inputField.children }
                     value={ form.get(inputField.name) }
+                    width={ inputField.width }
                     onChange={ (event: React.ChangeEvent<HTMLInputElement>, { value }) => {
                         handleChange(value.toString(), inputField.name);
                     } }
