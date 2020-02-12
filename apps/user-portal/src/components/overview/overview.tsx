@@ -16,9 +16,8 @@
  * under the License.
  */
 
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useContext } from "react";
 import { Divider, Grid } from "semantic-ui-react";
-import appConfig from "../../../app.config.json";
 import {
     ACCOUNT_ACTIVITY,
     ACCOUNT_SECURITY,
@@ -26,6 +25,7 @@ import {
     CONSENTS_CONTROL,
     OVERVIEW
 } from "../../constants";
+import { AppConfig } from "../../helpers";
 import { checkEnabled } from "../../utils";
 import {
     AccountSecurityWidget,
@@ -40,7 +40,7 @@ import {
  * @return {JSX.Element}
  */
 export const Overview: FunctionComponent<{}> = (): JSX.Element => {
-    const overViewConfig = appConfig[OVERVIEW];
+    const overViewConfig = useContext(AppConfig)[OVERVIEW];
 
     return (
         <Grid className="overview-page">

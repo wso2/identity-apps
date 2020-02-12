@@ -16,7 +16,10 @@
  * under the License.
  */
 
-export * from "./authenticate-util";
-export * from "./http-utils";
-export * from "./search-utils";
-export * from "./filter-utils";
+ /**
+  * Model of  application configuration
+  */
+export interface AppConfigInterface {
+    applications: boolean;
+    usersAndRoles: boolean;
+}

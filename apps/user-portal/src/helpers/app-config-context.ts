@@ -1,3 +1,4 @@
+
 /**
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
@@ -16,7 +17,10 @@
  * under the License.
  */
 
-export * from "./authenticate-util";
-export * from "./http-utils";
-export * from "./search-utils";
-export * from "./filter-utils";
+import React from "react";
+import { AppConfigInterface } from "../models";
+
+/**
+ * This creates a React context that will hold the application configuration
+ */
+export const AppConfig = React.createContext<AppConfigInterface>(null);

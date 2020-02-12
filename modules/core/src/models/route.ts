@@ -26,30 +26,42 @@ export interface RouteInterface {
      * Component to be displayed.
      */
     component: React.ReactNode;
+
     /**
      * Child routes.
      */
     children?: ChildRouteInterface[];
+
     /**
      * Icon to be displayed on the side panel.
      */
     icon?: any;
+
+    /**
+     * A key to uniquely identify the route with
+     */
+    id: string;
+
     /**
      * Name to be displayed on the side panel.
      */
     name: string;
+
     /**
      * Router path.
      */
     path: string;
+
     /**
      * If the route is protected or not.
      */
     protected: boolean;
+
     /**
      * Redirect path.
      */
     redirectTo?: string;
+
     /**
      * Should the item be displayed on the side panel.
      */

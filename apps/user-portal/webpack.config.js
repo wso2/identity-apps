@@ -187,6 +187,11 @@ module.exports = (env) => {
                     from: "public",
                     to: ".",
                     force: true
+                },
+                {
+                    from: "./app.config.json",
+                    to: "./app.config.json",
+                    force: true
                 }
             ]),
             compileAppIndex(),
