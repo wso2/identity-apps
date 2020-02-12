@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/theme",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Theme for web components of WSO2 Identity Server Webapps.",
     "keywords": [
         "WSO2",
@@ -11,18 +11,22 @@
     ],
     "main": "src/index.js",
     "scripts": {
-        "build": "node scripts/build-theme.js",
-        "test": "echo \"Error: no test specified\"",
-        "lint": "tslint -t stylish --project .",
-        "test-coverage": "echo \"Error: no test coverage specified\"",
-        "watch": "watch \"npm run build\" src",
-        "clean": "rm -rf node_modules lib npm"
+        "prebuild": "npm run clean",
+        "build": "npm run compile",
+        "clean": "rimraf ./lib",
+        "compile": "node scripts/build-theme.js",
+        "watch": "watch \"npm run build\" src"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
     "devDependencies": {
         "clean-css": "^4.2.1",
         "less-plugin-npm-import": "^2.1.0",
-        "less-plugin-rewrite-import": "^0.1.1"
+        "less-plugin-rewrite-import": "^0.1.1",
+        "rimraf": "^3.0.2"
+    },
+    "peerDependencies": {
+        "fs-extra": "*",
+        "less": "*"
     }
 }

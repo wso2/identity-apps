@@ -33,7 +33,7 @@ import { UIConstants } from "../constants";
 import { AppConfig, history } from "../helpers";
 import { AppState } from "../store";
 import { filteredRoutes } from "../utils";
-
+import { BaseLayout } from "./base";
 
 /**
  * Dashboard layout Prop types.
@@ -207,126 +207,128 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
     };
 
     return (
-        <Responsive
-            className={ classes }
-            fireOnMount
-            onUpdate={ handleLayoutOnUpdate }
-        >
-            <Header
-                brand={ (
-                    <ProductBrand
-                        style={ { marginTop: 0 } }
-                        logo={ <Logo image={ LogoImage } /> }
-                        name={ ContextUtils.getRuntimeConfig().applicationName }
-                    />
-                ) }
-                brandLink={ ContextUtils.getRuntimeConfig().appHomePath }
-                basicProfileInfo={ profileDetails }
-                fluid={ !isMobileViewport ? fluid : false }
-                isProfileInfoLoading={ isProfileInfoLoading }
-                userDropdownLinks={ [
-                    {
-                        name: "Logout",
-                        to: "/logout"
-                    }
-                ] }
-                profileInfo={ profileDetails.profileInfo }
-                showUserDropdown={ true }
-                onSidePanelToggleClick={ handleSidePanelToggleClick }
-            />
-            <SidePanel
-                bordered="right"
-                caretIcon={ SidePanelMiscIcons.caretRight }
-                desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
-                fluid={ !isMobileViewport ? fluid : false }
-                footerHeight={ footerHeight }
-                headerHeight={ headerHeight }
-                mobileSidePanelVisibility={ mobileSidePanelVisibility }
-                onSidePanelItemClick={ handleSidePanelItemClick }
-                onSidePanelPusherClick={ handleSidePanelPusherClick }
-                icons={ SidePanelIcons }
-                routes={ appConfig && filteredRoutes(appConfig) }
-                selected={ selectedRoute }
+        <BaseLayout>
+            <Responsive
+                className={ classes }
+                fireOnMount
+                onUpdate={ handleLayoutOnUpdate }
             >
-                <Switch>
-                    {
-                        appConfig
+                <Header
+                    brand={ (
+                        <ProductBrand
+                            style={ { marginTop: 0 } }
+                            logo={ <Logo image={ LogoImage }  /> }
+                            name={ ContextUtils.getRuntimeConfig().applicationName }
+                        />
+                    ) }
+                    brandLink={ ContextUtils.getRuntimeConfig().appHomePath }
+                    basicProfileInfo={ profileDetails }
+                    fluid={ !isMobileViewport ? fluid : false }
+                    isProfileInfoLoading={ isProfileInfoLoading }
+                    userDropdownLinks={ [
+                        {
+                            name: "Logout",
+                            to: "/logout"
+                        }
+                    ] }
+                    profileInfo={ profileDetails.profileInfo }
+                    showUserDropdown={ true }
+                    onSidePanelToggleClick={ handleSidePanelToggleClick }
+                />
+                <SidePanel
+                    bordered="right"
+                    caretIcon={ SidePanelMiscIcons.caretRight }
+                    desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
+                    fluid={ !isMobileViewport ? fluid : false }
+                    footerHeight={ footerHeight }
+                    headerHeight={ headerHeight }
+                    mobileSidePanelVisibility={ mobileSidePanelVisibility }
+                    onSidePanelItemClick={ handleSidePanelItemClick }
+                    onSidePanelPusherClick={ handleSidePanelPusherClick }
+                    icons={ SidePanelIcons }
+                    routes={ appConfig && filteredRoutes(appConfig) }
+                    selected={ selectedRoute }
+                >
+                    <Switch>
+                        {
+                            appConfig
                             ? filteredRoutes(appConfig).map((route, index) => {
                                 if (route.children && route.children.length > 0) {
                                     return route.children.map((child, i) => {
                                         return (
-                                        child.redirectTo
+                                            child.redirectTo
                                                 ? <Redirect key={ i } to={ child.redirectTo } />
-                                            : child.protected
-                                                ? (
-                                                    <ProtectedRoute
-                                                        component={ child.component }
-                                                        path={ child.path }
-                                                        key={ i }
-                                                        exact={ child.exact }
-                                                    />
-                                                )
-                                                : (
-                                                    <Route
-                                                        path={ child.path }
-                                                        render={ (renderProps) =>
-                                                            child.component
-                                                                ? <child.component { ...renderProps } />
-                                                                : null
-                                                        }
-                                                        key={ i }
-                                                        exact={ child.exact }
-                                                    />
-                                                )
+                                                : child.protected
+                                                    ? (
+                                                        <ProtectedRoute
+                                                            component={ child.component ? child.component : null }
+                                                            path={ child.path }
+                                                            key={ i }
+                                                            exact={ child.exact }
+                                                        />
+                                                    )
+                                                    : (
+                                                        <Route
+                                                            path={ child.path }
+                                                            render={ (renderProps) =>
+                                                                child.component
+                                                                    ? <child.component { ...renderProps } />
+                                                                    : null
+                                                            }
+                                                            key={ i }
+                                                            exact={ child.exact }
+                                                        />
+                                                    )
                                         );
                                     });
                                 }
                                 return (
-                                route.redirectTo
+                                    route.redirectTo
                                         ? <Redirect key={ index } to={ route.redirectTo } />
-                                    : route.protected
-                                        ? (
-                                            <ProtectedRoute
-                                                component={ route.component ? route.component : null }
-                                                path={ route.path }
-                                                key={ index }
-                                                exact={ route.exact }
-                                            />
-                                        )
-                                        : (
-                                            <Route
-                                                path={ route.path }
-                                                render={ (renderProps) =>
-                                                    route.component
-                                                        ? <route.component { ...renderProps } />
-                                                        : null
-                                                }
-                                                key={ index }
-                                                exact={ route.exact }
-                                            />
-                                        )
+                                        : route.protected
+                                            ? (
+                                                <ProtectedRoute
+                                                    component={ route.component ? route.component : null }
+                                                    path={ route.path }
+                                                    key={ index }
+                                                    exact={ route.exact }
+                                                />
+                                            )
+                                            : (
+                                                <Route
+                                                    path={ route.path }
+                                                    render={ (renderProps) =>
+                                                        route.component
+                                                            ? <route.component { ...renderProps } />
+                                                            : null
+                                                    }
+                                                    key={ index }
+                                                    exact={ route.exact }
+                                                />
+                                            )
                                 );
                             })
                             : null
+                        }
+                    </Switch>
+                </SidePanel>
+                <Footer
+                    copyright={
+                        ContextUtils.getRuntimeConfig().copyrightText
+                            ? ContextUtils.getRuntimeConfig().copyrightText
+                            : null
                     }
-                </Switch>
-            </SidePanel>
-            <Footer
-                copyright={
-                    ContextUtils.getRuntimeConfig().copyrightText
-                        ? ContextUtils.getRuntimeConfig().copyrightText
-                        : null
-                }
-                fixed="bottom"
-                fluid={ !isMobileViewport ? fluid : false }
-                links={ [
-                    {
-                        name: t("common:privacy"),
-                        to: "/privacy"
-                    }
-                ] }
-            />
-        </Responsive>
+                    fixed="bottom"
+                    fluid={ !isMobileViewport ? fluid : false }
+                    links={ [
+                        {
+                            name: t("common:privacy"),
+                            to: "/privacy"
+                        }
+                    ] }
+                />
+            </Responsive>
+        </BaseLayout>
     );
 };
 

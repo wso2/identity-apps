@@ -108,6 +108,7 @@ export const ApplicationsPage = (): JSX.Element => {
         <PageLayout
             title="Applications"
             description="Create applications based on templates and configure authentication."
+            showBottomDivider={ true }
         >
             <ListLayout
                 advancedSearch={ <ApplicationSearch onFilter={ handleApplicationFilter }/> }

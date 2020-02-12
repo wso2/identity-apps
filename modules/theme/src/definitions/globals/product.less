@@ -778,4 +778,40 @@ body {
     }
 }
 
+/*****************************************
+            Page Header
+*****************************************/
+
+.page-header-wrapper {
+    .back-button {
+        margin-bottom: 15px;
+        cursor: pointer;
+        color: @doveGray;
+        display: inline-block;
+
+        &:hover {
+            color: darken(@doveGray, 30);
+        }
+    }
+
+    .page-header-inner {
+        &.with-image {
+            display: flex;
+
+            .page-header {
+                margin: 0 0 0 10px;
+            }
+        }
+    }
+}
+
+/*****************************************
+            UI Hints
+*****************************************/
+
+.ui-hint {
+    color: @inputAddonColor;
+    font-size: @inputAddonFontSize;
+}
+
 .loadUIOverrides();

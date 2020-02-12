@@ -76,7 +76,6 @@ export const ListLayout: React.FunctionComponent<PropsWithChildren<ListLayoutPro
                                 {
                                     sortOptions && sortStrategy && onSortStrategyChange && (
                                         <Dropdown
-                                            compact
                                             onChange={ onSortStrategyChange }
                                             options={ sortOptions }
                                             placeholder={ "Sort by" }

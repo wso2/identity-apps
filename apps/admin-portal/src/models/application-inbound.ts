@@ -20,8 +20,10 @@
  * Captures the auth protocols
  */
 export interface AuthProtocolMetadataInterface {
-    name?: string;
-    displayname?: string;
+    name: string;
+    displayName: string;
+    logo?: string;
+    type?: string;
 }
 
 export interface MetadataPropertyInterface {

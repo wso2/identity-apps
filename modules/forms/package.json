@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/forms",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Forms module for WSO2 Identity Server web-apps.",
     "keywords": [
         "WSO2",
@@ -9,17 +9,21 @@
         "WSO2 Identity Apps",
         "form"
     ],
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "main": "dist/src/index.js",
+    "types": "dist/typings/index.d.ts",
     "files": [
         "dist"
     ],
     "scripts": {
-        "build": "npm run clean && npm run compile",
+        "prebuild": "npm run clean",
+        "build": "npm run compile",
         "clean": "rimraf ./dist",
         "compile": "tsc -p tsconfig.json",
         "lint": "tslint -t stylish --project .",
         "test": "jest"
+    },
+    "devDependencies": {
+        "rimraf": "^3.0.2"
     },
     "author": "WSO2",
     "license": "Apache-2.0"
