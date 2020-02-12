@@ -55,6 +55,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         component: ApplicationEditPage,
         exact: true,
         icon: "applications",
+        id: "applicationsEdit",
         name: "Application-Edit",
         path: "/applications/:id",
         protected: true,
@@ -81,6 +82,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: null,
         icon: null,
+        id: "404",
         name: "404",
         path: "*",
         protected: true,
@@ -96,7 +98,7 @@ const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: PrivacyPage,
         icon: null,
-        id: "privacy",
+        id: "defaultPrivacy",
         name: "Privacy",
         path: "/privacy",
         protected: true,
@@ -111,6 +113,7 @@ const ERROR_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: PageNotFound,
         icon: null,
+        id: "error404",
         name: "404",
         path: "/404",
         protected: true,
@@ -125,7 +128,7 @@ const AUTH_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: SignIn,
         icon: null,
-        id: "login",
+        id: "authLayoutLogin",
         name: "Login",
         path: APP_LOGIN_PATH,
         protected: false,
@@ -134,7 +137,7 @@ const AUTH_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: SignOut,
         icon: null,
-        id: "logout",
+        id: "authLayoutLogout",
         name: "Logout",
         path: "/logout",
         protected: false,
@@ -149,7 +152,7 @@ const APP_ROUTES: RouteInterface[] = [
     {
         component: AuthLayout,
         icon: null,
-        id: "login",
+        id: "appRouteLogin",
         name: "Login",
         path: APP_LOGIN_PATH,
         protected: false,
@@ -158,7 +161,7 @@ const APP_ROUTES: RouteInterface[] = [
     {
         component: AuthLayout,
         icon: null,
-        id: "logout",
+        id: "appRouteLogout",
         name: "Logout",
         path: "/logout",
         protected: false,
@@ -167,7 +170,7 @@ const APP_ROUTES: RouteInterface[] = [
     {
         component: DefaultPageLayout,
         icon: null,
-        id: "privacy",
+        id: "appRoutePrivacy",
         name: "Privacy",
         path: "/privacy",
         protected: true,
@@ -177,6 +180,7 @@ const APP_ROUTES: RouteInterface[] = [
         component: ErrorPageLayout,
         exact: true,
         icon: null,
+        id: "appRoute404",
         name: "Error",
         path: "/404",
         protected: true,
