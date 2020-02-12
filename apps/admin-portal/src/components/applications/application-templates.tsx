@@ -57,12 +57,12 @@ export const ApplicationTemplate: FunctionComponent<ApplicationTemplateProps> = 
     };
 
     const [showWebAppOption, setWebAppOption] = useState(false);
-
     const [showWizard, setWizard] = useState(false);
 
     const closeWizard = () => {
         setWizard(false);
     };
+
     const openWizard = () => {
         setWizard(true);
     };

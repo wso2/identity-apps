@@ -56,6 +56,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         component: ApplicationTemplateSelectPage,
         exact: true,
         icon: null,
+        id: "applicationTemplate",
         name: "Application-Template",
         path: "/applications/templates",
         protected: true,

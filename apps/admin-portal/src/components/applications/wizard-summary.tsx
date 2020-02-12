@@ -16,9 +16,12 @@
  * under the License.
  */
 
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Forms } from "@wso2is/forms";
 import { isEmpty } from "lodash";
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Button, Grid, Label } from "semantic-ui-react";
 import { createApplication } from "../../api/application";
 import { history } from "../../helpers";
@@ -47,6 +50,8 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (props): JSX
     useEffect(() => {
         loadData();
     }, []);
+
+    const dispatch = useDispatch();
 
     const createGeneralSettings = () => {
         const generalSetting = {
@@ -112,7 +117,11 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (props): JSX
     const createNewApplication = (app) => {
         createApplication(app)
             .then((response) => {
-                // TODO add notifications
+                dispatch(addAlert({
+                    description: "Successfully Added the application",
+                    level: AlertLevels.SUCCESS,
+                    message: "Creation successful"
+                }));
                 if (!isEmpty(response.headers.location)) {
                     const location = response.headers.location;
                     const createdAppID = location.substring(location.lastIndexOf("/") + 1);
@@ -120,7 +129,11 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (props): JSX
                 }
             })
             .catch((error) => {
-                // TODO add notifications
+                dispatch(addAlert({
+                    description: "An error occurred while creating the application",
+                    level: AlertLevels.ERROR,
+                    message: "Creation Error"
+                }));
             });
     };
 
