@@ -17,7 +17,7 @@
  */
 
 import React from "react";
-import { Button, Divider, Form, Radio } from "semantic-ui-react";
+import { Button, Divider, Form, Radio, TextArea } from "semantic-ui-react";
 import {
     isButtonField,
     isCheckBoxField,
@@ -103,30 +103,34 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                 );
             } else {
                 return (
-                    <Form.Input
-                        label={ inputField.label }
-                        width={ inputField.width }
-                        error={
-                            isError
-                                ? {
-                                    content: errorMessages.map((errorMessage: string, index: number) => {
-                                        return <p key={ index }>{ errorMessage }</p>;
-                                    })
-                                }
-                                : false
-                        }
-                        type={ inputField.type }
-                        placeholder={ inputField.placeholder }
-                        name={ inputField.name }
-                        value={ form.get(inputField.name) || "" }
-                        onBlur={ (event: React.KeyboardEvent) => {
-                            handleBlur(event, inputField.name);
-                        } }
-                        onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
-                            handleChange(event.target.value, inputField.name);
-                        } }
-                        autoFocus={ inputField.autoFocus || false }
-                    />
+                    <>
+                        { inputField.type === "textarea" && <label>{ inputField.label }</label> }
+                        <Form.Input
+                            label={ inputField.label }
+                            width={ inputField.width }
+                            error={
+                                isError
+                                    ? {
+                                        content: errorMessages.map((errorMessage: string, index: number) => {
+                                            return <p key={ index }>{ errorMessage }</p>;
+                                        })
+                                    }
+                                    : false
+                            }
+                            as={ inputField.type === "textarea" ? TextArea : undefined }
+                            type={ inputField.type }
+                            placeholder={ inputField.placeholder }
+                            name={ inputField.name }
+                            value={ form.get(inputField.name) || "" }
+                            onBlur={ (event: React.KeyboardEvent) => {
+                                handleBlur(event, inputField.name);
+                            } }
+                            onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
+                                handleChange(event.target.value, inputField.name);
+                            } }
+                            autoFocus={ inputField.autoFocus || false }
+                        />
+                    </>
                 );
             }
         } else if (isSubmitField(inputField)) {

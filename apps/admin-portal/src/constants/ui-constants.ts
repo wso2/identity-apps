@@ -49,4 +49,11 @@ export class UIConstants {
      * @type {number}
      */
     public static readonly DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING: number = 0;
+
+    /**
+     * Interval to dismiss the alerts.
+     * @constant
+     * @type {number}
+     */
+    public static readonly ALERT_DISMISS_INTERVAL: number = 5;
 }

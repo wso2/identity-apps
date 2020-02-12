@@ -151,6 +151,34 @@ export const getApplicationDetails = (id: string): Promise<any> => {
 };
 
 /**
+ * Deletes an application when the relevant id is passed in.
+ *
+ * @param id ID of the application.
+ * @return {Promise<any>} A promise containing the response.
+ */
+export const deleteApplication = (id: string): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: ServiceResourcesEndpoint.applications + "/" + id
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 204) {
+                return Promise.reject(new Error("Failed to delete the application."));
+            }
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
  * Updates the application with basic details.
  *
  * @param app Basic info about the application.
@@ -158,20 +186,18 @@ export const getApplicationDetails = (id: string): Promise<any> => {
  * @return {Promise<any>} A promise containing the response.
  */
 export const updateApplicationDetails = (app: ApplicationInterface): Promise<any> => {
+
+    const { id, ...rest } = app;
+
     const requestConfig = {
-        data: {
-            accessUrl: app.accessUrl,
-            description: app.description,
-            imageUrl: app.imageUrl,
-            name: app.name
-        },
+        data: rest,
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: ServiceResourcesEndpoint.applications + "/" + app.id
+        url: ServiceResourcesEndpoint.applications + "/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -236,7 +262,7 @@ export const getAvailableInboundProtocols = (customOnly: boolean): Promise<any> 
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed get Inbound protocols from: "));
             }
-            return Promise.resolve(response.data as AuthProtocolMetadataInterface);
+            return Promise.resolve(response.data as AuthProtocolMetadataInterface[]);
         }).catch((error) => {
             return Promise.reject(error);
         });
@@ -293,6 +319,37 @@ export const getOIDCData = (id: string): Promise<any> => {
                 return Promise.reject(new Error("Failed retrieve OIDC data from: "));
             }
             return Promise.resolve(response.data as OIDCDataInterface);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Generic function to get the relevant inbound protocol config
+ * when the path provided in the `self` attribute of the application
+ * response is passed in.
+ *
+ * @param {string} endpoint - Resource endpoint.
+ * @return {Promise<OIDCDataInterface>}
+ */
+export const getInboundProtocolConfig = (endpoint: string) => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: ServiceResourcesEndpoint.base + endpoint
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed retrieve the inbound protocol config."));
+            }
+            return Promise.resolve(response.data);
         }).catch((error) => {
             return Promise.reject(error);
         });

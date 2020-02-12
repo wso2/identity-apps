@@ -41,6 +41,16 @@ export interface ApplicationInterface extends ApplicationBasicInterface {
     imageUrl?: string;
     claimConfiguration?: ClaimConfigurationInterface;
     advancedConfigurations?: AdvancedConfigurationsInterface;
+    inboundProtocols?: InboundProtocolListItemInterface[];
+}
+
+/**
+ * Interface for the inbound protocol in the application response.
+ */
+export interface InboundProtocolListItemInterface {
+    type: string;
+    name?: string;
+    self: string;
 }
 
 /**
@@ -155,3 +165,16 @@ export interface LinkInterface {
     href: string;
     rel: string;
 }
+
+export const emptyApplication = (): ApplicationInterface => ({
+    accessUrl: "",
+    advancedConfigurations: {
+        discoverableByEndUsers: false
+    },
+    claimConfiguration: undefined,
+    description: "",
+    id: "",
+    imageUrl: "",
+    inboundProtocols: undefined,
+    name: ""
+});

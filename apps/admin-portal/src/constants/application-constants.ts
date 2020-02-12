@@ -55,3 +55,26 @@ export const APPLICATIONS_PAGE_PATH: string = "/applications";
  * @default
  */
 export const USER_PORTAL_IDENTIFIER: string = "This is the user portal application.";
+
+/**
+ * Class containing app constants.
+ */
+export class ApplicationConstants {
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    private constructor() { }
+
+    /**
+     * Paths for the application management config files.
+     * @constant
+     * @type {object}
+     */
+    public static readonly APPLICATION_MGT_CONFIG_PATHS: any = {
+        META: "configs/application-mgt.meta.json"
+    };
+}
