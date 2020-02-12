@@ -39,7 +39,6 @@ export const BaseLayout: React.FunctionComponent<PropsWithChildren<{}>> = (
     const alertSystem: any = useSelector((state: AppState) => state.global.alertSystem);
 
     const dispatch = useDispatch();
-
     const { children } = props;
 
     const handleAlertSystemInitialize = (system) => {
