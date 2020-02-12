@@ -38,8 +38,10 @@ interface AddUserProps {
     isRoleModalOpen: boolean;
     handleRoleModalOpen: any;
     handleRoleModalClose: any;
-    getUserList: () => void;
+    getUserList: (limit: number, offset: number) => void;
     onAlertFired: (alert: AlertInterface) => void;
+    listOffset: number;
+    listItemLimit: number;
 }
 
 /**
@@ -58,6 +60,8 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const [ userId, setUserId ] = useState("");
     const [ passwordOption, setPasswordOption ] = useState("");
     const [ email, setEmail ] = useState("");
+    const [ firstName, setFirstName ] = useState("");
+    const [ lastName, setLastName ] = useState("");
 
     const {
         getUserList,
@@ -66,7 +70,9 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         isRoleModalOpen,
         handleRoleModalOpen,
         handleRoleModalClose,
-        onAlertFired
+        onAlertFired,
+        listItemLimit,
+        listOffset
     } = props;
     const { t } = useTranslation();
     const passwordOptions = [
@@ -114,6 +120,21 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         if (passwordOption && passwordOption === "createPw") {
             return (
                 <EditSection>
+                    <Field
+                        label="Email address"
+                        name="email"
+                        placeholder={ t(
+                            "views:components.user.forms.addUserForm.inputs." +
+                            "newPassword.placeholder"
+                        ) }
+                        required={ true }
+                        requiredErrorMessage={ t(
+                            "views:components.user.forms.addUserForm." +
+                            "inputs.newPassword.validations.empty"
+                        ) }
+                        type="text"
+                        width={ 9 }
+                    />
                     <Field
                         hidePassword={ t("common:hidePassword") }
                         label={ t(
@@ -297,6 +318,16 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         passwordOption && passwordOption !== "askPw" ?
             (
                 data = {
+                    emails:
+                        [{
+                            primary: true,
+                            value: email
+                        }],
+                    name:
+                        {
+                            familyName: lastName,
+                            givenName: firstName
+                        },
                     password,
                     userName
                 }
@@ -308,6 +339,11 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             primary: true,
                             value: email
                         }],
+                    "name":
+                        {
+                            familyName: lastName,
+                            givenName: firstName
+                        },
                     "password": "password",
                     "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User":
                         {
@@ -330,7 +366,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     )
                 });
                 handleBasicModalClose();
-                getUserList();
+                getUserList(listItemLimit, listOffset);
             })
             .catch((error) => {
                 // Axios throws a generic `Network Error` for 401 status.
@@ -408,9 +444,9 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         if (passwordOption === "createPw") {
                             setPassword(value.get("newPassword").toString());
                         }
-                        if (passwordOption === "askPw") {
-                            setEmail(value.get("email").toString());
-                        }
+                        setFirstName(value.get("firstName").toString());
+                        setLastName(value.get("lastName").toString());
+                        setEmail(value.get("email").toString());
                         setUsername(value.get("username").toString());
                         setDomain(value.get("domain").toString());
                         setRoleIds(value.get("role") as string[]);
@@ -448,6 +484,40 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         requiredErrorMessage={ t(
                             "views:components.user.forms.addUserForm." +
                             "inputs.username.validations.empty"
+                        ) }
+                        type="text"
+                        width={ 9 }
+                    />
+                    <Field
+                        label={ t(
+                            "views:components.user.forms.addUserForm.inputs.firstName.label"
+                        ) }
+                        name="firstName"
+                        placeholder={ t(
+                            "views:components.user.forms.addUserForm.inputs." +
+                            "firstName.placeholder"
+                        ) }
+                        required={ true }
+                        requiredErrorMessage={ t(
+                            "views:components.user.forms.addUserForm." +
+                            "inputs.firstName.validations.empty"
+                        ) }
+                        type="text"
+                        width={ 9 }
+                    />
+                    <Field
+                        label={ t(
+                            "views:components.user.forms.addUserForm.inputs.lastName.label"
+                        ) }
+                        name="lastName"
+                        placeholder={ t(
+                            "views:components.user.forms.addUserForm.inputs." +
+                            "lastName.placeholder"
+                        ) }
+                        required={ true }
+                        requiredErrorMessage={ t(
+                            "views:components.user.forms.addUserForm." +
+                            "inputs.lastName.validations.empty"
                         ) }
                         type="text"
                         width={ 9 }
