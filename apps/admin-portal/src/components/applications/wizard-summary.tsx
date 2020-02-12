@@ -17,6 +17,7 @@
  */
 
 import { Forms } from "@wso2is/forms";
+import { isEmpty } from "lodash";
 import React, { FunctionComponent, useEffect } from "react";
 import { Button, Grid, Label } from "semantic-ui-react";
 import { createApplication } from "../../api/application";
@@ -76,6 +77,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (props): JSX
         if (url.includes("regexp=(")) {
             url = url.replace("regexp=(", "");
             url = url.replace(")", "");
+            url =  url.split("|").join(",");
         }
         return url;
     };
@@ -111,6 +113,11 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (props): JSX
         createApplication(app)
             .then((response) => {
                 // TODO add notifications
+                if (!isEmpty(response.headers.location)) {
+                    const location = response.headers.location;
+                    const createdAppID = location.substring(location.lastIndexOf("/") + 1);
+                    history.push("/applications/" + createdAppID);
+                }
             })
             .catch((error) => {
                 // TODO add notifications
@@ -118,8 +125,8 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (props): JSX
     };
 
     const handleSubmit = () => {
-        createNewApplication(data);
         next();
+        createNewApplication(data);
         history.push("/applications");
     };
 

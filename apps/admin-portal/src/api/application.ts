@@ -432,7 +432,7 @@ export const createApplication = (application: object): Promise<any> => {
 
     return httpClient.request(requestConfig)
         .then((response) => {
-            if (response.status !== 200) {
+            if ((response.status !== 201)) {
                 return Promise.reject(new Error("Failed create the application."));
             }
             return Promise.resolve(response);

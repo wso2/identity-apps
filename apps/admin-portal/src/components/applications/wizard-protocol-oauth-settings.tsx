@@ -42,9 +42,9 @@ export const WizardOAuthProtocolSettings: FunctionComponent<OAuthProtocolSetting
     } = props;
 
     const buildCallBackUrlWithRegExp = (urls: string): string => {
-        let callbackURLs = urls.replace(/['"]+/g, "");
+        let callbackURLs = urls;
         if (callbackURLs.split(",").length > 1) {
-            callbackURLs = "regexp=(" + callbackURLs + ")";
+            callbackURLs = "regexp=(" + callbackURLs.split(",").join("|") + ")";
         }
         return callbackURLs;
     };
@@ -53,6 +53,7 @@ export const WizardOAuthProtocolSettings: FunctionComponent<OAuthProtocolSetting
         if (url.includes("regexp=(")) {
             url = url.replace("regexp=(", "");
             url = url.replace(")", "");
+            url = url.split("|").join(",");
         }
         return url;
     };
@@ -87,7 +88,9 @@ export const WizardOAuthProtocolSettings: FunctionComponent<OAuthProtocolSetting
                                             urlList.map((singleUrl) => {
                                                 if (!FormValidation.url(singleUrl)) {
                                                     validation.isValid = false;
-                                                    validation.errorMessages.push("Please add valid URLs with comma separation.");
+                                                    validation.errorMessages.push(
+                                                        "Please add valid URLs with comma separation."
+                                                    );
                                                 }
                                             });
                                         } }

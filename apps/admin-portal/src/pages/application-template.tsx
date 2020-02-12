@@ -29,6 +29,7 @@ import { PageLayout } from "../layouts";
  */
 export const ApplicationTemplateSelectPage = (): JSX.Element => {
 
+    // TODO Remove this hard coded list and retrieve the template list from an endpoint.
     // Template list
     const Templates = {
         SPA: {

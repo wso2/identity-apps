@@ -32,8 +32,7 @@ interface GeneralSettingsProps {
 /**
  * General settings in the application wizard.
  *
- * @param props GeneralSettingsProps
- * @constructor
+ * @param props GeneralSettingsProps.
  */
 export const WizardGeneralSettings: FunctionComponent<GeneralSettingsProps> = (props): JSX.Element => {
     const {
@@ -116,7 +115,8 @@ export const WizardGeneralSettings: FunctionComponent<GeneralSettingsProps> = (p
                                         requiredErrorMessage="this is needed"
                                         type="checkbox"
                                         value={
-                                            applicationData && applicationData.discoverableByEndUsers ? ["discoverableByEndUsers"] : []
+                                            applicationData && applicationData.discoverableByEndUsers ?
+                                                ["discoverableByEndUsers"] : []
                                         }
                                         children={ [
                                             {
