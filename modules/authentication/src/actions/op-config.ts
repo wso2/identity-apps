@@ -20,6 +20,7 @@ import axios from "axios";
 import {
     AUTHORIZATION_ENDPOINT,
     END_SESSION_ENDPOINT,
+    ISSUER,
     JWKS_ENDPOINT,
     OP_CONFIG_INITIATED,
     REVOKE_TOKEN_ENDPOINT,
@@ -60,6 +61,7 @@ export const initOPConfiguration = (
             setJwksUri(response.data.jwks_uri);
             setRevokeTokenEndpoint(response.data.token_endpoint
                 .substring(0, response.data.token_endpoint.lastIndexOf("token")) + "revoke");
+            setIssuer(response.data.issuer);
             setOPConfigInitiated();
 
             return Promise.resolve("success");
@@ -78,6 +80,7 @@ export const resetOPConfiguration = () => {
     removeSessionParameter(JWKS_ENDPOINT);
     removeSessionParameter(REVOKE_TOKEN_ENDPOINT);
     removeSessionParameter(OP_CONFIG_INITIATED);
+    removeSessionParameter(ISSUER);
 };
 
 /**
@@ -210,6 +213,24 @@ export const getTenant = () => {
     }
 
     return "";
+};
+
+/**
+ * Get id_token issuer.
+ *
+ * @returns {any}
+ */
+export const getIssuer = () => {
+    return getSessionParameter(ISSUER);
+};
+
+/**
+ * Set id_token issuer.
+ *
+ * @param issuer id_token issuer.
+ */
+export const setIssuer = (issuer) => {
+    setSessionParameter(ISSUER, issuer);
 };
 
 /**

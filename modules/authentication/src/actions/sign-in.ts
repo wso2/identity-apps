@@ -17,12 +17,19 @@
  */
 
 import axios from "axios";
-import { ACCESS_TOKEN, AUTHORIZATION_CODE, OIDC_SCOPE, PKCE_CODE_VERIFIER, REQUEST_PARAMS } from "../constants";
+import {
+    ACCESS_TOKEN,
+    AUTHORIZATION_CODE,
+    OIDC_SCOPE,
+    PKCE_CODE_VERIFIER,
+    REQUEST_PARAMS,
+    SERVICE_RESOURCES
+} from "../constants";
 import { AuthenticatedUserInterface } from "../models/authenticated-user";
 import { AccountSwitchRequestParams, OIDCRequestParamsInterface } from "../models/oidc-request-params";
 import { TokenResponseInterface } from "../models/token-response";
 import { getCodeChallenge, getCodeVerifier, getEmailHash, getJWKForTheIdToken, isValidIdToken } from "./crypto";
-import { getAuthorizeEndpoint, getJwksUri, getRevokeTokenEndpoint, getTokenEndpoint } from "./op-config";
+import { getAuthorizeEndpoint, getIssuer, getJwksUri, getRevokeTokenEndpoint, getTokenEndpoint } from "./op-config";
 import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
 
 /**
@@ -335,8 +342,12 @@ const validateIdToken = (clientId: string, idToken: string,  serverOrigin: strin
             }
 
             const jwk = getJWKForTheIdToken(idToken.split(".")[0], response.data.keys);
+            let issuer = getIssuer();
+            if (!issuer || issuer.trim().length === 0) {
+                issuer = serverOrigin + SERVICE_RESOURCES.token;
+            }
 
-            return Promise.resolve(isValidIdToken(idToken, jwk, clientId, serverOrigin));
+            return Promise.resolve(isValidIdToken(idToken, jwk, clientId, issuer));
         }).catch((error) => {
             return Promise.reject(error);
         });
