@@ -228,7 +228,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             placeholder="Enter Client ID"
                                             type="text"
                                             value={ initialValues.clientId }
-                                            readOnly={ true }
                                         />
                                     </Grid.Column>
                                 </Grid.Row>
@@ -248,7 +247,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             placeholder="Enter Client Secret"
                                             type="password"
                                             value={ initialValues.clientSecret }
-                                            readOnly={ true }
                                         />
                                     </Grid.Column>
                                 </Grid.Row>
