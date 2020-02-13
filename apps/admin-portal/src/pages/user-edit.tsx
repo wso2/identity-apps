@@ -19,7 +19,7 @@
 import { UserAvatar } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getApplicationDetails, getUserDetails } from "../api";
+import { getUserDetails } from "../api";
 import { EditUser } from "../components/users/edit-user";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
@@ -67,7 +67,8 @@ export const UserEditPage = (): JSX.Element => {
     return (
         <PageLayout
             title={ user.name.givenName + " " + user.name.familyName }
-            description={ user.emails[0] }
+            description={ "" + user.emails && user.emails !== undefined ? user.emails[0].toString() :
+                user.userName }
             image={ (
                 <UserAvatar
                     name={ user.userName }
