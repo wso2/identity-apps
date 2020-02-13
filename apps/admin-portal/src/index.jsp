@@ -69,8 +69,8 @@
             var clientOriginAddress = "<%= htmlWebpackPlugin.options.serverUrl %>";
 
             var tenantName = getTenantName();
-            var defaultUserPortalClientID = "ADMIN_PORTAL";
-            var tenantUserPortalClientID = defaultUserPortalClientID + "_" + tenantName;
+            var defaultAdminPortalClientID = "ADMIN_PORTAL";
+            var tenantAdminPortalClientID = defaultAdminPortalClientID + "_" + tenantName;
 
             /** ===================================================== */
 
@@ -85,7 +85,7 @@
                 clientOrigin: window.userConfig.clientOrigin || clientOriginAddress,
                 clientID: window.userConfig.clientID ||
                     (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ?
-                    tenantUserPortalClientID : defaultUserPortalClientID,
+                    tenantAdminPortalClientID : defaultAdminPortalClientID,
                 serverHost: window.userConfig.serverHost || serverOriginAddress + getTenantPath(tenantName),
                 serverOrigin: window.userConfig.serverOrigin || serverOriginAddress,
                 tenant: window.userConfig.tenant || (tenantName === "") ? getSuperTenant() : tenantName,
