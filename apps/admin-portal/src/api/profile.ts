@@ -31,24 +31,24 @@ import { BasicProfileInterface, HttpMethods, ProfileSchema } from "../models";
 const httpClient = AxiosHttpClient.getInstance();
 
 /**
- * Retrieve the user information of the currently authenticated user.
+ * Retrieve the user information through user id.
  *
  * @return {Promise<any>} a promise containing the response.
  */
-export const getUserInfo = (): Promise<any> => {
+export const getUserDetails = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.me
+        url: ServiceResourcesEndpoint.users + "/" + id
     };
 
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            return Promise.resolve(response);
+            return Promise.resolve(response.data as BasicProfileInterface);
         })
         .catch((error) => {
             return Promise.reject(`Failed to retrieve user information - ${error}`);
@@ -108,18 +108,21 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
 /**
  * Update the required details of the user profile.
  *
- * @param {object} info.
+ * @param {object} user.
  * @return {Promise<any>} a promise containing the response.
  */
-export const updateProfileInfo = (info: object): Promise<any> => {
+export const updateProfileInfo = (user: BasicProfileInterface): Promise<any> => {
+
+    const { id, ...rest } = user;
+
     const requestConfig = {
-        data: info,
+        data: rest,
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: ServiceResourcesEndpoint.me
+        url: ServiceResourcesEndpoint.users + "/" + id
     };
 
     return httpClient

@@ -50,15 +50,6 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
     const getList = (limit: number, offset: number) => {
         getUsersList(limit, offset)
             .then((response) => {
-                handleAlerts({
-                    description: t(
-                        "views:components.users.notifications.fetchUsers.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "views:components.users.notifications.fetchUsers.success.message"
-                    )
-                });
                 setUsersList(response);
             });
     };

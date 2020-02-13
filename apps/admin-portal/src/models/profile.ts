@@ -36,6 +36,7 @@ export interface Name {
  * Profile Model
  */
 export interface BasicProfileInterface {
+    id: string;
     emails: string[] | MultiValue[];
     email?: string;
     phoneNumbers: MultiValue[];
@@ -103,6 +104,7 @@ export const createEmptyProfile = (): BasicProfileInterface => ({
     associations: [],
     email: "",
     emails: [],
+    id: "",
     isSecurity: false,
     name: { givenName: "", familyName: "" },
     organisation: "",

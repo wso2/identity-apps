@@ -16,19 +16,23 @@
  * under the License.
  */
 
-import React from "react";
+import { UserAvatar } from "@wso2is/react-components";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { UserProfile } from "../components/users/user-profile";
+import { getApplicationDetails, getUserDetails } from "../api";
+import { EditUser } from "../components/users/edit-user";
+import { history } from "../helpers";
 import { PageLayout } from "../layouts";
-import { AlertInterface } from "../models";
+import { AlertInterface, BasicProfileInterface, createEmptyProfile } from "../models";
 import { addAlert } from "../store/actions";
 
 /**
- * Application Edit page.
+ * User Edit page.
  *
  * @return {JSX.Element}
  */
 export const UserEditPage = (): JSX.Element => {
+    const [ user, setUserProfile ] = useState<BasicProfileInterface>(createEmptyProfile);
     const dispatch = useDispatch();
 
     /**
@@ -39,12 +43,46 @@ export const UserEditPage = (): JSX.Element => {
         dispatch(addAlert(alert));
     };
 
+    const getUser = (id: string) => {
+        getUserDetails(id)
+            .then((response) => {
+                setUserProfile(response);
+            })
+            .catch((error) => {
+                // TODO add to notifications
+            });
+    };
+
+    useEffect(() => {
+        const path = history.location.pathname.split("/");
+        const id = path[ path.length - 1 ];
+
+        getUser(id);
+    }, []);
+
+    const handleBackButtonClick = () => {
+        history.push("/users");
+    };
+
     return (
         <PageLayout
-            title=" "
-            description=" "
+            title={ user.name.givenName + " " + user.name.familyName }
+            description={ user.emails[0] }
+            image={ (
+                <UserAvatar
+                    name={ user.userName }
+                    size="tiny"
+                    floated="left"
+                />
+            ) }
+            backButton={ {
+                onClick: handleBackButtonClick,
+                text: "Go back to users"
+            } }
+            titleTextAlign="left"
+            bottomMargin={ false }
         >
-            <UserProfile onAlertFired={ handleAlerts }/>
+            <EditUser user={ user } />
         </PageLayout>
     );
 };
