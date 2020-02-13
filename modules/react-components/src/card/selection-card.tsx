@@ -30,6 +30,7 @@ interface SelectionCardPropsInterface {
      */
     className?: string;
     description?: string;
+    disabled?: boolean;
     header: string;
     id?: string;
     image?: any;
@@ -54,6 +55,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
     const {
         className,
         description,
+        disabled,
         header,
         id,
         inline,
@@ -68,6 +70,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         "selection-card",
         {
             ["with-image"]: image,
+            disabled,
             inline,
             selected
         },

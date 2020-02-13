@@ -16,18 +16,6 @@
  * under the License.
  */
 
-import { combineReducers } from "redux";
-import { applicationReducer, authenticateReducer, globalReducer } from "./reducers";
-import { LoadersReducer } from "./reducers/loaders";
-
-/**
- * Combines all the reducers.
- *
- * @type {Reducer<any>} Root reducer to be used when creating the store.
- */
-export const reducers = combineReducers({
-    application: applicationReducer,
-    authenticationInformation: authenticateReducer,
-    global: globalReducer,
-    loaders: LoadersReducer
-});
+export * from "./advanced-configurations-form";
+export * from "./inbound-form-factory";
+export * from "./inbound-oidc-form";

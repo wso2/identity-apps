@@ -16,20 +16,28 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AxiosHttpClient } from "@wso2is/http";
+import { AxiosError, AxiosResponse } from "axios";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
+import { ApplicationManagementConstants } from "../constants";
 import {
     ApplicationBasicInterface,
     ApplicationInterface,
     ApplicationListInterface,
-    AuthProtocolMetadataInterface,
+    AuthProtocolMetaListItemInterface,
     Claim,
     ClaimDialect,
     ExternalClaim,
     HttpMethods,
     OIDCDataInterface,
-    OIDCMetadataInterface
+    SupportedAuthProtocolMetaTypes,
+    SupportedAuthProtocolTypes
 } from "../models";
+
+/**
+ * TODO: move the error messages to a constant file.
+ */
 
 /**
  * Get an axios instance.
@@ -37,8 +45,6 @@ import {
  * @type {AxiosHttpClientInstance}.
  */
 const httpClient = AxiosHttpClient.getInstance();
-
-// TODO move the error msg to a constant file.
 
 /**
  * Retrieve claims in local dialect.
@@ -264,18 +270,20 @@ export const getAvailableInboundProtocols = (customOnly: boolean): Promise<any> 
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get Inbound protocols from: "));
             }
-            return Promise.resolve(response.data as AuthProtocolMetadataInterface[]);
+            return Promise.resolve(response.data as AuthProtocolMetaListItemInterface[]);
         }).catch((error) => {
             return Promise.reject(error);
         });
 };
 
 /**
- * Gets the OIDC protocol's meta data.
+ * Get all the metadata related to the passed in auth protocol.
  *
- * @return {Promise<any>} A promise containing the response.
+ * @param {SupportedAuthProtocolMetaTypes} protocol - The protocol to get the meta.
+ * @return {Promise<T>} Promise of type T.
+ * @throws {IdentityAppsApiException}
  */
-export const getOIDCMetadata = (): Promise<any> => {
+export const getAuthProtocolMetadata = <T>(protocol: SupportedAuthProtocolMetaTypes): Promise<T> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -283,19 +291,30 @@ export const getOIDCMetadata = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.applications + "/meta/inbound-protocols/oidc"
+        url: `${ ServiceResourcesEndpoint.applications}/meta/inbound-protocols/${ protocol }`
     };
 
     return httpClient.request(requestConfig)
-        .then((response) => {
-            if (response.status === 404) {
-                return Promise.reject(new Error("Inbound protocol not configured"));
-            } else if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to get OIDC meta data from: "));
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ApplicationManagementConstants.AUTH_PROTOCOL_METADATA_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
             }
-            return Promise.resolve(response.data as OIDCMetadataInterface);
-        }).catch((error) => {
-            return Promise.reject(error);
+
+            return Promise.resolve(response.data as T);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ApplicationManagementConstants.AUTH_PROTOCOL_METADATA_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 
@@ -359,6 +378,7 @@ export const getInboundProtocolConfig = (endpoint: string) => {
 
 /**
  * Updates the OIDC configuration.
+ * TODO: Migrate to `updateAuthProtocolConfig` generic function.
  *
  * @param id Application ID
  * @param OIDC OIDC configuration data.
@@ -383,6 +403,52 @@ export const updateOIDCData = (id: string, OIDC: object): Promise<any> => {
             return Promise.resolve(response);
         }).catch((error) => {
             return Promise.reject(error);
+        });
+};
+
+/**
+ * Generic function to update the authentication protocol config of an application.
+ *
+ * @param {string} id - Application ID.
+ * @param config - Protocol config.
+ * @param {SupportedAuthProtocolTypes} protocol - The protocol to be updated.
+ * @return {Promise<T>} Promise of type T.
+ * @throws {IdentityAppsApiException}
+ */
+export const updateAuthProtocolConfig = <T>(id: string, config: any,
+                                            protocol: SupportedAuthProtocolTypes): Promise<T> => {
+    const requestConfig = {
+        data: config,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: `${ ServiceResourcesEndpoint.applications}/${ id }/inbound-protocols/${ protocol }`
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ApplicationManagementConstants.AUTH_PROTOCOL_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data as T);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ApplicationManagementConstants.AUTH_PROTOCOL_CONFIG_UPDATE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 

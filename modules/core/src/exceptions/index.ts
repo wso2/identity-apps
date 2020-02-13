@@ -16,18 +16,6 @@
  * under the License.
  */
 
-import { combineReducers } from "redux";
-import { applicationReducer, authenticateReducer, globalReducer } from "./reducers";
-import { LoadersReducer } from "./reducers/loaders";
-
-/**
- * Combines all the reducers.
- *
- * @type {Reducer<any>} Root reducer to be used when creating the store.
- */
-export const reducers = combineReducers({
-    application: applicationReducer,
-    authenticationInformation: authenticateReducer,
-    global: globalReducer,
-    loaders: LoadersReducer
-});
+export * from "./identity-apps-api-exception";
+export * from "./identity-apps-exception";
+export * from "./identity-apps-module-exception";

@@ -74,3 +74,4 @@
 
 @inputAddonColor: @doveGray;
 @inputAddonFontSize: 12px;
+@inputAddonMargin: 10px 0;;

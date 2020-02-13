@@ -219,6 +219,9 @@
         &.selected {
             border-bottom: @selectionCardSelectedStateBorderBottom;
         }
+        &.disabled {
+            cursor: not-allowed;
+        }
         .card-image-container {
         }
         .card-text-container {

@@ -16,18 +16,23 @@
  * under the License.
  */
 
-import { combineReducers } from "redux";
-import { applicationReducer, authenticateReducer, globalReducer } from "./reducers";
-import { LoadersReducer } from "./reducers/loaders";
+import { IdentityAppsException } from "./identity-apps-exception";
 
 /**
- * Combines all the reducers.
- *
- * @type {Reducer<any>} Root reducer to be used when creating the store.
+ * Base exception class for the identity apps modules.
  */
-export const reducers = combineReducers({
-    application: applicationReducer,
-    authenticationInformation: authenticateReducer,
-    global: globalReducer,
-    loaders: LoadersReducer
-});
+export class IdentityAppsModuleException extends IdentityAppsException {
+
+    public module: string;
+
+    /**
+     * Constructor.
+     * @param {string} message - Message for the exception.
+     * @param {any} stack - Stack trace for the error.
+     * @param {string} module - Name of the module which threw the exception.
+     */
+    constructor(message?: string, stack?: any, module?: string) {
+        super(message, stack);
+        this.module = module;
+    }
+}
