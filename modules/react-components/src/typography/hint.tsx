@@ -29,6 +29,10 @@ interface HintPropsInterface {
      */
     className?: string;
     /**
+     * Renders without any margins.
+     */
+    compact?: boolean;
+    /**
      * Icon to be displayed
      */
     icon?: SemanticICONS;
@@ -47,11 +51,15 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
     const {
         children,
         className,
+        compact,
         icon
     } = props;
 
     const classes = classNames(
         "ui-hint",
+        {
+            compact
+        },
         className
     );
 
@@ -61,4 +69,12 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
             { children }
         </div>
     );
+};
+
+/**
+ * Default props for the hint component.
+ */
+Hint.defaultProps = {
+    compact: false,
+    icon: "info circle"
 };
