@@ -269,7 +269,15 @@ export interface ApplicationTemplateTechnology {
 export const emptyApplication = (): ApplicationInterface => ({
     accessUrl: "",
     advancedConfigurations: {
-        discoverableByEndUsers: false
+        certificate: {
+            type: CertificateTypeInterface.JWKS,
+            value: ""
+        },
+        discoverableByEndUsers: false,
+        enableAuthorization: false,
+        returnAuthenticatedIdpList: false,
+        saas: false,
+        skipConsent: false,
     },
     claimConfiguration: undefined,
     description: "",

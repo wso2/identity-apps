@@ -45,14 +45,6 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
         onSubmit
     } = props;
 
-    const {
-        certificate,
-        enableAuthorization,
-        returnAuthenticatedIdpList,
-        saas,
-        skipConsent
-    } = config;
-
     /**
      * Prepare form values for submitting.
      *
@@ -84,7 +76,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             label=""
                             required={ false }
                             requiredErrorMessage="this is needed"
-                            value={ saas ? [ "saas" ] : [] }
+                            value={ config?.saas ? [ "saas" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
@@ -106,7 +98,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             label=""
                             required={ false }
                             requiredErrorMessage="this is needed"
-                            value={ skipConsent ? [ "skipConsent" ] : [] }
+                            value={ config?.skipConsent ? [ "skipConsent" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
@@ -127,7 +119,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             label=""
                             required={ false }
                             requiredErrorMessage="this is needed"
-                            value={ returnAuthenticatedIdpList ? [ "returnAuthenticatedIdpList" ] : [] }
+                            value={ config?.returnAuthenticatedIdpList ? [ "returnAuthenticatedIdpList" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
@@ -149,7 +141,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             label=""
                             required={ false }
                             requiredErrorMessage="this is needed"
-                            value={ enableAuthorization ? [ "enableAuthorization" ] : [] }
+                            value={ config?.enableAuthorization ? [ "enableAuthorization" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
@@ -172,7 +164,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                         <Field
                             label="Certificate type"
                             name="type"
-                            default={ certificate ? certificate.type : "JWKS" }
+                            default={ config?.certificate ? config?.certificate.type : "JWKS" }
                             type="radio"
                             children={ [
                                 {
@@ -198,7 +190,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             placeholder={ "If type is JWKS, value should be jwks URL. " +
                             "If type is PEM, value should be the certificate in PEM format." }
                             type="text"
-                            value={ certificate && certificate.value }
+                            value={ config?.certificate && config?.certificate?.value && config.certificate.value }
                         />
                         <Hint>
                             If the type is JWKS, value should be a jwks URL. If the type is PEM, value should be the
