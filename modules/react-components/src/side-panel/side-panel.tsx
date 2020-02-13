@@ -20,7 +20,7 @@ import { UIConstants } from "@wso2is/core/constants";
 import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import _ from "lodash";
-import React, { PropsWithChildren, useState } from "react";
+import React, { PropsWithChildren, useEffect, useState } from "react";
 import { Container, Responsive, Sidebar } from "semantic-ui-react";
 import { SidePanelItems } from "./side-panel-items";
 
@@ -111,6 +111,13 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
             return evalRoute;
         });
     };
+
+    /**
+     * Update items when the routes prop changes
+     */
+    useEffect(() => {
+        setItems(routes);
+    }, [routes]);
 
     return (
         <div style={ mainLayoutStyles } className="layout-content">

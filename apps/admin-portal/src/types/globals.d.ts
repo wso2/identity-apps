@@ -33,3 +33,5 @@ declare const SERVER_HOST: string;
 declare const CLIENT_ID: string;
 declare const CLIENT_HOST: string;
 declare const TITLE_TEXT_DEFAULT: string;
+declare const USER_PORTAL_BASENAME: string;
+declare const USER_PORTAL_CLIENT_HOST_DEFAULT: string;
