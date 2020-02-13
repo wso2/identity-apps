@@ -57,6 +57,14 @@ export const APPLICATIONS_PAGE_PATH: string = "/applications";
 export const USER_PORTAL_IDENTIFIER: string = "This is the user portal application.";
 
 /**
+ * Error description when the user denies consent to the app
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const USER_DENIED_CONSENT: string = "User denied the consent";
+
+/**
  * Class containing app constants.
  */
 export class ApplicationConstants {

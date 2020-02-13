@@ -32,8 +32,6 @@ export const SignOut = () => {
     useEffect(() => {
         if (!logoutInit) {
             dispatch(handleSignOut());
-        } else {
-            history.push(APP_LOGIN_PATH);
         }
     }, [logoutInit]);
 

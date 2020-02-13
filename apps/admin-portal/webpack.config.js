@@ -42,7 +42,9 @@ module.exports = (env) => {
     const clientHostDefault = isProd ? serverHostDefault : `https://localhost:${devServerPort}`;
     const clientOriginDefault = clientHostDefault;
     const clientIdDefault = "ADMIN_PORTAL";
-    const applicationName = "Admin Portal";
+    const applicationName = "Developer Portal";
+    const tenantDefault = "carbon.super";
+    const tenantPathDefault = "";
 
     const userPortalClientHostDefault =
         env.NODE_ENV === "prod" ? serverHostDefault : `https://localhost:${userPortalDevServerPort}`;
@@ -183,7 +185,10 @@ module.exports = (env) => {
         },
         plugins: [
             new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
-            new WriteFilePlugin(),
+            new WriteFilePlugin({
+                // Exclude hot-update files
+                test: /^(?!.*(hot-update)).*/
+            }),
             new CopyWebpackPlugin([
                 {
                     context: path.join(__dirname, "node_modules", "@wso2is", "theme"),
@@ -226,6 +231,8 @@ module.exports = (env) => {
                 LOGIN_CALLBACK_URL: JSON.stringify(externalLoginCallbackURL),
                 SERVER_HOST_DEFAULT: JSON.stringify(serverHostDefault),
                 SERVER_ORIGIN_DEFAULT: JSON.stringify(serverOriginDefault),
+                TENANT_DEFAULT: JSON.stringify(tenantDefault),
+                TENANT_PATH_DEFAULT: JSON.stringify(tenantPathDefault),
                 TITLE_TEXT_DEFAULT: JSON.stringify(titleText),
                 USER_PORTAL_BASENAME: JSON.stringify(userPortalBaseName),
                 USER_PORTAL_CLIENT_HOST_DEFAULT: JSON.stringify(userPortalClientHostDefault),
