@@ -279,7 +279,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
         /**
          * Check if the element is an input element(an element that can hold a value)
          *      -> Then:
-         *          Check if the field has not been touched
+         *          Check if the field has not been touched OR the reset button has been pressed
          *          -> Then:
          *              Check if the element has a value and the reset button has not been clicked
          *                  -> Then:
@@ -297,7 +297,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
          *
          */
             if (isInputField(inputField)) {
-                if (!touchedFields.get(inputField.name)) {
+                if (!touchedFields.get(inputField.name) || isReset) {
                     inputField.value && !isReset
                         ? tempForm.set(inputField.name, inputField.value)
                         : (isRadioField(inputField) || isDropdownField(inputField)) && inputField.default
