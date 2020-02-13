@@ -64,7 +64,6 @@
             var serverOriginAddress = "https://localhost:9443";
             var clientOriginAddress = window.location.origin;
 
-            // Update below with tenant user-portal application/service-provider details
             var tenantName = getTenantName();
             var defaultUserPortalClientID = "USER_PORTAL";
             var tenantUserPortalClientID = defaultUserPortalClientID + "_" + tenantName;
@@ -76,7 +75,8 @@
             }
 
             window["runConfig"] = {
-                appBaseName: window.userConfig.appBaseName || getTenantPath(tenantName) + "/user-portal",
+                appBaseName: window.userConfig.appBaseName || getTenantPath(tenantName) + 
+                    "<%= htmlWebpackPlugin.options.publicPath %>",
                 clientHost: window.userConfig.clientHost || clientOriginAddress + getTenantPath(tenantName),
                 clientOrigin: window.userConfig.clientOrigin || clientOriginAddress,
                 clientID: window.userConfig.clientID || 
@@ -88,7 +88,6 @@
                 tenantPath: window.userConfig.tenantPath || getTenantPath(tenantName)
             };
         </script>
-
     </head>
     <body>
         <noscript>
