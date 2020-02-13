@@ -29,6 +29,8 @@ interface RuntimeConfigInterface {
     serverHost?: string;
     serverOrigin?: string;
     titleText?: string;
+    userPortalBaseName: string;
+    userPortalClientHost: string;
 }
 
 // tslint:disable-next-line:no-string-literal
@@ -48,5 +50,11 @@ export let GlobalConfig: RuntimeConfigInterface = {
         LOGIN_CALLBACK_URL,
     serverHost: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.serverHost || SERVER_HOST_DEFAULT) : SERVER_HOST_DEFAULT,
     serverOrigin: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.serverOrigin || SERVER_ORIGIN_DEFAULT) : SERVER_ORIGIN_DEFAULT,
-    titleText: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.copyrightText || TITLE_TEXT_DEFAULT) : TITLE_TEXT_DEFAULT
+    titleText: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.copyrightText || TITLE_TEXT_DEFAULT) : TITLE_TEXT_DEFAULT,
+    userPortalBaseName: (RUNTIME_CONFIG)
+        ? (RUNTIME_CONFIG).userPortalBaseName || USER_PORTAL_BASENAME
+        : USER_PORTAL_BASENAME,
+    userPortalClientHost: (RUNTIME_CONFIG)
+        ? (RUNTIME_CONFIG).userPortalClientHost || USER_PORTAL_CLIENT_HOST_DEFAULT
+        : USER_PORTAL_CLIENT_HOST_DEFAULT
 };
