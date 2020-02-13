@@ -189,34 +189,36 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
      */
     const parseChildren = (elements: React.ReactNode, fields: FormField[]): React.ReactElement[] => {
         return React.Children.map(elements, (element: React.ReactElement) => {
-            if (element.type === Field) {
-                fields.push(element.props);
-                flatReactChildren.push(element);
-                return React.createElement(InnerField, {
-                    formProps: {
-                        checkError,
-                        form,
-                        handleBlur,
-                        handleChange,
-                        handleChangeCheckBox,
-                        handleReset
-                    },
-                    passedProps: { ...element.props }
-                });
-            } else if (element.type === GroupFields) {
-                return React.createElement(InnerGroupFields, {
-                    ...element.props,
-                    children: parseChildren(element.props.children, fields)
-                });
-            } else if (element.props
-                && element.props.children
-                && React.Children.count(element.props.children) > 0) {
-                return React.createElement(element.type, {
-                    ...element.props,
-                    children: parseChildren(element.props.children, fields)
-                });
-            } else {
-                return element;
+            if (element) {
+                if (element.type === Field) {
+                    fields.push(element.props);
+                    flatReactChildren.push(element);
+                    return React.createElement(InnerField, {
+                        formProps: {
+                            checkError,
+                            form,
+                            handleBlur,
+                            handleChange,
+                            handleChangeCheckBox,
+                            handleReset
+                        },
+                        passedProps: { ...element.props }
+                    });
+                } else if (element.type === GroupFields) {
+                    return React.createElement(InnerGroupFields, {
+                        ...element.props,
+                        children: parseChildren(element.props.children, fields)
+                    });
+                } else if (element.props
+                    && element.props.children
+                    && React.Children.count(element.props.children) > 0) {
+                    return React.createElement(element.type, {
+                        ...element.props,
+                        children: parseChildren(element.props.children, fields)
+                    });
+                } else {
+                    return element;
+                }
             }
         });
     };
