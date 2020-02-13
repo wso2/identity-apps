@@ -12,12 +12,13 @@ The following sub modules are available for use and can be imported in to the pr
 
 1. api - Contains common API requests (`wso2is/core/api`)
 2. configs - Common configs such as endpoints etc. (`wso2is/core/configs`)
-3. constants - Common Constants (`wso2is/core/constants`)
-4. helpers - Helper functions such as history, parsers etc. (`wso2is/core/helpers`)
-5. hooks - Contains reusable react hooks. (`wso2is/core/hooks`)
-6. models - Commonly used models and schemas. (`wso2is/core/models`)
-7. store - Common redux actions, types and reducers (`wso2is/core/store`)
-8. utils - Common utils (`wso2is/core/utils`)
+3. constants - Common constants (`wso2is/core/constants`)
+4. exceptions - Common exceptions (`wso2is/core/exceptions`)
+5. helpers - Helper functions such as history, parsers etc. (`wso2is/core/helpers`)
+6. hooks - Contains reusable react hooks. (`wso2is/core/hooks`)
+7. models - Commonly used models and schemas. (`wso2is/core/models`)
+8. store - Common redux actions, types and reducers (`wso2is/core/store`)
+9. utils - Common utils (`wso2is/core/utils`)
 
 ## Notes
 
@@ -25,7 +26,20 @@ If TSLint starts detecting submodule imports such as `wso2is/core/utils` as an e
 
 ```json
 {
-"no-submodule-imports": [ true, "@wso2is/core/*" ]
+    "rules": {
+        "no-submodule-imports": [
+            true,
+            "@wso2is/core/api",
+            "@wso2is/core/configs",
+            "@wso2is/core/constants",
+            "@wso2is/core/exceptions",
+            "@wso2is/core/helpers",
+            "@wso2is/core/hooks",
+            "@wso2is/core/models",
+            "@wso2is/core/store",
+            "@wso2is/core/utils"
+        ]
+    }
 }
 ``` 
 
