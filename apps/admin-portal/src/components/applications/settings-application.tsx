@@ -18,7 +18,7 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Heading, Hint, SelectionCard } from "@wso2is/react-components";
+import { ContentLoader, Heading, Hint, SelectionCard } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, SyntheticEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -49,6 +49,7 @@ interface ApplicationSettingsPropsInterface {
     appId: string;
     advancedConfigurations: AdvancedConfigurationsInterface;
     inboundProtocols: InboundProtocolListItemInterface[];
+    isLoading?: boolean;
 }
 
 /**
@@ -64,7 +65,8 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
     const {
         appId,
         advancedConfigurations,
-        inboundProtocols
+        inboundProtocols,
+        isLoading
     } = props;
 
     const dispatch = useDispatch();
@@ -81,7 +83,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
      */
     useEffect(() => {
 
-        // If the `inboundProtocols` is undefined. Terminate the rest of the operations.
+        // Checks if the `inboundProtocols` is undefined. Terminate the rest of the operations.
         // If this check isn't done, fast navigation to the settings tab will potentially
         // break the UI.
         if (!inboundProtocols) {
@@ -129,6 +131,13 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
      * Use effect hook to be run when an inbound protocol is selected.
      */
     useEffect(() => {
+
+        // Checks if the `inboundProtocols` is undefined. Terminate the rest of the operations.
+        // If this check isn't done, fast navigation to the settings tab will potentially
+        // break the UI.
+        if (!inboundProtocols) {
+            return;
+        }
 
         if (!selectedInboundProtocol) {
             return;
@@ -183,7 +192,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
             && availableInboundProtocols instanceof Array
             && availableInboundProtocols.length > 0) {
 
-            setSelectedInboundProtocol(availableInboundProtocols[0]);
+            setSelectedInboundProtocol(availableInboundProtocols[ 0 ]);
         }
     };
 
@@ -230,7 +239,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
             case SupportedAuthProtocolTypes.OIDC:
                 return (
                     <InboundFormFactory
-                        metadata={ authProtocolMeta[selectedInboundProtocol.name] }
+                        metadata={ authProtocolMeta[ selectedInboundProtocol.name ] }
                         initialValues={
                             selectedInboundProtocolConfig
                             && selectedInboundProtocolConfig.hasOwnProperty(selectedInboundProtocol.name)
@@ -294,48 +303,56 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
 
     return (
         <>
-            <div className="inbound-protocols-section">
-                <Heading as="h4">Inbound protocol</Heading>
-                <Hint icon="info circle">Please select one of the following inbound protocols.</Hint>
-                {
-                    (availableInboundProtocols
-                        && availableInboundProtocols instanceof Array
-                        && availableInboundProtocols.length > 0)
-                        ? availableInboundProtocols.map((protocol, index) => (
-                            protocol.enabled && (
-                                <SelectionCard
-                                    inline
-                                    disabled={ protocol.enabled }
-                                    selected={
-                                        selectedInboundProtocol && selectedInboundProtocol.name
-                                            ? protocol.name === selectedInboundProtocol.name
-                                            : false
-                                    }
-                                    id={ protocol.name }
-                                    key={ index }
-                                    header={ protocol.displayName }
-                                    image={ InboundProtocolLogos[ protocol.logo ] }
-                                    onClick={ handleInboundProtocolSelection }
-                                />
-                            )
-                        ))
-                        : null
-                }
-                <Divider hidden />
-                <div className="protocol-settings-section">
-                    { selectedInboundProtocol && resolveInboundProtocolSettingsForm() }
-                </div>
-            </div>
-            <Divider hidden />
+            {
+                (!isLoading && !isInboundProtocolsRequestLoading)
+                    ? (
+                        <>
+                            <div className="inbound-protocols-section">
+                                <Heading as="h4">Inbound protocol</Heading>
+                                <Hint icon="info circle">Please select one of the following inbound protocols.</Hint>
+                                {
+                                    (availableInboundProtocols
+                                        && availableInboundProtocols instanceof Array
+                                        && availableInboundProtocols.length > 0)
+                                        ? availableInboundProtocols.map((protocol, index) => (
+                                            protocol.enabled && (
+                                                <SelectionCard
+                                                    inline
+                                                    disabled={ protocol.enabled }
+                                                    selected={
+                                                        selectedInboundProtocol && selectedInboundProtocol.name
+                                                            ? protocol.name === selectedInboundProtocol.name
+                                                            : false
+                                                    }
+                                                    id={ protocol.name }
+                                                    key={ index }
+                                                    header={ protocol.displayName }
+                                                    image={ InboundProtocolLogos[ protocol.logo ] }
+                                                    onClick={ handleInboundProtocolSelection }
+                                                />
+                                            )
+                                        ))
+                                        : null
+                                }
+                                <Divider hidden/>
+                                <div className="protocol-settings-section">
+                                    { selectedInboundProtocol && resolveInboundProtocolSettingsForm() }
+                                </div>
+                            </div>
+                            <Divider hidden/>
 
-            <div className="advanced-configuration-section">
-                <Heading as="h4">Advanced Configurations</Heading>
-                <Divider hidden />
-                <AdvanceConfigurationsForm
-                    config={ advancedConfigurations }
-                    onSubmit={ handleAdvancedConfigFormSubmit }
-                />
-            </div>
+                            <div className="advanced-configuration-section">
+                                <Heading as="h4">Advanced Configurations</Heading>
+                                <Divider hidden/>
+                                <AdvanceConfigurationsForm
+                                    config={ advancedConfigurations }
+                                    onSubmit={ handleAdvancedConfigFormSubmit }
+                                />
+                            </div>
+                        </>
+                    )
+                    : <ContentLoader />
+            }
         </>
     );
 };

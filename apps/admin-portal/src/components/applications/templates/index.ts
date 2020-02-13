@@ -16,5 +16,4 @@
  * under the License.
  */
 
-export * from "./application-template-SPA";
-export * from "./application-template-web-oauth";
+export * from "./quick-start-application-templates";

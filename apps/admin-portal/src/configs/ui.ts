@@ -30,6 +30,11 @@ import {
     DummyUser,
     EmptySearchResultsIllustration,
     ErrorIcon,
+    AngularLogo,
+    DotNetLogo,
+    JavaLogo,
+    ReactLogo,
+    VueLogo,
     ForbiddenIcon,
     HomeTileIcons,
     InfoIcon,
@@ -40,9 +45,11 @@ import {
     PlugIcon,
     SamlLogo,
     SettigsSectionIconSet,
+    SPATemplateIllustration,
     SuccessIcon,
     UserIcon,
     WarningIcon,
+    WebAppTemplateIllustration,
     WSFedLogo,
     WSTrustLogo
 } from "@wso2is/theme";
@@ -129,4 +136,17 @@ export const InboundProtocolLogos = {
     saml: SamlLogo,
     wsFed: WSFedLogo,
     wsTrust: WSTrustLogo
+};
+
+export const ApplicationTemplateIllustrations = {
+    spa: SPATemplateIllustration,
+    webApp: WebAppTemplateIllustration
+};
+
+export const TechnologyLogos = {
+    angular: AngularLogo,
+    dotNet: DotNetLogo,
+    java: JavaLogo,
+    react: ReactLogo,
+    vue: VueLogo,
 };
