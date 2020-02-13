@@ -28,6 +28,7 @@ module.exports = (env) => {
     const basename = "admin-portal";
     const devServerPort = 9001;
     const publicPath = `/${basename}`;
+    const isProd = env.NODE_ENV === "prod";
 
     //user-portal related variables
     const userPortalBaseName = "user-portal";
@@ -38,7 +39,7 @@ module.exports = (env) => {
      */
     const serverHostDefault = "https://localhost:9443";
     const serverOriginDefault = serverHostDefault;
-    const clientHostDefault = env.NODE_ENV === "prod" ? serverHostDefault : `https://localhost:${devServerPort}`;
+    const clientHostDefault = isProd ? serverHostDefault : `https://localhost:${devServerPort}`;
     const clientOriginDefault = clientHostDefault;
     const clientIdDefault = "ADMIN_PORTAL";
     const applicationName = "Admin Portal";
@@ -58,7 +59,6 @@ module.exports = (env) => {
      */
     const distFolder = path.resolve(__dirname, "build", basename);
     const faviconImage = path.resolve(__dirname, "node_modules", "@wso2is/theme/lib/assets/images/favicon.ico");
-    const isProd = env.NODE_ENV === 'prod';
     const titleText = "WSO2 Identity Server";
     const copyrightText = `${titleText} \u00A9 ${ new Date().getFullYear() }`;
 

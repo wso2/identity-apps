@@ -28,16 +28,19 @@ module.exports = (env) => {
     const devServerPort = 9000;
     const publicPath = `/${basename}`;
 
+    const isProd = env.NODE_ENV === "prod";
+
     /**
      * Deployment configurations
      */
     const serverHostDefault = "https://localhost:9443";
     const serverOriginDefault = serverHostDefault;
-    const clientHostDefault = env.NODE_ENV === "prod" ? serverHostDefault : `https://localhost:${devServerPort}`;
+    const clientHostDefault = isProd ? serverHostDefault : `https://localhost:${devServerPort}`;
     const clientOriginDefault = clientHostDefault;
     const clientIdDefault = "USER_PORTAL";
     const applicationName = "User Portal";
     const tenantDefault = "carbon.super";
+    const tenantPathDefault = "";
 
     /**
      * App configurations
@@ -55,7 +58,7 @@ module.exports = (env) => {
     const copyrightText = `${titleText} \u00A9 ${ new Date().getFullYear() }`;
 
     const compileAppIndex = () => {
-        if (env.NODE_ENV === "prod") {
+        if (isProd) {
             return new HtmlWebpackPlugin({
                 filename: path.join(distFolder, "index.jsp"),
                 template: path.join(__dirname, "src", "index.jsp"),
@@ -127,17 +130,37 @@ module.exports = (env) => {
                 },
                 {
                     test: /\.tsx?$/,
-                    use: "ts-loader",
+                    use: [{
+                        loader: 'thread-loader',
+                        options: {
+                            // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                            workers: require('os').cpus().length - 1,
+                        },
+                    },{
+                        loader: "ts-loader",
+                        options: {
+                            happyPackMode: true,
+                            transpileOnly: false
+                        }
+                    }],
                     exclude: /(node_modules)/
                 },
                 {
                     test: /\.ts$/,
                     enforce: "pre",
-                    use: [
-                        {
-                            loader: "tslint-loader"
+                    use: [{
+                        loader: 'thread-loader',
+                        options: {
+                            // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                            workers: require('os').cpus().length - 1,
+                        },
+                    },{
+                        loader:"tslint-loader",
+                        options: {
+                            happyPackMode: true,
+                            transpileOnly: false
                         }
-                    ]
+                    }]
                 },
                 {
                     test: /\.js$/,
@@ -208,6 +231,7 @@ module.exports = (env) => {
                 SERVER_HOST_DEFAULT: JSON.stringify(serverHostDefault),
                 SERVER_ORIGIN_DEFAULT: JSON.stringify(serverOriginDefault),
                 TENANT_DEFAULT: JSON.stringify(tenantDefault),
+                TENANT_PATH_DEFAULT: JSON.stringify(tenantPathDefault),
                 TITLE_TEXT_DEFAULT: JSON.stringify(titleText),
                 "typeof window": JSON.stringify("object"),
                 "process.env": {
@@ -219,12 +243,12 @@ module.exports = (env) => {
         optimization: {
             minimize: true,
             minimizer: [
-                new TaserJSPlugin({
-                    terserOptions: {
-                        keep_fnames: true
-                    }
+                isProd && new TaserJSPlugin({
+                     terserOptions: {
+                         keep_fnames: true
+                     }
                 })
-            ]
+            ].filter(Boolean)
         }
     };
 };
