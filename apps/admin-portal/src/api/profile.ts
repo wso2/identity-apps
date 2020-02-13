@@ -89,6 +89,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
             }
             const profileResponse: BasicProfileInterface = {
                 emails: response.data.emails || "",
+                id: response.data.id || "",
                 name: response.data.name || { givenName: "", familyName: "" },
                 organisation: response.data[orgKey] ? response.data[orgKey].organization : "",
                 phoneNumbers: response.data.phoneNumbers || [],
@@ -111,18 +112,16 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
  * @param {object} user.
  * @return {Promise<any>} a promise containing the response.
  */
-export const updateProfileInfo = (user: BasicProfileInterface): Promise<any> => {
-
-    const { id, ...rest } = user;
+export const updateProfileInfo = (data: object): Promise<any> => {
 
     const requestConfig = {
-        data: rest,
+        data,
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: ServiceResourcesEndpoint.users + "/" + id
+        url: ServiceResourcesEndpoint.me
     };
 
     return httpClient

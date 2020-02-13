@@ -17,9 +17,8 @@
  */
 
 import { ResourceList, ResourceListItem, UserAvatar } from "@wso2is/react-components";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Grid, List } from "semantic-ui-react";
-import { getGravatarImage } from "../../api";
 import { history } from "../../helpers";
 import { UserListInterface } from "../../models";
 
@@ -65,6 +64,12 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         history.push(`users/${ userId }`);
     };
 
+    /**
+     * This function calculate the number of days since the last
+     * modified date to the current date.
+     *
+     * @param modifiedDate
+     */
     const handleLastModifiedDate = (modifiedDate: string) => {
         if (modifiedDate && modifiedDate !== undefined) {
             const currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, "/");
@@ -122,7 +127,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         ) }
                         itemHeader={ user.name && user.name.givenName !== undefined ? user.name.givenName +
                             " " + user.name.familyName : user.userName }
-                        itemDescription={ user.emails && user.emails !== undefined ? user.emails[0].toString() :
+                        itemDescription={ user.emails ? user.emails[0].toString() :
                             user.userName }
                         metaContent={ listContent(user.userName, "last modified" + " " +
                             handleLastModifiedDate(user.meta.lastModified) + " " + "days ago") }
