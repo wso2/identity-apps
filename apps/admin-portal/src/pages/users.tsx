@@ -132,12 +132,12 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
             description="Create and manage users, user access and user profiles."
         >
             <ListLayout
+                // TODO add sorting functionality.
                 advancedSearch={ <UserSearch onFilter={ handleUserFilter }/> }
                 currentListSize={ usersList.count }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
-                // onSortStrategyChange={ handleListSortingStrategyOnChange }
                 rightActionPanel={
                     (
                         <PrimaryButton onClick={ handleModalOpen }>
@@ -158,8 +158,6 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
                     )
                 }
                 showPagination={ true }
-                // sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
-                // sortStrategy={ listSortingStrategy }
                 totalPages={ Math.ceil(usersList.totalResults / listItemLimit) }
                 totalListSize={ usersList.totalResults }
             >
