@@ -21,7 +21,7 @@ import React, { FunctionComponent, useState } from "react";
 import { Modal } from "semantic-ui-react";
 import { history } from "../../helpers";
 import { ApplicationBasicWizard, MainApplicationInterface } from "../../models";
-import { OAuthWebApplication, SPApplication } from "./templates";
+import { OAuthWebApplication, SPApplication } from "./meta";
 import { WizardGeneralSettings } from "./wizard-general-settings";
 import { WizardOAuthProtocolSettings } from "./wizard-protocol-oauth-settings";
 import { WizardSummary } from "./wizard-summary";

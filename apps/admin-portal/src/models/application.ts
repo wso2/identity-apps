@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import { AuthProtocolMetaListItemInterface, OIDCDataInterface, OIDCMetadataInterface } from "./application-inbound";
+import {
+    AuthProtocolMetaListItemInterface,
+    OIDCDataInterface,
+    OIDCMetadataInterface,
+    SupportedAuthProtocolTypes
+} from "./application-inbound";
 
 /**
  *  Captures the basic details in the applications.
@@ -238,6 +243,27 @@ interface ApplicationMetaInterface {
  */
 interface AuthProtocolMetaInterface {
     [ key: string ]: OIDCMetadataInterface | any;
+}
+
+/**
+ *  Application template interface.
+ */
+export interface ApplicationTemplateInterface {
+    description: string;
+    displayName: string;
+    id: string;
+    image: any;
+    protocols: SupportedAuthProtocolTypes[];
+    technologies: ApplicationTemplateTechnology[];
+}
+
+/**
+ *  Application template technology interface.
+ */
+export interface ApplicationTemplateTechnology {
+    name: string;
+    displayName: string;
+    logo: any;
 }
 
 export const emptyApplication = (): ApplicationInterface => ({

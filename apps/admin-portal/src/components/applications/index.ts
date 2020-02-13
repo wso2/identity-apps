@@ -16,6 +16,7 @@
  * under the License.
  */
 
+export * from "./templates";
 export * from "./application-list";
 export * from "./application-edit";
 export * from "./application-search";
@@ -30,4 +31,3 @@ export * from "./wizard-general-settings";
 export * from "./wizard-protocol-oauth-settings";
 export * from "./wizard-summary";
 export * from "./application-wizard-creation";
-export * from "./application-templates";

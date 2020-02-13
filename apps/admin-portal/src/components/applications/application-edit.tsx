@@ -22,13 +22,24 @@ import { ApplicationInterface } from "../../models";
 import { GeneralDetailsApplication } from "./general-details-application";
 import { ApplicationSettings } from "./settings-application";
 
+/**
+ * Proptypes for the applications edit component.
+ */
 interface EditApplicationPropsInterface {
+    /**
+     * Editing application.
+     */
     application: ApplicationInterface;
+    /**
+     * Is the data still loading.
+     */
+    isLoading?: boolean;
 }
 
 /**
  * Application edit component.
  *
+ * @param {EditApplicationPropsInterface} props - Props injected to the component.
  * @return {JSX.Element}
  */
 export const EditApplication: FunctionComponent<EditApplicationPropsInterface> = (
@@ -36,7 +47,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 ): JSX.Element => {
 
     const {
-        application
+        application,
+        isLoading
     } = props;
 
     const panes = () => ([
@@ -48,9 +60,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         accessUrl={ application.accessUrl }
                         appId={ application.id }
                         description={ application.description }
-                        discoverability={ application.advancedConfigurations.discoverableByEndUsers }
+                        discoverability={ application.advancedConfigurations?.discoverableByEndUsers }
                         imageUrl={ application.imageUrl }
                         name={ application.name }
+                        isLoading={ isLoading }
                     />
                 </ResourceTab.Pane>
             ),
@@ -63,6 +76,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         appId={ application.id }
                         advancedConfigurations={ application.advancedConfigurations }
                         inboundProtocols={ application.inboundProtocols }
+                        isLoading={ isLoading }
                     />
                 </ResourceTab.Pane>
             ),

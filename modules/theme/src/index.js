@@ -86,6 +86,17 @@ export const OIDCLogo = require("../lib/assets/images/protocols/oidc.png");
 export const DummyUser = require("../lib/assets/images/user.png");
 export const OrangeAppIconBackground = require("../lib/assets/images/app-icon-background.png");
 
+// Technology Logos
+export const AngularLogo = require("../lib/assets/images/technologies/angular-logo.svg");
+export const DotNetLogo = require("../lib/assets/images/technologies/dotnet-logo.svg");
+export const JavaLogo = require("../lib/assets/images/technologies/java-logo.svg");
+export const ReactLogo = require("../lib/assets/images/technologies/react-logo.svg");
+export const VueLogo = require("../lib/assets/images/technologies/vue-logo.svg");
+
+// Application template illustrations
+export const WebAppTemplateIllustration = require("../lib/assets/images/illustrations/web-app-illustration.svg");
+export const SPATemplateIllustration = require("../lib/assets/images/illustrations/spa-illustration.svg");
+
 /**
  * The following has been kept for backward compatibility.
  * These can be removed once the user portal is refactored.
