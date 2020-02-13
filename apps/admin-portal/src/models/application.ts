@@ -16,11 +16,13 @@
  * under the License.
  */
 
+import { OIDCDataInterface } from "./application-inbound";
+
 /**
  *  Captures the basic details in the applications.
  */
 export interface ApplicationBasicInterface {
-    id: string;
+    id?: string;
     name: string;
     description?: string;
     accessUrl?: string;
@@ -41,6 +43,39 @@ export interface ApplicationInterface extends ApplicationBasicInterface {
     imageUrl?: string;
     claimConfiguration?: ClaimConfigurationInterface;
     advancedConfigurations?: AdvancedConfigurationsInterface;
+    inboundProtocols?: InboundProtocolListItemInterface[];
+    authenticationSequence?: AuthenticationSequenceInterface;
+}
+
+/**
+ * Interface for the inbound protocol in the application response.
+ */
+export interface InboundProtocolListItemInterface {
+    type: string;
+    name?: string;
+    self: string;
+}
+
+/**
+ *  Application Basic details for add wizard.
+ */
+export interface ApplicationBasicWizard extends ApplicationBasicInterface {
+    imageUrl?: string;
+    discoverableByEndUsers?: boolean;
+}
+
+/**
+ *  Captures inbound protocols.
+ */
+export interface InboundProtocolsInterface {
+    oidc?: OIDCDataInterface;
+}
+
+/**
+ *  Application interface for Post request.
+ */
+export interface MainApplicationInterface  extends ApplicationInterface {
+    inboundProtocolConfiguration?: InboundProtocolsInterface;
 }
 
 /**
@@ -155,3 +190,43 @@ export interface LinkInterface {
     href: string;
     rel: string;
 }
+
+export enum AuthenticationSequenceType {
+    DEFAULT = "DEFAULT",
+    USER_DEFINED = "USER_DEFINED"
+}
+
+interface AuthenticatorInterface {
+    idp: string;
+    authenticator: string;
+}
+
+interface AuthenticationStepModelInterface {
+    id: number;
+    options: AuthenticatorInterface[];
+}
+
+/**
+ * Authentication Sequence model.
+ */
+export interface AuthenticationSequenceInterface  {
+    type?: AuthenticationSequenceType;
+    steps?: AuthenticationStepModelInterface[];
+    requestPathAuthenticators?: string[];
+    script?: string;
+    subjectStepId?: number;
+    attributeStepId?: number;
+}
+
+export const emptyApplication = (): ApplicationInterface => ({
+    accessUrl: "",
+    advancedConfigurations: {
+        discoverableByEndUsers: false
+    },
+    claimConfiguration: undefined,
+    description: "",
+    id: "",
+    imageUrl: "",
+    inboundProtocols: undefined,
+    name: ""
+});

@@ -33,6 +33,7 @@ import {
     Responsive
 } from "semantic-ui-react";
 import { UserAvatar } from "../avatar";
+import { useTranslation } from "react-i18next";
 
 /**
  * Header component prop types.
@@ -92,6 +93,7 @@ export const Header: React.FunctionComponent<HeaderPropsInterface> = (
         userDropdownIcon,
         userDropdownLinks
     } = props;
+    const { t } = useTranslation();
 
     const classes = classNames(
         "app-header",

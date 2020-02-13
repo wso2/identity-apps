@@ -22,6 +22,7 @@ import { AppLayout, AuthLayout, DashboardLayout, DefaultPageLayout, ErrorPageLay
 import {
     ApplicationEditPage,
     ApplicationsPage,
+    ApplicationTemplateSelectPage,
     HomePage,
     PageNotFound,
     PrivacyPage,
@@ -52,6 +53,16 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true,
     },
     {
+        component: ApplicationTemplateSelectPage,
+        exact: true,
+        icon: null,
+        id: "applicationTemplate",
+        name: "Application-Template",
+        path: "/applications/templates",
+        protected: true,
+        showOnSidePanel: false,
+    },
+    {
         component: ApplicationEditPage,
         exact: true,
         icon: "applications",
@@ -62,6 +73,17 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: false,
     },
     {
+        children: [
+            {
+                component: UsersPage,
+                icon: "usersAndRoles",
+                level: 2,
+                name: "Users",
+                path: "/users",
+                protected: true,
+                showOnSidePanel: true,
+            }
+        ],
         component: UsersPage,
         icon: "usersAndRoles",
         id: "usersAndRoles",

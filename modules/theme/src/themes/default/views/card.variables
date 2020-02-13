@@ -45,3 +45,18 @@ Recent Application Card
 @recentApplicationCardHeaderColor: @darkTextColor;
 @recentApplicationCardDescColor: @mutedTextColor;
 @recentApplicationCardDescMinWidth: 20px;
+
+/*-------------------
+   Selection Card
+--------------------*/
+
+@selectionCardDefaultWidth: 150px;
+@selectionCardRightSpacing: 20px;
+@selectionCardTextContainerPadding: 0.8em 1em;
+@selectionCardHeaderFontSize: 1em;
+@selectionCardDescriptionFontSize: 0.8em;
+@selectionCardHeaderMaxWidth: 100%;
+@selectionCardDescriptionMaxWidth: 100%;
+@selectionCardDescriptionMinHeight: 20px;
+@selectionCardDefaultStateBorderBottom: 3px solid transparent;
+@selectionCardSelectedStateBorderBottom: 3px solid @primaryColor;

@@ -24,7 +24,7 @@ import { Divider } from "semantic-ui-react";
  * Page layout component Prop types.
  */
 interface PageLayoutPropsInterface extends PageHeaderPropsInterface {
-    showTopDivider?: boolean;
+    contentTopMargin?: boolean;
 }
 
 /**
@@ -39,21 +39,16 @@ export const PageLayout: React.FunctionComponent<PropsWithChildren<PageLayoutPro
 
     const {
         children,
-        title,
-        description,
-        showTopDivider,
-        titleTextAlign
+        contentTopMargin,
+        ...rest
     } = props;
 
     return (
         <>
             <PageHeader
-                title={ title }
-                description={ description }
-                titleTextAlign={ titleTextAlign }
+                { ...rest }
             />
-            { showTopDivider && <Divider /> }
-            <Divider hidden />
+            { contentTopMargin && <Divider hidden /> }
             { children }
         </>
     );
@@ -63,6 +58,6 @@ export const PageLayout: React.FunctionComponent<PropsWithChildren<PageLayoutPro
  * Default props for the page layout.
  */
 PageLayout.defaultProps = {
-    showTopDivider: true,
+    contentTopMargin: true,
     titleTextAlign: "left"
 };

@@ -20,8 +20,10 @@
  * Captures the auth protocols
  */
 export interface AuthProtocolMetadataInterface {
-    name?: string;
-    displayname?: string;
+    name: string;
+    displayName: string;
+    logo?: string;
+    type?: string;
 }
 
 export interface MetadataPropertyInterface {
@@ -44,7 +46,7 @@ export interface OIDCMetadataInterface {
     accessTokenType?: MetadataPropertyInterface;
 }
 
-enum State {
+export enum State {
     ACTIVE = "ACTIVE",
     REVOKED = "REVOKED"
 }

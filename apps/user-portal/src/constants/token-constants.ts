@@ -19,7 +19,7 @@
 /**
  * The login scope.
  * @constant
- * @type {number}
+ * @type {string}
  * @default
  */
 export const LOGIN_SCOPE = "internal_login";

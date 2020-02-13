@@ -197,3 +197,49 @@
         }
     }
 }
+
+/*******************************
+    Selection Card Variation
+*******************************/
+
+.ui.card {
+    &.selection-card {
+        border-bottom: @selectionCardDefaultStateBorderBottom;
+        width: @selectionCardDefaultWidth;
+
+        &:hover {
+            transform: none;
+            text-decoration: none;
+            border-bottom: @selectionCardDefaultStateBorderBottom;
+        }
+        &.inline {
+            display: inline-block;
+            margin-right: @selectionCardRightSpacing;
+        }
+        &.selected {
+            border-bottom: @selectionCardSelectedStateBorderBottom;
+        }
+        .card-image-container {
+        }
+        .card-text-container {
+            padding: @selectionCardTextContainerPadding;
+
+            .header {
+                font-size: @selectionCardHeaderFontSize;
+                line-height: @selectionCardHeaderFontSize;
+                max-width: @selectionCardHeaderMaxWidth;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+            .description {
+                font-size: @selectionCardDescriptionFontSize;
+                max-width: @selectionCardDescriptionMaxWidth;
+                min-height: @selectionCardDescriptionMinHeight;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+}

@@ -75,6 +75,13 @@ export const StatusShieldDanger = require("../lib/assets/images/accounts-status-
 export const GravatarLogo = require("../lib/assets/images/gravatar-logo.png");
 export const Logo = require("../lib/assets/images/logo.svg");
 
+// Protocol Logos
+export const SamlLogo = require("../lib/assets/images/protocols/saml.png");
+export const OpenIDLogo = require("../lib/assets/images/protocols/openid.png");
+export const WSFedLogo = require("../lib/assets/images/protocols/ws-fed.png");
+export const WSTrustLogo = require("../lib/assets/images/protocols/ws-trust.png");
+export const OIDCLogo = require("../lib/assets/images/protocols/oidc.png");
+
 // Misc
 export const DummyUser = require("../lib/assets/images/user.png");
 export const OrangeAppIconBackground = require("../lib/assets/images/app-icon-background.png");

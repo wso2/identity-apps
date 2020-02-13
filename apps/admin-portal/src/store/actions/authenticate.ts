@@ -28,7 +28,8 @@ import _ from "lodash";
 import { getProfileInfo } from "../../api";
 import { GlobalConfig, i18n, ServiceResourcesEndpoint } from "../../configs";
 import * as TokenConstants from "../../constants";
-import { AlertLevels, BasicProfileInterface, ProfileSchema } from "../../models";
+import { history } from "../../helpers";
+import { AlertLevels, ProfileSchema } from "../../models";
 import { store } from "../index";
 import { addAlert } from "./global";
 import { setProfileInfoLoader } from "./loaders";
@@ -150,30 +151,36 @@ export const getProfileInformation = () => (dispatch) => {
  * Handle user sign-in
  */
 export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
-    const sendSignInRequest = () => {
-        const requestParams: OIDCRequestParamsInterface = {
-            clientHost: GlobalConfig.clientHost,
-            clientId: GlobalConfig.clientID,
-            clientSecret: null,
-            enablePKCE: true,
-            redirectUri: GlobalConfig.loginCallbackUrl,
-            scope: [TokenConstants.LOGIN_SCOPE, TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_VIEW,
-                TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_UPDATE,
-                TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_DELETE,
-                TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_CREATE,
-                TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_VIEW,
-                TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_UPDATE,
-                TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_DELETE,
-                TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_LIST,
-                TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_CREATE,
-                TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_CREATE,
-                TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_DELETE,
-                TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_VIEW,
-                TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_UPDATE
-            ],
-            serverOrigin: GlobalConfig.serverOrigin
-        };
+    const requestParams: OIDCRequestParamsInterface = {
+        clientHost: GlobalConfig.clientHost,
+        clientId: GlobalConfig.clientID,
+        clientSecret: null,
+        enablePKCE: true,
+        redirectUri: GlobalConfig.loginCallbackUrl,
+        scope: [TokenConstants.LOGIN_SCOPE, TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_VIEW,
+            TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_UPDATE,
+            TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_DELETE,
+            TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_CREATE,
+            TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_VIEW,
+            TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_UPDATE,
+            TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_DELETE,
+            TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_LIST,
+            TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_CREATE,
+            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_VIEW,
+            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_UPDATE,
+            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_DELETE,
+            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_LIST,
+            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_CREATE,
+            TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_CREATE,
+            TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_CREATE,
+            TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_DELETE,
+            TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_VIEW,
+            TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_UPDATE
+        ],
+        serverOrigin: GlobalConfig.serverOrigin
+    };
 
+    const sendSignInRequest = () => {
         if (consentDenied) {
             requestParams.prompt = "login";
         }
@@ -201,7 +208,7 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
         dispatch(setSignIn());
         dispatch(getProfileInformation());
     } else {
-        OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false)
+        OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false, requestParams.clientHost)
             .then(() => {
                 sendSignInRequest();
             })
@@ -222,15 +229,17 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
  * Handle user sign-out
  */
 export const handleSignOut = () => (dispatch) => {
-    SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl)
-        .then(() => {
+    if (sessionStorage.length === 0) {
+        history.push(GlobalConfig.appLoginPath);
+    } else {
+        SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl, () => {
             dispatch(setSignOut());
             AuthenticateSessionUtil.endAuthenticatedSession();
             OPConfigurationUtil.resetOPConfiguration();
-        })
-        .catch((error) => {
-            // TODO: show error page
+        }).catch(() => {
+            history.push(GlobalConfig.appLoginPath);
         });
+    }
 };
 
 /**

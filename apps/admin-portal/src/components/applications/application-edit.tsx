@@ -16,111 +16,71 @@
  * under the License.
  */
 
-import React, { FunctionComponent, useEffect, useState } from "react";
-import { Button, Divider, Grid, Icon, Tab } from "semantic-ui-react";
-import { getApplicationDetails } from "../../api/application";
-import { history } from "../../helpers";
+import { ResourceTab } from "@wso2is/react-components";
+import React, { FunctionComponent } from "react";
 import { ApplicationInterface } from "../../models";
 import { GeneralDetailsApplication } from "./general-details-application";
 import { ApplicationSettings } from "./settings-application";
+
+interface EditApplicationPropsInterface {
+    application: ApplicationInterface;
+}
 
 /**
  * Application edit component.
  *
  * @return {JSX.Element}
  */
-export const EditApplication: FunctionComponent<{}> = (props): JSX.Element => {
+export const EditApplication: FunctionComponent<EditApplicationPropsInterface> = (
+    props: EditApplicationPropsInterface
+): JSX.Element => {
 
-    const [application, setApplication] = useState<ApplicationInterface>();
-
-    const setBasic = (basic: ApplicationInterface) => {
-        setApplication(basic);
-    };
-
-    const getAppID = (): string => {
-        const path = history.location.pathname.split("/");
-        const appName = path[path.length - 1];
-        return appName;
-    };
-
-    const ApplicationDetails = (id: string) => {
-        getApplicationDetails(id)
-            .then((response) => {
-                setBasic(response);
-            })
-            .catch((error) => {
-                // TODO add to notifications
-            });
-    };
-
-    useEffect(() => {
-        ApplicationDetails(getAppID());
-    }, []);
-
-    const navigate = (): void => {
-        history.push("/applications");
-    };
+    const {
+        application
+    } = props;
 
     const panes = () => ([
         {
             menuItem: "General",
             render: () => (
-                <Tab.Pane attached={ false }>
+                <ResourceTab.Pane attached={ false }>
                     <GeneralDetailsApplication
-                        appId={ application.id }
-                        name={ application.name }
-                        description={ application.description }
-                        imageUrl={ application.imageUrl }
                         accessUrl={ application.accessUrl }
+                        appId={ application.id }
+                        description={ application.description }
+                        discoverability={ application.advancedConfigurations.discoverableByEndUsers }
+                        imageUrl={ application.imageUrl }
+                        name={ application.name }
                     />
-                </Tab.Pane>
+                </ResourceTab.Pane>
             ),
         },
         {
             menuItem: "Settings",
             render: () => (
-                <Tab.Pane attached={ false }>
+                <ResourceTab.Pane attached={ false }>
                     <ApplicationSettings
                         appId={ application.id }
                         advancedConfigurations={ application.advancedConfigurations }
+                        inboundProtocols={ application.inboundProtocols }
                     />
-                </Tab.Pane>
+                </ResourceTab.Pane>
             ),
         },
         {
-            menuItem: "SignOnMethods",
-            render: () => <Tab.Pane attached={ false }>SignOnMethod</Tab.Pane>,
+            menuItem: "Sign-on Methods",
+            render: () => <ResourceTab.Pane attached={ false }>SignOnMethod</ResourceTab.Pane>,
         },
     ]);
 
     return (
         <>
-            { application &&
-            (
-                <Grid>
-                    <Grid.Row>
-                        <Grid.Column width={ 2 }>
-                            <Icon size="large" name={ "home" }/>
-                        </Grid.Column>
-                        <Grid.Column width={ 7 }>
-                            <h1 style={ { fontVariant: "small-caps" } }>{ application.name }</h1>
-                            <p>{ application.description }</p>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column width={ 16 }>
-                            <Tab menu={ { secondary: true, pointing: true } } panes={ panes() }/>
-                            <Divider hidden/>
-                            <Button primary type="submit" size="small">
-                                Update
-                            </Button>
-                            <Button type="submit" size="small" onClick={ navigate }>
-                                Cancel
-                            </Button>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            )
+            {
+                application && (
+                    <ResourceTab
+                        panes={ panes() }
+                    />
+                )
             }
         </>
     );

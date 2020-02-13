@@ -58,7 +58,7 @@ module.exports = (env) => {
      */
     const distFolder = path.resolve(__dirname, "build", basename);
     const faviconImage = path.resolve(__dirname, "node_modules", "@wso2is/theme/lib/assets/images/favicon.ico");
-    const isProd = process.env.NODE_ENV === 'prod';
+    const isProd = env.NODE_ENV === 'prod';
     const titleText = "WSO2 Identity Server";
     const copyrightText = `${titleText} \u00A9 ${ new Date().getFullYear() }`;
 
