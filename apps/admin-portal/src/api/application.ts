@@ -36,6 +36,10 @@ import {
 } from "../models";
 
 /**
+ * TODO: move the error messages to a constant file.
+ */
+
+/**
  * Get an axios instance.
  *
  * @type {AxiosHttpClientInstance}.
@@ -61,7 +65,7 @@ export const getLocalClaims = (): Promise<any> => {
     return httpClient.request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed get local claims from: "));
+                return Promise.reject(new Error("Failed to get local claims from: "));
             }
             return Promise.resolve(response.data as Claim);
         }).catch((error) => {
@@ -88,7 +92,7 @@ export const getClaimDialect = (): Promise<any> => {
     return httpClient.request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed get claim dialect from: "));
+                return Promise.reject(new Error("Failed to get claim dialect from: "));
             }
             return Promise.resolve(response.data as ClaimDialect);
         }).catch((error) => {
@@ -117,7 +121,7 @@ export const getExternalClaims = (dialectID: string): Promise<any> => {
     return httpClient.request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed get external claims: "));
+                return Promise.reject(new Error("Failed to get external claims: "));
             }
             return Promise.resolve(response.data as ExternalClaim);
         }).catch((error) => {
@@ -146,7 +150,7 @@ export const getApplicationDetails = (id: string): Promise<any> => {
     return httpClient.get(requestConfig.url, { headers: requestConfig.headers })
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed get app from: "));
+                return Promise.reject(new Error("Failed to get app from: "));
             }
             return Promise.resolve(response.data as ApplicationBasicInterface);
         }).catch((error) => {
@@ -237,7 +241,7 @@ export const getApplicationList = (limit: number, offset: number): Promise<any> 
     return httpClient.request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed get application list from: "));
+                return Promise.reject(new Error("Failed to get application list from: "));
             }
             return Promise.resolve(response.data as ApplicationListInterface);
         }).catch((error) => {
@@ -264,7 +268,7 @@ export const getAvailableInboundProtocols = (customOnly: boolean): Promise<any> 
     return httpClient.request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed get Inbound protocols from: "));
+                return Promise.reject(new Error("Failed to get Inbound protocols from: "));
             }
             return Promise.resolve(response.data as AuthProtocolMetaListItemInterface[]);
         }).catch((error) => {
@@ -333,7 +337,7 @@ export const getOIDCData = (id: string): Promise<any> => {
     return httpClient.request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed retrieve OIDC data from: "));
+                return Promise.reject(new Error("Failed to retrieve OIDC data from: "));
             }
             return Promise.resolve(response.data as OIDCDataInterface);
         }).catch((error) => {
@@ -364,9 +368,39 @@ export const getInboundProtocolConfig = (endpoint: string) => {
     return httpClient.request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed retrieve the inbound protocol config."));
+                return Promise.reject(new Error("Failed to retrieve the inbound protocol config."));
             }
             return Promise.resolve(response.data);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Updates the OIDC configuration.
+ * TODO: Migrate to `updateAuthProtocolConfig` generic function.
+ *
+ * @param id Application ID
+ * @param OIDC OIDC configuration data.
+ */
+export const updateOIDCData = (id: string, OIDC: object): Promise<any> => {
+    const requestConfig = {
+        data: OIDC,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: ServiceResourcesEndpoint.applications + "/" + id + "/inbound-protocols/oidc"
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to update inbound configuration"));
+            }
+            return Promise.resolve(response);
         }).catch((error) => {
             return Promise.reject(error);
         });
@@ -439,7 +473,35 @@ export const updateAdvanceConfigurations = (id: string, advancedConfigs: object)
     return httpClient.request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed update advance configuration"));
+                return Promise.reject(new Error("Failed to update advance configuration"));
+            }
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Creates a new application.
+ *
+ * @param application Application settings data.
+ */
+export const createApplication = (application: object): Promise<any> => {
+    const requestConfig = {
+        data: application,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: ServiceResourcesEndpoint.applications
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if ((response.status !== 201)) {
+                return Promise.reject(new Error("Failed to create the application."));
             }
             return Promise.resolve(response);
         }).catch((error) => {

@@ -56,7 +56,6 @@ export const GeneralDetailsApplication: FunctionComponent<GeneralSettingsProps> 
     } = props;
 
     const [ isDiscoverable, setDiscoverability ] = useState<boolean>(discoverability);
-
     const dispatch = useDispatch();
 
     const handleApplicationDelete = () => {

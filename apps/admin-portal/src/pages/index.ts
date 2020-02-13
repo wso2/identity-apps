@@ -22,3 +22,4 @@ export * from "./home";
 export * from "./privacy";
 export * from "./users";
 export * from "./application-edit";
+export * from "./application-template";

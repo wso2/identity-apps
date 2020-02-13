@@ -22,16 +22,17 @@ import { ContextUtils } from "@wso2is/core/utils";
 import { Footer, Header, Logo, ProductBrand, SidePanel } from "@wso2is/react-components";
 import classNames from "classnames";
 import _ from "lodash";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
 import { ProtectedRoute } from "../components";
-import { dashboardLayoutRoutes, LogoImage, routes, SidePanelIcons, SidePanelMiscIcons } from "../configs";
+import { LogoImage, routes, SidePanelIcons, SidePanelMiscIcons } from "../configs";
 import { UIConstants } from "../constants";
-import { history } from "../helpers";
+import { AppConfig, history } from "../helpers";
 import { AppState } from "../store";
+import { filteredRoutes } from "../utils";
 import { BaseLayout } from "./base";
 
 /**
@@ -64,11 +65,13 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
     const [ footerHeight, setFooterHeight ] = React.useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
     const [ isMobileViewport, setIsMobileViewport ] = React.useState<boolean>(false);
 
+    const appConfig = useContext(AppConfig);
+
     const classes = classNames(
         "layout",
         "dashboard-layout",
         {
-            [ "fluid-dashboard-layout" ]: fluid
+            ["fluid-dashboard-layout"]: fluid
         }
     );
 
@@ -243,17 +246,18 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
                     icons={ SidePanelIcons }
-                    routes={ routes }
+                    routes={ appConfig && filteredRoutes(appConfig) }
                     selected={ selectedRoute }
                 >
                     <Switch>
                         {
-                            dashboardLayoutRoutes.map((route, index) => {
+                            appConfig
+                            ? filteredRoutes(appConfig).map((route, index) => {
                                 if (route.children && route.children.length > 0) {
                                     return route.children.map((child, i) => {
                                         return (
                                             child.redirectTo
-                                                ? <Redirect to={ child.redirectTo } />
+                                                ? <Redirect key={ i } to={ child.redirectTo } />
                                                 : child.protected
                                                     ? (
                                                         <ProtectedRoute
@@ -280,7 +284,7 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
                                 }
                                 return (
                                     route.redirectTo
-                                        ? <Redirect to={ route.redirectTo } />
+                                        ? <Redirect key={ index } to={ route.redirectTo } />
                                         : route.protected
                                             ? (
                                                 <ProtectedRoute
@@ -304,6 +308,7 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
                                             )
                                 );
                             })
+                            : null
                         }
                     </Switch>
                 </SidePanel>

@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import React from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { List } from "semantic-ui-react";
-import appConfig from "../../../app.config.json";
 import { ACCOUNT_RECOVERY, EMAIL_RECOVERY, SECURITY, SECURITY_QUESTIONS } from "../../constants";
+import { AppConfig } from "../../helpers";
 import { AlertInterface } from "../../models";
 import { checkEnabled } from "../../utils";
 import { SettingsSection } from "../shared";
@@ -44,7 +44,7 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
 ): JSX.Element => {
     const { t } = useTranslation();
     const { onAlertFired } = props;
-    const accountRecoveryConfig = appConfig[SECURITY][ACCOUNT_RECOVERY];
+    const accountRecoveryConfig = useContext(AppConfig)[SECURITY][ACCOUNT_RECOVERY];
 
     return (
         <SettingsSection

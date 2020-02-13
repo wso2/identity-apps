@@ -52,6 +52,20 @@ export const INTERNAL_USER_MGT = {
 };
 
 /**
+ * The role management scopes.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const INTERNAL_ROLE_MGT = {
+    INTERNAL_ROLE_MGT_CREATE: "internal_role_mgt_create",
+    INTERNAL_ROLE_MGT_DELETE: "internal_role_mgt_delete",
+    INTERNAL_ROLE_MGT_LIST: "internal_role_mgt_list",
+    INTERNAL_ROLE_MGT_UPDATE: "internal_role_mgt_update",
+    INTERNAL_ROLE_MGT_VIEW: "internal_role_mgt_view"
+};
+
+/**
  * Human task scope.
  * @constant
  * @type {string}

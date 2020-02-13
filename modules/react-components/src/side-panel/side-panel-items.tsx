@@ -55,9 +55,9 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsPropsInterfac
         }
 
         if (typeof sidePanelTopMargin === "number") {
-            return `${ sidePanelTopMargin }px`;
+            return `${sidePanelTopMargin}px`;
         } else if (typeof sidePanelTopMargin === "boolean" && sidePanelTopMargin === true) {
-            return `${ headerHeight + desktopContentTopSpacing }px`;
+            return `${headerHeight + desktopContentTopSpacing}px`;
         }
 
         return undefined;
@@ -71,15 +71,17 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsPropsInterfac
         : null;
 
     return (
-        <Menu className={ `side-panel ${ type }` } style={ style } vertical fluid>
+        <Menu className={ `side-panel ${type}` } style={ style } vertical fluid>
             {
-                routes.map((route, index) => (
-                    <SidePanelItem
-                        key={ route.level ? `level-${ route.level }-${ index }` : `level-${ 0 }-${ index }` }
-                        route={ route }
-                        { ...props }
-                    />
-                ))
+                routes
+                    ? routes.map((route, index) => (
+                        <SidePanelItem
+                            key={ route.level ? `level-${route.level}-${index}` : `level-${0}-${index}` }
+                            route={ route }
+                            { ...props }
+                        />
+                    ))
+                    : null
             }
         </Menu>
     );

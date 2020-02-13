@@ -30,4 +30,5 @@ export * from "./profile";
 export * from "./global";
 export * from "./loaders";
 export * from "./locales";
+export * from "./app-config";
 export * from "./application-inbound";

@@ -16,41 +16,34 @@
  * under the License.
  */
 
+import { UserAvatar } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Container, Divider, Table } from "semantic-ui-react";
-import { getUsersList } from "../../api";
-import { UserImagePlaceHolder } from "../../components";
+import { Container, Divider, Grid, Icon, List, Popup, Table } from "semantic-ui-react";
+
+/**
+ * Prop types for the liked accounts component.
+ */
+interface UsersListProps {
+    usersList: any;
+}
 
 /**
  * Users info page.
  *
  * @return {JSX.Element}
  */
-export const UsersList: React.FunctionComponent<any> = (): JSX.Element => {
-    const { t } = useTranslation();
-    const [usersList, setUsersList] = useState([]);
-
-    useEffect(() => {
-        getList();
-    }, []);
-
-    const getList = () => {
-        getUsersList()
-            .then((response) => {
-                if (response.status === 200) {
-                setUsersList(response.data.Resources);
-                }
-            });
-    };
+export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersListProps): JSX.Element => {
+    const { usersList } = props;
 
     return (
-        <Table color="orange" className="sub-section-table">
+        <Table basic="very" className="sub-section-table" selectable stackable>
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>Name</Table.HeaderCell>
                     <Table.HeaderCell>Created On</Table.HeaderCell>
                     <Table.HeaderCell>Last Modified</Table.HeaderCell>
+                    <Table.HeaderCell />
                 </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -58,11 +51,30 @@ export const UsersList: React.FunctionComponent<any> = (): JSX.Element => {
                     usersList.map((user, index) => (
                         <Table.Row key={ index }>
                             <Table.Cell>
-                                <UserImagePlaceHolder size="mini" floated="left"/>
-                                <p style={ { padding: "10px 45px" } }>{ user.userName }</p>
+                                <UserAvatar
+                                    floated="left"
+                                    spaced="right"
+                                    size="mini"
+                                    image=""
+                                    name={ user.userName }
+                                />
+                                <p  style={ { padding: "10px 45px" } }>{ user.userName }</p>
                             </Table.Cell>
                             <Table.Cell>{ user.meta.created }</Table.Cell>
                             <Table.Cell>{ user.meta.lastModified }</Table.Cell>
+                            <Table.Cell>
+                                <Grid>
+                                    <Grid.Column>
+                                        <Icon name="pencil alternate" size="small" color="grey" />
+                                    </Grid.Column>
+                                    <Grid.Column>
+                                        <Icon name="trash alternate" size="small" color="grey" />
+                                    </Grid.Column>
+                                    <Grid.Column>
+                                        <Icon name="ellipsis vertical" size="small" color="grey" />
+                                    </Grid.Column>
+                                </Grid>
+                            </Table.Cell>
                         </Table.Row>
                     ))
                 }

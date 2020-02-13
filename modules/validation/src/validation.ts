@@ -18,7 +18,7 @@
  */
 
 import Joi from "@hapi/joi";
-import "fastestsmallesttextencoderdecoder";
+import "./plugins/text-encoder-polyfill";
 
 type ValidationFunction = (value: string) => boolean;
 

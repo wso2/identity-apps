@@ -128,7 +128,7 @@ module.exports = (env) => {
                 {
                     test: /\.tsx?$/,
                     use: "ts-loader",
-                    exclude: /(node_modules|diagram)/
+                    exclude: /(node_modules)/
                 },
                 {
                     test: /\.ts$/,
@@ -161,7 +161,10 @@ module.exports = (env) => {
             fs: "empty"
         },
         plugins: [
-            new WriteFilePlugin(),
+            new WriteFilePlugin({
+                // Exclude hot-update files
+                test: /^(?!.*(hot-update)).*/
+            }),
             new CopyWebpackPlugin([
                 {
                     context: path.join(__dirname, "node_modules", "@wso2is", "theme"),
@@ -183,6 +186,11 @@ module.exports = (env) => {
                     context: path.join(__dirname, "src"),
                     from: "public",
                     to: ".",
+                    force: true
+                },
+                {
+                    from: "./app.config.json",
+                    to: "./app.config.json",
                     force: true
                 }
             ]),
