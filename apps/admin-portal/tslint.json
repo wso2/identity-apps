@@ -9,6 +9,7 @@
             "@wso2is/core/api",
             "@wso2is/core/configs",
             "@wso2is/core/constants",
+            "@wso2is/core/exceptions",
             "@wso2is/core/helpers",
             "@wso2is/core/hooks",
             "@wso2is/core/models",
