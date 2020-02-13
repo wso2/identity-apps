@@ -41,12 +41,25 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
     const { onSubmit, triggerReset, onChange, children } = props;
 
+    // This holds the values of the form fields
     const [form, setForm] = useState(new Map<string, FormValue>());
+
+    // This specifies if any of the fields in the form has been touched or not
     const [isPure, setIsPure] = useState(true);
+
+    // This specifies if a field's value is valid or not
     const [validFields, setValidFields] = useState(new Map<string, Validation>());
+
+    // This specifies if a field has been touched or not
+    const [touchedFields, setTouchedFields] = useState(new Map<string, boolean>());
+
+    // This specifies if the required fields are  filled or not
     const [requiredFields, setRequiredFields] = useState(new Map<string, boolean>());
+
+    // This specifies if the `Submit` method has been called or not
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    // This holds all the form field components
     const formFields: FormField[] = [];
     const flatReactChildren: React.ReactElement[] = [];
 
@@ -75,12 +88,15 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
      */
     const handleChange = (value: string, name: string) => {
         const tempForm: Map<string, FormValue> = new Map(form);
+        const tempTouchedFields: Map<string, boolean> = new Map(touchedFields);
 
         tempForm.set(name, value);
+        tempTouchedFields.set(name, true);
         listener(name, tempForm);
         propagateOnChange(tempForm);
         setForm(tempForm);
         setIsPure(false);
+        setTouchedFields(tempTouchedFields);
     };
 
     /**
@@ -91,6 +107,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
     const handleChangeCheckBox = (value: string, name: string) => {
         const tempForm: Map<string, FormValue> = new Map(form);
         const selectedItems: string[] = tempForm.get(name) as string[];
+        const tempTouchedFields: Map<string, boolean> = new Map(touchedFields);
 
         let itemIndex = -1;
         selectedItems.forEach((item, index) => {
@@ -101,10 +118,12 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
         itemIndex === -1 ? selectedItems.push(value) : selectedItems.splice(itemIndex, 1);
 
         tempForm.set(name, selectedItems);
+        tempTouchedFields.set(name, true);
         listener(name, tempForm);
         propagateOnChange(tempForm);
         setForm(tempForm);
         setIsPure(false);
+        setTouchedFields(tempTouchedFields);
     };
 
     /**
@@ -254,10 +273,31 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
         const tempForm: Map<string, FormValue> = new Map(form);
         const tempRequiredFields: Map<string, boolean> = new Map(requiredFields);
         const tempValidFields: Map<string, Validation> = new Map(validFields);
+        const tempTouchedFields: Map<string, boolean> = new Map(touchedFields);
 
         formFields.forEach((inputField: FormField) => {
+        /**
+         * Check if the element is an input element(an element that can hold a value)
+         *      -> Then:
+         *          Check if the field has not been touched
+         *          -> Then:
+         *              Check if the element has a value and the reset button has not been clicked
+         *                  -> Then:
+         *                      Set the value of the element to the corresponding key in the FormValue map
+         *                  -> Else:
+         *                      Check if the element is a (radio OR Dropdown) AND it has a default value
+         *                          -> Then:
+         *                              Assign the default value to the corresponding FormValue key
+         *                          -> Else:
+         *                              Check if the the element is checkbox
+         *                                  -> Then:
+         *                                      Assign an empty array to the corresponding FormValue key
+         *                                  -> Else:
+         *                                      Assign an empty string value to the corresponding FormValue key
+         *
+         */
             if (isInputField(inputField)) {
-                if (!tempForm.has(inputField.name) || isReset) {
+                if (!touchedFields.get(inputField.name)) {
                     inputField.value && !isReset
                         ? tempForm.set(inputField.name, inputField.value)
                         : (isRadioField(inputField) || isDropdownField(inputField)) && inputField.default
@@ -267,17 +307,40 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                                 : tempForm.set(inputField.name, "");
                 }
 
-                ((!inputField.value && (!tempForm.get(inputField.name) || !(tempForm.get(inputField.name).length > 0)))
-                    || isReset) && (!isRadioField(inputField) && inputField.required)
+                /**
+                 * {
+                 *      {
+                 *          Check if the field value is not empty AND
+                 *          (the field doesn't already exist/the value is empty OR the array's length is 0 )
+                 *      } OR
+                 *      the reset button has been clicked
+                 * } AND
+                 *          it is not a radio field AND
+                 *          the field is not required
+                 *
+                 * Then: Set required to false
+                 * Else: Set required to true
+                 *
+                 */
+                (
+                    (
+                        !inputField.value
+                        && (!tempForm.get(inputField.name) || !(tempForm.get(inputField.name).length > 0))
+                    )
+                    || isReset
+                )
+                    && (!isRadioField(inputField) && inputField.required)
                     ? tempRequiredFields.set(inputField.name, false)
                     : tempRequiredFields.set(inputField.name, true);
 
                 tempValidFields.set(inputField.name, { isValid: true, errorMessages: [] });
+                tempTouchedFields.set(inputField.name, false);
             }
         });
 
         if (!isReset) {
             setRequiredFields(tempRequiredFields);
+            setTouchedFields(tempTouchedFields);
         }
         setForm(tempForm);
         setValidFields(tempValidFields);
