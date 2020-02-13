@@ -34,6 +34,10 @@
                 return "t";
             };
 
+            var getSuperTenant = function(tenantName) {
+                return "carbon.super";
+            };
+
             var getTenantName = function() {
                 var paths = window.location.pathname.split("/");
                 var tenantIndex = paths.indexOf(getTenantPrefix());
@@ -67,15 +71,21 @@
 
             /** ===================================================== */
 
+            if (!window.userConfig) {
+                window.userConfig = {};
+            }
+
             window["runConfig"] = {
-                appBaseName: getTenantPath(tenantName) + "/user-portal",
-                clientHost: clientOriginAddress + getTenantPath(tenantName),
-                clientOrigin: clientOriginAddress,
-                clientID: (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ? 
+                appBaseName: window.userConfig.appBaseName || getTenantPath(tenantName) + "/user-portal",
+                clientHost: window.userConfig.clientHost || clientOriginAddress + getTenantPath(tenantName),
+                clientOrigin: window.userConfig.clientOrigin || clientOriginAddress,
+                clientID: window.userConfig.clientID || 
+                    (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ? 
                     tenantUserPortalClientID : defaultUserPortalClientID,
-                serverHost: serverOriginAddress + getTenantPath(tenantName),
-                serverOrigin: serverOriginAddress,
-                tenant: (tenantName === "") ? "carbon.super" : tenantName
+                serverHost: window.userConfig.serverHost || serverOriginAddress + getTenantPath(tenantName),
+                serverOrigin: window.userConfig.serverOrigin || serverOriginAddress,
+                tenant: window.userConfig.tenant || (tenantName === "") ? getSuperTenant() : tenantName,
+                tenantPath: window.userConfig.tenantPath || getTenantPath(tenantName)
             };
         </script>
 

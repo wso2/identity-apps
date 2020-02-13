@@ -31,7 +31,11 @@
 
         <script>
             var getTenantPrefix = function(tenantName) {
-                return  "<%= htmlWebpackPlugin.options.tenantPrefix %>";
+                return "<%= htmlWebpackPlugin.options.tenantPrefix %>";
+            };
+
+            var getSuperTenant = function(tenantName) {
+                return "carbon.super";
             };
 
             var getTenantName = function() {
@@ -58,7 +62,7 @@
 
             // Update below with tenant user-portal application/service-provider details
             var serverOriginAddress = "<%= htmlWebpackPlugin.options.serverUrl %>";
-            var clientOriginAddress = window.location.origin;
+            var clientOriginAddress = "<%= htmlWebpackPlugin.options.serverUrl %>";
 
             // Update below with tenant user-portal application/service-provider details
             var tenantName = getTenantName();
@@ -67,15 +71,19 @@
 
             /** ===================================================== */
 
+            if (!window.userConfig) {
+                window.userConfig = {};
+            }
+
             window["runConfig"] = {
-                appBaseName: getTenantPath(tenantName) + "/user-portal",
-                clientHost: clientOriginAddress + getTenantPath(tenantName),
-                clientOrigin: clientOriginAddress,
-                clientID: (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ?
+                appBaseName: window.userConfig.appBaseName || getTenantPath(tenantName) + "/user-portal",
+                clientHost: window.userConfig.clientHost || clientOriginAddress + getTenantPath(tenantName),
+                clientOrigin: window.userConfig.clientOrigin || clientOriginAddress,
+                clientID: window.userConfig.clientID || (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ?
                     tenantUserPortalClientID : defaultUserPortalClientID,
-                serverHost: serverOriginAddress + getTenantPath(tenantName),
-                serverOrigin: serverOriginAddress,
-                tenant: (tenantName === "") ? "carbon.super" : tenantName
+                serverHost: window.userConfig.serverHost || serverOriginAddress + getTenantPath(tenantName),
+                serverOrigin: window.userConfig.serverOrigin || serverOriginAddress,
+                tenant: window.userConfig.tenant || (tenantName === "") ? getSuperTenant() : tenantName
             };
         </script>
     </head>
