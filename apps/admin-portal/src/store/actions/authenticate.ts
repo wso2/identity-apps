@@ -241,14 +241,14 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
  */
 export const handleSignOut = () => (dispatch) => {
     if (sessionStorage.length === 0) {
-        history.push(GlobalConfig.appLoginPath);
+        // history.push(GlobalConfig.appLoginPath);
     } else {
         SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl, () => {
                 dispatch(setSignOut());
                 AuthenticateSessionUtil.endAuthenticatedSession();
                 OPConfigurationUtil.resetOPConfiguration();
             }).catch(() => {
-                history.push(GlobalConfig.appLoginPath);
+                // history.push(GlobalConfig.appLoginPath);
             });
     }
 };
