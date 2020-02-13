@@ -19,7 +19,7 @@
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, FormValue } from "@wso2is/forms";
-import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
+import { ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
@@ -36,6 +36,7 @@ interface GeneralSettingsProps {
     description?: string;
     discoverability?: boolean;
     imageUrl?: string;
+    isLoading?: boolean;
     name: string;
 }
 
@@ -52,7 +53,8 @@ export const GeneralDetailsApplication: FunctionComponent<GeneralSettingsProps> 
         description,
         discoverability,
         imageUrl,
-        accessUrl
+        accessUrl,
+        isLoading
     } = props;
 
     const [ isDiscoverable, setDiscoverability ] = useState<boolean>(discoverability);
@@ -116,98 +118,106 @@ export const GeneralDetailsApplication: FunctionComponent<GeneralSettingsProps> 
 
     return (
         <>
-            <Forms
-                onSubmit={ handleFormSubmit }
-                onChange={ handleFormValuesOnChange }
-            >
-                <Grid>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                name="name"
-                                label="Application Name"
-                                required={ true }
-                                requiredErrorMessage="Application name is required"
-                                placeholder={ name }
-                                type="text"
-                                value={ name }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                name="description"
-                                label="Description"
-                                required={ false }
-                                requiredErrorMessage=""
-                                placeholder="Enter a description for the application"
-                                type="textarea"
-                                value={ description }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                name="imageUrl"
-                                label="Application Image"
-                                required={ false }
-                                requiredErrorMessage=""
-                                placeholder="Enter a image url for the application"
-                                type="text"
-                                value={ imageUrl }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                name="discoverableByEndUsers"
-                                required={ false }
-                                requiredErrorMessage=""
-                                type="checkbox"
-                                children={ [
-                                    {
-                                        label: "Discoverable application",
-                                        value: "discoverable"
-                                    }
-                                ] }
-                                value={ isDiscoverable ? [ "discoverable" ] : [] }
-                            />
-                            <Field
-                                name="accessUrl"
-                                label="Access URL"
-                                required={ isDiscoverable }
-                                requiredErrorMessage={ "A valid access URL needs to be defined for an application " +
-                                "to be marked as discoverable" }
-                                placeholder="Enter access url for the application login page"
-                                type="text"
-                                value={ accessUrl }
-                            />
-                            <div className="ui-hint">
-                                <Icon color="grey" floated="left" name="info circle"/>
-                                Applications flagged as discoverable are visible for end users.
-                            </div>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Button primary type="submit" size="small" className="form-button">
-                                Update
-                            </Button>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Forms>
-            <DangerZoneGroup sectionHeader="Danger Zone">
-                <DangerZone
-                    actionTitle="Delete application"
-                    header="Delete the application"
-                    subheader="This action is irreversible. Please proceed with caution."
-                    onActionClick={ handleApplicationDelete }
-                />
-            </DangerZoneGroup>
+            {
+                !isLoading
+                    ? (
+                        <>
+                            <Forms
+                                onSubmit={ handleFormSubmit }
+                                onChange={ handleFormValuesOnChange }
+                            >
+                                <Grid>
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                            <Field
+                                                name="name"
+                                                label="Application Name"
+                                                required={ true }
+                                                requiredErrorMessage="Application name is required"
+                                                placeholder={ name }
+                                                type="text"
+                                                value={ name }
+                                            />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                            <Field
+                                                name="description"
+                                                label="Description"
+                                                required={ false }
+                                                requiredErrorMessage=""
+                                                placeholder="Enter a description for the application"
+                                                type="textarea"
+                                                value={ description }
+                                            />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                            <Field
+                                                name="imageUrl"
+                                                label="Application Image"
+                                                required={ false }
+                                                requiredErrorMessage=""
+                                                placeholder="Enter a image url for the application"
+                                                type="text"
+                                                value={ imageUrl }
+                                            />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                            <Field
+                                                name="discoverableByEndUsers"
+                                                required={ false }
+                                                requiredErrorMessage=""
+                                                type="checkbox"
+                                                children={ [
+                                                    {
+                                                        label: "Discoverable application",
+                                                        value: "discoverable"
+                                                    }
+                                                ] }
+                                                value={ isDiscoverable ? [ "discoverable" ] : [] }
+                                            />
+                                            <Field
+                                                name="accessUrl"
+                                                label="Access URL"
+                                                required={ isDiscoverable }
+                                                requiredErrorMessage={ "A valid access URL needs to be defined for an application " +
+                                                "to be marked as discoverable" }
+                                                placeholder="Enter access url for the application login page"
+                                                type="text"
+                                                value={ accessUrl }
+                                            />
+                                            <div className="ui-hint">
+                                                <Icon color="grey" floated="left" name="info circle"/>
+                                                Applications flagged as discoverable are visible for end users.
+                                            </div>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                            <Button primary type="submit" size="small" className="form-button">
+                                                Update
+                                            </Button>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                            </Forms>
+                            <DangerZoneGroup sectionHeader="Danger Zone">
+                                <DangerZone
+                                    actionTitle="Delete application"
+                                    header="Delete the application"
+                                    subheader="This action is irreversible. Please proceed with caution."
+                                    onActionClick={ handleApplicationDelete }
+                                />
+                            </DangerZoneGroup>
+                        </>
+                    )
+                    : <ContentLoader />
+            }
         </>
     );
 };
