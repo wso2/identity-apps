@@ -28,7 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Button, Responsive } from "semantic-ui-react";
 import { ProtectedRoute } from "../components";
-import { LogoImage, routes, SidePanelIcons, SidePanelMiscIcons } from "../configs";
+import { GlobalConfig, LogoImage, routes, SidePanelIcons, SidePanelMiscIcons } from "../configs";
 import { UIConstants } from "../constants";
 import { AppConfig, history } from "../helpers";
 import { AppConfigInterface } from "../models";
@@ -232,7 +232,9 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
                             primary
                             onClick={
                                 () => {
-                                    window.open(`${USER_PORTAL_CLIENT_HOST_DEFAULT}/${USER_PORTAL_BASENAME}`);
+                                    window.open(
+                                        `${GlobalConfig.userPortalClientHost}/${GlobalConfig.userPortalBaseName}`
+                                    );
                                 }
                             }
                         >
