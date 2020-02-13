@@ -246,3 +246,64 @@
         }
     }
 }
+
+/*********************************************
+    Application Template Card Variation
+*********************************************/
+
+.ui.card {
+    &.app-template-card {
+        width: @appTemplateCardDefaultWidth;
+        transition: @defaultCardTransition;
+        border: @defaultCardBorder;
+        box-shadow: none;
+
+        &:hover {
+            transform: none;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: @defaultCardHoverBoxShadow;
+        }
+        &.inline {
+            display: inline-block;
+            margin-right: @appTemplateCardRightSpacing;
+        }
+        &.selected {
+            border-bottom-width: @appTemplateCardBorderBottomWidth;
+            border-bottom-color: @appTemplateCardSelectedStateBorderBottomColor;
+        }
+        &.disabled {
+            cursor: not-allowed;
+        }
+        .card-image-container {
+        }
+        .card-text-container {
+            padding: @appTemplateCardTextContainerPadding;
+            border-top: none;
+
+            .header {
+                font-size: @appTemplateCardHeaderFontSize;
+                font-weight: @appTemplateCardHeaderFontWeight;
+                line-height: @appTemplateCardHeaderLineHeight;
+                max-width: @appTemplateCardHeaderMaxWidth;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+            .description {
+                font-size: @appTemplateCardDescriptionFontSize;
+                max-width: @appTemplateCardDescriptionMaxWidth;
+                min-height: @appTemplateCardDescriptionMinHeight;
+            }
+            .technologies {
+                margin-top: 8px;
+
+                .title {
+                    font-size: @appTemplateCardTechnologiesTitleFontSize;
+                    text-decoration: underline;
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
+}
