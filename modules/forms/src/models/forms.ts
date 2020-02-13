@@ -17,7 +17,7 @@
  */
 
 import * as React from "react";
-import { SemanticFLOATS, SemanticICONS, SemanticSIZES, SemanticWIDTHS } from "semantic-ui-react";
+import { SemanticSIZES, SemanticWIDTHS } from "semantic-ui-react";
 
 /**
  * Form Field Types
@@ -53,6 +53,9 @@ export interface Error {
     errorMessages: string[];
 }
 
+/**
+ * The generic interface for all input fields
+ */
 interface FormFieldModel {
     name: string;
     label?: string;
@@ -60,10 +63,14 @@ interface FormFieldModel {
     autoFocus?: boolean;
 }
 
+/**
+ * The generic interface for all input fields but the radio field
+ */
 interface FormRequiredFieldModel extends FormFieldModel {
     required: boolean;
     requiredErrorMessage: string;
 }
+
 /**
  * Input field model
  */
