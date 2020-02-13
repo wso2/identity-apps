@@ -27,3 +27,4 @@ export const REFRESH_TOKEN = "refresh_token";
 export const SCOPE = "scope";
 export const TOKEN_TYPE = "token_type";
 export const REQUEST_PARAMS = "request_params";
+export const ISSUER = "issuer";

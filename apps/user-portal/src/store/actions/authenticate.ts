@@ -216,6 +216,7 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
                 OPConfigurationUtil.setRevokeTokenEndpoint(ServiceResourcesEndpoint.revoke);
                 OPConfigurationUtil.setEndSessionEndpoint(ServiceResourcesEndpoint.logout);
                 OPConfigurationUtil.setJwksUri(ServiceResourcesEndpoint.jwks);
+                OPConfigurationUtil.setIssuer(ServiceResourcesEndpoint.issuer);
                 OPConfigurationUtil.setOPConfigInitiated();
 
                 sendSignInRequest();
