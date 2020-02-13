@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthProtocolMetaListItemInterface, OIDCMetadataInterface } from "./application-inbound";
+import { AuthProtocolMetaListItemInterface, OIDCDataInterface, OIDCMetadataInterface } from "./application-inbound";
 
 /**
  *  Captures the basic details in the applications.
