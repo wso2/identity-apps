@@ -230,7 +230,7 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
                         primary
                         onClick={
                             () => {
-                                window.open(`${SERVER_HOST_DEFAULT}/user-portal`);
+                                window.open(`${USER_PORTAL_CLIENT_HOST_DEFAULT}/${USER_PORTAL_BASENAME}`);
                             }
                         }
                     >
