@@ -93,77 +93,6 @@ export const views: Views = {
                 resultsIndicator: 'Showing results for the query "{{query}}"'
             }
         },
-        user: {
-            forms: {
-                addUserForm: {
-                    inputs: {
-                        confirmPassword: {
-                            label: "Confirm password",
-                            placeholder: "Enter the new password",
-                            validations: {
-                                empty: "Confirm password is a required field",
-                                mismatch: "The password confirmation doesn't match"
-                            }
-                        },
-                        domain: {
-                            label: "Domain name",
-                            placeholder: "Select domain",
-                            validations: {
-                                empty: "User store domain cannot be empty.",
-                            }
-                        },
-                        email: {
-                            label: "Email address",
-                            placeholder: "Enter the email address",
-                            validations: {
-                                empty: "Email address cannot be empty",
-                                invalid: "Please enter a valid email address"
-                            }
-                        },
-                        newPassword: {
-                            label: "New password",
-                            placeholder: "Enter the new password",
-                            validations: {
-                                empty: "New password is a required field"
-                            }
-                        },
-                        username: {
-                            label: "Username",
-                            placeholder: "Enter the username",
-                            validations: {
-                                empty: "Username is a required field",
-                                invalid: "Username is invalid"
-                            }
-                        }
-                    },
-                    validations: {
-                        genericError: {
-                            description: "Something went wrong. Please try again",
-                            message: "Change password error"
-                        },
-                        invalidCurrentPassword: {
-                            description: "The current password you entered appears to be invalid. Please try again",
-                            message: "Change password error"
-                        },
-                        submitError: {
-                            description: "{{description}}",
-                            message: "Change password error"
-                        },
-                        submitSuccess: {
-                            description: "The password has been changed successfully",
-                            message: "Password reset successful"
-                        }
-                    }
-                }
-            },
-            modals: {
-                addUserWarnModal: {
-                    heading: "Warning",
-                    message: "Please note that this created user will not be assigned with a role. If you wish to " +
-                        "assign roles to this user please click on the button below."
-                }
-            }
-        },
         footer: {
             copyright: "WSO2 Identity Server © {{year}}"
         },
@@ -375,6 +304,77 @@ export const views: Views = {
                 }
             }
         },
+        user: {
+            forms: {
+                addUserForm: {
+                    inputs: {
+                        confirmPassword: {
+                            label: "Confirm password",
+                            placeholder: "Enter the new password",
+                            validations: {
+                                empty: "Confirm password is a required field",
+                                mismatch: "The password confirmation doesn't match"
+                            }
+                        },
+                        domain: {
+                            label: "Domain name",
+                            placeholder: "Select domain",
+                            validations: {
+                                empty: "User store domain cannot be empty.",
+                            }
+                        },
+                        email: {
+                            label: "Email address",
+                            placeholder: "Enter the email address",
+                            validations: {
+                                empty: "Email address cannot be empty",
+                                invalid: "Please enter a valid email address"
+                            }
+                        },
+                        newPassword: {
+                            label: "New password",
+                            placeholder: "Enter the new password",
+                            validations: {
+                                empty: "New password is a required field"
+                            }
+                        },
+                        username: {
+                            label: "Username",
+                            placeholder: "Enter the username",
+                            validations: {
+                                empty: "Username is a required field",
+                                invalid: "Username is invalid"
+                            }
+                        }
+                    },
+                    validations: {
+                        genericError: {
+                            description: "Something went wrong. Please try again",
+                            message: "Change password error"
+                        },
+                        invalidCurrentPassword: {
+                            description: "The current password you entered appears to be invalid. Please try again",
+                            message: "Change password error"
+                        },
+                        submitError: {
+                            description: "{{description}}",
+                            message: "Change password error"
+                        },
+                        submitSuccess: {
+                            description: "The password has been changed successfully",
+                            message: "Password reset successful"
+                        }
+                    }
+                }
+            },
+            modals: {
+                addUserWarnModal: {
+                    heading: "Warning",
+                    message: "Please note that this created user will not be assigned with a role. If you wish to " +
+                        "assign roles to this user please click on the button below."
+                }
+            }
+        },
         users: {
             all: {
                 heading: "Users",
@@ -457,7 +457,7 @@ export const views: Views = {
                 },
                 resultsIndicator: "Showing results for the query \"{{query}}\""
             }
-        },
+        }
     },
     pages: {
         overView: {
@@ -506,5 +506,5 @@ export const views: Views = {
             },
             title: "Page under construction"
         }
-    },
+    }
 };

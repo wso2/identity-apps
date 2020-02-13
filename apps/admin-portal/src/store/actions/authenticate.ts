@@ -177,7 +177,8 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
             TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_VIEW,
             TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_UPDATE
         ],
-        serverOrigin: GlobalConfig.serverOrigin
+        serverOrigin: GlobalConfig.serverOrigin,
+        tenant: GlobalConfig.tenant
     };
 
     const sendSignInRequest = () => {
@@ -196,7 +197,10 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
                     dispatch(getProfileInformation());
                 })
                 .catch((error) => {
-                    // This error will be handled by the error handler in the http module.
+                    if (error.response.status === 400) {
+                        SignInUtil.sendAuthorizationRequest(requestParams);
+                    }
+
                     throw error;
                 });
         } else {
@@ -205,10 +209,16 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
     };
 
     if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
+        if (OPConfigurationUtil.isValidOPConfig(requestParams.tenant)) {
+            AuthenticateSessionUtil.endAuthenticatedSession();
+            OPConfigurationUtil.resetOPConfiguration();
+            handleSignOut();
+        }
+
         dispatch(setSignIn());
         dispatch(getProfileInformation());
     } else {
-        OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false, requestParams.clientHost)
+        OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false)
             .then(() => {
                 sendSignInRequest();
             })
@@ -234,12 +244,12 @@ export const handleSignOut = () => (dispatch) => {
         history.push(GlobalConfig.appLoginPath);
     } else {
         SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl, () => {
-            dispatch(setSignOut());
-            AuthenticateSessionUtil.endAuthenticatedSession();
-            OPConfigurationUtil.resetOPConfiguration();
-        }).catch(() => {
-            history.push(GlobalConfig.appLoginPath);
-        });
+                dispatch(setSignOut());
+                AuthenticateSessionUtil.endAuthenticatedSession();
+                OPConfigurationUtil.resetOPConfiguration();
+            }).catch(() => {
+                history.push(GlobalConfig.appLoginPath);
+            });
     }
 };
 

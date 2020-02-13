@@ -107,18 +107,18 @@ export interface OIDCDataInterface {
 }
 
 export const emptyOIDCConfig: OIDCDataInterface = ({
+    accessToken: undefined,
+    allowedOrigins: [],
+    callbackURLs: [],
     clientId: "",
     clientSecret: "",
-    state: undefined,
     grantTypes: [],
-    callbackURLs: [],
-    allowedOrigins: [],
-    publicClient: false,
     pkce: {
         mandatory: false,
         supportPlainTransformAlgorithm: false
     },
-    accessToken: undefined
+    publicClient: false,
+    state: undefined
 });
 
 /**
