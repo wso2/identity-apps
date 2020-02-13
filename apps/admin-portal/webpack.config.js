@@ -29,6 +29,10 @@ module.exports = (env) => {
     const devServerPort = 9001;
     const publicPath = `/${basename}`;
 
+    //user-portal related variables
+    const userPortalBaseName = "user-portal";
+    const userPortalDevServerPort = 9000;
+
     /**
      * Deployment configurations
      */
@@ -38,6 +42,9 @@ module.exports = (env) => {
     const clientOriginDefault = clientHostDefault;
     const clientIdDefault = "ADMIN_PORTAL";
     const applicationName = "Admin Portal";
+
+    const userPortalClientHostDefault =
+        env.NODE_ENV === "prod" ? serverHostDefault : `https://localhost:${userPortalDevServerPort}`;
 
     /**
      * App configurations
@@ -220,6 +227,8 @@ module.exports = (env) => {
                 SERVER_HOST_DEFAULT: JSON.stringify(serverHostDefault),
                 SERVER_ORIGIN_DEFAULT: JSON.stringify(serverOriginDefault),
                 TITLE_TEXT_DEFAULT: JSON.stringify(titleText),
+                USER_PORTAL_BASENAME: JSON.stringify(userPortalBaseName),
+                USER_PORTAL_CLIENT_HOST_DEFAULT: JSON.stringify(userPortalClientHostDefault),
                 "typeof window": JSON.stringify("object"),
                 "process.env": {
                     NODE_ENV: JSON.stringify(process.env.NODE_ENV)
