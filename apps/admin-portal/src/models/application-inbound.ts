@@ -19,9 +19,11 @@
 /**
  * Captures the auth protocols
  */
-export interface AuthProtocolMetadataInterface {
+export interface AuthProtocolMetaListItemInterface {
     name: string;
     displayName: string;
+    enabled?: boolean;
+    id?: string;
     logo?: string;
     type?: string;
 }
@@ -102,4 +104,48 @@ export interface OIDCDataInterface {
     logout?: OIDCLogoutConfigurationInterface;
     validateRequestObjectSignature?: boolean;
     scopeValidators?: string[];
+}
+
+export const emptyOIDCConfig: OIDCDataInterface = ({
+    clientId: "",
+    clientSecret: "",
+    state: undefined,
+    grantTypes: [],
+    callbackURLs: [],
+    allowedOrigins: [],
+    publicClient: false,
+    pkce: {
+        mandatory: false,
+        supportPlainTransformAlgorithm: false
+    },
+    accessToken: undefined
+});
+
+/**
+ * Enum for the supported auth protocol types.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum SupportedAuthProtocolTypes {
+    SAML = "saml",
+    OIDC = "oidc",
+    WS_FEDERATION = "passive-sts",
+    WS_TRUST = "ws-trust"
+}
+
+/**
+ * Enum for the supported auth protocol meta types.
+ *
+ * @remarks
+ * Currently, the application meta endpoint only supports fetching
+ * metadata for the following auth protocols.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum SupportedAuthProtocolMetaTypes {
+    SAML = "saml",
+    OIDC = "oidc",
+    WS_TRUST = "ws-trust"
 }

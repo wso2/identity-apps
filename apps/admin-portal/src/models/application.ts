@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AuthProtocolMetaListItemInterface, OIDCMetadataInterface } from "./application-inbound";
+
 /**
  *  Captures the basic details in the applications.
  */
@@ -164,6 +166,28 @@ export interface AdvancedConfigurationsInterface {
 export interface LinkInterface {
     href: string;
     rel: string;
+}
+
+/**
+ * Interface for the Application reducer state.
+ */
+export interface ApplicationReducerStateInterface {
+    meta: ApplicationMetaInterface;
+}
+
+/**
+ * Interface for the application meta for the redux store.
+ */
+interface ApplicationMetaInterface {
+    inboundProtocols: AuthProtocolMetaListItemInterface[];
+    protocolMeta: AuthProtocolMetaInterface;
+}
+
+/**
+ * Interface for the auth protocol metadata.
+ */
+interface AuthProtocolMetaInterface {
+    [ key: string ]: OIDCMetadataInterface | any;
 }
 
 export const emptyApplication = (): ApplicationInterface => ({

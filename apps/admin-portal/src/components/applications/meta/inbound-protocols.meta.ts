@@ -16,33 +16,45 @@
  * under the License.
  */
 
-export const InboundProtocolsMeta = [
+import { AuthProtocolMetaListItemInterface } from "../../../models";
+
+export const InboundProtocolsMeta: AuthProtocolMetaListItemInterface[] = [
     {
         displayName: "OpenID Connect",
+        enabled: true,
+        id: "oidc",
         logo: "oidc",
         name: "oidc",
         type: "oauth2"
     },
     {
         displayName: "OpenID",
+        enabled: false,
+        id: "openid",
         logo: "openid",
         name: "openid",
         type: "openid"
     },
     {
         displayName: "SAML 2.0",
+        enabled: false,
+        id: "saml",
         logo: "saml",
         name: "saml",
         type: "samlsso"
     },
     {
         displayName: "WS-Federation",
+        enabled: false,
+        id: "passive-sts",
         logo: "wsFed",
         name: "ws-federation",
         type: "passivests"
     },
     {
         displayName: "WS-Trust",
+        enabled: false,
+        id: "ws-trust",
         logo: "wsTrust",
         name: "ws-trust",
         type: "wstrust"
