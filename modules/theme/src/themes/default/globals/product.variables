@@ -75,3 +75,19 @@
 @inputAddonColor: @doveGray;
 @inputAddonFontSize: 12px;
 @inputAddonMargin: 10px 0;;
+
+/*-------------------
+        Steps
+--------------------*/
+
+@stepIconSize: 40px;
+@stepIconDefaultBgColor: @dustyGray;
+@stepDefaultFontColor: @nobel;
+@stepFontSize: 0.9em;
+@stepCompleteFontColor: @green;
+@stepIconCompleteBgColor: @green;
+@stepActiveFontColor: @primaryColor;
+@stepIconActiveBgColor: @primaryColor;
+@stepHorizontalSpacing: 2em;
+@stepsHeaderFontColor: @dustyGray;
+@stepsHeaderFontSize: 0.9em;
