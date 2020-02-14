@@ -170,17 +170,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @return {any} Sanitized form values.
      */
     const updateConfiguration = (values: any): any => {
-        return {
+        const formValues = {
             accessToken: {
                 applicationAccessTokenExpiryInSeconds: Number(values.get("applicationAccessTokenExpiryInSeconds")),
                 type: values.get("type"),
                 userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds")),
             },
             allowedOrigins: [],
-            callbackURLs: [ values.get("callbackURL") ],
+            callbackURLs: [values.get("callbackURL")],
             grantTypes: values.get("grant"),
             idToken: {
-                audience: [ values.get("audience") ],
+                audience: [values.get("audience")],
                 encryption: {
                     algorithm: values.get("algorithm"),
                     enabled: values.get("encryption").length > 1,
@@ -193,7 +193,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 frontChannelLogoutUrl: values.get("frontChannelLogoutUrl")
             },
             pkce: {
-                mandatory: !!values.get("PKCE").includes("mandatory"),
+                mandatory: values.get("PKCE").includes("mandatory"),
                 supportPlainTransformAlgorithm: !!values.get("PKCE").includes("supportPlainTransformAlgorithm")
             },
             publicClient: values.get("supportPublicClients").length > 1,
@@ -203,6 +203,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             },
             scopeValidators: values.get("scopeValidator"),
             validateRequestObjectSignature: values.get("enableRequestObjectSignatureValidation").length > 1
+        };
+
+        // If the app is newly created do not add `clientId` & `clientSecret`.
+        if (!values.get("clientId") || !values.get("clientSecret")) {
+            return formValues;
+        }
+
+        return {
+            ...formValues,
+            clientId: values.get("clientId"),
+            clientSecret: values.get("clientSecret"),
         };
     };
 

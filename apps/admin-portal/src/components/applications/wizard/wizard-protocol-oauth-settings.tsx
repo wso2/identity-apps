@@ -114,15 +114,18 @@ export const WizardOAuthProtocolSettings: FunctionComponent<OAuthProtocolSetting
                                 </Grid.Column>
                             </Grid.Row>
                             <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                                     <Field
                                         name="publicClients"
                                         label=""
                                         required={ false }
                                         requiredErrorMessage="this is needed"
                                         type="checkbox"
-                                        value={ templateData &&
-                                        templateData.inboundProtocolConfiguration.oidc.publicClient ? ["supportPublicClients"] : [] }
+                                        value={
+                                            templateData &&
+                                            templateData.inboundProtocolConfiguration.oidc.publicClient ?
+                                                ["supportPublicClients"] : []
+                                        }
                                         children={ [
                                             {
                                                 label: "Public Client",
