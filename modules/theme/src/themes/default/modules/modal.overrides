@@ -199,3 +199,25 @@
         transform: scale(1);
     }
 }
+
+/*********************************************
+                    Wizards
+*********************************************/
+
+.ui.modal {
+    &.wizard {
+        .wizard-header {
+            h6 {
+                margin-top: 5px;
+                color: @wizardSubHeaderFontColor;
+            }
+        }
+        .steps-container {
+            background: @wizardStepsContainerBgColor;
+            border-bottom: @defaultBorderWidth solid @defaultBorderColor;
+        }
+        .content-container {
+            height: @wizardContentHeight;
+        }
+    }
+}

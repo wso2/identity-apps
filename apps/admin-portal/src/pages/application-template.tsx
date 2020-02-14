@@ -18,12 +18,12 @@
 
 import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, SyntheticEvent, useState } from "react";
-import { ApplicationWizardCreation, QuickStartApplicationTemplates } from "../components";
+import { ApplicationCreateWizard, QuickStartApplicationTemplates } from "../components";
 import { ApplicationTemplateIllustrations, TechnologyLogos } from "../configs";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import {
-    ApplicationTemplateInterface,
+    ApplicationTemplateListItemInterface, ApplicationTemplatesInterface, SupportedApplicationTemplateCategories,
     SupportedAuthProtocolTypes
 } from "../models";
 
@@ -35,11 +35,12 @@ import {
 export const ApplicationTemplateSelectPage: FunctionComponent<any> = (): JSX.Element => {
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateInterface>(null);
+    const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(null);
+    const [ selectedTemplateCategoryTitle, setSelectedTemplateCategoryTitle ] = useState<string>("");
 
     // TODO Remove this hard coded list and retrieve the template list from an endpoint.
-    // Template list
-    const QUICK_START_APPLICATION_TEMPLATES: ApplicationTemplateInterface[] = [
+    // Quick start templates list.
+    const QUICK_START_APPLICATION_TEMPLATES: ApplicationTemplateListItemInterface[] = [
         {
             description: "Front end applications which uses APIs. Mostly written using scripting languages.",
             displayName: "Single page application",
@@ -85,6 +86,12 @@ export const ApplicationTemplateSelectPage: FunctionComponent<any> = (): JSX.Ele
         }
     ];
 
+    // TODO Remove this hard coded list and retrieve the template list from an endpoint.
+    // Templates list.
+    const TEMPLATES: ApplicationTemplatesInterface = {
+        [ SupportedApplicationTemplateCategories.QUICK_START as string ]: QUICK_START_APPLICATION_TEMPLATES
+    };
+
     /**
      * Handles back button click.
      */
@@ -97,14 +104,32 @@ export const ApplicationTemplateSelectPage: FunctionComponent<any> = (): JSX.Ele
      *
      * @param {React.SyntheticEvent} e - Click event.
      * @param {string} id - Id of the template.
+     * @param {SupportedApplicationTemplateCategories} templateCategory - The category of the selected template.
      */
-    const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
-        const selected = QUICK_START_APPLICATION_TEMPLATES.find((template) => template.id === id);
+    const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string },
+                                     templateCategory: SupportedApplicationTemplateCategories): void => {
+
+        if (!TEMPLATES.hasOwnProperty(templateCategory)) {
+            return;
+        }
+
+        const selected = TEMPLATES[templateCategory].find((template) => template.id === id);
 
         if (!selected) {
             return;
         }
 
+        let categoryTitle = "";
+
+        switch (templateCategory) {
+            case SupportedApplicationTemplateCategories.QUICK_START:
+                categoryTitle = "Quick Start";
+                break;
+            default:
+                break;
+        }
+
+        setSelectedTemplateCategoryTitle(categoryTitle);
         setSelectedTemplate(selected);
         setShowWizard(true);
     };
@@ -125,16 +150,21 @@ export const ApplicationTemplateSelectPage: FunctionComponent<any> = (): JSX.Ele
             <div className="quick-start-templates">
                 <Heading as="h1">Quick Start</Heading>
                 <QuickStartApplicationTemplates
-                    templates={ QUICK_START_APPLICATION_TEMPLATES }
-                    onTemplateSelect={ handleTemplateSelection }
+                    templates={ TEMPLATES[ SupportedApplicationTemplateCategories.QUICK_START ] }
+                    onTemplateSelect={ (e, { id }) =>
+                        handleTemplateSelection(e, { id }, SupportedApplicationTemplateCategories.QUICK_START)
+                    }
                 />
             </div>
-            <ApplicationWizardCreation
-                closeWizard={ () => setShowWizard(false) }
-                startWizard={ showWizard }
-                templateID={ selectedTemplate?.id }
-                protocol={ selectedTemplate?.protocols[0] }
-            />
+            { showWizard && (
+                    <ApplicationCreateWizard
+                        title={ selectedTemplateCategoryTitle }
+                        subTitle={ selectedTemplate?.displayName }
+                        closeWizard={ () => setShowWizard(false) }
+                        templateID={ selectedTemplate?.id }
+                        protocol={ selectedTemplate?.protocols[0] }
+                    />
+                ) }
         </PageLayout>
     );
 };

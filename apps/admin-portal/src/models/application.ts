@@ -246,15 +246,32 @@ interface AuthProtocolMetaInterface {
 }
 
 /**
- *  Application template interface.
+ *  Application template list item interface.
  */
-export interface ApplicationTemplateInterface {
+export interface ApplicationTemplateListItemInterface {
     description: string;
     displayName: string;
     id: string;
     image: any;
     protocols: SupportedAuthProtocolTypes[];
     technologies: ApplicationTemplateTechnology[];
+}
+
+/**
+ *  Application templates interface.
+ */
+export interface ApplicationTemplatesInterface {
+    [ key: string ]: ApplicationTemplateListItemInterface[];
+}
+
+/**
+ * Enum for supported application template categories.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum SupportedApplicationTemplateCategories {
+    QUICK_START = "quick_start"
 }
 
 /**

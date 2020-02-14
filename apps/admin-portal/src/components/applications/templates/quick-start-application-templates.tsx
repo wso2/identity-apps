@@ -18,7 +18,7 @@
 
 import { ApplicationTemplateCard } from "@wso2is/react-components";
 import React, { FunctionComponent, SyntheticEvent } from "react";
-import { ApplicationTemplateInterface } from "../../../models";
+import { ApplicationTemplateListItemInterface } from "../../../models";
 
 /**
  * Proptypes for the quick start templates component.
@@ -31,7 +31,7 @@ interface QuickStartApplicationTemplatesPropsInterface {
     /**
      * List of templates.
      */
-    templates: ApplicationTemplateInterface[];
+    templates: ApplicationTemplateListItemInterface[];
 }
 
 /**

@@ -19,7 +19,7 @@
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, FormValue } from "@wso2is/forms";
-import { ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
+import { ContentLoader, DangerZone, DangerZoneGroup, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
@@ -191,10 +191,9 @@ export const GeneralDetailsApplication: FunctionComponent<GeneralSettingsProps> 
                                                 type="text"
                                                 value={ accessUrl }
                                             />
-                                            <div className="ui-hint">
-                                                <Icon color="grey" floated="left" name="info circle"/>
+                                            <Hint>
                                                 Applications flagged as discoverable are visible for end users.
-                                            </div>
+                                            </Hint>
                                         </Grid.Column>
                                     </Grid.Row>
                                     <Grid.Row columns={ 1 }>

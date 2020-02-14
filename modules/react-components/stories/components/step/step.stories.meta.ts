@@ -14,17 +14,20 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
 
-export * from "./templates";
-export * from "./application-list";
-export * from "./application-edit";
-export * from "./application-search";
-export * from "./dropdown-details";
-export * from "./dropdown-details-general";
-export * from "./forms";
-export * from "./general-details-application";
-export * from "./settings-application";
-export * from "./settings-section-application-variation";
-export * from "./application-edit";
-export * from "./wizard";
+import { StoryCategories } from "../../hierarchy";
+import { StoryMetaInterface } from "../../models";
+
+export const meta: StoryMetaInterface = {
+    components: [ "Steps" ],
+    description: "Component to render steps.",
+    stories: [
+        {
+            description: "Default Steps.",
+            title: "Default",
+        }
+    ],
+    title: `${ StoryCategories.COMPONENTS }/Steps`,
+};
