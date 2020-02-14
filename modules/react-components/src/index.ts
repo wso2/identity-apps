@@ -38,5 +38,6 @@ export * from "./placeholder";
 export * from "./route";
 export * from "./section";
 export * from "./side-panel";
+export * from "./step";
 export * from "./tab";
 export * from "./typography";

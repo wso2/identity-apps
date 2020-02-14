@@ -20,6 +20,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../store";
 import { handleSignOut } from "../../store/actions";
+
 /**
  * This component handles the sign-out function
  */

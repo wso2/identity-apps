@@ -18,6 +18,7 @@
 
 import {
     AlertIcon,
+    AngularLogo,
     AppIcon,
     BlockedMagnifierIcon,
     BoxIcon,
@@ -26,23 +27,32 @@ import {
     CodeIcon,
     CrossIcon,
     DashboardIcon,
+    DocumentIcon,
     DotIcon,
+    DotNetLogo,
     DummyUser,
     EmptySearchResultsIllustration,
     ErrorIcon,
     ForbiddenIcon,
+    GearsIcon,
     HomeTileIcons,
     InfoIcon,
+    JavaLogo,
     Logo,
     MFAIconSet,
     OIDCLogo,
     OpenIDLogo,
     PlugIcon,
+    ReactLogo,
     SamlLogo,
     SettigsSectionIconSet,
+    SPATemplateIllustration,
+    SpinWheelIcon,
     SuccessIcon,
     UserIcon,
+    VueLogo,
     WarningIcon,
+    WebAppTemplateIllustration,
     WSFedLogo,
     WSTrustLogo
 } from "@wso2is/theme";
@@ -129,4 +139,23 @@ export const InboundProtocolLogos = {
     saml: SamlLogo,
     wsFed: WSFedLogo,
     wsTrust: WSTrustLogo
+};
+
+export const ApplicationTemplateIllustrations = {
+    spa: SPATemplateIllustration,
+    webApp: WebAppTemplateIllustration
+};
+
+export const TechnologyLogos = {
+    angular: AngularLogo,
+    dotNet: DotNetLogo,
+    java: JavaLogo,
+    react: ReactLogo,
+    vue: VueLogo,
+};
+
+export const ApplicationWizardStepIcons = {
+    general: DocumentIcon,
+    protocolConfig: GearsIcon,
+    protocolSelection: SpinWheelIcon
 };

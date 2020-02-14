@@ -25,14 +25,14 @@ import {
     SignOutUtil
 } from "@wso2is/authentication";
 import _ from "lodash";
-import { getProfileInfo } from "../../api";
+import { getProfileInfo, getProfileSchemas } from "../../api";
 import { GlobalConfig, i18n, ServiceResourcesEndpoint } from "../../configs";
 import * as TokenConstants from "../../constants";
 import { history } from "../../helpers";
-import { AlertLevels, ProfileSchema } from "../../models";
+import { AlertLevels, BasicProfileInterface, ProfileSchema } from "../../models";
 import { store } from "../index";
 import { addAlert } from "./global";
-import { setProfileInfoLoader } from "./loaders";
+import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
 import { authenticateActionTypes } from "./types";
 
 /**
@@ -95,6 +95,7 @@ export const getProfileInformation = () => (dispatch) => {
                 // If the schemas in the redux store is empty, fetch the SCIM schemas from the API.
                 if (_.isEmpty(store.getState().authenticationInformation.profileSchemas)) {
                     isCompletionCalculated = true;
+                    dispatch(getScimSchemas(infoResponse));
                 }
 
                 return;
@@ -177,7 +178,8 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
             TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_VIEW,
             TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_UPDATE
         ],
-        serverOrigin: GlobalConfig.serverOrigin
+        serverOrigin: GlobalConfig.serverOrigin,
+        tenant: GlobalConfig.tenant
     };
 
     const sendSignInRequest = () => {
@@ -196,7 +198,10 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
                     dispatch(getProfileInformation());
                 })
                 .catch((error) => {
-                    // This error will be handled by the error handler in the http module.
+                    if (error.response.status === 400) {
+                        SignInUtil.sendAuthorizationRequest(requestParams);
+                    }
+
                     throw error;
                 });
         } else {
@@ -205,10 +210,16 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
     };
 
     if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
+        if (OPConfigurationUtil.isValidOPConfig(requestParams.tenant)) {
+            AuthenticateSessionUtil.endAuthenticatedSession();
+            OPConfigurationUtil.resetOPConfiguration();
+            handleSignOut();
+        }
+
         dispatch(setSignIn());
         dispatch(getProfileInformation());
     } else {
-        OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false, requestParams.clientHost)
+        OPConfigurationUtil.initOPConfiguration(ServiceResourcesEndpoint.wellKnown, false)
             .then(() => {
                 sendSignInRequest();
             })
@@ -234,13 +245,25 @@ export const handleSignOut = () => (dispatch) => {
         history.push(GlobalConfig.appLoginPath);
     } else {
         SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl, () => {
-            dispatch(setSignOut());
-            AuthenticateSessionUtil.endAuthenticatedSession();
-            OPConfigurationUtil.resetOPConfiguration();
-        }).catch(() => {
-            history.push(GlobalConfig.appLoginPath);
-        });
+                dispatch(setSignOut());
+                AuthenticateSessionUtil.endAuthenticatedSession();
+                OPConfigurationUtil.resetOPConfiguration();
+            }).catch(() => {
+                history.push(GlobalConfig.appLoginPath);
+            });
     }
+};
+
+/**
+ * Get SCIM2 schemas
+ */
+export const getScimSchemas = (profileInfo: BasicProfileInterface = null) => (dispatch) => {
+    dispatch(setProfileSchemaLoader(true));
+    getProfileSchemas()
+        .then((response: ProfileSchema[]) => {
+            dispatch(setProfileSchemaLoader(false));
+            dispatch(setScimSchemas(response));
+        });
 };
 
 /**

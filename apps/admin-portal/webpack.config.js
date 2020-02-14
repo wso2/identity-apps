@@ -28,6 +28,7 @@ module.exports = (env) => {
     const basename = "admin-portal";
     const devServerPort = 9001;
     const publicPath = `/${basename}`;
+    const isProd = env.NODE_ENV === "prod";
 
     //user-portal related variables
     const userPortalBaseName = "user-portal";
@@ -38,10 +39,12 @@ module.exports = (env) => {
      */
     const serverHostDefault = "https://localhost:9443";
     const serverOriginDefault = serverHostDefault;
-    const clientHostDefault = env.NODE_ENV === "prod" ? serverHostDefault : `https://localhost:${devServerPort}`;
+    const clientHostDefault = isProd ? serverHostDefault : `https://localhost:${devServerPort}`;
     const clientOriginDefault = clientHostDefault;
     const clientIdDefault = "ADMIN_PORTAL";
-    const applicationName = "Admin Portal";
+    const applicationName = "Developer Portal";
+    const tenantDefault = "carbon.super";
+    const tenantPathDefault = "";
 
     const userPortalClientHostDefault =
         env.NODE_ENV === "prod" ? serverHostDefault : `https://localhost:${userPortalDevServerPort}`;
@@ -58,7 +61,6 @@ module.exports = (env) => {
      */
     const distFolder = path.resolve(__dirname, "build", basename);
     const faviconImage = path.resolve(__dirname, "node_modules", "@wso2is/theme/lib/assets/images/favicon.ico");
-    const isProd = env.NODE_ENV === 'prod';
     const titleText = "WSO2 Identity Server";
     const copyrightText = `${titleText} \u00A9 ${ new Date().getFullYear() }`;
 
@@ -183,7 +185,10 @@ module.exports = (env) => {
         },
         plugins: [
             new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
-            new WriteFilePlugin(),
+            new WriteFilePlugin({
+                // Exclude hot-update files
+                test: /^(?!.*(hot-update)).*/
+            }),
             new CopyWebpackPlugin([
                 {
                     context: path.join(__dirname, "node_modules", "@wso2is", "theme"),
@@ -226,6 +231,8 @@ module.exports = (env) => {
                 LOGIN_CALLBACK_URL: JSON.stringify(externalLoginCallbackURL),
                 SERVER_HOST_DEFAULT: JSON.stringify(serverHostDefault),
                 SERVER_ORIGIN_DEFAULT: JSON.stringify(serverOriginDefault),
+                TENANT_DEFAULT: JSON.stringify(tenantDefault),
+                TENANT_PATH_DEFAULT: JSON.stringify(tenantPathDefault),
                 TITLE_TEXT_DEFAULT: JSON.stringify(titleText),
                 USER_PORTAL_BASENAME: JSON.stringify(userPortalBaseName),
                 USER_PORTAL_CLIENT_HOST_DEFAULT: JSON.stringify(userPortalClientHostDefault),

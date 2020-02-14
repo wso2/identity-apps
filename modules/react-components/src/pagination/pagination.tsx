@@ -120,7 +120,7 @@ Pagination.defaultProps =  {
     float: "right",
     itemsPerPageDropdownLabel: "Items per page",
     itemsPerPageDropdownLowerLimit: 10,
-    itemsPerPageDropdownMultiple: 5,
+    itemsPerPageDropdownMultiple: 10,
     itemsPerPageDropdownUpperLimit: 50,
     showItemsPerPageDropdown: true
 };

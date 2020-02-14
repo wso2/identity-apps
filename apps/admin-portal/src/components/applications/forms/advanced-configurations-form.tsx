@@ -16,11 +16,12 @@
  * under the License.
  */
 
-import { Field, Forms } from "@wso2is/forms";
+import { Field, Forms, Validation } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
-import React, { FunctionComponent } from "react";
-import { Button, Divider, Grid } from "semantic-ui-react";
+import React, { FunctionComponent, useState } from "react";
+import { Button, Divider, Grid, Segment } from "semantic-ui-react";
 import { AdvancedConfigurationsInterface } from "../../../models";
+import { FormValidation } from "@wso2is/validation";
 
 /**
  *  Advance Configurations for the Application.
@@ -45,13 +46,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
         onSubmit
     } = props;
 
-    const {
-        certificate,
-        enableAuthorization,
-        returnAuthenticatedIdpList,
-        saas,
-        skipConsent
-    } = config;
+    const [isPEMSelected, setPEMSelected] = useState<boolean>(false);
 
     /**
      * Prepare form values for submitting.
@@ -84,7 +79,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             label=""
                             required={ false }
                             requiredErrorMessage="this is needed"
-                            value={ saas ? [ "saas" ] : [] }
+                            value={ config?.saas ? ["saas"] : [] }
                             type="checkbox"
                             children={ [
                                 {
@@ -106,7 +101,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             label=""
                             required={ false }
                             requiredErrorMessage="this is needed"
-                            value={ skipConsent ? [ "skipConsent" ] : [] }
+                            value={ config?.skipConsent ? ["skipConsent"] : [] }
                             type="checkbox"
                             children={ [
                                 {
@@ -127,7 +122,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             label=""
                             required={ false }
                             requiredErrorMessage="this is needed"
-                            value={ returnAuthenticatedIdpList ? [ "returnAuthenticatedIdpList" ] : [] }
+                            value={ config?.returnAuthenticatedIdpList ? ["returnAuthenticatedIdpList"] : [] }
                             type="checkbox"
                             children={ [
                                 {
@@ -149,7 +144,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             label=""
                             required={ false }
                             requiredErrorMessage="this is needed"
-                            value={ enableAuthorization ? [ "enableAuthorization" ] : [] }
+                            value={ config?.enableAuthorization ? ["enableAuthorization"] : [] }
                             type="checkbox"
                             children={ [
                                 {
@@ -164,15 +159,19 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
-
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Heading as="h5">Certificate</Heading>
-                        <Divider hidden />
+                        <Divider hidden/>
                         <Field
                             label="Certificate type"
                             name="type"
-                            default={ certificate ? certificate.type : "JWKS" }
+                            default={ config?.certificate ? config?.certificate.type : "JWKS" }
+                            listen={
+                                (values) => {
+                                    setPEMSelected(values.get("type") === "PEM" ? true : false);
+                                }
+                            }
                             type="radio"
                             children={ [
                                 {
@@ -190,23 +189,44 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            name="value"
-                            label="Value"
-                            required={ false }
-                            requiredErrorMessage="Certificate value is required"
-                            placeholder={ "If type is JWKS, value should be jwks URL. " +
-                            "If type is PEM, value should be the certificate in PEM format." }
-                            type="text"
-                            value={ certificate && certificate.value }
-                        />
-                        <Hint>
+                        {
+                            isPEMSelected ?
+                                (
+                                    <Field
+                                        name="value"
+                                        label="Value"
+                                        required={ false }
+                                        requiredErrorMessage="Certificate value is required"
+                                        placeholder={ "Value should be the certificate in PEM format." }
+                                        type="textarea"
+                                        value={ config?.certificate && config?.certificate?.value &&
+                                        config.certificate.value }
+                                    />
+                                ) : (
+                                    <Field
+                                        name="value"
+                                        label="Value"
+                                        required={ false }
+                                        requiredErrorMessage="Certificate value is required"
+                                        placeholder={ "Value should be jwks URL." }
+                                        type="text"
+                                        validation={ (value: string, validation: Validation) => {
+                                            if (!FormValidation.url(value)) {
+                                                validation.isValid = false;
+                                                validation.errorMessages.push("This is not a valid URL");
+                                            }
+                                        } }
+                                        value={ config?.certificate && config?.certificate?.value &&
+                                        config.certificate.value }
+                                    />
+                                )
+                        }
+                        < Hint>
                             If the type is JWKS, value should be a jwks URL. If the type is PEM, value should be the
                             certificate in PEM format.
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
-
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Button primary type="submit" size="small" className="form-button">

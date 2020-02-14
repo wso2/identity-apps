@@ -72,7 +72,8 @@ export const ListLayout: React.FunctionComponent<PropsWithChildren<ListLayoutPro
                 <Grid>
                     <Grid.Row>
                         <Grid.Column width={ 4 }>
-                            <div className="left-aligned-actions">
+                            { /* TODO: Re-enable when the API is ready */ }
+                            { /* <div className="left-aligned-actions">
                                 {
                                     sortOptions && sortStrategy && onSortStrategyChange && (
                                         <Dropdown
@@ -85,11 +86,12 @@ export const ListLayout: React.FunctionComponent<PropsWithChildren<ListLayoutPro
                                     )
                                 }
                                 { leftActionPanel && leftActionPanel }
-                            </div>
+                            </div> */ }
                         </Grid.Column>
                         <Grid.Column width={ 12 }>
                             <div className="right-aligned-actions">
-                                { advancedSearch && advancedSearch }
+                                { /* TODO: Re-enable when the API is ready */ }
+                                { /* { advancedSearch && advancedSearch } */ }
                                 { rightActionPanel && rightActionPanel }
                             </div>
                         </Grid.Column>

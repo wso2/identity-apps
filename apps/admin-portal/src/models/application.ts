@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import { AuthProtocolMetaListItemInterface, OIDCDataInterface, OIDCMetadataInterface } from "./application-inbound";
+import {
+    AuthProtocolMetaListItemInterface,
+    OIDCDataInterface,
+    OIDCMetadataInterface,
+    SupportedAuthProtocolTypes
+} from "./application-inbound";
 
 /**
  *  Captures the basic details in the applications.
@@ -240,10 +245,56 @@ interface AuthProtocolMetaInterface {
     [ key: string ]: OIDCMetadataInterface | any;
 }
 
+/**
+ *  Application template list item interface.
+ */
+export interface ApplicationTemplateListItemInterface {
+    description: string;
+    displayName: string;
+    id: string;
+    image: any;
+    protocols: SupportedAuthProtocolTypes[];
+    technologies: ApplicationTemplateTechnology[];
+}
+
+/**
+ *  Application templates interface.
+ */
+export interface ApplicationTemplatesInterface {
+    [ key: string ]: ApplicationTemplateListItemInterface[];
+}
+
+/**
+ * Enum for supported application template categories.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum SupportedApplicationTemplateCategories {
+    QUICK_START = "quick_start"
+}
+
+/**
+ *  Application template technology interface.
+ */
+export interface ApplicationTemplateTechnology {
+    name: string;
+    displayName: string;
+    logo: any;
+}
+
 export const emptyApplication = (): ApplicationInterface => ({
     accessUrl: "",
     advancedConfigurations: {
-        discoverableByEndUsers: false
+        certificate: {
+            type: CertificateTypeInterface.JWKS,
+            value: ""
+        },
+        discoverableByEndUsers: false,
+        enableAuthorization: false,
+        returnAuthenticatedIdpList: false,
+        saas: false,
+        skipConsent: false,
     },
     claimConfiguration: undefined,
     description: "",

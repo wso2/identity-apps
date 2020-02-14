@@ -17,7 +17,7 @@
  */
 
 import { AppAvatar } from "@wso2is/react-components";
-import React, { useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { getApplicationDetails } from "../api";
 import { EditApplication } from "../components";
 import { history } from "../helpers";
@@ -29,17 +29,23 @@ import { ApplicationInterface, emptyApplication } from "../models";
  *
  * @return {JSX.Element}
  */
-export const ApplicationEditPage: React.FunctionComponent<{}> = (): JSX.Element => {
+export const ApplicationEditPage: FunctionComponent<any> = (): JSX.Element => {
 
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
+    const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(false);
 
     const getApplication = (id: string) => {
+        setApplicationRequestLoading(true);
+
         getApplicationDetails(id)
             .then((response) => {
                 setApplication(response);
             })
             .catch((error) => {
                 // TODO add to notifications
+            })
+            .finally(() => {
+                setApplicationRequestLoading(false);
             });
     };
 
@@ -50,7 +56,10 @@ export const ApplicationEditPage: React.FunctionComponent<{}> = (): JSX.Element 
         getApplication(id);
     }, []);
 
-    const handleBackButtonClick = () => {
+    /**
+     * Handles the back button click event.
+     */
+    const handleBackButtonClick = (): void => {
         history.push("/applications");
     };
 
@@ -63,7 +72,6 @@ export const ApplicationEditPage: React.FunctionComponent<{}> = (): JSX.Element 
                 <AppAvatar
                     name={ application.name }
                     image={ application.imageUrl }
-                    isLoading={ !application.name || !application.imageUrl }
                     size="tiny"
                     spaced="right"
                 />
@@ -75,7 +83,7 @@ export const ApplicationEditPage: React.FunctionComponent<{}> = (): JSX.Element 
             titleTextAlign="left"
             bottomMargin={ false }
         >
-            <EditApplication application={ application } />
+            <EditApplication application={ application } isLoading={ isApplicationRequestLoading } />
         </PageLayout>
     );
 };

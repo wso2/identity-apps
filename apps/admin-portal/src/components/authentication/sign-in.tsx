@@ -18,6 +18,8 @@
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { GlobalConfig } from "../../configs";
+import { USER_DENIED_CONSENT } from "../../constants";
 import { history } from "../../helpers";
 import { AppState } from "../../store";
 import { handleSignIn } from "../../store/actions";
@@ -25,13 +27,17 @@ import { handleSignIn } from "../../store/actions";
 /**
  * This component handles the sign-in function
  */
-export const SignIn = () => {
+export const SignIn = (props) => {
     const dispatch = useDispatch();
     const isAuth = useSelector((state: AppState) => state.authenticationInformation.isAuth);
 
+    const error = new URLSearchParams(props.location.search).get("error_description");
+
     useEffect(() => {
-        if (!isAuth) {
+        if (!isAuth && !error) {
             dispatch(handleSignIn());
+        } else if (error === USER_DENIED_CONSENT) {
+            dispatch(handleSignIn(true));
         } else {
             loginSuccessRedirect();
         }
@@ -44,8 +50,8 @@ export const SignIn = () => {
     const loginSuccessRedirect = () => {
         const AuthenticationCallbackUrl = getAuthenticationCallbackUrl();
         const location =
-            !AuthenticationCallbackUrl || AuthenticationCallbackUrl === APP_LOGIN_PATH
-                ? APP_HOME_PATH
+            !AuthenticationCallbackUrl || AuthenticationCallbackUrl === GlobalConfig.appLoginPath
+                ? GlobalConfig.appHomePath
                 : AuthenticationCallbackUrl;
 
         history.push(location);

@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/http",
-    "version": "1.0.9",
+    "version": "1.0.21",
     "description": "HTTP module for WSO2 Identity Server web-apps.",
     "keywords": [
         "WSO2",
@@ -21,16 +21,19 @@
         "prebuild": "npm run clean",
         "build": "npm run compile",
         "clean": "rimraf ./dist",
-        "compile": "tsc -p tsconfig.json",
+        "compile": "run-script-os",
+        "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
+        "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
         "lint": "tslint -t stylish --project ."
     },
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/authentication": "^1.0.9"
+        "@wso2is/authentication": "^1.0.21"
     },
     "devDependencies": {
-        "rimraf": "^3.0.2"
+        "rimraf": "^3.0.2",
+        "run-script-os": "^1.0.7"
     },
     "peerDependencies": {
         "axios": "*"

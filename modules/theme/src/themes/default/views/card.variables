@@ -60,3 +60,21 @@ Recent Application Card
 @selectionCardDescriptionMinHeight: 20px;
 @selectionCardDefaultStateBorderBottom: 3px solid transparent;
 @selectionCardSelectedStateBorderBottom: 3px solid @primaryColor;
+
+/*-------------------------------
+    Application Template Card
+--------------------------------*/
+
+@appTemplateCardDefaultWidth: 250px;
+@appTemplateCardRightSpacing: 30px;
+@appTemplateCardTextContainerPadding: 0.8em 1em;
+@appTemplateCardHeaderFontSize: 1.2em;
+@appTemplateCardHeaderFontWeight: 500;
+@appTemplateCardHeaderLineHeight: 1.3em;
+@appTemplateCardDescriptionFontSize: 0.8em;
+@appTemplateCardHeaderMaxWidth: 100%;
+@appTemplateCardDescriptionMaxWidth: 100%;
+@appTemplateCardDescriptionMinHeight: 20px;
+@appTemplateCardTechnologiesTitleFontSize: 0.7em;
+@appTemplateCardBorderBottomWidth: 3px;
+@appTemplateCardSelectedStateBorderBottomColor: @primaryColor;

@@ -36,11 +36,13 @@ export const ConsentIcon = require("../lib/assets/images/icons/consent-icon.svg"
 export const ControlsIcon = require("../lib/assets/images/icons/controls-icon.svg");
 export const CrossIcon = require("../lib/assets/images/icons/cross-icon.svg");
 export const DashboardIcon = require("../lib/assets/images/icons/dashboard-icon.svg");
+export const DocumentIcon = require("../lib/assets/images/icons/document-icon.svg");
 export const DotIcon = require("../lib/assets/images/icons/dot-icon.svg");
 export const EmailIcon = require("../lib/assets/images/icons/email-icon.svg");
 export const ErrorIcon = require("../lib/assets/images/icons/error-icon.svg");
 export const FingerprintIcon = require("../lib/assets/images/icons/fingerprint.svg");
 export const ForbiddenIcon = require("../lib/assets/images/icons/forbidden-icon.svg");
+export const GearsIcon = require("../lib/assets/images/icons/gears-icon.svg");
 export const InfoIcon = require("../lib/assets/images/icons/info-icon.svg");
 export const LockIcon = require("../lib/assets/images/icons/lock-icon.svg");
 export const MonitorIcon = require("../lib/assets/images/icons/monitor-icon.svg");
@@ -49,6 +51,7 @@ export const PadlockIcon = require("../lib/assets/images/icons/padlock-icon.svg"
 export const PlugIcon = require("../lib/assets/images/icons/plug-icon.svg");
 export const SecurityQuestionsIcon = require("../lib/assets/images/icons/security-questions-icon.svg");
 export const SMSIcon = require("../lib/assets/images/icons/sms-icon.svg");
+export const SpinWheelIcon = require("../lib/assets/images/icons/spin-wheel-icon.svg");
 export const SuccessIcon = require("../lib/assets/images/icons/success-icon.svg");
 export const TickCircleIcon = require("../lib/assets/images/icons/tick-circle-icon.svg");
 export const ToolsIcon = require("../lib/assets/images/icons/tools-icon.svg");
@@ -85,6 +88,17 @@ export const OIDCLogo = require("../lib/assets/images/protocols/oidc.png");
 // Misc
 export const DummyUser = require("../lib/assets/images/user.png");
 export const OrangeAppIconBackground = require("../lib/assets/images/app-icon-background.png");
+
+// Technology Logos
+export const AngularLogo = require("../lib/assets/images/technologies/angular-logo.svg");
+export const DotNetLogo = require("../lib/assets/images/technologies/dotnet-logo.svg");
+export const JavaLogo = require("../lib/assets/images/technologies/java-logo.svg");
+export const ReactLogo = require("../lib/assets/images/technologies/react-logo.svg");
+export const VueLogo = require("../lib/assets/images/technologies/vue-logo.svg");
+
+// Application template illustrations
+export const WebAppTemplateIllustration = require("../lib/assets/images/illustrations/web-app-illustration.svg");
+export const SPATemplateIllustration = require("../lib/assets/images/illustrations/spa-illustration.svg");
 
 /**
  * The following has been kept for backward compatibility.

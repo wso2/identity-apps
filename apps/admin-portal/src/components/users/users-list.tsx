@@ -16,17 +16,38 @@
  * under the License.
  */
 
-import { UserAvatar } from "@wso2is/react-components";
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Container, Divider, Grid, Icon, List, Popup, Table } from "semantic-ui-react";
+import { ResourceList, ResourceListItem, UserAvatar } from "@wso2is/react-components";
+import React from "react";
+import { Grid, List } from "semantic-ui-react";
+import { history } from "../../helpers";
+import { UserListInterface } from "../../models";
 
 /**
  * Prop types for the liked accounts component.
  */
 interface UsersListProps {
-    usersList: any;
+    usersList: UserListInterface;
+    handleUserDelete: (userId: string) => void;
 }
+
+const listContent = (userName: string, lastModified: any) => (
+    <Grid>
+        <Grid.Column width={ 6 }>
+            <List.Content>
+                <List.Description className="list-item-meta">
+                    { userName }
+                </List.Description>
+            </List.Content>
+        </Grid.Column>
+        <Grid.Column width={ 9 }>
+            <List.Content>
+                <List.Description className="list-item-meta">
+                    { lastModified }
+                </List.Description>
+            </List.Content>
+        </Grid.Column>
+    </Grid>
+);
 
 /**
  * Users info page.
@@ -34,51 +55,89 @@ interface UsersListProps {
  * @return {JSX.Element}
  */
 export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersListProps): JSX.Element => {
-    const { usersList } = props;
+    const {
+        usersList,
+        handleUserDelete
+    } = props;
+
+    const handleUserEdit = (userId: string) => {
+        history.push(`users/${ userId }`);
+    };
+
+    /**
+     * This function calculate the number of days since the last
+     * modified date to the current date.
+     *
+     * @param modifiedDate
+     */
+    const handleLastModifiedDate = (modifiedDate: string) => {
+        if (modifiedDate) {
+            const currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, "/");
+            const modDate = modifiedDate.split("T");
+            const modDateNew = modDate[0].replace(/-/g, "/");
+
+            const dateX = new Date(modDateNew);
+            const dateY = new Date(currentDate);
+
+            if (dateY.getDate() - dateX.getDate() !== 0) {
+                return Math.abs(dateY.getDate() - dateX.getDate()) + " " + "days ago";
+            } else {
+                return "today";
+            }
+        } else {
+            return "unknown";
+        }
+    };
 
     return (
-        <Table basic="very" className="sub-section-table" selectable stackable>
-            <Table.Header>
-                <Table.Row>
-                    <Table.HeaderCell>Name</Table.HeaderCell>
-                    <Table.HeaderCell>Created On</Table.HeaderCell>
-                    <Table.HeaderCell>Last Modified</Table.HeaderCell>
-                    <Table.HeaderCell />
-                </Table.Row>
-            </Table.Header>
-            <Table.Body>
-                {
-                    usersList.map((user, index) => (
-                        <Table.Row key={ index }>
-                            <Table.Cell>
-                                <UserAvatar
-                                    floated="left"
-                                    spaced="right"
-                                    size="mini"
-                                    image=""
-                                    name={ user.userName }
-                                />
-                                <p  style={ { padding: "10px 45px" } }>{ user.userName }</p>
-                            </Table.Cell>
-                            <Table.Cell>{ user.meta.created }</Table.Cell>
-                            <Table.Cell>{ user.meta.lastModified }</Table.Cell>
-                            <Table.Cell>
-                                <Grid>
-                                    <Grid.Column>
-                                        <Icon name="pencil alternate" size="small" color="grey" />
-                                    </Grid.Column>
-                                    <Grid.Column>
-                                        <Icon name="trash alternate" size="small" color="grey" />
-                                    </Grid.Column>
-                                    <Grid.Column>
-                                        <Icon name="ellipsis vertical" size="small" color="grey" />
-                                    </Grid.Column>
-                                </Grid>
-                            </Table.Cell>
-                        </Table.Row>
-                    ))
-                }
-            </Table.Body>
-        </Table>
+        <ResourceList className="applications-list">
+            {
+                usersList && usersList.Resources && usersList.Resources instanceof Array &&
+                usersList.Resources.map((user, index) => (
+                    <ResourceListItem
+                        key={ index }
+                        actions={ [
+                            {
+                                icon: "pencil alternate",
+                                onClick: () => handleUserEdit(user.id),
+                                popupText: "edit",
+                                type: "button"
+                            },
+                            {
+                                icon: "trash alternate",
+                                onClick: () => handleUserDelete(user.id),
+                                popupText: "delete user",
+                                type: "button"
+                            },
+                            {
+                                icon: "ellipsis vertical",
+                                onClick: null,
+                                popupText: "more",
+                                subActions: [
+                                    {
+                                        key: "1",
+                                        text: "Delete"
+                                    }
+                                ],
+                                type: "dropdown"
+                            }
+                        ] }
+                        avatar={ (
+                            <UserAvatar
+                                name={ user.userName }
+                                size="mini"
+                                floated="left"
+                            />
+                        ) }
+                        itemHeader={ user.name && user.name.givenName !== undefined ? user.name.givenName +
+                            " " + user.name.familyName : user.userName }
+                        itemDescription={ user.emails ? user.emails[0].toString() :
+                            user.userName }
+                        metaContent={ listContent(user.userName, "last modified" + " " +
+                            handleLastModifiedDate(user.meta.lastModified)) }
+                    />
+                ))
+            }
+        </ResourceList>
     );
 };

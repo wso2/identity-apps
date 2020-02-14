@@ -120,6 +120,20 @@ export const views: Views = {
                                 invalid: "Please enter a valid email address"
                             }
                         },
+                        firstName: {
+                            label: "First name",
+                            placeholder: "Enter your first name",
+                            validations: {
+                                empty: "First name is a required field"
+                            }
+                        },
+                        lastName: {
+                            label: "Last name",
+                            placeholder: "Enter your last name",
+                            validations: {
+                                empty: "Last name is a required field"
+                            }
+                        },
                         newPassword: {
                             label: "New password",
                             placeholder: "Enter the new password",
@@ -161,6 +175,129 @@ export const views: Views = {
                     heading: "Warning",
                     message: "Please note that this created user will not be assigned with a role. If you wish to " +
                         "assign roles to this user please click on the button below."
+                }
+            },
+            profile: {
+                fields: {
+                    addresses_home: "Home address",
+                    addresses_work: "Work address",
+                    emails: "Email",
+                    emails_home: "Home email",
+                    emails_other: "Other email",
+                    emails_work: "Work email",
+                    generic: {
+                        default: "Add {{fieldName}}"
+                    },
+                    name_familyName: "Last name",
+                    name_givenName: "First name",
+                    phoneNumbers: "Phone number",
+                    phoneNumbers_home: "Home phone number",
+                    phoneNumbers_mobile: "Mobile number",
+                    phoneNumbers_other: "Other phone number",
+                    phoneNumbers_work: "Work phone number",
+                    profileUrl: "URL",
+                    userName: "Username"
+                },
+                forms: {
+                    emailChangeForm: {
+                        inputs: {
+                            email: {
+                                label: "Email",
+                                note: "NOTE: This will change the email address in your profile",
+                                placeholder: "Enter your email address",
+                                validations: {
+                                    empty: "Email address is a required field",
+                                    invalidFormat: "The email address is not of the correct format"
+                                }
+                            }
+                        }
+                    },
+                    generic: {
+                        inputs: {
+                            placeholder: "Enter your {{fieldName}}",
+                            validations: {
+                                empty: "{{fieldName}} is a required field",
+                                invalidFormat: "The {{fieldName}} is not of the correct format"
+                            }
+                        }
+                    },
+                    mobileChangeForm: {
+                        inputs: {
+                            mobile: {
+                                label: "Mobile number",
+                                note: "NOTE: This will change the mobile number in your profile",
+                                placeholder: "Enter your mobile number",
+                                validations: {
+                                    empty: "Mobile number is a required field",
+                                    invalidFormat: "The mobile number is not of the right format"
+                                }
+                            }
+                        }
+                    },
+                    nameChangeForm: {
+                        inputs: {
+                            firstName: {
+                                label: "First name",
+                                placeholder: "Enter the first name",
+                                validations: {
+                                    empty: "First name is a required field"
+                                }
+                            },
+                            lastName: {
+                                label: "Last name",
+                                placeholder: "Enter the last name",
+                                validations: {
+                                    empty: "Last name is a required field"
+                                }
+                            }
+                        }
+                    },
+                    organizationChangeForm: {
+                        inputs: {
+                            organization: {
+                                label: "Organization",
+                                placeholder: "Enter your organization",
+                                validations: {
+                                    empty: "Organization is a required field"
+                                }
+                            }
+                        }
+                    }
+                },
+                notifications: {
+                    getProfileInfo: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while retrieving the profile details"
+                        },
+                        genericError: {
+                            description: "Error occurred while retrieving the profile details",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The required user profile details are retrieved successfully",
+                            message: "Successfully retrieved user profile"
+                        }
+                    },
+                    updateProfileInfo: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while updating the profile details"
+                        },
+                        genericError: {
+                            description: "Error occurred while updating the profile details",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The required user profile details were successfully updated",
+                            message: "User profile updated successfully"
+                        }
+                    }
+                },
+                placeholders: {
+                    SCIMDisabled: {
+                        heading: "This feature is not available for your account"
+                    }
                 }
             }
         },
@@ -398,6 +535,20 @@ export const views: Views = {
                         message: "User added successfully"
                     }
                 },
+                deleteUser: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error deleting the user"
+                    },
+                    genericError: {
+                        description: "Couldn't delete the user",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The user was deleted successfully.",
+                        message: "User deleted successfully"
+                    }
+                },
                 fetchUsers: {
                     error: {
                         description: "{{description}}",
@@ -457,7 +608,7 @@ export const views: Views = {
                 },
                 resultsIndicator: "Showing results for the query \"{{query}}\""
             }
-        },
+        }
     },
     pages: {
         overView: {
@@ -506,5 +657,5 @@ export const views: Views = {
             },
             title: "Page under construction"
         }
-    },
+    }
 };

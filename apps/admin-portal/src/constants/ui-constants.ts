@@ -51,6 +51,14 @@ export class UIConstants {
     public static readonly DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING: number = 0;
 
     /**
+     * `Gravatar` website URL.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly GRAVATAR_URL: string = "https://www.gravatar.com";
+
+    /**
      * Interval to dismiss the alerts.
      * @constant
      * @type {number}

@@ -61,7 +61,7 @@ export interface Common {
     operatingSystem: string;
     operations: string;
     overview: string;
-    personalInfo: string;
+    myAccount: string;
     priority: string;
     privacy: string;
     properties: string;
@@ -158,6 +158,7 @@ export interface Views {
             },
             notifications: {
                 addUser: Notification;
+                deleteUser: Notification;
                 fetchUsers: Notification;
             },
             search: {
@@ -217,6 +218,20 @@ export interface Views {
                                 mismatch: string;
                             }
                         },
+                        firstName: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                            }
+                        },
+                        lastName: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                            }
+                        },
                         username: {
                             label: string;
                             placeholder: string;
@@ -273,6 +288,103 @@ export interface Views {
                     heading: string;
                     message: string;
                 }
+            },
+            profile: {
+                fields: {
+                    generic: {
+                        default: string;
+                    };
+                    emails: string;
+                    profileUrl: string;
+                    addresses_work: string;
+                    addresses_home: string;
+                    emails_home: string;
+                    emails_other: string;
+                    emails_work: string;
+                    name_familyName: string;
+                    name_givenName: string;
+                    phoneNumbers: string;
+                    phoneNumbers_home: string;
+                    phoneNumbers_mobile: string;
+                    phoneNumbers_work: string;
+                    phoneNumbers_other: string;
+                    userName: string;
+                };
+                forms: {
+                    generic: {
+                        inputs: {
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                invalidFormat: string;
+                            };
+                        };
+                    };
+                    emailChangeForm: {
+                        inputs: {
+                            email: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalidFormat: string;
+                                };
+                                note: string;
+                            };
+                        };
+                    };
+                    mobileChangeForm: {
+                        inputs: {
+                            mobile: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                    invalidFormat: string;
+                                };
+                                note: string;
+                            };
+                        };
+                    };
+                    nameChangeForm: {
+                        inputs: {
+                            firstName: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            lastName: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                        };
+                    };
+                    organizationChangeForm: {
+                        inputs: {
+                            organization: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                        };
+                    };
+                };
+                notifications: {
+                    getProfileInfo: Notification;
+                    updateProfileInfo: Notification;
+                };
+                placeholders: {
+                    SCIMDisabled: {
+                        heading: string;
+                    }
+                };
             }
         },
         footer: {

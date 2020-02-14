@@ -819,4 +819,95 @@ body {
     }
 }
 
+/*****************************************
+                Steps
+*****************************************/
+
+.steps {
+    text-align: center;
+
+    .header {
+        color: @stepsHeaderFontColor;
+        font-size: @stepsHeaderFontSize;
+    }
+    .step {
+        display: inline-block;
+        text-align: center;
+        color: @stepDefaultFontColor;
+        font-size: @stepFontSize;
+
+        .step-icon-wrapper {
+            width: @stepIconSize;
+            height: @stepIconSize;
+            border-radius: 50%;
+            background: @stepIconDefaultBgColor;
+            text-align: center;
+            display: inline-table;
+
+            .theme-icon {
+                display: table-cell;
+                vertical-align: middle;
+
+                .icon {
+                    margin-top: 5px;
+                }
+                .path {
+                    fill: @white;
+                }
+            }
+            &:after {
+                content: "- - -";
+                color: @stepDefaultFontColor;
+                display: inline-block;
+                transition: 0.5s;
+                position: absolute;
+                margin-top: 10px;
+                margin-left: 40px;
+                font-weight: bold;
+                font-size: 1.5em;
+            }
+        }
+
+        .step-title {
+            margin-top: 8px;
+        }
+
+        &.completed {
+            color: @stepCompleteFontColor;
+
+            .step-icon-wrapper {
+                background: @stepIconCompleteBgColor;
+
+                &:after {
+                    color: @stepCompleteFontColor;
+                }
+            }
+        }
+        &.active {
+            color: @stepActiveFontColor;
+
+            .step-icon-wrapper {
+                background: @stepIconActiveBgColor;
+
+                &:after {
+                    color: @stepActiveFontColor;
+                }
+            }
+        }
+        &:not(:last-child) {
+            margin-right: @stepHorizontalSpacing;
+        }
+        &:not(:first-child) {
+            margin-left: @stepHorizontalSpacing;
+        }
+        &:last-child {
+            .step-icon-wrapper {
+                &:after {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
 .loadUIOverrides();

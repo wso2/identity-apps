@@ -16,87 +16,155 @@
  * under the License.
  */
 
-import React from "react";
-import { Grid, Icon, Input } from "semantic-ui-react";
-import { ApplicationTemplate } from "../components";
-import { history } from "../helpers/history";
+import { Heading } from "@wso2is/react-components";
+import React, { FunctionComponent, SyntheticEvent, useState } from "react";
+import { ApplicationCreateWizard, QuickStartApplicationTemplates } from "../components";
+import { ApplicationTemplateIllustrations, TechnologyLogos } from "../configs";
+import { history } from "../helpers";
 import { PageLayout } from "../layouts";
+import {
+    ApplicationTemplateListItemInterface, ApplicationTemplatesInterface, SupportedApplicationTemplateCategories,
+    SupportedAuthProtocolTypes
+} from "../models";
 
 /**
  * Choose the application template from this page.
  *
  * @return {JSX.Element}
  */
-export const ApplicationTemplateSelectPage = (): JSX.Element => {
+export const ApplicationTemplateSelectPage: FunctionComponent<any> = (): JSX.Element => {
+
+    const [ showWizard, setShowWizard ] = useState<boolean>(false);
+    const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(null);
+    const [ selectedTemplateCategoryTitle, setSelectedTemplateCategoryTitle ] = useState<string>("");
 
     // TODO Remove this hard coded list and retrieve the template list from an endpoint.
-    // Template list
-    const Templates = {
-        SPA: {
-            data: "SPApplication",
-            description: "Front end applications which uses API. Mostly written using script languages.",
-            example: "eg ReactJs, Nodejs apps",
-            logo: "",
-            name: "Single Page Application",
-            protocol: "OIDC"
+    // Quick start templates list.
+    const QUICK_START_APPLICATION_TEMPLATES: ApplicationTemplateListItemInterface[] = [
+        {
+            description: "Front end applications which uses APIs. Mostly written using scripting languages.",
+            displayName: "Single page application",
+            id: "SPApplication",
+            image: ApplicationTemplateIllustrations?.spa,
+            protocols: [ SupportedAuthProtocolTypes.OIDC ],
+            technologies: [
+                {
+                    displayName: "Angular",
+                    logo: TechnologyLogos.angular,
+                    name: "angular"
+                },
+                {
+                    displayName: "React",
+                    logo: TechnologyLogos.react,
+                    name: "react"
+                },
+                {
+                    displayName: "Vue",
+                    logo: TechnologyLogos.vue,
+                    name: "vuejs"
+                }
+            ]
         },
-        oauthWeb: {
-            data: "OAuthWebApplication",
-            description: "Regular web applications that use redirections inside browsers.",
-            example: "eg JAVA, .Net apps",
-            logo: "",
-            name: "Web APP",
-            protocol: "OIDC"
+        {
+            description: "Regular web applications which uses redirections inside browsers.",
+            displayName: "Web application",
+            id: "OAuthWebApplication",
+            image: ApplicationTemplateIllustrations?.webApp,
+            protocols: [ SupportedAuthProtocolTypes.OIDC ],
+            technologies: [
+                {
+                    displayName: "Java",
+                    logo: TechnologyLogos.java,
+                    name: "java"
+                },
+                {
+                    displayName: ".NET",
+                    logo: TechnologyLogos.dotNet,
+                    name: "dotnet"
+                }
+            ]
         }
+    ];
+
+    // TODO Remove this hard coded list and retrieve the template list from an endpoint.
+    // Templates list.
+    const TEMPLATES: ApplicationTemplatesInterface = {
+        [ SupportedApplicationTemplateCategories.QUICK_START as string ]: QUICK_START_APPLICATION_TEMPLATES
     };
 
-    // Create template object
-    const readTemplates = Object.keys(Templates).map((template) => {
-        return (
-            <Grid.Column width={ 5 } key={ template }>
-                <ApplicationTemplate
-                    name={ Templates[template].name }
-                    description={ Templates[template].description }
-                    example={ Templates[template].example }
-                    webApp={ false }
-                    templateID={ Templates[template].data }
-                    protocol={ Templates[template].protocol }
-                />
-            </Grid.Column>
-        );
-    });
-
-    const navigate = (): void => {
+    /**
+     * Handles back button click.
+     */
+    const handleBackButtonClick = (): void => {
         history.push("/applications");
     };
+
+    /**
+     * Handles template selection.
+     *
+     * @param {React.SyntheticEvent} e - Click event.
+     * @param {string} id - Id of the template.
+     * @param {SupportedApplicationTemplateCategories} templateCategory - The category of the selected template.
+     */
+    const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string },
+                                     templateCategory: SupportedApplicationTemplateCategories): void => {
+
+        if (!TEMPLATES.hasOwnProperty(templateCategory)) {
+            return;
+        }
+
+        const selected = TEMPLATES[templateCategory].find((template) => template.id === id);
+
+        if (!selected) {
+            return;
+        }
+
+        let categoryTitle = "";
+
+        switch (templateCategory) {
+            case SupportedApplicationTemplateCategories.QUICK_START:
+                categoryTitle = "Quick Start";
+                break;
+            default:
+                break;
+        }
+
+        setSelectedTemplateCategoryTitle(categoryTitle);
+        setSelectedTemplate(selected);
+        setShowWizard(true);
+    };
+
     return (
         <PageLayout
-            title={ "Create Application" }
-            description={ " Please choose one of the types to build the application " }
+            title="Select application type"
+            contentTopMargin={ true }
+            description="Please choose one of the following application types."
+            backButton={ {
+                onClick: handleBackButtonClick,
+                text: "Go back to applications"
+            } }
+            titleTextAlign="left"
+            bottomMargin={ false }
+            showBottomDivider
         >
-            <Grid>
-                <Grid.Row>
-                    <Grid.Column>
-                        <Icon
-                            link
-                            size="large"
-                            onClick={ navigate }
-                            color="grey"
-                            name="arrow left"
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column>
-                        <Input style={ { width: "100%" } } icon="search" placeholder="Search Template..."/>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    { readTemplates }
-                </Grid.Row>
-            </Grid>
+            <div className="quick-start-templates">
+                <Heading as="h1">Quick Start</Heading>
+                <QuickStartApplicationTemplates
+                    templates={ TEMPLATES[ SupportedApplicationTemplateCategories.QUICK_START ] }
+                    onTemplateSelect={ (e, { id }) =>
+                        handleTemplateSelection(e, { id }, SupportedApplicationTemplateCategories.QUICK_START)
+                    }
+                />
+            </div>
+            { showWizard && (
+                    <ApplicationCreateWizard
+                        title={ selectedTemplateCategoryTitle }
+                        subTitle={ selectedTemplate?.displayName }
+                        closeWizard={ () => setShowWizard(false) }
+                        templateID={ selectedTemplate?.id }
+                        protocol={ selectedTemplate?.protocols[0] }
+                    />
+                ) }
         </PageLayout>
     );
 };
-
-export default ApplicationTemplateSelectPage;
