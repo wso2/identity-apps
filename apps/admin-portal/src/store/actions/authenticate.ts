@@ -176,7 +176,11 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
             TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_CREATE,
             TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_DELETE,
             TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_VIEW,
-            TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_UPDATE
+            TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_UPDATE,
+            TokenConstants.INTERNAL_IDP.INTERNAL_IDP_CREATE,
+            TokenConstants.INTERNAL_IDP.INTERNAL_IDP_VIEW,
+            TokenConstants.INTERNAL_IDP.INTERNAL_IDP_DELETE,
+            TokenConstants.INTERNAL_IDP.INTERNAL_IDP_UPDATE
         ],
         serverOrigin: GlobalConfig.serverOrigin,
         tenant: GlobalConfig.tenant

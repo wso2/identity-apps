@@ -74,11 +74,21 @@ export const INTERNAL_ROLE_MGT = {
 export const HUMAN_TASK_SCOPE = "internal_humantask_view";
 
 /**
- *  Application management scope
+ *  Application management scope.
  */
 export const INTERNAL_APP_MGT = {
     INTERNAL_APP_MGT_CREATE: "internal_application_mgt_create",
     INTERNAL_APP_MGT_DELETE: "internal_application_mgt_delete",
     INTERNAL_APP_MGT_UPDATE: "internal_application_mgt_update",
     INTERNAL_APP_MGT_VIEW: "internal_application_mgt_view"
+};
+
+/**
+ *  Identity Provider management scope.
+ */
+export const INTERNAL_IDP = {
+    INTERNAL_IDP_CREATE: "internal_idp_create",
+    INTERNAL_IDP_DELETE: "internal_idp_delete",
+    INTERNAL_IDP_UPDATE: "internal_idp_update",
+    INTERNAL_IDP_VIEW: "internal_idp_view"
 };
