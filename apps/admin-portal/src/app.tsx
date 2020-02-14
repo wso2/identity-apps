@@ -21,7 +21,6 @@ import { I18nextProvider } from "react-i18next";
 import { Provider } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
-import { SignIn, SignOut } from "./components/authentication";
 import { baseRoutes, GlobalConfig, i18n } from "./configs";
 import { AppConfig, history } from "./helpers";
 import { AppConfigInterface } from "./models";
