@@ -18,7 +18,7 @@
 
 import { AxiosHttpClient } from "@wso2is/http";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
-import { HttpMethods } from "../models";
+import { HttpMethods, UserListInterface } from "../models";
 
 /**
  * Initialize an axios Http client.
@@ -31,19 +31,19 @@ const httpClient = AxiosHttpClient.getInstance();
  *
  * @returns {Promise<BasicProfileInterface>} a promise containing the user list.
  */
-export const getUsersList = (): Promise<any> => {
+export const getUsersList = (limit: number, offset: number): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.users
+        url: ServiceResourcesEndpoint.users + "?limit=" + limit + "&offset=" + offset
     };
 
     return httpClient.request(requestConfig)
         .then((response) => {
-            return Promise.resolve(response);
+            return Promise.resolve(response.data as UserListInterface);
         })
         .catch((error) => {
             return Promise.reject(error);
@@ -90,6 +90,32 @@ export const addUser = (data: object): Promise<any> => {
         },
         method: HttpMethods.POST,
         url: ServiceResourcesEndpoint.users
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Delete user.
+ *
+ * @param user id
+ *
+ * @returns {Promise<BasicProfileInterface>} a promise containing the response.
+ */
+export const deleteUser = (userId: string): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/scim+json"
+        },
+        method: HttpMethods.DELETE,
+        url: ServiceResourcesEndpoint.users + "/" + userId
     };
 
     return httpClient.request(requestConfig)

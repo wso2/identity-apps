@@ -26,7 +26,8 @@ import {
     HomePage,
     PageNotFound,
     PrivacyPage,
-    UsersPage
+    UserEditPage,
+    UsersPage,
 } from "../pages";
 
 /**
@@ -76,6 +77,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         children: [
             {
                 component: UsersPage,
+                exact: true,
                 icon: "usersAndRoles",
                 level: 2,
                 name: "Users",
@@ -85,12 +87,22 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             }
         ],
         component: UsersPage,
+        exact: true,
         icon: "usersAndRoles",
         id: "usersAndRoles",
         name: "Users & Roles",
         path: "/users",
         protected: true,
         showOnSidePanel: true,
+    },
+    {
+        component: UserEditPage,
+        exact: true,
+        icon: "usersAndRoles",
+        name: "User-Edit",
+        path: "/users/:id",
+        protected: true,
+        showOnSidePanel: false,
     },
     {
         component: PrivacyPage,

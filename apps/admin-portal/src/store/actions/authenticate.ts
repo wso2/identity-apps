@@ -25,14 +25,14 @@ import {
     SignOutUtil
 } from "@wso2is/authentication";
 import _ from "lodash";
-import { getProfileInfo } from "../../api";
+import { getProfileInfo, getProfileSchemas } from "../../api";
 import { GlobalConfig, i18n, ServiceResourcesEndpoint } from "../../configs";
 import * as TokenConstants from "../../constants";
 import { history } from "../../helpers";
-import { AlertLevels, ProfileSchema } from "../../models";
+import { AlertLevels, BasicProfileInterface, ProfileSchema } from "../../models";
 import { store } from "../index";
 import { addAlert } from "./global";
-import { setProfileInfoLoader } from "./loaders";
+import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
 import { authenticateActionTypes } from "./types";
 
 /**
@@ -95,6 +95,7 @@ export const getProfileInformation = () => (dispatch) => {
                 // If the schemas in the redux store is empty, fetch the SCIM schemas from the API.
                 if (_.isEmpty(store.getState().authenticationInformation.profileSchemas)) {
                     isCompletionCalculated = true;
+                    dispatch(getScimSchemas(infoResponse));
                 }
 
                 return;
@@ -251,6 +252,18 @@ export const handleSignOut = () => (dispatch) => {
                 history.push(GlobalConfig.appLoginPath);
             });
     }
+};
+
+/**
+ * Get SCIM2 schemas
+ */
+export const getScimSchemas = (profileInfo: BasicProfileInterface = null) => (dispatch) => {
+    dispatch(setProfileSchemaLoader(true));
+    getProfileSchemas()
+        .then((response: ProfileSchema[]) => {
+            dispatch(setProfileSchemaLoader(false));
+            dispatch(setScimSchemas(response));
+        });
 };
 
 /**

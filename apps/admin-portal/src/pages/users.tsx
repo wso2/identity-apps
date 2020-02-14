@@ -16,14 +16,19 @@
  * under the License.
  */
 
+import { PrimaryButton } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Divider, Grid } from "semantic-ui-react";
-import { getUsersList } from "../api";
+import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { deleteUser, getUsersList } from "../api";
 import { AddUser, UserSearch, UsersList } from "../components/users";
+import { ListLayout, PageLayout } from "../layouts";
 import { AlertInterface, AlertLevels } from "../models";
+import { UserListInterface } from "../models/user";
 import { addAlert } from "../store/actions";
+
+const DEFAULT_USER_LIST_ITEM_LIMIT: number = 10;
 
 /**
  * Users info page.
@@ -37,27 +42,25 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
     const [ searchQuery, setSearchQuery ] = useState("");
     const [ isBasicModalOpen, setModalOpen ] = useState(false);
     const [ isRoleModalOpen, setRoleModalOpen] = useState(false);
-    const [ usersList, setUsersList ] = useState([]);
+    const [ listOffset, setListOffset ] = useState<number>(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(0);
 
-    useEffect(() => {
-        getList();
-    }, []);
+    const [ usersList, setUsersList ] = useState<UserListInterface>({});
 
-    const getList = () => {
-        getUsersList()
+    const getList = (limit: number, offset: number) => {
+        getUsersList(limit, offset)
             .then((response) => {
-                handleAlerts({
-                    description: t(
-                        "views:components.users.notifications.fetchUsers.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "views:components.users.notifications.fetchUsers.success.message"
-                    )
-                });
-                setUsersList(response.data.Resources);
+                setUsersList(response);
             });
     };
+
+    useEffect(() => {
+        setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
+    }, []);
+
+    useEffect(() => {
+        getList(listItemLimit, listOffset);
+    }, [ listOffset, listItemLimit ]);
 
     /**
      * Dispatches the alert object to the redux store.
@@ -74,8 +77,31 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
      *
      * @param {string} query - Search query.
      */
-    const handleUsersFilter = (query: string): void => {
+    const handleUserFilter = (query: string): void => {
         setSearchQuery(query);
+    };
+
+    const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
+        setListOffset((data.activePage as number - 1) * listItemLimit);
+    };
+
+    const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+        setListItemLimit(data.value as number);
+    };
+
+    const handleUserDelete = (userId: string): void => {
+        deleteUser(userId)
+            .then(() => {
+                handleAlerts({
+                    description: t(
+                        "views:components.users.notifications.deleteUser.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "views:components.users.notifications.deleteUser.success.message"
+                    )
+                });
+            });
     };
 
     const handleModalOpen = (): void => {
@@ -101,41 +127,42 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
     ];
 
     return (
-            <Grid>
-                <Grid.Row width={ 16 } columns={ 2 }>
-                    <Grid.Column>
-                        <UserSearch onFilter={ handleUsersFilter }/>
-                    </Grid.Column>
-                    <Grid.Column>
-                        <Button
-                            trigger={ <React.Fragment /> }
-                            icon="ellipsis horizontal"
-                            size="medium"
-                            floated="right"
-                        />
-                        <Button
-                            primary
-                            floated="right"
-                            size="medium"
-                            onClick={ handleModalOpen }
-                        >
-                            + ADD USER
-                        </Button>
-                        <AddUser
-                            getUserList={ getList }
-                            isBasicModalOpen={ isBasicModalOpen }
-                            handleModalClose={ handleModalClose }
-                            isRoleModalOpen={ isRoleModalOpen }
-                            handleRoleModalOpen={ handleRoleModalOpen }
-                            handleRoleModalClose={ handleRoleModalClose }
-                            onAlertFired={ handleAlerts }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                <Divider/>
-                <Grid.Row width={ 16 }>
-                    <UsersList usersList={ usersList }/>
-                </Grid.Row>
-            </Grid>
+        <PageLayout
+            title="Users page"
+            description="Create and manage users, user access and user profiles."
+        >
+            <ListLayout
+                // TODO add sorting functionality.
+                advancedSearch={ <UserSearch onFilter={ handleUserFilter }/> }
+                currentListSize={ usersList.count }
+                listItemLimit={ listItemLimit }
+                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                onPageChange={ handlePaginationChange }
+                rightActionPanel={
+                    (
+                        <PrimaryButton onClick={ handleModalOpen }>
+                            <Icon name="add"/>
+                            Add User
+                            <AddUser
+                                getUserList={ getList }
+                                isBasicModalOpen={ isBasicModalOpen }
+                                handleModalClose={ handleModalClose }
+                                isRoleModalOpen={ isRoleModalOpen }
+                                handleRoleModalOpen={ handleRoleModalOpen }
+                                handleRoleModalClose={ handleRoleModalClose }
+                                onAlertFired={ handleAlerts }
+                                listItemLimit={ listItemLimit }
+                                listOffset={ listOffset }
+                            />
+                        </PrimaryButton>
+                    )
+                }
+                showPagination={ true }
+                totalPages={ Math.ceil(usersList.totalResults / listItemLimit) }
+                totalListSize={ usersList.totalResults }
+            >
+                <UsersList usersList={ usersList } handleUserDelete={ handleUserDelete }/>
+            </ListLayout>
+        </PageLayout>
     );
 };
