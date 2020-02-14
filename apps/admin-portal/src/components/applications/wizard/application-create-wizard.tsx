@@ -22,7 +22,7 @@ import React, { FunctionComponent, useState } from "react";
 import { Grid, Modal } from "semantic-ui-react";
 import { ApplicationWizardStepIcons } from "../../../configs";
 import { history } from "../../../helpers";
-import { ApplicationBasicWizard, MainApplicationInterface } from "../../../models";
+import { ApplicationBasicWizard, MainApplicationInterface, OIDCDataInterface } from "../../../models";
 import { OAuthWebApplication, SPApplication } from "../meta";
 import { WizardGeneralSettings } from "./wizard-general-settings";
 import { WizardOAuthProtocolSettings } from "./wizard-protocol-oauth-settings";
@@ -61,9 +61,9 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
 
     // OIDC protocol settings.
-    const [ OIDCProtocolSetting, setOIDCProtocolSetting ] = useState("");
+    const [OIDCProtocolSetting, setOIDCProtocolSetting] = useState<OIDCDataInterface>();
 
-    const setCallBackURL = (callbackUrls: string) => setOIDCProtocolSetting(callbackUrls);
+    const setOIDCSettings = (OIDCdata: OIDCDataInterface) => setOIDCProtocolSetting(OIDCdata);
 
     // General settings
     const [ generalSettingsData, setGeneralSettingsData ] = useState<ApplicationBasicWizard>();
@@ -106,7 +106,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             // clean up all the states.
             setApplication({ name: "" });
             setGeneralSettings({ name: "" })
-            setOIDCProtocolSetting("")
+            setOIDCProtocolSetting({ grantTypes: [] })
             history.push("application/new/template");
         } else {
             history.push("application/new/template");
@@ -154,7 +154,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     // Update Protocol Settings.
     const updateOIDCProtocolDetails = (applicationData: MainApplicationInterface) => {
         if (OIDCProtocolSetting) {
-            applicationData.inboundProtocolConfiguration.oidc.callbackURLs = [ OIDCProtocolSetting ];
+            applicationData.inboundProtocolConfiguration.oidc.callbackURLs = OIDCProtocolSetting.callbackURLs;
+            applicationData.inboundProtocolConfiguration.oidc.publicClient = OIDCProtocolSetting.publicClient;
         }
     };
 
@@ -187,8 +188,9 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 <WizardOAuthProtocolSettings
                     back={ stepBackward }
                     next={ stepForward }
-                    callBackURL={ OIDCProtocolSetting }
-                    setCallBackURL={ setCallBackURL }
+                    OIDCdata={ OIDCProtocolSetting }
+                    setOIDCdata={ setOIDCSettings }
+                    templateData={ application }
                 />
             ),
             icon: ApplicationWizardStepIcons.protocolConfig,

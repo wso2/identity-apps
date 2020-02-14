@@ -19,6 +19,7 @@
 import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
 import { ApplicationInterface } from "../../models";
+import { AdvanceSettings } from "./advance-application";
 import { GeneralDetailsApplication } from "./general-details-application";
 import { ApplicationSettings } from "./settings-application";
 
@@ -69,12 +70,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             ),
         },
         {
-            menuItem: "Settings",
+            menuItem: "Access",
             render: () => (
                 <ResourceTab.Pane attached={ false }>
                     <ApplicationSettings
                         appId={ application.id }
-                        advancedConfigurations={ application.advancedConfigurations }
                         inboundProtocols={ application.inboundProtocols }
                         isLoading={ isLoading }
                     />
@@ -82,8 +82,19 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             ),
         },
         {
-            menuItem: "Sign-on Methods",
+            menuItem: "Sign-on Method",
             render: () => <ResourceTab.Pane attached={ false }>SignOnMethod</ResourceTab.Pane>,
+        },
+        {
+            menuItem: "Advance",
+            render: () => (
+                <ResourceTab.Pane attached={ false }>
+                    <AdvanceSettings
+                        appId={ application.id }
+                        advancedConfigurations={ application.advancedConfigurations }
+                    />
+                </ResourceTab.Pane>
+            ),
         },
     ]);
 
