@@ -61,10 +61,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @param {string} urls - Callback URLs.
      * @return {string} Prepared callback URL.
      */
-    const buildCallBackUrl = (urls: string): string => {
+    const buildCallBackUrlWithRegExp = (urls: string): string => {
         let callbackURL = urls.replace(/['"]+/g, "");
         if (callbackURL.split(",").length > 1) {
-            callbackURL = "regexp=(" + callbackURL + ")";
+            callbackURL = "regexp=(" + callbackURL.split(",").join("|") + ")";
         }
         return callbackURL;
     };
@@ -75,10 +75,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @param {string} url - Callback URLs.
      * @return {string} Prepared callback URL.
      */
-    const buildFormCallBackURL = (url: string): string => {
+    const buildCallBackURLWithSeparator = (url: string): string => {
         if (url.includes("regexp=(")) {
             url = url.replace("regexp=(", "");
             url = url.replace(")", "");
+            url = url.split("|").join(",");
         }
         return url;
     };
@@ -211,7 +212,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 <Forms
                     onSubmit={ (values) => {
                         const newValues = new Map(values);
-                        newValues.set("callbackURL", buildCallBackUrl(values.get("callbackURL").toString()));
+                        newValues.set("callbackURL", buildCallBackUrlWithRegExp(values.get("callbackURL").toString()));
                         onSubmit(updateConfiguration(values));
                     } }
                 >
@@ -276,12 +277,22 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     requiredErrorMessage="this is needed"
                                     placeholder="Enter the Callback URL"
                                     type="text"
-                                    value={ buildFormCallBackURL(initialValues.callbackURLs?.toString()) }
+                                    validation={ (value: string, validation: Validation) => {
+                                        const urlList = value.split(",");
+                                        urlList.map((singleUrl) => {
+                                            if (!FormValidation.url(singleUrl)) {
+                                                validation.isValid = false;
+                                                validation.errorMessages.push(
+                                                    "Please add valid URLs with comma separation."
+                                                );
+                                            }
+                                        });
+                                    } }
+                                    value={ buildCallBackURLWithSeparator(initialValues.callbackURLs?.toString()) }
                                 />
                                 <Hint>
                                     After the authentication, we will only redirect to the above callback URLs.
-                                    You can specify multiple URLs by separating them using a comma. Otherwise
-                                    you can enter the URLs using a regex pattern like regexp=(URL1|URL2).
+                                    You can specify multiple URLs by separating them using a comma.
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
