@@ -47,7 +47,6 @@ import { InboundProtocolsMeta } from "./meta";
  */
 interface ApplicationSettingsPropsInterface {
     appId: string;
-    advancedConfigurations: AdvancedConfigurationsInterface;
     inboundProtocols: InboundProtocolListItemInterface[];
     isLoading?: boolean;
 }
@@ -64,7 +63,6 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
 
     const {
         appId,
-        advancedConfigurations,
         inboundProtocols,
         isLoading
     } = props;
@@ -278,29 +276,6 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
             });
     };
 
-    /**
-     * Handles the advanced config form submit action.
-     *
-     * @param values - Form values.
-     */
-    const handleAdvancedConfigFormSubmit = (values: any): void => {
-        updateAdvanceConfigurations(appId, values)
-            .then((response) => {
-                dispatch(addAlert({
-                    description: "Successfully updated the advanced configurations.",
-                    level: AlertLevels.SUCCESS,
-                    message: "Update successful"
-                }));
-            })
-            .catch((error) => {
-                dispatch(addAlert({
-                    description: "An error occurred while the advanced configurations.",
-                    level: AlertLevels.ERROR,
-                    message: "Update error"
-                }));
-            });
-    };
-
     return (
         <>
             {
@@ -338,16 +313,6 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                 <div className="protocol-settings-section">
                                     { selectedInboundProtocol && resolveInboundProtocolSettingsForm() }
                                 </div>
-                            </div>
-                            <Divider hidden/>
-
-                            <div className="advanced-configuration-section">
-                                <Heading as="h4">Advanced Configurations</Heading>
-                                <Divider hidden/>
-                                <AdvanceConfigurationsForm
-                                    config={ advancedConfigurations }
-                                    onSubmit={ handleAdvancedConfigFormSubmit }
-                                />
                             </div>
                         </>
                     )
