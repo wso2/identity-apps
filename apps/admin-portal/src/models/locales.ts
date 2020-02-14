@@ -61,7 +61,7 @@ export interface Common {
     operatingSystem: string;
     operations: string;
     overview: string;
-    personalInfo: string;
+    myAccount: string;
     priority: string;
     privacy: string;
     properties: string;

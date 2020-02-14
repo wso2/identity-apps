@@ -238,7 +238,7 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
                                 }
                             }
                         >
-                            { t("common:personalInfo") }
+                            { t("common:myAccount") }
                         </Button>
                     ) }
                     userDropdownLinks={ [

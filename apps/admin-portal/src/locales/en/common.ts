@@ -60,7 +60,7 @@ export const common: Common = {
     operatingSystem: "Operating System",
     operations: "Operations",
     overview: "Overview",
-    personalInfo: "Personal Info",
+    myAccount: "My Account",
     priority: "Priority",
     privacy: "Privacy",
     properties: "Properties",
