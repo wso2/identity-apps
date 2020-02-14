@@ -146,8 +146,8 @@ export const startFidoFlow = (): Promise<any> => {
                 response.data.requestId,
                 decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions)
             )
-                .then(() => {
-                    return Promise.resolve(response);
+                .then((responseAtCompletion) => {
+                    return Promise.resolve(responseAtCompletion);
                 })
                 .catch((error) => {
                     return Promise.reject(`Failed to connect to device - ${error}`);
