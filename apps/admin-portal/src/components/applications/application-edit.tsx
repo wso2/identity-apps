@@ -22,6 +22,7 @@ import { ApplicationInterface } from "../../models";
 import { AdvanceSettings } from "./advance-application";
 import { GeneralDetailsApplication } from "./general-details-application";
 import { ApplicationSettings } from "./settings-application";
+import { SignOnMethod } from "./sign-on-method";
 
 /**
  * Proptypes for the applications edit component.
@@ -83,7 +84,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         },
         {
             menuItem: "Sign-on Method",
-            render: () => <ResourceTab.Pane attached={ false }>SignOnMethod</ResourceTab.Pane>,
+            render: () => (
+                <ResourceTab.Pane attached={ false }>
+                    <SignOnMethod appId={ application.id }/>
+                </ResourceTab.Pane>
+            ),
         },
         {
             menuItem: "Advance",

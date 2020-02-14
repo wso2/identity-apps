@@ -26,7 +26,6 @@ import { HttpMethods, IdentityProviderListResponseInterface, IdentityProviderRes
  * @type {AxiosHttpClientInstance}.
  */
 const httpClient = AxiosHttpClient.getInstance();
-httpClient.init(true, null, null, null, null);
 
 /**
  * Gets the idp list.
