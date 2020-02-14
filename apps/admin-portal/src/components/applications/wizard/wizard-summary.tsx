@@ -20,12 +20,12 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Forms } from "@wso2is/forms";
 import { isEmpty } from "lodash";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Button, Grid, Label } from "semantic-ui-react";
-import { createApplication } from "../../api/application";
-import { history } from "../../helpers";
-import { MainApplicationInterface } from "../../models";
+import { createApplication } from "../../../api";
+import { history } from "../../../helpers";
+import { MainApplicationInterface } from "../../../models";
 
 interface WizardSummaryProps {
     data: MainApplicationInterface;
