@@ -72,6 +72,9 @@
             var defaultAdminPortalClientID = "ADMIN_PORTAL";
             var tenantAdminPortalClientID = defaultAdminPortalClientID + "_" + tenantName;
 
+            var defaultuserPortalClientHost = serverOriginAddress + getTenantPath(tenantName);
+            var defaultUserPortalBaseName = "user-portal";
+
             /** ===================================================== */
 
             if (!window.userConfig) {
@@ -89,7 +92,9 @@
                 serverHost: window.userConfig.serverHost || serverOriginAddress + getTenantPath(tenantName),
                 serverOrigin: window.userConfig.serverOrigin || serverOriginAddress,
                 tenant: window.userConfig.tenant || (tenantName === "") ? getSuperTenant() : tenantName,
-                tenantPath: window.userConfig.tenantPath || getTenantPath(tenantName)
+                tenantPath: window.userConfig.tenantPath || getTenantPath(tenantName),
+                userPortalBaseName: window.userConfig.userPortalBaseName || defaultUserPortalBaseName,
+                userPortalClientHost: window.userConfig.userPortalClientHost || defaultuserPortalClientHost
             };
         </script>
     </head>
