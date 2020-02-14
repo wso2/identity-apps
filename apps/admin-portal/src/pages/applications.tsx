@@ -22,9 +22,9 @@ import React, { useEffect, useState } from "react";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getApplicationList } from "../api";
 import { ApplicationList, ApplicationSearch } from "../components";
+import { history } from "../helpers/history";
 import { ListLayout, PageLayout } from "../layouts";
 import { ApplicationListInterface } from "../models";
-import { history } from "../helpers/history";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
