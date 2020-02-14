@@ -54,18 +54,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 </ResourceTab.Pane>
             ),
         },
-        {
-            menuItem: "Roles",
-            render: () => (
-                <ResourceTab.Pane attached={ false }>
-                    Roles
-                </ResourceTab.Pane>
-            ),
-        },
-        {
-            menuItem: "Permissions",
-            render: () => <ResourceTab.Pane attached={ false }>Permissions</ResourceTab.Pane>,
-        },
     ]);
 
     return (

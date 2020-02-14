@@ -135,6 +135,34 @@ export const updateProfileInfo = (data: object): Promise<any> => {
 };
 
 /**
+ * Update the required details of the user profile.
+ *
+ * @param {object} user.
+ * @return {Promise<any>} a promise containing the response.
+ */
+export const updateUserInfo = (userId: string, data: object): Promise<any> => {
+
+    const requestConfig = {
+        data,
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: ServiceResourcesEndpoint.users + "/" + userId
+    };
+
+    return httpClient
+        .request(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response.data as BasicProfileInterface);
+        })
+        .catch((error) => {
+            return Promise.reject(`Failed to update the profile info - ${error}`);
+        });
+};
+
+/**
  *  Get gravatar image using email address
  * @param email
  */
