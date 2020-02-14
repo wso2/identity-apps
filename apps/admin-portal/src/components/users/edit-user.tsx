@@ -69,10 +69,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     ]);
 
     return (
-        <>
-            <ResourceTab
-                panes={ panes() }
-            />
-        </>
+        <ResourceTab
+            panes={ panes() }
+        />
     );
 };

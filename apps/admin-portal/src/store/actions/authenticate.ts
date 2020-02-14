@@ -263,9 +263,6 @@ export const getScimSchemas = (profileInfo: BasicProfileInterface = null) => (di
         .then((response: ProfileSchema[]) => {
             dispatch(setProfileSchemaLoader(false));
             dispatch(setScimSchemas(response));
-        })
-        .catch((error) => {
-            // TODO: show error page
         });
 };
 

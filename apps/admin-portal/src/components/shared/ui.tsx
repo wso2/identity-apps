@@ -85,7 +85,7 @@ export const UserImagePlaceHolder = (props: ImageProps) => {
     );
 };
 
-export const HomeTileIcon = (props: HomeTileIconImageProps) => {
+export const HomeTileIcon = (props: HomeTileIconImageProps): JSX.Element => {
     const { classes, size, icon } = props;
 
     const src = () => {
