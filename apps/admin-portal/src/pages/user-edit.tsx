@@ -66,7 +66,8 @@ export const UserEditPage = (): JSX.Element => {
 
     return (
         <PageLayout
-            title={ user.name.givenName + " " + user.name.familyName }
+            title={ user.name.givenName !== undefined ? user.name.givenName + " " + user.name.familyName :
+                user.name.familyName }
             description={ "" + user.emails && user.emails !== undefined ? user.emails[0].toString() :
                 user.userName }
             image={ (

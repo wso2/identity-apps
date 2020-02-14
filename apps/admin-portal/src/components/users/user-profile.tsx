@@ -23,11 +23,10 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
-import { deleteUser } from "../../api";
+import { deleteUser, updateUserInfo } from "../../api";
 import { history } from "../../helpers";
 import { AlertInterface, AlertLevels, AuthStateInterface, BasicProfileInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
-import { getProfileInformation } from "../../store/actions";
 import { flattenSchemas } from "../../utils";
 import * as _ from "lodash";
 
@@ -46,22 +45,13 @@ interface ProfileProps {
  * @return {JSX.Element}
  */
 export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps): JSX.Element => {
-    const [profileInfo, setProfileInfo] = useState(new Map<string, string>());
-    const [profileSchema, setProfileSchema] = useState<ProfileSchema[]>();
     const { onAlertFired, user } = props;
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+
+    const [profileInfo, setProfileInfo] = useState(new Map<string, string>());
+    const [profileSchema, setProfileSchema] = useState<ProfileSchema[]>();
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const [urlSchema, setUrlSchema] = useState<ProfileSchema>();
-
-    /**
-     * dispatch getProfileInformation action if the profileDetails object is empty
-     */
-    useEffect(() => {
-        if (isEmpty(user)) {
-            dispatch(getProfileInformation());
-        }
-    }, []);
 
     /**
      * Sort the elements of the profileSchema state according by the displayOrder attribute in the ascending order.
@@ -159,6 +149,74 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
     };
 
     /**
+     * The following method handles the `onSubmit` event of forms.
+     *
+     * @param values
+     * @param formName
+     */
+    const handleSubmit = (values: Map<string, string | string[]>): void => {
+
+        const data = {
+            Operations: [],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+        };
+
+        let operation = {
+            op: "replace",
+            value: {}
+        };
+
+        profileSchema.forEach((schema: ProfileSchema) => {
+            let opValue = {};
+
+            const schemaNames = schema.name.split(".");
+
+            if (schema.name !== "roles.default" && schema.name !== "profileUrl") {
+                if (values.get(schema.name) !== undefined && values.get(schema.name).toString() !== undefined) {
+                    if (schemaNames.length === 1) {
+                        opValue = schemaNames[0] === "emails"
+                            ? { emails: [values.get(schema.name)] }
+                            : { [schemaNames[0]]: values.get(schemaNames[0]) };
+                    } else {
+                        if (schemaNames[0] === "name") {
+                            opValue = {
+                                name: { [schemaNames[1]]: values.get(schema.name) }
+                            };
+                        } else {
+                            opValue = {
+                                [schemaNames[0]]: [
+                                    {
+                                        type: schemaNames[1],
+                                        value: values.get(schemaNames[1])
+                                    }
+                                ]
+                            };
+                        }
+                    }
+                }
+            }
+
+            operation = {
+                op: "replace",
+                value: opValue
+            };
+            data.Operations.push(operation);
+        });
+
+        updateUserInfo(user.id, data).then(() => {
+            onAlertFired({
+                    description: t(
+                        "views:components.user.profile.notifications.updateProfileInfo.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "views:components.user.profile.notifications.updateProfileInfo.success.message"
+                    )
+                });
+        });
+    };
+
+    /**
      * This function generates the user profile details form based on the input Profile Schema
      *
      * @param {Profile Schema} schema
@@ -191,8 +249,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
             {
                 !_.isEmpty(profileInfo) && (
                     <Forms
-                        // TODO add function to handle the form submission.
-                        onSubmit={ (values) => console.log(values) }
+                        onSubmit={ (values) => handleSubmit(values) }
                     >
                         <Grid>
                             {

@@ -71,7 +71,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
      * @param modifiedDate
      */
     const handleLastModifiedDate = (modifiedDate: string) => {
-        if (modifiedDate && modifiedDate !== undefined) {
+        if (modifiedDate) {
             const currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, "/");
             const modDate = modifiedDate.split("T");
             const modDateNew = modDate[0].replace(/-/g, "/");
@@ -79,7 +79,11 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             const dateX = new Date(modDateNew);
             const dateY = new Date(currentDate);
 
-            return Math.abs(dateY.getDate() - dateX.getDate());
+            if (dateY.getDate() - dateX.getDate() !== 0) {
+                return Math.abs(dateY.getDate() - dateX.getDate()) + " " + "days ago";
+            } else {
+                return "today";
+            }
         } else {
             return "unknown";
         }
@@ -130,7 +134,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         itemDescription={ user.emails ? user.emails[0].toString() :
                             user.userName }
                         metaContent={ listContent(user.userName, "last modified" + " " +
-                            handleLastModifiedDate(user.meta.lastModified) + " " + "days ago") }
+                            handleLastModifiedDate(user.meta.lastModified)) }
                     />
                 ))
             }
