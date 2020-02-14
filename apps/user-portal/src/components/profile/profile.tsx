@@ -220,9 +220,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     };
 
     /**
-     * This takes the schema name and a type and see if the schema is of a certain type
-     * @param schema
-     * @param type
+     * This takes the schema name and a type and sees if the schema is of the specified type
+     * @param {string} schema The schema name eg: 'emails.workEmail'
+     * @param {string}type The type to check for eg: 'emails'
+     *
+     * @returns {boolean} True/False
      */
     const checkSchemaType = (schema: string, type: string): boolean => {
         return schema.split(".").filter((name) => {
