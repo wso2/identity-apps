@@ -17,13 +17,16 @@
  */
 
 import { Field, Forms, Validation } from "@wso2is/forms";
+import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent } from "react";
 import { Button, Grid } from "semantic-ui-react";
+import { MainApplicationInterface, OIDCDataInterface } from "../../../models";
 
 interface OAuthProtocolSettingsProps {
-    callBackURL: string;
-    setCallBackURL: any;
+    templateData: MainApplicationInterface;
+    OIDCdata: OIDCDataInterface;
+    setOIDCdata: any;
     next: any;
     back: any;
 }
@@ -35,8 +38,9 @@ interface OAuthProtocolSettingsProps {
  */
 export const WizardOAuthProtocolSettings: FunctionComponent<OAuthProtocolSettingsProps> = (props): JSX.Element => {
     const {
-        callBackURL,
-        setCallBackURL,
+        OIDCdata,
+        setOIDCdata,
+        templateData,
         back,
         next,
     } = props;
@@ -59,8 +63,12 @@ export const WizardOAuthProtocolSettings: FunctionComponent<OAuthProtocolSetting
     };
 
     const handleSubmit = (values) => {
-        const submit: string = buildCallBackUrlWithRegExp(values.get("callbackURL"));
-        setCallBackURL(submit);
+        const submit: OIDCDataInterface = {
+            callbackURLs: [buildCallBackUrlWithRegExp(values.get("callbackURL"))],
+            grantTypes: templateData.inboundProtocolConfiguration.oidc.grantTypes,
+            publicClient: values.get("publicClients").includes("supportPublicClients"),
+        };
+        setOIDCdata(submit);
         next();
     };
 
@@ -94,8 +102,37 @@ export const WizardOAuthProtocolSettings: FunctionComponent<OAuthProtocolSetting
                                                 }
                                             });
                                         } }
-                                        value={ callBackURL && buildCallBackURLWithSeparator(callBackURL) }
+                                        value={ OIDCdata &&
+                                        buildCallBackURLWithSeparator(OIDCdata.callbackURLs?.toString()) }
                                     />
+                                    <Hint>
+                                        After the authentication, we will only redirect to the above callback
+                                        URLs.
+                                        You can specify multiple URLs by separating them using a comma.
+                                    </Hint>
+
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Field
+                                        name="publicClients"
+                                        label=""
+                                        required={ false }
+                                        requiredErrorMessage="this is needed"
+                                        type="checkbox"
+                                        value={ templateData &&
+                                        templateData.inboundProtocolConfiguration.oidc.publicClient ? ["supportPublicClients"] : [] }
+                                        children={ [
+                                            {
+                                                label: "Public Client",
+                                                value: "supportPublicClients"
+                                            }
+                                        ] }
+                                    />
+                                    <Hint>
+                                        Allow the client to authenticate without a client secret.
+                                    </Hint>
                                 </Grid.Column>
                             </Grid.Row>
                             <Grid.Row columns={ 3 } className={ "protocolRow" }>
@@ -112,8 +149,7 @@ export const WizardOAuthProtocolSettings: FunctionComponent<OAuthProtocolSetting
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
-                    </Forms
-                    >
+                    </Forms>
                 )
             }
         </>
