@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/react-components",
-    "version": "1.0.22",
+    "version": "1.0.23",
     "description": "A React component library for WSO2 Identity Server frontend apps implementing Semantic UI Framework",
     "keywords": [
         "WSO2",
@@ -30,8 +30,8 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/core": "^1.0.22",
-        "@wso2is/theme": "^1.0.22"
+        "@wso2is/core": "^1.0.23",
+        "@wso2is/theme": "^1.0.23"
     },
     "peerDependencies": {
         "@babel/core": "*",
