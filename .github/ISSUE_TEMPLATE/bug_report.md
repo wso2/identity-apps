@@ -1,5 +1,5 @@
 ---
-name: ❗️ Bug report
+name: ❗️ Issue/Bug report
 about: Create a report to help us improve
 title: ''
 labels: ''
@@ -7,26 +7,29 @@ assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**Describe the Issue:**
+<!-- A clear and concise description of what the bug is. If applicable, add screenshots to help explain your problem. -->
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+**How To Reproduce:**
+<!-- Steps to reproduce the behavior. -->
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**Expected behavior:**
+<!-- A clear and concise description of what you expected to happen. -->
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
-
-**Device Information (please complete the following information):**
+**Device Information** (_Please complete the following information_) **:**
  - Device: [e.g. PC, iPhone6]
  - OS: [e.g. Windows, Android, iOS]
  - Browser + Version [e.g. chrome 1.x.x, safari 1.x.x]
 
-**Additional context**
-Add any other context about the problem here.
+---
+
+### Optional Fields
+
+**Related Issues:**
+<!-- Any related issues from this/other repositories-->
+
+**Suggested Labels:**
+<!--Only to be used by non-members-->
+
+**Suggested Assignees:**
+<!--Only to be used by non-members-->
