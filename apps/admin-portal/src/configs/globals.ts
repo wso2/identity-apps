@@ -55,10 +55,8 @@ export let GlobalConfig: RuntimeConfigInterface = {
     tenant: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.tenant || TENANT_DEFAULT) : TENANT_DEFAULT,
     tenantPath: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.tenantPath || TENANT_PATH_DEFAULT) : TENANT_PATH_DEFAULT,
     titleText: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.copyrightText || TITLE_TEXT_DEFAULT) : TITLE_TEXT_DEFAULT,
-    userPortalBaseName: (RUNTIME_CONFIG)
-        ? (RUNTIME_CONFIG).userPortalBaseName || USER_PORTAL_BASENAME
-        : USER_PORTAL_BASENAME,
-    userPortalClientHost: (RUNTIME_CONFIG)
-        ? (RUNTIME_CONFIG).userPortalClientHost || USER_PORTAL_CLIENT_HOST_DEFAULT
-        : USER_PORTAL_CLIENT_HOST_DEFAULT
+    userPortalBaseName: (RUNTIME_CONFIG) ?
+        (RUNTIME_CONFIG.userPortalBaseName || USER_PORTAL_BASENAME) : USER_PORTAL_BASENAME,
+    userPortalClientHost: (RUNTIME_CONFIG) ?
+        (RUNTIME_CONFIG.userPortalClientHost || USER_PORTAL_CLIENT_HOST_DEFAULT) : USER_PORTAL_CLIENT_HOST_DEFAULT
 };

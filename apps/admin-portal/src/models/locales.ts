@@ -57,11 +57,11 @@ export interface Common {
     loginTime: string;
     logout: string;
     more: string;
+    myAccount: string;
     name: string;
     operatingSystem: string;
     operations: string;
     overview: string;
-    myAccount: string;
     priority: string;
     privacy: string;
     properties: string;
