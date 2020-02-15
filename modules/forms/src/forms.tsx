@@ -16,11 +16,12 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Form } from "semantic-ui-react";
 import { Field, GroupFields, InnerField, InnerGroupFields } from "./components";
 import { isCheckBoxField, isDropdownField, isInputField, isRadioField, isTextField } from "./helpers";
 import { Error, FormField, FormValue, Validation } from "./models";
+import { useNonInitialEffect } from "./utils";
 
 /**
  * Prop types for Form component
@@ -28,8 +29,8 @@ import { Error, FormField, FormValue, Validation } from "./models";
 interface FormPropsInterface {
     onSubmit: (values: Map<string, FormValue>) => void;
     onChange?: (isPure: boolean, values: Map<string, FormValue>) => void;
-    triggerReset?: (reset: () => void) => void;
-
+    resetState?: boolean;
+    submitState?: boolean;
 }
 
 /**
@@ -39,7 +40,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
     props: React.PropsWithChildren<FormPropsInterface>
 ): JSX.Element => {
 
-    const { onSubmit, triggerReset, onChange, children } = props;
+    const { onSubmit, resetState, submitState, onChange, children } = props;
 
     // This holds the values of the form fields
     const [form, setForm] = useState(new Map<string, FormValue>());
@@ -63,23 +64,8 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
     const formFields: FormField[] = [];
     const flatReactChildren: React.ReactElement[] = [];
 
-    /**
-     * This function calls the listener prop of the field that is calling the `handleChange` function
-     * @param name
-     * @param newForm
-     */
-    const listener = (name: string, newForm: Map<string, FormValue>) => {
-        React.Children.map(flatReactChildren, (element: React.ReactElement) => {
-            if (
-                element.props.name
-                && element.props.name === name
-                && element.props.listen
-                && typeof element.props.listen === "function"
-            ) {
-                element.props.listen(newForm);
-            }
-        });
-    };
+    // The lock to be used by `initMutex`
+    let locked = false;
 
     /**
      * Handler for the onChange event
@@ -142,6 +128,106 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
     };
 
     /**
+     * Handles reset button click
+     * @param event
+     */
+    const handleReset = (event: React.MouseEvent) => {
+        event.preventDefault();
+        reset();
+        locked = false;
+    };
+
+    /**
+     * Handler for onSubmit event
+     * @param {React.FormEvent} event
+     */
+    const handleSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
+        submit();
+    };
+
+    /**
+     * Resets form
+     */
+    const reset = () => {
+        setIsSubmitting(false);
+        initMutex(true);
+    };
+
+    /**
+     * This is a mutex that wraps the `init` function.
+     * This prevents `init` from being called twice when reset is triggered.
+     * @param {boolean} lock A boolean value that specifies if the mutex should be locked or not
+     */
+    const initMutex = (lock: boolean) => {
+        if (locked) {
+            locked = false;
+        } else {
+            if (lock) {
+                locked = true;
+                init(true);
+            } else {
+                init(false);
+            }
+        }
+    };
+    /**
+     * This validates the form and calls the `onSubmit` prop function
+     */
+    const submit = () => {
+        if (checkRequiredFieldsFilled() && checkValidated()) {
+            setIsSubmitting(false);
+            onSubmit(form);
+        } else {
+            setIsSubmitting(true);
+        }
+    };
+
+    /**
+     * This function calls the listener prop of the field that is calling the `handleChange` function
+     * @param name
+     * @param newForm
+     */
+    const listener = (name: string, newForm: Map<string, FormValue>) => {
+        React.Children.map(flatReactChildren, (element: React.ReactElement) => {
+            if (
+                element.props.name
+                && element.props.name === name
+                && element.props.listen
+                && typeof element.props.listen === "function"
+            ) {
+                element.props.listen(newForm);
+            }
+        });
+    };
+
+    /**
+     * Checks if all the required fields are filled
+     */
+    const checkRequiredFieldsFilled = (): boolean => {
+        let requiredFilled: boolean = true;
+        requiredFields.forEach((requiredFieldParam) => {
+            if (!requiredFieldParam) {
+                requiredFilled = false;
+            }
+        });
+        return requiredFilled;
+    };
+
+    /**
+     * Checks if all the fields are validated
+     */
+    const checkValidated = (): boolean => {
+        let isValidated: boolean = true;
+        validFields.forEach((validField) => {
+            if (!validField.isValid) {
+                isValidated = false;
+            }
+        });
+        return isValidated;
+    };
+
+    /**
      * Checks if the field has any errors (required but not filled | not validated)
      * @param inputField
      */
@@ -174,12 +260,25 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
     };
 
     /**
-     * Resets form
+     * Calls submit when submit is triggered externally
      */
-    const reset = () => {
-        setIsSubmitting(false);
-        init(true);
-    };
+    useNonInitialEffect(() => {
+        submit();
+    }, [submitState]);
+
+    /**
+     * Calls reset when reset is triggered externally
+     */
+    useNonInitialEffect(() => {
+        reset();
+    }, [resetState]);
+
+    /**
+     * Initializes the state of the from every time the passed formFields prop changes
+     */
+    useEffect(() => {
+        initMutex(false);
+    }, [children]);
 
     /**
      * Calls the onChange prop
@@ -188,15 +287,6 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
         if (onChange && typeof onChange === "function") {
             onChange(isPure, formValue);
         }
-    };
-
-    /**
-     * Handles reset button click
-     * @param event
-     */
-    const handleReset = (event: React.MouseEvent) => {
-        event.preventDefault();
-        reset();
     };
 
     /**
@@ -242,29 +332,6 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
         });
     };
 
-    const mutatedChildren: React.ReactElement[] = [...parseChildren(children, formFields)];
-
-    /**
-     * Initializes the state of the from every time the passed formFields prop changes
-     */
-    useEffect(() => {
-        init(false);
-    }, [children]);
-
-    /**
-     * passes the reset function as an argument into the triggerReset prop method
-     */
-    useEffect(() => {
-        if (triggerReset) {
-            triggerReset(reset);
-        }
-        return () => {
-            if (triggerReset) {
-                triggerReset(() => undefined);
-            }
-        };
-    }, []);
-
     /**
      * Initialize form
      * @param {boolean} isReset
@@ -276,26 +343,25 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
         const tempTouchedFields: Map<string, boolean> = new Map(touchedFields);
 
         formFields.forEach((inputField: FormField) => {
-        /**
-         * Check if the element is an input element(an element that can hold a value)
-         *      -> Then:
-         *          Check if the field has not been touched OR the reset button has been pressed
-         *          -> Then:
-         *              Check if the element has a value and the reset button has not been clicked
-         *                  -> Then:
-         *                      Set the value of the element to the corresponding key in the FormValue map
-         *                  -> Else:
-         *                      Check if the element is a (radio OR Dropdown) AND it has a default value
-         *                          -> Then:
-         *                              Assign the default value to the corresponding FormValue key
-         *                          -> Else:
-         *                              Check if the the element is checkbox
-         *                                  -> Then:
-         *                                      Assign an empty array to the corresponding FormValue key
-         *                                  -> Else:
-         *                                      Assign an empty string value to the corresponding FormValue key
-         *
-         */
+            /**
+             * Check if the element is an input element(an element that can hold a value)
+             *      -> Then:
+             *          Check if the field has not been touched OR the reset button has been pressed
+             *          -> Then:
+             *              Check if the element has a value and the reset button has not been clicked
+             *                  -> Then:
+             *                      Set the value of the element to the corresponding key in the FormValue map
+             *                  -> Else:
+             *                      Check if the element is a (radio OR Dropdown) AND it has a default value
+             *                          -> Then:
+             *                              Assign the default value to the corresponding FormValue key
+             *                          -> Else:
+             *                              Check if the the element is checkbox
+             *                                  -> Then:
+             *                                      Assign an empty array to the corresponding FormValue key
+             *                                  -> Else:
+             *                                      Assign an empty string value to the corresponding FormValue key
+             */
             if (isInputField(inputField)) {
                 if (!touchedFields.get(inputField.name) || isReset) {
                     inputField.value && !isReset
@@ -392,45 +458,12 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
         });
     };
 
-    /**
-     * Handler for onSubmit event
-     * @param event
-     */
-    const handleSubmit = (event: React.FormEvent) => {
-        event.preventDefault();
-        if (checkRequiredFieldsFilled() && checkValidated()) {
-            setIsSubmitting(false);
-            onSubmit(form);
-        } else {
-            setIsSubmitting(true);
-        }
-    };
-
-    /**
-     * Checks if all the required fields are filled
-     */
-    const checkRequiredFieldsFilled = (): boolean => {
-        let requiredFilled: boolean = true;
-        requiredFields.forEach((requiredFieldParam) => {
-            if (!requiredFieldParam) {
-                requiredFilled = false;
-            }
-        });
-        return requiredFilled;
-    };
-
-    /**
-     * Checks if all the fields are validated
-     */
-    const checkValidated = (): boolean => {
-        let isValidated: boolean = true;
-        validFields.forEach((validField) => {
-            if (!validField.isValid) {
-                isValidated = false;
-            }
-        });
-        return isValidated;
-    };
+    const mutatedChildren: React.ReactElement[] = [...parseChildren(children, formFields)];
 
     return <Form onSubmit={ handleSubmit }>{ mutatedChildren }</Form>;
+};
+
+Forms.defaultProps = {
+    resetState: false,
+    submitState: false
 };

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -14,14 +14,20 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-p.inline-paragraph,
-.inline-paragraph > p { 
-    display: inline;
-}
+import { useState } from "react";
 
-span.ui.text.color.red{
-    color:@red;
-}
+/**
+ * This is a custom React Hook that returns a function that toggles the state and
+ * thereby triggers either a reset or a submit event.
+ * @param useState Call the React useState hook
+ * @returns The state, A function that can be called to trigger a reset or submit event
+ */
+export const useTrigger = (): [boolean, () => void] => {
+    const [state, setState] = useState(false);
+
+    return [state, () => {
+        setState(!state);
+    }];
+};

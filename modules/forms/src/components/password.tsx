@@ -17,6 +17,9 @@ interface PasswordPropsInterface {
     showPassword: string;
     hidePassword: string;
     autoFocus?: boolean;
+    readOnly?: boolean;
+    disabled?: boolean;
+    required?: boolean;
 }
 
 /**
@@ -65,6 +68,9 @@ export const Password: React.FunctionComponent<PasswordPropsInterface> = (
                 )
             }
             autoFocus={ props.autoFocus || false }
+            readOnly={ props.readOnly }
+            disabled={ props.disabled }
+            required={ props.required }
         />
     );
 };

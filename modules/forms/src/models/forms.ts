@@ -61,6 +61,8 @@ interface FormFieldModel {
     label?: string;
     listen?: (values: Map<string, FormValue>) => void;
     autoFocus?: boolean;
+    readOnly?: boolean;
+    disabled?: boolean;
 }
 
 /**

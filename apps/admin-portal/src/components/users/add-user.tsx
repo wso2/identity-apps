@@ -17,7 +17,7 @@
  */
 
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
-import { Field, Forms, Validation } from "@wso2is/forms";
+import { Field, Forms, useTrigger, Validation } from "@wso2is/forms";
 import { EditSection } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -62,6 +62,9 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const [ email, setEmail ] = useState("");
     const [ firstName, setFirstName ] = useState("");
     const [ lastName, setLastName ] = useState("");
+  
+    const [resetStateUserForm, resetUserForm] = useTrigger();
+    const [resetStateUserRoleForm, resetUserRoleForm] = useTrigger();
 
     const {
         getUserList,
@@ -384,7 +387,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     });
                 } else if (error.response && error.response.data && error.response.data.detail) {
                     // reset the form.
-                    resetForm();
+                    resetUserForm();
                     // hide the add user form
                     handleModalClose();
 
@@ -400,7 +403,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     });
                 } else {
                     // reset the form.
-                    resetForm();
+                    resetUserForm();
                     // hide the add user form
                     handleModalClose();
 
@@ -417,11 +420,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 }
             });
     };
-
-    /**
-     * Resets the form by re-initializing state.
-     */
-    let resetForm: () => void = () => undefined;
 
     /**
      * The modal to add new user.
@@ -451,9 +449,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         setDomain(value.get("domain").toString());
                         setRoleIds(value.get("role") as string[]);
                     } }
-                    triggerReset={ (reset) => {
-                        resetForm = reset;
-                    } }
+                    resetState={ resetStateUserForm }
                 >
                     <Field
                         type="dropdown"
@@ -575,9 +571,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     onSubmit={ (value) => {
                         setRoleIds(value.get("role") as string[]);
                     } }
-                    triggerReset={ (reset) => {
-                        resetForm = reset;
-                    } }
+                    resetState={ resetStateUserRoleForm }
                 >
                     <Field
                         type="checkbox"

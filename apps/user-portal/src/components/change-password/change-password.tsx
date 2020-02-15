@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Field, Forms, Validation } from "@wso2is/forms";
+import { Field, Forms, useTrigger, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
@@ -56,6 +56,8 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
         [CHANGE_PASSWORD_FORM_IDENTIFIER]: false
     });
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+
+    const [reset, resetForm] = useTrigger();
 
     const { t } = useTranslation();
 
@@ -164,11 +166,6 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     };
 
     /**
-     * Resets the form by re-initializing state.
-     */
-    let resetForm: () => void = () => undefined;
-
-    /**
      * Handle the confirmation modal close event.
      */
     const handleConfirmationModalClose = (): void => {
@@ -227,9 +224,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     setNewPassword(value.get("newPassword").toString());
                     handleSubmit(CHANGE_PASSWORD_FORM_IDENTIFIER);
                 } }
-                triggerReset={ (reset) => {
-                    resetForm = reset;
-                } }
+                resetState={ reset }
             >
                 <Field
                     autoFocus={ true }
