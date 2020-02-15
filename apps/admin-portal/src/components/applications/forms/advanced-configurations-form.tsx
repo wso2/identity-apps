@@ -83,7 +83,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             type="checkbox"
                             children={ [
                                 {
-                                    label: "SaaS",
+                                    label: "SaaS Application",
                                     value: "saas"
                                 }
                             ] }
@@ -126,13 +126,13 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             type="checkbox"
                             children={ [
                                 {
-                                    label: "Return Authenticated Idp List",
+                                    label: "Return Authenticated IdP List",
                                     value: "returnAuthenticatedIdpList"
                                 }
                             ] }
                         />
                         <Hint>
-                            The list of authenticated identity providers will be returned in the authentication
+                            The list of authenticated Identity Providers will be returned in the authentication
                             response.
                         </Hint>
                     </Grid.Column>
