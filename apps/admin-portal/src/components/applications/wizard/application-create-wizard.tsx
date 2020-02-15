@@ -265,7 +265,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 />
             ),
             icon: ApplicationWizardStepIcons.protocolConfig,
-            title: "Protocol Selection"
+            title: "Protocol Configuration"
         },
         {
             content: (

@@ -139,7 +139,6 @@ export const ApplicationTemplateSelectPage: FunctionComponent<any> = (): JSX.Ele
             showBottomDivider
         >
             <div className="quick-start-templates">
-                <Heading as="h1">Quick Start</Heading>
                 <QuickStartApplicationTemplates
                     templates={ TEMPLATES[ SupportedApplicationTemplateCategories.QUICK_START ] }
                     onTemplateSelect={ (e, { id }) =>
