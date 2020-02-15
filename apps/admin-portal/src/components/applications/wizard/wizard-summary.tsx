@@ -88,7 +88,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                         <div className="label">Access URL</div>
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                        <div className="value">{ summary.accessUrl }</div>
+                        <div className="value url">{ summary.accessUrl }</div>
                     </Grid.Column>
                 </Grid.Row>
             ) }
@@ -126,7 +126,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                                 EncodeDecodeUtils.decodeURLRegex(
                                     summary.inboundProtocolConfiguration.oidc.callbackURLs)
                                     .map((url, index) => (
-                                        <div className="value" key={ index }>{ url }</div>
+                                        <div className="value url" key={ index }>{ url }</div>
                                     ))
                             }
                         </Grid.Column>
