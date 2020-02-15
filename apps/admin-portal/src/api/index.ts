@@ -22,3 +22,4 @@ export * from "./profile";
 export * from "./linked-accounts";
 export * from "./roles";
 export * from "./application";
+export * from "./identity-provider";

@@ -508,3 +508,31 @@ export const createApplication = (application: object): Promise<any> => {
             return Promise.reject(error);
         });
 };
+
+/**
+ * Updates Authentication sequence of the application.
+ * @param id ID of the application
+ * @param authenticationConfigs Authentication configurations of the application.
+ */
+export const updateAuthenticationSequence = (id: string, authenticationConfigs: object): Promise<any> => {
+    const requestConfig = {
+        data: authenticationConfigs,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: ServiceResourcesEndpoint.applications + "/" + id
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to update authentication sequence"));
+            }
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
