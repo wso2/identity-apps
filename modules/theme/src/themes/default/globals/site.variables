@@ -30,6 +30,7 @@
 @googleFontName    : 'Lato';
 
 @bold              : 400;
+@lightFontColor    : @lightTextColor;
 
 /*-------------------
      Borders

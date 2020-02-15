@@ -18,7 +18,7 @@
 
 import { AuthenticationSequenceType, MainApplicationInterface, State } from "../../../models";
 
-export const OAuthWebApplication: MainApplicationInterface = {
+export const OAuthWebApplicationTemplate: MainApplicationInterface = {
     advancedConfigurations: {
         discoverableByEndUsers: false
     },

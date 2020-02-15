@@ -210,6 +210,10 @@
             h6 {
                 margin-top: 5px;
                 color: @wizardSubHeaderFontColor;
+                width: @wizardSubHeaderMaxWidth;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
             }
         }
         .steps-container {
@@ -218,6 +222,59 @@
         }
         .content-container {
             height: @wizardContentHeight;
+            padding-left: @wizardContentHorizontalPadding;
+            padding-right: @wizardContentHorizontalPadding;
+
+            .wizard-summary {
+                .summary-field {
+                    .label {
+                        font-weight: 500;
+                    }
+                    .value {
+                        margin-bottom: 10px;
+                        color: @wizardSummaryFieldValueColor;
+
+                        &.url {
+                            font-style: italic;
+                        }
+                    }
+                }
+                .result-container {
+                    margin-bottom: 15px;
+
+                    .header {
+                        color: @lightFontColor;
+                        font-weight: 500;
+                        margin-bottom: 4px;
+                        color: @lightFontColor;
+                    }
+                }
+            }
+        }
+
+        &.application-create-wizard {
+            .content-container {
+                .wizard-summary {
+                    .general-details {
+                        .name {
+                            margin-bottom: 8px;
+                            margin-top: 10px;
+                        }
+                        .info-label {
+                            padding: 4px 6px;
+                            margin-bottom: 8px;
+                        }
+                        .description {
+                            padding: 0 16em;
+                            font-size: 0.8em;
+                            color: @lightFontColor;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                        }
+                    }
+                }
+            }
         }
     }
 }

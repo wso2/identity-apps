@@ -18,7 +18,7 @@
 
 import { AuthenticationSequenceType, MainApplicationInterface, State } from "../../../models";
 
-export const SPApplication: MainApplicationInterface = {
+export const SPAApplicationTemplate: MainApplicationInterface = {
     advancedConfigurations: {
         discoverableByEndUsers: false
     },

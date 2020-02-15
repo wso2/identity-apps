@@ -20,7 +20,8 @@ import {
     AuthProtocolMetaListItemInterface,
     OIDCDataInterface,
     OIDCMetadataInterface,
-    SupportedAuthProtocolTypes
+    SupportedAuthProtocolTypes,
+    SupportedQuickStartTemplateTypes
 } from "./application-inbound";
 
 /**
@@ -251,7 +252,7 @@ interface AuthProtocolMetaInterface {
 export interface ApplicationTemplateListItemInterface {
     description: string;
     displayName: string;
-    id: string;
+    id: SupportedQuickStartTemplateTypes,
     image: any;
     protocols: SupportedAuthProtocolTypes[];
     technologies: ApplicationTemplateTechnology[];
