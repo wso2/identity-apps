@@ -16,32 +16,32 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels } from "@wso2is/core/models";
-import { Field, Forms, useTrigger, Validation } from "@wso2is/forms";
-import { EditSection } from "@wso2is/react-components";
+import { Field, Forms, Validation } from "@wso2is/forms";
+import { FormValidation } from "@wso2is/validation";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import {
     Form,
     Grid,
-    Icon,
+    Message,
     Modal,
 } from "semantic-ui-react";
 import { addUser, addUserRole, getGroupsList, getUserStoreList } from "../../api";
+import { AlertLevels, createEmptyUserBasicWizard, UserBasicWizard } from "../../models";
+import { addAlert } from "../../store/actions";
+import { useTrigger } from "@wso2is/forms";
 
 /**
  * Proptypes for the application consents list component.
  */
 interface AddUserProps {
-    isBasicModalOpen: boolean;
-    handleModalClose: any;
     isRoleModalOpen: boolean;
     handleRoleModalOpen: any;
     handleRoleModalClose: any;
-    getUserList: (limit: number, offset: number) => void;
-    onAlertFired: (alert: AlertInterface) => void;
-    listOffset: number;
-    listItemLimit: number;
+    userData: UserBasicWizard;
+    setUserData: any;
+    next: () => void;
 }
 
 /**
@@ -54,33 +54,29 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const [ groupsList, setGroupsList ] = useState([]);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ username, setUsername ] = useState("");
-    const [ password, setPassword ] = useState("");
-    const [ domain, setDomain ] = useState("");
     const [ roleIds, setRoleIds ] = useState([]);
     const [ userId, setUserId ] = useState("");
     const [ passwordOption, setPasswordOption ] = useState("");
-    const [ email, setEmail ] = useState("");
-    const [ firstName, setFirstName ] = useState("");
-    const [ lastName, setLastName ] = useState("");
-  
     const [resetStateUserForm, resetUserForm] = useTrigger();
     const [resetStateUserRoleForm, resetUserRoleForm] = useTrigger();
 
+    let newUser = createEmptyUserBasicWizard();
+
     const {
-        getUserList,
-        isBasicModalOpen,
-        handleModalClose,
         isRoleModalOpen,
         handleRoleModalOpen,
         handleRoleModalClose,
-        onAlertFired,
-        listItemLimit,
-        listOffset
+        setUserData,
+        userData,
+        next
     } = props;
+
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+
     const passwordOptions = [
-        { label: "Ask password", value: "askPw" },
-        { label: "Create password", value: "createPw" },
+        { label: "Invite user to set password", value: "askPw" },
+        { label: "Set user password", value: "createPw" },
     ];
 
     /**
@@ -102,130 +98,11 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     //     assignUserRole();
     // }, [roleIds]);
 
-    /**
-     * The api request to add the user will be sent
-     * depending on the state change of the username.
-     */
-    useEffect(() => {
-        if (username !== "") {
-            addUserBasic();
-        }
-    }, [username]);
-
     const getGroups = () => {
         getGroupsList()
             .then((response) => {
                 setRoleListItem(response.data.Resources);
             });
-    };
-
-    const handlePasswordOptions = () => {
-        if (passwordOption && passwordOption === "createPw") {
-            return (
-                <EditSection>
-                    <Field
-                        label="Email address"
-                        name="email"
-                        placeholder={ t(
-                            "views:components.user.forms.addUserForm.inputs." +
-                            "newPassword.placeholder"
-                        ) }
-                        required={ true }
-                        requiredErrorMessage={ t(
-                            "views:components.user.forms.addUserForm." +
-                            "inputs.newPassword.validations.empty"
-                        ) }
-                        type="text"
-                        width={ 9 }
-                    />
-                    <Field
-                        hidePassword={ t("common:hidePassword") }
-                        label={ t(
-                            "views:components.user.forms.addUserForm.inputs.newPassword.label"
-                        ) }
-                        name="newPassword"
-                        placeholder={ t(
-                            "views:components.user.forms.addUserForm.inputs." +
-                            "newPassword.placeholder"
-                        ) }
-                        required={ true }
-                        requiredErrorMessage={ t(
-                            "views:components.user.forms.addUserForm." +
-                            "inputs.newPassword.validations.empty"
-                        ) }
-                        showPassword={ t("common:showPassword") }
-                        type="password"
-                        width={ 9 }
-                    />
-                    <Field
-                        hidePassword={ t("common:hidePassword") }
-                        label={ t(
-                            "views:components.user.forms.addUserForm.inputs.confirmPassword.label"
-                        ) }
-                        name="confirmPassword"
-                        placeholder={ t(
-                            "views:components.user.forms.addUserForm.inputs." +
-                            "confirmPassword.placeholder"
-                        ) }
-                        required={ true }
-                        requiredErrorMessage={ t(
-                            "views:components.user.forms.addUserForm." +
-                            "inputs.confirmPassword.validations.empty"
-                        ) }
-                        showPassword={ t("common:showPassword") }
-                        type="password"
-                        validation={ (value: string, validation: Validation, formValues) => {
-                            if (formValues.get("newPassword") !== value) {
-                                validation.isValid = false;
-                                validation.errorMessages.push(
-                                    t("views:components.user.forms.addUserForm.inputs" +
-                                        ".confirmPassword.validations.mismatch"));
-                            }
-                        } }
-                        width={ 9 }
-                    />
-                    <Field
-                        hidden={ true }
-                        type="divider"
-                    />
-                </EditSection>
-            );
-        } else if (passwordOption && passwordOption === "askPw") {
-            return (
-                <EditSection>
-                    <Field
-                        label="Email address"
-                        name="email"
-                        placeholder={ t(
-                            "views:components.user.forms.addUserForm.inputs." +
-                            "newPassword.placeholder"
-                        ) }
-                        required={ true }
-                        requiredErrorMessage={ t(
-                            "views:components.user.forms.addUserForm." +
-                            "inputs.newPassword.validations.empty"
-                        ) }
-                        type="text"
-                        width={ 9 }
-                    />
-                    <p style={ { fontSize: "12px" } }>
-                        <Icon color="grey" floated="left" name="info circle" />
-                        An email requesting a password will be set to this address
-                    </p>
-                    <Field
-                        hidden={ true }
-                        type="divider"
-                    />
-                </EditSection>
-            );
-        } else {
-            return "";
-        }
-    };
-
-    const handleBasicModalClose = () => {
-        setPasswordOption("");
-        handleModalClose();
     };
 
     /**
@@ -310,42 +187,57 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         });
     };
 
+    const handleSubmit = (values) => {
+        newUser = {
+            domain: values.get("domain").toString(),
+            email: values.get("email").toString(),
+            firstName: values.get("firstName").toString(),
+            lastName: values.get("lastName").toString(),
+            newPassword: values.get("newPassword") && values.get("newPassword") !== undefined  ?
+                values.get("newPassword").toString() : "",
+            passwordOption: values.get("passwordOption").toString(),
+            userName: values.get("userName").toString(),
+        };
+        addUserBasic(newUser);
+    };
+
     /**
      * This function handles adding the user.
      */
-    const addUserBasic = () => {
+    const addUserBasic = (user: UserBasicWizard) => {
         let userName = "";
-        domain !== "primary" ? userName = domain + "/" + username : userName = username;
-        let data = {};
+        user.domain !== "primary" ? userName = user.domain + "/" + user.userName : userName = user.userName;
+        let userDetails = {};
+        const password = user.newPassword;
 
-        passwordOption && passwordOption !== "askPw" ?
+        user.passwordOption && user.passwordOption !== "askPw" ?
             (
-                data = {
+                userDetails = {
                     emails:
                         [{
                             primary: true,
-                            value: email
+                            value: user.email
                         }],
                     name:
                         {
-                            familyName: lastName,
-                            givenName: firstName
+                            familyName: user.lastName,
+                            givenName: user.firstName
                         },
                     password,
                     userName
                 }
             ) :
             (
-                data = {
+                userDetails = {
                     "emails":
                         [{
                             primary: true,
-                            value: email
+                            value: user.email
                         }],
                     "name":
                         {
-                            familyName: lastName,
-                            givenName: firstName
+                            familyName: user.lastName,
+                            givenName: user.firstName
                         },
                     "password": "password",
                     "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User":
@@ -356,10 +248,10 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 }
             );
 
-        addUser(data)
+        addUser(userDetails)
             .then((response) => {
-                setUserId(response.data.id);
-                onAlertFired({
+                // setUserId(response.data.id);
+                dispatch(addAlert({
                     description: t(
                         "views:components.users.notifications.addUser.success.description"
                     ),
@@ -367,16 +259,15 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     message: t(
                         "views:components.users.notifications.addUser.success.message"
                     )
-                });
-                handleBasicModalClose();
-                getUserList(listItemLimit, listOffset);
+                }));
+                close();
             })
             .catch((error) => {
                 // Axios throws a generic `Network Error` for 401 status.
                 // As a temporary solution, a check to see if a response
                 // is available has be used.
                 if (!error.response || error.response.status === 401) {
-                    onAlertFired({
+                    dispatch(addAlert({
                         description: t(
                             "views:components.users.notifications.addUser.error.description"
                         ),
@@ -384,14 +275,12 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         message: t(
                             "views:components.users.notifications.addUser.error.message"
                         )
-                    });
+                    }));
                 } else if (error.response && error.response.data && error.response.data.detail) {
                     // reset the form.
                     resetUserForm();
-                    // hide the add user form
-                    handleModalClose();
 
-                    onAlertFired({
+                    dispatch(addAlert({
                         description: t(
                             "views:components.users.notifications.addUser.error.description",
                             { description: error.response.data.detail }
@@ -400,15 +289,13 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         message: t(
                             "views:components.users.notifications.addUser.error.message"
                         )
-                    });
+                    }));
                 } else {
                     // reset the form.
                     resetUserForm();
-                    // hide the add user form
-                    handleModalClose();
 
                     // Generic error message
-                    onAlertFired({
+                    dispatch(addAlert({
                         description: t(
                             "views:components.users.notifications.addUser.genericError.description"
                         ),
@@ -416,146 +303,232 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         message: t(
                             "views:components.users.notifications.addUser.genericError.message"
                         )
-                    });
+                    }));
                 }
             });
+    };
+
+    const handlePasswordOptions = () => {
+        if (passwordOption && passwordOption === "createPw") {
+            return (
+                <>
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                hidePassword={ t("common:hidePassword") }
+                                label={ t(
+                                    "views:components.user.forms.addUserForm.inputs.newPassword.label"
+                                ) }
+                                name="newPassword"
+                                placeholder={ t(
+                                    "views:components.user.forms.addUserForm.inputs." +
+                                    "newPassword.placeholder"
+                                ) }
+                                required={ true }
+                                requiredErrorMessage={ t(
+                                    "views:components.user.forms.addUserForm." +
+                                    "inputs.newPassword.validations.empty"
+                                ) }
+                                showPassword={ t("common:showPassword") }
+                                type="password"
+                            />
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                hidePassword={ t("common:hidePassword") }
+                                label={ t(
+                                    "views:components.user.forms.addUserForm.inputs.confirmPassword.label"
+                                ) }
+                                name="confirmPassword"
+                                placeholder={ t(
+                                    "views:components.user.forms.addUserForm.inputs." +
+                                    "confirmPassword.placeholder"
+                                ) }
+                                required={ true }
+                                requiredErrorMessage={ t(
+                                    "views:components.user.forms.addUserForm." +
+                                    "inputs.confirmPassword.validations.empty"
+                                ) }
+                                showPassword={ t("common:showPassword") }
+                                type="password"
+                                validation={ (value: string, validation: Validation, formValues) => {
+                                    if (formValues.get("newPassword") !== value) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(
+                                            t("views:components.user.forms.addUserForm.inputs" +
+                                                ".confirmPassword.validations.mismatch"));
+                                    }
+                                } }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </>
+            );
+        } else if (passwordOption && passwordOption === "askPw") {
+            return (
+                <>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Message
+                                icon="mail"
+                                content="We will send an email with the link to set the password to the email address provided."
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </>
+            );
+        } else {
+            return "";
+        }
     };
 
     /**
      * The modal to add new user.
      */
     const addUserBasicForm = () => (
-        <Modal open={ isBasicModalOpen } size="small">
-            <Modal.Header>
-                <Grid>
-                    <Grid.Column>
-                        <Icon name="user plus"/>
-                    </Grid.Column>
-                    <Grid.Column width={ 4 }>
-                        Add new user
-                    </Grid.Column>
-                </Grid>
-            </Modal.Header>
-            <Modal.Content>
-                <Forms
-                    onSubmit={ (value) => {
-                        if (passwordOption === "createPw") {
-                            setPassword(value.get("newPassword").toString());
-                        }
-                        setFirstName(value.get("firstName").toString());
-                        setLastName(value.get("lastName").toString());
-                        setEmail(value.get("email").toString());
-                        setUsername(value.get("username").toString());
-                        setDomain(value.get("domain").toString());
-                        setRoleIds(value.get("role") as string[]);
-                    } }
-                    resetState={ resetStateUserForm }
-                >
-                    <Field
-                        type="dropdown"
-                        label={ t(
-                            "views:components.user.forms.addUserForm.inputs.domain.label"
-                        ) }
-                        name="domain"
-                        children={ userStoreOptions }
-                        placeholder={ t(
-                            "views:components.user.forms.addUserForm.inputs.domain.placeholder"
-                        ) }
-                        requiredErrorMessage={ t(
-                            "views:components.user.forms.addUserForm.inputs.domain.validations.empty"
-                        ) }
-                        required={ true }
-                        width={ 9 }
-                    />
-                    <Field
-                        label={ t(
-                            "views:components.user.forms.addUserForm.inputs.username.label"
-                        ) }
-                        name="username"
-                        placeholder={ t(
-                            "views:components.user.forms.addUserForm.inputs." +
-                            "username.placeholder"
-                        ) }
-                        required={ true }
-                        requiredErrorMessage={ t(
-                            "views:components.user.forms.addUserForm." +
-                            "inputs.username.validations.empty"
-                        ) }
-                        type="text"
-                        width={ 9 }
-                    />
-                    <Field
-                        label={ t(
-                            "views:components.user.forms.addUserForm.inputs.firstName.label"
-                        ) }
-                        name="firstName"
-                        placeholder={ t(
-                            "views:components.user.forms.addUserForm.inputs." +
-                            "firstName.placeholder"
-                        ) }
-                        required={ true }
-                        requiredErrorMessage={ t(
-                            "views:components.user.forms.addUserForm." +
-                            "inputs.firstName.validations.empty"
-                        ) }
-                        type="text"
-                        width={ 9 }
-                    />
-                    <Field
-                        label={ t(
-                            "views:components.user.forms.addUserForm.inputs.lastName.label"
-                        ) }
-                        name="lastName"
-                        placeholder={ t(
-                            "views:components.user.forms.addUserForm.inputs." +
-                            "lastName.placeholder"
-                        ) }
-                        required={ true }
-                        requiredErrorMessage={ t(
-                            "views:components.user.forms.addUserForm." +
-                            "inputs.lastName.validations.empty"
-                        ) }
-                        type="text"
-                        width={ 9 }
-                    />
-                    <Field
-                        hidden={ true }
-                        type="divider"
-                    />
-                    <Field
-                        hidden={ false }
-                        type="divider"
-                    />
-                    <Field
-                        type="radio"
-                        label="Password options"
-                        name="pwOption"
-                        default="Ask password"
-                        listen={ (values) => { setPasswordOption(values.get("pwOption").toString()); } }
-                        children={ passwordOptions }
-                    />
-                    <Field
-                        hidden={ true }
-                        type="divider"
-                    />
-                    { handlePasswordOptions() }
-                    <Form.Group>
+        <Forms
+            onSubmit={ (values) => {
+                handleSubmit(values);
+            } }
+            resetState={ resetStateUserForm }
+        >
+            <Grid>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
-                            size="small"
-                            type="submit"
-                            value={ t("common:submit").toString() }
+                            type="dropdown"
+                            label={ t(
+                                "views:components.user.forms.addUserForm.inputs.domain.label"
+                            ) }
+                            name="domain"
+                            children={ userStoreOptions }
+                            placeholder={ t(
+                                "views:components.user.forms.addUserForm.inputs.domain.placeholder"
+                            ) }
+                            requiredErrorMessage={ t(
+                                "views:components.user.forms.addUserForm.inputs.domain.validations.empty"
+                            ) }
+                            required={ true }
+                            value={ userData && userData.domain }
                         />
+                    </Grid.Column>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
-                            className="link-button"
-                            onClick={ handleBasicModalClose }
-                            size="small"
-                            type="button"
-                            value={ t("common:cancel").toString() }
+                            label={ t(
+                                "views:components.user.forms.addUserForm.inputs.username.label"
+                            ) }
+                            name="userName"
+                            placeholder={ t(
+                                "views:components.user.forms.addUserForm.inputs." +
+                                "username.placeholder"
+                            ) }
+                            required={ true }
+                            requiredErrorMessage={ t(
+                                "views:components.user.forms.addUserForm." +
+                                "inputs.username.validations.empty"
+                            ) }
+                            type="text"
+                            value={ userData && userData.userName }
                         />
-                    </Form.Group>
-                </Forms>
-            </Modal.Content>
-        </Modal>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            label={ t(
+                                "views:components.user.forms.addUserForm.inputs.firstName.label"
+                            ) }
+                            name="firstName"
+                            placeholder={ t(
+                                "views:components.user.forms.addUserForm.inputs." +
+                                "firstName.placeholder"
+                            ) }
+                            required={ true }
+                            requiredErrorMessage={ t(
+                                "views:components.user.forms.addUserForm." +
+                                "inputs.firstName.validations.empty"
+                            ) }
+                            type="text"
+                            value={ userData && userData.firstName }
+                        />
+                    </Grid.Column>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            label={ t(
+                                "views:components.user.forms.addUserForm.inputs.lastName.label"
+                            ) }
+                            name="lastName"
+                            placeholder={ t(
+                                "views:components.user.forms.addUserForm.inputs." +
+                                "lastName.placeholder"
+                            ) }
+                            required={ true }
+                            requiredErrorMessage={ t(
+                                "views:components.user.forms.addUserForm." +
+                                "inputs.lastName.validations.empty"
+                            ) }
+                            type="text"
+                            value={ userData && userData.lastName }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            label="Email address"
+                            name="email"
+                            placeholder={ t(
+                                "views:components.user.forms.addUserForm.inputs." +
+                                "email.placeholder"
+                            ) }
+                            required={ true }
+                            requiredErrorMessage={ t(
+                                "views:components.user.forms.addUserForm.inputs.email.validations.empty"
+                            ) }
+                            validation={ (value: string, validation: Validation) => {
+                                if (!FormValidation.email(value)) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(
+                                        t(
+                                            "views:components.user.forms.addUserForm.inputs.email." +
+                                            "validations.invalid"
+                                        ).toString()
+                                    );
+                                }
+                            }
+                            }
+                            type="email"
+                            value={ userData && userData.email }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                        <Field
+                            type="radio"
+                            label="Select the method to set the user password"
+                            name="passwordOption"
+                            default="Ask password"
+                            listen={ (values) => { setPasswordOption(values.get("passwordOption").toString()); } }
+                            children={ passwordOptions }
+                            value={ userData && userData.passwordOption }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                { handlePasswordOptions() }
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                        <Form.Group>
+                            <Field
+                                size="small"
+                                type="submit"
+                                value={ t("common:save").toString() }
+                            />
+                        </Form.Group>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </Forms>
     );
 
     /**

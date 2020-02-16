@@ -30,15 +30,8 @@ interface UsersListProps {
     handleUserDelete: (userId: string) => void;
 }
 
-const listContent = (userName: string, lastModified: any) => (
+const listContent = (lastModified: any) => (
     <Grid>
-        <Grid.Column width={ 6 }>
-            <List.Content>
-                <List.Description className="list-item-meta">
-                    { userName }
-                </List.Description>
-            </List.Content>
-        </Grid.Column>
         <Grid.Column width={ 9 }>
             <List.Content>
                 <List.Description className="list-item-meta">
@@ -108,18 +101,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 onClick: () => handleUserDelete(user.id),
                                 popupText: "delete user",
                                 type: "button"
-                            },
-                            {
-                                icon: "ellipsis vertical",
-                                onClick: null,
-                                popupText: "more",
-                                subActions: [
-                                    {
-                                        key: "1",
-                                        text: "Delete"
-                                    }
-                                ],
-                                type: "dropdown"
                             }
                         ] }
                         avatar={ (
@@ -133,7 +114,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                             " " + user.name.familyName : user.userName }
                         itemDescription={ user.emails ? user.emails[0].toString() :
                             user.userName }
-                        metaContent={ listContent(user.userName, "last modified" + " " +
+                        metaContent={ listContent("last modified" + " " +
                             handleLastModifiedDate(user.meta.lastModified)) }
                     />
                 ))
