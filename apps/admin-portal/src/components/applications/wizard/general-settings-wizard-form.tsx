@@ -18,70 +18,80 @@
 
 import { Field, Forms } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
-import React, { FunctionComponent, useRef } from "react";
-import { Button, Grid } from "semantic-ui-react";
-import { ApplicationBasicWizard } from "../../../models";
+import React, { FunctionComponent, useEffect, useRef } from "react";
+import { Divider, Grid } from "semantic-ui-react";
 
-interface GeneralSettingsProps {
-    applicationData: ApplicationBasicWizard;
-    setApplicationData: any;
+/**
+ * Proptypes for the general settings wizard form component.
+ */
+interface GeneralSettingsWizardFormPropsInterface {
+    initialValues: any;
     triggerSubmit: boolean;
-    next: any;
-    cancel: any;
-    loadTemplate: any;
     onSubmit: (values: any) => void;
 }
 
 /**
- * General settings in the application wizard.
+ * General settings wizard form component.
  *
- * @param props GeneralSettingsProps.
+ * @param {GeneralSettingsWizardFormPropsInterface} props - Props injected to the component.
+ * @return {JSX.Element}
  */
-export const WizardGeneralSettings: FunctionComponent<GeneralSettingsProps> = (props): JSX.Element => {
+export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardFormPropsInterface> = (
+    props: GeneralSettingsWizardFormPropsInterface
+): JSX.Element => {
 
     const {
-        applicationData,
-        setApplicationData,
-        next,
-        cancel,
-        loadTemplate,
+        initialValues,
         triggerSubmit,
         onSubmit
     } = props;
 
     const form = useRef(null);
 
-    const handleSubmit = (values) => {
-        const submit: ApplicationBasicWizard = {
+    /**
+     * Submits the form programmatically if triggered from outside.
+     */
+    useEffect(() => {
+        if (!triggerSubmit) {
+            return;
+        }
+
+        form?.current?.props?.onSubmit(new Event("submit"));
+    }, [ triggerSubmit ]);
+
+    /**
+     * Sanitizes and prepares the form values for submission.
+     *
+     * @param values - Form values.
+     * @return {object} Prepared values.
+     */
+    const getFormValues = (values: any): object => {
+        return {
             accessUrl: values.get("accessUrl").toString(),
+            advancedConfigurations: {
+                discoverableByEndUsers: !!values.get("discoverableByEndUsers").includes("discoverableByEndUsers"),
+            },
             description: values.get("description").toString(),
-            discoverableByEndUsers:
-                (values.get("advanceConfiguration").includes("discoverableByEndUsers") ? true : false),
             imageUrl: values.get("imageUrl").toString(),
             name: values.get("name").toString(),
         };
-        setApplicationData(submit);
-        loadTemplate();
-        next();
     };
 
     return (
         <Forms
-            // ref={ form }
-            onSubmit={ (values) => {
-                handleSubmit(values);
-            } }
+            ref={ form }
+            onSubmit={ (values) => onSubmit(getFormValues(values)) }
         >
             <Grid>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <Field
                             name="name"
                             label="Name"
                             required={ true }
                             requiredErrorMessage="Application name is required"
                             placeholder={ "Enter Application Name" }
-                            value={ applicationData && applicationData.name }
+                            value={ initialValues?.name }
                             type="text"
                         />
                     </Grid.Column>
@@ -95,7 +105,7 @@ export const WizardGeneralSettings: FunctionComponent<GeneralSettingsProps> = (p
                             requiredErrorMessage=""
                             placeholder="Enter a description for the application"
                             type="textarea"
-                            value={ applicationData && applicationData.description }
+                            value={ initialValues?.description }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -103,11 +113,11 @@ export const WizardGeneralSettings: FunctionComponent<GeneralSettingsProps> = (p
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <Field
                             name="imageUrl"
-                            label="ImageUrl"
+                            label="Image URL"
                             required={ false }
                             requiredErrorMessage=""
                             placeholder="Provide the image url for the application"
-                            value={ applicationData && applicationData.imageUrl }
+                            value={ initialValues?.imageUrl }
                             type="text"
                         />
                     </Grid.Column>
@@ -116,7 +126,7 @@ export const WizardGeneralSettings: FunctionComponent<GeneralSettingsProps> = (p
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
-                                name="advanceConfiguration"
+                                name="discoverableByEndUsers"
                                 required={ false }
                                 requiredErrorMessage=""
                                 type="checkbox"
@@ -126,8 +136,16 @@ export const WizardGeneralSettings: FunctionComponent<GeneralSettingsProps> = (p
                                         value: "discoverableByEndUsers"
                                     }
                                 ] }
-                                value={ applicationData?.discoverableByEndUsers ? [ "discoverableByEndUsers" ] : [] }
+                                value={
+                                    initialValues?.advancedConfigurations?.discoverableByEndUsers
+                                        ? [ "discoverableByEndUsers" ]
+                                        : []
+                                }
                             />
+                            <Hint>
+                                Applications flagged as discoverable are visible for end users.
+                            </Hint>
+                            <Divider hidden/>
                             <Field
                                 name="accessUrl"
                                 label="Access URL"
@@ -136,25 +154,9 @@ export const WizardGeneralSettings: FunctionComponent<GeneralSettingsProps> = (p
                                 "to be marked as discoverable" }
                                 placeholder="Enter access url for the application login page"
                                 type="text"
-                                value={ applicationData?.accessUrl }
+                                value={ initialValues?.accessUrl }
                             />
-                            <Hint>
-                                Applications flagged as discoverable are visible for end users.
-                            </Hint>
                         </Grid.Column>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
-                        <Button onClick={ cancel } size="small" className="form-button">
-                            Back
-                        </Button>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }/>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
-                        <Button primary type="submit" size="small" className="form-button">
-                            Next
-                        </Button>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

@@ -135,6 +135,17 @@ export enum SupportedAuthProtocolTypes {
 }
 
 /**
+ * Enum for the supported quick start template types.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum SupportedQuickStartTemplateTypes {
+    SPA = "spa",
+    OAUTH_WEB_APP = "oauthWebApp"
+}
+
+/**
  * Enum for the supported auth protocol meta types.
  *
  * @remarks

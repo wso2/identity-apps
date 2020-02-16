@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export * from "./application-template-SPA";
-export * from "./application-template-web-oauth";
+export * from "./spa-application-template.meta";
+export * from "./oauth-web-application-template.meta";
 export * from "./inbound-protocols.meta";
 export * from "./authenticators";

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import { Form } from "semantic-ui-react";
 import { Field, GroupFields, InnerField, InnerGroupFields } from "./components";
 import { isCheckBoxField, isDropdownField, isInputField, isRadioField, isTextField } from "./helpers";
@@ -24,11 +24,17 @@ import { Error, FormField, FormValue, Validation } from "./models";
 import { useNonInitialEffect } from "./utils";
 
 /**
+ * Component ref type.
+ */
+type Ref = HTMLFormElement;
+
+/**
  * Prop types for Form component
  */
 interface FormPropsInterface {
     onSubmit: (values: Map<string, FormValue>) => void;
     onChange?: (isPure: boolean, values: Map<string, FormValue>) => void;
+    ref?: React.RefObject<Ref>;
     resetState?: boolean;
     submitState?: boolean;
 }
@@ -36,9 +42,8 @@ interface FormPropsInterface {
 /**
  * This is a Forms component
  */
-export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInterface>> = (
-    props: React.PropsWithChildren<FormPropsInterface>
-): JSX.Element => {
+export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInterface>> =
+    forwardRef<Ref, React.PropsWithChildren<FormPropsInterface>>((props, ref): JSX.Element => {
 
     const { onSubmit, resetState, submitState, onChange, children } = props;
 
@@ -460,8 +465,8 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
     const mutatedChildren: React.ReactElement[] = [...parseChildren(children, formFields)];
 
-    return <Form onSubmit={ handleSubmit }>{ mutatedChildren }</Form>;
-};
+    return <Form onSubmit={ handleSubmit } ref={ ref }>{ mutatedChildren }</Form>;
+});
 
 Forms.defaultProps = {
     resetState: false,

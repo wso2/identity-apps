@@ -23,8 +23,11 @@ import { ApplicationTemplateIllustrations, TechnologyLogos } from "../configs";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import {
-    ApplicationTemplateListItemInterface, ApplicationTemplatesInterface, SupportedApplicationTemplateCategories,
-    SupportedAuthProtocolTypes
+    ApplicationTemplateListItemInterface,
+    ApplicationTemplatesInterface,
+    SupportedApplicationTemplateCategories,
+    SupportedAuthProtocolTypes,
+    SupportedQuickStartTemplateTypes
 } from "../models";
 
 /**
@@ -36,7 +39,6 @@ export const ApplicationTemplateSelectPage: FunctionComponent<any> = (): JSX.Ele
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(null);
-    const [ selectedTemplateCategoryTitle, setSelectedTemplateCategoryTitle ] = useState<string>("");
 
     // TODO Remove this hard coded list and retrieve the template list from an endpoint.
     // Quick start templates list.
@@ -44,7 +46,7 @@ export const ApplicationTemplateSelectPage: FunctionComponent<any> = (): JSX.Ele
         {
             description: "Front end applications which uses APIs. Mostly written using scripting languages.",
             displayName: "Single page application",
-            id: "SPApplication",
+            id: SupportedQuickStartTemplateTypes.SPA,
             image: ApplicationTemplateIllustrations?.spa,
             protocols: [ SupportedAuthProtocolTypes.OIDC ],
             technologies: [
@@ -68,7 +70,7 @@ export const ApplicationTemplateSelectPage: FunctionComponent<any> = (): JSX.Ele
         {
             description: "Regular web applications which uses redirections inside browsers.",
             displayName: "Web application",
-            id: "OAuthWebApplication",
+            id: SupportedQuickStartTemplateTypes.OAUTH_WEB_APP,
             image: ApplicationTemplateIllustrations?.webApp,
             protocols: [ SupportedAuthProtocolTypes.OIDC ],
             technologies: [
@@ -119,17 +121,6 @@ export const ApplicationTemplateSelectPage: FunctionComponent<any> = (): JSX.Ele
             return;
         }
 
-        let categoryTitle = "";
-
-        switch (templateCategory) {
-            case SupportedApplicationTemplateCategories.QUICK_START:
-                categoryTitle = "Quick Start";
-                break;
-            default:
-                break;
-        }
-
-        setSelectedTemplateCategoryTitle(categoryTitle);
         setSelectedTemplate(selected);
         setShowWizard(true);
     };
@@ -148,7 +139,6 @@ export const ApplicationTemplateSelectPage: FunctionComponent<any> = (): JSX.Ele
             showBottomDivider
         >
             <div className="quick-start-templates">
-                <Heading as="h1">Quick Start</Heading>
                 <QuickStartApplicationTemplates
                     templates={ TEMPLATES[ SupportedApplicationTemplateCategories.QUICK_START ] }
                     onTemplateSelect={ (e, { id }) =>
@@ -158,10 +148,10 @@ export const ApplicationTemplateSelectPage: FunctionComponent<any> = (): JSX.Ele
             </div>
             { showWizard && (
                     <ApplicationCreateWizard
-                        title={ selectedTemplateCategoryTitle }
-                        subTitle={ selectedTemplate?.displayName }
+                        title={ selectedTemplate?.displayName }
+                        subTitle={ selectedTemplate?.description }
                         closeWizard={ () => setShowWizard(false) }
-                        templateID={ selectedTemplate?.id }
+                        templateType={ selectedTemplate?.id }
                         protocol={ selectedTemplate?.protocols[0] }
                     />
                 ) }

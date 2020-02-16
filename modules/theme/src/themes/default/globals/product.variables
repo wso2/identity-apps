@@ -91,3 +91,4 @@
 @stepHorizontalSpacing: 2em;
 @stepsHeaderFontColor: @dustyGray;
 @stepsHeaderFontSize: 0.9em;
+@stepTrailTransition: all .5s ease-in;;

@@ -185,8 +185,8 @@ export const GeneralDetailsApplication: FunctionComponent<GeneralSettingsProps> 
                                                 name="accessUrl"
                                                 label="Access URL"
                                                 required={ isDiscoverable }
-                                                requiredErrorMessage={ "A valid access URL needs to be defined for an application " +
-                                                "to be marked as discoverable" }
+                                                requiredErrorMessage={ "A valid access URL needs to be defined for" +
+                                                " an application to be marked as discoverable" }
                                                 placeholder="Enter access url for the application login page"
                                                 type="text"
                                                 value={ accessUrl }

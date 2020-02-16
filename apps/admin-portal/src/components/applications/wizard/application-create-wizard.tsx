@@ -16,29 +16,55 @@
  * under the License.
  */
 
-import { Heading, LinkButton, Steps } from "@wso2is/react-components";
-import { isEmpty } from "lodash";
-import React, { FunctionComponent, useState } from "react";
-import { Grid, Modal } from "semantic-ui-react";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { EncodeDecodeUtils } from "@wso2is/core/utils";
+import { Heading, LinkButton, Steps, PrimaryButton } from "@wso2is/react-components";
+import _ from "lodash";
+import React, { FunctionComponent, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Grid, Icon, Modal } from "semantic-ui-react";
+import { createApplication } from "../../../api";
 import { ApplicationWizardStepIcons } from "../../../configs";
 import { history } from "../../../helpers";
-import { ApplicationBasicWizard, MainApplicationInterface, OIDCDataInterface } from "../../../models";
-import { OAuthWebApplication, SPApplication } from "../meta";
-import { WizardGeneralSettings } from "./wizard-general-settings";
-import { WizardOAuthProtocolSettings } from "./wizard-protocol-oauth-settings";
+import { SupportedQuickStartTemplateTypes } from "../../../models";
+import { OAuthWebApplicationTemplate, SPAApplicationTemplate } from "../meta";
+import { GeneralSettingsWizardForm } from "./general-settings-wizard-form";
+import { OAuthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { WizardSummary } from "./wizard-summary";
 
+/**
+ * Proptypes for the application creation wizard component.
+ */
 interface ApplicationCreateWizardPropsInterface {
     currentStep?: number;
     title: string;
     closeWizard: any;
-    templateID: string;
+    templateType: SupportedQuickStartTemplateTypes; // TODO: Extend this once more types are available.
     protocol: string;
     subTitle?: string;
 }
 
 /**
- * Application creation wizard.
+ * Interface for the wizard state.
+ */
+interface WizardStateInterface {
+    [ key: string ]: any;
+}
+
+/**
+ * Enum for wizard steps form types.
+ * @readonly
+ * @enum {string}
+ */
+enum WizardStepsFormTypes {
+    GENERAL_SETTINGS = "generalSettings",
+    PROTOCOL_SETTINGS = "protocolSettings",
+    SUMMARY = "summary"
+}
+
+/**
+ * Application creation wizard component.
  *
  * @param {ApplicationCreateWizardPropsInterface} props - Props injected to the component.
  * @return {JSX.Element}
@@ -50,134 +76,180 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     const {
         closeWizard,
         currentStep,
-        templateID,
+        templateType,
         protocol,
         title,
         subTitle
     } = props;
 
-    const [ creationStep, setCreationStep ] = useState("GeneralSettings");
+    const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
     const [ completedStep, setCompletedStep ] = useState<number>(undefined);
+    const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
+    const [ template, setTemplate ] = useState<any>(undefined);
 
-    // OIDC protocol settings.
-    const [OIDCProtocolSetting, setOIDCProtocolSetting] = useState<OIDCDataInterface>();
+    const dispatch = useDispatch();
 
-    const setOIDCSettings = (OIDCdata: OIDCDataInterface) => setOIDCProtocolSetting(OIDCdata);
+    /**
+     * Loads the application template on initial component load.
+     */
+    useEffect(() => {
+        loadTemplate();
+    }, []);
 
-    // General settings
-    const [ generalSettingsData, setGeneralSettingsData ] = useState<ApplicationBasicWizard>();
-
-    const setGeneralSettings = (applicationGeneral: ApplicationBasicWizard) => {
-        setGeneralSettingsData(applicationGeneral);
-    };
-
-    const [ application, setApplication ] = useState<MainApplicationInterface>();
-
-    const updateMainApplication = (applicationData: MainApplicationInterface) => {
-        if (applicationData !== application) {
-            setApplication(applicationData);
+    /**
+     * Sets the current wizard step to the next on every `completedStep`
+     * value change , and resets the completed step value.
+     */
+    useEffect(() => {
+        if (completedStep === undefined) {
+            return;
         }
-    };
 
-    // Stages order for application creation.
-    const steps = [ "GeneralSettings", "ProtocolSettings", "Summary", "exit" ];
-
-    // Advance to next step defined in the steps array.
-    const stepForward = () => {
-        const currentStep = creationStep;
-        const currentIndex = steps.indexOf(currentStep);
-        if ((currentIndex + 1) < steps.length) {
-            const newstep = steps[ currentIndex + 1 ];
-            setCreationStep(newstep);
-        } else {
-            history.push("/application");
-        }
-    };
-
-    // Rollback to previous step defined in the steps array.
-    const stepBackward = () => {
-        const currentStep = creationStep;
-        const currentIndex = steps.indexOf(currentStep);
-        if ((currentIndex - 1) >= 0) {
-            const newstep = steps[ currentIndex - 1 ];
-            setCreationStep(newstep);
-        } else if (currentStep === "GeneralSettings") {
-            // clean up all the states.
-            setApplication({ name: "" });
-            setGeneralSettings({ name: "" })
-            setOIDCProtocolSetting({ grantTypes: [] })
-            history.push("application/new/template");
-        } else {
-            history.push("application/new/template");
-        }
-    };
-
-    // Load data from the templates.
-    const loadTemplateData = () => {
-        let applicationData: MainApplicationInterface = { ...application };
-        if (templateID === "SPApplication") {
-            applicationData = { ...SPApplication };
-        } else if (templateID === "OAuthWebApplication") {
-            applicationData = { ...OAuthWebApplication };
-        }
-        updateMainApplication(applicationData);
-    };
-
-    // Update the template data with user data.
-    const updateTemplateData = () => {
-        const applicationData: MainApplicationInterface = { ...application };
-        updateGeneralDetails(applicationData);
-        // TODO update protocol settings based on the protocol.
-        updateOIDCProtocolDetails(applicationData);
-        updateMainApplication(applicationData);
-    };
-
-    // Update General settings data.
-    const updateGeneralDetails = (applicationData: MainApplicationInterface) => {
-        if (generalSettingsData) {
-            applicationData.name = generalSettingsData.name;
-            applicationData.advancedConfigurations.discoverableByEndUsers =
-                generalSettingsData.discoverableByEndUsers;
-            if (!isEmpty(generalSettingsData.accessUrl)) {
-                applicationData.accessUrl = generalSettingsData.accessUrl;
-            }
-            if (!isEmpty(generalSettingsData.description)) {
-                applicationData.description = generalSettingsData.description;
-            }
-            if (!isEmpty(generalSettingsData.imageUrl)) {
-                applicationData.imageUrl = generalSettingsData.imageUrl;
-            }
-        }
-    };
-
-    // Update Protocol Settings.
-    const updateOIDCProtocolDetails = (applicationData: MainApplicationInterface) => {
-        if (OIDCProtocolSetting) {
-            applicationData.inboundProtocolConfiguration.oidc.callbackURLs = OIDCProtocolSetting.callbackURLs;
-            applicationData.inboundProtocolConfiguration.oidc.publicClient = OIDCProtocolSetting.publicClient;
-        }
-    };
-
-    const navigateToNext = () => {
         setCurrentWizardStep(currentWizardStep + 1);
+        setCompletedStep(undefined);
+    }, [ completedStep ]);
+
+    /**
+     * Sets the current wizard step to the previous on every `partiallyCompletedStep`
+     * value change , and resets the partially completed step value.
+     */
+    useEffect(() => {
+        if (partiallyCompletedStep === undefined) {
+            return;
+        }
+
+        setCurrentWizardStep(currentWizardStep - 1);
+        setPartiallyCompletedStep(undefined);
+    }, [ partiallyCompletedStep ]);
+
+    /**
+     * Load the respective template based on the selected type.
+     */
+    const loadTemplate = () => {
+        switch (templateType) {
+            case SupportedQuickStartTemplateTypes.SPA:
+                setTemplate(SPAApplicationTemplate);
+                break;
+            case SupportedQuickStartTemplateTypes.OAUTH_WEB_APP:
+                setTemplate(OAuthWebApplicationTemplate);
+                break;
+            default:
+                break;
+        }
     };
 
+    /**
+     * Creates a new application.
+     *
+     * @param application - The application to be created
+     */
+    const createNewApplication = (application: any) => {
+        createApplication(application)
+            .then((response) => {
+                dispatch(addAlert({
+                    description: "Successfully created the application",
+                    level: AlertLevels.SUCCESS,
+                    message: "Creation successful"
+                }));
+                if (!_.isEmpty(response.headers.location)) {
+                    const location = response.headers.location;
+                    const createdAppID = location.substring(location.lastIndexOf("/") + 1);
+                    history.push("/applications/" + createdAppID);
+                }
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Application Create Error"
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: "An error occurred while creating the application",
+                    level: AlertLevels.ERROR,
+                    message: "Creation Error"
+                }));
+            });
+    };
+
+    /**
+     * Navigates to the next wizard step.
+     */
+    const navigateToNext = () => {
+        setCompletedStep(currentWizardStep);
+    };
+
+    /**
+     * Navigates to the previous wizard step.
+     */
     const navigateToPrevious = () => {
-        setCurrentWizardStep(currentWizardStep - 1);
+        setPartiallyCompletedStep(currentWizardStep);
+    };
+
+    /**
+     * Handles wizard step submit.
+     *
+     * @param values - Forms values to be stored in state.
+     * @param {WizardStepsFormTypes} formType - Type of the form.
+     */
+    const handleWizardFormSubmit = (values: any, formType: WizardStepsFormTypes) => {
+        setWizardState(_.merge(wizardState, { [ formType ]: values }));
+    };
+
+    /**
+     * Generates a summary of the wizard.
+     *
+     * @return {any}
+     */
+    const generateWizardSummary = () => {
+        if (!wizardState) {
+            return;
+        }
+
+        let summary = {};
+
+        for (const value of Object.values(wizardState)) {
+            summary = {
+                ...summary,
+                ...value
+            };
+        }
+
+        return _.merge(_.cloneDeep(template), summary);
+    };
+
+    /**
+     * Handles the final wizard submission.
+     *
+     * @param application - Application data.
+     */
+    const handleWizardFormFinish = (application: any) => {
+        createNewApplication({
+            ...application,
+            inboundProtocolConfiguration: {
+                ...application.inboundProtocolConfiguration,
+                oidc: {
+                    ...application.inboundProtocolConfiguration.oidc,
+                    callbackURLs: EncodeDecodeUtils
+                        .decodeURLRegex(application?.inboundProtocolConfiguration?.oidc?.callbackURLs)
+                }
+            }
+        });
+        history.push("/applications");
     };
 
     const STEPS = [
         {
             content: (
-                <WizardGeneralSettings
-                    next={ stepForward }
-                    cancel={ closeWizard }
-                    triggerSubmit={ false }
-                    applicationData={ generalSettingsData }
-                    setApplicationData={ setGeneralSettings }
-                    loadTemplate={ loadTemplateData }
-                    onSubmit={ null }
+                <GeneralSettingsWizardForm
+                    triggerSubmit={ completedStep === 0 || partiallyCompletedStep === 0 }
+                    initialValues={ wizardState && wizardState[ WizardStepsFormTypes.GENERAL_SETTINGS ] }
+                    onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.GENERAL_SETTINGS) }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
@@ -185,24 +257,22 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         },
         {
             content: (
-                <WizardOAuthProtocolSettings
-                    back={ stepBackward }
-                    next={ stepForward }
-                    OIDCdata={ OIDCProtocolSetting }
-                    setOIDCdata={ setOIDCSettings }
-                    templateData={ application }
+                <OAuthProtocolSettingsWizardForm
+                    triggerSubmit={ completedStep === 1 || partiallyCompletedStep === 1 }
+                    templateType={ templateType }
+                    initialValues={ wizardState && wizardState[ WizardStepsFormTypes.PROTOCOL_SETTINGS ] }
+                    onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.PROTOCOL_SETTINGS) }
                 />
             ),
             icon: ApplicationWizardStepIcons.protocolConfig,
-            title: "Protocol Selection"
+            title: "Protocol Configuration"
         },
         {
             content: (
                 <WizardSummary
-                    back={ stepBackward }
-                    next={ stepForward }
-                    data={ application }
-                    loadData={ updateTemplateData }
+                    triggerSubmit={ completedStep === 2 }
+                    summary={ generateWizardSummary() }
+                    onSubmit={ handleWizardFormFinish }
                 />
             ),
             icon: ApplicationWizardStepIcons.protocolSelection,
@@ -210,13 +280,19 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         }
     ];
 
+    /**
+     * Called when modal close event is triggered.
+     */
+    const handleWizardClose = () => {
+        closeWizard();
+    };
+
     return (
         <Modal
             open={ true }
             className="wizard application-create-wizard"
             dimmer="blurring"
-            size="small"
-            onClose={ closeWizard }
+            onClose={ handleWizardClose }
             closeOnDimmerClick
             closeOnEscape
         >
@@ -242,14 +318,21 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 <Grid>
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton floated="left" onClick={ () => closeWizard() }>Cancel</LinkButton>
+                            <LinkButton floated="left" onClick={ handleWizardClose }>Cancel</LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (
-                                <LinkButton floated="right" onClick={ navigateToNext }>Next Step</LinkButton>
+                                <PrimaryButton floated="right" onClick={ navigateToNext }>
+                                    Next Step <Icon name="arrow right"/>
+                                </PrimaryButton>
+                            ) }
+                            { currentWizardStep === STEPS.length - 1 && (
+                                <PrimaryButton floated="right" onClick={ navigateToNext }>Finish</PrimaryButton>
                             ) }
                             { currentWizardStep > 0 && (
-                                <LinkButton floated="right" onClick={ navigateToPrevious }>Previous step</LinkButton>
+                                <LinkButton floated="right" onClick={ navigateToPrevious }>
+                                    <Icon name="arrow left"/> Previous step
+                                </LinkButton>
                             ) }
                         </Grid.Column>
                     </Grid.Row>

@@ -16,173 +16,123 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import { Forms } from "@wso2is/forms";
-import { isEmpty } from "lodash";
+import { EncodeDecodeUtils } from "@wso2is/core/utils";
+import { AppAvatar, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { Button, Grid, Label } from "semantic-ui-react";
-import { createApplication } from "../../../api";
-import { history } from "../../../helpers";
-import { MainApplicationInterface } from "../../../models";
+import { Grid, Label } from "semantic-ui-react";
 
+/**
+ * Proptypes for the wizard summary component.
+ */
 interface WizardSummaryProps {
-    data: MainApplicationInterface;
-    back: any;
-    next: any;
-    loadData: any;
+    summary: any;
+    triggerSubmit: boolean;
+    onSubmit: (application: any) => void;
 }
 
 /**
- * Creates Summary of the application data.
+ * Wizard summary form component.
  *
- * @param props WizardSummaryProps
+ * @param {WizardSummaryProps} props - Props injected to the component.
+ * @return {JSX.Element}
  */
-export const WizardSummary: FunctionComponent<WizardSummaryProps> = (props): JSX.Element => {
+export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
+    props: WizardSummaryProps
+): JSX.Element => {
+
     const {
-        data,
-        back,
-        loadData,
-        next
+        summary,
+        triggerSubmit,
+        onSubmit
     } = props;
 
+    /**
+     * Submits the form programmatically if triggered from outside.
+     */
     useEffect(() => {
-        loadData();
-    }, []);
-
-    const dispatch = useDispatch();
-
-    const createGeneralSettings = () => {
-        const generalSetting = {
-            Name: data.name,
-            Description: data.description,
-            Image_Url: data.imageUrl,
-            Access_Url: data.accessUrl,
-            Discoverable_By_EndUsers: data.advancedConfigurations.discoverableByEndUsers ? "true" : "false"
-        };
-        const result = Object.keys(generalSetting).map((detail) => {
-            if (detail !== null) {
-                return (
-                    <Grid.Row columns={ 2 } key={ detail } className="endpoint-row">
-                        <Grid.Column width={ 5 }>
-                            { detail.replace(/_/g, " ") }
-                        </Grid.Column>
-                        <Grid.Column width={ 11 }>
-                            { generalSetting[detail] }
-                        </Grid.Column>
-                    </Grid.Row>
-                );
-            }
-        });
-        return result;
-    };
-
-    const buildCallBackURLWithSeparator = (url: string): string => {
-        if (url.includes("regexp=(")) {
-            url = url.replace("regexp=(", "");
-            url = url.replace(")", "");
-            url =  url.split("|").join(",");
+        if (!triggerSubmit) {
+            return;
         }
-        return url;
-    };
 
-    const createProtocolSettings = () => {
-        let result = {};
-        if (data.inboundProtocolConfiguration.oidc !== null) {
-            const oidc = data.inboundProtocolConfiguration.oidc;
-            const setting = {
-                Allowed_Grant_Type: oidc.grantTypes.toString(),
-                Callback_Urls: oidc.callbackURLs && buildCallBackURLWithSeparator(oidc.callbackURLs.toString()),
-                Public_Client: oidc.publicClient ? "true" : "false"
-            };
-            result = Object.keys(setting).map((detail) => {
-                if (detail !== null && setting[detail] !== null) {
-                    return (
-                        <Grid.Row columns={ 2 } key={ detail } className="endpoint-row">
-                            <Grid.Column width={ 5 }>
-                                { detail.replace(/_/g, " ") }
-                            </Grid.Column>
-                            <Grid.Column width={ 11 }>
-                                { setting[detail] }
-                            </Grid.Column>
-                        </Grid.Row>
-                    );
-                }
-            });
-        }
-        return result;
-    };
-
-    const createNewApplication = (app) => {
-        createApplication(app)
-            .then((response) => {
-                dispatch(addAlert({
-                    description: "Successfully Added the application",
-                    level: AlertLevels.SUCCESS,
-                    message: "Creation successful"
-                }));
-                if (!isEmpty(response.headers.location)) {
-                    const location = response.headers.location;
-                    const createdAppID = location.substring(location.lastIndexOf("/") + 1);
-                    history.push("/applications/" + createdAppID);
-                }
-            })
-            .catch((error) => {
-                dispatch(addAlert({
-                    description: "An error occurred while creating the application",
-                    level: AlertLevels.ERROR,
-                    message: "Creation Error"
-                }));
-            });
-    };
-
-    const handleSubmit = () => {
-        next();
-        createNewApplication(data);
-        history.push("/applications");
-    };
+        onSubmit(summary);
+    }, [ triggerSubmit ]);
 
     return (
-        <>
+        <Grid className="wizard-summary">
+            <Grid.Row>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
+                    <div className="general-details">
+                        <AppAvatar
+                            name={ summary?.name }
+                            image={ summary?.imageUrl }
+                            size="tiny"
+                        />
+                        { summary?.name && (
+                            <Heading size="small" className="name">{ summary.name }</Heading>
+                        ) }
+                        { summary?.advancedConfigurations?.discoverableByEndUsers && (
+                            <Label className="info-label">Discoverable</Label>
+                        ) }
+                        { summary?.inboundProtocolConfiguration?.oidc?.publicClient && (
+                            <Label className="info-label">Public</Label>
+                        ) }
+                        { summary?.description && (
+                            <div className="description">{ summary.description }</div>
+                        ) }
+                    </div>
+                </Grid.Column>
+            </Grid.Row>
+            { summary?.accessUrl && (
+                <Grid.Row className="summary-field" columns={ 2 }>
+                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                        <div className="label">Access URL</div>
+                    </Grid.Column>
+                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                        <div className="value url">{ summary.accessUrl }</div>
+                    </Grid.Column>
+                </Grid.Row>
+            ) }
             {
-                (
-                    <Forms
-                        onSubmit={ (values) => {
-                            handleSubmit();
-                        } }
-                    >
-                        <Grid className={ "protocolForm" }>
-                            <Grid.Row columns={ 1 } className={ "protocolRow" }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 } className="protocolColumn">
-                                    <Label as="a" color="orange" ribbon> General Settings</Label>
-                                </Grid.Column>
-                            </Grid.Row>
-                            { createGeneralSettings() }
-                            <Grid.Row columns={ 1 } className={ "protocolRow" }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 } className="protocolColumn">
-                                    <Label as="a" color="blue" ribbon> Protocol Settings</Label>
-                                </Grid.Column>
-                            </Grid.Row>
-                            { createProtocolSettings() }
-                            <Grid.Row columns={ 3 } className={ "protocolRow" }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
-                                    <Button onClick={ back } size="small" className="form-button">
-                                        Back
-                                    </Button>
-                                </Grid.Column>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }/>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
-                                    <Button primary type="submit" size="small" className="form-button">
-                                        Submit
-                                    </Button>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </Forms
-                    >
+                summary?.inboundProtocolConfiguration?.oidc?.grantTypes
+                && summary.inboundProtocolConfiguration.oidc.grantTypes instanceof Array
+                && summary.inboundProtocolConfiguration.oidc.grantTypes.length > 0
+                    ? (
+                        <Grid.Row className="summary-field" columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                                <div className="label">Grant Type(s)</div>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                                <Label.Group>
+                                    {
+                                        summary.inboundProtocolConfiguration.oidc.grantTypes
+                                            .map((grant, index) => (
+                                                <Label key={ index } basic circular>{ grant }</Label>
+                                            ))
+                                    }
+                                </Label.Group>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                    : null
+            }
+            {
+                summary?.inboundProtocolConfiguration?.oidc?.callbackURLs && (
+                    <Grid.Row className="summary-field" columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                            <div className="label">Callback URL(s)</div>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                            {
+                                EncodeDecodeUtils.decodeURLRegex(
+                                    summary.inboundProtocolConfiguration.oidc.callbackURLs)
+                                    .map((url, index) => (
+                                        <div className="value url" key={ index }>{ url }</div>
+                                    ))
+                            }
+                        </Grid.Column>
+                    </Grid.Row>
                 )
             }
-        </>
+        </Grid>
     );
 };
