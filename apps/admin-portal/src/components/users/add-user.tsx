@@ -564,13 +564,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             type="submit"
                             value={ t("common:save").toString() }
                         />
-                        <Field
-                            className="link-button"
-                            onClick={ handleBasicModalClose }
-                            size="small"
-                            type="button"
-                            value={ t("common:cancel").toString() }
-                        />
                     </Form.Group>
                 </Forms>
             </Modal.Content>
