@@ -36,6 +36,7 @@ import * as _ from "lodash";
 interface ProfileProps {
     onAlertFired: (alert: AlertInterface) => void;
     user: BasicProfileInterface;
+    setUser: (userInfo: BasicProfileInterface) => void;
 }
 
 /**
@@ -45,7 +46,7 @@ interface ProfileProps {
  * @return {JSX.Element}
  */
 export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps): JSX.Element => {
-    const { onAlertFired, user } = props;
+    const { onAlertFired, user, setUser } = props;
     const { t } = useTranslation();
 
     const [profileInfo, setProfileInfo] = useState(new Map<string, string>());
@@ -203,7 +204,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
             data.Operations.push(operation);
         });
 
-        updateUserInfo(user.id, data).then(() => {
+        updateUserInfo(user.id, data).then((response) => {
             onAlertFired({
                     description: t(
                         "views:components.user.profile.notifications.updateProfileInfo.success.description"
@@ -213,6 +214,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
                         "views:components.user.profile.notifications.updateProfileInfo.success.message"
                     )
                 });
+            setUser(response);
         });
     };
 

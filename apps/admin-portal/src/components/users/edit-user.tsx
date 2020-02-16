@@ -25,6 +25,7 @@ import { UserProfile } from "./user-profile";
 
 interface EditUserPropsInterface {
     user: BasicProfileInterface;
+    setUser: (userInfo: BasicProfileInterface) => void;
 }
 
 /**
@@ -37,7 +38,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 ): JSX.Element => {
 
     const {
-        user
+        user,
+        setUser
     } = props;
     const dispatch = useDispatch();
 
@@ -50,7 +52,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             menuItem: "Profile",
             render: () => (
                 <ResourceTab.Pane attached={ false }>
-                    <UserProfile onAlertFired={ handleAlerts }  user={ user }/>
+                    <UserProfile onAlertFired={ handleAlerts }  user={ user } setUser={ setUser }/>
                 </ResourceTab.Pane>
             ),
         },
