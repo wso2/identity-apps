@@ -284,7 +284,10 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                         <>
                             <div className="inbound-protocols-section">
                                 <Heading as="h4">Inbound protocol</Heading>
-                                <Hint icon="info circle">Please select one of the following inbound protocols.</Hint>
+
+                                {/* TODO enable this after having multiple inbound protocols*/ }
+                                {/*<Hint icon="info circle">Please select one of the
+                                                   following inbound protocols.</Hint>*/ }
                                 {
                                     (availableInboundProtocols
                                         && availableInboundProtocols instanceof Array

@@ -19,7 +19,7 @@
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState } from "react";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import {
     emptyOIDCConfig,
@@ -54,6 +54,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         initialValues,
         onSubmit
     } = props;
+
+    const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
 
     /**
      * Add regexp to multiple callbackUrls and update configs.
@@ -91,30 +93,31 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @return {any}
      */
     const makeGrantTypeReadable = (grant: string): any => {
+        // TODO Remove this method and fix backend to provide consistent options
         if ("urn:ietf:params:oauth:grant-type:device_code" === grant) {
-            return { label: "Device Code", value: grant };
+            // return { label: "Device Code", value: grant };
         } else if ("urn:ietf:params:oauth:grant-type:uma-ticket" === grant) {
-            return { label: "UMA Ticket ", value: grant };
+            // return { label: "UMA Ticket ", value: grant };
         } else if ("account_switch" === grant) {
-            return { label: "Account Switch", value: grant };
+            // return { label: "Account Switch", value: grant };
         } else if ("urn:ietf:params:oauth:grant-type:jwt-bearer" === grant) {
-            return { label: "JWT Bearer", value: grant };
+            // return { label: "JWT Bearer", value: grant };
         } else if ("Code" === grant) {
             return { label: grant, value: "authorization_code" };
         } else if ("Refresh Token" === grant) {
             return { label: grant, value: "refresh_token" };
         } else if ("SAML2" === grant) {
-            return { label: grant, value: "urn:ietf:params:oauth:grant-type:saml2-bearer" };
+            // return { label: grant, value: "urn:ietf:params:oauth:grant-type:saml2-bearer" };
         } else if ("Implicit" === grant) {
-            return { label: grant, value: "implicit" };
+            // return { label: grant, value: "implicit" };
         } else if ("Password" === grant) {
-            return { label: grant, value: "password" };
+            // return { label: grant, value: "password" };
         } else if ("Client Credential" === grant) {
-            return { label: grant, value: "client_credentials" };
+            // return { label: grant, value: "client_credentials" };
         } else if ("IWA-NTLM" === grant) {
-            return { label: grant, value: "iwa:ntlm" };
+            // return { label: grant, value: "iwa:ntlm" };
         } else {
-            return { label: grant, value: grant };
+            // return { label: grant, value: grant };
         }
     };
 
@@ -131,7 +134,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (metadata) {
             if (isGrant) {
                 metadataProp.options.map((ele) => {
-                    allowedList.push(makeGrantTypeReadable(ele));
+                    const addElement = makeGrantTypeReadable(ele);
+                    if (addElement) {
+                        allowedList.push(makeGrantTypeReadable(ele));
+                    }
                 });
             } else if (isLabel) {
                 metadataProp.options.map((ele) => {
@@ -240,6 +246,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             placeholder="Enter Client ID"
                                             type="text"
                                             value={ initialValues.clientId }
+                                            readOnly
                                         />
                                     </Grid.Column>
                                 </Grid.Row>
@@ -259,24 +266,28 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             placeholder="Enter Client Secret"
                                             type="password"
                                             value={ initialValues.clientSecret }
+                                            readOnly
                                         />
                                     </Grid.Column>
                                 </Grid.Row>
                             )
                         }
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Heading as="h5">Allowed grant types</Heading>
-                                <Hint>This will determine how the application communicates with the token service</Hint>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                <Divider />
                                 <Divider hidden />
+                            </Grid.Column>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     name="grant"
+                                    label="Allowed grant type"
                                     type="checkbox"
                                     required={ true }
-                                    requiredErrorMessage="select at least a  grant type"
+                                    requiredErrorMessage="Select at least a  grant type"
                                     children={ getAllowedList(metadata.allowedGrantTypes, true, true) }
                                     value={ initialValues.grantTypes }
                                 />
+                                <Hint>This will determine how the application communicates with the token service</Hint>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
@@ -353,7 +364,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         </Grid.Row>
 
                         { /* PKCE */ }
-                        <Grid.Row columns={ 1 }>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                <Divider />
+                                <Divider hidden />
+                            </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">PKCE</Heading>
                                 <Hint>
@@ -383,7 +398,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         </Grid.Row>
 
                         { /* Access Token */ }
-                        <Grid.Row columns={ 1 }>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                <Divider />
+                                <Divider hidden />
+                            </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">Access Token</Heading>
                                 <Hint>
@@ -402,7 +421,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                 <Field
                                     name="userAccessTokenExpiryInSeconds"
                                     label="User access token expiry time"
@@ -417,25 +436,31 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Hint>Configure the user access token expiry time (in seconds).</Hint>
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    name="applicationAccessTokenExpiryInSeconds"
-                                    label="Application access token expiry time"
-                                    required={ true }
-                                    requiredErrorMessage="Please fill the application access token expiry time"
-                                    value={ initialValues.accessToken ?
-                                        initialValues.accessToken.applicationAccessTokenExpiryInSeconds.toString() :
-                                        metadata.defaultApplicationAccessTokenExpiryTime }
-                                    placeholder="Enter the application access token expiry time "
-                                    type="number"
-                                />
-                                <Hint>Configure the application access token expiry time (in seconds).</Hint>
-                            </Grid.Column>
-                        </Grid.Row>
+                        {/* TODO  Enable this option in future*/ }
+                        {/*<Grid.Row columns={ 1 }>*/ }
+                        {/*    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>*/ }
+                        {/*        <Field*/ }
+                        {/*            name="applicationAccessTokenExpiryInSeconds"*/ }
+                        {/*            label="Application access token expiry time"*/ }
+                        {/*            required={ true }*/ }
+                        {/*            requiredErrorMessage="Please fill the application access token expiry time"*/ }
+                        {/*            value={ initialValues.accessToken ?*/ }
+                        {/*                initialValues.accessToken.
+                        applicationAccessTokenExpiryInSeconds.toString() :*/ }
+                        {/*                metadata.defaultApplicationAccessTokenExpiryTime }*/ }
+                        {/*            placeholder="Enter the application access token expiry time "*/ }
+                        {/*            type="number"*/ }
+                        {/*        />*/ }
+                        {/*        <Hint>Configure the application access token expiry time (in seconds).</Hint>*/ }
+                        {/*    </Grid.Column>*/ }
+                        {/*</Grid.Row>*/ }
 
                         { /* Refresh Token */ }
                         <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                <Divider />
+                                <Divider hidden />
+                            </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">Refresh Token</Heading>
                                 <Divider hidden />
@@ -457,7 +482,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                 <Field
                                     name="expiryInSeconds"
                                     label="Refresh Token Expiry Time"
@@ -474,7 +499,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         </Grid.Row>
 
                         { /* ID Token */ }
-                        <Grid.Row columns={ 1 }>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                <Divider />
+                                <Divider hidden />
+                            </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">ID Token</Heading>
                                 <Divider hidden />
@@ -498,10 +527,18 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     required={ false }
                                     requiredErrorMessage="this is needed"
                                     type="checkbox"
+                                    listen={
+                                        (values) => {
+                                            setEncryptionEnable(
+                                                values.get("encryption").includes("enableEncryption") ?
+                                                    true : false
+                                            );
+                                        }
+                                    }
                                     value={ initialValues.idToken?.encryption.enabled ? [ "enableEncryption" ] : [] }
                                     children={ [
                                         {
-                                            label: "Enable encription",
+                                            label: "Enable encryption",
                                             value: "enableEncryption"
                                         },
                                     ] }
@@ -521,6 +558,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         metadata.idTokenEncryptionAlgorithm.defaultValue }
                                     placeholder="Select Algorithm"
                                     children={ getAllowedList(metadata.idTokenEncryptionAlgorithm) }
+                                    disabled={ !isEncryptionEnabled }
                                 />
                                 <Hint>Choose encryption algorithm of ID token for the client.</Hint>
                             </Grid.Column>
@@ -537,12 +575,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         metadata.idTokenEncryptionMethod.defaultValue }
                                     placeholder="Select Method"
                                     children={ getAllowedList(metadata.idTokenEncryptionMethod) }
+                                    disabled={ !isEncryptionEnabled }
                                 />
                                 <Hint>Choose the method for the ID token encryption.</Hint>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                 <Field
                                     name="idExpiryInSeconds"
                                     label="Id Token Expiry Time"
@@ -558,7 +597,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         </Grid.Row>
 
                         { /* Logout */ }
-                        <Grid.Row columns={ 1 }>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                <Divider />
+                                <Divider hidden />
+                            </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">Logout URLs</Heading>
                                 <Divider hidden />
@@ -605,9 +648,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 />
                             </Grid.Column>
                         </Grid.Row>
-
                         { /* Scope Validators */ }
-                        <Grid.Row columns={ 1 }>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                <Divider />
+                                <Divider hidden />
+                            </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">Scope validators</Heading>
                                 <Divider hidden />

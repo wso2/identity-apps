@@ -41,11 +41,8 @@ export const SPAApplicationTemplate: MainApplicationInterface = {
     },
     inboundProtocolConfiguration: {
         oidc: {
-            callbackURLs: [
-                "mustneeded"
-            ],
             grantTypes: [
-                "implicit"
+                "authorization_code"
             ],
             publicClient: true,
             state: State.ACTIVE
