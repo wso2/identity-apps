@@ -55,7 +55,7 @@ export interface UserListInterface {
     /**
      * Number of elements in the returned page.
      */
-    count?: number;
+    itemsPerPage?: number;
     /**
      * Set of applications.
      */
@@ -65,3 +65,26 @@ export interface UserListInterface {
      */
     links?: LinkInterface[];
 }
+
+/**
+ *  User basic details for add wizard.
+ */
+export interface UserBasicWizard {
+    userName: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    domain: string;
+    newPassword: string;
+    passwordOption: string;
+}
+
+export const createEmptyUserBasicWizard = (): UserBasicWizard => ({
+    domain: "",
+    email: "",
+    firstName: "",
+    lastName: "",
+    newPassword: "",
+    passwordOption: "",
+    userName: ""
+});

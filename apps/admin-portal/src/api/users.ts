@@ -38,7 +38,7 @@ export const getUsersList = (limit: number, offset: number): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.users + "?limit=" + limit + "&offset=" + offset
+        url: ServiceResourcesEndpoint.users + "?count=" + limit + "&startIndex=" + offset
     };
 
     return httpClient.request(requestConfig)
