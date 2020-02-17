@@ -61,7 +61,7 @@ export const App = (): JSX.Element => {
                                     } }
                                 />
                                 <Route
-                                    path={ LOGOUT_CALLBACK_URL }
+                                    path={ APP_LOGOUT_PATH }
                                     render={ () => {
                                         return <SignOut />;
                                     } }
