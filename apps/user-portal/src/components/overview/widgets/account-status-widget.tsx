@@ -143,7 +143,11 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                                     attributes.completedAttributes
                                                         .map((attr, index) => (
                                                             <li key={ index }>
-                                                                {
+                                                                { attr.name === "profileUrl" ?
+                                                                    t("views:components.profile.fields."
+                                                                        + "profileImage",
+                                                                        { defaultValue: attr.displayName })
+                                                                    :
                                                                     t("views:components.profile.fields."
                                                                         + attr.name.replace(".", "_"),
                                                                         { defaultValue: attr.displayName })
@@ -173,7 +177,11 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                                     attributes.incompleteAttributes
                                                         .map((attr, index) => (
                                                             <li key={ index }>
-                                                                {
+                                                                { attr.name === "profileUrl" ?
+                                                                    t("views:components.profile.fields."
+                                                                        + "profileImage",
+                                                                        { defaultValue: attr.displayName })
+                                                                :
                                                                     t("views:components.profile.fields."
                                                                         + attr.name.replace(".", "_"),
                                                                         { defaultValue: attr.displayName })
