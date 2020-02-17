@@ -52,7 +52,7 @@ export const resolveUserDisplayName = (state: AuthStateInterface): string => {
  * @param {string} userStoreDomain - User store domain of the user.
  * @return {string}
  */
-export const resolveUsername = (username: string, userStoreDomain: string) => {
+export const resolveUsername = (username: string, userStoreDomain: string): string => {
     // check if the user store is `PRIMARY`.
     if (userStoreDomain === ApplicationConstants.PRIMARY_USER_STORE_IDENTIFIER) {
         return username;
@@ -69,7 +69,7 @@ export const resolveUsername = (username: string, userStoreDomain: string) => {
  * @param {string} username - Username of the user with user store embedded.
  * @return {string}
  */
-export const resolveUserStoreEmbeddedUsername = (username: string) => {
+export const resolveUserStoreEmbeddedUsername = (username: string): string => {
     const parts = username.split("/");
 
     if (parts.length === 1) {
