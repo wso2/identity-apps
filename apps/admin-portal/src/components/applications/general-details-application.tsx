@@ -24,6 +24,7 @@ import React, { FunctionComponent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
 import { deleteApplication, updateApplicationDetails } from "../../api";
+import { GlobalConfig } from "../../configs";
 import { history } from "../../helpers";
 import { ApplicationInterface } from "../../models";
 
@@ -205,14 +206,18 @@ export const GeneralDetailsApplication: FunctionComponent<GeneralSettingsProps> 
                                     </Grid.Row>
                                 </Grid>
                             </Forms>
-                            <DangerZoneGroup sectionHeader="Danger Zone">
-                                <DangerZone
-                                    actionTitle="Delete application"
-                                    header="Delete the application"
-                                    subheader="This action is irreversible. Please proceed with caution."
-                                    onActionClick={ handleApplicationDelete }
-                                />
-                            </DangerZoneGroup>
+                            { !(GlobalConfig.doNotDeleteApplications.includes(name)) &&
+                            (
+                                <DangerZoneGroup sectionHeader="Danger Zone">
+                                    <DangerZone
+                                        actionTitle="Delete application"
+                                        header="Delete the application"
+                                        subheader="This action is irreversible. Please proceed with caution."
+                                        onActionClick={ handleApplicationDelete }
+                                    />
+                                </DangerZoneGroup>
+                            )
+                            }
                         </>
                     )
                     : <ContentLoader />

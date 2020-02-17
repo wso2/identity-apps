@@ -25,6 +25,7 @@ interface RuntimeConfigInterface {
     clientID?: string;
     clientOrigin?: string;
     copyrightText?: string;
+    doNotDeleteApplications?: string[];
     loginCallbackUrl?: string;
     serverHost?: string;
     serverOrigin?: string;
@@ -47,6 +48,7 @@ export let GlobalConfig: RuntimeConfigInterface = {
     clientID: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.clientID || CLIENT_ID_DEFAULT) : CLIENT_ID_DEFAULT,
     clientOrigin: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.clientOrigin || CLIENT_ORIGIN_DEFAULT) : CLIENT_ORIGIN_DEFAULT,
     copyrightText: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.copyrightText || COPYRIGHT_TEXT_DEFAULT) : COPYRIGHT_TEXT_DEFAULT,
+    doNotDeleteApplications: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.doNotDeleteApplications || []) : [],
     loginCallbackUrl: (RUNTIME_CONFIG) ?
         (RUNTIME_CONFIG.clientHost || CLIENT_HOST_DEFAULT) + (RUNTIME_CONFIG.loginCallbackUrl || LOGIN_CALLBACK_URL) :
         LOGIN_CALLBACK_URL,

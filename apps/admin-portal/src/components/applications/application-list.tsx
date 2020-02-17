@@ -57,7 +57,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 (list.applications && list.applications.length && list.applications.length > 0)
                     ? list.applications.map((app, index) => {
                         // TODO Remove this check and move the logic to backend.
-                        if (app.name !== "wso2carbon-local-sp") {
+                        if ("wso2carbon-local-sp" !== app.name) {
                             return (
                                 <ResourceList.Item
                                     key={ index }
