@@ -50,6 +50,10 @@ Recent Application Card
    Selection Card
 --------------------*/
 
+@selectionCardHoverBoxShadow: @defaultCardHoverBoxShadow;
+@selectionCardTransition: @defaultCardTransition;
+@selectionCardBorder: @defaultCardBorder;
+@selectionCardSelectedStateBorderColor: @primaryColor;
 @selectionCardDefaultWidth: 150px;
 @selectionCardRightSpacing: 20px;
 @selectionCardTextContainerPadding: 0.8em 1em;
@@ -58,8 +62,6 @@ Recent Application Card
 @selectionCardHeaderMaxWidth: 100%;
 @selectionCardDescriptionMaxWidth: 100%;
 @selectionCardDescriptionMinHeight: 20px;
-@selectionCardDefaultStateBorderBottom: 3px solid transparent;
-@selectionCardSelectedStateBorderBottom: 3px solid @primaryColor;
 
 /*-------------------------------
     Application Template Card

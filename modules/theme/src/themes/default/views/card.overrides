@@ -204,23 +204,29 @@
 
 .ui.card {
     &.selection-card {
-        border-bottom: @selectionCardDefaultStateBorderBottom;
         width: @selectionCardDefaultWidth;
+        transition: @selectionCardTransition;
+        border: @selectionCardBorder;
+        box-shadow: none;
 
         &:hover {
             transform: none;
             text-decoration: none;
-            border-bottom: @selectionCardDefaultStateBorderBottom;
+            cursor: pointer;
+            box-shadow: @defaultCardHoverBoxShadow;
         }
         &.inline {
             display: inline-block;
             margin-right: @selectionCardRightSpacing;
         }
         &.selected {
-            border-bottom: @selectionCardSelectedStateBorderBottom;
+            &:after {
+                visibility: visible;
+            }
         }
         &.disabled {
             cursor: not-allowed;
+            filter: grayscale(100%);
         }
         .card-image-container {
         }
@@ -243,6 +249,13 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
+        }
+        &:after {
+            display: block;
+            background: @selectionCardSelectedStateBorderColor;
+            content: '';
+            height: 3px;
+            visibility: hidden;
         }
     }
 }
