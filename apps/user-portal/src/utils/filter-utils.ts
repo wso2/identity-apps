@@ -24,6 +24,7 @@ import { Route, routes } from "../configs";
  * @param appConfig
  * @param key
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const checkEnabled = (appConfig: any, key: string): boolean => {
     if (appConfig[key] === undefined) {
         return true;
