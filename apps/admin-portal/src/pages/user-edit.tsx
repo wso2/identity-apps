@@ -79,6 +79,7 @@ export const UserEditPage = (): JSX.Element => {
                     name={ user.userName }
                     size="tiny"
                     floated="left"
+                    image={ user.profileUrl }
                 />
             ) }
             backButton={ {

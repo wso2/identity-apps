@@ -38,6 +38,7 @@ export interface UserBasicInterface {
     emails?: string[] | MultiValue[];
     name: Name;
     meta: UserMetaInterface;
+    profileUrl: string;
 }
 
 /**

@@ -108,6 +108,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 name={ user.userName }
                                 size="mini"
                                 floated="left"
+                                image={ user.profileUrl }
                             />
                         ) }
                         itemHeader={ user.name && user.name.givenName !== undefined ? user.name.givenName +

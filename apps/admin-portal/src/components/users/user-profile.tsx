@@ -172,7 +172,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
 
             const schemaNames = schema.name.split(".");
 
-            if (schema.name !== "roles.default" && schema.name !== "profileUrl") {
+            if (schema.name !== "roles.default") {
                 if (values.get(schema.name) !== undefined && values.get(schema.name).toString() !== undefined) {
                     if (schemaNames.length === 1) {
                         opValue = schemaNames[0] === "emails"
@@ -256,7 +256,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
                         <Grid>
                             {
                                 profileSchema && profileSchema.map((schema: ProfileSchema, index: number) => {
-                                    if (schema.name !== "roles.default" && schema.name !== "profileUrl") {
+                                    if (schema.name !== "roles.default") {
                                         return (
                                             generateProfileEditForm(schema, index)
                                         );
