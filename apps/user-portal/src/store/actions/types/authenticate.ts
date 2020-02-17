@@ -62,3 +62,12 @@ export const authenticateActionTypes = {
     SET_SIGN_IN,
     SET_SIGN_OUT
 };
+
+/**
+ * Api request end action interface.
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export interface AuthAction {
+    payload?: any;
+    type: string;
+}
