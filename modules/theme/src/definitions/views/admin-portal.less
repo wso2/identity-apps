@@ -36,6 +36,19 @@
 
         .authentication-steps-section {
             .authentication-step-container {
+                .step-header {
+                    display: inline-block;
+                }
+                .delete-button {
+                    display: inline-block;
+                    float: right;
+                    color: @nobel;
+
+                    &:hover {
+                        color: @black;
+                        cursor: pointer;
+                    }
+                }
                 .authentication-step {
                     min-height: 120px;
                     background-color: @whiteSmoke;

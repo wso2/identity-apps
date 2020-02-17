@@ -30,6 +30,7 @@ export interface AuthenticatorListItemInterface {
     displayName?: string;
     idp?: string;
     image?: any;
+    index?: number;
     type?: AuthenticatorTypes;
 }
 
@@ -40,20 +41,6 @@ export const selectedLocalAuthenticators: AuthenticatorListItemInterface[] = [
         idp: "LOCAL",
         image: AuthenticatorIcons.basic,
         type: AuthenticatorTypes.FIRST_FACTOR,
-    },
-    {
-        authenticator: "FIDOAuthenticator",
-        displayName: "FIDO",
-        idp: "LOCAL",
-        image: AuthenticatorIcons.fido,
-        type: AuthenticatorTypes.SECOND_FACTOR,
-    },
-    {
-        authenticator: "totp",
-        displayName: "TOTP",
-        idp: "LOCAL",
-        image: AuthenticatorIcons.totp,
-        type: AuthenticatorTypes.SECOND_FACTOR,
     }
 ];
 
@@ -86,4 +73,18 @@ export const selectedFederatedAuthenticators: AuthenticatorListItemInterface[] =
         image: AuthenticatorIcons.facebook,
         type: AuthenticatorTypes.SOCIAL,
     },
+    {
+        authenticator: "FIDOAuthenticator",
+        authenticatorId: "asdadagJvb2tBdggXRoZW50aWNhdG9y",
+        displayName: "FIDO",
+        image: AuthenticatorIcons.fido,
+        type: AuthenticatorTypes.SECOND_FACTOR,
+    },
+    {
+        authenticator: "TwitterAuthenticator",
+        authenticatorId: "VHdpdHRlckF1dGhlbnRpY2F0b3I",
+        displayName: "Twitter",
+        image: AuthenticatorIcons.twitter,
+        type: AuthenticatorTypes.SOCIAL,
+    }
 ];

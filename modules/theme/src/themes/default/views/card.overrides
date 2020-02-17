@@ -341,6 +341,10 @@
                 text-decoration: none;
                 cursor: pointer;
                 box-shadow: @labeledCardHoverBoxShadow;
+
+                .close-button {
+                    visibility: visible;
+                }
             }
         }
     }
@@ -361,6 +365,16 @@
                 text-decoration: none;
                 cursor: pointer;
                 box-shadow: @labeledCardHoverBoxShadow;
+            }
+            .close-button {
+                border-radius: 50% !important;
+                display: inline-table;
+                font-weight: 500;
+                visibility: hidden;
+
+                &:hover {
+                    box-shadow: 1px 1px 4px @darkGray;
+                }
             }
             &.selected {
 

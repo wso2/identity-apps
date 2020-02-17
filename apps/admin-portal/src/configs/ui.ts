@@ -18,15 +18,9 @@
 
 import {
     AlertIcon,
-    BasicAuthIcon,
-    FIDOLogo,
-    TOTPIcon,
-    EmailOTPIcon,
-    SMSOTPIcon,
-    FacebookLogo,
-    GoogleLogo,
     AngularLogo,
     AppIcon,
+    BasicAuthIcon,
     BlockedMagnifierIcon,
     BoxIcon,
     CaretRightIcon,
@@ -37,11 +31,16 @@ import {
     DocumentIcon,
     DotIcon,
     DotNetLogo,
+    DragIcon,
     DummyUser,
+    EmailOTPIcon,
     EmptySearchResultsIllustration,
     ErrorIcon,
+    FacebookLogo,
+    FIDOLogo,
     ForbiddenIcon,
     GearsIcon,
+    GoogleLogo,
     HomeTileIcons,
     InfoIcon,
     JavaLogo,
@@ -53,9 +52,12 @@ import {
     ReactLogo,
     SamlLogo,
     SettigsSectionIconSet,
+    SMSOTPIcon,
     SPATemplateIllustration,
     SpinWheelIcon,
     SuccessIcon,
+    TOTPIcon,
+    TwitterLogo,
     UserIcon,
     VueLogo,
     WarningIcon,
@@ -174,5 +176,10 @@ export const AuthenticatorIcons = {
     fido: FIDOLogo,
     google: GoogleLogo,
     smsOTP: SMSOTPIcon,
-    totp: TOTPIcon
+    totp: TOTPIcon,
+    twitter: TwitterLogo
+};
+
+export const PlaceHolderIcons = {
+    drag: DragIcon
 };

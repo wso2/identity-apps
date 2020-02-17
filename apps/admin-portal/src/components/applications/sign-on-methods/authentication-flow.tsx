@@ -18,12 +18,12 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Heading, Hint, LabeledCard, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { EmptyPlaceholder, Heading, Hint, LabeledCard, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { DragDropContext, Droppable, DroppableProvided, DropResult } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
-import { Checkbox, Divider, Grid, Icon } from "semantic-ui-react";
+import { Checkbox, Divider, Grid, Icon, Label } from "semantic-ui-react";
 import { getIdentityProviderDetail, getIdentityProviderList, updateAuthenticationSequence } from "../../../api";
 import {
     AuthenticationSequenceType,
@@ -342,7 +342,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
      * @param {AuthenticatorInterface} option - Authenticator step option.
      * @return {JSX.Element} A resolved labeled card.
      */
-    const resolveStepOption = (option: AuthenticatorInterface): JSX.Element => {
+    const resolveStepOption = (option: AuthenticatorInterface, stepIndex, optionIndex): JSX.Element => {
         const authenticators: AuthenticatorListItemInterface[] = option.idp === IdentityProviderTypes.LOCAL
             ? [ ...localAuthenticators ]
             : [ ...federatedAuthenticators ];
@@ -360,9 +360,38 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                     image={ authenticator.image }
                     label={ authenticator.displayName }
                     bottomMargin={ false }
+                    onCloseClick={ () => handleStepOptionDelete(stepIndex, optionIndex) }
                 />
             );
         }
+    };
+
+    const handleStepOptionDelete = (stepIndex: number, optionIndex: number) => {
+        const steps = [ ...authenticationSteps ];
+        steps[stepIndex].options.splice(optionIndex, 1);
+        setAuthenticationSteps(steps);
+    };
+
+    /**
+     * Handles step delete.
+     *
+     * @param {number} stepIndex - Authentication step.
+     */
+    const handleStepDelete = (stepIndex: number) => {
+        const steps = [ ...authenticationSteps ];
+
+        if (steps.length <= 1) {
+            dispatch(addAlert({
+                description: "At least one authentication step is required.",
+                level: AlertLevels.WARNING,
+                message: "Delete error"
+            }));
+
+            return;
+        }
+
+        steps.splice(stepIndex, 1);
+        setAuthenticationSteps(steps);
     };
 
     /**
@@ -439,27 +468,16 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
     };
 
     /**
-     * Filters the list of federated authenticators based on the passed in type.
+     * Filters the list of federated & local authenticators and returns a list of
+     * authenticators of the selected type.
      *
      * @param {AuthenticatorTypes} type - Authenticator type.
      * @return {AuthenticatorListItemInterface[]} A filtered list of authenticators.
      */
     const filterFederatedAuthenticators = (type: AuthenticatorTypes): AuthenticatorListItemInterface[] => {
-        let authenticators: AuthenticatorListItemInterface[] = [ ...federatedAuthenticators ];
+        const authenticators: AuthenticatorListItemInterface[] = [ ...federatedAuthenticators ];
 
-        if (type === AuthenticatorTypes.SECOND_FACTOR) {
-            authenticators = authenticators
-                .filter((authenticator) => authenticator.type === AuthenticatorTypes.SECOND_FACTOR);
-
-            return authenticators;
-        } else if (type === AuthenticatorTypes.SOCIAL) {
-            authenticators = authenticators
-                .filter((authenticator) => authenticator.type === AuthenticatorTypes.SOCIAL);
-
-            return authenticators;
-        }
-
-        return [];
+        return authenticators.filter((authenticator) => authenticator.type === type);
     };
 
     return (
@@ -482,14 +500,14 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                                 <Grid>
                                     <Grid.Row columns={ 2 }>
                                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 5 }>
-                                            <Heading as="h6">Local authenticators</Heading>
+                                            <Heading as="h6">Local</Heading>
                                             <Authenticators
                                                 authenticators={ localAuthenticators }
                                                 droppableId={ LOCAL_AUTHENTICATORS_DROPPABLE_ID }
                                             />
                                         </Grid.Column>
                                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 5 }>
-                                            <Heading as="h6">Second factor authenticators</Heading>
+                                            <Heading as="h6">Second factor</Heading>
                                             <Authenticators
                                                 authenticators={
                                                     filterFederatedAuthenticators(AuthenticatorTypes.SECOND_FACTOR)
@@ -498,12 +516,12 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                                             />
                                         </Grid.Column>
                                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 5 }>
-                                            <Heading as="h6">Social authenticators</Heading>
+                                            <Heading as="h6">Social logins</Heading>
                                             <Authenticators
                                                 authenticators={
                                                     filterFederatedAuthenticators(AuthenticatorTypes.SOCIAL)
                                                 }
-                                                droppableId={ SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID }
+                                                droppableId={ SOCIAL_AUTHENTICATORS_DROPPABLE_ID }
                                             />
                                         </Grid.Column>
                                     </Grid.Row>
@@ -519,10 +537,10 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                                     authenticationSteps
                                     && authenticationSteps instanceof Array
                                     && authenticationSteps.length > 0
-                                        ? authenticationSteps.map((step, index) => (
+                                        ? authenticationSteps.map((step, stepIndex) => (
                                             <Droppable
-                                                key={ index }
-                                                droppableId={ AUTHENTICATION_STEP_DROPPABLE_ID + index }
+                                                key={ stepIndex }
+                                                droppableId={ AUTHENTICATION_STEP_DROPPABLE_ID + stepIndex }
                                             >
                                                 { (provided: DroppableProvided) => (
                                                     <div
@@ -530,28 +548,49 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                                                         { ...provided.droppableProps }
                                                         className="authentication-step-container"
                                                     >
-                                                        <Heading as="h6">Step { step.id }</Heading>
+                                                        <Heading className="step-header" as="h6">
+                                                            Step { step.id }
+                                                        </Heading>
+                                                        <Icon
+                                                            className="delete-button"
+                                                            name="cancel"
+                                                            onClick={ () => handleStepDelete(stepIndex) }
+                                                        />
                                                         <div className="authentication-step">
                                                             {
                                                                 step.options
                                                                 && step.options instanceof Array
                                                                 && step.options.length > 0
-                                                                    ? step.options
-                                                                        .map((option) => resolveStepOption(option))
-                                                                    : null
+                                                                    ? step.options.map((option, optionIndex) =>
+                                                                        resolveStepOption(
+                                                                            option,
+                                                                            stepIndex,
+                                                                            optionIndex
+                                                                        ))
+                                                                    : (
+                                                                        <EmptyPlaceholder
+                                                                            subtitle={ [ "Drag and drop any of the " +
+                                                                            "above authenticators", "to build an " +
+                                                                            "authentication sequence."] }
+                                                                        />
+                                                                    )
                                                             }
                                                             { provided.placeholder }
                                                         </div>
                                                         <div className="checkboxes">
                                                             <Checkbox
                                                                 label="Use subject identifier from this step"
-                                                                checked={ subjectStepId === (index + 1) }
-                                                                onChange={ () => onSubjectCheckboxChange(index + 1) }
+                                                                checked={ subjectStepId === (stepIndex + 1) }
+                                                                onChange={
+                                                                    () => onSubjectCheckboxChange(stepIndex + 1)
+                                                                }
                                                             />
                                                             <Checkbox
                                                                 label="Use attributes from this step"
-                                                                checked={ attributeStepId === (index + 1) }
-                                                                onChange={ () => onAttributeCheckboxChange(index + 1) }
+                                                                checked={ attributeStepId === (stepIndex + 1) }
+                                                                onChange={
+                                                                    () => onAttributeCheckboxChange(stepIndex + 1)
+                                                                }
                                                             />
                                                         </div>
                                                     </div>
@@ -564,6 +603,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                                 <LinkButton className="add-step-button" onClick={ handleAuthenticationStepAdd }>
                                     <Icon name="plus"/>Add authentication step
                                 </LinkButton>
+                                <Divider hidden />
                                 <PrimaryButton onClick={ handleAuthenticationFlowUpdate }>Save changes</PrimaryButton>
                             </div>
                         </Grid.Column>

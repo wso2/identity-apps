@@ -18,7 +18,7 @@
 
 import classNames from "classnames";
 import React, { FunctionComponent } from "react";
-import { Card, CardProps } from "semantic-ui-react";
+import { Card, CardProps, Label, LabelProps } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
 
 /**
@@ -58,6 +58,10 @@ interface LabeledCardPropsInterface {
      */
     onClick?: (event: React.MouseEvent<HTMLAnchorElement>, data: CardProps) => void;
     /**
+     * On click callback for the close button.
+     */
+    onCloseClick?: (event: React.MouseEvent<HTMLElement>, data: LabelProps) => void;
+    /**
      * If the card should appear as selected.
      */
     selected?: boolean;
@@ -88,6 +92,7 @@ export const LabeledCard: FunctionComponent<LabeledCardPropsInterface> = (
         imageSize,
         label,
         onClick,
+        onCloseClick,
         selected
     } = props;
 
@@ -118,6 +123,18 @@ export const LabeledCard: FunctionComponent<LabeledCardPropsInterface> = (
                 onClick={ onClick }
                 link={ false }
             >
+                { onCloseClick && (
+                    <Label
+                        className="close-button"
+                        color="red"
+                        size="mini"
+                        onClick={ onCloseClick }
+                        floating
+                        circular
+                    >
+                        x
+                    </Label>
+                ) }
                 <Card.Content className="card-image-container">
                     <GenericIcon
                         className="card-image"

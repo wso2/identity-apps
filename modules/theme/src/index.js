@@ -38,6 +38,7 @@ export const CrossIcon = require("../lib/assets/images/icons/cross-icon.svg");
 export const DashboardIcon = require("../lib/assets/images/icons/dashboard-icon.svg");
 export const DocumentIcon = require("../lib/assets/images/icons/document-icon.svg");
 export const DotIcon = require("../lib/assets/images/icons/dot-icon.svg");
+export const DragIcon = require("../lib/assets/images/icons/drag-icon.svg");
 export const EmailIcon = require("../lib/assets/images/icons/email-icon.svg");
 export const ErrorIcon = require("../lib/assets/images/icons/error-icon.svg");
 export const FingerprintIcon = require("../lib/assets/images/icons/fingerprint.svg");
@@ -103,6 +104,7 @@ export const SPATemplateIllustration = require("../lib/assets/images/illustratio
 // Social
 export const FacebookLogo = require("../lib/assets/images/social/facebook.svg");
 export const GoogleLogo = require("../lib/assets/images/social/google.svg");
+export const TwitterLogo = require("../lib/assets/images/social/twitter.svg");
 
 // Authenticators
 export const BasicAuthIcon = require("../lib/assets/images/authenticators/basic-auth.png");
