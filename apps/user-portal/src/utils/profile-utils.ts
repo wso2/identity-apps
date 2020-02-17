@@ -155,12 +155,25 @@ export const flattenSchemas = (schemas: ProfileSchema[], parentSchemaName?: stri
 };
 
 /**
+ * Type Guard to check if the passed in attribute is of type `MultiValue`.
+ *
+ * @param attribute - Profile attribute.
+ * @return {attribute is MultiValue}
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const isMultiValuedProfileAttribute = (attribute: any): attribute is MultiValue => {
+    return attribute.type !== undefined;
+};
+
+
+/**
  * Modifies the profile info object in to a flat level.
  *
  * @param profileInfo - Profile information.
  * @param {string} parentAttributeName - Name of the parent attribute.
  * @return {any[]}
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: string) => {
     const tempProfile = [];
 
@@ -223,16 +236,6 @@ export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: strin
     }
 
     return tempProfile;
-};
-
-/**
- * Type Guard to check if the passed in attribute is of type `MultiValue`.
- *
- * @param attribute - Profile attribute.
- * @return {attribute is MultiValue}
- */
-export const isMultiValuedProfileAttribute = (attribute: any): attribute is MultiValue => {
-    return attribute.type !== undefined;
 };
 
 /**

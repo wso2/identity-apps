@@ -26,17 +26,9 @@ import { hideGlobalLoader, showGlobalLoader } from "../store/actions";
 import { endUserSession, hasLoginPermission } from "./authenticate-util";
 
 /**
- * Set up the http client by registering the callback functions.
- */
-export const setupHttpClient = () => {
-    const httpClient = AxiosHttpClient.getInstance();
-    httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
-};
-
-/**
  * Callback to be fired on every Http request start.
  */
-export const onHttpRequestStart = () => {
+export const onHttpRequestStart = (): void => {
     store.dispatch(showGlobalLoader());
 };
 
@@ -45,9 +37,29 @@ export const onHttpRequestStart = () => {
  *
  * @param response - Http response.
  */
-export const onHttpRequestSuccess = (response: any) => {
+export const onHttpRequestSuccess = (): void => {
     // TODO: Handle any conditions required on request success.
 };
+
+/**
+ * Set up the http client by registering the callback functions.
+ */
+const endUserSessionWithoutLoops = () => {
+    if (!sessionStorage.getItem(ApplicationConstants.AUTH_ERROR_TIME)) {
+        sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
+    } else {
+        const currentTime = new Date().getTime();
+        const errorTime = parseInt(sessionStorage.getItem(ApplicationConstants.AUTH_ERROR_TIME), 10);
+        if (currentTime - errorTime >= 10000) {
+            sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
+            history.push(APP_LOGOUT_PATH);
+        } else {
+            sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
+            return;
+        }
+    }
+};
+
 
 /**
  * Callback to be fired on every Http request error. The error
@@ -61,7 +73,8 @@ export const onHttpRequestSuccess = (response: any) => {
  *
  * @param error - Http error.
  */
-export const onHttpRequestError = (error: any) => {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const onHttpRequestError = (error: any): null => {
     // Terminate the session if the token endpoint returns a bad request(400)
     // The token binding feature will return a 400 status code when the session
     // times out.
@@ -92,27 +105,6 @@ export const onHttpRequestError = (error: any) => {
 /**
  * Callback to be fired on every Http request finish.
  */
-export const onHttpRequestFinish = () => {
+export const onHttpRequestFinish = (): void => {
     store.dispatch(hideGlobalLoader());
-};
-
-/**
- * Sets the time at which an auth error occurs in the session storage and calls `endUserSession()
- * only if the current error takes place 10 seconds after the previous one. This helps avoid entering
- * an infinite loop when a faulty api keeps returning auth errors.
- */
-const endUserSessionWithoutLoops = () => {
-    if (!sessionStorage.getItem(ApplicationConstants.AUTH_ERROR_TIME)) {
-        sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
-    } else {
-        const currentTime = new Date().getTime();
-        const errorTime = parseInt(sessionStorage.getItem(ApplicationConstants.AUTH_ERROR_TIME), 10);
-        if (currentTime - errorTime >= 10000) {
-            sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
-            history.push(APP_LOGOUT_PATH);
-        } else {
-            sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
-            return;
-        }
-    }
 };
