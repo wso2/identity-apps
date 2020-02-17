@@ -16,9 +16,3 @@
  * under the License.
  *
  */
-
-& { @import "./globals/product.less"; }
-
-& { @import "./views/login.less"; }
-& { @import "./views/user-portal.less"; }
-& { @import "./views/admin-portal.less"; }
