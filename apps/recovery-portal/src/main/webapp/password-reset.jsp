@@ -161,7 +161,6 @@
                     }
                     
                     if (password !== password2) {
-                        debugger
                         error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                         "Passwords.did.not.match.please.try.again")%>");
                         error_msg.show();
