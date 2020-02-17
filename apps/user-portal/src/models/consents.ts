@@ -148,22 +148,6 @@ export enum ConsentState {
 }
 
 /**
- * Creates an empty consent object. This can be used to initialize
- * a consent in the state.
- * @return {ConsentInterface} an empty consent object.
- */
-export const createEmptyConsent = (): ConsentInterface => ({
-    consentReceipt: createEmptyConsentReceipt(),
-    consentReceiptID: "",
-    language: "",
-    piiPrincipalId: "",
-    spDescription: "",
-    spDisplayName: "",
-    state: ConsentState.ACTIVE,
-    tenantDomain: "",
-});
-
-/**
  * Creates an empty consent receipt object. This can be used to initialize
  * a consent receipt in the state.
  * @return {ConsentReceiptInterface}  an empty consent receipt object.
@@ -201,4 +185,20 @@ export const createEmptyConsentReceipt = (): ConsentReceiptInterface => ({
         }
     ],
     version: ""
+});
+
+/**
+ * Creates an empty consent object. This can be used to initialize
+ * a consent in the state.
+ * @return {ConsentInterface} an empty consent object.
+ */
+export const createEmptyConsent = (): ConsentInterface => ({
+    consentReceipt: createEmptyConsentReceipt(),
+    consentReceiptID: "",
+    language: "",
+    piiPrincipalId: "",
+    spDescription: "",
+    spDisplayName: "",
+    state: ConsentState.ACTIVE,
+    tenantDomain: "",
 });
