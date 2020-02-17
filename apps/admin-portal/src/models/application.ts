@@ -207,7 +207,7 @@ export interface AuthenticatorInterface {
     authenticator: string;
 }
 
-export interface AuthenticationStepModelInterface {
+export interface AuthenticationStepInterface {
     id: number;
     options: AuthenticatorInterface[];
 }
@@ -217,7 +217,7 @@ export interface AuthenticationStepModelInterface {
  */
 export interface AuthenticationSequenceInterface  {
     type?: AuthenticationSequenceType;
-    steps?: AuthenticationStepModelInterface[];
+    steps?: AuthenticationStepInterface[];
     requestPathAuthenticators?: string[];
     script?: string;
     subjectStepId?: number;

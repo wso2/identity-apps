@@ -18,72 +18,72 @@
 
 import { AuthenticatorIcons } from "../../../configs";
 
-enum authenticatorType {
+export enum AuthenticatorTypes {
     SECOND_FACTOR = "secondary",
     FIRST_FACTOR = "first",
     SOCIAL = "social"
 }
 
-export interface AuthenticatorListInterface {
+export interface AuthenticatorListItemInterface {
     authenticator?: string;
     authenticatorId?: string;
     displayName?: string;
     idp?: string;
     image?: any;
-    type?: authenticatorType;
+    type?: AuthenticatorTypes;
 }
 
-export const selectedLocalAuthenticators: AuthenticatorListInterface[] = [
+export const selectedLocalAuthenticators: AuthenticatorListItemInterface[] = [
     {
         authenticator: "BasicAuthenticator",
         displayName: "Basic",
         idp: "LOCAL",
         image: AuthenticatorIcons.basic,
-        type: authenticatorType.FIRST_FACTOR,
+        type: AuthenticatorTypes.FIRST_FACTOR,
     },
     {
         authenticator: "FIDOAuthenticator",
         displayName: "FIDO",
         idp: "LOCAL",
         image: AuthenticatorIcons.fido,
-        type: authenticatorType.SECOND_FACTOR,
+        type: AuthenticatorTypes.SECOND_FACTOR,
     },
     {
         authenticator: "totp",
         displayName: "TOTP",
         idp: "LOCAL",
         image: AuthenticatorIcons.totp,
-        type: authenticatorType.SECOND_FACTOR,
+        type: AuthenticatorTypes.SECOND_FACTOR,
     }
 ];
 
-export const selectedFederatedAuthenticators: AuthenticatorListInterface[] = [
+export const selectedFederatedAuthenticators: AuthenticatorListItemInterface[] = [
     {
         authenticator: "EmailOTP",
         authenticatorId: "RW1haWxPVFA",
         displayName: "Email OTP",
         image: AuthenticatorIcons.emailOTP,
-        type: authenticatorType.SECOND_FACTOR,
+        type: AuthenticatorTypes.SECOND_FACTOR,
     },
     {
         authenticator: "SMSOTP",
         authenticatorId: "U01TT1RQ",
         displayName: "SMS OTP",
         image: AuthenticatorIcons.smsOTP,
-        type: authenticatorType.SECOND_FACTOR,
+        type: AuthenticatorTypes.SECOND_FACTOR,
     },
     {
         authenticator: "GoogleOIDCAuthenticator",
         authenticatorId: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
         displayName: "Google",
         image: AuthenticatorIcons.google,
-        type: authenticatorType.SOCIAL,
+        type: AuthenticatorTypes.SOCIAL,
     },
     {
         authenticator: "FacebookAuthenticator",
         authenticatorId: "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
         displayName: "Facebook",
         image: AuthenticatorIcons.facebook,
-        type: authenticatorType.SOCIAL,
+        type: AuthenticatorTypes.SOCIAL,
     },
 ];

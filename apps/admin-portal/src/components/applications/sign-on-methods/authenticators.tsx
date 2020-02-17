@@ -25,13 +25,13 @@ import {
     Droppable,
     DroppableProvided
 } from "react-beautiful-dnd";
-import { AuthenticatorListInterface } from "../meta";
+import { AuthenticatorListItemInterface } from "../meta";
 
 /**
  * Proptypes for the authenticators component.
  */
 interface AuthenticatorsPropsInterface {
-    authenticators: AuthenticatorListInterface[];
+    authenticators: AuthenticatorListItemInterface[];
     className?: string;
     droppableId: string;
     isDropDisabled?: boolean;
