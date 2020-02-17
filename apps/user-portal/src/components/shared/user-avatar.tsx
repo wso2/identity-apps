@@ -205,11 +205,11 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
      * This is called when the save button is clicked
      * @param event
      */
-    const handleSubmit = (event: React.MouseEvent) => {
+    const handleSubmit = async (event: React.MouseEvent) => {
 
         if (_.isEmpty(url)) {
             setUrlError(Error.REQUIRED);
-        } else if (!FormValidation.url(url)) {
+        } else if (! await FormValidation.imageUrl(url)) {
             setUrlError(Error.VALIDATION);
         } else {
             updateProfileUrl();
