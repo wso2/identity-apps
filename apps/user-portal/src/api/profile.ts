@@ -39,6 +39,7 @@ const httpClient = AxiosHttpClient.getInstance();
  *
  * @return {Promise<any>} a promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getUserInfo = (): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -63,11 +64,34 @@ export const getUserInfo = (): Promise<any> => {
 };
 
 /**
+ * Get gravatar image using email address
+ * @param email
+ */
+export const getGravatarImage = (email: string): Promise<string> => {
+    if (_.isEmpty(email)) {
+        return Promise.reject("Email is null");
+    } else {
+        const url: string = SignInUtil.getGravatar(email);
+        return new Promise((resolve, reject) => {
+            axios
+                .get(url)
+                .then(() => {
+                    resolve(url.split("?")[0]);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+};
+
+/**
  * This function iterates over all email addresses until it finds an email with a gravatar image
  * @param emails
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const findGravatar = async (emails: string[] | MultiValue[]): Promise<string> => {
-    let gravatar: string = "";
+    let gravatar = "";
     if (!_.isEmpty(emails)) {
         for (const email of emails) {
             try {
@@ -102,7 +126,6 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
         .request(requestConfig)
         .then(async (response) => {
             let gravatar = "";
-            let profileImage: string;
 
             if (response.status !== 200) {
                 return Promise.reject(new Error(`Failed get user profile info from: ${ServiceResourcesEndpoint.me}`));
@@ -111,7 +134,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
                 gravatar = await findGravatar(response.data.emails);
             }
 
-            profileImage = response.data.profileUrl ? response.data.profileUrl : gravatar;
+            const profileImage = response.data.profileUrl ? response.data.profileUrl : gravatar;
 
             const profileResponse: BasicProfileInterface = {
                 emails: response.data.emails || "",
@@ -153,6 +176,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
  * @param {object} info.
  * @return {Promise<any>} a promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const updateProfileInfo = (info: object): Promise<any> => {
     const requestConfig = {
         data: info,
@@ -180,32 +204,11 @@ export const updateProfileInfo = (info: object): Promise<any> => {
 };
 
 /**
- * Get gravatar image using email address
- * @param email
- */
-export const getGravatarImage = (email: string): Promise<string> => {
-    if (_.isEmpty(email)) {
-        return Promise.reject("Email is null");
-    } else {
-        const url: string = SignInUtil.getGravatar(email);
-        return new Promise((resolve, reject) => {
-            axios
-                .get(url)
-                .then((response) => {
-                    resolve(url.split("?")[0]);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
-    }
-};
-
-/**
  * Retrieve the profile schemas of the user claims of the currently authenticated user.
  *
  * @return {Promise<any>} a promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getProfileSchemas = (): Promise<any> => {
     const requestConfig = {
         headers: {
