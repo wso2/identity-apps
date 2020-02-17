@@ -16,6 +16,25 @@
  * under the License.
  */
 
-export * from "./use-trigger";
-export * from "./use-non-initial-effect";
-export * from "./filter-props";
+/**
+ * This removes the used props frm passedProps
+ * @param props
+ */
+export const filterPassedProps = (props: any): any => {
+    delete props.type;
+    delete props.name;
+    delete props.label;
+    delete props.listen;
+    delete props.autoFocus;
+    delete props.readOnly;
+    delete props.disabled;
+    delete props.required;
+    delete props.requiredErrorMessage;
+    delete props.validation;
+    delete props.value;
+    delete props.placeholder;
+    delete props.children;
+    delete props.default;
+
+    return props;
+};

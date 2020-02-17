@@ -31,6 +31,7 @@ import {
     isTextField
 } from "../helpers";
 import { FormField, FormValue, RadioChild } from "../models";
+import { filterPassedProps } from "../utils";
 import { Password } from "./password";
 
 /**
@@ -61,6 +62,8 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
 
     const formField: FormField = { ...passedProps };
 
+    const filteredProps = filterPassedProps(passedProps);
+
     const { checkError, handleBlur, handleChange, handleChangeCheckBox, handleReset, form } = formProps;
 
     /**
@@ -75,7 +78,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
             if (isPasswordField(inputField)) {
                 return (
                     <Password
-                        { ...passedProps }
+                        { ...filteredProps }
                         label={ inputField.label }
                         width={ inputField.width }
                         error={
@@ -108,7 +111,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
             } else if (inputField.type === "textarea") {
                 return (
                     <Form.TextArea
-                        { ...passedProps }
+                        { ...filteredProps }
                         label={ inputField.label }
                         width={ inputField.width }
                         error={
@@ -139,7 +142,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
             } else {
                 return (
                     <Form.Input
-                        { ...passedProps }
+                        { ...filteredProps }
                         label={ inputField.label }
                         width={ inputField.width }
                         error={
@@ -176,7 +179,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                         return (
                             <Form.Field key={ index }>
                                 <Radio
-                                    { ...passedProps }
+                                    { ...filteredProps }
                                     label={ radio.label }
                                     name={ inputField.name }
                                     value={ radio.value }
@@ -199,7 +202,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
         } else if (isDropdownField(inputField)) {
             return (
                 <Form.Select
-                    { ...passedProps }
+                    { ...filteredProps }
                     label={ inputField.label }
                     placeholder={ inputField.placeholder }
                     options={ inputField.children }
@@ -241,7 +244,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                         return (
                             <Form.Field key={ index }>
                                 <Form.Checkbox
-                                    { ...passedProps }
+                                    { ...filteredProps }
                                     label={ checkbox.label }
                                     name={ inputField.name }
                                     value={ checkbox.value }
@@ -281,7 +284,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
         } else if (isSubmitField(inputField)) {
             return (
                 <Button
-                    { ...passedProps }
+                    { ...filteredProps }
                     primary={ true }
                     size={ inputField.size }
                     className={ inputField.className }
@@ -294,7 +297,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
         } else if (isResetField(inputField)) {
             return (
                 <Button
-                    { ...passedProps }
+                    { ...filteredProps }
                     size={ inputField.size }
                     className={ inputField.className }
                     onClick={ handleReset }
@@ -306,7 +309,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
         } else if (isButtonField(inputField)) {
             return (
                 <Button
-                    { ...passedProps }
+                    { ...filteredProps }
                     size={ inputField.size }
                     className={ inputField.className }
                     onClick={ (event) => {
