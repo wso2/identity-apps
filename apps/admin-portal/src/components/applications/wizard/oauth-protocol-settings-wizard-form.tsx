@@ -16,12 +16,13 @@
  * under the License.
  */
 
-import { Field, Forms, Validation } from "@wso2is/forms";
+import { Field, Forms } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, useEffect, useRef } from "react";
+import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { SupportedQuickStartTemplateTypes } from "../../../models";
+import { URLInputComponent } from "../components";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -52,7 +53,38 @@ export const OAuthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
 
     const initialCallbackURLs = initialValues?.inboundProtocolConfiguration?.oidc?.callbackURLs;
 
+    const [ callBackUrls, setCallBackUrls ] = useState("");
+
     const form = useRef(null);
+
+    /**
+     * Add regexp to multiple callbackUrls and update configs.
+     *
+     * @param {string} urls - Callback URLs.
+     * @return {string} Prepared callback URL.
+     */
+    const buildCallBackUrlWithRegExp = (urls: string): string => {
+        let callbackURL = urls.replace(/['"]+/g, "");
+        if (callbackURL.split(",").length > 1) {
+            callbackURL = "regexp=(" + callbackURL.split(",").join("|") + ")";
+        }
+        return callbackURL;
+    };
+
+    /**
+     * Remove regexp from incoming data and show the callbackUrls.
+     *
+     * @param {string} url - Callback URLs.
+     * @return {string} Prepared callback URL.
+     */
+    const buildCallBackURLWithSeparator = (url: string): string => {
+        if (url && url.includes("regexp=(")) {
+            url = url.replace("regexp=(", "");
+            url = url.replace(")", "");
+            url = url.split("|").join(",");
+        }
+        return url;
+    };
 
     /**
      * Submits the form programmatically if triggered from outside.
@@ -63,8 +95,11 @@ export const OAuthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         }
 
         form?.current?.props?.onSubmit(new Event("submit"));
-    }, [ triggerSubmit ]);
+    }, [triggerSubmit]);
 
+    useEffect(() => {
+        setCallBackUrls("");
+    }, []);
     /**
      * Sanitizes and prepares the form values for submission.
      *
@@ -75,7 +110,7 @@ export const OAuthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         return {
             inboundProtocolConfiguration: {
                 oidc: {
-                    callbackURLs: values.get("callbackURLs"),
+                    callbackURLs: buildCallBackUrlWithRegExp(callBackUrls),
                     publicClient: values.get("publicClients").includes("supportPublicClients")
                 }
             }
@@ -88,34 +123,22 @@ export const OAuthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
             submitState={ triggerSubmit }
         >
             <Grid>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <Field
-                            name="callbackURLs"
-                            label="Callback URLs"
-                            required={ true }
-                            requiredErrorMessage="This field is required."
-                            placeholder="Add callback URLs for the application"
-                            type="text"
-                            validation={ (value: string, validation: Validation) => {
-                                const urlList = value.split(",");
-                                urlList.map((singleUrl) => {
-                                    if (!FormValidation.url(singleUrl)) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(
-                                            "Please add valid URLs with comma separation."
-                                        );
-                                    }
-                                });
-                            } }
-                            value={ initialCallbackURLs }
-                        />
-                        <Hint>
-                            After the authentication, we will only redirect to the above callback URLs.
-                            You can specify multiple URLs by separating them using a comma.
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
+                <URLInputComponent
+                    urlState={ callBackUrls }
+                    setURLState={ setCallBackUrls }
+                    labelName={ "Callback URL" }
+                    value={ buildCallBackURLWithSeparator(initialCallbackURLs) }
+                    placeholder={ "Enter callbackUrl" }
+                    validationErrorMsg={ "Please add valid URL." }
+                    validation={ (value: string) => {
+                        if (FormValidation.url(value)) {
+                            return true;
+                        }
+                        return false;
+                    } }
+                    hint={ " After the authentication, we will only redirect to the above callback URLs " +
+                    "and you can specify multiple URLs" }
+                />
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field

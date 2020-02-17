@@ -1,4 +1,4 @@
-/*!
+/**
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -14,14 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-/*******************************************
-        Row spacing Variation
-*******************************************/
-
-@ZeroMargin: 0%;
-@ZeroPadding: 0%;
-@SmallMargin: 0.5%;
-@SmallPadding: 0.5%;
+export * from "./url-input-component";
