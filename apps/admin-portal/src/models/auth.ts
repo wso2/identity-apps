@@ -19,6 +19,7 @@
 import { BasicProfileInterface, ProfileSchema } from "./profile";
 
 export interface AuthStateInterface {
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     children?: any;
     displayName: string;
     emails: string;

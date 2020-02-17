@@ -20,6 +20,7 @@ import { AlertInterface } from "./alert";
 
 export interface GlobalInterface {
     alert: AlertInterface;
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     alertSystem: any;
     isApplicationsPageVisible: boolean;
     isGlobalLoaderVisible: boolean;
