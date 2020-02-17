@@ -36,7 +36,7 @@ interface RuntimeConfigInterface {
 // tslint:disable-next-line:no-string-literal
 const RUNTIME_CONFIG: RuntimeConfigInterface = window["runConfig"];
 
-export let GlobalConfig: RuntimeConfigInterface = {
+export const GlobalConfig: RuntimeConfigInterface = {
     appBaseName: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.appBaseName || APP_BASENAME) : APP_BASENAME,
     appHomePath: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.appHomePath || APP_HOME_PATH) : APP_HOME_PATH,
     appLoginPath: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.appLoginPath || APP_LOGIN_PATH) : APP_LOGIN_PATH,
