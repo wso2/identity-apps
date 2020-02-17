@@ -271,8 +271,8 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                             <Message
                                 icon="mail"
-                                content={ "We will send an email with the link to set the password to the email" +
-                                + "address provided." }
+                                content="We will send an email with the link to set the password to the email
+                                address provided."
                             />
                         </Grid.Column>
                     </Grid.Row>
