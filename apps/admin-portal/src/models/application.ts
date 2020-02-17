@@ -202,12 +202,12 @@ export enum AuthenticationSequenceType {
     USER_DEFINED = "USER_DEFINED"
 }
 
-interface AuthenticatorInterface {
+export interface AuthenticatorInterface {
     idp: string;
     authenticator: string;
 }
 
-interface AuthenticationStepModelInterface {
+export interface AuthenticationStepModelInterface {
     id: number;
     options: AuthenticatorInterface[];
 }

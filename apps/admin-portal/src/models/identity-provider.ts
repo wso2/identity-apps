@@ -70,3 +70,12 @@ export enum IdentityProviderTypes {
     LOCAL = "LOCAL",
     FEDERATED = "FEDERATED"
 }
+
+/**
+ *  Captures IDPs name, logo and ID
+ */
+export interface IDPNameInterface {
+    authenticatorId: string;
+    idp: string;
+    image?: string;
+}

@@ -16,16 +16,6 @@
  * under the License.
  */
 
-export * from "./templates";
+export * from "./authentication-flow";
+export * from "./authenticators";
 export * from "./sign-on-methods";
-export * from "./application-list";
-export * from "./application-edit";
-export * from "./application-search";
-export * from "./dropdown-details";
-export * from "./dropdown-details-general";
-export * from "./forms";
-export * from "./general-details-application";
-export * from "./settings-application";
-export * from "./settings-section-application-variation";
-export * from "./application-edit";
-export * from "./wizard";
