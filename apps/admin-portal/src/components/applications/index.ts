@@ -17,7 +17,6 @@
  */
 
 export * from "./templates";
-export * from "./sign-on-methods";
 export * from "./application-list";
 export * from "./application-edit";
 export * from "./application-search";
