@@ -34,7 +34,7 @@ interface AddUserWizardPropsInterface {
     currentStep?: number;
     listOffset: number;
     listItemLimit: number;
-    getUserList: (listOffset: number, listItemLimit: number) => void;
+    updateList: () => void;
 }
 
 /**
@@ -64,6 +64,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 ): JSX.Element => {
 
     const {
+        updateList,
         closeWizard,
         currentStep,
     } = props;
@@ -172,6 +173,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         "views:components.users.notifications.addUser.success.message"
                     )
                 }));
+                updateList();
                 closeWizard();
             })
             .catch((error) => {
