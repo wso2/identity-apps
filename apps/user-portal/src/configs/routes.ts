@@ -32,6 +32,7 @@ import {
 /**
  * Interface to handle route types.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface Route {
     component: any;
     icon?: string;
