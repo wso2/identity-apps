@@ -104,11 +104,9 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                         required={ inputField.required }
                     />
                 );
-            } else {
+            } else if (inputField.type === "textarea") {
                 return (
-                    <>
-                        { inputField.type === "textarea" && <label>{ inputField.label }</label> }
-                        <Form.Input
+                        <Form.TextArea
                             label={ inputField.label }
                             width={ inputField.width }
                             error={
@@ -120,15 +118,14 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                                     }
                                     : false
                             }
-                            as={ inputField.type === "textarea" ? TextArea : undefined }
                             type={ inputField.type }
                             placeholder={ inputField.placeholder }
                             name={ inputField.name }
-                            value={ form.get(inputField.name) || "" }
+                            value={ form.get(inputField.name)?.toString() || "" }
                             onBlur={ (event: React.KeyboardEvent) => {
                                 handleBlur(event, inputField.name);
                             } }
-                            onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
+                            onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
                                 handleChange(event.target.value, inputField.name);
                             } }
                             autoFocus={ inputField.autoFocus || false }
@@ -136,7 +133,36 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                             disabled={ inputField.disabled }
                             required={ inputField.required }
                         />
-                    </>
+                );
+            } else {
+                return (
+                    <Form.Input
+                        label={ inputField.label }
+                        width={ inputField.width }
+                        error={
+                            isError
+                                ? {
+                                    content: errorMessages.map((errorMessage: string, index: number) => {
+                                        return <p key={ index }>{ errorMessage }</p>;
+                                    })
+                                }
+                                : false
+                        }
+                        type={ inputField.type }
+                        placeholder={ inputField.placeholder }
+                        name={ inputField.name }
+                        value={ form.get(inputField.name) || "" }
+                        onBlur={ (event: React.KeyboardEvent) => {
+                            handleBlur(event, inputField.name);
+                        } }
+                        onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
+                            handleChange(event.target.value, inputField.name);
+                        } }
+                        autoFocus={ inputField.autoFocus || false }
+                        readOnly={ inputField.readOnly }
+                        disabled={ inputField.disabled }
+                        required={ inputField.required }
+                    />
                 );
             }
         } else if (isRadioField(inputField)) {
