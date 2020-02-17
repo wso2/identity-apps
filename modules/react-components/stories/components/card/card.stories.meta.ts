@@ -31,6 +31,10 @@ export const meta: StoryMetaInterface = {
         {
             description: "Card to represent selections.",
             title: "Selection Card",
+        },
+        {
+            description: "Card to represent labeled items.",
+            title: "Labeled Card",
         }
     ],
     title: `${ StoryCategories.COMPONENTS }/Card`,

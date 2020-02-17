@@ -321,3 +321,58 @@
         }
     }
 }
+
+/*******************************
+     Labeled Card Variation
+*******************************/
+
+.labeled-card-wrapper {
+    text-align: center;
+
+    &.with-bottom-margin {
+        margin-bottom: @labeledCardWrapperMarginBottom;
+    }
+    &:hover {
+        cursor: pointer;
+
+        .ui.card {
+            &.labeled-card {
+                transform: none;
+                text-decoration: none;
+                cursor: pointer;
+                box-shadow: @labeledCardHoverBoxShadow;
+            }
+        }
+    }
+    &.inline {
+        display: inline-block;
+        margin-right: @labeledCardRightSpacing;
+    }
+    .ui.card {
+        &.labeled-card {
+            width: auto;
+            transition: @labeledCardTransition;
+            border: @labeledCardBorder;
+            box-shadow: none;
+            margin-bottom: @labeledCardMarginBottom;
+
+            &:hover {
+                transform: none;
+                text-decoration: none;
+                cursor: pointer;
+                box-shadow: @labeledCardHoverBoxShadow;
+            }
+            &.selected {
+
+            }
+            &.disabled {
+                cursor: not-allowed;
+                filter: grayscale(100%);
+            }
+       }
+    }
+
+    .card-label {
+        font-size: @labeledCardLabelFontColor;
+    }
+}

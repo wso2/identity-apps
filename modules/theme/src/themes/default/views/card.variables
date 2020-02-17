@@ -83,3 +83,15 @@ Recent Application Card
 @appTemplateCardTechnologiesTitleFontSize: 0.7em;
 @appTemplateCardBorderBottomWidth: 3px;
 @appTemplateCardSelectedStateBorderBottomColor: @primaryColor;
+
+/*-------------------------------
+        Labeled Card
+--------------------------------*/
+
+@labeledCardRightSpacing: 15px;
+@labeledCardHoverBoxShadow: @defaultCardHoverBoxShadow;
+@labeledCardTransition: @defaultCardTransition;
+@labeledCardBorder: @defaultCardBorder;
+@labeledCardMarginBottom: 5px;
+@labeledCardLabelFontColor: 0.8em;
+@labeledCardWrapperMarginBottom: 8px;
