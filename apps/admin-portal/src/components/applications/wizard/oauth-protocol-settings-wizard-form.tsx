@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { Field, Forms } from "@wso2is/forms";
+import { Field, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, useEffect, useRef } from "react";
 import { Grid } from "semantic-ui-react";
 import { SupportedQuickStartTemplateTypes } from "../../../models";
@@ -83,8 +84,8 @@ export const OAuthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
 
     return (
         <Forms
-            ref={ form }
             onSubmit={ (values) => onSubmit(getFormValues(values)) }
+            submitState={ triggerSubmit }
         >
             <Grid>
                 <Grid.Row columns={ 1 }>
@@ -94,9 +95,10 @@ export const OAuthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                             label="Callback URLs"
                             required={ true }
                             requiredErrorMessage="This field is required."
+
                             placeholder="Add callback URLs for the application"
                             type="text"
-                            /*validation={ (value: string, validation: Validation) => {
+                            validation={ (value: string, validation: Validation) => {
                                 const urlList = value.split(",");
                                 urlList.map((singleUrl) => {
                                     if (!FormValidation.url(singleUrl)) {
@@ -106,7 +108,7 @@ export const OAuthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         );
                                     }
                                 });
-                            } }*/
+                            } }
                             value={ initialCallbackURLs }
                         />
                         <Hint>

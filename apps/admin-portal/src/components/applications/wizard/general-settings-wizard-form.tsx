@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { Field, Forms } from "@wso2is/forms";
+import { Field, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, useEffect, useRef } from "react";
 import { Divider, Grid } from "semantic-ui-react";
 
@@ -46,19 +47,6 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
         onSubmit
     } = props;
 
-    const form = useRef(null);
-
-    /**
-     * Submits the form programmatically if triggered from outside.
-     */
-    useEffect(() => {
-        if (!triggerSubmit) {
-            return;
-        }
-
-        form?.current?.props?.onSubmit(new Event("submit"));
-    }, [ triggerSubmit ]);
-
     /**
      * Sanitizes and prepares the form values for submission.
      *
@@ -79,8 +67,8 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
 
     return (
         <Forms
-            ref={ form }
             onSubmit={ (values) => onSubmit(getFormValues(values)) }
+            submitState={ triggerSubmit }
         >
             <Grid>
                 <Grid.Row columns={ 1 }>
@@ -91,7 +79,7 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                             required={ true }
                             requiredErrorMessage="Application name is required"
                             placeholder={ "Enter Application Name" }
-                            value={ initialValues?.name }
+                            value={ initialValues ?.name  }
                             type="text"
                         />
                     </Grid.Column>
@@ -105,7 +93,7 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                             requiredErrorMessage=""
                             placeholder="Enter a description for the application"
                             type="textarea"
-                            value={ initialValues?.description }
+                            value={ initialValues?.description  }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -117,7 +105,13 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                             required={ false }
                             requiredErrorMessage=""
                             placeholder="Provide the image url for the application"
-                            value={ initialValues?.imageUrl }
+                            validation={ (value: string, validation: Validation) => {
+                                if (!FormValidation.url(value)) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push("The URL you entered is invalid");
+                                }
+                            } }
+                            value={ initialValues?.imageUrl  }
                             type="text"
                         />
                     </Grid.Column>
@@ -151,10 +145,16 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                                 label="Access URL"
                                 required={ false }
                                 requiredErrorMessage={ "A valid access URL needs to be defined for an application " +
-                                "to be marked as discoverable" }
+                                    "to be marked as discoverable" }
+                                validation={ (value: string, validation: Validation) => {
+                                    if (!FormValidation.url(value)) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push("The URL you entered is invalid");
+                                    }
+                                } }
                                 placeholder="Enter access url for the application login page"
                                 type="text"
-                                value={ initialValues?.accessUrl }
+                                value={ initialValues?.accessUrl  }
                             />
                         </Grid.Column>
                     </Grid.Column>
