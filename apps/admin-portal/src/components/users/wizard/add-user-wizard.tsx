@@ -28,13 +28,14 @@ import { AlertLevels } from "../../../models";
 import { addAlert } from "../../../store/actions";
 import { AddUser } from "../add-user";
 import { AddUserWizardSummary } from "./wizard-summary";
+import { useTrigger } from "@wso2is/forms";
 
 interface AddUserWizardPropsInterface {
     closeWizard: () => void;
     currentStep?: number;
     listOffset: number;
     listItemLimit: number;
-    getUserList: (listOffset: number, listItemLimit: number) => void;
+    updateList: () => void;
 }
 
 /**
@@ -64,12 +65,16 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 ): JSX.Element => {
 
     const {
+        updateList,
         closeWizard,
         currentStep,
     } = props;
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
+
+    const [submitGeneralSettings, setSubmitGeneralSettings] = useTrigger();
+    const [finishSubmit, setFinishSubmit] = useTrigger();
 
     const [ completedStep, setCompletedStep ] = useState<number>(undefined);
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
@@ -106,7 +111,13 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     }, [ partiallyCompletedStep ]);
 
     const navigateToNext = () => {
-        setCompletedStep(currentWizardStep);
+        switch (currentWizardStep) {
+            case 0:
+                setSubmitGeneralSettings();
+                break;
+            case 1:
+                setFinishSubmit();
+        }
     };
 
     const navigateToPrevious = () => {
@@ -172,6 +183,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         "views:components.users.notifications.addUser.success.message"
                     )
                 }));
+                updateList();
                 closeWizard();
             })
             .catch((error) => {
@@ -222,6 +234,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      * @param {WizardStepsFormTypes} formType - Type of the form.
      */
     const handleWizardFormSubmit = (values: any, formType: WizardStepsFormTypes) => {
+        setCurrentWizardStep(currentWizardStep + 1);
         setWizardState(_.merge(wizardState, { [ formType ]: values }));
     };
 
@@ -258,7 +271,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     isRoleModalOpen={ null }
                     handleRoleModalClose={ null }
                     handleRoleModalOpen={ null }
-                    triggerSubmit={ completedStep === 0 || partiallyCompletedStep === 0 }
+                    triggerSubmit={ submitGeneralSettings }
                     initialValues={ wizardState && wizardState[ WizardStepsFormTypes.GENERAL_SETTINGS ] }
                     onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.GENERAL_SETTINGS) }
                 />
@@ -269,7 +282,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         {
             content: (
                 <AddUserWizardSummary
-                    triggerSubmit={ completedStep === 1 }
+                    triggerSubmit={ finishSubmit }
                     onSubmit={ handleWizardFormFinish }
                     summary={ generateWizardSummary() }
                 />

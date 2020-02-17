@@ -45,6 +45,7 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ usersList, setUsersList ] = useState<UserListInterface>({});
+    const [ isListUpdated, setListUpdated ] = useState(false);
 
     const getList = (limit: number, offset: number) => {
         getUsersList(limit, offset)
@@ -60,6 +61,10 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
     useEffect(() => {
         getList(listItemLimit, listOffset);
     }, [ listOffset, listItemLimit ]);
+
+    useEffect(() => {
+        getList(listItemLimit, listOffset);
+    }, [ isListUpdated ]);
 
     /**
      * Dispatches the alert object to the redux store.
@@ -100,6 +105,7 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
                         "views:components.users.notifications.deleteUser.success.message"
                     )
                 });
+                setListUpdated(true);
             });
     };
 
@@ -140,7 +146,7 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
                         closeWizard={ () => setShowWizard(false) }
                         listOffset={ listOffset }
                         listItemLimit={ listItemLimit }
-                        getUserList={ getList }
+                        updateList={ () => setListUpdated(true) }
                     />
                 ) }
             </ListLayout>
