@@ -170,6 +170,8 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 );
                 setUserStoresList(storeOptions);
             });
+
+        setUserStoresList(storeOptions);
     };
 
     /**
