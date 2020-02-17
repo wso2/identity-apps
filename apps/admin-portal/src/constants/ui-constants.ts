@@ -27,6 +27,7 @@ export class UIConstants {
      *
      * @hideconstructor
      */
+    /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
 
     /**
@@ -34,14 +35,14 @@ export class UIConstants {
      * @constant
      * @type {number}
      */
-    public static readonly DEFAULT_HEADER_HEIGHT: number = 59;
+    public static readonly DEFAULT_HEADER_HEIGHT = 59;
 
     /**
      * Default footer height to be used in state initialisations
      * @constant
      * @type {number}
      */
-    public static readonly DEFAULT_FOOTER_HEIGHT: number = 60;
+    public static readonly DEFAULT_FOOTER_HEIGHT = 60;
 
     /**
      * Constant to handle dashboard layout's desktop content top spacing.
