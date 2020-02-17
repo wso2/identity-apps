@@ -33,33 +33,34 @@ import { AlertLevels, BasicProfileInterface, ProfileSchema } from "../../models"
 import { store } from "../index";
 import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
-import { authenticateActionTypes } from "./types";
+import { authenticateActionTypes, AuthAction } from "./types";
 
 /**
  * Dispatches an action of type `SET_SIGN_IN`.
  */
-export const setSignIn = () => ({
+export const setSignIn = (): AuthAction => ({
     type: authenticateActionTypes.SET_SIGN_IN
 });
 
 /**
  * Dispatches an action of type `SET_SIGN_OUT`.
  */
-export const setSignOut = () => ({
+export const setSignOut = (): AuthAction => ({
     type: authenticateActionTypes.SET_SIGN_OUT
 });
 
 /**
  * Dispatches an action of type `RESET_AUTHENTICATION`.
  */
-export const resetAuthentication = () => ({
+export const resetAuthentication = (): AuthAction => ({
     type: authenticateActionTypes.RESET_AUTHENTICATION
 });
 
 /**
  * Dispatches an action of type `SET_PROFILE_INFO`.
  */
-export const setProfileInfo = (details: any) => ({
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const setProfileInfo = (details: any): AuthAction => ({
     payload: details,
     type: authenticateActionTypes.SET_PROFILE_INFO
 });
@@ -68,7 +69,7 @@ export const setProfileInfo = (details: any) => ({
  * Dispatches an action of type `SET_SCHEMAS`
  * @param schemas
  */
-export const setScimSchemas = (schemas: ProfileSchema[]) => ({
+export const setScimSchemas = (schemas: ProfileSchema[]): AuthAction => ({
     payload: schemas,
     type: authenticateActionTypes.SET_SCHEMAS
 });
@@ -76,9 +77,9 @@ export const setScimSchemas = (schemas: ProfileSchema[]) => ({
 /**
  *  Gets profile information by making an API call
  */
-export const getProfileInformation = () => (dispatch) => {
+export const getProfileInformation = () => (dispatch): void => {
 
-    let isCompletionCalculated: boolean = false;
+    let isCompletionCalculated = false;
 
     dispatch(setProfileInfoLoader(true));
 
@@ -275,6 +276,6 @@ export const getScimSchemas = (profileInfo: BasicProfileInterface = null) => (di
  *
  * @param {string} location - history path.
  */
-export const updateAuthenticationCallbackUrl = (location) => {
+export const updateAuthenticationCallbackUrl = (location): void => {
     window.sessionStorage.setItem("auth_callback_url", location);
 };
