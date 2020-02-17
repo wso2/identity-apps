@@ -43,6 +43,10 @@ export const UserEditPage = (): JSX.Element => {
         dispatch(addAlert(alert));
     };
 
+    const handleUserUpdate = (userInfo: BasicProfileInterface) => {
+        setUserProfile(userInfo);
+    };
+
     const getUser = (id: string) => {
         getUserDetails(id)
             .then((response) => {
@@ -75,6 +79,7 @@ export const UserEditPage = (): JSX.Element => {
                     name={ user.userName }
                     size="tiny"
                     floated="left"
+                    image={ user.profileUrl }
                 />
             ) }
             backButton={ {
@@ -84,7 +89,7 @@ export const UserEditPage = (): JSX.Element => {
             titleTextAlign="left"
             bottomMargin={ false }
         >
-            <EditUser user={ user } />
+            <EditUser user={ user } setUser={ handleUserUpdate } />
         </PageLayout>
     );
 };

@@ -23,6 +23,7 @@ import { useDispatch } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { deleteUser, getUsersList } from "../api";
 import { AddUser, UserSearch, UsersList } from "../components/users";
+import { AddUserWizard } from "../components/users/wizard/add-user-wizard";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertInterface, AlertLevels } from "../models";
 import { UserListInterface } from "../models/user";
@@ -40,11 +41,9 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
     const dispatch = useDispatch();
 
     const [ searchQuery, setSearchQuery ] = useState("");
-    const [ isBasicModalOpen, setModalOpen ] = useState(false);
-    const [ isRoleModalOpen, setRoleModalOpen] = useState(false);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
-
+    const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ usersList, setUsersList ] = useState<UserListInterface>({});
 
     const getList = (limit: number, offset: number) => {
@@ -104,23 +103,6 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
             });
     };
 
-    const handleModalOpen = (): void => {
-        setModalOpen(true);
-    };
-
-    const handleModalClose = (): void => {
-        setModalOpen(false);
-    };
-
-    const handleRoleModalOpen = (): void => {
-        setRoleModalOpen(true);
-        setModalOpen(false);
-    };
-
-    const handleRoleModalClose = (): void => {
-        setRoleModalOpen(false);
-    };
-
     const options = [
         { key: "import", icon: "download", text: "Import users", value: "import" },
         { key: "export", icon: "upload", text: "Export users", value: "export" },
@@ -130,30 +112,20 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
         <PageLayout
             title="Users page"
             description="Create and manage users, user access and user profiles."
+            showBottomDivider={ true }
         >
             <ListLayout
                 // TODO add sorting functionality.
                 advancedSearch={ <UserSearch onFilter={ handleUserFilter }/> }
-                currentListSize={ usersList.count }
+                currentListSize={ usersList.itemsPerPage }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
                 rightActionPanel={
                     (
-                        <PrimaryButton onClick={ handleModalOpen }>
+                        <PrimaryButton onClick={ () => setShowWizard(true) }>
                             <Icon name="add"/>
                             Add User
-                            <AddUser
-                                getUserList={ getList }
-                                isBasicModalOpen={ isBasicModalOpen }
-                                handleModalClose={ handleModalClose }
-                                isRoleModalOpen={ isRoleModalOpen }
-                                handleRoleModalOpen={ handleRoleModalOpen }
-                                handleRoleModalClose={ handleRoleModalClose }
-                                onAlertFired={ handleAlerts }
-                                listItemLimit={ listItemLimit }
-                                listOffset={ listOffset }
-                            />
                         </PrimaryButton>
                     )
                 }
@@ -162,6 +134,15 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
                 totalListSize={ usersList.totalResults }
             >
                 <UsersList usersList={ usersList } handleUserDelete={ handleUserDelete }/>
+                {
+                    showWizard && (
+                    <AddUserWizard
+                        closeWizard={ () => setShowWizard(false) }
+                        listOffset={ listOffset }
+                        listItemLimit={ listItemLimit }
+                        getUserList={ getList }
+                    />
+                ) }
             </ListLayout>
         </PageLayout>
     );

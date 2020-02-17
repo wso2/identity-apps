@@ -317,10 +317,10 @@ export const views: Views = {
                             }
                         },
                         domain: {
-                            label: "Domain name",
-                            placeholder: "Select domain",
+                            label: "User store",
+                            placeholder: "Select user store",
                             validations: {
-                                empty: "User store domain cannot be empty.",
+                                empty: "User store name cannot be empty.",
                             }
                         },
                         email: {
