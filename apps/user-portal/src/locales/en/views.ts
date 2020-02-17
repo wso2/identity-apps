@@ -1037,8 +1037,8 @@ export const views: Views = {
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "The required user profile details are downloaded successfully",
-                        message: "User profile details downloaded successfully"
+                        description: "The file containing the required user profile details has started downloading",
+                        message: "User profile details download started"
                     }
                 }
             }
@@ -1230,7 +1230,7 @@ export const views: Views = {
             description:
                 "Add an extra layer of protection to your account by configuring multiple " +
                 "steps of authentication. You can choose from options like SMS or a security device",
-            heading: "Multi factor authentication"
+            heading: "Multi-factor authentication"
         },
         profile: {
             description: "Manage and update your personal details like name, email, mobile number, organization, etc.",
