@@ -51,6 +51,7 @@ const httpClient = AxiosHttpClient.getInstance();
  *
  * @return {Promise<any>} a promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getLocalClaims = (): Promise<any> => {
     const requestConfig = {
         headers: {
