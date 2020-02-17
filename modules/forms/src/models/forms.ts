@@ -58,7 +58,7 @@ export interface Error {
  */
 interface FormFieldModel {
     name: string;
-    label?: string | React.ReactNode;
+    label?: string | React.ReactElement;
     listen?: (values: Map<string, FormValue>) => void;
     autoFocus?: boolean;
     readOnly?: boolean;
