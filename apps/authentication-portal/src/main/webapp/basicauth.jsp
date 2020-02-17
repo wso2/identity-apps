@@ -319,6 +319,7 @@
     </div>
     
     <% if (Boolean.parseBoolean(loginFailed) && errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE) && request.getParameter("resend_username") == null) { %>
+    <div class="ui divider hidden"></div>
     <div class="field">
         <div class="form-actions">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.confirmation.mail")%>
