@@ -18,9 +18,8 @@
  */
 
 import Joi from "@hapi/joi";
-import "axios";
-import "./plugins/text-encoder-polyfill";
 import Axios from "axios";
+import "./plugins/text-encoder-polyfill";
 
 type ValidationFunction = (value: string) => boolean;
 
