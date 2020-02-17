@@ -54,7 +54,7 @@ module.exports = (env) => {
      */
     const loginPagePath = "/login";
     const logoutPagePath = "/logout";
-    const homePagePath = "/overview";
+    const homePagePath = "/applications";
     const externalLoginCallbackURL = `${publicPath}${loginPagePath}`;
 
     /**

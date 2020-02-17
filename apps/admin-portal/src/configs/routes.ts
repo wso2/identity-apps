@@ -41,7 +41,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         name: "Overview",
         path: "/overview",
         protected: true,
-        showOnSidePanel: true,
+        showOnSidePanel: false,
     },
     {
         component: ApplicationsPage,
