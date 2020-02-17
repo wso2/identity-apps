@@ -61,7 +61,7 @@ export const App = (): JSX.Element => {
                                     } }
                                 />
                                 <Route
-                                    path="/logout"
+                                    path={ APP_LOGOUT_PATH }
                                     render={ () => {
                                         return <SignOut />;
                                     } }

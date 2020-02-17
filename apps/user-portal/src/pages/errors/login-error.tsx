@@ -38,7 +38,7 @@ export const LoginErrorPage = (): JSX.Element => {
                     <Button
                         className="link-button"
                         as={ Link }
-                        to="/logout"
+                        to={ APP_LOGOUT_PATH }
                     >
                         { t("views:placeholders.loginError.action") }
                     </Button>

@@ -70,7 +70,7 @@ export const onHttpRequestError = (error: any) => {
         && error.response.request.responseURL === OPConfigurationUtil.getTokenEndpoint()) {
 
         if (error.response.status === 400) {
-            endUserSession();
+            history.push(APP_LOGOUT_PATH);
             return;
         }
     }
@@ -109,7 +109,7 @@ const endUserSessionWithoutLoops = () => {
         const errorTime = parseInt(sessionStorage.getItem(ApplicationConstants.AUTH_ERROR_TIME), 10);
         if (currentTime - errorTime >= 10000) {
             sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
-            endUserSession();
+            history.push(APP_LOGOUT_PATH);
         } else {
             sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
             return;

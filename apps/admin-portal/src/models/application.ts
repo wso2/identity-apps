@@ -252,7 +252,7 @@ interface AuthProtocolMetaInterface {
 export interface ApplicationTemplateListItemInterface {
     description: string;
     displayName: string;
-    id: SupportedQuickStartTemplateTypes,
+    id: SupportedQuickStartTemplateTypes;
     image: any;
     protocols: SupportedAuthProtocolTypes[];
     technologies: ApplicationTemplateTechnology[];
