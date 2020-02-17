@@ -31,6 +31,7 @@ const httpClient = AxiosHttpClient.getInstance();
  *
  * @returns {Promise<BasicProfileInterface>} a promise containing the user list.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getUsersList = (limit: number, offset: number): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -55,6 +56,7 @@ export const getUsersList = (limit: number, offset: number): Promise<any> => {
  *
  * @returns {Promise<BasicProfileInterface>} a promise containing the user store list.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getUserStoreList = (): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -81,6 +83,7 @@ export const getUserStoreList = (): Promise<any> => {
  *
  * @returns {Promise<BasicProfileInterface>} a promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const addUser = (data: object): Promise<any> => {
     const requestConfig = {
         data,
@@ -108,6 +111,7 @@ export const addUser = (data: object): Promise<any> => {
  *
  * @returns {Promise<BasicProfileInterface>} a promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const deleteUser = (userId: string): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -135,6 +139,7 @@ export const deleteUser = (userId: string): Promise<any> => {
  *
  * @returns {Promise<BasicProfileInterface>} a promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const addUserRole = (data: object, groupId: string): Promise<any> => {
     const requestConfig = {
         data,
