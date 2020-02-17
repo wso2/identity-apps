@@ -95,7 +95,6 @@ export const OAuthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                             label="Callback URLs"
                             required={ true }
                             requiredErrorMessage="This field is required."
-
                             placeholder="Add callback URLs for the application"
                             type="text"
                             validation={ (value: string, validation: Validation) => {
