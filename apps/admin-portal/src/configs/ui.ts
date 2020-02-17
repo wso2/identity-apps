@@ -18,6 +18,13 @@
 
 import {
     AlertIcon,
+    BasicAuthIcon,
+    FIDOLogo,
+    TOTPIcon,
+    EmailOTPIcon,
+    SMSOTPIcon,
+    FacebookLogo,
+    GoogleLogo,
     AngularLogo,
     AppIcon,
     BlockedMagnifierIcon,
@@ -158,4 +165,14 @@ export const ApplicationWizardStepIcons = {
     general: DocumentIcon,
     protocolConfig: GearsIcon,
     protocolSelection: SpinWheelIcon
+};
+
+export const AuthenticatorIcons = {
+    basic: BasicAuthIcon,
+    emailOTP: EmailOTPIcon,
+    facebook: FacebookLogo,
+    fido: FIDOLogo,
+    google: GoogleLogo,
+    smsOTP: SMSOTPIcon,
+    totp: TOTPIcon
 };

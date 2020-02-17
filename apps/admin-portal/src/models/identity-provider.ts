@@ -65,3 +65,8 @@ export interface IdentityProviderResponseInterface {
     isEnabled?: string;
     federatedAuthenticators?: FederatedAuthenticatorListResponseInterface;
 }
+
+export enum IdentityProviderTypes {
+    LOCAL = "LOCAL",
+    FEDERATED = "FEDERATED"
+}

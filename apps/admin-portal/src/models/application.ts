@@ -297,6 +297,7 @@ export const emptyApplication = (): ApplicationInterface => ({
         saas: false,
         skipConsent: false,
     },
+    authenticationSequence: undefined,
     claimConfiguration: undefined,
     description: "",
     id: "",

@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AuthenticatorIcons } from "../../../configs";
+
 enum authenticatorType {
     SECOND_FACTOR = "secondary",
     FIRST_FACTOR = "first",
@@ -36,18 +38,21 @@ export const selectedLocalAuthenticators: AuthenticatorListInterface[] = [
         authenticator: "BasicAuthenticator",
         displayName: "Basic",
         idp: "LOCAL",
+        image: AuthenticatorIcons.basic,
         type: authenticatorType.FIRST_FACTOR,
     },
     {
         authenticator: "FIDOAuthenticator",
         displayName: "FIDO",
         idp: "LOCAL",
+        image: AuthenticatorIcons.fido,
         type: authenticatorType.SECOND_FACTOR,
     },
     {
         authenticator: "totp",
         displayName: "TOTP",
         idp: "LOCAL",
+        image: AuthenticatorIcons.totp,
         type: authenticatorType.SECOND_FACTOR,
     }
 ];
@@ -57,24 +62,28 @@ export const selectedFederatedAuthenticators: AuthenticatorListInterface[] = [
         authenticator: "EmailOTP",
         authenticatorId: "RW1haWxPVFA",
         displayName: "Email OTP",
+        image: AuthenticatorIcons.emailOTP,
         type: authenticatorType.SECOND_FACTOR,
     },
     {
         authenticator: "SMSOTP",
         authenticatorId: "U01TT1RQ",
         displayName: "SMS OTP",
+        image: AuthenticatorIcons.smsOTP,
         type: authenticatorType.SECOND_FACTOR,
     },
     {
         authenticator: "GoogleOIDCAuthenticator",
         authenticatorId: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
         displayName: "Google",
+        image: AuthenticatorIcons.google,
         type: authenticatorType.SOCIAL,
     },
     {
         authenticator: "FacebookAuthenticator",
         authenticatorId: "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
         displayName: "Facebook",
+        image: AuthenticatorIcons.facebook,
         type: authenticatorType.SOCIAL,
     },
 ];

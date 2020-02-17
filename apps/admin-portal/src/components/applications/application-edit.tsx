@@ -86,7 +86,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             menuItem: "Sign-on Method",
             render: () => (
                 <ResourceTab.Pane attached={ false }>
-                    <SignOnMethod appId={ application.id }/>
+                    <SignOnMethod
+                        appId={ application.id }
+                        authenticationSequence={ application.authenticationSequence }
+                    />
                 </ResourceTab.Pane>
             ),
         },
