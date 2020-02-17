@@ -19,7 +19,7 @@
 import { FormField } from "../models";
 
 /**
- * This component is a syntactic sugar for the InnerField component
+ * This component renders Form elements based on the provided `type` prop
  * @param props
  */
 export const Field = (props: FormField): JSX.Element => {
@@ -33,8 +33,9 @@ interface GroupFieldsPropsInterface {
     wrapper: React.ComponentType;
     wrapperProps: any;
 }
+
 /**
- * This component is a syntactic sugar for the InnerGroupFields component
+ * This component groups form elements together
  * @param props
  */
 export const GroupFields = (props: React.PropsWithChildren<GroupFieldsPropsInterface>): JSX.Element => {
