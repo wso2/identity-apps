@@ -59,6 +59,15 @@
             };
 
             /**
+            * =====================================================
+            * Configure your portal settings
+            * =====================================================
+            */
+
+            // Add applications which are not to be deleted in to this array.
+            var doNotDeleteApplications = ["Admin Portal"];
+
+            /**
              * =====================================================
              * Update below details according to your configuration
              * =====================================================
@@ -72,7 +81,7 @@
             var defaultAdminPortalClientID = "ADMIN_PORTAL";
             var tenantAdminPortalClientID = defaultAdminPortalClientID + "_" + tenantName;
 
-            var defaultuserPortalClientHost = serverOriginAddress + getTenantPath(tenantName);
+            var defaultUserPortalClientHost = serverOriginAddress + getTenantPath(tenantName);
             var defaultUserPortalBaseName = "user-portal";
 
             /** ===================================================== */
@@ -89,12 +98,13 @@
                 clientID: window.userConfig.clientID ||
                     (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ?
                     tenantAdminPortalClientID : defaultAdminPortalClientID,
+                doNotDeleteApplications: doNotDeleteApplications || [],
                 serverHost: window.userConfig.serverHost || serverOriginAddress + getTenantPath(tenantName),
                 serverOrigin: window.userConfig.serverOrigin || serverOriginAddress,
                 tenant: window.userConfig.tenant || (tenantName === "") ? getSuperTenant() : tenantName,
                 tenantPath: window.userConfig.tenantPath || getTenantPath(tenantName),
                 userPortalBaseName: window.userConfig.userPortalBaseName || defaultUserPortalBaseName,
-                userPortalClientHost: window.userConfig.userPortalClientHost || defaultuserPortalClientHost
+                userPortalClientHost: window.userConfig.userPortalClientHost || defaultUserPortalClientHost
             };
         </script>
     </head>
