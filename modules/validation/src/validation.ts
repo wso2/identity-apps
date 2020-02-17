@@ -18,6 +18,7 @@
  */
 
 import Joi from "@hapi/joi";
+import Axios from "axios";
 import "./plugins/text-encoder-polyfill";
 
 type ValidationFunction = (value: string) => boolean;
@@ -56,4 +57,25 @@ export const url: ValidationFunction = (value: string): boolean => {
         return false;
     }
     return true;
+};
+
+/**
+ * Checks if the image url is valid
+ * @param value Url
+ */
+export const imageUrl = async (value: string): Promise<boolean> => {
+        if (
+            Joi.string()
+                .uri()
+                .validate(value).error
+        ) {
+            return Promise.resolve(false);
+        } else {
+            try {
+                const response = await Axios.get(value);
+                return Promise.resolve(response.headers["content-type"].includes("image"));
+            } catch (error) {
+                return Promise.resolve(false);
+            }
+        }
 };
