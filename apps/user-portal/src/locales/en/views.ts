@@ -1229,7 +1229,7 @@ export const views: Views = {
             description:
                 "Add an extra layer of protection to your account by configuring multiple " +
                 "steps of authentication. You can choose from options like SMS or a security device",
-            heading: "Multi factor authentication"
+            heading: "Multi-factor authentication"
         },
         profile: {
             description: "Manage and update your personal details like name, email, mobile number, organization, etc.",
