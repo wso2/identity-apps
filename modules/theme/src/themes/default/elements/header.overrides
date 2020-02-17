@@ -21,6 +21,14 @@
          Theme Overrides
 *******************************/
 
+h6.ui.header {
+  font-size: @h6;
+}
+
+h6.ui.header .sub.header {
+  font-size: @h6SubHeaderFontSize;
+}
+
 .ui.header {
     &.page-header {
         .sub-header {
