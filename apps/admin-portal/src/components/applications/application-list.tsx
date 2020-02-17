@@ -55,42 +55,48 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         <ResourceList className="applications-list">
             {
                 (list.applications && list.applications.length && list.applications.length > 0)
-                    ? list.applications.map((app, index) => (
-                       <ResourceList.Item
-                           key={ index }
-                           actions={ [
-                               {
-                                   icon: "pencil alternate",
-                                   onClick: () => handleApplicationEdit(app.id),
-                                   popupText: "edit",
-                                   type: "button"
-                               },
-                               {
-                                   icon: "ellipsis vertical",
-                                   onClick: null,
-                                   popupText: "more",
-                                   subActions: [
-                                       {
-                                           key: "1",
-                                           onClick: handleApplicationDelete,
-                                           text: "Delete"
-                                       }
-                                   ],
-                                   type: "dropdown"
-                               }
-                           ] }
-                           avatar={ (
-                               <AppAvatar
-                                   name={ app.name }
-                                   image={ app.image }
-                                   size="mini"
-                                   floated="left"
-                               />
-                           ) }
-                           itemHeader={ app.name }
-                           itemDescription={ app.description }
-                       />
-                    ))
+                    ? list.applications.map((app, index) => {
+                        // TODO Remove this check and move the logic to backend.
+                        if (app.name !== "wso2carbon-local-sp") {
+                            return (
+                                <ResourceList.Item
+                                    key={ index }
+                                    actions={ [
+                                        {
+                                            icon: "pencil alternate",
+                                            onClick: () => handleApplicationEdit(app.id),
+                                            popupText: "edit",
+                                            type: "button"
+                                        },
+                                        {
+                                            icon: "ellipsis vertical",
+                                            onClick: null,
+                                            popupText: "more",
+                                            subActions: [
+                                                // TODO  Add proper options here.
+                                                // {
+                                                //     key: "1",
+                                                //     onClick: handleApplicationDelete,
+                                                //     text: "Delete"
+                                                // }
+                                            ],
+                                            type: "dropdown"
+                                        }
+                                    ] }
+                                    avatar={ (
+                                        <AppAvatar
+                                            name={ app.name }
+                                            image={ app.image }
+                                            size="mini"
+                                            floated="left"
+                                        />
+                                    ) }
+                                    itemHeader={ app.name }
+                                    itemDescription={ app.description }
+                                />
+                            );
+                        }
+                    })
                     : null
             }
         </ResourceList>
