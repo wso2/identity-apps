@@ -34,33 +34,34 @@ import { getProfileCompletion } from "../../utils";
 import { store } from "../index";
 import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
-import { authenticateActionTypes } from "./types";
+import { authenticateActionTypes, AuthAction } from "./types";
 
 /**
  * Dispatches an action of type `SET_SIGN_IN`.
  */
-export const setSignIn = () => ({
+export const setSignIn = (): AuthAction => ({
     type: authenticateActionTypes.SET_SIGN_IN
 });
 
 /**
  * Dispatches an action of type `SET_SIGN_OUT`.
  */
-export const setSignOut = () => ({
+export const setSignOut = (): AuthAction => ({
     type: authenticateActionTypes.SET_SIGN_OUT
 });
 
 /**
  * Dispatches an action of type `RESET_AUTHENTICATION`.
  */
-export const resetAuthentication = () => ({
+export const resetAuthentication = (): AuthAction => ({
     type: authenticateActionTypes.RESET_AUTHENTICATION
 });
 
 /**
  * Dispatches an action of type `SET_PROFILE_INFO`.
  */
-export const setProfileInfo = (details: any) => ({
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const setProfileInfo = (details: any): AuthAction => ({
     payload: details,
     type: authenticateActionTypes.SET_PROFILE_INFO
 });
@@ -69,17 +70,37 @@ export const setProfileInfo = (details: any) => ({
  * Dispatches an action of type `SET_SCHEMAS`
  * @param schemas
  */
-export const setScimSchemas = (schemas: ProfileSchema[]) => ({
+export const setScimSchemas = (schemas: ProfileSchema[]): AuthAction => ({
     payload: schemas,
     type: authenticateActionTypes.SET_SCHEMAS
 });
 
 /**
+ * Get SCIM2 schemas
+ */
+export const getScimSchemas = (profileInfo: BasicProfileInterface = null) => (dispatch): void => {
+    dispatch(setProfileSchemaLoader(true));
+
+    getProfileSchemas()
+        .then((response: ProfileSchema[]) => {
+            dispatch(setProfileSchemaLoader(false));
+            dispatch(setScimSchemas(response));
+
+            if (profileInfo) {
+                dispatch(getProfileCompletion(profileInfo, response));
+            }
+        })
+        .catch(() => {
+            // TODO: show error page
+        });
+};
+
+/**
  *  Gets profile information by making an API call
  */
-export const getProfileInformation = (updateProfileCompletion: boolean = false) => (dispatch) => {
+export const getProfileInformation = (updateProfileCompletion = false) => (dispatch): void => {
 
-    let isCompletionCalculated: boolean = false;
+    let isCompletionCalculated = false;
 
     dispatch(setProfileInfoLoader(true));
 
@@ -155,9 +176,26 @@ export const getProfileInformation = (updateProfileCompletion: boolean = false) 
 };
 
 /**
+ * Handle user sign-out
+ */
+export const handleSignOut = () => (dispatch): void => {
+    if (sessionStorage.length === 0) {
+        history.push(GlobalConfig.appLoginPath);
+    } else {
+        SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl, () => {
+                dispatch(setSignOut());
+                AuthenticateSessionUtil.endAuthenticatedSession();
+                OPConfigurationUtil.resetOPConfiguration();
+            }).catch(() => {
+                history.push(GlobalConfig.appLoginPath);
+            });
+    }
+};
+
+/**
  * Handle user sign-in
  */
-export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
+export const handleSignIn = (consentDenied = false) => (dispatch): void => {
     const requestParams: OIDCRequestParamsInterface = {
         clientHost: GlobalConfig.clientHost,
         clientId: GlobalConfig.clientID,
@@ -169,7 +207,7 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
         tenant: GlobalConfig.tenant
     };
 
-    const sendSignInRequest = () => {
+    const sendSignInRequest = (): void => {
         if (consentDenied) {
             requestParams.prompt = "login";
         }
@@ -222,41 +260,4 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
                 sendSignInRequest();
             });
     }
-};
-
-/**
- * Handle user sign-out
- */
-export const handleSignOut = () => (dispatch) => {
-    if (sessionStorage.length === 0) {
-        history.push(GlobalConfig.appLoginPath);
-    } else {
-        SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl, () => {
-                dispatch(setSignOut());
-                AuthenticateSessionUtil.endAuthenticatedSession();
-                OPConfigurationUtil.resetOPConfiguration();
-            }).catch(() => {
-                history.push(GlobalConfig.appLoginPath);
-            });
-    }
-};
-
-/**
- * Get SCIM2 schemas
- */
-export const getScimSchemas = (profileInfo: BasicProfileInterface = null) => (dispatch) => {
-    dispatch(setProfileSchemaLoader(true));
-
-    getProfileSchemas()
-        .then((response: ProfileSchema[]) => {
-            dispatch(setProfileSchemaLoader(false));
-            dispatch(setScimSchemas(response));
-
-            if (profileInfo) {
-                dispatch(getProfileCompletion(profileInfo, response));
-            }
-        })
-        .catch((error) => {
-            // TODO: show error page
-        });
 };

@@ -59,6 +59,7 @@ export const toggleApplicationsPageVisibility = (visibility: boolean): ToggleApp
  * @param alertSystem - Alert system object.
  * @return {InitializeAlertSystemAction}
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const initializeAlertSystem = (alertSystem: any): InitializeAlertSystemAction => ({
     payload: alertSystem,
     type: GlobalActionTypes.INITIALIZE_ALERT_SYSTEM

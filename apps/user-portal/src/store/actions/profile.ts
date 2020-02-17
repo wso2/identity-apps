@@ -20,12 +20,12 @@ import { getAssociations } from "../../api";
 import { i18n } from "../../configs/i18n";
 import { AlertLevels, LinkedAccountInterface, ProfileCompletion } from "../../models";
 import { addAlert } from "./global";
-import { ProfileActionTypes, ToggleSCIMEnabledAction } from "./types/profile";
+import { ProfileActionTypes, ToggleSCIMEnabledAction, ProfileBaseActionWithCommonPayload } from "./types/profile";
 
 /**
  * Dispatches an action of type `SET_PROFILE_COMPLETION`.
  */
-export const setProfileCompletion = (completion: ProfileCompletion) => ({
+export const setProfileCompletion = (completion: ProfileCompletion): ProfileBaseActionWithCommonPayload => ({
     payload: completion,
     type: ProfileActionTypes.SET_PROFILE_COMPLETION
 });
@@ -33,7 +33,7 @@ export const setProfileCompletion = (completion: ProfileCompletion) => ({
 /**
  * Dispatches an action of type `SET_PROFILE_LINKED_ACCOUNTS`.
  */
-export const setProfileLinkedAccounts = (accounts: LinkedAccountInterface[]) => ({
+export const setProfileLinkedAccounts = (accounts: LinkedAccountInterface[]): ProfileBaseActionWithCommonPayload => ({
     payload: accounts,
     type: ProfileActionTypes.SET_PROFILE_LINKED_ACCOUNTS
 });
@@ -52,7 +52,7 @@ export const toggleSCIMEnabled = (isEnabled: boolean): ToggleSCIMEnabledAction =
  * Action to fetch the linked accounts and set the response in redux state.
  * @return {(dispatch) => void}
  */
-export const getProfileLinkedAccounts = () => (dispatch) => {
+export const getProfileLinkedAccounts = () => (dispatch): void => {
 
     getAssociations()
         .then((linkedAccountsResponse) => {

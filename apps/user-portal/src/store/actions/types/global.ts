@@ -61,6 +61,7 @@ export interface ToggleApplicationsPageVisibilityAction extends GlobalBaseAction
 /**
  * Alert system initialize action interface.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface InitializeAlertSystemAction extends GlobalBaseAction {
     payload: any;
     type: GlobalActionTypes.INITIALIZE_ALERT_SYSTEM;
