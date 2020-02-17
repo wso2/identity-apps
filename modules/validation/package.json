@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/validation",
-    "version": "1.0.29",
+    "version": "1.0.30",
     "description": "Validator module for WSO2 Identity Server web-apps.",
     "keywords": [
         "WSO2",
@@ -27,7 +27,7 @@
     "license": "Apache-2.0",
     "peerDependencies": {
         "@hapi/joi": "*",
-        "axios":"^0.19.2"
+        "axios": "^0.19.2"
     },
     "devDependencies": {
         "rimraf": "^3.0.2",
