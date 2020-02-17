@@ -18,3 +18,4 @@
 ![consent](modules/theme/src/themes/default/assets/images/icons/consent-icon.svg) | Icon made by Wichai.wi from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/gdpr_1355236?term=gdpr&page=1&position=3)
 ![forbidden](modules/theme/src/themes/default/assets/images/icons/forbidden-icon.svg) | Icon made by Freepik from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/prohibition-symbol_12572?term=not%20permitted&page=1&position=2)
 ![plug](modules/theme/src/themes/default/assets/images/icons/plug-icon.svg) | Icon made by prettycons from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/plug_978016?term=plug&page=1&position=20)
+![drag](modules/theme/src/themes/default/assets/images/icons/drag-icon.svg) | Icon made by Pixel Perfect from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/drag_624828?term=drag&page=1&position=2)

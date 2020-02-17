@@ -34,6 +34,7 @@
     },
     "peerDependencies": {
         "@svgr/webpack": "*",
+        "@types/react-beautiful-dnd": "*",
         "axios": "*",
         "fork-ts-checker-webpack-plugin": "*",
         "history": "*",
@@ -41,6 +42,7 @@
         "i18next-browser-languagedetector": "*",
         "lodash": "*",
         "log": "*",
+        "react-beautiful-dnd": "*",
         "react-i18next": "*",
         "react-notification-system": "*",
         "react-redux": "*",

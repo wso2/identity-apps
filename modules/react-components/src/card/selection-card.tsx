@@ -83,6 +83,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
             className={ classes }
             onClick={ onClick }
             link={ false }
+            as="div"
         >
             {
                 image && (

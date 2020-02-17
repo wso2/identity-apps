@@ -204,23 +204,29 @@
 
 .ui.card {
     &.selection-card {
-        border-bottom: @selectionCardDefaultStateBorderBottom;
         width: @selectionCardDefaultWidth;
+        transition: @selectionCardTransition;
+        border: @selectionCardBorder;
+        box-shadow: none;
 
         &:hover {
             transform: none;
             text-decoration: none;
-            border-bottom: @selectionCardDefaultStateBorderBottom;
+            cursor: pointer;
+            box-shadow: @defaultCardHoverBoxShadow;
         }
         &.inline {
             display: inline-block;
             margin-right: @selectionCardRightSpacing;
         }
         &.selected {
-            border-bottom: @selectionCardSelectedStateBorderBottom;
+            &:after {
+                visibility: visible;
+            }
         }
         &.disabled {
             cursor: not-allowed;
+            filter: grayscale(100%);
         }
         .card-image-container {
         }
@@ -244,6 +250,13 @@
                 text-overflow: ellipsis;
             }
         }
+        &:after {
+            display: block;
+            background: @selectionCardSelectedStateBorderColor;
+            content: '';
+            height: 3px;
+            visibility: hidden;
+        }
     }
 }
 
@@ -254,15 +267,15 @@
 .ui.card {
     &.app-template-card {
         width: @appTemplateCardDefaultWidth;
-        transition: @defaultCardTransition;
-        border: @defaultCardBorder;
+        transition: @appTemplateCardTransition;
+        border: @appTemplateCardBorder;
         box-shadow: none;
 
         &:hover {
             transform: none;
             text-decoration: none;
             cursor: pointer;
-            box-shadow: @defaultCardHoverBoxShadow;
+            box-shadow: @appTemplateCardHoverBoxShadow;
         }
         &.inline {
             display: inline-block;
@@ -274,6 +287,7 @@
         }
         &.disabled {
             cursor: not-allowed;
+            filter: grayscale(100%);
         }
         .card-image-container {
         }
@@ -305,5 +319,74 @@
                 }
             }
         }
+    }
+}
+
+/*******************************
+     Labeled Card Variation
+*******************************/
+
+.labeled-card-wrapper {
+    text-align: center;
+
+    &.with-bottom-margin {
+        margin-bottom: @labeledCardWrapperMarginBottom;
+    }
+    &:hover {
+        cursor: pointer;
+
+        .ui.card {
+            &.labeled-card {
+                transform: none;
+                text-decoration: none;
+                cursor: pointer;
+                box-shadow: @labeledCardHoverBoxShadow;
+
+                .close-button {
+                    visibility: visible;
+                }
+            }
+        }
+    }
+    &.inline {
+        display: inline-block;
+        margin-right: @labeledCardRightSpacing;
+    }
+    .ui.card {
+        &.labeled-card {
+            width: auto;
+            transition: @labeledCardTransition;
+            border: @labeledCardBorder;
+            box-shadow: none;
+            margin-bottom: @labeledCardMarginBottom;
+
+            &:hover {
+                transform: none;
+                text-decoration: none;
+                cursor: pointer;
+                box-shadow: @labeledCardHoverBoxShadow;
+            }
+            .close-button {
+                border-radius: 50% !important;
+                display: inline-table;
+                font-weight: 500;
+                visibility: hidden;
+
+                &:hover {
+                    box-shadow: 1px 1px 4px @darkGray;
+                }
+            }
+            &.selected {
+
+            }
+            &.disabled {
+                cursor: not-allowed;
+                filter: grayscale(100%);
+            }
+       }
+    }
+
+    .card-label {
+        font-size: @labeledCardLabelFontColor;
     }
 }

@@ -512,11 +512,11 @@ export const createApplication = (application: object): Promise<any> => {
 /**
  * Updates Authentication sequence of the application.
  * @param id ID of the application
- * @param authenticationConfigs Authentication configurations of the application.
+ * @param data Authentication configurations of the application.
  */
-export const updateAuthenticationSequence = (id: string, authenticationConfigs: object): Promise<any> => {
+export const updateAuthenticationSequence = (id: string, data: object): Promise<any> => {
     const requestConfig = {
-        data: authenticationConfigs,
+        data,
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,

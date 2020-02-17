@@ -18,9 +18,9 @@
  */
 
 import { action } from "@storybook/addon-actions";
-import { GravatarLogo } from "@wso2is/theme";
+import { GravatarLogo, ReactLogo } from "@wso2is/theme";
 import React from "react";
-import { SelectionCard } from "../../../src";
+import { LabeledCard, SelectionCard } from "../../../src";
 import { meta } from "./card.stories.meta";
 
 export default {
@@ -49,6 +49,25 @@ Selection.story = {
     parameters: {
         docs: {
             storyDescription: meta.stories[ 1 ].description,
+        },
+    }
+};
+
+/**
+ * Story to display labeled card
+ * @return {any}
+ */
+export const Labeled = () => (
+    <LabeledCard
+        label="React"
+        image={ ReactLogo }
+    />
+);
+
+Labeled.story = {
+    parameters: {
+        docs: {
+            storyDescription: meta.stories[ 2 ].description,
         },
     }
 };

@@ -202,12 +202,12 @@ export enum AuthenticationSequenceType {
     USER_DEFINED = "USER_DEFINED"
 }
 
-interface AuthenticatorInterface {
+export interface AuthenticatorInterface {
     idp: string;
     authenticator: string;
 }
 
-interface AuthenticationStepModelInterface {
+export interface AuthenticationStepInterface {
     id: number;
     options: AuthenticatorInterface[];
 }
@@ -217,7 +217,7 @@ interface AuthenticationStepModelInterface {
  */
 export interface AuthenticationSequenceInterface  {
     type?: AuthenticationSequenceType;
-    steps?: AuthenticationStepModelInterface[];
+    steps?: AuthenticationStepInterface[];
     requestPathAuthenticators?: string[];
     script?: string;
     subjectStepId?: number;
@@ -297,6 +297,7 @@ export const emptyApplication = (): ApplicationInterface => ({
         saas: false,
         skipConsent: false,
     },
+    authenticationSequence: undefined,
     claimConfiguration: undefined,
     description: "",
     id: "",

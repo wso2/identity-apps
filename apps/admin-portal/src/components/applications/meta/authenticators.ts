@@ -16,65 +16,75 @@
  * under the License.
  */
 
-enum authenticatorType {
+import { AuthenticatorIcons } from "../../../configs";
+
+export enum AuthenticatorTypes {
     SECOND_FACTOR = "secondary",
     FIRST_FACTOR = "first",
     SOCIAL = "social"
 }
 
-export interface AuthenticatorListInterface {
+export interface AuthenticatorListItemInterface {
     authenticator?: string;
     authenticatorId?: string;
     displayName?: string;
     idp?: string;
     image?: any;
-    type?: authenticatorType;
+    index?: number;
+    type?: AuthenticatorTypes;
 }
 
-export const selectedLocalAuthenticators: AuthenticatorListInterface[] = [
+export const selectedLocalAuthenticators: AuthenticatorListItemInterface[] = [
     {
         authenticator: "BasicAuthenticator",
         displayName: "Basic",
         idp: "LOCAL",
-        type: authenticatorType.FIRST_FACTOR,
-    },
-    {
-        authenticator: "FIDOAuthenticator",
-        displayName: "FIDO",
-        idp: "LOCAL",
-        type: authenticatorType.SECOND_FACTOR,
-    },
-    {
-        authenticator: "totp",
-        displayName: "TOTP",
-        idp: "LOCAL",
-        type: authenticatorType.SECOND_FACTOR,
+        image: AuthenticatorIcons.basic,
+        type: AuthenticatorTypes.FIRST_FACTOR,
     }
 ];
 
-export const selectedFederatedAuthenticators: AuthenticatorListInterface[] = [
+export const selectedFederatedAuthenticators: AuthenticatorListItemInterface[] = [
     {
         authenticator: "EmailOTP",
         authenticatorId: "RW1haWxPVFA",
         displayName: "Email OTP",
-        type: authenticatorType.SECOND_FACTOR,
+        image: AuthenticatorIcons.emailOTP,
+        type: AuthenticatorTypes.SECOND_FACTOR,
     },
     {
         authenticator: "SMSOTP",
         authenticatorId: "U01TT1RQ",
         displayName: "SMS OTP",
-        type: authenticatorType.SECOND_FACTOR,
+        image: AuthenticatorIcons.smsOTP,
+        type: AuthenticatorTypes.SECOND_FACTOR,
     },
     {
         authenticator: "GoogleOIDCAuthenticator",
         authenticatorId: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
         displayName: "Google",
-        type: authenticatorType.SOCIAL,
+        image: AuthenticatorIcons.google,
+        type: AuthenticatorTypes.SOCIAL,
     },
     {
         authenticator: "FacebookAuthenticator",
         authenticatorId: "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
         displayName: "Facebook",
-        type: authenticatorType.SOCIAL,
+        image: AuthenticatorIcons.facebook,
+        type: AuthenticatorTypes.SOCIAL,
     },
+    {
+        authenticator: "FIDOAuthenticator",
+        authenticatorId: "asdadagJvb2tBdggXRoZW50aWNhdG9y",
+        displayName: "FIDO",
+        image: AuthenticatorIcons.fido,
+        type: AuthenticatorTypes.SECOND_FACTOR,
+    },
+    {
+        authenticator: "TwitterAuthenticator",
+        authenticatorId: "VHdpdHRlckF1dGhlbnRpY2F0b3I",
+        displayName: "Twitter",
+        image: AuthenticatorIcons.twitter,
+        type: AuthenticatorTypes.SOCIAL,
+    }
 ];
