@@ -18,7 +18,7 @@
 
 import { AxiosHttpClient } from "@wso2is/http";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
-import { ApplicationList, HttpMethods } from "../models";
+import { HttpMethods } from "../models";
 
 /**
  * Get an axios instance.
@@ -32,6 +32,7 @@ const httpClient = AxiosHttpClient.getInstance();
  *
  * @return {Promise<any>} A promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const fetchApplications = (
     limit: number,
     offset: number,

@@ -35,6 +35,7 @@ const httpClient = AxiosHttpClient.getInstance();
  * @param {string} newPassword newly assigned password.
  * @return {Promise<any>} a promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const updatePassword = (currentPassword: string, newPassword: string): Promise<any> => {
     // We're currently using basic auth to validate the current password. If the password is
     // different, the server responds with a status code `401`. The callbacks handle 401 errors and

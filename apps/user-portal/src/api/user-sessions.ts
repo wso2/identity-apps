@@ -35,6 +35,7 @@ const httpClient = AxiosHttpClient.getInstance();
  *
  * @return {Promise<any>} A promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const fetchUserSessions = (): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -59,6 +60,7 @@ export const fetchUserSessions = (): Promise<any> => {
  * @param {string} id - Session ID.
  * @return {Promise<any>} A promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const terminateUserSession = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -82,6 +84,7 @@ export const terminateUserSession = (id: string): Promise<any> => {
  *
  * @return {Promise<any>} A promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const terminateAllUserSessions = (): Promise<any> => {
     const requestConfig = {
         headers: {
