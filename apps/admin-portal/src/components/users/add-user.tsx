@@ -67,19 +67,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
     const { t } = useTranslation();
 
-    const form = useRef(null);
-
-    /**
-     * Submits the form programmatically if triggered from outside.
-     */
-    useEffect(() => {
-        if (!triggerSubmit) {
-            return;
-        }
-
-        form?.current?.props?.onSubmit(new Event("submit"));
-    }, [ triggerSubmit ]);
-
     const passwordOptions = [
         { label: "Invite user to set password", value: "askPw" },
         { label: "Set user password", value: "createPw" },
@@ -288,10 +275,10 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      */
     const addUserBasicForm = () => (
         <Forms
-            ref={ form }
             onSubmit={ (values) => {
                 onSubmit(getFormValues(values));
             } }
+            submitState={ triggerSubmit }
         >
             <Grid>
                 <Grid.Row columns={ 2 }>
