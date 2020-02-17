@@ -937,6 +937,7 @@ export const views: Views = {
                 phoneNumbers_mobile: "கையடக்க தொலைபேசி இலக்கம்",
                 phoneNumbers_other: "வேறு தொலைபேசி இலக்கம்",
                 phoneNumbers_work: "தொழில் தொலைபேசி இலக்கம்",
+                profileImage: "பயனர் படம்",
                 profileUrl: "URL",
                 userName: "பயனர் பெயர்"
             },

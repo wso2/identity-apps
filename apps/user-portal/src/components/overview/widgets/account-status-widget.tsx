@@ -121,7 +121,7 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                 && attributes.incompleteAttributes.length > 0))
             ? (
                 <Popup
-                    trigger={ <Icon color="grey" name="info circle"/> }
+                    trigger={ <Icon color="grey" name="info circle" /> }
                     position="bottom center"
                     className="list-content-popup"
                     hoverable
@@ -134,7 +134,7 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                     ? (
                                         <>
                                             <div className="header">
-                                                <Icon color="green" name="check circle"/>
+                                                <Icon color="green" name="check circle" />
                                                 { t("views:components.overview.widgets.accountStatus." +
                                                     "completedFields") }
                                             </div>
@@ -143,8 +143,11 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                                     attributes.completedAttributes
                                                         .map((attr, index) => (
                                                             <li key={ index }>
-                                                                {
-                                                                    t("views:components.profile.fields."
+                                                                { attr.name === "profileUrl"
+                                                                    ? t("views:components.profile.fields."
+                                                                        + "profileImage",
+                                                                        { defaultValue: attr.displayName })
+                                                                    : t("views:components.profile.fields."
                                                                         + attr.name.replace(".", "_"),
                                                                         { defaultValue: attr.displayName })
                                                                 }
@@ -164,7 +167,7 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                     ? (
                                         <>
                                             <div className="header">
-                                                <Icon color="red" name="times circle"/>
+                                                <Icon color="red" name="times circle" />
                                                 { t("views:components.overview.widgets.accountStatus." +
                                                     "inCompleteFields") }
                                             </div>
@@ -173,8 +176,11 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                                     attributes.incompleteAttributes
                                                         .map((attr, index) => (
                                                             <li key={ index }>
-                                                                {
-                                                                    t("views:components.profile.fields."
+                                                                { attr.name === "profileUrl"
+                                                                    ? t("views:components.profile.fields."
+                                                                        + "profileImage",
+                                                                        { defaultValue: attr.displayName })
+                                                                    : t("views:components.profile.fields."
                                                                         + attr.name.replace(".", "_"),
                                                                         { defaultValue: attr.displayName })
                                                                 }
@@ -206,8 +212,8 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                     && profileCompletion.required.completedCount)
                     ? (
                         <li
-                            className={ `progress-item ${ getFieldCompletionStatus(
-                                profileCompletion.required, false) }` }
+                            className={ `progress-item ${getFieldCompletionStatus(
+                                profileCompletion.required, false)}` }
                         >
                             {
                                 t("views:components.overview.widgets.accountStatus" +
@@ -229,8 +235,8 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                     && profileCompletion.optional.completedCount)
                     ? (
                         <li
-                            className={ `progress-item ${ getFieldCompletionStatus(
-                                profileCompletion.optional, true) }` }
+                            className={ `progress-item ${getFieldCompletionStatus(
+                                profileCompletion.optional, true)}` }
                         >
                             {
                                 t("views:components.overview.widgets.accountStatus" +
@@ -255,7 +261,7 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                 <Grid.Row>
                     <Grid.Column largeScreen={ 6 } computer={ 5 } tablet={ 5 } mobile={ 16 }>
                         <div className="status-shield-container">
-                            <ThemeIcon icon={ resolveStatusShield() } size="auto" transparent/>
+                            <ThemeIcon icon={ resolveStatusShield() } size="auto" transparent />
                         </div>
                     </Grid.Column>
                     <Grid.Column largeScreen={ 10 } computer={ 11 } tablet={ 11 } mobile={ 16 }>
@@ -288,7 +294,7 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                                         })
                                 }
                             </Progress>
-                            <Divider hidden/>
+                            <Divider hidden />
                             {
                                 profileCompletion && (profileCompletion.required || profileCompletion.optional)
                                     ? generateCompletionProgress()

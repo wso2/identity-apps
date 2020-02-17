@@ -584,6 +584,7 @@ export interface Views {
                 emails_work: string;
                 name_familyName: string;
                 name_givenName: string;
+                profileImage: string;
                 phoneNumbers: string;
                 phoneNumbers_home: string;
                 phoneNumbers_mobile: string;
