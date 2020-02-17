@@ -1017,8 +1017,8 @@ export const views: Views = {
                         message: "Algo deu errado"
                     },
                     success: {
-                        description: "Os detalhes do perfil de usuário necessários foram baixados com sucesso",
-                        message: "Detalhes do perfil do usuário baixados com sucesso"
+                        description: "O arquivo que contém os detalhes necessários do perfil do usuário começou a baixar",
+                        message: "Download dos detalhes do perfil do usuário iniciado"
                     }
                 }
             }

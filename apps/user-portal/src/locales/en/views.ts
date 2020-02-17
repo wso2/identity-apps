@@ -1036,8 +1036,8 @@ export const views: Views = {
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "The required user profile details are downloaded successfully",
-                        message: "User profile details downloaded successfully"
+                        description: "The file containing the required user profile details has started downloading",
+                        message: "User profile details download started"
                     }
                 }
             }
