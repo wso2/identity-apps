@@ -38,7 +38,7 @@ export const LoginErrorPage = (): JSX.Element => {
                     <Button
                         className="link-button"
                         as={ Link }
-                        to="/logout"
+                        to={ LOGOUT_CALLBACK_URL }
                     >
                         { t("views:placeholders.loginError.action") }
                     </Button>

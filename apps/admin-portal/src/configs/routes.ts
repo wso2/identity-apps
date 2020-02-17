@@ -173,7 +173,7 @@ const AUTH_LAYOUT_ROUTES: RouteInterface[] = [
         icon: null,
         id: "authLayoutLogout",
         name: "Logout",
-        path: "/logout",
+        path: APP_LOGOUT_PATH,
         protected: false,
         showOnSidePanel: false
     }
@@ -197,7 +197,7 @@ const APP_ROUTES: RouteInterface[] = [
         icon: null,
         id: "appRouteLogout",
         name: "Logout",
-        path: "/logout",
+        path: APP_LOGOUT_PATH,
         protected: false,
         showOnSidePanel: false
     },

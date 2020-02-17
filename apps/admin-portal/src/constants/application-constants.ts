@@ -86,3 +86,11 @@ export class ApplicationConstants {
         META: "configs/application-mgt.meta.json"
     };
 }
+
+/**
+ * Key of the time at which an auth error occurred in the session storage
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const AUTH_ERROR_TIME: string = "authErrorTime";

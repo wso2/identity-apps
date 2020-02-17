@@ -53,6 +53,7 @@ module.exports = (env) => {
      * App configurations
      */
     const loginPagePath = "/login";
+    const logoutPagePath = "/logout";
     const homePagePath = "/overview";
     const externalLoginCallbackURL = `${publicPath}${loginPagePath}`;
 
@@ -223,6 +224,7 @@ module.exports = (env) => {
                 APP_BASENAME: JSON.stringify(basename),
                 APP_HOME_PATH: JSON.stringify(homePagePath),
                 APP_LOGIN_PATH: JSON.stringify(loginPagePath),
+                APP_LOGOUT_PATH: JSON.stringify(logoutPagePath),
                 APP_NAME: JSON.stringify(applicationName),
                 COPYRIGHT_TEXT_DEFAULT: JSON.stringify(copyrightText),
                 CLIENT_ID_DEFAULT: JSON.stringify(clientIdDefault),

@@ -70,7 +70,7 @@ export const onHttpRequestError = (error: any) => {
         && error.response.request.responseURL === OPConfigurationUtil.getTokenEndpoint()) {
 
         if (error.response.status === 400) {
-            endUserSession();
+            history.push(LOGOUT_CALLBACK_URL);
             return;
         }
     }
@@ -84,9 +84,9 @@ export const onHttpRequestError = (error: any) => {
     // Terminate the session if the requests returns an un-authorized status code (401)
     // or a forbidden status code (403). NOTE: Axios is unable to handle 401 errors.
     // `!error.response` will usually catch the `401` error. Check the link in the doc comment.
-    // if (!error.response || error.response.status === 403 || error.response.status === 401) {
-    //     endUserSession();
-    // }
+    if (!error.response || error.response.status === 403 || error.response.status === 401) {
+        endUserSessionWithoutLoops();
+    }
 };
 
 /**
@@ -94,4 +94,25 @@ export const onHttpRequestError = (error: any) => {
  */
 export const onHttpRequestFinish = () => {
     store.dispatch(hideGlobalLoader());
+};
+
+/**
+ * Sets the time at which an auth error occurs in the session storage and calls `endUserSession()
+ * only if the current error takes place 10 seconds after the previous one. This helps avoid entering
+ * an infinite loop when a faulty api keeps returning auth errors.
+ */
+const endUserSessionWithoutLoops = () => {
+    if (!sessionStorage.getItem(ApplicationConstants.AUTH_ERROR_TIME)) {
+        sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
+    } else {
+        const currentTime = new Date().getTime();
+        const errorTime = parseInt(sessionStorage.getItem(ApplicationConstants.AUTH_ERROR_TIME), 10);
+        if (currentTime - errorTime >= 10000) {
+            sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
+            history.push(LOGOUT_CALLBACK_URL);
+        } else {
+            sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
+            return;
+        }
+    }
 };

@@ -19,6 +19,7 @@
 declare const APP_BASENAME: string;
 declare const APP_HOME_PATH: string;
 declare const APP_LOGIN_PATH: string;
+declare const APP_LOGOUT_PATH: string;
 declare const APP_NAME: string;
 declare const CLIENT_ID_DEFAULT: string;
 declare const CLIENT_HOST_DEFAULT: string;
