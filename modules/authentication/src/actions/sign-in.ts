@@ -31,13 +31,14 @@ import { TokenResponseInterface } from "../models/token-response";
 import { getCodeChallenge, getCodeVerifier, getEmailHash, getJWKForTheIdToken, isValidIdToken } from "./crypto";
 import { getAuthorizeEndpoint, getIssuer, getJwksUri, getRevokeTokenEndpoint, getTokenEndpoint } from "./op-config";
 import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
+import { TokenRequestHeader } from "../models/sign-in";
 
 /**
  * Checks whether authorization code present in the request.
  *
  * @returns {boolean} true if authorization code is present.
  */
-export const hasAuthorizationCode = () => {
+export const hasAuthorizationCode = (): boolean => {
     return !!new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE);
 };
 
@@ -46,7 +47,7 @@ export const hasAuthorizationCode = () => {
  *
  * @param {OIDCRequestParamsInterface} requestParams request parameters required for authorization request.
  */
-export const sendAuthorizationRequest = (requestParams: OIDCRequestParamsInterface) => {
+export const sendAuthorizationRequest = (requestParams: OIDCRequestParamsInterface): Promise<never>|boolean => {
     const authorizeEndpoint = getAuthorizeEndpoint();
 
     if (!authorizeEndpoint || authorizeEndpoint.trim().length === 0) {
@@ -203,7 +204,8 @@ export const sendRefreshTokenRequest = (
  * @param {string} accessToken access token
  * @returns {any}
  */
-export const sendRevokeTokenRequest = (requestParams: OIDCRequestParamsInterface, accessToken: string) => {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const sendRevokeTokenRequest = (requestParams: OIDCRequestParamsInterface, accessToken: string): Promise<any> => {
     const revokeTokenEndpoint = getRevokeTokenEndpoint();
 
     if (!revokeTokenEndpoint || revokeTokenEndpoint.trim().length === 0) {
@@ -235,7 +237,7 @@ export const sendRevokeTokenRequest = (requestParams: OIDCRequestParamsInterface
  * @param emailAddress email address received authenticated user.
  * @returns {string} gravatar image path.
  */
-export const getGravatar = (emailAddress: string) => {
+export const getGravatar = (emailAddress: string): string => {
     return "https://www.gravatar.com/avatar/" + getEmailHash(emailAddress) + "?d=404";
 };
 
