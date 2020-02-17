@@ -17,3 +17,4 @@
  */
 
 export * from "./add-user-wizard";
+export * from "./wizard-summary";

@@ -16,13 +16,17 @@
  * under the License.
  */
 
-import React, { FunctionComponent, useState } from "react";
-import { history } from "../../../helpers";
-import { UserBasicWizard } from "../../../models";
+import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import _ from "lodash";
+import React, { FunctionComponent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Grid, Icon, Modal } from "semantic-ui-react";
+import { addUser } from "../../../api";
 import { ApplicationWizardStepIcons } from "../../../configs";
+import { AlertLevels } from "../../../models";
+import { addAlert } from "../../../store/actions";
 import { AddUser } from "../add-user";
-import { Grid, Modal } from "semantic-ui-react";
-import { Heading, LinkButton, Steps } from "@wso2is/react-components";
 import { AddUserWizardSummary } from "./wizard-summary";
 
 interface AddUserWizardPropsInterface {
@@ -31,6 +35,23 @@ interface AddUserWizardPropsInterface {
     listOffset: number;
     listItemLimit: number;
     getUserList: (listOffset: number, listItemLimit: number) => void;
+}
+
+/**
+ * Interface for the wizard state.
+ */
+interface WizardStateInterface {
+    [ key: string ]: any;
+}
+
+/**
+ * Enum for wizard steps form types.
+ * @readonly
+ * @enum {string}
+ */
+enum WizardStepsFormTypes {
+    GENERAL_SETTINGS = "GeneralDetails",
+    SUMMARY = "summary"
 }
 
 /**
@@ -45,79 +66,212 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const {
         closeWizard,
         currentStep,
-        listOffset,
-        listItemLimit,
-        getUserList
-    } = props
+    } = props;
 
-    const [ creationStep, setCreationStep ] = useState("GeneralDetails");
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
+
     const [ completedStep, setCompletedStep ] = useState<number>(undefined);
+    const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
+    const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
 
-    const [ generalSettingsData, setGeneralSettingsData ] = useState();
-    const [ user, setUser ] = useState<UserBasicWizard>();
-
-    const updateMainUserData = (userData: UserBasicWizard) => {
-        if (userData !== user) {
-            setUser(userData);
+    /**
+     * Sets the current wizard step to the next on every `completedStep`
+     * value change , and resets the completed step value.
+     */
+    useEffect(() => {
+        if (completedStep === undefined) {
+            return;
         }
-    };
 
-    const setGeneralSettings = (userGeneral: UserBasicWizard) => {
-        setGeneralSettingsData(userGeneral);
-    };
-
-    // Stages order for application creation.
-    const steps = [ "GeneralDetails", "Summary" ];
-
-    // Advance to next step defined in the steps array.
-    const stepForward = () => {
-        const currentStep = creationStep;
-        const currentIndex = steps.indexOf(currentStep);
-        if ((currentIndex + 1) < steps.length) {
-            const newstep = steps[ currentIndex + 1 ];
-            setCreationStep(newstep);
-        } else {
-            history.push("/users");
+        if ((currentWizardStep + 1) === STEPS.length) {
+            return;
         }
-    };
+        setCurrentWizardStep(currentWizardStep + 1);
+        setCompletedStep(undefined);
+    }, [ completedStep ]);
 
-    // Rollback to previous step defined in the steps array.
-    const stepBackward = () => {
-        const currentStep = creationStep;
-        const currentIndex = steps.indexOf(currentStep);
-        if ((currentIndex - 1) >= 0) {
-            const newstep = steps[ currentIndex - 1 ];
-            setCreationStep(newstep);
-        } else if (currentStep === "GeneralDetails") {
-            // clean up all the states.
-            // setApplication({ name: "" });
-            // setGeneralSettings({  } )
-            // setOIDCProtocolSetting({ grantTypes: [] })
-            history.push("/users");
-        } else {
-            history.push("/users");
+    /**
+     * Sets the current wizard step to the previous on every `partiallyCompletedStep`
+     * value change , and resets the partially completed step value.
+     */
+    useEffect(() => {
+        if (partiallyCompletedStep === undefined) {
+            return;
         }
-    };
+
+        setCurrentWizardStep(currentWizardStep - 1);
+        setPartiallyCompletedStep(undefined);
+    }, [ partiallyCompletedStep ]);
 
     const navigateToNext = () => {
-        setCurrentWizardStep(currentWizardStep + 1);
+        setCompletedStep(currentWizardStep);
     };
 
     const navigateToPrevious = () => {
-        setCurrentWizardStep(currentWizardStep - 1);
+        setPartiallyCompletedStep(currentWizardStep);
+    };
+
+    /**
+     * This function handles adding the user.
+     */
+    const addUserBasic = (userInfo: any) => {
+        let userName = "";
+        userInfo.domain !== "primary" ? userName = userInfo.domain + "/" + userInfo.userName : userName =
+            userInfo.userName;
+        let userDetails = {};
+        const password = userInfo.newPassword;
+
+        userInfo.passwordOption && userInfo.passwordOption !== "askPw" ?
+            (
+                userDetails = {
+                    emails:
+                        [{
+                            primary: true,
+                            value: userInfo.email
+                        }],
+                    name:
+                        {
+                            familyName: userInfo.lastName,
+                            givenName: userInfo.firstName
+                        },
+                    password,
+                    userName
+                }
+            ) :
+            (
+                userDetails = {
+                    "emails":
+                        [{
+                            primary: true,
+                            value: userInfo.email
+                        }],
+                    "name":
+                        {
+                            familyName: userInfo.lastName,
+                            givenName: userInfo.firstName
+                        },
+                    "password": "password",
+                    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User":
+                        {
+                            askPassword: "true"
+                        },
+                    userName
+                }
+            );
+
+        addUser(userDetails)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t(
+                        "views:components.users.notifications.addUser.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "views:components.users.notifications.addUser.success.message"
+                    )
+                }));
+                closeWizard();
+            })
+            .catch((error) => {
+                // Axios throws a generic `Network Error` for 401 status.
+                // As a temporary solution, a check to see if a response
+                // is available has be used.
+                if (!error.response || error.response.status === 401) {
+                    dispatch(addAlert({
+                        description: t(
+                            "views:components.users.notifications.addUser.error.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "views:components.users.notifications.addUser.error.message"
+                        )
+                    }));
+                } else if (error.response && error.response.data && error.response.data.detail) {
+
+                    dispatch(addAlert({
+                        description: t(
+                            "views:components.users.notifications.addUser.error.description",
+                            { description: error.response.data.detail }
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "views:components.users.notifications.addUser.error.message"
+                        )
+                    }));
+                } else {
+                    // Generic error message
+                    dispatch(addAlert({
+                        description: t(
+                            "views:components.users.notifications.addUser.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "views:components.users.notifications.addUser.genericError.message"
+                        )
+                    }));
+                }
+            });
+    };
+
+    /**
+     * Handles wizard step submit.
+     *
+     * @param values - Forms values to be stored in state.
+     * @param {WizardStepsFormTypes} formType - Type of the form.
+     */
+    const handleWizardFormSubmit = (values: any, formType: WizardStepsFormTypes) => {
+        setWizardState(_.merge(wizardState, { [ formType ]: values }));
+    };
+
+    /**
+     * Generates a summary of the wizard.
+     *
+     * @return {any}
+     */
+    const generateWizardSummary = () => {
+        if (!wizardState) {
+            return;
+        }
+
+        let summary = {};
+
+        for (const value of Object.values(wizardState)) {
+            summary = {
+                ...summary,
+                ...value
+            };
+        }
+
+        return _.merge(_.cloneDeep(summary));
+    };
+
+    const handleWizardFormFinish = (user: any) => {
+        addUserBasic(user);
     };
 
     const STEPS = [
         {
             content: (
                 <AddUser
-                    userData={ generalSettingsData }
-                    setUserData={ setGeneralSettings }
-                    next={ navigateToNext }
                     isRoleModalOpen={ null }
                     handleRoleModalClose={ null }
                     handleRoleModalOpen={ null }
+                    triggerSubmit={ completedStep === 0 || partiallyCompletedStep === 0 }
+                    initialValues={ wizardState && wizardState[ WizardStepsFormTypes.GENERAL_SETTINGS ] }
+                    onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.GENERAL_SETTINGS) }
+                />
+            ),
+            icon: ApplicationWizardStepIcons.general,
+            title: "Basic user details"
+        },
+        {
+            content: (
+                <AddUserWizardSummary
+                    triggerSubmit={ completedStep === 1 }
+                    onSubmit={ handleWizardFormFinish }
+                    summary={ generateWizardSummary() }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
@@ -161,10 +315,18 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (
-                                <LinkButton floated="right" onClick={ navigateToNext }>Next Step</LinkButton>
+                                <PrimaryButton floated="right" onClick={ navigateToNext }>
+                                    Next Step <Icon name="arrow right"/>
+                                </PrimaryButton>
+                            ) }
+                            { currentWizardStep === STEPS.length - 1 && (
+                                <PrimaryButton floated="right" onClick={ navigateToNext }>
+                                    Finish</PrimaryButton>
                             ) }
                             { currentWizardStep > 0 && (
-                                <LinkButton floated="right" onClick={ navigateToPrevious }>Previous step</LinkButton>
+                                <LinkButton floated="right" onClick={ navigateToPrevious }>
+                                    <Icon name="arrow left"/> Previous step
+                                </LinkButton>
                             ) }
                         </Grid.Column>
                     </Grid.Row>

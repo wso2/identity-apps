@@ -18,18 +18,15 @@
 
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
 import {
     Form,
     Grid,
     Message,
     Modal,
 } from "semantic-ui-react";
-import { addUser, addUserRole, getGroupsList, getUserStoreList } from "../../api";
-import { AlertLevels, createEmptyUserBasicWizard, UserBasicWizard } from "../../models";
-import { addAlert } from "../../store/actions";
+import { addUserRole, getGroupsList, getUserStoreList } from "../../api";
 import { useTrigger } from "@wso2is/forms";
 
 /**
@@ -39,9 +36,9 @@ interface AddUserProps {
     isRoleModalOpen: boolean;
     handleRoleModalOpen: any;
     handleRoleModalClose: any;
-    userData: UserBasicWizard;
-    setUserData: any;
-    next: () => void;
+    initialValues: any;
+    triggerSubmit: boolean;
+    onSubmit: (values: any) => void;
 }
 
 /**
@@ -57,22 +54,31 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const [ roleIds, setRoleIds ] = useState([]);
     const [ userId, setUserId ] = useState("");
     const [ passwordOption, setPasswordOption ] = useState("");
-    const [resetStateUserForm, resetUserForm] = useTrigger();
     const [resetStateUserRoleForm, resetUserRoleForm] = useTrigger();
-
-    let newUser = createEmptyUserBasicWizard();
 
     const {
         isRoleModalOpen,
         handleRoleModalOpen,
         handleRoleModalClose,
-        setUserData,
-        userData,
-        next
+        initialValues,
+        triggerSubmit,
+        onSubmit,
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+
+    const form = useRef(null);
+
+    /**
+     * Submits the form programmatically if triggered from outside.
+     */
+    useEffect(() => {
+        if (!triggerSubmit) {
+            return;
+        }
+
+        form?.current?.props?.onSubmit(new Event("submit"));
+    }, [ triggerSubmit ]);
 
     const passwordOptions = [
         { label: "Invite user to set password", value: "askPw" },
@@ -187,8 +193,8 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         });
     };
 
-    const handleSubmit = (values) => {
-        newUser = {
+    const getFormValues = (values) => {
+        return {
             domain: values.get("domain").toString(),
             email: values.get("email").toString(),
             firstName: values.get("firstName").toString(),
@@ -198,114 +204,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             passwordOption: values.get("passwordOption").toString(),
             userName: values.get("userName").toString(),
         };
-        addUserBasic(newUser);
-    };
-
-    /**
-     * This function handles adding the user.
-     */
-    const addUserBasic = (user: UserBasicWizard) => {
-        let userName = "";
-        user.domain !== "primary" ? userName = user.domain + "/" + user.userName : userName = user.userName;
-        let userDetails = {};
-        const password = user.newPassword;
-
-        user.passwordOption && user.passwordOption !== "askPw" ?
-            (
-                userDetails = {
-                    emails:
-                        [{
-                            primary: true,
-                            value: user.email
-                        }],
-                    name:
-                        {
-                            familyName: user.lastName,
-                            givenName: user.firstName
-                        },
-                    password,
-                    userName
-                }
-            ) :
-            (
-                userDetails = {
-                    "emails":
-                        [{
-                            primary: true,
-                            value: user.email
-                        }],
-                    "name":
-                        {
-                            familyName: user.lastName,
-                            givenName: user.firstName
-                        },
-                    "password": "password",
-                    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User":
-                        {
-                            askPassword: "true"
-                        },
-                    userName
-                }
-            );
-
-        addUser(userDetails)
-            .then((response) => {
-                // setUserId(response.data.id);
-                dispatch(addAlert({
-                    description: t(
-                        "views:components.users.notifications.addUser.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "views:components.users.notifications.addUser.success.message"
-                    )
-                }));
-                close();
-            })
-            .catch((error) => {
-                // Axios throws a generic `Network Error` for 401 status.
-                // As a temporary solution, a check to see if a response
-                // is available has be used.
-                if (!error.response || error.response.status === 401) {
-                    dispatch(addAlert({
-                        description: t(
-                            "views:components.users.notifications.addUser.error.description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "views:components.users.notifications.addUser.error.message"
-                        )
-                    }));
-                } else if (error.response && error.response.data && error.response.data.detail) {
-                    // reset the form.
-                    resetUserForm();
-
-                    dispatch(addAlert({
-                        description: t(
-                            "views:components.users.notifications.addUser.error.description",
-                            { description: error.response.data.detail }
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "views:components.users.notifications.addUser.error.message"
-                        )
-                    }));
-                } else {
-                    // reset the form.
-                    resetUserForm();
-
-                    // Generic error message
-                    dispatch(addAlert({
-                        description: t(
-                            "views:components.users.notifications.addUser.genericError.description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "views:components.users.notifications.addUser.genericError.message"
-                        )
-                    }));
-                }
-            });
     };
 
     const handlePasswordOptions = () => {
@@ -368,10 +266,11 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             return (
                 <>
                     <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                             <Message
                                 icon="mail"
-                                content="We will send an email with the link to set the password to the email address provided."
+                                content={ "We will send an email with the link to set the password to the email" +
+                                + "address provided." }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -387,10 +286,10 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      */
     const addUserBasicForm = () => (
         <Forms
+            ref={ form }
             onSubmit={ (values) => {
-                handleSubmit(values);
+                onSubmit(getFormValues(values));
             } }
-            resetState={ resetStateUserForm }
         >
             <Grid>
                 <Grid.Row columns={ 2 }>
@@ -409,7 +308,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 "views:components.user.forms.addUserForm.inputs.domain.validations.empty"
                             ) }
                             required={ true }
-                            value={ userData && userData.domain }
+                            value={ initialValues && initialValues.domain }
                         />
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -428,7 +327,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 "inputs.username.validations.empty"
                             ) }
                             type="text"
-                            value={ userData && userData.userName }
+                            value={ initialValues && initialValues.userName }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -449,7 +348,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 "inputs.firstName.validations.empty"
                             ) }
                             type="text"
-                            value={ userData && userData.firstName }
+                            value={ initialValues && initialValues.firstName }
                         />
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -468,7 +367,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 "inputs.lastName.validations.empty"
                             ) }
                             type="text"
-                            value={ userData && userData.lastName }
+                            value={ initialValues && initialValues.lastName }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -498,7 +397,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             }
                             }
                             type="email"
-                            value={ userData && userData.email }
+                            value={ initialValues && initialValues.email }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -511,22 +410,11 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             default="Ask password"
                             listen={ (values) => { setPasswordOption(values.get("passwordOption").toString()); } }
                             children={ passwordOptions }
-                            value={ userData && userData.passwordOption }
+                            value={ initialValues && initialValues.passwordOption }
                         />
                     </Grid.Column>
                 </Grid.Row>
                 { handlePasswordOptions() }
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <Form.Group>
-                            <Field
-                                size="small"
-                                type="submit"
-                                value={ t("common:save").toString() }
-                            />
-                        </Form.Group>
-                    </Grid.Column>
-                </Grid.Row>
             </Grid>
         </Forms>
     );
