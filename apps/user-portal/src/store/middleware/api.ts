@@ -28,7 +28,7 @@ import { API_REQUEST } from "../actions/types";
  * @param {any} dispatch - `dispatch` function from redux
  * @returns {(next) => (action) => any} Passes the action to the next middleware
  */
-export const apiMiddleware = ({ dispatch }) => (next) => (action) => {
+export const apiMiddleware = ({ dispatch }) => (next) => (action): void => {
     next(action);
 
     if (action.type !== API_REQUEST) {
@@ -36,6 +36,7 @@ export const apiMiddleware = ({ dispatch }) => (next) => (action) => {
     }
 
     const { auth, dispatcher, headers, method, onSuccess, onError, url }: HttpRequestConfig = action.meta;
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     const data: any = action.payload;
 
     // `GET` requests and `DELETE` requests usually has params rather than data.
