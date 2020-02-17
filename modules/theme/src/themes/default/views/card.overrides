@@ -267,15 +267,15 @@
 .ui.card {
     &.app-template-card {
         width: @appTemplateCardDefaultWidth;
-        transition: @defaultCardTransition;
-        border: @defaultCardBorder;
+        transition: @appTemplateCardTransition;
+        border: @appTemplateCardBorder;
         box-shadow: none;
 
         &:hover {
             transform: none;
             text-decoration: none;
             cursor: pointer;
-            box-shadow: @defaultCardHoverBoxShadow;
+            box-shadow: @appTemplateCardHoverBoxShadow;
         }
         &.inline {
             display: inline-block;
@@ -287,6 +287,7 @@
         }
         &.disabled {
             cursor: not-allowed;
+            filter: grayscale(100%);
         }
         .card-image-container {
         }
