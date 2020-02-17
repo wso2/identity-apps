@@ -24,7 +24,8 @@ import { useEffect, useRef, useState } from "react";
  * @param {boolean} initialValue - Initial value.
  * @return {object} - ref, isComponentVisible & setIsComponentVisible
  */
-export function useClickOutside(initialValue: boolean = false) {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export function useClickOutside(initialValue = false): any {
     const [ isComponentVisible, setIsComponentVisible ] = useState(initialValue);
     const ref = useRef(null);
 
@@ -33,7 +34,7 @@ export function useClickOutside(initialValue: boolean = false) {
      *
      * @param {MouseEvent} e - Mouse event.
      */
-    const handleClickOutside = (e: MouseEvent) => {
+    const handleClickOutside = (e: MouseEvent): void => {
         const { target } = e;
 
         if (ref.current && !ref.current.contains(target)) {
@@ -43,7 +44,7 @@ export function useClickOutside(initialValue: boolean = false) {
 
     useEffect(() => {
         document.addEventListener("click", handleClickOutside, true);
-        return () => {
+        return (): void => {
             document.removeEventListener("click", handleClickOutside, true);
         };
     });
