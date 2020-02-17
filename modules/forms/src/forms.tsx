@@ -34,7 +34,6 @@ type Ref = HTMLFormElement;
 interface FormPropsInterface {
     onSubmit: (values: Map<string, FormValue>) => void;
     onChange?: (isPure: boolean, values: Map<string, FormValue>) => void;
-    ref?: React.RefObject<Ref>;
     resetState?: boolean;
     submitState?: boolean;
 }
@@ -43,7 +42,7 @@ interface FormPropsInterface {
  * This is a Forms component
  */
 export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInterface>> =
-    forwardRef<Ref, React.PropsWithChildren<FormPropsInterface>>((props, ref): JSX.Element => {
+    (props): JSX.Element => {
 
     const { onSubmit, resetState, submitState, onChange, children } = props;
 
@@ -404,8 +403,10 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                     ? tempRequiredFields.set(inputField.name, false)
                     : tempRequiredFields.set(inputField.name, true);
 
-                tempValidFields.set(inputField.name, { isValid: true, errorMessages: [] });
-                tempTouchedFields.set(inputField.name, false);
+                if (!tempValidFields.has(inputField.name) || isReset) {
+                    tempValidFields.set(inputField.name, { isValid: true, errorMessages: [] });
+                    tempTouchedFields.set(inputField.name, false);
+                }
             }
         });
 
@@ -465,8 +466,8 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
     const mutatedChildren: React.ReactElement[] = [...parseChildren(children, formFields)];
 
-    return <Form onSubmit={ handleSubmit } ref={ ref }>{ mutatedChildren }</Form>;
-});
+    return <Form onSubmit={ handleSubmit }>{ mutatedChildren }</Form>;
+};
 
 Forms.defaultProps = {
     resetState: false,

@@ -20,6 +20,7 @@ interface PasswordPropsInterface {
     readOnly?: boolean;
     disabled?: boolean;
     required?: boolean;
+    [extra: string]: any;
 }
 
 /**
@@ -33,6 +34,7 @@ export const Password: React.FunctionComponent<PasswordPropsInterface> = (
 
     return (
         <Form.Input
+            { ...props }
             label={ props.label }
             value={ props.value }
             error={ props.error }

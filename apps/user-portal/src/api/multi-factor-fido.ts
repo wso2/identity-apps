@@ -83,13 +83,13 @@ export const updateDeviceName = (credentialId: string, deviceName: string): Prom
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
-                    new Error(`Failed get device name from: ${ServiceResourcesEndpoint.fidoMetaData}`)
+                    new Error(`Failed update device name from: ${ServiceResourcesEndpoint.fidoMetaData}`)
                 );
             }
             return Promise.resolve(response);
         })
         .catch((error) => {
-            return Promise.reject(`Failed to retrieve FIDO device name - ${error}`);
+            return Promise.reject(`Failed to update FIDO device name - ${error}`);
         });
 };
 

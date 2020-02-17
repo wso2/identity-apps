@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,28 +16,25 @@
  * under the License.
  */
 
-import { FormField } from "../models";
-
 /**
- * This component renders Form elements based on the provided `type` prop
+ * This removes the used props frm passedProps
  * @param props
  */
-export const Field = (props: FormField): JSX.Element => {
-    return null;
-};
+export const filterPassedProps = (props: any): any => {
+    delete props.type;
+    delete props.name;
+    delete props.label;
+    delete props.listen;
+    delete props.autoFocus;
+    delete props.readOnly;
+    delete props.disabled;
+    delete props.required;
+    delete props.requiredErrorMessage;
+    delete props.validation;
+    delete props.value;
+    delete props.placeholder;
+    delete props.children;
+    delete props.default;
 
-/**
- * Prop types for the GroupFields component
- */
-interface GroupFieldsPropsInterface {
-    wrapper: React.ComponentType;
-    wrapperProps: any;
-}
-
-/**
- * This component groups form elements together
- * @param props
- */
-export const GroupFields = (props: React.PropsWithChildren<GroupFieldsPropsInterface>): JSX.Element => {
-    return null;
+    return props;
 };

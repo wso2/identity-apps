@@ -18,3 +18,4 @@
 
 export * from "./use-trigger";
 export * from "./use-non-initial-effect";
+export * from "./filter-props";

@@ -58,7 +58,7 @@ export interface Error {
  */
 interface FormFieldModel {
     name: string;
-    label?: string;
+    label?: string | React.ReactElement;
     listen?: (values: Map<string, FormValue>) => void;
     autoFocus?: boolean;
     readOnly?: boolean;
@@ -82,6 +82,7 @@ export interface TextField extends FormRequiredFieldModel {
     validation?: (value: string, validation: Validation, allValues?: Map<string, FormValue>) => void;
     value?: string;
     placeholder: string;
+    [extra: string]: any;
 }
 
 /**
@@ -95,6 +96,7 @@ export interface PasswordField extends FormRequiredFieldModel {
     showPassword: string;
     hidePassword: string;
     placeholder: string;
+    [extra: string]: any;
 }
 
 /**
@@ -113,6 +115,7 @@ export interface RadioField extends FormFieldModel {
     default: string;
     children: RadioChild[];
     value?: string;
+    [extra: string]: any;
 }
 
 /**
@@ -130,6 +133,7 @@ export interface CheckboxField extends FormRequiredFieldModel {
     type: "checkbox";
     children: CheckboxChild[];
     value?: string[];
+    [extra: string]: any;
 }
 
 /**
@@ -151,6 +155,7 @@ export interface DropdownField extends FormRequiredFieldModel {
     placeholder?: string;
     value?: string;
     width?: SemanticWIDTHS;
+    [extra: string]: any;
 }
 
 /**
@@ -159,6 +164,7 @@ export interface DropdownField extends FormRequiredFieldModel {
 export interface CustomField {
     type: Type;
     element: JSX.Element;
+    [extra: string]: any;
 }
 
 /**
@@ -170,6 +176,7 @@ export interface FormSubmit {
     type: "submit";
     size?: SemanticSIZES;
     className?: string;
+    [extra: string]: any;
 }
 
 /**
@@ -181,6 +188,7 @@ export interface Reset {
     type: "reset";
     size?: SemanticSIZES;
     className?: string;
+    [extra: string]: any;
 }
 
 /**
@@ -193,6 +201,7 @@ export interface FormButton {
     size?: SemanticSIZES;
     type: "button";
     value: string;
+    [extra: string]: any;
 }
 
 /**
@@ -203,6 +212,7 @@ export interface Group {
     endIndex: number;
     wrapper: React.ComponentType;
     wrapperProps: any;
+    [extra: string]: any;
 }
 
 /**
@@ -211,6 +221,7 @@ export interface Group {
 export interface FormDivider {
     type: "divider";
     hidden: boolean;
+    [extra: string]: any;
 }
 
 /**

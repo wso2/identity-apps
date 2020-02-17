@@ -19,7 +19,8 @@
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
-import { Heading, LinkButton, Steps, PrimaryButton } from "@wso2is/react-components";
+import { useTrigger } from "@wso2is/forms";
+import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -90,25 +91,16 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
 
     const dispatch = useDispatch();
 
+    const [submitGeneralSettings, setSubmitGeneralSettings] = useTrigger();
+    const [submitOAuth, setSubmitOauth] = useTrigger();
+    const [finishSubmit, setFinishSubmit] = useTrigger();
+
     /**
      * Loads the application template on initial component load.
      */
     useEffect(() => {
         loadTemplate();
     }, []);
-
-    /**
-     * Sets the current wizard step to the next on every `completedStep`
-     * value change , and resets the completed step value.
-     */
-    useEffect(() => {
-        if (completedStep === undefined) {
-            return;
-        }
-
-        setCurrentWizardStep(currentWizardStep + 1);
-        setCompletedStep(undefined);
-    }, [ completedStep ]);
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -181,7 +173,16 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      * Navigates to the next wizard step.
      */
     const navigateToNext = () => {
-        setCompletedStep(currentWizardStep);
+        switch (currentWizardStep) {
+            case 0:
+                setSubmitGeneralSettings();
+                break;
+            case 1:
+                setSubmitOauth();
+                break;
+            case 2:
+                setFinishSubmit();
+        }
     };
 
     /**
@@ -198,6 +199,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      * @param {WizardStepsFormTypes} formType - Type of the form.
      */
     const handleWizardFormSubmit = (values: any, formType: WizardStepsFormTypes) => {
+        setCurrentWizardStep(currentWizardStep + 1);
         setWizardState(_.merge(wizardState, { [ formType ]: values }));
     };
 
@@ -247,7 +249,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         {
             content: (
                 <GeneralSettingsWizardForm
-                    triggerSubmit={ completedStep === 0 || partiallyCompletedStep === 0 }
+                    triggerSubmit={ submitGeneralSettings }
                     initialValues={ wizardState && wizardState[ WizardStepsFormTypes.GENERAL_SETTINGS ] }
                     onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.GENERAL_SETTINGS) }
                 />
@@ -258,7 +260,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         {
             content: (
                 <OAuthProtocolSettingsWizardForm
-                    triggerSubmit={ completedStep === 1 || partiallyCompletedStep === 1 }
+                    triggerSubmit={ submitOAuth }
                     templateType={ templateType }
                     initialValues={ wizardState && wizardState[ WizardStepsFormTypes.PROTOCOL_SETTINGS ] }
                     onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.PROTOCOL_SETTINGS) }
@@ -270,7 +272,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         {
             content: (
                 <WizardSummary
-                    triggerSubmit={ completedStep === 2 }
+                    triggerSubmit={ finishSubmit }
                     summary={ generateWizardSummary() }
                     onSubmit={ handleWizardFormFinish }
                 />
