@@ -19,6 +19,7 @@
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
+import { isEmpty } from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import {
@@ -58,6 +59,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     const [isEncryptionEnabled, setEncryptionEnable] = useState(false);
     const [callBackUrls, setCallBackUrls] = useState("");
+    const [showURLError, setShowURLError] = useState(false);
 
     /**
      * Add regexp to multiple callbackUrls and update configs.
@@ -240,9 +242,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             { metadata && (
                 <Forms
                     onSubmit={ (values) => {
-                        const newValues = new Map(values);
-                        newValues.set("callbackURL", buildCallBackUrlWithRegExp(callBackUrls));
-                        onSubmit(updateConfiguration(values));
+                        if (isEmpty(callBackUrls)) {
+                            setShowURLError(true);
+                        } else {
+                            onSubmit(updateConfiguration(values));
+                        }
                     } }
                 >
                     <Grid>
@@ -315,6 +319,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 }
                                 return false;
                             } }
+                            showError={ showURLError }
+                            setShowError={ setShowURLError }
                             hint={ " After the authentication, we will only redirect to the above callback URLs " +
                             "and you can specify multiple URLs" }
                         />

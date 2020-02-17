@@ -288,31 +288,31 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                                 {/* TODO enable this after having multiple inbound protocols*/ }
                                 {/*<Hint icon="info circle">Please select one of the
                                                    following inbound protocols.</Hint>*/ }
-                                {
-                                    (availableInboundProtocols
-                                        && availableInboundProtocols instanceof Array
-                                        && availableInboundProtocols.length > 0)
-                                        ? availableInboundProtocols.map((protocol, index) => (
-                                            protocol.enabled && (
-                                                <SelectionCard
-                                                    inline
-                                                    disabled={ protocol.enabled }
-                                                    selected={
-                                                        selectedInboundProtocol && selectedInboundProtocol.name
-                                                            ? protocol.name === selectedInboundProtocol.name
-                                                            : false
-                                                    }
-                                                    id={ protocol.name }
-                                                    key={ index }
-                                                    header={ protocol.displayName }
-                                                    image={ InboundProtocolLogos[ protocol.logo ] }
-                                                    onClick={ handleInboundProtocolSelection }
-                                                />
-                                            )
-                                        ))
-                                        : null
-                                }
-                                <Divider hidden/>
+                                {/*{*/}
+                                {/*    (availableInboundProtocols*/}
+                                {/*        && availableInboundProtocols instanceof Array*/}
+                                {/*        && availableInboundProtocols.length > 0)*/}
+                                {/*        ? availableInboundProtocols.map((protocol, index) => (*/}
+                                {/*            protocol.enabled && (*/}
+                                {/*                <SelectionCard*/}
+                                {/*                    inline*/}
+                                {/*                    disabled={ protocol.enabled }*/}
+                                {/*                    selected={*/}
+                                {/*                        selectedInboundProtocol && selectedInboundProtocol.name*/}
+                                {/*                            ? protocol.name === selectedInboundProtocol.name*/}
+                                {/*                            : false*/}
+                                {/*                    }*/}
+                                {/*                    id={ protocol.name }*/}
+                                {/*                    key={ index }*/}
+                                {/*                    header={ protocol.displayName }*/}
+                                {/*                    image={ InboundProtocolLogos[ protocol.logo ] }*/}
+                                {/*                    onClick={ handleInboundProtocolSelection }*/}
+                                {/*                />*/}
+                                {/*            )*/}
+                                {/*        ))*/}
+                                {/*        : null*/}
+                                {/*}*/}
+                                {/*<Divider hidden/>*/}
                                 <div className="protocol-settings-section">
                                     { selectedInboundProtocol && resolveInboundProtocolSettingsForm() }
                                 </div>

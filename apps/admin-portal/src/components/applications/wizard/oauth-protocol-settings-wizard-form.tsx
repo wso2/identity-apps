@@ -23,6 +23,7 @@ import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { SupportedQuickStartTemplateTypes } from "../../../models";
 import { URLInputComponent } from "../components";
+import { isEmpty } from "lodash";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -54,6 +55,7 @@ export const OAuthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     const initialCallbackURLs = initialValues?.inboundProtocolConfiguration?.oidc?.callbackURLs;
 
     const [ callBackUrls, setCallBackUrls ] = useState("");
+    const [showURLError, setShowURLError] = useState(false);
 
     const form = useRef(null);
 
@@ -119,7 +121,14 @@ export const OAuthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
 
     return (
         <Forms
-            onSubmit={ (values) => onSubmit(getFormValues(values)) }
+            onSubmit={ (values) => {
+                // check whether callback url is empty or not
+                if (isEmpty(callBackUrls)) {
+                    setShowURLError(true);
+                } else {
+                    onSubmit(getFormValues(values));
+                }
+            } }
             submitState={ triggerSubmit }
         >
             <Grid>
@@ -136,6 +145,8 @@ export const OAuthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                         }
                         return false;
                     } }
+                    setShowError={ setShowURLError }
+                    showError={ showURLError }
                     hint={ " After the authentication, we will only redirect to the above callback URLs " +
                     "and you can specify multiple URLs" }
                 />

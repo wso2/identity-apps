@@ -30,6 +30,8 @@ interface URLInputComponentInterface {
     validationErrorMsg: string;
     value?: string;
     hint?: string;
+    showError?: boolean;
+    setShowError?: any;
 }
 
 /**
@@ -39,6 +41,8 @@ interface URLInputComponentInterface {
 export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = (props): JSX.Element => {
 
     const {
+        showError,
+        setShowError,
         urlState,
         setURLState,
         validation,
@@ -136,6 +140,15 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
         }
         , [value]);
 
+    useEffect(
+        () => {
+            if (showError) {
+                setValidURL(false);
+                setShowError(false);
+            }
+        }
+        , [showError]);
+
     return (
         <>
             <Grid.Row columns={ 1 } className={ "urlComponentLabelRow" }>
@@ -208,7 +221,7 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
             { urlState && urlState.split(",").map((url) => {
                 if (url !== "") {
                     return (
-                        <Grid.Row className={ "urlComponentTagRow" }>
+                        <Grid.Row  key={ url } className={ "urlComponentTagRow" }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Label>
                                     { url }
