@@ -275,7 +275,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
-            title: "Basic user details"
+            title: "Summary"
         }
     ];
 
