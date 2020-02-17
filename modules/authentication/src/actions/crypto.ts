@@ -31,8 +31,21 @@ import { JWKInterface } from "../models/crypto";
  *
  * @returns {string} hashed email address.
  */
-export const getEmailHash = (emailAddress: string) => {
+export const getEmailHash = (emailAddress: string): CryptoJS.WordArray => {
     return emailAddress ? MD5((emailAddress).trim()) : null;
+};
+
+/**
+ * Get URL encoded string.
+ *
+ * @param {CryptoJS.WordArray} value.
+ * @returns {string} base 64 url encoded value.
+ */
+export const base64URLEncode = (value: CryptoJS.WordArray): string => {
+    return Base64.stringify(value)
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_")
+        .replace(/=/g, "");
 };
 
 /**
@@ -40,7 +53,7 @@ export const getEmailHash = (emailAddress: string) => {
  *
  * @returns {string} code verifier.
  */
-export const getCodeVerifier = () => {
+export const getCodeVerifier = (): string => {
     return base64URLEncode(WordArray.random(32));
 };
 
@@ -50,21 +63,8 @@ export const getCodeVerifier = () => {
  * @param {string} verifier.
  * @returns {string} code challenge.
  */
-export const getCodeChallenge = (verifier: string) => {
+export const getCodeChallenge = (verifier: string): string => {
     return base64URLEncode(sha256(verifier));
-};
-
-/**
- * Get URL encoded string.
- *
- * @param {CryptoJS.WordArray} value.
- * @returns {string} base 64 url encoded value.
- */
-export const base64URLEncode = (value: CryptoJS.WordArray) => {
-    return Base64.stringify(value)
-        .replace(/\+/g, "-")
-        .replace(/\//g, "_")
-        .replace(/=/g, "");
 };
 
 /**
@@ -72,7 +72,7 @@ export const base64URLEncode = (value: CryptoJS.WordArray) => {
  *
  * @returns {string[]} array of supported algorithms.
  */
-export const getSupportedSignatureAlgorithms = () => {
+export const getSupportedSignatureAlgorithms = (): string[] => {
     return ["RS256", "RS512", "RS384", "PS256"];
 };
 
@@ -83,7 +83,8 @@ export const getSupportedSignatureAlgorithms = () => {
  * @param {JWKInterface[]} keys jwks response.
  * @returns {any} public key.
  */
-export const getJWKForTheIdToken = (jwtHeader: string, keys: JWKInterface[]) => {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const getJWKForTheIdToken = (jwtHeader: string, keys: JWKInterface[]): Error|any => {
     const headerJSON = JSON.parse(atob(jwtHeader));
 
     for (const key of keys) {
@@ -105,7 +106,8 @@ export const getJWKForTheIdToken = (jwtHeader: string, keys: JWKInterface[]) => 
  * @param {string} issuer id_token issuer.
  * @returns {any} whether the id_token is valid.
  */
-export const isValidIdToken = (idToken, jwk, clientID: string, issuer: string) => {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const isValidIdToken = (idToken, jwk, clientID: string, issuer: string): any => {
     return KJUR.jws.JWS.verifyJWT(idToken, jwk, {
         alg: getSupportedSignatureAlgorithms(),
         aud: clientID,

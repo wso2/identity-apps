@@ -30,12 +30,74 @@ import {
 import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
 
 /**
+ * Checks whether openid configuration initiated.
+ *
+ * @returns {boolean}
+ */
+export const isOPConfigInitiated = (): boolean => {
+    return getSessionParameter(OP_CONFIG_INITIATED) && getSessionParameter(OP_CONFIG_INITIATED) === "true";
+};
+
+/**
+ * Set OAuth2 authorize endpoint.
+ *
+ * @param {string} authorizationEndpoint
+ */
+export const setAuthorizeEndpoint = (authorizationEndpoint: string): void => {
+    setSessionParameter(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
+};
+
+/**
+ * Set OAuth2 token endpoint.
+ *
+ * @param {string} tokenEndpoint
+ */
+export const setTokenEndpoint = (tokenEndpoint: string): void => {
+    setSessionParameter(TOKEN_ENDPOINT, tokenEndpoint);
+};
+
+/**
+ * Set OIDC end session endpoint.
+ *
+ * @param {string} endSessionEndpoint
+ */
+export const setEndSessionEndpoint = (endSessionEndpoint: string): void => {
+    setSessionParameter(END_SESSION_ENDPOINT, endSessionEndpoint);
+};
+
+/**
+ * Set JWKS URI.
+ *
+ * @param jwksEndpoint
+ */
+export const setJwksUri = (jwksEndpoint): void => {
+    setSessionParameter(JWKS_ENDPOINT, jwksEndpoint);
+};
+
+/**
+ * Set OAuth2 revoke token endpoint.
+ *
+ * @param {string} revokeTokenEndpoint
+ */
+export const setRevokeTokenEndpoint = (revokeTokenEndpoint: string): void => {
+    setSessionParameter(REVOKE_TOKEN_ENDPOINT, revokeTokenEndpoint);
+};
+
+/**
+ * Set openid configuration initiated.
+ */
+export const setOPConfigInitiated = (): void => {
+    setSessionParameter(OP_CONFIG_INITIATED, "true");
+};
+
+/**
  * Initialize openid provider configuration.
  *
  * @param {string} wellKnownEndpoint openid provider configuration.
  * @param {boolean} forceInit whether to initialize the configuration again.
  * @returns {Promise<any>} promise.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const initOPConfiguration = (
         wellKnownEndpoint: string,
         forceInit: boolean
@@ -73,7 +135,7 @@ export const initOPConfiguration = (
 /**
  * Reset openid provider configuration.
  */
-export const resetOPConfiguration = () => {
+export const resetOPConfiguration = (): void => {
     removeSessionParameter(AUTHORIZATION_ENDPOINT);
     removeSessionParameter(TOKEN_ENDPOINT);
     removeSessionParameter(END_SESSION_ENDPOINT);
@@ -86,115 +148,54 @@ export const resetOPConfiguration = () => {
 /**
  * Get OAuth2 authorize endpoint.
  *
- * @returns {any}
+ * @returns {string|null}
  */
-export const getAuthorizeEndpoint = () => {
+export const getAuthorizeEndpoint = (): string|null => {
     return getSessionParameter(AUTHORIZATION_ENDPOINT);
-};
-
-/**
- * Set OAuth2 authorize endpoint.
- *
- * @param {string} authorizationEndpoint
- */
-export const setAuthorizeEndpoint = (authorizationEndpoint: string) => {
-    setSessionParameter(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
 };
 
 /**
  * Get OAuth2 token endpoint.
  *
- * @returns {any}
+ * @returns {string|null}
  */
-export const getTokenEndpoint = () => {
+export const getTokenEndpoint = (): string|null => {
     return getSessionParameter(TOKEN_ENDPOINT);
-};
-
-/**
- * Set OAuth2 token endpoint.
- *
- * @param {string} tokenEndpoint
- */
-export const setTokenEndpoint = (tokenEndpoint: string) => {
-    setSessionParameter(TOKEN_ENDPOINT, tokenEndpoint);
 };
 
 /**
  * Get OAuth2 revoke token endpoint.
  *
- * @returns {any}
+ * @returns {string|null}
  */
-export const getRevokeTokenEndpoint = () => {
+export const getRevokeTokenEndpoint = (): string|null => {
     return getSessionParameter(REVOKE_TOKEN_ENDPOINT);
-};
-
-/**
- * Set OAuth2 revoke token endpoint.
- *
- * @param {string} revokeTokenEndpoint
- */
-export const setRevokeTokenEndpoint = (revokeTokenEndpoint: string) => {
-    setSessionParameter(REVOKE_TOKEN_ENDPOINT, revokeTokenEndpoint);
 };
 
 /**
  * Get OIDC end session endpoint.
  *
- * @returns {any}
+ * @returns {string|null}
  */
-export const getEndSessionEndpoint = () => {
+export const getEndSessionEndpoint = (): string|null => {
     return getSessionParameter(END_SESSION_ENDPOINT);
-};
-
-/**
- * Set OIDC end session endpoint.
- *
- * @param {string} endSessionEndpoint
- */
-export const setEndSessionEndpoint = (endSessionEndpoint: string) => {
-    setSessionParameter(END_SESSION_ENDPOINT, endSessionEndpoint);
 };
 
 /**
  * Get JWKS URI.
  *
- * @returns {any}
+ * @returns {string|null}
  */
-export const getJwksUri = () => {
+export const getJwksUri = (): string|null => {
     return getSessionParameter(JWKS_ENDPOINT);
-};
-
-/**
- * Set JWKS URI.
- *
- * @param jwksEndpoint
- */
-export const setJwksUri = (jwksEndpoint) => {
-    setSessionParameter(JWKS_ENDPOINT, jwksEndpoint);
-};
-
-/**
- * Checks whether openid configuration initiated.
- *
- * @returns {boolean}
- */
-export const isOPConfigInitiated = (): boolean => {
-    return getSessionParameter(OP_CONFIG_INITIATED) && getSessionParameter(OP_CONFIG_INITIATED) === "true";
-};
-
-/**
- * Set openid configuration initiated.
- */
-export const setOPConfigInitiated = () => {
-    setSessionParameter(OP_CONFIG_INITIATED, "true");
 };
 
 /**
  * Get authenticated user's username
  *
- * @returns {any}
+ * @returns {string|null}
  */
-export const getUsername = () => {
+export const getUsername = (): string|null => {
     return getSessionParameter(USERNAME);
 };
 
@@ -203,7 +204,7 @@ export const getUsername = () => {
  *
  * @returns {any}
  */
-export const getTenant = () => {
+export const getTenant = (): string|string[] => {
     if (getUsername()) {
         const usernameSplit = getUsername().split("@");
 
