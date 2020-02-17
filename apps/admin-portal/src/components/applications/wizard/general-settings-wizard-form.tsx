@@ -79,7 +79,7 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                             required={ true }
                             requiredErrorMessage="Application name is required"
                             placeholder={ "Enter Application Name" }
-                            value={ initialValues ?.name  }
+                            value={ initialValues?.name }
                             type="text"
                         />
                     </Grid.Column>
@@ -93,7 +93,7 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                             requiredErrorMessage=""
                             placeholder="Enter a description for the application"
                             type="textarea"
-                            value={ initialValues?.description  }
+                            value={ initialValues?.description }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -154,7 +154,7 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                                 } }
                                 placeholder="Enter access url for the application login page"
                                 type="text"
-                                value={ initialValues?.accessUrl  }
+                                value={ initialValues?.accessUrl }
                             />
                         </Grid.Column>
                     </Grid.Column>
