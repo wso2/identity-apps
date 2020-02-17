@@ -188,7 +188,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
                                 [schemaNames[0]]: [
                                     {
                                         type: schemaNames[1],
-                                        value: values.get(schemaNames[1])
+                                        value: values.get(schema.name)
                                     }
                                 ]
                             };
