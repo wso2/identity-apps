@@ -900,6 +900,7 @@ export const views: Views = {
                 phoneNumbers_mobile: "Número de celular",
                 phoneNumbers_other: "Outro número de telefone",
                 phoneNumbers_work: "Número de telefone comercial",
+                profileImage: "Imagem de perfil",
                 profileUrl: "URL",
                 userName: "Nome de usuário"
             },

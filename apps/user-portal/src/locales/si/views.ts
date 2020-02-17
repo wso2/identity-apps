@@ -911,6 +911,7 @@ export const views: Views = {
                 phoneNumbers_mobile: "ජංගම දූරකථන අංකය",
                 phoneNumbers_other: "වෙනත් දුරකථන අංකය",
                 phoneNumbers_work: "රැකියා දුරකථන අංකය",
+                profileImage: "පැතිකඩ රූපය",
                 profileUrl: "URL",
                 userName: "පරිශීලක නාමය"
             },
