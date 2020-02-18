@@ -46,10 +46,20 @@ export const SignIn = (props) => {
         return window.sessionStorage.getItem("auth_callback_url");
     };
 
+    const checkRedirected = () => {
+        if (sessionStorage.getItem("redirected") === "true") {
+            sessionStorage.removeItem("redirected");
+            return true;
+        }
+        return false;
+    };
+
     const loginSuccessRedirect = () => {
         const AuthenticationCallbackUrl = getAuthenticationCallbackUrl();
         const location =
-            !AuthenticationCallbackUrl || AuthenticationCallbackUrl === GlobalConfig.appLoginPath
+            !AuthenticationCallbackUrl
+                || AuthenticationCallbackUrl === GlobalConfig.appLoginPath
+                || checkRedirected()
                 ? GlobalConfig.appHomePath
                 : AuthenticationCallbackUrl;
 
