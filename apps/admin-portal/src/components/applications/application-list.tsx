@@ -16,9 +16,15 @@
  * under the License.
  */
 
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { AppAvatar, ResourceList } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
+import { useDispatch } from "react-redux";
 import { history } from "../../helpers";
+// TODO: Importing `deleteApplication` before `history` import throws `appBaseName` undefined error.
+// tslint:disable-next-line:ordered-imports
+import { deleteApplication } from "../../api";
 import { ApplicationListInterface } from "../../models";
 
 /**
@@ -27,6 +33,7 @@ import { ApplicationListInterface } from "../../models";
  */
 interface ApplicationListPropsInterface {
     list: ApplicationListInterface;
+    onApplicationDelete: () => void;
 }
 
 /**
@@ -40,15 +47,44 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 ): JSX.Element => {
 
     const {
-        list
+        list,
+        onApplicationDelete
     } = props;
+
+    const dispatch = useDispatch();
 
     const handleApplicationEdit = (appId: string) => {
         history.push(`applications/${ appId }`);
     };
 
-    const handleApplicationDelete = () => {
-        // Delete the application.
+    const handleApplicationDelete = (appId: string) => {
+        deleteApplication(appId)
+            .then((response) => {
+                dispatch(addAlert({
+                    description: "Successfully deleted the application",
+                    level: AlertLevels.SUCCESS,
+                    message: "Delete successful"
+                }));
+
+                onApplicationDelete();
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Application Delete Error"
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: "An error occurred while deleting the application",
+                    level: AlertLevels.ERROR,
+                    message: "Application Delete Error"
+                }));
+            });
     };
 
     return (
@@ -69,17 +105,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                             type: "button"
                                         },
                                         {
-                                            icon: "ellipsis vertical",
-                                            onClick: null,
-                                            popupText: "more",
-                                            subActions: [
-                                                // TODO  Add proper options here.
-                                                // {
-                                                //     key: "1",
-                                                //     onClick: handleApplicationDelete,
-                                                //     text: "Delete"
-                                                // }
-                                            ],
+                                            icon: "trash alternate",
+                                            onClick: () => handleApplicationDelete(app.id),
+                                            popupText: "delete",
                                             type: "dropdown"
                                         }
                                     ] }
