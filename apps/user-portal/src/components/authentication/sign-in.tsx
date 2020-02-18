@@ -38,7 +38,15 @@ export const SignIn = (props) => {
         } else if (error === USER_DENIED_CONSENT) {
             dispatch(handleSignIn(true));
         } else {
-            loginSuccessRedirect();
+            // TODO: Use authentication SDK to access the session
+            if (sessionStorage.getItem("request_params") &&
+                JSON.parse(sessionStorage.getItem("request_params")).clientId &&
+                JSON.parse(sessionStorage.getItem("request_params")).clientId !== GlobalConfig.clientID) {
+                sessionStorage.clear();
+                dispatch(handleSignIn());
+            } else {
+                loginSuccessRedirect();
+            }
         }
     }, [isAuth]);
 
