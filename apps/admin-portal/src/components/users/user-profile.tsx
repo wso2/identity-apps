@@ -16,7 +16,7 @@
  * under the License
  */
 
-import { Field, Forms } from "@wso2is/forms";
+import {Field, Forms, Validation} from "@wso2is/forms";
 import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
@@ -29,6 +29,7 @@ import { AlertInterface, AlertLevels, AuthStateInterface, BasicProfileInterface,
 import { AppState } from "../../store";
 import { flattenSchemas } from "../../utils";
 import * as _ from "lodash";
+import {FormValidation} from "@wso2is/validation";
 
 /**
  * Prop types for the basic details component.
@@ -100,18 +101,21 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
 
                 if (schemaNames.length === 1) {
                     if (schemaNames[0] === "emails") {
-                        userInfo[schemaNames[0]][0] &&
-                        userInfo[[schemaNames[0]][0]][0].value &&
-                        userInfo[[schemaNames[0]][0]][0].value !== ""
-                            ? tempProfileInfo.set(schema.name,
-                            userInfo[[schemaNames[0]][0]][0].value as string)
-                            : tempProfileInfo.set(schema.name, userInfo[schemaNames[0]][0] as string);
+                        if (userInfo.hasOwnProperty(schemaNames[0]) && userInfo[schemaNames[0]][0]) {
+                            userInfo[[schemaNames[0]][0]][0].value &&
+                            userInfo[[schemaNames[0]][0]][0].value !== "" ? tempProfileInfo.set(schema.name,
+                                userInfo[[schemaNames[0]][0]][0].value as string)
+                                : tempProfileInfo.set(schema.name, userInfo[schemaNames[0]][0] as string);
+                        }
                     } else {
                         tempProfileInfo.set(schema.name, userInfo[schemaNames[0]]);
                     }
                 } else {
                     if (schemaNames[0] === "name") {
-                        tempProfileInfo.set(schema.name, userInfo[schemaNames[0]][schemaNames[1]]);
+                        const name = schemaNames[1] && userInfo[schemaNames[0]] &&
+                            userInfo[schemaNames[0]][schemaNames[1]] && (
+                            tempProfileInfo.set(schema.name, userInfo[schemaNames[0]][schemaNames[1]])
+                        );
                     } else {
                         const subValue = userInfo[schemaNames[0]]
                             && userInfo[schemaNames[0]]
@@ -180,9 +184,11 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
                             : { [schemaNames[0]]: values.get(schemaNames[0]) };
                     } else {
                         if (schemaNames[0] === "name") {
-                            opValue = {
-                                name: { [schemaNames[1]]: values.get(schema.name) }
-                            };
+                            const name = values.get(schema.name) && (
+                                opValue = {
+                                    name: { [schemaNames[1]]: values.get(schema.name) }
+                                }
+                            );
                         } else {
                             opValue = {
                                 [schemaNames[0]]: [
