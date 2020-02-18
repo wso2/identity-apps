@@ -23,7 +23,7 @@ import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { DragDropContext, Droppable, DroppableProvided, DropResult } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
-import { Checkbox, Divider, Grid, Icon, Label } from "semantic-ui-react";
+import { Checkbox, Divider, Grid, Icon } from "semantic-ui-react";
 import { getIdentityProviderDetail, getIdentityProviderList, updateAuthenticationSequence } from "../../../api";
 import {
     AuthenticationSequenceType,
@@ -137,8 +137,15 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
     const updateFederateIDPNameList = (): Promise<any> => {
         return getIdentityProviderList()
             .then((response: IdentityProviderListResponseInterface) => {
+                // If no IDP's are configured in IS, the api drops the
+                // `identityProviders` attribute. If it is not available,
+                // return from the function to avoid iteration
+                if (!response?.identityProviders) {
+                    return;
+                }
+
                 return Promise.all(
-                    response?.identityProviders
+                    response.identityProviders
                     && response.identityProviders instanceof Array
                     && response.identityProviders.length > 0
                     && response.identityProviders.map((item: IdentityProviderListItemInterface) => {
@@ -210,6 +217,11 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
     const loadFederatedAuthenticators = () => {
         updateFederateIDPNameList()
             .then((response) => {
+                // If `updateFederateIDPNameList()` function returns a falsy value
+                // return from the function.
+                if (!response) {
+                    return;
+                }
 
                 const selectedFederatedList = [ ...selectedFederatedAuthenticators ];
                 const newIDPNameList: IDPNameInterface[] = [ ...response ];
@@ -325,7 +337,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
 
         if (options.find((option) => option.authenticator === authenticator.authenticator)) {
             dispatch(addAlert({
-                description: "The same authenticator is not allowed in the same step.",
+                description: "The same authenticator is not allowed to repeated in a single step.",
                 level: AlertLevels.WARNING,
                 message: "Not allowed"
             }));
@@ -384,7 +396,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
             dispatch(addAlert({
                 description: "At least one authentication step is required.",
                 level: AlertLevels.WARNING,
-                message: "Delete error"
+                message: "Removal error"
             }));
 
             return;
@@ -500,28 +512,28 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                                 <Grid>
                                     <Grid.Row columns={ 2 }>
                                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 5 }>
-                                            <Heading as="h6">Local</Heading>
                                             <Authenticators
                                                 authenticators={ localAuthenticators }
                                                 droppableId={ LOCAL_AUTHENTICATORS_DROPPABLE_ID }
+                                                heading="Local"
                                             />
                                         </Grid.Column>
                                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 5 }>
-                                            <Heading as="h6">Second factor</Heading>
                                             <Authenticators
                                                 authenticators={
                                                     filterFederatedAuthenticators(AuthenticatorTypes.SECOND_FACTOR)
                                                 }
                                                 droppableId={ SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID }
+                                                heading="Second factor"
                                             />
                                         </Grid.Column>
                                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 5 }>
-                                            <Heading as="h6">Social logins</Heading>
                                             <Authenticators
                                                 authenticators={
                                                     filterFederatedAuthenticators(AuthenticatorTypes.SOCIAL)
                                                 }
                                                 droppableId={ SOCIAL_AUTHENTICATORS_DROPPABLE_ID }
+                                                heading="Social logins"
                                             />
                                         </Grid.Column>
                                     </Grid.Row>
