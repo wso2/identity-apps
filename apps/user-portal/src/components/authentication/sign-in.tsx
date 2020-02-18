@@ -49,18 +49,17 @@ export const SignIn = (props) => {
 
     const checkRedirected = () => {
         if (sessionStorage.getItem(AppConstants.REDIRECTED_KEY) === AppConstants.REDIRECTED_VALUE) {
-            sessionStorage.removeItem("redirected");
-            return true;
+            sessionStorage.clear();
+            window.location.replace(GlobalConfig.appHomePath);
         }
-        return false;
     };
 
     const loginSuccessRedirect = () => {
         const AuthenticationCallbackUrl = getAuthenticationCallbackUrl();
+        checkRedirected();
         const location =
             !AuthenticationCallbackUrl
                 || AuthenticationCallbackUrl === GlobalConfig.appLoginPath
-                || checkRedirected()
                 ? GlobalConfig.appHomePath
                 : AuthenticationCallbackUrl;
 
