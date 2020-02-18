@@ -183,7 +183,6 @@ export const updateUserInfo = (userId: string, data: object): Promise<any> => {
 };
 
 
-
 /**
  * Retrieve the profile schemas of the user claims of the currently authenticated user.
  *
