@@ -22,7 +22,6 @@ interface ServiceResourcesType {
     applications: string;
     associations: string;
     authorize: string;
-    base: string;
     challenges: string;
     challengeAnswers: string;
     consents: string;
@@ -47,7 +46,6 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     applications: `${GlobalConfig.serverHost}/api/server/v1/applications`,
     associations: `${GlobalConfig.serverHost}/api/users/v1/me/associations`,
     authorize: `${GlobalConfig.serverHost}/oauth2/authorize`,
-    base: `${GlobalConfig.serverHost}`,
     challengeAnswers: `${GlobalConfig.serverHost}/api/users/v1/me/challenge-answers`,
     challenges: `${GlobalConfig.serverHost}/api/users/v1/me/challenges`,
     claims: `${GlobalConfig.serverHost}/api/server/v1/claim-dialects`,

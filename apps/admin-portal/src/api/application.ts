@@ -354,7 +354,6 @@ export const getOIDCData = (id: string): Promise<any> => {
  * @return {Promise<OIDCDataInterface>}
  */
 export const getInboundProtocolConfig = (endpoint: string) => {
-
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -362,7 +361,7 @@ export const getInboundProtocolConfig = (endpoint: string) => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.base + endpoint
+        url: GlobalConfig.serverOrigin + endpoint
     };
 
     return httpClient.request(requestConfig)
