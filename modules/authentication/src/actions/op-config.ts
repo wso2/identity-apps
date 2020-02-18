@@ -91,6 +91,16 @@ export const setOPConfigInitiated = (): void => {
 };
 
 /**
+ * Set id_token issuer.
+ *
+ * @param issuer id_token issuer.
+ */
+export const setIssuer = (issuer): void => {
+    setSessionParameter(ISSUER, issuer);
+};
+
+
+/**
  * Initialize openid provider configuration.
  *
  * @param {string} wellKnownEndpoint openid provider configuration.
@@ -221,17 +231,8 @@ export const getTenant = (): string|string[] => {
  *
  * @returns {any}
  */
-export const getIssuer = () => {
+export const getIssuer = (): string => {
     return getSessionParameter(ISSUER);
-};
-
-/**
- * Set id_token issuer.
- *
- * @param issuer id_token issuer.
- */
-export const setIssuer = (issuer) => {
-    setSessionParameter(ISSUER, issuer);
 };
 
 /**
