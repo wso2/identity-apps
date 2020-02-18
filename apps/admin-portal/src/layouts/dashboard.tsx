@@ -17,7 +17,6 @@
  */
 
 import { getProfileInfo } from "@wso2is/core/api";
-import { AppConstants } from "@wso2is/core/constants";
 import { AuthReducerStateInterface, ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
 import { ContextUtils } from "@wso2is/core/utils";
 import { Footer, Header, Logo, ProductBrand, SidePanel } from "@wso2is/react-components";
@@ -233,7 +232,6 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
                             primary
                             onClick={
                                 () => {
-                                    sessionStorage.setItem(AppConstants.REDIRECTED_KEY, AppConstants.REDIRECTED_VALUE);
                                     window.open(
                                         `${GlobalConfig.userPortalClientHost}/${GlobalConfig.userPortalBaseName}`
                                     );
