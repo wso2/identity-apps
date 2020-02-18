@@ -32,7 +32,6 @@ import {
     IdentityProviderListItemInterface,
     IdentityProviderListResponseInterface,
     IdentityProviderResponseInterface,
-    IdentityProviderTypes,
     IDPNameInterface
 } from "../../../models";
 import {
@@ -132,6 +131,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
 
     /**
      * Updates the federatedIDPNameList with available IDPs.
+     *
      * @return {Promise<any>}
      */
     const updateFederateIDPNameList = (): Promise<any> => {
@@ -176,6 +176,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
 
     /**
      * Add Federated IDP name and ID in to the state.
+     *
      * @param {string} id - Identity Provider ID
      * @return {Promise<any>}
      */
@@ -214,7 +215,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
     /**
      *  Merge the IDP name list and meta details to populate the final federated List.
      */
-    const loadFederatedAuthenticators = () => {
+    const loadFederatedAuthenticators = (): void => {
         updateFederateIDPNameList()
             .then((response) => {
                 // If `updateFederateIDPNameList()` function returns a falsy value
@@ -257,31 +258,15 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
     /**
      * Load local authenticator list.
      */
-    const loadLocalAuthenticators = () => {
+    const loadLocalAuthenticators = (): void => {
         setLocalAuthenticators([ ...selectedLocalAuthenticators ]);
     };
     /**
      * Handles the authenticator drag and drop event.
-     * @param result
+     * @param {DropResult} result - Droppable value.
      */
-    const handleAuthenticatorDrag = (result: DropResult) => {
+    const handleAuthenticatorDrag = (result: DropResult): void => {
         if (!result.destination) {
-            return;
-        }
-
-        let idpType: IdentityProviderTypes = null;
-
-        if (result.draggableId && result.destination?.droppableId?.includes(AUTHENTICATION_STEP_DROPPABLE_ID)) {
-            if (result.source?.droppableId) {
-                if (result.source.droppableId.includes(LOCAL_AUTHENTICATORS_DROPPABLE_ID)) {
-                    idpType = IdentityProviderTypes.LOCAL;
-                } else if (result.source.droppableId.includes(SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID)) {
-                    idpType = IdentityProviderTypes.FEDERATED;
-                }
-            }
-        }
-
-        if (!idpType) {
             return;
         }
 
@@ -293,7 +278,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
             10
         );
 
-        updateAuthenticationStep(destinationIndex, result.draggableId, idpType);
+        updateAuthenticationStep(destinationIndex, result.draggableId);
     };
 
     /**
@@ -301,16 +286,9 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
      *
      * @param {number} stepNo - Step number.
      * @param {string} authenticatorId - Id of the authenticator.
-     * @param {IdentityProviderTypes} idpType - Identity provider type.
      */
-    const updateAuthenticationStep = (stepNo: number, authenticatorId: string, idpType: IdentityProviderTypes) => {
-        let authenticators: AuthenticatorListItemInterface[] = [];
-
-        if (idpType === IdentityProviderTypes.LOCAL) {
-            authenticators = [ ...localAuthenticators ];
-        } else if (idpType === IdentityProviderTypes.FEDERATED) {
-            authenticators = [ ...federatedAuthenticators ];
-        }
+    const updateAuthenticationStep = (stepNo: number, authenticatorId: string): void => {
+        const authenticators: AuthenticatorListItemInterface[] = [ ...localAuthenticators, ...federatedAuthenticators ];
 
         const authenticator: AuthenticatorListItemInterface = authenticators
             .find((item) => item.authenticator === authenticatorId);
@@ -332,6 +310,13 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
         setAuthenticationSteps(steps);
     };
 
+    /**
+     * Validates if the addition to the step is valid.
+     *
+     * @param {AuthenticatorListItemInterface} authenticator - Authenticator to be added.
+     * @param {AuthenticatorInterface[]} options - Current step options
+     * @return {boolean} True or false.
+     */
     const validateStepAddition = (authenticator: AuthenticatorListItemInterface,
                                   options: AuthenticatorInterface[]): boolean => {
 
@@ -352,12 +337,12 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
      * Resolves the authenticator step option.
      *
      * @param {AuthenticatorInterface} option - Authenticator step option.
-     * @return {JSX.Element} A resolved labeled card.
+     * @param {number} stepIndex - Index of the step.
+     * @param {number} optionIndex - Index of the option.
+     * @return {JSX.Element}
      */
-    const resolveStepOption = (option: AuthenticatorInterface, stepIndex, optionIndex): JSX.Element => {
-        const authenticators: AuthenticatorListItemInterface[] = option.idp === IdentityProviderTypes.LOCAL
-            ? [ ...localAuthenticators ]
-            : [ ...federatedAuthenticators ];
+    const resolveStepOption = (option: AuthenticatorInterface, stepIndex: number, optionIndex: number): JSX.Element => {
+        const authenticators: AuthenticatorListItemInterface[] = [ ...localAuthenticators, ...federatedAuthenticators ];
 
         if (authenticators && authenticators instanceof Array && authenticators.length > 0) {
 
@@ -378,18 +363,24 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
         }
     };
 
-    const handleStepOptionDelete = (stepIndex: number, optionIndex: number) => {
+    /**
+     * Handles step option delete action.
+     *
+     * @param {number} stepIndex - Index of the step.
+     * @param {number} optionIndex - Index of the option.
+     */
+    const handleStepOptionDelete = (stepIndex: number, optionIndex: number): void => {
         const steps = [ ...authenticationSteps ];
         steps[stepIndex].options.splice(optionIndex, 1);
         setAuthenticationSteps(steps);
     };
 
     /**
-     * Handles step delete.
+     * Handles step delete action.
      *
      * @param {number} stepIndex - Authentication step.
      */
-    const handleStepDelete = (stepIndex: number) => {
+    const handleStepDelete = (stepIndex: number): void => {
         const steps = [ ...authenticationSteps ];
 
         if (steps.length <= 1) {
@@ -409,7 +400,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
     /**
      * Handles the addition of new authentication step.
      */
-    const handleAuthenticationStepAdd = () => {
+    const handleAuthenticationStepAdd = (): void => {
         const steps = [ ...authenticationSteps ];
 
         steps.push({
@@ -425,23 +416,23 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
      *
      * @param {number} id - Step index.
      */
-    const onSubjectCheckboxChange = (id: number) => {
+    const onSubjectCheckboxChange = (id: number): void => {
         setSubjectStepId(id);
     };
 
     /**
      * Handles the attribute identifier checkbox onchange event.
      *
-     * @param {string} id - Step index.
+     * @param {number} id - Step index.
      */
-    const onAttributeCheckboxChange = (id: number) => {
+    const onAttributeCheckboxChange = (id: number): void => {
         setAttributeStepId(id);
     };
 
     /**
      * Handles the authentication flow update action.
      */
-    const handleAuthenticationFlowUpdate = () => {
+    const handleAuthenticationFlowUpdate = (): void => {
         const requestBody = {
             authenticationSequence: {
                 attributeStepId,
@@ -486,8 +477,8 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
      * @param {AuthenticatorTypes} type - Authenticator type.
      * @return {AuthenticatorListItemInterface[]} A filtered list of authenticators.
      */
-    const filterFederatedAuthenticators = (type: AuthenticatorTypes): AuthenticatorListItemInterface[] => {
-        const authenticators: AuthenticatorListItemInterface[] = [ ...federatedAuthenticators ];
+    const filterAuthenticators = (type: AuthenticatorTypes): AuthenticatorListItemInterface[] => {
+        const authenticators: AuthenticatorListItemInterface[] = [ ...localAuthenticators, ...federatedAuthenticators ];
 
         return authenticators.filter((authenticator) => authenticator.type === type);
     };
@@ -513,7 +504,9 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                                     <Grid.Row columns={ 2 }>
                                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 5 }>
                                             <Authenticators
-                                                authenticators={ localAuthenticators }
+                                                authenticators={
+                                                    filterAuthenticators(AuthenticatorTypes.FIRST_FACTOR)
+                                                }
                                                 droppableId={ LOCAL_AUTHENTICATORS_DROPPABLE_ID }
                                                 heading="Local"
                                             />
@@ -521,7 +514,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 5 }>
                                             <Authenticators
                                                 authenticators={
-                                                    filterFederatedAuthenticators(AuthenticatorTypes.SECOND_FACTOR)
+                                                    filterAuthenticators(AuthenticatorTypes.SECOND_FACTOR)
                                                 }
                                                 droppableId={ SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID }
                                                 heading="Second factor"
@@ -530,7 +523,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 5 }>
                                             <Authenticators
                                                 authenticators={
-                                                    filterFederatedAuthenticators(AuthenticatorTypes.SOCIAL)
+                                                    filterAuthenticators(AuthenticatorTypes.SOCIAL)
                                                 }
                                                 droppableId={ SOCIAL_AUTHENTICATORS_DROPPABLE_ID }
                                                 heading="Social logins"

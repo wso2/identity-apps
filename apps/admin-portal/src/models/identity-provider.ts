@@ -66,11 +66,6 @@ export interface IdentityProviderResponseInterface {
     federatedAuthenticators?: FederatedAuthenticatorListResponseInterface;
 }
 
-export enum IdentityProviderTypes {
-    LOCAL = "LOCAL",
-    FEDERATED = "FEDERATED"
-}
-
 /**
  *  Captures IDPs name, logo and ID
  */
