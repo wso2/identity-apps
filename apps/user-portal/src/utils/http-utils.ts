@@ -23,7 +23,7 @@ import * as ApplicationConstants from "../constants/application-constants";
 import { history } from "../helpers";
 import { store } from "../store";
 import { hideGlobalLoader, showGlobalLoader } from "../store/actions";
-import { endUserSession, hasLoginPermission } from "./authenticate-util";
+import { hasLoginPermission } from "./authenticate-util";
 
 /**
  * Set up the http client by registering the callback functions.
