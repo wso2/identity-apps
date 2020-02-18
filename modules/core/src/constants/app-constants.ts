@@ -16,7 +16,29 @@
  * under the License.
  */
 
-export * from "./is-constants";
-export * from "./token-constants";
-export * from "./ui-constants";
-export * from "./app-constants";
+/**
+ * Class containing app constants.
+ */
+export class AppConstants {
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    private constructor() {}
+
+    /**
+     * Constant that holds the key of the sessionStorage that is used during redirect
+     * @constant
+     * @type {number}
+     */
+    public static readonly REDIRECTED_KEY: string = "redirected";
+
+    /**
+     * Constant that holds the value of the `REDIRECTED_KEY` of the sessionStorage that is used during redirect
+     * @constant
+     * @type {number}
+     */
+    public static readonly REDIRECTED_VALUE: string = "true";
+}

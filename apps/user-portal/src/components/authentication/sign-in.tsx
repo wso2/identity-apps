@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { AppConstants } from "@wso2is/core/constants";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GlobalConfig } from "../../configs";
@@ -46,10 +47,19 @@ export const SignIn = (props) => {
         return window.sessionStorage.getItem("auth_callback_url");
     };
 
+    const checkRedirected = () => {
+        if (sessionStorage.getItem(AppConstants.REDIRECTED_KEY) === AppConstants.REDIRECTED_VALUE) {
+            sessionStorage.clear();
+            window.location.replace(GlobalConfig.appHomePath);
+        }
+    };
+
     const loginSuccessRedirect = () => {
         const AuthenticationCallbackUrl = getAuthenticationCallbackUrl();
+        checkRedirected();
         const location =
-            !AuthenticationCallbackUrl || AuthenticationCallbackUrl === GlobalConfig.appLoginPath
+            !AuthenticationCallbackUrl
+                || AuthenticationCallbackUrl === GlobalConfig.appLoginPath
                 ? GlobalConfig.appHomePath
                 : AuthenticationCallbackUrl;
 
