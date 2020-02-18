@@ -186,7 +186,7 @@ export const views: Views = {
                                 "would only apply to users who choose to use upgraded versions.",
                             para2: "The organization running WSO2 IS may revise the Privacy Policy from time to " +
                                 "time. You can find the most recent governing policy with the respective link " +
-                                "provided by the organization running WSO2 IS 5.5. The organization will notify " +
+                                "provided by the organization running WSO2 IS. The organization will notify " +
                                 "any changes to the privacy policy over our official public channels."
                         },
                         heading: "Changes to this policy"
