@@ -480,7 +480,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
     const filterAuthenticators = (type: AuthenticatorTypes): AuthenticatorListItemInterface[] => {
         const authenticators: AuthenticatorListItemInterface[] = [ ...localAuthenticators, ...federatedAuthenticators ];
 
-        return authenticators.filter((authenticator) => authenticator.type === type);
+        return authenticators.filter((authenticator) => authenticator.type === type && authenticator.idp);
     };
 
     return (
