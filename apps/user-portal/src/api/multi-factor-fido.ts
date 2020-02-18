@@ -202,7 +202,6 @@ export const endFidoFlow = (clientResponse): Promise<any> => {
         });
 };
 
-
 /**
  * This function stores the credentialCreationOptions received from the registration endpoint
  * to the credential store as a publicKey.
