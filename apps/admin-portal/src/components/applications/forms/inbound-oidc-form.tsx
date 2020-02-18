@@ -19,7 +19,8 @@
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, useState } from "react";
+import { isEmpty } from "lodash";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import {
     emptyOIDCConfig,
@@ -28,6 +29,7 @@ import {
     OIDCDataInterface,
     OIDCMetadataInterface
 } from "../../../models";
+import { URLInputComponent } from "../components";
 
 /**
  * Proptypes for the inbound OIDC form component.
@@ -55,7 +57,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         onSubmit
     } = props;
 
-    const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
+    const [isEncryptionEnabled, setEncryptionEnable] = useState(false);
+    const [callBackUrls, setCallBackUrls] = useState("");
+    const [showURLError, setShowURLError] = useState(false);
 
     /**
      * Add regexp to multiple callbackUrls and update configs.
@@ -178,19 +182,21 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const updateConfiguration = (values: any): any => {
         const formValues = {
             accessToken: {
-                applicationAccessTokenExpiryInSeconds: Number(values.get("applicationAccessTokenExpiryInSeconds")),
+                applicationAccessTokenExpiryInSeconds: Number(metadata.defaultApplicationAccessTokenExpiryTime),
                 type: values.get("type"),
                 userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds")),
             },
             allowedOrigins: [],
-            callbackURLs: [values.get("callbackURL")],
+            callbackURLs: [buildCallBackUrlWithRegExp(callBackUrls)],
             grantTypes: values.get("grant"),
             idToken: {
                 audience: [values.get("audience")],
                 encryption: {
-                    algorithm: values.get("algorithm"),
-                    enabled: values.get("encryption").length > 1,
-                    method: values.get("method")
+                    algorithm: isEncryptionEnabled ?
+                        values.get("algorithm") : metadata.idTokenEncryptionAlgorithm.defaultValue,
+                    enabled: values.get("encryption").includes("enableEncryption"),
+                    method: isEncryptionEnabled ?
+                        values.get("method") : metadata.idTokenEncryptionMethod.defaultValue
                 },
                 expiryInSeconds: Number(values.get("idExpiryInSeconds"))
             },
@@ -223,14 +229,24 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         };
     };
 
+    useEffect(
+        () => {
+            if (initialValues?.idToken?.encryption) {
+                setEncryptionEnable(initialValues.idToken.encryption?.enabled);
+            }
+        }, [initialValues]
+    );
+
     return (
         <>
             { metadata && (
                 <Forms
                     onSubmit={ (values) => {
-                        const newValues = new Map(values);
-                        newValues.set("callbackURL", buildCallBackUrlWithRegExp(values.get("callbackURL").toString()));
-                        onSubmit(updateConfiguration(values));
+                        if (isEmpty(callBackUrls)) {
+                            setShowURLError(true);
+                        } else {
+                            onSubmit(updateConfiguration(values));
+                        }
                     } }
                 >
                     <Grid>
@@ -290,34 +306,24 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Hint>This will determine how the application communicates with the token service</Hint>
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    name="callbackURL"
-                                    label="Callback URL"
-                                    required={ true }
-                                    requiredErrorMessage="this is needed"
-                                    placeholder="Enter the Callback URL"
-                                    type="text"
-                                    validation={ (value: string, validation: Validation) => {
-                                        const urlList = value.split(",");
-                                        urlList.map((singleUrl) => {
-                                            if (!FormValidation.url(singleUrl)) {
-                                                validation.isValid = false;
-                                                validation.errorMessages.push(
-                                                    "Please add valid URLs with comma separation."
-                                                );
-                                            }
-                                        });
-                                    } }
-                                    value={ buildCallBackURLWithSeparator(initialValues.callbackURLs?.toString()) }
-                                />
-                                <Hint>
-                                    After the authentication, we will only redirect to the above callback URLs.
-                                    You can specify multiple URLs by separating them using a comma.
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
+                        <URLInputComponent
+                            urlState={ callBackUrls }
+                            setURLState={ setCallBackUrls }
+                            labelName={ "Callback URL" }
+                            value={ buildCallBackURLWithSeparator(initialValues.callbackURLs?.toString()) }
+                            placeholder={ "Enter callbackUrl" }
+                            validationErrorMsg={ "Please add valid URL." }
+                            validation={ (value: string) => {
+                                if (FormValidation.url(value)) {
+                                    return true;
+                                }
+                                return false;
+                            } }
+                            showError={ showURLError }
+                            setShowError={ setShowURLError }
+                            hint={ " After the authentication, we will only redirect to the above callback URLs " +
+                            "and you can specify multiple URLs" }
+                        />
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
@@ -551,7 +557,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Field
                                     name="algorithm"
                                     label="Algorithm"
-                                    required={ true }
+                                    required={ isEncryptionEnabled }
                                     requiredErrorMessage="this is needed"
                                     type="dropdown"
                                     default={ initialValues.idToken ? initialValues.idToken.encryption.algorithm :
@@ -560,7 +566,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     children={ getAllowedList(metadata.idTokenEncryptionAlgorithm) }
                                     disabled={ !isEncryptionEnabled }
                                 />
-                                <Hint>Choose encryption algorithm of ID token for the client.</Hint>
+                                { isEncryptionEnabled &&
+                                (<Hint>Choose encryption algorithm of ID token for the client.</Hint>) }
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
@@ -568,7 +575,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Field
                                     name="method"
                                     label="Encryption method"
-                                    required={ true }
+                                    required={ isEncryptionEnabled }
                                     requiredErrorMessage="this is needed"
                                     type="dropdown"
                                     default={ initialValues.idToken ? initialValues.idToken.encryption.method :
@@ -577,7 +584,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     children={ getAllowedList(metadata.idTokenEncryptionMethod) }
                                     disabled={ !isEncryptionEnabled }
                                 />
-                                <Hint>Choose the method for the ID token encryption.</Hint>
+                                { isEncryptionEnabled &&
+                                (<Hint>Choose the method for the ID token encryption.</Hint>) }
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
