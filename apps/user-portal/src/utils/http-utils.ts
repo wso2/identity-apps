@@ -112,7 +112,8 @@ export const onHttpRequestFinish = (): void => {
 /**
  * Set up the http client by registering the callback functions.
  */
-export const setupHttpClient = () => {
+export const setupHttpClient = (): void => {
     const httpClient = AxiosHttpClient.getInstance();
     httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
+
 };
