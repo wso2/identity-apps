@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { LabeledCard } from "@wso2is/react-components";
+import { Heading, LabeledCard } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent } from "react";
 import {
@@ -34,6 +34,7 @@ interface AuthenticatorsPropsInterface {
     authenticators: AuthenticatorListItemInterface[];
     className?: string;
     droppableId: string;
+    heading?: string;
     isDropDisabled?: boolean;
     isLoading?: boolean;
 }
@@ -52,45 +53,49 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         authenticators,
         className,
         droppableId,
+        heading,
         isDropDisabled
     } = props;
 
     const classes = classNames("authenticators", className);
 
     return (
-        <Droppable droppableId={ droppableId } direction="horizontal" isDropDisabled={ isDropDisabled }>
-            { (provided: DroppableProvided) => (
-                <div ref={ provided.innerRef } { ...provided.droppableProps } className={ classes }>
-                    {
-                        (authenticators && authenticators instanceof Array && authenticators.length > 0)
-                            ? authenticators.map((authenticator, index) => (
-                                <Draggable
-                                    key={ authenticator.authenticator }
-                                    draggableId={ authenticator.authenticator }
-                                    index={ index }
-                                >
-                                    {
-                                        (providedDraggable: DraggableProvided) => (
-                                            <div
-                                                ref={ providedDraggable.innerRef }
-                                                { ...providedDraggable.draggableProps }
-                                                { ...providedDraggable.dragHandleProps }
-                                            >
-                                                <LabeledCard
-                                                    image={ authenticator.image }
-                                                    label={ authenticator.displayName }
-                                                />
-                                            </div>
-                                        ) }
-                                </Draggable>
-                            ))
-                            : null
-                    }
-                    { provided.placeholder }
-                </div>
-            ) }
-        </Droppable>
-
+        (authenticators && authenticators instanceof Array && authenticators.length > 0)
+            ? (
+                <>
+                    <Heading as="h6">{ heading }</Heading>
+                    <Droppable droppableId={ droppableId } direction="horizontal" isDropDisabled={ isDropDisabled }>
+                        { (provided: DroppableProvided) => (
+                            <div ref={ provided.innerRef } { ...provided.droppableProps } className={ classes }>
+                                { authenticators.map((authenticator, index) => (
+                                    <Draggable
+                                        key={ authenticator.authenticator }
+                                        draggableId={ authenticator.authenticator }
+                                        index={ index }
+                                    >
+                                        {
+                                            (providedDraggable: DraggableProvided) => (
+                                                <div
+                                                    ref={ providedDraggable.innerRef }
+                                                    { ...providedDraggable.draggableProps }
+                                                    { ...providedDraggable.dragHandleProps }
+                                                >
+                                                    <LabeledCard
+                                                        image={ authenticator.image }
+                                                        label={ authenticator.displayName }
+                                                    />
+                                                </div>
+                                            ) }
+                                    </Draggable>
+                                ))
+                                }
+                                { provided.placeholder }
+                            </div>
+                        ) }
+                    </Droppable>
+                </>
+            )
+            : null
     );
 };
 
