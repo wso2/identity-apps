@@ -27,11 +27,10 @@ import {
 } from "../constants";
 import { AuthenticatedUserInterface } from "../models/authenticated-user";
 import { AccountSwitchRequestParams, OIDCRequestParamsInterface } from "../models/oidc-request-params";
-import { TokenResponseInterface } from "../models/token-response";
+import { TokenResponseInterface, TokenRequestHeader } from "../models/token-response";
 import { getCodeChallenge, getCodeVerifier, getEmailHash, getJWKForTheIdToken, isValidIdToken } from "./crypto";
 import { getAuthorizeEndpoint, getIssuer, getJwksUri, getRevokeTokenEndpoint, getTokenEndpoint } from "./op-config";
 import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
-import { TokenRequestHeader } from "../models/sign-in";
 
 /**
  * Checks whether authorization code present in the request.

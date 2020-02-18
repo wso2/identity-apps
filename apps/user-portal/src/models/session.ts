@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,22 +16,23 @@
  * under the License.
  */
 
+import { AuthenticatedUserInterface } from "./authenticated-user";
+import { TokenInterface } from "./tokens";
+
 /**
- * JWK Model
+ * Interface of the user session.
  */
-export interface JWKInterface {
-    kty: string;
-    e: string;
-    use: string;
-    kid: string;
-    alg: string;
-    n: string;
+export interface SessionInterface extends AuthenticatedUserInterface, TokenInterface {
+
 }
 
-export interface TokenRequestHeader {
-    headers: {
-        Accept: string,
-        "Access-Control-Allow-Origin": string,
-        "Content-Type": string
-    }
-}
+export const createEmptySession = (): SessionInterface => ({
+    access_token: "",
+    display_name: "",
+    email: "",
+    expires_in: "",
+    id_token: "",
+    issued_at: "",
+    refresh_token: "",
+    username: ""
+});
