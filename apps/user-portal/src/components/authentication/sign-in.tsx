@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { AppConstants } from "@wso2is/core/constants";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GlobalConfig } from "../../configs";
@@ -47,7 +48,7 @@ export const SignIn = (props) => {
     };
 
     const checkRedirected = () => {
-        if (sessionStorage.getItem("redirected") === "true") {
+        if (sessionStorage.getItem(AppConstants.REDIRECTED_KEY) === AppConstants.REDIRECTED_VALUE) {
             sessionStorage.removeItem("redirected");
             return true;
         }
