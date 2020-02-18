@@ -129,6 +129,14 @@ export const SMS = "sms";
 export const FIDO = "fido";
 
 /**
+ * Authenticator app.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const AUTHENTICATOR_APP = "authenticatorApp";
+
+/**
  * ACtive Sessions key.
  * @constant
  * @type {string}
