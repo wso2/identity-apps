@@ -393,7 +393,12 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
             return;
         }
 
+        // Remove the step.
         steps.splice(stepIndex, 1);
+
+        // Rebuild the step ids.
+        steps.forEach((step, index) => step.id = index + 1);
+
         setAuthenticationSteps(steps);
     };
 
@@ -433,6 +438,13 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
      * Handles the authentication flow update action.
      */
     const handleAuthenticationFlowUpdate = (): void => {
+
+        const isValid: boolean = validateSteps();
+
+        if (!isValid) {
+            return;
+        }
+
         const requestBody = {
             authenticationSequence: {
                 attributeStepId,
@@ -468,6 +480,31 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                     message: "Update Error"
                 }));
             });
+    };
+
+    /**
+     * Validates if the step deletion is valid.
+     *
+     * @return {boolean} True or false.
+     */
+    const validateSteps = (): boolean => {
+
+        const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
+
+        const found = steps.find((step) => _.isEmpty(step.options));
+
+        if (found) {
+            dispatch(addAlert({
+                description: "There is an empty authentication step. Please remove it or add authenticators to " +
+                    "proceed.",
+                level: AlertLevels.WARNING,
+                message: "Update error"
+            }));
+
+            return false;
+        }
+
+        return true;
     };
 
     /**
