@@ -18,18 +18,49 @@
 
 import * as React from "react";
 import { WithTranslation } from "react-i18next";
-import { Divider, List } from "semantic-ui-react";
+import { Divider, Grid, Icon, List } from "semantic-ui-react";
+import { ThemeIcon } from "../../../components/shared";
+import { MFAIcons } from "../../../configs";
 
 export const TOTPAuthenticator: React.FunctionComponent<any> = (props: WithTranslation): JSX.Element => {
     return (
-        <List.Item>
-            <List.Content>
-                <List.Header>TOTP</List.Header>
-                <List.Description>
-                    You'll receive a text message containing the verification code to your mobile number
-                </List.Description>
-                <Divider hidden/>
-            </List.Content>
-        </List.Item>
+
+        <Grid padded={ true }>
+            <Grid.Row columns={ 2 }>
+                <Grid.Column width={ 11 } className="first-column">
+                    <List.Content floated="left">
+                        <ThemeIcon
+                            icon={ MFAIcons.authenticatorApp }
+                            size="mini"
+                            twoTone={ true }
+                            transparent={ true }
+                            square={ true }
+                            rounded={ true }
+                            relaxed={ true }
+                        />
+                    </List.Content>
+                    <List.Content>
+                        <List.Header>
+                            Authenticator App
+                        </List.Header>
+                        <List.Description>
+                            Use your phone
+                        </List.Description>
+                    </List.Content>
+                </Grid.Column>
+                <Grid.Column width={ 5 } className="last-column">
+                    <List.Content floated="right">
+                        <Icon
+                            link={ true }
+                            onClick={ () => {} }
+                            className="list-icon"
+                            size="small"
+                            color="grey"
+                            name="pencil alternate"
+                        />
+                    </List.Content>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
     );
 };
