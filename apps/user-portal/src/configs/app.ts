@@ -39,6 +39,8 @@ interface ServiceResourcesType {
     receipts: string;
     sessions: string;
     token: string;
+    totp: string;
+    totpSecret: string;
     user: string;
     revoke: string;
     wellKnown: string;
@@ -66,6 +68,8 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     revoke: `${GlobalConfig.serverHost}/oauth2/revoke`,
     sessions: `${GlobalConfig.serverHost}/api/users/v1/me/sessions`,
     token: `${GlobalConfig.serverHost}/oauth2/token`,
+    totp: `${GlobalConfig.serverHost}/t/${GlobalConfig.tenantPath}/me/totp`,
+    totpSecret: `${GlobalConfig.serverHost}/t/${GlobalConfig.tenantPath}/me/totp/secret`,
     user: `${GlobalConfig.serverHost}/api/identity/user/v1.0/me`,
     wellKnown: `${GlobalConfig.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
 };
