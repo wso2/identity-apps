@@ -104,11 +104,11 @@ export const getProfileInformation = () => (dispatch) => {
             dispatch(
                 addAlert({
                     description: i18n.t(
-                        "views:components.profile.notifications.getProfileInfo.genericError.description"
+                        "views:components.user.profile.notifications.getProfileInfo.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: i18n.t(
-                        "views:components.profile.notifications.getProfileInfo.genericError.message"
+                        "views:components.user.profile.notifications.getProfileInfo.genericError.message"
                     )
                 })
             );
@@ -118,12 +118,12 @@ export const getProfileInformation = () => (dispatch) => {
                 dispatch(
                     addAlert({
                         description: i18n.t(
-                            "views:components.profile.notifications.getProfileInfo.error.description",
+                            "views:components.user.profile.notifications.getProfileInfo.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: i18n.t(
-                            "views:components.profile.notifications.getProfileInfo.error.message"
+                            "views:components.user.profile.notifications.getProfileInfo.error.message"
                         )
                     })
                 );
@@ -134,11 +134,11 @@ export const getProfileInformation = () => (dispatch) => {
             dispatch(
                 addAlert({
                     description: i18n.t(
-                        "views:components.profile.notifications.getProfileInfo.genericError.description"
+                        "views:components.user.profile.notifications.getProfileInfo.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: i18n.t(
-                        "views:components.profile.notifications.getProfileInfo.genericError.message"
+                        "views:components.user.profile.notifications.getProfileInfo.genericError.message"
                     )
                 })
             );
