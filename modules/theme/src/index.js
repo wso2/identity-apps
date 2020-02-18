@@ -56,6 +56,7 @@ export const SpinWheelIcon = require("../lib/assets/images/icons/spin-wheel-icon
 export const SuccessIcon = require("../lib/assets/images/icons/success-icon.svg");
 export const TickCircleIcon = require("../lib/assets/images/icons/tick-circle-icon.svg");
 export const ToolsIcon = require("../lib/assets/images/icons/tools-icon.svg");
+export const AuthenticatorAppIcon = require("../lib/assets/images/icons/authenticator-app-icon.svg");
 export const UserIcon = require("../lib/assets/images/icons/user-icon.svg");
 export const WarningIcon = require("../lib/assets/images/icons/warning-icon.svg");
 
@@ -138,7 +139,8 @@ export const SidePanelIconSet = {
 
 export const MFAIconSet = {
     sms: require("../lib/assets/images/icons/sms-icon.svg"),
-    fingerprint: require("../lib/assets/images/icons/fingerprint.svg")
+    fingerprint: require("../lib/assets/images/icons/fingerprint.svg"),
+    authenticatorApp: require("../lib/assets/images/icons/authenticator-app-icon.svg")
 };
 
 export const AccountRecoveryIconSet = {
