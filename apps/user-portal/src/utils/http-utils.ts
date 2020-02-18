@@ -18,12 +18,11 @@
  */
 
 import { OPConfigurationUtil } from "@wso2is/authentication";
-import { AxiosHttpClient } from "@wso2is/http";
 import * as ApplicationConstants from "../constants/application-constants";
 import { history } from "../helpers";
 import { store } from "../store";
 import { hideGlobalLoader, showGlobalLoader } from "../store/actions";
-import { endUserSession, hasLoginPermission } from "./authenticate-util";
+import { hasLoginPermission } from "./authenticate-util";
 
 /**
  * Callback to be fired on every Http request start.
@@ -44,7 +43,7 @@ export const onHttpRequestSuccess = (): void => {
 /**
  * Set up the http client by registering the callback functions.
  */
-const endUserSessionWithoutLoops = () => {
+const endUserSessionWithoutLoops = (): void => {
     if (!sessionStorage.getItem(ApplicationConstants.AUTH_ERROR_TIME)) {
         sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
     } else {

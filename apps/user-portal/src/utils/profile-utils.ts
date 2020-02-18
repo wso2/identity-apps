@@ -30,98 +30,6 @@ import { store } from "../store";
 import { setProfileCompletion } from "../store/actions";
 
 /**
- * Calculates the profile completion.
- *
- * @param {BasicProfileInterface} profileInfo - Profile information.
- * @param {ProfileSchema[]} profileSchemas - Profile schemas.
- * @return {ProfileCompletion}
- */
-export const getProfileCompletion = (
-    profileInfo: BasicProfileInterface,
-    profileSchemas: ProfileSchema[]
-): ProfileCompletion => {
-    const completion: ProfileCompletion = emptyProfileCompletion();
-
-    for (const schema of flattenSchemas([...profileSchemas])) {
-        // Skip `Roles`
-        if (schema.displayName === "Role") {
-            continue;
-        }
-
-        // Attribute to be stored as `completed` or `incomplete` attribute.
-        const attribute: ProfileAttribute = {
-            displayName: schema.name === "profileUrl" ? "Profile Image" : schema.displayName,
-            name: schema.name
-        };
-
-        let isMapped: boolean = false;
-
-        if (schema.required) {
-            completion.required.totalCount++;
-        } else {
-            completion.optional.totalCount++;
-        }
-
-        for (const info of flattenProfileInfo(profileInfo)) {
-            for (const [key, value] of Object.entries(info)) {
-                if (schema.name === key) {
-                    if (schema.required) {
-                        if (
-                            value ||
-                            (schema.name === "profileUrl" && isProfileImageComplete(schema.name, profileInfo))
-                        ) {
-                            completion.required.completedCount++;
-                            completion.required.completedAttributes.push(attribute);
-                        } else {
-                            completion.required.incompleteAttributes.push(attribute);
-                        }
-                    } else {
-                        if (
-                            value ||
-                            (schema.name === "profileUrl" && isProfileImageComplete(schema.name, profileInfo))
-                        ) {
-                            completion.optional.completedCount++;
-                            completion.optional.completedAttributes.push(attribute);
-                        } else {
-                            completion.optional.incompleteAttributes.push(attribute);
-                        }
-                    }
-
-                    isMapped = true;
-                }
-            }
-        }
-
-        // If the schema couldn't be mapped, add it to in-completed list.
-        if (!isMapped) {
-            if (schema.required) {
-                if (schema.name !== "profileUrl" || !isProfileImageComplete(schema.name, profileInfo)) {
-                    completion.required.incompleteAttributes.push(attribute);
-                }
-            } else {
-                if (schema.name !== "profileUrl" || !isProfileImageComplete(schema.name, profileInfo)) {
-                    completion.optional.incompleteAttributes.push(attribute);
-                }
-            }
-        }
-    }
-
-    // Calculate the profile completion percentage.
-    completion.percentage =
-        Math.ceil(
-            (((completion.required.completedCount + completion.optional.completedCount) /
-                (completion.required.totalCount + completion.optional.totalCount)) *
-                100) /
-                10
-        ) * 10;
-
-    // Set the redux state.
-    store.dispatch(setProfileCompletion(completion));
-
-    return completion;
-};
-
-/**
  * This function extracts the sub attributes from the schemas and appends them to the main schema iterable.
  * The returned iterable will have all the schema attributes in a flat structure so that
  * you can just iterate through them to display them.
@@ -165,7 +73,6 @@ export const isMultiValuedProfileAttribute = (attribute: any): attribute is Mult
     return attribute.type !== undefined;
 };
 
-
 /**
  * Modifies the profile info object in to a flat level.
  *
@@ -174,10 +81,12 @@ export const isMultiValuedProfileAttribute = (attribute: any): attribute is Mult
  * @return {any[]}
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: string) => {
+export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: string): any[] => {
     const tempProfile = [];
 
-    for (let [key, value] of Object.entries(profileInfo)) {
+    for (let key in profileInfo) {
+        const value = profileInfo[key];
+
         // Skip `associations`, `responseStatus` & `roles`.
         if (key === "associations" || key === "responseStatus") {
             continue;
@@ -245,6 +154,98 @@ export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: strin
  * @param {BasicProfileInterface} profileInfo ProfileInfo from the store
  * @returns {boolean} Boolean
  */
-const isProfileImageComplete = (name: string, profileInfo: BasicProfileInterface) => {
+const isProfileImageComplete = (name: string, profileInfo: BasicProfileInterface): boolean => {
     return !(_.isEmpty(profileInfo.profileUrl) && _.isEmpty(profileInfo.userImage));
+};
+
+/**
+ * Calculates the profile completion.
+ *
+ * @param {BasicProfileInterface} profileInfo - Profile information.
+ * @param {ProfileSchema[]} profileSchemas - Profile schemas.
+ * @return {ProfileCompletion}
+ */
+export const getProfileCompletion = (
+    profileInfo: BasicProfileInterface,
+    profileSchemas: ProfileSchema[]
+): ProfileCompletion => {
+    const completion: ProfileCompletion = emptyProfileCompletion();
+
+    for (const schema of flattenSchemas([...profileSchemas])) {
+        // Skip `Roles`
+        if (schema.displayName === "Role") {
+            continue;
+        }
+
+        // Attribute to be stored as `completed` or `incomplete` attribute.
+        const attribute: ProfileAttribute = {
+            displayName: schema.name === "profileUrl" ? "Profile Image" : schema.displayName,
+            name: schema.name
+        };
+
+        let isMapped = false;
+
+        if (schema.required) {
+            completion.required.totalCount++;
+        } else {
+            completion.optional.totalCount++;
+        }
+
+        for (const info of flattenProfileInfo(profileInfo)) {
+            for (const [key, value] of Object.entries(info)) {
+                if (schema.name === key) {
+                    if (schema.required) {
+                        if (
+                            value ||
+                            (schema.name === "profileUrl" && isProfileImageComplete(schema.name, profileInfo))
+                        ) {
+                            completion.required.completedCount++;
+                            completion.required.completedAttributes.push(attribute);
+                        } else {
+                            completion.required.incompleteAttributes.push(attribute);
+                        }
+                    } else {
+                        if (
+                            value ||
+                            (schema.name === "profileUrl" && isProfileImageComplete(schema.name, profileInfo))
+                        ) {
+                            completion.optional.completedCount++;
+                            completion.optional.completedAttributes.push(attribute);
+                        } else {
+                            completion.optional.incompleteAttributes.push(attribute);
+                        }
+                    }
+
+                    isMapped = true;
+                }
+            }
+        }
+
+        // If the schema couldn't be mapped, add it to in-completed list.
+        if (!isMapped) {
+            if (schema.required) {
+                if (schema.name !== "profileUrl" || !isProfileImageComplete(schema.name, profileInfo)) {
+                    completion.required.incompleteAttributes.push(attribute);
+                }
+            } else {
+                if (schema.name !== "profileUrl" || !isProfileImageComplete(schema.name, profileInfo)) {
+                    completion.optional.incompleteAttributes.push(attribute);
+                }
+            }
+        }
+    }
+
+    // Calculate the profile completion percentage.
+    completion.percentage =
+        Math.ceil(
+            (((completion.required.completedCount + completion.optional.completedCount) /
+                (completion.required.totalCount + completion.optional.totalCount)) *
+                100) /
+                10
+        ) * 10;
+
+    // Set the redux state.
+    store.dispatch(setProfileCompletion(completion));
+
+    return completion;
 };
