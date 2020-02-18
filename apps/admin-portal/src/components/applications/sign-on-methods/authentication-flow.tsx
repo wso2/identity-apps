@@ -609,7 +609,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                                     <Icon name="plus"/>Add authentication step
                                 </LinkButton>
                                 <Divider hidden />
-                                <PrimaryButton onClick={ handleAuthenticationFlowUpdate }>Save changes</PrimaryButton>
+                                <PrimaryButton onClick={ handleAuthenticationFlowUpdate }>Update</PrimaryButton>
                             </div>
                         </Grid.Column>
                     </Grid.Row>
