@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ContextUtils, } from "@wso2is/core/utils";
+import { ContextUtils } from "@wso2is/core/utils";
 import * as React from "react";
 // tslint:disable:no-submodule-imports
 import "react-app-polyfill/ie11";
