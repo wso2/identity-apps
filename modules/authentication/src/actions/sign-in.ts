@@ -43,6 +43,22 @@ export const hasAuthorizationCode = (): boolean => {
 };
 
 /**
+ * Get token request headers.
+ *
+ * @param {string} clientHost
+ * @returns {{headers: {Accept: string; "Access-Control-Allow-Origin": string; "Content-Type": string}}}
+ */
+const getTokenRequestHeaders = (clientHost: string): TokenRequestHeader => {
+    return {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": clientHost,
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    };
+};
+
+/**
  * Send authorization request.
  *
  * @param {OIDCRequestParamsInterface} requestParams request parameters required for authorization request.
@@ -83,6 +99,40 @@ export const sendAuthorizationRequest = (requestParams: OIDCRequestParamsInterfa
     document.location.href = authorizeRequest;
 
     return false;
+};
+
+/**
+ * Validate id_token.
+ *
+ * @param {string} clientId client ID.
+ * @param {string} idToken id_token received from the IdP.
+ * @returns {Promise<boolean>} whether token is valid.
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+const validateIdToken = (clientId: string, idToken: string,  serverOrigin: string): Promise<any> => {
+    const jwksEndpoint = getJwksUri();
+
+    if (!jwksEndpoint || jwksEndpoint.trim().length === 0) {
+        return Promise.reject("Invalid JWKS URI found.");
+    }
+
+    return axios.get(jwksEndpoint)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to load public keys from JWKS URI: "
+                    + jwksEndpoint));
+            }
+
+            const jwk = getJWKForTheIdToken(idToken.split(".")[0], response.data.keys);
+            let issuer = getIssuer();
+            if (!issuer || issuer.trim().length === 0) {
+                issuer = serverOrigin + SERVICE_RESOURCES.token;
+            }
+
+            return Promise.resolve(isValidIdToken(idToken, jwk, clientId, issuer));
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
 };
 
 /**
@@ -320,53 +370,4 @@ export const sendAccountSwitchRequest = (
         .catch((error) => {
             return Promise.reject(error);
         });
-};
-
-/**
- * Validate id_token.
- *
- * @param {string} clientId client ID.
- * @param {string} idToken id_token received from the IdP.
- * @returns {Promise<boolean>} whether token is valid.
- */
-const validateIdToken = (clientId: string, idToken: string,  serverOrigin: string): Promise<any> => {
-    const jwksEndpoint = getJwksUri();
-
-    if (!jwksEndpoint || jwksEndpoint.trim().length === 0) {
-        return Promise.reject("Invalid JWKS URI found.");
-    }
-
-    return axios.get(jwksEndpoint)
-        .then((response) => {
-            if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to load public keys from JWKS URI: "
-                    + jwksEndpoint));
-            }
-
-            const jwk = getJWKForTheIdToken(idToken.split(".")[0], response.data.keys);
-            let issuer = getIssuer();
-            if (!issuer || issuer.trim().length === 0) {
-                issuer = serverOrigin + SERVICE_RESOURCES.token;
-            }
-
-            return Promise.resolve(isValidIdToken(idToken, jwk, clientId, issuer));
-        }).catch((error) => {
-            return Promise.reject(error);
-        });
-};
-
-/**
- * Get token request headers.
- *
- * @param {string} clientHost
- * @returns {{headers: {Accept: string; "Access-Control-Allow-Origin": string; "Content-Type": string}}}
- */
-const getTokenRequestHeaders = (clientHost: string) => {
-    return {
-        headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": clientHost,
-            "Content-Type": "application/x-www-form-urlencoded"
-        }
-    };
 };
