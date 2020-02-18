@@ -232,6 +232,7 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
                             primary
                             onClick={
                                 () => {
+                                    sessionStorage.setItem("redirected", "true");
                                     window.open(
                                         `${GlobalConfig.userPortalClientHost}/${GlobalConfig.userPortalBaseName}`
                                     );
