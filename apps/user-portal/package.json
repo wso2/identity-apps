@@ -26,7 +26,8 @@
         "@wso2is/forms": "^1.0.43",
         "@wso2is/http": "^1.0.43",
         "@wso2is/theme": "^1.0.43",
-        "@wso2is/validation": "^1.0.43"
+        "@wso2is/validation": "^1.0.43",
+        "qrcode.react": "^1.0.0"
     },
     "devDependencies": {
         "run-script-os": "^1.0.7"
