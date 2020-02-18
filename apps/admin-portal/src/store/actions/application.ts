@@ -17,7 +17,7 @@
  */
 
 import {
-    AuthProtocolMetaListItemInterface, OIDCMetadataInterface, SupportedAuthProtocolMetaTypes, SupportedAuthProtocolTypes
+    AuthProtocolMetaListItemInterface, OIDCMetadataInterface, SupportedAuthProtocolMetaTypes
 } from "../../models";
 import {
     ApplicationActionTypes,
@@ -45,6 +45,7 @@ export const setAvailableInboundAuthProtocolMeta = (
  * @param {OIDCMetadataInterface | any} meta - Auth protocol metadata.
  * @return {SetAuthProtocolMetaInterface} An action of type `SET_AUTH_PROTOCOL_META`
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const setAuthProtocolMeta = (
     protocol: SupportedAuthProtocolMetaTypes, meta: OIDCMetadataInterface | any
 ): SetAuthProtocolMetaInterface => ({

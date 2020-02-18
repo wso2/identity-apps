@@ -152,10 +152,10 @@ export interface Views {
             all: {
                 heading: string;
                 subHeading: string;
-            },
+            };
             buttons: {
                 assignUserRoleBtn: string;
-            },
+            };
             notifications: {
                 addUser: Notification;
                 deleteUser: Notification;
@@ -204,8 +204,8 @@ export interface Views {
                     dropdown: string;
                 };
                 resultsIndicator: string;
-            },
-        },
+            };
+        };
         user: {
             forms: {
                 addUserForm: {
@@ -216,22 +216,22 @@ export interface Views {
                             validations: {
                                 empty: string;
                                 mismatch: string;
-                            }
-                        },
+                            };
+                        };
                         firstName: {
                             label: string;
                             placeholder: string;
                             validations: {
                                 empty: string;
-                            }
-                        },
+                            };
+                        };
                         lastName: {
                             label: string;
                             placeholder: string;
                             validations: {
                                 empty: string;
-                            }
-                        },
+                            };
+                        };
                         username: {
                             label: string;
                             placeholder: string;
@@ -245,24 +245,24 @@ export interface Views {
                             placeholder: string;
                             validations: {
                                 empty: string;
-                            }
-                        },
+                            };
+                        };
                         domain: {
                             label: string;
                             placeholder: string;
                             validations: {
                                 empty: string;
-                            }
-                        },
+                            };
+                        };
                         email: {
                             label: string;
                             placeholder: string;
                             validations: {
                                 empty: string;
                                 invalid: string;
-                            }
-                        },
-                    },
+                            };
+                        };
+                    };
                     validations: {
                         genericError: {
                             description: string;
@@ -287,8 +287,8 @@ export interface Views {
                 addUserWarnModal: {
                     heading: string;
                     message: string;
-                }
-            },
+                };
+            };
             profile: {
                 fields: {
                     generic: {
@@ -296,18 +296,18 @@ export interface Views {
                     };
                     emails: string;
                     profileUrl: string;
-                    addresses_work: string;
-                    addresses_home: string;
-                    emails_home: string;
-                    emails_other: string;
-                    emails_work: string;
-                    name_familyName: string;
-                    name_givenName: string;
+                    addressesWork: string;
+                    addressesHome: string;
+                    emailsHome: string;
+                    emailsOther: string;
+                    emailsWork: string;
+                    nameFamilyName: string;
+                    nameGivenName: string;
                     phoneNumbers: string;
-                    phoneNumbers_home: string;
-                    phoneNumbers_mobile: string;
-                    phoneNumbers_work: string;
-                    phoneNumbers_other: string;
+                    phoneNumbersHome: string;
+                    phoneNumbersMobile: string;
+                    phoneNumbersWork: string;
+                    phoneNumbersOther: string;
                     userName: string;
                 };
                 forms: {
@@ -383,10 +383,10 @@ export interface Views {
                 placeholders: {
                     SCIMDisabled: {
                         heading: string;
-                    }
+                    };
                 };
-            }
-        },
+            };
+        };
         footer: {
             copyright: string;
         };
