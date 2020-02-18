@@ -293,14 +293,14 @@ export interface Views {
                 piiCategoryHeading: string;
                 state: string;
                 version: string;
-            }
+            };
             modals: {
                 consentRevokeModal: {
                     heading: string;
                     message: string;
                     warning: string;
-                }
-            },
+                };
+            };
             notifications: {
                 consentReceiptFetch: Notification;
                 consentedAppsFetch: Notification;
@@ -350,7 +350,7 @@ export interface Views {
                 getFederatedAssociations: Notification;
                 removeFederatedAssociation: Notification;
                 removeAllFederatedAssociations: Notification;
-            }
+            };
         };
         mfa: {
             fido: {
@@ -360,8 +360,8 @@ export interface Views {
                     deviceRegistrationErrorModal: {
                         description: string;
                         heading: string;
-                    }
-                }
+                    };
+                };
                 notifications: {
                     removeDevice: Notification;
                     startFidoFlow: Notification;
@@ -373,7 +373,7 @@ export interface Views {
                     placeholder: string;
                     remove: string;
                     required: string;
-                }
+                };
             };
             smsOtp: {
                 descriptions: {
@@ -665,7 +665,7 @@ export interface Views {
             placeholders: {
                 SCIMDisabled: {
                     heading: string;
-                }
+                };
             };
         };
         profileExport: {
@@ -681,7 +681,7 @@ export interface Views {
             browserAndOS: string;
             dangerZones: {
                 terminate: DangerZone;
-            }
+            };
             lastAccessed: string;
             modals: {
                 terminateAllUserSessionsModal: {
