@@ -95,4 +95,4 @@ export class ApplicationConstants {
  * @type {string}
  * @default
  */
-export const AUTH_ERROR_TIME: string = "authErrorTime";
+export const AUTH_ERROR_TIME = "authErrorTime";
