@@ -16,13 +16,16 @@
  * under the License.
  */
 
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getApplicationList } from "../api";
 import { ApplicationList, ApplicationSearch } from "../components";
-import { history } from "../helpers/history";
+import { history } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
 import { ApplicationListInterface } from "../models";
 
@@ -58,6 +61,8 @@ const DEFAULT_APP_LIST_ITEM_LIMIT: number = 10;
  */
 export const ApplicationsPage = (): JSX.Element => {
 
+    const dispatch = useDispatch();
+
     const [ searchQuery, setSearchQuery ] = useState("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
         APPLICATIONS_LIST_SORTING_OPTIONS[ 0 ]
@@ -72,7 +77,21 @@ export const ApplicationsPage = (): JSX.Element => {
                 setAppList(response);
             })
             .catch((error) => {
-                // TODO add notifications
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Application Create Error"
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: "An error occurred while retrieving applications",
+                    level: AlertLevels.ERROR,
+                    message: "Retrieval Error"
+                }));
             });
     };
 
@@ -105,6 +124,13 @@ export const ApplicationsPage = (): JSX.Element => {
         setListItemLimit(data.value as number);
     };
 
+    /**
+     * Handles application delete action.
+     */
+    const handleApplicationDelete = (): void => {
+        getAppLists(listItemLimit, listOffset);
+    };
+
     return (
         <PageLayout
             title="Applications"
@@ -135,7 +161,7 @@ export const ApplicationsPage = (): JSX.Element => {
                 totalPages={ Math.ceil(appList.totalResults / listItemLimit) }
                 totalListSize={ appList.totalResults }
             >
-                <ApplicationList list={ appList } />
+                <ApplicationList list={ appList } onApplicationDelete={ handleApplicationDelete } />
             </ListLayout>
         </PageLayout>
     );
