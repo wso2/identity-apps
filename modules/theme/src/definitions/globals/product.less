@@ -839,7 +839,8 @@ body {
         text-align: center;
         color: @stepDefaultFontColor;
         font-size: @stepFontSize;
-        width: 120px;
+        min-width: @stepMinWidth;
+        margin: 0 @stepHorizontalSpacing;
 
         .step-icon-wrapper {
             width: @stepIconSize;
@@ -861,7 +862,7 @@ body {
                 }
             }
             &:after {
-                content: "- - -";
+                content: "- - - -";
                 color: @stepDefaultFontColor;
                 display: inline-block;
                 position: absolute;
@@ -901,12 +902,6 @@ body {
                     color: @stepActiveFontColor;
                 }
             }
-        }
-        &:not(:last-child) {
-            margin-right: @stepHorizontalSpacing;
-        }
-        &:not(:first-child) {
-            margin-left: @stepHorizontalSpacing;
         }
         &:last-child {
             .step-icon-wrapper {
