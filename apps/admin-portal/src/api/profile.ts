@@ -21,7 +21,7 @@ import { AxiosHttpClient } from "@wso2is/http";
 import axios from "axios";
 import { isEmpty } from "lodash";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
-import { BasicProfileInterface, HttpMethods } from "../models";
+import { BasicProfileInterface, HttpMethods, ProfileSchema } from "../models";
 
 /**
  * Get an axios instance.

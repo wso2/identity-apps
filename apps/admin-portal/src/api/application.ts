@@ -354,7 +354,8 @@ export const getOIDCData = (id: string): Promise<any> => {
  * @param {string} endpoint - Resource endpoint.
  * @return {Promise<OIDCDataInterface>}
  */
-export const getInboundProtocolConfig = (endpoint: string) => {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const getInboundProtocolConfig = (endpoint: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",

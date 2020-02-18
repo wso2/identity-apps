@@ -29,7 +29,7 @@ import { getProfileInfo, getProfileSchemas } from "../../api";
 import { GlobalConfig, i18n, ServiceResourcesEndpoint } from "../../configs";
 import * as TokenConstants from "../../constants";
 import { history } from "../../helpers";
-import { AlertLevels, BasicProfileInterface, ProfileSchema } from "../../models";
+import { AlertLevels, ProfileSchema } from "../../models";
 import { store } from "../index";
 import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
@@ -75,11 +75,21 @@ export const setScimSchemas = (schemas: ProfileSchema[]): AuthAction => ({
 });
 
 /**
+ * Get SCIM2 schemas
+ */
+export const getScimSchemas = () => (dispatch): void => {
+    dispatch(setProfileSchemaLoader(true));
+    getProfileSchemas()
+        .then((response: ProfileSchema[]) => {
+            dispatch(setProfileSchemaLoader(false));
+            dispatch(setScimSchemas(response));
+        });
+};
+
+/**
  *  Gets profile information by making an API call
  */
 export const getProfileInformation = () => (dispatch): void => {
-
-    let isCompletionCalculated = false;
 
     dispatch(setProfileInfoLoader(true));
 
@@ -95,8 +105,7 @@ export const getProfileInformation = () => (dispatch): void => {
 
                 // If the schemas in the redux store is empty, fetch the SCIM schemas from the API.
                 if (_.isEmpty(store.getState().authenticationInformation.profileSchemas)) {
-                    isCompletionCalculated = true;
-                    dispatch(getScimSchemas(infoResponse));
+                    dispatch(getScimSchemas());
                 }
 
                 return;
@@ -149,10 +158,28 @@ export const getProfileInformation = () => (dispatch): void => {
         });
 };
 
+
+/**
+ * Handle user sign-out
+ */
+export const handleSignOut = () => (dispatch): void => {
+    if (sessionStorage.length === 0) {
+        history.push(GlobalConfig.appLoginPath);
+    } else {
+        SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl, () => {
+                dispatch(setSignOut());
+                AuthenticateSessionUtil.endAuthenticatedSession();
+                OPConfigurationUtil.resetOPConfiguration();
+            }).catch(() => {
+                history.push(GlobalConfig.appLoginPath);
+            });
+    }
+};
+
 /**
  * Handle user sign-in
  */
-export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
+export const handleSignIn = (consentDenied = false) => (dispatch): void => {
     const requestParams: OIDCRequestParamsInterface = {
         clientHost: GlobalConfig.clientHost,
         clientId: GlobalConfig.clientID,
@@ -187,7 +214,7 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
         tenant: GlobalConfig.tenant
     };
 
-    const sendSignInRequest = () => {
+    const sendSignInRequest = (): void => {
         if (consentDenied) {
             requestParams.prompt = "login";
         }
@@ -240,35 +267,6 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
                 sendSignInRequest();
             });
     }
-};
-
-/**
- * Handle user sign-out
- */
-export const handleSignOut = () => (dispatch) => {
-    if (sessionStorage.length === 0) {
-        history.push(GlobalConfig.appLoginPath);
-    } else {
-        SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl, () => {
-                dispatch(setSignOut());
-                AuthenticateSessionUtil.endAuthenticatedSession();
-                OPConfigurationUtil.resetOPConfiguration();
-            }).catch(() => {
-                history.push(GlobalConfig.appLoginPath);
-            });
-    }
-};
-
-/**
- * Get SCIM2 schemas
- */
-export const getScimSchemas = (profileInfo: BasicProfileInterface = null) => (dispatch) => {
-    dispatch(setProfileSchemaLoader(true));
-    getProfileSchemas()
-        .then((response: ProfileSchema[]) => {
-            dispatch(setProfileSchemaLoader(false));
-            dispatch(setScimSchemas(response));
-        });
 };
 
 /**

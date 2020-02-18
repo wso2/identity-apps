@@ -27,6 +27,7 @@ export class ApplicationManagementConstants {
      *
      * @hideconstructor
      */
+    /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
 
     // API errors

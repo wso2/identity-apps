@@ -32,6 +32,7 @@ const httpClient = AxiosHttpClient.getInstance();
  *
  * @return {Promise<any>} A promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getIdentityProviderList = (): Promise<any> => {
     // TODO add limit and offsets
     const requestConfig = {
@@ -60,6 +61,7 @@ export const getIdentityProviderList = (): Promise<any> => {
  *
  * @param id Identity Provider Id.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getIdentityProviderDetail = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {

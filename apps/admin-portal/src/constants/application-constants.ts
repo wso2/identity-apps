@@ -75,6 +75,7 @@ export class ApplicationConstants {
      *
      * @hideconstructor
      */
+    /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
 
     /**
@@ -82,6 +83,7 @@ export class ApplicationConstants {
      * @constant
      * @type {object}
      */
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
     public static readonly APPLICATION_MGT_CONFIG_PATHS: any = {
         META: "configs/application-mgt.meta.json"
     };
