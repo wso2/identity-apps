@@ -16,12 +16,12 @@
  * under the License
  */
 
-import {Field, Forms, Validation} from "@wso2is/forms";
+import { Field, Forms } from "@wso2is/forms";
 import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { deleteUser, updateUserInfo } from "../../api";
 import { history } from "../../helpers";
@@ -29,7 +29,6 @@ import { AlertInterface, AlertLevels, AuthStateInterface, BasicProfileInterface,
 import { AppState } from "../../store";
 import { flattenSchemas } from "../../utils";
 import * as _ from "lodash";
-import {FormValidation} from "@wso2is/validation";
 
 /**
  * Prop types for the basic details component.
