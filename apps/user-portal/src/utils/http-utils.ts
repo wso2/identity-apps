@@ -18,6 +18,7 @@
  */
 
 import { OPConfigurationUtil } from "@wso2is/authentication";
+import { AxiosHttpClient } from "@wso2is/http";
 import * as ApplicationConstants from "../constants/application-constants";
 import { history } from "../helpers";
 import { store } from "../store";
@@ -106,4 +107,12 @@ export const onHttpRequestError = (error: any): null => {
  */
 export const onHttpRequestFinish = (): void => {
     store.dispatch(hideGlobalLoader());
+};
+
+/**
+ * Set up the http client by registering the callback functions.
+ */
+export const setupHttpClient = () => {
+    const httpClient = AxiosHttpClient.getInstance();
+    httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
 };
