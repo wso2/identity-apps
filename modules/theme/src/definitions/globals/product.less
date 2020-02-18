@@ -814,6 +814,10 @@ body {
     font-size: @inputAddonFontSize;
     margin: @inputAddonMargin;
 
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.45;
+    }
     &.compact {
         margin: 0;
     }
