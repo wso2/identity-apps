@@ -90,7 +90,6 @@ export const ListLayout: React.FunctionComponent<PropsWithChildren<ListLayoutPro
                         </Grid.Column>
                         <Grid.Column width={ 12 }>
                             <div className="right-aligned-actions">
-                                { /* TODO: Re-enable when the API is ready */ }
                                 { advancedSearch && advancedSearch }
                                 { rightActionPanel && rightActionPanel }
                             </div>
