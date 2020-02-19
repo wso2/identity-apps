@@ -70,6 +70,8 @@ export const ProfileExportIllustration = require("../lib/assets/images/illustrat
 export const ProfileExportMiniIllustration = require("../lib/assets/images/illustrations/profile-export-mini.svg");
 export const SecurityQuestionsIllustration = require("../lib/assets/images/illustrations/security-questions.svg");
 export const SecurityQuestionsMiniIllustration = require("../lib/assets/images/illustrations/security-questions-mini.svg");
+export const QRCodeScanIllustration = require("../lib/assets/images/illustrations/qrcode-scan.svg");
+export const EnterVerificationCode = require("../lib/assets/images/illustrations/enter-verification-code.svg");
 
 // Status shields
 export const StatusShieldGood = require("../lib/assets/images/accounts-status-icons/good.svg");
