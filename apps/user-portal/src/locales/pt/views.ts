@@ -548,6 +548,7 @@ export const views: Views = {
                 modals: {
                     done: "Sucesso! Agora você pode usar seu aplicativo de autenticação para autenticação de dois fatores",
                     scan: {
+                        authenticatorApps: "Authenticator Apps",
                         generate: "Gere um novo código",
                         heading: "Leia este QR Code usando um aplicativo Authenticator",
                         messageBody: "Você pode encontrar uma lista de aplicativos autenticadores disponíveis aqui.",

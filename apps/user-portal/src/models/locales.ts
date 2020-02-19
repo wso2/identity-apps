@@ -396,6 +396,7 @@ export interface Views {
                         generate: string;
                         messageHeading: string;
                         messageBody: string;
+                        authenticatorApps: string;
                     };
                     verify: {
                         heading: string;

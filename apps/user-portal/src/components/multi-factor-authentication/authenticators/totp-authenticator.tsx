@@ -270,7 +270,12 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
                 </Segment>
                 <Message info>
                     <Message.Header>{ t(translateKey + "modals.scan.messageHeading") }</Message.Header>
-                    <Message.Content>{ t(translateKey + "modals.scan.messageBody") }</Message.Content>
+                    <Message.Content>
+                        { t(translateKey + "modals.scan.messageBody") + " " }
+                        <a target="_blank" href="https://www.g2.com/categories/multi-factor-authentication-mfa">
+                            { t(translateKey + "modals.scan.authenticatorApps")}
+                        </a>
+                    </Message.Content>
                 </Message>
             </>
         );
