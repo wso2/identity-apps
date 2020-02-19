@@ -43,6 +43,7 @@ export interface Common {
     delete: string;
     description: string;
     deviceModel: string;
+    done: string;
     edit: string;
     endsWith: string;
     equals: string;
@@ -91,6 +92,7 @@ export interface Common {
     type: string;
     update: string;
     user: string;
+    verify: string;
 }
 
 /**
@@ -383,6 +385,39 @@ export interface Views {
                 notifications: {
                     updateMobile: Notification;
                 };
+            };
+            authenticatorApp: {
+                description: string;
+                heading: string;
+                hint: string;
+                modals: {
+                    scan: {
+                        heading: string;
+                        generate: string;
+                        messageHeading: string;
+                        messageBody: string;
+                    };
+                    verify: {
+                        heading: string;
+                        label: string;
+                        placeholder: string;
+                        error: string;
+                        requiredError: string;
+                        reScanQuestion: string;
+                        reScan: string;
+                    };
+                    done: string;
+                };
+                notifications: {
+                    initError: {
+                        genericError: NotificationItem;
+                        error: NotificationItem;
+                    };
+                    refreshError: {
+                        genericError: NotificationItem;
+                        error: NotificationItem;
+                    }
+                }
             };
         };
         overview: {
