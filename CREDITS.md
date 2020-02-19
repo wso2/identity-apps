@@ -19,3 +19,10 @@
 ![forbidden](modules/theme/src/themes/default/assets/images/icons/forbidden-icon.svg) | Icon made by Freepik from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/prohibition-symbol_12572?term=not%20permitted&page=1&position=2)
 ![plug](modules/theme/src/themes/default/assets/images/icons/plug-icon.svg) | Icon made by prettycons from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/plug_978016?term=plug&page=1&position=20)
 ![drag](modules/theme/src/themes/default/assets/images/icons/drag-icon.svg) | Icon made by Pixel Perfect from www.flaticon.com | [Link](https://www.flaticon.com/free-icon/drag_624828?term=drag&page=1&position=2)
+
+# Illustration Owners
+
+|Illustration|Author|Link|
+:-:|:-:|:-:|
+|![QRCodeScan](modules/theme/src/themes/default/assets/images/illustrations/qrcode-scan.svg)|Invitation Vectors by Vecteezy|[Link](https://www.vecteezy.com/free-vector/invitation)|
+|![EnterVerificationCode](modules/theme/src/themes/default/assets/images/illustrations/enter-verification-code.svg)|From [Wikimedia Commons](https://commons.wikimedia.org/wiki/Main_Page) by [Videoplasty.com](https://videoplasty.com/)|[Link](https://commons.wikimedia.org/wiki/File:Laptop_Typing_Scene_Vector.svg)|
