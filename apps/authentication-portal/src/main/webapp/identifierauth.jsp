@@ -34,10 +34,19 @@
 
 <script>
     function submitIdentifier () {
-        var username = document.getElementById("username");
-        username.value = username.value.trim();
-        if(username.value){
-            console.log(username.value);
+        var tenantName = getParameterByName("tenantDomain");
+
+        var usernameUserInputValue = document.getElementById("usernameUserInput").value.trim();
+        var userName = document.getElementById("username");
+
+        if (getParameterByName("isSaaSApp") === "false") {
+            userName.value = usernameUserInputValue + "@" + tenantName;
+        }
+        else {
+            userName.value = usernameUserInputValue;
+        }
+
+        if (username.value) {
             document.getElementById("identifierForm").submit();
         }
     }
@@ -65,14 +74,15 @@
         <div class="ui fluid left icon input">
             <input
                 type="text"
-                id="username"
+                id="usernameUserInput"
                 value=""
-                name="username"
+                name="usernameUserInput"
                 tabindex="0"
                 placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "username")%>"
                 required />
             <i aria-hidden="true" class="user icon"></i>
         </div>
+        <input id="username" name="username" type="hidden" value="">
         <input id="authType" name="authType" type="hidden" value="idf">
     </div>
     <%

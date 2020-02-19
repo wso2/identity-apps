@@ -54,12 +54,27 @@
                     console.warn("Prevented a possible double submit event");
                 } else {
                     e.preventDefault();
+
+                    var tenantName = getParameterByName("tenantDomain");
                     var userName = document.getElementById("username");
-                    userName.value = userName.value.trim();
-                    if(userName.value){
+
+                    var usernameUserInput = document.getElementById("usernameUserInput");
+
+                    if (usernameUserInput) {
+                        var usernameUserInputValue = usernameUserInput.value.trim();
+
+                        if (getParameterByName("isSaaSApp") === "false") {
+                            userName.value = usernameUserInputValue + "@" + tenantName;
+                        }
+                        else {
+                            userName.value = usernameUserInputValue;
+                        }
+                    }
+
+                    if (userName.value) {
                         $.ajax({
                             type: "GET",
-                            url: "/logincontext?sessionDataKey=" + getParameterByName("sessionDataKey") + "&relyingParty=" + getParameterByName("relyingParty") + "&tenantDomain=" + getParameterByName("tenantDomain"),
+                            url: "/logincontext?sessionDataKey=" + getParameterByName("sessionDataKey") + "&relyingParty=" + getParameterByName("relyingParty") + "&tenantDomain=" + tenantName,
                             success: function (data) {
                                 if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
                                     window.location.href = data.redirectUrl;
@@ -144,6 +159,14 @@
 %>
 
 <form class="ui large form" action="<%=loginFormActionURL%>" method="post" id="loginForm">
+    <% if (isIdentifierFirstLogin(inputType)) { %>
+    <div class="field" style="text-align: center;">
+        <a href="javascript:goBack()" id="backLink" tabindex="7" class="ui center aligned">
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.different.account")%>
+        </a>
+    </div>
+    <div class="ui divider hidden"></div>
+    <% } %>
     <%
         if (loginFormActionURL.equals(samlssoURL) || loginFormActionURL.equals(oauth2AuthorizeURL)) {
     %>
@@ -165,13 +188,14 @@
             <div class="ui fluid left icon input">
                 <input
                     type="text"
-                    id="username"
+                    id="usernameUserInput"
                     value=""
-                    name="username"
+                    name="usernameUserInput"
                     tabindex="1"
                     placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "username")%>"
                     required>
                 <i aria-hidden="true" class="user icon"></i>
+                <input id="username" name="username" type="hidden" value="<%=username%>">
             </div>
         </div>
     <% } else { %>
@@ -241,26 +265,23 @@
     
     <div class="buttons">
         <% if (isRecoveryEPAvailable) { %>
-        <div class="field">
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
+        <div class="field">   
             <% if (!isIdentifierFirstLogin(inputType)) { %>
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%> 
                 <a id="usernameRecoverLink" tabindex="5" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true)%>">
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
                 </a>
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
-            <% } %>
+                <a id="passwordRecoverLink" tabindex="6" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false)%>">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
+                </a>
+                ?
+            <% } else { %>
             <a id="passwordRecoverLink" tabindex="6" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false)%>">
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%> 
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%> ?
             </a>
-            ?
-        </div>
-        <% } %>
-
-        <% if (isIdentifierFirstLogin(inputType)) { %>
-        <div class="field">
-            <a id="backLink" tabindex="7" onclick="goBack()">
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.different.account")%>
-            </a>
+            <% } %>
         </div>
         <% } %>
     </div>
@@ -276,6 +297,7 @@
     <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute
             (request.getParameter("sessionDataKey"))%>'/>
 
+    <% if (!isIdentifierFirstLogin(inputType)) { %>
     <div class="ui divider hidden"></div>
 
     <div class="cookie-policy-message">
@@ -290,6 +312,8 @@
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%>
         </a>
     </div>
+    <% } %>
+
     <div class="ui divider hidden"></div>
 
     <div class="ui two column stackable grid">
