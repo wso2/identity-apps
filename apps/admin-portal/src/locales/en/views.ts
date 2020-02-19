@@ -564,13 +564,23 @@ export const views: Views = {
                     }
                 }
             },
+            placeholders: {
+                emptyList: {
+                    action: "Refresh list",
+                    subtitles: {
+                        0: "The users list returned empty.",
+                        1: "Something went wrong while fetching the user list",
+                    },
+                    title: "No Users Found"
+                }
+            },
             search: {
                 forms: {
                     searchForm: {
                         inputs: {
                             filerAttribute: {
                                 label: "Filter attribute",
-                                placeholder: "E.g. name, description etc.",
+                                placeholder: "E.g. username, email etc.",
                                 validations: {
                                     empty: "Filter attribute is a required field"
                                 }
@@ -584,7 +594,7 @@ export const views: Views = {
                             },
                             filterValue: {
                                 label: "Filter value",
-                                placeholder: "E.g. facebook, slack etc.",
+                                placeholder: "Enter value to search",
                                 validations: {
                                     empty: "Filter value is a required field"
                                 }
