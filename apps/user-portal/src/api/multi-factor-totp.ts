@@ -31,19 +31,19 @@ const httpClient = AxiosHttpClient.getInstance();
  * The action types of the totp post endpoint
  */
 enum POST_TOTP {
-    VALIDATE,
-    INIT,
-    REFRESH
-};
+    VALIDATE = "VALIDATE",
+    INIT = "INIT",
+    REFRESH = "REFRESH"
+}
 
 /**
- * This API is used to retrieve the QR code URL of the authenticated user. 
+ * This API is used to retrieve the QR code URL of the authenticated user.
  */
 export const getTotpQrCode = (): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
         url: ServiceResourcesEndpoint.totp
@@ -52,7 +52,7 @@ export const getTotpQrCode = (): Promise<any> => {
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status !== 200) {
+            if (response.status === 200) {
                 return Promise.reject(`An error occurred. Server returned ${response.status}.`);
             } else {
                 return Promise.resolve(response);
@@ -69,25 +69,25 @@ export const getTotpQrCode = (): Promise<any> => {
  */
 export const validateTOTPCode = (code: string): Promise<any> => {
     const requestConfig = {
-        headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.totp,
         data: {
             action: POST_TOTP.VALIDATE,
             verificationCode: code
-        }
+        },
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: ServiceResourcesEndpoint.totp
     };
 
-    httpClient
+    return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status !== 200) {
+            if (response.status === 200) {
                 return Promise.resolve(response);
             } else {
-                return Promise.PromiseRejectionEvent(`An error occurred. The server returned ${response.status}`);
+                return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
         })
         .catch((error) => {
@@ -97,29 +97,27 @@ export const validateTOTPCode = (code: string): Promise<any> => {
 
 /**
  * Refresh TOTP secret key of the authenticated user
- * @param code Verification code
  */
-export const refreshTOTPCode = (code: string): Promise<any> => {
+export const refreshTOTPCode = (): Promise<any> => {
     const requestConfig = {
+        data: {
+            action: POST_TOTP.REFRESH
+        },
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.totp,
-        data: {
-            action: POST_TOTP.REFRESH,
-            verificationCode: code
-        }
+        url: ServiceResourcesEndpoint.totp
     };
 
-    httpClient
+    return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status !== 201) {
+            if (response.status === 200) {
                 return Promise.resolve(response);
             } else {
-                return Promise.PromiseRejectionEvent(`An error occurred. The server returned ${response.status}`);
+                return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
         })
         .catch((error) => {
@@ -129,29 +127,27 @@ export const refreshTOTPCode = (code: string): Promise<any> => {
 
 /**
  * Generate TOTP QR code URL for the authenticated user
- * @param code Verification code
  */
-export const initTOTPCode = (code: string): Promise<any> => {
+export const initTOTPCode = (): Promise<any> => {
     const requestConfig = {
+        data: {
+            action: POST_TOTP.INIT
+        },
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.totp,
-        data: {
-            action: POST_TOTP.INIT,
-            verificationCode: code
-        }
+        url: ServiceResourcesEndpoint.totp
     };
 
-    httpClient
+    return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status !== 200) {
+            if (response.status === 200) {
                 return Promise.resolve(response);
             } else {
-                return Promise.PromiseRejectionEvent(`An error occurred. The server returned ${response.status}`);
+                return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
         })
         .catch((error) => {
@@ -166,19 +162,19 @@ export const deleteTOTP = (): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
         url: ServiceResourcesEndpoint.totp
     };
 
-    httpClient
+    return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status !== 200) {
+            if (response.status === 200) {
                 return Promise.resolve(response);
             } else {
-                return Promise.PromiseRejectionEvent(`An error occurred. The server returned ${response.status}`);
+                return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
         })
         .catch((error) => {
@@ -193,19 +189,19 @@ export const getTOTPSecret = (): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
         url: ServiceResourcesEndpoint.totpSecret
     };
 
-    httpClient
+    return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status !== 200) {
+            if (response.status === 200) {
                 return Promise.resolve(response);
             } else {
-                return Promise.PromiseRejectionEvent(`An error occurred. The server returned ${response.status}`);
+                return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
         })
         .catch((error) => {
