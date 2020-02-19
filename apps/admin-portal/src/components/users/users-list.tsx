@@ -73,12 +73,12 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             const dateY = new Date(currentDate);
 
             if (dateY.getDate() - dateX.getDate() !== 0) {
-                return Math.abs(dateY.getDate() - dateX.getDate()) + " " + "days ago";
+                return "last modified" + " " + Math.abs(dateY.getDate() - dateX.getDate()) + " " + "days ago";
             } else {
-                return "today";
+                return " last modified today";
             }
         } else {
-            return "unknown";
+            return;
         }
     };
 
@@ -115,8 +115,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                             " " + user.name.familyName : user.userName }
                         itemDescription={ user.emails ? user.emails[0].toString() :
                             user.userName }
-                        metaContent={ listContent("last modified" + " " +
-                            handleLastModifiedDate(user.meta.lastModified)) }
+                        metaContent={ listContent(handleLastModifiedDate(user.meta.lastModified)) }
                     />
                 ))
             }

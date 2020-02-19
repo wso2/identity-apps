@@ -73,10 +73,20 @@ export const GeneralDetailsApplication: FunctionComponent<GeneralSettingsProps> 
                 history.push("/applications");
             })
             .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Application Delete Error"
+                    }));
+
+                    return;
+                }
+
                 dispatch(addAlert({
                     description: "An error occurred while deleting the application",
                     level: AlertLevels.ERROR,
-                    message: "Delete Error"
+                    message: "Application Delete Error"
                 }));
             });
     };

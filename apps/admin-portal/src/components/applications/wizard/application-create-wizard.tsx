@@ -144,11 +144,19 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     level: AlertLevels.SUCCESS,
                     message: "Creation successful"
                 }));
+
+                // The created resource's id is sent as a location header.
+                // If that's available, navigate to the edit page.
                 if (!_.isEmpty(response.headers.location)) {
                     const location = response.headers.location;
                     const createdAppID = location.substring(location.lastIndexOf("/") + 1);
                     history.push("/applications/" + createdAppID);
+
+                    return;
                 }
+
+                // Fallback to applications page, if the location header is not present.
+                history.push("/applications");
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -242,7 +250,6 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 }
             }
         });
-        history.push("/applications");
     };
 
     const STEPS = [

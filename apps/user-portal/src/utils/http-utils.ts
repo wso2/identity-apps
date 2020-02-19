@@ -18,7 +18,6 @@
  */
 
 import { OPConfigurationUtil } from "@wso2is/authentication";
-import { AxiosHttpClient } from "@wso2is/http";
 import * as ApplicationConstants from "../constants/application-constants";
 import { history } from "../helpers";
 import { store } from "../store";

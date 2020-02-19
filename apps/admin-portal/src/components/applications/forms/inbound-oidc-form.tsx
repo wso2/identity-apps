@@ -566,8 +566,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     children={ getAllowedList(metadata.idTokenEncryptionAlgorithm) }
                                     disabled={ !isEncryptionEnabled }
                                 />
-                                { isEncryptionEnabled &&
-                                (<Hint>Choose encryption algorithm of ID token for the client.</Hint>) }
+                                <Hint disabled={ !isEncryptionEnabled }>
+                                    Choose encryption algorithm of ID token for the client.
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
@@ -584,8 +585,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     children={ getAllowedList(metadata.idTokenEncryptionMethod) }
                                     disabled={ !isEncryptionEnabled }
                                 />
-                                { isEncryptionEnabled &&
-                                (<Hint>Choose the method for the ID token encryption.</Hint>) }
+                                <Hint disabled={ !isEncryptionEnabled }>
+                                    Choose the method for the ID token encryption.
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>

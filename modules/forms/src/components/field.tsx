@@ -79,7 +79,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                 return (
                     <Password
                         { ...filteredProps }
-                        label={ inputField.label }
+                        label={ inputField.label !== "" ? inputField.label : null }
                         width={ inputField.width }
                         error={
                             isError
@@ -112,7 +112,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                 return (
                     <Form.TextArea
                         { ...filteredProps }
-                        label={ inputField.label }
+                        label={ inputField.label !== "" ? inputField.label : null }
                         width={ inputField.width }
                         error={
                             isError
@@ -143,7 +143,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                 return (
                     <Form.Input
                         { ...filteredProps }
-                        label={ inputField.label }
+                        label={ inputField.label !== "" ? inputField.label : null }
                         width={ inputField.width }
                         error={
                             isError
@@ -174,7 +174,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
         } else if (isRadioField(inputField)) {
             return (
                 <Form.Group grouped={ true }>
-                    <label>{ inputField.label }</label>
+                    { inputField.label !== "" ? `<label>${inputField.label}</label>` : null }
                     { inputField.children.map((radio: RadioChild, index: number) => {
                         return (
                             <Form.Field key={ index }>
@@ -203,7 +203,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
             return (
                 <Form.Select
                     { ...filteredProps }
-                    label={ inputField.label }
+                    label={ inputField.label !== "" ? inputField.label : null }
                     placeholder={ inputField.placeholder }
                     options={ inputField.children }
                     value={ form.get(inputField.name) }

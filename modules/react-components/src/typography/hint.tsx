@@ -33,6 +33,10 @@ interface HintPropsInterface {
      */
     compact?: boolean;
     /**
+     * Determines if the hint is in the disabled state.
+     */
+    disabled?: boolean;
+    /**
      * Icon to be displayed
      */
     icon?: SemanticICONS;
@@ -52,13 +56,15 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
         children,
         className,
         compact,
+        disabled,
         icon
     } = props;
 
     const classes = classNames(
         "ui-hint",
         {
-            compact
+            compact,
+            disabled
         },
         className
     );

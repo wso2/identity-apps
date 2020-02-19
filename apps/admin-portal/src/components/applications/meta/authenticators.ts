@@ -31,7 +31,6 @@ export interface AuthenticatorListItemInterface {
     idp?: string;
     /* eslint-disable @typescript-eslint/no-explicit-any */
     image?: any;
-    index?: number;
     type?: AuthenticatorTypes;
 }
 
@@ -42,6 +41,13 @@ export const selectedLocalAuthenticators: AuthenticatorListItemInterface[] = [
         idp: "LOCAL",
         image: AuthenticatorIcons.basic,
         type: AuthenticatorTypes.FIRST_FACTOR,
+    },
+    {
+        authenticator: "FIDOAuthenticator",
+        displayName: "FIDO",
+        idp: "LOCAL",
+        image: AuthenticatorIcons.fido,
+        type: AuthenticatorTypes.SECOND_FACTOR,
     }
 ];
 
@@ -73,13 +79,6 @@ export const selectedFederatedAuthenticators: AuthenticatorListItemInterface[] =
         displayName: "Facebook",
         image: AuthenticatorIcons.facebook,
         type: AuthenticatorTypes.SOCIAL,
-    },
-    {
-        authenticator: "FIDOAuthenticator",
-        authenticatorId: "asdadagJvb2tBdggXRoZW50aWNhdG9y",
-        displayName: "FIDO",
-        image: AuthenticatorIcons.fido,
-        type: AuthenticatorTypes.SECOND_FACTOR,
     },
     {
         authenticator: "TwitterAuthenticator",

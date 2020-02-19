@@ -758,7 +758,7 @@ export const views: Views = {
                                 "se aplicariam apenas aos usuários que optarem por usar versões atualizadas.",
                             para2: "A organização que executa o WSO2 IS pode revisar a Política de Privacidade de " +
                                 "tempos em tempos. Você pode encontrar a política de governo mais recente com o " +
-                                "respectivo link fornecido pela organização que executa o WSO2 IS 5.5. " +
+                                "respectivo link fornecido pela organização que executa o WSO2 IS. " +
                                 "A organização notificará quaisquer alterações na política de privacidade " +
                                 "nos nossos canais públicos oficiais."
                         },

@@ -78,7 +78,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             {
                 component: UsersPage,
                 exact: true,
-                icon: "usersAndRoles",
+                icon: "childIcon",
                 level: 2,
                 name: "Users",
                 path: "/users",
