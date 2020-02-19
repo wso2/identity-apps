@@ -42,6 +42,7 @@ export const common: Common = {
     delete: "Delete",
     description: "Description",
     deviceModel: "Device model",
+    done: "Done",
     edit: "Edit",
     endsWith: "Ends with",
     equals: "Equals",
@@ -89,5 +90,6 @@ export const common: Common = {
     terminateSession: "Terminate session",
     type: "Type",
     update: "Update",
-    user: "User"
+    user: "User",
+    verify: "Verify"
 };
