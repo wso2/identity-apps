@@ -18,20 +18,11 @@
  */
 
 import { OPConfigurationUtil } from "@wso2is/authentication";
-import { AxiosHttpClient } from "@wso2is/http";
 import * as ApplicationConstants from "../constants/application-constants";
 import { history } from "../helpers";
 import { store } from "../store";
 import { hideGlobalLoader, showGlobalLoader } from "../store/actions";
-import { endUserSession, hasLoginPermission } from "./authenticate-util";
-
-/**
- * Set up the http client by registering the callback functions.
- */
-export const setupHttpClient = () => {
-    const httpClient = AxiosHttpClient.getInstance();
-    httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
-};
+import { hasLoginPermission } from "./authenticate-util";
 
 /**
  * Callback to be fired on every Http request start.
