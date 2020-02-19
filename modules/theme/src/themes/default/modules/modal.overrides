@@ -278,3 +278,32 @@
         }
     }
 }
+
+/*********************************************
+                    TOTP
+*********************************************/
+
+.ui.modal {
+    .totp-header {
+        height: 150px;
+        background-color: @primaryColor;
+        color: @white;
+        border: none;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: end;
+
+        .illustration {
+            width: 150px;
+            height: 150px;
+            overflow: hidden;
+        }
+    }
+
+    .link {
+        color: @primaryColor;
+        cursor: pointer;
+        text-weight: bold;
+    }
+}
