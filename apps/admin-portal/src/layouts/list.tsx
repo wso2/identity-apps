@@ -19,7 +19,7 @@
 import { Pagination } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { PropsWithChildren } from "react";
-import { Divider, Dropdown, DropdownItemProps, DropdownProps, Grid, PaginationProps } from "semantic-ui-react";
+import { Divider, DropdownItemProps, DropdownProps, Grid, PaginationProps } from "semantic-ui-react";
 
 /**
  * List layout component Prop types.

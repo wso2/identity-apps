@@ -20,16 +20,15 @@ import { Button, EmptyPlaceholder, PrimaryButton } from "@wso2is/react-component
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import {DropdownProps, Grid, Icon, PaginationProps} from "semantic-ui-react";
+import { DropdownProps, Grid, Icon, PaginationProps } from "semantic-ui-react";
 import { deleteUser, getUsersList } from "../api";
-import { AddUser, UserSearch, UsersList } from "../components/users";
+import { UserSearch, UsersList } from "../components/users";
 import { AddUserWizard } from "../components/users/wizard/add-user-wizard";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertInterface, AlertLevels } from "../models";
 import { UserListInterface } from "../models/user";
 import { addAlert } from "../store/actions";
 import { EmptyPlaceholderIllustrations } from "../configs";
-import { isEmpty } from "lodash";
 
 const DEFAULT_USER_LIST_ITEM_LIMIT: number = 10;
 
