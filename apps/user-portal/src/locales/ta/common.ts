@@ -42,6 +42,7 @@ export const common: Common = {
     delete: "அழி",
     description: "விபரம்",
     deviceModel: "கருவி மாதிரி",
+    done: "நிறைவு செய்",
     edit: "திருத்து",
     endsWith: "முடிவடைவது",
     equals: "சமன்",
@@ -89,5 +90,6 @@ export const common: Common = {
     terminateSession: "அமர்வை முடி",
     type: "வகை",
     update: "புதுப்பி",
-    user: "பயனர்"
+    user: "பயனர்",
+    verify: "உறுதி செய்"
 };

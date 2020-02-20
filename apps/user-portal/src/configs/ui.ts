@@ -26,6 +26,7 @@ import {
     CrossIcon,
     DummyUser,
     EmptySearchResultsIllustration,
+    EnterVerificationCode,
     ErrorIcon,
     ForbiddenIcon,
     GravatarLogo,
@@ -36,6 +37,7 @@ import {
     OrangeAppIconBackground,
     PackageIcon,
     Padlock,
+    QRCodeScanIllustration,
     SettigsSectionIconSet,
     SidePanelIconSet,
     StatusShieldDanger,
@@ -111,3 +113,6 @@ export const AlertIcons = {
     success: SuccessIcon,
     warning: WarningIcon
 };
+
+export const QRCodeScan = QRCodeScanIllustration;
+export const EnterCode = EnterVerificationCode;

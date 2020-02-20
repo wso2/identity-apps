@@ -541,6 +541,52 @@ export const views: Views = {
             }
         },
         mfa: {
+            authenticatorApp: {
+                description: "දෙවන සත්‍යාපන සාධකය ලෙස TOTP භාවිතා කිරීම සඳහා Authenticator යෙදුමක් භාවිතයෙන් QR කේතය පරිලෝකනය කරන්න",
+                heading: "සත්‍යාපන යෙදුම",
+                hint: "QR කේතය පෙන්වන්න",
+                modals: {
+                    done: "සාර්ථකත්වය! දැන් ඔබට සාධක දෙකක සත්‍යාපනය සඳහා ඔබේ සත්‍යාපන යෙදුම භාවිතා කළ හැකිය",
+                    scan: {
+                        authenticatorApps: "සත්‍යාපන යෙදුම්",
+                        generate: "නව කේතයක් ජනනය කරන්න",
+                        heading: "සත්‍යාපන යෙදුමක් භාවිතයෙන් මෙම QR කේතය පරිලෝකනය කරන්න",
+                        messageBody: "ඔබට මෙහි ඇති සත්‍යාපන යෙදුම් ලැයිස්තුවක් සොයාගත හැකිය.",
+                        messageHeading: "සත්‍යාපන යෙදුමක් ස්ථාපනය කර නොමැතිද?"
+                    },
+                    verify: {
+                        error: "සත්‍යාපනය අසාර්ථක විය. කරුණාකර නැවත උත්සාහ කරන්න.",
+                        heading: "සත්‍යාපන යෙදුමෙන් සත්‍යාපන කේතය ඇතුළත් කරන්න",
+                        label: "සත්යාපන කේතය",
+                        placeholder: "ඔබගේ සත්‍යාපන කේතය ඇතුළත් කරන්න",
+                        requiredError: "සත්‍යාපන කේතය ඇතුළත් කරන්න",
+                        reScan: "නැවත පරිලෝකනය කරන්න",
+                        reScanQuestion: "QR කේතය නැවත පරිලෝකනය කිරීමට අවශ්‍යද?"
+                    }
+                },
+                notifications: {
+                    initError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        genericError: {
+                            description: "QR කේතය ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        }
+                    },
+                    refreshError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        genericError: {
+                            description: "නව QR කේතයක් ලබා ගැනීමට උත්සාහ කිරීමේදී දෝෂයකි",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        }
+                    }
+                }
+            },
             fido: {
                 description: "FIDO යතුරක් සම්බන්ධ කිරීමෙන් සත්\u200Dයාපනය කිරීම",
                 form: {

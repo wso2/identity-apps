@@ -56,6 +56,7 @@ export const SpinWheelIcon = require("../lib/assets/images/icons/spin-wheel-icon
 export const SuccessIcon = require("../lib/assets/images/icons/success-icon.svg");
 export const TickCircleIcon = require("../lib/assets/images/icons/tick-circle-icon.svg");
 export const ToolsIcon = require("../lib/assets/images/icons/tools-icon.svg");
+export const AuthenticatorAppIcon = require("../lib/assets/images/icons/authenticator-app-icon.svg");
 export const UserIcon = require("../lib/assets/images/icons/user-icon.svg");
 export const WarningIcon = require("../lib/assets/images/icons/warning-icon.svg");
 
@@ -69,6 +70,8 @@ export const ProfileExportIllustration = require("../lib/assets/images/illustrat
 export const ProfileExportMiniIllustration = require("../lib/assets/images/illustrations/profile-export-mini.svg");
 export const SecurityQuestionsIllustration = require("../lib/assets/images/illustrations/security-questions.svg");
 export const SecurityQuestionsMiniIllustration = require("../lib/assets/images/illustrations/security-questions-mini.svg");
+export const QRCodeScanIllustration = require("../lib/assets/images/illustrations/qrcode-scan.svg");
+export const EnterVerificationCode = require("../lib/assets/images/illustrations/enter-verification-code.svg");
 
 // Status shields
 export const StatusShieldGood = require("../lib/assets/images/accounts-status-icons/good.svg");
@@ -138,7 +141,8 @@ export const SidePanelIconSet = {
 
 export const MFAIconSet = {
     sms: require("../lib/assets/images/icons/sms-icon.svg"),
-    fingerprint: require("../lib/assets/images/icons/fingerprint.svg")
+    fingerprint: require("../lib/assets/images/icons/fingerprint.svg"),
+    authenticatorApp: require("../lib/assets/images/icons/authenticator-app-icon.svg")
 };
 
 export const AccountRecoveryIconSet = {
