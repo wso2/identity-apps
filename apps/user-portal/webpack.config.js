@@ -157,7 +157,7 @@ module.exports = (env) => {
                             workers: require('os').cpus().length - 1,
                         },
                     },{
-                        loader:"tslint-loader",
+                        loader:"eslint-loader",
                         options: {
                             happyPackMode: true,
                             transpileOnly: false

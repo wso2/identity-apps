@@ -295,14 +295,14 @@ export interface Views {
                 piiCategoryHeading: string;
                 state: string;
                 version: string;
-            }
+            };
             modals: {
                 consentRevokeModal: {
                     heading: string;
                     message: string;
                     warning: string;
-                }
-            },
+                };
+            };
             notifications: {
                 consentReceiptFetch: Notification;
                 consentedAppsFetch: Notification;
@@ -352,7 +352,7 @@ export interface Views {
                 getFederatedAssociations: Notification;
                 removeFederatedAssociation: Notification;
                 removeAllFederatedAssociations: Notification;
-            }
+            };
         };
         mfa: {
             fido: {
@@ -362,8 +362,8 @@ export interface Views {
                     deviceRegistrationErrorModal: {
                         description: string;
                         heading: string;
-                    }
-                }
+                    };
+                };
                 notifications: {
                     removeDevice: Notification;
                     startFidoFlow: Notification;
@@ -375,7 +375,7 @@ export interface Views {
                     placeholder: string;
                     remove: string;
                     required: string;
-                }
+                };
             };
             smsOtp: {
                 descriptions: {
@@ -613,19 +613,19 @@ export interface Views {
                 };
                 emails: string;
                 profileUrl: string;
-                addresses_work: string;
-                addresses_home: string;
-                emails_home: string;
-                emails_other: string;
-                emails_work: string;
-                name_familyName: string;
-                name_givenName: string;
+                addressesWork: string;
+                addressesHome: string;
+                emailsHome: string;
+                emailsOther: string;
+                emailsWork: string;
+                nameFamilyName: string;
+                nameGivenName: string;
                 profileImage: string;
                 phoneNumbers: string;
-                phoneNumbers_home: string;
-                phoneNumbers_mobile: string;
-                phoneNumbers_work: string;
-                phoneNumbers_other: string;
+                phoneNumbersHome: string;
+                phoneNumbersMobile: string;
+                phoneNumbersWork: string;
+                phoneNumbersOther: string;
                 userName: string;
             };
             forms: {
@@ -701,7 +701,7 @@ export interface Views {
             placeholders: {
                 SCIMDisabled: {
                     heading: string;
-                }
+                };
             };
         };
         profileExport: {
@@ -717,7 +717,7 @@ export interface Views {
             browserAndOS: string;
             dangerZones: {
                 terminate: DangerZone;
-            }
+            };
             lastAccessed: string;
             modals: {
                 terminateAllUserSessionsModal: {

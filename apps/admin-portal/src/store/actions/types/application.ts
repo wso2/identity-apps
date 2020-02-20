@@ -57,6 +57,7 @@ export interface SetAvailableInboundProtocolsMetaInterface extends ApplicationBa
 /**
  * Set the metadata related to the auth protocol action interface.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface SetAuthProtocolMetaInterface extends ApplicationBaseActionInterface {
     payload: OIDCMetadataInterface | any;
     type: ApplicationActionTypes.SET_AUTH_PROTOCOL_META;

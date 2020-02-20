@@ -944,22 +944,22 @@ export const views: Views = {
         },
         profile: {
             fields: {
-                addresses_home: "Home address",
-                addresses_work: "Work address",
+                addressesHome: "Home address",
+                addressesWork: "Work address",
                 emails: "Email",
-                emails_home: "Home email",
-                emails_other: "Other email",
-                emails_work: "Work email",
+                emailsHome: "Home email",
+                emailsOther: "Other email",
+                emailsWork: "Work email",
                 generic: {
                     default: "Add {{fieldName}}"
                 },
-                name_familyName: "Last name",
-                name_givenName: "First name",
+                nameFamilyName: "Last name",
+                nameGivenName: "First name",
                 phoneNumbers: "Phone number",
-                phoneNumbers_home: "Home phone number",
-                phoneNumbers_mobile: "Mobile number",
-                phoneNumbers_other: "Other phone number",
-                phoneNumbers_work: "Work phone number",
+                phoneNumbersHome: "Home phone number",
+                phoneNumbersMobile: "Mobile number",
+                phoneNumbersOther: "Other phone number",
+                phoneNumbersWork: "Work phone number",
                 profileImage: "Profile Image",
                 profileUrl: "URL",
                 userName: "Username"

@@ -25,6 +25,7 @@ import { getSessionParameter } from "./session";
  *
  * @returns {}
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const sendSignOutRequest =  (redirectUri: string, sessionClearCallback): Promise<any> => {
     const logoutEndpoint = getEndSessionEndpoint();
 

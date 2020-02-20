@@ -968,22 +968,22 @@ export const views: Views = {
         },
         profile: {
             fields: {
-                addresses_home: "வீட்டு முகவரி",
-                addresses_work: "தொழில் முகவரி",
+                addressesHome: "வீட்டு முகவரி",
+                addressesWork: "தொழில் முகவரி",
                 emails: "மின்னஞ்சல் முகவரி",
-                emails_home: "வீட்டு மின்னஞ்சல் முகவரி",
-                emails_other: "வேறு மின்னஞ்சல் முகவரி",
-                emails_work: "தொழில் மின்னஞ்சல் முகவரி",
+                emailsHome: "வீட்டு மின்னஞ்சல் முகவரி",
+                emailsOther: "வேறு மின்னஞ்சல் முகவரி",
+                emailsWork: "தொழில் மின்னஞ்சல் முகவரி",
                 generic: {
                     default: "ஐச் சேருங்கள் {{fieldName}}"
                 },
-                name_familyName: "இறுதிப்பெயர்",
-                name_givenName: "முதற்பெயர்",
+                nameFamilyName: "இறுதிப்பெயர்",
+                nameGivenName: "முதற்பெயர்",
                 phoneNumbers: "தொலைபேசி இலக்கம்",
-                phoneNumbers_home: "வீட்டு தொலைபேசி இலக்கம்",
-                phoneNumbers_mobile: "கையடக்க தொலைபேசி இலக்கம்",
-                phoneNumbers_other: "வேறு தொலைபேசி இலக்கம்",
-                phoneNumbers_work: "தொழில் தொலைபேசி இலக்கம்",
+                phoneNumbersHome: "வீட்டு தொலைபேசி இலக்கம்",
+                phoneNumbersMobile: "கையடக்க தொலைபேசி இலக்கம்",
+                phoneNumbersOther: "வேறு தொலைபேசி இலக்கம்",
+                phoneNumbersWork: "தொழில் தொலைபேசி இலக்கம்",
                 profileImage: "பயனர் படம்",
                 profileUrl: "URL",
                 userName: "பயனர் பெயர்"

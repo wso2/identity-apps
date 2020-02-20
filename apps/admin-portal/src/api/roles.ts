@@ -31,6 +31,7 @@ const httpClient = AxiosHttpClient.getInstance();
  *
  * @returns {Promise<BasicProfileInterface>} a promise containing the user list.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getGroupsList = (): Promise<any> => {
     const requestConfig = {
         headers: {

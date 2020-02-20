@@ -67,7 +67,6 @@ import {
 } from "@wso2is/theme";
 
 type ImageType = string;
-type TitleTextType = string;
 
 interface StylesType {
     appPrimaryColor?: string;
@@ -104,7 +103,7 @@ export const AdvancedSearchIcons = {
     clear: CrossIcon
 };
 
-export const TitleText: TitleTextType = "Identity Server";
+export const TitleText = "Identity Server";
 export const customCSS: CustomCSSType = {
     dark: {
         appPrimaryColor: "#ff5000"
@@ -125,13 +124,13 @@ export const AlertIcons = {
  * Constant to handle desktop layout content top padding.
  * @type {number}
  */
-export const DESKTOP_CONTENT_TOP_PADDING: number = 50;
+export const DESKTOP_CONTENT_TOP_PADDING = 50;
 
 /**
  * Constant to handle mobile layout content padding.
  * @type {string}
  */
-export const MOBILE_CONTENT_PADDING: string = "2rem 1rem";
+export const MOBILE_CONTENT_PADDING = "2rem 1rem";
 
 export const EmptyPlaceholderIllustrations = {
     alert: AlertIcon,

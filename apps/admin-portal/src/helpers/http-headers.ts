@@ -21,7 +21,8 @@
  *
  * @returns {{headers: {Accept: string; "Access-Control-Allow-Origin": string; "Content-Type": string}}}
  */
-export const getTokenRequestHeaders = () => {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const getTokenRequestHeaders = (): any => {
     return {
         headers: {
             "Accept": "application/json",

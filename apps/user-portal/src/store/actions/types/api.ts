@@ -56,6 +56,7 @@ export const API_REQUEST = "API_REQUEST";
 /**
  * Api request action interface.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface ApiRequestAction {
     meta: object;
     payload: any;

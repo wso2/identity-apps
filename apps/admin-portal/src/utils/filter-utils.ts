@@ -25,6 +25,7 @@ import { dashboardLayoutRoutes } from "../configs";
  * @param appConfig
  * @param key
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const checkEnabled = (appConfig: any, key: string): boolean => {
     if (appConfig[key] === undefined) {
         return true;
@@ -50,6 +51,7 @@ export const filteredRoutes = (appConfig): RouteInterface[] => {
 /**
  * This obtains the app.config.json file from the server
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getAppConfig = (): Promise<any> => {
     return Axios.get(`/${APP_BASENAME}/app.config.json`).then((response) => {
         return Promise.resolve(response.data);

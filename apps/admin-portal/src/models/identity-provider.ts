@@ -69,6 +69,7 @@ export interface IdentityProviderResponseInterface {
 /**
  *  Captures IDPs name, logo and ID
  */
+/* eslint-disable @typescript-eslint/interface-name-prefix */
 export interface IDPNameInterface {
     authenticatorId: string;
     idp: string;

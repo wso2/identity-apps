@@ -41,13 +41,58 @@ import { getAuthenticatedUser, sendRefreshTokenRequest } from "./sign-in";
 const semaphore = new Semaphore(1);
 
 /**
+ * Remove parameter from session storage.
+ *
+ * @param {string} key.
+ */
+export const removeSessionParameter = (key: string): void => {
+    sessionStorage.removeItem(key);
+};
+
+/**
+ * Set parameter to session storage.
+ *
+ * @param {string} key.
+ * @param value value.
+ */
+export const setSessionParameter = (key: string, value: string): void => {
+    sessionStorage.setItem(key, value);
+};
+
+/**
+ * Get parameter from session storage.
+ *
+ * @param {string} key.
+ * @returns {string | null} parameter value or null.
+ */
+export const getSessionParameter = (key: string): string|null => {
+    return sessionStorage.getItem(key);
+};
+
+/**
+ * End authenticated user session.
+ */
+export const endAuthenticatedSession = (): void => {
+    removeSessionParameter(ACCESS_TOKEN);
+    removeSessionParameter(ACCESS_TOKEN_EXPIRE_IN);
+    removeSessionParameter(ACCESS_TOKEN_ISSUED_AT);
+    removeSessionParameter(DISPLAY_NAME);
+    removeSessionParameter(EMAIL);
+    removeSessionParameter(ID_TOKEN);
+    removeSessionParameter(REFRESH_TOKEN);
+    removeSessionParameter(SCOPE);
+    removeSessionParameter(TOKEN_TYPE);
+    removeSessionParameter(USERNAME);
+};
+
+/**
  * Initialize authenticated user session.
  *
  * @param {TokenResponseInterface} tokenResponse.
  * @param authenticatedUser authenticated user.
  */
 export const initUserSession = (tokenResponse: TokenResponseInterface,
-                                authenticatedUser: AuthenticatedUserInterface) => {
+                                authenticatedUser: AuthenticatedUserInterface): void => {
     endAuthenticatedSession();
     setSessionParameter(ACCESS_TOKEN, tokenResponse.accessToken);
     setSessionParameter(ACCESS_TOKEN_EXPIRE_IN, tokenResponse.expiresIn);
@@ -59,22 +104,6 @@ export const initUserSession = (tokenResponse: TokenResponseInterface,
     setSessionParameter(REFRESH_TOKEN, tokenResponse.refreshToken);
     setSessionParameter(TOKEN_TYPE, tokenResponse.tokenType);
     setSessionParameter(USERNAME, authenticatedUser.username);
-};
-
-/**
- * End authenticated user session.
- */
-export const endAuthenticatedSession = () => {
-    removeSessionParameter(ACCESS_TOKEN);
-    removeSessionParameter(ACCESS_TOKEN_EXPIRE_IN);
-    removeSessionParameter(ACCESS_TOKEN_ISSUED_AT);
-    removeSessionParameter(DISPLAY_NAME);
-    removeSessionParameter(EMAIL);
-    removeSessionParameter(ID_TOKEN);
-    removeSessionParameter(REFRESH_TOKEN);
-    removeSessionParameter(SCOPE);
-    removeSessionParameter(TOKEN_TYPE);
-    removeSessionParameter(USERNAME);
 };
 
 /**
@@ -97,35 +126,6 @@ export const getAllSessionParameters = (): SessionInterface => {
 };
 
 /**
- * Set parameter to session storage.
- *
- * @param {string} key.
- * @param value value.
- */
-export const setSessionParameter = (key: string, value: string) => {
-    sessionStorage.setItem(key, value);
-};
-
-/**
- * Get parameter from session storage.
- *
- * @param {string} key.
- * @returns {string | null} parameter value or null.
- */
-export const getSessionParameter = (key: string) => {
-    return sessionStorage.getItem(key);
-};
-
-/**
- * Remove parameter from session storage.
- *
- * @param {string} key.
- */
-export const removeSessionParameter = (key: string) => {
-    sessionStorage.removeItem(key);
-};
-
-/**
  * Get access token.
  *
  * @returns {Promise<string>} access token.
@@ -142,7 +142,7 @@ export const getAccessToken = (): Promise<string> => {
         return Promise.reject(new Error("Invalid user session."));
     }
 
-    function getValidityPeriod() {
+    function getValidityPeriod(): number {
         const currentExpiresIn = getSessionParameter(ACCESS_TOKEN_EXPIRE_IN);
         const currentIssuedAt = getSessionParameter(ACCESS_TOKEN_ISSUED_AT);
 

@@ -152,15 +152,15 @@ export interface Views {
             all: {
                 heading: string;
                 subHeading: string;
-            },
+            };
             buttons: {
                 assignUserRoleBtn: string;
-            },
+            };
             notifications: {
                 addUser: Notification;
                 deleteUser: Notification;
                 fetchUsers: Notification;
-            },
+            };
             search: {
                 forms: {
                     searchForm: {
@@ -170,42 +170,42 @@ export interface Views {
                                 placeholder: string;
                                 validations: {
                                     empty: string;
-                                }
-                            },
+                                };
+                            };
                             filterCondition: {
                                 label: string;
                                 placeholder: string;
                                 validations: {
                                     empty: string;
-                                }
-                            },
+                                };
+                            };
                             filterValue: {
                                 label: string;
                                 placeholder: string;
                                 validations: {
                                     empty: string;
-                                }
-                            },
-                        }
-                    }
-                },
+                                };
+                            };
+                        };
+                    };
+                };
                 hints: {
                     querySearch: {
                         actionKeys: string;
                         label: string;
-                    }
-                },
+                    };
+                };
                 options: {
                     header: string;
-                }
+                };
                 placeholder: string;
                 popups: {
                     clear: string;
                     dropdown: string;
-                },
+                };
                 resultsIndicator: string;
-            },
-        },
+            };
+        };
         user: {
             forms: {
                 addUserForm: {
@@ -216,79 +216,79 @@ export interface Views {
                             validations: {
                                 empty: string;
                                 mismatch: string;
-                            }
-                        },
+                            };
+                        };
                         firstName: {
                             label: string;
                             placeholder: string;
                             validations: {
                                 empty: string;
-                            }
-                        },
+                            };
+                        };
                         lastName: {
                             label: string;
                             placeholder: string;
                             validations: {
                                 empty: string;
-                            }
-                        },
+                            };
+                        };
                         username: {
                             label: string;
                             placeholder: string;
                             validations: {
                                 empty: string;
                                 invalid: string;
-                            }
-                        },
+                            };
+                        };
                         newPassword: {
                             label: string;
                             placeholder: string;
                             validations: {
                                 empty: string;
-                            }
-                        },
+                            };
+                        };
                         domain: {
                             label: string;
                             placeholder: string;
                             validations: {
                                 empty: string;
-                            }
-                        },
+                            };
+                        };
                         email: {
                             label: string;
                             placeholder: string;
                             validations: {
                                 empty: string;
                                 invalid: string;
-                            }
-                        },
-                    },
+                            };
+                        };
+                    };
                     validations: {
                         genericError: {
                             description: string;
                             message: string;
-                        },
+                        };
                         invalidCurrentPassword: {
                             description: string;
                             message: string;
-                        },
+                        };
                         submitError: {
                             description: string;
                             message: string;
-                        },
+                        };
                         submitSuccess: {
                             description: string;
                             message: string;
-                        }
-                    }
-                }
-            },
+                        };
+                    };
+                };
+            };
             modals: {
                 addUserWarnModal: {
                     heading: string;
                     message: string;
-                }
-            },
+                };
+            };
             profile: {
                 fields: {
                     generic: {
@@ -296,18 +296,18 @@ export interface Views {
                     };
                     emails: string;
                     profileUrl: string;
-                    addresses_work: string;
-                    addresses_home: string;
-                    emails_home: string;
-                    emails_other: string;
-                    emails_work: string;
-                    name_familyName: string;
-                    name_givenName: string;
+                    addressesWork: string;
+                    addressesHome: string;
+                    emailsHome: string;
+                    emailsOther: string;
+                    emailsWork: string;
+                    nameFamilyName: string;
+                    nameGivenName: string;
                     phoneNumbers: string;
-                    phoneNumbers_home: string;
-                    phoneNumbers_mobile: string;
-                    phoneNumbers_work: string;
-                    phoneNumbers_other: string;
+                    phoneNumbersHome: string;
+                    phoneNumbersMobile: string;
+                    phoneNumbersWork: string;
+                    phoneNumbersOther: string;
                     userName: string;
                 };
                 forms: {
@@ -383,18 +383,18 @@ export interface Views {
                 placeholders: {
                     SCIMDisabled: {
                         heading: string;
-                    }
+                    };
                 };
-            }
-        },
+            };
+        };
         footer: {
             copyright: string;
-        },
+        };
         privacy: {
             about: {
                 description: string;
                 heading: string;
-            },
+            };
             privacyPolicy: {
                 collectionOfPersonalInfo: {
                     description: {
@@ -402,9 +402,9 @@ export interface Views {
                             0: string;
                             1: string;
                             2: string;
-                        },
+                        };
                         para1: string;
-                    },
+                    };
                     heading: string;
                     trackingTechnologies: {
                         description: {
@@ -413,58 +413,58 @@ export interface Views {
                                 1: string;
                                 2: string;
                                 3: string;
-                            },
+                            };
                             para1: string;
-                        },
+                        };
                         heading: string;
-                    }
-                },
+                    };
+                };
                 description: {
                     para1: string;
                     para2: string;
                     para3: string;
-                },
+                };
                 disclaimer: {
                     description: {
                         list1: {
                             0: string;
                             1: string;
-                        }
-                    },
+                        };
+                    };
                     heading: string;
-                },
+                };
                 disclosureOfPersonalInfo: {
                     description: string;
                     heading: string;
                     legalProcess: {
                         description: string;
                         heading: string;
-                    }
-                },
+                    };
+                };
                 heading: string;
                 moreInfo: {
                     changesToPolicy: {
                         description: {
                             para1: string;
                             para2: string;
-                        },
+                        };
                         heading: string;
-                    },
+                    };
                     contactUs: {
                         description: {
                             para1: string;
-                        },
+                        };
                         heading: string;
-                    },
+                    };
                     heading: string;
                     yourChoices: {
                         description: {
                             para1: string;
                             para2: string;
-                        },
+                        };
                         heading: string;
-                    }
-                },
+                    };
+                };
                 storageOfPersonalInfo: {
                     heading: string;
                     howLong: {
@@ -472,34 +472,34 @@ export interface Views {
                             list1: {
                                 0: string;
                                 1: string;
-                            },
+                            };
                             para1: string;
                             para2: string;
-                        },
+                        };
                         heading: string;
-                    },
+                    };
                     requestRemoval: {
                         description: {
                             para1: string;
                             para2: string;
-                        },
+                        };
                         heading: string;
-                    },
+                    };
                     where: {
                         description: {
                             para1: string;
                             para2: string;
-                        },
+                        };
                         heading: string;
-                    }
-                },
+                    };
+                };
                 useOfPersonalInfo: {
                     description: {
                         list1: {
                             0: string;
                             1: string;
                             2: string;
-                        },
+                        };
                         para1: string;
                         para2: string;
                         subList1: {
@@ -508,18 +508,18 @@ export interface Views {
                                 0: string;
                                 1: string;
                                 2: string;
-                            }
-                        },
+                            };
+                        };
                         subList2: {
                             heading: string;
                             list: {
                                 0: string;
                                 1: string;
-                            }
-                        }
-                    },
+                            };
+                        };
+                    };
                     heading: string;
-                },
+                };
                 whatIsPersonalInfo: {
                     description: {
                         list1: {
@@ -527,30 +527,30 @@ export interface Views {
                             1: string;
                             2: string;
                             3: string;
-                        },
+                        };
                         list2: {
                             0: string;
                             1: string;
                             2: string;
                             3: string;
-                        },
+                        };
                         para1: string;
                         para2: string;
-                    },
+                    };
                     heading: string;
-                }
-            }
-        }
+                };
+            };
+        };
     };
     pages: {
-        overView: Page
+        overView: Page;
     };
     placeholders: {
-        404: Placeholder,
-        emptySearchResult: Placeholder,
-        genericError: Placeholder,
-        loginError: Placeholder,
-        underConstruction: Placeholder
+        404: Placeholder;
+        emptySearchResult: Placeholder;
+        genericError: Placeholder;
+        loginError: Placeholder;
+        underConstruction: Placeholder;
     };
 }
 
