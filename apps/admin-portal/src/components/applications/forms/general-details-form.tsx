@@ -110,7 +110,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     return (
         <Forms
-            onSubmit={ (values) => {
+            onSubmit={ (values): void => {
                 onSubmit(updateConfigurations(values))
             } }
             onChange={ handleFormValuesOnChange }
