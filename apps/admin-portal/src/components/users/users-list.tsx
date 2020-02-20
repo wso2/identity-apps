@@ -21,6 +21,7 @@ import React from "react";
 import { Grid, List } from "semantic-ui-react";
 import { history } from "../../helpers";
 import { UserListInterface } from "../../models";
+import { handleLastModifiedDate } from "../../utils";
 
 /**
  * Prop types for the liked accounts component.
@@ -57,35 +58,10 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         history.push(`users/${ userId }`);
     };
 
-    /**
-     * This function calculate the number of days since the last
-     * modified date to the current date.
-     *
-     * @param modifiedDate
-     */
-    const handleLastModifiedDate = (modifiedDate: string) => {
-        if (modifiedDate) {
-            const currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, "/");
-            const modDate = modifiedDate.split("T");
-            const modDateNew = modDate[0].replace(/-/g, "/");
-
-            const dateX = new Date(modDateNew);
-            const dateY = new Date(currentDate);
-
-            if (dateY.getDate() - dateX.getDate() !== 0) {
-                return "last modified" + " " + Math.abs(dateY.getDate() - dateX.getDate()) + " " + "days ago";
-            } else {
-                return " last modified today";
-            }
-        } else {
-            return;
-        }
-    };
-
     return (
         <ResourceList className="applications-list">
             {
-                usersList && usersList.Resources && usersList.Resources instanceof Array &&
+                usersList && usersList.Resources && usersList.Resources instanceof Array && 
                 usersList.Resources.map((user, index) => (
                     <ResourceListItem
                         key={ index }
