@@ -55,7 +55,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     const [isDiscoverable, setDiscoverability] = useState<boolean>(discoverability);
 
-
     const updateConfigurations = (values: Map<string, FormValue>): ApplicationInterface => {
         const editingApplication: ApplicationInterface = {
             accessUrl: values.get("accessUrl").toString(),

@@ -65,7 +65,8 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
      * @param e keypress event.
      */
     const keyPressed = (e) => {
-        if (e.keyCode === 13) {
+        const key = e.which || e.charCode || e.keyCode;
+        if (key === 13) {
             e.preventDefault();
             addUrl();
         }
@@ -144,7 +145,7 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
 
     const addFromButton = (e) => {
         e.preventDefault();
-        addUrl()
+        addUrl();
     };
 
     /**
@@ -208,7 +209,7 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                                 )
                             }
                             position="top center"
-                            content="Add URL."
+                            content="Add URL"
                             inverted
                         />
                     </Input>
