@@ -161,7 +161,6 @@ export interface Views {
                 deleteUser: Notification;
                 fetchUsers: Notification;
             };
-            },
             placeholders: {
                 emptyList: Placeholder;
             };
@@ -300,18 +299,18 @@ export interface Views {
                     };
                     emails: string;
                     profileUrl: string;
-                    addresses_work: string;
-                    addresses_home: string;
-                    emails_home: string;
-                    emails_other: string;
-                    emails_work: string;
-                    name_familyName: string;
-                    name_givenName: string;
+                    addressesWork: string;
+                    addressesHome: string;
+                    emailsHome: string;
+                    emailsOther: string;
+                    emailsWork: string;
+                    nameFamilyName: string;
+                    nameGivenName: string;
                     phoneNumbers: string;
-                    phoneNumbers_home: string;
-                    phoneNumbers_mobile: string;
-                    phoneNumbers_work: string;
-                    phoneNumbers_other: string;
+                    phoneNumbersHome: string;
+                    phoneNumbersMobile: string;
+                    phoneNumbersWork: string;
+                    phoneNumbersOther: string;
                     userName: string;
                 };
                 forms: {
