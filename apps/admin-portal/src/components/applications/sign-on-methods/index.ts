@@ -17,5 +17,6 @@
  */
 
 export * from "./authentication-flow";
+export * from "./authentication-step";
 export * from "./authenticators";
 export * from "./sign-on-methods";

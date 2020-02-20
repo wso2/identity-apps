@@ -31,7 +31,7 @@ import { ApplicationInterface } from "../../models";
 /**
  * Proptypes for the applications general details component.
  */
-interface GeneralSettingsProps {
+interface GeneralApplicationSettingsInterface {
     accessUrl?: string;
     appId?: string;
     description?: string;
@@ -44,9 +44,12 @@ interface GeneralSettingsProps {
 /**
  * Component to edit general details of the application.
  *
- * @param props GeneralSettingsProps.
+ * @param {GeneralApplicationSettingsInterface} props - Props injected to the component.
+ * @return {JSX.Element}
  */
-export const GeneralDetailsApplication: FunctionComponent<GeneralSettingsProps> = (props): JSX.Element => {
+export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSettingsInterface> = (
+    props: GeneralApplicationSettingsInterface
+): JSX.Element => {
 
     const {
         appId,

@@ -18,13 +18,23 @@
 
 import React, { FunctionComponent } from "react";
 import { AuthenticationFlow } from "./authentication-flow";
+import { AuthenticationSequenceInterface } from "../../../models";
 
 /**
  * Proptypes for the sign on methods component.
  */
 interface SignOnMethodsPropsInterface {
+    /**
+     * ID of the application.
+     */
     appId?: string;
-    authenticationSequence: any;
+    /**
+     * Currently configured authentication sequence for the application.
+     */
+    authenticationSequence: AuthenticationSequenceInterface;
+    /**
+     * Is the application info request loading.
+     */
     isLoading?: boolean;
 }
 
@@ -40,12 +50,17 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
     const {
         appId,
-        authenticationSequence
+        authenticationSequence,
+        isLoading
     } = props;
 
     return (
         <div className="sign-on-methods-tab-content">
-            <AuthenticationFlow appId={ appId } authenticationSequence={ authenticationSequence } />
+            <AuthenticationFlow
+                appId={ appId }
+                authenticationSequence={ authenticationSequence }
+                isLoading={ isLoading }
+            />
         </div>
     );
 };

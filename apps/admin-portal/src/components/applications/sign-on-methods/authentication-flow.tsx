@@ -18,14 +18,15 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder, Heading, Hint, LabeledCard, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { DragDropContext, Droppable, DroppableProvided, DropResult } from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
-import { Checkbox, Divider, Grid, Icon } from "semantic-ui-react";
+import { Divider, Grid, Icon } from "semantic-ui-react";
 import { getIdentityProviderDetail, getIdentityProviderList, updateAuthenticationSequence } from "../../../api";
 import {
+    AuthenticationSequenceInterface,
     AuthenticationSequenceType,
     AuthenticationStepInterface,
     AuthenticatorInterface,
@@ -41,13 +42,23 @@ import {
     selectedLocalAuthenticators
 } from "../meta";
 import { Authenticators } from "./authenticators";
+import { AuthenticationStep } from "./authentication-step";
 
 /**
  * Proptypes for the applications settings component.
  */
 interface AuthenticationFlowPropsInterface {
+    /**
+     * ID of the application.
+     */
     appId: string;
-    authenticationSequence: any;
+    /**
+     * Currently configured authentication sequence for the application.
+     */
+    authenticationSequence: AuthenticationSequenceInterface;
+    /**
+     * Is the application info request loading.
+     */
     isLoading?: boolean;
 }
 
@@ -57,7 +68,7 @@ interface AuthenticationFlowPropsInterface {
  * @type {string}
  * @default
  */
-const AUTHENTICATION_STEP_DROPPABLE_ID: string = "authentication-step-";
+const AUTHENTICATION_STEP_DROPPABLE_ID = "authentication-step-";
 
 /**
  * Droppable id for the local authenticators section.
@@ -65,7 +76,7 @@ const AUTHENTICATION_STEP_DROPPABLE_ID: string = "authentication-step-";
  * @type {string}
  * @default
  */
-const LOCAL_AUTHENTICATORS_DROPPABLE_ID: string = "local-authenticators";
+const LOCAL_AUTHENTICATORS_DROPPABLE_ID = "local-authenticators";
 
 /**
  * Droppable id for the second factor authenticators section.
@@ -73,7 +84,7 @@ const LOCAL_AUTHENTICATORS_DROPPABLE_ID: string = "local-authenticators";
  * @type {string}
  * @default
  */
-const SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID: string = "second-factor-authenticators";
+const SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID = "second-factor-authenticators";
 
 /**
  * Droppable id for the social authenticators section.
@@ -81,7 +92,7 @@ const SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID: string = "second-factor-authent
  * @type {string}
  * @default
  */
-const SOCIAL_AUTHENTICATORS_DROPPABLE_ID: string = "social-authenticators";
+const SOCIAL_AUTHENTICATORS_DROPPABLE_ID = "social-authenticators";
 
 /**
  * Configure the authentication flow of an application.
@@ -107,34 +118,49 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
     const [ attributeStepId, setAttributeStepId ] = useState<number>(undefined);
 
     /**
-     * Loads federated authenticators and local authenticators
-     * on component load.
+     * Add Federated IDP name and ID in to the state.
+     *
+     * @param {string} id - Identity Provider ID
+     * @return {Promise<void | IDPNameInterface>}
      */
-    useEffect(() => {
-        loadFederatedAuthenticators();
-        loadLocalAuthenticators();
-    }, []);
+    const updateFederatedIDPNameListItem = (id: string): Promise<void | IDPNameInterface> => {
+        return getIdentityProviderDetail(id)
+            .then((response: IdentityProviderResponseInterface) => {
+                const iDPNamePair: IDPNameInterface = {
+                    authenticatorId: response?.federatedAuthenticators?.defaultAuthenticatorId,
+                    idp: response.name,
+                    image: response.image
+                };
+                if (typeof iDPNamePair.image === "undefined") {
+                    delete iDPNamePair.image;
+                }
+                return Promise.resolve(iDPNamePair);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Update Error"
+                    }));
 
-    /**
-     * If the `authenticationSequence` prop is available, sets the authentication steps,
-     * subject step id, and attribute step id.
-     */
-    useEffect(() => {
-        if (!authenticationSequence) {
-            return;
-        }
+                    return;
+                }
 
-        setAuthenticationSteps(authenticationSequence?.steps);
-        setSubjectStepId(authenticationSequence?.subjectStepId);
-        setAttributeStepId(authenticationSequence?.attributeStepId);
-    }, [ authenticationSequence ]);
+                dispatch(addAlert({
+                    description: "An error occurred while updating the IPD name",
+                    level: AlertLevels.ERROR,
+                    message: "Update Error"
+                }));
+            });
+    };
 
     /**
      * Updates the federatedIDPNameList with available IDPs.
      *
-     * @return {Promise<any>}
+     * @return {Promise<any | IDPNameInterface[]>}
      */
-    const updateFederateIDPNameList = (): Promise<any> => {
+    const updateFederateIDPNameList = (): Promise<any | IDPNameInterface[]> => {
         return getIdentityProviderList()
             .then((response: IdentityProviderListResponseInterface) => {
                 // If no IDP's are configured in IS, the api drops the
@@ -170,44 +196,6 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                     description: "An error occurred while retrieving the IPD list",
                     level: AlertLevels.ERROR,
                     message: "Retrieval Error"
-                }));
-            });
-    };
-
-    /**
-     * Add Federated IDP name and ID in to the state.
-     *
-     * @param {string} id - Identity Provider ID
-     * @return {Promise<any>}
-     */
-    const updateFederatedIDPNameListItem = (id: string): Promise<any> => {
-        return getIdentityProviderDetail(id)
-            .then((response: IdentityProviderResponseInterface) => {
-                const iDPNamePair: IDPNameInterface = {
-                    authenticatorId: response?.federatedAuthenticators?.defaultAuthenticatorId,
-                    idp: response.name,
-                    image: response.image
-                };
-                if (typeof iDPNamePair.image === "undefined") {
-                    delete iDPNamePair.image;
-                }
-                return Promise.resolve(iDPNamePair);
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Update Error"
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: "An error occurred while updating the IPD name",
-                    level: AlertLevels.ERROR,
-                    message: "Update Error"
                 }));
             });
     };
@@ -261,54 +249,6 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
     const loadLocalAuthenticators = (): void => {
         setLocalAuthenticators([ ...selectedLocalAuthenticators ]);
     };
-    /**
-     * Handles the authenticator drag and drop event.
-     * @param {DropResult} result - Droppable value.
-     */
-    const handleAuthenticatorDrag = (result: DropResult): void => {
-        if (!result.destination) {
-            return;
-        }
-
-        // Remark: result.destination.index was giving unexpected values. Therefore as a workaround, index will be
-        // extracted from the draggableId. Since the droppable id is in the form of `authentication-step-0`
-        // 0 can be extracted by splitting the string.
-        const destinationIndex: number = parseInt(
-            result.destination.droppableId.split(AUTHENTICATION_STEP_DROPPABLE_ID).pop(),
-            10
-        );
-
-        updateAuthenticationStep(destinationIndex, result.draggableId);
-    };
-
-    /**
-     * Updates the authentication step based on the newly added authenticators.
-     *
-     * @param {number} stepNo - Step number.
-     * @param {string} authenticatorId - Id of the authenticator.
-     */
-    const updateAuthenticationStep = (stepNo: number, authenticatorId: string): void => {
-        const authenticators: AuthenticatorListItemInterface[] = [ ...localAuthenticators, ...federatedAuthenticators ];
-
-        const authenticator: AuthenticatorListItemInterface = authenticators
-            .find((item) => item.authenticator === authenticatorId);
-
-        if (!authenticator) {
-            return;
-        }
-
-        const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
-
-        const isValid: boolean = validateStepAddition(authenticator, steps[stepNo].options);
-
-        if (!isValid) {
-            return;
-        }
-
-        steps[ stepNo ].options.push({ authenticator: authenticator.authenticator, idp: authenticator.idp });
-
-        setAuthenticationSteps(steps);
-    };
 
     /**
      * Validates if the addition to the step is valid.
@@ -334,33 +274,52 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
     };
 
     /**
-     * Resolves the authenticator step option.
+     * Updates the authentication step based on the newly added authenticators.
      *
-     * @param {AuthenticatorInterface} option - Authenticator step option.
-     * @param {number} stepIndex - Index of the step.
-     * @param {number} optionIndex - Index of the option.
-     * @return {JSX.Element}
+     * @param {number} stepNo - Step number.
+     * @param {string} authenticatorId - Id of the authenticator.
      */
-    const resolveStepOption = (option: AuthenticatorInterface, stepIndex: number, optionIndex: number): JSX.Element => {
+    const updateAuthenticationStep = (stepNo: number, authenticatorId: string): void => {
         const authenticators: AuthenticatorListItemInterface[] = [ ...localAuthenticators, ...federatedAuthenticators ];
 
-        if (authenticators && authenticators instanceof Array && authenticators.length > 0) {
+        const authenticator: AuthenticatorListItemInterface = authenticators
+            .find((item) => item.authenticator === authenticatorId);
 
-            const authenticator = authenticators.find((item) => item.authenticator === option.authenticator);
-
-            if (!authenticator) {
-                return null;
-            }
-
-            return (
-                <LabeledCard
-                    image={ authenticator.image }
-                    label={ authenticator.displayName }
-                    bottomMargin={ false }
-                    onCloseClick={ () => handleStepOptionDelete(stepIndex, optionIndex) }
-                />
-            );
+        if (!authenticator) {
+            return;
         }
+
+        const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
+
+        const isValid: boolean = validateStepAddition(authenticator, steps[ stepNo ].options);
+
+        if (!isValid) {
+            return;
+        }
+
+        steps[ stepNo ].options.push({ authenticator: authenticator.authenticator, idp: authenticator.idp });
+
+        setAuthenticationSteps(steps);
+    };
+
+    /**
+     * Handles the authenticator drag and drop event.
+     * @param {DropResult} result - Droppable value.
+     */
+    const handleAuthenticatorDrag = (result: DropResult): void => {
+        if (!result.destination) {
+            return;
+        }
+
+        // Remark: result.destination.index was giving unexpected values. Therefore as a workaround, index will be
+        // extracted from the draggableId. Since the droppable id is in the form of `authentication-step-0`
+        // 0 can be extracted by splitting the string.
+        const destinationIndex: number = parseInt(
+            result.destination.droppableId.split(AUTHENTICATION_STEP_DROPPABLE_ID).pop(),
+            10
+        );
+
+        updateAuthenticationStep(destinationIndex, result.draggableId);
     };
 
     /**
@@ -371,7 +330,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
      */
     const handleStepOptionDelete = (stepIndex: number, optionIndex: number): void => {
         const steps = [ ...authenticationSteps ];
-        steps[stepIndex].options.splice(optionIndex, 1);
+        steps[ stepIndex ].options.splice(optionIndex, 1);
         setAuthenticationSteps(steps);
     };
 
@@ -421,7 +380,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
      *
      * @param {number} id - Step index.
      */
-    const onSubjectCheckboxChange = (id: number): void => {
+    const handleSubjectCheckboxChange = (id: number): void => {
         setSubjectStepId(id);
     };
 
@@ -430,8 +389,33 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
      *
      * @param {number} id - Step index.
      */
-    const onAttributeCheckboxChange = (id: number): void => {
+    const handleAttributeCheckboxChange = (id: number): void => {
         setAttributeStepId(id);
+    };
+
+    /**
+     * Validates if the step deletion is valid.
+     *
+     * @return {boolean} True or false.
+     */
+    const validateSteps = (): boolean => {
+
+        const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
+
+        const found = steps.find((step) => _.isEmpty(step.options));
+
+        if (found) {
+            dispatch(addAlert({
+                description: "There is an empty authentication step. Please remove it or add authenticators to " +
+                    "proceed.",
+                level: AlertLevels.WARNING,
+                message: "Update error"
+            }));
+
+            return false;
+        }
+
+        return true;
     };
 
     /**
@@ -483,31 +467,6 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
     };
 
     /**
-     * Validates if the step deletion is valid.
-     *
-     * @return {boolean} True or false.
-     */
-    const validateSteps = (): boolean => {
-
-        const steps: AuthenticationStepInterface[] = [ ...authenticationSteps ];
-
-        const found = steps.find((step) => _.isEmpty(step.options));
-
-        if (found) {
-            dispatch(addAlert({
-                description: "There is an empty authentication step. Please remove it or add authenticators to " +
-                    "proceed.",
-                level: AlertLevels.WARNING,
-                message: "Update error"
-            }));
-
-            return false;
-        }
-
-        return true;
-    };
-
-    /**
      * Filters the list of federated & local authenticators and returns a list of
      * authenticators of the selected type.
      *
@@ -519,6 +478,29 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
 
         return authenticators.filter((authenticator) => authenticator.type === type && authenticator.idp);
     };
+
+    /**
+     * Loads federated authenticators and local authenticators
+     * on component load.
+     */
+    useEffect(() => {
+        loadFederatedAuthenticators();
+        loadLocalAuthenticators();
+    }, []);
+
+    /**
+     * If the `authenticationSequence` prop is available, sets the authentication steps,
+     * subject step id, and attribute step id.
+     */
+    useEffect(() => {
+        if (!authenticationSequence) {
+            return;
+        }
+
+        setAuthenticationSteps(authenticationSequence?.steps);
+        setSubjectStepId(authenticationSequence?.subjectStepId);
+        setAttributeStepId(authenticationSequence?.attributeStepId);
+    }, [ authenticationSequence ]);
 
     return (
         <div className="authentication-flow-section">
@@ -580,64 +562,19 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                                     && authenticationSteps instanceof Array
                                     && authenticationSteps.length > 0
                                         ? authenticationSteps.map((step, stepIndex) => (
-                                            <Droppable
+                                            <AuthenticationStep
                                                 key={ stepIndex }
+                                                authenticators={ [ ...localAuthenticators, ...federatedAuthenticators ] }
+                                                attributeStepId={ attributeStepId }
                                                 droppableId={ AUTHENTICATION_STEP_DROPPABLE_ID + stepIndex }
-                                            >
-                                                { (provided: DroppableProvided) => (
-                                                    <div
-                                                        ref={ provided.innerRef }
-                                                        { ...provided.droppableProps }
-                                                        className="authentication-step-container"
-                                                    >
-                                                        <Heading className="step-header" as="h6">
-                                                            Step { step.id }
-                                                        </Heading>
-                                                        <Icon
-                                                            className="delete-button"
-                                                            name="cancel"
-                                                            onClick={ () => handleStepDelete(stepIndex) }
-                                                        />
-                                                        <div className="authentication-step">
-                                                            {
-                                                                step.options
-                                                                && step.options instanceof Array
-                                                                && step.options.length > 0
-                                                                    ? step.options.map((option, optionIndex) =>
-                                                                        resolveStepOption(
-                                                                            option,
-                                                                            stepIndex,
-                                                                            optionIndex
-                                                                        ))
-                                                                    : (
-                                                                        <EmptyPlaceholder
-                                                                            subtitle={ [ "Drag and drop any of the " +
-                                                                            "above authenticators", "to build an " +
-                                                                            "authentication sequence."] }
-                                                                        />
-                                                                    )
-                                                            }
-                                                            { provided.placeholder }
-                                                        </div>
-                                                        <div className="checkboxes">
-                                                            <Checkbox
-                                                                label="Use subject identifier from this step"
-                                                                checked={ subjectStepId === (stepIndex + 1) }
-                                                                onChange={
-                                                                    () => onSubjectCheckboxChange(stepIndex + 1)
-                                                                }
-                                                            />
-                                                            <Checkbox
-                                                                label="Use attributes from this step"
-                                                                checked={ attributeStepId === (stepIndex + 1) }
-                                                                onChange={
-                                                                    () => onAttributeCheckboxChange(stepIndex + 1)
-                                                                }
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                ) }
-                                            </Droppable>
+                                                onAttributeCheckboxChange={ handleAttributeCheckboxChange }
+                                                onStepDelete={ handleStepDelete }
+                                                onStepOptionDelete={ handleStepOptionDelete }
+                                                onSubjectCheckboxChange={ handleSubjectCheckboxChange }
+                                                step={ step }
+                                                stepIndex={ stepIndex }
+                                                subjectStepId={ subjectStepId }
+                                            />
                                         ))
                                         : null
                                 }
@@ -645,7 +582,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                                 <LinkButton className="add-step-button" onClick={ handleAuthenticationStepAdd }>
                                     <Icon name="plus"/>Add authentication step
                                 </LinkButton>
-                                <Divider hidden />
+                                <Divider hidden/>
                                 <PrimaryButton onClick={ handleAuthenticationFlowUpdate }>Update</PrimaryButton>
                             </div>
                         </Grid.Column>

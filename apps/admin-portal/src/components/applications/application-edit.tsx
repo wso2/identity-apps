@@ -17,10 +17,10 @@
  */
 
 import { ResourceTab } from "@wso2is/react-components";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { ApplicationInterface } from "../../models";
 import { AdvanceSettings } from "./advance-application";
-import { GeneralDetailsApplication } from "./general-details-application";
+import { GeneralApplicationSettings } from "./general-application-settings";
 import { ApplicationSettings } from "./settings-application";
 import { SignOnMethods } from "./sign-on-methods";
 
@@ -46,75 +46,77 @@ interface EditApplicationPropsInterface {
  */
 export const EditApplication: FunctionComponent<EditApplicationPropsInterface> = (
     props: EditApplicationPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         application,
         isLoading
     } = props;
 
-    const panes = () => ([
-        {
-            menuItem: "General",
-            render: () => (
-                <ResourceTab.Pane attached={ false }>
-                    <GeneralDetailsApplication
-                        accessUrl={ application.accessUrl }
-                        appId={ application.id }
-                        description={ application.description }
-                        discoverability={ application.advancedConfigurations?.discoverableByEndUsers }
-                        imageUrl={ application.imageUrl }
-                        name={ application.name }
-                        isLoading={ isLoading }
-                    />
-                </ResourceTab.Pane>
-            ),
-        },
-        {
-            menuItem: "Access",
-            render: () => (
-                <ResourceTab.Pane attached={ false }>
-                    <ApplicationSettings
-                        appId={ application.id }
-                        inboundProtocols={ application.inboundProtocols }
-                        isLoading={ isLoading }
-                    />
-                </ResourceTab.Pane>
-            ),
-        },
-        {
-            menuItem: "Sign-on Method",
-            render: () => (
-                <ResourceTab.Pane attached={ false }>
-                    <SignOnMethods
-                        appId={ application.id }
-                        authenticationSequence={ application.authenticationSequence }
-                    />
-                </ResourceTab.Pane>
-            ),
-        },
-        {
-            menuItem: "Advance",
-            render: () => (
-                <ResourceTab.Pane attached={ false }>
-                    <AdvanceSettings
-                        appId={ application.id }
-                        advancedConfigurations={ application.advancedConfigurations }
-                    />
-                </ResourceTab.Pane>
-            ),
-        },
-    ]);
+    const GeneralApplicationSettingsTabPane = (): ReactElement => (
+        <ResourceTab.Pane attached={ false }>
+            <GeneralApplicationSettings
+                accessUrl={ application.accessUrl }
+                appId={ application.id }
+                description={ application.description }
+                discoverability={ application.advancedConfigurations?.discoverableByEndUsers }
+                imageUrl={ application.imageUrl }
+                name={ application.name }
+                isLoading={ isLoading }
+            />
+        </ResourceTab.Pane>
+    );
+
+    const ApplicationSettingsTabPane = (): ReactElement => (
+        <ResourceTab.Pane attached={ false }>
+            <ApplicationSettings
+                appId={ application.id }
+                inboundProtocols={ application.inboundProtocols }
+                isLoading={ isLoading }
+            />
+        </ResourceTab.Pane>
+    );
+
+    const SignOnMethodsTabPane = (): ReactElement => (
+        <ResourceTab.Pane attached={ false }>
+            <SignOnMethods
+                appId={ application.id }
+                authenticationSequence={ application.authenticationSequence }
+            />
+        </ResourceTab.Pane>
+    );
+
+    const AdvancedSettingsTabPane = (): ReactElement => (
+        <ResourceTab.Pane attached={ false }>
+            <AdvanceSettings
+                appId={ application.id }
+                advancedConfigurations={ application.advancedConfigurations }
+            />
+        </ResourceTab.Pane>
+    );
 
     return (
-        <>
-            {
-                application && (
-                    <ResourceTab
-                        panes={ panes() }
-                    />
-                )
-            }
-        </>
+        application && (
+            <ResourceTab
+                panes={ [
+                    {
+                        menuItem: "General",
+                        render: GeneralApplicationSettingsTabPane
+                    },
+                    {
+                        menuItem: "Access",
+                        render: ApplicationSettingsTabPane
+                    },
+                    {
+                        menuItem: "Sign-on Method",
+                        render: SignOnMethodsTabPane,
+                    },
+                    {
+                        menuItem: "Advance",
+                        render: AdvancedSettingsTabPane,
+                    },
+                ] }
+            />
+        )
     );
 };
