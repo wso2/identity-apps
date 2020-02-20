@@ -1,14 +1,14 @@
 module.exports = {
-    parser: '@typescript-eslint/parser',
+    parser: "@typescript-eslint/parser",
     extends: [
-        'eslint:recommended',
-        'plugin:react/recommended',
-        'plugin:@typescript-eslint/eslint-recommended',
-        'plugin:@typescript-eslint/recommended',
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
     ],
     parserOptions: {
         ecmaVersion: 9,
-        sourceType: 'module',
+        sourceType: "module",
     },
     settings: {
         react: {
@@ -22,4 +22,12 @@ module.exports = {
             "spacing": {"objectLiterals": "always"}
         }]
     },
+    overrides: [
+        {
+            files: ["**/*.tsx"],
+            rules: {
+                "react/prop-types": "off"
+            }
+        }
+    ]
 };
