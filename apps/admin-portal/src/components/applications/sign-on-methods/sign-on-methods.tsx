@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { AuthenticationFlow } from "./authentication-flow";
 import { AuthenticationSequenceInterface } from "../../../models";
 
@@ -36,22 +36,27 @@ interface SignOnMethodsPropsInterface {
      * Is the application info request loading.
      */
     isLoading?: boolean;
+    /**
+     * Callback to update the application details.
+     */
+    onUpdate: (id: string) => void;
 }
 
 /**
  * Configure the different sign on strategies for an application.
  *
  * @param {SignOnMethodsPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
 export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     props: SignOnMethodsPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         appId,
         authenticationSequence,
-        isLoading
+        isLoading,
+        onUpdate
     } = props;
 
     return (
@@ -60,6 +65,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 appId={ appId }
                 authenticationSequence={ authenticationSequence }
                 isLoading={ isLoading }
+                onUpdate={ onUpdate }
             />
         </div>
     );

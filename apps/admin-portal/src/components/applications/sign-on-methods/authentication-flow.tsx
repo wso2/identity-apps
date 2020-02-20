@@ -20,7 +20,7 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon } from "semantic-ui-react";
@@ -60,6 +60,10 @@ interface AuthenticationFlowPropsInterface {
      * Is the application info request loading.
      */
     isLoading?: boolean;
+    /**
+     * Callback to update the application details.
+     */
+    onUpdate: (id: string) => void;
 }
 
 /**
@@ -98,15 +102,16 @@ const SOCIAL_AUTHENTICATORS_DROPPABLE_ID = "social-authenticators";
  * Configure the authentication flow of an application.
  *
  * @param {AuthenticationFlowPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
 export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterface> = (
     props: AuthenticationFlowPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         appId,
-        authenticationSequence
+        authenticationSequence,
+        onUpdate
     } = props;
 
     const dispatch = useDispatch();
@@ -446,6 +451,8 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                     level: AlertLevels.SUCCESS,
                     message: "Update successful"
                 }));
+
+                onUpdate(appId);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {

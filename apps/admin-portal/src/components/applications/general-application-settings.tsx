@@ -20,36 +20,64 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, FormValue } from "@wso2is/forms";
 import { ContentLoader, DangerZone, DangerZoneGroup, Hint } from "@wso2is/react-components";
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Button, Grid, Icon } from "semantic-ui-react";
+import { Button, Grid } from "semantic-ui-react";
 import { deleteApplication, updateApplicationDetails } from "../../api";
 import { GlobalConfig } from "../../configs";
-import { history } from "../../helpers";
 import { ApplicationInterface } from "../../models";
 
 /**
  * Proptypes for the applications general details component.
  */
 interface GeneralApplicationSettingsInterface {
+    /**
+     * Application access URL.
+     */
     accessUrl?: string;
+    /**
+     * Currently editing application id.
+     */
     appId?: string;
+    /**
+     * Application description.
+     */
     description?: string;
+    /**
+     * Is the application discoverable.
+     */
     discoverability?: boolean;
+    /**
+     * Application logo URL.
+     */
     imageUrl?: string;
+    /**
+     * Is the application info request loading.
+     */
     isLoading?: boolean;
+    /**
+     * Name of the application.
+     */
     name: string;
+    /**
+     * Callback to be triggered after deleting the application.
+     */
+    onDelete: () => void;
+    /**
+     * Callback to update the application details.
+     */
+    onUpdate: (id: string) => void;
 }
 
 /**
  * Component to edit general details of the application.
  *
  * @param {GeneralApplicationSettingsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
 export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSettingsInterface> = (
     props: GeneralApplicationSettingsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         appId,
@@ -58,13 +86,18 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         discoverability,
         imageUrl,
         accessUrl,
-        isLoading
+        isLoading,
+        onDelete,
+        onUpdate
     } = props;
 
     const [ isDiscoverable, setDiscoverability ] = useState<boolean>(discoverability);
     const dispatch = useDispatch();
 
-    const handleApplicationDelete = () => {
+    /**
+     * Deletes an application.
+     */
+    const handleApplicationDelete = (): void => {
         deleteApplication(appId)
             .then((response) => {
                 dispatch(addAlert({
@@ -73,7 +106,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     message: "Delete successful"
                 }));
 
-                history.push("/applications");
+                onDelete();
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -94,7 +127,12 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
             });
     };
 
-    const handleFormSubmit = (values: Map<string, FormValue>) => {
+    /**
+     * Handles form submit action.
+     *
+     * @param {Map<string, FormValue>} values - Form values.
+     */
+    const handleFormSubmit = (values: Map<string, FormValue>): void => {
         const editingApplication: ApplicationInterface = {
             accessUrl: values.get("accessUrl").toString(),
             advancedConfigurations: {
@@ -113,8 +151,20 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     level: AlertLevels.SUCCESS,
                     message: "Update successful"
                 }));
+
+                onUpdate(appId);
             })
             .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Update Error"
+                    }));
+
+                    return;
+                }
+
                 dispatch(addAlert({
                     description: "An error occurred while updating the application",
                     level: AlertLevels.ERROR,
@@ -123,7 +173,13 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
             });
     };
 
-    const handleFormValuesOnChange = (isPure: boolean, values: Map<string, FormValue>) => {
+    /**
+     * Handles form value change.
+     *
+     * @param {boolean} isPure - Is the form pure.
+     * @param {Map<string, FormValue>} values - Form values
+     */
+    const handleFormValuesOnChange = (isPure: boolean, values: Map<string, FormValue>): void => {
         // Set the discoverability based on the checkbox toggle.
         if (values.get("discoverableByEndUsers").includes("discoverable") !== isDiscoverable) {
             setDiscoverability(!!values.get("discoverableByEndUsers").includes("discoverable"));
@@ -131,110 +187,106 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
     };
 
     return (
-        <>
-            {
-                !isLoading
-                    ? (
-                        <>
-                            <Forms
-                                onSubmit={ handleFormSubmit }
-                                onChange={ handleFormValuesOnChange }
-                            >
-                                <Grid>
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                            <Field
-                                                name="name"
-                                                label="Application Name"
-                                                required={ true }
-                                                requiredErrorMessage="Application name is required"
-                                                placeholder={ name }
-                                                type="text"
-                                                value={ name }
-                                            />
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                            <Field
-                                                name="description"
-                                                label="Description"
-                                                required={ false }
-                                                requiredErrorMessage=""
-                                                placeholder="Enter a description for the application"
-                                                type="textarea"
-                                                value={ description }
-                                            />
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                            <Field
-                                                name="imageUrl"
-                                                label="Application Image"
-                                                required={ false }
-                                                requiredErrorMessage=""
-                                                placeholder="Enter a image url for the application"
-                                                type="text"
-                                                value={ imageUrl }
-                                            />
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                            <Field
-                                                name="discoverableByEndUsers"
-                                                required={ false }
-                                                requiredErrorMessage=""
-                                                type="checkbox"
-                                                children={ [
-                                                    {
-                                                        label: "Discoverable application",
-                                                        value: "discoverable"
-                                                    }
-                                                ] }
-                                                value={ isDiscoverable ? [ "discoverable" ] : [] }
-                                            />
-                                            <Field
-                                                name="accessUrl"
-                                                label="Access URL"
-                                                required={ isDiscoverable }
-                                                requiredErrorMessage={ "A valid access URL needs to be defined for" +
-                                                " an application to be marked as discoverable" }
-                                                placeholder="Enter access url for the application login page"
-                                                type="text"
-                                                value={ accessUrl }
-                                            />
-                                            <Hint>
-                                                Applications flagged as discoverable are visible for end users.
-                                            </Hint>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                            <Button primary type="submit" size="small" className="form-button">
-                                                Update
-                                            </Button>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            </Forms>
-                            { !(GlobalConfig.doNotDeleteApplications.includes(name)) &&
-                            (
-                                <DangerZoneGroup sectionHeader="Danger Zone">
-                                    <DangerZone
-                                        actionTitle="Delete application"
-                                        header="Delete the application"
-                                        subheader="This action is irreversible. Please proceed with caution."
-                                        onActionClick={ handleApplicationDelete }
+        !isLoading
+            ? (
+                <>
+                    <Forms
+                        onSubmit={ handleFormSubmit }
+                        onChange={ handleFormValuesOnChange }
+                    >
+                        <Grid>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Field
+                                        name="name"
+                                        label="Application Name"
+                                        required={ true }
+                                        requiredErrorMessage="Application name is required"
+                                        placeholder={ name }
+                                        type="text"
+                                        value={ name }
                                     />
-                                </DangerZoneGroup>
-                            )
-                            }
-                        </>
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Field
+                                        name="description"
+                                        label="Description"
+                                        required={ false }
+                                        requiredErrorMessage=""
+                                        placeholder="Enter a description for the application"
+                                        type="textarea"
+                                        value={ description }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Field
+                                        name="imageUrl"
+                                        label="Application Image"
+                                        required={ false }
+                                        requiredErrorMessage=""
+                                        placeholder="Enter a image url for the application"
+                                        type="text"
+                                        value={ imageUrl }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Field
+                                        name="discoverableByEndUsers"
+                                        required={ false }
+                                        requiredErrorMessage=""
+                                        type="checkbox"
+                                        children={ [
+                                            {
+                                                label: "Discoverable application",
+                                                value: "discoverable"
+                                            }
+                                        ] }
+                                        value={ isDiscoverable ? [ "discoverable" ] : [] }
+                                    />
+                                    <Field
+                                        name="accessUrl"
+                                        label="Access URL"
+                                        required={ isDiscoverable }
+                                        requiredErrorMessage={ "A valid access URL needs to be defined for" +
+                                        " an application to be marked as discoverable" }
+                                        placeholder="Enter access url for the application login page"
+                                        type="text"
+                                        value={ accessUrl }
+                                    />
+                                    <Hint>
+                                        Applications flagged as discoverable are visible for end users.
+                                    </Hint>
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Button primary type="submit" size="small" className="form-button">
+                                        Update
+                                    </Button>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    </Forms>
+                    { !(GlobalConfig.doNotDeleteApplications.includes(name)) &&
+                    (
+                        <DangerZoneGroup sectionHeader="Danger Zone">
+                            <DangerZone
+                                actionTitle="Delete application"
+                                header="Delete the application"
+                                subheader="This action is irreversible. Please proceed with caution."
+                                onActionClick={ handleApplicationDelete }
+                            />
+                        </DangerZoneGroup>
                     )
-                    : <ContentLoader />
-            }
-        </>
+                    }
+                </>
+            )
+            : <ContentLoader/>
     );
 };

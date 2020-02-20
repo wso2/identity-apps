@@ -36,13 +36,21 @@ interface EditApplicationPropsInterface {
      * Is the data still loading.
      */
     isLoading?: boolean;
+    /**
+     * Callback to be triggered after deleting the application.
+     */
+    onDelete: () => void;
+    /**
+     * Callback to update the application details.
+     */
+    onUpdate: (id: string) => void;
 }
 
 /**
  * Application edit component.
  *
  * @param {EditApplicationPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
 export const EditApplication: FunctionComponent<EditApplicationPropsInterface> = (
     props: EditApplicationPropsInterface
@@ -50,7 +58,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const {
         application,
-        isLoading
+        isLoading,
+        onDelete,
+        onUpdate
     } = props;
 
     const GeneralApplicationSettingsTabPane = (): ReactElement => (
@@ -63,6 +73,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 imageUrl={ application.imageUrl }
                 name={ application.name }
                 isLoading={ isLoading }
+                onDelete={ onDelete }
+                onUpdate={ onUpdate }
             />
         </ResourceTab.Pane>
     );
@@ -73,6 +85,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 appId={ application.id }
                 inboundProtocols={ application.inboundProtocols }
                 isLoading={ isLoading }
+                onUpdate={ onUpdate }
             />
         </ResourceTab.Pane>
     );
@@ -82,6 +95,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             <SignOnMethods
                 appId={ application.id }
                 authenticationSequence={ application.authenticationSequence }
+                isLoading={ isLoading }
+                onUpdate={ onUpdate }
             />
         </ResourceTab.Pane>
     );
@@ -91,6 +106,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             <AdvanceSettings
                 appId={ application.id }
                 advancedConfigurations={ application.advancedConfigurations }
+                onUpdate={ onUpdate }
             />
         </ResourceTab.Pane>
     );

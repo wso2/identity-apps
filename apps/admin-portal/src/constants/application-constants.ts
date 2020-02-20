@@ -87,6 +87,14 @@ export class ApplicationConstants {
     public static readonly APPLICATION_MGT_CONFIG_PATHS: any = {
         META: "configs/application-mgt.meta.json"
     };
+
+    /**
+     * Application Paths.
+     * @constant
+     * @type {Map<string, string>}
+     */
+    public static readonly PATHS: Map<string, string> = new Map<string, string>()
+        .set("APPLICATIONS", "/applications");
 }
 
 /**
