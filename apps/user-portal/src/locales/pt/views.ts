@@ -540,6 +540,53 @@ export const views: Views = {
             }
         },
         mfa: {
+            authenticatorApp: {
+                description: "Digitalize o código QR usando um aplicativo Authenticator para usar o" +
+                    " TOTP como um segundo fator de autenticação",
+                heading: "Authenticator App",
+                hint: "Mostrar o QR Code",
+                modals: {
+                    done: "Sucesso! Agora você pode usar seu aplicativo de autenticação para autenticação de dois fatores",
+                    scan: {
+                        authenticatorApps: "Authenticator Apps",
+                        generate: "Gere um novo código",
+                        heading: "Leia este QR Code usando um aplicativo Authenticator",
+                        messageBody: "Você pode encontrar uma lista de aplicativos autenticadores disponíveis aqui.",
+                        messageHeading: "Não tem um aplicativo autenticador instalado?"
+                    },
+                    verify: {
+                        error: "Falha na verificação. Por favor, tente novamente.",
+                        heading: "Digite o código de verificação no aplicativo de autenticação",
+                        label: "Código de verificação",
+                        placeholder: "Digite seu código de verificação",
+                        requiredError: "Insira o código de verificação",
+                        reScan: "Verificar novamente",
+                        reScanQuestion: "Deseja digitalizar o código QR novamente?"
+                    }
+                },
+                notifications: {
+                    initError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Algo deu errado"
+                        },
+                        genericError: {
+                            description: "Ocorreu um erro ao recuperar o código QR",
+                            message: "Algo deu errado"
+                        }
+                    },
+                    refreshError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Algo deu errado"
+                        },
+                        genericError: {
+                            description: "Erro ao tentar obter um novo código QR",
+                            message: "Algo deu errado"
+                        }
+                    }
+                }
+            },
             fido: {
                 description: "Autentique-se conectando uma chave FIDO",
                 form: {

@@ -537,3 +537,59 @@ export const updateAuthenticationSequence = (id: string, data: object): Promise<
             return Promise.reject(error);
         });
 };
+
+/**
+ * Regenerates the client secret.
+ * Used only in OIDC flow.
+ *
+ * @param appId application Id
+ */
+export const regenerateClientSecret = (appId: string): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: ServiceResourcesEndpoint.applications + "/" + appId + "inbound-protocols/oidc/regenerate-secret"
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if ((response.status !== 200)) {
+                return Promise.reject(new Error("Failed to regenerate the application secret."));
+            }
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Revoke the client secret of application
+ * Used only in OIDC flow.
+ *
+ * @param appId application ID
+ */
+export const revokeClientSecret = (appId: string): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: ServiceResourcesEndpoint.applications + "/" + appId + "inbound-protocols/oidc/revoke"
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if ((response.status !== 200)) {
+                return Promise.reject(new Error("Failed to revoke the application secret."));
+            }
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};

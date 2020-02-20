@@ -31,15 +31,19 @@ const httpClient = AxiosHttpClient.getInstance();
  *
  * @returns {Promise<BasicProfileInterface>} a promise containing the user list.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const getUsersList = (limit: number, offset: number): Promise<any> => {
+export const getUsersList = (count: number, startIndex: number, filter: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.users + "?count=" + limit + "&startIndex=" + offset
+        params: {
+            count,
+            filter,
+            startIndex,
+        },
+        url: ServiceResourcesEndpoint.users
     };
 
     return httpClient.request(requestConfig)

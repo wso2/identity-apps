@@ -18,6 +18,7 @@
 
 <%= htmlWebpackPlugin.options.importUtil %>
 <%= htmlWebpackPlugin.options.importTenantPrefix %>
+<%= htmlWebpackPlugin.options.importSuperTenantConstant %>
 
 <!doctype html>
 <html>
@@ -34,12 +35,12 @@
         <!-- runtime config -->
 
         <script>
-            var getTenantPrefix = function(tenantName) {
+            var getTenantPrefix = function() {
                 return "<%= htmlWebpackPlugin.options.tenantPrefix %>";
             };
 
-            var getSuperTenant = function(tenantName) {
-                return "carbon.super";
+            var getSuperTenant = function() {
+                return "<%= htmlWebpackPlugin.options.superTenantConstant %>";
             };
 
             var getTenantName = function() {

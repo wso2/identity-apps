@@ -46,17 +46,17 @@ const FILTER_VALUES_FIELD_IDENTIFIER: string = "filerValues";
  * field value to this.
  * @type {string}
  */
-const DEFAULT_SEARCH_STRATEGY: string = "name co";
+const DEFAULT_SEARCH_STRATEGY: string = "userName sw";
 
 /**
- * Prop types for the application search component.
+ * Prop types for the user search component.
  */
 interface UserSearchProps {
     onFilter: (query: string) => void;
 }
 
 /**
- * Application search component.
+ * User search component.
  *
  * @return {JSX.Element}
  */
@@ -77,7 +77,8 @@ export const UserSearch: FunctionComponent<UserSearchProps> = (
      * @type {({text: string; value: string})[]}
      */
     const filterAttributeOptions = [
-        { value: "name", text: t("common:name") }
+        { value: "userName", text: "Username" },
+        { value: "emails", text: "Email" }
     ];
 
     /**

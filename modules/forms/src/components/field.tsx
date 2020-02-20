@@ -174,7 +174,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
         } else if (isRadioField(inputField)) {
             return (
                 <Form.Group grouped={ true }>
-                    { inputField.label !== "" ? `<label>${inputField.label}</label>` : null }
+                    { inputField.label !== "" ? <label>{ inputField.label }</label> : null }
                     { inputField.children.map((radio: RadioChild, index: number) => {
                         return (
                             <Form.Field key={ index }>

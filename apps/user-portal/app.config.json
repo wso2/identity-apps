@@ -25,7 +25,8 @@
         "multiFactorAuthentication":{
             "enabled":true,
             "sms":true,
-            "fido":true
+            "fido":true,
+            "authenticatorApp":true
         },
         "activeSessions":true,
         "manageConsents":true
