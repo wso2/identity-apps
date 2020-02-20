@@ -49,7 +49,6 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
     const [ isListUpdated, setListUpdated ] = useState(false);
 
     const getList = (limit: number, offset: number, filter: string) => {
-        console.log(filter);
         getUsersList(limit, offset, filter)
             .then((response) => {
                 setUsersList(response);
