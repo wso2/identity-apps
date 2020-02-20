@@ -417,8 +417,8 @@ export interface Views {
                     refreshError: {
                         genericError: NotificationItem;
                         error: NotificationItem;
-                    }
-                }
+                    };
+                };
             };
         };
         overview: {
