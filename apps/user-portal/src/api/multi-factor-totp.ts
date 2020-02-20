@@ -30,7 +30,7 @@ const httpClient = AxiosHttpClient.getInstance();
 /**
  * The action types of the totp post endpoint
  */
-enum postTOTPActions {
+enum PostTOTPActions {
     VALIDATE = "VALIDATE",
     INIT = "INIT",
     REFRESH = "REFRESH"
@@ -69,7 +69,7 @@ export const getTotpQrCode = (): Promise<any> => {
 export const validateTOTPCode = (code: string): Promise<any> => {
     const requestConfig = {
         data: {
-            action: postTOTPActions.VALIDATE,
+            action: PostTOTPActions.VALIDATE,
             verificationCode: code
         },
         headers: {
@@ -99,7 +99,7 @@ export const validateTOTPCode = (code: string): Promise<any> => {
 export const refreshTOTPCode = (): Promise<any> => {
     const requestConfig = {
         data: {
-            action: postTOTPActions.REFRESH
+            action: PostTOTPActions.REFRESH
         },
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
@@ -129,7 +129,7 @@ export const refreshTOTPCode = (): Promise<any> => {
 export const initTOTPCode = (): Promise<any> => {
     const requestConfig = {
         data: {
-            action: postTOTPActions.INIT
+            action: PostTOTPActions.INIT
         },
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
