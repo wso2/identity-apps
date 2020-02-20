@@ -161,6 +161,9 @@ export interface Views {
                 deleteUser: Notification;
                 fetchUsers: Notification;
             };
+            placeholders: {
+                emptyList: Placeholder;
+            };
             search: {
                 forms: {
                     searchForm: {
