@@ -19,8 +19,17 @@
 
 import Joi from "@hapi/joi";
 import Axios from "axios";
+import JoiPhoneNumber from "joi-phone-number";
 import "./plugins/text-encoder-polyfill";
 
+/**
+ * Loads the phone number extension
+ */
+const phoneJoi = Joi.extend(JoiPhoneNumber);
+
+/**
+ * The type of a typical Validation function
+ */
 type ValidationFunction = (value: string) => boolean;
 
 /**
@@ -37,11 +46,10 @@ export const email: ValidationFunction = (value: string): boolean => {
 
 /**
  * This validates mobile numbers. Returns true if valid. False if not valid.
- * Checks if the mobile number input has only numbers, '-', and '+'.
  * @param value
  */
-export const mobileNumber: ValidationFunction = (value: string): boolean => {
-    if (Joi.string().pattern(/^[\d-\+]+$/).validate(value).error) {
+export const mobileNumber = (value: string, country: string): boolean => {
+    if (phoneJoi.string().phoneNumber({ defaultCountry: country }).validate(value).error) {
         return false;
     }
     return true;
