@@ -16,18 +16,19 @@
  * under the License.
  */
 
-import { PrimaryButton } from "@wso2is/react-components";
+import { Button, EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { DropdownProps, Grid, Icon, PaginationProps } from "semantic-ui-react";
 import { deleteUser, getUsersList } from "../api";
-import { AddUser, UserSearch, UsersList } from "../components/users";
+import { UserSearch, UsersList } from "../components/users";
 import { AddUserWizard } from "../components/users/wizard/add-user-wizard";
 import { ListLayout, PageLayout } from "../layouts";
 import { AlertInterface, AlertLevels } from "../models";
 import { UserListInterface } from "../models/user";
 import { addAlert } from "../store/actions";
+import { EmptyPlaceholderIllustrations } from "../configs";
 
 const DEFAULT_USER_LIST_ITEM_LIMIT: number = 10;
 
@@ -47,8 +48,8 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
     const [ usersList, setUsersList ] = useState<UserListInterface>({});
     const [ isListUpdated, setListUpdated ] = useState(false);
 
-    const getList = (limit: number, offset: number) => {
-        getUsersList(limit, offset)
+    const getList = (limit: number, offset: number, filter: string) => {
+        getUsersList(limit, offset, filter)
             .then((response) => {
                 setUsersList(response);
             });
@@ -59,12 +60,41 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
     }, []);
 
     useEffect(() => {
-        getList(listItemLimit, listOffset);
+        getList(listItemLimit, listOffset, null);
     }, [ listOffset, listItemLimit ]);
 
     useEffect(() => {
-        getList(listItemLimit, listOffset);
+        getList(listItemLimit, listOffset, null);
     }, [ isListUpdated ]);
+
+    /**
+     * Shows list placeholders.
+     * @return {JSX.Element}
+     */
+    const showPlaceholders = (): JSX.Element => {
+        // When the search returns empty.
+        if (searchQuery) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <Button
+                            className="link-button"
+                            onClick={ () => getList(listItemLimit, listOffset, null) }
+                        >
+                            { t("views:placeholders.emptySearchResult.action") }
+                        </Button>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.search }
+                    title={ t("views:placeholders.emptySearchResult.title") }
+                    subtitle={ [
+                        t("views:placeholders.emptySearchResult.subtitles.0",
+                            { query: searchQuery }),
+                        t("views:placeholders.emptySearchResult.subtitles.1"),
+                    ] }
+                />
+            );
+        }
+    };
 
     /**
      * Dispatches the alert object to the redux store.
@@ -82,7 +112,13 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
      * @param {string} query - Search query.
      */
     const handleUserFilter = (query: string): void => {
+        if (query === "userName sw ") {
+            getList(null, null, null);
+            return;
+        }
+
         setSearchQuery(query);
+        getList(null, null, query);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
@@ -139,7 +175,17 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
                 totalPages={ Math.ceil(usersList.totalResults / listItemLimit) }
                 totalListSize={ usersList.totalResults }
             >
-                <UsersList usersList={ usersList } handleUserDelete={ handleUserDelete }/>
+                {
+                    (usersList.Resources && usersList.Resources.length > 0) ?
+                        (
+                            < UsersList usersList={ usersList } handleUserDelete={ handleUserDelete }/>
+                        ) :
+                        (
+                            <Grid.Column width={ 16 }>
+                                { showPlaceholders() }
+                            </Grid.Column>
+                        )
+                }
                 {
                     showWizard && (
                     <AddUserWizard
@@ -148,7 +194,8 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
                         listItemLimit={ listItemLimit }
                         updateList={ () => setListUpdated(true) }
                     />
-                ) }
+                    )
+                }
             </ListLayout>
         </PageLayout>
     );
