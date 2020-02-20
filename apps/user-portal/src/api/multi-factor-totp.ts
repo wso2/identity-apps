@@ -129,8 +129,7 @@ export const refreshTOTPCode = (): Promise<any> => {
 export const initTOTPCode = (): Promise<any> => {
     const requestConfig = {
         data: {
-            action: postTOTPActions.INIT,
-            valid: true
+            action: postTOTPActions.INIT
         },
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
