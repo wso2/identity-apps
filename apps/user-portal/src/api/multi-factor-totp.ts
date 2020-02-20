@@ -52,11 +52,10 @@ export const getTotpQrCode = (): Promise<any> => {
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status === 200) {
+            if (response.status !== 200) {
                 return Promise.reject(`An error occurred. Server returned ${response.status}.`);
-            } else {
-                return Promise.resolve(response);
             }
+            return Promise.resolve(response);
         })
         .catch((error) => {
             return Promise.reject(error);
@@ -84,11 +83,10 @@ export const validateTOTPCode = (code: string): Promise<any> => {
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status === 200) {
-                return Promise.resolve(response);
-            } else {
+            if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+            return Promise.resolve(response);
         })
         .catch((error) => {
             return Promise.reject(error);
@@ -114,10 +112,10 @@ export const refreshTOTPCode = (): Promise<any> => {
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status === 200) {
-                return Promise.resolve(response);
-            } else {
+            if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
+            } else {
+                return Promise.resolve(response);
             }
         })
         .catch((error) => {
@@ -131,7 +129,8 @@ export const refreshTOTPCode = (): Promise<any> => {
 export const initTOTPCode = (): Promise<any> => {
     const requestConfig = {
         data: {
-            action: POST_TOTP.INIT
+            action: POST_TOTP.INIT,
+            valid: true
         },
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
@@ -144,11 +143,10 @@ export const initTOTPCode = (): Promise<any> => {
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status === 200) {
-                return Promise.resolve(response);
-            } else {
+            if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+            return Promise.resolve(response);
         })
         .catch((error) => {
             return Promise.reject(error);
@@ -171,11 +169,10 @@ export const deleteTOTP = (): Promise<any> => {
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status === 200) {
-                return Promise.resolve(response);
-            } else {
+            if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+            return Promise.resolve(response);
         })
         .catch((error) => {
             return Promise.reject(error);
@@ -198,11 +195,10 @@ export const getTOTPSecret = (): Promise<any> => {
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status === 200) {
-                return Promise.resolve(response);
-            } else {
+            if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+            return Promise.resolve(response);
         })
         .catch((error) => {
             return Promise.reject(error);
