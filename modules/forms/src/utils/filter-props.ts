@@ -35,6 +35,18 @@ export const filterPassedProps = (props: any): any => {
     delete props.placeholder;
     delete props.children;
     delete props.default;
+    delete props.showPassword;
+    delete props.hidePassword;
+    delete props.width;
+    delete props.placeholder;
+    delete props.className;
+    delete props.size;
+    delete props.onClick;
+    delete props.startIndex;
+    delete props.endIndex;
+    delete props.wrapper;
+    delete props.wrapperProps;
+    delete props.hidden;
 
     return props;
 };
