@@ -393,6 +393,7 @@ export const views: Views = {
             }
         },
         federatedAssociations: {
+            deleteConfirmation: "මෙය ඔබගේ ගිණුමෙන් මෙම බාහිර පිවිසුම ඉවත් කරයි. දිගටම ඉවත් කිරීමට ඔබට අවශ්‍යද?",
             notifications: {
                 getFederatedAssociations: {
                     error: {
@@ -447,6 +448,7 @@ export const views: Views = {
                     label: "ස්ථානික පරිශීලක ගිණුම එක් කරන්න"
                 }
             },
+            deleteConfirmation: "මෙය ඔබගේ ගිණුමෙන් සම්බන්ධිත ගිණුම ඉවත් කරයි. දිගටම ඉවත් කිරීමට ඔබට අවශ්‍යද?",
             forms: {
                 addAccountForm: {
                     inputs: {

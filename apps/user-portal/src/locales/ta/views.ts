@@ -394,6 +394,7 @@ export const views: Views = {
             }
         },
         federatedAssociations: {
+            deleteConfirmation: "இது உங்கள் கணக்கிலிருந்து இந்த வெளிப்புற உள்நுழைவை அகற்றும். நீக்குவதைத் தொடர விரும்புகிறீர்களா?",
             notifications: {
                 getFederatedAssociations: {
                     error: {
@@ -448,6 +449,7 @@ export const views: Views = {
                     label: "உட்பயனர் கணக்கினை சேர்க்க"
                 }
             },
+            deleteConfirmation: "இது உங்கள் கணக்கிலிருந்து இணைக்கப்பட்ட கணக்கை அகற்றும். நீக்குவதைத் தொடர விரும்புகிறீர்களா?",
             forms: {
                 addAccountForm: {
                     inputs: {

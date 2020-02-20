@@ -337,6 +337,7 @@ export interface Views {
                     };
                 };
             };
+            deleteConfirmation: string;
             notifications: {
                 addAssociation: Notification;
                 getAssociations: Notification;
@@ -346,6 +347,7 @@ export interface Views {
             };
         };
         federatedAssociations: {
+            deleteConfirmation: string;
             notifications: {
                 getFederatedAssociations: Notification;
                 removeFederatedAssociation: Notification;
