@@ -42,7 +42,7 @@ export class UserAgentParser {
      *
      * @return {IUAParser.IBrowser}
      */
-    public get browser() {
+    public get browser(): IUAParser.IBrowser {
         return UserAgentParser.parser.getBrowser();
     }
 
@@ -54,14 +54,15 @@ export class UserAgentParser {
      * implemented as a fallback. Refer [here]{@link https://github.com/faisalman/ua-parser-js/issues/16}
      * @return {IUAParser.IDevice | {vendor: string; model: string; type: string}}
      */
-    public get device() {
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    public get device(): Record<string, any> {
         if (UserAgentParser.parser.getDevice() && UserAgentParser.parser.getDevice().type) {
             return UserAgentParser.parser.getDevice();
         }
 
         const ua = UserAgentParser.parser.getUA();
 
-        // tslint:disable:max-line-length
+        /* eslint-disable max-len, no-useless-escape */
         const type = ua.match(/iPad/i) || ua.match(/tablet/i) && !ua.match(/RX-34/i) || ua.match(/FOLIO/i) ? "tablet"
             : ua.match(/Linux/i) && ua.match(/Android/i) && !ua.match(/Fennec|mobi|HTC.Magic|HTCX06HT|Nexus.One|SC-02B|fone.945/i) ? "tablet"
                 : ua.match(/Kindle/i) || ua.match(/Mac.OS/i) && ua.match(/Silk/i) ? "tablet"
@@ -73,7 +74,7 @@ export class UserAgentParser {
                                         : ua.match(/Linux/i) && ua.match(/X11/i) ? "desktop"
                                             : ua.match(/Solaris|SunOS|BSD/i) ? "desktop"
                                                 : ua.match(/Bot|Crawler|Spider|Yahoo|ia_archiver|Covario-IDS|findlinks|DataparkSearch|larbin|Mediapartners-Google|NG-Search|Snappy|Teoma|Jeeves|TinEye/i) && !ua.match(/Mobile/i) ? "desktop" : "mobile";
-        // tslint:enable:max-line-length
+        /* eslint-enable max-len, no-useless-escape */
 
         return { type, vendor: null, model: null };
     }
@@ -83,7 +84,7 @@ export class UserAgentParser {
      *
      * @return {IUAParser.IEngine}
      */
-    public get engine() {
+    public get engine(): IUAParser.IEngine {
         return UserAgentParser.parser.getEngine();
     }
 
@@ -92,7 +93,7 @@ export class UserAgentParser {
      *
      * @return {IUAParser.IOS}
      */
-    public get os() {
+    public get os(): IUAParser.IOS {
         return UserAgentParser.parser.getOS();
     }
 }

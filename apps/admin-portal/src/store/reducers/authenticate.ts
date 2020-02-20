@@ -42,7 +42,7 @@ const authenticateInitialState: AuthStateInterface = {
  * @param action - Action type
  * @returns The new state
  */
-const authenticateReducer = (state = authenticateInitialState, action) => {
+const authenticateReducer = (state = authenticateInitialState, action): AuthStateInterface => {
     switch (action.type) {
         case authenticateActionTypes.SET_SIGN_IN:
             if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {

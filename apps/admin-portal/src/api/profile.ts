@@ -35,6 +35,7 @@ const httpClient = AxiosHttpClient.getInstance();
  *
  * @return {Promise<any>} a promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getUserDetails = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -53,6 +54,24 @@ export const getUserDetails = (id: string): Promise<any> => {
         .catch((error) => {
             return Promise.reject(`Failed to retrieve user information - ${error}`);
         });
+};
+
+/**
+ *  Get gravatar image using email address
+ * @param email
+ */
+export const getGravatarImage = (email: string): Promise<string> => {
+    const url: string = SignInUtil.getGravatar(email);
+    return new Promise((resolve, reject) => {
+        axios
+            .get(url)
+            .then(() => {
+                resolve(url.split("?")[0]);
+            })
+            .catch(() => {
+                reject();
+            });
+    });
 };
 
 /**
@@ -112,6 +131,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
  * @param {object} user.
  * @return {Promise<any>} a promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const updateProfileInfo = (data: object): Promise<any> => {
 
     const requestConfig = {
@@ -162,23 +182,6 @@ export const updateUserInfo = (userId: string, data: object): Promise<any> => {
         });
 };
 
-/**
- *  Get gravatar image using email address
- * @param email
- */
-export const getGravatarImage = (email: string): Promise<string> => {
-    const url: string = SignInUtil.getGravatar(email);
-    return new Promise((resolve, reject) => {
-        axios
-            .get(url)
-            .then((response) => {
-                resolve(url.split("?")[0]);
-            })
-            .catch((error) => {
-                reject();
-            });
-    });
-};
 
 /**
  * Retrieve the profile schemas of the user claims of the currently authenticated user.

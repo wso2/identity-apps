@@ -32,13 +32,15 @@ const httpClient = AxiosHttpClient.getInstance();
  *
  * @return {Promise<any>} a promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getSecurityQs = (): Promise<any> => {
     const headers = {
         "Accept": "application/json",
         "Access-Control-Allow-Origin": GlobalConfig.clientHost
     };
 
-    const getQuestions = () => {
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    const getQuestions = (): any => {
         const requestConfig = {
             headers,
             method: HttpMethods.GET,
@@ -48,7 +50,8 @@ export const getSecurityQs = (): Promise<any> => {
         return httpClient.request(requestConfig);
     };
 
-    const getAnswers = () => {
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    const getAnswers = (): any => {
         const requestConfig = {
             headers,
             method: HttpMethods.GET,
@@ -73,6 +76,7 @@ export const getSecurityQs = (): Promise<any> => {
  * @param {object} data the new set of challenge questions and the answers.
  * @return {Promise<any>} a promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const addSecurityQs = (data: object): Promise<any> => {
     const requestConfig = {
         data,
@@ -102,6 +106,7 @@ export const addSecurityQs = (data: object): Promise<any> => {
  * @param {object} data the new set of challenge questions and the answers.
  * @return {Promise<any>} a promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const updateSecurityQs = (data: object): Promise<any> => {
     const requestConfig = {
         data,

@@ -27,7 +27,7 @@ import {
 } from "../constants";
 import { AuthenticatedUserInterface } from "../models/authenticated-user";
 import { AccountSwitchRequestParams, OIDCRequestParamsInterface } from "../models/oidc-request-params";
-import { TokenResponseInterface } from "../models/token-response";
+import { TokenResponseInterface, TokenRequestHeader } from "../models/token-response";
 import { getCodeChallenge, getCodeVerifier, getEmailHash, getJWKForTheIdToken, isValidIdToken } from "./crypto";
 import { getAuthorizeEndpoint, getIssuer, getJwksUri, getRevokeTokenEndpoint, getTokenEndpoint } from "./op-config";
 import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
@@ -37,8 +37,24 @@ import { getSessionParameter, removeSessionParameter, setSessionParameter } from
  *
  * @returns {boolean} true if authorization code is present.
  */
-export const hasAuthorizationCode = () => {
+export const hasAuthorizationCode = (): boolean => {
     return !!new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE);
+};
+
+/**
+ * Get token request headers.
+ *
+ * @param {string} clientHost
+ * @returns {{headers: {Accept: string; "Access-Control-Allow-Origin": string; "Content-Type": string}}}
+ */
+const getTokenRequestHeaders = (clientHost: string): TokenRequestHeader => {
+    return {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": clientHost,
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    };
 };
 
 /**
@@ -46,7 +62,7 @@ export const hasAuthorizationCode = () => {
  *
  * @param {OIDCRequestParamsInterface} requestParams request parameters required for authorization request.
  */
-export const sendAuthorizationRequest = (requestParams: OIDCRequestParamsInterface) => {
+export const sendAuthorizationRequest = (requestParams: OIDCRequestParamsInterface): Promise<never>|boolean => {
     const authorizeEndpoint = getAuthorizeEndpoint();
 
     if (!authorizeEndpoint || authorizeEndpoint.trim().length === 0) {
@@ -82,6 +98,40 @@ export const sendAuthorizationRequest = (requestParams: OIDCRequestParamsInterfa
     document.location.href = authorizeRequest;
 
     return false;
+};
+
+/**
+ * Validate id_token.
+ *
+ * @param {string} clientId client ID.
+ * @param {string} idToken id_token received from the IdP.
+ * @returns {Promise<boolean>} whether token is valid.
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+const validateIdToken = (clientId: string, idToken: string,  serverOrigin: string): Promise<any> => {
+    const jwksEndpoint = getJwksUri();
+
+    if (!jwksEndpoint || jwksEndpoint.trim().length === 0) {
+        return Promise.reject("Invalid JWKS URI found.");
+    }
+
+    return axios.get(jwksEndpoint)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to load public keys from JWKS URI: "
+                    + jwksEndpoint));
+            }
+
+            const jwk = getJWKForTheIdToken(idToken.split(".")[0], response.data.keys);
+            let issuer = getIssuer();
+            if (!issuer || issuer.trim().length === 0) {
+                issuer = serverOrigin + SERVICE_RESOURCES.token;
+            }
+
+            return Promise.resolve(isValidIdToken(idToken, jwk, clientId, issuer));
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
 };
 
 /**
@@ -203,7 +253,8 @@ export const sendRefreshTokenRequest = (
  * @param {string} accessToken access token
  * @returns {any}
  */
-export const sendRevokeTokenRequest = (requestParams: OIDCRequestParamsInterface, accessToken: string) => {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const sendRevokeTokenRequest = (requestParams: OIDCRequestParamsInterface, accessToken: string): Promise<any> => {
     const revokeTokenEndpoint = getRevokeTokenEndpoint();
 
     if (!revokeTokenEndpoint || revokeTokenEndpoint.trim().length === 0) {
@@ -235,7 +286,7 @@ export const sendRevokeTokenRequest = (requestParams: OIDCRequestParamsInterface
  * @param emailAddress email address received authenticated user.
  * @returns {string} gravatar image path.
  */
-export const getGravatar = (emailAddress: string) => {
+export const getGravatar = (emailAddress: string): string => {
     return "https://www.gravatar.com/avatar/" + getEmailHash(emailAddress) + "?d=404";
 };
 
@@ -318,53 +369,4 @@ export const sendAccountSwitchRequest = (
         .catch((error) => {
             return Promise.reject(error);
         });
-};
-
-/**
- * Validate id_token.
- *
- * @param {string} clientId client ID.
- * @param {string} idToken id_token received from the IdP.
- * @returns {Promise<boolean>} whether token is valid.
- */
-const validateIdToken = (clientId: string, idToken: string,  serverOrigin: string): Promise<any> => {
-    const jwksEndpoint = getJwksUri();
-
-    if (!jwksEndpoint || jwksEndpoint.trim().length === 0) {
-        return Promise.reject("Invalid JWKS URI found.");
-    }
-
-    return axios.get(jwksEndpoint)
-        .then((response) => {
-            if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to load public keys from JWKS URI: "
-                    + jwksEndpoint));
-            }
-
-            const jwk = getJWKForTheIdToken(idToken.split(".")[0], response.data.keys);
-            let issuer = getIssuer();
-            if (!issuer || issuer.trim().length === 0) {
-                issuer = serverOrigin + SERVICE_RESOURCES.token;
-            }
-
-            return Promise.resolve(isValidIdToken(idToken, jwk, clientId, issuer));
-        }).catch((error) => {
-            return Promise.reject(error);
-        });
-};
-
-/**
- * Get token request headers.
- *
- * @param {string} clientHost
- * @returns {{headers: {Accept: string; "Access-Control-Allow-Origin": string; "Content-Type": string}}}
- */
-const getTokenRequestHeaders = (clientHost: string) => {
-    return {
-        headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": clientHost,
-            "Content-Type": "application/x-www-form-urlencoded"
-        }
-    };
 };

@@ -242,6 +242,7 @@ interface ApplicationMetaInterface {
 /**
  * Interface for the auth protocol metadata.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface AuthProtocolMetaInterface {
     [ key: string ]: OIDCMetadataInterface | any;
 }
@@ -253,6 +254,7 @@ export interface ApplicationTemplateListItemInterface {
     description: string;
     displayName: string;
     id: SupportedQuickStartTemplateTypes;
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     image: any;
     protocols: SupportedAuthProtocolTypes[];
     technologies: ApplicationTemplateTechnology[];
@@ -281,6 +283,7 @@ export enum SupportedApplicationTemplateCategories {
 export interface ApplicationTemplateTechnology {
     name: string;
     displayName: string;
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     logo: any;
 }
 

@@ -29,6 +29,7 @@ export interface AuthenticatorListItemInterface {
     authenticatorId?: string;
     displayName?: string;
     idp?: string;
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     image?: any;
     type?: AuthenticatorTypes;
 }

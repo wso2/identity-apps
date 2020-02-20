@@ -22,7 +22,7 @@
  * @type {number}
  * @default
  */
-export const SETTINGS_SECTION_LIST_ITEMS_DEFAULT_COUNT: number = 5;
+export const SETTINGS_SECTION_LIST_ITEMS_DEFAULT_COUNT = 5;
 
 /**
  * The max list item count on settings sections.
@@ -30,7 +30,7 @@ export const SETTINGS_SECTION_LIST_ITEMS_DEFAULT_COUNT: number = 5;
  * @type {number}
  * @default
  */
-export const SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT: number = 1000;
+export const SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT = 1000;
 
 /**
  * Desktop layout content top padding.
@@ -38,7 +38,7 @@ export const SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT: number = 1000;
  * @type {number}
  * @default
  */
-export const DESKTOP_CONTENT_TOP_PADDING: number = 50;
+export const DESKTOP_CONTENT_TOP_PADDING = 50;
 
 /**
  * Mobile layout content padding.
@@ -46,7 +46,7 @@ export const DESKTOP_CONTENT_TOP_PADDING: number = 50;
  * @type {string}
  * @default
  */
-export const MOBILE_CONTENT_PADDING: string = "2rem 1rem";
+export const MOBILE_CONTENT_PADDING = "2rem 1rem";
 
 /**
  * The maximum recent application count.
@@ -54,7 +54,7 @@ export const MOBILE_CONTENT_PADDING: string = "2rem 1rem";
  * @type {number}
  * @default
  */
-export const RECENT_APPLICATIONS_LIST_LIMIT: number = 3;
+export const RECENT_APPLICATIONS_LIST_LIMIT = 3;
 
 /**
  * Add local linked account form identifier.
@@ -62,7 +62,7 @@ export const RECENT_APPLICATIONS_LIST_LIMIT: number = 3;
  * @type {string}
  * @default
  */
-export const ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER: string = "addLocalLinkedAccountForm";
+export const ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER = "addLocalLinkedAccountForm";
 
 /**
  * `Gravatar` website URL.
@@ -70,7 +70,7 @@ export const ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER: string = "addLocalLinkedA
  * @type {string}
  * @default
  */
-export const GRAVATAR_URL: string = "https://www.gravatar.com";
+export const GRAVATAR_URL = "https://www.gravatar.com";
 
 /**
  * Warning Account status upper limit.
@@ -78,7 +78,7 @@ export const GRAVATAR_URL: string = "https://www.gravatar.com";
  * @type {number}
  * @default
  */
-export const WARNING_ACCOUNT_STATUS_UPPER_LIMIT: number = 70;
+export const WARNING_ACCOUNT_STATUS_UPPER_LIMIT = 70;
 
 /**
  * Error Account status upper limit.
@@ -86,4 +86,4 @@ export const WARNING_ACCOUNT_STATUS_UPPER_LIMIT: number = 70;
  * @type {number}
  * @default
  */
-export const ERROR_ACCOUNT_STATUS_UPPER_LIMIT: number = 40;
+export const ERROR_ACCOUNT_STATUS_UPPER_LIMIT = 40;
