@@ -273,7 +273,7 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
                     <Message.Content>
                         { t(translateKey + "modals.scan.messageBody") + " " }
                         <a target="_blank" href="https://www.g2.com/categories/multi-factor-authentication-mfa">
-                            { t(translateKey + "modals.scan.authenticatorApps")}
+                            { t(translateKey + "modals.scan.authenticatorApps") }
                         </a>
                     </Message.Content>
                 </Message>
@@ -291,6 +291,7 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
                 size="mini"
                 open={ openWizard }
                 onClose={ () => { setOpenWizard(false); } }
+                className="totp"
             >
                 {
                     step !== 3
