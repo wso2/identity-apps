@@ -18,7 +18,7 @@
 
 import classNames from "classnames";
 import { EmptyPlaceholder, Heading, LabeledCard } from "@wso2is/react-components";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Droppable, DroppableProvided } from "react-beautiful-dnd";
 import { Checkbox, Icon } from "semantic-ui-react";
 import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../models";
@@ -78,11 +78,11 @@ interface AuthenticationStepPropsInterface {
  * Component to render the authentication step.
  *
  * @param {AuthenticationStepPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
 export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterface> = (
     props: AuthenticationStepPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         authenticators,
@@ -106,9 +106,9 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
      * @param {AuthenticatorInterface} option - Authenticator step option.
      * @param {number} stepIndex - Index of the step.
      * @param {number} optionIndex - Index of the option.
-     * @return {JSX.Element}
+     * @return {ReactElement}
      */
-    const resolveStepOption = (option: AuthenticatorInterface, stepIndex: number, optionIndex: number): JSX.Element => {
+    const resolveStepOption = (option: AuthenticatorInterface, stepIndex: number, optionIndex: number): ReactElement => {
         if (authenticators && authenticators instanceof Array && authenticators.length > 0) {
 
             const authenticator = authenticators.find((item) => item.authenticator === option.authenticator);
