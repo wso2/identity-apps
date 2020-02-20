@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { HttpMethods } from "@wso2is/core/models";
 import { AxiosHttpClient } from "@wso2is/http";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
-import { HttpMethods } from "../models";
 
 /**
  * Get an axios instance.
