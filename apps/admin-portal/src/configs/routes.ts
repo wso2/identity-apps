@@ -28,6 +28,7 @@ import {
     PrivacyPage,
     UserEditPage,
     UsersPage,
+    UserRoles
 } from "../pages";
 
 /**
@@ -82,6 +83,16 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 level: 2,
                 name: "Users",
                 path: "/users",
+                protected: true,
+                showOnSidePanel: true,
+            },
+            {
+                component: UserRoles,
+                exact: true,
+                icon: "childIcon",
+                level: 2,
+                name: "User Roles",
+                path: "/roles",
                 protected: true,
                 showOnSidePanel: true,
             }
