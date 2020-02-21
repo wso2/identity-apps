@@ -28,8 +28,7 @@ import { ListLayout, PageLayout } from "../layouts";
 import { AlertInterface, AlertLevels } from "../models";
 import { UserListInterface } from "../models/user";
 import { addAlert } from "../store/actions";
-
-const DEFAULT_USER_LIST_ITEM_LIMIT: number = 10;
+import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
 
 /**
  * Users info page.

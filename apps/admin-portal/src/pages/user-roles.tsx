@@ -21,6 +21,9 @@ import { PageLayout, ListLayout } from "../layouts";
 import { getGroupsList } from "../api";
 import { RoleList } from "../components/users";
 import { RoleListInterface } from "../models"
+import { PrimaryButton } from "@wso2is/react-components";
+import { Icon, PaginationProps, DropdownProps } from "semantic-ui-react";
+import { DEFAULT_ROLE_LIST_ITEM_LIMIT } from "../constants";
 
 /**
  * React component to list User Roles.
@@ -30,6 +33,12 @@ import { RoleListInterface } from "../models"
 export const UserRoles = (): JSX.Element => {
     const [ roleList, setRoleList ] = useState<RoleListInterface>();
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
+    const [ listOffset, setListOffset ] = useState<number>(0);
+    const [ showWizard, setShowWizard ] = useState<boolean>(false);
+
+    useEffect(() => {
+        setListItemLimit(DEFAULT_ROLE_LIST_ITEM_LIMIT);
+    }, []);
 
     useEffect(() => {
         getGroupsList().then((response)=> {
@@ -38,7 +47,15 @@ export const UserRoles = (): JSX.Element => {
                 setRoleList(response.data);
             }
         }).catch();
-    },[])
+    },[ listOffset, listItemLimit ]);
+
+    const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
+        setListOffset((data.activePage as number - 1) * listItemLimit);
+    };
+
+    const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+        setListItemLimit(data.value as number);
+    };
 
     return (
         <PageLayout
@@ -47,9 +64,27 @@ export const UserRoles = (): JSX.Element => {
             showBottomDivider={ true } 
         >
             <ListLayout
+                currentListSize={ roleList?.itemsPerPage }
+                listItemLimit={ listItemLimit }
+                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                onPageChange={ handlePaginationChange }
+                rightActionPanel={
+                    (
+                        <PrimaryButton onClick={ () => setShowWizard(true) }>
+                            <Icon name="add"/>
+                            Add Role
+                        </PrimaryButton>
+                    )
+                }
+                showPagination={ roleList?.totalResults >= DEFAULT_ROLE_LIST_ITEM_LIMIT }
                 totalPages={ Math.ceil(roleList?.totalResults / listItemLimit) }
+                totalListSize={ roleList?.totalResults }
             >
                 <RoleList roleList={ roleList?.Resources } />
+                {
+                    showWizard && (
+                    <div>ppp</div>
+                ) }
             </ListLayout>
         </PageLayout>
     );
