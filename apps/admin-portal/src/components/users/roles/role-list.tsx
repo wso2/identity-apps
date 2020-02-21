@@ -43,4 +43,4 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
             }
         </ResourceList>
     );
-}
+};

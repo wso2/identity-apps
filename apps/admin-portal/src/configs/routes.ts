@@ -94,7 +94,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 name: "User Roles",
                 path: "/roles",
                 protected: true,
-                showOnSidePanel: true,
+                showOnSidePanel: true
             }
         ],
         component: UsersPage,

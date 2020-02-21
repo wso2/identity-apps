@@ -61,7 +61,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     return (
         <ResourceList className="applications-list">
             {
-                usersList && usersList.Resources && usersList.Resources instanceof Array && 
+                usersList && usersList.Resources && usersList.Resources instanceof Array &&
                 usersList.Resources.map((user, index) => (
                     <ResourceListItem
                         key={ index }
