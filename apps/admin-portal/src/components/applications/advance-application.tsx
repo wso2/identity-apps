@@ -19,7 +19,7 @@
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading } from "@wso2is/react-components";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useDispatch } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { updateAdvanceConfigurations } from "../../api";
@@ -30,23 +30,34 @@ import { AdvanceConfigurationsForm } from "./forms";
  * Proptypes for the advance settings component.
  */
 interface AdvanceSettingsPropsInterface {
+    /**
+     * Currently editing application id.
+     */
     appId: string;
+    /**
+     * Current advanced configurations.
+     */
     advancedConfigurations: AdvancedConfigurationsInterface;
+    /**
+     * Callback to update the application details.
+     */
+    onUpdate: (id: string) => void;
 }
 
 /**
  *  advance settings component.
  *
  * @param {AdvanceSettingsPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
 export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> = (
     props: AdvanceSettingsPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         appId,
         advancedConfigurations,
+        onUpdate
     } = props;
 
     const dispatch = useDispatch();
@@ -64,6 +75,8 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
                     level: AlertLevels.SUCCESS,
                     message: "Update successful"
                 }));
+
+                onUpdate(appId);
             })
             .catch((error) => {
                 dispatch(addAlert({
@@ -86,4 +99,4 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
             </div>
         </>
     );
-}
+};

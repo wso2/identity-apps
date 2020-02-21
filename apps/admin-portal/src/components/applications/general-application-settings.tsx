@@ -19,33 +19,64 @@
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useDispatch } from "react-redux";
 import { deleteApplication, updateApplicationDetails } from "../../api";
 import { GlobalConfig } from "../../configs";
-import { history } from "../../helpers";
 import { ApplicationInterface } from "../../models";
 import { GeneralDetailsForm } from "./forms";
 
 /**
  * Proptypes for the applications general details component.
  */
-interface GeneralSettingsProps {
+interface GeneralApplicationSettingsInterface {
+    /**
+     * Application access URL.
+     */
     accessUrl?: string;
+    /**
+     * Currently editing application id.
+     */
     appId?: string;
+    /**
+     * Application description.
+     */
     description?: string;
+    /**
+     * Is the application discoverable.
+     */
     discoverability?: boolean;
+    /**
+     * Application logo URL.
+     */
     imageUrl?: string;
+    /**
+     * Is the application info request loading.
+     */
     isLoading?: boolean;
+    /**
+     * Name of the application.
+     */
     name: string;
+    /**
+     * Callback to be triggered after deleting the application.
+     */
+    onDelete: () => void;
+    /**
+     * Callback to update the application details.
+     */
+    onUpdate: (id: string) => void;
 }
 
 /**
  * Component to edit general details of the application.
  *
- * @param props GeneralSettingsProps.
+ * @param {GeneralApplicationSettingsInterface} props - Props injected to the component.
+ * @return {ReactElement}
  */
-export const GeneralDetailsApplication: FunctionComponent<GeneralSettingsProps> = (props): JSX.Element => {
+export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSettingsInterface> = (
+    props: GeneralApplicationSettingsInterface
+): ReactElement => {
 
     const {
         appId,
@@ -54,12 +85,17 @@ export const GeneralDetailsApplication: FunctionComponent<GeneralSettingsProps> 
         discoverability,
         imageUrl,
         accessUrl,
-        isLoading
+        isLoading,
+        onDelete,
+        onUpdate
     } = props;
 
     const dispatch = useDispatch();
 
-    const handleApplicationDelete = () => {
+    /**
+     * Deletes an application.
+     */
+    const handleApplicationDelete = (): void => {
         deleteApplication(appId)
             .then((response) => {
                 dispatch(addAlert({
@@ -68,7 +104,7 @@ export const GeneralDetailsApplication: FunctionComponent<GeneralSettingsProps> 
                     message: "Delete successful"
                 }));
 
-                history.push("/applications");
+                onDelete();
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -89,8 +125,12 @@ export const GeneralDetailsApplication: FunctionComponent<GeneralSettingsProps> 
             });
     };
 
-    const handleFormSubmit = (updatedDetails: ApplicationInterface) => {
-
+    /**
+     * Handles form submit action.
+     *
+     * @param {ApplicationInterface} updatedDetails - Form values.
+     */
+    const handleFormSubmit = (updatedDetails: ApplicationInterface): void => {
         updateApplicationDetails(updatedDetails)
             .then((response) => {
                 dispatch(addAlert({
@@ -98,8 +138,20 @@ export const GeneralDetailsApplication: FunctionComponent<GeneralSettingsProps> 
                     level: AlertLevels.SUCCESS,
                     message: "Update successful"
                 }));
+
+                onUpdate(appId);
             })
             .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Update Error"
+                    }));
+
+                    return;
+                }
+
                 dispatch(addAlert({
                     description: "An error occurred while updating the application",
                     level: AlertLevels.ERROR,
@@ -109,36 +161,30 @@ export const GeneralDetailsApplication: FunctionComponent<GeneralSettingsProps> 
     };
 
     return (
-        <>
-            {
-                !isLoading
-                    ? (
-                        <>
-                            <GeneralDetailsForm
-                                name={ name }
-                                appId={ appId }
-                                description={ description }
-                                discoverability={ discoverability }
-                                onSubmit={ handleFormSubmit }
-                                imageUrl={ imageUrl }
-                                accessUrl={ accessUrl }
+        !isLoading
+            ? (
+                <>
+                    <GeneralDetailsForm
+                        name={ name }
+                        appId={ appId }
+                        description={ description }
+                        discoverability={ discoverability }
+                        onSubmit={ handleFormSubmit }
+                        imageUrl={ imageUrl }
+                        accessUrl={ accessUrl }
+                    />
+                    { !(GlobalConfig.doNotDeleteApplications.includes(name)) && (
+                        <DangerZoneGroup sectionHeader="Danger Zone">
+                            <DangerZone
+                                actionTitle="Delete application"
+                                header="Delete the application"
+                                subheader="This action is irreversible. Please proceed with caution."
+                                onActionClick={ handleApplicationDelete }
                             />
-                            { !(GlobalConfig.doNotDeleteApplications.includes(name)) &&
-                            (
-                                <DangerZoneGroup sectionHeader="Danger Zone">
-                                    <DangerZone
-                                        actionTitle="Delete application"
-                                        header="Delete the application"
-                                        subheader="This action is irreversible. Please proceed with caution."
-                                        onActionClick={ handleApplicationDelete }
-                                    />
-                                </DangerZoneGroup>
-                            )
-                            }
-                        </>
-                    )
-                    : <ContentLoader/>
-            }
-        </>
+                        </DangerZoneGroup>
+                    ) }
+                </>
+            )
+            : <ContentLoader/>
     );
 };

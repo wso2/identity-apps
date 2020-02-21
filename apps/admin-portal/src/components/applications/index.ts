@@ -23,7 +23,7 @@ export * from "./application-search";
 export * from "./dropdown-details";
 export * from "./dropdown-details-general";
 export * from "./forms";
-export * from "./general-details-application";
+export * from "./general-application-settings";
 export * from "./settings-application";
 export * from "./settings-section-application-variation";
 export * from "./application-edit";

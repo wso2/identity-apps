@@ -31,11 +31,29 @@ import { AuthenticatorListItemInterface } from "../meta";
  * Proptypes for the authenticators component.
  */
 interface AuthenticatorsPropsInterface {
+    /**
+     * List of authenticators.
+     */
     authenticators: AuthenticatorListItemInterface[];
+    /**
+     * Additional CSS classes.
+     */
     className?: string;
+    /**
+     * ID for the droppable field.
+     */
     droppableId: string;
+    /**
+     * Heading for the authenticators section.
+     */
     heading?: string;
+    /**
+     * Is dropping allowed.
+     */
     isDropDisabled?: boolean;
+    /**
+     * Is the application info request loading.
+     */
     isLoading?: boolean;
 }
 
@@ -65,16 +83,16 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                 <>
                     <Heading as="h6">{ heading }</Heading>
                     <Droppable droppableId={ droppableId } direction="horizontal" isDropDisabled={ isDropDisabled }>
-                        { (provided: DroppableProvided) => (
+                        { (provided: DroppableProvided): React.ReactElement<HTMLElement> => (
                             <div ref={ provided.innerRef } { ...provided.droppableProps } className={ classes }>
                                 { authenticators.map((authenticator, index) => (
                                     <Draggable
-                                        key={ authenticator.authenticator }
+                                        key={ `${ authenticator.authenticator }-${ index }` }
                                         draggableId={ authenticator.authenticator }
                                         index={ index }
                                     >
                                         {
-                                            (providedDraggable: DraggableProvided) => (
+                                            (providedDraggable: DraggableProvided): React.ReactElement<HTMLElement> => (
                                                 <div
                                                     ref={ providedDraggable.innerRef }
                                                     { ...providedDraggable.draggableProps }
