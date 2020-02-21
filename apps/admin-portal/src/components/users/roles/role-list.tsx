@@ -19,7 +19,7 @@
 import React from "react";
 import { RolesInterface } from "../../../models";
 import { ResourceList, ResourceListItem } from "@wso2is/react-components";
-import { handleLastModifiedDate } from "../../../utils";
+import { CommonUtils } from "../../../utils";
 
 interface RoleListProps {
     roleList: RolesInterface[]
@@ -37,7 +37,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     <ResourceListItem 
                         key={ index }
                         itemHeader={role.displayName}
-                        metaContent={handleLastModifiedDate(role.meta.created)}
+                        metaContent={CommonUtils.humanizeDateDifference(role.meta.created)}
                     />
                 ))
             }

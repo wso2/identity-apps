@@ -45,7 +45,7 @@ export interface RolesInterface {
 }
 
 /**
- * 
+ * Interface to contain roles listing
  */
 export interface RoleListInterface {
     totalResults?: number;

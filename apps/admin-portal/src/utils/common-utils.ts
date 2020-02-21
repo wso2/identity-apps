@@ -20,23 +20,26 @@
  * This function calculate the number of days since the last
  * modified date to the current date.
  *
- * @param modifiedDate
+ * @param modifiedDate - Data string that needs to be calculated.
  */
-export const handleLastModifiedDate = (modifiedDate: string): string => {
-    if (modifiedDate) {
-        const currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, "/");
-        const modDate = modifiedDate.split("T");
-        const modDateNew = modDate[0].replace(/-/g, "/");
 
-        const dateX = new Date(modDateNew);
-        const dateY = new Date(currentDate);
-
-        if (dateY.getDate() - dateX.getDate() !== 0) {
-            return "last modified" + " " + Math.abs(dateY.getDate() - dateX.getDate()) + " " + "days ago";
-        } else {
-            return " last modified today";
-        }
-    } else {
-        return;
-    }
-};
+import moment from "moment"
+/**
+ * Class containing common utility methods used
+ * throuought the application.
+ * 
+ */
+export class CommonUtils {
+    
+    /**
+     * A util method to humanize the last modified date.
+     * 
+     * @param date - Date string which needs to be humanize
+     */
+    static humanizeDateDifference = (date: string): string => {
+        const now = moment(new Date());
+        const recievedDate = moment(date);
+        return "last modified " + moment.duration(now.diff(recievedDate)).humanize(true) + " ago";
+    };
+    
+}

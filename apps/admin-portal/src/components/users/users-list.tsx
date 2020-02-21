@@ -21,7 +21,7 @@ import React from "react";
 import { Grid, List } from "semantic-ui-react";
 import { history } from "../../helpers";
 import { UserListInterface } from "../../models";
-import { handleLastModifiedDate } from "../../utils";
+import { CommonUtils } from "../../utils";
 
 /**
  * Prop types for the liked accounts component.
@@ -91,7 +91,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                             " " + user.name.familyName : user.userName }
                         itemDescription={ user.emails ? user.emails[0].toString() :
                             user.userName }
-                        metaContent={ listContent(handleLastModifiedDate(user.meta.lastModified)) }
+                        metaContent={ listContent(CommonUtils.humanizeDateDifference(user.meta.lastModified)) }
                     />
                 ))
             }
