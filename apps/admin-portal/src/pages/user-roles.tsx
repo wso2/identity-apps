@@ -16,13 +16,12 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ReactElement } from "react";
 import { PageLayout, ListLayout } from "../layouts";
 import { getGroupsList } from "../api";
 import { RoleList } from "../components/users";
 import { RoleListInterface } from "../models"
-import { PrimaryButton } from "@wso2is/react-components";
-import { Icon, PaginationProps, DropdownProps } from "semantic-ui-react";
+import { PaginationProps, DropdownProps } from "semantic-ui-react";
 import { DEFAULT_ROLE_LIST_ITEM_LIMIT } from "../constants";
 
 /**
@@ -30,11 +29,10 @@ import { DEFAULT_ROLE_LIST_ITEM_LIMIT } from "../constants";
  * 
  * @return {JSX.Element}
  */
-export const UserRoles = (): JSX.Element => {
+export const UserRoles = (): ReactElement => {
     const [ roleList, setRoleList ] = useState<RoleListInterface>();
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ listOffset, setListOffset ] = useState<number>(0);
-    const [ showWizard, setShowWizard ] = useState<boolean>(false);
 
     useEffect(() => {
         setListItemLimit(DEFAULT_ROLE_LIST_ITEM_LIMIT);

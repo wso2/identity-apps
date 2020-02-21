@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import React, { ReactElement } from "react";
 import { ResourceList, ResourceListItem, UserAvatar } from "@wso2is/react-components";
-import React from "react";
 import { Grid, List } from "semantic-ui-react";
 import { history } from "../../helpers";
 import { UserListInterface } from "../../models";
@@ -48,7 +48,7 @@ const listContent = (lastModified: any) => (
  *
  * @return {JSX.Element}
  */
-export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersListProps): JSX.Element => {
+export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersListProps): ReactElement => {
     const {
         usersList,
         handleUserDelete
