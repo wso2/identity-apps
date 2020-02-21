@@ -37,12 +37,12 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     <ResourceListItem 
                         key={ index }
                         actions={ [
-                            {
+                            /*{
                                 icon: "trash alternate",
                                 onClick: () => {},
                                 popupText: "Delete Role",
                                 type: "button"
-                            }
+                            }*/
                         ] }
                         itemHeader={role.displayName}
                         metaContent={handleLastModifiedDate(role.meta.created)}

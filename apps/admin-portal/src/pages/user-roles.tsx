@@ -68,14 +68,14 @@ export const UserRoles = (): JSX.Element => {
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
-                rightActionPanel={
+                /*={
                     (
                         <PrimaryButton onClick={ () => setShowWizard(true) }>
                             <Icon name="add"/>
                             Add Role
                         </PrimaryButton>
                     )
-                }
+                }*/
                 showPagination={ roleList?.totalResults >= DEFAULT_ROLE_LIST_ITEM_LIMIT }
                 totalPages={ Math.ceil(roleList?.totalResults / listItemLimit) }
                 totalListSize={ roleList?.totalResults }
