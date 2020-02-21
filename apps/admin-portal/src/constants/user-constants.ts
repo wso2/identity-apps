@@ -16,8 +16,5 @@
  * under the License.
  */
 
-export * from "./application-constants";
-export * from "./application-management";
-export * from "./token-constants";
-export * from "./ui-constants";
-export * from "./user-constants";
+export const DEFAULT_USER_LIST_ITEM_LIMIT = 10;
+export const DEFAULT_ROLE_LIST_ITEM_LIMIT = 10;
