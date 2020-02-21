@@ -29,8 +29,8 @@ import { AlertInterface, AlertLevels } from "../models";
 import { UserListInterface } from "../models/user";
 import { addAlert } from "../store/actions";
 import { EmptyPlaceholderIllustrations } from "../configs";
+import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
 
-const DEFAULT_USER_LIST_ITEM_LIMIT: number = 10;
 
 /**
  * Users info page.

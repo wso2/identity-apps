@@ -16,7 +16,5 @@
  * under the License.
  */
 
-export * from "./users-search";
-export * from "./users-list";
-export * from "./add-user";
-export * from "./roles/role-list";
+export const DEFAULT_USER_LIST_ITEM_LIMIT = 10;
+export const DEFAULT_ROLE_LIST_ITEM_LIMIT = 10;

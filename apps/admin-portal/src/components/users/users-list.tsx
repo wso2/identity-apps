@@ -16,11 +16,12 @@
  * under the License.
  */
 
+import React, { ReactElement } from "react";
 import { ResourceList, ResourceListItem, UserAvatar } from "@wso2is/react-components";
-import React from "react";
 import { Grid, List } from "semantic-ui-react";
 import { history } from "../../helpers";
 import { UserListInterface } from "../../models";
+import { CommonUtils } from "../../utils";
 
 /**
  * Prop types for the liked accounts component.
@@ -47,7 +48,7 @@ const listContent = (lastModified: any) => (
  *
  * @return {JSX.Element}
  */
-export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersListProps): JSX.Element => {
+export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersListProps): ReactElement => {
     const {
         usersList,
         handleUserDelete
@@ -55,31 +56,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
     const handleUserEdit = (userId: string) => {
         history.push(`users/${ userId }`);
-    };
-
-    /**
-     * This function calculate the number of days since the last
-     * modified date to the current date.
-     *
-     * @param modifiedDate
-     */
-    const handleLastModifiedDate = (modifiedDate: string) => {
-        if (modifiedDate) {
-            const currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, "/");
-            const modDate = modifiedDate.split("T");
-            const modDateNew = modDate[0].replace(/-/g, "/");
-
-            const dateX = new Date(modDateNew);
-            const dateY = new Date(currentDate);
-
-            if (dateY.getDate() - dateX.getDate() !== 0) {
-                return "last modified" + " " + Math.abs(dateY.getDate() - dateX.getDate()) + " " + "days ago";
-            } else {
-                return " last modified today";
-            }
-        } else {
-            return;
-        }
     };
 
     return (
@@ -115,7 +91,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                             " " + user.name.familyName : user.userName }
                         itemDescription={ user.emails ? user.emails[0].toString() :
                             user.userName }
-                        metaContent={ listContent(handleLastModifiedDate(user.meta.lastModified)) }
+                        metaContent={ listContent(CommonUtils.humanizeDateDifference(user.meta.lastModified)) }
                     />
                 ))
             }
