@@ -43,7 +43,6 @@ export const UserRoles = (): JSX.Element => {
     useEffect(() => {
         getGroupsList().then((response)=> {
             if (response.status === 200) {
-                console.log(response.data);
                 setRoleList(response.data);
             }
         }).catch();
@@ -81,10 +80,6 @@ export const UserRoles = (): JSX.Element => {
                 totalListSize={ roleList?.totalResults }
             >
                 <RoleList roleList={ roleList?.Resources } />
-                {
-                    showWizard && (
-                    <div>ppp</div>
-                ) }
             </ListLayout>
         </PageLayout>
     );
