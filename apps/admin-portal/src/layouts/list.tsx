@@ -18,7 +18,7 @@
 
 import { Pagination } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, { PropsWithChildren } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Divider, DropdownItemProps, DropdownProps, Grid, PaginationProps } from "semantic-ui-react";
 
 /**
@@ -40,11 +40,11 @@ interface ListLayoutPropsInterface extends PaginationProps {
  * List layout.
  *
  * @param {React.PropsWithChildren<ListLayoutPropsInterface>} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
-export const ListLayout: React.FunctionComponent<PropsWithChildren<ListLayoutPropsInterface>> = (
+export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInterface>> = (
     props: PropsWithChildren<ListLayoutPropsInterface>
-): JSX.Element => {
+): ReactElement => {
 
     const {
         advancedSearch,

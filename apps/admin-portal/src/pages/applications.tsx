@@ -20,7 +20,7 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getApplicationList } from "../api";
@@ -28,6 +28,7 @@ import { ApplicationList, ApplicationSearch } from "../components";
 import { history } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
 import { ApplicationListInterface } from "../models";
+import { ApplicationConstants } from "../constants";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -52,14 +53,14 @@ const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     }
 ];
 
-const DEFAULT_APP_LIST_ITEM_LIMIT: number = 10;
+const DEFAULT_APP_LIST_ITEM_LIMIT = 10;
 
 /**
  * Overview page.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const ApplicationsPage = (): JSX.Element => {
+export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
 
     const dispatch = useDispatch();
 
@@ -71,7 +72,14 @@ export const ApplicationsPage = (): JSX.Element => {
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(DEFAULT_APP_LIST_ITEM_LIMIT);
 
-    const getAppLists = (limit: number, offset: number, filter: string) => {
+    /**
+     * Retrieves the list of applications.
+     *
+     * @param {number} limit - List limit.
+     * @param {number} offset - List offset.
+     * @param {string} filter - Search query.
+     */
+    const getAppLists = (limit: number, offset: number, filter: string): void => {
         getApplicationList(limit, offset, filter)
             .then((response) => {
                 setAppList(response);
@@ -95,12 +103,21 @@ export const ApplicationsPage = (): JSX.Element => {
             });
     };
 
+    /**
+     * Called on every `listOffset` & `listItemLimit` change.
+     */
     useEffect(() => {
         getAppLists(listItemLimit, listOffset, null);
     }, [ listOffset, listItemLimit ]);
 
-    const handleListSortingStrategyOnChange = (event: React.SyntheticEvent<HTMLElement>,
-                                               data: DropdownProps) => {
+    /**
+     * Sets the list sorting strategy.
+     *
+     * @param {React.SyntheticEvent<HTMLElement>} event - The event.
+     * @param {DropdownProps} data - Dropdown data.
+     */
+    const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>,
+                                               data: DropdownProps): void => {
         setListSortingStrategy(_.find(APPLICATIONS_LIST_SORTING_OPTIONS, (option) => {
             return data.value === option.value;
         }));
@@ -117,11 +134,23 @@ export const ApplicationsPage = (): JSX.Element => {
         getAppLists(listItemLimit, listOffset, query);
     };
 
-    const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
+    /**
+     * Handles the pagination change.
+     *
+     * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
+     * @param {PaginationProps} data - Pagination component data.
+     */
+    const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
         setListOffset((data.activePage as number - 1) * listItemLimit);
     };
 
-    const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+    /**
+     * Handles per page dropdown page.
+     *
+     * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
+     * @param {DropdownProps} data - Dropdown data.
+     */
+    const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
         setListItemLimit(data.value as number);
     };
 
@@ -148,8 +177,8 @@ export const ApplicationsPage = (): JSX.Element => {
                 rightActionPanel={
                     (
                         <PrimaryButton
-                            onClick={ () => {
-                                history.push("/applications/templates");
+                            onClick={ (): void => {
+                                history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"));
                             } }
                         >
                             <Icon name="add"/>Add application

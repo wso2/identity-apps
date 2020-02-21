@@ -223,13 +223,13 @@ export const updateApplicationDetails = (app: ApplicationInterface): Promise<any
 /**
  * Gets the application list with limit and offset.
  *
- * @param {number} limit Maximum Limit of the application List.
- * @param {number} offset Offset for get to start.
- * @param {number} Search filter.
+ * @param {number} limit - Maximum Limit of the application List.
+ * @param {number} offset - Offset for get to start.
+ * @param {string} filter - Search filter.
  *
- * @return {Promise<any>} A promise containing the response.
+ * @return {Promise<ApplicationListInterface>} A promise containing the response.
  */
-export const getApplicationList = (limit: number, offset: number, filter: string): Promise<any> => {
+export const getApplicationList = (limit: number, offset: number, filter: string): Promise<ApplicationListInterface> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
