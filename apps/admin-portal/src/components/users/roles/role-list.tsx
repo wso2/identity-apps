@@ -31,7 +31,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     } = props;
 
     return (
-        <ResourceList className="applications-list">
+        <ResourceList className="roles-list">
             {
                 roleList && roleList.map((role, index) => (
                     <ResourceListItem 
