@@ -126,16 +126,20 @@ body {
 
     &.list-layout {
         .top-action-panel {
-            .left-aligned-actions {
-                float: left;
-            }
-
-            .right-aligned-actions {
-                float: right;
+            .actions {
                 display: flex;
 
-                > div :not(:last-child), > button :not(:last-child) {
-                    margin-right: 10px;
+                &.right-aligned {
+                    float: right;
+                }
+                &.left-aligned {
+                    float: left;
+                }
+
+                > div, > button {
+                    &:not(:last-child) {
+                        margin-right: 10px;
+                    }
                 }
             }
         }

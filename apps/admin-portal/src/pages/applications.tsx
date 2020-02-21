@@ -71,8 +71,8 @@ export const ApplicationsPage = (): JSX.Element => {
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(DEFAULT_APP_LIST_ITEM_LIMIT);
 
-    const getAppLists = (limit: number, offset: number) => {
-        getApplicationList(limit, offset)
+    const getAppLists = (limit: number, offset: number, filter: string) => {
+        getApplicationList(limit, offset, filter)
             .then((response) => {
                 setAppList(response);
             })
@@ -96,7 +96,7 @@ export const ApplicationsPage = (): JSX.Element => {
     };
 
     useEffect(() => {
-        getAppLists(listItemLimit, listOffset);
+        getAppLists(listItemLimit, listOffset, null);
     }, [ listOffset, listItemLimit ]);
 
     const handleListSortingStrategyOnChange = (event: React.SyntheticEvent<HTMLElement>,
@@ -114,6 +114,7 @@ export const ApplicationsPage = (): JSX.Element => {
      */
     const handleApplicationFilter = (query: string): void => {
         setSearchQuery(query);
+        getAppLists(listItemLimit, listOffset, query);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
@@ -128,7 +129,7 @@ export const ApplicationsPage = (): JSX.Element => {
      * Handles application delete action.
      */
     const handleApplicationDelete = (): void => {
-        getAppLists(listItemLimit, listOffset);
+        getAppLists(listItemLimit, listOffset, null);
     };
 
     return (

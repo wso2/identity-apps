@@ -89,7 +89,7 @@ export const ListLayout: React.FunctionComponent<PropsWithChildren<ListLayoutPro
                             </div> */ }
                         </Grid.Column>
                         <Grid.Column width={ 12 }>
-                            <div className="right-aligned-actions">
+                            <div className="actions right-aligned">
                                 { advancedSearch && advancedSearch }
                                 { rightActionPanel && rightActionPanel }
                             </div>
