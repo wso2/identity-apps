@@ -18,7 +18,7 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { PrimaryButton } from "@wso2is/react-components";
+import { LinkButton, PrimaryButton, EmptyPlaceholder } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -29,6 +29,7 @@ import { history } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
 import { ApplicationListInterface } from "../models";
 import { ApplicationConstants } from "../constants";
+import { EmptyPlaceholderIllustrations } from "../configs";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -53,6 +54,7 @@ const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     }
 ];
 
+// TODO: Calculate based on the screen dimensions.
 const DEFAULT_APP_LIST_ITEM_LIMIT = 10;
 
 /**
@@ -71,6 +73,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
     const [ appList, setAppList ] = useState<ApplicationListInterface>({});
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(DEFAULT_APP_LIST_ITEM_LIMIT);
+    const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
 
     /**
      * Retrieves the list of applications.
@@ -80,6 +83,8 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
      * @param {string} filter - Search query.
      */
     const getAppLists = (limit: number, offset: number, filter: string): void => {
+        setApplicationListRequestLoading(true);
+
         getApplicationList(limit, offset, filter)
             .then((response) => {
                 setAppList(response);
@@ -100,6 +105,9 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                     level: AlertLevels.ERROR,
                     message: "Retrieval Error"
                 }));
+            })
+            .finally(() => {
+                setApplicationListRequestLoading(false);
             });
     };
 
@@ -161,6 +169,61 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
         getAppLists(listItemLimit, listOffset, null);
     };
 
+    /**
+     * Handles the `onSearchQueryClear` callback action.
+     */
+    const handleSearchQueryClear = (): void => {
+        setSearchQuery("");
+        getAppLists(listItemLimit, listOffset, null);
+    };
+
+    /**
+     * Resolve the relevant placeholder.
+     *
+     * @return {JSX.Element}
+     */
+    const showPlaceholders = (): JSX.Element => {
+        // When the search returns empty.
+        if (searchQuery) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <LinkButton onClick={ handleSearchQueryClear }>Clear search query</LinkButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    imageSize="tiny"
+                    title={ "No results found" }
+                    subtitle={ [
+                        `We couldn't find any results for ${ searchQuery }`,
+                        "Please try a different search term.",
+                    ] }
+                />
+            );
+        }
+
+        return (
+            <EmptyPlaceholder
+                action={ (
+                    <PrimaryButton
+                        onClick={ (): void => {
+                            history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"));
+                        } }
+                    >
+                        <Icon name="add"/>Add application
+                    </PrimaryButton>
+                ) }
+                image={ EmptyPlaceholderIllustrations.newList }
+                imageSize="tiny"
+                title={ "Create an Application" }
+                subtitle={ [
+                    "There are currently no applications available.",
+                    "You can create a new application easily by using the",
+                    "predefined templates."
+                ] }
+            />
+        );
+    };
+
     return (
         <PageLayout
             title="Applications"
@@ -186,12 +249,18 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
                     )
                 }
                 showPagination={ true }
+                showTopActionPanel={ !(!searchQuery && appList?.totalResults <= 0) }
                 sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
                 sortStrategy={ listSortingStrategy }
                 totalPages={ Math.ceil(appList.totalResults / listItemLimit) }
                 totalListSize={ appList.totalResults }
             >
-                <ApplicationList list={ appList } onApplicationDelete={ handleApplicationDelete } />
+                {
+                    (appList?.totalResults > 0 ||
+                        appList?.applications instanceof Array && appList.applications.length > 0)
+                        ? <ApplicationList list={ appList } onApplicationDelete={ handleApplicationDelete } />
+                        : !isApplicationListRequestLoading && showPlaceholders()
+                }
             </ListLayout>
         </PageLayout>
     );

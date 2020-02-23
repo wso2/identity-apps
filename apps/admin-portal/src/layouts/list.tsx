@@ -31,6 +31,7 @@ interface ListLayoutPropsInterface extends PaginationProps {
     onSortStrategyChange?: (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => void;
     rightActionPanel?: React.ReactNode;
     showPagination?: boolean;
+    showTopActionPanel?: boolean;
     sortOptions?: DropdownItemProps[];
     sortStrategy?: DropdownItemProps;
     totalListSize?: number;
@@ -54,6 +55,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         onSortStrategyChange,
         rightActionPanel,
         showPagination,
+        showTopActionPanel,
         sortOptions,
         sortStrategy,
         totalListSize,
@@ -68,12 +70,15 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
 
     return (
         <div className={ classes }>
-            <div className="top-action-panel">
-                <Grid>
-                    <Grid.Row>
-                        <Grid.Column width={ 4 }>
-                            { /* TODO: Re-enable when the API is ready */ }
-                            { /* <div className="left-aligned-actions">
+            {
+                showTopActionPanel && (
+                    <>
+                        <div className="top-action-panel">
+                            <Grid>
+                                <Grid.Row>
+                                    <Grid.Column width={ 4 }>
+                                        { /* TODO: Re-enable when the API is ready */ }
+                                        { /* <div className="left-aligned-actions">
                                 {
                                     sortOptions && sortStrategy && onSortStrategyChange && (
                                         <Dropdown
@@ -87,17 +92,20 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                 }
                                 { leftActionPanel && leftActionPanel }
                             </div> */ }
-                        </Grid.Column>
-                        <Grid.Column width={ 12 }>
-                            <div className="actions right-aligned">
-                                { advancedSearch && advancedSearch }
-                                { rightActionPanel && rightActionPanel }
-                            </div>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </div>
-            <Divider hidden />
+                                    </Grid.Column>
+                                    <Grid.Column width={ 12 }>
+                                        <div className="actions right-aligned">
+                                            { advancedSearch && advancedSearch }
+                                            { rightActionPanel && rightActionPanel }
+                                        </div>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </div>
+                        <Divider hidden />
+                    </>
+                )
+            }
             <div className="list-container">
                 { children }
                 {
@@ -120,5 +128,6 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
  * Default props for the list layout.
  */
 ListLayout.defaultProps = {
+    showTopActionPanel: false,
     showPagination: false
 };

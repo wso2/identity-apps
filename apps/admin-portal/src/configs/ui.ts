@@ -18,6 +18,8 @@
 
 import {
     AlertIcon,
+    MagnifierIcon,
+    LaunchIcon,
     AngularLogo,
     AppIcon,
     BasicAuthIcon,
@@ -135,8 +137,10 @@ export const MOBILE_CONTENT_PADDING = "2rem 1rem";
 export const EmptyPlaceholderIllustrations = {
     alert: AlertIcon,
     emptyList: BoxIcon,
+    emptySearch: MagnifierIcon,
     genericError: CloseIcon,
     loginError: ForbiddenIcon,
+    newList: LaunchIcon,
     pageNotFound: BlockedMagnifierIcon,
     search: EmptySearchResultsIllustration
 };
