@@ -28,19 +28,37 @@
 <%@ page import="javax.ws.rs.core.Response" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isSelfSignUpEPAvailable" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isRecoveryEPAvailable" %>
+<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 
+<%
+    String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
+    Boolean isEmailUsernameEnabled = false;
+
+    if (StringUtils.isNotBlank(emailUsernameEnable)) {
+        isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
+    } else {
+        isEmailUsernameEnabled = isEmailUsernameEnabled();
+    }
+%>
+
 <script>
     function submitIdentifier () {
+        var isEmailUsernameEnabled = JSON.parse("<%= isEmailUsernameEnabled %>");
         var tenantName = getParameterByName("tenantDomain");
-
-        var usernameUserInputValue = document.getElementById("usernameUserInput").value.trim();
         var userName = document.getElementById("username");
+        var usernameUserInput = document.getElementById("usernameUserInput");
 
         if (getParameterByName("isSaaSApp") === "false") {
-            userName.value = usernameUserInputValue + "@" + tenantName;
+            
+            if ((!isEmailUsernameEnabled) && (usernameUserInputValue.split("@").length > 1)) {
+                userName.value = usernameUserInputValue;
+            }
+            else {
+                userName.value = usernameUserInputValue + "@" + tenantName;
+            }
         }
         else {
             userName.value = usernameUserInputValue;

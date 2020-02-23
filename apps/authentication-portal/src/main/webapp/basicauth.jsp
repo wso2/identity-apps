@@ -30,6 +30,7 @@
 <%@ page import="javax.ws.rs.core.Response" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isSelfSignUpEPAvailable" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isRecoveryEPAvailable" %>
+<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
 <%@ page import="org.apache.commons.codec.binary.Base64" %>
 <%@ page import="java.nio.charset.Charset" %>
@@ -37,6 +38,17 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EndpointConfigManager" %>
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
+
+<%
+    String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
+    Boolean isEmailUsernameEnabled = false;
+
+    if (StringUtils.isNotBlank(emailUsernameEnable)) {
+        isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
+    } else {
+        isEmailUsernameEnabled = isEmailUsernameEnabled();
+    }
+%>
 
 <script>
     function goBack() {
@@ -55,16 +67,22 @@
                 } else {
                     e.preventDefault();
 
+                    var isEmailUsernameEnabled = JSON.parse("<%= isEmailUsernameEnabled %>");
                     var tenantName = getParameterByName("tenantDomain");
                     var userName = document.getElementById("username");
-
                     var usernameUserInput = document.getElementById("usernameUserInput");
 
                     if (usernameUserInput) {
                         var usernameUserInputValue = usernameUserInput.value.trim();
 
                         if (getParameterByName("isSaaSApp") === "false") {
-                            userName.value = usernameUserInputValue + "@" + tenantName;
+
+                            if ((!isEmailUsernameEnabled) && (usernameUserInputValue.split("@").length > 1)) {
+                                userName.value = usernameUserInputValue;
+                            }
+                            else {
+                                userName.value = usernameUserInputValue + "@" + tenantName;
+                            }
                         }
                         else {
                             userName.value = usernameUserInputValue;
@@ -343,7 +361,6 @@
     </div>
     
     <% if (Boolean.parseBoolean(loginFailed) && errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE) && request.getParameter("resend_username") == null) { %>
-    <div class="ui divider hidden"></div>
     <div class="field">
         <div class="form-actions">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.confirmation.mail")%>
