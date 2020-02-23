@@ -92,7 +92,8 @@
                     if (userName.value) {
                         $.ajax({
                             type: "GET",
-                            url: "/logincontext?sessionDataKey=" + getParameterByName("sessionDataKey") + "&relyingParty=" + getParameterByName("relyingParty") + "&tenantDomain=" + tenantName,
+                            url: "/logincontext?sessionDataKey=" + getParameterByName("sessionDataKey") + 
+                                "&relyingParty=" + getParameterByName("relyingParty") + "&tenantDomain=" + tenantName,
                             success: function (data) {
                                 if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
                                     window.location.href = data.redirectUrl;
@@ -286,16 +287,19 @@
         <div class="field">   
             <% if (!isIdentifierFirstLogin(inputType)) { %>
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%> 
-                <a id="usernameRecoverLink" tabindex="5" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true)%>">
+                <a id="usernameRecoverLink" tabindex="5"
+                    href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true)%>">
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
                 </a>
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
-                <a id="passwordRecoverLink" tabindex="6" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false)%>">
+                <a id="passwordRecoverLink" tabindex="6"
+                    href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false)%>">
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
                 </a>
                 ?
             <% } else { %>
-            <a id="passwordRecoverLink" tabindex="6" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false)%>">
+            <a id="passwordRecoverLink" tabindex="6"
+                href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false)%>">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%> 
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%> ?
             </a>
