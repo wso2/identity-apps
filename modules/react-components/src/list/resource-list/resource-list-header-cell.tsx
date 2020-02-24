@@ -18,7 +18,7 @@
 
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
-import { List, SemanticWIDTHS } from "semantic-ui-react";
+import { List, SemanticFLOATS, SemanticWIDTHS } from "semantic-ui-react";
 
 /**
  * Proptypes for the resource list header cell component.
@@ -28,6 +28,14 @@ export interface ResourceListHeaderCellPropsInterface {
      * Additional CSS classes.
      */
     className?: string;
+    /**
+     * Float direction.
+     */
+    floated?: SemanticFLOATS;
+    /**
+     * Cell offset.
+     */
+    offset?: SemanticWIDTHS;
     /**
      * Cell width.
      */
@@ -46,12 +54,13 @@ export const ResourceListHeaderCell: FunctionComponent<PropsWithChildren<Resourc
 
     const {
         children,
-        className
+        className,
+        floated
     } = props;
 
     const classes = classNames("resource-list-header-cell", className);
 
     return (
-        <List.Content className={ classes }>{ children }</List.Content>
+        <List.Content className={ classes } floated={ floated }>{ children }</List.Content>
     );
 };

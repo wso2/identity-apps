@@ -56,9 +56,14 @@ export const ResourceListHeader: FunctionComponent<PropsWithChildren<ResourceLis
                         {
                             React.Children.map(children,
                                 (heading: ReactElement<ResourceListHeaderCellPropsInterface>, index: number) => (
-                                    <Grid.Column key={ index } width={ heading.props.width }>
-                                        <List.Header className="table-heading">{ heading }</List.Header>
-                                    </Grid.Column>
+                                    <>
+                                        { heading.props.offset && (
+                                            <Grid.Column width={ heading.props.offset } />
+                                        )}
+                                        <Grid.Column key={ index } width={ heading.props.width }>
+                                            <List.Header>{ heading }</List.Header>
+                                        </Grid.Column>
+                                    </>
                                 ))
                         }
                     </Grid.Row>

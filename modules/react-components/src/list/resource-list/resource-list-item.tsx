@@ -26,6 +26,7 @@ import {
     List,
     ListItemProps,
     Popup,
+    SemanticFLOATS,
     SemanticICONS,
     SemanticWIDTHS
 } from "semantic-ui-react";
@@ -38,6 +39,10 @@ interface ResourceListItemPropsInterface extends ListItemProps {
      * List items actions.
      */
     actions?: ResourceListAction[];
+    /**
+     * Action panel float direction.
+     */
+    actionsFloated?: SemanticFLOATS;
     /**
      * Width of the action panel column.
      */
@@ -97,6 +102,7 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
     const {
         actions,
         actionsColumnWidth,
+        actionsFloated,
         avatar,
         className,
         descriptionColumnWidth,
@@ -119,11 +125,11 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
                             <List.Description className="list-item-description">{ itemDescription }</List.Description>
                         </List.Content>
                     </Grid.Column>
-                    <Grid.Column width={ metaColumnWidth }>
+                    <Grid.Column width={ metaColumnWidth } verticalAlign="middle">
                         <List.Content>{ metaContent }</List.Content>
                     </Grid.Column>
                     <Grid.Column width={ actionsColumnWidth }>
-                        <List.Content floated="right" className="list-item-action-panel">
+                        <List.Content floated={ actionsFloated } className="list-item-action-panel">
                             {
                                 (actions && actions.length && actions.length > 0)
                                     ? actions.map((action, index) => (
@@ -189,6 +195,7 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
  */
 ResourceListItem.defaultProps = {
     actionsColumnWidth: 5,
+    actionsFloated: "left",
     descriptionColumnWidth: 7,
     metaColumnWidth: 4
 };
