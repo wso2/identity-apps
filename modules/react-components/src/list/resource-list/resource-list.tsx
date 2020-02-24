@@ -17,14 +17,18 @@
  */
 
 import classNames from "classnames";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { List , ListProps } from "semantic-ui-react";
 import { ResourceListItem } from "./resource-list-item";
+import { ResourceListHeader } from "./resource-list-header";
+import { ResourceListHeaderCell } from "./resource-list-header-cell";
 
 /**
  * Interface for the resource tab sub component.
  */
 interface ResourceListSubComponentsInterface {
+    Header: typeof ResourceListHeader;
+    HeaderCell: typeof ResourceListHeaderCell;
     Item: typeof ResourceListItem;
 }
 
@@ -32,11 +36,11 @@ interface ResourceListSubComponentsInterface {
  * Resource list component.
  *
  * @param {ListProps} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
 export const ResourceList: FunctionComponent<ListProps> & ResourceListSubComponentsInterface = (
     props: ListProps
-): JSX.Element => {
+): ReactElement => {
 
     const {
         children,
@@ -61,4 +65,6 @@ export const ResourceList: FunctionComponent<ListProps> & ResourceListSubCompone
     );
 };
 
+ResourceList.Header = ResourceListHeader;
+ResourceList.HeaderCell = ResourceListHeaderCell;
 ResourceList.Item = ResourceListItem;

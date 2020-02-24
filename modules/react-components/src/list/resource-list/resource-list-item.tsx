@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import classNames from "classnames";
 import React, { FunctionComponent } from "react";
 import {
     Dropdown,
@@ -46,6 +47,10 @@ interface ResourceListItemPropsInterface extends ListItemProps {
      * Can be either {@link UserAvatar} or {@link AppAvatar}
      */
     avatar?: React.ReactNode;
+    /**
+     * Additional CSS classes.
+     */
+    className?: string;
     /**
      * List item header.
      */
@@ -93,6 +98,7 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
         actions,
         actionsColumnWidth,
         avatar,
+        className,
         descriptionColumnWidth,
         itemDescription,
         itemHeader,
@@ -100,8 +106,10 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
         metaColumnWidth
     } = props;
 
+    const classes = classNames("resource-list-item", className);
+
     return (
-        <List.Item>
+        <List.Item className={ classes }>
             <Grid>
                 <Grid.Row columns={ 3 }>
                     <Grid.Column width={ descriptionColumnWidth }>
