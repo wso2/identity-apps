@@ -33,32 +33,9 @@ export const onHttpRequestStart = (): void => {
 
 /**
  * Callback to be fired on every Http request success.
- *
- * @param response - Http response.
  */
 export const onHttpRequestSuccess = (): void => {
     // TODO: Handle any conditions required on request success.
-};
-
-/**
- * Sets the time at which an auth error occurs in the session storage and calls `endUserSession()
- * only if the current error takes place 10 seconds after the previous one. This helps avoid entering
- * an infinite loop when a faulty api keeps returning auth errors.
- */
-const endUserSessionWithoutLoops = (): void => {
-    if (!sessionStorage.getItem(ApplicationConstants.AUTH_ERROR_TIME)) {
-        sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
-    } else {
-        const currentTime = new Date().getTime();
-        const errorTime = parseInt(sessionStorage.getItem(ApplicationConstants.AUTH_ERROR_TIME), 10);
-        if (currentTime - errorTime >= 10000) {
-            sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
-            history.push(APP_LOGOUT_PATH);
-        } else {
-            sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
-            return;
-        }
-    }
 };
 
 /**
@@ -98,7 +75,7 @@ export const onHttpRequestError = (error: any): void => {
     // or a forbidden status code (403). NOTE: Axios is unable to handle 401 errors.
     // `!error.response` will usually catch the `401` error. Check the link in the doc comment.
     if (!error.response || error.response.status === 403 || error.response.status === 401) {
-        endUserSessionWithoutLoops();
+        history.push(APP_LOGOUT_PATH);
     }
 };
 
