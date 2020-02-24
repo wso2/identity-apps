@@ -618,6 +618,24 @@ export const views: Views = {
                 },
                 resultsIndicator: "Showing results for the query \"{{query}}\""
             }
+        },
+        roles: {
+            notifications: {
+                deleteRole: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error deleting the selected role."
+                    },
+                    genericError: {
+                        description: "Couldn't remove the selected role.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The selected role was deleted successfully.",
+                        message: "Role deleted successfully"
+                    }
+                }
+            }
         }
     },
     pages: {
