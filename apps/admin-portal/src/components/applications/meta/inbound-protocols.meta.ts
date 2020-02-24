@@ -37,7 +37,7 @@ export const InboundProtocolsMeta: AuthProtocolMetaListItemInterface[] = [
     },
     {
         displayName: "SAML 2.0",
-        enabled: false,
+        enabled: true,
         id: "saml",
         logo: "saml",
         name: "saml",

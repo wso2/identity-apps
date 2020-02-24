@@ -233,8 +233,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 "should be redirected to after the authentication is successful. " +
                                 "This is the Assertion Consumer Service (ACS) URL of the Application" }
                             />
-
-                            {/* TODO read from the assertion consumer url states */ }
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                     <Field
@@ -297,7 +295,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Grid.Column>
                             </Grid.Row>
 
-                            {/**/ }
+                            {/*Single SignOn Profile*/ }
                             <Grid.Row columns={ 2 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                     <Divider/>
@@ -484,7 +482,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                                 .assertionEncryptionAlgorithm
                                         }
                                         children={ getAllowedOptions(metadata?.assertionEncryptionAlgorithm) }
-
                                     />
                                 </Grid.Column>
                             </Grid.Row>
@@ -664,8 +661,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         ] }
                                     />
                                     <Hint>
-                                        When this is enabled, the service provider is not required to
-                                        send the SAML2 request.
+                                        When this is enabled, the service provider is not required to send
+                                        the SAML request.
                                     </Hint>
                                 </Grid.Column>
                             </Grid.Row>
