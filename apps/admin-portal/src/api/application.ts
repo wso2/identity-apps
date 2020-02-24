@@ -229,7 +229,8 @@ export const updateApplicationDetails = (app: ApplicationInterface): Promise<any
  *
  * @return {Promise<ApplicationListInterface>} A promise containing the response.
  */
-export const getApplicationList = (limit: number, offset: number, filter: string): Promise<ApplicationListInterface> => {
+export const getApplicationList = (limit: number, offset: number,
+                                   filter: string): Promise<ApplicationListInterface> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",

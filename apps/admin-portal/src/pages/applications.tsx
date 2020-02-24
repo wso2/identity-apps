@@ -20,7 +20,7 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LinkButton, PrimaryButton, EmptyPlaceholder } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, MouseEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getApplicationList } from "../api";
@@ -148,7 +148,7 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
      * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
      * @param {PaginationProps} data - Pagination component data.
      */
-    const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
+    const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
         setListOffset((data.activePage as number - 1) * listItemLimit);
     };
 
@@ -158,7 +158,8 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
      * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
      * @param {DropdownProps} data - Dropdown data.
      */
-    const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
+    const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>,
+                                              data: DropdownProps): void => {
         setListItemLimit(data.value as number);
     };
 
@@ -180,9 +181,9 @@ export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
     /**
      * Resolve the relevant placeholder.
      *
-     * @return {JSX.Element}
+     * @return {React.ReactElement}
      */
-    const showPlaceholders = (): JSX.Element => {
+    const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
         if (searchQuery) {
             return (
