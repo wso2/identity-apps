@@ -39,7 +39,7 @@ interface FederatedAssociationsPropsInterface {
  * This renders the federated associations component
  * @param props
  */
-export const FederatedAssociations = (props: FederatedAssociationsPropsInterface): JSX.Element => {
+export const FederatedAssociations = (props: FederatedAssociationsPropsInterface): React.ReactElement => {
 
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [id, setId] = useState(null);
@@ -112,7 +112,7 @@ export const FederatedAssociations = (props: FederatedAssociationsPropsInterface
     /**
      * Pops up a model requesting confirmation before deleting 
      */
-    const deleteConfirmation = (): JSX.Element => {
+    const deleteConfirmation = (): React.ReactElement => {
         return (
             <Modal
                 dimmer="blurring"
@@ -153,7 +153,7 @@ export const FederatedAssociations = (props: FederatedAssociationsPropsInterface
     /**
      * This returns the list of federated associations as a `List` component
      */
-    const federatedAssociationsList = (): JSX.Element => {
+    const federatedAssociationsList = (): React.ReactElement => {
         return (
             <List divided verticalAlign="middle" className="main-content-inner">
                 {

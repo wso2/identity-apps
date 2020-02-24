@@ -37,11 +37,11 @@ interface LinkedAccountsListProps {
  * Linked accounts list component.
  *
  * @param {LinkedAccountsListProps} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
 export const LinkedAccountsList: FunctionComponent<LinkedAccountsListProps> = (
     props: LinkedAccountsListProps
-): JSX.Element => {
+): React.ReactElement => {
     const { linkedAccounts, onLinkedAccountRemove, onLinkedAccountSwitch } = props;
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [userID, setUserID] = useState(null);
@@ -51,7 +51,7 @@ export const LinkedAccountsList: FunctionComponent<LinkedAccountsListProps> = (
     /**
      * Pops up a modal requesting confirmation before deleting
      */
-    const requestConfirmation = (): JSX.Element => {
+    const requestConfirmation = (): React.ReactElement => {
         return (
             <Modal
                 size="mini"
