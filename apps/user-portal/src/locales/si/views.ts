@@ -393,7 +393,7 @@ export const views: Views = {
             }
         },
         federatedAssociations: {
-            deleteConfirmation: "මෙය ඔබගේ ගිණුමෙන් මෙම බාහිර පිවිසුම ඉවත් කරයි. දිගටම ඉවත් කිරීමට ඔබට අවශ්‍යද?",
+            deleteConfirmation: "මෙම ක්‍රියාව මගින්, ඔබේ ගිණුමේ මෙම බාහිර පිවිසුම ඉවත් කරයි. එය සනාථ කිරීමට ඔබට අවශ්‍යද?",
             notifications: {
                 getFederatedAssociations: {
                     error: {
