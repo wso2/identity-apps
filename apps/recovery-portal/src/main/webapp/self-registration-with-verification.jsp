@@ -414,58 +414,35 @@
 
                                 if (hasPurposes) {
                             %>
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-double consent-section test">
-                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 consent-border">
-                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-top-double padding-left-double padding-right-double">
-                                        <p style="text-align: justify;">
-                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                                    "Need.consent.for.following.purposes")%>
-                                            <span>
-                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                                    "I.consent.to.use.them")%>
-                                        </span>
-                                        </p>
-                                    </div>
+                            <div class="ui divider hidden"></div>
+                            <div class="ui secondary left aligned segment">
+                                <p>
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                        "Need.consent.for.following.purposes")%>
+                                    <span>
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                            "I.consent.to.use.them")%>
+                                    </span>
                                     <%
                                         if (consentDisplayType == "template") {
                                     %>
                                     <!--User Consents from Template-->
-                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-top margin-bottom-half">
-                                        <div class="padding-top margin-bottom-double">
-                                            <div id="consent-mgt-template-container">
-                                                <div class="consent-statement"></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        <div class="consent-statement"></div>
                                     <!--End User Consents from Template-->
                                     <% } else if (consentDisplayType == "tree") { %>
                                     <!--User Consents Tree-->
-                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding-top padding-bottom-double">
-                                        <div class="margin-none">
-                                            <div id="consent-mgt-tree-container">
-                                                <div id="tree-table"></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        <div id="tree-table"></div>
                                     <!--End User Consents Tree-->
                                     <%
                                     } else if (consentDisplayType == "row") {
                                     %>
                                     <!--User Consents Row-->
-                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                        <div class="padding-top margin-bottom-double">
-                                            <div id="consent-mgt-row-container">
-                                                <div id="row-container">
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        <div id="row-container"></div>
                                     <!--End User Consents Row-->
                                     <%
                                         }
                                     %>
-                                </div>
+                                </p>
                             </div>
                             <%
                                 }
@@ -1056,27 +1033,28 @@
             function renderReceiptDetailsFromRows(data) {
                 var rowTemplate =
                     '{{#purposes}}' +
-                    '<div class="consent-container-3 box clearfix"><ul class="consent-ul">' +
-                    '<li><span>{{purpose}} {{#if description}}<img src="images/info.png" class="form-info" data-toggle="tooltip" data-content="{{description}}" data-placement="right"/>{{/if}}</span></li></ul>' +
+                    '<div class="ui bulleted list">' +
+                    '<div class="item"><span>{{purpose}} {{#if description}}<i id="description" class="info circle icon" data-variation="inverted" data-content="{{description}}" data-placement="right"/>{{/if}}</span></div></div>' +
+                    '<div class="ui form">' +
                     '{{#grouped_each 2 piiCategories}}' +
-                    '<div class="row">' +
                     '{{#each this }}' +
-                    '<div class="col-xs-6">' +
-                    '<input type="checkbox" name="switch" class="custom-checkbox" id="consent-checkbox-{{../../purposeId}}-{{piiCategoryId}}" {{#if mandatory}}required{{/if}} />' +
+                    '<div class="{{#if mandatory}}required{{/if}} field">'+
+                    '<div class="ui checkbox">' +
+                    '<input type="checkbox" name="switch" id="consent-checkbox-{{../../purposeId}}-{{piiCategoryId}}" {{#if mandatory}}required{{/if}} />' +
                     '<label for="consent-checkbox-{{../../purposeId}}-{{piiCategoryId}}" data-piicategoryid="{{piiCategoryId}}" data-mandetorypiicatergory="{{mandatory}}" data-purposeid="{{../../purposeId}}">' +
-                    '<span>{{#if displayName}}{{displayName}}{{else}}{{piiCategory}}{{/if}}{{#if mandatory}}' +
-                    '<span class="required_consent">*</span>{{/if}}</span>' +
+                    '<span>{{#if displayName}}{{displayName}}{{else}}{{piiCategory}}{{/if}}'+
                     '</label></div>' +
+                    '</div>'+
                     '{{/each}}' +
-                    '</div>' +
                     '{{/grouped_each}}' +
-                    '</div>' +
+                    '</div></div>' +
                     '{{/purposes}}';
 
                 var rows = Handlebars.compile(rowTemplate);
                 var rowsRendered = rows(data);
 
                 $("#row-container").html(rowsRendered);
+                $("#description").popup();
             }
 
         });
