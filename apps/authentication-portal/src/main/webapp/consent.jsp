@@ -82,7 +82,7 @@
                                 <div class="claim-alert" role="alert">
                                     <p class="margin-bottom-double">
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "by.selecting.following.attributes")%>
-                                        <%=Encode.forHtml(request.getParameter("application"))%>.
+                                        <%=Encode.forHtml(request.getParameter("sp"))%>.
                                     </p>
                                 </div>
                                 <div>
@@ -140,10 +140,10 @@
                         <div class="ui divider hidden"></div>
                         <div class="feild">
                             <div class="cookie-policy-message">
-                                <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving.head")%> <%=Encode.forHtml(request.getParameter("application"))%></h5>
+                                <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving.head")%> <%=Encode.forHtml(request.getParameter("sp"))%></h5>
 
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving")%>
-                                <%=Encode.forHtml(request.getParameter("application"))%>
+                                <%=Encode.forHtml(request.getParameter("sp"))%>
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving2")%>
                                 <a href="privacy_policy.do" target="policy-pane"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%></a>.
                             </div>
