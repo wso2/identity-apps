@@ -254,7 +254,8 @@ export const sendRefreshTokenRequest = (
  * @returns {any}
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const sendRevokeTokenRequest = (requestParams: OIDCRequestParamsInterface, accessToken: string): Promise<any> => {
+export const sendRevokeTokenRequest = (requestParams: OIDCRequestParamsInterface,
+                                       accessToken: string): Promise<any> => {
     const revokeTokenEndpoint = getRevokeTokenEndpoint();
 
     if (!revokeTokenEndpoint || revokeTokenEndpoint.trim().length === 0) {

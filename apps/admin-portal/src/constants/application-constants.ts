@@ -94,7 +94,8 @@ export class ApplicationConstants {
      * @type {Map<string, string>}
      */
     public static readonly PATHS: Map<string, string> = new Map<string, string>()
-        .set("APPLICATIONS", "/applications");
+        .set("APPLICATIONS", "/applications")
+        .set("APPLICATION_TEMPLATES", "/applications/templates");
 }
 
 /**
