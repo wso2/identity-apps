@@ -19,7 +19,7 @@
 import {
     AuthProtocolMetaListItemInterface,
     OIDCDataInterface,
-    OIDCMetadataInterface,
+    OIDCMetadataInterface, SAML2ConfigurationInterface,
     SupportedAuthProtocolTypes,
     SupportedQuickStartTemplateTypes
 } from "./application-inbound";
@@ -75,6 +75,7 @@ export interface ApplicationBasicWizard extends ApplicationBasicInterface {
  */
 export interface InboundProtocolsInterface {
     oidc?: OIDCDataInterface;
+    saml?: SAML2ConfigurationInterface;
 }
 
 /**

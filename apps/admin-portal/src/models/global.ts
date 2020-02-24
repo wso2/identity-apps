@@ -25,3 +25,7 @@ export interface GlobalInterface {
     isApplicationsPageVisible: boolean;
     isGlobalLoaderVisible: boolean;
 }
+
+export type MandatoryArray<T> = {
+    0: T;
+} & Array<T>

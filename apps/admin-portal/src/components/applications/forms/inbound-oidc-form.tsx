@@ -310,6 +310,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             urlState={ callBackUrls }
                             setURLState={ setCallBackUrls }
                             labelName={ "Callback URL" }
+                            required={ true }
                             value={ buildCallBackURLWithSeparator(initialValues.callbackURLs?.toString()) }
                             placeholder={ "Enter callbackUrl" }
                             validationErrorMsg={ "Please add valid URL." }
