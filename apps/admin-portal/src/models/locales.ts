@@ -390,6 +390,11 @@ export interface Views {
                 };
             };
         };
+        roles: {
+            notifications: {
+                deleteRole: Notification;
+            };
+        };
         footer: {
             copyright: string;
         };
