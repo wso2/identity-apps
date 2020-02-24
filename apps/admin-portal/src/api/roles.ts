@@ -50,3 +50,49 @@ export const getGroupsList = (): Promise<any> => {
             return Promise.reject(error);
         });
 };
+
+/**
+ * Delete a selected role with a given role ID.
+ * 
+ * @param roleId - Id of the role which needs to be deleted.
+ * @returns {Promise<any>} a promise containing the status of the delete.
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const deleteSelectedRole = (roleId: string): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: ServiceResourcesEndpoint.groups + "/" + roleId
+    };
+
+    return httpClient.request(requestConfig).then((response) => {
+        return Promise.resolve(response);
+    }).catch((error) => {
+        return Promise.reject(error)
+    })
+} 
+
+/**
+ * Retrieve a list of all the permissions from the system.
+ *
+ * @returns {Promise<any>} a promise containing the permission list
+ */
+export const getPermissionList = (): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: ServiceResourcesEndpoint.permission
+    };
+
+    return httpClient.request(requestConfig).then((response) => {
+        return Promise.resolve(response);
+    }).catch((error) => {
+        return Promise.reject(error);
+    });
+}
