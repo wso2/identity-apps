@@ -19,17 +19,8 @@
 
 import Joi from "@hapi/joi";
 import Axios from "axios";
-import JoiPhoneNumber from "joi-phone-number";
 import "./plugins/text-encoder-polyfill";
 
-/**
- * Loads the phone number extension
- */
-const phoneJoi = Joi.extend(JoiPhoneNumber);
-
-/**
- * The type of a typical Validation function
- */
 type ValidationFunction = (value: string) => boolean;
 
 /**
@@ -38,7 +29,11 @@ type ValidationFunction = (value: string) => boolean;
  * @param value
  */
 export const email: ValidationFunction = (value: string): boolean => {
-    if (Joi.string().email({ tlds: false }).validate(value).error) {
+    if (
+        Joi.string()
+            .email({ tlds: false })
+            .validate(value).error
+    ) {
         return false;
     }
     return true;
@@ -46,10 +41,15 @@ export const email: ValidationFunction = (value: string): boolean => {
 
 /**
  * This validates mobile numbers. Returns true if valid. False if not valid.
+ * Checks if the mobile number input has only numbers, '-', and '+'.
  * @param value
  */
-export const mobileNumber = (value: string, country: string): boolean => {
-    if (phoneJoi.string().phoneNumber({ defaultCountry: country }).validate(value).error) {
+export const mobileNumber: ValidationFunction = (value: string): boolean => {
+    if (
+        Joi.string()
+            .pattern(/^[\d+].[\d-\s\+]+[\d]$/)
+            .validate(value).error
+    ) {
         return false;
     }
     return true;
@@ -61,7 +61,11 @@ export const mobileNumber = (value: string, country: string): boolean => {
  * @param value
  */
 export const url: ValidationFunction = (value: string): boolean => {
-    if (Joi.string().uri().validate(value).error) {
+    if (
+        Joi.string()
+            .uri()
+            .validate(value).error
+    ) {
         return false;
     }
     return true;
@@ -72,18 +76,18 @@ export const url: ValidationFunction = (value: string): boolean => {
  * @param value Url
  */
 export const imageUrl = async (value: string): Promise<boolean> => {
-        if (
-            Joi.string()
-                .uri()
-                .validate(value).error
-        ) {
+    if (
+        Joi.string()
+            .uri()
+            .validate(value).error
+    ) {
+        return Promise.resolve(false);
+    } else {
+        try {
+            const response = await Axios.get(value);
+            return Promise.resolve(response.headers["content-type"].includes("image"));
+        } catch (error) {
             return Promise.resolve(false);
-        } else {
-            try {
-                const response = await Axios.get(value);
-                return Promise.resolve(response.headers["content-type"].includes("image"));
-            } catch (error) {
-                return Promise.resolve(false);
-            }
         }
+    }
 };
