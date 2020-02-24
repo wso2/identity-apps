@@ -20,8 +20,7 @@ module.exports = {
         "react/jsx-curly-spacing": [2, "always", {
             "allowMultiline": true,
             "spacing": {"objectLiterals": "always"}
-        }],
-        "max-len": ["error", { "code": 120 }]
+        }]
     },
     overrides: [
         {
