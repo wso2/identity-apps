@@ -49,7 +49,6 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
         onSubmit
     } = props;
 
-
     const [assertionConsumerUrls, setAssertionConsumerUrls] = useState("");
     const [showAssertionConsumerUrlError, setAssertionConsumerUrlError] = useState(false);
 
