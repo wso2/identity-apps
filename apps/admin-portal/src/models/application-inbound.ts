@@ -196,7 +196,7 @@ export interface SAMLAttributeProfileInterface {
     alwaysIncludeAttributesInResponse?: boolean;
 }
 
-export enum LogoutMethod {
+export enum LogoutMethods {
     BACK_CHANNEL= "BACKCHANNEL",
     FRONT_CHANNEL_HTTP_REDIRECT= "FRONTCHANNEL_HTTP_REDIRECT",
     FRONT_CHANNEL_HTTP_POST= "FRONTCHANNEL_HTTP_POST"
@@ -210,7 +210,7 @@ interface SingleLogoutProfileInterface {
     enabled?: boolean;
     logoutRequestUrl?: string;
     logoutResponseUrl?: string;
-    logoutMethod?: LogoutMethod;
+    logoutMethod?: LogoutMethods;
     idpInitiatedSingleLogout?: IdpInitiatedSingleLogoutInterface;
 }
 

@@ -26,6 +26,9 @@ export interface GlobalInterface {
     isGlobalLoaderVisible: boolean;
 }
 
+/**
+ * Make sure array has at least one element
+ */
 export type MandatoryArray<T> = {
     0: T;
 } & Array<T>
