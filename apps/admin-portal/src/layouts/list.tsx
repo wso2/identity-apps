@@ -128,6 +128,6 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
  * Default props for the list layout.
  */
 ListLayout.defaultProps = {
-    showTopActionPanel: false,
+    showTopActionPanel: true,
     showPagination: false
 };
