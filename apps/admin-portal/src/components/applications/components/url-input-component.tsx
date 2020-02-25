@@ -33,6 +33,7 @@ interface URLInputComponentInterface {
     hint?: string;
     showError?: boolean;
     setShowError?: any;
+    required?:boolean;
 }
 
 /**
@@ -51,7 +52,8 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
         placeholder,
         labelName,
         value,
-        hint
+        hint,
+        required
     } = props;
 
     const [changeUrl, setChangeUrl] = useState("");
@@ -181,7 +183,15 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
         <>
             <Grid.Row columns={ 1 } className={ "urlComponentLabelRow" }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    <label>{ labelName }</label>
+                    {
+                        required ? (
+                            <div className={ "required field" }>
+                                <label>{ labelName }</label>
+                            </div>
+                        ) : (
+                            <label>{ labelName }</label>
+                        )
+                    }
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row className={ "urlComponentInputRow" }>

@@ -18,7 +18,7 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ContentLoader, Heading } from "@wso2is/react-components";
+import { ContentLoader, Heading, Hint, SelectionCard } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,6 +38,8 @@ import { AppState } from "../../store";
 import { setAuthProtocolMeta, setAvailableInboundAuthProtocolMeta } from "../../store/actions";
 import { InboundFormFactory } from "./forms";
 import { InboundProtocolsMeta } from "./meta";
+import { Divider } from "semantic-ui-react";
+import { InboundProtocolLogos } from "../../configs";
 
 /**
  * Proptypes for the applications settings component.
@@ -190,6 +192,21 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                         type={ SupportedAuthProtocolTypes.OIDC }
                     />
                 );
+            case SupportedAuthProtocolTypes.SAML:
+                return (
+                    <InboundFormFactory
+                        metadata={ authProtocolMeta[selectedInboundProtocol.name] }
+                        initialValues={
+                            selectedInboundProtocolConfig
+                            && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+                                selectedInboundProtocol.name)
+                                ? selectedInboundProtocolConfig[selectedInboundProtocol.name]
+                                : undefined
+                        }
+                        onSubmit={ handleInboundConfigFormSubmit }
+                        type={ SupportedAuthProtocolTypes.SAML }
+                    />
+                );
             default:
                 return null;
         }
@@ -338,33 +355,32 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                         <Heading as="h4">Inbound protocol</Heading>
 
                         {/* TODO enable this after having multiple inbound protocols*/ }
-                        {/*<Hint icon="info circle">Please select one of the
-                                                   following inbound protocols.</Hint>*/ }
-                        {/*{*/ }
-                        {/*    (availableInboundProtocols*/ }
-                        {/*        && availableInboundProtocols instanceof Array*/ }
-                        {/*        && availableInboundProtocols.length > 0)*/ }
-                        {/*        ? availableInboundProtocols.map((protocol, index) => (*/ }
-                        {/*            protocol.enabled && (*/ }
-                        {/*                <SelectionCard*/ }
-                        {/*                    inline*/ }
-                        {/*                    disabled={ protocol.enabled }*/ }
-                        {/*                    selected={*/ }
-                        {/*                        selectedInboundProtocol && selectedInboundProtocol.name*/ }
-                        {/*                            ? protocol.name === selectedInboundProtocol.name*/ }
-                        {/*                            : false*/ }
-                        {/*                    }*/ }
-                        {/*                    id={ protocol.name }*/ }
-                        {/*                    key={ index }*/ }
-                        {/*                    header={ protocol.displayName }*/ }
-                        {/*                    image={ InboundProtocolLogos[ protocol.logo ] }*/ }
-                        {/*                    onClick={ handleInboundProtocolSelection }*/ }
-                        {/*                />*/ }
-                        {/*            )*/ }
-                        {/*        ))*/ }
-                        {/*        : null*/ }
-                        {/*}*/ }
-                        {/*<Divider hidden/>*/ }
+                        <Hint icon="info circle">Please select one of the following inbound protocols.</Hint>
+                        {
+                            (availableInboundProtocols
+                                && availableInboundProtocols instanceof Array
+                                && availableInboundProtocols.length > 0)
+                                ? availableInboundProtocols.map((protocol, index) => (
+                                    protocol.enabled && (
+                                        <SelectionCard
+                                            inline
+                                            disabled={ !protocol.enabled }
+                                            selected={
+                                                selectedInboundProtocol && selectedInboundProtocol.name
+                                                    ? protocol.name === selectedInboundProtocol.name
+                                                    : false
+                                            }
+                                            id={ protocol.name }
+                                            key={ index }
+                                            header={ protocol.displayName }
+                                            image={ InboundProtocolLogos[ protocol.logo ] }
+                                            onClick={ handleInboundProtocolSelection }
+                                        />
+                                    )
+                                ))
+                                : null
+                        }
+                        <Divider hidden/>
                         <div className="protocol-settings-section">
                             { selectedInboundProtocol && resolveInboundProtocolSettingsForm() }
                         </div>

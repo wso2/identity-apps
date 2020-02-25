@@ -20,7 +20,7 @@ import { Field, Forms, Validation } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import {
     emptyOIDCConfig,
@@ -49,7 +49,7 @@ interface InboundOIDCFormPropsInterface {
  */
 export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> = (
     props: InboundOIDCFormPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         metadata,
@@ -310,6 +310,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             urlState={ callBackUrls }
                             setURLState={ setCallBackUrls }
                             labelName={ "Callback URL" }
+                            required={ true }
                             value={ buildCallBackURLWithSeparator(initialValues.callbackURLs?.toString()) }
                             placeholder={ "Enter callbackUrl" }
                             validationErrorMsg={ "Please add valid URL." }
