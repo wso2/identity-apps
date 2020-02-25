@@ -29,7 +29,11 @@ type ValidationFunction = (value: string) => boolean;
  * @param value
  */
 export const email: ValidationFunction = (value: string): boolean => {
-    if (Joi.string().email({ tlds: false }).validate(value).error) {
+    if (
+        Joi.string()
+            .email({ tlds: false })
+            .validate(value).error
+    ) {
         return false;
     }
     return true;
@@ -41,7 +45,11 @@ export const email: ValidationFunction = (value: string): boolean => {
  * @param value
  */
 export const mobileNumber: ValidationFunction = (value: string): boolean => {
-    if (Joi.string().pattern(/^[\d-\+]+$/).validate(value).error) {
+    if (
+        Joi.string()
+            .pattern(/^[\d+].[\d-\s\+]+[\d]$/)
+            .validate(value).error
+    ) {
         return false;
     }
     return true;
@@ -53,7 +61,11 @@ export const mobileNumber: ValidationFunction = (value: string): boolean => {
  * @param value
  */
 export const url: ValidationFunction = (value: string): boolean => {
-    if (Joi.string().uri().validate(value).error) {
+    if (
+        Joi.string()
+            .uri()
+            .validate(value).error
+    ) {
         return false;
     }
     return true;
@@ -64,18 +76,18 @@ export const url: ValidationFunction = (value: string): boolean => {
  * @param value Url
  */
 export const imageUrl = async (value: string): Promise<boolean> => {
-        if (
-            Joi.string()
-                .uri()
-                .validate(value).error
-        ) {
+    if (
+        Joi.string()
+            .uri()
+            .validate(value).error
+    ) {
+        return Promise.resolve(false);
+    } else {
+        try {
+            const response = await Axios.get(value);
+            return Promise.resolve(response.headers["content-type"].includes("image"));
+        } catch (error) {
             return Promise.resolve(false);
-        } else {
-            try {
-                const response = await Axios.get(value);
-                return Promise.resolve(response.headers["content-type"].includes("image"));
-            } catch (error) {
-                return Promise.resolve(false);
-            }
         }
+    }
 };

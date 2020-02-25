@@ -394,6 +394,7 @@ export const views: Views = {
             }
         },
         federatedAssociations: {
+            deleteConfirmation: "இது உங்கள் கணக்கிலிருந்து இந்த வெளிப்புற உள்நுழைவை அகற்றும். நீக்குவதைத் தொடர விரும்புகிறீர்களா?",
             notifications: {
                 getFederatedAssociations: {
                     error: {
@@ -448,6 +449,7 @@ export const views: Views = {
                     label: "உட்பயனர் கணக்கினை சேர்க்க"
                 }
             },
+            deleteConfirmation: "இது உங்கள் கணக்கிலிருந்து இணைக்கப்பட்ட கணக்கை அகற்றும். நீக்குவதைத் தொடர விரும்புகிறீர்களா?",
             forms: {
                 addAccountForm: {
                     inputs: {
@@ -700,7 +702,7 @@ export const views: Views = {
                     complete: "உங்கள் சுயவிவரம் முடிந்தது",
                     completedFields: "பூர்த்தி செய்யப்பட்ட புலங்கள்",
                     completionPercentage: "உங்கள் சுயவிவர நிறைவு {{percentage}}%",
-                    inComplete: "உங்கள் சுயவிவரத்தை முடிக்கவும்",
+                    inComplete: "உங்கள் சுயவிவரத்தை பூர்த்தி செய்யவும்",
                     inCompleteFields: "முழுமையற்ற புலங்கள்",
                     mandatoryFieldsCompletion: "{{total}} கட்டாய புலங்களில் {{completed}} முடிந்தது",
                     optionalFieldsCompletion: "{{total}} விருப்ப புலங்களில் {{completed}} முடிந்தது"

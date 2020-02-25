@@ -393,6 +393,7 @@ export const views: Views = {
             }
         },
         federatedAssociations: {
+            deleteConfirmation: "This will remove this external login from your account. Do you want to continue removing?",
             notifications: {
                 getFederatedAssociations: {
                     error: {
@@ -447,6 +448,7 @@ export const views: Views = {
                     label: "Add local user account"
                 }
             },
+            deleteConfirmation: "This will remove the linked account from your account. Do you want to continue removing?",
             forms: {
                 addAccountForm: {
                     inputs: {

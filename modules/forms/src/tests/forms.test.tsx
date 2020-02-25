@@ -263,7 +263,6 @@ describe("Test if the Forms is working fine", () => {
         expect(constants.listen.mock.calls[0][0].get(constants.CHECKBOX_NAME)[1])
             .toBe(constants.CHECKBOX_CHILD_1_VALUE);
 
-
         // check if required validation is working fine
         fireEvent.click(getByDisplayValue(constants.CHECKBOX_CHILD_1_VALUE));
         fireEvent.click(getByDisplayValue(constants.CHECKBOX_CHILD_2_VALUE));
