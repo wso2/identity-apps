@@ -159,7 +159,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
         }
     };
 
-
     return (
         metadata &&
         (
