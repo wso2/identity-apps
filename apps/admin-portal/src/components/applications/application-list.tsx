@@ -120,6 +120,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                         type: "dropdown"
                                     }
                                 ] }
+                                actionsFloated="right"
                                 avatar={ (
                                     <AppAvatar
                                         name={ app.name }
