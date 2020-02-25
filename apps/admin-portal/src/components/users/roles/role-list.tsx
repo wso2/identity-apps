@@ -16,26 +16,41 @@
  * under the License.
  */
 
-import React from "react";
+import React, { ReactElement } from "react";
 import { RolesInterface } from "../../../models";
 import { ResourceList, ResourceListItem } from "@wso2is/react-components";
 import { CommonUtils } from "../../../utils";
 
 interface RoleListProps {
-    roleList: RolesInterface[]
+    roleList: RolesInterface[],
+    handleRoleDelete: (roleId: string) => void;
 }
 
-export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleListProps): JSX.Element => {
+/**
+ * List component for Role Management list
+ * 
+ * @param props contains the role list as a prop to populate
+ */
+export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleListProps): ReactElement => {
     const {
-        roleList
+        roleList,
+        handleRoleDelete
     } = props;
 
     return (
         <ResourceList className="roles-list">
             {
                 roleList && roleList.map((role, index) => (
-                    <ResourceListItem 
+                    <ResourceListItem
                         key={ index }
+                        actions={ [
+                            {
+                                icon: "trash alternate",
+                                onClick: () => handleRoleDelete(role.id),
+                                popupText: "Delete Role",
+                                type: "button"
+                            }
+                        ] }
                         itemHeader={role.displayName}
                         metaContent={CommonUtils.humanizeDateDifference(role.meta.created)}
                     />
