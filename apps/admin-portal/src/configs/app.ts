@@ -33,6 +33,7 @@ interface ServiceResourcesType {
     logout: string;
     me: string;
     profileSchemas: string;
+    permission: string;
     sessions: string;
     token: string;
     user: string;
@@ -57,6 +58,7 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     logout: `${GlobalConfig.serverHost}/oidc/logout`,
     me: `${GlobalConfig.serverHost}/scim2/Me`, // TODO: Remove this endpoint and use ID token to get the details
     profileSchemas: `${GlobalConfig.serverHost}/scim2/Schemas`,
+    permission: `${GlobalConfig.serverHost}/api/server/v1/permission-management/permissions`,
     revoke: `${GlobalConfig.serverHost}/oauth2/revoke`,
     sessions: `${GlobalConfig.serverHost}/api/users/v1/me/sessions`,
     token: `${GlobalConfig.serverHost}/oauth2/token`,
