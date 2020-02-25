@@ -32,8 +32,8 @@ interface ServiceResourcesType {
     jwks: string;
     logout: string;
     me: string;
-    profileSchemas: string;
     permission: string;
+    profileSchemas: string;
     sessions: string;
     token: string;
     user: string;
@@ -57,8 +57,8 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     jwks: `${GlobalConfig.serverHost}/oauth2/jwks`,
     logout: `${GlobalConfig.serverHost}/oidc/logout`,
     me: `${GlobalConfig.serverHost}/scim2/Me`, // TODO: Remove this endpoint and use ID token to get the details
-    profileSchemas: `${GlobalConfig.serverHost}/scim2/Schemas`,
     permission: `${GlobalConfig.serverHost}/api/server/v1/permission-management/permissions`,
+    profileSchemas: `${GlobalConfig.serverHost}/scim2/Schemas`,
     revoke: `${GlobalConfig.serverHost}/oauth2/revoke`,
     sessions: `${GlobalConfig.serverHost}/api/users/v1/me/sessions`,
     token: `${GlobalConfig.serverHost}/oauth2/token`,
