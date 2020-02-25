@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import classNames from "classnames";
 import React, { FunctionComponent } from "react";
 import {
     Dropdown,
@@ -25,6 +26,7 @@ import {
     List,
     ListItemProps,
     Popup,
+    SemanticFLOATS,
     SemanticICONS,
     SemanticWIDTHS
 } from "semantic-ui-react";
@@ -38,6 +40,10 @@ interface ResourceListItemPropsInterface extends ListItemProps {
      */
     actions?: ResourceListAction[];
     /**
+     * Action panel float direction.
+     */
+    actionsFloated?: SemanticFLOATS;
+    /**
      * Width of the action panel column.
      */
     actionsColumnWidth?: SemanticWIDTHS;
@@ -46,6 +52,10 @@ interface ResourceListItemPropsInterface extends ListItemProps {
      * Can be either {@link UserAvatar} or {@link AppAvatar}
      */
     avatar?: React.ReactNode;
+    /**
+     * Additional CSS classes.
+     */
+    className?: string;
     /**
      * List item header.
      */
@@ -92,7 +102,9 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
     const {
         actions,
         actionsColumnWidth,
+        actionsFloated,
         avatar,
+        className,
         descriptionColumnWidth,
         itemDescription,
         itemHeader,
@@ -100,8 +112,10 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
         metaColumnWidth
     } = props;
 
+    const classes = classNames("resource-list-item", className);
+
     return (
-        <List.Item>
+        <List.Item className={ classes }>
             <Grid>
                 <Grid.Row columns={ 3 }>
                     <Grid.Column width={ descriptionColumnWidth }>
@@ -111,11 +125,11 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
                             <List.Description className="list-item-description">{ itemDescription }</List.Description>
                         </List.Content>
                     </Grid.Column>
-                    <Grid.Column width={ metaColumnWidth }>
+                    <Grid.Column width={ metaColumnWidth } verticalAlign="middle">
                         <List.Content>{ metaContent }</List.Content>
                     </Grid.Column>
                     <Grid.Column width={ actionsColumnWidth }>
-                        <List.Content floated="right" className="list-item-action-panel">
+                        <List.Content floated={ actionsFloated } className="list-item-action-panel">
                             {
                                 (actions && actions.length && actions.length > 0)
                                     ? actions.map((action, index) => (
@@ -181,6 +195,7 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
  */
 ResourceListItem.defaultProps = {
     actionsColumnWidth: 5,
+    actionsFloated: "left",
     descriptionColumnWidth: 7,
     metaColumnWidth: 4
 };
