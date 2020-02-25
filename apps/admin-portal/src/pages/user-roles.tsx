@@ -24,7 +24,6 @@ import { RoleListInterface, AlertInterface, AlertLevels } from "../models"
 import { PrimaryButton } from "@wso2is/react-components";
 import { Icon, PaginationProps, DropdownProps } from "semantic-ui-react";
 import { DEFAULT_ROLE_LIST_ITEM_LIMIT } from "../constants";
-import { CreateRoleWizard } from "../components/users/role-wizard";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
 import { useTranslation } from "react-i18next";
@@ -125,13 +124,6 @@ export const UserRoles = (): ReactElement => {
                 totalListSize={ roleList?.totalResults }
             >
                 <RoleList roleList={ roleList?.Resources } handleRoleDelete={ handleOnDelete } />
-                {
-                    showWizard && (
-                        <CreateRoleWizard
-                            closeWizard={ () => setShowWizard(false) }
-                        />
-                    ) 
-                }
             </ListLayout>
         </PageLayout>
     );
