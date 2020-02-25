@@ -55,7 +55,6 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
 
     const form = useRef(null);
 
-
     /**
      * Submits the form programmatically if triggered from outside.
      */
