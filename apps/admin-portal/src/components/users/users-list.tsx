@@ -79,6 +79,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 type: "button"
                             }
                         ] }
+                        actionsFloated="right"
                         avatar={ (
                             <UserAvatar
                                 name={ user.userName }
