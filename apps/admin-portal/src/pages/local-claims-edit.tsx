@@ -22,6 +22,7 @@ import { getAClaim } from "../api";
 import { Claim } from "../models";
 import { ResourceTab } from "@wso2is/react-components";
 import { EditBasicDetailsLocalClaims, EditAdditionalPropertiesLocalClaims } from "../components";
+import { history } from "../helpers";
 
 export const LocalClaimsEditPage = (props): React.ReactElement => {
 
@@ -30,35 +31,46 @@ export const LocalClaimsEditPage = (props): React.ReactElement => {
     const [claim, setClaim] = useState<Claim>(null);
 
     useEffect(() => {
+        getClaim();
+    }, []);
+    
+    const getClaim = () => {
         getAClaim(claimID).then(response => {
-            setClaim(claim);
+            setClaim(response);
         }).catch(error => {
             // TODO: Notify
         })
-    },[]);
+    }
     
     const panes = [
         {
             menuItem: "Basic Details",
             render: () => (
-                <EditBasicDetailsLocalClaims/>
+                <EditBasicDetailsLocalClaims
+                    claim={claim}
+                    update={getClaim}/>
             )
         },
         {
             menuItem: "Additional Properties",
             render: () => (
-                <EditAdditionalPropertiesLocalClaims/>
+                <EditAdditionalPropertiesLocalClaims
+                    claim={claim}
+                    update={getClaim}
+                />
             )
         }
     ];
 
     return (
         <PageLayout
-            title={""}
-            description={""}
+            title={claim?.displayName}
+            description={"Edit "+claim?.claimURI}
             backButton={{
-                onClick: ()=>{},
-                text: "Go back to users"
+                onClick: () => {
+                    history.push("/local-claims");
+                },
+                text: "Go back to Local Claims"
             }}
             titleTextAlign="left"
             bottomMargin={false}
