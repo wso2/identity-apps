@@ -18,17 +18,18 @@
 
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { addUser } from "../../../api";
+import { addUser, addUserRole } from "../../../api";
 import { ApplicationWizardStepIcons } from "../../../configs";
 import { AlertLevels } from "../../../models";
 import { addAlert } from "../../../store/actions";
 import { AddUser } from "../add-user";
 import { AddUserWizardSummary } from "./wizard-summary";
 import { useTrigger } from "@wso2is/forms";
+import { AddUserRole } from "../add-user-role";
 
 interface AddUserWizardPropsInterface {
     closeWizard: () => void;
@@ -36,6 +37,8 @@ interface AddUserWizardPropsInterface {
     listOffset: number;
     listItemLimit: number;
     updateList: () => void;
+    rolesList: any;
+    onUserListDomainChange: (domain: string) => void;
 }
 
 /**
@@ -51,7 +54,8 @@ interface WizardStateInterface {
  * @enum {string}
  */
 enum WizardStepsFormTypes {
-    GENERAL_SETTINGS = "GeneralDetails",
+    BASIC_DETAILS = "BasicDetails",
+    ROLE_LIST= "RoleList",
     SUMMARY = "summary"
 }
 
@@ -62,40 +66,26 @@ enum WizardStepsFormTypes {
  */
 export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     props: AddUserWizardPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         updateList,
         closeWizard,
         currentStep,
+        rolesList,
+        onUserListDomainChange
     } = props;
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const [submitGeneralSettings, setSubmitGeneralSettings] = useTrigger();
-    const [finishSubmit, setFinishSubmit] = useTrigger();
+    const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
+    const [ submitRoleList, setSubmitRoleList ] = useTrigger();
+    const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
-    const [ completedStep, setCompletedStep ] = useState<number>(undefined);
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
-
-    /**
-     * Sets the current wizard step to the next on every `completedStep`
-     * value change , and resets the completed step value.
-     */
-    useEffect(() => {
-        if (completedStep === undefined) {
-            return;
-        }
-
-        if ((currentWizardStep + 1) === STEPS.length) {
-            return;
-        }
-        setCurrentWizardStep(currentWizardStep + 1);
-        setCompletedStep(undefined);
-    }, [ completedStep ]);
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -116,6 +106,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 setSubmitGeneralSettings();
                 break;
             case 1:
+                setSubmitRoleList();
+                break;
+            case 2:
                 setFinishSubmit();
         }
     };
@@ -173,7 +166,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             );
 
         addUser(userDetails)
-            .then(() => {
+            .then((response) => {
                 dispatch(addAlert({
                     description: t(
                         "views:components.users.notifications.addUser.success.description"
@@ -183,6 +176,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         "views:components.users.notifications.addUser.success.message"
                     )
                 }));
+
+                if (wizardState.RoleList.roleIds && wizardState.RoleList.roleIds.length > 0) {
+                    assignUserRole(response.data, wizardState.RoleList.roleIds)
+                }
                 updateList();
                 closeWizard();
             })
@@ -228,6 +225,68 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     };
 
     /**
+     * This function handles assigning the roles to the user.
+     */
+    const assignUserRole = (user: any, roleIds: any) => {
+        const data = {
+            Operations: [
+                {
+                    op: "add",
+                    value: {
+                        members: [
+                            {
+                                display: user.userName,
+                                value: user.id
+                            }
+                        ]
+                    }
+                }
+            ],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
+        };
+
+        for (const roleId of roleIds) {
+            addUserRole(data, roleId)
+                .catch((error) => {
+                    if (!error.response || error.response.status === 401) {
+                        dispatch(addAlert({
+                            description: t(
+                                "views:components.users.notifications.addUser.error.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "views:components.users.notifications.addUser.error.message"
+                            )
+                        }));
+                    } else if (error.response && error.response.data && error.response.data.detail) {
+
+                        dispatch(addAlert({
+                            description: t(
+                                "views:components.users.notifications.addUser.error.description",
+                                { description: error.response.data.detail }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "views:components.users.notifications.addUser.error.message"
+                            )
+                        }));
+                    } else {
+                        // Generic error message
+                        dispatch(addAlert({
+                            description: t(
+                                "views:components.users.notifications.addUser.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "views:components.users.notifications.addUser.genericError.message"
+                            )
+                        }));
+                    }
+                });
+        }
+    };
+
+    /**
      * Handles wizard step submit.
      *
      * @param values - Forms values to be stored in state.
@@ -268,16 +327,25 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         {
             content: (
                 <AddUser
-                    isRoleModalOpen={ null }
-                    handleRoleModalClose={ null }
-                    handleRoleModalOpen={ null }
+                    onUserStoreDomainChange={ (domain) => onUserListDomainChange(domain) }
                     triggerSubmit={ submitGeneralSettings }
-                    initialValues={ wizardState && wizardState[ WizardStepsFormTypes.GENERAL_SETTINGS ] }
-                    onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.GENERAL_SETTINGS) }
+                    initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
+                    onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,
             title: "Basic user details"
+        },
+        {
+            content: (
+                <AddUserRole
+                    triggerSubmit={ submitRoleList }
+                    onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.ROLE_LIST) }
+                    initialValues={ rolesList }
+                />
+            ),
+            icon: ApplicationWizardStepIcons.general,
+            title: "Assign user roles"
         },
         {
             content: (

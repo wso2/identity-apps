@@ -18,24 +18,19 @@
 
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    Form,
     Grid,
     Message,
-    Modal,
 } from "semantic-ui-react";
-import { addUserRole, getGroupsList, getUserStoreList } from "../../api";
-import { useTrigger } from "@wso2is/forms";
+import { getUserStoreList } from "../../api";
 
 /**
  * Proptypes for the application consents list component.
  */
 interface AddUserProps {
-    isRoleModalOpen: boolean;
-    handleRoleModalOpen: any;
-    handleRoleModalClose: any;
+    onUserStoreDomainChange: (domain: string) => void;
     initialValues: any;
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
@@ -48,21 +43,14 @@ interface AddUserProps {
  */
 export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserProps): JSX.Element => {
 
-    const [ groupsList, setGroupsList ] = useState([]);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ username, setUsername ] = useState("");
-    const [ roleIds, setRoleIds ] = useState([]);
-    const [ userId, setUserId ] = useState("");
     const [ passwordOption, setPasswordOption ] = useState("");
-    const [resetStateUserRoleForm, resetUserRoleForm] = useTrigger();
 
     const {
-        isRoleModalOpen,
-        handleRoleModalOpen,
-        handleRoleModalClose,
         initialValues,
         triggerSubmit,
         onSubmit,
+        onUserStoreDomainChange
     } = props;
 
     const { t } = useTranslation();
@@ -73,67 +61,11 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     ];
 
     /**
-     * Fetch the list of available groups.
-     */
-    useEffect(() => {
-        getGroups();
-    }, []);
-
-    /**
      * Fetch the list of available user stores.
      */
     useEffect(() => {
         getUserStores();
     }, []);
-
-    // TODO: enable this function with roles feature.
-    // useEffect(() => {
-    //     assignUserRole();
-    // }, [roleIds]);
-
-    const getGroups = () => {
-        getGroupsList()
-            .then((response) => {
-                setRoleListItem(response.data.Resources);
-            });
-    };
-
-    /**
-     * The following function handles the functionality of
-     * the user roles modal.
-     */
-    const handleRoleModal = () => {
-        handleRoleModalOpen();
-    };
-
-    /**
-     * This function handles assigning the roles to the user.
-     */
-    const assignUserRole = () => {
-        const data = {
-            Operations: [
-                {
-                    op: "add",
-                    value: {
-                        members: [
-                            {
-                                display: username,
-                                value: userId
-                            }
-                        ]
-                    }
-                }
-            ],
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
-        };
-
-        for (const roleId of roleIds) {
-            addUserRole(data, roleId)
-                .then(() => {
-                    handleRoleModalClose();
-                });
-        }
-    };
 
     /**
      * The following function fetch the user store list and set it to the state.
@@ -159,27 +91,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             });
 
         setUserStoresList(storeOptions);
-    };
-
-    /**
-     * The following function set the role list to the state.
-     *
-     * @param resources
-     */
-    const setRoleListItem = (resources) => {
-        const roles = [];
-        let role = {
-            label: "",
-            value: ""
-        };
-        resources.map((group) => {
-            role = {
-                label: group.displayName,
-                value: group.id
-            };
-            roles.push(role);
-            setGroupsList(roles);
-        });
     };
 
     const getFormValues = (values) => {
@@ -298,6 +209,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             ) }
                             required={ true }
                             value={ initialValues && initialValues.domain }
+                            listen={ (values) => onUserStoreDomainChange(values.get("domain").toString()) }
                         />
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -408,49 +320,9 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         </Forms>
     );
 
-    /**
-     * The modal to add user roles.
-     */
-    const addUserRoles = () => (
-        <Modal open={ isRoleModalOpen } size="small">
-            <Modal.Header>
-                Assign roles
-            </Modal.Header>
-            <Modal.Content>
-                <Forms
-                    onSubmit={ (value) => {
-                        setRoleIds(value.get("role") as string[]);
-                    } }
-                    resetState={ resetStateUserRoleForm }
-                >
-                    <Field
-                        type="checkbox"
-                        label="Select role"
-                        name="role"
-                        children={ groupsList }
-                        required={ true }
-                        requiredErrorMessage="Please select a role to assign"
-                    />
-                    <Field
-                        hidden={ true }
-                        type="divider"
-                    />
-                    <Form.Group>
-                        <Field
-                            size="small"
-                            type="submit"
-                            value={ t("common:save").toString() }
-                        />
-                    </Form.Group>
-                </Forms>
-            </Modal.Content>
-        </Modal>
-    );
-
     return (
         <>
             { addUserBasicForm() }
-            { addUserRoles() }
         </>
     );
 };
