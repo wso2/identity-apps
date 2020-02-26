@@ -21,7 +21,11 @@ import { PageLayout } from "../layouts"
 import { getAClaim } from "../api";
 import { Claim } from "../models";
 import { ResourceTab } from "@wso2is/react-components";
-import { EditBasicDetailsLocalClaims, EditAdditionalPropertiesLocalClaims } from "../components";
+import {
+    EditBasicDetailsLocalClaims,
+    EditAdditionalPropertiesLocalClaims,
+    EditMappedAttributesLocalClaims
+} from "../components";
 import { history } from "../helpers";
 
 export const LocalClaimsEditPage = (props): React.ReactElement => {
@@ -33,7 +37,7 @@ export const LocalClaimsEditPage = (props): React.ReactElement => {
     useEffect(() => {
         getClaim();
     }, []);
-    
+
     const getClaim = () => {
         getAClaim(claimID).then(response => {
             setClaim(response);
@@ -41,14 +45,23 @@ export const LocalClaimsEditPage = (props): React.ReactElement => {
             // TODO: Notify
         })
     }
-    
+
     const panes = [
         {
             menuItem: "Basic Details",
             render: () => (
                 <EditBasicDetailsLocalClaims
                     claim={claim}
-                    update={getClaim}/>
+                    update={getClaim} />
+            )
+        },
+        {
+            menuItem: "Mapped Attributes",
+            render: () => (
+                <EditMappedAttributesLocalClaims
+                    claim={claim}
+                    update={getClaim}
+                />
             )
         },
         {
@@ -65,7 +78,7 @@ export const LocalClaimsEditPage = (props): React.ReactElement => {
     return (
         <PageLayout
             title={claim?.displayName}
-            description={"Edit "+claim?.claimURI}
+            description={"Edit " + claim?.claimURI}
             backButton={{
                 onClick: () => {
                     history.push("/local-claims");
@@ -75,7 +88,7 @@ export const LocalClaimsEditPage = (props): React.ReactElement => {
             titleTextAlign="left"
             bottomMargin={false}
         >
-            <ResourceTab panes={panes}/>
+            <ResourceTab panes={panes} />
         </PageLayout>
     )
 }
