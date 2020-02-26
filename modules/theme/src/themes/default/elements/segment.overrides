@@ -105,20 +105,18 @@
 
         .ui.label {
             margin-top: @assignedRolesListLabelMarginTop;
+            margin-left: @assignedRolesListLabelMarginLeft;
 
             &.info-label {
                 background-color: @InfoLabelBackgroundColor !important;
                 border-color: @InfoLabelBorderColor !important;
                 color: white;
+                margin-left: @assignedRolesListLabelMarginLeft;
 
                 i {
                     margin-right: auto;
                     margin-left: @assignedRolesListIconMarginLeft;
                 }
-            }
-
-            &:not(.info-label) {
-                margin-left: @assignedRolesListLabelMarginLeft;
             }
         }
     }

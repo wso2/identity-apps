@@ -64,7 +64,6 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
     };
 
     const getRoleListForDomain = (domain: string) => {
-        debugger;
         getGroupsList(domain)
             .then((response) => {
                 setRolesList([ ...rolesList, ...response.data.Resources ] );

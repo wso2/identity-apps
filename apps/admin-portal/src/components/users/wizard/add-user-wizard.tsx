@@ -177,8 +177,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     )
                 }));
 
-                if (wizardState.RoleList.roleIds && wizardState.RoleList.roleIds.length > 0) {
-                    assignUserRole(response.data, wizardState.RoleList.roleIds)
+                if (wizardState.RoleList.roles && wizardState.RoleList.roles.length > 0) {
+                    assignUserRole(response.data, wizardState.RoleList.roles)
                 }
                 updateList();
                 closeWizard();
@@ -227,7 +227,12 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     /**
      * This function handles assigning the roles to the user.
      */
-    const assignUserRole = (user: any, roleIds: any) => {
+    const assignUserRole = (user: any, roles: any) => {
+        const roleIds = [];
+
+        roles.map((role) => {
+            roleIds.push(role.id);
+        });
         const data = {
             Operations: [
                 {

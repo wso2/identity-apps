@@ -36,7 +36,7 @@
 /* Assigned Roles List Segment */
 @assignedRolesListSegmentHeight: 298px;
 @assignedRolesListLabelMarginTop: 0.5em;
-@assignedRolesListLabelMarginLeft: 2px;
+@assignedRolesListLabelMarginLeft: 0.5em;
 @assignedRolesListIconMarginLeft: 0.3em;
 @InfoLabelBackgroundColor: #b5b7b7;
 @InfoLabelBorderColor: #b5b7b7;

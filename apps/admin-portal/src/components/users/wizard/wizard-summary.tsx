@@ -95,7 +95,7 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                                     {
                                         summary.roles
                                             .map((role, index) => (
-                                                <Label key={ index } basic circular>{ role }</Label>
+                                                <Label key={ index } basic circular>{ role.displayName }</Label>
                                             ))
                                     }
                                 </Label.Group>

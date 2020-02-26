@@ -43,21 +43,19 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
         onSubmit
     } = props;
 
-    const [ userRoles, setUserRoles ] = useState([]);
-    const [ roleIds, setRoleIds ] = useState([]);
     const [ roleList, setRoleList ] = useState(initialValues);
+    const [ tempRoleList, setTempRoleList ] = useState([]);
     const [ duplicationError, setError ] = useState(undefined);
 
-    const handleRemoveRoleItem = (role: string) => {
-        let userRolesCopy = [ ...userRoles ];
-        userRolesCopy.splice(userRoles.indexOf(role), 1);
-        setUserRoles(userRolesCopy);
+    const handleRemoveRoleItem = (role: any) => {
+        let userRolesCopy = [ ...tempRoleList ];
+        userRolesCopy.splice(tempRoleList.indexOf(role), 1);
+        setTempRoleList(userRolesCopy);
     };
 
     const addRole = (role: any) => {
-         if (!(roleIds.includes(role.id)) && !(userRoles.includes(role.displayName))) {
-             setRoleIds([...roleIds, role.id]);
-             setUserRoles([...userRoles, role.displayName]);
+         if (!(tempRoleList.includes(role))) {
+             setTempRoleList([ ...tempRoleList, role ]);
              setError(undefined);
          } else {
              setError("You have already added the role:" + " " + role.displayName);
@@ -86,7 +84,7 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
     return (
         <Forms
             onSubmit={ () => {
-                onSubmit({ roles: userRoles, roleIds: roleIds });
+                onSubmit({ roles: tempRoleList });
             } }
             submitState={ triggerSubmit }
         >
@@ -153,10 +151,10 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
                                           content="This role will be assigned to all the users by default."
                                         />
                                     {
-                                        userRoles && userRoles.map((role, index) => {
+                                        tempRoleList && tempRoleList.map((role, index) => {
                                             return (
                                                 <Label key={ index }>
-                                                    { role }
+                                                    { role.displayName }
                                                     <Icon
                                                         name="delete"
                                                         onClick={() => handleRemoveRoleItem(role)}
