@@ -22,8 +22,8 @@ import { ListLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
 import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
 import { ClaimsList, ListType } from "../components";
-import { ExternalClaim } from "../models";
-import { getAllExternalClaims } from "../api";
+import { ExternalClaim, ClaimDialect } from "../models";
+import { getAllExternalClaims, getADialect } from "../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
 import { history } from "../helpers";
 
@@ -32,11 +32,19 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
     const [claims, setClaims] = useState<ExternalClaim[]>(null);
     const [offset, setOffset] = useState(0);
     const [listItemLimit, setListItemLimit] = useState<number>(0);
+    const [dialect, setDialect] = useState<ClaimDialect>( null);
 
     const dialectID = props.match.params.id;
 
     useEffect(() => {
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
+
+        getADialect(dialectID).then(response => {
+            setDialect(response);
+        }).catch(error => {
+            // TODO: Notify
+        });
+
     }, []);
 
     useEffect(() => {
@@ -61,8 +69,8 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
 
     return (
         <PageLayout
-            title="Claims"
-            description="View, edit and add claims"
+            title="External Claims"
+            description={"View, edit and add claims of "+dialect?.dialectURI}
             showBottomDivider={true}
             backButton={{
                 onClick: () => { history.push("/claim-dialects")},
