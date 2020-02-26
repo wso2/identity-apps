@@ -16,10 +16,42 @@
 * under the License.
 */
 
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { PageLayout } from "../layouts"
+import { getAClaim } from "../api";
+import { Claim } from "../models";
+import { ResourceTab } from "@wso2is/react-components";
+import { EditBasicDetailsLocalClaims, EditAdditionalPropertiesLocalClaims } from "../components";
 
-export const LocalClaimsEditPage = (): React.ReactElement => {
+export const LocalClaimsEditPage = (props): React.ReactElement => {
+
+    const claimID = props.match.params.id;
+
+    const [claim, setClaim] = useState<Claim>(null);
+
+    useEffect(() => {
+        getAClaim(claimID).then(response => {
+            setClaim(claim);
+        }).catch(error => {
+            // TODO: Notify
+        })
+    },[]);
+    
+    const panes = [
+        {
+            menuItem: "Basic Details",
+            render: () => (
+                <EditBasicDetailsLocalClaims/>
+            )
+        },
+        {
+            menuItem: "Additional Properties",
+            render: () => (
+                <EditAdditionalPropertiesLocalClaims/>
+            )
+        }
+    ];
+
     return (
         <PageLayout
             title={""}
@@ -31,6 +63,7 @@ export const LocalClaimsEditPage = (): React.ReactElement => {
             titleTextAlign="left"
             bottomMargin={false}
         >
+            <ResourceTab panes={panes}/>
         </PageLayout>
     )
 }
