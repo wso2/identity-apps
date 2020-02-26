@@ -328,7 +328,7 @@ export const addExternalClaim = (dialectID: string, data: AddExternalClaim): Pro
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status !== 200) {
+            if (response.status !== 201) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
             return Promise.resolve(response.data);
@@ -400,7 +400,7 @@ export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<
  * @param claimID External Claim ID
  * @param data Updates with this data
  */
-export const updateAnExternalClaim = (dialectID: string, claimID: string, data: Claim): Promise<any> => {
+export const updateAnExternalClaim = (dialectID: string, claimID: string, data: AddExternalClaim): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
