@@ -17,3 +17,4 @@
 */
 
 export * from "./add-local-claims";
+export * from "./add-external-claims";
