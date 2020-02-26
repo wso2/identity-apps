@@ -19,20 +19,21 @@
 import React, { useState } from "react";
 import { Modal, Grid, Icon } from "semantic-ui-react";
 import { useTrigger, FormValue } from "@wso2is/forms";
-import { addLocalClaim } from "../../api";
+import { addLocalClaim } from "../../../api";
 import { Steps, PrimaryButton, LinkButton } from "@wso2is/react-components";
-import { ApplicationWizardStepIcons } from "../../configs";
-import { BasicDetailsLocalClaims, AdditionalProperties, SummaryLocalClaims } from "./wizard";
-import { Claim } from "../../models";
+import { ApplicationWizardStepIcons } from "../../../configs";
+import { BasicDetailsLocalClaims, AdditionalProperties, SummaryLocalClaims } from "../wizard";
+import { Claim } from "../../../models";
 
 interface AddLocalClaimsPropsInterface {
     open: boolean;
     onClose: () => void;
     claimID: string;
+    update: () => void;
 }
 export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.ReactElement => {
 
-    const { open, onClose } = props;
+    const { open, onClose, update } = props;
     const [currentWizardStep, setCurrentWizardStep] = useState(0);
     const [data, setData] = useState<Claim>(null);
     const [basicDetailsData, setBasicDetailsData] = useState<Map<string, FormValue>>(null);
@@ -47,6 +48,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
         addLocalClaim(data).then(response => {
             // TODO: Notify
             onClose();
+            update();
         }).catch(error => {
             // TODO: Notify
         })
