@@ -98,34 +98,46 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         [`${relaxLevel}`]: relaxLevel,
     }, className);
 
+    /**
+     * Constructs the icon.
+     * TODO: Add a default icon if the an error occurs rather than returning null.
+     *
+     * @return {HTMLElement | SVGElement | JSX.Element}
+     */
     const constructContent = (): HTMLElement | SVGElement | JSX.Element => {
-        // Check if the icon is an SVG element
-        if (icon instanceof SVGElement) {
-            return icon;
+        if (!icon) {
+            return null;
         }
 
-        // Check if the icon is a module and has `ReactComponent` property.
-        // Important when used with SVG's imported with `@svgr/webpack`.
-        if (icon.ReactComponent && typeof icon.ReactComponent === "function") {
-            return <icon.ReactComponent />;
-        }
+        try {
+            // Check if the icon is an SVG element
+            if (icon instanceof SVGElement) {
+                return icon;
+            }
 
-        // Check is icon is a component.
-        if (typeof icon === "function") {
-            return icon;
-        }
+            // Check if the icon is a module and has `ReactComponent` property.
+            // Important when used with SVG's imported with `@svgr/webpack`.
+            if (icon.hasOwnProperty("ReactComponent") && typeof icon.ReactComponent === "function") {
+                return <icon.ReactComponent/>;
+            }
 
-        // Check is icon is a component.
-        if (typeof icon === "object") {
-            return icon;
-        }
+            // Check is icon is a component.
+            if (typeof icon === "function") {
+                return icon;
+            }
 
-        // Check if icon passed in is a string. Can be a URL or a base64 encoded.
-        if (typeof icon === "string") {
-            return <img src={ icon } className="icon" alt="icon" />;
-        }
+            // Check is icon is a component.
+            if (typeof icon === "object") {
+                return icon;
+            }
 
-        throw new Error("The provided icon type is not supported.");
+            // Check if icon passed in is a string. Can be a URL or a base64 encoded.
+            if (typeof icon === "string") {
+                return <img src={ icon } className="icon" alt="icon"/>;
+            }
+        } catch (e) {
+            return null;
+        }
     };
 
     return (

@@ -25,40 +25,42 @@ import {
     SignOutUtil
 } from "@wso2is/authentication";
 import _ from "lodash";
-import { getProfileInfo } from "../../api";
+import { getProfileInfo, getProfileSchemas } from "../../api";
 import { GlobalConfig, i18n, ServiceResourcesEndpoint } from "../../configs";
 import * as TokenConstants from "../../constants";
-import { AlertLevels, BasicProfileInterface, ProfileSchema } from "../../models";
+import { history } from "../../helpers";
+import { AlertLevels, ProfileSchema } from "../../models";
 import { store } from "../index";
 import { addAlert } from "./global";
-import { setProfileInfoLoader } from "./loaders";
-import { authenticateActionTypes } from "./types";
+import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
+import { authenticateActionTypes, AuthAction } from "./types";
 
 /**
  * Dispatches an action of type `SET_SIGN_IN`.
  */
-export const setSignIn = () => ({
+export const setSignIn = (): AuthAction => ({
     type: authenticateActionTypes.SET_SIGN_IN
 });
 
 /**
  * Dispatches an action of type `SET_SIGN_OUT`.
  */
-export const setSignOut = () => ({
+export const setSignOut = (): AuthAction => ({
     type: authenticateActionTypes.SET_SIGN_OUT
 });
 
 /**
  * Dispatches an action of type `RESET_AUTHENTICATION`.
  */
-export const resetAuthentication = () => ({
+export const resetAuthentication = (): AuthAction => ({
     type: authenticateActionTypes.RESET_AUTHENTICATION
 });
 
 /**
  * Dispatches an action of type `SET_PROFILE_INFO`.
  */
-export const setProfileInfo = (details: any) => ({
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const setProfileInfo = (details: any): AuthAction => ({
     payload: details,
     type: authenticateActionTypes.SET_PROFILE_INFO
 });
@@ -67,17 +69,27 @@ export const setProfileInfo = (details: any) => ({
  * Dispatches an action of type `SET_SCHEMAS`
  * @param schemas
  */
-export const setScimSchemas = (schemas: ProfileSchema[]) => ({
+export const setScimSchemas = (schemas: ProfileSchema[]): AuthAction => ({
     payload: schemas,
     type: authenticateActionTypes.SET_SCHEMAS
 });
 
 /**
+ * Get SCIM2 schemas
+ */
+export const getScimSchemas = () => (dispatch): void => {
+    dispatch(setProfileSchemaLoader(true));
+    getProfileSchemas()
+        .then((response: ProfileSchema[]) => {
+            dispatch(setProfileSchemaLoader(false));
+            dispatch(setScimSchemas(response));
+        });
+};
+
+/**
  *  Gets profile information by making an API call
  */
-export const getProfileInformation = () => (dispatch) => {
-
-    let isCompletionCalculated: boolean = false;
+export const getProfileInformation = () => (dispatch): void => {
 
     dispatch(setProfileInfoLoader(true));
 
@@ -93,7 +105,7 @@ export const getProfileInformation = () => (dispatch) => {
 
                 // If the schemas in the redux store is empty, fetch the SCIM schemas from the API.
                 if (_.isEmpty(store.getState().authenticationInformation.profileSchemas)) {
-                    isCompletionCalculated = true;
+                    dispatch(getScimSchemas());
                 }
 
                 return;
@@ -102,11 +114,11 @@ export const getProfileInformation = () => (dispatch) => {
             dispatch(
                 addAlert({
                     description: i18n.t(
-                        "views:components.profile.notifications.getProfileInfo.genericError.description"
+                        "views:components.user.profile.notifications.getProfileInfo.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: i18n.t(
-                        "views:components.profile.notifications.getProfileInfo.genericError.message"
+                        "views:components.user.profile.notifications.getProfileInfo.genericError.message"
                     )
                 })
             );
@@ -116,12 +128,12 @@ export const getProfileInformation = () => (dispatch) => {
                 dispatch(
                     addAlert({
                         description: i18n.t(
-                            "views:components.profile.notifications.getProfileInfo.error.description",
+                            "views:components.user.profile.notifications.getProfileInfo.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: i18n.t(
-                            "views:components.profile.notifications.getProfileInfo.error.message"
+                            "views:components.user.profile.notifications.getProfileInfo.error.message"
                         )
                     })
                 );
@@ -132,11 +144,11 @@ export const getProfileInformation = () => (dispatch) => {
             dispatch(
                 addAlert({
                     description: i18n.t(
-                        "views:components.profile.notifications.getProfileInfo.genericError.description"
+                        "views:components.user.profile.notifications.getProfileInfo.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: i18n.t(
-                        "views:components.profile.notifications.getProfileInfo.genericError.message"
+                        "views:components.user.profile.notifications.getProfileInfo.genericError.message"
                     )
                 })
             );
@@ -146,34 +158,63 @@ export const getProfileInformation = () => (dispatch) => {
         });
 };
 
+
+/**
+ * Handle user sign-out
+ */
+export const handleSignOut = () => (dispatch): void => {
+    if (sessionStorage.length === 0) {
+        history.push(GlobalConfig.appLoginPath);
+    } else {
+        SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl, () => {
+                dispatch(setSignOut());
+                AuthenticateSessionUtil.endAuthenticatedSession();
+                OPConfigurationUtil.resetOPConfiguration();
+            }).catch(() => {
+                history.push(GlobalConfig.appLoginPath);
+            });
+    }
+};
+
 /**
  * Handle user sign-in
  */
-export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
-    const sendSignInRequest = () => {
-        const requestParams: OIDCRequestParamsInterface = {
-            clientHost: GlobalConfig.clientHost,
-            clientId: GlobalConfig.clientID,
-            clientSecret: null,
-            enablePKCE: true,
-            redirectUri: GlobalConfig.loginCallbackUrl,
-            scope: [TokenConstants.LOGIN_SCOPE, TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_VIEW,
-                TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_UPDATE,
-                TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_DELETE,
-                TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_CREATE,
-                TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_VIEW,
-                TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_UPDATE,
-                TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_DELETE,
-                TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_LIST,
-                TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_CREATE,
-                TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_CREATE,
-                TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_DELETE,
-                TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_VIEW,
-                TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_UPDATE
-            ],
-            serverOrigin: GlobalConfig.serverOrigin
-        };
+export const handleSignIn = (consentDenied = false) => (dispatch): void => {
+    const requestParams: OIDCRequestParamsInterface = {
+        clientHost: GlobalConfig.clientHost,
+        clientId: GlobalConfig.clientID,
+        clientSecret: null,
+        enablePKCE: true,
+        redirectUri: GlobalConfig.loginCallbackUrl,
+        scope: [TokenConstants.LOGIN_SCOPE, TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_VIEW,
+            TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_UPDATE,
+            TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_DELETE,
+            TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_CREATE,
+            TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_VIEW,
+            TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_UPDATE,
+            TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_DELETE,
+            TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_LIST,
+            TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_CREATE,
+            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_VIEW,
+            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_UPDATE,
+            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_DELETE,
+            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_LIST,
+            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_CREATE,
+            TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_CREATE,
+            TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_CREATE,
+            TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_DELETE,
+            TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_VIEW,
+            TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_UPDATE,
+            TokenConstants.INTERNAL_IDP.INTERNAL_IDP_CREATE,
+            TokenConstants.INTERNAL_IDP.INTERNAL_IDP_VIEW,
+            TokenConstants.INTERNAL_IDP.INTERNAL_IDP_DELETE,
+            TokenConstants.INTERNAL_IDP.INTERNAL_IDP_UPDATE
+        ],
+        serverOrigin: GlobalConfig.serverOrigin,
+        tenant: GlobalConfig.tenant
+    };
 
+    const sendSignInRequest = (): void => {
         if (consentDenied) {
             requestParams.prompt = "login";
         }
@@ -189,7 +230,10 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
                     dispatch(getProfileInformation());
                 })
                 .catch((error) => {
-                    // This error will be handled by the error handler in the http module.
+                    if (error.response.status === 400) {
+                        SignInUtil.sendAuthorizationRequest(requestParams);
+                    }
+
                     throw error;
                 });
         } else {
@@ -198,6 +242,12 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
     };
 
     if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
+        if (OPConfigurationUtil.isValidOPConfig(requestParams.tenant)) {
+            AuthenticateSessionUtil.endAuthenticatedSession();
+            OPConfigurationUtil.resetOPConfiguration();
+            handleSignOut();
+        }
+
         dispatch(setSignIn());
         dispatch(getProfileInformation());
     } else {
@@ -211,6 +261,7 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
                 OPConfigurationUtil.setRevokeTokenEndpoint(ServiceResourcesEndpoint.revoke);
                 OPConfigurationUtil.setEndSessionEndpoint(ServiceResourcesEndpoint.logout);
                 OPConfigurationUtil.setJwksUri(ServiceResourcesEndpoint.jwks);
+                OPConfigurationUtil.setIssuer(ServiceResourcesEndpoint.issuer);
                 OPConfigurationUtil.setOPConfigInitiated();
 
                 sendSignInRequest();
@@ -219,25 +270,10 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
 };
 
 /**
- * Handle user sign-out
- */
-export const handleSignOut = () => (dispatch) => {
-    SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl)
-        .then(() => {
-            dispatch(setSignOut());
-            AuthenticateSessionUtil.endAuthenticatedSession();
-            OPConfigurationUtil.resetOPConfiguration();
-        })
-        .catch((error) => {
-            // TODO: show error page
-        });
-};
-
-/**
  * Update sessionStorage with location history path
  *
  * @param {string} location - history path.
  */
-export const updateAuthenticationCallbackUrl = (location) => {
+export const updateAuthenticationCallbackUrl = (location): void => {
     window.sessionStorage.setItem("auth_callback_url", location);
 };

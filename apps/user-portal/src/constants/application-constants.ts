@@ -22,7 +22,7 @@
  * @type {string}
  * @default
  */
-export const APPLICATION_SETTINGS_STORAGE_KEY: string = "application_settings";
+export const APPLICATION_SETTINGS_STORAGE_KEY = "application_settings";
 
 /**
  * Primary user store identifier.
@@ -30,7 +30,7 @@ export const APPLICATION_SETTINGS_STORAGE_KEY: string = "application_settings";
  * @type {string}
  * @default
  */
-export const PRIMARY_USER_STORE_IDENTIFIER: string = "PRIMARY";
+export const PRIMARY_USER_STORE_IDENTIFIER = "PRIMARY";
 
 /**
  * Path to the login error page.
@@ -38,7 +38,7 @@ export const PRIMARY_USER_STORE_IDENTIFIER: string = "PRIMARY";
  * @type {string}
  * @default
  */
-export const LOGIN_ERROR_PAGE_PATH: string = "/login-error";
+export const LOGIN_ERROR_PAGE_PATH = "/login-error";
 
 /**
  * Path to the applications page.
@@ -46,7 +46,7 @@ export const LOGIN_ERROR_PAGE_PATH: string = "/login-error";
  * @type {string}
  * @default
  */
-export const APPLICATIONS_PAGE_PATH: string = "/applications";
+export const APPLICATIONS_PAGE_PATH = "/applications";
 
 /**
  * User portal application identifier.
@@ -54,7 +54,7 @@ export const APPLICATIONS_PAGE_PATH: string = "/applications";
  * @type {string}
  * @default
  */
-export const USER_PORTAL_IDENTIFIER: string = "This is the user portal application.";
+export const USER_PORTAL_IDENTIFIER = "This is the user portal application.";
 
 /**
  * Error description when the user selects no in the logout prompt
@@ -62,7 +62,7 @@ export const USER_PORTAL_IDENTIFIER: string = "This is the user portal applicati
  * @type {string}
  * @default
  */
-export const USER_DENIED_LOGOUT_REQUEST: string = "End User denied the logout request";
+export const USER_DENIED_LOGOUT_REQUEST = "End User denied the logout request";
 
 /**
  * Error description when the user denies consent to the app
@@ -70,7 +70,7 @@ export const USER_DENIED_LOGOUT_REQUEST: string = "End User denied the logout re
  * @type {string}
  * @default
  */
-export const USER_DENIED_CONSENT: string = "User denied the consent";
+export const USER_DENIED_CONSENT = "User denied the consent";
 
 /**
  * Key of the time at which an auth error occurred in the session storage
@@ -78,4 +78,4 @@ export const USER_DENIED_CONSENT: string = "User denied the consent";
  * @type {string}
  * @default
  */
-export const AUTH_ERROR_TIME: string = "authErrorTime";
+export const AUTH_ERROR_TIME = "authErrorTime";

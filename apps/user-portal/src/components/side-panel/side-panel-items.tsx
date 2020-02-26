@@ -17,18 +17,19 @@
  */
 
 import _ from "lodash";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
 import { fetchApplications } from "../../api";
-import { routes, SidePanelIcons } from "../../configs";
+import { SidePanelIcons } from "../../configs";
 import * as ApplicationConstants from "../../constants/application-constants";
 import * as UIConstants from "../../constants/ui-constants";
+import { AppConfig } from "../../helpers";
 import { AppState } from "../../store";
 import { toggleApplicationsPageVisibility } from "../../store/actions";
-import { hasScope } from "../../utils";
+import { filteredRoutes, hasScope } from "../../utils";
 import { ThemeIcon } from "../shared";
 
 /**
@@ -53,6 +54,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const isApplicationsPageVisible = useSelector((state: AppState) => state.global.isApplicationsPageVisible);
+    const appConfig = useContext(AppConfig);
     const activeRoute = (path: string) => {
         const pathname = window.location.pathname;
         const urlTokens = path.split("/");
@@ -103,7 +105,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
     return (
         <Menu className={ `side-panel ${ type }` } style={ style } vertical fluid>
             {
-                routes.map((route, index) => (
+                filteredRoutes(appConfig).map((route, index) => (
                     (route.showOnSidePanel
                         && (route.scope ? hasScope(route.scope) : true)
                         && validateSidePanelVisibility(route.path))

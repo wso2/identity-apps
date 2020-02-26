@@ -28,7 +28,7 @@ export interface PlaceholderProps {
     image?: any;
     imageSize?: GenericIconSizes;
     subtitle: string | string[];
-    title: string;
+    title?: string;
 }
 
 /**
@@ -51,7 +51,7 @@ export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: Pla
                     )
                     : null
             }
-            <Header as="h4" className="title">{ title }</Header>
+            { title && <Header as="h4" className="title">{ title }</Header> }
             {
                 (subtitle && subtitle.length && subtitle.length > 0)
                     ? typeof subtitle !== "string" && subtitle.map((line, index) => (

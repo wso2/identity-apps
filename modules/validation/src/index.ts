@@ -17,6 +17,6 @@
  *
  */
 
-import { email, mobileNumber, url } from "./validation";
+import { email, imageUrl, mobileNumber, url } from "./validation";
 
-export const FormValidation = { email, mobileNumber, url };
+export const FormValidation = { email, mobileNumber, url, imageUrl };

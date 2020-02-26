@@ -38,19 +38,19 @@ export const PageHeader: React.FunctionComponent<PageHeaderProps> = (props: Page
     const { title, description, titleTextAlign } = props;
     return (
         <>
-            { (title || description) &&
+            { (title || description) && (
                 <>
-                <Header as="h1" textAlign={ titleTextAlign }>
-                    { title &&
-                        title
-                    }
-                    { description &&
-                        <Header.Subheader>{ description }</Header.Subheader>
-                    }
-                </Header>
-                <Divider hidden />
+                    <Header as="h1" textAlign={ titleTextAlign }>
+                        { title &&
+                            title
+                        }
+                        { description &&
+                            <Header.Subheader>{ description }</Header.Subheader>
+                        }
+                    </Header>
+                    <Divider hidden />
                 </>
-            }
+            ) }
         </>
     );
 };

@@ -22,10 +22,13 @@ import { AppLayout, AuthLayout, DashboardLayout, DefaultPageLayout, ErrorPageLay
 import {
     ApplicationEditPage,
     ApplicationsPage,
+    ApplicationTemplateSelectPage,
     HomePage,
     PageNotFound,
     PrivacyPage,
-    UsersPage
+    UserEditPage,
+    UsersPage,
+    UserRoles
 } from "../pages";
 
 /**
@@ -35,40 +38,87 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: HomePage,
         icon: "overview",
+        id: "overview",
         name: "Overview",
         path: "/overview",
         protected: true,
-        showOnSidePanel: true,
+        showOnSidePanel: false,
     },
     {
         component: ApplicationsPage,
         exact: true,
         icon: "applications",
+        id: "applications",
         name: "Applications",
         path: "/applications",
         protected: true,
         showOnSidePanel: true,
     },
     {
+        component: ApplicationTemplateSelectPage,
+        exact: true,
+        icon: null,
+        id: "applicationTemplate",
+        name: "Application-Template",
+        path: "/applications/templates",
+        protected: true,
+        showOnSidePanel: false,
+    },
+    {
         component: ApplicationEditPage,
         exact: true,
         icon: "applications",
+        id: "applicationsEdit",
         name: "Application-Edit",
         path: "/applications/:id",
         protected: true,
         showOnSidePanel: false,
     },
     {
+        children: [
+            {
+                component: UsersPage,
+                exact: true,
+                icon: "childIcon",
+                level: 2,
+                name: "Users",
+                path: "/users",
+                protected: true,
+                showOnSidePanel: true,
+            },
+            {
+                component: UserRoles,
+                exact: true,
+                icon: "childIcon",
+                level: 2,
+                name: "User Roles",
+                path: "/roles",
+                protected: true,
+                showOnSidePanel: true
+            }
+        ],
         component: UsersPage,
+        exact: true,
         icon: "usersAndRoles",
+        id: "usersAndRoles",
         name: "Users & Roles",
         path: "/users",
         protected: true,
         showOnSidePanel: true,
     },
     {
+        component: UserEditPage,
+        exact: true,
+        icon: "usersAndRoles",
+        name: "User-Edit",
+        path: "/users/:id",
+        protected: true,
+        showOnSidePanel: false,
+    },
+    {
         component: PrivacyPage,
         icon: null,
+        id: "privacy",
         name: "common:privacy",
         path: "/privacy",
         protected: true,
@@ -77,6 +127,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: null,
         icon: null,
+        id: "404",
         name: "404",
         path: "*",
         protected: true,
@@ -92,6 +143,7 @@ const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: PrivacyPage,
         icon: null,
+        id: "defaultPrivacy",
         name: "Privacy",
         path: "/privacy",
         protected: true,
@@ -106,6 +158,7 @@ const ERROR_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: PageNotFound,
         icon: null,
+        id: "error404",
         name: "404",
         path: "/404",
         protected: true,
@@ -120,6 +173,7 @@ const AUTH_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: SignIn,
         icon: null,
+        id: "authLayoutLogin",
         name: "Login",
         path: APP_LOGIN_PATH,
         protected: false,
@@ -128,8 +182,9 @@ const AUTH_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: SignOut,
         icon: null,
+        id: "authLayoutLogout",
         name: "Logout",
-        path: "/logout",
+        path: APP_LOGOUT_PATH,
         protected: false,
         showOnSidePanel: false
     }
@@ -142,6 +197,7 @@ const APP_ROUTES: RouteInterface[] = [
     {
         component: AuthLayout,
         icon: null,
+        id: "appRouteLogin",
         name: "Login",
         path: APP_LOGIN_PATH,
         protected: false,
@@ -150,14 +206,16 @@ const APP_ROUTES: RouteInterface[] = [
     {
         component: AuthLayout,
         icon: null,
+        id: "appRouteLogout",
         name: "Logout",
-        path: "/logout",
+        path: APP_LOGOUT_PATH,
         protected: false,
         showOnSidePanel: false
     },
     {
         component: DefaultPageLayout,
         icon: null,
+        id: "appRoutePrivacy",
         name: "Privacy",
         path: "/privacy",
         protected: true,
@@ -167,6 +225,7 @@ const APP_ROUTES: RouteInterface[] = [
         component: ErrorPageLayout,
         exact: true,
         icon: null,
+        id: "appRoute404",
         name: "Error",
         path: "/404",
         protected: true,
@@ -175,6 +234,7 @@ const APP_ROUTES: RouteInterface[] = [
     {
         component: DashboardLayout,
         icon: null,
+        id: "dashboard",
         name: "Dashboard",
         path: "/",
         protected: true,
@@ -189,6 +249,7 @@ const BASE_ROUTES: RouteInterface[] = [
     {
         component: AppLayout,
         icon: null,
+        id: "app",
         name: "App",
         path: "/",
         protected: false,

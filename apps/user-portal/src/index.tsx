@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ContextUtils, HttpUtils } from "@wso2is/core/utils";
 import * as React from "react";
 // tslint:disable:no-submodule-imports
 import "react-app-polyfill/ie11";
@@ -25,10 +26,14 @@ import "react-app-polyfill/stable";
 import * as ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";
-import { setupHttpClient } from "./utils";
+import { GlobalConfig } from "./configs";
+import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
+
+// Set the runtime config in the context.
+ContextUtils.setRuntimeConfig(GlobalConfig);
 
 // Set up the Http client.
-setupHttpClient();
+HttpUtils.setupHttpClient(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
 
 ReactDOM.render(
     (

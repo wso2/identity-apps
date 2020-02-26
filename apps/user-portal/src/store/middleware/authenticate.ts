@@ -30,13 +30,22 @@ import { history } from "../../helpers";
 import { setProfileInfo, setSignIn, setSignOut } from "../actions";
 
 /**
+ * Get location history path from sessionStorage
+ *
+ * @return {string} location - history path.
+ */
+export const getAuthenticationCallbackUrl = (): string => {
+    return window.sessionStorage.getItem("auth_callback_url");
+};
+
+/**
  * Handle user sign-out
  *
  * @param {object} state - AuthContext state object.
  * @param {function} dispatch - State update `dispatch` react hook for AuthContext.
  */
-export const handleSignIn = (state, dispatch) => {
-    const loginSuccessRedirect = () => {
+export const handleSignIn = (state, dispatch): void => {
+    const loginSuccessRedirect = (): void => {
         const AuthenticationCallbackUrl = getAuthenticationCallbackUrl();
         const location = ((!AuthenticationCallbackUrl)
             || (AuthenticationCallbackUrl === GlobalConfig.appLoginPath)) ?
@@ -49,7 +58,7 @@ export const handleSignIn = (state, dispatch) => {
      * Get profile info and associations from the API
      * to set the associations in the context.
      */
-    const setProfileDetails = () => {
+    const setProfileDetails = (): void => {
         getProfileInfo()
             .then((infoResponse) => {
                 getAssociations()
@@ -62,7 +71,7 @@ export const handleSignIn = (state, dispatch) => {
             });
     };
 
-    const sendSignInRequest = () => {
+    const sendSignInRequest = (): void => {
         const requestParams = {
             clientHost: GlobalConfig.clientHost,
             clientId: GlobalConfig.clientID,
@@ -104,6 +113,7 @@ export const handleSignIn = (state, dispatch) => {
                 OPConfigurationUtil.setRevokeTokenEndpoint(ServiceResourcesEndpoint.revoke);
                 OPConfigurationUtil.setEndSessionEndpoint(ServiceResourcesEndpoint.logout);
                 OPConfigurationUtil.setJwksUri(ServiceResourcesEndpoint.jwks);
+                OPConfigurationUtil.setIssuer(ServiceResourcesEndpoint.issuer);
                 OPConfigurationUtil.setOPConfigInitiated();
 
                 sendSignInRequest();
@@ -117,7 +127,7 @@ export const handleSignIn = (state, dispatch) => {
  * @param {object} state - AuthContext state object.
  * @param {function} dispatch - State update `dispatch` react hook for AuthContext.
  */
-export const handleSignOut = (state, dispatch) => {
+export const handleSignOut = (state, dispatch): void => {
     if (!state.logoutInit) {
         SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl).then(() => {
             dispatch(setSignOut());
@@ -136,15 +146,6 @@ export const handleSignOut = (state, dispatch) => {
  *
  * @param {string} location - history path.
  */
-export const updateAuthenticationCallbackUrl = (location) => {
+export const updateAuthenticationCallbackUrl = (location): void => {
     window.sessionStorage.setItem("auth_callback_url", location);
-};
-
-/**
- * Get location history path from sessionStorage
- *
- * @return {string} location - history path.
- */
-export const getAuthenticationCallbackUrl = () => {
-    return window.sessionStorage.getItem("auth_callback_url");
 };

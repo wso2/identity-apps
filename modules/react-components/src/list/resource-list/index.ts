@@ -17,4 +17,6 @@
  */
 
 export * from "./resource-list";
+export * from "./resource-list-header";
+export * from "./resource-list-header-cell";
 export * from "./resource-list-item";

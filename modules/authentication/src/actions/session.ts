@@ -41,59 +41,12 @@ import { getAuthenticatedUser, sendRefreshTokenRequest } from "./sign-in";
 const semaphore = new Semaphore(1);
 
 /**
- * Initialize authenticated user session.
+ * Remove parameter from session storage.
  *
- * @param {TokenResponseInterface} tokenResponse.
- * @param authenticatedUser authenticated user.
+ * @param {string} key.
  */
-export const initUserSession = (tokenResponse: TokenResponseInterface,
-                                authenticatedUser: AuthenticatedUserInterface) => {
-    endAuthenticatedSession();
-    sessionStorage.setItem(ACCESS_TOKEN, tokenResponse.accessToken);
-    sessionStorage.setItem(ACCESS_TOKEN_EXPIRE_IN, tokenResponse.expiresIn);
-    sessionStorage.setItem(ACCESS_TOKEN_ISSUED_AT, (Date.now() / 1000).toString());
-    sessionStorage.setItem(DISPLAY_NAME, authenticatedUser.displayName);
-    sessionStorage.setItem(EMAIL, authenticatedUser.email);
-    sessionStorage.setItem(ID_TOKEN, tokenResponse.idToken);
-    sessionStorage.setItem(SCOPE, tokenResponse.scope);
-    sessionStorage.setItem(REFRESH_TOKEN, tokenResponse.refreshToken);
-    sessionStorage.setItem(TOKEN_TYPE, tokenResponse.tokenType);
-    sessionStorage.setItem(USERNAME, authenticatedUser.username);
-};
-
-/**
- * End authenticated user session.
- */
-export const endAuthenticatedSession = () => {
-    sessionStorage.removeItem(ACCESS_TOKEN);
-    sessionStorage.removeItem(ACCESS_TOKEN_EXPIRE_IN);
-    sessionStorage.removeItem(ACCESS_TOKEN_ISSUED_AT);
-    sessionStorage.removeItem(DISPLAY_NAME);
-    sessionStorage.removeItem(EMAIL);
-    sessionStorage.removeItem(ID_TOKEN);
-    sessionStorage.removeItem(REFRESH_TOKEN);
-    sessionStorage.removeItem(SCOPE);
-    sessionStorage.removeItem(TOKEN_TYPE);
-    sessionStorage.removeItem(USERNAME);
-};
-
-/**
- * Get the user session object.
- *
- * @returns {SessionInterface} session object.
- */
-export const getAllSessionParameters = (): SessionInterface => {
-    return {
-        accessToken: sessionStorage.getItem(ACCESS_TOKEN),
-        displayName: sessionStorage.getItem(DISPLAY_NAME),
-        email: sessionStorage.getItem(EMAIL),
-        expiresIn: sessionStorage.getItem(ACCESS_TOKEN_ISSUED_AT),
-        idToken: sessionStorage.getItem(ID_TOKEN),
-        refreshToken: sessionStorage.getItem(REFRESH_TOKEN),
-        scope: sessionStorage.getItem(SCOPE),
-        tokenType: sessionStorage.getItem(TOKEN_TYPE),
-        username: sessionStorage.getItem(USERNAME)
-    };
+export const removeSessionParameter = (key: string): void => {
+    sessionStorage.removeItem(key);
 };
 
 /**
@@ -102,7 +55,7 @@ export const getAllSessionParameters = (): SessionInterface => {
  * @param {string} key.
  * @param value value.
  */
-export const setSessionParameter = (key: string, value: string) => {
+export const setSessionParameter = (key: string, value: string): void => {
     sessionStorage.setItem(key, value);
 };
 
@@ -112,17 +65,64 @@ export const setSessionParameter = (key: string, value: string) => {
  * @param {string} key.
  * @returns {string | null} parameter value or null.
  */
-export const getSessionParameter = (key: string) => {
+export const getSessionParameter = (key: string): string|null => {
     return sessionStorage.getItem(key);
 };
 
 /**
- * Remove parameter from session storage.
- *
- * @param {string} key.
+ * End authenticated user session.
  */
-export const removeSessionParameter = (key: string) => {
-    sessionStorage.removeItem(key);
+export const endAuthenticatedSession = (): void => {
+    removeSessionParameter(ACCESS_TOKEN);
+    removeSessionParameter(ACCESS_TOKEN_EXPIRE_IN);
+    removeSessionParameter(ACCESS_TOKEN_ISSUED_AT);
+    removeSessionParameter(DISPLAY_NAME);
+    removeSessionParameter(EMAIL);
+    removeSessionParameter(ID_TOKEN);
+    removeSessionParameter(REFRESH_TOKEN);
+    removeSessionParameter(SCOPE);
+    removeSessionParameter(TOKEN_TYPE);
+    removeSessionParameter(USERNAME);
+};
+
+/**
+ * Initialize authenticated user session.
+ *
+ * @param {TokenResponseInterface} tokenResponse.
+ * @param authenticatedUser authenticated user.
+ */
+export const initUserSession = (tokenResponse: TokenResponseInterface,
+                                authenticatedUser: AuthenticatedUserInterface): void => {
+    endAuthenticatedSession();
+    setSessionParameter(ACCESS_TOKEN, tokenResponse.accessToken);
+    setSessionParameter(ACCESS_TOKEN_EXPIRE_IN, tokenResponse.expiresIn);
+    setSessionParameter(ACCESS_TOKEN_ISSUED_AT, (Date.now() / 1000).toString());
+    setSessionParameter(DISPLAY_NAME, authenticatedUser.displayName);
+    setSessionParameter(EMAIL, authenticatedUser.email);
+    setSessionParameter(ID_TOKEN, tokenResponse.idToken);
+    setSessionParameter(SCOPE, tokenResponse.scope);
+    setSessionParameter(REFRESH_TOKEN, tokenResponse.refreshToken);
+    setSessionParameter(TOKEN_TYPE, tokenResponse.tokenType);
+    setSessionParameter(USERNAME, authenticatedUser.username);
+};
+
+/**
+ * Get the user session object.
+ *
+ * @returns {SessionInterface} session object.
+ */
+export const getAllSessionParameters = (): SessionInterface => {
+    return {
+        accessToken: getSessionParameter(ACCESS_TOKEN),
+        displayName: getSessionParameter(DISPLAY_NAME),
+        email: getSessionParameter(EMAIL),
+        expiresIn: getSessionParameter(ACCESS_TOKEN_ISSUED_AT),
+        idToken: getSessionParameter(ID_TOKEN),
+        refreshToken: getSessionParameter(REFRESH_TOKEN),
+        scope: getSessionParameter(SCOPE),
+        tokenType: getSessionParameter(TOKEN_TYPE),
+        username: getSessionParameter(USERNAME)
+    };
 };
 
 /**
@@ -131,9 +131,9 @@ export const removeSessionParameter = (key: string) => {
  * @returns {Promise<string>} access token.
  */
 export const getAccessToken = (): Promise<string> => {
-    const accessToken = sessionStorage.getItem(ACCESS_TOKEN);
-    const expiresIn = sessionStorage.getItem(ACCESS_TOKEN_EXPIRE_IN);
-    const issuedAt = sessionStorage.getItem(ACCESS_TOKEN_ISSUED_AT);
+    const accessToken = getSessionParameter(ACCESS_TOKEN);
+    const expiresIn = getSessionParameter(ACCESS_TOKEN_EXPIRE_IN);
+    const issuedAt = getSessionParameter(ACCESS_TOKEN_ISSUED_AT);
 
     if (!accessToken || accessToken.trim().length === 0 || !expiresIn || expiresIn.length === 0 || !issuedAt
         || issuedAt.length === 0) {
@@ -142,9 +142,9 @@ export const getAccessToken = (): Promise<string> => {
         return Promise.reject(new Error("Invalid user session."));
     }
 
-    function getValidityPeriod() {
-        const currentExpiresIn = sessionStorage.getItem(ACCESS_TOKEN_EXPIRE_IN);
-        const currentIssuedAt = sessionStorage.getItem(ACCESS_TOKEN_ISSUED_AT);
+    function getValidityPeriod(): number {
+        const currentExpiresIn = getSessionParameter(ACCESS_TOKEN_EXPIRE_IN);
+        const currentIssuedAt = getSessionParameter(ACCESS_TOKEN_ISSUED_AT);
 
         return (parseInt(currentIssuedAt, 10) + parseInt(currentExpiresIn, 10)) - Math.floor(Date.now() / 1000);
     }
@@ -166,7 +166,7 @@ export const getAccessToken = (): Promise<string> => {
                         return Promise.reject(error);
                     });
             } else {
-                return Promise.resolve(sessionStorage.getItem(ACCESS_TOKEN));
+                return Promise.resolve(getSessionParameter(ACCESS_TOKEN));
             }
         });
     } else {

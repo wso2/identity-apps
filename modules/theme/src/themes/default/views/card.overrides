@@ -197,3 +197,196 @@
         }
     }
 }
+
+/*******************************
+    Selection Card Variation
+*******************************/
+
+.ui.card {
+    &.selection-card {
+        width: @selectionCardDefaultWidth;
+        transition: @selectionCardTransition;
+        border: @selectionCardBorder;
+        box-shadow: none;
+
+        &:hover {
+            transform: none;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: @defaultCardHoverBoxShadow;
+        }
+        &.inline {
+            display: inline-block;
+            margin-right: @selectionCardRightSpacing;
+        }
+        &.selected {
+            &:after {
+                visibility: visible;
+            }
+        }
+        &.disabled {
+            cursor: not-allowed;
+            filter: grayscale(100%);
+        }
+        .card-image-container {
+        }
+        .card-text-container {
+            padding: @selectionCardTextContainerPadding;
+
+            .header {
+                font-size: @selectionCardHeaderFontSize;
+                line-height: @selectionCardHeaderFontSize;
+                max-width: @selectionCardHeaderMaxWidth;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+            .description {
+                font-size: @selectionCardDescriptionFontSize;
+                max-width: @selectionCardDescriptionMaxWidth;
+                min-height: @selectionCardDescriptionMinHeight;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+        &:after {
+            display: block;
+            background: @selectionCardSelectedStateBorderColor;
+            content: '';
+            height: 3px;
+            visibility: hidden;
+        }
+    }
+}
+
+/*********************************************
+    Application Template Card Variation
+*********************************************/
+
+.ui.card {
+    &.app-template-card {
+        width: @appTemplateCardDefaultWidth;
+        transition: @appTemplateCardTransition;
+        border: @appTemplateCardBorder;
+        box-shadow: none;
+
+        &:hover {
+            transform: none;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: @appTemplateCardHoverBoxShadow;
+        }
+        &.inline {
+            display: inline-block;
+            margin-right: @appTemplateCardRightSpacing;
+        }
+        &.selected {
+            border-bottom-width: @appTemplateCardBorderBottomWidth;
+            border-bottom-color: @appTemplateCardSelectedStateBorderBottomColor;
+        }
+        &.disabled {
+            cursor: not-allowed;
+            filter: grayscale(100%);
+        }
+        .card-image-container {
+        }
+        .card-text-container {
+            padding: @appTemplateCardTextContainerPadding;
+            border-top: none;
+
+            .header {
+                font-size: @appTemplateCardHeaderFontSize;
+                font-weight: @appTemplateCardHeaderFontWeight;
+                line-height: @appTemplateCardHeaderLineHeight;
+                max-width: @appTemplateCardHeaderMaxWidth;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+            .description {
+                font-size: @appTemplateCardDescriptionFontSize;
+                max-width: @appTemplateCardDescriptionMaxWidth;
+                min-height: @appTemplateCardDescriptionMinHeight;
+            }
+            .technologies {
+                margin-top: 8px;
+
+                .title {
+                    font-size: @appTemplateCardTechnologiesTitleFontSize;
+                    text-decoration: underline;
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
+}
+
+/*******************************
+     Labeled Card Variation
+*******************************/
+
+.labeled-card-wrapper {
+    text-align: center;
+
+    &.with-bottom-margin {
+        margin-bottom: @labeledCardWrapperMarginBottom;
+    }
+    &:hover {
+        cursor: pointer;
+
+        .ui.card {
+            &.labeled-card {
+                transform: none;
+                text-decoration: none;
+                cursor: pointer;
+                box-shadow: @labeledCardHoverBoxShadow;
+
+                .close-button {
+                    visibility: visible;
+                }
+            }
+        }
+    }
+    &.inline {
+        display: inline-block;
+        margin-right: @labeledCardRightSpacing;
+    }
+    .ui.card {
+        &.labeled-card {
+            width: auto;
+            transition: @labeledCardTransition;
+            border: @labeledCardBorder;
+            box-shadow: none;
+            margin-bottom: @labeledCardMarginBottom;
+
+            &:hover {
+                transform: none;
+                text-decoration: none;
+                cursor: pointer;
+                box-shadow: @labeledCardHoverBoxShadow;
+            }
+            .close-button {
+                border-radius: 50% !important;
+                display: inline-table;
+                font-weight: 500;
+                visibility: hidden;
+
+                &:hover {
+                    box-shadow: 1px 1px 4px @darkGray;
+                }
+            }
+            &.selected {
+
+            }
+            &.disabled {
+                cursor: not-allowed;
+                filter: grayscale(100%);
+            }
+       }
+    }
+
+    .card-label {
+        font-size: @labeledCardLabelFontColor;
+    }
+}

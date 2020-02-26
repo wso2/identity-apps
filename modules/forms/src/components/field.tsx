@@ -17,7 +17,7 @@
  */
 
 import React from "react";
-import { Button, Divider, Form, Radio } from "semantic-ui-react";
+import { Button, Divider, Form, Radio, TextArea } from "semantic-ui-react";
 import {
     isButtonField,
     isCheckBoxField,
@@ -31,13 +31,14 @@ import {
     isTextField
 } from "../helpers";
 import { FormField, FormValue, RadioChild } from "../models";
+import { filterPassedProps } from "../utils";
 import { Password } from "./password";
 
 /**
  * prop types for the Field component
  */
 interface InnerFieldPropsInterface {
-    passedProps: FormField;
+    passedProps: any;
     formProps: {
         checkError: (inputField: FormField) => { isError: boolean, errorMessages: string[] };
         handleBlur: (event: React.KeyboardEvent, name: string) => void;
@@ -61,6 +62,8 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
 
     const formField: FormField = { ...passedProps };
 
+    const filteredProps = filterPassedProps(passedProps);
+
     const { checkError, handleBlur, handleChange, handleChangeCheckBox, handleReset, form } = formProps;
 
     /**
@@ -75,7 +78,8 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
             if (isPasswordField(inputField)) {
                 return (
                     <Password
-                        label={ inputField.label }
+                        { ...filteredProps }
+                        label={ inputField.label !== "" ? inputField.label : null }
                         width={ inputField.width }
                         error={
                             isError
@@ -99,12 +103,47 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                         showPassword={ inputField.showPassword }
                         hidePassword={ inputField.hidePassword }
                         autoFocus={ inputField.autoFocus || false }
+                        readOnly={ inputField.readOnly }
+                        disabled={ inputField.disabled }
+                        required={ inputField.label ? inputField.required : false }
+                    />
+                );
+            } else if (inputField.type === "textarea") {
+                return (
+                    <Form.TextArea
+                        { ...filteredProps }
+                        label={ inputField.label !== "" ? inputField.label : null }
+                        width={ inputField.width }
+                        error={
+                            isError
+                                ? {
+                                    content: errorMessages.map((errorMessage: string, index: number) => {
+                                        return <p key={ index }>{ errorMessage }</p>;
+                                    })
+                                }
+                                : false
+                        }
+                        type={ inputField.type }
+                        placeholder={ inputField.placeholder }
+                        name={ inputField.name }
+                        value={ form.get(inputField.name)?.toString() || "" }
+                        onBlur={ (event: React.KeyboardEvent) => {
+                            handleBlur(event, inputField.name);
+                        } }
+                        onChange={ (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+                            handleChange(event.target.value, inputField.name);
+                        } }
+                        autoFocus={ inputField.autoFocus || false }
+                        readOnly={ inputField.readOnly }
+                        disabled={ inputField.disabled }
+                        required={ inputField.label ? inputField.required : false }
                     />
                 );
             } else {
                 return (
                     <Form.Input
-                        label={ inputField.label }
+                        { ...filteredProps }
+                        label={ inputField.label !== "" ? inputField.label : null }
                         width={ inputField.width }
                         error={
                             isError
@@ -126,58 +165,21 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                             handleChange(event.target.value, inputField.name);
                         } }
                         autoFocus={ inputField.autoFocus || false }
+                        readOnly={ inputField.readOnly }
+                        disabled={ inputField.disabled }
+                        required={ inputField.label ? inputField.required : false }
                     />
                 );
             }
-        } else if (isSubmitField(inputField)) {
-            return (
-                <Button
-                    primary={ true }
-                    size={ inputField.size }
-                    className={ inputField.className }
-                    type={ inputField.type }
-                    disabled={ inputField.disabled ? inputField.disabled(form) : false }
-                >
-                    { inputField.value }
-                </Button>
-            );
-        } else if (isResetField(inputField)) {
-            return (
-                <Button
-                    size={ inputField.size }
-                    className={ inputField.className }
-                    onClick={ handleReset }
-                    disabled={ inputField.disabled ? inputField.disabled(form) : false }
-                >
-                    { inputField.value }
-                </Button>
-            );
-        } else if (isButtonField(inputField)) {
-            return (
-                <Button
-                    size={ inputField.size }
-                    className={ inputField.className }
-                    onClick={ (event) => {
-                        event.preventDefault();
-                        inputField.onClick();
-                    } }
-                    disabled={ inputField.disabled ? inputField.disabled(form) : false }
-                >
-                    { inputField.value }
-                </Button>
-            );
-        } else if (isDivider(inputField)) {
-            return <Divider hidden={ inputField.hidden } />;
-        } else if (isCustomField(inputField)) {
-            return inputField.element;
         } else if (isRadioField(inputField)) {
             return (
                 <Form.Group grouped={ true }>
-                    <label>{ inputField.label }</label>
+                    { inputField.label !== "" ? <label>{ inputField.label }</label> : null }
                     { inputField.children.map((radio: RadioChild, index: number) => {
                         return (
                             <Form.Field key={ index }>
                                 <Radio
+                                    { ...filteredProps }
                                     label={ radio.label }
                                     name={ inputField.name }
                                     value={ radio.value }
@@ -189,6 +191,8 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                                         handleBlur(event, inputField.name);
                                     } }
                                     autoFocus={ inputField.autoFocus || false }
+                                    readOnly={ inputField.readOnly }
+                                    disabled={ inputField.disabled }
                                 />
                             </Form.Field>
                         );
@@ -198,10 +202,12 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
         } else if (isDropdownField(inputField)) {
             return (
                 <Form.Select
-                    label={ inputField.label }
+                    { ...filteredProps }
+                    label={ inputField.label !== "" ? inputField.label : null }
                     placeholder={ inputField.placeholder }
                     options={ inputField.children }
                     value={ form.get(inputField.name) }
+                    width={ inputField.width }
                     onChange={ (event: React.ChangeEvent<HTMLInputElement>, { value }) => {
                         handleChange(value.toString(), inputField.name);
                     } }
@@ -218,16 +224,27 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                             : false
                     }
                     autoFocus={ inputField.autoFocus || false }
+                    readOnly={ inputField.readOnly }
+                    disabled={ inputField.disabled }
+                    required={ inputField.label ? inputField.required : false }
                 />
             );
         } else if (isCheckBoxField(inputField)) {
             return (
                 <Form.Group grouped={ true }>
-                    <label>{ inputField.label }</label>
+                    <label>
+                        { inputField.label }
+                        {
+                            inputField.label && inputField.required
+                                ? <span className="ui text color red">*</span>
+                                : null
+                        }
+                    </label>
                     { inputField.children.map((checkbox, index) => {
                         return (
                             <Form.Field key={ index }>
                                 <Form.Checkbox
+                                    { ...filteredProps }
                                     label={ checkbox.label }
                                     name={ inputField.name }
                                     value={ checkbox.value }
@@ -256,12 +273,58 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                                             : isError
                                     }
                                     autoFocus={ inputField.autoFocus || false }
+                                    readOnly={ inputField.readOnly }
+                                    disabled={ inputField.disabled }
                                 />
                             </Form.Field>
                         );
                     }) }
                 </Form.Group>
             );
+        } else if (isSubmitField(inputField)) {
+            return (
+                <Button
+                    { ...filteredProps }
+                    primary={ true }
+                    size={ inputField.size }
+                    className={ inputField.className }
+                    type={ inputField.type }
+                    disabled={ inputField.disabled ? inputField.disabled(form) : false }
+                >
+                    { inputField.value }
+                </Button>
+            );
+        } else if (isResetField(inputField)) {
+            return (
+                <Button
+                    { ...filteredProps }
+                    size={ inputField.size }
+                    className={ inputField.className }
+                    onClick={ handleReset }
+                    disabled={ inputField.disabled ? inputField.disabled(form) : false }
+                >
+                    { inputField.value }
+                </Button>
+            );
+        } else if (isButtonField(inputField)) {
+            return (
+                <Button
+                    { ...filteredProps }
+                    size={ inputField.size }
+                    className={ inputField.className }
+                    onClick={ (event) => {
+                        event.preventDefault();
+                        inputField.onClick();
+                    } }
+                    disabled={ inputField.disabled ? inputField.disabled(form) : false }
+                >
+                    { inputField.value }
+                </Button>
+            );
+        } else if (isDivider(inputField)) {
+            return <Divider hidden={ inputField.hidden } />;
+        } else if (isCustomField(inputField)) {
+            return inputField.element;
         }
     };
     return (

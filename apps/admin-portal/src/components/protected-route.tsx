@@ -19,6 +19,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteProps } from "react-router-dom";
+import { GlobalConfig } from "../configs";
 import * as ApplicationConstants from "../constants/application-constants";
 import { history } from "../helpers";
 import { updateAuthenticationCallbackUrl } from "../store/actions";
@@ -41,7 +42,7 @@ export const ProtectedRoute = (props: RouteProps): JSX.Element => {
      * Update existing location path in the state to recall upon page refresh or authentication callback.
      * The login path and the login error path have been skipped.
      */
-    if ((history.location.pathname !== APP_LOGIN_PATH)
+    if ((history.location.pathname !== GlobalConfig.appLoginPath)
         && (history.location.pathname !== ApplicationConstants.LOGIN_ERROR_PAGE_PATH)) {
         updateAuthenticationCallbackUrl(history.location.pathname);
     }
@@ -53,7 +54,7 @@ export const ProtectedRoute = (props: RouteProps): JSX.Element => {
                     ? Component
                         ? <Component { ...renderProps } />
                         : null
-                    : <Redirect to={ APP_LOGIN_PATH }/>
+                    : <Redirect to={ GlobalConfig.appLoginPath }/>
             }
             { ...rest }
         />

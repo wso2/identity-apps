@@ -117,6 +117,7 @@ apps/x509-certificate-authentication-portal/src/main/webapp/libs/theme/
 
 .classpath
 .settings
+.factorypath
 *.iml
 *.iws
 *.ipr

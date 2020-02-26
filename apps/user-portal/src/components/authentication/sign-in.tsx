@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GlobalConfig } from "../../configs";
 import { USER_DENIED_CONSENT } from "../../constants";
@@ -38,7 +38,15 @@ export const SignIn = (props) => {
         } else if (error === USER_DENIED_CONSENT) {
             dispatch(handleSignIn(true));
         } else {
-            loginSuccessRedirect();
+            // TODO: Use authentication SDK to access the session
+            if (sessionStorage.getItem("request_params") &&
+                JSON.parse(sessionStorage.getItem("request_params")).clientId &&
+                JSON.parse(sessionStorage.getItem("request_params")).clientId !== GlobalConfig.clientID) {
+                sessionStorage.clear();
+                dispatch(handleSignIn());
+            } else {
+                loginSuccessRedirect();
+            }
         }
     }, [isAuth]);
 

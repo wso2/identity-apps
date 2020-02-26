@@ -126,16 +126,20 @@ body {
 
     &.list-layout {
         .top-action-panel {
-            .left-aligned-actions {
-                float: left;
-            }
-
-            .right-aligned-actions {
-                float: right;
+            .actions {
                 display: flex;
 
-                > div :not(:last-child), > button :not(:last-child) {
-                    margin-right: 10px;
+                &.right-aligned {
+                    float: right;
+                }
+                &.left-aligned {
+                    float: left;
+                }
+
+                > div, > button {
+                    &:not(:last-child) {
+                        margin-right: 10px;
+                    }
                 }
             }
         }
@@ -775,6 +779,141 @@ body {
 
     .list-pagination {
         float: right;
+    }
+}
+
+/*****************************************
+            Page Header
+*****************************************/
+
+.page-header-wrapper {
+    .back-button {
+        margin-bottom: 15px;
+        cursor: pointer;
+        color: @doveGray;
+        display: inline-block;
+
+        &:hover {
+            color: darken(@doveGray, 30);
+        }
+    }
+
+    .page-header-inner {
+        &.with-image {
+            display: flex;
+
+            .page-header {
+                margin: 0 0 0 10px;
+            }
+        }
+    }
+}
+
+/*****************************************
+            UI Hints
+*****************************************/
+
+.ui-hint {
+    color: @inputAddonColor;
+    font-size: @inputAddonFontSize;
+    margin: @inputAddonMargin;
+
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.45;
+    }
+    &.compact {
+        margin: 0;
+    }
+}
+
+/*****************************************
+                Steps
+*****************************************/
+
+.steps {
+    text-align: center;
+
+    .header {
+        color: @stepsHeaderFontColor;
+        font-size: @stepsHeaderFontSize;
+    }
+    .step {
+        display: inline-block;
+        text-align: center;
+        color: @stepDefaultFontColor;
+        font-size: @stepFontSize;
+        min-width: @stepMinWidth;
+        margin: 0 @stepHorizontalSpacing;
+
+        .step-icon-wrapper {
+            width: @stepIconSize;
+            height: @stepIconSize;
+            border-radius: 50%;
+            background: @stepIconDefaultBgColor;
+            text-align: center;
+            display: inline-table;
+
+            .theme-icon {
+                display: table-cell;
+                vertical-align: middle;
+
+                .icon {
+                    margin-top: 5px;
+                }
+                .path {
+                    fill: @white;
+                }
+            }
+            &:after {
+                content: "- - - -";
+                color: @stepDefaultFontColor;
+                display: inline-block;
+                position: absolute;
+                margin-top: 10px;
+                margin-left: 40px;
+                font-weight: bold;
+                font-size: 1.5em;
+                -moz-transition: @stepTrailTransition;
+                -webkit-transition: @stepTrailTransition;
+                -o-transition: @stepTrailTransition;
+                transition: @stepTrailTransition;
+            }
+        }
+
+        .step-title {
+            margin-top: 8px;
+        }
+
+        &.completed {
+            color: @stepCompleteFontColor;
+
+            .step-icon-wrapper {
+                background: @stepIconCompleteBgColor;
+
+                &:after {
+                    color: @stepCompleteFontColor;
+                }
+            }
+        }
+        &.active {
+            color: @stepActiveFontColor;
+
+            .step-icon-wrapper {
+                background: @stepIconActiveBgColor;
+
+                &:after {
+                    color: @stepActiveFontColor;
+                }
+            }
+        }
+        &:last-child {
+            .step-icon-wrapper {
+                &:after {
+                    display: none;
+                }
+            }
+        }
     }
 }
 

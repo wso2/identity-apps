@@ -19,6 +19,7 @@
 import { BasicProfileInterface, ProfileSchema } from "./profile";
 
 export interface AuthStateInterface {
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     children?: any;
     displayName: string;
     emails: string;
@@ -29,11 +30,4 @@ export interface AuthStateInterface {
     profileSchemas: ProfileSchema[];
     profileInfo: BasicProfileInterface;
     username: string;
-}
-
-export interface AuthContextInterface {
-    dispatch: ({ type }: {type: string}) => void;
-    signIn: () => void;
-    signOut: () => void;
-    state: AuthStateInterface;
 }

@@ -28,22 +28,33 @@ module.exports = (env) => {
     const basename = "admin-portal";
     const devServerPort = 9001;
     const publicPath = `/${basename}`;
+    const isProd = env.NODE_ENV === "prod";
+
+    // user-portal related variables
+    const userPortalBaseName = "user-portal";
+    const userPortalDevServerPort = 9000;
 
     /**
      * Deployment configurations
      */
     const serverHostDefault = "https://localhost:9443";
     const serverOriginDefault = serverHostDefault;
-    const clientHostDefault = env.NODE_ENV === "prod" ? serverHostDefault : `https://localhost:${devServerPort}`;
+    const clientHostDefault = isProd ? serverHostDefault : `https://localhost:${devServerPort}`;
     const clientOriginDefault = clientHostDefault;
     const clientIdDefault = "ADMIN_PORTAL";
-    const applicationName = "Admin Portal";
+    const applicationName = "Developer Portal";
+    const tenantDefault = "carbon.super";
+    const tenantPathDefault = "";
+
+    const userPortalClientHostDefault =
+        env.NODE_ENV === "prod" ? serverHostDefault : `https://localhost:${userPortalDevServerPort}`;
 
     /**
      * App configurations
      */
     const loginPagePath = "/login";
-    const homePagePath = "/overview";
+    const logoutPagePath = "/logout";
+    const homePagePath = "/applications";
     const externalLoginCallbackURL = `${publicPath}${loginPagePath}`;
 
     /**
@@ -51,7 +62,6 @@ module.exports = (env) => {
      */
     const distFolder = path.resolve(__dirname, "build", basename);
     const faviconImage = path.resolve(__dirname, "node_modules", "@wso2is/theme/lib/assets/images/favicon.ico");
-    const isProd = process.env.NODE_ENV === 'prod';
     const titleText = "WSO2 Identity Server";
     const copyrightText = `${titleText} \u00A9 ${ new Date().getFullYear() }`;
 
@@ -68,9 +78,12 @@ module.exports = (env) => {
                     "pageEncoding=\"UTF-8\" %>",
                 importUtil: "<%@ page import=\"" +
                     "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>",
-                serverUrl: "<%=getServerURL(\"\", true, true)%>",
                 importTenantPrefix: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
                     "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>",
+                importSuperTenantConstant: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                    "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>",
+                serverUrl: "<%=getServerURL(\"\", true, true)%>",
+                superTenantConstant: "<%=SUPER_TENANT_DOMAIN_NAME%>",
                 tenantDelimiter: "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"",
                 tenantPrefix: '<%=TENANT_AWARE_URL_PREFIX%>'
             });
@@ -146,7 +159,7 @@ module.exports = (env) => {
                             workers: require('os').cpus().length - 1,
                         },
                     },{
-                        loader:"tslint-loader",
+                        loader:"eslint-loader",
                         options: {
                             happyPackMode: true,
                             transpileOnly: false
@@ -176,7 +189,10 @@ module.exports = (env) => {
         },
         plugins: [
             new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
-            new WriteFilePlugin(),
+            new WriteFilePlugin({
+                // Exclude hot-update files
+                test: /^(?!.*(hot-update)).*/
+            }),
             new CopyWebpackPlugin([
                 {
                     context: path.join(__dirname, "node_modules", "@wso2is", "theme"),
@@ -199,6 +215,11 @@ module.exports = (env) => {
                     from: "public",
                     to: ".",
                     force: true
+                },
+                {
+                    from: "./app.config.json",
+                    to: "./app.config.json",
+                    force: true
                 }
             ]),
             compileAppIndex(),
@@ -206,6 +227,7 @@ module.exports = (env) => {
                 APP_BASENAME: JSON.stringify(basename),
                 APP_HOME_PATH: JSON.stringify(homePagePath),
                 APP_LOGIN_PATH: JSON.stringify(loginPagePath),
+                APP_LOGOUT_PATH: JSON.stringify(logoutPagePath),
                 APP_NAME: JSON.stringify(applicationName),
                 COPYRIGHT_TEXT_DEFAULT: JSON.stringify(copyrightText),
                 CLIENT_ID_DEFAULT: JSON.stringify(clientIdDefault),
@@ -214,7 +236,11 @@ module.exports = (env) => {
                 LOGIN_CALLBACK_URL: JSON.stringify(externalLoginCallbackURL),
                 SERVER_HOST_DEFAULT: JSON.stringify(serverHostDefault),
                 SERVER_ORIGIN_DEFAULT: JSON.stringify(serverOriginDefault),
+                TENANT_DEFAULT: JSON.stringify(tenantDefault),
+                TENANT_PATH_DEFAULT: JSON.stringify(tenantPathDefault),
                 TITLE_TEXT_DEFAULT: JSON.stringify(titleText),
+                USER_PORTAL_BASENAME: JSON.stringify(userPortalBaseName),
+                USER_PORTAL_CLIENT_HOST_DEFAULT: JSON.stringify(userPortalClientHostDefault),
                 "typeof window": JSON.stringify("object"),
                 "process.env": {
                     NODE_ENV: JSON.stringify(process.env.NODE_ENV)

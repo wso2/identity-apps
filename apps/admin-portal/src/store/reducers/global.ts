@@ -37,7 +37,7 @@ const initialState: GlobalInterface = {
  * @param action - Action type
  * @returns The new state
  */
-export const globalReducer = (state: GlobalInterface = initialState, action: GlobalActions) => {
+export const globalReducer = (state: GlobalInterface = initialState, action: GlobalActions): GlobalInterface => {
     switch (action.type) {
         case GlobalActionTypes.SHOW_GLOBAL_LOADER:
             return {

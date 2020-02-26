@@ -34,6 +34,26 @@ export class HttpUtils {
 
     /**
      * Set up the http client by registering the callback functions.
+     *
+     * @example
+     * Example usage.
+     * ```
+     * import { HttpUtils } from "@wso2is/core/utils";
+     *
+     * HttpUtils.setupHttpClient(
+     *  true,
+     *  onHttpRequestStart,
+     *  onHttpRequestSuccess,
+     *  onHttpRequestError,
+     *  onHttpRequestFinish);
+     *
+     * ```
+     *
+     * @param {boolean} isHandlerEnabled - Flag to toggle handler enablement.
+     * @param {() => void} requestStartCallback - Callback function to be triggered on request start.
+     * @param {(response: any) => void} requestSuccessCallback - Callback function to be triggered on request success.
+     * @param {(error: any) => void} requestErrorCallback - Callback function to be triggered on request error.
+     * @param {() => void} requestFinishCallback - Callback function to be triggered on request error.
      */
     public static setupHttpClient(isHandlerEnabled: boolean = true,
                                   requestStartCallback: () => void,

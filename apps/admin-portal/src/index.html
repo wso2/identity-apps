@@ -18,69 +18,96 @@
 
 <!DOCTYPE HTML>
 <html>
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <link href="<%= htmlWebpackPlugin.options.publicPath %>/libs/styles/css/wso2-default.css" rel="stylesheet" type="text/css"/>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link href="<%= htmlWebpackPlugin.options.publicPath %>/libs/styles/css/wso2-default.css" rel="stylesheet" type="text/css"/>
 
-    <title><%= htmlWebpackPlugin.options.title %></title>
+        <title><%= htmlWebpackPlugin.options.title %></title>
 
-    <script>
-        var getTenantPrefix = function(tenantName) {
-            return "t";
-        };
+        <!-- runtime config -->
+        <script src="<%= htmlWebpackPlugin.options.publicPath %>/runtime-config.js"></script>
+        <!-- runtime config -->
 
-        var getTenantName = function() {
-            var paths = window.location.pathname.split("/");
-            var tenantIndex = paths.indexOf(getTenantPrefix());
+        <script>
+            var getTenantPrefix = function() {
+                return "t";
+            };
 
-            if (tenantIndex > 0) {
-                var tenantName = paths[tenantIndex + 1];
-                return (tenantName) ? tenantName : "";
-            } else {
-                return "";
-            }
-        };
+            var getSuperTenant = function() {
+                return "carbon.super";
+            };
 
-        var getTenantPath = function(tenantName) {
-            return (tenantName !== "") ? "/" + getTenantPrefix() + "/" + tenantName : "";
-        };
+            var getTenantName = function() {
+                var paths = window.location.pathname.split("/");
+                var tenantIndex = paths.indexOf(getTenantPrefix());
 
-        /**
-         * =====================================================
-         * Update below details according to your configuration
-         * =====================================================
-         */
+                if (tenantIndex > 0) {
+                    var tenantName = paths[tenantIndex + 1];
+                    return (tenantName) ? tenantName : "";
+                } else {
+                    return "";
+                }
+            };
+
+            var getTenantPath = function(tenantName) {
+                return (tenantName !== "") ? "/" + getTenantPrefix() + "/" + tenantName : "";
+            };
+
+            /**
+             * =====================================================
+             * Configure your portal settings
+             * =====================================================
+             */
+
+            // Add applications which are not to be deleted in to this array.
+            var doNotDeleteApplications = ["Admin Portal"];
+
+            /**
+             * =====================================================
+             * Update below details according to your configuration
+             * =====================================================
+             */
 
             // Update below with tenant admin-portal application/service-provider details
-        var serverOriginAddress = "https://localhost:9443";
-        var clientOriginAddress = window.location.origin;
+            var serverOriginAddress = "https://localhost:9443";
+            var clientOriginAddress = window.location.origin;
 
-        // Update below with tenant admin-portal application/service-provider details
-        var tenantName = getTenantName();
-        var tenantAdminPortalClientID = "";
+            var tenantName = getTenantName();
+            var defaultAdminPortalClientID = "ADMIN_PORTAL";
+            var tenantAdminPortalClientID = defaultAdminPortalClientID + "_" + tenantName;
 
-        /** ===================================================== */
+            var defaultUserPortalClientHost = serverOriginAddress + getTenantPath(tenantName);
+            var defaultUserPortalBaseName = "user-portal";
 
-        window["runConfig"] = {
-            appBaseName: getTenantPath(tenantName) + "/admin-portal",
-            clientHost: clientOriginAddress + getTenantPath(tenantName),
-            clientOrigin: clientOriginAddress,
-            clientID: (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ?
-                tenantAdminPortalClientID : "UX70QCZcrLfTnfbN0fiJagBtC6sa",
-            serverHost: serverOriginAddress + getTenantPath(tenantName),
-            serverOrigin: serverOriginAddress
-        };
-    </script>
+            /** ===================================================== */
 
-    <!-- runtime config -->
-    <script src="<%= htmlWebpackPlugin.options.publicPath %>/runtime-config.js"></script>
-    <!-- runtime config -->
-</head>
-<body>
-<noscript>
-    You need to enable JavaScript to run this app.
-</noscript>
-<div id="root"></div>
-</body>
+            if (!window.userConfig) {
+                window.userConfig = {};
+            }
+
+            window["runConfig"] = {
+                appBaseName: window.userConfig.appBaseName || getTenantPath(tenantName) + 
+                    "<%= htmlWebpackPlugin.options.publicPath %>",
+                clientHost: window.userConfig.clientHost || clientOriginAddress + getTenantPath(tenantName),
+                clientOrigin: window.userConfig.clientOrigin || clientOriginAddress,
+                clientID: window.userConfig.clientID || 
+                    (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ? 
+                    tenantAdminPortalClientID : defaultAdminPortalClientID,
+                doNotDeleteApplications: doNotDeleteApplications || [],
+                serverHost: window.userConfig.serverHost || serverOriginAddress + getTenantPath(tenantName),
+                serverOrigin: window.userConfig.serverOrigin || serverOriginAddress,
+                tenant: window.userConfig.tenant || (tenantName === "") ? getSuperTenant() : tenantName,
+                tenantPath: window.userConfig.tenantPath || getTenantPath(tenantName),
+                userPortalBaseName: window.userConfig.userPortalBaseName || defaultUserPortalBaseName,
+                userPortalClientHost: window.userConfig.userPortalClientHost || defaultUserPortalClientHost
+            };
+        </script>
+    </head>
+    <body>
+        <noscript>
+            You need to enable JavaScript to run this app.
+        </noscript>
+        <div id="root"></div>
+    </body>
 </html>

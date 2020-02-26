@@ -1,11 +1,12 @@
 {
     "name": "@wso2is/admin-portal",
-    "version": "1.0.3",
+    "version": "1.0.56",
     "description": "WSO2 Identity Server Admin Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
     "main": "index.js",
     "scripts": {
+        "prebuild": "npm run clean",
         "start": "run-script-os",
         "start:win32": "..\\..\\node_modules\\.bin\\webpack-dev-server --env.NODE_ENV=local --mode development --inline --hot --open",
         "start:default": "../../node_modules/.bin/webpack-dev-server --env.NODE_ENV=local --mode development --inline --hot --open",
@@ -17,22 +18,23 @@
         "build:default": "../../node_modules/.bin/webpack --env.NODE_ENV=prod --mode development && npm run test",
         "lint": "tslint -t stylish --project .",
         "test": "jest --passWithNoTests",
-        "clean": "rm -rf node_modules build npm"
+        "clean": "rm -rf build"
     },
     "dependencies": {
-        "@wso2is/authentication": "^1.0.3",
-        "@wso2is/core": "^1.0.3",
-        "@wso2is/forms": "^1.0.3",
-        "@wso2is/http": "^1.0.3",
-        "@wso2is/react-components": "^1.0.3",
-        "@wso2is/theme": "^1.0.3",
-        "@wso2is/validation": "^1.0.3"
+        "@wso2is/authentication": "^1.0.56",
+        "@wso2is/core": "^1.0.56",
+        "@wso2is/forms": "^1.0.56",
+        "@wso2is/http": "^1.0.56",
+        "@wso2is/react-components": "^1.0.56",
+        "@wso2is/theme": "^1.0.56",
+        "@wso2is/validation": "^1.0.56"
     },
     "devDependencies": {
         "run-script-os": "^1.0.7"
     },
     "peerDependencies": {
         "@svgr/webpack": "*",
+        "@types/react-beautiful-dnd": "*",
         "axios": "*",
         "fork-ts-checker-webpack-plugin": "*",
         "history": "*",
@@ -40,6 +42,7 @@
         "i18next-browser-languagedetector": "*",
         "lodash": "*",
         "log": "*",
+        "react-beautiful-dnd": "*",
         "react-i18next": "*",
         "react-notification-system": "*",
         "react-redux": "*",

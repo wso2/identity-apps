@@ -22,3 +22,6 @@ export * from "./home";
 export * from "./privacy";
 export * from "./users";
 export * from "./application-edit";
+export * from "./user-edit";
+export * from "./application-template";
+export * from "./user-roles";

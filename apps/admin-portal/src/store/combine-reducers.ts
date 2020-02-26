@@ -17,7 +17,7 @@
  */
 
 import { combineReducers } from "redux";
-import { authenticateReducer, globalReducer } from "./reducers";
+import { applicationReducer, authenticateReducer, globalReducer } from "./reducers";
 import { LoadersReducer } from "./reducers/loaders";
 
 /**
@@ -26,6 +26,7 @@ import { LoadersReducer } from "./reducers/loaders";
  * @type {Reducer<any>} Root reducer to be used when creating the store.
  */
 export const reducers = combineReducers({
+    application: applicationReducer,
     authenticationInformation: authenticateReducer,
     global: globalReducer,
     loaders: LoadersReducer

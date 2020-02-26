@@ -16,57 +16,86 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Container, Divider, Table } from "semantic-ui-react";
-import { getUsersList } from "../../api";
-import { UserImagePlaceHolder } from "../../components";
+import React, { ReactElement } from "react";
+import { ResourceList, ResourceListItem, UserAvatar } from "@wso2is/react-components";
+import { Grid, List } from "semantic-ui-react";
+import { history } from "../../helpers";
+import { UserListInterface } from "../../models";
+import { CommonUtils } from "../../utils";
+
+/**
+ * Prop types for the liked accounts component.
+ */
+interface UsersListProps {
+    usersList: UserListInterface;
+    handleUserDelete: (userId: string) => void;
+}
+
+const listContent = (lastModified: any) => (
+    <Grid>
+        <Grid.Column width={ 9 }>
+            <List.Content>
+                <List.Description className="list-item-meta">
+                    { lastModified }
+                </List.Description>
+            </List.Content>
+        </Grid.Column>
+    </Grid>
+);
 
 /**
  * Users info page.
  *
  * @return {JSX.Element}
  */
-export const UsersList: React.FunctionComponent<any> = (): JSX.Element => {
-    const { t } = useTranslation();
-    const [usersList, setUsersList] = useState([]);
+export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersListProps): ReactElement => {
+    const {
+        usersList,
+        handleUserDelete
+    } = props;
 
-    useEffect(() => {
-        getList();
-    }, []);
-
-    const getList = () => {
-        getUsersList()
-            .then((response) => {
-                if (response.status === 200) {
-                setUsersList(response.data.Resources);
-                }
-            });
+    const handleUserEdit = (userId: string) => {
+        history.push(`users/${ userId }`);
     };
 
     return (
-        <Table color="orange" className="sub-section-table">
-            <Table.Header>
-                <Table.Row>
-                    <Table.HeaderCell>Name</Table.HeaderCell>
-                    <Table.HeaderCell>Created On</Table.HeaderCell>
-                    <Table.HeaderCell>Last Modified</Table.HeaderCell>
-                </Table.Row>
-            </Table.Header>
-            <Table.Body>
-                {
-                    usersList.map((user, index) => (
-                        <Table.Row key={ index }>
-                            <Table.Cell>
-                                <UserImagePlaceHolder size="mini" floated="left"/>
-                                <p style={ { padding: "10px 45px" } }>{ user.userName }</p>
-                            </Table.Cell>
-                            <Table.Cell>{ user.meta.created }</Table.Cell>
-                            <Table.Cell>{ user.meta.lastModified }</Table.Cell>
-                        </Table.Row>
-                    ))
-                }
-            </Table.Body>
-        </Table>
+        <ResourceList className="applications-list">
+            {
+                usersList && usersList.Resources && usersList.Resources instanceof Array &&
+                usersList.Resources.map((user, index) => (
+                    <ResourceListItem
+                        key={ index }
+                        actions={ [
+                            {
+                                icon: "pencil alternate",
+                                onClick: () => handleUserEdit(user.id),
+                                popupText: "edit",
+                                type: "button"
+                            },
+                            {
+                                icon: "trash alternate",
+                                onClick: () => handleUserDelete(user.id),
+                                popupText: "delete user",
+                                type: "button"
+                            }
+                        ] }
+                        actionsFloated="right"
+                        avatar={ (
+                            <UserAvatar
+                                name={ user.userName }
+                                size="mini"
+                                floated="left"
+                                image={ user.profileUrl }
+                            />
+                        ) }
+                        itemHeader={ user.name && user.name.givenName !== undefined ? user.name.givenName +
+                            " " + user.name.familyName : user.userName }
+                        itemDescription={ user.emails ? user.emails[0].toString() :
+                            user.userName }
+                        metaContent={ listContent(CommonUtils.humanizeDateDifference(user.meta.lastModified)) }
+                    />
+                ))
+            }
+        </ResourceList>
     );
 };

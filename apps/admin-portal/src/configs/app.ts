@@ -24,13 +24,21 @@ interface ServiceResourcesType {
     authorize: string;
     challenges: string;
     challengeAnswers: string;
+    consents: string;
+    groups: string;
     claims: string;
+    identityProvider: string;
+    issuer: string;
     jwks: string;
     logout: string;
     me: string;
+    permission: string;
+    profileSchemas: string;
     sessions: string;
     token: string;
+    user: string;
     users: string;
+    userStores: string;
     revoke: string;
     wellKnown: string;
 }
@@ -42,12 +50,20 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     challengeAnswers: `${GlobalConfig.serverHost}/api/users/v1/me/challenge-answers`,
     challenges: `${GlobalConfig.serverHost}/api/users/v1/me/challenges`,
     claims: `${GlobalConfig.serverHost}/api/server/v1/claim-dialects`,
+    consents: `${GlobalConfig}/api/identity/consent-mgt/v1.0/consents`,
+    groups: `${GlobalConfig.serverHost}/scim2/Groups`,
+    identityProvider: `${GlobalConfig.serverHost}/api/server/v1/identity-providers`,
+    issuer: `${GlobalConfig.serverHost}/oauth2/token`,
     jwks: `${GlobalConfig.serverHost}/oauth2/jwks`,
     logout: `${GlobalConfig.serverHost}/oidc/logout`,
-    me: `${GlobalConfig.serverHost}/scim2/Me`, // TODO  Remove this endpoint and use ID token to get the details
+    me: `${GlobalConfig.serverHost}/scim2/Me`, // TODO: Remove this endpoint and use ID token to get the details
+    permission: `${GlobalConfig.serverHost}/api/server/v1/permission-management/permissions`,
+    profileSchemas: `${GlobalConfig.serverHost}/scim2/Schemas`,
     revoke: `${GlobalConfig.serverHost}/oauth2/revoke`,
     sessions: `${GlobalConfig.serverHost}/api/users/v1/me/sessions`,
     token: `${GlobalConfig.serverHost}/oauth2/token`,
+    user: `${GlobalConfig.serverHost}/api/identity/user/v1.0/me`,
+    userStores: `${GlobalConfig.serverHost}/api/server/v1/userstores`,
     users: `${GlobalConfig.serverHost}/scim2/Users`,
     wellKnown: `${GlobalConfig.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
 };

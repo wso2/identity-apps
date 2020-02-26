@@ -29,13 +29,14 @@ interface RuntimeConfigInterface {
     serverHost?: string;
     serverOrigin?: string;
     tenant: string;
+    tenantPath: string;
     titleText?: string;
 }
 
 // tslint:disable-next-line:no-string-literal
 const RUNTIME_CONFIG: RuntimeConfigInterface = window["runConfig"];
 
-export let GlobalConfig: RuntimeConfigInterface = {
+export const GlobalConfig: RuntimeConfigInterface = {
     appBaseName: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.appBaseName || APP_BASENAME) : APP_BASENAME,
     appHomePath: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.appHomePath || APP_HOME_PATH) : APP_HOME_PATH,
     appLoginPath: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.appLoginPath || APP_LOGIN_PATH) : APP_LOGIN_PATH,
@@ -50,5 +51,6 @@ export let GlobalConfig: RuntimeConfigInterface = {
     serverHost: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.serverHost || SERVER_HOST_DEFAULT) : SERVER_HOST_DEFAULT,
     serverOrigin: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.serverOrigin || SERVER_ORIGIN_DEFAULT) : SERVER_ORIGIN_DEFAULT,
     tenant: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.tenant || TENANT_DEFAULT) : TENANT_DEFAULT,
+    tenantPath: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.tenantPath || TENANT_PATH_DEFAULT) : TENANT_PATH_DEFAULT,
     titleText: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.copyrightText || TITLE_TEXT_DEFAULT) : TITLE_TEXT_DEFAULT
 };

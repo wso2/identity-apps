@@ -16,112 +16,123 @@
  * under the License.
  */
 
-import React, { FunctionComponent, useEffect, useState } from "react";
-import { Button, Divider, Grid, Icon, Tab } from "semantic-ui-react";
-import { getApplicationDetails } from "../../api/application";
-import { history } from "../../helpers";
+import { ResourceTab } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement } from "react";
 import { ApplicationInterface } from "../../models";
-import { GeneralDetailsApplication } from "./general-details-application";
+import { AdvanceSettings } from "./advance-application";
+import { GeneralApplicationSettings } from "./general-application-settings";
 import { ApplicationSettings } from "./settings-application";
+import { SignOnMethods } from "./sign-on-methods";
+
+/**
+ * Proptypes for the applications edit component.
+ */
+interface EditApplicationPropsInterface {
+    /**
+     * Editing application.
+     */
+    application: ApplicationInterface;
+    /**
+     * Is the data still loading.
+     */
+    isLoading?: boolean;
+    /**
+     * Callback to be triggered after deleting the application.
+     */
+    onDelete: () => void;
+    /**
+     * Callback to update the application details.
+     */
+    onUpdate: (id: string) => void;
+}
 
 /**
  * Application edit component.
  *
- * @return {JSX.Element}
+ * @param {EditApplicationPropsInterface} props - Props injected to the component.
+ * @return {ReactElement}
  */
-export const EditApplication: FunctionComponent<{}> = (props): JSX.Element => {
+export const EditApplication: FunctionComponent<EditApplicationPropsInterface> = (
+    props: EditApplicationPropsInterface
+): ReactElement => {
 
-    const [application, setApplication] = useState<ApplicationInterface>();
+    const {
+        application,
+        isLoading,
+        onDelete,
+        onUpdate
+    } = props;
 
-    const setBasic = (basic: ApplicationInterface) => {
-        setApplication(basic);
-    };
+    const GeneralApplicationSettingsTabPane = (): ReactElement => (
+        <ResourceTab.Pane attached={ false }>
+            <GeneralApplicationSettings
+                accessUrl={ application.accessUrl }
+                appId={ application.id }
+                description={ application.description }
+                discoverability={ application.advancedConfigurations?.discoverableByEndUsers }
+                imageUrl={ application.imageUrl }
+                name={ application.name }
+                isLoading={ isLoading }
+                onDelete={ onDelete }
+                onUpdate={ onUpdate }
+            />
+        </ResourceTab.Pane>
+    );
 
-    const getAppID = (): string => {
-        const path = history.location.pathname.split("/");
-        const appName = path[path.length - 1];
-        return appName;
-    };
+    const ApplicationSettingsTabPane = (): ReactElement => (
+        <ResourceTab.Pane attached={ false }>
+            <ApplicationSettings
+                appId={ application.id }
+                inboundProtocols={ application.inboundProtocols }
+                isLoading={ isLoading }
+                onUpdate={ onUpdate }
+            />
+        </ResourceTab.Pane>
+    );
 
-    const ApplicationDetails = (id: string) => {
-        getApplicationDetails(id)
-            .then((response) => {
-                setBasic(response);
-            })
-            .catch((error) => {
-                // TODO add to notifications
-            });
-    };
+    const SignOnMethodsTabPane = (): ReactElement => (
+        <ResourceTab.Pane attached={ false }>
+            <SignOnMethods
+                appId={ application.id }
+                authenticationSequence={ application.authenticationSequence }
+                isLoading={ isLoading }
+                onUpdate={ onUpdate }
+            />
+        </ResourceTab.Pane>
+    );
 
-    useEffect(() => {
-        ApplicationDetails(getAppID());
-    }, []);
-
-    const navigate = (): void => {
-        history.push("/applications");
-    };
-
-    const panes = () => ([
-        {
-            menuItem: "General",
-            render: () => (
-                <Tab.Pane attached={ false }>
-                    <GeneralDetailsApplication
-                        appId={ application.id }
-                        name={ application.name }
-                        description={ application.description }
-                        imageUrl={ application.imageUrl }
-                        accessUrl={ application.accessUrl }
-                    />
-                </Tab.Pane>
-            ),
-        },
-        {
-            menuItem: "Settings",
-            render: () => (
-                <Tab.Pane attached={ false }>
-                    <ApplicationSettings
-                        appId={ application.id }
-                        advancedConfigurations={ application.advancedConfigurations }
-                    />
-                </Tab.Pane>
-            ),
-        },
-        {
-            menuItem: "SignOnMethods",
-            render: () => <Tab.Pane attached={ false }>SignOnMethod</Tab.Pane>,
-        },
-    ]);
+    const AdvancedSettingsTabPane = (): ReactElement => (
+        <ResourceTab.Pane attached={ false }>
+            <AdvanceSettings
+                appId={ application.id }
+                advancedConfigurations={ application.advancedConfigurations }
+                onUpdate={ onUpdate }
+            />
+        </ResourceTab.Pane>
+    );
 
     return (
-        <>
-            { application &&
-            (
-                <Grid>
-                    <Grid.Row>
-                        <Grid.Column width={ 2 }>
-                            <Icon size="large" name={ "home" }/>
-                        </Grid.Column>
-                        <Grid.Column width={ 7 }>
-                            <h1 style={ { fontVariant: "small-caps" } }>{ application.name }</h1>
-                            <p>{ application.description }</p>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column width={ 16 }>
-                            <Tab menu={ { secondary: true, pointing: true } } panes={ panes() }/>
-                            <Divider hidden/>
-                            <Button primary type="submit" size="small">
-                                Update
-                            </Button>
-                            <Button type="submit" size="small" onClick={ navigate }>
-                                Cancel
-                            </Button>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            )
-            }
-        </>
+        application && (
+            <ResourceTab
+                panes={ [
+                    {
+                        menuItem: "General",
+                        render: GeneralApplicationSettingsTabPane
+                    },
+                    {
+                        menuItem: "Access",
+                        render: ApplicationSettingsTabPane
+                    },
+                    {
+                        menuItem: "Sign-on Method",
+                        render: SignOnMethodsTabPane,
+                    },
+                    {
+                        menuItem: "Advance",
+                        render: AdvancedSettingsTabPane,
+                    },
+                ] }
+            />
+        )
     );
 };

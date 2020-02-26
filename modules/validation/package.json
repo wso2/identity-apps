@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/validation",
-    "version": "1.0.3",
+    "version": "1.0.56",
     "description": "Validator module for WSO2 Identity Server web-apps.",
     "keywords": [
         "WSO2",
@@ -15,15 +15,22 @@
         "dist"
     ],
     "scripts": {
-        "build": "npm run clean && npm run compile",
+        "prebuild": "npm run clean",
+        "build": "node scripts/build-module.js && npm run compile",
         "clean": "rimraf ./dist",
-        "compile": "tsc -p tsconfig.json",
+        "compile": "run-script-os",
+        "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
+        "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
         "lint": "tslint -t stylish --project ."
     },
     "author": "WSO2",
     "license": "Apache-2.0",
     "peerDependencies": {
         "@hapi/joi": "*",
-        "fastestsmallesttextencoderdecoder": "*"
+        "axios": "^0.19.2"
+    },
+    "devDependencies": {
+        "rimraf": "^3.0.2",
+        "run-script-os": "^1.0.7"
     }
 }

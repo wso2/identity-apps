@@ -71,7 +71,7 @@ i18n.use(LanguageDetector)
 /*
  * If detected language is not a supported language fallback to default
  */
-const defaultLanguageFallback = () => {
+const defaultLanguageFallback = (): void => {
     let unSupportedLanguage = true;
 
     Object.keys(SupportedLanguages).forEach((elem) => {

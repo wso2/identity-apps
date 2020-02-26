@@ -106,11 +106,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 if (schemaNames.length === 1) {
                     if (schemaNames[0] === "emails") {
                         profileDetails.profileInfo[schemaNames[0]][0] &&
-                        profileDetails.profileInfo[[schemaNames[0]][0]][0].value &&
-                        profileDetails.profileInfo[[schemaNames[0]][0]][0].value !== ""
-                        ? tempProfileInfo.set(schema.name,
-                            profileDetails.profileInfo[[schemaNames[0]][0]][0].value as string)
-                        : tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]][0] as string);
+                            profileDetails.profileInfo[[schemaNames[0]][0]][0].value &&
+                            profileDetails.profileInfo[[schemaNames[0]][0]][0].value !== ""
+                            ? tempProfileInfo.set(schema.name,
+                                profileDetails.profileInfo[[schemaNames[0]][0]][0].value as string)
+                            : tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]][0] as string);
                     } else {
                         tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]]);
                     }
@@ -220,6 +220,19 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     };
 
     /**
+     * This takes the schema name and a type and sees if the schema is of the specified type
+     * @param {string} schema The schema name eg: 'emails.workEmail'
+     * @param {string}type The type to check for eg: 'emails'
+     *
+     * @returns {boolean} True/False
+     */
+    const checkSchemaType = (schema: string, type: string): boolean => {
+        return schema.split(".").filter((name) => {
+            return name === type;
+        }).length > 0;
+    };
+
+    /**
      * This function generates the Edit Section based on the input Profile Schema
      * @param {Profile Schema} schema
      */
@@ -256,33 +269,31 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                         ) }
                                         type="text"
                                         validation={ (value: string, validation: Validation) => {
-                                            switch (schema.name) {
-                                                case "emails":
-                                                    if (!FormValidation.email(value)) {
-                                                        validation.errorMessages.push(
-                                                            t(
-                                                                "views:components.profile.forms." +
-                                                                "generic.inputs.validations.invalidFormat",
-                                                                {
-                                                                    fieldName
-                                                                }
-                                                            )
-                                                        );
-                                                        validation.isValid = false;
-                                                    }
-                                                    break;
-                                                case "mobile":
-                                                    if (!FormValidation.mobileNumber(value)) {
-                                                        validation.errorMessages.push(t(
+                                            if (checkSchemaType(schema.name, "emails")) {
+                                                if (!FormValidation.email(value)) {
+                                                    validation.errorMessages.push(
+                                                        t(
                                                             "views:components.profile.forms." +
                                                             "generic.inputs.validations.invalidFormat",
                                                             {
                                                                 fieldName
                                                             }
-                                                        ));
-                                                        validation.isValid = false;
-                                                    }
-                                                    break;
+                                                        )
+                                                    );
+                                                    validation.isValid = false;
+                                                }
+                                            }
+                                            if (checkSchemaType(schema.name, "mobile")) {
+                                                if (!FormValidation.mobileNumber(value)) {
+                                                    validation.errorMessages.push(t(
+                                                        "views:components.profile.forms." +
+                                                        "generic.inputs.validations.invalidFormat",
+                                                        {
+                                                            fieldName
+                                                        }
+                                                    ));
+                                                    validation.isValid = false;
+                                                }
                                             }
                                         } }
                                         value={ profileInfo.get(schema.name) }

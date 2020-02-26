@@ -18,6 +18,7 @@
 
 <%= htmlWebpackPlugin.options.importUtil %>
 <%= htmlWebpackPlugin.options.importTenantPrefix %>
+<%= htmlWebpackPlugin.options.importSuperTenantConstant %>
 
 <!DOCTYPE HTML>
 <html>
@@ -29,9 +30,17 @@
 
         <title><%= htmlWebpackPlugin.options.title %></title>
 
+        <!-- runtime config -->
+        <script src="<%= htmlWebpackPlugin.options.publicPath %>/runtime-config.js"></script>
+        <!-- runtime config -->
+
         <script>
-            var getTenantPrefix = function(tenantName) {
-                return  "<%= htmlWebpackPlugin.options.tenantPrefix %>";
+            var getTenantPrefix = function() {
+                return "<%= htmlWebpackPlugin.options.tenantPrefix %>";
+            };
+
+            var getSuperTenant = function() {
+                return "<%= htmlWebpackPlugin.options.superTenantConstant %>";
             };
 
             var getTenantName = function() {
@@ -51,6 +60,15 @@
             };
 
             /**
+            * =====================================================
+            * Configure your portal settings
+            * =====================================================
+            */
+
+            // Add applications which are not to be deleted in to this array.
+            var doNotDeleteApplications = ["Admin Portal"];
+
+            /**
              * =====================================================
              * Update below details according to your configuration
              * =====================================================
@@ -58,23 +76,36 @@
 
             // Update below with tenant admin-portal application/service-provider details
             var serverOriginAddress = "<%= htmlWebpackPlugin.options.serverUrl %>";
-            var clientOriginAddress = window.location.origin;
+            var clientOriginAddress = "<%= htmlWebpackPlugin.options.serverUrl %>";
 
-            // Update below with tenant admin-portal application/service-provider details
             var tenantName = getTenantName();
             var defaultAdminPortalClientID = "ADMIN_PORTAL";
             var tenantAdminPortalClientID = defaultAdminPortalClientID + "_" + tenantName;
 
+            var defaultUserPortalClientHost = serverOriginAddress + getTenantPath(tenantName);
+            var defaultUserPortalBaseName = "user-portal";
+
             /** ===================================================== */
 
+            if (!window.userConfig) {
+                window.userConfig = {};
+            }
+
             window["runConfig"] = {
-                appBaseName: getTenantPath(tenantName) + "/admin-portal",
-                clientHost: clientOriginAddress + getTenantPath(tenantName),
-                clientOrigin: clientOriginAddress,
-                clientID: (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ?
+                appBaseName: window.userConfig.appBaseName || getTenantPath(tenantName) + 
+                    "<%= htmlWebpackPlugin.options.publicPath %>",
+                clientHost: window.userConfig.clientHost || clientOriginAddress + getTenantPath(tenantName),
+                clientOrigin: window.userConfig.clientOrigin || clientOriginAddress,
+                clientID: window.userConfig.clientID ||
+                    (getTenantPath(tenantName) === ("/" + getTenantPrefix() + "/" + tenantName)) ?
                     tenantAdminPortalClientID : defaultAdminPortalClientID,
-                serverHost: serverOriginAddress + getTenantPath(tenantName),
-                serverOrigin: serverOriginAddress
+                doNotDeleteApplications: doNotDeleteApplications || [],
+                serverHost: window.userConfig.serverHost || serverOriginAddress + getTenantPath(tenantName),
+                serverOrigin: window.userConfig.serverOrigin || serverOriginAddress,
+                tenant: window.userConfig.tenant || (tenantName === "") ? getSuperTenant() : tenantName,
+                tenantPath: window.userConfig.tenantPath || getTenantPath(tenantName),
+                userPortalBaseName: window.userConfig.userPortalBaseName || defaultUserPortalBaseName,
+                userPortalClientHost: window.userConfig.userPortalClientHost || defaultUserPortalClientHost
             };
         </script>
     </head>

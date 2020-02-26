@@ -93,62 +93,6 @@ export const views: Views = {
                 resultsIndicator: 'Showing results for the query "{{query}}"'
             }
         },
-        changePassword: {
-            forms: {
-                passwordResetForm: {
-                    inputs: {
-                        confirmPassword: {
-                            label: "Confirm password",
-                            placeholder: "Enter the new password",
-                            validations: {
-                                empty: "Confirm password is a required field",
-                                mismatch: "The password confirmation doesn't match"
-                            }
-                        },
-                        currentPassword: {
-                            label: "Current password",
-                            placeholder: "Enter the current password",
-                            validations: {
-                                empty: "Current password is a required field",
-                                invalid: "Current password is invalid"
-                            }
-                        },
-                        newPassword: {
-                            label: "New password",
-                            placeholder: "Enter the new password",
-                            validations: {
-                                empty: "New password is a required field"
-                            }
-                        }
-                    },
-                    validations: {
-                        genericError: {
-                            description: "Something went wrong. Please try again",
-                            message: "Change password error"
-                        },
-                        invalidCurrentPassword: {
-                            description: "The current password you entered appears to be invalid. Please try again",
-                            message: "Change password error"
-                        },
-                        submitError: {
-                            description: "{{description}}",
-                            message: "Change password error"
-                        },
-                        submitSuccess: {
-                            description: "The password has been changed successfully",
-                            message: "Password reset successful"
-                        }
-                    }
-                }
-            },
-            modals: {
-                confirmationModal: {
-                    heading: "Confirmation",
-                    message: "Changing the password will result in the termination of the current session. You will " +
-                        "have to login with the newly changed password. Do you wish to continue?"
-                }
-            }
-        },
         footer: {
             copyright: "WSO2 Identity Server © {{year}}"
         },
@@ -242,7 +186,7 @@ export const views: Views = {
                                 "would only apply to users who choose to use upgraded versions.",
                             para2: "The organization running WSO2 IS may revise the Privacy Policy from time to " +
                                 "time. You can find the most recent governing policy with the respective link " +
-                                "provided by the organization running WSO2 IS 5.5. The organization will notify " +
+                                "provided by the organization running WSO2 IS. The organization will notify " +
                                 "any changes to the privacy policy over our official public channels."
                         },
                         heading: "Changes to this policy"
@@ -360,12 +304,251 @@ export const views: Views = {
                 }
             }
         },
+        user: {
+            forms: {
+                addUserForm: {
+                    inputs: {
+                        confirmPassword: {
+                            label: "Confirm password",
+                            placeholder: "Enter the new password",
+                            validations: {
+                                empty: "Confirm password is a required field",
+                                mismatch: "The password confirmation doesn't match"
+                            }
+                        },
+                        domain: {
+                            label: "User store",
+                            placeholder: "Select user store",
+                            validations: {
+                                empty: "User store name cannot be empty.",
+                            }
+                        },
+                        email: {
+                            label: "Email address",
+                            placeholder: "Enter the email address",
+                            validations: {
+                                empty: "Email address cannot be empty",
+                                invalid: "Please enter a valid email address"
+                            }
+                        },
+                        firstName: {
+                            label: "First name",
+                            placeholder: "Enter your first name",
+                            validations: {
+                                empty: "First name is a required field"
+                            }
+                        },
+                        lastName: {
+                            label: "Last name",
+                            placeholder: "Enter your last name",
+                            validations: {
+                                empty: "Last name is a required field"
+                            }
+                        },
+                        newPassword: {
+                            label: "New password",
+                            placeholder: "Enter the new password",
+                            validations: {
+                                empty: "New password is a required field"
+                            }
+                        },
+                        username: {
+                            label: "Username",
+                            placeholder: "Enter the username",
+                            validations: {
+                                empty: "Username is a required field",
+                                invalid: "Username is invalid"
+                            }
+                        }
+                    },
+                    validations: {
+                        genericError: {
+                            description: "Something went wrong. Please try again",
+                            message: "Change password error"
+                        },
+                        invalidCurrentPassword: {
+                            description: "The current password you entered appears to be invalid. Please try again",
+                            message: "Change password error"
+                        },
+                        submitError: {
+                            description: "{{description}}",
+                            message: "Change password error"
+                        },
+                        submitSuccess: {
+                            description: "The password has been changed successfully",
+                            message: "Password reset successful"
+                        }
+                    }
+                }
+            },
+            modals: {
+                addUserWarnModal: {
+                    heading: "Warning",
+                    message: "Please note that this created user will not be assigned with a role. If you wish to " +
+                        "assign roles to this user please click on the button below."
+                }
+            },
+            profile: {
+                fields: {
+                    addressesHome: "Home address",
+                    addressesWork: "Work address",
+                    emails: "Email",
+                    emailsHome: "Home email",
+                    emailsOther: "Other email",
+                    emailsWork: "Work email",
+                    generic: {
+                        default: "Add {{fieldName}}"
+                    },
+                    nameFamilyName: "Last name",
+                    nameGivenName: "First name",
+                    phoneNumbers: "Phone number",
+                    phoneNumbersHome: "Home phone number",
+                    phoneNumbersMobile: "Mobile number",
+                    phoneNumbersOther: "Other phone number",
+                    phoneNumbersWork: "Work phone number",
+                    profileUrl: "URL",
+                    userName: "Username"
+                },
+                forms: {
+                    emailChangeForm: {
+                        inputs: {
+                            email: {
+                                label: "Email",
+                                note: "NOTE: This will change the email address in your profile",
+                                placeholder: "Enter your email address",
+                                validations: {
+                                    empty: "Email address is a required field",
+                                    invalidFormat: "The email address is not of the correct format"
+                                }
+                            }
+                        }
+                    },
+                    generic: {
+                        inputs: {
+                            placeholder: "Enter your {{fieldName}}",
+                            validations: {
+                                empty: "{{fieldName}} is a required field",
+                                invalidFormat: "The {{fieldName}} is not of the correct format"
+                            }
+                        }
+                    },
+                    mobileChangeForm: {
+                        inputs: {
+                            mobile: {
+                                label: "Mobile number",
+                                note: "NOTE: This will change the mobile number in your profile",
+                                placeholder: "Enter your mobile number",
+                                validations: {
+                                    empty: "Mobile number is a required field",
+                                    invalidFormat: "The mobile number is not of the right format"
+                                }
+                            }
+                        }
+                    },
+                    nameChangeForm: {
+                        inputs: {
+                            firstName: {
+                                label: "First name",
+                                placeholder: "Enter the first name",
+                                validations: {
+                                    empty: "First name is a required field"
+                                }
+                            },
+                            lastName: {
+                                label: "Last name",
+                                placeholder: "Enter the last name",
+                                validations: {
+                                    empty: "Last name is a required field"
+                                }
+                            }
+                        }
+                    },
+                    organizationChangeForm: {
+                        inputs: {
+                            organization: {
+                                label: "Organization",
+                                placeholder: "Enter your organization",
+                                validations: {
+                                    empty: "Organization is a required field"
+                                }
+                            }
+                        }
+                    }
+                },
+                notifications: {
+                    getProfileInfo: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while retrieving the profile details"
+                        },
+                        genericError: {
+                            description: "Error occurred while retrieving the profile details",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The required user profile details are retrieved successfully",
+                            message: "Successfully retrieved user profile"
+                        }
+                    },
+                    updateProfileInfo: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while updating the profile details"
+                        },
+                        genericError: {
+                            description: "Error occurred while updating the profile details",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The required user profile details were successfully updated",
+                            message: "User profile updated successfully"
+                        }
+                    }
+                },
+                placeholders: {
+                    SCIMDisabled: {
+                        heading: "This feature is not available for your account"
+                    }
+                }
+            }
+        },
         users: {
             all: {
                 heading: "Users",
-                subHeading: "Manage users and their identities..."
+                subHeading: "Add and manage user accounts, assign roles to the users and maintain user identities."
+            },
+            buttons: {
+                assignUserRoleBtn: "Assign roles"
             },
             notifications: {
+                addUser: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error adding the new user"
+                    },
+                    genericError: {
+                        description: "Couldn't add the new user",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The new user was added successfully.",
+                        message: "User added successfully"
+                    }
+                },
+                deleteUser: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error deleting the user"
+                    },
+                    genericError: {
+                        description: "Couldn't delete the user",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The user was deleted successfully.",
+                        message: "User deleted successfully"
+                    }
+                },
                 fetchUsers: {
                     error: {
                         description: "{{description}}",
@@ -381,13 +564,23 @@ export const views: Views = {
                     }
                 }
             },
+            placeholders: {
+                emptyList: {
+                    action: "Refresh list",
+                    subtitles: {
+                        0: "The users list returned empty.",
+                        1: "Something went wrong while fetching the user list",
+                    },
+                    title: "No Users Found"
+                }
+            },
             search: {
                 forms: {
                     searchForm: {
                         inputs: {
                             filerAttribute: {
                                 label: "Filter attribute",
-                                placeholder: "E.g. name, description etc.",
+                                placeholder: "E.g. username, email etc.",
                                 validations: {
                                     empty: "Filter attribute is a required field"
                                 }
@@ -401,7 +594,7 @@ export const views: Views = {
                             },
                             filterValue: {
                                 label: "Filter value",
-                                placeholder: "E.g. facebook, slack etc.",
+                                placeholder: "Enter value to search",
                                 validations: {
                                     empty: "Filter value is a required field"
                                 }
@@ -426,6 +619,24 @@ export const views: Views = {
                 resultsIndicator: "Showing results for the query \"{{query}}\""
             }
         },
+        roles: {
+            notifications: {
+                deleteRole: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error deleting the selected role."
+                    },
+                    genericError: {
+                        description: "Couldn't remove the selected role.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The selected role was deleted successfully.",
+                        message: "Role deleted successfully"
+                    }
+                }
+            }
+        }
     },
     pages: {
         overView: {
@@ -474,5 +685,5 @@ export const views: Views = {
             },
             title: "Page under construction"
         }
-    },
+    }
 };

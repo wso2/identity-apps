@@ -25,3 +25,14 @@
 @customModalIconMarginTop: 0.5em;
 @customModalDescriptionMarginTop: 0em 1.5em 0em 1.5em;
 @customModalHeadingMarginTop: -1.25em 1.5em 0em 1.5em;
+
+/*-------------------
+       Wizard
+--------------------*/
+
+@wizardContentHeight: 500px;
+@wizardStepsContainerBgColor: @athensGray;
+@wizardSubHeaderFontColor: @dustyGray;
+@wizardSubHeaderMaxWidth: 600px;
+@wizardContentHorizontalPadding: 3em;
+@wizardSummaryFieldValueColor: @nobel;

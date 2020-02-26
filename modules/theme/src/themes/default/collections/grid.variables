@@ -16,3 +16,12 @@
  * under the License.
  *
  */
+
+/*******************************************
+        Row spacing Variation
+*******************************************/
+
+@ZeroMargin: 0%;
+@ZeroPadding: 0%;
+@SmallMargin: 0.5%;
+@SmallPadding: 0.5%;

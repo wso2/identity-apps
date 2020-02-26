@@ -18,7 +18,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Icon, List, Popup } from "semantic-ui-react";
+import { Button, Grid, Icon, List, Modal, Popup } from "semantic-ui-react";
 import { deleteFederatedAssociation, getFederatedAssociations } from "../../api/federated-associations";
 import { SettingsSectionIcons } from "../../configs";
 import {
@@ -39,7 +39,11 @@ interface FederatedAssociationsPropsInterface {
  * This renders the federated associations component
  * @param props
  */
-export const FederatedAssociations = (props: FederatedAssociationsPropsInterface): JSX.Element => {
+export const FederatedAssociations = (props: FederatedAssociationsPropsInterface): React.ReactElement => {
+
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const [id, setId] = useState(null);
+
     const { onAlertFired } = props;
     const { t } = useTranslation();
     const [federatedAssociations, setFederatedAssociations] = useState<FederatedAssociation[]>([]);
@@ -106,9 +110,50 @@ export const FederatedAssociations = (props: FederatedAssociationsPropsInterface
     };
 
     /**
+     * Pops up a model requesting confirmation before deleting 
+     */
+    const deleteConfirmation = (): React.ReactElement => {
+        return (
+            <Modal
+                dimmer="blurring"
+                size="mini"
+                open={ confirmDelete }
+                onClose={ () => { setConfirmDelete(false); } }
+            >
+                <Modal.Content>
+                    { t("views:components.federatedAssociations.deleteConfirmation") }
+                </Modal.Content>
+                <Modal.Actions>
+                    <Button
+                        className="link-button"
+                        onClick={ () => {
+                            setId(null);
+                            setConfirmDelete(false);
+                        } }
+                    >
+                        { t("common:cancel") }
+                    </Button>
+                    <Button
+                        primary
+                        onClick={ () => {
+                            removeFederatedAssociation(
+                                id
+                            );
+                            setId(null);
+                            setConfirmDelete(false);
+                        } }
+                    >
+                        { t("common:remove") }
+                    </Button>
+                </Modal.Actions>
+            </Modal>
+        );
+    };
+
+    /**
      * This returns the list of federated associations as a `List` component
      */
-    const federatedAssociationsList = (): JSX.Element => {
+    const federatedAssociationsList = (): React.ReactElement => {
         return (
             <List divided verticalAlign="middle" className="main-content-inner">
                 {
@@ -147,9 +192,8 @@ export const FederatedAssociations = (props: FederatedAssociationsPropsInterface
                                                                 color="red"
                                                                 name="trash alternate outline"
                                                                 onClick={ () => {
-                                                                    removeFederatedAssociation(
-                                                                        federatedAssociation.id
-                                                                    );
+                                                                    setId(federatedAssociation.id);
+                                                                    setConfirmDelete(true);
                                                                 } }
                                                             />
                                                         ) }
@@ -181,6 +225,7 @@ export const FederatedAssociations = (props: FederatedAssociationsPropsInterface
             iconFloated="right"
             showActionBar={ true }
         >
+            { deleteConfirmation() }
             { federatedAssociationsList() }
         </SettingsSection>
     );

@@ -393,6 +393,7 @@ export const views: Views = {
             }
         },
         federatedAssociations: {
+            deleteConfirmation: "මෙම ක්‍රියාව මගින්, ඔබේ ගිණුමේ මෙම බාහිර පිවිසුම ඉවත් කරයි. එය සනාථ කිරීමට ඔබට අවශ්‍යද?",
             notifications: {
                 getFederatedAssociations: {
                     error: {
@@ -447,6 +448,7 @@ export const views: Views = {
                     label: "ස්ථානික පරිශීලක ගිණුම එක් කරන්න"
                 }
             },
+            deleteConfirmation: "මෙය ඔබගේ ගිණුමෙන් සම්බන්ධිත ගිණුම ඉවත් කරයි. දිගටම ඉවත් කිරීමට ඔබට අවශ්‍යද?",
             forms: {
                 addAccountForm: {
                     inputs: {
@@ -541,6 +543,52 @@ export const views: Views = {
             }
         },
         mfa: {
+            authenticatorApp: {
+                description: "දෙවන සත්‍යාපන සාධකය ලෙස TOTP භාවිතා කිරීම සඳහා Authenticator යෙදුමක් භාවිතයෙන් QR කේතය පරිලෝකනය කරන්න",
+                heading: "සත්‍යාපන යෙදුම",
+                hint: "QR කේතය පෙන්වන්න",
+                modals: {
+                    done: "සාර්ථකත්වය! දැන් ඔබට සාධක දෙකක සත්‍යාපනය සඳහා ඔබේ සත්‍යාපන යෙදුම භාවිතා කළ හැකිය",
+                    scan: {
+                        authenticatorApps: "සත්‍යාපන යෙදුම්",
+                        generate: "නව කේතයක් ජනනය කරන්න",
+                        heading: "සත්‍යාපන යෙදුමක් භාවිතයෙන් මෙම QR කේතය පරිලෝකනය කරන්න",
+                        messageBody: "ඔබට මෙහි ඇති සත්‍යාපන යෙදුම් ලැයිස්තුවක් සොයාගත හැකිය.",
+                        messageHeading: "සත්‍යාපන යෙදුමක් ස්ථාපනය කර නොමැතිද?"
+                    },
+                    verify: {
+                        error: "සත්‍යාපනය අසාර්ථක විය. කරුණාකර නැවත උත්සාහ කරන්න.",
+                        heading: "සත්‍යාපන යෙදුමෙන් සත්‍යාපන කේතය ඇතුළත් කරන්න",
+                        label: "සත්යාපන කේතය",
+                        placeholder: "ඔබගේ සත්‍යාපන කේතය ඇතුළත් කරන්න",
+                        requiredError: "සත්‍යාපන කේතය ඇතුළත් කරන්න",
+                        reScan: "නැවත පරිලෝකනය කරන්න",
+                        reScanQuestion: "QR කේතය නැවත පරිලෝකනය කිරීමට අවශ්‍යද?"
+                    }
+                },
+                notifications: {
+                    initError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        genericError: {
+                            description: "QR කේතය ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        }
+                    },
+                    refreshError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        genericError: {
+                            description: "නව QR කේතයක් ලබා ගැනීමට උත්සාහ කිරීමේදී දෝෂයකි",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        }
+                    }
+                }
+            },
             fido: {
                 description: "FIDO යතුරක් සම්බන්ධ කිරීමෙන් සත්\u200Dයාපනය කිරීම",
                 form: {
@@ -759,7 +807,7 @@ export const views: Views = {
                                 "පරිශීලකයින්ට පමණි.",
                             para2:
                                 "WSO2 IS පවත්වාගෙන යන සංවිධානය වරින් වර රහස්‍යතා ප්‍රතිපත්තිය සංශෝධනය කළ හැකිය. " +
-                                "WSO2 IS 5.5 ක්‍රියාත්මක වන සංවිධානය විසින් සපයනු ලබන අදාළ සබැඳිය සමඟ ඔබට" +
+                                "WSO2 IS ක්‍රියාත්මක වන සංවිධානය විසින් සපයනු ලබන අදාළ සබැඳිය සමඟ ඔබට" +
                                 " නවතම පාලන ප්‍රතිපත්තිය සොයාගත හැකිය. අපගේ නිල පොදු නාලිකා හරහා රහස්‍යතා ප්‍රතිපත්තියේ " +
                                 "යම් වෙනසක් සංවිධානය විසින් දැනුම් දෙනු ඇත."
                         },
@@ -895,22 +943,23 @@ export const views: Views = {
         },
         profile: {
             fields: {
-                addresses_home: "නිවසේ ලිපිනය",
-                addresses_work: "වැඩ ලිපිනය",
+                addressesHome: "නිවසේ ලිපිනය",
+                addressesWork: "වැඩ ලිපිනය",
                 emails: "විද්යුත් තැපෑල",
-                emails_home: "නිවසේ විද්‍යුත් තැපෑල",
-                emails_other: "වෙනත් විද්‍යුත් තැපෑල",
-                emails_work: "වැඩ ඊමේල්",
+                emailsHome: "නිවසේ විද්‍යුත් තැපෑල",
+                emailsOther: "වෙනත් විද්‍යුත් තැපෑල",
+                emailsWork: "වැඩ ඊමේල්",
                 generic: {
                     default: "එකතු කරන්න {{fieldName}}"
                 },
-                name_familyName: "අවසන් නම",
-                name_givenName: "මුල් නම",
+                nameFamilyName: "අවසන් නම",
+                nameGivenName: "මුල් නම",
                 phoneNumbers: "දුරකතන අංකය",
-                phoneNumbers_home: "නිවසේ දුරකථන අංකය",
-                phoneNumbers_mobile: "ජංගම දූරකථන අංකය",
-                phoneNumbers_other: "වෙනත් දුරකථන අංකය",
-                phoneNumbers_work: "රැකියා දුරකථන අංකය",
+                phoneNumbersHome: "නිවසේ දුරකථන අංකය",
+                phoneNumbersMobile: "ජංගම දූරකථන අංකය",
+                phoneNumbersOther: "වෙනත් දුරකථන අංකය",
+                phoneNumbersWork: "රැකියා දුරකථන අංකය",
+                profileImage: "පැතිකඩ රූපය",
                 profileUrl: "URL",
                 userName: "පරිශීලක නාමය"
             },
@@ -1028,8 +1077,8 @@ export const views: Views = {
                         message: "දෝෂයක් ඇතිවිය!!!"
                     },
                     success: {
-                        description: "අවශ්‍ය පරිශීලක පැතිකඩ විස්තර සාර්ථකව බාගත කර ඇත",
-                        message: "පරිශීලක පැතිකඩ විස්තර සාර්ථකව බාගත කර ඇත"
+                        description: "අවශ්‍ය පරිශීලක පැතිකඩ විස්තර අඩංගු ගොනුව බාගත කිරීම ආරම්භ කර ඇත.",
+                        message: "පරිශීලක පැතිකඩ විස්තර බාගත කිරීම ආරම්භ විය"
                     }
                 }
             }

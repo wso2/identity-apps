@@ -39,6 +39,15 @@
             padding-right: unset;
         }
 
+        .resource-list-header {
+            border: none;
+
+            .resource-list-header-cell {
+                font-weight: 500;
+                color: @lightFontColor;
+            }
+        }
+
         > .item {
             padding: @veryRelaxedItemVerticalPadding 0.5em !important;
 
@@ -57,6 +66,10 @@
                 > .list-item-action:not(:last-child) {
                     margin-right: 10px;
                 }
+            }
+
+            .list-item-meta {
+                padding-top: 10px;
             }
         }
     }

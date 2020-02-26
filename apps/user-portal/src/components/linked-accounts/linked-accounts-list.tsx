@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Icon, List, Popup } from "semantic-ui-react";
+import { Button, Grid, Icon, List, Modal, Popup } from "semantic-ui-react";
 import { getGravatarImage } from "../../api";
 import { resolveUsername } from "../../helpers";
 import { LinkedAccountInterface } from "../../models";
@@ -37,78 +37,126 @@ interface LinkedAccountsListProps {
  * Linked accounts list component.
  *
  * @param {LinkedAccountsListProps} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
 export const LinkedAccountsList: FunctionComponent<LinkedAccountsListProps> = (
     props: LinkedAccountsListProps
-): JSX.Element => {
+): React.ReactElement => {
     const { linkedAccounts, onLinkedAccountRemove, onLinkedAccountSwitch } = props;
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const [userID, setUserID] = useState(null);
+
     const { t } = useTranslation();
 
+    /**
+     * Pops up a modal requesting confirmation before deleting
+     */
+    const requestConfirmation = (): React.ReactElement => {
+        return (
+            <Modal
+                size="mini"
+                dimmer="blurring"
+                open={ confirmDelete }
+                onClose={ () => { setConfirmDelete(false); } }
+            >
+                <Modal.Content>
+                    { t("views:components.linkedAccounts.deleteConfirmation") }
+                </Modal.Content>
+                <Modal.Actions>
+                    <Button
+                        onClick={ () => {
+                            setConfirmDelete(false);
+                            setUserID(null);
+                        } }
+                        className="link-button"
+                    >
+                        { t("common:cancel") }
+                    </Button>
+                    <Button
+                        primary
+                        onClick={ () => {
+                            onLinkedAccountRemove(userID);
+                            setConfirmDelete(false);
+                            setUserID(null);
+                        } }
+                    >
+                        { t("common:remove") }
+                    </Button>
+                </Modal.Actions>
+            </Modal>
+        );
+    };
+
     return (
-        <List divided verticalAlign="middle" className="main-content-inner">
-            {
-                linkedAccounts.map((account, index) => (
-                    <List.Item className="inner-list-item" key={ index }>
-                        <Grid padded>
-                            <Grid.Row columns={ 2 }>
-                                <Grid.Column width={ 11 } className="first-column">
-                                    <UserAvatar
-                                        floated="left"
-                                        spaced="right"
-                                        size="mini"
-                                        image={ getGravatarImage(account.email) }
-                                        name={ account.username }
-                                    />
-                                    <List.Header>
-                                        { resolveUsername(account.username, account.userStoreDomain) }
-                                    </List.Header>
-                                    <List.Description>
-                                        <p style={ { fontSize: "11px" } }>{ account.tenantDomain }</p>
-                                    </List.Description>
-                                </Grid.Column>
-                                <Grid.Column width={ 5 } className="last-column">
-                                    <List.Content floated="right">
-                                        <div className="list-item-action">
-                                            <Popup
-                                                trigger={ (
-                                                    <Icon
-                                                        link
-                                                        className="list-icon"
-                                                        size="small"
-                                                        color="grey"
-                                                        name="exchange"
-                                                        onClick={ () => onLinkedAccountSwitch(account) }
-                                                    />
-                                                ) }
-                                                position="top center"
-                                                content={ t("common:switch") }
-                                                inverted
-                                            />
-                                        </div>
-                                        <div className="list-item-action">
-                                            <Popup
-                                                trigger={ (
-                                                    <Icon
-                                                        link
-                                                        className="list-icon"
-                                                        size="small"
-                                                        color="red"
-                                                        name="trash alternate outline"
-                                                        onClick={ () => onLinkedAccountRemove(account.userId) }
-                                                    />
-                                                ) }
-                                                position="top center"
-                                                content={ t("common:remove") }
-                                                inverted
-                                            />
-                                        </div>
-                                    </List.Content>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </List.Item>
-                )) }
-        </List>
+        <>
+            { requestConfirmation() }
+            <List divided verticalAlign="middle" className="main-content-inner">
+                {
+                    linkedAccounts.map((account, index) => (
+                        <List.Item className="inner-list-item" key={ index }>
+                            <Grid padded>
+                                <Grid.Row columns={ 2 }>
+                                    <Grid.Column width={ 11 } className="first-column">
+                                        <UserAvatar
+                                            floated="left"
+                                            spaced="right"
+                                            size="mini"
+                                            image={ getGravatarImage(account.email) }
+                                            name={ account.username }
+                                        />
+                                        <List.Header>
+                                            { resolveUsername(account.username, account.userStoreDomain) }
+                                        </List.Header>
+                                        <List.Description>
+                                            <p style={ { fontSize: "11px" } }>{ account.tenantDomain }</p>
+                                        </List.Description>
+                                    </Grid.Column>
+                                    <Grid.Column width={ 5 } className="last-column">
+                                        <List.Content floated="right">
+                                            <div className="list-item-action">
+                                                <Popup
+                                                    trigger={ (
+                                                        <Icon
+                                                            link
+                                                            className="list-icon"
+                                                            size="small"
+                                                            color="grey"
+                                                            name="exchange"
+                                                            onClick={ () => onLinkedAccountSwitch(account) }
+                                                        />
+                                                    ) }
+                                                    position="top center"
+                                                    content={ t("common:switch") }
+                                                    inverted
+                                                />
+                                            </div>
+                                            <div className="list-item-action">
+                                                <Popup
+                                                    trigger={ (
+                                                        <Icon
+                                                            link
+                                                            className="list-icon"
+                                                            size="small"
+                                                            color="red"
+                                                            name="trash alternate outline"
+                                                            onClick={ () => {
+                                                                setUserID(account.userId);
+                                                                setConfirmDelete(true);
+                                                            } }
+                                                        />
+                                                    ) }
+                                                    position="top center"
+                                                    content={ t("common:remove") }
+                                                    inverted
+                                                />
+                                            </div>
+                                        </List.Content>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </List.Item>
+                    )) }
+            </List>
+        </>
     );
 };

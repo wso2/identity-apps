@@ -180,45 +180,22 @@
     .grid-margin-responsive("computer", "margin");
 }
 
-/*-----------------------------------
-  Application Edit
--------------------------------------*/
-
 .ui.grid {
-     &.advance-settings {
-             .row {
-                &.endpoint-row {
-                  position: relative;
-                  display: flex;
-                  flex-direction: row;
-                  flex-wrap: wrap;
-                  justify-content: inherit;
-                  align-items: stretch;
-                  width: 100% !important;
-                  padding: 0rem;
-                  padding-top: 0.5rem;
-                  padding-bottom: 0.5rem;
-                }
-             }
-          }
-     &.protocolForm{
-         .row {
-           &.protocolRow {
-                     .column {
-                       &.protocolColumn {
-                         margin: 1% 5%;
-                       }
-                     }
-             }
-          }
-          .form-button {
-             margin: 2% 5%;
-          }
-
-          .sub-heading {
-             margin: 2% 5%;
-             font-weight: bold;
-             font-size: 1em;
-          }
-     }
+      .row {
+           &.urlComponentLabelRow {
+                margin-bottom: @ZeroMargin;
+                padding-bottom: @SmallPadding;
+           }
+           &.urlComponentInputRow {
+                margin-top: @ZeroMargin;
+                padding-top: @ZeroMargin;
+                margin-bottom: @ZeroMargin;
+                padding-bottom: @SmallPadding;
+           }
+           &.urlComponentTagRow {
+                margin-top: @SmallMargin;
+                margin-bottom: @SmallMargin;
+                padding: @ZeroPadding;
+           }
+      }
 }

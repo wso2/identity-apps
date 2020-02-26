@@ -30,6 +30,7 @@
 @googleFontName    : 'Lato';
 
 @bold              : 400;
+@lightFontColor    : @lightTextColor;
 
 /*-------------------
      Borders
@@ -104,6 +105,9 @@
 @h3 : unit((22 / 14), rem);
 @h4 : unit((19 / 14), rem);
 @h5 : unit((16 / 14), rem);
+@h6 : unit((14 / 14), rem);
+
+@h6SubHeaderFontSize: unit((12 / 14), rem);
 
 /*-------------------
        Links
@@ -127,3 +131,11 @@
 --------------------------*/
 
 @overviewPageWidgetHeaderMinHeight: 155px;
+
+/*-------------------------
+           Card
+--------------------------*/
+
+@defaultCardHoverBoxShadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+@defaultCardTransition: all 0.3s;
+@defaultCardBorder: 1px solid #e8e8e8;

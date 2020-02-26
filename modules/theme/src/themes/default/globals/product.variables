@@ -67,3 +67,29 @@
 @fluidDashboardLayoutFooterPadding: 0 @fluidDashboardLayoutHorizontalPadding;
 @fluidDashboardLayoutSidePanelPadding: @fluidDashboardLayoutTopPadding @fluidDashboardLayoutHorizontalPadding;
 @fluidDashboardLayoutDesktopContentPadding: @fluidDashboardLayoutTopPadding 30px;
+
+/*-------------------
+    Input Addons
+--------------------*/
+
+@inputAddonColor: @doveGray;
+@inputAddonFontSize: 12px;
+@inputAddonMargin: 10px 0;;
+
+/*-------------------
+        Steps
+--------------------*/
+
+@stepIconSize: 40px;
+@stepIconDefaultBgColor: @dustyGray;
+@stepDefaultFontColor: @nobel;
+@stepFontSize: 0.9em;
+@stepCompleteFontColor: @green;
+@stepIconCompleteBgColor: @green;
+@stepActiveFontColor: @primaryColor;
+@stepIconActiveBgColor: @primaryColor;
+@stepHorizontalSpacing: 2em;
+@stepsHeaderFontColor: @dustyGray;
+@stepsHeaderFontSize: 0.9em;
+@stepTrailTransition: all .5s ease-in;;
+@stepMinWidth: 120px;

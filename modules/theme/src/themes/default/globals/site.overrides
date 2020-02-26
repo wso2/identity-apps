@@ -21,3 +21,7 @@ p.inline-paragraph,
 .inline-paragraph > p { 
     display: inline;
 }
+
+span.ui.text.color.red{
+    color:@red;
+}

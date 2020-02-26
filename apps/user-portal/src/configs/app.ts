@@ -30,6 +30,7 @@ interface ServiceResourcesType {
     fidoMetaData: string;
     fidoStart: string;
     fidoStartUsernameless: string;
+    issuer: string;
     jwks: string;
     logout: string;
     me: string;
@@ -38,6 +39,8 @@ interface ServiceResourcesType {
     receipts: string;
     sessions: string;
     token: string;
+    totp: string;
+    totpSecret: string;
     user: string;
     revoke: string;
     wellKnown: string;
@@ -55,6 +58,7 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     fidoMetaData: `${GlobalConfig.serverHost}/api/users/v2/me/webauthn`,
     fidoStart: `${GlobalConfig.serverHost}/api/users/v2/me/webauthn/start-registration`,
     fidoStartUsernameless: `${GlobalConfig.serverHost}/api/users/v2/me/webauthn/start-usernameless-registration`,
+    issuer: `${GlobalConfig.serverHost}/oauth2/token`,
     jwks: `${GlobalConfig.serverHost}/oauth2/jwks`,
     logout: `${GlobalConfig.serverHost}/oidc/logout`,
     me: `${GlobalConfig.serverHost}/scim2/Me`,
@@ -64,6 +68,8 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     revoke: `${GlobalConfig.serverHost}/oauth2/revoke`,
     sessions: `${GlobalConfig.serverHost}/api/users/v1/me/sessions`,
     token: `${GlobalConfig.serverHost}/oauth2/token`,
+    totp: `${GlobalConfig.serverHost}/t/${GlobalConfig.tenant}/api/users/v1/me/totp`,
+    totpSecret: `${GlobalConfig.serverHost}/t/${GlobalConfig.tenantPath}/api/users/v1/me/totp/secret`,
     user: `${GlobalConfig.serverHost}/api/identity/user/v1.0/me`,
     wellKnown: `${GlobalConfig.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
 };

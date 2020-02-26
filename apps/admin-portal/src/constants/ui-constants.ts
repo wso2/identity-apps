@@ -27,6 +27,7 @@ export class UIConstants {
      *
      * @hideconstructor
      */
+    /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
 
     /**
@@ -34,14 +35,14 @@ export class UIConstants {
      * @constant
      * @type {number}
      */
-    public static readonly DEFAULT_HEADER_HEIGHT: number = 59;
+    public static readonly DEFAULT_HEADER_HEIGHT = 59;
 
     /**
      * Default footer height to be used in state initialisations
      * @constant
      * @type {number}
      */
-    public static readonly DEFAULT_FOOTER_HEIGHT: number = 60;
+    public static readonly DEFAULT_FOOTER_HEIGHT = 60;
 
     /**
      * Constant to handle dashboard layout's desktop content top spacing.
@@ -49,4 +50,19 @@ export class UIConstants {
      * @type {number}
      */
     public static readonly DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING: number = 0;
+
+    /**
+     * `Gravatar` website URL.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly GRAVATAR_URL: string = "https://www.gravatar.com";
+
+    /**
+     * Interval to dismiss the alerts.
+     * @constant
+     * @type {number}
+     */
+    public static readonly ALERT_DISMISS_INTERVAL: number = 5;
 }

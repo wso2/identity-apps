@@ -31,28 +31,47 @@ import { BasicProfileInterface, HttpMethods, ProfileSchema } from "../models";
 const httpClient = AxiosHttpClient.getInstance();
 
 /**
- * Retrieve the user information of the currently authenticated user.
+ * Retrieve the user information through user id.
  *
  * @return {Promise<any>} a promise containing the response.
  */
-export const getUserInfo = (): Promise<any> => {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const getUserDetails = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.me
+        url: ServiceResourcesEndpoint.users + "/" + id
     };
 
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            return Promise.resolve(response);
+            return Promise.resolve(response.data as BasicProfileInterface);
         })
         .catch((error) => {
             return Promise.reject(`Failed to retrieve user information - ${error}`);
         });
+};
+
+/**
+ *  Get gravatar image using email address
+ * @param email
+ */
+export const getGravatarImage = (email: string): Promise<string> => {
+    const url: string = SignInUtil.getGravatar(email);
+    return new Promise((resolve, reject) => {
+        axios
+            .get(url)
+            .then(() => {
+                resolve(url.split("?")[0]);
+            })
+            .catch(() => {
+                reject();
+            });
+    });
 };
 
 /**
@@ -89,6 +108,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
             }
             const profileResponse: BasicProfileInterface = {
                 emails: response.data.emails || "",
+                id: response.data.id || "",
                 name: response.data.name || { givenName: "", familyName: "" },
                 organisation: response.data[orgKey] ? response.data[orgKey].organization : "",
                 phoneNumbers: response.data.phoneNumbers || [],
@@ -108,12 +128,14 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
 /**
  * Update the required details of the user profile.
  *
- * @param {object} info.
+ * @param {object} user.
  * @return {Promise<any>} a promise containing the response.
  */
-export const updateProfileInfo = (info: object): Promise<any> => {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const updateProfileInfo = (data: object): Promise<any> => {
+
     const requestConfig = {
-        data: info,
+        data,
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
@@ -133,19 +155,58 @@ export const updateProfileInfo = (info: object): Promise<any> => {
 };
 
 /**
- *  Get gravatar image using email address
- * @param email
+ * Update the required details of the user profile.
+ *
+ * @param {object} user.
+ * @return {Promise<any>} a promise containing the response.
  */
-export const getGravatarImage = (email: string): Promise<string> => {
-    const url: string = SignInUtil.getGravatar(email);
-    return new Promise((resolve, reject) => {
-        axios
-            .get(url)
-            .then((response) => {
-                resolve(url.split("?")[0]);
-            })
-            .catch((error) => {
-                reject();
-            });
-    });
+export const updateUserInfo = (userId: string, data: object): Promise<any> => {
+
+    const requestConfig = {
+        data,
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: ServiceResourcesEndpoint.users + "/" + userId
+    };
+
+    return httpClient
+        .request(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response.data as BasicProfileInterface);
+        })
+        .catch((error) => {
+            return Promise.reject(`Failed to update the profile info - ${error}`);
+        });
+};
+
+
+/**
+ * Retrieve the profile schemas of the user claims of the currently authenticated user.
+ *
+ * @return {Promise<any>} a promise containing the response.
+ */
+export const getProfileSchemas = (): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: ServiceResourcesEndpoint.profileSchemas
+    };
+
+    return httpClient
+        .request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed get user schemas"));
+            }
+            return Promise.resolve(response.data[0].attributes as ProfileSchema[]);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
 };

@@ -45,3 +45,53 @@ Recent Application Card
 @recentApplicationCardHeaderColor: @darkTextColor;
 @recentApplicationCardDescColor: @mutedTextColor;
 @recentApplicationCardDescMinWidth: 20px;
+
+/*-------------------
+   Selection Card
+--------------------*/
+
+@selectionCardHoverBoxShadow: @defaultCardHoverBoxShadow;
+@selectionCardTransition: @defaultCardTransition;
+@selectionCardBorder: @defaultCardBorder;
+@selectionCardSelectedStateBorderColor: @primaryColor;
+@selectionCardDefaultWidth: 150px;
+@selectionCardRightSpacing: 20px;
+@selectionCardTextContainerPadding: 0.8em 1em;
+@selectionCardHeaderFontSize: 1em;
+@selectionCardDescriptionFontSize: 0.8em;
+@selectionCardHeaderMaxWidth: 100%;
+@selectionCardDescriptionMaxWidth: 100%;
+@selectionCardDescriptionMinHeight: 20px;
+
+/*-------------------------------
+    Application Template Card
+--------------------------------*/
+
+@appTemplateCardDefaultWidth: 250px;
+@appTemplateCardRightSpacing: 30px;
+@appTemplateCardHoverBoxShadow: @defaultCardHoverBoxShadow;
+@appTemplateCardTransition: @defaultCardTransition;
+@appTemplateCardBorder: @defaultCardBorder;
+@appTemplateCardTextContainerPadding: 0.8em 1em;
+@appTemplateCardHeaderFontSize: 1.2em;
+@appTemplateCardHeaderFontWeight: 500;
+@appTemplateCardHeaderLineHeight: 1.3em;
+@appTemplateCardDescriptionFontSize: 0.8em;
+@appTemplateCardHeaderMaxWidth: 100%;
+@appTemplateCardDescriptionMaxWidth: 100%;
+@appTemplateCardDescriptionMinHeight: 20px;
+@appTemplateCardTechnologiesTitleFontSize: 0.7em;
+@appTemplateCardBorderBottomWidth: 3px;
+@appTemplateCardSelectedStateBorderBottomColor: @primaryColor;
+
+/*-------------------------------
+        Labeled Card
+--------------------------------*/
+
+@labeledCardRightSpacing: 15px;
+@labeledCardHoverBoxShadow: @defaultCardHoverBoxShadow;
+@labeledCardTransition: @defaultCardTransition;
+@labeledCardBorder: @defaultCardBorder;
+@labeledCardMarginBottom: 5px;
+@labeledCardLabelFontColor: 0.8em;
+@labeledCardWrapperMarginBottom: 8px;

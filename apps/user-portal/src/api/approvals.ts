@@ -36,6 +36,7 @@ const httpClient = AxiosHttpClient.getInstance();
  *     Approval task's status to filter tasks by their status.
  * @return {Promise<any>} A promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const fetchPendingApprovals = (
     limit: number,
     offset: number,
@@ -83,6 +84,7 @@ export const fetchPendingApprovals = (
  * @param {string} id - `id` of the approval.
  * @return {Promise<any>} A promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const fetchPendingApprovalDetails = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -111,6 +113,7 @@ export const fetchPendingApprovalDetails = (id: string): Promise<any> => {
  *     status.
  * @return {Promise<any>} A promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const updatePendingApprovalStatus = (
     id: string,
     status: ApprovalStatus.CLAIM | ApprovalStatus.RELEASE | ApprovalStatus.APPROVE | ApprovalStatus.REJECT

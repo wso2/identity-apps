@@ -28,21 +28,25 @@ module.exports = (env) => {
     const devServerPort = 9000;
     const publicPath = `/${basename}`;
 
+    const isProd = env.NODE_ENV === "prod";
+
     /**
      * Deployment configurations
      */
     const serverHostDefault = "https://localhost:9443";
     const serverOriginDefault = serverHostDefault;
-    const clientHostDefault = env.NODE_ENV === "prod" ? serverHostDefault : `https://localhost:${devServerPort}`;
+    const clientHostDefault = isProd ? serverHostDefault : `https://localhost:${devServerPort}`;
     const clientOriginDefault = clientHostDefault;
     const clientIdDefault = "USER_PORTAL";
     const applicationName = "User Portal";
     const tenantDefault = "carbon.super";
+    const tenantPathDefault = "";
 
     /**
      * App configurations
      */
     const loginPagePath = "/login";
+    const logoutPagePath = "/logout";
     const homePagePath = "/overview";
     const externalLoginCallbackURL = `${publicPath}${loginPagePath}`;
 
@@ -55,7 +59,7 @@ module.exports = (env) => {
     const copyrightText = `${titleText} \u00A9 ${ new Date().getFullYear() }`;
 
     const compileAppIndex = () => {
-        if (env.NODE_ENV === "prod") {
+        if (isProd) {
             return new HtmlWebpackPlugin({
                 filename: path.join(distFolder, "index.jsp"),
                 template: path.join(__dirname, "src", "index.jsp"),
@@ -67,8 +71,12 @@ module.exports = (env) => {
                                 "pageEncoding=\"UTF-8\" %>",
                 importUtil: "<%@ page import=\"" + 
                                 "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>",
+                importTenantPrefix: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                    "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>",
+                importSuperTenantConstant: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                    "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>",
                 serverUrl: "<%=getServerURL(\"\", true, true)%>",
-                importTenantPrefix: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy.MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>",
+                superTenantConstant: "<%=SUPER_TENANT_DOMAIN_NAME%>",
                 tenantDelimiter: "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"",
                 tenantPrefix: '<%=TENANT_AWARE_URL_PREFIX%>'
             });
@@ -127,17 +135,37 @@ module.exports = (env) => {
                 },
                 {
                     test: /\.tsx?$/,
-                    use: "ts-loader",
-                    exclude: /(node_modules|diagram)/
+                    use: [{
+                        loader: 'thread-loader',
+                        options: {
+                            // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                            workers: require('os').cpus().length - 1,
+                        },
+                    },{
+                        loader: "ts-loader",
+                        options: {
+                            happyPackMode: true,
+                            transpileOnly: false
+                        }
+                    }],
+                    exclude: /(node_modules)/
                 },
                 {
                     test: /\.ts$/,
                     enforce: "pre",
-                    use: [
-                        {
-                            loader: "tslint-loader"
+                    use: [{
+                        loader: 'thread-loader',
+                        options: {
+                            // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                            workers: require('os').cpus().length - 1,
+                        },
+                    },{
+                        loader:"eslint-loader",
+                        options: {
+                            happyPackMode: true,
+                            transpileOnly: false
                         }
-                    ]
+                    }]
                 },
                 {
                     test: /\.js$/,
@@ -161,7 +189,10 @@ module.exports = (env) => {
             fs: "empty"
         },
         plugins: [
-            new WriteFilePlugin(),
+            new WriteFilePlugin({
+                // Exclude hot-update files
+                test: /^(?!.*(hot-update)).*/
+            }),
             new CopyWebpackPlugin([
                 {
                     context: path.join(__dirname, "node_modules", "@wso2is", "theme"),
@@ -184,6 +215,11 @@ module.exports = (env) => {
                     from: "public",
                     to: ".",
                     force: true
+                },
+                {
+                    from: "./app.config.json",
+                    to: "./app.config.json",
+                    force: true
                 }
             ]),
             compileAppIndex(),
@@ -191,6 +227,7 @@ module.exports = (env) => {
                 APP_BASENAME: JSON.stringify(basename),
                 APP_HOME_PATH: JSON.stringify(homePagePath),
                 APP_LOGIN_PATH: JSON.stringify(loginPagePath),
+                APP_LOGOUT_PATH: JSON.stringify(logoutPagePath),
                 APP_NAME: JSON.stringify(applicationName),
                 COPYRIGHT_TEXT_DEFAULT: JSON.stringify(copyrightText),
                 CLIENT_ID_DEFAULT: JSON.stringify(clientIdDefault),
@@ -200,6 +237,7 @@ module.exports = (env) => {
                 SERVER_HOST_DEFAULT: JSON.stringify(serverHostDefault),
                 SERVER_ORIGIN_DEFAULT: JSON.stringify(serverOriginDefault),
                 TENANT_DEFAULT: JSON.stringify(tenantDefault),
+                TENANT_PATH_DEFAULT: JSON.stringify(tenantPathDefault),
                 TITLE_TEXT_DEFAULT: JSON.stringify(titleText),
                 "typeof window": JSON.stringify("object"),
                 "process.env": {
@@ -211,12 +249,12 @@ module.exports = (env) => {
         optimization: {
             minimize: true,
             minimizer: [
-                new TaserJSPlugin({
-                    terserOptions: {
-                        keep_fnames: true
-                    }
+                isProd && new TaserJSPlugin({
+                     terserOptions: {
+                         keep_fnames: true
+                     }
                 })
-            ]
+            ].filter(Boolean)
         }
     };
 };

@@ -16,4 +16,5 @@
  * under the License.
  */
 
+export * from "./content-loader";
 export * from "./global-loader";

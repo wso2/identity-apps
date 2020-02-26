@@ -37,14 +37,14 @@ export interface HttpRequestConfig extends AxiosRequestConfig {
  * Interface to handle HTTP responses. Extends `AxiosResponse` interface
  * from Axios library.
  */
-// tslint:disable-next-line:no-empty-interface
+/* eslint-disable @typescript-eslint/no-empty-interface  */
 export interface HttpResponse extends AxiosResponse {}
 
 /**
  * Interface to handle HTTP errors. Extends `AxiosError` interface
  * from Axios library.
  */
-// tslint:disable-next-line:no-empty-interface
+/* eslint-disable @typescript-eslint/no-empty-interface  */
 export interface HttpError extends AxiosError {}
 
 /**

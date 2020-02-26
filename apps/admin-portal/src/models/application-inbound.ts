@@ -16,12 +16,18 @@
  * under the License.
  */
 
+import { MandatoryArray } from "./global";
+
 /**
  * Captures the auth protocols
  */
-export interface AuthProtocolMetadataInterface {
-    name?: string;
-    displayname?: string;
+export interface AuthProtocolMetaListItemInterface {
+    name: string;
+    displayName: string;
+    enabled?: boolean;
+    id?: string;
+    logo?: string;
+    type?: string;
 }
 
 export interface MetadataPropertyInterface {
@@ -44,7 +50,7 @@ export interface OIDCMetadataInterface {
     accessTokenType?: MetadataPropertyInterface;
 }
 
-enum State {
+export enum State {
     ACTIVE = "ACTIVE",
     REVOKED = "REVOKED"
 }
@@ -100,4 +106,165 @@ export interface OIDCDataInterface {
     logout?: OIDCLogoutConfigurationInterface;
     validateRequestObjectSignature?: boolean;
     scopeValidators?: string[];
+}
+
+export const emptyOIDCConfig: OIDCDataInterface = ({
+    accessToken: undefined,
+    allowedOrigins: [],
+    callbackURLs: [],
+    clientId: "",
+    clientSecret: "",
+    grantTypes: [],
+    pkce: {
+        mandatory: false,
+        supportPlainTransformAlgorithm: false
+    },
+    publicClient: false,
+    state: undefined
+});
+
+/**
+ * Enum for the supported auth protocol types.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum SupportedAuthProtocolTypes {
+    SAML = "saml",
+    OIDC = "oidc",
+    WS_FEDERATION = "passive-sts",
+    WS_TRUST = "ws-trust"
+}
+
+/**
+ * Enum for the supported quick start template types.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum SupportedQuickStartTemplateTypes {
+    SPA = "spa",
+    OAUTH_WEB_APP = "oauthWebApp"
+}
+
+/**
+ * Enum for the supported auth protocol meta types.
+ *
+ * @remarks
+ * Currently, the application meta endpoint only supports fetching
+ * metadata for the following auth protocols.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum SupportedAuthProtocolMetaTypes {
+    SAML = "saml",
+    OIDC = "oidc",
+    WS_TRUST = "ws-trust"
+}
+
+interface AssertionEncryptionConfigurationInterface {
+    enabled?: boolean;
+    assertionEncryptionAlgorithm?: string;
+    keyEncryptionAlgorithm?: string;
+}
+
+interface SAMLAssertionConfigurationInterface {
+    nameIdFormat?: string;
+    audiences?: string[];
+    recipients?: string[];
+    digestAlgorithm?: string;
+    encryption?: AssertionEncryptionConfigurationInterface;
+}
+
+export enum SAML2BindingTypes {
+    HTTP_POST= "HTTP_POST",
+    HTTP_REDIRECT= "HTTP_REDIRECT",
+    ARTIFACT= "ARTIFACT"
+}
+
+interface SingleSignOnProfileInterface {
+    bindings?: SAML2BindingTypes[];
+    enableSignatureValidationForArtifactBinding?: boolean;
+    attributeConsumingServiceIndex?: string;
+    enableIdpInitiatedSingleSignOn?: boolean;
+    assertion?: SAMLAssertionConfigurationInterface;
+}
+
+export interface SAMLAttributeProfileInterface {
+    enabled?: boolean;
+    alwaysIncludeAttributesInResponse?: boolean;
+}
+
+export enum LogoutMethods {
+    BACK_CHANNEL= "BACKCHANNEL",
+    FRONT_CHANNEL_HTTP_REDIRECT= "FRONTCHANNEL_HTTP_REDIRECT",
+    FRONT_CHANNEL_HTTP_POST= "FRONTCHANNEL_HTTP_POST"
+}
+
+interface IdpInitiatedSingleLogoutInterface {
+    enabled?: string;
+    returnToUrls?: string[];
+}
+interface SingleLogoutProfileInterface {
+    enabled?: boolean;
+    logoutRequestUrl?: string;
+    logoutResponseUrl?: string;
+    logoutMethod?: LogoutMethods;
+    idpInitiatedSingleLogout?: IdpInitiatedSingleLogoutInterface;
+}
+
+interface SAMLRequestValidationInterface {
+    enableSignatureValidation?: boolean;
+    signatureValidationCertAlias?: string;
+}
+
+interface SAMLResponseSigningInterface {
+    enabled?: boolean;
+    signingAlgorithm?: string;
+}
+
+/**
+ * SAML configuration for an application.
+ */
+export interface SAML2ServiceProviderInterface {
+    issuer: string;
+    serviceProviderQualifier?: string;
+    /**
+     *  At least one assertion consumerURL should be passed
+     */
+    assertionConsumerUrls: MandatoryArray<string>;
+    /**
+     * If not provided, the first assertion consumer URL on the assertionConsumerUrls
+     * will be picked as the default assertion consumer URL.
+     */
+    defaultAssertionConsumerUrl?: string;
+    idpEntityIdAlias?: string;
+    singleSignOnProfile?: SingleSignOnProfileInterface;
+    attributeProfile?: SAMLAttributeProfileInterface;
+    singleLogoutProfile?: SingleLogoutProfileInterface;
+    requestValidation?: SAMLRequestValidationInterface;
+    responseSigning?: SAMLResponseSigningInterface;
+    enableAssertionQueryProfile?: boolean;
+}
+
+/**
+ * SAML configuration interface.
+ */
+export interface SAML2ConfigurationInterface {
+    metadataFile?: string;
+    metadataURL?: string;
+    manualConfiguration?: SAML2ServiceProviderInterface;
+}
+
+/**
+ * SAML metadata interface
+ */
+export interface SAMLMetaDataInterface {
+    defaultNameIdFormat?: string;
+    certificateAlias?: MetadataPropertyInterface;
+    responseSigningAlgorithm?: MetadataPropertyInterface;
+    responseDigestAlgorithm?: MetadataPropertyInterface;
+    assertionEncryptionAlgorithm?: MetadataPropertyInterface;
+    keyEncryptionAlgorithm?: MetadataPropertyInterface;
 }

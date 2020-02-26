@@ -24,7 +24,7 @@ const initialState: LoadersInterface = {
     isProfileSchemaLoading: false
 };
 
-export const LoadersReducer = (state: LoadersInterface = initialState, action: LoaderAction) => {
+export const LoadersReducer = (state: LoadersInterface = initialState, action: LoaderAction): LoadersInterface => {
     switch (action.type) {
         case SET_PROFILE_INFO_LOADER:
             return {

@@ -16,11 +16,19 @@
  * under the License.
  */
 
+import {
+    AuthProtocolMetaListItemInterface,
+    OIDCDataInterface,
+    OIDCMetadataInterface, SAML2ConfigurationInterface,
+    SupportedAuthProtocolTypes,
+    SupportedQuickStartTemplateTypes
+} from "./application-inbound";
+
 /**
  *  Captures the basic details in the applications.
  */
 export interface ApplicationBasicInterface {
-    id: string;
+    id?: string;
     name: string;
     description?: string;
     accessUrl?: string;
@@ -41,6 +49,40 @@ export interface ApplicationInterface extends ApplicationBasicInterface {
     imageUrl?: string;
     claimConfiguration?: ClaimConfigurationInterface;
     advancedConfigurations?: AdvancedConfigurationsInterface;
+    inboundProtocols?: InboundProtocolListItemInterface[];
+    authenticationSequence?: AuthenticationSequenceInterface;
+}
+
+/**
+ * Interface for the inbound protocol in the application response.
+ */
+export interface InboundProtocolListItemInterface {
+    type: string;
+    name?: string;
+    self: string;
+}
+
+/**
+ *  Application Basic details for add wizard.
+ */
+export interface ApplicationBasicWizard extends ApplicationBasicInterface {
+    imageUrl?: string;
+    discoverableByEndUsers?: boolean;
+}
+
+/**
+ *  Captures inbound protocols.
+ */
+export interface InboundProtocolsInterface {
+    oidc?: OIDCDataInterface;
+    saml?: SAML2ConfigurationInterface;
+}
+
+/**
+ *  Application interface for Post request.
+ */
+export interface MainApplicationInterface  extends ApplicationInterface {
+    inboundProtocolConfiguration?: InboundProtocolsInterface;
 }
 
 /**
@@ -155,3 +197,115 @@ export interface LinkInterface {
     href: string;
     rel: string;
 }
+
+export enum AuthenticationSequenceType {
+    DEFAULT = "DEFAULT",
+    USER_DEFINED = "USER_DEFINED"
+}
+
+export interface AuthenticatorInterface {
+    idp: string;
+    authenticator: string;
+}
+
+export interface AuthenticationStepInterface {
+    id: number;
+    options: AuthenticatorInterface[];
+}
+
+/**
+ * Authentication Sequence model.
+ */
+export interface AuthenticationSequenceInterface  {
+    type?: AuthenticationSequenceType;
+    steps?: AuthenticationStepInterface[];
+    requestPathAuthenticators?: string[];
+    script?: string;
+    subjectStepId?: number;
+    attributeStepId?: number;
+}
+
+/**
+ * Interface for the Application reducer state.
+ */
+export interface ApplicationReducerStateInterface {
+    meta: ApplicationMetaInterface;
+}
+
+/**
+ * Interface for the application meta for the redux store.
+ */
+interface ApplicationMetaInterface {
+    inboundProtocols: AuthProtocolMetaListItemInterface[];
+    protocolMeta: AuthProtocolMetaInterface;
+}
+
+/**
+ * Interface for the auth protocol metadata.
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+interface AuthProtocolMetaInterface {
+    [ key: string ]: OIDCMetadataInterface | any;
+}
+
+/**
+ *  Application template list item interface.
+ */
+export interface ApplicationTemplateListItemInterface {
+    description: string;
+    displayName: string;
+    id: SupportedQuickStartTemplateTypes;
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    image: any;
+    protocols: SupportedAuthProtocolTypes[];
+    technologies: ApplicationTemplateTechnology[];
+}
+
+/**
+ *  Application templates interface.
+ */
+export interface ApplicationTemplatesInterface {
+    [ key: string ]: ApplicationTemplateListItemInterface[];
+}
+
+/**
+ * Enum for supported application template categories.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum SupportedApplicationTemplateCategories {
+    QUICK_START = "quick_start"
+}
+
+/**
+ *  Application template technology interface.
+ */
+export interface ApplicationTemplateTechnology {
+    name: string;
+    displayName: string;
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    logo: any;
+}
+
+export const emptyApplication = (): ApplicationInterface => ({
+    accessUrl: "",
+    advancedConfigurations: {
+        certificate: {
+            type: CertificateTypeInterface.JWKS,
+            value: ""
+        },
+        discoverableByEndUsers: false,
+        enableAuthorization: false,
+        returnAuthenticatedIdpList: false,
+        saas: false,
+        skipConsent: false,
+    },
+    authenticationSequence: undefined,
+    claimConfiguration: undefined,
+    description: "",
+    id: "",
+    imageUrl: "",
+    inboundProtocols: undefined,
+    name: ""
+});

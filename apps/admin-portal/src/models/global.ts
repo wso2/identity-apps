@@ -20,7 +20,15 @@ import { AlertInterface } from "./alert";
 
 export interface GlobalInterface {
     alert: AlertInterface;
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     alertSystem: any;
     isApplicationsPageVisible: boolean;
     isGlobalLoaderVisible: boolean;
 }
+
+/**
+ * Make sure array has at least one element
+ */
+export type MandatoryArray<T> = {
+    0: T;
+} & Array<T>

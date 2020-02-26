@@ -18,7 +18,11 @@
 
 import {
     AlertIcon,
+    MagnifierIcon,
+    LaunchIcon,
+    AngularLogo,
     AppIcon,
+    BasicAuthIcon,
     BlockedMagnifierIcon,
     BoxIcon,
     CaretRightIcon,
@@ -26,24 +30,45 @@ import {
     CodeIcon,
     CrossIcon,
     DashboardIcon,
+    DocumentIcon,
     DotIcon,
+    DotNetLogo,
+    DragIcon,
     DummyUser,
+    EmailOTPIcon,
     EmptySearchResultsIllustration,
     ErrorIcon,
+    FacebookLogo,
+    FIDOLogo,
     ForbiddenIcon,
+    GearsIcon,
+    GoogleLogo,
     HomeTileIcons,
     InfoIcon,
+    JavaLogo,
     Logo,
     MFAIconSet,
+    OIDCLogo,
+    OpenIDLogo,
     PlugIcon,
+    ReactLogo,
+    SamlLogo,
     SettigsSectionIconSet,
+    SMSOTPIcon,
+    SPATemplateIllustration,
+    SpinWheelIcon,
     SuccessIcon,
+    TOTPIcon,
+    TwitterLogo,
     UserIcon,
-    WarningIcon
+    VueLogo,
+    WarningIcon,
+    WebAppTemplateIllustration,
+    WSFedLogo,
+    WSTrustLogo
 } from "@wso2is/theme";
 
 type ImageType = string;
-type TitleTextType = string;
 
 interface StylesType {
     appPrimaryColor?: string;
@@ -80,7 +105,7 @@ export const AdvancedSearchIcons = {
     clear: CrossIcon
 };
 
-export const TitleText: TitleTextType = "Identity Server";
+export const TitleText = "Identity Server";
 export const customCSS: CustomCSSType = {
     dark: {
         appPrimaryColor: "#ff5000"
@@ -101,19 +126,63 @@ export const AlertIcons = {
  * Constant to handle desktop layout content top padding.
  * @type {number}
  */
-export const DESKTOP_CONTENT_TOP_PADDING: number = 50;
+export const DESKTOP_CONTENT_TOP_PADDING = 50;
 
 /**
  * Constant to handle mobile layout content padding.
  * @type {string}
  */
-export const MOBILE_CONTENT_PADDING: string = "2rem 1rem";
+export const MOBILE_CONTENT_PADDING = "2rem 1rem";
 
 export const EmptyPlaceholderIllustrations = {
     alert: AlertIcon,
     emptyList: BoxIcon,
+    emptySearch: MagnifierIcon,
     genericError: CloseIcon,
     loginError: ForbiddenIcon,
+    newList: LaunchIcon,
     pageNotFound: BlockedMagnifierIcon,
     search: EmptySearchResultsIllustration
+};
+
+export const InboundProtocolLogos = {
+    oidc: OIDCLogo,
+    openid: OpenIDLogo,
+    saml: SamlLogo,
+    wsFed: WSFedLogo,
+    wsTrust: WSTrustLogo
+};
+
+export const ApplicationTemplateIllustrations = {
+    spa: SPATemplateIllustration,
+    webApp: WebAppTemplateIllustration
+};
+
+export const TechnologyLogos = {
+    angular: AngularLogo,
+    dotNet: DotNetLogo,
+    java: JavaLogo,
+    react: ReactLogo,
+    vue: VueLogo,
+};
+
+export const ApplicationWizardStepIcons = {
+    general: DocumentIcon,
+    protocolConfig: GearsIcon,
+    protocolSelection: SpinWheelIcon
+};
+
+export const AuthenticatorIcons = {
+    basic: BasicAuthIcon,
+    emailOTP: EmailOTPIcon,
+    facebook: FacebookLogo,
+    fido: FIDOLogo,
+    google: GoogleLogo,
+    smsOTP: SMSOTPIcon,
+    totp: TOTPIcon,
+    twitter: TwitterLogo
+};
+
+export const PlaceHolderIcons = {
+    drag: DragIcon
 };

@@ -16,16 +16,31 @@
  * under the License.
  */
 
-import React from "react";
-import { Divider, Header } from "semantic-ui-react";
+import classNames from "classnames";
+import React, { MouseEventHandler } from "react";
+import { Divider, Header, Icon } from "semantic-ui-react";
+import { GenericIcon } from "../icon";
 
 /**
  * Page header component Prop types.
  */
 export interface PageHeaderPropsInterface {
-    title: string;
+    backButton?: BackButtonInterface;
+    bottomMargin?: boolean;
+    className?: string;
     description?: string;
+    image?: any;
+    showBottomDivider?: boolean;
+    title: string;
     titleTextAlign?: "left" | "center" | "right" | "justified";
+}
+
+/**
+ * Back button interface.
+ */
+interface BackButtonInterface {
+    text: string;
+    onClick: MouseEventHandler;
 }
 
 /**
@@ -39,20 +54,68 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
 ): JSX.Element => {
 
     const {
+        backButton,
+        bottomMargin,
+        className,
         description,
+        image,
+        showBottomDivider,
         title,
         titleTextAlign
     } = props;
 
+    const wrapperClasses = classNames(
+        "page-header-wrapper",
+        {
+            ["with-image"]: image,
+        },
+        className
+    );
+
+    const innerClasses = classNames(
+        "page-header-inner",
+        {
+            ["with-image"]: image,
+        }
+    );
+
     return (
         (title || description) && (
-            <>
-                <Header className="page-header" as="h1" textAlign={ titleTextAlign }>
-                    { title && title }
-                    { description && <Header.Subheader className="sub-header">{ description }</Header.Subheader> }
-                </Header>
-                <Divider hidden/>
-            </>
+            <div className={ wrapperClasses }>
+                {
+                    backButton && backButton.text && (
+                        <div className="back-button" onClick={ backButton.onClick }>
+                            <Icon name="arrow left" />
+                            { backButton.text }
+                        </div>
+                    )
+                }
+                <div className={ innerClasses }>
+                    { image && (
+                        <GenericIcon
+                            icon={ image }
+                            size="tiny"
+                            transparent
+                            spaced="right"
+                        />
+                    ) }
+                    <Header className="page-header" as="h1" textAlign={ titleTextAlign }>
+                        { title && title }
+                        { description && <Header.Subheader className="sub-header">{ description }</Header.Subheader> }
+                    </Header>
+                </div>
+                {
+                    bottomMargin && <Divider hidden/>
+                }
+                {
+                    showBottomDivider && <Divider />
+                }
+            </div>
         )
     );
+};
+
+PageHeader.defaultProps = {
+    bottomMargin: true,
+    showBottomDivider: false
 };

@@ -33,6 +33,7 @@ const httpClient = AxiosHttpClient.getInstance();
  *
  * @return {Promise<any>} a promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getMetaData = (): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -63,6 +64,7 @@ export const getMetaData = (): Promise<any> => {
  * @param credentialId
  * @param deviceName
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const updateDeviceName = (credentialId: string, deviceName: string): Promise<any> => {
     const requestConfig = {
         data: [{
@@ -83,13 +85,13 @@ export const updateDeviceName = (credentialId: string, deviceName: string): Prom
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(
-                    new Error(`Failed get device name from: ${ServiceResourcesEndpoint.fidoMetaData}`)
+                    new Error(`Failed update device name from: ${ServiceResourcesEndpoint.fidoMetaData}`)
                 );
             }
             return Promise.resolve(response);
         })
         .catch((error) => {
-            return Promise.reject(`Failed to retrieve FIDO device name - ${error}`);
+            return Promise.reject(`Failed to update FIDO device name - ${error}`);
         });
 };
 
@@ -98,6 +100,7 @@ export const updateDeviceName = (credentialId: string, deviceName: string): Prom
  *
  * @return {Promise<any>} a promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const deleteDevice = (credentialId): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -119,126 +122,13 @@ export const deleteDevice = (credentialId): Promise<any> => {
 };
 
 /**
- * Start registration flow of the FIDO device
- *
- * @return {Promise<any>} a promise containing the response.
- */
-export const startFidoFlow = (): Promise<any> => {
-    const requestConfig = {
-        data: { appId: window.location.origin },
-        headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.fidoStart
-    };
-
-    return httpClient
-        .request(requestConfig)
-        .then((response) => {
-            if (response.status !== 200) {
-                return Promise.reject(
-                    new Error(`Failed to start registration flow at: ${ServiceResourcesEndpoint.fidoStart}`)
-                );
-            }
-            return connectToDevice(
-                response.data.requestId,
-                decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions)
-            )
-                .then(() => {
-                    return Promise.resolve(response);
-                })
-                .catch((error) => {
-                    return Promise.reject(`Failed to connect to device - ${error}`);
-                });
-        })
-        .catch((error) => {
-            return Promise.reject(`FIDO connection terminated - ${error}`);
-        });
-};
-
-/**
- * Start registration flow of the FIDO device which supports usernameless flow
- *
- * @return {Promise<any>} a promise containing the response.
- */
-export const startFidoUsernamelessFlow = (): Promise<any> => {
-    const requestConfig = {
-        data: { appId: window.location.origin },
-        headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.fidoStartUsernameless
-    };
-
-    return httpClient
-        .request(requestConfig)
-        .then((response) => {
-            if (response.status !== 200) {
-                return Promise.reject(
-                    new Error(`Failed to start registration flow at:
-                    ${ServiceResourcesEndpoint.fidoStartUsernameless}`)
-                );
-            }
-            return connectToDevice(
-                response.data.requestId,
-                decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions)
-            )
-                .then((responseAtCompletion) => {
-                    return Promise.resolve(responseAtCompletion);
-                })
-                .catch((error) => {
-                    return Promise.reject(`Failed to connect to device - ${error}`);
-                });
-        })
-        .catch((error) => {
-            return Promise.reject(`FIDO connection terminated - ${error}`);
-        });
-};
-
-/**
- * Finish registration flow of the FIDO device
- *
- * @return {Promise<any>} a promise containing the response.
- */
-export const endFidoFlow = (clientResponse): Promise<any> => {
-    const requestConfig = {
-        data: clientResponse,
-        headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.POST,
-        url: ServiceResourcesEndpoint.fidoEnd
-    };
-
-    return httpClient
-        .request(requestConfig)
-        .then((response) => {
-            if (response.status !== 200) {
-                return Promise.reject(
-                    new Error(`Failed to end registration flow at: ${ServiceResourcesEndpoint.fidoEnd}`)
-                );
-            }
-            return Promise.resolve(response);
-        })
-        .catch((error) => {
-            return Promise.reject(`Failed to finish the FIDO registration - ${error}`);
-        });
-};
-
-/**
  * This functions receive the response from the start-registration endpoint
  * and convert the values of the attributes of response object
  * from byte array to base64url format.
  *
  * @param {object} response
  */
-const responseToObject = (response) => {
+const responseToObject = (response): Record<string, any> => {
     if (response.u2fResponse) {
         return response;
     } else {
@@ -280,6 +170,39 @@ const responseToObject = (response) => {
 };
 
 /**
+ * Finish registration flow of the FIDO device
+ *
+ * @return {Promise<any>} a promise containing the response.
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const endFidoFlow = (clientResponse): Promise<any> => {
+    const requestConfig = {
+        data: clientResponse,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: ServiceResourcesEndpoint.fidoEnd
+    };
+
+    return httpClient
+        .request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(
+                    new Error(`Failed to end registration flow at: ${ServiceResourcesEndpoint.fidoEnd}`)
+                );
+            }
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(`Failed to finish the FIDO registration - ${error}`);
+        });
+};
+
+/**
  * This function stores the credentialCreationOptions received from the registration endpoint
  * to the credential store as a publicKey.
  *
@@ -288,7 +211,8 @@ const responseToObject = (response) => {
  *
  * @return {Promise<any>} a promise containing the response.
  */
-const connectToDevice = (requestId, credentialCreationOptions) => {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+const connectToDevice = (requestId, credentialCreationOptions): Promise<any> => {
     return navigator.credentials
         .create({ publicKey: credentialCreationOptions })
         .then((credential) => {
@@ -319,7 +243,7 @@ const connectToDevice = (requestId, credentialCreationOptions) => {
  *
  * @return {object} excludeCredentials
  */
-const decodePublicKeyCredentialCreationOptions = (request) => {
+const decodePublicKeyCredentialCreationOptions = (request): Record<string, any> => {
     const excludeCredentials = request.excludeCredentials.map((credential) => {
         return { ...credential, id: Decode(credential.id) };
     });
@@ -334,4 +258,87 @@ const decodePublicKeyCredentialCreationOptions = (request) => {
             id: Decode(request.user.id)
         }
     };
+};
+
+/**
+ * Start registration flow of the FIDO device
+ *
+ * @return {Promise<any>} a promise containing the response.
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const startFidoFlow = (): Promise<any> => {
+    const requestConfig = {
+        data: { appId: window.location.origin },
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        method: HttpMethods.POST,
+        url: ServiceResourcesEndpoint.fidoStart
+    };
+
+    return httpClient
+        .request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(
+                    new Error(`Failed to start registration flow at: ${ServiceResourcesEndpoint.fidoStart}`)
+                );
+            }
+            return connectToDevice(
+                response.data.requestId,
+                decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions)
+            )
+                .then((responseAtCompletion) => {
+                    return Promise.resolve(responseAtCompletion);
+                })
+                .catch((error) => {
+                    return Promise.reject(`Failed to connect to device - ${error}`);
+                });
+        })
+        .catch((error) => {
+            return Promise.reject(`FIDO connection terminated - ${error}`);
+        });
+};
+
+/**
+ * Start registration flow of the FIDO device which supports usernameless flow
+ *
+ * @return {Promise<any>} a promise containing the response.
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const startFidoUsernamelessFlow = (): Promise<any> => {
+    const requestConfig = {
+        data: { appId: window.location.origin },
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        method: HttpMethods.POST,
+        url: ServiceResourcesEndpoint.fidoStartUsernameless
+    };
+
+    return httpClient
+        .request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(
+                    new Error(`Failed to start registration flow at:
+                    ${ServiceResourcesEndpoint.fidoStartUsernameless}`)
+                );
+            }
+            return connectToDevice(
+                response.data.requestId,
+                decodePublicKeyCredentialCreationOptions(response.data.publicKeyCredentialCreationOptions)
+            )
+                .then((responseAtCompletion) => {
+                    return Promise.resolve(responseAtCompletion);
+                })
+                .catch((error) => {
+                    return Promise.reject(`Failed to connect to device - ${error}`);
+                });
+        })
+        .catch((error) => {
+            return Promise.reject(`FIDO connection terminated - ${error}`);
+        });
 };

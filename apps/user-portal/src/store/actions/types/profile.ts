@@ -35,6 +35,15 @@ interface ProfileBaseAction {
 }
 
 /**
+ * Profile base action interface with payload with type any.
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export interface ProfileBaseActionWithCommonPayload extends ProfileBaseAction {
+    payload: any;
+    type: ProfileActionTypes;
+}
+
+/**
  * Set profile completion action interface.
  */
 export interface SetProfileCompletionAction extends ProfileBaseAction {
