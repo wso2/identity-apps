@@ -22,7 +22,15 @@ import { ContextUtils } from "@wso2is/core/utils";
 import { Footer, Header, Logo, ProductBrand, SidePanel } from "@wso2is/react-components";
 import classNames from "classnames";
 import _ from "lodash";
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    ReactNode,
+    SyntheticEvent,
+    useContext,
+    useEffect,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
@@ -33,7 +41,7 @@ import { UIConstants } from "../constants";
 import { AppConfig, history } from "../helpers";
 import { AppConfigInterface } from "../models";
 import { AppState } from "../store";
-import { filteredRoutes } from "../utils";
+import { filterRoutes } from "../utils";
 import { BaseLayout } from "./base";
 
 /**
@@ -47,11 +55,11 @@ interface DashboardLayoutPropsInterface {
  * Dashboard layout.
  *
  * @param {DashboardLayoutPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterface> = (
+export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> = (
     props: DashboardLayoutPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const { fluid } = props;
     const { t } = useTranslation();
@@ -61,10 +69,10 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
     const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
 
     const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(routes[0]);
-    const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = React.useState<boolean>(false);
-    const [ headerHeight, setHeaderHeight ] = React.useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
-    const [ footerHeight, setFooterHeight ] = React.useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
-    const [ isMobileViewport, setIsMobileViewport ] = React.useState<boolean>(false);
+    const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
+    const [ headerHeight, setHeaderHeight ] = useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
+    const [ footerHeight, setFooterHeight ] = useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
+    const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
 
     const appConfig: AppConfigInterface = useContext(AppConfig);
 
@@ -91,14 +99,14 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
             return;
         }
         setHeaderHeight(document.getElementById("app-header").offsetHeight);
-    });
+    }, []);
 
     useEffect(() => {
         if (footerHeight === document.getElementById("app-footer").offsetHeight) {
             return;
         }
         setFooterHeight(document.getElementById("app-footer").offsetHeight);
-    });
+    }, []);
 
     /**
      * Gets the active route on initial app loading time.
@@ -106,16 +114,15 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
      * @return { RouteInterface | ChildRouteInterface } Initially active route.
      */
     const getInitialActiveRoute = (): RouteInterface | ChildRouteInterface => {
-        let found: boolean = false;
+        let found = false;
         let activeRoute: RouteInterface | ChildRouteInterface = null;
 
-        const recurse = (routesArr: RouteInterface[] | ChildRouteInterface[]) => {
+        const recurse = (routesArr: RouteInterface[] | ChildRouteInterface[]): void => {
             for (const route of routesArr) {
-
                 // Terminate the evaluation if the route is
                 // not supposed to be displayed on the side panel.
                 if (!route.showOnSidePanel) {
-                    return;
+                    continue;
                 }
 
                 activeRoute = route;
@@ -160,7 +167,7 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
      * @param { RouteInterface | ChildRouteInterface } route - Clicked on route.
      */
     const handleSidePanelItemClick = (route: RouteInterface | ChildRouteInterface) => {
-        if (!route.children) {
+        if (route.path) {
             setSelectedRoute(route);
             history.push(route.path);
 
@@ -194,7 +201,7 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
      * @param {React.SyntheticEvent<HTMLElement>} event - On change event.
      * @param {any} width - Width of the browser window.
      */
-    const handleLayoutOnUpdate = (event: React.SyntheticEvent<HTMLElement>, { width }) => {
+    const handleLayoutOnUpdate = (event: SyntheticEvent<HTMLElement>, { width }) => {
         if (width < Responsive.onlyTablet.minWidth) {
             setIsMobileViewport(true);
             return;
@@ -205,6 +212,68 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
         }
 
         setIsMobileViewport(false);
+    };
+
+    /**
+     * Conditionally renders a route. If a route has defined a Redirect to
+     * URL, it will be directed to the specified one. If the route is stated
+     * as protected, It'll be rendered using the `ProtectedRoute`.
+     *
+     * @param route - Route to be rendered.
+     * @param key - Index of the route.
+     * @return {React.ReactNode} Resolved route to be rendered.
+     */
+    const renderRoute = (route, key): ReactNode => (
+        route.redirectTo
+            ? <Redirect key={ key } to={ route.redirectTo }/>
+            : route.protected
+            ? (
+                <ProtectedRoute
+                    component={ route.component ? route.component : null }
+                    path={ route.path }
+                    key={ key }
+                    exact={ route.exact }
+                />
+            )
+            : (
+                <Route
+                    path={ route.path }
+                    render={ (renderProps): ReactNode =>
+                        route.component
+                            ? <route.component { ...renderProps } />
+                            : null
+                    }
+                    key={ key }
+                    exact={ route.exact }
+                />
+            )
+    );
+
+    /**
+     * Resolves the set of routes for the react router.
+     * This function recursively adds any child routes
+     * defined.
+     *
+     * @return {RouteInterface[]} Set of resolved routes.
+     */
+    const resolveRoutes = (): RouteInterface[] => {
+        const resolvedRoutes = [];
+
+        const recurse = (routesArr): void => {
+            routesArr.forEach((route, key) => {
+                if (route.path) {
+                    resolvedRoutes.push(renderRoute(route, key))
+                }
+
+                if (route.children && route.children instanceof Array && route.children.length > 0) {
+                    recurse(route.children);
+                }
+            })
+        };
+
+        recurse(filterRoutes(routes, appConfig));
+
+        return resolvedRoutes;
     };
 
     return (
@@ -262,70 +331,11 @@ export const DashboardLayout: React.FunctionComponent<DashboardLayoutPropsInterf
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
                     icons={ SidePanelIcons }
-                    routes={ appConfig && filteredRoutes(appConfig) }
+                    routes={ filterRoutes(routes, appConfig) }
                     selected={ selectedRoute }
                 >
                     <Switch>
-                        {
-                            appConfig
-                            ? filteredRoutes(appConfig).map((route, index) => {
-                                if (route.children && route.children.length > 0) {
-                                    return route.children.map((child, i) => {
-                                        return (
-                                            child.redirectTo
-                                                ? <Redirect key={ i } to={ child.redirectTo } />
-                                                : child.protected
-                                                    ? (
-                                                        <ProtectedRoute
-                                                            component={ child.component ? child.component : null }
-                                                            path={ child.path }
-                                                            key={ i }
-                                                            exact={ child.exact }
-                                                        />
-                                                    )
-                                                    : (
-                                                        <Route
-                                                            path={ child.path }
-                                                            render={ (renderProps) =>
-                                                                child.component
-                                                                    ? <child.component { ...renderProps } />
-                                                                    : null
-                                                            }
-                                                            key={ i }
-                                                            exact={ child.exact }
-                                                        />
-                                                    )
-                                        );
-                                    });
-                                }
-                                return (
-                                    route.redirectTo
-                                        ? <Redirect key={ index } to={ route.redirectTo } />
-                                        : route.protected
-                                            ? (
-                                                <ProtectedRoute
-                                                    component={ route.component ? route.component : null }
-                                                    path={ route.path }
-                                                    key={ index }
-                                                    exact={ route.exact }
-                                                />
-                                            )
-                                            : (
-                                                <Route
-                                                    path={ route.path }
-                                                    render={ (renderProps) =>
-                                                        route.component
-                                                            ? <route.component { ...renderProps } />
-                                                            : null
-                                                    }
-                                                    key={ index }
-                                                    exact={ route.exact }
-                                                />
-                                            )
-                                );
-                            })
-                            : null
-                        }
+                        { resolveRoutes() }
                     </Switch>
                 </SidePanel>
                 <Footer
