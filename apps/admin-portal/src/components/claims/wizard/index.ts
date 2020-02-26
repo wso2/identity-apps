@@ -16,6 +16,6 @@
 * under the License.
 */
 
-export * from "./additional-properties";
+export * from "./mapped-attributes";
 export * from "./basic-details-local-claims";
 export * from "./summary";

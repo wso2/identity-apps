@@ -43,8 +43,6 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
         )
     };
 
-
-
     return (
         <Grid className="wizard-summary">
             <Grid.Row>
@@ -89,26 +87,6 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
                                         </Grid.Column>
                                         <Grid.Column>
                                             {attribute.mappedAttribute}
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                )
-                            })}
-                        </Grid>
-                    )
-                ) : null
-            }
-            {
-                data.properties?.length > 0 ? generateSummaryLine("Additional Properties",
-                    (
-                        <Grid>
-                            {data.properties.map((property: Property) => {
-                                return (
-                                    <Grid.Row columns={2}>
-                                        <Grid.Column>
-                                            {property.key}
-                                        </Grid.Column>
-                                        <Grid.Column>
-                                            {property.value}
                                         </Grid.Column>
                                     </Grid.Row>
                                 )

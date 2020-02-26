@@ -22,7 +22,7 @@ import { useTrigger, FormValue } from "@wso2is/forms";
 import { addLocalClaim } from "../../../api";
 import { Steps, PrimaryButton, LinkButton } from "@wso2is/react-components";
 import { ApplicationWizardStepIcons } from "../../../configs";
-import { BasicDetailsLocalClaims, AdditionalProperties, SummaryLocalClaims } from "../wizard";
+import { BasicDetailsLocalClaims, MappedAttributes, SummaryLocalClaims } from "../wizard";
 import { Claim } from "../../../models";
 
 interface AddLocalClaimsPropsInterface {
@@ -39,7 +39,6 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
     const [basicDetailsData, setBasicDetailsData] = useState<Map<string, FormValue>>(null);
     const [additionalPropertiesData, setAdditionalPropertiesData] = useState<Map<string, FormValue>>(null);
     const [mappedAttributes, setMappedAttributes] = useState<Set<number>>(new Set([0]));
-    const [properties, setProperties] = useState<Set<number>>(new Set([0]));
 
     const [firstStep, setFirstStep] = useTrigger();
     const [secondStep, setSecondStep] = useTrigger();
@@ -54,20 +53,20 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
         })
     }
 
-    const onSubmitBasicDetails = (dataFromForm, values: Map<string, FormValue>, attributes: Set<number>) => {
+    const onSubmitBasicDetails = (dataFromForm, values: Map<string, FormValue>) => {
         setCurrentWizardStep(1);
         const tempData = { ...data, ...dataFromForm };
         setData(tempData);
         setBasicDetailsData(values);
-        setMappedAttributes(attributes);
+        
     }
 
-    const onSubmitAdditionalProperties = (dataFromForm, values: Map<string, FormValue>, properties: Set<number>) => {
+    const onSubmitAdditionalProperties = (dataFromForm, values: Map<string, FormValue>, attributes: Set<number>) => {
         setCurrentWizardStep(2);
         const tempData = { ...data, ...dataFromForm };
         setData(tempData);
         setAdditionalPropertiesData(values);
-        setProperties(properties);
+        setMappedAttributes(attributes);
     }
 
     const STEPS = [
@@ -77,7 +76,6 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
                     submitState={firstStep}
                     onSubmit={onSubmitBasicDetails}
                     values={basicDetailsData}
-                    mappedAttributes={mappedAttributes}
                 />
             ),
             title: "Basic Local Claim Details",
@@ -85,14 +83,14 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
         },
         {
             content: (
-                <AdditionalProperties
+                <MappedAttributes
                     submitState={secondStep}
                     onSubmit={onSubmitAdditionalProperties}
                     values={additionalPropertiesData}
-                    properties={properties}
+                    mappedAttributes={mappedAttributes}
                 />
             ),
-            title: "Additional Properties",
+            title: "Mapped Attributes",
             icon: ApplicationWizardStepIcons.general
         },
         {
