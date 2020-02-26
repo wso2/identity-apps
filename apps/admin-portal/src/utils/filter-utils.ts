@@ -18,7 +18,7 @@
 
 import { RouteInterface } from "@wso2is/core/models";
 import Axios from "axios";
-import { dashboardLayoutRoutes } from "../configs";
+import { AppConfigInterface } from "../models";
 
 /**
  * Returns true if a given key in the JSON object is set to true
@@ -39,11 +39,19 @@ export const checkEnabled = (appConfig: any, key: string): boolean => {
 };
 
 /**
- * This filters the routes based on the application configuration
- * @param appConfig
+ * This filters the routes based on the application configuration.
+ * If the route is disabled in the app configuration, it is not shown.
+ *
+ * @param {RouteInterface[]} routes - Routes array.
+ * @param {AppConfigInterface} appConfig - Application config.
+ * @return {RouteInterface[]} Filtered routes.
  */
-export const filteredRoutes = (appConfig): RouteInterface[] => {
-    return dashboardLayoutRoutes.filter((route: RouteInterface) => {
+export const filterRoutes = (routes: RouteInterface[], appConfig: AppConfigInterface): RouteInterface[] => {
+    if (!appConfig) {
+        return routes;
+    }
+
+    return routes.filter((route: RouteInterface) => {
         return checkEnabled(appConfig, route.id);
     });
 };
