@@ -18,7 +18,7 @@
 
 import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
 import { AuthenticateUtils } from "@wso2is/core/utils";
-import React from "react";
+import React, { ReactElement } from "react";
 import { Menu } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
 import { CommonSidePanelPropsInterface } from "./side-panel";
@@ -36,11 +36,11 @@ interface SidePanelItemPropsInterface extends CommonSidePanelPropsInterface {
  * Side panel item component.
  *
  * @param {SidePanelItemPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
 export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface> = (
     props: SidePanelItemPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         caretIcon,
@@ -54,6 +54,55 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
         translationHook,
         sidePanelItemHeight
     } = props;
+
+    /**
+     * Validates if any of the child routes is supposed to be shown
+     * on the side panel.
+     *
+     * @param {ChildRouteInterface[]} children - Child routes.
+     * @return {boolean} If valid or not.
+     */
+    const validateChildren = (children: ChildRouteInterface[]): boolean => {
+        if (!(children && children instanceof Array && children.length > 0)) {
+            return false;
+        }
+
+        return children.some((child) => {
+            return child.showOnSidePanel === true;
+        });
+    };
+
+    /**
+     * Checks if the child item is the selected, if so opens
+     * the child items section automatically to improve UX.
+     *
+     * @param {boolean} isOpen - Passed as a prop when manually clicked.
+     * @param {RouteInterface | ChildRouteInterface}selectedRoute - The selected route.
+     * @param {ChildRouteInterface[]} children - Child routes.
+     * @return {boolean} Should the child item section be opened or not.
+     */
+    const validateOpenState = (isOpen: boolean, selectedRoute: RouteInterface | ChildRouteInterface,
+                               children: ChildRouteInterface[]): boolean => {
+        if (isOpen) {
+            return true;
+        }
+
+        const recurse = (childrenArr): boolean => {
+            for (const child of childrenArr) {
+                if (child.id === selectedRoute?.id) {
+                    return true;
+                }
+
+                if (child.children) {
+                    recurse(child.children);
+                }
+            }
+
+            return false;
+        };
+
+        return recurse(children);
+    };
 
     return (
         <>
@@ -80,7 +129,9 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                                 { translationHook ? translationHook(route.name) : route.name }
                             </span>
                             {
-                                (caretIcon && route.children && route.children.length && route.children.length > 0)
+                                // Check if any of the child items are defined to be shown on the side panel.
+                                // If not hides the caret icon.
+                                (caretIcon && validateChildren(route.children))
                                     ? (
                                         <GenericIcon
                                             className={ `caret ${ route.open ? "down" : "right" }` }
@@ -107,7 +158,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                             icons={ icons }
                             onSidePanelItemClick={ onSidePanelItemClick }
                             selected={ selected }
-                            open={ route.open }
+                            open={ validateOpenState(route.open, selected, route.children) }
                             sidePanelItemHeight={ sidePanelItemHeight }
                         />
                     )
