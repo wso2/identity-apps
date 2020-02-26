@@ -203,7 +203,7 @@ export enum LogoutMethods {
 }
 
 interface IdpInitiatedSingleLogoutInterface {
-    enabled?: string;
+    enabled?: boolean;
     returnToUrls?: string[];
 }
 interface SingleLogoutProfileInterface {

@@ -238,8 +238,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     );
 
     return (
-        <>
-            { metadata && (
+        metadata ?
+            (
                 <Forms
                     onSubmit={ (values) => {
                         if (isEmpty(callBackUrls)) {
@@ -290,8 +290,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider />
-                                <Divider hidden />
+                                <Divider/>
+                                <Divider hidden/>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
@@ -356,7 +356,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     required={ false }
                                     requiredErrorMessage="this is needed"
                                     type="checkbox"
-                                    value={ initialValues.publicClient ? [ "supportPublicClients" ] : [] }
+                                    value={ initialValues.publicClient ? ["supportPublicClients"] : [] }
                                     children={ [
                                         {
                                             label: "Public Client",
@@ -373,8 +373,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { /* PKCE */ }
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider />
-                                <Divider hidden />
+                                <Divider/>
+                                <Divider hidden/>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">PKCE</Heading>
@@ -382,7 +382,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     PKCE (RFC 7636) is an extension to the Authorization Code flow to prevent certain
                                     attacks and to be able to securely perform the OAuth exchange from public clients.
                                 </Hint>
-                                <Divider hidden />
+                                <Divider hidden/>
                                 <Field
                                     name="PKCE"
                                     label=""
@@ -407,8 +407,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { /* Access Token */ }
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider />
-                                <Divider hidden />
+                                <Divider/>
+                                <Divider hidden/>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">Access Token</Heading>
@@ -416,7 +416,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     Configure the access token issuer, user access token expiry time, application access
                                     token expiry time etc.
                                 </Hint>
-                                <Divider hidden />
+                                <Divider hidden/>
                                 <Field
                                     label="Token type"
                                     name="type"
@@ -465,19 +465,19 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { /* Refresh Token */ }
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider />
-                                <Divider hidden />
+                                <Divider/>
+                                <Divider hidden/>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">Refresh Token</Heading>
-                                <Divider hidden />
+                                <Divider hidden/>
                                 <Field
                                     name="RefreshToken"
                                     label=""
                                     required={ false }
                                     requiredErrorMessage="this is needed"
                                     type="checkbox"
-                                    value={ initialValues.refreshToken?.renewRefreshToken ? [ "refreshToken" ] : [] }
+                                    value={ initialValues.refreshToken?.renewRefreshToken ? ["refreshToken"] : [] }
                                     children={ [
                                         {
                                             label: "Renew Refresh Token",
@@ -508,12 +508,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { /* ID Token */ }
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider />
-                                <Divider hidden />
+                                <Divider/>
+                                <Divider hidden/>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">ID Token</Heading>
-                                <Divider hidden />
+                                <Divider hidden/>
                                 <Field
                                     name="audience"
                                     label="Audience"
@@ -542,7 +542,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             );
                                         }
                                     }
-                                    value={ initialValues.idToken?.encryption.enabled ? [ "enableEncryption" ] : [] }
+                                    value={ initialValues.idToken?.encryption.enabled ? ["enableEncryption"] : [] }
                                     children={ [
                                         {
                                             label: "Enable encryption",
@@ -610,12 +610,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { /* Logout */ }
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider />
-                                <Divider hidden />
+                                <Divider/>
+                                <Divider hidden/>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">Logout URLs</Heading>
-                                <Divider hidden />
+                                <Divider hidden/>
                                 <Field
                                     name="backChannelLogoutUrl"
                                     label="Back Channel Logout Url"
@@ -649,7 +649,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     requiredErrorMessage="this is needed"
                                     type="checkbox"
                                     value={ initialValues.validateRequestObjectSignature ?
-                                        [ "EnableRequestObjectSignatureValidation" ] : [] }
+                                        ["EnableRequestObjectSignatureValidation"] : [] }
                                     children={ [
                                         {
                                             label: "Enable Request Object Signature Validation",
@@ -662,12 +662,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { /* Scope Validators */ }
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider />
-                                <Divider hidden />
+                                <Divider/>
+                                <Divider hidden/>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">Scope validators</Heading>
-                                <Divider hidden />
+                                <Divider hidden/>
                                 <Field
                                     name="scopeValidator"
                                     label=""
@@ -689,8 +689,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </Grid>
                 </Forms>
             )
-            }
-        </>
+            : null
     );
 };
 
