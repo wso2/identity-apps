@@ -380,7 +380,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 <Heading as="h6">Create a new user in the system</Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">
-                <Steps.Group header="Fill the following mandatory details of the user." current={ currentWizardStep }>
+                <Steps.Group header="Fill the following details to create the new user." current={ currentWizardStep }>
                     { STEPS.map((step, index) => (
                         <Steps.Step
                             key={ index }
