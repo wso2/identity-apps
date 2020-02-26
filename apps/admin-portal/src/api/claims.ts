@@ -46,7 +46,7 @@ export const addLocalClaim = (data: Claim): Promise<any> => {
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status !== 200) {
+            if (response.status !== 201) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
