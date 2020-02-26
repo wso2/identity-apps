@@ -18,6 +18,7 @@
 
 import {
     AlertIcon,
+    ArrowRight,
     MagnifierIcon,
     LaunchIcon,
     AngularLogo,
@@ -87,7 +88,7 @@ export const HomeTileIconImages = HomeTileIcons;
 // Icon set for the side panel.
 export const SidePanelIcons = {
     applications: AppIcon,
-    childIcon: DotIcon,
+    childIcon: ArrowRight,
     connections: PlugIcon,
     overview: DashboardIcon,
     usersAndRoles: UserIcon

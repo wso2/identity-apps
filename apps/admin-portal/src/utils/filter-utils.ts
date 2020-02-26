@@ -18,32 +18,41 @@
 
 import { RouteInterface } from "@wso2is/core/models";
 import Axios from "axios";
-import { dashboardLayoutRoutes } from "../configs";
+import { AppConfigInterface } from "../models";
 
 /**
- * Returns true if a given key in the JSON object is set to true
- * @param appConfig
- * @param key
+ * Returns true if a given key in the JSON object is set to true.
+ *
+ * @param {AppConfigInterface} appConfig - Application config.
+ * @param {string} key - Object key.
+ * @return {boolean} If enabled or not.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const checkEnabled = (appConfig: any, key: string): boolean => {
+export const checkEnabled = (appConfig: AppConfigInterface, key: string): boolean => {
     if (appConfig[key] === undefined) {
         return true;
     } else if (typeof appConfig[key] === "boolean" && appConfig[key]) {
         return true;
     } else if (typeof appConfig[key] === "object" && appConfig[key].enabled) {
         return true;
-    } else {
-        return false;
     }
+
+    return false;
 };
 
 /**
- * This filters the routes based on the application configuration
- * @param appConfig
+ * This filters the routes based on the application configuration.
+ * If the route is disabled in the app configuration, it is not shown.
+ *
+ * @param {RouteInterface[]} routes - Routes array.
+ * @param {AppConfigInterface} appConfig - Application config.
+ * @return {RouteInterface[]} Filtered routes.
  */
-export const filteredRoutes = (appConfig): RouteInterface[] => {
-    return dashboardLayoutRoutes.filter((route: RouteInterface) => {
+export const filterRoutes = (routes: RouteInterface[], appConfig: AppConfigInterface): RouteInterface[] => {
+    if (!appConfig) {
+        return routes;
+    }
+
+    return routes.filter((route: RouteInterface) => {
         return checkEnabled(appConfig, route.id);
     });
 };

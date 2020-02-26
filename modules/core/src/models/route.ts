@@ -50,7 +50,7 @@ export interface RouteInterface {
     /**
      * Router path.
      */
-    path: string;
+    path?: string;
 
     /**
      * If the route is protected or not.
