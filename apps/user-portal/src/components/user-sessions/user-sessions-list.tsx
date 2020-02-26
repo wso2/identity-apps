@@ -104,7 +104,15 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
                             <List.Item className="inner-list-item" key={ userSession.id }>
                                 <Grid padded>
                                     <Grid.Row columns={ 2 }>
-                                        <Grid.Column width={ 11 } className="first-column">
+                                        <Grid.Column
+                                            /*
+                                             * This is a generic component. This is used in both overview
+                                             * and security pages. Therefore the column width will be set
+                                             * depending on the user sessions list.
+                                             */
+                                            width={ userSessionsListActiveIndexes ? 11 : 16 }
+                                            className="first-column"
+                                        >
                                             <ThemeIcon
                                                 icon={
                                                     (
