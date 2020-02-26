@@ -169,3 +169,30 @@
         }
     }
 }
+
+/*******************************
+     User Role List Variation
+*******************************/
+
+.ui.list {
+    &.user-role-list {
+        .user-role-list-item {
+            padding: @userRolesListPadding;
+            margin: @userRolesListMargin;
+            color: @userRolesListItemFontColor;
+
+            i {
+                visibility: hidden;
+                padding-right: @userRolesListIconPaddingRight;
+                float: right;
+            }
+            &:hover {
+                background: @userRolesListItemBackgroundColorOnHover;
+                border-radius: @userRolesListItemBorderRadius;
+                i {
+                    visibility: visible;
+                }
+            }
+        }
+    }
+}
