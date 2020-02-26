@@ -166,7 +166,7 @@ export const AdditionalProperties = (props: AdditionalPropertiesPropsInterface):
                             label="Required"
                             required={false}
                             requiredErrorMessage=""
-                            children={[{ value: "Support", label: "" }]}
+                            children={[{ value: "Required", label: "" }]}
                             value={values?.get("required") as string[]}
                         />
                         <Field
@@ -176,7 +176,7 @@ export const AdditionalProperties = (props: AdditionalPropertiesPropsInterface):
                             label="Read Only"
                             required={false}
                             requiredErrorMessage=""
-                            children={[{ value: "Support", label: "" }]}
+                            children={[{ value: "ReadOnly", label: "" }]}
                             value={values?.get("readOnly") as string[]}
                         />
                     </Grid.Column>
