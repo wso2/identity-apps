@@ -30,12 +30,13 @@ export enum ListType {
 
 interface ClaimsListPropsInterface {
     list: Claim[] | ExternalClaim[] | ClaimDialect[];
-    localClaim: ListType
+    localClaim: ListType;
+    openEdit: (claimID:string) => void;
 }
 
 export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement => {
 
-    const { list, localClaim } = props;
+    const { list, localClaim, openEdit } = props;
 
     const isLocalClaim = (toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[]): toBeDetermined is Claim[] => {
         return localClaim === ListType.LOCAL;
@@ -110,7 +111,9 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                     actions={[
                                         {
                                             icon: "pencil alternate",
-                                            onClick: () => { },
+                                            onClick: () => {
+                                                openEdit(claim?.id);
+                                             },
                                             popupText: "edit",
                                             type: "button"
                                         },
