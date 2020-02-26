@@ -20,7 +20,7 @@ import { UIConstants } from "@wso2is/core/constants";
 import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import _ from "lodash";
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { Container, Responsive, Sidebar } from "semantic-ui-react";
 import { SidePanelItems } from "./side-panel-items";
 
@@ -56,11 +56,11 @@ interface SidePanelPropsInterface extends CommonSidePanelPropsInterface {
  * Side panel base component.
  *
  * @param {SidePanelPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
 export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelPropsInterface>> = (
     props: PropsWithChildren<SidePanelPropsInterface>
-): JSX.Element => {
+): ReactElement => {
 
     const {
         bordered,
@@ -95,14 +95,28 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
         paddingTop: `${ desktopContentTopSpacing }px`
     };
 
+    /**
+     * Handles side panel item onclick.
+     *
+     * @param {RouteInterface | ChildRouteInterface} route - Clicked on route.
+     */
     const handleItemOnClick = (route: RouteInterface | ChildRouteInterface) => {
         setItems(evaluateSidePanelItemExtension(routes, route));
         onSidePanelItemClick(route);
     };
 
-    const evaluateSidePanelItemExtension = (routesArray, route) => {
+    /**
+     * Evaluate if the child item section should be extended or not. If so, adds
+     * `open` attribute to the route section.
+     *
+     * @param {RouteInterface[] | ChildRouteInterface[]} routesArray
+     * @param {RouteInterface | ChildRouteInterface}route
+     * @return {RouteInterface[]} Modified set of routes.
+     */
+    const evaluateSidePanelItemExtension = (routesArray: RouteInterface[] | ChildRouteInterface[],
+                                            route: RouteInterface | ChildRouteInterface): RouteInterface[] => {
         return _.filter([ ...routesArray ], (evalRoute) => {
-            if (evalRoute.path === route.path) {
+            if (evalRoute.id === route.id) {
                 evalRoute.open = !evalRoute.open;
             }
             if (evalRoute.children) {
