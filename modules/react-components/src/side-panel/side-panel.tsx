@@ -28,16 +28,19 @@ import { SidePanelItems } from "./side-panel-items";
  * Common side panel base component Prop types.
  */
 export interface CommonSidePanelPropsInterface {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     caretIcon?: any;
     desktopContentTopSpacing?: number;
     footerHeight: number;
     headerHeight: number;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     icons: any;
     onSidePanelItemClick: (route: RouteInterface | ChildRouteInterface) => void;
     selected: RouteInterface | ChildRouteInterface;
     sidePanelItemHeight?: number;
     sidePanelPosition?: "absolute" | "fixed" | "inherit" | "initial" | "relative" | "static" | "sticky" | "unset";
     sidePanelTopMargin?: number | boolean;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     translationHook?: any;
 }
 
@@ -96,16 +99,6 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
     };
 
     /**
-     * Handles side panel item onclick.
-     *
-     * @param {RouteInterface | ChildRouteInterface} route - Clicked on route.
-     */
-    const handleItemOnClick = (route: RouteInterface | ChildRouteInterface) => {
-        setItems(evaluateSidePanelItemExtension(routes, route));
-        onSidePanelItemClick(route);
-    };
-
-    /**
      * Evaluate if the child item section should be extended or not. If so, adds
      * `open` attribute to the route section.
      *
@@ -124,6 +117,16 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
             }
             return evalRoute;
         });
+    };
+
+    /**
+     * Handles side panel item onclick.
+     *
+     * @param {RouteInterface | ChildRouteInterface} route - Clicked on route.
+     */
+    const handleItemOnClick = (route: RouteInterface | ChildRouteInterface): void => {
+        setItems(evaluateSidePanelItemExtension(routes, route));
+        onSidePanelItemClick(route);
     };
 
     /**

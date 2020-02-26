@@ -21,21 +21,22 @@ import Axios from "axios";
 import { AppConfigInterface } from "../models";
 
 /**
- * Returns true if a given key in the JSON object is set to true
- * @param appConfig
- * @param key
+ * Returns true if a given key in the JSON object is set to true.
+ *
+ * @param {AppConfigInterface} appConfig - Application config.
+ * @param {string} key - Object key.
+ * @return {boolean} If enabled or not.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const checkEnabled = (appConfig: any, key: string): boolean => {
+export const checkEnabled = (appConfig: AppConfigInterface, key: string): boolean => {
     if (appConfig[key] === undefined) {
         return true;
     } else if (typeof appConfig[key] === "boolean" && appConfig[key]) {
         return true;
     } else if (typeof appConfig[key] === "object" && appConfig[key].enabled) {
         return true;
-    } else {
-        return false;
     }
+
+    return false;
 };
 
 /**

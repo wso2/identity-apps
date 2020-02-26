@@ -84,29 +84,23 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
         }
     );
 
-    useEffect(() => {
-        if (_.isEmpty(profileDetails)) {
-            dispatch(getProfileInfo(() => null));
+    /**
+     * Checks if the URL path is similar to the path of the route that's passed in.
+     *
+     * @param { RouteInterface | ChildRouteInterface } route - Route to be evaluated.
+     * @return {boolean} If the route is active or not.
+     */
+    const isActiveRoute = (route: RouteInterface | ChildRouteInterface): boolean => {
+        const pathname = window.location.pathname.split("/").pop();
+        if (route.path) {
+            const urlTokens = route.path.split("/");
+            return pathname === urlTokens[1];
+        } else if (!route.path && route.children && route.children.length > 0) {
+            return route.children.some((childRoute) => {
+                return pathname === childRoute.path;
+            });
         }
-    }, []);
-
-    useEffect(() => {
-        setSelectedRoute(getInitialActiveRoute());
-    }, []);
-
-    useEffect(() => {
-        if (headerHeight === document.getElementById("app-header").offsetHeight) {
-            return;
-        }
-        setHeaderHeight(document.getElementById("app-header").offsetHeight);
-    }, []);
-
-    useEffect(() => {
-        if (footerHeight === document.getElementById("app-footer").offsetHeight) {
-            return;
-        }
-        setFooterHeight(document.getElementById("app-footer").offsetHeight);
-    }, []);
+    };
 
     /**
      * Gets the active route on initial app loading time.
@@ -150,14 +144,14 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
     /**
      * Handles side panel toggle click.
      */
-    const handleSidePanelToggleClick = () => {
+    const handleSidePanelToggleClick = (): void => {
         setMobileSidePanelVisibility(!mobileSidePanelVisibility);
     };
 
     /**
      * Handles side panel pusher on click.
      */
-    const handleSidePanelPusherClick = () => {
+    const handleSidePanelPusherClick = (): void => {
         setMobileSidePanelVisibility(false);
     };
 
@@ -166,7 +160,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
      *
      * @param { RouteInterface | ChildRouteInterface } route - Clicked on route.
      */
-    const handleSidePanelItemClick = (route: RouteInterface | ChildRouteInterface) => {
+    const handleSidePanelItemClick = (route: RouteInterface | ChildRouteInterface): void => {
         if (route.path) {
             setSelectedRoute(route);
             history.push(route.path);
@@ -178,30 +172,12 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
     };
 
     /**
-     * Checks if the URL path is similar to the path of the route that's passed in.
-     *
-     * @param { Route | ChildRoute } route - Route to be evaluated.
-     * @return {boolean} If the route is active or not.
-     */
-    const isActiveRoute = (route: RouteInterface | ChildRouteInterface): boolean => {
-        const pathname = window.location.pathname.split("/").pop();
-        if (route.path) {
-            const urlTokens = route.path.split("/");
-            return pathname === urlTokens[1];
-        } else if (!route.path && route.children && route.children.length > 0) {
-            return route.children.some((childRoute) => {
-                return pathname === childRoute.path;
-            });
-        }
-    };
-
-    /**
      * Handles the layout on change event.
      *
      * @param {React.SyntheticEvent<HTMLElement>} event - On change event.
      * @param {any} width - Width of the browser window.
      */
-    const handleLayoutOnUpdate = (event: SyntheticEvent<HTMLElement>, { width }) => {
+    const handleLayoutOnUpdate = (event: SyntheticEvent<HTMLElement>, { width }): void => {
         if (width < Responsive.onlyTablet.minWidth) {
             setIsMobileViewport(true);
             return;
@@ -276,6 +252,30 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
         return resolvedRoutes;
     };
 
+    useEffect(() => {
+        if (_.isEmpty(profileDetails)) {
+            dispatch(getProfileInfo(() => null));
+        }
+    }, []);
+
+    useEffect(() => {
+        setSelectedRoute(getInitialActiveRoute());
+    }, []);
+
+    useEffect(() => {
+        if (headerHeight === document.getElementById("app-header").offsetHeight) {
+            return;
+        }
+        setHeaderHeight(document.getElementById("app-header").offsetHeight);
+    }, []);
+
+    useEffect(() => {
+        if (footerHeight === document.getElementById("app-footer").offsetHeight) {
+            return;
+        }
+        setFooterHeight(document.getElementById("app-footer").offsetHeight);
+    }, []);
+
     return (
         <BaseLayout>
             <Responsive
@@ -300,7 +300,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                             size="tiny"
                             primary
                             onClick={
-                                () => {
+                                (): void => {
                                     window.open(
                                         `${GlobalConfig.userPortalClientHost}/${GlobalConfig.userPortalBaseName}`
                                     );

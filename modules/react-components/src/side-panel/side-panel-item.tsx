@@ -115,7 +115,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                                 selected && (selected.path === route.path) ? "active" : ""
                             }` }
                             active={ selected && (selected.path === route.path) }
-                            onClick={ () => onSidePanelItemClick(route) }
+                            onClick={ (): void => onSidePanelItemClick(route) }
                         >
                             <GenericIcon
                                 className="left-icon"
