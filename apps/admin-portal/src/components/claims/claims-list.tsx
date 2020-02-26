@@ -19,9 +19,9 @@
 import React from "react";
 import { ResourceList } from "@wso2is/react-components"
 import { Claim, ExternalClaim, ClaimDialect } from "../../models";
-import { Grid, List } from "semantic-ui-react";
+import { List } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-
+import { history } from "../../helpers";
 export enum ListType {
     LOCAL,
     EXTERNAL,
@@ -66,7 +66,9 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                 actions={[
                                     {
                                         icon: "pencil alternate",
-                                        onClick: () => { },
+                                        onClick: () => {
+                                            history.push("/edit-local-claims/"+claim.id)
+                                         },
                                         popupText: "edit",
                                         type: "button"
                                     },
