@@ -25,6 +25,10 @@ import { Header, HeaderProps } from "semantic-ui-react";
  */
 interface HeadingPropsInterface extends HeaderProps {
     /**
+     * Determines if the hint is in the disabled state.
+     */
+    disabled?: boolean;
+    /**
      * Adds intentional omission to the header when a width is defined.
      */
     ellipsis?: boolean;
@@ -43,12 +47,14 @@ export const Heading: React.FunctionComponent<HeadingPropsInterface> = (
     const {
         ellipsis,
         className,
+        disabled,
         ...rest
     } = props;
 
     const classes = classNames(
         {
-            ellipsis
+            ellipsis,
+            disabled
         }
         , className
     );
