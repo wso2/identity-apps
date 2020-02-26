@@ -17,22 +17,25 @@
 */
 
 import React, { useState, useEffect } from "react";
-import { Modal } from "semantic-ui-react";
+import { Modal, Header } from "semantic-ui-react";
 import { ClaimDialect, Claim } from "../../../models";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
-import { getLocalClaims } from "../../../api";
-import { Forms, Field } from "@wso2is/forms";
+import { getLocalClaims, addExternalClaim, updateAClaim } from "../../../api";
+import { Forms, Field, FormValue, useTrigger } from "@wso2is/forms";
 
-interface AddExternalClaimsPropsInterface{
+interface AddExternalClaimsPropsInterface {
     open: boolean;
     onClose: () => void;
     dialect: ClaimDialect;
+    update: () => void;
 }
 export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React.ReactElement => {
-    
-    const { open, onClose, dialect } = props;
-    
+
+    const { open, onClose, dialect, update } = props;
+
     const [localClaims, setLocalClaims] = useState<Claim[]>();
+
+    const [submit, setSubmit] = useTrigger();
 
     useEffect(() => {
         getLocalClaims().then(response => {
@@ -45,19 +48,28 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
     return (
         <Modal
             dimmer="blurring"
-            size="small"
+            size="tiny"
             open={open}
             onClose={onClose}
         >
             <Modal.Header>
-                Add an External Claim 
-                {dialect.dialectURI}
+                <Header as="h3" content="Add an External Claim" subheader={"to " + dialect?.dialectURI} />
             </Modal.Header>
             <Modal.Content>
                 <Forms
-                    onSubmit={() => {
-                        
+                    onSubmit={(values:Map<string,FormValue>) => {
+                        addExternalClaim(dialect.id, {
+                            claimURI: values.get("claimURI").toString(),
+                            mappedLocalClaimURI: values.get("localClaim").toString()
+                        }).then(response => {
+                            // TODO: Notify
+                            onClose();
+                            update();
+                        }).catch(error => {
+                            // TODO: Notify
+                        })
                     }}
+                    submitState={submit}
                 >
                     <Field
                         name="claimURI"
@@ -67,30 +79,37 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                         placeholder="Enter a claim URI"
                         type="text"
                     />
-                    <Field 
+                    <Field
                         type="dropdown"
                         name="localClaim"
                         label="Local Claim URI to map to"
+                        required={true}
+                        requiredErrorMessage="Select a local claim to map to"
                         placeholder="Select a Local Claim"
+                        search
                         children={
-                            localClaims.map((claim:Claim) => {
+                            localClaims?.map((claim: Claim, index) => {
                                 return {
-                                    key: claim.id,
+                                    key: index,
                                     value: claim.claimURI,
                                     text: claim.displayName
                                 }
                             })
                         }
-                        required={true}
-                        requiredErrorMessage="Select a local claim to map to"
                     />
                 </Forms>
             </Modal.Content>
             <Modal.Actions>
-                <LinkButton>
+                <LinkButton
+                    onClick={onClose}
+                >
                     Cancel
                 </LinkButton>
-                <PrimaryButton>
+                <PrimaryButton
+                    onClick={() => {
+                        setSubmit();
+                    }}
+                >
                     Add
                 </PrimaryButton>
             </Modal.Actions>
