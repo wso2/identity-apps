@@ -21,7 +21,7 @@ import { PageLayout } from "../layouts";
 import { ListLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
 import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
-import { ClaimsList, ListType } from "../components";
+import { ClaimsList, ListType, AddExternalClaims, EditExternalClaims } from "../components";
 import { ExternalClaim, ClaimDialect } from "../models";
 import { getAllExternalClaims, getADialect } from "../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
@@ -32,7 +32,10 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
     const [claims, setClaims] = useState<ExternalClaim[]>(null);
     const [offset, setOffset] = useState(0);
     const [listItemLimit, setListItemLimit] = useState<number>(0);
-    const [dialect, setDialect] = useState<ClaimDialect>( null);
+    const [dialect, setDialect] = useState<ClaimDialect>(null);
+    const [addClaim, setAddClaim] = useState(false);
+    const [editClaim, setEditClaim] = useState(false);
+    const [editClaimID, setEditClaimID] = useState("");
 
     const dialectID = props.match.params.id;
 
@@ -48,12 +51,16 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
     }, []);
 
     useEffect(() => {
+        getExternalClaims();
+    }, [dialectID]);
+
+    const getExternalClaims = () => {
         dialectID && getAllExternalClaims(dialectID, null).then(response => {
             setClaims(response);
         }).catch(error => {
             // TODO: Notify
         });
-    }, [dialectID]);
+    }
 
     const paginate = (list: ExternalClaim[], limit: number, offset: number): ExternalClaim[] => {
         return list?.slice(offset, offset + limit);
@@ -68,40 +75,73 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
     };
 
     return (
-        <PageLayout
-            title="External Claims"
-            description={"View, edit and add claims of "+dialect?.dialectURI}
-            showBottomDivider={true}
-            backButton={{
-                onClick: () => { history.push("/claim-dialects")},
-                text: "Go back to Claim Dialects"
-            }}
-        >
-            <ListLayout
-                advancedSearch={null}
-                currentListSize={listItemLimit}
-                listItemLimit={listItemLimit}
-                onItemsPerPageDropdownChange={handleItemsPerPageDropdownChange}
-                onPageChange={handlePaginationChange}
-                onSortStrategyChange={null}
-                rightActionPanel={
-                    (
-                        <PrimaryButton
-                            onClick={() => {
-                            }}
-                        >
-                            <Icon name="add" />Add a claim
-                        </PrimaryButton>
-                    )
-                }
-                showPagination={true}
-                sortOptions={null}
-                sortStrategy={null}
-                totalPages={Math.ceil(claims?.length / listItemLimit)}
-                totalListSize={claims?.length}
+        <>
+            {addClaim
+                ? <AddExternalClaims
+                    open={addClaim}
+                    onClose={() => { setAddClaim(false) }}
+                    dialect={dialect}
+                    update={getExternalClaims}
+                />
+                : null
+            }
+            {
+                editClaim
+                    ? <EditExternalClaims
+                        open={editClaim}
+                        onClose={() => {
+                            setEditClaim(false);
+                            setEditClaimID("");
+                        }}
+                        update={getExternalClaims}
+                        claimID={editClaimID}
+                        dialectID={dialect?.id}
+                    />
+                    : null
+            }
+            <PageLayout
+                title="External Claims"
+                description={"View, edit and add claims of " + dialect?.dialectURI}
+                showBottomDivider={true}
+                backButton={{
+                    onClick: () => { history.push("/claim-dialects") },
+                    text: "Go back to Claim Dialects"
+                }}
             >
-                <ClaimsList list={paginate(claims, listItemLimit, offset)} localClaim={ListType.EXTERNAL} />
-            </ListLayout>
-        </PageLayout>
+                <ListLayout
+                    advancedSearch={null}
+                    currentListSize={listItemLimit}
+                    listItemLimit={listItemLimit}
+                    onItemsPerPageDropdownChange={handleItemsPerPageDropdownChange}
+                    onPageChange={handlePaginationChange}
+                    onSortStrategyChange={null}
+                    rightActionPanel={
+                        (
+                            <PrimaryButton
+                                onClick={() => {
+                                    setAddClaim(true);
+                                }}
+                            >
+                                <Icon name="add" />Add a claim
+                        </PrimaryButton>
+                        )
+                    }
+                    showPagination={true}
+                    sortOptions={null}
+                    sortStrategy={null}
+                    totalPages={Math.ceil(claims?.length / listItemLimit)}
+                    totalListSize={claims?.length}
+                >
+                    <ClaimsList
+                        list={paginate(claims, listItemLimit, offset)}
+                        localClaim={ListType.EXTERNAL}
+                        openEdit={(claimID: string) => {
+                            setEditClaim(true);
+                            setEditClaimID(claimID);
+                        }}
+                    />
+                </ListLayout>
+            </PageLayout>
+        </>
     );
 };
