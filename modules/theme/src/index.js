@@ -31,6 +31,7 @@ export const ArrowRight = require("../lib/assets/images/icons/arrow-right-icon.s
 export const BlockedMagnifierIcon = require("../lib/assets/images/icons/blocked-magnifier-icon.svg");
 export const BoxIcon = require("../lib/assets/images/icons/box-icon.svg");
 export const CaretRightIcon = require("../lib/assets/images/icons/caret-right-icon.svg");
+export const ClaimsIcon = require("../lib/assets/images/icons/claims-icon.svg");
 export const CloseIcon = require("../lib/assets/images/icons/close-icon.svg");
 export const CodeIcon = require("../lib/assets/images/icons/code-icon.svg");
 export const ConsentIcon = require("../lib/assets/images/icons/consent-icon.svg");

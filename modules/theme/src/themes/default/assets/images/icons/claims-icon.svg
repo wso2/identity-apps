@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?> 
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg class="icon" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" viewBox="0 0 1024 1024">
+<defs/>
+<g>
+<path class="path fill secondary" d="M648.25+71.5625C608.245+71.5625+575.813+103.995+575.812+144C575.812+184.005+608.245+216.438+648.25+216.438L915.719+216.438C955.723+216.438+988.156+184.005+988.156+144C988.156+103.995+955.724+71.5625+915.719+71.5625L648.25+71.5625ZM252+75C191.249+75+142+124.249+142+185C142+227.348+165.956+264.053+201.031+282.438C126.462+304.431+72+373.306+72+455L432+455C432+373.306+377.538+304.431+302.969+282.438C338.044+264.053+362+227.348+362+185C362+124.249+312.751+75+252+75ZM540+311.562C499.995+311.562+467.562+343.995+467.562+384C467.562+424.005+499.995+456.438+540+456.438L915.719+456.438C955.723+456.438+988.156+424.005+988.156+384C988.156+343.995+955.724+311.562+915.719+311.562L540+311.562ZM123.719+551.562C83.714+551.562+51.2812+583.995+51.2812+624C51.2812+664.005+83.714+696.437+123.719+696.438L915.719+696.438C955.723+696.438+988.156+664.005+988.156+624C988.156+583.995+955.724+551.563+915.719+551.562L123.719+551.562ZM123.719+791.562C83.714+791.562+51.2812+823.995+51.2812+864C51.2812+904.005+83.714+936.438+123.719+936.438L915.719+936.438C955.723+936.438+988.156+904.005+988.156+864C988.156+823.995+955.724+791.562+915.719+791.562L123.719+791.562Z" fill="#000000" stroke-linecap="round" opacity="1"/>
+</g>
+</svg>
