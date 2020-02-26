@@ -34,6 +34,7 @@ interface URLInputComponentInterface {
     showError?: boolean;
     setShowError?: any;
     required?:boolean;
+    disabled?: boolean;
 }
 
 /**
@@ -53,7 +54,8 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
         labelName,
         value,
         hint,
-        required
+        required,
+        disabled
     } = props;
 
     const [changeUrl, setChangeUrl] = useState("");
@@ -97,9 +99,10 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
      * Handle blur event.
      */
     const handleOnBlur = () => {
-        if (!isEmpty(changeUrl)) {
-            addUrl();
-        }
+        // TODO introduce a different method to handle this
+        // if (!isEmpty(changeUrl)) {
+        //     addUrl();
+        // }
         setKeepFocus(false);
     };
 
@@ -207,7 +210,9 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                         placeholder={ placeholder }
                         action
                     >
-                        <input/>
+                        <input
+                            disabled={ disabled ? disabled : false }
+                        />
                         <Popup
                             trigger={
                                 (
@@ -215,6 +220,7 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                                         onClick={ (e) => addFromButton(e) }
                                         icon="add"
                                         type="button"
+                                        disabled={ disabled ? disabled : false }
                                     />
                                 )
                             }
