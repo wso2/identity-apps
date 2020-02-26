@@ -20,11 +20,10 @@ import React, { useEffect, useState } from "react";
 import { PageLayout } from "../layouts";
 import { ListLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
-import { Icon, Dropdown, DropdownProps, PaginationProps } from "semantic-ui-react";
+import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
 import { ClaimsList, ListType } from "../components";
-import { ClaimDialect, Claim, ClaimsGetParams } from "../models";
-import { getClaimDialect } from "../api";
-import { getAllExternalClaims, getAllLocalClaims } from "../api";
+import { Claim, ClaimsGetParams } from "../models";
+import { getAllLocalClaims } from "../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
 import { AddLocalClaims } from "../components";
 
@@ -37,9 +36,11 @@ export const LocalClaimsPage = (): React.ReactElement => {
 
 
     useEffect(() => {
-
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
+        getLocalClaims();
+    }, []);
 
+    const getLocalClaims = () => {
         const params: ClaimsGetParams = {
             limit: null,
             sort: null,
@@ -52,12 +53,7 @@ export const LocalClaimsPage = (): React.ReactElement => {
         }).catch(error => {
             // TODO: Notify
         });
-
-    }, []);
-
-    useEffect(() => {
-
-    }, []);
+    }
 
     const paginate = (list: Claim[], limit: number, offset: number): Claim[] => {
         return list?.slice(offset, offset + limit);
@@ -79,6 +75,7 @@ export const LocalClaimsPage = (): React.ReactElement => {
                         open={openModal}
                         onClose={() => { setOpenModal(false) }}
                         claimID={null}
+                        update={getLocalClaims}
                     />
                     : null
             }
@@ -117,4 +114,4 @@ export const LocalClaimsPage = (): React.ReactElement => {
             </PageLayout>
         </>
     );
-}
+};
