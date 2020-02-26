@@ -133,7 +133,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
                 Add a Local Claim
             </Modal.Header>
             <Modal.Content className="steps-container">
-                <Steps.Group header="Fill in teh following details to create a local claim." current={currentWizardStep}>
+                <Steps.Group header="Fill in the following details to create a local claim." current={currentWizardStep}>
                     {STEPS.map((step, index) => (
                         <Steps.Step
                             key={index}
