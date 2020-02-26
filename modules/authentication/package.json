@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/authentication",
-    "version": "1.0.58",
+    "version": "1.0.59",
     "description": "Authentication module for WSO2 Identity Server Webapps.",
     "keywords": [
         "WSO2",
