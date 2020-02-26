@@ -18,3 +18,4 @@
 
 export * from "./claims-list";
 export * from "./add-local-claims";
+export * from "./edit";
