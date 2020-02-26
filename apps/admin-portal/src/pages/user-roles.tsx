@@ -48,7 +48,7 @@ export const UserRoles = (): ReactElement => {
     }, []);
 
     const getRoleList = () => {
-        getGroupsList().then((response)=> {
+        getGroupsList(null).then((response)=> {
             if (response.status === 200) {
                 setRoleList(response.data);
             }

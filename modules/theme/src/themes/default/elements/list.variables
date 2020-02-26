@@ -27,3 +27,25 @@
 
 /* List Padding */
 @settingsSectionInnerListHeaderPaddingLeft: 37px;
+
+/*------------------------
+   User roles list
+--------------------------*/
+
+/* List Padding */
+@userRolesListPadding: 0.5em 0.5em;
+
+/* List Margin */
+@userRolesListMargin: 0em;
+
+/* List Item Font Color */
+@userRolesListItemFontColor: #666666;
+
+/* List Item Icon Padding */
+@userRolesListIconPaddingRight: 2px;
+
+/* List Item Background Color */
+@userRolesListItemBackgroundColorOnHover: #f7f7f7;
+
+/* List Item Border Radius */
+@userRolesListItemBorderRadius: 0.5em;

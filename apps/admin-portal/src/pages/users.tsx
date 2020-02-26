@@ -17,11 +17,11 @@
  */
 
 import { Button, EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
-import React, { useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownProps, Grid, Icon, PaginationProps } from "semantic-ui-react";
-import { deleteUser, getUsersList } from "../api";
+import { deleteUser, getGroupsList, getUsersList } from "../api";
 import { UserSearch, UsersList } from "../components/users";
 import { AddUserWizard } from "../components/users/wizard/add-user-wizard";
 import { ListLayout, PageLayout } from "../layouts";
@@ -37,7 +37,7 @@ import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
  *
  * @return {JSX.Element}
  */
-export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
+export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -46,6 +46,7 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ usersList, setUsersList ] = useState<UserListInterface>({});
+    const [ rolesList, setRolesList ] = useState([]);
     const [ isListUpdated, setListUpdated ] = useState(false);
 
     const getList = (limit: number, offset: number, filter: string) => {
@@ -54,6 +55,24 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
                 setUsersList(response);
             });
     };
+
+    const getRolesList = (domain: string) => {
+        getGroupsList(domain)
+            .then((response) => {
+                setRolesList(response.data.Resources);
+            });
+    };
+
+    const getRoleListForDomain = (domain: string) => {
+        getGroupsList(domain)
+            .then((response) => {
+                setRolesList([ ...rolesList, ...response.data.Resources ] );
+            });
+    };
+
+    useEffect(() => {
+        getRolesList("Application");
+    }, []);
 
     useEffect(() => {
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
@@ -65,6 +84,7 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
 
     useEffect(() => {
         getList(listItemLimit, listOffset, null);
+        setListUpdated(false);
     }, [ isListUpdated ]);
 
     /**
@@ -193,6 +213,8 @@ export const UsersPage: React.FunctionComponent<any> = (): JSX.Element => {
                         listOffset={ listOffset }
                         listItemLimit={ listItemLimit }
                         updateList={ () => setListUpdated(true) }
+                        rolesList={ rolesList }
+                        onUserListDomainChange={ (domain) => getRoleListForDomain(domain) }
                     />
                     )
                 }

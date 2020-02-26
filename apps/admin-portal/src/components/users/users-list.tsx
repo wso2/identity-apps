@@ -93,6 +93,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         itemDescription={ user.emails ? user.emails[0].toString() :
                             user.userName }
                         metaContent={ listContent(CommonUtils.humanizeDateDifference(user.meta.lastModified)) }
+                        metaColumnWidth={ 6 }
+                        descriptionColumnWidth={ 5 }
                     />
                 ))
             }
