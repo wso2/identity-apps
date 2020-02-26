@@ -143,7 +143,7 @@ export interface CheckboxField extends FormRequiredFieldModel {
 export interface DropdownChild {
     text: string;
     value: string;
-    key: number;
+    key: string | number;
 }
 
 /**
