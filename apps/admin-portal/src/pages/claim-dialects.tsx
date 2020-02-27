@@ -23,9 +23,9 @@ import { PrimaryButton } from "@wso2is/react-components";
 import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
 import { ClaimsList, ListType } from "../components";
 import { ClaimDialect } from "../models";
-import { getClaimDialect } from "../api";
+import { getDialects } from "../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
-import { AddEditDialect } from "../components";
+import { AddEditDialect, DialectSearch } from "../components";
 
 export const ClaimDialectsPage = (): React.ReactElement => {
 
@@ -37,11 +37,14 @@ export const ClaimDialectsPage = (): React.ReactElement => {
 
     useEffect(() => {
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
-        getDialects();
+        getDialect();
     }, []);
 
-    const getDialects = () => {
-        getClaimDialect().then((response: ClaimDialect[]) => {
+    const getDialect = (limit?: number, offset?: number, sort?: string, filter?: string, ) => {
+        getDialects({
+            limit, offset, sort, filter
+
+        }).then((response: ClaimDialect[]) => {
             const filteredResponse = response.filter((claim: ClaimDialect) => {
                 return claim.id !== "local";
             });
@@ -71,7 +74,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                     setAddEditClaim(false);
                     setDialectID(null);
                 }}
-                update={getDialects}
+                update={getDialect}
                 edit={dialectID ? true : false}
                 dialectID={dialectID}
             />
@@ -81,7 +84,11 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                 showBottomDivider={true}
             >
                 <ListLayout
-                    advancedSearch={null}
+                    advancedSearch={
+                        <DialectSearch onFilter={(query) => {
+                            getDialect(null, null, null, query);
+                        }} />
+                    }
                     currentListSize={listItemLimit}
                     listItemLimit={listItemLimit}
                     onItemsPerPageDropdownChange={handleItemsPerPageDropdownChange}
@@ -113,7 +120,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                                 setAddEditClaim(true);
                             }
                         }
-                        update={getDialects}
+                        update={getDialect}
                     />
                 </ListLayout>
             </PageLayout>
