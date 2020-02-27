@@ -71,6 +71,16 @@ export const EditBasicDetailsLocalClaims = (
                     <Grid.Column width={6}>
                         <Field
                             type="text"
+                            name="claimURI"
+                            label="Claim ID"
+                            required={false}
+                            readOnly
+                            requiredErrorMessage="Claim URI is required"
+                            placeholder="Enter a claim URI"
+                            value={claim?.claimURI.replace(claimURIBase + "/", "")}
+                        />
+                        <Field
+                            type="text"
                             name="name"
                             label="Name"
                             required={true}
@@ -86,15 +96,6 @@ export const EditBasicDetailsLocalClaims = (
                             requiredErrorMessage="Description is required"
                             placeholder="Enter a description"
                             value={claim?.description}
-                        />
-                        <Field
-                            type="text"
-                            name="claimURI"
-                            label="Claim ID"
-                            required={true}
-                            requiredErrorMessage="Claim URI is required"
-                            placeholder="Enter a claim URI"
-                            value={claim?.claimURI.replace(claimURIBase + "/", "")}
                         />
                         <Field
                             type="text"
