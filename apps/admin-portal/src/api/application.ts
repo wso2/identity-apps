@@ -358,11 +358,12 @@ export const getOIDCData = (id: string): Promise<any> => {
  * when the path provided in the `self` attribute of the application
  * response is passed in.
  *
- * @param {string} endpoint - Resource endpoint.
+ * @param {string} applicationId - ID of the application.
+ * @param {string} inboundProtocolId - Protocol ID.
  * @return {Promise<OIDCDataInterface>}
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const getInboundProtocolConfig = (endpoint: string): Promise<any> => {
+export const getInboundProtocolConfig = (applicationId: string, inboundProtocolId: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -370,7 +371,7 @@ export const getInboundProtocolConfig = (endpoint: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: GlobalConfig.serverOrigin + endpoint
+        url: `${ ServiceResourcesEndpoint.applications }/${ applicationId }/inbound-protocols/${ inboundProtocolId }`
     };
 
     return httpClient.request(requestConfig)
