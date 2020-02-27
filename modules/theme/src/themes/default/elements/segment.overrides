@@ -88,3 +88,36 @@
         }
     }
 }
+
+/*******************************
+     User List Variation
+*******************************/
+
+.ui.segment {
+    &.user-role-list-segment {
+        margin-top: @userRolesListSegmentMarginTop;
+        height: @userRolesListSegmentHeight;
+        overflow: auto;
+    }
+
+    &.user-assigned-roles-segment {
+        height: @assignedRolesListSegmentHeight;
+
+        .ui.label {
+            margin-top: @assignedRolesListLabelMarginTop;
+            margin-left: @assignedRolesListLabelMarginLeft;
+
+            &.info-label {
+                background-color: @InfoLabelBackgroundColor !important;
+                border-color: @InfoLabelBorderColor !important;
+                color: white;
+                margin-left: @assignedRolesListLabelMarginLeft;
+
+                i {
+                    margin-right: auto;
+                    margin-left: @assignedRolesListIconMarginLeft;
+                }
+            }
+        }
+    }
+}

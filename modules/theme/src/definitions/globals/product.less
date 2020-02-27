@@ -917,4 +917,15 @@ body {
     }
 }
 
+/**
+ * The following style was added to overcome the issue
+ * with rendering the popup on a modal when the modal
+ * dimmer is set to blurring.
+ *
+ * This is a known issue: https://github.com/Semantic-Org/Semantic-UI-React/issues/1803
+ */
+.blurring.dimmed.dimmable > :not(.dimmer).popup {
+    filter: none;
+}
+
 .loadUIOverrides();

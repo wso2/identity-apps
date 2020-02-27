@@ -35,6 +35,21 @@ import {
 
 /**
  * Dashboard Layout Routes array.
+ *
+ * @remarks
+ * Having a unique id for every route is mandatory.
+ * Since there are checks performed inside the side
+ * panel component to validate the exact clicked route,
+ * selected route etc.
+ * @example
+ * A route can have children and still be clickable.
+ * If so, define a path. If no path is defined, the
+ * child routes section will be extended in the UI.
+ *  {
+ *      children: [ ... ],
+ *     ...
+ *     path: "/applications"
+ *  }
  */
 const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
@@ -47,6 +62,28 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: false,
     },
     {
+        children: [
+            {
+                component: ApplicationTemplateSelectPage,
+                exact: true,
+                icon: null,
+                id: "applicationTemplate",
+                name: "Application Templates",
+                path: "/applications/templates",
+                protected: true,
+                showOnSidePanel: false,
+            },
+            {
+                component: ApplicationEditPage,
+                exact: true,
+                icon: "applications",
+                id: "applicationsEdit",
+                name: "Application-Edit",
+                path: "/applications/:id",
+                protected: true,
+                showOnSidePanel: false,
+            },
+        ],
         component: ApplicationsPage,
         exact: true,
         icon: "applications",
@@ -57,26 +94,18 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true,
     },
     {
-        component: ApplicationTemplateSelectPage,
-        exact: true,
-        icon: null,
-        id: "applicationTemplate",
-        name: "Application-Template",
-        path: "/applications/templates",
-        protected: true,
-        showOnSidePanel: false,
-    },
-    {
-        component: ApplicationEditPage,
-        exact: true,
-        icon: "applications",
-        id: "applicationsEdit",
-        name: "Application-Edit",
-        path: "/applications/:id",
-        protected: true,
-        showOnSidePanel: false,
-    },
-    {
+        children: [
+            {
+                component: IdentityProviderTemplateSelectPage,
+                exact: true,
+                icon: null,
+                id: "identityProviderTemplate",
+                name: "Identity-Provider-Template",
+                path: "/connections/templates",
+                protected: true,
+                showOnSidePanel: false,
+            }
+        ],
         component: ConnectionsPage,
         exact: true,
         icon: "connections",
@@ -87,21 +116,12 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true,
     },
     {
-        component: IdentityProviderTemplateSelectPage,
-        exact: true,
-        icon: null,
-        id: "identityProviderTemplate",
-        name: "Identity-Provider-Template",
-        path: "/connections/templates",
-        protected: true,
-        showOnSidePanel: false,
-    },
-    {
         children: [
             {
                 component: UsersPage,
                 exact: true,
                 icon: "childIcon",
+                id: "users",
                 level: 2,
                 name: "Users",
                 path: "/users",
@@ -112,30 +132,30 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 component: UserRoles,
                 exact: true,
                 icon: "childIcon",
+                id: "roles",
                 level: 2,
                 name: "User Roles",
                 path: "/roles",
                 protected: true,
                 showOnSidePanel: true
+            },
+            {
+                component: UserEditPage,
+                exact: true,
+                icon: "usersAndRoles",
+                id: "usersEdit",
+                name: "User-Edit",
+                path: "/users/:id",
+                protected: true,
+                showOnSidePanel: false,
             }
         ],
-        component: UsersPage,
         exact: true,
         icon: "usersAndRoles",
         id: "usersAndRoles",
         name: "Users & Roles",
-        path: "/users",
         protected: true,
         showOnSidePanel: true,
-    },
-    {
-        component: UserEditPage,
-        exact: true,
-        icon: "usersAndRoles",
-        name: "User-Edit",
-        path: "/users/:id",
-        protected: true,
-        showOnSidePanel: false,
     },
     {
         component: PrivacyPage,

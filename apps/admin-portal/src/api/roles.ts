@@ -32,13 +32,16 @@ const httpClient = AxiosHttpClient.getInstance();
  * @returns {Promise<BasicProfileInterface>} a promise containing the user list.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const getGroupsList = (): Promise<any> => {
+export const getGroupsList = (domain: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
+        params: {
+            domain
+        },
         url: ServiceResourcesEndpoint.groups
     };
 

@@ -24,6 +24,9 @@
 <%@ page import="org.wso2.carbon.identity.oauth2.OAuth2ScopeService" %>
 <%@ page import="org.wso2.carbon.identity.oauth2.bean.Scope" %>
 <%@ page import="org.wso2.carbon.identity.oauth2.IdentityOAuth2ScopeException" %>
+<%@ page import="org.wso2.carbon.identity.oauth.dto.ScopeDTO" %>
+<%@ page import="org.wso2.carbon.identity.oauth.IdentityOAuthAdminException" %>
+<%@ page import="org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.stream.Collectors" %>
@@ -179,22 +182,43 @@
                                     <div class="scopes-list ui list">
                                         <%
                                             for (String scopeID : openIdScopes) {
+                                                String displayName = null;
+                                                String description = null;
                                                 try {
                                                     Scope scope = new OAuth2ScopeService().getScope(scopeID);
                                                     if (scope != null) {
-                                                        String displayName = scope.getDisplayName();
+                                                        displayName = scope.getDisplayName();
+                                                        description = scope.getDescription();
+                                                    }
+                                                } catch (IdentityOAuth2ScopeException e) {
+                                                    try {
+                                                        ScopeDTO oidcScope =
+                                                                new OAuthAdminServiceImpl().getScope(scopeID);
+                                                        if (oidcScope != null) {
+                                                            displayName = oidcScope.getDisplayName();
+                                                            description = oidcScope.getDescription();
+                                                        }
+                                                    } catch (IdentityOAuthAdminException exception) {
+                                                        displayName = scopeID;
+                                                    }
+                                                }
+    
+                                                if (displayName != null) {
                                         %>
                                         <div class="item">
                                             <i class="check circle outline icon"></i>
                                             <div class="content">
-                                                <%=Encode.forHtml(displayName)%>
+                                                <div class="header">
+                                                    <%=Encode.forHtml(displayName)%>
+                                                </div>
+                                                <% if (description != null) { %>
+                                                <div class="description">
+                                                    <%=Encode.forHtml(description)%>
+                                                </div>
+                                                <% } %>
                                             </div>
                                         </div>
                                         <%
-                                                    }
-                                                } catch (IdentityOAuth2ScopeException e) {
-                                                    // Ignore the error since the scope might be an open ID scope
-                                                    // so can't view it via scope binding layer.
                                                 }
                                             }
                                         %>
