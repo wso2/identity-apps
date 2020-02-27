@@ -176,7 +176,7 @@ export const deleteAClaim = (id: string): Promise<any> => {
  * Add a claim dialect
  * @param data Adds this data
  */
-export const addDialect = (data: ClaimDialect): Promise<any> => {
+export const addDialect = (dialectURI: string): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
@@ -185,12 +185,14 @@ export const addDialect = (data: ClaimDialect): Promise<any> => {
         },
         method: HttpMethods.POST,
         url: ServiceResourcesEndpoint.claims,
-        data
+        data: {
+            dialectURI
+        }
     };
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status !== 200) {
+            if (response.status !== 201) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
             return Promise.resolve(response.data);
@@ -258,7 +260,7 @@ export const getDialects = (): Promise<any> => {
  * @param id Claim Dialect ID
  * @param data Updates with this data
  */
-export const updateADialect = (id: string, data: Claim): Promise<any> => {
+export const updateADialect = (id: string, dialectURI: string): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
@@ -267,7 +269,9 @@ export const updateADialect = (id: string, data: Claim): Promise<any> => {
         },
         method: HttpMethods.PUT,
         url: `${ServiceResourcesEndpoint.claims}/${id}`,
-        data
+        data: {
+            dialectURI
+        }
     };
     return httpClient
         .request(requestConfig)
