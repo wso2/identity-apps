@@ -297,18 +297,6 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     const handleWizardFormFinish = (application: any): void => {
         if (wizardState[ WizardStepsFormTypes.PROTOCOL_SELECTION ].id === SupportedAuthProtocolTypes.OIDC) {
             delete application.inboundProtocolConfiguration.saml;
-
-            application = {
-                ...application,
-                inboundProtocolConfiguration: {
-                    ...application.inboundProtocolConfiguration,
-                    oidc: {
-                        ...application.inboundProtocolConfiguration.oidc,
-                        callbackURLs: EncodeDecodeUtils
-                            .decodeURLRegex(application?.inboundProtocolConfiguration?.oidc?.callbackURLs)
-                    }
-                }
-            }
         } else if (wizardState[ WizardStepsFormTypes.PROTOCOL_SELECTION ].id === SupportedAuthProtocolTypes.SAML) {
             delete application.inboundProtocolConfiguration.oidc;
         }

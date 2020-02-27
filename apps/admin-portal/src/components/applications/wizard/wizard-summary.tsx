@@ -153,8 +153,11 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             {
+                                // Multiple callback URLs are supported through regexp only.
+                                // Hence the retrieval of 0th index.
+                                // TODO: Revert this once the API supports callback URLs as string arrays.
                                 EncodeDecodeUtils.decodeURLRegex(
-                                    summary.inboundProtocolConfiguration.oidc.callbackURLs)
+                                    summary.inboundProtocolConfiguration.oidc.callbackURLs[0])
                                     .map((url, index) => (
                                         <div className="value url" key={ index }>{ url }</div>
                                     ))
