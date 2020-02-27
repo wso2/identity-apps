@@ -16,10 +16,10 @@
 * under the License.
 */
 
-import React from "react";
-import { ResourceList } from "@wso2is/react-components"
+import React, { useState } from "react";
+import { ResourceList, LinkButton, PrimaryButton } from "@wso2is/react-components"
 import { Claim, ExternalClaim, ClaimDialect } from "../../models";
-import { List } from "semantic-ui-react";
+import { List, Modal } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { history } from "../../helpers";
 import { deleteAClaim, updateAClaim, deleteAnExternalClaim, deleteADialect } from "../../api";
@@ -40,6 +40,10 @@ interface ClaimsListPropsInterface {
 export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement => {
 
     const { list, localClaim, openEdit, update, dialectID } = props;
+
+    const [deleteConfirm, setDeleteConfirm] = useState(false);
+    const [deleteType, setDeleteType] = useState<ListType>(null);
+    const [deleteID, setDeleteID] = useState<string>(null);
 
     const isLocalClaim = (toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[]): toBeDetermined is Claim[] => {
         return localClaim === ListType.LOCAL;
@@ -62,6 +66,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
     const deleteLocalClaim = (id: string) => {
         deleteAClaim(id).then(response => {
             update();
+            closeDeleteConfirm();
             // TODO: Notify
         }).catch(error => {
             // TODO: Notify
@@ -71,6 +76,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
     const deleteExternalClaim = (dialectID: string, claimID: string) => {
         deleteAnExternalClaim(dialectID, claimID).then(response => {
             update();
+            closeDeleteConfirm();
             // TODO: Notify
         }).catch(error => {
             // TODO: Notify
@@ -80,43 +86,78 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
     const deleteDialect = (dialectID: string) => {
         deleteADialect(dialectID).then(response => {
             update();
+            closeDeleteConfirm();
             // TODO: Notify
         }).catch(error => {
             // TODO: Notify
         })
     };
 
+    const showDeleteConfirm = (): React.ReactElement => {
+        return (
+            <Modal
+                open={deleteConfirm}
+                onClose={closeDeleteConfirm}
+                size="mini"
+                dimmer="blurring"
+            >
+                <Modal.Header>
+                    Confirm Delete
+                </Modal.Header>
+                <Modal.Content>
+                    This will completely delete the
+                    {
+                        deleteType === ListType.DIALECT
+                            ? " Claim Dialect. "
+                            : deleteType === ListType.EXTERNAL
+                                ? " External Claim. "
+                                : " Local Claim. "
+                    }
+                    Do you want to continue deleting it? 
+                </Modal.Content>
+                <Modal.Actions>
+                    <LinkButton onClick={closeDeleteConfirm}>
+                        Cancel
+                    </LinkButton>
+                    <PrimaryButton onClick={() => {
+                        switch (deleteType) {
+                            case ListType.DIALECT:
+                                deleteDialect(deleteID);
+                                break;
+                            case ListType.EXTERNAL:
+                                deleteExternalClaim(dialectID, deleteID);
+                                break;
+                            case ListType.LOCAL:
+                                deleteLocalClaim(deleteID);
+                                break;
+                        }
+                    }}>
+                        Delete
+                    </PrimaryButton>
+                </Modal.Actions>
+            </Modal>
+        )
+    };
+
+    const initDelete = (type: ListType, id: string) => {
+        setDeleteType(type);
+        setDeleteID(id);
+        setDeleteConfirm(true);
+    };
+
+    const closeDeleteConfirm = () => {
+        setDeleteConfirm(false);
+        setDeleteID(null);
+        setDeleteType(null);
+    }
+
     return (
-        <ResourceList>
-            {
-                isLocalClaim(list)
-                    ? list?.map((claim: Claim, index: number) => {
-                        return (
-                            <ResourceList.Item
-                                key={index}
-                                actions={[
-                                    {
-                                        icon: "pencil alternate",
-                                        onClick: () => {
-                                            history.push("/edit-local-claims/" + claim?.id)
-                                        },
-                                        popupText: "edit",
-                                        type: "button"
-                                    },
-                                    {
-                                        icon: "trash alternate",
-                                        onClick: () => { deleteLocalClaim(claim?.id) },
-                                        popupText: "delete",
-                                        type: "dropdown"
-                                    }
-                                ]}
-                                itemHeader={claim.displayName}
-                                metaContent={listContent(claim.description)}
-                            />
-                        )
-                    })
-                    : isDialect(list)
-                        ? list?.map((dialect: ClaimDialect, index: number) => {
+        <>
+            {deleteConfirm ? showDeleteConfirm() : null}
+            <ResourceList>
+                {
+                    isLocalClaim(list)
+                        ? list?.map((claim: Claim, index: number) => {
                             return (
                                 <ResourceList.Item
                                     key={index}
@@ -124,50 +165,77 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                         {
                                             icon: "pencil alternate",
                                             onClick: () => {
-                                                openEdit(dialect.id);
+                                                history.push("/edit-local-claims/" + claim?.id)
                                             },
                                             popupText: "edit",
                                             type: "button"
                                         },
                                         {
                                             icon: "trash alternate",
-                                            onClick: () => { deleteDialect(dialect?.id) },
+                                            onClick: () => { initDelete(ListType.LOCAL, claim?.id) },
                                             popupText: "delete",
                                             type: "dropdown"
                                         }
                                     ]}
-                                    itemHeader={(
-                                        <Link to={"/external-claims/" + dialect.id} >{dialect.dialectURI}</Link>
-                                    )}
+                                    itemHeader={claim.displayName}
+                                    metaContent={listContent(claim.description)}
                                 />
                             )
                         })
-                        : list?.map((claim: ExternalClaim, index: number) => {
-                            return (
-                                <ResourceList.Item
-                                    key={index}
-                                    actions={[
-                                        {
-                                            icon: "pencil alternate",
-                                            onClick: () => {
-                                                openEdit(claim?.id);
+                        : isDialect(list)
+                            ? list?.map((dialect: ClaimDialect, index: number) => {
+                                return (
+                                    <ResourceList.Item
+                                        key={index}
+                                        actions={[
+                                            {
+                                                icon: "pencil alternate",
+                                                onClick: () => {
+                                                    openEdit(dialect.id);
+                                                },
+                                                popupText: "edit",
+                                                type: "button"
                                             },
-                                            popupText: "edit",
-                                            type: "button"
-                                        },
-                                        {
-                                            icon: "trash alternate",
-                                            onClick: () => { deleteExternalClaim(dialectID, claim?.id) },
-                                            popupText: "delete",
-                                            type: "dropdown"
-                                        }
-                                    ]}
-                                    itemHeader={claim.claimURI}
-                                    metaContent={listContent(claim.mappedLocalClaimURI)}
-                                />
-                            )
-                        })
-            }
-        </ResourceList>
+                                            {
+                                                icon: "trash alternate",
+                                                onClick: () => { initDelete(ListType.DIALECT, dialect?.id) },
+                                                popupText: "delete",
+                                                type: "dropdown"
+                                            }
+                                        ]}
+                                        itemHeader={(
+                                            <Link to={"/external-claims/" + dialect.id} >{dialect.dialectURI}</Link>
+                                        )}
+                                    />
+                                )
+                            })
+                            : list?.map((claim: ExternalClaim, index: number) => {
+                                return (
+                                    <ResourceList.Item
+                                        key={index}
+                                        actions={[
+                                            {
+                                                icon: "pencil alternate",
+                                                onClick: () => {
+                                                    openEdit(claim?.id);
+                                                },
+                                                popupText: "edit",
+                                                type: "button"
+                                            },
+                                            {
+                                                icon: "trash alternate",
+                                                onClick: () => { initDelete(ListType.EXTERNAL, claim?.id) },
+                                                popupText: "delete",
+                                                type: "dropdown"
+                                            }
+                                        ]}
+                                        itemHeader={claim.claimURI}
+                                        metaContent={listContent(claim.mappedLocalClaimURI)}
+                                    />
+                                )
+                            })
+                }
+            </ResourceList>
+        </>
     )
-}
+};
