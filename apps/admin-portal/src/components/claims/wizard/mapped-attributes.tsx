@@ -148,7 +148,7 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): React.R
         mappedAttributes.size < userStore.length
             ? mappedElements.push(
                 <Grid.Row key={lastElement + 1} textAlign="center" columns={1}>
-                    <Grid.Column width={16}>
+                    <Grid.Column width={14}>
                         <Button
                             type="button"
                             size="mini"
