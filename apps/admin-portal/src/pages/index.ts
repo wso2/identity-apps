@@ -25,3 +25,5 @@ export * from "./application-edit";
 export * from "./user-edit";
 export * from "./application-template";
 export * from "./user-roles";
+export * from "./identity-providers";
+export * from "./identity-provider-template";

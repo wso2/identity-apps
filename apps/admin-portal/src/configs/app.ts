@@ -27,7 +27,7 @@ interface ServiceResourcesType {
     consents: string;
     groups: string;
     claims: string;
-    identityProvider: string;
+    identityProviders: string;
     issuer: string;
     jwks: string;
     logout: string;
@@ -52,7 +52,7 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     claims: `${GlobalConfig.serverHost}/api/server/v1/claim-dialects`,
     consents: `${GlobalConfig}/api/identity/consent-mgt/v1.0/consents`,
     groups: `${GlobalConfig.serverHost}/scim2/Groups`,
-    identityProvider: `${GlobalConfig.serverHost}/api/server/v1/identity-providers`,
+    identityProviders: `${GlobalConfig.serverHost}/api/server/v1/identity-providers`,
     issuer: `${GlobalConfig.serverHost}/oauth2/token`,
     jwks: `${GlobalConfig.serverHost}/oauth2/jwks`,
     logout: `${GlobalConfig.serverHost}/oidc/logout`,

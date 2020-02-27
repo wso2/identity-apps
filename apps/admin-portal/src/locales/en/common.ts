@@ -25,6 +25,7 @@ export const common: Common = {
     all: "All",
     applicationName: "Application name",
     applications: "Applications",
+    connections: "Connections",
     approvalStatus: "Approval Status",
     approve: "Approve",
     assignees: "Assignees",

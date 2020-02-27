@@ -26,6 +26,7 @@ export interface Common {
     all: string;
     applicationName: string;
     applications: string;
+    connections: string;
     approvalStatus: string;
     approve: string;
     assignees: string;
