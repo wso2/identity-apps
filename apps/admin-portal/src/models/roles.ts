@@ -54,3 +54,19 @@ export interface RoleListInterface {
     Resources?: RolesInterface[];
     schemas: string;
 }
+
+/**
+ * Interface to store data for create role api.
+ */
+export interface CreateRoleInterface {
+    schemas: string[];
+    displayName: string;
+}
+
+/**
+ * Interface to store form data from create role wizard form.
+ */
+export interface CreateRoleFormData {
+    domain: string;
+    roleName: string;
+}
