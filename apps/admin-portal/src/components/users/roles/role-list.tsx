@@ -43,6 +43,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 roleList && roleList.map((role, index) => (
                     <ResourceListItem
                         key={ index }
+                        actionsFloated="right"
                         actions={ [
                             {
                                 icon: "trash alternate",
