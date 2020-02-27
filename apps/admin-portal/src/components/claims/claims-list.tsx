@@ -31,7 +31,7 @@ export enum ListType {
 interface ClaimsListPropsInterface {
     list: Claim[] | ExternalClaim[] | ClaimDialect[];
     localClaim: ListType;
-    openEdit: (claimID:string) => void;
+    openEdit?: (claimID:string) => void;
 }
 
 export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement => {
