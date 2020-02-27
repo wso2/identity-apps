@@ -16,11 +16,20 @@
  * under the License.
  */
 
-export interface PermissionListInterface {
-    list: PermissionInterface[];
+/**
+ * Interface to capture permission tree node.
+ */
+export interface Permission {
+    displayName?: string;
+    permissionName?: string
+    fullPath?: string;
+    children?: Object;
 }
 
-export interface PermissionInterface {
+/**
+ * Interface to capture backend permission structure
+ */
+export interface PermissionObject {
     displayName: string;
     resourcePath: string;
 }
