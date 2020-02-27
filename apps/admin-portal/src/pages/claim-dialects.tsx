@@ -25,17 +25,22 @@ import { ClaimsList, ListType } from "../components";
 import { ClaimDialect } from "../models";
 import { getClaimDialect } from "../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
+import { AddEditDialect } from "../components";
 
 export const ClaimDialectsPage = (): React.ReactElement => {
 
     const [dialects, setDialects] = useState<ClaimDialect[]>(null);
     const [offset, setOffset] = useState(0);
     const [listItemLimit, setListItemLimit] = useState<number>(0);
+    const [addEditClaim, setAddEditClaim] = useState(false);
+    const [dialectID, setDialectID] = useState<string>(null);
 
     useEffect(() => {
-
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
+        getDialects();
+    }, []);
 
+    const getDialects = () => {
         getClaimDialect().then((response: ClaimDialect[]) => {
             const filteredResponse = response.filter((claim: ClaimDialect) => {
                 return claim.id !== "local";
@@ -44,7 +49,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
         }).catch(error => {
             // TODO: Notify
         })
-    }, []);
+    }
 
     const paginate = (list: ClaimDialect[], limit: number, offset: number): ClaimDialect[] => {
         return list?.slice(offset, offset + limit);
@@ -59,36 +64,59 @@ export const ClaimDialectsPage = (): React.ReactElement => {
     };
 
     return (
-        <PageLayout
-            title="Claims"
-            description="View, edit and add claims"
-            showBottomDivider={true}
-        >
-            <ListLayout
-                advancedSearch={null}
-                currentListSize={listItemLimit}
-                listItemLimit={listItemLimit}
-                onItemsPerPageDropdownChange={handleItemsPerPageDropdownChange}
-                onPageChange={handlePaginationChange}
-                onSortStrategyChange={null}
-                rightActionPanel={
-                    (
-                        <PrimaryButton
-                            onClick={() => {
-                            }}
-                        >
-                            <Icon name="add" />Add a dialect
-                        </PrimaryButton>
-                    )
-                }
-                showPagination={true}
-                sortOptions={null}
-                sortStrategy={null}
-                totalPages={Math.ceil(dialects?.length / listItemLimit)}
-                totalListSize={dialects?.length}
+        <>
+            <AddEditDialect
+                open={addEditClaim}
+                onClose={() => {
+                    setAddEditClaim(false);
+                    setDialectID(null);
+                }}
+                update={getDialects}
+                edit={dialectID ? true : false}
+                dialectID={dialectID}
+            />
+            <PageLayout
+                title="Claims"
+                description="View, edit and add claims"
+                showBottomDivider={true}
             >
-                <ClaimsList list={paginate(dialects, listItemLimit, offset)} localClaim={ListType.DIALECT} />
-            </ListLayout>
-        </PageLayout>
+                <ListLayout
+                    advancedSearch={null}
+                    currentListSize={listItemLimit}
+                    listItemLimit={listItemLimit}
+                    onItemsPerPageDropdownChange={handleItemsPerPageDropdownChange}
+                    onPageChange={handlePaginationChange}
+                    onSortStrategyChange={null}
+                    rightActionPanel={
+                        (
+                            <PrimaryButton
+                                onClick={() => {
+                                    setAddEditClaim(true);
+                                }}
+                            >
+                                <Icon name="add" />Add a dialect
+                        </PrimaryButton>
+                        )
+                    }
+                    showPagination={true}
+                    sortOptions={null}
+                    sortStrategy={null}
+                    totalPages={Math.ceil(dialects?.length / listItemLimit)}
+                    totalListSize={dialects?.length}
+                >
+                    <ClaimsList
+                        list={paginate(dialects, listItemLimit, offset)}
+                        localClaim={ListType.DIALECT}
+                        openEdit={
+                            (id: string) => {
+                                setDialectID(id);
+                                setAddEditClaim(true);
+                            }
+                        }
+                    />
+                </ListLayout>
+            </PageLayout>
+        </>
     );
+
 };
