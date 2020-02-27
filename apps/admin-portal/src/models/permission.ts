@@ -20,10 +20,11 @@
  * Interface to capture permission tree node.
  */
 export interface Permission {
-    displayName?: string;
-    permissionName?: string
+    label?: string;
+    name?: string;
+    isExpanded?: boolean;
+    children?: Permission[];
     fullPath?: string;
-    children?: Object;
 }
 
 /**
