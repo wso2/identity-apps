@@ -31,9 +31,8 @@ export enum ListType {
 interface ClaimsListPropsInterface {
     list: Claim[] | ExternalClaim[] | ClaimDialect[];
     localClaim: ListType;
-    openEdit?: (claimID:string) => void;
+    openEdit?: (id:string) => void;
 }
-
 export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement => {
 
     const { list, localClaim, openEdit } = props;
@@ -91,6 +90,14 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                 <ResourceList.Item
                                     key={index}
                                     actions={[
+                                        {
+                                            icon: "pencil alternate",
+                                            onClick: () => {
+                                                openEdit(dialect.id);
+                                            },
+                                            popupText: "edit",
+                                            type: "button"
+                                        },
                                         {
                                             icon: "trash alternate",
                                             onClick: () => { },
