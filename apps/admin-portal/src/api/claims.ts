@@ -162,7 +162,7 @@ export const deleteAClaim = (id: string): Promise<any> => {
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status !== 200) {
+            if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
             return Promise.resolve(response.data);
@@ -303,7 +303,7 @@ export const deleteADialect = (id: string): Promise<any> => {
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status !== 200) {
+            if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
             return Promise.resolve(response.data);
@@ -446,7 +446,7 @@ export const deleteAnExternalClaim = (dialectID: string, claimID: string): Promi
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status !== 200) {
+            if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
             return Promise.resolve(response.data);
