@@ -48,6 +48,7 @@ import { ProtocolSelectionWizardForm } from "./protocol-selection-wizard-form";
 import { AppState } from "../../../store";
 import { ApplicationManagementUtils } from "../../../utils";
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
+import { ApplicationConstants } from "../../../constants";
 
 /**
  * Proptypes for the application creation wizard component.
@@ -186,13 +187,14 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     const location = response.headers.location;
                     const createdAppID = location.substring(location.lastIndexOf("/") + 1);
 
-                    history.push("/applications/" + createdAppID);
+                    history.push(ApplicationConstants.PATHS.get("APPLICATION_EDIT").replace(":id",
+                        createdAppID));
 
                     return;
                 }
 
                 // Fallback to applications page, if the location header is not present.
-                history.push("/applications");
+                history.push(ApplicationConstants.PATHS.get("APPLICATIONS"));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
