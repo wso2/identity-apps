@@ -78,7 +78,7 @@ export const LocalClaimsEditPage = (props): React.ReactElement => {
     return (
         <PageLayout
             title={claim?.displayName}
-            description={"Edit " + claim?.claimURI}
+            description={"Edit Local Claim"}
             backButton={{
                 onClick: () => {
                     history.push("/local-claims");
