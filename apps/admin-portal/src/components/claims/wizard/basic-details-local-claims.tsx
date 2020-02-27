@@ -26,20 +26,11 @@ interface BasicDetailsLocalClaimsPropsInterface {
     submitState: boolean;
     onSubmit: (data: any, values: Map<string, FormValue>) => void;
     values: Map<string, FormValue>;
+    claimURIBase: string;
 }
 export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInterface): React.ReactElement => {
 
-    const [claimURIBase, setClaimURIBase] = useState("");
-
-    const { submitState, onSubmit, values } = props;
-
-    useEffect(() => {
-        getADialect("local").then((response) => {
-            setClaimURIBase(response.dialectURI);
-        }).catch(error => {
-            // TODO:Notify
-        })
-    }, []);
+    const { submitState, onSubmit, values, claimURIBase } = props;
 
     return (
         <Forms

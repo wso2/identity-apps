@@ -30,10 +30,11 @@ interface AddLocalClaimsPropsInterface {
     onClose: () => void;
     claimID: string;
     update: () => void;
+    claimURIBase: string;
 }
 export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.ReactElement => {
 
-    const { open, onClose, update } = props;
+    const { open, onClose, update, claimURIBase } = props;
     const [currentWizardStep, setCurrentWizardStep] = useState(0);
     const [data, setData] = useState<Claim>(null);
     const [basicDetailsData, setBasicDetailsData] = useState<Map<string, FormValue>>(null);
@@ -76,6 +77,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
                     submitState={firstStep}
                     onSubmit={onSubmitBasicDetails}
                     values={basicDetailsData}
+                    claimURIBase={claimURIBase}
                 />
             ),
             title: "Basic Local Claim Details",

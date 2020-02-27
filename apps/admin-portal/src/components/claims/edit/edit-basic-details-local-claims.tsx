@@ -38,9 +38,8 @@ export const EditBasicDetailsLocalClaims = (
         getADialect("local").then((response) => {
             setClaimURIBase(response.dialectURI);
         }).catch(error => {
-
-        })
-
+            // TODO: Notify 
+        });
     }, []);
 
     return (
