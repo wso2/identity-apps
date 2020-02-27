@@ -109,7 +109,11 @@ export const LocalClaimsPage = (): React.ReactElement => {
                     totalPages={Math.ceil(claims?.length / listItemLimit)}
                     totalListSize={claims?.length}
                 >
-                    <ClaimsList list={paginate(claims, listItemLimit, offset)} localClaim={ListType.LOCAL} />
+                    <ClaimsList
+                        list={paginate(claims, listItemLimit, offset)}
+                        localClaim={ListType.LOCAL}
+                        update={getLocalClaims}
+                    />
                 </ListLayout>
             </PageLayout>
         </>

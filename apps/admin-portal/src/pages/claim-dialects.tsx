@@ -113,6 +113,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                                 setAddEditClaim(true);
                             }
                         }
+                        update={getDialects}
                     />
                 </ListLayout>
             </PageLayout>

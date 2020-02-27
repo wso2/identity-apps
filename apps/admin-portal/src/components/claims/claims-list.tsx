@@ -22,6 +22,8 @@ import { Claim, ExternalClaim, ClaimDialect } from "../../models";
 import { List } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { history } from "../../helpers";
+import { deleteAClaim, updateAClaim, deleteAnExternalClaim, deleteADialect } from "../../api";
+
 export enum ListType {
     LOCAL,
     EXTERNAL,
@@ -31,11 +33,13 @@ export enum ListType {
 interface ClaimsListPropsInterface {
     list: Claim[] | ExternalClaim[] | ClaimDialect[];
     localClaim: ListType;
-    openEdit?: (id:string) => void;
+    openEdit?: (id: string) => void;
+    update: () => void;
+    dialectID?: string;
 }
 export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement => {
 
-    const { list, localClaim, openEdit } = props;
+    const { list, localClaim, openEdit, update, dialectID } = props;
 
     const isLocalClaim = (toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[]): toBeDetermined is Claim[] => {
         return localClaim === ListType.LOCAL;
@@ -55,6 +59,33 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         </List.Content>
     );
 
+    const deleteLocalClaim = (id: string) => {
+        deleteAClaim(id).then(response => {
+            update();
+            // TODO: Notify
+        }).catch(error => {
+            // TODO: Notify
+        })
+    };
+
+    const deleteExternalClaim = (dialectID: string, claimID: string) => {
+        deleteAnExternalClaim(dialectID, claimID).then(response => {
+            update();
+            // TODO: Notify
+        }).catch(error => {
+            // TODO: Notify
+        })
+    };
+
+    const deleteDialect = (dialectID: string) => {
+        deleteADialect(dialectID).then(response => {
+            update();
+            // TODO: Notify
+        }).catch(error => {
+            // TODO: Notify
+        })
+    };
+
     return (
         <ResourceList>
             {
@@ -67,14 +98,14 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                     {
                                         icon: "pencil alternate",
                                         onClick: () => {
-                                            history.push("/edit-local-claims/"+claim.id)
-                                         },
+                                            history.push("/edit-local-claims/" + claim?.id)
+                                        },
                                         popupText: "edit",
                                         type: "button"
                                     },
                                     {
                                         icon: "trash alternate",
-                                        onClick: () => { },
+                                        onClick: () => { deleteLocalClaim(claim?.id) },
                                         popupText: "delete",
                                         type: "dropdown"
                                     }
@@ -100,13 +131,13 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                         },
                                         {
                                             icon: "trash alternate",
-                                            onClick: () => { },
+                                            onClick: () => { deleteDialect(dialect?.id) },
                                             popupText: "delete",
                                             type: "dropdown"
                                         }
                                     ]}
                                     itemHeader={(
-                                        <Link to={"/external-claims/"+dialect.id} >{dialect.dialectURI}</Link>
+                                        <Link to={"/external-claims/" + dialect.id} >{dialect.dialectURI}</Link>
                                     )}
                                 />
                             )
@@ -120,13 +151,13 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                             icon: "pencil alternate",
                                             onClick: () => {
                                                 openEdit(claim?.id);
-                                             },
+                                            },
                                             popupText: "edit",
                                             type: "button"
                                         },
                                         {
                                             icon: "trash alternate",
-                                            onClick: () => { },
+                                            onClick: () => { deleteExternalClaim(dialectID, claim?.id) },
                                             popupText: "delete",
                                             type: "dropdown"
                                         }

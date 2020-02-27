@@ -139,6 +139,8 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                             setEditClaim(true);
                             setEditClaimID(claimID);
                         }}
+                        update={getExternalClaims}
+                        dialectID={dialectID}
                     />
                 </ListLayout>
             </PageLayout>
