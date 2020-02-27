@@ -19,4 +19,5 @@
 export * from "./application-create-wizard";
 export * from "./general-settings-wizard-form";
 export * from "./oauth-protocol-settings-wizard-form";
+export * from "./protocol-selection-wizard-form";
 export * from "./wizard-summary";

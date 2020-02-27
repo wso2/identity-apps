@@ -19,10 +19,11 @@
 import { Field, Forms } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { URLInputComponent } from "../components";
 import { isEmpty } from "lodash";
+import { FormValue } from "@wso2is/forms";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -49,37 +50,25 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
         onSubmit
     } = props;
 
-    const [assertionConsumerUrls, setAssertionConsumerUrls] = useState("");
-    const [showAssertionConsumerUrlError, setAssertionConsumerUrlError] = useState(false);
-
-    const form = useRef(null);
-
-    /**
-     * Submits the form programmatically if triggered from outside.
-     */
-    useEffect(() => {
-        if (!triggerSubmit) {
-            return;
-        }
-
-        form?.current?.props?.onSubmit(new Event("submit"));
-    }, [triggerSubmit]);
+    const [ assertionConsumerUrls, setAssertionConsumerUrls ] = useState("");
+    const [ showAssertionConsumerUrlError, setAssertionConsumerUrlError ] = useState(false);
 
     useEffect(() => {
         setAssertionConsumerUrls("");
     }, []);
+
     /**
      * Sanitizes and prepares the form values for submission.
      *
      * @param values - Form values.
      * @return {object} Prepared values.
      */
-    const getFormValues = (values: any): object => {
+    const getFormValues = (values: Map<string, FormValue>): any => {
         return {
             inboundProtocolConfiguration: {
                 saml: {
                     manualConfiguration: {
-                        issuer: values.get("issuer"),
+                        issuer: values.get("issuer") as string,
                         assertionConsumerUrls: (assertionConsumerUrls.split(","))
                     }
                 }
@@ -89,7 +78,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
 
     return (
         <Forms
-            onSubmit={ (values) => {
+            onSubmit={ (values: Map<string, FormValue>): void => {
                 // check whether assertionConsumer url is empty or not
                 if (isEmpty(assertionConsumerUrls)) {
                     setAssertionConsumerUrlError(true);
@@ -109,13 +98,13 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                             requiredErrorMessage="Please provide the issuer"
                             type="text"
                             placeholder={ "Enter the issuer name" }
-                            value={ initialValues?.issuer }
-                            readOnly={ initialValues?.issuer }
+                            value={ initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration?.issuer }
+                            readOnly={ initialValues?.saml?.issuer }
                         />
                         <Hint>
-                            This specifies the issuer. This is the "saml:Issuer" element that contains
+                            { `This specifies the issuer. This is the "saml:Issuer" element that contains
                             the unique identifier of the Application. This is also the issuer value
-                            specified in the SAML Authentication Request issued by the Application.
+                            specified in the SAML Authentication Request issued by the Application. ` }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -123,14 +112,14 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                     urlState={ assertionConsumerUrls }
                     setURLState={ setAssertionConsumerUrls }
                     labelName={ "Assertion Consumer URLs" }
-                    value={ initialValues?.assertionConsumerUrls.toString() }
+                    value={
+                        initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration.assertionConsumerUrls?.
+                        toString()
+                    }
                     placeholder={ "Enter url " }
                     validationErrorMsg={ "Please add valid URL" }
-                    validation={ (value: string) => {
-                        if (FormValidation.url(value)) {
-                            return true;
-                        }
-                        return false;
+                    validation={ (value: string): boolean => {
+                        return FormValidation.url(value);
                     } }
                     required={ true }
                     showError={ showAssertionConsumerUrlError }
