@@ -21,9 +21,9 @@ import { PageLayout } from "../layouts";
 import { ListLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
 import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
-import { ClaimsList, ListType } from "../components";
+import { ClaimsList, ListType, LocalClaimsSearch } from "../components";
 import { Claim, ClaimsGetParams } from "../models";
-import { getAllLocalClaims } from "../api";
+import { getAllLocalClaims, getADialect } from "../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
 import { AddLocalClaims } from "../components";
 
@@ -33,19 +33,24 @@ export const LocalClaimsPage = (): React.ReactElement => {
     const [offset, setOffset] = useState(0);
     const [listItemLimit, setListItemLimit] = useState<number>(0);
     const [openModal, setOpenModal] = useState(false);
-
+    const [claimURIBase, setClaimURIBase] = useState("");
 
     useEffect(() => {
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
-        getLocalClaims();
+        getLocalClaims(null,null,null,null);
+        getADialect("local").then((response) => {
+            setClaimURIBase(response.dialectURI);
+        }).catch(error => {
+            // TODO: Notify 
+        });
     }, []);
 
-    const getLocalClaims = () => {
+    const getLocalClaims = (limit?: number, sort?: string, offset?: number, filter?: string) => {
         const params: ClaimsGetParams = {
-            limit: null,
-            sort: null,
-            offset: null,
-            filter: null
+            limit: limit || null,
+            sort: sort || null,
+            offset: offset || null,
+            filter: filter || null
         };
 
         getAllLocalClaims(params).then(response => {
@@ -53,7 +58,7 @@ export const LocalClaimsPage = (): React.ReactElement => {
         }).catch(error => {
             // TODO: Notify
         });
-    }
+    };
 
     const paginate = (list: Claim[], limit: number, offset: number): Claim[] => {
         return list?.slice(offset, offset + limit);
@@ -76,6 +81,7 @@ export const LocalClaimsPage = (): React.ReactElement => {
                         onClose={() => { setOpenModal(false) }}
                         claimID={null}
                         update={getLocalClaims}
+                        claimURIBase={claimURIBase}
                     />
                     : null
             }
@@ -85,7 +91,14 @@ export const LocalClaimsPage = (): React.ReactElement => {
                 showBottomDivider={true}
             >
                 <ListLayout
-                    advancedSearch={null}
+                    advancedSearch={
+                        <LocalClaimsSearch
+                            onFilter={(query) => {
+                                getLocalClaims(null, null, null, query);
+                            }}
+                            claimURIBase={claimURIBase}
+                        />
+                    }
                     currentListSize={listItemLimit}
                     listItemLimit={listItemLimit}
                     onItemsPerPageDropdownChange={handleItemsPerPageDropdownChange}
