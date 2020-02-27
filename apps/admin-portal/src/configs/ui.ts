@@ -53,6 +53,7 @@ import {
     OpenIDLogo,
     PlugIcon,
     ReactLogo,
+    ReportIcon,
     SamlLogo,
     SettigsSectionIconSet,
     SMSOTPIcon,
@@ -170,7 +171,8 @@ export const TechnologyLogos = {
 export const ApplicationWizardStepIcons = {
     general: DocumentIcon,
     protocolConfig: GearsIcon,
-    protocolSelection: SpinWheelIcon
+    protocolSelection: SpinWheelIcon,
+    summary: ReportIcon
 };
 
 export const AuthenticatorIcons = {
