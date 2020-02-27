@@ -21,7 +21,7 @@ import { PageLayout } from "../layouts";
 import { ListLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
 import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
-import { ClaimsList, ListType, AddExternalClaims, EditExternalClaims } from "../components";
+import { ClaimsList, ListType, AddExternalClaims, EditExternalClaims, ExternalClaimsSearch } from "../components";
 import { ExternalClaim, ClaimDialect } from "../models";
 import { getAllExternalClaims, getADialect } from "../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
@@ -54,8 +54,8 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
         getExternalClaims();
     }, [dialectID]);
 
-    const getExternalClaims = () => {
-        dialectID && getAllExternalClaims(dialectID, null).then(response => {
+    const getExternalClaims = (limit?:number,offset?:number,sort?:string,filter?:string) => {
+        dialectID && getAllExternalClaims(dialectID, {limit,offset,sort,filter}).then(response => {
             setClaims(response);
         }).catch(error => {
             // TODO: Notify
@@ -109,7 +109,9 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                 }}
             >
                 <ListLayout
-                    advancedSearch={null}
+                    advancedSearch={<ExternalClaimsSearch onFilter={(query) => {
+                        getExternalClaims(null, null, null, query);
+                    }}/>}
                     currentListSize={listItemLimit}
                     listItemLimit={listItemLimit}
                     onItemsPerPageDropdownChange={handleItemsPerPageDropdownChange}
