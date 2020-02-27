@@ -230,17 +230,18 @@ export const getADialect = (id: string): Promise<any> => {
 };
 
 /**
- * Get all teh claim dialects
+ * Get all the claim dialects
  */
-export const getDialects = (): Promise<any> => {
+export const getDialects = (params: ClaimsGetParams): Promise<any> => {
     const requestConfig = {
         headers: {
             Accept: "application/json",
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
-        method: HttpMethods.PUT,
-        url: ServiceResourcesEndpoint.claims
+        method: HttpMethods.GET,
+        url: ServiceResourcesEndpoint.claims,
+        params
     };
     return httpClient
         .request(requestConfig)
