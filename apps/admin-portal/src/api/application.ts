@@ -262,7 +262,7 @@ export const getApplicationList = (limit: number, offset: number,
  *
  * @param customOnly If true only returns custom protocols.
  */
-export const getAvailableInboundProtocols = (customOnly: boolean): Promise<any> => {
+export const getAvailableInboundProtocols = (customOnly: boolean): Promise<AuthProtocolMetaListItemInterface[]> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
