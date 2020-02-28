@@ -62,6 +62,7 @@ export const UserRoles = (): ReactElement => {
 
     useEffect(() => {
         getRoleList();
+        setListUpdated(false);
     }, [ isListUpdated ]);
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
