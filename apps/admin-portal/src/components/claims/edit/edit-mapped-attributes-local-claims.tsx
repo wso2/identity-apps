@@ -17,10 +17,12 @@
 */
 
 import React, { useState, useEffect } from "react";
-import { Claim, AttributeMapping } from "../../../models";
+import { Claim, AttributeMapping, AlertLevels } from "../../../models";
 import { Grid, Button } from "semantic-ui-react";
 import { Field, Validation, FormValue, Forms } from "@wso2is/forms";
 import { getUserStoreList, updateAClaim } from "../../../api";
+import { useDispatch } from "react-redux";
+import { addAlert } from "../../../store/actions";
 
 interface EditMappedAttributesLocalClaimsPropsInterface {
     claim: Claim;
@@ -35,6 +37,8 @@ export const EditMappedAttributesLocalClaims = (
 
     const { claim, update } = props;
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
         const userstore = [];
         userstore.push({
@@ -46,7 +50,6 @@ export const EditMappedAttributesLocalClaims = (
             setUserStore(userstore);
         }).catch(error => {
             setUserStore(userstore);
-            // TODO: Notify
         });
 
         const tempMappedAttributes = new Set(mappedAttributes);
@@ -198,10 +201,22 @@ export const EditMappedAttributesLocalClaims = (
                     attributeMapping: getMappedAttributes(values),
                 }
                 updateAClaim(claim.id, data).then((response) => {
-                    //TODO: Notify
+                    dispatch(addAlert(
+                        {
+                            description: "The Attributes Mapping of this local claim has been updated successfully!",
+                            level: AlertLevels.SUCCESS,
+                            message: "Attributes Mapping updated successfully"
+                        }
+                    ));
                     update();
                 }).catch(error => {
-                    //TODO: Notify 
+                    dispatch(addAlert(
+                        {
+                            description: error?.description,
+                            level: AlertLevels.ERROR,
+                            message: error?.message
+                        }
+                    )); 
                 })
             }}
         >

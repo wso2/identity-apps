@@ -22,10 +22,12 @@ import { ListLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
 import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
 import { ClaimsList, ListType, AddExternalClaims, EditExternalClaims, ExternalClaimsSearch } from "../components";
-import { ExternalClaim, ClaimDialect } from "../models";
+import { ExternalClaim, ClaimDialect, AlertLevels } from "../models";
 import { getAllExternalClaims, getADialect } from "../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
 import { history } from "../helpers";
+import { useDispatch } from "react-redux";
+import { addAlert } from "../store/actions";
 
 export const ExternalClaimsPage = (props): React.ReactElement => {
 
@@ -37,6 +39,8 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
     const [editClaim, setEditClaim] = useState(false);
     const [editClaimID, setEditClaimID] = useState("");
 
+    const dispatch=useDispatch();
+
     const dialectID = props.match.params.id;
 
     useEffect(() => {
@@ -45,7 +49,13 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
         getADialect(dialectID).then(response => {
             setDialect(response);
         }).catch(error => {
-            // TODO: Notify
+            dispatch(addAlert(
+                {
+                    description: error?.description,
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                }
+            ));
         });
 
     }, []);
@@ -58,7 +68,13 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
         dialectID && getAllExternalClaims(dialectID, {limit,offset,sort,filter}).then(response => {
             setClaims(response);
         }).catch(error => {
-            // TODO: Notify
+            dispatch(addAlert(
+                {
+                    description: error?.description,
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                }
+            ));
         });
     }
 

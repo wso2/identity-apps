@@ -18,10 +18,12 @@
 
 import React, { useState, useEffect } from "react";
 import { Modal, Header } from "semantic-ui-react";
-import { Claim, ExternalClaim } from "../../../models";
+import { Claim, ExternalClaim, AlertLevels } from "../../../models";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
-import { getLocalClaims, addExternalClaim, updateAClaim, getAnExternalClaim, updateAnExternalClaim } from "../../../api";
+import { getLocalClaims, getAnExternalClaim, updateAnExternalClaim } from "../../../api";
 import { Forms, Field, FormValue, useTrigger } from "@wso2is/forms";
+import { useDispatch } from "react-redux";
+import { addAlert } from "../../../store/actions";
 
 interface EditExternalClaimsPropsInterface {
     open: boolean;
@@ -39,17 +41,31 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
 
     const [submit, setSubmit] = useTrigger();
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
         getLocalClaims().then(response => {
             setLocalClaims(response);
         }).catch(error => {
-            // TODO:Notify
+            dispatch(addAlert(
+                {
+                    description: error?.description,
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                }
+            ));
         });
 
         getAnExternalClaim(dialectID, claimID).then(response => {
             setClaim(response);
         }).catch(error => {
-            // TODO: Notify
+            dispatch(addAlert(
+                {
+                    description: error?.description,
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                }
+            ));
         })
     }, []);
 
@@ -70,11 +86,23 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                             claimURI: values.get("claimURI").toString(),
                             mappedLocalClaimURI: values.get("localClaim").toString()
                         }).then(response => {
-                            // TODO: Notify
+                            dispatch(addAlert(
+                                {
+                                    description: "The external claim has been updated successfully!",
+                                    level: AlertLevels.SUCCESS,
+                                    message: "External claim updated successfully"
+                                }
+                            ));
                             onClose();
                             update();
                         }).catch(error => {
-                            // TODO: Notify
+                            dispatch(addAlert(
+                                {
+                                    description: error?.description,
+                                    level: AlertLevels.ERROR,
+                                    message: error?.message
+                                }
+                            ));
                         })
                     }}
                     submitState={submit}

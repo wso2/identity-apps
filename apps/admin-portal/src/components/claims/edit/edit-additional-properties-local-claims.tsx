@@ -19,8 +19,10 @@
 import React, { useState, useEffect } from "react";
 import { Button, Grid } from "semantic-ui-react";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import { Property, Claim } from "../../../models";
+import { Property, Claim, AlertLevels } from "../../../models";
 import { updateAClaim } from "../../../api";
+import { useDispatch } from "react-redux";
+import { addAlert } from "../../../store/actions";
 
 interface EditAdditionalPropertiesLocalClaimsPropsInterface{
     claim: Claim;
@@ -31,6 +33,8 @@ export const EditAdditionalPropertiesLocalClaims = (
 ): React.ReactElement => {
 
     const { claim, update } = props;
+
+    const dispatch = useDispatch();
 
     const [properties, setProperties] = useState<Set<number>>(new Set([0]));
 
@@ -130,7 +134,7 @@ export const EditAdditionalPropertiesLocalClaims = (
             });
         });
         return attributes;
-    }
+    };
 
     return (
         <Forms
@@ -141,10 +145,22 @@ export const EditAdditionalPropertiesLocalClaims = (
                     properties: getProperties(values)
                 }
                 updateAClaim(claim.id, data).then((response) => {
-                    //TODO: Notify
+                    dispatch(addAlert(
+                        {
+                            description: "Additional Properties of this local claim have been updated successfully!",
+                            level: AlertLevels.SUCCESS,
+                            message: "Additional Properties updated successfully"
+                        }
+                    ));
                     update();
                 }).catch(error => {
-                    //TODO: Notify 
+                    dispatch(addAlert(
+                        {
+                            description: error?.description,
+                            level: AlertLevels.ERROR,
+                            message: error?.message
+                        }
+                    ));
                 })
             }}
         >

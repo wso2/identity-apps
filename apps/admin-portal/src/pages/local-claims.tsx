@@ -22,10 +22,12 @@ import { ListLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
 import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
 import { ClaimsList, ListType, LocalClaimsSearch } from "../components";
-import { Claim, ClaimsGetParams } from "../models";
+import { Claim, ClaimsGetParams, AlertLevels } from "../models";
 import { getAllLocalClaims, getADialect } from "../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
 import { AddLocalClaims } from "../components";
+import { useDispatch } from "react-redux";
+import { addAlert } from "../store/actions";
 
 export const LocalClaimsPage = (): React.ReactElement => {
 
@@ -35,13 +37,21 @@ export const LocalClaimsPage = (): React.ReactElement => {
     const [openModal, setOpenModal] = useState(false);
     const [claimURIBase, setClaimURIBase] = useState("");
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
         getLocalClaims(null,null,null,null);
         getADialect("local").then((response) => {
             setClaimURIBase(response.dialectURI);
         }).catch(error => {
-            // TODO: Notify 
+            dispatch(addAlert(
+                {
+                    description: error?.description,
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                }
+            ));
         });
     }, []);
 
@@ -56,7 +66,13 @@ export const LocalClaimsPage = (): React.ReactElement => {
         getAllLocalClaims(params).then(response => {
             setClaims(response);
         }).catch(error => {
-            // TODO: Notify
+            dispatch(addAlert(
+                {
+                    description: error?.description,
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                }
+            ));
         });
     };
 

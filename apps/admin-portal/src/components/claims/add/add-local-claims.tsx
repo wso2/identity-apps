@@ -23,7 +23,9 @@ import { addLocalClaim } from "../../../api";
 import { Steps, PrimaryButton, LinkButton } from "@wso2is/react-components";
 import { ApplicationWizardStepIcons } from "../../../configs";
 import { BasicDetailsLocalClaims, MappedAttributes, SummaryLocalClaims } from "../wizard";
-import { Claim } from "../../../models";
+import { Claim, AlertLevels } from "../../../models";
+import { useDispatch } from "react-redux";
+import { addAlert } from "../../../store/actions";
 
 interface AddLocalClaimsPropsInterface {
     open: boolean;
@@ -44,13 +46,27 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
     const [firstStep, setFirstStep] = useTrigger();
     const [secondStep, setSecondStep] = useTrigger();
 
+    const dispatch = useDispatch();
+
     const handleSubmit = () => {
         addLocalClaim(data).then(response => {
-            // TODO: Notify
+            dispatch(addAlert(
+                {
+                    description: "The local claim has been added successfully!",
+                    level: AlertLevels.SUCCESS,
+                    message: "Local claim added successfully"
+                }
+            ));
             onClose();
             update();
         }).catch(error => {
-            // TODO: Notify
+            dispatch(addAlert(
+                {
+                    description: error?.description,
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                }
+            ));
         })
     }
 

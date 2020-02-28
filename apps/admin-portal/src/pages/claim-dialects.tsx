@@ -22,10 +22,12 @@ import { ListLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
 import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
 import { ClaimsList, ListType } from "../components";
-import { ClaimDialect } from "../models";
+import { ClaimDialect, AlertLevels } from "../models";
 import { getDialects } from "../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
 import { AddEditDialect, DialectSearch } from "../components";
+import { useDispatch } from "react-redux";
+import { addAlert } from "../store/actions";
 
 export const ClaimDialectsPage = (): React.ReactElement => {
 
@@ -34,6 +36,8 @@ export const ClaimDialectsPage = (): React.ReactElement => {
     const [listItemLimit, setListItemLimit] = useState<number>(0);
     const [addEditClaim, setAddEditClaim] = useState(false);
     const [dialectID, setDialectID] = useState<string>(null);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
@@ -50,7 +54,13 @@ export const ClaimDialectsPage = (): React.ReactElement => {
             });
             setDialects(filteredResponse);
         }).catch(error => {
-            // TODO: Notify
+            dispatch(addAlert(
+                {
+                    description: error?.description,
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                }
+            ));
         })
     }
 

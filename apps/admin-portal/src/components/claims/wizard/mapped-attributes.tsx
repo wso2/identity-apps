@@ -46,7 +46,6 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): React.R
             setUserStore(userstore);
         }).catch(error => {
             setUserStore(userstore);
-            // TODO: Notify
         });
     },[])
     const generateMappedAttributes = (): React.ReactElement[] => {

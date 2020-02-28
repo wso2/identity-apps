@@ -17,10 +17,12 @@
 */
 
 import React, { useEffect, useState } from "react";
-import { Claim, AttributeMapping } from "../../../models";
+import { Claim, AttributeMapping, AlertLevels } from "../../../models";
 import { Forms, Field, FormValue, Validation } from "@wso2is/forms";
 import { Grid, Button } from "semantic-ui-react";
 import { getADialect, getUserStoreList, updateAClaim } from "../../../api";
+import { useDispatch } from "react-redux";
+import { addAlert } from "../../../store/actions";
 
 interface EditBasicDetailsLocalClaimsPropsInterface{
     claim: Claim;
@@ -32,13 +34,21 @@ export const EditBasicDetailsLocalClaims = (
 
     const [claimURIBase, setClaimURIBase] = useState("");
 
+    const dispatch = useDispatch();
+
     const { claim, update } = props;
 
     useEffect(() => {
         getADialect("local").then((response) => {
             setClaimURIBase(response.dialectURI);
         }).catch(error => {
-            // TODO: Notify 
+            dispatch(addAlert(
+                {
+                    description: error?.description,
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                }
+            )); 
         });
     }, []);
 
@@ -59,10 +69,22 @@ export const EditBasicDetailsLocalClaims = (
                     
                 }
                 updateAClaim(claim.id, data).then((response) => {
-                    //TODO: Notify
+                    dispatch(addAlert(
+                        {
+                            description: "The basic details of the local claim have been updated successfully!",
+                            level: AlertLevels.SUCCESS,
+                            message: "Basic details updated successfully"
+                        }
+                    ));
                     update();
                 }).catch(error => {
-                    //TODO: Notify 
+                    dispatch(addAlert(
+                        {
+                            description: error?.description,
+                            level: AlertLevels.ERROR,
+                            message: error?.message
+                        }
+                    ));
                 })
             }}
         >

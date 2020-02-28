@@ -21,7 +21,9 @@ import { Modal } from "semantic-ui-react";
 import { Forms, Field, useTrigger, FormValue } from "@wso2is/forms";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { getADialect, updateADialect, addDialect } from "../../api";
-import { ClaimDialect } from "../../models";
+import { ClaimDialect, AlertLevels } from "../../models";
+import { useDispatch } from "react-redux";
+import { addAlert } from "../../store/actions";
 
 interface AddEditDialectPropsInterface {
     open: boolean;
@@ -38,12 +40,20 @@ export const AddEditDialect = (props: AddEditDialectPropsInterface): React.React
 
     const [submit, setSubmit] = useTrigger();
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
         if (dialectID) {
             getADialect(dialectID).then(response => {
                 setDialect(response)
             }).catch(error => {
-                // TODO: Notify
+                dispatch(addAlert(
+                    {
+                        description: error?.description,
+                        level: AlertLevels.ERROR,
+                        message: error?.message
+                    }
+                ));
             })
         }
     },[dialectID])
@@ -69,17 +79,41 @@ export const AddEditDialect = (props: AddEditDialectPropsInterface): React.React
                                 ).then(response => {
                                     update();
                                     onClose();
-                                    // TODO: Notify
+                                    dispatch(addAlert(
+                                        {
+                                            description: "The dialect has been updates successfully!",
+                                            level: AlertLevels.SUCCESS,
+                                            message: "Dialect updated successfully"
+                                        }
+                                    ));
                                 }).catch(error => {
-                                    // TODO: Notify
+                                    dispatch(addAlert(
+                                        {
+                                            description: error?.description,
+                                            level: AlertLevels.ERROR,
+                                            message: error?.message
+                                        }
+                                    ));
                                 });
                             } else {
                                 addDialect(values.get("dialectURI").toString()).then(response => {
                                     update();
                                     onClose();
-                                    // TODO: Notify
+                                    dispatch(addAlert(
+                                        {
+                                            description: "The dialect has been added successfully!",
+                                            level: AlertLevels.ERROR,
+                                            message: "Dialect added successfully"
+                                        }
+                                    ));
                                 }).catch(error => {
-                                    // TODO: Notify
+                                    dispatch(addAlert(
+                                        {
+                                            description: error?.description,
+                                            level: AlertLevels.ERROR,
+                                            message: error?.message
+                                        }
+                                    ));
                                 })
                             }
                         }

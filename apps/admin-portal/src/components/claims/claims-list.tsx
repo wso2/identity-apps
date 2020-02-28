@@ -18,11 +18,13 @@
 
 import React, { useState } from "react";
 import { ResourceList, LinkButton, PrimaryButton } from "@wso2is/react-components"
-import { Claim, ExternalClaim, ClaimDialect } from "../../models";
+import { Claim, ExternalClaim, ClaimDialect, AlertLevels } from "../../models";
 import { List, Modal } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { history } from "../../helpers";
 import { deleteAClaim, updateAClaim, deleteAnExternalClaim, deleteADialect } from "../../api";
+import { useDispatch } from "react-redux";
+import { addAlert } from "../../store/actions";
 
 export enum ListType {
     LOCAL,
@@ -44,6 +46,8 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
     const [deleteConfirm, setDeleteConfirm] = useState(false);
     const [deleteType, setDeleteType] = useState<ListType>(null);
     const [deleteID, setDeleteID] = useState<string>(null);
+
+    const dispatch = useDispatch();
 
     const isLocalClaim = (toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[]): toBeDetermined is Claim[] => {
         return localClaim === ListType.LOCAL;
@@ -67,9 +71,21 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         deleteAClaim(id).then(response => {
             update();
             closeDeleteConfirm();
-            // TODO: Notify
+            dispatch(addAlert(
+                {
+                    description: "The local claim has been deleted successfully!",
+                    level: AlertLevels.SUCCESS,
+                    message: "Local claim deleted successfully"
+                }
+            ));
         }).catch(error => {
-            // TODO: Notify
+            dispatch(addAlert(
+                {
+                    description: error?.description,
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                }
+            ));
         })
     };
 
@@ -77,9 +93,21 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         deleteAnExternalClaim(dialectID, claimID).then(response => {
             update();
             closeDeleteConfirm();
-            // TODO: Notify
+            dispatch(addAlert(
+                {
+                    description: "The external claim has been deleted successfully!",
+                    level: AlertLevels.SUCCESS,
+                    message: "External claim deleted successfully"
+                }
+            ));
         }).catch(error => {
-            // TODO: Notify
+            dispatch(addAlert(
+                {
+                    description: error?.description,
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                }
+            ));
         })
     };
 
@@ -87,9 +115,21 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         deleteADialect(dialectID).then(response => {
             update();
             closeDeleteConfirm();
-            // TODO: Notify
+            dispatch(addAlert(
+                {
+                    description: "The dialect has been deleted successfully!",
+                    level: AlertLevels.SUCCESS,
+                    message: "Dialect deleted successfully"
+                }
+            ));
         }).catch(error => {
-            // TODO: Notify
+            dispatch(addAlert(
+                {
+                    description: error?.description,
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                }
+            ));
         })
     };
 

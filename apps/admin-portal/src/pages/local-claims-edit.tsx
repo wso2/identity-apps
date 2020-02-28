@@ -19,7 +19,7 @@
 import React, { useEffect, useState } from "react"
 import { PageLayout } from "../layouts"
 import { getAClaim } from "../api";
-import { Claim } from "../models";
+import { Claim, AlertLevels } from "../models";
 import { ResourceTab } from "@wso2is/react-components";
 import {
     EditBasicDetailsLocalClaims,
@@ -27,12 +27,16 @@ import {
     EditMappedAttributesLocalClaims
 } from "../components";
 import { history } from "../helpers";
+import { useDispatch } from "react-redux";
+import { addAlert } from "../store/actions";
 
 export const LocalClaimsEditPage = (props): React.ReactElement => {
 
     const claimID = props.match.params.id;
 
     const [claim, setClaim] = useState<Claim>(null);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         getClaim();
@@ -42,7 +46,13 @@ export const LocalClaimsEditPage = (props): React.ReactElement => {
         getAClaim(claimID).then(response => {
             setClaim(response);
         }).catch(error => {
-            // TODO: Notify
+            dispatch(addAlert(
+                {
+                    description: error?.description,
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                }
+            ));
         })
     }
 

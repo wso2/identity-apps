@@ -18,10 +18,12 @@
 
 import React, { useState, useEffect } from "react";
 import { Modal, Header } from "semantic-ui-react";
-import { ClaimDialect, Claim } from "../../../models";
+import { ClaimDialect, Claim, AlertLevels } from "../../../models";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
-import { getLocalClaims, addExternalClaim, updateAClaim } from "../../../api";
+import { getLocalClaims, addExternalClaim } from "../../../api";
 import { Forms, Field, FormValue, useTrigger } from "@wso2is/forms";
+import { useDispatch } from "react-redux";
+import { addAlert } from "../../../store/actions";
 
 interface AddExternalClaimsPropsInterface {
     open: boolean;
@@ -37,11 +39,19 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
 
     const [submit, setSubmit] = useTrigger();
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
         getLocalClaims().then(response => {
             setLocalClaims(response);
         }).catch(error => {
-            // TODO:Notify
+            dispatch(addAlert(
+                {
+                    description: error?.description,
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                }
+            ));
         })
     }, []);
 
@@ -62,11 +72,23 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                             claimURI: values.get("claimURI").toString(),
                             mappedLocalClaimURI: values.get("localClaim").toString()
                         }).then(response => {
-                            // TODO: Notify
+                            dispatch(addAlert(
+                                {
+                                    description: "The external claim has been added to the dialect successfully!",
+                                    level: AlertLevels.SUCCESS,
+                                    message: "External claim added successfully"
+                                }
+                            ));
                             onClose();
                             update();
                         }).catch(error => {
-                            // TODO: Notify
+                            dispatch(addAlert(
+                                {
+                                    description: error?.description,
+                                    level: AlertLevels.ERROR,
+                                    message: error?.message
+                                }
+                            ));
                         })
                     }}
                     submitState={submit}
