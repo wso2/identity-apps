@@ -217,6 +217,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                             type: "dropdown"
                                         }
                                     ]}
+                                    actionsFloated="right"
                                     itemHeader={claim.displayName}
                                     metaContent={listContent(claim.description)}
                                 />
@@ -243,6 +244,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                                 type: "dropdown"
                                             }
                                         ]}
+                                        actionsFloated="right"
                                         itemHeader={(
                                             <Link to={"/external-claims/" + dialect.id} >{dialect.dialectURI}</Link>
                                         )}
@@ -269,6 +271,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                                 type: "dropdown"
                                             }
                                         ]}
+                                        actionsFloated="right"
                                         itemHeader={claim.claimURI}
                                         metaContent={listContent(claim.mappedLocalClaimURI)}
                                     />
