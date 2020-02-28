@@ -66,7 +66,7 @@ export const AddEditDialect = (props: AddEditDialectPropsInterface): React.React
             size="mini"
         >
             <Modal.Header>
-                Add a Claim Dialect
+                {edit ? "Edit the Claim Dialect" :"Add a Claim Dialect"}
             </Modal.Header>
             <Modal.Content>
                 <Forms
