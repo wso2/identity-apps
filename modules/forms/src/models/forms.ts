@@ -63,6 +63,7 @@ interface FormFieldModel {
     autoFocus?: boolean;
     readOnly?: boolean;
     disabled?: boolean;
+    displayErrorOn?: "blur" | "submit";
 }
 
 /**
@@ -142,7 +143,7 @@ export interface CheckboxField extends FormRequiredFieldModel {
 export interface DropdownChild {
     text: string;
     value: string;
-    key: number;
+    key: string | number;
 }
 
 /**
@@ -152,6 +153,7 @@ export interface DropdownField extends FormRequiredFieldModel {
     type: "dropdown";
     default?: string;
     children: DropdownChild[];
+    validation?: (value: string, validation: Validation, allValues?: Map<string, FormValue>) => void;
     placeholder?: string;
     value?: string;
     width?: SemanticWIDTHS;

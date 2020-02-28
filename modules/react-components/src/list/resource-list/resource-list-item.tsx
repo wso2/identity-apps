@@ -59,7 +59,7 @@ interface ResourceListItemPropsInterface extends ListItemProps {
     /**
      * List item header.
      */
-    itemHeader: string;
+    itemHeader: string|React.ReactNode;
     /**
      * List item description
      */

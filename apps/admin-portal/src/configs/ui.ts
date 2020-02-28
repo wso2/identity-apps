@@ -67,7 +67,8 @@ import {
     WarningIcon,
     WebAppTemplateIllustration,
     WSFedLogo,
-    WSTrustLogo
+    WSTrustLogo,
+    ClaimsIcon
 } from "@wso2is/theme";
 
 type ImageType = string;
@@ -92,7 +93,8 @@ export const SidePanelIcons = {
     childIcon: ArrowRight,
     connections: PlugIcon,
     overview: DashboardIcon,
-    usersAndRoles: UserIcon
+    usersAndRoles: UserIcon,
+    claims: ClaimsIcon
 };
 
 export const SidePanelMiscIcons = {

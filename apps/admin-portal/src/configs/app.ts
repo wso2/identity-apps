@@ -27,9 +27,11 @@ interface ServiceResourcesType {
     consents: string;
     groups: string;
     claims: string;
+    externalClaims: string;
     identityProvider: string;
     issuer: string;
     jwks: string;
+    localClaims: string;
     logout: string;
     me: string;
     permission: string;
@@ -51,10 +53,12 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     challenges: `${GlobalConfig.serverHost}/api/users/v1/me/challenges`,
     claims: `${GlobalConfig.serverHost}/api/server/v1/claim-dialects`,
     consents: `${GlobalConfig}/api/identity/consent-mgt/v1.0/consents`,
+    externalClaims:`${GlobalConfig.serverHost}/api/server/v1/claim-dialects/{}/claims`,
     groups: `${GlobalConfig.serverHost}/scim2/Groups`,
     identityProvider: `${GlobalConfig.serverHost}/api/server/v1/identity-providers`,
     issuer: `${GlobalConfig.serverHost}/oauth2/token`,
     jwks: `${GlobalConfig.serverHost}/oauth2/jwks`,
+    localClaims: `${GlobalConfig.serverHost}/api/server/v1/claim-dialects/local/claims`,
     logout: `${GlobalConfig.serverHost}/oidc/logout`,
     me: `${GlobalConfig.serverHost}/scim2/Me`, // TODO: Remove this endpoint and use ID token to get the details
     permission: `${GlobalConfig.serverHost}/api/server/v1/permission-management/permissions`,
