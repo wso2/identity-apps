@@ -69,7 +69,7 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
                     name={data.required ? "check circle outline" : "times circle outline"}
                 />
             )}
-            {generateSummaryLine("Show on Profile?",
+            {generateSummaryLine("Show on Profile",
                 <Icon
                     color={data.supportedByDefault ? "green" : "red"}
                     name={data.supportedByDefault ? "check circle outline" : "times circle outline"}
