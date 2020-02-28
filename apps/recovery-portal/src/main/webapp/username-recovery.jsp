@@ -29,6 +29,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
+<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.HashMap" %>
@@ -114,8 +115,18 @@
             isEmailInClaims = true;
         }
     }
-%>
-<%
+
+    boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
+
+    String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
+    Boolean isEmailUsernameEnabled = false;
+
+    if (StringUtils.isNotBlank(emailUsernameEnable)) {
+        isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
+    } else {
+        isEmailUsernameEnabled = isEmailUsernameEnabled();
+    }
+
     boolean reCaptchaEnabled = false;
     if (request.getAttribute("reCaptcha") != null &&
             "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
@@ -219,25 +230,18 @@
                         </div>
                         <%}%>
 
-                        <%
-                            if (StringUtils.isNotEmpty(tenantDomain) && !error) {
-                        %>
+                        <% if (!isSaaSApp || (StringUtils.isNotEmpty(tenantDomain) && !error)) { %> 
                         <div>
-                            <input type="hidden" name="tenantDomain" value="<%=Encode.forHtmlAttribute(tenantDomain)%>"/>
+                            <input id="tenant-domain" type="hidden" name="tenantDomain" value="<%=Encode.forHtmlAttribute(tenantDomain)%>"/>
                         </div>
-                        <%
-                        } else {
-                        %>
+                        <% } else { %>
                         <div class="field">
-                            <label class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                    "Tenant.domain")%>
+                            <label class="control-label">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Tenant.domain")%>
                             </label>
-                            <input id="tenant-domain" type="text" name="tenantDomain"
-                                    class="form-control ">
+                            <input id="tenant-domain" type="text" name="tenantDomain" class="form-control">
                         </div>
-                        <%
-                            }
-                        %>
+                        <% } %>
                         
                         <input type="hidden" id="isUsernameRecovery" name="isUsernameRecovery" value="true">
 
@@ -317,15 +321,47 @@
     <% } %>
 
     <script type="text/javascript">
+
         $(document).ready(function () {
 
             $("#recoverDetailsForm").submit(function (e) {
                 var errorMessage = $("#error-msg");
                 errorMessage.hide();
 
-                <%
-                    if (isFirstNameInClaims){
-                %>
+                var isSaaSApp = JSON.parse("<%= isSaaSApp %>");
+                var tenantDomain = "<%= tenantDomain %>";
+                var isEmailUsernameEnabled = JSON.parse("<%= isEmailUsernameEnabled %>");
+
+                var userName = document.getElementById("username");
+                var usernameUserInput = document.getElementById("usernameUserInput");
+                var usernameUserInputValue = usernameUserInput.value.trim();
+
+                document.getElementById("tenant-domain").value = tenantDomain;
+
+                if (!isSaaSApp) {
+                    if (!isEmailUsernameEnabled && (usernameUserInputValue.split("@").length >= 2)) {
+
+                        errorMessage.text(
+                            "Invalid Username. Username should't have '@' or any other special characters.");
+                        errorMessage.show();
+
+                        return;
+                    }
+
+                    if (isEmailUsernameEnabled && (usernameUserInputValue.split("@").length <= 1)) {
+
+                        errorMessage.text("Invalid Username. Username has to be an email address.");
+                        errorMessage.show();
+
+                        return;
+                    }
+                    
+                    userName.value = usernameUserInputValue + "@" + tenantDomain;
+                } else {
+                    userName.value = usernameUserInputValue;
+                }
+
+                <% if (isFirstNameInClaims){ %>
                     var firstName = $("#first-name").val();
 
                     if (firstName == '') {
@@ -335,13 +371,9 @@
 
                         return false;
                     }
-                <%
-                    }
-                %>
+                <% } %>
 
-                <%
-                    if (reCaptchaEnabled) {
-                %>
+                <% if (reCaptchaEnabled) { %>
                     var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
 
                     if (reCaptchaResponse.trim() == '') {
@@ -350,9 +382,7 @@
                         $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
                         return false;
                     }
-                <%
-                    }
-                %>
+                <% } %>
 
                 return true;
             });

@@ -16,7 +16,7 @@
   ~ under the License.
   --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="org.apache.commons.lang3.StringUtils" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.constants.SelfRegistrationStatusCodes" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
@@ -142,7 +142,7 @@
                         <div class="ui divider hidden"></div>
 
                         <div class="align-right buttons">
-                            <a href="javascript:goBack()"class="ui button link-button">
+                            <a href="javascript:goBack()" class="ui button link-button">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                             </a>
                             <button id="registrationSubmit" class="ui primary button" type="submit">

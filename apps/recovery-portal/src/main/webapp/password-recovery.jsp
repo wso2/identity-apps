@@ -26,14 +26,17 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.*" %>
+
 <jsp:directive.include file="includes/localize.jsp"/>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
     String username = request.getParameter("username");
+    boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
     String tenantDomain = null;
 
     if (StringUtils.isNotEmpty(username)) {
@@ -63,12 +66,20 @@
 
     isEmailNotificationEnabled = Boolean.parseBoolean(application.getInitParameter(
             IdentityManagementEndpointConstants.ConfigConstants.ENABLE_EMAIL_NOTIFICATION));
-%>
-<%
+
     boolean reCaptchaEnabled = true;
     if (request.getAttribute("reCaptcha") != null &&
             "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
         reCaptchaEnabled = true;
+    }
+
+    String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
+    Boolean isEmailUsernameEnabled = false;
+
+    if (StringUtils.isNotBlank(emailUsernameEnable)) {
+        isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
+    } else {
+        isEmailUsernameEnabled = isEmailUsernameEnabled();
     }
 %>
 
@@ -106,18 +117,16 @@
             <% } %>
             <div class="ui segment">
                 <!-- page content -->
-                <h2>
+                <h3 class="ui header">
                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.password")%>
-                </h2>
+                </h3>
                 <% if (error) { %>
                 <div class="ui visible negative message" id="server-error-msg">
                     <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
                 </div>
                 <% } %>
                 <div class="ui negative message" id="error-msg" hidden="hidden"></div>
-                <p>
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.detail.to.recover.pwd")%>
-                </p>
+
                 <div class="ui divider hidden"></div>
                 <div class="segment-form">
                     <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
@@ -132,17 +141,18 @@
                         %>
 
                         <div class="field">
-                            <input id="username" name="username" type="text" tabindex="0"
-                                   placeholder=
-                                       <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")%> required>
+                            <label for="username">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.your.username.here")%>
+                            </label>
+                            <input id="usernameUserInput" name="usernameUserInput" type="text" tabindex="0" required>
+                            <input id="username" name="username" type="hidden" required>
                         </div>
 
                         <%
                             }
                         %>
-                        <%
-                            if (isEmailNotificationEnabled) {
-                        %>
+
+                        <% if (isEmailNotificationEnabled) { %>
                         <div class="ui secondary segment" style="text-align: left;">
                             <div class="field">
                                 <div class="ui radio checkbox">
@@ -159,15 +169,11 @@
                                 </div>
                             </div>
                         </div>
-                        <%
-                        } else {
-                        %>
+                        <% } else { %>
                         <div class="field">
                             <input type="hidden" name="recoveryOption" value="SECURITY_QUESTIONS"/>
                         </div>
-                        <%
-                            }
-                        %>
+                        <% } %>
 
                         <%
                             String callback = request.getParameter("callback");
@@ -238,27 +244,63 @@
                 var errorMessage = $("#error-msg");
                 errorMessage.hide();
 
+                var isSaaSApp = JSON.parse("<%= isSaaSApp %>");
+                var tenantDomain = "<%= tenantDomain %>";
+                var isEmailUsernameEnabled = JSON.parse("<%= isEmailUsernameEnabled %>");
+
+                var userName = document.getElementById("username");
+                var usernameUserInput = document.getElementById("usernameUserInput");
+                var usernameUserInputValue = usernameUserInput.value.trim();
+
+                if (!isSaaSApp) {
+                    if (!isEmailUsernameEnabled && (usernameUserInputValue.split("@").length >= 2)) {
+
+                        errorMessage.text(
+                            "Invalid Username. Username should't have '@' or any other special characters.");
+                        errorMessage.show();
+
+                        return;
+                    }
+
+                    if (isEmailUsernameEnabled && (usernameUserInputValue.split("@").length <= 1)) {
+
+                        errorMessage.text("Invalid Username. Username has to be an email address.");
+                        errorMessage.show();
+
+                        return;
+                    }
+                    
+                    userName.value = usernameUserInputValue + "@" + tenantDomain;
+                } else {
+                    userName.value = usernameUserInputValue;
+                }
+
+
+                // Validate User Name
                 var firstName = $("#username").val();
+
                 if (firstName == '') {
                     errorMessage.text("Please fill the first name.");
                     errorMessage.show();
                     $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+
                     return false;
                 }
 
-                <%
-                if (reCaptchaEnabled) {
-                %>
+                // Validate reCaptcha
+                <% if (reCaptchaEnabled) { %>
+
                 var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
+
                 if (reCaptchaResponse.trim() == '') {
                     errorMessage.text("Please select reCaptcha.");
                     errorMessage.show();
                     $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+
                     return false;
                 }
-                <%
-                }
-                %>
+
+                <% } %>
 
                 return true;
             });
