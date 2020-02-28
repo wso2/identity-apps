@@ -17,7 +17,7 @@
  */
 
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
-import { HttpMethods, Claim, ClaimDialect, AddExternalClaim, ClaimsGetParams } from "../models";
+import { HttpMethods, Claim, AddExternalClaim, ClaimsGetParams } from "../models";
 import { AxiosHttpClient } from "@wso2is/http";
 
 /**
@@ -53,7 +53,7 @@ export const addLocalClaim = (data: Claim): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -82,7 +82,7 @@ export const getAllLocalClaims = (params: ClaimsGetParams): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -111,7 +111,7 @@ export const getAClaim = (id: string): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -141,7 +141,7 @@ export const updateAClaim = (id: string, data: Claim): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -168,7 +168,7 @@ export const deleteAClaim = (id: string): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -198,7 +198,7 @@ export const addDialect = (dialectURI: string): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -225,7 +225,7 @@ export const getADialect = (id: string): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -252,7 +252,7 @@ export const getDialects = (params: ClaimsGetParams): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -283,7 +283,7 @@ export const updateADialect = (id: string, dialectURI: string): Promise<any> => 
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -310,7 +310,7 @@ export const deleteADialect = (id: string): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -339,7 +339,7 @@ export const addExternalClaim = (dialectID: string, data: AddExternalClaim): Pro
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -367,7 +367,7 @@ export const getAllExternalClaims = (dialectID: string, params: ClaimsGetParams)
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -395,7 +395,7 @@ export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -425,7 +425,7 @@ export const updateAnExternalClaim = (dialectID: string, claimID: string, data: 
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -453,6 +453,6 @@ export const deleteAnExternalClaim = (dialectID: string, claimID: string): Promi
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            return Promise.reject(error?.response?.data);
         });
 };
