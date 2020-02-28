@@ -215,7 +215,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     This value is needed only if you have to configure multiple SAML SSO
                                     inbound authentication configurations for the same Issuer value. Qualifier
                                     that is defined here will be appended to the issuer internally to
-                                    identify a application uniquely at runtime
+                                    identify a application uniquely at runtime.
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
@@ -237,7 +237,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             setShowError={ setAssertionConsumerUrlError }
                             hint={ "This specifies the assertion Consumer URLs that the browser " +
                             "should be redirected to after the authentication is successful. " +
-                            "This is the Assertion Consumer Service (ACS) URL of the Application" }
+                            "This is the Assertion Consumer Service (ACS) URL of the Application." }
                         />
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -256,7 +256,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 <Hint>
                                     As there can be multiple assertion consumer URLs, you must define a
                                     Default Assertion Consumer URL in case you are unable to retrieve
-                                    it from the authentication request
+                                    it from the authentication request.
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
@@ -317,7 +317,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 <Hint>
                                     This specifies whether the identity provider must validate the signature of
                                     the SAML2 authentication request and the SAML2 logout request
-                                    that are sent by the application
+                                    that are sent by the application.
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
@@ -336,20 +336,51 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 />
                                 <Hint disabled={ !isRequestSignatureValidationEnabled }>
                                     If application certificate is provided then it will be used and above selected
-                                    certificate will be ignored
+                                    certificate will be ignored.
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
 
-                        {/*Response Signing*/ }
+                        {/*Response/Assertion Signing*/ }
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                 <Divider/>
                                 <Divider hidden/>
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Heading as="h5">Response Signing</Heading>
+                                <Heading as="h5">Assertion/Response Signing</Heading>
                                 <Divider hidden/>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Field
+                                        label="Digest Algorithm"
+                                        name="digestAlgorithm"
+                                        type="dropdown"
+                                        required={ false }
+                                        requiredErrorMessage="This is needed"
+                                        default={ metadata?.responseDigestAlgorithm.defaultValue }
+                                        value={ initialValues?.singleSignOnProfile.assertion.digestAlgorithm }
+                                        children={ getAllowedOptions(metadata?.responseDigestAlgorithm) }
+
+                                    />
+                                </Grid.Column>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Field
+                                    label="Signing Algorithm"
+                                    name="signingAlgorithm"
+                                    type="dropdown"
+                                    required={ false }
+                                    value={ initialValues?.responseSigning.signingAlgorithm }
+                                    requiredErrorMessage="This is needed"
+                                    default={ metadata?.responseSigningAlgorithm.defaultValue }
+                                    children={ getAllowedOptions(metadata?.responseSigningAlgorithm) }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     name="responseSigning"
                                     label=""
@@ -357,36 +388,14 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     requiredErrorMessage="this is needed"
                                     type="checkbox"
                                     value={ initialValues?.responseSigning.enabled ? ["enabled"] : [] }
-                                    listen={
-                                        (values) => {
-                                            setIsResponseSigningEnabled(
-                                                values.get("responseSigning").includes("enabled")
-                                            )
-                                        }
-                                    }
                                     children={ [
                                         {
-                                            label: "Enable",
+                                            label: "Sign SAML Responses",
                                             value: "enabled"
                                         },
                                     ] }
                                 />
                                 <Hint>Sign the SAML2 Responses returned after the authentication process.</Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    label="Response Signing Algorithm"
-                                    name="signingAlgorithm"
-                                    type="dropdown"
-                                    required={ false }
-                                    disabled={ !isResponseSigningEnabled }
-                                    value={ initialValues?.responseSigning.signingAlgorithm }
-                                    requiredErrorMessage="This is needed"
-                                    default={ metadata?.responseSigningAlgorithm.defaultValue }
-                                    children={ getAllowedOptions(metadata?.responseSigningAlgorithm) }
-                                />
                             </Grid.Column>
                         </Grid.Row>
 
@@ -439,21 +448,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 />
                                 <Hint>
                                     Artifact resolve request's signature will be validated against
-                                    the Application certificate
+                                    the Application certificate.
                                 </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    label="Attribute Consuming ServiceIndex"
-                                    name="attributeConsumingServiceIndex"
-                                    placeholder={ "Enter attribute consuming serviceIndex" }
-                                    type="text"
-                                    required={ false }
-                                    requiredErrorMessage="This is needed"
-                                    value={ initialValues?.singleSignOnProfile.attributeConsumingServiceIndex }
-                                />
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
@@ -513,7 +509,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             } }
                             showError={ showAudienceError }
                             setShowError={ setAudienceError }
-                            hint={ "Restrict the audience" }
+                            hint={ "Restrict the audience." }
                         />
                         <URLInputComponent
                             urlState={ recipients }
@@ -532,21 +528,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             setShowError={ setRecipientsError }
                             hint={ "Validate the recipients of the response." }
                         />
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    label="Digest Algorithm"
-                                    name="digestAlgorithm"
-                                    type="dropdown"
-                                    required={ false }
-                                    requiredErrorMessage="This is needed"
-                                    default={ metadata?.responseDigestAlgorithm.defaultValue }
-                                    value={ initialValues?.singleSignOnProfile.assertion.digestAlgorithm }
-                                    children={ getAllowedOptions(metadata?.responseDigestAlgorithm) }
-
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                 <Heading as="h6">Encryption</Heading>
@@ -676,6 +657,23 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     Once you select the checkbox to Include Attributes in the Response Always ,
                                     the identity provider always includes the attribute values related to
                                     the selected claims in the SAML attribute statement.
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Field
+                                    label="Attribute Consuming ServiceIndex"
+                                    name="attributeConsumingServiceIndex"
+                                    placeholder={ "Enter attribute consuming serviceIndex" }
+                                    type="text"
+                                    required={ false }
+                                    disabled={ !isAttributeProfileEnabled }
+                                    requiredErrorMessage="This is needed"
+                                    value={ initialValues?.singleSignOnProfile.attributeConsumingServiceIndex }
+                                />
+                                <Hint>
+                                    This is an optional field if not provided a value will be generated automatically.
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
