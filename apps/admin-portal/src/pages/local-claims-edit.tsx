@@ -91,7 +91,7 @@ export const LocalClaimsEditPage = (props): React.ReactElement => {
             description={"Edit Local Claim"}
             backButton={{
                 onClick: () => {
-                    history.push("/local-claims");
+                    history.push("/local-dialect");
                 },
                 text: "Go back to Local Claims"
             }}

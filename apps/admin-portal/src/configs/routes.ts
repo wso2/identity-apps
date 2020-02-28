@@ -151,8 +151,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 exact: true,
                 icon: "childIcon",
                 level: 2,
-                name: "Local Claims",
-                path: "/local-claims",
+                name: "Local Dialects",
+                path: "/local-dialects",
                 protected: true,
                 showOnSidePanel: true
             },
@@ -171,8 +171,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 exact: true,
                 icon: "childIcon",
                 level: 2,
-                name: "Claim Dialects",
-                path: "/claim-dialects",
+                name: "Claim Dialect",
+                path: "/claim-dialect",
                 protected: true,
                 showOnSidePanel:true
             },
