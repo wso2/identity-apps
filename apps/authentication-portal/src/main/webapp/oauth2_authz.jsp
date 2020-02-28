@@ -167,7 +167,6 @@
                         </div>
                         
                     </div>
-        
                     <div class="align-right buttons">
                         <input type="hidden" name="<%=Constants.SESSION_DATA_KEY_CONSENT%>"
                             value="<%=Encode.forHtmlAttribute(request.getParameter(Constants.SESSION_DATA_KEY_CONSENT))%>"/>
