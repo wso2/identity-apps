@@ -103,7 +103,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
 
                 setIsInboundProtocolConfigRequestLoading(true);
 
-                getInboundProtocolConfig(appId, protocol.id, null)
+                getInboundProtocolConfig(appId, protocol.id)
                     .then((response) => {
                         found = true;
 
