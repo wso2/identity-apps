@@ -84,7 +84,6 @@
     
                                 if (CollectionUtils.isNotEmpty(openIdScopes)) {
                         %>
-            
                         <div class="ui segment" style="text-align: left;">
                             <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.scopes")%></h5>
                             <div class="scopes-list ui list">
