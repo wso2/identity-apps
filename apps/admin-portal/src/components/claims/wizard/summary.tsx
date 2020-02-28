@@ -16,9 +16,9 @@
 * under the License.
 */
 
-import React from "react";
+import React, { useRef } from "react";
 import { Claim, AttributeMapping, Property } from "../../../models";
-import { List, Grid, GridColumn, Icon } from "semantic-ui-react";
+import { List, Grid, GridColumn, Icon, Input, Label, Button, Popup } from "semantic-ui-react";
 
 interface SummaryLocalClaimsPropsInterface {
     data: Claim;
@@ -26,6 +26,8 @@ interface SummaryLocalClaimsPropsInterface {
 export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): React.ReactElement => {
 
     const { data } = props;
+
+    const claimURIText = useRef(null);
 
     const generateSummaryLine = (
         title: string,
@@ -43,6 +45,35 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
         )
     };
 
+    const showClaimURI = (): React.ReactElement => {
+        return (
+            <Input
+                ref={claimURIText}
+                value={data.claimURI}
+                labelPosition="right"
+            >
+                <input/>
+                <Popup
+                    trigger={
+                        (
+                            <Button
+                                icon="clipboard"
+                                onClick={(event: React.MouseEvent) => {
+                                    claimURIText.current.select();
+                                    document.execCommand("copy");
+                                }}
+                            />
+                        )
+                    }
+                    position="top center"
+                    content="Copy to clipboard"
+                    inverted
+                />
+                
+            </Input>
+        )
+    };
+
     return (
         <Grid className="wizard-summary">
             <Grid.Row>
@@ -53,8 +84,7 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
                     </div>
                 </Grid.Column>
             </Grid.Row>
-            {data.description ? generateSummaryLine("Description", data.description) : null}
-            {data.claimURI ? generateSummaryLine("Claim URI", data.claimURI) : null}
+            {data.claimURI ? generateSummaryLine("Claim URI", showClaimURI()) : null}
             {data.displayOrder ? generateSummaryLine("Display Order", data.displayOrder) : null}
             {data.regEx ? generateSummaryLine("Regular Expression", data.regEx) : null}
             {generateSummaryLine("ReadOnly",

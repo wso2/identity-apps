@@ -16,10 +16,10 @@
 * under the License.
 */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Claim, AttributeMapping, AlertLevels } from "../../../models";
 import { Forms, Field, FormValue, Validation } from "@wso2is/forms";
-import { Grid, Button } from "semantic-ui-react";
+import { Grid, Button, Input, Popup } from "semantic-ui-react";
 import { getADialect, getUserStoreList, updateAClaim } from "../../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
@@ -38,6 +38,8 @@ export const EditBasicDetailsLocalClaims = (
 
     const { claim, update } = props;
 
+    const claimURIText = useRef(null);
+
     useEffect(() => {
         getADialect("local").then((response) => {
             setClaimURIBase(response.dialectURI);
@@ -51,6 +53,35 @@ export const EditBasicDetailsLocalClaims = (
             )); 
         });
     }, []);
+
+    const showClaimURI = (): React.ReactElement => {
+        return (
+            <Input
+                ref={claimURIText}
+                value={data.claimURI}
+                labelPosition="right"
+            >
+                <input />
+                <Popup
+                    trigger={
+                        (
+                            <Button
+                                icon="clipboard"
+                                onClick={(event: React.MouseEvent) => {
+                                    claimURIText.current.select();
+                                    document.execCommand("copy");
+                                }}
+                            />
+                        )
+                    }
+                    position="top center"
+                    content="Copy to clipboard"
+                    inverted
+                />
+
+            </Input>
+        )
+    };
 
     return (
         <Forms
@@ -91,16 +122,6 @@ export const EditBasicDetailsLocalClaims = (
             <Grid>
                 <Grid.Row columns={1}>
                     <Grid.Column width={6}>
-                        <Field
-                            type="text"
-                            name="claimURI"
-                            label="Claim ID"
-                            required={false}
-                            readOnly
-                            requiredErrorMessage="Claim URI is required"
-                            placeholder="Enter a claim URI"
-                            value={claim?.claimURI.replace(claimURIBase + "/", "")}
-                        />
                         <Field
                             type="text"
                             name="name"
