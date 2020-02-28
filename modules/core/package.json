@@ -41,6 +41,7 @@
         "@types/react": "*",
         "@types/react-notification-system": "*",
         "@types/ua-parser-js": "*",
+        "axios": "*",
         "history": "*",
         "lodash": "*",
         "react": "*",

@@ -57,6 +57,7 @@ export const SecurityQuestionsIcon = require("../lib/assets/images/icons/securit
 export const SMSIcon = require("../lib/assets/images/icons/sms-icon.svg");
 export const SpinWheelIcon = require("../lib/assets/images/icons/spin-wheel-icon.svg");
 export const SuccessIcon = require("../lib/assets/images/icons/success-icon.svg");
+export const ReportIcon = require("../lib/assets/images/icons/report-icon.svg");
 export const TickCircleIcon = require("../lib/assets/images/icons/tick-circle-icon.svg");
 export const ToolsIcon = require("../lib/assets/images/icons/tools-icon.svg");
 export const AuthenticatorAppIcon = require("../lib/assets/images/icons/authenticator-app-icon.svg");

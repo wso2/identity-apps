@@ -16,6 +16,7 @@
  * under the License.
  */
 
+export * from "./application-management-utils";
 export * from "./authenticate-util";
 export * from "./http-utils";
 export * from "./search-utils";

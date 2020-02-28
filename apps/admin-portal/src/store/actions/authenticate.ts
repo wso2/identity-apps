@@ -25,7 +25,8 @@ import {
     SignOutUtil
 } from "@wso2is/authentication";
 import _ from "lodash";
-import { getProfileInfo, getProfileSchemas } from "../../api";
+import { getProfileSchemas } from "../../api";
+import { getProfileInfo } from "@wso2is/core/api";
 import { GlobalConfig, i18n, ServiceResourcesEndpoint } from "../../configs";
 import * as TokenConstants from "../../constants";
 import { history } from "../../helpers";
@@ -93,8 +94,9 @@ export const getProfileInformation = () => (dispatch): void => {
 
     dispatch(setProfileInfoLoader(true));
 
-    // Get the profile info
-    getProfileInfo()
+    // Get the profile info.
+    // TODO: Add the function to handle SCIM disabled error.
+    getProfileInfo(null)
         .then((infoResponse) => {
             if (infoResponse.responseStatus === 200) {
                 dispatch(
