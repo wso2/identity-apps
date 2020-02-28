@@ -26,7 +26,9 @@
             "enabled":true,
             "sms":true,
             "fido":true,
-            "authenticatorApp":true
+            "authenticatorApp":{
+                "enabled": true
+            }
         },
         "activeSessions":true,
         "manageConsents":true
