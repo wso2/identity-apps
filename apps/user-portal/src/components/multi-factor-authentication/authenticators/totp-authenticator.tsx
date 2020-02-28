@@ -190,7 +190,7 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
         return (
             <>
                 <Forms
-                    onSubmit={(values: Map<string, string>) => {
+                    onSubmit={ (values: Map<string, string>) => {
                         verifyCode(values.get("code"));
                     }}
                     submitState={submit}
