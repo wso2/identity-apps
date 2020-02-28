@@ -18,7 +18,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Forms, FormValue, Field, Validation } from "@wso2is/forms";
-import { Grid, Button } from "semantic-ui-react";
+import { Grid, Button, Label } from "semantic-ui-react";
 import { AttributeMapping } from "../../../models";
 import { getUserStoreList, getADialect } from "../../../api";
 
@@ -32,11 +32,13 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
 
     const { submitState, onSubmit, values, claimURIBase } = props;
 
+    const [claimID, setClaimID] = useState<string>(null);
+
     return (
         <Forms
             onSubmit={(values) => {
                 const data = {
-                    claimURI: claimURIBase+"/"+values.get("claimURI").toString(),
+                    claimURI: claimURIBase + "/" + values.get("claimURI").toString(),
                     description: values.get("description").toString(),
                     displayOrder: parseInt(values.get("displayOrder").toString()),
                     regEx: values.get("regularExpression").toString(),
@@ -75,10 +77,14 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             name="claimURI"
                             label="Claim ID"
                             required={true}
-                            requiredErrorMessage="Claim URI is required"
-                            placeholder="Enter a claim URI"
+                            requiredErrorMessage="Claim ID is required"
+                            placeholder="Enter a claim ID"
                             value={values?.get("claimURI")?.toString()}
+                            listen={(values: Map<string, FormValue>) => {
+                                setClaimID(values.get("claimURI").toString())
+                            }}
                         />
+                        {claimID ? <Label><em>Claim URI</em>: {claimURIBase + "/" + claimID}</Label> : null}
                     </Grid.Column>
                     <Grid.Column>
                         <Field
