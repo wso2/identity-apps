@@ -228,9 +228,9 @@
                                     class="form-control"
                                     data-validate="email">
                         </div>
-                        <%}%>
+                        <% } %>
 
-                        <% if (!isSaaSApp || (StringUtils.isNotEmpty(tenantDomain) && !error)) { %> 
+                        <% if (!isSaaSApp && (StringUtils.isNotEmpty(tenantDomain) && !error)) { %> 
                         <div>
                             <input id="tenant-domain" type="hidden" name="tenantDomain" value="<%=Encode.forHtmlAttribute(tenantDomain)%>"/>
                         </div>

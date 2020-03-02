@@ -160,7 +160,7 @@
 
     <% if (isSelfSignUpEPAvailable) { %>
         <div class="field">
-            <a id="usernameRecoverLink" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true)%>">
+            <a id="usernameRecoverLink" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true, urlParameters)%>">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%> ?
             </a>

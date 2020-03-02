@@ -282,12 +282,12 @@
         <div class="field">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
             <% if (!isIdentifierFirstLogin(inputType)) { %>
-                <a id="usernameRecoverLink" tabindex="5" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true)%>">
+                <a id="usernameRecoverLink" tabindex="5" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true, urlParameters)%>">
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
                 </a>
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
             <% } %>
-            <a id="passwordRecoverLink" tabindex="6" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false)%>">
+            <a id="passwordRecoverLink" tabindex="6" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false, urlParameters)%>">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
             </a>
             ?
@@ -369,16 +369,17 @@
     </div>
     <% } %>
     <%!
-        private String getRecoverAccountUrl(
+        private String getRecoverAccountUrl (
             String identityMgtEndpointContext,
             String urlEncodedURL,
-            boolean isUsernameRecovery) {
+            boolean isUsernameRecovery,
+            String urlParameters) {
 
-            return identityMgtEndpointContext + "/recoveraccountrouter.do?callback=" +
-                    Encode.forHtmlAttribute(urlEncodedURL) + "&isUsernameRecovery=" + isUsernameRecovery;
+            return identityMgtEndpointContext + "/recoveraccountrouter.do?" + urlParameters +
+                "&isUsernameRecovery=" + isUsernameRecovery + "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
         }
 
-        private String getRegistrationUrl(
+        private String getRegistrationUrl (
             String identityMgtEndpointContext,
             String urlEncodedURL,
             String urlParameters) {
