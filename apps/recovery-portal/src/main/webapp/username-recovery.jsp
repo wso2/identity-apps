@@ -29,7 +29,6 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
-<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.HashMap" %>
@@ -117,15 +116,6 @@
     }
 
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
-
-    String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
-    Boolean isEmailUsernameEnabled = false;
-
-    if (StringUtils.isNotBlank(emailUsernameEnable)) {
-        isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
-    } else {
-        isEmailUsernameEnabled = isEmailUsernameEnabled();
-    }
 
     boolean reCaptchaEnabled = false;
     if (request.getAttribute("reCaptcha") != null &&
@@ -328,38 +318,7 @@
                 var errorMessage = $("#error-msg");
                 errorMessage.hide();
 
-                var isSaaSApp = JSON.parse("<%= isSaaSApp %>");
-                var tenantDomain = "<%= tenantDomain %>";
-                var isEmailUsernameEnabled = JSON.parse("<%= isEmailUsernameEnabled %>");
-
-                var userName = document.getElementById("username");
-                var usernameUserInput = document.getElementById("usernameUserInput");
-                var usernameUserInputValue = usernameUserInput.value.trim();
-
-                document.getElementById("tenant-domain").value = tenantDomain;
-
-                if (!isSaaSApp) {
-                    if (!isEmailUsernameEnabled && (usernameUserInputValue.split("@").length >= 2)) {
-
-                        errorMessage.text(
-                            "Invalid Username. Username should't have '@' or any other special characters.");
-                        errorMessage.show();
-
-                        return;
-                    }
-
-                    if (isEmailUsernameEnabled && (usernameUserInputValue.split("@").length <= 1)) {
-
-                        errorMessage.text("Invalid Username. Username has to be an email address.");
-                        errorMessage.show();
-
-                        return;
-                    }
-                    
-                    userName.value = usernameUserInputValue + "@" + tenantDomain;
-                } else {
-                    userName.value = usernameUserInputValue;
-                }
+                document.getElementById("tenant-domain").value = "<%= tenantDomain %>";
 
                 <% if (isFirstNameInClaims){ %>
                     var firstName = $("#first-name").val();
