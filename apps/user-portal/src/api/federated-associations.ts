@@ -30,6 +30,7 @@ const httpClient = AxiosHttpClient.getInstance();
 /**
  * This function calls the federated association API endpoint and gets the list of federated associations
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getFederatedAssociations = (): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -58,6 +59,7 @@ export const getFederatedAssociations = (): Promise<any> => {
  * This removes the specified federated association
  * @param id
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const deleteFederatedAssociation = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -81,6 +83,7 @@ export const deleteFederatedAssociation = (id: string): Promise<any> => {
 /**
  * This removes all the federated associations
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const deleteAllFederatedAssociation = (): Promise<any> => {
     const requestConfig = {
         headers: {

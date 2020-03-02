@@ -393,6 +393,7 @@ export const views: Views = {
             }
         },
         federatedAssociations: {
+            deleteConfirmation: "This will remove this external login from your account. Do you want to continue removing?",
             notifications: {
                 getFederatedAssociations: {
                     error: {
@@ -447,6 +448,7 @@ export const views: Views = {
                     label: "Add local user account"
                 }
             },
+            deleteConfirmation: "This will remove the linked account from your account. Do you want to continue removing?",
             forms: {
                 addAccountForm: {
                     inputs: {
@@ -541,6 +543,52 @@ export const views: Views = {
             }
         },
         mfa: {
+            authenticatorApp: {
+                description: "Scan the QR code using an Authenticator App to use TOTP" + " as a second authentication factor",
+                heading: "Authenticator App",
+                hint: "Show the QR Code",
+                modals: {
+                    done: "Success! Now you can use your Authentication App for two-factor authentication",
+                    scan: {
+                        authenticatorApps: "Authenticator Apps",
+                        generate: "Generate a new code",
+                        heading: "Scan this QR Code using an Authenticator App",
+                        messageBody: "You can find a list of Authenticator Apps available here.",
+                        messageHeading: "Don't have an Authenticator App installed?"
+                    },
+                    verify: {
+                        error: "Verification failed. Please try again.",
+                        heading: "Enter the verification code from the Authentication App",
+                        label: "Verification Code",
+                        placeholder: "Enter your verification code",
+                        requiredError: "Enter the verification code",
+                        reScan: "Re-scan",
+                        reScanQuestion: "Want to scan the QR code again?"
+                    }
+                },
+                notifications: {
+                    initError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Something went wrong"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving the QR code",
+                            message: "Something went wrong"
+                        }
+                    },
+                    refreshError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "Something went wrong"
+                        },
+                        genericError: {
+                            description: "An error occurred while trying to get a new QR code",
+                            message: "Something went wrong"
+                        }
+                    }
+                }
+            },
             fido: {
                 description: "Authenticate yourself by connecting a biometric device or a FIDO key",
                 form: {
@@ -552,9 +600,7 @@ export const views: Views = {
                 heading: "via Security Device",
                 modals: {
                     deviceRegistrationErrorModal: {
-                        description:
-                            "The device registration was interrupted. If this was not intentional you may " +
-                            "retry the same flow or try again with an older security key.",
+                        description: "The device registration was interrupted. If this was not intentional you may " + "retry the same flow or try again with an older security key.",
                         heading: "Device Registration Failed"
                     }
                 },
@@ -583,9 +629,7 @@ export const views: Views = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description:
-                                "The device was successfully registered and now you can use it as an" +
-                                " authentication factor",
+                            description: "The device was successfully registered and now you can use it as an" + " authentication factor",
                             message: "Your Device Registered Successfully"
                         }
                     },
@@ -599,8 +643,7 @@ export const views: Views = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description:
-                                "The name of your security device was successfully updated",
+                            description: "The name of your security device was successfully updated",
                             message: "Security Device name updated successfully"
                         }
                     }
@@ -903,22 +946,22 @@ export const views: Views = {
         },
         profile: {
             fields: {
-                addresses_home: "Home address",
-                addresses_work: "Work address",
+                addressesHome: "Home address",
+                addressesWork: "Work address",
                 emails: "Email",
-                emails_home: "Home email",
-                emails_other: "Other email",
-                emails_work: "Work email",
+                emailsHome: "Home email",
+                emailsOther: "Other email",
+                emailsWork: "Work email",
                 generic: {
                     default: "Add {{fieldName}}"
                 },
-                name_familyName: "Last name",
-                name_givenName: "First name",
+                nameFamilyName: "Last name",
+                nameGivenName: "First name",
                 phoneNumbers: "Phone number",
-                phoneNumbers_home: "Home phone number",
-                phoneNumbers_mobile: "Mobile number",
-                phoneNumbers_other: "Other phone number",
-                phoneNumbers_work: "Work phone number",
+                phoneNumbersHome: "Home phone number",
+                phoneNumbersMobile: "Mobile number",
+                phoneNumbersOther: "Other phone number",
+                phoneNumbersWork: "Work phone number",
                 profileImage: "Profile Image",
                 profileUrl: "URL",
                 userName: "Username"

@@ -20,9 +20,9 @@
  *  Captures claim management properties.
  */
 export interface Claim {
-    id: string;
+    id?: string;
     claimURI: string;
-    dialectURI: string;
+    dialectURI?: string;
     description: string;
     displayOrder: number;
     displayName: string;
@@ -30,13 +30,18 @@ export interface Claim {
     regEx: string;
     required: boolean;
     supportedByDefault: boolean;
-    attributeMapping: AttributeMapping;
-    properties?: string[];
+    attributeMapping: AttributeMapping[];
+    properties?: Property[];
 }
 
-interface AttributeMapping {
+export interface AttributeMapping {
     mappedAttribute: string;
     userstore: string;
+}
+
+export interface Property{
+    key: string;
+    value: string;
 }
 
 export interface ClaimDialect {
@@ -58,4 +63,17 @@ export interface ExternalClaim {
     claimURI: string;
     claimDialectURI: string;
     mappedLocalClaimURI: string;
+}
+
+export interface AddExternalClaim {
+    claimURI: string;
+    mappedLocalClaimURI: string;
+}
+
+export interface ClaimsGetParams {
+    limit: number;
+    offset: number;
+    filter: string;
+    sort: string;
+    attributes?: string;
 }

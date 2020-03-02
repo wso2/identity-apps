@@ -25,41 +25,43 @@ import {
     SignOutUtil
 } from "@wso2is/authentication";
 import _ from "lodash";
-import { getProfileInfo, getProfileSchemas } from "../../api";
+import { getProfileSchemas } from "../../api";
+import { getProfileInfo } from "@wso2is/core/api";
 import { GlobalConfig, i18n, ServiceResourcesEndpoint } from "../../configs";
 import * as TokenConstants from "../../constants";
 import { history } from "../../helpers";
-import { AlertLevels, BasicProfileInterface, ProfileSchema } from "../../models";
+import { AlertLevels, ProfileSchema } from "../../models";
 import { store } from "../index";
 import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
-import { authenticateActionTypes } from "./types";
+import { authenticateActionTypes, AuthAction } from "./types";
 
 /**
  * Dispatches an action of type `SET_SIGN_IN`.
  */
-export const setSignIn = () => ({
+export const setSignIn = (): AuthAction => ({
     type: authenticateActionTypes.SET_SIGN_IN
 });
 
 /**
  * Dispatches an action of type `SET_SIGN_OUT`.
  */
-export const setSignOut = () => ({
+export const setSignOut = (): AuthAction => ({
     type: authenticateActionTypes.SET_SIGN_OUT
 });
 
 /**
  * Dispatches an action of type `RESET_AUTHENTICATION`.
  */
-export const resetAuthentication = () => ({
+export const resetAuthentication = (): AuthAction => ({
     type: authenticateActionTypes.RESET_AUTHENTICATION
 });
 
 /**
  * Dispatches an action of type `SET_PROFILE_INFO`.
  */
-export const setProfileInfo = (details: any) => ({
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const setProfileInfo = (details: any): AuthAction => ({
     payload: details,
     type: authenticateActionTypes.SET_PROFILE_INFO
 });
@@ -68,22 +70,33 @@ export const setProfileInfo = (details: any) => ({
  * Dispatches an action of type `SET_SCHEMAS`
  * @param schemas
  */
-export const setScimSchemas = (schemas: ProfileSchema[]) => ({
+export const setScimSchemas = (schemas: ProfileSchema[]): AuthAction => ({
     payload: schemas,
     type: authenticateActionTypes.SET_SCHEMAS
 });
 
 /**
+ * Get SCIM2 schemas
+ */
+export const getScimSchemas = () => (dispatch): void => {
+    dispatch(setProfileSchemaLoader(true));
+    getProfileSchemas()
+        .then((response: ProfileSchema[]) => {
+            dispatch(setProfileSchemaLoader(false));
+            dispatch(setScimSchemas(response));
+        });
+};
+
+/**
  *  Gets profile information by making an API call
  */
-export const getProfileInformation = () => (dispatch) => {
-
-    let isCompletionCalculated: boolean = false;
+export const getProfileInformation = () => (dispatch): void => {
 
     dispatch(setProfileInfoLoader(true));
 
-    // Get the profile info
-    getProfileInfo()
+    // Get the profile info.
+    // TODO: Add the function to handle SCIM disabled error.
+    getProfileInfo(null)
         .then((infoResponse) => {
             if (infoResponse.responseStatus === 200) {
                 dispatch(
@@ -94,8 +107,7 @@ export const getProfileInformation = () => (dispatch) => {
 
                 // If the schemas in the redux store is empty, fetch the SCIM schemas from the API.
                 if (_.isEmpty(store.getState().authenticationInformation.profileSchemas)) {
-                    isCompletionCalculated = true;
-                    dispatch(getScimSchemas(infoResponse));
+                    dispatch(getScimSchemas());
                 }
 
                 return;
@@ -148,10 +160,28 @@ export const getProfileInformation = () => (dispatch) => {
         });
 };
 
+
+/**
+ * Handle user sign-out
+ */
+export const handleSignOut = () => (dispatch): void => {
+    if (sessionStorage.length === 0) {
+        history.push(GlobalConfig.appLoginPath);
+    } else {
+        SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl, () => {
+                dispatch(setSignOut());
+                AuthenticateSessionUtil.endAuthenticatedSession();
+                OPConfigurationUtil.resetOPConfiguration();
+            }).catch(() => {
+                history.push(GlobalConfig.appLoginPath);
+            });
+    }
+};
+
 /**
  * Handle user sign-in
  */
-export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
+export const handleSignIn = (consentDenied = false) => (dispatch): void => {
     const requestParams: OIDCRequestParamsInterface = {
         clientHost: GlobalConfig.clientHost,
         clientId: GlobalConfig.clientID,
@@ -186,7 +216,7 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
         tenant: GlobalConfig.tenant
     };
 
-    const sendSignInRequest = () => {
+    const sendSignInRequest = (): void => {
         if (consentDenied) {
             requestParams.prompt = "login";
         }
@@ -242,39 +272,10 @@ export const handleSignIn = (consentDenied: boolean= false) => (dispatch) => {
 };
 
 /**
- * Handle user sign-out
- */
-export const handleSignOut = () => (dispatch) => {
-    if (sessionStorage.length === 0) {
-        history.push(GlobalConfig.appLoginPath);
-    } else {
-        SignOutUtil.sendSignOutRequest(GlobalConfig.loginCallbackUrl, () => {
-                dispatch(setSignOut());
-                AuthenticateSessionUtil.endAuthenticatedSession();
-                OPConfigurationUtil.resetOPConfiguration();
-            }).catch(() => {
-                history.push(GlobalConfig.appLoginPath);
-            });
-    }
-};
-
-/**
- * Get SCIM2 schemas
- */
-export const getScimSchemas = (profileInfo: BasicProfileInterface = null) => (dispatch) => {
-    dispatch(setProfileSchemaLoader(true));
-    getProfileSchemas()
-        .then((response: ProfileSchema[]) => {
-            dispatch(setProfileSchemaLoader(false));
-            dispatch(setScimSchemas(response));
-        });
-};
-
-/**
  * Update sessionStorage with location history path
  *
  * @param {string} location - history path.
  */
-export const updateAuthenticationCallbackUrl = (location) => {
+export const updateAuthenticationCallbackUrl = (location): void => {
     window.sessionStorage.setItem("auth_callback_url", location);
 };

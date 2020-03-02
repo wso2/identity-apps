@@ -19,7 +19,7 @@
 import {
     AuthProtocolMetaListItemInterface,
     OIDCDataInterface,
-    OIDCMetadataInterface,
+    OIDCMetadataInterface, SAML2ConfigurationInterface,
     SupportedAuthProtocolTypes,
     SupportedQuickStartTemplateTypes
 } from "./application-inbound";
@@ -75,6 +75,7 @@ export interface ApplicationBasicWizard extends ApplicationBasicInterface {
  */
 export interface InboundProtocolsInterface {
     oidc?: OIDCDataInterface;
+    saml?: SAML2ConfigurationInterface;
 }
 
 /**
@@ -242,6 +243,7 @@ interface ApplicationMetaInterface {
 /**
  * Interface for the auth protocol metadata.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface AuthProtocolMetaInterface {
     [ key: string ]: OIDCMetadataInterface | any;
 }
@@ -253,6 +255,7 @@ export interface ApplicationTemplateListItemInterface {
     description: string;
     displayName: string;
     id: SupportedQuickStartTemplateTypes;
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     image: any;
     protocols: SupportedAuthProtocolTypes[];
     technologies: ApplicationTemplateTechnology[];
@@ -281,6 +284,7 @@ export enum SupportedApplicationTemplateCategories {
 export interface ApplicationTemplateTechnology {
     name: string;
     displayName: string;
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     logo: any;
 }
 

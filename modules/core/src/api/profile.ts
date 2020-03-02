@@ -30,6 +30,7 @@ import {
     ProfileSchemaInterface
 } from "../models";
 import { ContextUtils } from "../utils";
+import axios from "axios";
 
 /**
  * Get an http client instance.
@@ -175,11 +176,7 @@ export const getGravatarImage = (email: string): Promise<string> => {
         url: SignInUtil.getGravatar(email)
     };
 
-    // Temporarily disable the handler since we don't need auth
-    // headers in the Gravatar request.
-    httpClient.disableHandler();
-
-    return httpClient.request(requestConfig)
+    return axios.request(requestConfig)
         .then(() => {
             return Promise.resolve(requestConfig.url.split("?")[ 0 ]);
         })

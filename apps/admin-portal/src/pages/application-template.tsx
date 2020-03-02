@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { Heading } from "@wso2is/react-components";
-import React, { FunctionComponent, SyntheticEvent, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
 import { ApplicationCreateWizard, QuickStartApplicationTemplates } from "../components";
 import { ApplicationTemplateIllustrations, TechnologyLogos } from "../configs";
 import { history } from "../helpers";
@@ -33,9 +32,9 @@ import {
 /**
  * Choose the application template from this page.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const ApplicationTemplateSelectPage: FunctionComponent<any> = (): JSX.Element => {
+export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactElement => {
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(null);
@@ -72,7 +71,7 @@ export const ApplicationTemplateSelectPage: FunctionComponent<any> = (): JSX.Ele
             displayName: "Web application",
             id: SupportedQuickStartTemplateTypes.OAUTH_WEB_APP,
             image: ApplicationTemplateIllustrations?.webApp,
-            protocols: [ SupportedAuthProtocolTypes.OIDC ],
+            protocols: [ SupportedAuthProtocolTypes.OIDC, SupportedAuthProtocolTypes.SAML ],
             technologies: [
                 {
                     displayName: "Java",
@@ -111,7 +110,7 @@ export const ApplicationTemplateSelectPage: FunctionComponent<any> = (): JSX.Ele
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string },
                                      templateCategory: SupportedApplicationTemplateCategories): void => {
 
-        if (!TEMPLATES.hasOwnProperty(templateCategory)) {
+        if (!Object.prototype.hasOwnProperty.call(TEMPLATES, templateCategory)) {
             return;
         }
 
@@ -150,9 +149,8 @@ export const ApplicationTemplateSelectPage: FunctionComponent<any> = (): JSX.Ele
                     <ApplicationCreateWizard
                         title={ selectedTemplate?.displayName }
                         subTitle={ selectedTemplate?.description }
-                        closeWizard={ () => setShowWizard(false) }
-                        templateType={ selectedTemplate?.id }
-                        protocol={ selectedTemplate?.protocols[0] }
+                        closeWizard={ (): void => setShowWizard(false) }
+                        template={ selectedTemplate }
                     />
                 ) }
         </PageLayout>

@@ -105,7 +105,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                         autoFocus={ inputField.autoFocus || false }
                         readOnly={ inputField.readOnly }
                         disabled={ inputField.disabled }
-                        required={ inputField.required }
+                        required={ inputField.label ? inputField.required : false }
                     />
                 );
             } else if (inputField.type === "textarea") {
@@ -136,7 +136,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                         autoFocus={ inputField.autoFocus || false }
                         readOnly={ inputField.readOnly }
                         disabled={ inputField.disabled }
-                        required={ inputField.required }
+                        required={ inputField.label ? inputField.required : false }
                     />
                 );
             } else {
@@ -167,14 +167,14 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                         autoFocus={ inputField.autoFocus || false }
                         readOnly={ inputField.readOnly }
                         disabled={ inputField.disabled }
-                        required={ inputField.required }
+                        required={ inputField.label ? inputField.required : false }
                     />
                 );
             }
         } else if (isRadioField(inputField)) {
             return (
                 <Form.Group grouped={ true }>
-                    { inputField.label !== "" ? `<label>${inputField.label}</label>` : null }
+                    { inputField.label !== "" ? <label>{ inputField.label }</label> : null }
                     { inputField.children.map((radio: RadioChild, index: number) => {
                         return (
                             <Form.Field key={ index }>
@@ -226,7 +226,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                     autoFocus={ inputField.autoFocus || false }
                     readOnly={ inputField.readOnly }
                     disabled={ inputField.disabled }
-                    required={ inputField.required }
+                    required={ inputField.label ? inputField.required : false }
                 />
             );
         } else if (isCheckBoxField(inputField)) {
@@ -235,7 +235,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                     <label>
                         { inputField.label }
                         {
-                            inputField.required
+                            inputField.label && inputField.required
                                 ? <span className="ui text color red">*</span>
                                 : null
                         }

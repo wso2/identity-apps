@@ -27,3 +27,11 @@ export interface TokenResponseInterface {
     refreshToken: string;
     tokenType: string;
 }
+
+export interface TokenRequestHeader {
+    headers: {
+        Accept: string,
+        "Access-Control-Allow-Origin": string,
+        "Content-Type": string
+    }
+}

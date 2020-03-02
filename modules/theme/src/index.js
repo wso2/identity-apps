@@ -27,9 +27,11 @@ export const Theme = require("./theme");
 // Icons
 export const AlertIcon = require("../lib/assets/images/icons/alert-icon.svg");
 export const AppIcon = require("../lib/assets/images/icons/app-icon.svg");
+export const ArrowRight = require("../lib/assets/images/icons/arrow-right-icon.svg");
 export const BlockedMagnifierIcon = require("../lib/assets/images/icons/blocked-magnifier-icon.svg");
 export const BoxIcon = require("../lib/assets/images/icons/box-icon.svg");
 export const CaretRightIcon = require("../lib/assets/images/icons/caret-right-icon.svg");
+export const ClaimsIcon = require("../lib/assets/images/icons/claims-icon.svg");
 export const CloseIcon = require("../lib/assets/images/icons/close-icon.svg");
 export const CodeIcon = require("../lib/assets/images/icons/code-icon.svg");
 export const ConsentIcon = require("../lib/assets/images/icons/consent-icon.svg");
@@ -45,7 +47,9 @@ export const FingerprintIcon = require("../lib/assets/images/icons/fingerprint.s
 export const ForbiddenIcon = require("../lib/assets/images/icons/forbidden-icon.svg");
 export const GearsIcon = require("../lib/assets/images/icons/gears-icon.svg");
 export const InfoIcon = require("../lib/assets/images/icons/info-icon.svg");
+export const LaunchIcon = require("../lib/assets/images/icons/launch-icon.svg");
 export const LockIcon = require("../lib/assets/images/icons/lock-icon.svg");
+export const MagnifierIcon = require("../lib/assets/images/icons/magnifier-icon.svg");
 export const MonitorIcon = require("../lib/assets/images/icons/monitor-icon.svg");
 export const PackageIcon = require("../lib/assets/images/icons/package.svg");
 export const PadlockIcon = require("../lib/assets/images/icons/padlock-icon.svg");
@@ -54,8 +58,10 @@ export const SecurityQuestionsIcon = require("../lib/assets/images/icons/securit
 export const SMSIcon = require("../lib/assets/images/icons/sms-icon.svg");
 export const SpinWheelIcon = require("../lib/assets/images/icons/spin-wheel-icon.svg");
 export const SuccessIcon = require("../lib/assets/images/icons/success-icon.svg");
+export const ReportIcon = require("../lib/assets/images/icons/report-icon.svg");
 export const TickCircleIcon = require("../lib/assets/images/icons/tick-circle-icon.svg");
 export const ToolsIcon = require("../lib/assets/images/icons/tools-icon.svg");
+export const AuthenticatorAppIcon = require("../lib/assets/images/icons/authenticator-app-icon.svg");
 export const UserIcon = require("../lib/assets/images/icons/user-icon.svg");
 export const WarningIcon = require("../lib/assets/images/icons/warning-icon.svg");
 
@@ -69,6 +75,8 @@ export const ProfileExportIllustration = require("../lib/assets/images/illustrat
 export const ProfileExportMiniIllustration = require("../lib/assets/images/illustrations/profile-export-mini.svg");
 export const SecurityQuestionsIllustration = require("../lib/assets/images/illustrations/security-questions.svg");
 export const SecurityQuestionsMiniIllustration = require("../lib/assets/images/illustrations/security-questions-mini.svg");
+export const QRCodeScanIllustration = require("../lib/assets/images/illustrations/qrcode-scan.svg");
+export const EnterVerificationCode = require("../lib/assets/images/illustrations/enter-verification-code.svg");
 
 // Status shields
 export const StatusShieldGood = require("../lib/assets/images/accounts-status-icons/good.svg");
@@ -138,7 +146,8 @@ export const SidePanelIconSet = {
 
 export const MFAIconSet = {
     sms: require("../lib/assets/images/icons/sms-icon.svg"),
-    fingerprint: require("../lib/assets/images/icons/fingerprint.svg")
+    fingerprint: require("../lib/assets/images/icons/fingerprint.svg"),
+    authenticatorApp: require("../lib/assets/images/icons/authenticator-app-icon.svg")
 };
 
 export const AccountRecoveryIconSet = {

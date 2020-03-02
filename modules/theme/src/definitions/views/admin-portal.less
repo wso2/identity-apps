@@ -74,4 +74,133 @@
     }
 }
 
+// VARIABLES
+@super-treeview-text-color: #000;
+@super-treeview-arrow-color: #000;
+@super-treeview-tree-stem-color: #000;
+
+.super-treeview * {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+.super-treeview {
+  font-size: 100%;
+
+  > div {
+    > .super-treeview-no-children-transition {
+      transition-property: all;
+    }
+
+    > .super-treeview-no-children-transition-enter {
+      opacity: 0;
+      height: 0;
+      overflow: hidden;
+
+      &.super-treeview-no-children-transition-enter-active {
+        opacity: 1;
+        height: 0;
+      }
+    }
+
+    > .super-treeview-no-children {
+      overflow: hidden;
+      > .super-treeview-no-children-content {
+        margin: 2px 0;
+      }
+    }
+
+    > .super-treeview-node {
+      overflow: hidden;
+      > .super-treeview-children-container {
+        margin-left: 8px;
+        padding-left: 20px;
+        border-left: 1px solid @super-treeview-tree-stem-color;
+
+        > .super-treeview-loading {
+          padding: 0 3px;
+          margin: 2px 0;
+        }
+      }
+
+      > .super-treeview-node-content {
+        padding: 0 3px;
+        margin: 2px 0;
+
+        > label {
+          vertical-align: top;
+          text-overflow: ellipsis;
+          width: calc(100% - 55px);
+          overflow: hidden;
+          white-space: nowrap;
+          display: inline-block;
+          margin: 0;
+          font-weight: normal;
+          font-size: 100%;
+        }
+
+        > input[type=checkbox] {
+          float: left;
+          margin: 4px 5px 0 0;
+          line-height: normal;
+        }
+
+        > .super-treeview-triangle-btn {
+          float: left;
+          margin-right: 5px;
+          cursor: pointer;
+        }
+        
+        > .super-treeview-triangle-btn-none {
+          cursor: none;
+        }
+
+        > .super-treeview-triangle-btn-right {
+          width: 8px;
+          height: 10px;
+          margin-top: 2px;
+          margin-left: 2px;
+          border-top: 5px solid transparent;
+          border-left: 6px solid @super-treeview-arrow-color;
+          border-bottom: 5px solid transparent;
+        }
+
+        > .super-treeview-triangle-btn-down {
+          width: 10px;
+          height: 8px;
+          margin-top: 5px;
+          border-left: 5px solid transparent;
+          border-right: 5px solid transparent;
+          border-top: 6px solid @super-treeview-arrow-color;
+        }
+
+        > .delete-btn {
+          float: right;
+          cursor: pointer;
+        }
+      }
+    }
+
+    > .super-treeview-node-transition {
+      transition-property: all;
+    }
+
+    > .super-treeview-node-transition-enter {
+      opacity: 0;
+
+      &.super-treeview-node-transition-enter-active {
+        opacity: 1;
+      }
+    }
+
+    > .super-treeview-node-transition-exit {
+      opacity: 1;
+
+      &.super-treeview-node-transition-exit-active {
+        opacity: 0;
+        background-color: red;
+      }
+    }
+  }
+}
+
 .loadUIOverrides();

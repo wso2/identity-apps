@@ -18,7 +18,8 @@
 
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, useEffect, useState } from "react";
-import { Grid, Icon, Input, Label } from "semantic-ui-react";
+import { Button, Grid, Icon, Input, Label, Popup } from "semantic-ui-react";
+import { isEmpty } from "lodash";
 
 interface URLInputComponentInterface {
     urlState: string;
@@ -32,6 +33,8 @@ interface URLInputComponentInterface {
     hint?: string;
     showError?: boolean;
     setShowError?: any;
+    required?:boolean;
+    disabled?: boolean;
 }
 
 /**
@@ -50,41 +53,62 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
         placeholder,
         labelName,
         value,
-        hint
+        hint,
+        required,
+        disabled
     } = props;
 
     const [changeUrl, setChangeUrl] = useState("");
     const [predictValue, setPredictValue] = useState([]);
     const [validURL, setValidURL] = useState(true);
     const [duplicateURL, setDuplicateURL] = useState(false);
+    const [keepFocus, setKeepFocus] = useState(false);
 
     /**
      * Enter button option.
-     * @param e Enter event.
+     * @param e keypress event.
      */
     const keyPressed = (e) => {
-        if (e.keyCode === 13) {
+        const key = e.which || e.charCode || e.keyCode;
+        if (key === 13) {
             e.preventDefault();
             addUrl();
         }
     };
 
+    /**
+     * Handle change event of the input.
+     *
+     * @param event change event.
+     */
     const handleChange = (event) => {
         const changeValue = event.target.value;
-        let predictions = []
+        let predictions = [];
         if (changeValue.length > 0) {
             predictions = getPredictions(changeValue);
         }
         if (!validURL) {
             setValidURL(true);
         }
+        setKeepFocus(true);
         setPredictValue(predictions);
         setChangeUrl(changeValue);
     };
 
     /**
+     * Handle blur event.
+     */
+    const handleOnBlur = () => {
+        // TODO introduce a different method to handle this
+        // if (!isEmpty(changeUrl)) {
+        //     addUrl();
+        // }
+        setKeepFocus(false);
+    };
+
+    /**
      * Initial prediction for the URL.
-     * @param changeValue
+     * @param changeValue input by the user.
      */
     const getPredictions = (changeValue) => {
 
@@ -94,20 +118,24 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
         ].filter((item) => item.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
     };
 
+    /**
+     * When the predicted element is clicked select the predict.
+     * @param predict filter prediction.
+     */
     const onPredictClick = (predict: string) => {
         setChangeUrl(predict);
         setPredictValue([]);
     };
 
     /**
-     * Add URL to the URL list
+     * Add URL to the URL list.
      */
     const addUrl = () => {
         const url = changeUrl;
         const urlValid = validation(url);
         setValidURL(urlValid);
         const availableURls = urlState.split(",");
-        const duplicate = availableURls.includes(url) ? true : false;
+        const duplicate = availableURls.includes(url);
         setDuplicateURL(duplicate);
         if (urlValid && !duplicate) {
             if (urlState === "") {
@@ -118,6 +146,11 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                 setChangeUrl("");
             }
         }
+    };
+
+    const addFromButton = (e) => {
+        e.preventDefault();
+        addUrl();
     };
 
     /**
@@ -153,34 +186,49 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
         <>
             <Grid.Row columns={ 1 } className={ "urlComponentLabelRow" }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    <label>{ labelName }</label>
+                    {
+                        required ? (
+                            <div className={ "required field" }>
+                                <label>{ labelName }</label>
+                            </div>
+                        ) : (
+                            <label>{ labelName }</label>
+                        )
+                    }
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row className={ "urlComponentInputRow" }>
                 <Grid.Column mobile={ 14 } tablet={ 14 } computer={ 8 }>
-                    {
-                        validURL && !duplicateURL ?
-                            (
-                                <Input
-                                    fluid
-                                    value={ changeUrl }
-                                    onKeyDown={ keyPressed }
-                                    onChange={ handleChange }
-                                    placeholder={ placeholder }
-                                    icon={ <Icon name="add" onClick={ () => addUrl() } link/> }
-                                />
-                            ) : (
-                                <Input
-                                    fluid
-                                    error
-                                    value={ changeUrl }
-                                    onKeyDown={ keyPressed }
-                                    onChange={ handleChange }
-                                    placeholder={ placeholder }
-                                    icon={ <Icon name="add" onClick={ () => addUrl() } link/> }
-                                />
-                            )
-                    }
+                    <Input
+                        fluid
+                        error={ validURL && !duplicateURL ? false : true }
+                        focus={ keepFocus }
+                        value={ changeUrl }
+                        onKeyDown={ keyPressed }
+                        onChange={ handleChange }
+                        onBlur={ handleOnBlur }
+                        placeholder={ placeholder }
+                        action
+                    >
+                        <input
+                            disabled={ disabled ? disabled : false }
+                        />
+                        <Popup
+                            trigger={
+                                (
+                                    <Button
+                                        onClick={ (e) => addFromButton(e) }
+                                        icon="add"
+                                        type="button"
+                                        disabled={ disabled ? disabled : false }
+                                    />
+                                )
+                            }
+                            position="top center"
+                            content="Add URL"
+                            inverted
+                        />
+                    </Input>
                     {
                         !validURL &&
                         (

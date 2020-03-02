@@ -19,6 +19,7 @@
 import React, { FunctionComponent } from "react";
 import { SupportedAuthProtocolTypes } from "../../../models";
 import { InboundOIDCForm } from "./inbound-oidc-form";
+import { InboundSAMLForm } from "./inbound-saml-form";
 
 /**
  * Proptypes for the inbound form factory component.
@@ -50,6 +51,8 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
     switch (type) {
         case SupportedAuthProtocolTypes.OIDC:
             return <InboundOIDCForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit } />;
+        case SupportedAuthProtocolTypes.SAML:
+            return <InboundSAMLForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit }/>;
         default:
             return null;
     }

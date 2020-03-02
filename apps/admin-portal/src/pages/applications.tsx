@@ -18,9 +18,9 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { PrimaryButton } from "@wso2is/react-components";
+import { LinkButton, PrimaryButton, EmptyPlaceholder } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, MouseEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getApplicationList } from "../api";
@@ -28,6 +28,8 @@ import { ApplicationList, ApplicationSearch } from "../components";
 import { history } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
 import { ApplicationListInterface } from "../models";
+import { ApplicationConstants } from "../constants";
+import { EmptyPlaceholderIllustrations } from "../configs";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -52,14 +54,15 @@ const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     }
 ];
 
-const DEFAULT_APP_LIST_ITEM_LIMIT: number = 10;
+// TODO: Calculate based on the screen dimensions.
+const DEFAULT_APP_LIST_ITEM_LIMIT = 10;
 
 /**
  * Overview page.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const ApplicationsPage = (): JSX.Element => {
+export const ApplicationsPage: FunctionComponent<{}> = (): ReactElement => {
 
     const dispatch = useDispatch();
 
@@ -70,9 +73,19 @@ export const ApplicationsPage = (): JSX.Element => {
     const [ appList, setAppList ] = useState<ApplicationListInterface>({});
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(DEFAULT_APP_LIST_ITEM_LIMIT);
+    const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
 
-    const getAppLists = (limit: number, offset: number) => {
-        getApplicationList(limit, offset)
+    /**
+     * Retrieves the list of applications.
+     *
+     * @param {number} limit - List limit.
+     * @param {number} offset - List offset.
+     * @param {string} filter - Search query.
+     */
+    const getAppLists = (limit: number, offset: number, filter: string): void => {
+        setApplicationListRequestLoading(true);
+
+        getApplicationList(limit, offset, filter)
             .then((response) => {
                 setAppList(response);
             })
@@ -92,15 +105,27 @@ export const ApplicationsPage = (): JSX.Element => {
                     level: AlertLevels.ERROR,
                     message: "Retrieval Error"
                 }));
+            })
+            .finally(() => {
+                setApplicationListRequestLoading(false);
             });
     };
 
+    /**
+     * Called on every `listOffset` & `listItemLimit` change.
+     */
     useEffect(() => {
-        getAppLists(listItemLimit, listOffset);
+        getAppLists(listItemLimit, listOffset, null);
     }, [ listOffset, listItemLimit ]);
 
-    const handleListSortingStrategyOnChange = (event: React.SyntheticEvent<HTMLElement>,
-                                               data: DropdownProps) => {
+    /**
+     * Sets the list sorting strategy.
+     *
+     * @param {React.SyntheticEvent<HTMLElement>} event - The event.
+     * @param {DropdownProps} data - Dropdown data.
+     */
+    const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>,
+                                               data: DropdownProps): void => {
         setListSortingStrategy(_.find(APPLICATIONS_LIST_SORTING_OPTIONS, (option) => {
             return data.value === option.value;
         }));
@@ -114,13 +139,27 @@ export const ApplicationsPage = (): JSX.Element => {
      */
     const handleApplicationFilter = (query: string): void => {
         setSearchQuery(query);
+        getAppLists(listItemLimit, listOffset, query);
     };
 
-    const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
+    /**
+     * Handles the pagination change.
+     *
+     * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
+     * @param {PaginationProps} data - Pagination component data.
+     */
+    const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
         setListOffset((data.activePage as number - 1) * listItemLimit);
     };
 
-    const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+    /**
+     * Handles per page dropdown page.
+     *
+     * @param {React.MouseEvent<HTMLAnchorElement>} event - Mouse event.
+     * @param {DropdownProps} data - Dropdown data.
+     */
+    const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>,
+                                              data: DropdownProps): void => {
         setListItemLimit(data.value as number);
     };
 
@@ -128,7 +167,62 @@ export const ApplicationsPage = (): JSX.Element => {
      * Handles application delete action.
      */
     const handleApplicationDelete = (): void => {
-        getAppLists(listItemLimit, listOffset);
+        getAppLists(listItemLimit, listOffset, null);
+    };
+
+    /**
+     * Handles the `onSearchQueryClear` callback action.
+     */
+    const handleSearchQueryClear = (): void => {
+        setSearchQuery("");
+        getAppLists(listItemLimit, listOffset, null);
+    };
+
+    /**
+     * Resolve the relevant placeholder.
+     *
+     * @return {React.ReactElement}
+     */
+    const showPlaceholders = (): ReactElement => {
+        // When the search returns empty.
+        if (searchQuery) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <LinkButton onClick={ handleSearchQueryClear }>Clear search query</LinkButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    imageSize="tiny"
+                    title={ "No results found" }
+                    subtitle={ [
+                        `We couldn't find any results for ${ searchQuery }`,
+                        "Please try a different search term.",
+                    ] }
+                />
+            );
+        }
+
+        return (
+            <EmptyPlaceholder
+                action={ (
+                    <PrimaryButton
+                        onClick={ (): void => {
+                            history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"));
+                        } }
+                    >
+                        <Icon name="add"/>Add application
+                    </PrimaryButton>
+                ) }
+                image={ EmptyPlaceholderIllustrations.newList }
+                imageSize="tiny"
+                title={ "Create an Application" }
+                subtitle={ [
+                    "There are currently no applications available.",
+                    "You can create a new application easily by using the",
+                    "predefined templates."
+                ] }
+            />
+        );
     };
 
     return (
@@ -147,8 +241,8 @@ export const ApplicationsPage = (): JSX.Element => {
                 rightActionPanel={
                     (
                         <PrimaryButton
-                            onClick={ () => {
-                                history.push("/applications/templates");
+                            onClick={ (): void => {
+                                history.push(ApplicationConstants.PATHS.get("APPLICATION_TEMPLATES"));
                             } }
                         >
                             <Icon name="add"/>Add application
@@ -156,12 +250,18 @@ export const ApplicationsPage = (): JSX.Element => {
                     )
                 }
                 showPagination={ true }
+                showTopActionPanel={ !(!searchQuery && appList?.totalResults <= 0) }
                 sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
                 sortStrategy={ listSortingStrategy }
                 totalPages={ Math.ceil(appList.totalResults / listItemLimit) }
                 totalListSize={ appList.totalResults }
             >
-                <ApplicationList list={ appList } onApplicationDelete={ handleApplicationDelete } />
+                {
+                    (appList?.totalResults > 0 ||
+                        appList?.applications instanceof Array && appList.applications.length > 0)
+                        ? <ApplicationList list={ appList } onApplicationDelete={ handleApplicationDelete } />
+                        : !isApplicationListRequestLoading && showPlaceholders()
+                }
             </ListLayout>
         </PageLayout>
     );

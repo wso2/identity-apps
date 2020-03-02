@@ -18,6 +18,9 @@
 
 import {
     AlertIcon,
+    ArrowRight,
+    MagnifierIcon,
+    LaunchIcon,
     AngularLogo,
     AppIcon,
     BasicAuthIcon,
@@ -50,6 +53,7 @@ import {
     OpenIDLogo,
     PlugIcon,
     ReactLogo,
+    ReportIcon,
     SamlLogo,
     SettigsSectionIconSet,
     SMSOTPIcon,
@@ -63,11 +67,11 @@ import {
     WarningIcon,
     WebAppTemplateIllustration,
     WSFedLogo,
-    WSTrustLogo
+    WSTrustLogo,
+    ClaimsIcon
 } from "@wso2is/theme";
 
 type ImageType = string;
-type TitleTextType = string;
 
 interface StylesType {
     appPrimaryColor?: string;
@@ -86,10 +90,11 @@ export const HomeTileIconImages = HomeTileIcons;
 // Icon set for the side panel.
 export const SidePanelIcons = {
     applications: AppIcon,
-    childIcon: DotIcon,
+    childIcon: ArrowRight,
     connections: PlugIcon,
     overview: DashboardIcon,
-    usersAndRoles: UserIcon
+    usersAndRoles: UserIcon,
+    claims: ClaimsIcon
 };
 
 export const SidePanelMiscIcons = {
@@ -104,7 +109,7 @@ export const AdvancedSearchIcons = {
     clear: CrossIcon
 };
 
-export const TitleText: TitleTextType = "Identity Server";
+export const TitleText = "Identity Server";
 export const customCSS: CustomCSSType = {
     dark: {
         appPrimaryColor: "#ff5000"
@@ -125,19 +130,21 @@ export const AlertIcons = {
  * Constant to handle desktop layout content top padding.
  * @type {number}
  */
-export const DESKTOP_CONTENT_TOP_PADDING: number = 50;
+export const DESKTOP_CONTENT_TOP_PADDING = 50;
 
 /**
  * Constant to handle mobile layout content padding.
  * @type {string}
  */
-export const MOBILE_CONTENT_PADDING: string = "2rem 1rem";
+export const MOBILE_CONTENT_PADDING = "2rem 1rem";
 
 export const EmptyPlaceholderIllustrations = {
     alert: AlertIcon,
     emptyList: BoxIcon,
+    emptySearch: MagnifierIcon,
     genericError: CloseIcon,
     loginError: ForbiddenIcon,
+    newList: LaunchIcon,
     pageNotFound: BlockedMagnifierIcon,
     search: EmptySearchResultsIllustration
 };
@@ -166,7 +173,8 @@ export const TechnologyLogos = {
 export const ApplicationWizardStepIcons = {
     general: DocumentIcon,
     protocolConfig: GearsIcon,
-    protocolSelection: SpinWheelIcon
+    protocolSelection: SpinWheelIcon,
+    summary: ReportIcon
 };
 
 export const AuthenticatorIcons = {

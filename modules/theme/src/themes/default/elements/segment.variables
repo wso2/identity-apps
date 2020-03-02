@@ -24,3 +24,19 @@
 @editSegmentBackgroundColor: @athensGray;
 @editSegmentTableValueMaxWidth: 220px;
 @editSegmentMarginTop: 15px;
+
+/*******************************
+          User List Segment
+ *******************************/
+
+/* User Roles List Segment */
+@userRolesListSegmentMarginTop: 10px;
+@userRolesListSegmentHeight: 250px;
+
+/* Assigned Roles List Segment */
+@assignedRolesListSegmentHeight: 298px;
+@assignedRolesListLabelMarginTop: 0.4em;
+@assignedRolesListLabelMarginLeft: 0.2em;
+@assignedRolesListIconMarginLeft: 0.3em;
+@InfoLabelBackgroundColor: #b5b7b7;
+@InfoLabelBorderColor: #b5b7b7;

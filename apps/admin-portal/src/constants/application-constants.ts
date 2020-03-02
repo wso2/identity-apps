@@ -75,6 +75,7 @@ export class ApplicationConstants {
      *
      * @hideconstructor
      */
+    /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
 
     /**
@@ -82,9 +83,20 @@ export class ApplicationConstants {
      * @constant
      * @type {object}
      */
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
     public static readonly APPLICATION_MGT_CONFIG_PATHS: any = {
         META: "configs/application-mgt.meta.json"
     };
+
+    /**
+     * Application Paths.
+     * @constant
+     * @type {Map<string, string>}
+     */
+    public static readonly PATHS: Map<string, string> = new Map<string, string>()
+        .set("APPLICATIONS", "/applications")
+        .set("APPLICATION_TEMPLATES", "/applications/templates")
+        .set("APPLICATION_EDIT", "/applications/:id");
 }
 
 /**
@@ -93,4 +105,4 @@ export class ApplicationConstants {
  * @type {string}
  * @default
  */
-export const AUTH_ERROR_TIME: string = "authErrorTime";
+export const AUTH_ERROR_TIME = "authErrorTime";

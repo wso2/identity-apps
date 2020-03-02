@@ -36,6 +36,7 @@ interface AdvancedSearchProps {
     externalSearchQuery?: string;
     hintActionKeys?: string;
     hintLabel?: string;
+    inputSize?: "mini" | "small" | "large" | "big" | "huge" | "massive";
     onExternalSearchQueryClear?: () => void;
     onSearchQuerySubmit: (processQuery: boolean, query: string) => void;
     placeholder?: string;
@@ -65,6 +66,7 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
         hintActionKeys,
         hintLabel,
         clearIcon,
+        inputSize,
         onExternalSearchQueryClear,
         onSearchQuerySubmit,
         placeholder,
@@ -235,7 +237,7 @@ export const AdvancedSearch: FunctionComponent<React.PropsWithChildren<AdvancedS
                     </>
                 ) }
                 className={ `advanced-search with-add-on ${ searchFieldClasses }` }
-                size="large"
+                size={ inputSize }
                 icon="search"
                 iconPosition="left"
                 placeholder={ placeholder }

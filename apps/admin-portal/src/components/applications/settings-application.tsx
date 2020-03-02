@@ -20,51 +20,64 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, Heading, Hint, SelectionCard } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, SyntheticEvent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider } from "semantic-ui-react";
 import {
     getAuthProtocolMetadata,
-    getAvailableInboundProtocols,
     getInboundProtocolConfig,
-    updateAdvanceConfigurations, updateAuthProtocolConfig
+    updateAuthProtocolConfig
 } from "../../api";
-import { InboundProtocolLogos } from "../../configs";
 import {
-    AdvancedConfigurationsInterface,
     AuthProtocolMetaListItemInterface,
     InboundProtocolListItemInterface,
     SupportedAuthProtocolMetaTypes,
     SupportedAuthProtocolTypes
 } from "../../models";
 import { AppState } from "../../store";
-import { setAuthProtocolMeta, setAvailableInboundAuthProtocolMeta } from "../../store/actions";
-import { AdvanceConfigurationsForm, InboundFormFactory } from "./forms";
+import { setAuthProtocolMeta } from "../../store/actions";
+import { InboundFormFactory } from "./forms";
 import { InboundProtocolsMeta } from "./meta";
+import { Divider } from "semantic-ui-react";
+import { InboundProtocolLogos } from "../../configs";
+import { ApplicationManagementUtils } from "../../utils";
 
 /**
  * Proptypes for the applications settings component.
  */
 interface ApplicationSettingsPropsInterface {
+    /**
+     * Currently editing application id.
+     */
     appId: string;
+    /**
+     * Currently configured inbound protocols.
+     */
     inboundProtocols: InboundProtocolListItemInterface[];
+    /**
+     * Is the application info request loading.
+     */
     isLoading?: boolean;
+    /**
+     * Callback to update the application details.
+     */
+    onUpdate: (id: string) => void;
 }
 
 /**
  *  Inbound protocols and advance settings component.
  *
  * @param {ApplicationSettingsPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
 export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInterface> = (
     props: ApplicationSettingsPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         appId,
         inboundProtocols,
-        isLoading
+        isLoading,
+        onUpdate
     } = props;
 
     const dispatch = useDispatch();
@@ -75,6 +88,155 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
     const [ selectedInboundProtocol, setSelectedInboundProtocol ] = useState<AuthProtocolMetaListItemInterface>(null);
     const [ selectedInboundProtocolConfig, setSelectedInboundProtocolConfig ] = useState<any>(undefined);
     const [ isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading ] = useState<boolean>(false);
+    const [ showProtocolSelection, setShowProtocolSelection ] = useState<boolean>(true);
+    const [ isInboundProtocolConfigRequestLoading, setIsInboundProtocolConfigRequestLoading ] = useState<boolean>(true);
+
+    /**
+     * Finds the configured inbound protocol.
+     */
+    const findConfiguredInboundProtocol = (): void => {
+
+        let found = false;
+
+        for (const protocol of availableInboundProtocols) {
+            if (Object.values(SupportedAuthProtocolTypes).includes(protocol.id as SupportedAuthProtocolTypes)) {
+
+                setIsInboundProtocolConfigRequestLoading(true);
+
+                getInboundProtocolConfig(appId, protocol.id)
+                    .then((response) => {
+                        found = true;
+
+                        setSelectedInboundProtocol(protocol);
+                        setSelectedInboundProtocolConfig({
+                            ...selectedInboundProtocolConfig,
+                            [ protocol.id ]: response
+                        });
+                        setShowProtocolSelection(false);
+                    })
+                    .catch((error) => {
+                        if (error.response.status === 404) {
+                            return;
+                        }
+
+                        if (error.response && error.response.data && error.response.data.description) {
+                            dispatch(addAlert({
+                                description: error.response.data.description,
+                                level: AlertLevels.ERROR,
+                                message: "Retrieval error"
+                            }));
+
+                            return;
+                        }
+
+                        dispatch(addAlert({
+                            description: "An error occurred retrieving the protocol configurations.",
+                            level: AlertLevels.ERROR,
+                            message: "Retrieval error"
+                        }));
+                    })
+                    .finally(() => {
+                        setIsInboundProtocolConfigRequestLoading(false);
+                    });
+            }
+
+            if (found) {
+                break;
+            }
+        }
+    };
+
+    /**
+     * Handles the inbound protocol selection.
+     *
+     * @param {React.SyntheticEvent} e - Click event.
+     * @param {string} id - Identifier.
+     */
+    const handleInboundProtocolSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
+        // Return if the already selected protocol is clicked again.
+        if (selectedInboundProtocol.name === id) {
+            return;
+        }
+
+        setSelectedInboundProtocol([ ...availableInboundProtocols ].find((protocol) => protocol.name === id));
+    };
+
+    /**
+     * Handles the inbound config form submit action.
+     *
+     * @param values - Form values.
+     */
+    const handleInboundConfigFormSubmit = (values: any): void => {
+        updateAuthProtocolConfig(appId, values, selectedInboundProtocol.id as SupportedAuthProtocolTypes)
+            .then(() => {
+                dispatch(addAlert({
+                    description: "Successfully updated the inbound protocol configurations.",
+                    level: AlertLevels.SUCCESS,
+                    message: "Update successful"
+                }));
+
+                onUpdate(appId);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Update error"
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: "An error occurred while updating inbound protocol configurations.",
+                    level: AlertLevels.ERROR,
+                    message: "Update error"
+                }));
+            });
+    };
+
+    /**
+     * Resolves the corresponding protocol config form when a
+     * protocol is selected.
+     * @return {React.ReactElement}
+     */
+    const resolveInboundProtocolSettingsForm = (): ReactElement => {
+        switch (selectedInboundProtocol.id as SupportedAuthProtocolTypes) {
+            case SupportedAuthProtocolTypes.OIDC:
+                return (
+                    <InboundFormFactory
+                        metadata={ authProtocolMeta[ selectedInboundProtocol.name ] }
+                        initialValues={
+                            selectedInboundProtocolConfig
+                            && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+                                selectedInboundProtocol.name)
+                                ? selectedInboundProtocolConfig[ selectedInboundProtocol.name ]
+                                : undefined
+                        }
+                        onSubmit={ handleInboundConfigFormSubmit }
+                        type={ SupportedAuthProtocolTypes.OIDC }
+                    />
+                );
+            case SupportedAuthProtocolTypes.SAML:
+                return (
+                    <InboundFormFactory
+                        metadata={ authProtocolMeta[ selectedInboundProtocol.name ] }
+                        initialValues={
+                            selectedInboundProtocolConfig
+                            && Object.prototype.hasOwnProperty.call(selectedInboundProtocolConfig,
+                                selectedInboundProtocol.name)
+                                ? selectedInboundProtocolConfig[ selectedInboundProtocol.name ]
+                                : undefined
+                        }
+                        onSubmit={ handleInboundConfigFormSubmit }
+                        type={ SupportedAuthProtocolTypes.SAML }
+                    />
+                );
+            default:
+                return null;
+        }
+    };
 
     /**
      * Use effect hook to be run on component init.
@@ -89,41 +251,17 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
         }
 
         if (!_.isEmpty(availableInboundProtocols)) {
-            setDefaultInboundProtocol();
+            findConfiguredInboundProtocol();
             return;
         }
 
         setInboundProtocolsRequestLoading(true);
 
-        getAvailableInboundProtocols(false)
-            .then((response) => {
-                // Filter meta based on the available protocols.
-                const filteredMeta = _.intersectionBy(InboundProtocolsMeta, response, "name");
-
-                dispatch(
-                    setAvailableInboundAuthProtocolMeta(_.unionBy<AuthProtocolMetaListItemInterface>(filteredMeta,
-                        response, "name"))
-                );
-            })
-            .catch((error) => {
-                dispatch(addAlert({
-                    description: "An error occurred retrieving the available inbound protocols.",
-                    level: AlertLevels.ERROR,
-                    message: "Retrieval error"
-                }));
-            })
+        ApplicationManagementUtils.getInboundProtocols(InboundProtocolsMeta, false)
             .finally(() => {
                 setInboundProtocolsRequestLoading(false);
             });
-    }, []);
-
-    /**
-     * Use effect hook to be run to set the default inbound protocol
-     * when the supported inbound protocols are available.
-     */
-    useEffect(() => {
-        setDefaultInboundProtocol();
-    }, [ availableInboundProtocols ]);
+    }, [ inboundProtocols, availableInboundProtocols ]);
 
     /**
      * Use effect hook to be run when an inbound protocol is selected.
@@ -145,12 +283,22 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
 
         // Check if the metadata for the selected auth protocol is available in redux store.
         // If not, fetch the metadata related to the selected auth protocol.
-        if (!authProtocolMeta.hasOwnProperty(selectedProtocol)) {
+        if (!Object.prototype.hasOwnProperty.call(authProtocolMeta, selectedProtocol)) {
             getAuthProtocolMetadata(selectedProtocol)
                 .then((response) => {
                     dispatch(setAuthProtocolMeta(selectedProtocol, response));
                 })
                 .catch((error) => {
+                    if (error.response && error.response.data && error.response.data.description) {
+                        dispatch(addAlert({
+                            description: error.response.data.description,
+                            level: AlertLevels.ERROR,
+                            message: "Retrieval error"
+                        }));
+
+                        return;
+                    }
+
                     dispatch(addAlert({
                         description: "An error occurred retrieving the protocol metadata.",
                         level: AlertLevels.ERROR,
@@ -158,169 +306,50 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                     }));
                 });
         }
-
-        // Check if the selected protocol is configured. If not refrain from making
-        // the API request to get the configured data.
-        if (!inboundProtocols.find((protocol) => protocol.type === selectedInboundProtocol.type)) {
-            return;
-        }
-
-        getInboundProtocolConfig(getInboundProtocolConfigEndpoint())
-            .then((response) => {
-                setSelectedInboundProtocolConfig({
-                    ...selectedInboundProtocolConfig,
-                    [ selectedProtocol ]: response
-                });
-            })
-            .catch((error) => {
-                dispatch(addAlert({
-                    description: "An error occurred retrieving the protocol configurations.",
-                    level: AlertLevels.ERROR,
-                    message: "Retrieval error"
-                }));
-            });
     }, [ selectedInboundProtocol ]);
 
-    /**
-     * Sets the default inbound protocol. Currently defaults to the first
-     * element of the available protocols array.
-     */
-    const setDefaultInboundProtocol = (): void => {
-        if (availableInboundProtocols
-            && availableInboundProtocols instanceof Array
-            && availableInboundProtocols.length > 0) {
-
-            setSelectedInboundProtocol(availableInboundProtocols[ 0 ]);
-        }
-    };
-
-    /**
-     * Finds the endpoint for retrieving the protocol config.
-     * @return {string} Endpoint to get the config.
-     */
-    const getInboundProtocolConfigEndpoint = (): string => {
-        for (const available of availableInboundProtocols) {
-            for (const configured of inboundProtocols) {
-                if (available.type === configured.type) {
-                    if (selectedInboundProtocol.type === configured.type) {
-                        return configured.self;
-                    }
-                }
-            }
-        }
-
-        return null;
-    };
-
-    /**
-     * Handles the inbound protocol selection.
-     *
-     * @param {React.SyntheticEvent} e - Click event.
-     * @param {string} id - Identifier.
-     */
-    const handleInboundProtocolSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
-        // Return if the already selected protocol is clicked again.
-        if (selectedInboundProtocol.name === id) {
-            return;
-        }
-
-        setSelectedInboundProtocol([ ...availableInboundProtocols ].find((protocol) => protocol.name === id));
-    };
-
-    /**
-     * Resolves the corresponding protocol config form when a
-     * protocol is selected.
-     * @return {JSX.Element}
-     */
-    const resolveInboundProtocolSettingsForm = (): JSX.Element => {
-        switch (selectedInboundProtocol.id as SupportedAuthProtocolTypes) {
-            case SupportedAuthProtocolTypes.OIDC:
-                return (
-                    <InboundFormFactory
-                        metadata={ authProtocolMeta[ selectedInboundProtocol.name ] }
-                        initialValues={
-                            selectedInboundProtocolConfig
-                            && selectedInboundProtocolConfig.hasOwnProperty(selectedInboundProtocol.name)
-                                ? selectedInboundProtocolConfig[ selectedInboundProtocol.name ]
-                                : undefined
-                        }
-                        onSubmit={ handleInboundConfigFormSubmit }
-                        type={ SupportedAuthProtocolTypes.OIDC }
-                    />
-                );
-            default:
-                return null;
-        }
-    };
-
-    /**
-     * Handles the inbound config form submit action.
-     *
-     * @param values - Form values.
-     */
-    const handleInboundConfigFormSubmit = (values: any): void => {
-        updateAuthProtocolConfig(appId, values, selectedInboundProtocol.id as SupportedAuthProtocolTypes)
-            .then((response) => {
-                dispatch(addAlert({
-                    description: "Successfully updated the inbound protocol configurations.",
-                    level: AlertLevels.SUCCESS,
-                    message: "Update successful"
-                }));
-            })
-            .catch((error) => {
-                dispatch(addAlert({
-                    description: "An error occurred while updating inbound protocol configurations.",
-                    level: AlertLevels.ERROR,
-                    message: "Update error"
-                }));
-            });
-    };
-
     return (
-        <>
-            {
-                (!isLoading && !isInboundProtocolsRequestLoading)
-                    ? (
+        (!isLoading && !isInboundProtocolsRequestLoading)
+            ? (
+                <div className="inbound-protocols-section">
+                    { !isInboundProtocolConfigRequestLoading && showProtocolSelection && (
                         <>
-                            <div className="inbound-protocols-section">
-                                <Heading as="h4">Inbound protocol</Heading>
+                            <Heading as="h4">Inbound protocol</Heading>
 
-                                {/* TODO enable this after having multiple inbound protocols*/ }
-                                {/*<Hint icon="info circle">Please select one of the
-                                                   following inbound protocols.</Hint>*/ }
-                                {/*{*/}
-                                {/*    (availableInboundProtocols*/}
-                                {/*        && availableInboundProtocols instanceof Array*/}
-                                {/*        && availableInboundProtocols.length > 0)*/}
-                                {/*        ? availableInboundProtocols.map((protocol, index) => (*/}
-                                {/*            protocol.enabled && (*/}
-                                {/*                <SelectionCard*/}
-                                {/*                    inline*/}
-                                {/*                    disabled={ protocol.enabled }*/}
-                                {/*                    selected={*/}
-                                {/*                        selectedInboundProtocol && selectedInboundProtocol.name*/}
-                                {/*                            ? protocol.name === selectedInboundProtocol.name*/}
-                                {/*                            : false*/}
-                                {/*                    }*/}
-                                {/*                    id={ protocol.name }*/}
-                                {/*                    key={ index }*/}
-                                {/*                    header={ protocol.displayName }*/}
-                                {/*                    image={ InboundProtocolLogos[ protocol.logo ] }*/}
-                                {/*                    onClick={ handleInboundProtocolSelection }*/}
-                                {/*                />*/}
-                                {/*            )*/}
-                                {/*        ))*/}
-                                {/*        : null*/}
-                                {/*}*/}
-                                {/*<Divider hidden/>*/}
-                                <div className="protocol-settings-section">
-                                    { selectedInboundProtocol && resolveInboundProtocolSettingsForm() }
-                                </div>
-                            </div>
+                            {/* TODO enable this after having multiple inbound protocols*/ }
+                            <Hint icon="info circle">Please select one of the following inbound protocols.</Hint>
+                            {
+                                (availableInboundProtocols
+                                    && availableInboundProtocols instanceof Array
+                                    && availableInboundProtocols.length > 0)
+                                    ? availableInboundProtocols.map((protocol, index) => (
+                                        protocol.enabled && (
+                                            <SelectionCard
+                                                inline
+                                                disabled={ !protocol.enabled }
+                                                selected={
+                                                    selectedInboundProtocol && selectedInboundProtocol.name
+                                                        ? protocol.name === selectedInboundProtocol.name
+                                                        : false
+                                                }
+                                                id={ protocol.name }
+                                                key={ index }
+                                                header={ protocol.displayName }
+                                                image={ InboundProtocolLogos[ protocol.logo ] }
+                                                onClick={ handleInboundProtocolSelection }
+                                            />
+                                        )
+                                    ))
+                                    : null
+                            }
+                            <Divider hidden/>
                         </>
-                    )
-                    : <ContentLoader />
-            }
-        </>
+                    ) }
+                    <div className="protocol-settings-section">
+                        { selectedInboundProtocol && resolveInboundProtocolSettingsForm() }
+                    </div>
+                </div>
+            )
+            : <ContentLoader/>
     );
 };

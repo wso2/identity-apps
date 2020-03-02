@@ -17,8 +17,8 @@
  */
 
 import { Heading, UserAvatar } from "@wso2is/react-components";
-import React, { FunctionComponent, useEffect } from "react";
-import { Grid } from "semantic-ui-react";
+import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import { Grid, Label } from "semantic-ui-react";
 
 interface AddUserWizardSummaryProps {
     summary: any;
@@ -33,7 +33,7 @@ interface AddUserWizardSummaryProps {
  */
 export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> = (
     props: AddUserWizardSummaryProps
-): JSX.Element => {
+): ReactElement => {
 
     const {
         summary,
@@ -81,6 +81,29 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                     </Grid.Column>
                 </Grid.Row>
             ) }
+            {
+                summary?.roles &&
+                summary.roles instanceof Array &&
+                summary.roles.length > 0
+                    ? (
+                        <Grid.Row className="summary-field" columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                                <div className="label">Role(s)</div>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                                <Label.Group>
+                                    {
+                                        summary.roles
+                                            .map((role, index) => (
+                                                <Label key={ index } basic circular>{ role.displayName }</Label>
+                                            ))
+                                    }
+                                </Label.Group>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                    : null
+            }
             { summary?.userName && (
                 <Grid.Row className="summary-field" columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">

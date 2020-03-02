@@ -51,6 +51,7 @@ const httpClient = AxiosHttpClient.getInstance();
  *
  * @return {Promise<any>} a promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getLocalClaims = (): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -222,12 +223,14 @@ export const updateApplicationDetails = (app: ApplicationInterface): Promise<any
 /**
  * Gets the application list with limit and offset.
  *
- * @param limit Maximum Limit of the application List.
- * @param offset Offset for get to start.
+ * @param {number} limit - Maximum Limit of the application List.
+ * @param {number} offset - Offset for get to start.
+ * @param {string} filter - Search filter.
  *
- * @return {Promise<any>} A promise containing the response.
+ * @return {Promise<ApplicationListInterface>} A promise containing the response.
  */
-export const getApplicationList = (limit: number, offset: number): Promise<any> => {
+export const getApplicationList = (limit: number, offset: number,
+                                   filter: string): Promise<ApplicationListInterface> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -235,7 +238,12 @@ export const getApplicationList = (limit: number, offset: number): Promise<any> 
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.applications + "?limit=" + limit + "&offset=" + offset
+        params: {
+            filter,
+            limit,
+            offset
+        },
+        url: ServiceResourcesEndpoint.applications
     };
 
     return httpClient.request(requestConfig)
@@ -254,7 +262,7 @@ export const getApplicationList = (limit: number, offset: number): Promise<any> 
  *
  * @param customOnly If true only returns custom protocols.
  */
-export const getAvailableInboundProtocols = (customOnly: boolean): Promise<any> => {
+export const getAvailableInboundProtocols = (customOnly: boolean): Promise<AuthProtocolMetaListItemInterface[]> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -350,10 +358,12 @@ export const getOIDCData = (id: string): Promise<any> => {
  * when the path provided in the `self` attribute of the application
  * response is passed in.
  *
- * @param {string} endpoint - Resource endpoint.
+ * @param {string} applicationId - ID of the application.
+ * @param {string} inboundProtocolId - Protocol ID.
  * @return {Promise<OIDCDataInterface>}
  */
-export const getInboundProtocolConfig = (endpoint: string) => {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const getInboundProtocolConfig = (applicationId: string, inboundProtocolId: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -361,7 +371,7 @@ export const getInboundProtocolConfig = (endpoint: string) => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: GlobalConfig.serverOrigin + endpoint
+        url: `${ ServiceResourcesEndpoint.applications }/${ applicationId }/inbound-protocols/${ inboundProtocolId }`
     };
 
     return httpClient.request(requestConfig)
@@ -529,6 +539,62 @@ export const updateAuthenticationSequence = (id: string, data: object): Promise<
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update authentication sequence"));
+            }
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Regenerates the client secret.
+ * Used only in OIDC flow.
+ *
+ * @param appId application Id
+ */
+export const regenerateClientSecret = (appId: string): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: ServiceResourcesEndpoint.applications + "/" + appId + "inbound-protocols/oidc/regenerate-secret"
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if ((response.status !== 200)) {
+                return Promise.reject(new Error("Failed to regenerate the application secret."));
+            }
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Revoke the client secret of application
+ * Used only in OIDC flow.
+ *
+ * @param appId application ID
+ */
+export const revokeClientSecret = (appId: string): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: ServiceResourcesEndpoint.applications + "/" + appId + "inbound-protocols/oidc/revoke"
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if ((response.status !== 200)) {
+                return Promise.reject(new Error("Failed to revoke the application secret."));
             }
             return Promise.resolve(response);
         }).catch((error) => {

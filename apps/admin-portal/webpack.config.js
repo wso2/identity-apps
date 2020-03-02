@@ -78,9 +78,12 @@ module.exports = (env) => {
                     "pageEncoding=\"UTF-8\" %>",
                 importUtil: "<%@ page import=\"" +
                     "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>",
-                serverUrl: "<%=getServerURL(\"\", true, true)%>",
                 importTenantPrefix: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
                     "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>",
+                importSuperTenantConstant: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                    "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>",
+                serverUrl: "<%=getServerURL(\"\", true, true)%>",
+                superTenantConstant: "<%=SUPER_TENANT_DOMAIN_NAME%>",
                 tenantDelimiter: "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"",
                 tenantPrefix: '<%=TENANT_AWARE_URL_PREFIX%>'
             });
@@ -156,7 +159,7 @@ module.exports = (env) => {
                             workers: require('os').cpus().length - 1,
                         },
                     },{
-                        loader:"tslint-loader",
+                        loader:"eslint-loader",
                         options: {
                             happyPackMode: true,
                             transpileOnly: false

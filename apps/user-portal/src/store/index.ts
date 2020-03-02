@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { applyMiddleware, createStore, Store } from "redux";
+import { applyMiddleware, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import { reducers } from "./combine-reducers";
@@ -33,6 +33,7 @@ export type AppState = ReturnType<typeof reducers>;
  *
  * @return {Store<any, AnyAction> & Store<S & {}, A> & {dispatch: any}} Redux Store
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const configureStore = (): any => {
     // Set of custom middleware.
     const middleware = [

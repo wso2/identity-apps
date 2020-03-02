@@ -394,6 +394,7 @@ export const views: Views = {
             }
         },
         federatedAssociations: {
+            deleteConfirmation: "இது உங்கள் கணக்கிலிருந்து இந்த வெளிப்புற உள்நுழைவை அகற்றும். நீக்குவதைத் தொடர விரும்புகிறீர்களா?",
             notifications: {
                 getFederatedAssociations: {
                     error: {
@@ -448,6 +449,7 @@ export const views: Views = {
                     label: "உட்பயனர் கணக்கினை சேர்க்க"
                 }
             },
+            deleteConfirmation: "இது உங்கள் கணக்கிலிருந்து இணைக்கப்பட்ட கணக்கை அகற்றும். நீக்குவதைத் தொடர விரும்புகிறீர்களா?",
             forms: {
                 addAccountForm: {
                     inputs: {
@@ -542,6 +544,53 @@ export const views: Views = {
             }
         },
         mfa: {
+            authenticatorApp: {
+                description: "இரண்டாவது உறுதிப்பாட்டு காரணியாக TOTP ஐப் பயன்படுத்த ஒரு உறுதிப்பாட்டு செயலியை" +
+                    " பயன்படுத்தி QR குறியீட்டை பதிவு செய்யுங்கள்",
+                heading: "உறுதிப்பாட்டு செயலி",
+                hint: "QR குறியீட்டினை காண்பி",
+                modals: {
+                    done: "வெற்றி! இப்போது இரண்டு காரணி உறுதிப்பாட்டிற்கு உங்கள் உறுதிப்பாட்டு செயலியை பயன்படுத்தலாம்",
+                    scan: {
+                        authenticatorApps: "உறுதிப்பாட்டு செயலிகள்",
+                        generate: "புதிய குறியீட்டை உருவாக்கவும்",
+                        heading: "ஒரு உறுதிப்பாட்டு செயலியை பயன்படுத்தி இந்த QR குறியீட்டை பதிவு செய்யுங்கள்",
+                        messageBody: "உறுதிப்பாட்டு செயலிகளின் பட்டியலை இங்கே காணலாம்.",
+                        messageHeading: "உங்களிடம் உறுதிப்பாட்டு செயலி இல்லையா?"
+                    },
+                    verify: {
+                        error: "சரிபார்ப்பு தோல்வியுற்றது. தயவு செய்து மீண்டும் முயற்சிக்கவும்.",
+                        heading: "உறுதிப்பாட்டு செயலியிலிருந்து சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்",
+                        label: "சரிபார்ப்புக் குறியீடு",
+                        placeholder: "உங்கள் சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்",
+                        requiredError: "சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்",
+                        reScan: "மீண்டும் பதிவு செய்",
+                        reScanQuestion: "QR குறியீட்டினை மீண்டும் பதிவு செய்ய வேண்டுமா?"
+                    }
+                },
+                notifications: {
+                    initError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "ஏதோ தவறேற்பட்டுவிட்டது"
+                        },
+                        genericError: {
+                            description: "QR குறியீட்டினை பெறும் பொழுது தவறேற்பட்டுவிட்டது",
+                            message: "ஏதோ தவறேற்பட்டுவிட்டது"
+                        }
+                    },
+                    refreshError: {
+                        error: {
+                            description: "{{error}}",
+                            message: "ஏதோ தவறேற்பட்டுவிட்டது"
+                        },
+                        genericError: {
+                            description: "புதிய QR குறியீட்டினை பெறும் பொழுது தவறேற்பட்டுவிட்டது",
+                            message: "ஏதோ தவறேற்பட்டுவிட்டது"
+                        }
+                    }
+                }
+            },
             fido: {
                 description: "FIDO கருவியினை இணைப்பதானூடாக உங்களை உறுதிப்படுத்திக் கொள்ளுங்கள்",
                 form: {
@@ -653,7 +702,7 @@ export const views: Views = {
                     complete: "உங்கள் சுயவிவரம் முடிந்தது",
                     completedFields: "பூர்த்தி செய்யப்பட்ட புலங்கள்",
                     completionPercentage: "உங்கள் சுயவிவர நிறைவு {{percentage}}%",
-                    inComplete: "உங்கள் சுயவிவரத்தை முடிக்கவும்",
+                    inComplete: "உங்கள் சுயவிவரத்தை பூர்த்தி செய்யவும்",
                     inCompleteFields: "முழுமையற்ற புலங்கள்",
                     mandatoryFieldsCompletion: "{{total}} கட்டாய புலங்களில் {{completed}} முடிந்தது",
                     optionalFieldsCompletion: "{{total}} விருப்ப புலங்களில் {{completed}} முடிந்தது"
@@ -921,22 +970,22 @@ export const views: Views = {
         },
         profile: {
             fields: {
-                addresses_home: "வீட்டு முகவரி",
-                addresses_work: "தொழில் முகவரி",
+                addressesHome: "வீட்டு முகவரி",
+                addressesWork: "தொழில் முகவரி",
                 emails: "மின்னஞ்சல் முகவரி",
-                emails_home: "வீட்டு மின்னஞ்சல் முகவரி",
-                emails_other: "வேறு மின்னஞ்சல் முகவரி",
-                emails_work: "தொழில் மின்னஞ்சல் முகவரி",
+                emailsHome: "வீட்டு மின்னஞ்சல் முகவரி",
+                emailsOther: "வேறு மின்னஞ்சல் முகவரி",
+                emailsWork: "தொழில் மின்னஞ்சல் முகவரி",
                 generic: {
                     default: "ஐச் சேருங்கள் {{fieldName}}"
                 },
-                name_familyName: "இறுதிப்பெயர்",
-                name_givenName: "முதற்பெயர்",
+                nameFamilyName: "இறுதிப்பெயர்",
+                nameGivenName: "முதற்பெயர்",
                 phoneNumbers: "தொலைபேசி இலக்கம்",
-                phoneNumbers_home: "வீட்டு தொலைபேசி இலக்கம்",
-                phoneNumbers_mobile: "கையடக்க தொலைபேசி இலக்கம்",
-                phoneNumbers_other: "வேறு தொலைபேசி இலக்கம்",
-                phoneNumbers_work: "தொழில் தொலைபேசி இலக்கம்",
+                phoneNumbersHome: "வீட்டு தொலைபேசி இலக்கம்",
+                phoneNumbersMobile: "கையடக்க தொலைபேசி இலக்கம்",
+                phoneNumbersOther: "வேறு தொலைபேசி இலக்கம்",
+                phoneNumbersWork: "தொழில் தொலைபேசி இலக்கம்",
                 profileImage: "பயனர் படம்",
                 profileUrl: "URL",
                 userName: "பயனர் பெயர்"

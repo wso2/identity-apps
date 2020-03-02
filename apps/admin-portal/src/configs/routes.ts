@@ -28,10 +28,30 @@ import {
     PrivacyPage,
     UserEditPage,
     UsersPage,
+    UserRoles,
+    LocalClaimsPage,
+    ExternalClaimsPage,
+    ClaimDialectsPage,
+    LocalClaimsEditPage
 } from "../pages";
 
 /**
  * Dashboard Layout Routes array.
+ *
+ * @remarks
+ * Having a unique id for every route is mandatory.
+ * Since there are checks performed inside the side
+ * panel component to validate the exact clicked route,
+ * selected route etc.
+ * @example
+ * A route can have children and still be clickable.
+ * If so, define a path. If no path is defined, the
+ * child routes section will be extended in the UI.
+ *  {
+ *      children: [ ... ],
+ *     ...
+ *     path: "/applications"
+ *  }
  */
 const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
@@ -41,9 +61,31 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         name: "Overview",
         path: "/overview",
         protected: true,
-        showOnSidePanel: false,
+        showOnSidePanel: false
     },
     {
+        children: [
+            {
+                component: ApplicationTemplateSelectPage,
+                exact: true,
+                icon: null,
+                id: "applicationTemplate",
+                name: "Application Templates",
+                path: "/applications/templates",
+                protected: true,
+                showOnSidePanel: false,
+            },
+            {
+                component: ApplicationEditPage,
+                exact: true,
+                icon: "applications",
+                id: "applicationsEdit",
+                name: "Application-Edit",
+                path: "/applications/:id",
+                protected: true,
+                showOnSidePanel: false,
+            },
+        ],
         component: ApplicationsPage,
         exact: true,
         icon: "applications",
@@ -54,56 +96,99 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true,
     },
     {
-        component: ApplicationTemplateSelectPage,
-        exact: true,
-        icon: null,
-        id: "applicationTemplate",
-        name: "Application-Template",
-        path: "/applications/templates",
-        protected: true,
-        showOnSidePanel: false,
-    },
-    {
-        component: ApplicationEditPage,
-        exact: true,
-        icon: "applications",
-        id: "applicationsEdit",
-        name: "Application-Edit",
-        path: "/applications/:id",
-        protected: true,
-        showOnSidePanel: false,
-    },
-    {
         children: [
             {
                 component: UsersPage,
                 exact: true,
                 icon: "childIcon",
+                id: "users",
                 level: 2,
                 name: "Users",
                 path: "/users",
                 protected: true,
-                showOnSidePanel: true,
+                showOnSidePanel: true
+            },
+            {
+                component: UserRoles,
+                exact: true,
+                icon: "childIcon",
+                id: "roles",
+                level: 2,
+                name: "User Roles",
+                path: "/roles",
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
+                component: UserEditPage,
+                exact: true,
+                icon: "usersAndRoles",
+                id: "usersEdit",
+                name: "User-Edit",
+                path: "/users/:id",
+                protected: true,
+                showOnSidePanel: false,
             }
         ],
-        component: UsersPage,
         exact: true,
         icon: "usersAndRoles",
         id: "usersAndRoles",
         name: "Users & Roles",
-        path: "/users",
         protected: true,
-        showOnSidePanel: true,
+        showOnSidePanel: true
     },
     {
-        component: UserEditPage,
+        component: LocalClaimsPage,
         exact: true,
-        icon: "usersAndRoles",
-        name: "User-Edit",
-        path: "/users/:id",
+        icon: "claims",
+        name: "Claims",
+        path: "/claims",
         protected: true,
-        showOnSidePanel: false,
+        showOnSidePanel: true,
+        children: [
+            {
+                component: LocalClaimsPage,
+                exact: true,
+                icon: "childIcon",
+                level: 2,
+                name: "Local Dialect",
+                path: "/local-dialect",
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
+                component: ExternalClaimsPage,
+                exact: true,
+                icon: "childIcon",
+                level: 2,
+                name: "External Claims",
+                path: "/external-claims/:id",
+                protected: true,
+                showOnSidePanel: false
+            },
+            {
+                component: ClaimDialectsPage,
+                exact: true,
+                icon: "childIcon",
+                level: 2,
+                name: "Claim Dialects",
+                path: "/claim-dialects",
+                protected: true,
+                showOnSidePanel:true
+            },
+            {
+                component: LocalClaimsEditPage,
+                exact: true,
+                icon: "childIcon",
+                level: 2,
+                name: "Edit Local Claims",
+                path: "/edit-local-claims/:id",
+                protected: true,
+                showOnSidePanel:false
+            }
+        ]
     },
+    {},
     {
         component: PrivacyPage,
         icon: null,
@@ -111,7 +196,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         name: "common:privacy",
         path: "/privacy",
         protected: true,
-        showOnSidePanel: false,
+        showOnSidePanel: false
     },
     {
         component: null,
@@ -121,7 +206,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         path: "*",
         protected: true,
         redirectTo: "/404",
-        showOnSidePanel: false,
+        showOnSidePanel: false
     }
 ];
 

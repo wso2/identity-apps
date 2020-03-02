@@ -39,6 +39,15 @@
             padding-right: unset;
         }
 
+        .resource-list-header {
+            border: none;
+
+            .resource-list-header-cell {
+                font-weight: 500;
+                color: @lightFontColor;
+            }
+        }
+
         > .item {
             padding: @veryRelaxedItemVerticalPadding 0.5em !important;
 
@@ -156,6 +165,33 @@
                padding-bottom: 10px;
                background-color: #f4f7f9;
                width: 100%;
+            }
+        }
+    }
+}
+
+/*******************************
+     User Role List Variation
+*******************************/
+
+.ui.list {
+    &.user-role-list {
+        .user-role-list-item {
+            padding: @userRolesListPadding;
+            margin: @userRolesListMargin;
+            color: @userRolesListItemFontColor;
+
+            i {
+                visibility: hidden;
+                padding-right: @userRolesListIconPaddingRight;
+                float: right;
+            }
+            &:hover {
+                background: @userRolesListItemBackgroundColorOnHover;
+                border-radius: @userRolesListItemBorderRadius;
+                i {
+                    visibility: visible;
+                }
             }
         }
     }

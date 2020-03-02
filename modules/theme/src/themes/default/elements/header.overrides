@@ -43,4 +43,9 @@ h6.ui.header .sub.header {
         text-overflow: ellipsis;
         overflow: hidden;
     }
+
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.20;
+    }
 }

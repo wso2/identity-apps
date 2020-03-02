@@ -24,10 +24,14 @@
 <%@ page import="org.wso2.carbon.identity.oauth2.OAuth2ScopeService" %>
 <%@ page import="org.wso2.carbon.identity.oauth2.bean.Scope" %>
 <%@ page import="org.wso2.carbon.identity.oauth2.IdentityOAuth2ScopeException" %>
+<%@ page import="org.wso2.carbon.identity.oauth.dto.ScopeDTO" %>
+<%@ page import="org.wso2.carbon.identity.oauth.IdentityOAuthAdminException" %>
+<%@ page import="org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.stream.Collectors" %>
 <%@ page import="java.util.stream.Stream" %>
+<%@ page import="java.util.Set" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
     
 <%@ include file="includes/localize.jsp" %>
@@ -178,23 +182,51 @@
                                     <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.scopes")%>:</h5>
                                     <div class="scopes-list ui list">
                                         <%
-                                            for (String scopeID : openIdScopes) {
-                                                try {
-                                                    Scope scope = new OAuth2ScopeService().getScope(scopeID);
-                                                    if (scope != null) {
-                                                        String displayName = scope.getDisplayName();
+                                            try {
+                                                String scopesAsString = String.join(" ", openIdScopes);
+                                                Set<Scope> scopes = new OAuth2ScopeService().getScopes(null, null,
+                                                        true, scopesAsString);
+        
+                                                for (Scope scope : scopes) {
+                                                    String displayName = scope.getDisplayName();
+                                                    String description = scope.getDescription();
+                                                    openIdScopes.remove(scope.getName());
+            
+                                                    if (displayName != null) {
                                         %>
                                         <div class="item">
                                             <i class="check circle outline icon"></i>
                                             <div class="content">
-                                                <%=Encode.forHtml(displayName)%>
+                                                <div class="header">
+                                                    <%=Encode.forHtml(displayName)%>
+                                                </div>
+                                                <% if (description != null) { %>
+                                                <div class="description">
+                                                    <%=Encode.forHtml(description)%>
+                                                </div>
+                                                <% } %>
                                             </div>
                                         </div>
                                         <%
                                                     }
-                                                } catch (IdentityOAuth2ScopeException e) {
-                                                    // Ignore the error since the scope might be an open ID scope
-                                                    // so can't view it via scope binding layer.
+                                                }
+                                            } catch (IdentityOAuth2ScopeException e) {
+                                                // Ignore the error
+                                            }
+    
+                                            // Unregistered scopes if exist, get the consent with provided scope name.
+                                            if (CollectionUtils.isNotEmpty(openIdScopes)) {
+                                                for (String scope : openIdScopes) {
+                                        %>
+                                        <div class="item">
+                                            <i class="check circle outline icon"></i>
+                                            <div class="content">
+                                                <div class="header">
+                                                    <%=Encode.forHtml(scope)%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <%
                                                 }
                                             }
                                         %>
@@ -220,7 +252,7 @@
 
                                 <div class="ui divider hidden"></div>
 
-                                <div tyle="text-align: left;">
+                                <div style="text-align: left;">
                                     <div class="ui form">
                                         <div class="grouped fields">
                                             <div class="field">

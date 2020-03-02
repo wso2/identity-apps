@@ -390,22 +390,22 @@ export const views: Views = {
             },
             profile: {
                 fields: {
-                    addresses_home: "Home address",
-                    addresses_work: "Work address",
+                    addressesHome: "Home address",
+                    addressesWork: "Work address",
                     emails: "Email",
-                    emails_home: "Home email",
-                    emails_other: "Other email",
-                    emails_work: "Work email",
+                    emailsHome: "Home email",
+                    emailsOther: "Other email",
+                    emailsWork: "Work email",
                     generic: {
                         default: "Add {{fieldName}}"
                     },
-                    name_familyName: "Last name",
-                    name_givenName: "First name",
+                    nameFamilyName: "Last name",
+                    nameGivenName: "First name",
                     phoneNumbers: "Phone number",
-                    phoneNumbers_home: "Home phone number",
-                    phoneNumbers_mobile: "Mobile number",
-                    phoneNumbers_other: "Other phone number",
-                    phoneNumbers_work: "Work phone number",
+                    phoneNumbersHome: "Home phone number",
+                    phoneNumbersMobile: "Mobile number",
+                    phoneNumbersOther: "Other phone number",
+                    phoneNumbersWork: "Work phone number",
                     profileUrl: "URL",
                     userName: "Username"
                 },
@@ -564,13 +564,23 @@ export const views: Views = {
                     }
                 }
             },
+            placeholders: {
+                emptyList: {
+                    action: "Refresh list",
+                    subtitles: {
+                        0: "The users list returned empty.",
+                        1: "Something went wrong while fetching the user list",
+                    },
+                    title: "No Users Found"
+                }
+            },
             search: {
                 forms: {
                     searchForm: {
                         inputs: {
                             filerAttribute: {
                                 label: "Filter attribute",
-                                placeholder: "E.g. name, description etc.",
+                                placeholder: "E.g. username, email etc.",
                                 validations: {
                                     empty: "Filter attribute is a required field"
                                 }
@@ -584,7 +594,7 @@ export const views: Views = {
                             },
                             filterValue: {
                                 label: "Filter value",
-                                placeholder: "E.g. facebook, slack etc.",
+                                placeholder: "Enter value to search",
                                 validations: {
                                     empty: "Filter value is a required field"
                                 }
@@ -607,6 +617,52 @@ export const views: Views = {
                     dropdown: "show options"
                 },
                 resultsIndicator: "Showing results for the query \"{{query}}\""
+            }
+        },
+        roles: {
+            notifications: {
+                deleteRole: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error deleting the selected role."
+                    },
+                    genericError: {
+                        description: "Couldn't remove the selected role.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The selected role was deleted successfully.",
+                        message: "Role deleted successfully"
+                    }
+                },
+                createRole: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error occured while creating the role."
+                    },
+                    genericError: {
+                        description: "Couldn't create the role.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The role was created successfully.",
+                        message: "Role created successfully."
+                    }
+                },
+                createPermission: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error occured while adding permission to role."
+                    },
+                    genericError: {
+                        description: "Couldn't add permissions to role.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Permissions were successfully added to the role.",
+                        message: "Role created successfully."
+                    }
+                }
             }
         }
     },

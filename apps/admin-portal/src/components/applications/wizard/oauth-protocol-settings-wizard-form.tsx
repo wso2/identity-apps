@@ -112,7 +112,7 @@ export const OAuthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         return {
             inboundProtocolConfiguration: {
                 oidc: {
-                    callbackURLs: buildCallBackUrlWithRegExp(callBackUrls),
+                    callbackURLs: [ buildCallBackUrlWithRegExp(callBackUrls) ],
                     publicClient: values.get("publicClients").includes("supportPublicClients")
                 }
             }

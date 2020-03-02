@@ -20,10 +20,17 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.oauth2.OAuth2ScopeService" %>
+<%@ page import="org.wso2.carbon.identity.oauth2.bean.Scope" %>
+<%@ page import="org.wso2.carbon.identity.oauth2.IdentityOAuth2ScopeException" %>
+<%@ page import="org.wso2.carbon.identity.oauth.dto.ScopeDTO" %>
+<%@ page import="org.wso2.carbon.identity.oauth.IdentityOAuthAdminException" %>
+<%@ page import="org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.stream.Collectors" %>
 <%@ page import="java.util.stream.Stream" %>
 <%@ page import="java.io.File" %>
+<%@ page import="java.util.Set" %>
 
 <%@include file="includes/localize.jsp" %>
 <%@include file="includes/init-url.jsp" %>
@@ -62,17 +69,11 @@
             <% } %>
 
             <div class="ui segment">
-                <h3 class="ui header">
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "authorize")%>
-                </h3>
-
-                <form action="<%=oauth2AuthorizeURL%>" method="post" id="profile" name="oauth2_authz" class="segment-form">
-
-                    <div class="ui visible warning message">
-                        <strong><%=Encode.forHtml(request.getParameter("application"))%></strong>
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile")%>
-                    </div>
-
+                <form class="ui large form" action="<%=oauth2AuthorizeURL%>" method="post" id="profile"
+                      name="oauth2_authz">
+                    <h4><%=Encode.forHtml(request.getParameter("application"))%>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile")%>:</h4>
+        
                     <div class="field"> 
                         <%
                             if (displayScopes && StringUtils.isNotBlank(scopeString)) {
@@ -83,20 +84,56 @@
     
                                 if (CollectionUtils.isNotEmpty(openIdScopes)) {
                         %>
-
-                        <div class="ui segment" style="text-align: left;"></div>
+                        <div class="ui segment" style="text-align: left;">
                             <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.scopes")%></h5>
                             <div class="scopes-list ui list">
                                 <%
-                                    for (String scopeID : openIdScopes) {
+                                    try {
+                                        String scopesAsString = String.join(" ", openIdScopes);
+                                        Set<Scope> scopes = new OAuth2ScopeService().getScopes(null, null,
+                                                true, scopesAsString);
+        
+                                        for (Scope scope : scopes) {
+                                            String displayName = scope.getDisplayName();
+                                            String description = scope.getDescription();
+                                            openIdScopes.remove(scope.getName());
+            
+                                            if (displayName != null) {
                                 %>
                                 <div class="item">
                                     <i class="check circle outline icon"></i>
                                     <div class="content">
-                                        <%=Encode.forHtml(scopeID)%>
+                                        <div class="header">
+                                            <%=Encode.forHtml(displayName)%>
+                                        </div>
+                                        <% if (description != null) { %>
+                                        <div class="description">
+                                            <%=Encode.forHtml(description)%>
+                                        </div>
+                                        <% } %>
                                     </div>
                                 </div>
                                 <%
+                                            }
+                                        }
+                                    } catch (IdentityOAuth2ScopeException e) {
+                                        // Ignore the error
+                                    }
+        
+                                    // Unregistered scopes if exist, get the consent with provided scope name.
+                                    if (CollectionUtils.isNotEmpty(openIdScopes)) {
+                                        for (String scope : openIdScopes) {
+                                %>
+                                <div class="item">
+                                    <i class="check circle outline icon"></i>
+                                    <div class="content">
+                                        <div class="header">
+                                            <%=Encode.forHtml(scope)%>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%
+                                        }
                                     }
                                 %>
                             </div>
@@ -106,13 +143,16 @@
                                 }
                             }
                         %>
-
-                        <div class="ui secondary segment" style="text-align: left;">
+            
+                        <div class="ui divider hidden"></div>
+            
+                        <div style="text-align: left;">
                             <div class="ui form">
                                 <div class="grouped fields">
                                     <div class="field">
                                         <div class="ui radio checkbox">
-                                            <input type="radio" class="hidden" name="scope-approval" id="approveCb" value="approve">
+                                            <input type="radio" class="hidden" name="scope-approval" id="approveCb"
+                                                   value="approve" checked>
                                             <label for="approveCb"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "approve.once")%></label>
                                         </div>
                                     </div>
@@ -127,18 +167,17 @@
                         </div>
                         
                     </div>
-
-                    <div class="buttons right aligned">
+                    <div class="align-right buttons">
                         <input type="hidden" name="<%=Constants.SESSION_DATA_KEY_CONSENT%>"
                             value="<%=Encode.forHtmlAttribute(request.getParameter(Constants.SESSION_DATA_KEY_CONSENT))%>"/>
                         <input type="hidden" name="consent" id="consent" value="deny"/>
-                        
-                        <input type="button" class="btn  btn-primary" id="approve" name="approve"
-                                onclick="approved(); return false;"
-                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"continue")%>"/>
-                        <input class="btn" type="reset"
-                                onclick="deny(); return false;"
-                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"deny")%>"/>
+            
+                        <input class="ui large button link-button" type="reset"
+                               onclick="deny(); return false;"
+                               value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"cancel")%>"/>
+                        <input type="button" class="ui primary large button" id="approve" name="approve"
+                               onclick="approved(); return false;"
+                               value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"continue")%> "/>
                     </div>
                 </form>
             </div>

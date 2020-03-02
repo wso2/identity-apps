@@ -19,50 +19,54 @@
 import { SearchUtils } from "@wso2is/core/utils";
 import { Field, Forms } from "@wso2is/forms";
 import { AdvancedSearch } from "@wso2is/react-components";
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Form, Grid } from "semantic-ui-react";
+import { AdvancedSearchIcons } from "../../configs";
 
 /**
  * Filter attribute field identifier.
  * @type {string}
  */
-const FILTER_ATTRIBUTE_FIELD_IDENTIFIER: string = "filerAttribute";
+const FILTER_ATTRIBUTE_FIELD_IDENTIFIER = "filerAttribute";
 
 /**
  * Filter condition field identifier.
  * @type {string}
  */
-const FILTER_CONDITION_FIELD_IDENTIFIER: string = "filerCondition";
+const FILTER_CONDITION_FIELD_IDENTIFIER = "filerCondition";
 
 /**
  * Filter value field identifier.
  * @type {string}
  */
-const FILTER_VALUES_FIELD_IDENTIFIER: string = "filerValues";
+const FILTER_VALUES_FIELD_IDENTIFIER = "filerValues";
 
 /**
  * The default search strategy. Search input will append the text
  * field value to this.
  * @type {string}
  */
-const DEFAULT_SEARCH_STRATEGY: string = "name co";
+const DEFAULT_SEARCH_STRATEGY = "name co";
 
 /**
  * Prop types for the application search component.
  */
 interface ApplicationSearchPropsInterface {
+    /**
+     * Callback to be triggered on filter query change.
+     */
     onFilter: (query: string) => void;
 }
 
 /**
  * Application search component.
  *
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
 export const ApplicationSearch: FunctionComponent<ApplicationSearchPropsInterface> = (
     props: ApplicationSearchPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const { onFilter } = props;
 
@@ -145,6 +149,7 @@ export const ApplicationSearch: FunctionComponent<ApplicationSearchPropsInterfac
         <AdvancedSearch
             aligned="left"
             clearButtonPopupLabel={ t("views:components.applications.search.popups.clear") }
+            clearIcon={ AdvancedSearchIcons.clear }
             defaultSearchStrategy={ DEFAULT_SEARCH_STRATEGY }
             dropdownTriggerPopupLabel={ t("views:components.applications.search.popups.dropdown") }
             hintActionKeys={ t("views:components.applications.search.hints.querySearch.actionKeys") }

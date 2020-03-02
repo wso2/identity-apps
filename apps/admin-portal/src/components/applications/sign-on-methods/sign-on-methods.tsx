@@ -16,36 +16,57 @@
  * under the License.
  */
 
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { AuthenticationFlow } from "./authentication-flow";
+import { AuthenticationSequenceInterface } from "../../../models";
 
 /**
  * Proptypes for the sign on methods component.
  */
 interface SignOnMethodsPropsInterface {
+    /**
+     * ID of the application.
+     */
     appId?: string;
-    authenticationSequence: any;
+    /**
+     * Currently configured authentication sequence for the application.
+     */
+    authenticationSequence: AuthenticationSequenceInterface;
+    /**
+     * Is the application info request loading.
+     */
     isLoading?: boolean;
+    /**
+     * Callback to update the application details.
+     */
+    onUpdate: (id: string) => void;
 }
 
 /**
  * Configure the different sign on strategies for an application.
  *
  * @param {SignOnMethodsPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
 export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     props: SignOnMethodsPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         appId,
-        authenticationSequence
+        authenticationSequence,
+        isLoading,
+        onUpdate
     } = props;
 
     return (
         <div className="sign-on-methods-tab-content">
-            <AuthenticationFlow appId={ appId } authenticationSequence={ authenticationSequence } />
+            <AuthenticationFlow
+                appId={ appId }
+                authenticationSequence={ authenticationSequence }
+                isLoading={ isLoading }
+                onUpdate={ onUpdate }
+            />
         </div>
     );
 };

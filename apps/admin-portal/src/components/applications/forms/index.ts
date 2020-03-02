@@ -19,3 +19,5 @@
 export * from "./advanced-configurations-form";
 export * from "./inbound-form-factory";
 export * from "./inbound-oidc-form";
+export * from "./general-details-form";
+export * from "./inbound-saml-form";

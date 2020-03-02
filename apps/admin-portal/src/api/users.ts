@@ -31,14 +31,19 @@ const httpClient = AxiosHttpClient.getInstance();
  *
  * @returns {Promise<BasicProfileInterface>} a promise containing the user list.
  */
-export const getUsersList = (limit: number, offset: number): Promise<any> => {
+export const getUsersList = (count: number, startIndex: number, filter: string): Promise<UserListInterface> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.users + "?count=" + limit + "&startIndex=" + offset
+        params: {
+            count,
+            filter,
+            startIndex,
+        },
+        url: ServiceResourcesEndpoint.users
     };
 
     return httpClient.request(requestConfig)
@@ -55,6 +60,7 @@ export const getUsersList = (limit: number, offset: number): Promise<any> => {
  *
  * @returns {Promise<BasicProfileInterface>} a promise containing the user store list.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getUserStoreList = (): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -81,6 +87,7 @@ export const getUserStoreList = (): Promise<any> => {
  *
  * @returns {Promise<BasicProfileInterface>} a promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const addUser = (data: object): Promise<any> => {
     const requestConfig = {
         data,
@@ -108,6 +115,7 @@ export const addUser = (data: object): Promise<any> => {
  *
  * @returns {Promise<BasicProfileInterface>} a promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const deleteUser = (userId: string): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -135,6 +143,7 @@ export const deleteUser = (userId: string): Promise<any> => {
  *
  * @returns {Promise<BasicProfileInterface>} a promise containing the response.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const addUserRole = (data: object, groupId: string): Promise<any> => {
     const requestConfig = {
         data,
