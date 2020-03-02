@@ -58,20 +58,16 @@
             <jsp:directive.include file="includes/product-title.jsp"/>
             <% } %>
             <div class="ui segment">
-                <div class="ui negative icon message" id="server-error-code">
-                    <i class="icon exclamation triangle"></i>
-                    <div class="content">
-                        <div>
-                            <% if (StringUtils.isNotBlank(errorCode)) {%>
+                <div class="segment-form">
+                    <div class="ui visible negative message" id="server-error-code">
+                        <div class="header"><%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, "error")%></div>
+                        <p><%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%></p>
+                    </div>
 
-                            <b><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Code")%> :
-                            </b><%=Encode.forHtmlContent(errorCode) %>
-                        </div>
-                        <% }%>
-                        <div>
-                            <b><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Message")%> : </b>
-                            <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
-                        </div>
+                    <div class="buttons">
+                        <a href="javascript:goBack()" class="ui button primary button">
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Go back")%>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -88,5 +84,11 @@
     <% } else { %>
     <jsp:directive.include file="includes/footer.jsp"/>
     <% } %>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
 </body>
 </html>
