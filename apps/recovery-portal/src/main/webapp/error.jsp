@@ -60,7 +60,7 @@
             <div class="ui segment">
                 <div class="segment-form">
                     <div class="ui visible negative message" id="server-error-code">
-                        <div class="header"><%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, "error")%></div>
+                        <div class="header"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error")%></div>
                         <p><%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%></p>
                     </div>
 
