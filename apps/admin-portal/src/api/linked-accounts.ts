@@ -19,8 +19,8 @@
 import { AuthenticateSessionUtil, SignInUtil } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
-import * as TokenConstants from "../constants";
 import { HttpMethods, LinkedAccountInterface } from "../models";
+import { SYSTEM_SCOPE } from "../constants";
 
 /**
  * Get an axios instance.
@@ -146,7 +146,7 @@ export const removeAllLinkedAccounts = (): Promise<any> => {
 export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
     const requestParams = {
         "client_id": GlobalConfig.clientID,
-        "scope": [ TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE ],
+        "scope": [ SYSTEM_SCOPE ],
         "tenant-domain": account.tenantDomain,
         "username": account.username,
         "userstore-domain": account.userStoreDomain
