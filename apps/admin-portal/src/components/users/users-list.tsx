@@ -18,9 +18,9 @@
 
 import React, { ReactElement } from "react";
 import { ResourceList, ResourceListItem, UserAvatar } from "@wso2is/react-components";
-import { Grid, List } from "semantic-ui-react";
+import { Grid, List, SemanticWIDTHS } from "semantic-ui-react";
 import { history } from "../../helpers";
-import { UserListInterface } from "../../models";
+import { UserBasicInterface, UserListInterface } from "../../models";
 import { CommonUtils } from "../../utils";
 
 /**
@@ -29,33 +29,98 @@ import { CommonUtils } from "../../utils";
 interface UsersListProps {
     usersList: UserListInterface;
     handleUserDelete: (userId: string) => void;
+    userMetaListContent: Map<string, string>;
 }
-
-const listContent = (lastModified: any) => (
-    <Grid>
-        <Grid.Column width={ 9 }>
-            <List.Content>
-                <List.Description className="list-item-meta">
-                    { lastModified }
-                </List.Description>
-            </List.Content>
-        </Grid.Column>
-    </Grid>
-);
 
 /**
  * Users info page.
  *
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
 export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersListProps): ReactElement => {
     const {
         usersList,
-        handleUserDelete
+        handleUserDelete,
+        userMetaListContent
     } = props;
 
     const handleUserEdit = (userId: string) => {
         history.push(`users/${ userId }`);
+    };
+
+    /**
+     * The following function generate the meta list items by mapping the
+     * meta content columns selected by the user to the user details.
+     *
+     * @param user - UserBasicInterface
+     */
+    const generateMetaContent = (user: UserBasicInterface) => {
+        const attributes = [];
+        let attribute = "";
+
+        for (const [key, value] of userMetaListContent.entries()) {
+            if (key !== "name" && key !== "emails" && value !== "") {
+                if (
+                    key !== "" &&
+                    (key === "meta.lastModified" ||
+                        key === "meta.created")
+                )
+                {
+                    if(user.meta) {
+                        const metaAttribute = key.split(".");
+                        attribute = user.meta[metaAttribute[1]];
+                        attribute && (attributes.push(CommonUtils.humanizeDateDifference(attribute)));
+                    }
+                }
+                attribute = user[key];
+                attributes.push(attribute);
+            }
+        }
+
+        let metaColumnWidth: SemanticWIDTHS = 1;
+         const metaList = attributes.map((metaAttribute, index) => {
+             if (metaAttribute?.toString().length < 10) {
+                 metaColumnWidth = 2
+             }
+             if (metaAttribute?.toString().length > 20) {
+                 metaColumnWidth = 4
+             }
+             if (metaAttribute?.toString().length > 30 && metaAttribute?.toString().length < 40) {
+                 metaColumnWidth = 6
+             }
+            return (
+                <Grid.Column width={ metaColumnWidth } key={ index }>
+                    <List.Content>
+                        <List.Description className="list-item-meta">
+                            { metaAttribute }
+                        </List.Description>
+                    </List.Content>
+                </Grid.Column>
+            );
+        });
+        return metaList;
+    };
+
+    const listContent = (user: UserBasicInterface) => {
+        if (userMetaListContent) {
+            return (
+                <Grid>
+                    { generateMetaContent(user)}
+                </Grid>
+            );
+        } else {
+            return (
+                <Grid>
+                    <Grid.Column width={ 6 }>
+                        <List.Content>
+                            <List.Description className="list-item-meta">
+                                { CommonUtils.humanizeDateDifference(user.meta.lastModified) }
+                            </List.Description>
+                        </List.Content>
+                    </Grid.Column>
+                </Grid>
+            );
+        }
     };
 
     return (
@@ -92,9 +157,10 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                             " " + user.name.familyName : user.userName }
                         itemDescription={ user.emails ? user.emails[0].toString() :
                             user.userName }
-                        metaContent={ listContent(CommonUtils.humanizeDateDifference(user.meta.lastModified)) }
-                        metaColumnWidth={ 6 }
-                        descriptionColumnWidth={ 5 }
+                        metaContent={ listContent(user) }
+                        metaColumnWidth={ 10 }
+                        descriptionColumnWidth={ 3 }
+                        actionsColumnWidth={ 3 }
                     />
                 ))
             }
