@@ -31,7 +31,8 @@ const httpClient = AxiosHttpClient.getInstance();
  *
  * @returns {Promise<BasicProfileInterface>} a promise containing the user list.
  */
-export const getUsersList = (count: number, startIndex: number, filter: string): Promise<UserListInterface> => {
+export const getUsersList = (count: number, startIndex: number, filter: string, attributes: string):
+    Promise<UserListInterface> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
@@ -42,6 +43,7 @@ export const getUsersList = (count: number, startIndex: number, filter: string):
             count,
             filter,
             startIndex,
+            attributes
         },
         url: ServiceResourcesEndpoint.users
     };
