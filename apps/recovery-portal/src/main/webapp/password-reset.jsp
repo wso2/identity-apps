@@ -146,7 +146,7 @@
             $(document).ready(function () {
 
                 $("#passwordResetForm").submit(function (e) {
-                    e.preventDefault();
+
                     $("#server-error-msg").remove();
                     var password = $("#reset-password").val();
                     var password2 = $("#reset-password2").val();

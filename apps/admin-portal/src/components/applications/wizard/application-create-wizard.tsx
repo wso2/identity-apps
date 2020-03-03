@@ -22,17 +22,33 @@ import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { createApplication } from "../../../api";
 import { ApplicationWizardStepIcons } from "../../../configs";
 import { history } from "../../../helpers";
-import { SupportedQuickStartTemplateTypes } from "../../../models";
-import { OAuthWebApplicationTemplate, SPAApplicationTemplate } from "../meta";
+import {
+    ApplicationTemplateListItemInterface,
+    AuthProtocolMetaListItemInterface,
+    MainApplicationInterface,
+    SupportedAuthProtocolTypes,
+    SupportedQuickStartTemplateTypes
+} from "../../../models";
+import {
+    InboundProtocolsMeta,
+    OAuthWebApplicationTemplate,
+    SAMLWebApplicationTemplate,
+    SPAApplicationTemplate
+} from "../meta";
 import { GeneralSettingsWizardForm } from "./general-settings-wizard-form";
 import { OAuthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { WizardSummary } from "./wizard-summary";
+import { ProtocolSelectionWizardForm } from "./protocol-selection-wizard-form";
+import { AppState } from "../../../store";
+import { ApplicationManagementUtils } from "../../../utils";
+import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
+import { ApplicationConstants } from "../../../constants";
 
 /**
  * Proptypes for the application creation wizard component.
@@ -40,9 +56,8 @@ import { WizardSummary } from "./wizard-summary";
 interface ApplicationCreateWizardPropsInterface {
     currentStep?: number;
     title: string;
-    closeWizard: any;
-    templateType: SupportedQuickStartTemplateTypes; // TODO: Extend this once more types are available.
-    protocol: string;
+    closeWizard: () => void;
+    template: ApplicationTemplateListItemInterface;
     subTitle?: string;
 }
 
@@ -50,7 +65,17 @@ interface ApplicationCreateWizardPropsInterface {
  * Interface for the wizard state.
  */
 interface WizardStateInterface {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [ key: string ]: any;
+}
+
+/**
+ * Interface for the wizard steps.
+ */
+interface WizardStepInterface {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    icon: any;
+    title: string;
 }
 
 /**
@@ -59,72 +84,83 @@ interface WizardStateInterface {
  * @enum {string}
  */
 enum WizardStepsFormTypes {
+    PROTOCOL_SELECTION = "protocolSelection",
     GENERAL_SETTINGS = "generalSettings",
     PROTOCOL_SETTINGS = "protocolSettings",
     SUMMARY = "summary"
 }
 
+const STEPS: WizardStepInterface[] = [
+    {
+        icon: ApplicationWizardStepIcons.protocolSelection,
+        title: "Protocol Selection"
+    },
+    {
+        icon: ApplicationWizardStepIcons.general,
+        title: "General settings"
+    },
+    {
+        icon: ApplicationWizardStepIcons.protocolConfig,
+        title: "Protocol Configuration"
+    },
+    {
+        icon: ApplicationWizardStepIcons.summary,
+        title: "Summary"
+    }
+];
+
 /**
  * Application creation wizard component.
  *
  * @param {ApplicationCreateWizardPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
 export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardPropsInterface> = (
     props: ApplicationCreateWizardPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         closeWizard,
         currentStep,
-        templateType,
-        protocol,
         title,
-        subTitle
+        subTitle,
+        template
     } = props;
 
+    const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>(undefined);
+    const [ isSelectionHidden, setIsSelectionHidden ] = useState<boolean>(false);
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
-    const [ completedStep, setCompletedStep ] = useState<number>(undefined);
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
-    const [ template, setTemplate ] = useState<any>(undefined);
+    const [ templateSettings, setTemplateSettings ] = useState<MainApplicationInterface>(undefined);
 
     const dispatch = useDispatch();
 
-    const [submitGeneralSettings, setSubmitGeneralSettings] = useTrigger();
-    const [submitOAuth, setSubmitOauth] = useTrigger();
-    const [finishSubmit, setFinishSubmit] = useTrigger();
+    const availableInboundProtocols = useSelector((state: AppState) => state.application.meta.inboundProtocols);
+
+    const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
+    const [ submitOAuth, setSubmitOauth ] = useTrigger();
+    const [ finishSubmit, setFinishSubmit ] = useTrigger();
+    const [ triggerProtocolSelectionSubmit, setTriggerProtocolSelectionSubmit ] = useState<boolean>(false);
 
     /**
-     * Loads the application template on initial component load.
+     * Load the respective template settings based on the selected type.
+     *
+     * @param {SupportedQuickStartTemplateTypes} templateType - Template type.
+     * @param {SupportedAuthProtocolTypes} protocolType - Protocol type.
      */
-    useEffect(() => {
-        loadTemplate();
-    }, []);
-
-    /**
-     * Sets the current wizard step to the previous on every `partiallyCompletedStep`
-     * value change , and resets the partially completed step value.
-     */
-    useEffect(() => {
-        if (partiallyCompletedStep === undefined) {
-            return;
-        }
-
-        setCurrentWizardStep(currentWizardStep - 1);
-        setPartiallyCompletedStep(undefined);
-    }, [ partiallyCompletedStep ]);
-
-    /**
-     * Load the respective template based on the selected type.
-     */
-    const loadTemplate = () => {
+    const loadTemplate = (templateType: SupportedQuickStartTemplateTypes,
+                          protocolType: SupportedAuthProtocolTypes): void => {
         switch (templateType) {
             case SupportedQuickStartTemplateTypes.SPA:
-                setTemplate(SPAApplicationTemplate);
+                setTemplateSettings(SPAApplicationTemplate);
                 break;
             case SupportedQuickStartTemplateTypes.OAUTH_WEB_APP:
-                setTemplate(OAuthWebApplicationTemplate);
+                if (protocolType === SupportedAuthProtocolTypes.OIDC) {
+                    setTemplateSettings(OAuthWebApplicationTemplate);
+                } else if (protocolType === SupportedAuthProtocolTypes.SAML) {
+                    setTemplateSettings(SAMLWebApplicationTemplate);
+                }
                 break;
             default:
                 break;
@@ -134,9 +170,9 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     /**
      * Creates a new application.
      *
-     * @param application - The application to be created
+     * @param {MainApplicationInterface} application - The application to be created.
      */
-    const createNewApplication = (application: any) => {
+    const createNewApplication = (application: MainApplicationInterface): void => {
         createApplication(application)
             .then((response) => {
                 dispatch(addAlert({
@@ -150,13 +186,15 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 if (!_.isEmpty(response.headers.location)) {
                     const location = response.headers.location;
                     const createdAppID = location.substring(location.lastIndexOf("/") + 1);
-                    history.push("/applications/" + createdAppID);
+
+                    history.push(ApplicationConstants.PATHS.get("APPLICATION_EDIT").replace(":id",
+                        createdAppID));
 
                     return;
                 }
 
                 // Fallback to applications page, if the location header is not present.
-                history.push("/applications");
+                history.push(ApplicationConstants.PATHS.get("APPLICATIONS"));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -180,23 +218,35 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     /**
      * Navigates to the next wizard step.
      */
-    const navigateToNext = () => {
-        switch (currentWizardStep) {
+    const navigateToNext = (): void => {
+        let step = currentWizardStep;
+
+        if (isSelectionHidden) {
+            step = currentWizardStep + 1;
+        }
+
+        switch (step) {
             case 0:
-                setSubmitGeneralSettings();
+                setTriggerProtocolSelectionSubmit(true);
                 break;
             case 1:
-                setSubmitOauth();
+                setSubmitGeneralSettings();
                 break;
             case 2:
+                setSubmitOauth();
+                break;
+            case 3:
                 setFinishSubmit();
+                break;
+            default:
+                break;
         }
     };
 
     /**
      * Navigates to the previous wizard step.
      */
-    const navigateToPrevious = () => {
+    const navigateToPrevious = (): void => {
         setPartiallyCompletedStep(currentWizardStep);
     };
 
@@ -206,31 +256,37 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      * @param values - Forms values to be stored in state.
      * @param {WizardStepsFormTypes} formType - Type of the form.
      */
-    const handleWizardFormSubmit = (values: any, formType: WizardStepsFormTypes) => {
+    const handleWizardFormSubmit = (values: any, formType: WizardStepsFormTypes): void => {
         setCurrentWizardStep(currentWizardStep + 1);
         setWizardState(_.merge(wizardState, { [ formType ]: values }));
+
+        if (formType === WizardStepsFormTypes.PROTOCOL_SELECTION) {
+            loadTemplate(template?.id, values.id);
+        }
     };
 
     /**
      * Generates a summary of the wizard.
-     *
-     * @return {any}
      */
-    const generateWizardSummary = () => {
+    const generateWizardSummary = (): MainApplicationInterface => {
         if (!wizardState) {
             return;
         }
 
         let summary = {};
 
-        for (const value of Object.values(wizardState)) {
+        for (const [ key, value ] of Object.entries(wizardState)) {
+            if (key === WizardStepsFormTypes.PROTOCOL_SELECTION) {
+                continue;
+            }
+
             summary = {
                 ...summary,
                 ...value
             };
         }
 
-        return _.merge(_.cloneDeep(template), summary);
+        return _.merge(_.cloneDeep(templateSettings), summary);
     };
 
     /**
@@ -238,116 +294,221 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      *
      * @param application - Application data.
      */
-    const handleWizardFormFinish = (application: any) => {
-        createNewApplication({
-            ...application,
-            inboundProtocolConfiguration: {
-                ...application.inboundProtocolConfiguration,
-                oidc: {
-                    ...application.inboundProtocolConfiguration.oidc,
-                    callbackURLs: EncodeDecodeUtils
-                        .decodeURLRegex(application?.inboundProtocolConfiguration?.oidc?.callbackURLs)
-                }
-            }
-        });
+    const handleWizardFormFinish = (application: any): void => {
+        if (wizardState[ WizardStepsFormTypes.PROTOCOL_SELECTION ].id === SupportedAuthProtocolTypes.OIDC) {
+            delete application.inboundProtocolConfiguration.saml;
+        } else if (wizardState[ WizardStepsFormTypes.PROTOCOL_SELECTION ].id === SupportedAuthProtocolTypes.SAML) {
+            delete application.inboundProtocolConfiguration.oidc;
+        }
+
+        createNewApplication(application);
     };
 
-    const STEPS = [
-        {
-            content: (
-                <GeneralSettingsWizardForm
-                    triggerSubmit={ submitGeneralSettings }
-                    initialValues={ wizardState && wizardState[ WizardStepsFormTypes.GENERAL_SETTINGS ] }
-                    onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.GENERAL_SETTINGS) }
-                />
-            ),
-            icon: ApplicationWizardStepIcons.general,
-            title: "General settings"
-        },
-        {
-            content: (
-                <OAuthProtocolSettingsWizardForm
-                    triggerSubmit={ submitOAuth }
-                    templateType={ templateType }
-                    initialValues={ wizardState && wizardState[ WizardStepsFormTypes.PROTOCOL_SETTINGS ] }
-                    onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.PROTOCOL_SETTINGS) }
-                />
-            ),
-            icon: ApplicationWizardStepIcons.protocolConfig,
-            title: "Protocol Configuration"
-        },
-        {
-            content: (
-                <WizardSummary
-                    triggerSubmit={ finishSubmit }
-                    summary={ generateWizardSummary() }
-                    onSubmit={ handleWizardFormFinish }
-                />
-            ),
-            icon: ApplicationWizardStepIcons.protocolSelection,
-            title: "Summary"
-        }
-    ];
+    /**
+     * Resolves the set of selectable inbound protocols.
+     *
+     * @return {AuthProtocolMetaListItemInterface[]} List of selectable inbound protocols.
+     */
+    const resolveSelectableInboundProtocols = (): AuthProtocolMetaListItemInterface[] => {
+        return availableInboundProtocols.filter((protocol) => {
+            return template.protocols.includes(protocol.id as SupportedAuthProtocolTypes);
+        })
+    };
 
     /**
      * Called when modal close event is triggered.
      */
-    const handleWizardClose = () => {
+    const handleWizardClose = (): void => {
         closeWizard();
     };
 
+    /**
+     * Resolves the step content.
+     *
+     * @return {React.ReactElement} Step content.
+     */
+    const resolveStepContent = (): ReactElement => {
+        let step = currentWizardStep;
+
+        if (isSelectionHidden) {
+            step = currentWizardStep + 1;
+        }
+
+        switch (step) {
+            case 0:
+                return (
+                    <ProtocolSelectionWizardForm
+                        triggerSubmit={ triggerProtocolSelectionSubmit }
+                        initialValues={ wizardState && wizardState[ WizardStepsFormTypes.PROTOCOL_SELECTION ] }
+                        onSubmit={ (values): void => handleWizardFormSubmit(values,
+                            WizardStepsFormTypes.PROTOCOL_SELECTION) }
+                        protocols={ resolveSelectableInboundProtocols() }
+                    />
+                );
+            case 1:
+                return (
+                    <GeneralSettingsWizardForm
+                        triggerSubmit={ submitGeneralSettings }
+                        initialValues={ wizardState && wizardState[ WizardStepsFormTypes.GENERAL_SETTINGS ] }
+                        onSubmit={ (values): void => handleWizardFormSubmit(values,
+                            WizardStepsFormTypes.GENERAL_SETTINGS) }
+                    />
+                );
+            case 2:
+                if (wizardState && wizardState[ WizardStepsFormTypes.PROTOCOL_SELECTION ]) {
+                    if (wizardState[ WizardStepsFormTypes.PROTOCOL_SELECTION ].id === SupportedAuthProtocolTypes.OIDC) {
+                        return (
+                            <OAuthProtocolSettingsWizardForm
+                                triggerSubmit={ submitOAuth }
+                                templateType={ template?.id }
+                                initialValues={ wizardState && wizardState[ WizardStepsFormTypes.PROTOCOL_SETTINGS ] }
+                                onSubmit={ (values): void => handleWizardFormSubmit(values,
+                                    WizardStepsFormTypes.PROTOCOL_SETTINGS) }
+                            />
+                        )
+                    } else if (wizardState[ WizardStepsFormTypes.PROTOCOL_SELECTION ].id ===
+                        SupportedAuthProtocolTypes.SAML) {
+                        return (
+                            <SAMLProtocolSettingsWizardForm
+                                triggerSubmit={ submitOAuth }
+                                initialValues={ wizardState && wizardState[ WizardStepsFormTypes.PROTOCOL_SETTINGS ] }
+                                onSubmit={ (values): void => handleWizardFormSubmit(values,
+                                    WizardStepsFormTypes.PROTOCOL_SETTINGS) }
+                            />
+                        )
+                    }
+                }
+
+                return null;
+            case 3:
+                return (
+                    <WizardSummary
+                        triggerSubmit={ finishSubmit }
+                        summary={ generateWizardSummary() }
+                        onSubmit={ handleWizardFormFinish }
+                    />
+                )
+        }
+    };
+
+    /**
+     * Loads the application template settings on initial component load.
+     */
+    useEffect(() => {
+        if (!_.isEmpty(availableInboundProtocols)) {
+            return;
+        }
+
+        ApplicationManagementUtils.getInboundProtocols(InboundProtocolsMeta, false);
+    }, []);
+
+    /**
+     * Called when `availableInboundProtocols` are changed.
+     */
+    useEffect(() => {
+        if (!(template.protocols instanceof Array)) {
+            throw new Error("Protocols has to be in the form of an array.")
+        }
+
+        // Set the default selected protocol to the first.
+        setWizardState(_.merge(wizardState,
+            {
+                [ WizardStepsFormTypes.PROTOCOL_SELECTION ]: [ ...availableInboundProtocols ]
+                    .find((protocol) => protocol.id === template.protocols[ 0 ])
+            }));
+
+        // If there is only one supported protocol for the template, set is as selected
+        // and skip the protocol selection step.
+        if (template.protocols instanceof Array && template.protocols.length === 1) {
+            // Load the template for the default selected template.
+            loadTemplate(template?.id, template.protocols[0]);
+
+            setIsSelectionHidden(true);
+            setWizardSteps(STEPS.slice(1));
+
+            return;
+        }
+
+        setWizardSteps(STEPS);
+    }, [ availableInboundProtocols ]);
+
+    /**
+     * Sets the current wizard step to the previous on every `partiallyCompletedStep`
+     * value change , and resets the partially completed step value.
+     */
+    useEffect(() => {
+        if (partiallyCompletedStep === undefined) {
+            return;
+        }
+
+        setCurrentWizardStep(currentWizardStep - 1);
+        setPartiallyCompletedStep(undefined);
+    }, [ partiallyCompletedStep ]);
+
+    /**
+     * Called when protocol selection form trigger value is changed.
+     */
+    useEffect(() => {
+        if (triggerProtocolSelectionSubmit) {
+            setTriggerProtocolSelectionSubmit(!triggerProtocolSelectionSubmit);
+        }
+    }, [ triggerProtocolSelectionSubmit ]);
+
     return (
-        <Modal
-            open={ true }
-            className="wizard application-create-wizard"
-            dimmer="blurring"
-            onClose={ handleWizardClose }
-            closeOnDimmerClick
-            closeOnEscape
-        >
-            <Modal.Header className="wizard-header">
-                { title }
-                { subTitle && <Heading as="h6">{ subTitle }</Heading> }
-            </Modal.Header>
-            <Modal.Content className="steps-container">
-                <Steps.Group header="Fill the basic information about your application." current={ currentWizardStep }>
-                    { STEPS.map((step, index) => (
-                        <Steps.Step
-                            key={ index }
-                            icon={ step.icon }
-                            title={ step.title }
-                        />
-                    )) }
-                </Steps.Group>
-            </Modal.Content>
-            <Modal.Content className="content-container" scrolling>
-                { STEPS[ currentWizardStep ].content }
-            </Modal.Content>
-            <Modal.Actions>
-                <Grid>
-                    <Grid.Row column={ 1 }>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton floated="left" onClick={ handleWizardClose }>Cancel</LinkButton>
-                        </Grid.Column>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            { currentWizardStep < STEPS.length - 1 && (
-                                <PrimaryButton floated="right" onClick={ navigateToNext }>
-                                    Next Step <Icon name="arrow right"/>
-                                </PrimaryButton>
-                            ) }
-                            { currentWizardStep === STEPS.length - 1 && (
-                                <PrimaryButton floated="right" onClick={ navigateToNext }>Finish</PrimaryButton>
-                            ) }
-                            { currentWizardStep > 0 && (
-                                <LinkButton floated="right" onClick={ navigateToPrevious }>
-                                    <Icon name="arrow left"/> Previous step
-                                </LinkButton>
-                            ) }
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Modal.Actions>
-        </Modal>
+        wizardSteps
+            ? (
+                <Modal
+                    open={ true }
+                    className="wizard application-create-wizard"
+                    dimmer="blurring"
+                    onClose={ handleWizardClose }
+                    closeOnDimmerClick
+                    closeOnEscape
+                >
+                    <Modal.Header className="wizard-header">
+                        { title }
+                        { subTitle && <Heading as="h6">{ subTitle }</Heading> }
+                    </Modal.Header>
+                    <Modal.Content className="steps-container">
+                        <Steps.Group header="Fill the basic information about your application."
+                                     current={ currentWizardStep }>
+                            { wizardSteps.map((step, index) => (
+                                <Steps.Step
+                                    key={ index }
+                                    icon={ step.icon }
+                                    title={ step.title }
+                                />
+                            )) }
+                        </Steps.Group>
+                    </Modal.Content>
+                    <Modal.Content className="content-container" scrolling>{ resolveStepContent() }</Modal.Content>
+                    <Modal.Actions>
+                        <Grid>
+                            <Grid.Row column={ 1 }>
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                    <LinkButton floated="left" onClick={ handleWizardClose }>Cancel</LinkButton>
+                                </Grid.Column>
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                    { currentWizardStep < wizardSteps.length - 1 && (
+                                        <PrimaryButton floated="right" onClick={ navigateToNext }>
+                                            Next Step <Icon name="arrow right"/>
+                                        </PrimaryButton>
+                                    ) }
+                                    { currentWizardStep === wizardSteps.length - 1 && (
+                                        <PrimaryButton floated="right" onClick={ navigateToNext }>Finish</PrimaryButton>
+                                    ) }
+                                    { currentWizardStep > 0 && (
+                                        <LinkButton floated="right" onClick={ navigateToPrevious }>
+                                            <Icon name="arrow left"/> Previous step
+                                        </LinkButton>
+                                    ) }
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    </Modal.Actions>
+                </Modal>
+            )
+            : null
     );
 };
 

@@ -25,9 +25,10 @@ import {
     SignOutUtil
 } from "@wso2is/authentication";
 import _ from "lodash";
-import { getProfileInfo, getProfileSchemas } from "../../api";
+import { getProfileSchemas } from "../../api";
+import { getProfileInfo } from "@wso2is/core/api";
 import { GlobalConfig, i18n, ServiceResourcesEndpoint } from "../../configs";
-import * as TokenConstants from "../../constants";
+import { SYSTEM_SCOPE } from "../../constants";
 import { history } from "../../helpers";
 import { AlertLevels, ProfileSchema } from "../../models";
 import { store } from "../index";
@@ -93,8 +94,9 @@ export const getProfileInformation = () => (dispatch): void => {
 
     dispatch(setProfileInfoLoader(true));
 
-    // Get the profile info
-    getProfileInfo()
+    // Get the profile info.
+    // TODO: Add the function to handle SCIM disabled error.
+    getProfileInfo(null)
         .then((infoResponse) => {
             if (infoResponse.responseStatus === 200) {
                 dispatch(
@@ -186,30 +188,7 @@ export const handleSignIn = (consentDenied = false) => (dispatch): void => {
         clientSecret: null,
         enablePKCE: true,
         redirectUri: GlobalConfig.loginCallbackUrl,
-        scope: [TokenConstants.LOGIN_SCOPE, TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_VIEW,
-            TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_UPDATE,
-            TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_DELETE,
-            TokenConstants.INTERNAL_IDENTITY_MGT.INTERNAL_IDENTITY_MGT_CREATE,
-            TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_VIEW,
-            TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_UPDATE,
-            TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_DELETE,
-            TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_LIST,
-            TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_CREATE,
-            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_VIEW,
-            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_UPDATE,
-            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_DELETE,
-            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_LIST,
-            TokenConstants.INTERNAL_ROLE_MGT.INTERNAL_ROLE_MGT_CREATE,
-            TokenConstants.INTERNAL_USER_MGT.INTERNAL_USER_MGT_CREATE,
-            TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_CREATE,
-            TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_DELETE,
-            TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_VIEW,
-            TokenConstants.INTERNAL_APP_MGT.INTERNAL_APP_MGT_UPDATE,
-            TokenConstants.INTERNAL_IDP.INTERNAL_IDP_CREATE,
-            TokenConstants.INTERNAL_IDP.INTERNAL_IDP_VIEW,
-            TokenConstants.INTERNAL_IDP.INTERNAL_IDP_DELETE,
-            TokenConstants.INTERNAL_IDP.INTERNAL_IDP_UPDATE
-        ],
+        scope: [ SYSTEM_SCOPE ],
         serverOrigin: GlobalConfig.serverOrigin,
         tenant: GlobalConfig.tenant
     };

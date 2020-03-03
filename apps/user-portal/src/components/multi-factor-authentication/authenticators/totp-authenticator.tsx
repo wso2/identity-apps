@@ -18,13 +18,15 @@
 
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import QRCode from "qrcode.react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Icon, List, Message, Modal, Popup, Segment } from "semantic-ui-react";
 import { initTOTPCode, refreshTOTPCode, validateTOTPCode } from "../../../api";
 import { ThemeIcon } from "../../../components/shared";
 import { EnterCode, MFAIcons, QRCodeScan } from "../../../configs";
 import { AlertLevels } from "../../../models";
+import { AppConfig } from "../../../helpers";
+import { MULTI_FACTOR_AUTHENTICATION, SECURITY, AUTHENTICATOR_APP } from "../../../constants";
 
 export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Element => {
 
@@ -38,6 +40,8 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
     const [submit, setSubmit] = useTrigger();
 
     const { t } = useTranslation();
+
+    const totpConfig = useContext(AppConfig)[SECURITY][MULTI_FACTOR_AUTHENTICATION][AUTHENTICATOR_APP];
 
     const translateKey = "views:components.mfa.authenticatorApp.";
 
@@ -127,9 +131,9 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
     const stepIllustration = (stepToDisplay: number): JSX.Element => {
         switch (stepToDisplay) {
             case 0:
-                return <QRCodeScan.ReactComponent/>;
+                return <QRCodeScan.ReactComponent />;
             case 1:
-                return <EnterCode.ReactComponent/>;
+                return <EnterCode.ReactComponent />;
         }
     };
 
@@ -188,16 +192,16 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
                 <Forms
                     onSubmit={ (values: Map<string, string>) => {
                         verifyCode(values.get("code"));
-                    } }
-                    submitState={ submit }
+                    }}
+                    submitState={submit}
                 >
                     <Field
                         name="code"
-                        label={ t(translateKey + "modals.verify.label") }
-                        placeholder={ t(translateKey + "modals.verify.placeholder") }
+                        label={t(translateKey + "modals.verify.label")}
+                        placeholder={t(translateKey + "modals.verify.placeholder")}
                         type="text"
-                        required={ true }
-                        requiredErrorMessage={ t(translateKey + "modals.verify.requiredError") }
+                        required={true}
+                        requiredErrorMessage={t(translateKey + "modals.verify.requiredError")}
                     />
                 </Forms>
                 {
@@ -205,15 +209,15 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
                         ? (
 
                             <>
-                                <Message error>{ t(translateKey + "modals.verify.error") }</Message>
-                                <p>{ t(translateKey + "modals.verify.reScanQuestion") + " " }
+                                <Message error>{t(translateKey + "modals.verify.error")}</Message>
+                                <p>{t(translateKey + "modals.verify.reScanQuestion") + " "}
                                     <p
                                         className="link"
                                         onClick={
                                             () => { setError(false); setStep(0); }
                                         }
                                     >
-                                        { t(translateKey + "modals.verify.reScan") }
+                                        {t(translateKey + "modals.verify.reScan")}
                                     </p>
                                 </p>
                             </>
@@ -252,7 +256,7 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
                         </g>
                     </svg>
                 </div>
-                <p>{ t(translateKey + "modals.done") }</p>
+                <p>{t(translateKey + "modals.done")}</p>
             </Segment>
         );
     };
@@ -264,19 +268,29 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
         return (
             <>
                 <Segment textAlign="center" basic>
-                    <QRCode value={ qrCode } />
+                    <QRCode value={qrCode} />
                     <Divider hidden />
-                    <p className="link" onClick={ refreshCode }>{ t(translateKey + "modals.scan.generate") }</p>
+                    <p className="link" onClick={refreshCode}>{t(translateKey + "modals.scan.generate")}</p>
                 </Segment>
-                <Message info>
-                    <Message.Header>{ t(translateKey + "modals.scan.messageHeading") }</Message.Header>
-                    <Message.Content>
-                        { t(translateKey + "modals.scan.messageBody") + " " }
-                        <a target="_blank" href="https://www.g2.com/categories/multi-factor-authentication-mfa">
-                            { t(translateKey + "modals.scan.authenticatorApps") }
-                        </a>
-                    </Message.Content>
-                </Message>
+                {totpConfig?.apps?.length > 0
+                    ? (
+                        <Message info>
+                            <Message.Header>{t(translateKey + "modals.scan.messageHeading")}</Message.Header>
+                            <Message.Content>
+                                {t(translateKey + "modals.scan.messageBody") + " "}
+                                <List bulleted>
+                                    {totpConfig?.apps?.map((app, index) => (
+                                        <List.Item key={index} >
+                                            <a target="_blank" href={app.link}>
+                                                {app.name}
+                                            </a>
+                                        </List.Item>
+                                    ))}
+                                </List>
+                            </Message.Content>
+                        </Message>
+                    )
+                    : null}
             </>
         );
     };
@@ -289,36 +303,36 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
             <Modal
                 dimmer="blurring"
                 size="mini"
-                open={ openWizard }
-                onClose={ () => { setOpenWizard(false); } }
+                open={openWizard}
+                onClose={() => { setOpenWizard(false); }}
                 className="totp"
             >
                 {
                     step !== 3
                         ? (
                             < Modal.Header className="totp-header">
-                                <div className="illustration">{ stepIllustration(step) }</div>
+                                <div className="illustration">{stepIllustration(step)}</div>
                             </Modal.Header>
                         )
                         : null
                 }
                 <Modal.Content>
-                    <h3>{ stepHeader(step) }</h3>
-                    <Divider hidden/>
-                    { stepContent(step) }
+                    <h3>{stepHeader(step)}</h3>
+                    <Divider hidden />
+                    {stepContent(step)}
                 </Modal.Content>
                 <Modal.Actions>
                     {
                         step !== 3
                             ? (
-                                < Button onClick={ () => { setOpenWizard(false); } } className="link-button">
-                                    { t("common:cancel") }
+                                < Button onClick={() => { setOpenWizard(false); }} className="link-button">
+                                    {t("common:cancel")}
                                 </Button>
                             )
                             : null
                     }
-                    <Button onClick={ () => { handleModalButtonClick(step); } } primary>
-                        { stepButtonText(step) }
+                    <Button onClick={() => { handleModalButtonClick(step); }} primary>
+                        {stepButtonText(step)}
                     </Button>
                 </Modal.Actions>
 
@@ -328,38 +342,38 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
 
     return (
         <>
-            { totpWizard() }
-            <Grid padded={ true }>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column width={ 11 } className="first-column">
+            {totpWizard()}
+            <Grid padded={true}>
+                <Grid.Row columns={2}>
+                    <Grid.Column width={11} className="first-column">
                         <List.Content floated="left">
                             <ThemeIcon
-                                icon={ MFAIcons.authenticatorApp }
+                                icon={MFAIcons.authenticatorApp}
                                 size="mini"
-                                twoTone={ true }
-                                transparent={ true }
-                                square={ true }
-                                rounded={ true }
-                                relaxed={ true }
+                                twoTone={true}
+                                transparent={true}
+                                square={true}
+                                rounded={true}
+                                relaxed={true}
                             />
                         </List.Content>
                         <List.Content>
                             <List.Header>
-                                { t(translateKey + "heading") }
+                                {t(translateKey + "heading")}
                             </List.Header>
                             <List.Description>
-                                { t(translateKey + "description") }
+                                {t(translateKey + "description")}
                             </List.Description>
                         </List.Content>
                     </Grid.Column>
-                    <Grid.Column width={ 5 } className="last-column">
+                    <Grid.Column width={5} className="last-column">
                         <List.Content floated="right">
                             <Popup
                                 trigger={
                                     (
                                         <Icon
-                                            link={ true }
-                                            onClick={ initTOTPFlow }
+                                            link={true}
+                                            onClick={initTOTPFlow}
                                             className="list-icon"
                                             size="small"
                                             color="grey"
@@ -367,7 +381,7 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
                                         />
                                     )
                                 }
-                                content={ t(translateKey + "hint") }
+                                content={t(translateKey + "hint")}
                                 inverted
                             />
                         </List.Content>

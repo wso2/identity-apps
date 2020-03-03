@@ -545,7 +545,7 @@ export const views: Views = {
         mfa: {
             authenticatorApp: {
                 description: "Scan the QR code using an Authenticator App to use TOTP" + " as a second authentication factor",
-                heading: "Authenticator App",
+                heading: "via Authenticator App",
                 hint: "Show the QR Code",
                 modals: {
                     done: "Success! Now you can use your Authentication App for two-factor authentication",

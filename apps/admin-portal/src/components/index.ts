@@ -25,3 +25,4 @@ export * from "./ui";
 export * from "./shared/icon";
 export * from "./users/users-search";
 export * from "./users/users-list";
+export * from "./claims";

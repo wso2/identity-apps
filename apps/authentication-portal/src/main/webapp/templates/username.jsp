@@ -63,6 +63,7 @@
                 String enableSelfSignUpEndpoint = application.getInitParameter("EnableSelfSignUpEndpoint");
                 Boolean isRecoveryEPAvailable;
                 Boolean isSelfSignUpEPAvailable;
+                String encodedUrlParameters = "";
         
                 if (StringUtils.isNotBlank(recoveryEPAvailable)) {
                     isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
@@ -82,6 +83,7 @@
                     int serverPort = request.getServerPort();
                     String urlWithoutEncoding = request.getRequestURL().append("?").append(request.getQueryString()).toString();
                     String urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
+                    String encodedUrlParameters = prmstr;
             
                     String identityMgtEndpointContext =
                             application.getInitParameter("IdentityManagementEndpointContextURL");
@@ -107,7 +109,7 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
                 <div class="form-actions">
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.account")%>
-                    <a id="registerLink" href="<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL)%>">
+                    <a id="registerLink" href="<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL, encodedUrlParameters)%>">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "register.now")%>
                     </a>
                 </div>

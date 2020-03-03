@@ -394,6 +394,8 @@ export interface Views {
         roles: {
             notifications: {
                 deleteRole: Notification;
+                createRole: Notification;
+                createPermission: Notification;
             };
         };
         footer: {

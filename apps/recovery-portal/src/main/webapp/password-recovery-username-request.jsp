@@ -18,14 +18,29 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
 <%@ page import="java.io.File" %>
+
 <jsp:directive.include file="includes/localize.jsp"/>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
+
+    String tenantDomain = request.getParameter("tenantDomain");
+    boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
+
+    String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
+    Boolean isEmailUsernameEnabled = false;
+
+    if (StringUtils.isNotBlank(emailUsernameEnable)) {
+        isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
+    } else {
+        isEmailUsernameEnabled = isEmailUsernameEnabled();
+    }
 %>
 
 <html>
@@ -60,7 +75,6 @@
 
                 <div class="ui segment">
                     <!-- page content -->
-                    <h2></h2>
                     <div class="segment-form">
                         <form class="ui large form" action="recoverpassword.do" method="post" id="tenantBasedRecovery">
                             <h2>
@@ -82,7 +96,8 @@
                                 <label>
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")%>
                                 </label>
-                                <input id="username" name="username" type="text" required/>
+                                <input id="usernameUserInput" name="usernameUserInput" type="text" tabindex="0" required>
+                                <input id="username" name="username" type="hidden" required/>
                             </div> 
                             <div class="ui message info">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
@@ -101,9 +116,7 @@
                             %>
                             <div class="ui divider hidden"></div>
                             <div class="align-right buttons">
-                                <a href="<%=Encode.forHtmlAttribute(IdentityManagementEndpointUtil.getUserPortalUrl(
-                                            application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL)))%>"
-                                    class="ui button link-button">
+                                <a href="javascript:goBack()" class="ui button link-button">
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                                 </a>
                                 <button id="registrationSubmit" class="ui primary button" type="submit">
@@ -136,5 +149,70 @@
         <% } else { %>
         <jsp:directive.include file="includes/footer.jsp"/>
         <% } %>
+
+        <script>
+            function goBack() {
+                window.history.back();
+            }
+            
+            // Handle form submission preventing double submission.
+            $(document).ready(function(){
+                $.fn.preventDoubleSubmission = function() {
+                    $(this).on("submit", function(e){
+                        var $form = $(this);
+
+                        if ($form.data("submitted") === true) {
+                            // Previously submitted - don't submit again.
+                            e.preventDefault();
+                            console.warn("Prevented a possible double submit event");
+                        } else {
+                            e.preventDefault();
+
+                            var isSaaSApp = JSON.parse("<%= isSaaSApp %>");
+                            var tenantDomain = "<%= tenantDomain %>";
+                            var isEmailUsernameEnabled = JSON.parse("<%= isEmailUsernameEnabled %>");
+
+                            var userName = document.getElementById("username");
+                            var usernameUserInput = document.getElementById("usernameUserInput");
+                            var usernameUserInputValue = usernameUserInput.value.trim();
+
+                            if (!isSaaSApp) {
+                                if (!isEmailUsernameEnabled && (usernameUserInputValue.split("@").length >= 2)) {
+                                    var errorMessage = document.getElementById("error-msg");
+
+                                    errorMessage.innerHTML = 
+                                        "Invalid Username. Username should't have '@' or any other special characters.";
+                                    errorMessage.hidden = false;
+
+                                    return;
+                                }
+
+                                if (isEmailUsernameEnabled && (usernameUserInputValue.split("@").length <= 1)) {
+                                    var errorMessage = document.getElementById("error-msg");
+
+                                    errorMessage.innerHTML = "Invalid Username. Username has to be an email address.";
+                                    errorMessage.hidden = false;
+
+                                    return;
+                                }
+                                
+                                userName.value = usernameUserInputValue + "@" + tenantDomain;      
+                            } else {
+                                userName.value = usernameUserInputValue;
+                            }
+
+                            // Mark it so that the next submit can be ignored.
+                            $form.data("submitted", true);
+                            document.getElementById("tenantBasedRecovery").submit();
+                        }
+                    });
+
+                    return this;
+                };
+
+                $('#tenantBasedRecovery').preventDoubleSubmission();
+            });
+        </script>
+
     </body>
 </html>

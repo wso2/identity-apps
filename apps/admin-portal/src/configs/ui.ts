@@ -58,6 +58,7 @@ import {
     PlugIcon,
     ProvisionCapabilityIcon,
     ReactLogo,
+    ReportIcon,
     SamlLogo,
     SettigsSectionIconSet,
     SMSOTPIcon,
@@ -72,7 +73,8 @@ import {
     WarningIcon,
     WebAppTemplateIllustration,
     WSFedLogo,
-    WSTrustLogo
+    WSTrustLogo,
+    ClaimsIcon
 } from "@wso2is/theme";
 
 type ImageType = string;
@@ -97,7 +99,8 @@ export const SidePanelIcons = {
     childIcon: ArrowRight,
     connections: PlugIcon,
     overview: DashboardIcon,
-    usersAndRoles: UserIcon
+    usersAndRoles: UserIcon,
+    claims: ClaimsIcon
 };
 
 export const SidePanelMiscIcons = {
@@ -176,7 +179,8 @@ export const TechnologyLogos = {
 export const ApplicationWizardStepIcons = {
     general: DocumentIcon,
     protocolConfig: GearsIcon,
-    protocolSelection: SpinWheelIcon
+    protocolSelection: SpinWheelIcon,
+    summary: ReportIcon
 };
 
 export const AuthenticatorIcons = {

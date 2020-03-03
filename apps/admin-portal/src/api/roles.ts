@@ -18,7 +18,7 @@
 
 import { AxiosHttpClient } from "@wso2is/http";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
-import { HttpMethods } from "../models";
+import { HttpMethods, CreateRoleInterface } from "../models";
 
 /**
  * Initialize an axios Http client.
@@ -76,7 +76,54 @@ export const deleteSelectedRole = (roleId: string): Promise<any> => {
     }).catch((error) => {
         return Promise.reject(error)
     })
+}
+
+/**
+ * Create a role in the system with role data given by user.
+ * 
+ * @param data - data object used to create the role
+ */
+export const createRole = (data: CreateRoleInterface): Promise<any> => {
+    const requestConfig = {
+        data,
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: ServiceResourcesEndpoint.groups
+    };
+
+    return httpClient.request(requestConfig).then((response) => {
+        return Promise.resolve(response);
+    }).catch((error) => {
+        return Promise.reject(error)
+    });
 } 
+
+/**
+ * Add or Update permission for the given Role using the role ID.
+ * 
+ * @param roleId - ID of the role which needs to be updated
+ * @param data - Permission data of the role
+ */
+export const updatePermissionForRole = (roleId: string, data: any): Promise<any> => {
+    const requestConfig = {
+        data,
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: ServiceResourcesEndpoint.groups + "/" + roleId + "/permissions"
+    };
+
+    return httpClient.request(requestConfig).then((response) => {
+        return Promise.resolve(response);
+    }).catch((error) => {
+        return Promise.reject(error)
+    });
+}
 
 /**
  * Retrieve a list of all the permissions from the system.

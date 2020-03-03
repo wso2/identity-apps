@@ -23,3 +23,4 @@ export * from "./linked-accounts";
 export * from "./roles";
 export * from "./application";
 export * from "./identity-provider";
+export * from "./claims";

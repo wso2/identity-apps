@@ -634,6 +634,34 @@ export const views: Views = {
                         description: "The selected role was deleted successfully.",
                         message: "Role deleted successfully"
                     }
+                },
+                createRole: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error occured while creating the role."
+                    },
+                    genericError: {
+                        description: "Couldn't create the role.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The role was created successfully.",
+                        message: "Role created successfully."
+                    }
+                },
+                createPermission: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error occured while adding permission to role."
+                    },
+                    genericError: {
+                        description: "Couldn't add permissions to role.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Permissions were successfully added to the role.",
+                        message: "Role created successfully."
+                    }
                 }
             }
         }

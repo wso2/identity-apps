@@ -186,16 +186,24 @@
                 margin-bottom: @ZeroMargin;
                 padding-bottom: @SmallPadding;
            }
+
            &.urlComponentInputRow {
                 margin-top: @ZeroMargin;
                 padding-top: @ZeroMargin;
                 margin-bottom: @ZeroMargin;
                 padding-bottom: @SmallPadding;
            }
+
            &.urlComponentTagRow {
                 margin-top: @SmallMargin;
                 margin-bottom: @SmallMargin;
                 padding: @ZeroPadding;
            }
+           
+           &.flex-row {
+               display : flex;
+               justify-content: space-between;
+           }
+
       }
 }

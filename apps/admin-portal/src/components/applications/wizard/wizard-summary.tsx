@@ -18,27 +18,28 @@
 
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import { AppAvatar, Heading } from "@wso2is/react-components";
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { Grid, Label } from "semantic-ui-react";
+import { MainApplicationInterface } from "../../../models";
 
 /**
  * Proptypes for the wizard summary component.
  */
 interface WizardSummaryProps {
-    summary: any;
+    summary: MainApplicationInterface;
     triggerSubmit: boolean;
-    onSubmit: (application: any) => void;
+    onSubmit: (application: MainApplicationInterface) => void;
 }
 
 /**
  * Wizard summary form component.
  *
  * @param {WizardSummaryProps} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
 export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
     props: WizardSummaryProps
-): JSX.Element => {
+): ReactElement => {
 
     const {
         summary,
@@ -92,6 +93,18 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                     </Grid.Column>
                 </Grid.Row>
             ) }
+            { summary?.inboundProtocolConfiguration?.saml?.manualConfiguration?.issuer && (
+                <Grid.Row className="summary-field" columns={ 2 }>
+                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                        <div className="label">Issuer</div>
+                    </Grid.Column>
+                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                        <div className="value url">
+                            { summary.inboundProtocolConfiguration.saml.manualConfiguration.issuer }
+                        </div>
+                    </Grid.Column>
+                </Grid.Row>
+            ) }
             {
                 summary?.inboundProtocolConfiguration?.oidc?.grantTypes
                 && summary.inboundProtocolConfiguration.oidc.grantTypes instanceof Array
@@ -116,6 +129,23 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                     : null
             }
             {
+                summary?.inboundProtocolConfiguration?.saml?.manualConfiguration?.assertionConsumerUrls && (
+                    <Grid.Row className="summary-field" columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                            <div className="label">Assertion consumer URL(s)</div>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                            {
+                                summary.inboundProtocolConfiguration.saml.manualConfiguration.assertionConsumerUrls
+                                    .map((url, index) => (
+                                        <div className="value url" key={ index }>{ url }</div>
+                                    ))
+                            }
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
+            {
                 summary?.inboundProtocolConfiguration?.oidc?.callbackURLs && (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
@@ -123,8 +153,11 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             {
+                                // Multiple callback URLs are supported through regexp only.
+                                // Hence the retrieval of 0th index.
+                                // TODO: Revert this once the API supports callback URLs as string arrays.
                                 EncodeDecodeUtils.decodeURLRegex(
-                                    summary.inboundProtocolConfiguration.oidc.callbackURLs)
+                                    summary.inboundProtocolConfiguration.oidc.callbackURLs[0])
                                     .map((url, index) => (
                                         <div className="value url" key={ index }>{ url }</div>
                                     ))

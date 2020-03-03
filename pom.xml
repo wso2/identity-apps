@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.60-SNAPSHOT</version>
+    <version>1.0.71-SNAPSHOT</version>
     <name>WSO2 Identity Server Apps - Parent</name>
     <description>WSO2 Identity Server Web Apps</description>
 
@@ -621,7 +621,7 @@
         <commons-logging.imp.pkg.version.range>[1.2, 2.0)</commons-logging.imp.pkg.version.range>
         
         <carbon.identity.version>5.0.7</carbon.identity.version>
-        <carbon.kernel.version>4.6.0-beta</carbon.kernel.version>
+        <carbon.kernel.version>4.6.0</carbon.kernel.version>
         <carbon.kernel.imp.pkg.version.range>[4.5.0, 5.0.0)</carbon.kernel.imp.pkg.version.range>
         <carbon.kernel.registry.imp.pkg.version.range>[1.0.1, 2.0.0)</carbon.kernel.registry.imp.pkg.version.range>
         <carbon.user.api.imp.pkg.version.range>[1.0.1, 2.0.0)</carbon.user.api.imp.pkg.version.range>
@@ -632,13 +632,13 @@
         <carbon.base.imp.pkg.version.range>[1.0.0, 2.0.0)</carbon.base.imp.pkg.version.range>
         <org.wso2.carbon.identity.outbound.auth.oidc>5.1.20</org.wso2.carbon.identity.outbound.auth.oidc>
 
-        <carbon.extension.identity.authenticator.version>2.0.31</carbon.extension.identity.authenticator.version>
+        <carbon.extension.identity.authenticator.version>3.0.0</carbon.extension.identity.authenticator.version>
         <commons-codec.version>1.10</commons-codec.version>
         <org.wso2.carbon.identity.association.account>5.1.5</org.wso2.carbon.identity.association.account>
         <identity.extension.utils>1.0.8</identity.extension.utils>
         <carbon.identity.framework.version>5.16.73</carbon.identity.framework.version>
         <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 6.0.0)</carbon.identity.framework.imp.pkg.version.range>
-        <carbon.identity.oauth.version>6.2.126</carbon.identity.oauth.version>
+        <carbon.identity.oauth.version>6.2.142</carbon.identity.oauth.version>
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)</carbon.identity.oauth.imp.pkg.version.range>
 
         <commons-io.wso2.version>2.4.0.wso2v1</commons-io.wso2.version>

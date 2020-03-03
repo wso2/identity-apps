@@ -22,6 +22,8 @@
 <%@ page import="org.wso2.carbon.identity.authenticator.smsotp.SMSOTPConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="org.wso2.carbon.identity.authenticator.smsotp.SMSOTPUtils" %>
+<%@ page import="java.net.URLDecoder" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="static java.util.Base64.getDecoder" %>
 
@@ -55,6 +57,9 @@
                 errorMessage = "The code entered is expired. Authentication Failed!";
             } else if (errorMessage.equalsIgnoreCase(SMSOTPConstants.SEND_OTP_DIRECTLY_DISABLE_MSG)) {
                 errorMessage = "User not found in the directory. Cannot proceed further without SMS OTP authentication.";
+            } else if (SMSOTPUtils.useInternalErrorCodes()) {
+                String httpCode = URLDecoder.decode(errorMessage, SMSOTPConstants.CHAR_SET_UTF_8);
+                errorMessage = SMSOTPConstants.ErrorMessage.getMappedErrorMessage(httpCode);
             }
         }
         if (request.getParameter(SMSOTPConstants.AUTH_FAILURE_INFO) != null) {

@@ -30,7 +30,11 @@ import {
     PrivacyPage,
     UserEditPage,
     UsersPage,
-    UserRoles
+    UserRoles,
+    LocalClaimsPage,
+    ExternalClaimsPage,
+    ClaimDialectsPage,
+    LocalClaimsEditPage
 } from "../pages";
 
 /**
@@ -59,7 +63,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         name: "Overview",
         path: "/overview",
         protected: true,
-        showOnSidePanel: false,
+        showOnSidePanel: false
     },
     {
         children: [
@@ -126,7 +130,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 name: "Users",
                 path: "/users",
                 protected: true,
-                showOnSidePanel: true,
+                showOnSidePanel: true
             },
             {
                 component: UserRoles,
@@ -155,8 +159,60 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         id: "usersAndRoles",
         name: "Users & Roles",
         protected: true,
-        showOnSidePanel: true,
+        showOnSidePanel: true
     },
+    {
+        component: LocalClaimsPage,
+        exact: true,
+        icon: "claims",
+        name: "Claims",
+        path: "/claims",
+        protected: true,
+        showOnSidePanel: true,
+        children: [
+            {
+                component: LocalClaimsPage,
+                exact: true,
+                icon: "childIcon",
+                level: 2,
+                name: "Local Dialect",
+                path: "/local-dialect",
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
+                component: ExternalClaimsPage,
+                exact: true,
+                icon: "childIcon",
+                level: 2,
+                name: "External Claims",
+                path: "/external-claims/:id",
+                protected: true,
+                showOnSidePanel: false
+            },
+            {
+                component: ClaimDialectsPage,
+                exact: true,
+                icon: "childIcon",
+                level: 2,
+                name: "Claim Dialects",
+                path: "/claim-dialects",
+                protected: true,
+                showOnSidePanel:true
+            },
+            {
+                component: LocalClaimsEditPage,
+                exact: true,
+                icon: "childIcon",
+                level: 2,
+                name: "Edit Local Claims",
+                path: "/edit-local-claims/:id",
+                protected: true,
+                showOnSidePanel:false
+            }
+        ]
+    },
+    {},
     {
         component: PrivacyPage,
         icon: null,
@@ -164,7 +220,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         name: "common:privacy",
         path: "/privacy",
         protected: true,
-        showOnSidePanel: false,
+        showOnSidePanel: false
     },
     {
         component: null,
@@ -174,7 +230,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         path: "*",
         protected: true,
         redirectTo: "/404",
-        showOnSidePanel: false,
+        showOnSidePanel: false
     }
 ];
 
