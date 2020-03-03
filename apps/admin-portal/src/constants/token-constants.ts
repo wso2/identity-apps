@@ -25,70 +25,9 @@
 export const LOGIN_SCOPE = "internal_login";
 
 /**
- * The internal identity scopes.
+ * The system scope.
  * @constant
  * @type {string}
  * @default
  */
-export const INTERNAL_IDENTITY_MGT = {
-    INTERNAL_IDENTITY_MGT_CREATE: "internal_identity_mgt_create",
-    INTERNAL_IDENTITY_MGT_DELETE: "internal_identity_mgt_delete",
-    INTERNAL_IDENTITY_MGT_UPDATE: "internal_identity_mgt_update",
-    INTERNAL_IDENTITY_MGT_VIEW: "internal_identity_mgt_view"
-};
-
-/**
- * The user management scopes.
- * @constant
- * @type {string}
- * @default
- */
-export const INTERNAL_USER_MGT = {
-    INTERNAL_USER_MGT_CREATE: "internal_user_mgt_create",
-    INTERNAL_USER_MGT_DELETE: "internal_user_mgt_delete",
-    INTERNAL_USER_MGT_LIST: "internal_user_mgt_list",
-    INTERNAL_USER_MGT_UPDATE: "internal_user_mgt_update",
-    INTERNAL_USER_MGT_VIEW: "internal_user_mgt_view"
-};
-
-/**
- * The role management scopes.
- * @constant
- * @type {string}
- * @default
- */
-export const INTERNAL_ROLE_MGT = {
-    INTERNAL_ROLE_MGT_CREATE: "internal_role_mgt_create",
-    INTERNAL_ROLE_MGT_DELETE: "internal_role_mgt_delete",
-    INTERNAL_ROLE_MGT_LIST: "internal_role_mgt_list",
-    INTERNAL_ROLE_MGT_UPDATE: "internal_role_mgt_update",
-    INTERNAL_ROLE_MGT_VIEW: "internal_role_mgt_view"
-};
-
-/**
- * Human task scope.
- * @constant
- * @type {string}
- * @default
- */
-export const HUMAN_TASK_SCOPE = "internal_humantask_view";
-
-/**
- *  Application management scope.
- */
-export const INTERNAL_APP_MGT = {
-    INTERNAL_APP_MGT_CREATE: "internal_application_mgt_create",
-    INTERNAL_APP_MGT_DELETE: "internal_application_mgt_delete",
-    INTERNAL_APP_MGT_UPDATE: "internal_application_mgt_update",
-    INTERNAL_APP_MGT_VIEW: "internal_application_mgt_view"
-};
-
-/**
- *  Identity Provider management scope.
- */
-export const INTERNAL_IDP = {
-    INTERNAL_IDP_CREATE: "internal_idp_create",
-    INTERNAL_IDP_DELETE: "internal_idp_delete",
-    INTERNAL_IDP_UPDATE: "internal_idp_update",
-    INTERNAL_IDP_VIEW: "internal_idp_view"
-};
+export const SYSTEM_SCOPE = "SYSTEM";
