@@ -146,7 +146,7 @@ export const removeAllLinkedAccounts = (): Promise<any> => {
 export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
     const requestParams = {
         "client_id": GlobalConfig.clientID,
-        "scope": [ TokenConstants.SYSTEM_SCOPE ],
+        "scope": [ TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE ],
         "tenant-domain": account.tenantDomain,
         "username": account.username,
         "userstore-domain": account.userStoreDomain
