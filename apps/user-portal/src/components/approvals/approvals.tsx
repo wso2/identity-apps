@@ -49,7 +49,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
         useState<ApprovalStatus.READY
             | ApprovalStatus.RESERVED
             | ApprovalStatus.COMPLETED
-            | ApprovalStatus.ALL>(ApprovalStatus.READY);
+            | ApprovalStatus.ALL>(ApprovalStatus.RESERVED);
     const [pagination, setPagination] = useState({
         [ApprovalStatus.READY]: false,
         [ApprovalStatus.RESERVED]: false,
@@ -334,17 +334,17 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
     const panes = [
         {
             tabHeader: (
-                <Menu.Item key="ready">
-                    <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.READY) } />
-                    { t("common:ready") }
+                <Menu.Item key="reserved">
+                    <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.RESERVED) } />
+                    { t("common:reserved") }
                 </Menu.Item>
             )
         },
         {
             tabHeader: (
-                <Menu.Item key="reserved">
-                    <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.RESERVED) } />
-                    { t("common:reserved") }
+                <Menu.Item key="ready">
+                    <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.READY) } />
+                    { t("common:ready") }
                 </Menu.Item>
             )
         },
@@ -372,9 +372,9 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
     const generateIcons = (): JSX.Element => {
         switch (activeIndexTab) {
             case 0:
-                return <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.READY) } />;
-            case 1:
                 return <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.RESERVED) } />;
+            case 1:
+                return <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.READY) } />;
             case 2:
                 return <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.COMPLETED) } />;
             case 3:
@@ -386,16 +386,16 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
 
     const paneOptions = [
         {
-            image: <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.READY) } />,
-            key: 0,
-            text: t("common:ready"),
-            value: 0
-        },
-        {
             image: <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.RESERVED) } />,
             key: 1,
             text: t("common:reserved"),
             value: 1
+        },
+        {
+            image: <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.READY) } />,
+            key: 0,
+            text: t("common:ready"),
+            value: 0
         },
         {
             image: <Icon name="tag" color={ resolveApprovalTagColor(ApprovalStatus.COMPLETED) } />,
@@ -422,10 +422,10 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
         _.isUndefined(activeIndex) ? setActiveIndexTab(value) : setActiveIndexTab(activeIndex);
         switch (_.isUndefined(activeIndex) ? value : activeIndex) {
             case 0:
-                setFilterStatus(ApprovalStatus.READY);
+                setFilterStatus(ApprovalStatus.RESERVED);
                 break;
             case 1:
-                setFilterStatus(ApprovalStatus.RESERVED);
+                setFilterStatus(ApprovalStatus.READY);
                 break;
             case 2:
                 setFilterStatus(ApprovalStatus.COMPLETED);
@@ -434,7 +434,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                 setFilterStatus(ApprovalStatus.ALL);
                 break;
             default:
-                setFilterStatus(ApprovalStatus.READY);
+                setFilterStatus(ApprovalStatus.RESERVED);
                 break;
         }
     };
