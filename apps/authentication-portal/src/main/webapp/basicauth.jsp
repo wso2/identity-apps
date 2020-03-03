@@ -30,6 +30,7 @@
 <%@ page import="javax.ws.rs.core.Response" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isSelfSignUpEPAvailable" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isRecoveryEPAvailable" %>
+<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
 <%@ page import="org.apache.commons.codec.binary.Base64" %>
 <%@ page import="java.nio.charset.Charset" %>
@@ -37,6 +38,17 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EndpointConfigManager" %>
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
+
+<%
+    String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
+    Boolean isEmailUsernameEnabled = false;
+
+    if (StringUtils.isNotBlank(emailUsernameEnable)) {
+        isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
+    } else {
+        isEmailUsernameEnabled = isEmailUsernameEnabled();
+    }
+%>
 
 <script>
     function goBack() {
@@ -54,12 +66,34 @@
                     console.warn("Prevented a possible double submit event");
                 } else {
                     e.preventDefault();
+
+                    var isEmailUsernameEnabled = JSON.parse("<%= isEmailUsernameEnabled %>");
+                    var tenantName = getParameterByName("tenantDomain");
                     var userName = document.getElementById("username");
-                    userName.value = userName.value.trim();
-                    if(userName.value){
+                    var usernameUserInput = document.getElementById("usernameUserInput");
+
+                    if (usernameUserInput) {
+                        var usernameUserInputValue = usernameUserInput.value.trim();
+
+                        if (getParameterByName("isSaaSApp") === "false") {
+
+                            if ((!isEmailUsernameEnabled) && (usernameUserInputValue.split("@").length > 1)) {
+                                userName.value = usernameUserInputValue;
+                            }
+                            else {
+                                userName.value = usernameUserInputValue + "@" + tenantName;
+                            }
+                        }
+                        else {
+                            userName.value = usernameUserInputValue;
+                        }
+                    }
+
+                    if (userName.value) {
                         $.ajax({
                             type: "GET",
-                            url: "/logincontext?sessionDataKey=" + getParameterByName("sessionDataKey") + "&relyingParty=" + getParameterByName("relyingParty") + "&tenantDomain=" + getParameterByName("tenantDomain"),
+                            url: "/logincontext?sessionDataKey=" + getParameterByName("sessionDataKey") + 
+                                "&relyingParty=" + getParameterByName("relyingParty") + "&tenantDomain=" + tenantName,
                             success: function (data) {
                                 if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
                                     window.location.href = data.redirectUrl;
@@ -165,13 +199,14 @@
             <div class="ui fluid left icon input">
                 <input
                     type="text"
-                    id="username"
+                    id="usernameUserInput"
                     value=""
-                    name="username"
+                    name="usernameUserInput"
                     tabindex="1"
                     placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "username")%>"
                     required>
                 <i aria-hidden="true" class="user icon"></i>
+                <input id="username" name="username" type="hidden" value="<%=username%>">
             </div>
         </div>
     <% } else { %>
@@ -209,6 +244,7 @@
         Boolean isSelfSignUpEPAvailable = false;
         String identityMgtEndpointContext = "";
         String urlEncodedURL = "";
+        String urlParameters = "";
 
         if (StringUtils.isNotBlank(recoveryEPAvailable)) {
             isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
@@ -229,7 +265,9 @@
             String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
             String prmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
             String urlWithoutEncoding = scheme + "://" +serverName + ":" + serverPort + uri + "?" + prmstr;
+
             urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
+            urlParameters = prmstr;
 
             identityMgtEndpointContext =
                     application.getInitParameter("IdentityManagementEndpointContextURL");
@@ -244,12 +282,12 @@
         <div class="field">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
             <% if (!isIdentifierFirstLogin(inputType)) { %>
-                <a id="usernameRecoverLink" tabindex="5" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true)%>">
+                <a id="usernameRecoverLink" tabindex="5" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true, urlParameters)%>">
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
                 </a>
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
             <% } %>
-            <a id="passwordRecoverLink" tabindex="6" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false)%>">
+            <a id="passwordRecoverLink" tabindex="6" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false, urlParameters)%>">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
             </a>
             ?
@@ -264,7 +302,7 @@
         </div>
         <% } %>
     </div>
-    
+
     <div class="ui divider hidden"></div>
 
     <div class="field">
@@ -297,7 +335,7 @@
             <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType)) { %>
             <button
                 type="button"
-                onclick="window.location.href='<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL)%>';"   
+                onclick="window.location.href='<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL, urlParameters)%>';"
                 class="ui large button link-button"
                 id="registerLink"
                 tabindex="8"
@@ -331,15 +369,23 @@
     </div>
     <% } %>
     <%!
-        private String getRecoverAccountUrl(String identityMgtEndpointContext, String urlEncodedURL, boolean isUsernameRecovery) {
-        
-            return identityMgtEndpointContext + "/recoveraccountrouter.do?callback=" +
-                    Encode.forHtmlAttribute(urlEncodedURL) + "&isUsernameRecovery=" + isUsernameRecovery;
+        private String getRecoverAccountUrl (
+            String identityMgtEndpointContext,
+            String urlEncodedURL,
+            boolean isUsernameRecovery,
+            String urlParameters) {
+
+            return identityMgtEndpointContext + "/recoveraccountrouter.do?" + urlParameters +
+                "&isUsernameRecovery=" + isUsernameRecovery + "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
         }
-    
-        private String getRegistrationUrl(String identityMgtEndpointContext, String urlEncodedURL) {
-        
-            return identityMgtEndpointContext + "/register.do?callback=" + Encode.forHtmlAttribute(urlEncodedURL);
+
+        private String getRegistrationUrl (
+            String identityMgtEndpointContext,
+            String urlEncodedURL,
+            String urlParameters) {
+
+            return identityMgtEndpointContext + "/register.do?" + urlParameters +
+                "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
         }
     %>
 </form>
