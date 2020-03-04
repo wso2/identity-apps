@@ -91,6 +91,7 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
             ["name", "name"],
             ["userName", "userName"],
             ["id", ""],
+            ["profileUrl", "profileUrl"],
             ["meta.lastModified", "meta.lastModified"],
             ["meta.created", ""]
         ]));
