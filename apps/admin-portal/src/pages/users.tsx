@@ -100,8 +100,6 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
         if (userListMetaContent) {
             const attributes = generateAttributesString(userListMetaContent.values());
             getList(listItemLimit, listOffset, null, attributes);
-        } else {
-            getList(listItemLimit, listOffset, null, null);
         }
     }, [ listOffset, listItemLimit ]);
 
@@ -113,15 +111,6 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
         getList(listItemLimit, listOffset, null, attributes);
         setListUpdated(false);
     }, [ isListUpdated ]);
-
-    useEffect(() => {
-        if (!userListMetaContent) {
-            return;
-        }
-        const attributes = generateAttributesString(userListMetaContent.values());
-        getList(listItemLimit, listOffset, null, attributes);
-        setListUpdated(false);
-    }, [ userListMetaContent ]);
 
     /**
      * The following method accepts a Map and returns the values as a string.
@@ -287,7 +276,7 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                 {
                     (usersList.Resources && usersList.Resources.length > 0) ?
                         (
-                            < UsersList
+                            <UsersList
                                 usersList={ usersList }
                                 handleUserDelete={ handleUserDelete }
                                 userMetaListContent={ userListMetaContent }
