@@ -62,7 +62,7 @@ const DEFAULT_IDP_LIST_ITEM_LIMIT = 10;
  *
  * @return {React.ReactElement}
  */
-export const ConnectionsPage: FunctionComponent<{}> = (): ReactElement => {
+export const IdentityProvidersPage: FunctionComponent<{}> = (): ReactElement => {
 
     const dispatch = useDispatch();
 
@@ -227,7 +227,7 @@ export const ConnectionsPage: FunctionComponent<{}> = (): ReactElement => {
 
     return (
         <PageLayout
-            title="Connections"
+            title="Identity Providers"
             description="Create identity providers based on templates and configure authentication."
             showBottomDivider={ true }
         >

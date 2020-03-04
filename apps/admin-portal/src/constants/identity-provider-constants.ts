@@ -30,7 +30,7 @@ export const IDENTITY_PROVIDER_SETTINGS_STORAGE_KEY = "identity_provider_setting
  * @type {string}
  * @default
  */
-export const IDENTITY_PROVIDER_PAGE_PATH = "/connections";
+export const IDENTITY_PROVIDER_PAGE_PATH = "/identity-providers";
 
 /**
  * Class containing app constants.
@@ -62,6 +62,6 @@ export class IdentityProviderConstants {
      * @type {Map<string, string>}
      */
     public static readonly PATHS: Map<string, string> = new Map<string, string>()
-        .set("IDENTITY_PROVIDERS", "/connections")
-        .set("IDENTITY_PROVIDER_TEMPLATES", "/connections/templates");
+        .set("IDENTITY_PROVIDERS", "/identity-providers")
+        .set("IDENTITY_PROVIDER_TEMPLATES", "/identity-providers/templates");
 }

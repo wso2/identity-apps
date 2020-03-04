@@ -105,7 +105,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<any> = (): JS
      * Handles back button click.
      */
     const handleBackButtonClick = (): void => {
-        history.push("/connections");
+        history.push("/identity-providers");
     };
 
     /**
@@ -139,7 +139,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<any> = (): JS
             description="Please choose one of the following identity provider types."
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: "Go back to connections"
+                text: "Go back to Identity Providers"
             } }
             titleTextAlign="left"
             bottomMargin={ false }

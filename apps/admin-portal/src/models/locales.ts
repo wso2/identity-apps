@@ -26,7 +26,6 @@ export interface Common {
     all: string;
     applicationName: string;
     applications: string;
-    connections: string;
     approvalStatus: string;
     approve: string;
     assignees: string;
@@ -51,6 +50,7 @@ export interface Common {
     goBackHome: string;
     help: string;
     hidePassword: string;
+    identityProviders: string;
     initiator: string;
     ipAddress: string;
     lastAccessed: string;
