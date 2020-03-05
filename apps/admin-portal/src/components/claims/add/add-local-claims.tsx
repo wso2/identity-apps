@@ -26,6 +26,7 @@ import { BasicDetailsLocalClaims, MappedAttributes, SummaryLocalClaims } from ".
 import { Claim, AlertLevels } from "../../../models";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
+import { KeyValue } from "../dynamic-fields";
 
 interface AddLocalClaimsPropsInterface {
     open: boolean;
@@ -40,8 +41,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
     const [currentWizardStep, setCurrentWizardStep] = useState(0);
     const [data, setData] = useState<Claim>(null);
     const [basicDetailsData, setBasicDetailsData] = useState<Map<string, FormValue>>(null);
-    const [additionalPropertiesData, setAdditionalPropertiesData] = useState<Map<string, FormValue>>(null);
-    const [mappedAttributes, setMappedAttributes] = useState<Set<number>>(new Set([0]));
+    const [mappedAttributesData, setMappedAttributesData] = useState<KeyValue[]>(null);
 
     const [firstStep, setFirstStep] = useTrigger();
     const [secondStep, setSecondStep] = useTrigger();
@@ -78,12 +78,11 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
         
     }
 
-    const onSubmitAdditionalProperties = (dataFromForm, values: Map<string, FormValue>, attributes: Set<number>) => {
+    const onSubmitMappedAttributes = (dataFromForm, values: KeyValue[]) => {
         setCurrentWizardStep(2);
         const tempData = { ...data, ...dataFromForm };
         setData(tempData);
-        setAdditionalPropertiesData(values);
-        setMappedAttributes(attributes);
+        setMappedAttributesData(values);
     }
 
     const STEPS = [
@@ -103,9 +102,8 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
             content: (
                 <MappedAttributes
                     submitState={secondStep}
-                    onSubmit={onSubmitAdditionalProperties}
-                    values={additionalPropertiesData}
-                    mappedAttributes={mappedAttributes}
+                    onSubmit={onSubmitMappedAttributes}
+                    values={mappedAttributesData}
                 />
             ),
             title: "Mapped Attributes",
