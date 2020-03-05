@@ -27,7 +27,7 @@ import { useNonInitialEffect } from "./utils";
  * Prop types for Form component
  */
 interface FormPropsInterface {
-    onSubmit: (values: Map<string, FormValue>) => void;
+    onSubmit?: (values: Map<string, FormValue>) => void;
     onChange?: (isPure: boolean, values: Map<string, FormValue>) => void;
     resetState?: boolean;
     submitState?: boolean;
@@ -170,6 +170,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                 }
             }
         };
+        
         /**
          * This validates the form and calls the `onSubmit` prop function
          */
@@ -336,6 +337,25 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
         };
 
         /**
+         * This removes all the redundant elements from the passed Map object and returns the stripped Map object
+         * @param iterable a Map object which should have redundant elements removed
+         * @param neededFields a Set object containing the names of the needed fields
+         * 
+         * @returns {Map} stripped Map object
+         */
+        const removeRedundant= (iterable:Map<string,any>, neededFields:Set<string>):Map<string, any> => {
+            const tempIterable = new Map(iterable);
+
+            iterable.forEach((value, key: string) => {
+                if (!neededFields.has(key)) {
+                    tempIterable.delete(key);
+                }
+            });
+
+            return tempIterable;
+        }
+
+        /**
          * Initialize form
          * @param {boolean} isReset
          */
@@ -344,6 +364,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             const tempRequiredFields: Map<string, boolean> = new Map(requiredFields);
             const tempValidFields: Map<string, Validation> = new Map(validFields);
             const tempTouchedFields: Map<string, boolean> = new Map(touchedFields);
+            const formFieldNames = new Set<string>();
 
             formFields.forEach((inputField: FormField) => {
                 /**
@@ -406,15 +427,28 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                         tempValidFields.set(inputField.name, { isValid: true, errorMessages: [] });
                         tempTouchedFields.set(inputField.name, false);
                     }
+
+                    formFieldNames.add(inputField.name);
                 }
             });
 
+            /**
+             * In case an existing form field is dynamically removed, remove all its data.
+             */
+            const leanForm = removeRedundant(tempForm, formFieldNames);
+            const leanRequiredFields = removeRedundant(tempRequiredFields, formFieldNames);
+            const leanValidFields = removeRedundant(tempValidFields, formFieldNames);
+            const leanTouchedFields = removeRedundant(tempTouchedFields, formFieldNames);
+
+            /**
+             * Touched and required should not change if it is a reset
+             */
             if (!isReset) {
-                setRequiredFields(tempRequiredFields);
-                setTouchedFields(tempTouchedFields);
+                setRequiredFields(leanRequiredFields);
+                setTouchedFields(leanTouchedFields);
             }
-            setForm(tempForm);
-            setValidFields(tempValidFields);
+            setForm(leanForm);
+            setValidFields(leanValidFields);
         };
 
         /**
