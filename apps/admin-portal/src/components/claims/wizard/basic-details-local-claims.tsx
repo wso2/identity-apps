@@ -112,32 +112,40 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                     <Grid.Column width={16}>
                         <Field
                             type="checkbox"
-                            toggle={true}
                             name="supportedByDefault"
                             label="Show on Profile"
                             required={false}
                             requiredErrorMessage=""
-                            children={[{ value: "Support", label: "" }]}
+                            children={[
+                                {
+                                    value: "Support",
+                                    label: "This displays this claim on the Profile page in the" +
+                                        " User Portal and prompted during user registration."
+                                }]}
                             value={values?.get("supportedByDefault") as string[]}
                         />
                         <Field
                             type="checkbox"
-                            toggle={true}
                             name="required"
                             label="Required"
                             required={false}
                             requiredErrorMessage=""
-                            children={[{ value: "Required", label: "" }]}
+                            children={[{
+                                value: "Required",
+                                label: "This makes the claim mandatory to be filled by the user."
+                            }]}
                             value={values?.get("required") as string[]}
                         />
                         <Field
                             type="checkbox"
-                            toggle={true}
                             name="readOnly"
                             label="Read Only"
                             required={false}
                             requiredErrorMessage=""
-                            children={[{ value: "ReadOnly", label: "" }]}
+                            children={[{
+                                value: "ReadOnly",
+                                label: "This makes the claim read only. "
+                            }]}
                             value={values?.get("readOnly") as string[]}
                         />
                     </Grid.Column>
