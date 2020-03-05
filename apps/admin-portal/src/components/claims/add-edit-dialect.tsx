@@ -102,7 +102,7 @@ export const AddEditDialect = (props: AddEditDialectPropsInterface): React.React
                                     dispatch(addAlert(
                                         {
                                             description: "The dialect has been added successfully!",
-                                            level: AlertLevels.ERROR,
+                                            level: AlertLevels.SUCCESS,
                                             message: "Dialect added successfully"
                                         }
                                     ));
