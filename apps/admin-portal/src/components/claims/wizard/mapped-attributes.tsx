@@ -18,22 +18,22 @@
 
 import React, { useState, useEffect } from "react";
 import { Forms, FormValue, Field, Validation } from "@wso2is/forms";
-import { Grid, Button } from "semantic-ui-react";
+import { Grid, Button, Message } from "semantic-ui-react";
 import { AttributeMapping } from "../../../models";
 import { getUserStoreList } from "../../../api";
+import { DynamicField, KeyValue } from "..";
 
 interface MappedAttributesPropsInterface {
     submitState: boolean;
-    onSubmit: (data: any, values: Map<string, FormValue>, properties: Set<number>) => void;
-    values: Map<string, FormValue>;
-    mappedAttributes: Set<number>;
+    onSubmit: (data: any, values: KeyValue[]) => void;
+    values: KeyValue[];
 }
 export const MappedAttributes = (props: MappedAttributesPropsInterface): React.ReactElement => {
 
     const { onSubmit, submitState, values } = props;
 
     const [userStore, setUserStore] = useState([]);
-    const [mappedAttributes, setMappedAttributes] = useState<Set<number>>(new Set(props.mappedAttributes || [0]));
+    const [empty, setEmpty] = useState(false);
 
     useEffect(() => {
         const userstore = [];
@@ -47,160 +47,63 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): React.R
         }).catch(error => {
             setUserStore(userstore);
         });
-    },[])
-    const generateMappedAttributes = (): React.ReactElement[] => {
-
-        const mappedElements: React.ReactElement[] = [];
-        mappedAttributes?.forEach((attribute: number) => {
-
-            const isFirstElement: boolean = attribute === Array.from(mappedAttributes)[0];
-            const isOnlyElement: boolean = mappedAttributes.size === 1;
-
-            mappedElements.push(
-                <Grid.Row key={attribute} columns={3}>
-                    <Grid.Column width={7}>
-                        <Field
-                            type="dropdown"
-                            name={"userstore" + attribute}
-                            label={isFirstElement ? "User Store" : null}
-                            required={true}
-                            requiredErrorMessage="Select a user store"
-                            placeholder="Select a user store"
-                            value={values?.get("userstore" + attribute)?.toString()}
-                            children={
-                                userStore.map(store => {
-                                    return {
-                                        key: store.id,
-                                        value: store.id,
-                                        text: store.name
-                                    }
-                                })
-                            }
-                            validation={
-                                (
-                                    value: string,
-                                    validation: Validation,
-                                    values: Map<string, FormValue>
-                                ) => {
-                                    let isSameUserStore = false;
-                                    let mappedAttribute;
-                                    for (mappedAttribute of mappedAttributes) {
-                                        if (
-                                            (values.get("userstore" + mappedAttribute)
-                                                === value)
-                                            && mappedAttribute !== attribute
-                                        ) {
-                                            isSameUserStore = true;
-                                            break;
-                                        }
-                                    };
-                                    if (isSameUserStore) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(
-                                            "This User Store has been selected twice. " +
-                                            "A User Store can only be selected once."
-                                        )
-                                    }
-                                }
-                            }
-                            displayErrorOn="blur"
-                        />
-                    </Grid.Column>
-                    <Grid.Column width={7}>
-                        <Field
-                            type="text"
-                            name={"attribute" + attribute}
-                            label={isFirstElement ? "Attribute to map to" : null}
-                            required={true}
-                            requiredErrorMessage="Enter an attribute or delete the mapping"
-                            placeholder="Enter an attribute"
-                            value={values?.get("attribute" + attribute)?.toString()}
-                        />
-                    </Grid.Column>
-                    <Grid.Column width={2} verticalAlign="bottom">
-                        {
-                            !isOnlyElement
-                                ? (
-                                    <Button
-                                        type="button"
-                                        size="mini"
-                                        primary
-                                        circular
-                                        icon={"trash"}
-                                        onClick={() => {
-                                            const tempMappedAttributes = new Set(mappedAttributes);
-                                            if (!isOnlyElement) {
-                                                tempMappedAttributes.delete(attribute);
-                                            }
-                                            setMappedAttributes(tempMappedAttributes);
-                                        }}
-                                    />
-                                )
-                                : null
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-            )
-        });
-
-        const lastElement: number = Array.from(mappedAttributes)[mappedAttributes.size - 1];
-        mappedAttributes.size < userStore.length
-            ? mappedElements.push(
-                <Grid.Row key={lastElement + 1} textAlign="center" columns={1}>
-                    <Grid.Column width={14}>
-                        <Button
-                            type="button"
-                            size="mini"
-                            primary
-                            circular
-                            icon="add"
-                            onClick={() => {
-                                if (mappedAttributes.size < userStore.length) {
-                                    const tempMappedAttributes = new Set(mappedAttributes);
-                                    tempMappedAttributes.add(lastElement + 1);
-                                    setMappedAttributes(tempMappedAttributes);
-                                }
-                            }}
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-            )
-            : null;
-        return mappedElements;
-    };
-
-    const getMappedAttributes = (values: Map<string, FormValue>): AttributeMapping[] => {
-        const attributes: AttributeMapping[] = [];
-        mappedAttributes.forEach((attribute: number) => {
-            attributes.push({
-                mappedAttribute: values.get("attribute" + attribute).toString(),
-                userstore: values.get("userstore" + attribute).toString()
-            });
-        });
-        return attributes;
-    }
+    }, [])
     return (
-        <Forms
-            onSubmit={(values) => {
-                const data = {
-                    attributeMapping: getMappedAttributes(values),
-                }
-                onSubmit(data, values, mappedAttributes);
-            }}
-            submitState={submitState}
-        >
-            <Grid>
-                <Grid.Row columns={1}>
-                    <Grid.Column width={16}>
-                        <h5>Map Attributes</h5>
-                        <Grid>
-                            {
-                                generateMappedAttributes()
+        <Grid>
+            <Grid.Row columns={1}>
+                <Grid.Column width={16}>
+                    <h5>Map Attributes</h5>
+                    <DynamicField
+                        data={values}
+                        keyType="dropdown"
+                        keyData={
+                            userStore.map(store => {
+                                return {
+                                    value: store.name,
+                                    id: store.id
+                                }
+                            })
+                        }
+                        keyName="User Store"
+                        valueName="Attribute to map to"
+                        keyRequiredMessage="Please select a User Store"
+                        valueRequiredErrorMessage="Please enter an attribute to map to"
+                        submit={submitState}
+                        update={(data) => {
+                            if (data.length > 0) {
+                                setEmpty(false);
+                                const submitData = {
+                                    attributeMapping: data.map(mapping => {
+                                        return {
+                                            mappedAttribute: mapping.value,
+                                            userstore: mapping.key
+                                        }
+                                    }),
+                                }
+                                onSubmit(submitData, data);
+                            } else {
+                                setEmpty(true);
                             }
-                        </Grid>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        </Forms>
+
+                        }}
+                        listen={(data: KeyValue[]) => {
+                            if (data.length > 0) {
+                                setEmpty(false);
+                            }
+                        }}
+                    />
+                </Grid.Column>
+            </Grid.Row>
+            {
+                empty ? (
+                    <Grid.Row>
+                        <Message negative>
+                            The claim should be mapped to at least one attribute from a user store.
+                        </Message>
+                    </Grid.Row>
+                )
+                    : null
+            }
+        </Grid>
     )
 }
