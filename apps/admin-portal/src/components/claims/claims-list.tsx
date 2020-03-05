@@ -16,13 +16,12 @@
 * under the License.
 */
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { ResourceList, LinkButton, PrimaryButton } from "@wso2is/react-components"
 import { Claim, ExternalClaim, ClaimDialect, AlertLevels } from "../../models";
-import { List, Modal } from "semantic-ui-react";
-import { Link } from "react-router-dom";
+import { List, Modal, Input, Popup, Button } from "semantic-ui-react";
 import { history } from "../../helpers";
-import { deleteAClaim, updateAClaim, deleteAnExternalClaim, deleteADialect } from "../../api";
+import { deleteAClaim, deleteAnExternalClaim, deleteADialect } from "../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../store/actions";
 
@@ -46,8 +45,23 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
     const [deleteConfirm, setDeleteConfirm] = useState(false);
     const [deleteType, setDeleteType] = useState<ListType>(null);
     const [deleteID, setDeleteID] = useState<string>(null);
+    const [copyIndex, setCopyIndex] = useState(null);
 
     const dispatch = useDispatch();
+
+    const claimURIText = useRef([]);
+    const copyButton = useRef([]);
+
+    list?.forEach((element, index) => {
+        claimURIText.current.push(claimURIText.current[index] || React.createRef());
+        copyButton.current.push(copyButton.current[index] || React.createRef())
+    });
+
+    useEffect(() => {
+        if (copyIndex !== null) {
+            copyButton.current[copyIndex].current.focus();
+        }
+    }, [copyIndex]);
 
     const isLocalClaim = (toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[]): toBeDetermined is Claim[] => {
         return localClaim === ListType.LOCAL;
@@ -153,7 +167,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                 ? " External Claim. "
                                 : " Local Claim. "
                     }
-                    Do you want to continue deleting it? 
+                    Do you want to continue deleting it?
                 </Modal.Content>
                 <Modal.Actions>
                     <LinkButton onClick={closeDeleteConfirm}>
@@ -217,9 +231,57 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                             type: "dropdown"
                                         }
                                     ]}
+                                    descriptionColumnWidth={4}
+                                    metaColumnWidth={4}
+                                    actionsColumnWidth={4}
                                     actionsFloated="right"
                                     itemHeader={claim.displayName}
-                                    metaContent={listContent(claim.description)}
+                                    metaContent={[
+                                        listContent(claim.description),
+                                        listContent(
+                                            <Input
+                                                ref={claimURIText.current[index]}
+                                                value={claim ? claim.claimURI : ""}
+                                                labelPosition="right"
+                                                readOnly
+                                                action
+                                                fluid
+                                                className="copy-field"
+                                            >
+                                                <input />
+                                                <Popup
+                                                    trigger={
+                                                        (
+                                                            <Button
+                                                                icon="copy"
+                                                                type="button"
+                                                                size="mini"
+                                                                onMouseEnter={() => {
+                                                                    setCopyIndex(null);
+                                                                }}
+                                                                ref={copyButton.current[index]}
+                                                                onClick={(event: React.MouseEvent) => {
+                                                                    claimURIText.current[index].current?.select();
+                                                                    document.execCommand("copy");
+                                                                    setCopyIndex(index);
+                                                                    copyButton.current[index].current.blur();
+                                                                    if (window.getSelection) {
+                                                                        window.getSelection().removeAllRanges();
+                                                                    }
+                                                                }
+                                                                }
+                                                            />
+                                                        )
+                                                    }
+                                                    closeOnTriggerBlur
+                                                    openOnTriggerFocus
+                                                    position="top center"
+                                                    content={copyIndex === index ? "Copied!" : "Copy to clipboard"}
+                                                    inverted
+                                                />
+                                            </Input>
+                                        )
+                                    ]}
                                 />
                             )
                         })
@@ -229,6 +291,14 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                     <ResourceList.Item
                                         key={index}
                                         actions={[
+                                            {
+                                                icon: "eye",
+                                                onClick: () => {
+                                                    history.push("/external-claims/" + dialect.id);
+                                                },
+                                                popupText: "View External Claims",
+                                                type: "button"
+                                            },
                                             {
                                                 icon: "pencil alternate",
                                                 onClick: () => {
@@ -245,9 +315,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                             }
                                         ]}
                                         actionsFloated="right"
-                                        itemHeader={(
-                                            <Link to={"/external-claims/" + dialect.id} >{dialect.dialectURI}</Link>
-                                        )}
+                                        itemHeader={dialect.dialectURI}
                                     />
                                 )
                             })
