@@ -20,7 +20,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Header } from "semantic-ui-react";
 import { Claim, ExternalClaim, AlertLevels } from "../../../models";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
-import { getLocalClaims, getAnExternalClaim, updateAnExternalClaim } from "../../../api";
+import { getAllLocalClaims, getAnExternalClaim, updateAnExternalClaim } from "../../../api";
 import { Forms, Field, FormValue, useTrigger } from "@wso2is/forms";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
@@ -44,7 +44,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
     const dispatch = useDispatch();
 
     useEffect(() => {
-        getLocalClaims().then(response => {
+        getAllLocalClaims(null).then(response => {
             setLocalClaims(response);
         }).catch(error => {
             dispatch(addAlert(
@@ -114,6 +114,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                         requiredErrorMessage="Claim URI is required"
                         placeholder="Enter a claim URI"
                         type="text"
+                        readOnly
                         value={claim?.claimURI}
                     />
                     <Field
