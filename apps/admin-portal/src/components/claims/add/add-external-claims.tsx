@@ -20,7 +20,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Header } from "semantic-ui-react";
 import { ClaimDialect, Claim, AlertLevels } from "../../../models";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
-import { getLocalClaims, addExternalClaim } from "../../../api";
+import { getAllLocalClaims, addExternalClaim } from "../../../api";
 import { Forms, Field, FormValue, useTrigger } from "@wso2is/forms";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
@@ -42,7 +42,7 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
     const dispatch = useDispatch();
 
     useEffect(() => {
-        getLocalClaims().then(response => {
+        getAllLocalClaims(null).then(response => {
             setLocalClaims(response);
         }).catch(error => {
             dispatch(addAlert(
