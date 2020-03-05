@@ -16,15 +16,15 @@
 * under the License.
 */
 
-import React, { useEffect, useState, useRef } from "react";
-import { Claim, AttributeMapping, AlertLevels } from "../../../models";
-import { Forms, Field, FormValue, Validation } from "@wso2is/forms";
-import { Grid, Button, Input, Popup } from "semantic-ui-react";
-import { getADialect, getUserStoreList, updateAClaim } from "../../../api";
+import React, { useRef, useState, useEffect } from "react";
+import { Claim, AlertLevels } from "../../../models";
+import { Forms, Field } from "@wso2is/forms";
+import { Grid, Button, Input, Popup, Form } from "semantic-ui-react";
+import { updateAClaim } from "../../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
 
-interface EditBasicDetailsLocalClaimsPropsInterface{
+interface EditBasicDetailsLocalClaimsPropsInterface {
     claim: Claim;
     update: () => void;
 }
@@ -32,174 +32,188 @@ export const EditBasicDetailsLocalClaims = (
     props: EditBasicDetailsLocalClaimsPropsInterface
 ): React.ReactElement => {
 
-    const [claimURIBase, setClaimURIBase] = useState("");
-
     const dispatch = useDispatch();
 
     const { claim, update } = props;
 
     const claimURIText = useRef(null);
+    const copyButton = useRef(null);
+
+    const [copied, setCopied] = useState(false);
 
     useEffect(() => {
-        getADialect("local").then((response) => {
-            setClaimURIBase(response.dialectURI);
-        }).catch(error => {
-            dispatch(addAlert(
-                {
-                    description: error?.description,
-                    level: AlertLevels.ERROR,
-                    message: error?.message
-                }
-            )); 
-        });
-    }, []);
-
-    const showClaimURI = (): React.ReactElement => {
-        return (
-            <Input
-                ref={claimURIText}
-                value={data.claimURI}
-                labelPosition="right"
-            >
-                <input />
-                <Popup
-                    trigger={
-                        (
-                            <Button
-                                icon="clipboard"
-                                onClick={(event: React.MouseEvent) => {
-                                    claimURIText.current.select();
-                                    document.execCommand("copy");
-                                }}
-                            />
-                        )
-                    }
-                    position="top center"
-                    content="Copy to clipboard"
-                    inverted
-                />
-
-            </Input>
-        )
-    };
+        if (copied) {
+            copyButton.current.focus();
+        }
+    },[copied]);
 
     return (
-        <Forms
-            onSubmit={(values) => {
-                const data: Claim = {
-                    claimURI: claimURIBase + "/" + values.get("claimURI").toString(),
-                    description: values.get("description").toString(),
-                    displayOrder: parseInt(values.get("displayOrder").toString()),
-                    regEx: values.get("regularExpression").toString(),
-                    displayName: values.get("name").toString(),
-                    attributeMapping: claim.attributeMapping,
-                    properties: claim.properties,
-                    supportedByDefault: values.get("supportedByDefault").length > 0,
-                    readOnly: values.get("readOnly").length > 0,
-                    required: values.get("required").length > 0
-                    
-                }
-                updateAClaim(claim.id, data).then((response) => {
-                    dispatch(addAlert(
-                        {
-                            description: "The basic details of the local claim have been updated successfully!",
-                            level: AlertLevels.SUCCESS,
-                            message: "Basic details updated successfully"
-                        }
-                    ));
-                    update();
-                }).catch(error => {
-                    dispatch(addAlert(
-                        {
-                            description: error?.description,
-                            level: AlertLevels.ERROR,
-                            message: error?.message
-                        }
-                    ));
-                })
-            }}
-        >
+        <>
             <Grid>
                 <Grid.Row columns={1}>
                     <Grid.Column width={6}>
-                        <Field
-                            type="text"
-                            name="name"
-                            label="Name"
-                            required={true}
-                            requiredErrorMessage="Name is required"
-                            placeholder="Enter a name for the claim"
-                            value={claim?.displayName}
-                        />
-                        <Field
-                            type="text"
-                            name="description"
-                            label="Description"
-                            required={true}
-                            requiredErrorMessage="Description is required"
-                            placeholder="Enter a description"
-                            value={claim?.description}
-                        />
-                        <Field
-                            type="text"
-                            name="regularExpression"
-                            label="Regular Expression"
-                            required={false}
-                            requiredErrorMessage=""
-                            placeholder="Regular expression to validate the claim"
-                            value={claim?.regEx}
-                        />
-                        <Field
-                            type="number"
-                            min="0"
-                            name="displayOrder"
-                            label="Display Order"
-                            required={false}
-                            requiredErrorMessage=""
-                            placeholder="Enter the display order"
-                            value={claim?.displayOrder.toString()}
-                        />
-                        <Field
-                            type="checkbox"
-                            toggle={true}
-                            name="supportedByDefault"
-                            label="Show on Profile"
-                            required={false}
-                            requiredErrorMessage=""
-                            children={[{ value: "Support", label: "" }]}
-                            value={claim?.supportedByDefault ? ["Support"] : []}
-                        />
-                        <Field
-                            type="checkbox"
-                            toggle={true}
-                            name="required"
-                            label="Required"
-                            required={false}
-                            requiredErrorMessage=""
-                            children={[{ value: "Required", label: "" }]}
-                            value={claim?.required ? ["Required"] : []}
-                        />
-                        <Field
-                            type="checkbox"
-                            toggle={true}
-                            name="readOnly"
-                            label="Read Only"
-                            required={false}
-                            requiredErrorMessage=""
-                            children={[{ value: "ReadOnly", label: "" }]}
-                            value={claim?.readOnly ? ["ReadOnly"] : []}
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={1}>
-                    <Grid.Column width={6}>
-                        <Field
-                            type="submit"
-                            value="Update"
-                        />
+                        <Form>
+                            <Form.Field>
+                                <label>Claim URI</label>
+                                <Input
+                                    ref={claimURIText}
+                                    value={claim ? claim.claimURI : ""}
+                                    labelPosition="right"
+                                    readOnly
+                                    action
+                                >
+                                    <input />
+                                    <Popup
+                                        trigger={
+                                            (
+                                                <Button
+                                                    icon="copy"
+                                                    type="button"
+                                                    onMouseEnter={() => {
+                                                        setCopied(false);
+                                                    }}
+                                                    ref={copyButton}
+                                                    onClick={(event: React.MouseEvent) => {
+                                                        claimURIText.current?.select();
+                                                        setCopied(true);
+                                                        document.execCommand("copy");
+                                                        copyButton.current.blur();
+                                                        if (window.getSelection) {
+                                                            window.getSelection().removeAllRanges();
+                                                        }
+                                                    }}
+                                                />
+                                            )
+                                        }
+                                        openOnTriggerFocus
+                                        closeOnTriggerBlur
+                                        position="top center"
+                                        content={copied?"Copied!":"Copy to clipboard"}
+                                        inverted
+                                    />
+                                </Input>
+                            </Form.Field>
+                        </Form>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-        </Forms>
+            <Forms
+                onSubmit={(values) => {
+                    const data: Claim = {
+                        claimURI: claim.claimURI,
+                        description: values.get("description").toString(),
+                        displayOrder: parseInt(values.get("displayOrder").toString()),
+                        regEx: values.get("regularExpression").toString(),
+                        displayName: values.get("name").toString(),
+                        attributeMapping: claim.attributeMapping,
+                        properties: claim.properties,
+                        supportedByDefault: values.get("supportedByDefault").length > 0,
+                        readOnly: values.get("readOnly").length > 0,
+                        required: values.get("required").length > 0
+
+                    }
+                    updateAClaim(claim.id, data).then((response) => {
+                        dispatch(addAlert(
+                            {
+                                description: "The basic details of the local claim have been updated successfully!",
+                                level: AlertLevels.SUCCESS,
+                                message: "Basic details updated successfully"
+                            }
+                        ));
+                        update();
+                    }).catch(error => {
+                        dispatch(addAlert(
+                            {
+                                description: error?.description,
+                                level: AlertLevels.ERROR,
+                                message: error?.message
+                            }
+                        ));
+                    })
+                }}
+            >
+                <Grid>
+                    <Grid.Row columns={1}>
+                        <Grid.Column width={6}>
+                            <Field
+                                type="text"
+                                name="name"
+                                label="Name"
+                                required={true}
+                                requiredErrorMessage="Name is required"
+                                placeholder="Enter a name for the claim"
+                                value={claim?.displayName}
+                            />
+                            <Field
+                                type="text"
+                                name="description"
+                                label="Description"
+                                required={true}
+                                requiredErrorMessage="Description is required"
+                                placeholder="Enter a description"
+                                value={claim?.description}
+                            />
+                            <Field
+                                type="text"
+                                name="regularExpression"
+                                label="Regular Expression"
+                                required={false}
+                                requiredErrorMessage=""
+                                placeholder="Regular expression to validate the claim"
+                                value={claim?.regEx}
+                            />
+                            <Field
+                                type="number"
+                                min="0"
+                                name="displayOrder"
+                                label="Display Order"
+                                required={false}
+                                requiredErrorMessage=""
+                                placeholder="Enter the display order"
+                                value={claim?.displayOrder.toString()}
+                            />
+                            <Field
+                                type="checkbox"
+                                toggle={true}
+                                name="supportedByDefault"
+                                label="Show on Profile"
+                                required={false}
+                                requiredErrorMessage=""
+                                children={[{ value: "Support", label: "" }]}
+                                value={claim?.supportedByDefault ? ["Support"] : []}
+                            />
+                            <Field
+                                type="checkbox"
+                                toggle={true}
+                                name="required"
+                                label="Required"
+                                required={false}
+                                requiredErrorMessage=""
+                                children={[{ value: "Required", label: "" }]}
+                                value={claim?.required ? ["Required"] : []}
+                            />
+                            <Field
+                                type="checkbox"
+                                toggle={true}
+                                name="readOnly"
+                                label="Read Only"
+                                required={false}
+                                requiredErrorMessage=""
+                                children={[{ value: "ReadOnly", label: "" }]}
+                                value={claim?.readOnly ? ["ReadOnly"] : []}
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={1}>
+                        <Grid.Column width={6}>
+                            <Field
+                                type="submit"
+                                value="Update"
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Forms>
+        </>
     )
 };
