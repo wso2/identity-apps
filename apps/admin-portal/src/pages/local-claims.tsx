@@ -102,8 +102,8 @@ export const LocalClaimsPage = (): React.ReactElement => {
                     : null
             }
             <PageLayout
-                title="Local Claims"
-                description="View, edit and add local claims"
+                title="Local Dialect"
+                description="View, edit and add the Local Dialect"
                 showBottomDivider={true}
             >
                 <ListLayout
