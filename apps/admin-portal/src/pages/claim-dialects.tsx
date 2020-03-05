@@ -89,8 +89,8 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                 dialectID={dialectID}
             />
             <PageLayout
-                title="Claim Dialects"
-                description="View, edit and add Claim Dialects"
+                title="External Dialects"
+                description="View, edit and add External Dialects"
                 showBottomDivider={true}
             >
                 <ListLayout
