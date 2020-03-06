@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useEffect, useState, SyntheticEvent, Children } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { getPermissionList } from "../../../../src/api";
 import { Permission, PermissionObject } from "../../../models/permission";
 import SuperTreeview from 'react-super-treeview';
@@ -47,13 +47,13 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     } = props;
 
     /**
-     * A Util method to create an array of permission object with heirarchy.
+     * A Util method to create an array of permission object with hierarchy.
      * 
      * @param permObj - Permission Object
      * @param pathcomponents - Permission path array
      * @param arr - Empty array to start with
      * 
-     * @returns {Permission[]} - Permission arra with tree structure
+     * @returns {Permission[]} - Permission array with tree structure
      */
     const addPath = (permObj: PermissionObject, pathcomponents: string[], arr: Permission[]): Permission[] => {
         const component = pathcomponents.shift()
@@ -99,27 +99,11 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     },[ listOffset, listItemLimit ]);
 
     /**
-     * Util function to check all child elements of the tree.
-     * 
-     * @param nodes - node list which will need to be checked
-     */
-    const applyCheckStateTo = (nodes: any): void => {
-        const checkState = nodes[0].isChecked;
-
-        nodes.forEach((node)=>{
-            node.isChecked = checkState
-            if(node.children){
-                applyCheckStateTo(node.children);
-            }
-        })
-    }
-
-    /**
      * Click event handler for the permission tree checkboxes.
      * 
      * @param nodeData - array of checked elements returned.
      */
-    const handlePermssionCheck = (nodeData): void => {
+    const handlePermissionCheck = (nodeData): void => {
         const checkState = nodeData[0].isChecked;
 
         /**
@@ -152,7 +136,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
             isDeletable= { () => { return false } }
             noChildrenAvailableMessage= ""
             onUpdateCb={ updatedData => setPermissionTree(updatedData) }
-            onCheckToggleCb={ handlePermssionCheck }
+            onCheckToggleCb={ handlePermissionCheck }
         /> :  <p>Loading Permissions</p>
     );
 }
