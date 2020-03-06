@@ -22,7 +22,7 @@ import { ResourceList, ResourceListItem } from "@wso2is/react-components";
 import { CommonUtils } from "../../../utils";
 
 interface RoleListProps {
-    roleList: RolesInterface[],
+    roleList: RolesInterface[];
     handleRoleDelete: (roleId: string) => void;
 }
 
@@ -52,8 +52,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                 type: "button"
                             }
                         ] }
-                        itemHeader={role.displayName}
-                        metaContent={CommonUtils.humanizeDateDifference(role.meta.created)}
+                        itemHeader={ role.displayName }
+                        metaContent={ CommonUtils.humanizeDateDifference(role.meta.created) }
                     />
                 ))
             }

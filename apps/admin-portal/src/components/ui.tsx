@@ -46,10 +46,10 @@ export const Logo = (props: ImageProps) => {
 
     return (
         <ThemeIcon
-            icon={LogoImage}
-            className={classNames(classes, "product-logo")}
-            size={size}
-            style={style}
+            icon={ LogoImage }
+            className={ classNames(classes, "product-logo") }
+            size={ size }
+            style={ style }
             transparent
             inline
         />
@@ -60,9 +60,9 @@ export const Title = (props: TitleProps) => {
     const { classes, style, children } = props;
 
     return (
-        <div className={classNames(classes, "product-title")} style={style}>
+        <div className={ classNames(classes, "product-title") } style={ style }>
             <Logo />
-            <h1 className={classNames(classes, "product-title-text")} style={style}>{TitleText}</h1>
+            <h1 className={ classNames(classes, "product-title-text") } style={ style }>{TitleText}</h1>
             {children}
         </div>
     );
@@ -73,10 +73,10 @@ export const UserImagePlaceHolder = (props: ImageProps) => {
 
     return (
         <Image
-            className={classNames(classes, "user-image")}
-            src={UserImage}
-            size={size}
-            floated={floated}
+            className={ classNames(classes, "user-image") }
+            src={ UserImage }
+            size={ size }
+            floated={ floated }
             circular
             centered
         />
@@ -104,9 +104,9 @@ export const HomeTileIcon = (props: HomeTileIconImageProps) => {
 
     return (
         <Image
-            className={classNames(classes, "home-tile-icon")}
-            src={src()}
-            size={size}
+            className={ classNames(classes, "home-tile-icon") }
+            src={ src() }
+            size={ size }
             centered
         />
     );

@@ -61,13 +61,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     ];
 
     /**
-     * Fetch the list of available user stores.
-     */
-    useEffect(() => {
-        getUserStores();
-    }, []);
-
-    /**
      * The following function fetch the user store list and set it to the state.
      */
     const getUserStores = () => {
@@ -92,6 +85,13 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
         setUserStoresList(storeOptions);
     };
+    
+    /**
+     * Fetch the list of available user stores.
+     */
+    useEffect(() => {
+        getUserStores();
+    }, []);
 
     const getFormValues = (values) => {
         return {

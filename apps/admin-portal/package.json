@@ -16,7 +16,7 @@
         "build": "run-script-os",
         "build:win32": "..\\..\\node_modules\\.bin\\webpack --env.NODE_ENV=prod --mode development && npm run test",
         "build:default": "../../node_modules/.bin/webpack --env.NODE_ENV=prod --mode development && npm run test",
-        "lint": "tslint -t stylish --project .",
+        "lint": "eslint .",
         "test": "jest --passWithNoTests",
         "clean": "rm -rf build"
     },
@@ -30,6 +30,7 @@
         "@wso2is/validation": "^1.0.63"
     },
     "devDependencies": {
+        "eslint-plugin-node": "^11.0.0",
         "run-script-os": "^1.0.7"
     },
     "peerDependencies": {

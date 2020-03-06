@@ -69,46 +69,6 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
     /**
-     * Method to handle the create role wizard finish action.
-     * 
-     * @param permissions - permission list which was created by the user.
-     */
-    const handleRoleWizardFinish = (permissions: string[]) => {
-        addRole(wizardState, permissions)
-    };
-
-    // Create role wizard steps
-    const WIZARD_STEPS = [{
-        content: (
-            <RoleBasics
-                triggerSubmit={ submitGeneralSettings }
-                onSubmit={ (values) => handleWizardSubmit(values) }
-            />
-        ),
-        icon: ApplicationWizardStepIcons.general,
-        title: "Basic Details"
-    },{
-        content: (
-            <PermissionList
-                triggerSubmit={ finishSubmit }
-                onSubmit={ handleRoleWizardFinish }
-            />
-        ),
-        icon: ApplicationWizardStepIcons.general,
-        title: "Permission Selection"
-    }]
-    
-    /**
-     * Create role wizard handler.
-     * 
-     * @param values values which will be taken from the previous wizard step
-     */
-    const handleWizardSubmit = (values: any) => {
-        setCurrentWizardStep(currentStep + 1);
-        setWizardState(_.merge(wizardState, { values }));
-    }
-
-    /**
      * Method to handle create role action when create role wizard finish action is triggered.
      * 
      * @param basicData - basic data required to create role.
@@ -117,7 +77,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     const addRole = (basicData: any, permissions: string[]): void => {
         const roleData: CreateRoleInterface = {
             "schemas": [
-              "urn:ietf:params:scim:schemas:core:2.0:Group"
+                "urn:ietf:params:scim:schemas:core:2.0:Group"
             ],
             "displayName": basicData.values.roleName,
         }
@@ -128,8 +88,6 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
          *        to add the selected permissions to the created role.
          */
         createRole(roleData).then(response => {
-            debugger;
-        
             if (response.status === 201) {
                 const createdRoleId = response.data.id;
                 const permData = permissions;
@@ -215,6 +173,44 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             }
         });
     }
+    /**
+         * Create role wizard handler.
+         * 
+         * @param values values which will be taken from the previous wizard step
+         */
+    const handleWizardSubmit = (values: any) => {
+        setCurrentWizardStep(currentStep + 1);
+        setWizardState(_.merge(wizardState, { values }));
+    }
+    /**
+     * Method to handle the create role wizard finish action.
+     * 
+     * @param permissions - permission list which was created by the user.
+     */
+    const handleRoleWizardFinish = (permissions: string[]) => {
+        addRole(wizardState, permissions)
+    };
+
+    // Create role wizard steps
+    const WIZARD_STEPS = [{
+        content: (
+            <RoleBasics
+                triggerSubmit={ submitGeneralSettings }
+                onSubmit={ (values) => handleWizardSubmit(values) }
+            />
+        ),
+        icon: ApplicationWizardStepIcons.general,
+        title: "Basic Details"
+    },{
+        content: (
+            <PermissionList
+                triggerSubmit={ finishSubmit }
+                onSubmit={ handleRoleWizardFinish }
+            />
+        ),
+        icon: ApplicationWizardStepIcons.general,
+        title: "Permission Selection"
+    }]
 
     /**
      * Function to change the current wizard step to next.
