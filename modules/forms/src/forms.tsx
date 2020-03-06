@@ -205,7 +205,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
          * Checks if all the required fields are filled
          */
         const checkRequiredFieldsFilled = (): boolean => {
-            let requiredFilled: boolean = true;
+            let requiredFilled = true;
             requiredFields.forEach((requiredFieldParam) => {
                 if (!requiredFieldParam) {
                     requiredFilled = false;
@@ -218,7 +218,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
          * Checks if all the fields are validated
          */
         const checkValidated = (): boolean => {
-            let isValidated: boolean = true;
+            let isValidated = true;
             validFields.forEach((validField) => {
                 if (!validField.isValid) {
                     isValidated = false;
@@ -343,7 +343,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
          * 
          * @returns {Map} stripped Map object
          */
-        const removeRedundant= (iterable:Map<string,any>, neededFields:Set<string>):Map<string, any> => {
+        const removeRedundant= (iterable: Map<string,any>, neededFields: Set<string>): Map<string, any> => {
             const tempIterable = new Map(iterable);
 
             iterable.forEach((value, key: string) => {
@@ -499,7 +499,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
         const mutatedChildren: React.ReactElement[] = [...parseChildren(children, formFields)];
 
-        return <Form onSubmit={handleSubmit}>{mutatedChildren}</Form>;
+        return <Form onSubmit={ handleSubmit }>{mutatedChildren}</Form>;
     };
 
 Forms.defaultProps = {

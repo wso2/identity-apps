@@ -19,7 +19,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Grid, Label, Icon, Popup } from "semantic-ui-react";
 import { Forms, Field, useTrigger, FormValue, Validation } from "@wso2is/forms";
-import _ from "lodash";
 
 export interface KeyValue {
     key: string;
@@ -154,8 +153,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                             validation={
                                                                 (
                                                                     value: string,
-                                                                    validation: Validation,
-                                                                    values: Map<string, FormValue>
+                                                                    validation: Validation
                                                                 ) => {
                                                                     let isSameUserStore = false;
                                                                     for (const mapping of fields) {
@@ -281,8 +279,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                                                 validation={
                                                                                     (
                                                                                         value: string,
-                                                                                        validation: Validation,
-                                                                                        values: Map<string, FormValue>
+                                                                                        validation: Validation
                                                                                     ) => {
                                                                                         let isSameUserStore = false;
                                                                                         for (const mapping of fields) {

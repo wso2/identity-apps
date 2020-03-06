@@ -16,10 +16,10 @@
 * under the License.
 */
 
-import React, { useState, useEffect } from "react";
-import { Button, Grid, Form } from "semantic-ui-react";
-import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
-import { Property, Claim, AlertLevels } from "../../../models";
+import React from "react";
+import { Grid } from "semantic-ui-react";
+import { useTrigger } from "@wso2is/forms";
+import { Claim, AlertLevels } from "../../../models";
 import { updateAClaim } from "../../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
@@ -53,13 +53,15 @@ export const EditAdditionalPropertiesLocalClaims = (
                         keyRequiredMessage="Enter a name"
                         valueRequiredErrorMessage="Enter a value"
                         update={ (data) => {
-                            const { id, dialectURI, ...claimData } = claim;
+                            const claimData = { ...claim };
+                            delete claimData.id;
+                            delete claimData.dialectURI;
                             const submitData = {
                                 ...claimData,
                                 properties: [...data]
                             }
 
-                            updateAClaim(claim.id, submitData).then((response) => {
+                            updateAClaim(claim.id, submitData).then(() => {
                                 dispatch(addAlert(
                                     {
                                         description: "Additional Properties of this local claim have been updated successfully!",

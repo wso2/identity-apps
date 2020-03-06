@@ -91,7 +91,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             if (response.status === 201) {
                 const createdRoleId = response.data.id;
                 const permData = permissions;
-                updatePermissionForRole(createdRoleId, permData).then(response => {
+                updatePermissionForRole(createdRoleId, permData).then(() => {
                     dispatch(addAlert({
                         description: t(
                             "views:components.roles.notifications.createRole.success.description"

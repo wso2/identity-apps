@@ -19,7 +19,6 @@
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Button, Grid, Icon, Input, Label, Popup } from "semantic-ui-react";
-import { isEmpty } from "lodash";
 
 interface URLInputComponentInterface {
     urlState: string;

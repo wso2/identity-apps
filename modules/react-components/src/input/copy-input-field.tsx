@@ -23,7 +23,7 @@ interface CopyInputFieldPropsInterface{
     value: string;
     className?: string;
 }
-export const CopyInputField = (props:CopyInputFieldPropsInterface): React.ReactElement => {
+export const CopyInputField = (props: CopyInputFieldPropsInterface): React.ReactElement => {
 
     const claimURIText = useRef(null);
     const copyButton = useRef(null);
@@ -40,13 +40,13 @@ export const CopyInputField = (props:CopyInputFieldPropsInterface): React.ReactE
     
     return (
         <Input
-            ref={claimURIText}
-            value={value}
+            ref={ claimURIText }
+            value={ value }
             labelPosition="right"
             readOnly
             action
             fluid
-            className={className}
+            className={ className }
         >
             <input />
             <Popup
@@ -55,11 +55,11 @@ export const CopyInputField = (props:CopyInputFieldPropsInterface): React.ReactE
                         <Button
                             icon="copy"
                             type="button"
-                            onMouseEnter={() => {
+                            onMouseEnter={ () => {
                                 setCopied(false);
-                            }}
-                            ref={copyButton}
-                            onClick={(event: React.MouseEvent) => {
+                            } }
+                            ref={ copyButton }
+                            onClick={ () => {
                                 claimURIText.current?.select();
                                 setCopied(true);
                                 document.execCommand("copy");
@@ -67,14 +67,14 @@ export const CopyInputField = (props:CopyInputFieldPropsInterface): React.ReactE
                                 if (window.getSelection) {
                                     window.getSelection().removeAllRanges();
                                 }
-                            }}
+                            } }
                         />
                     )
                 }
                 openOnTriggerFocus
                 closeOnTriggerBlur
                 position="top center"
-                content={copied ? "Copied!" : "Copy to clipboard"}
+                content={ copied ? "Copied!" : "Copy to clipboard" }
                 inverted
             />
         </Input>

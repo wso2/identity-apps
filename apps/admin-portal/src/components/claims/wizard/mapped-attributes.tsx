@@ -17,9 +17,7 @@
 */
 
 import React, { useState, useEffect } from "react";
-import { Forms, FormValue, Field, Validation } from "@wso2is/forms";
-import { Grid, Button, Message } from "semantic-ui-react";
-import { AttributeMapping } from "../../../models";
+import { Grid, Message } from "semantic-ui-react";
 import { getUserStoreList } from "../../../api";
 import { DynamicField, KeyValue } from "..";
 
@@ -44,7 +42,7 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): React.R
         getUserStoreList().then((response) => {
             userstore.push(...response.data);
             setUserStore(userstore);
-        }).catch(error => {
+        }).catch(() => {
             setUserStore(userstore);
         });
     }, [])

@@ -76,7 +76,7 @@ export const AddEditDialect = (props: AddEditDialectPropsInterface): React.React
                                 updateADialect(
                                     dialectID,
                                     values.get("dialectURI").toString()
-                                ).then(response => {
+                                ).then(() => {
                                     update();
                                     onClose();
                                     dispatch(addAlert(
@@ -96,7 +96,7 @@ export const AddEditDialect = (props: AddEditDialectPropsInterface): React.React
                                     ));
                                 });
                             } else {
-                                addDialect(values.get("dialectURI").toString()).then(response => {
+                                addDialect(values.get("dialectURI").toString()).then(() => {
                                     update();
                                     onClose();
                                     dispatch(addAlert(

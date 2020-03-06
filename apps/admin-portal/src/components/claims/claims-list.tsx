@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { ResourceList, LinkButton, PrimaryButton } from "@wso2is/react-components"
 import { Claim, ExternalClaim, ClaimDialect, AlertLevels } from "../../models";
 import { List, Modal } from "semantic-ui-react";
@@ -46,7 +46,6 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
     const [deleteConfirm, setDeleteConfirm] = useState(false);
     const [deleteType, setDeleteType] = useState<ListType>(null);
     const [deleteID, setDeleteID] = useState<string>(null);
-    const [copyIndex, setCopyIndex] = useState(null);
 
     const dispatch = useDispatch();
 
@@ -58,17 +57,13 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         copyButton.current.push(copyButton.current[index] || React.createRef())
     });
 
-    useEffect(() => {
-        if (copyIndex !== null) {
-            copyButton.current[copyIndex].current.focus();
-        }
-    }, [copyIndex]);
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const isLocalClaim = (toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[]): toBeDetermined is Claim[] => {
         return localClaim === ListType.LOCAL;
     }
 
     const isDialect = (
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[]
     ): toBeDetermined is ClaimDialect[] => {
         return localClaim === ListType.DIALECT
@@ -87,9 +82,9 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         setDeleteID(null);
         setDeleteType(null);
     }
-    
+
     const deleteLocalClaim = (id: string) => {
-        deleteAClaim(id).then(response => {
+        deleteAClaim(id).then(() => {
             update();
             closeDeleteConfirm();
             dispatch(addAlert(
@@ -111,7 +106,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
     };
 
     const deleteExternalClaim = (dialectID: string, claimID: string) => {
-        deleteAnExternalClaim(dialectID, claimID).then(response => {
+        deleteAnExternalClaim(dialectID, claimID).then(() => {
             update();
             closeDeleteConfirm();
             dispatch(addAlert(
@@ -133,7 +128,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
     };
 
     const deleteDialect = (dialectID: string) => {
-        deleteADialect(dialectID).then(response => {
+        deleteADialect(dialectID).then(() => {
             update();
             closeDeleteConfirm();
             dispatch(addAlert(

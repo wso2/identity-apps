@@ -82,10 +82,10 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
             <Modal.Content>
                 <Forms
                     onSubmit={ (values: Map<string, FormValue>) => {
-                        updateAnExternalClaim(dialectID,claimID, {
+                        updateAnExternalClaim(dialectID, claimID, {
                             claimURI: values.get("claimURI").toString(),
                             mappedLocalClaimURI: values.get("localClaim").toString()
-                        }).then(response => {
+                        }).then(() => {
                             dispatch(addAlert(
                                 {
                                     description: "The external claim has been updated successfully!",

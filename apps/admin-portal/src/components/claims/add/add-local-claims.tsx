@@ -49,7 +49,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
     const dispatch = useDispatch();
 
     const handleSubmit = () => {
-        addLocalClaim(data).then(response => {
+        addLocalClaim(data).then(() => {
             dispatch(addAlert(
                 {
                     description: "The local claim has been added successfully!",

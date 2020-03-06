@@ -66,7 +66,7 @@ export const EditBasicDetailsLocalClaims = (
                         required: values.get("required").length > 0
 
                     }
-                    updateAClaim(claim.id, data).then((response) => {
+                    updateAClaim(claim.id, data).then(() => {
                         dispatch(addAlert(
                             {
                                 description: "The basic details of the local claim have been updated successfully!",

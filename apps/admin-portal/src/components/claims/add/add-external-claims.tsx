@@ -71,7 +71,7 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                         addExternalClaim(dialect.id, {
                             claimURI: values.get("claimURI").toString(),
                             mappedLocalClaimURI: values.get("localClaim").toString()
-                        }).then(response => {
+                        }).then(() => {
                             dispatch(addAlert(
                                 {
                                     description: "The external claim has been added to the dialect successfully!",

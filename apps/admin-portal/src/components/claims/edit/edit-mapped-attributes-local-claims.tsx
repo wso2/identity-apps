@@ -17,9 +17,9 @@
 */
 
 import React, { useState, useEffect } from "react";
-import { Claim, AttributeMapping, AlertLevels } from "../../../models";
-import { Grid, Button, Message } from "semantic-ui-react";
-import { Field, Validation, FormValue, Forms, useTrigger } from "@wso2is/forms";
+import { Claim, AlertLevels } from "../../../models";
+import { Grid, Message } from "semantic-ui-react";
+import { useTrigger } from "@wso2is/forms";
 import { getUserStoreList, updateAClaim } from "../../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
@@ -52,7 +52,7 @@ export const EditMappedAttributesLocalClaims = (
         getUserStoreList().then((response) => {
             userstore.push(...response.data);
             setUserStore(userstore);
-        }).catch(error => {
+        }).catch(() => {
             setUserStore(userstore);
         });
     }, []);
@@ -87,7 +87,9 @@ export const EditMappedAttributesLocalClaims = (
                         update={ (data) => {
                             if (data.length > 0) {
                                 setEmpty(false);
-                                const { id, dialectURI, ...claimData } = claim;
+                                const claimData = claim;
+                                delete claimData.id;
+                                delete claimData.dialectURI;
                                 const submitData: Claim = {
                                     ...claimData,
                                     attributeMapping: data.map(mapping => {
@@ -97,7 +99,7 @@ export const EditMappedAttributesLocalClaims = (
                                         }
                                     }),
                                 }
-                                updateAClaim(claim.id, submitData).then((response) => {
+                                updateAClaim(claim.id, submitData).then(() => {
                                     dispatch(addAlert(
                                         {
                                             description: "The Attributes Mapping of this local claim has been" +
