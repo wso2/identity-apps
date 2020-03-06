@@ -16,13 +16,14 @@
 * under the License.
 */
 
-import React, { useRef, useState, useEffect } from "react";
+import React from "react";
 import { Claim, AlertLevels } from "../../../models";
 import { Forms, Field } from "@wso2is/forms";
-import { Grid, Button, Input, Popup, Form } from "semantic-ui-react";
+import { Grid, Form } from "semantic-ui-react";
 import { updateAClaim } from "../../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
+import { CopyInputField } from "@wso2is/react-components";
 
 interface EditBasicDetailsLocalClaimsPropsInterface {
     claim: Claim;
@@ -36,17 +37,6 @@ export const EditBasicDetailsLocalClaims = (
 
     const { claim, update } = props;
 
-    const claimURIText = useRef(null);
-    const copyButton = useRef(null);
-
-    const [copied, setCopied] = useState(false);
-
-    useEffect(() => {
-        if (copied) {
-            copyButton.current.focus();
-        }
-    },[copied]);
-
     return (
         <>
             <Grid>
@@ -55,43 +45,7 @@ export const EditBasicDetailsLocalClaims = (
                         <Form>
                             <Form.Field>
                                 <label>Claim URI</label>
-                                <Input
-                                    ref={claimURIText}
-                                    value={claim ? claim.claimURI : ""}
-                                    labelPosition="right"
-                                    readOnly
-                                    action
-                                >
-                                    <input />
-                                    <Popup
-                                        trigger={
-                                            (
-                                                <Button
-                                                    icon="copy"
-                                                    type="button"
-                                                    onMouseEnter={() => {
-                                                        setCopied(false);
-                                                    }}
-                                                    ref={copyButton}
-                                                    onClick={(event: React.MouseEvent) => {
-                                                        claimURIText.current?.select();
-                                                        setCopied(true);
-                                                        document.execCommand("copy");
-                                                        copyButton.current.blur();
-                                                        if (window.getSelection) {
-                                                            window.getSelection().removeAllRanges();
-                                                        }
-                                                    }}
-                                                />
-                                            )
-                                        }
-                                        openOnTriggerFocus
-                                        closeOnTriggerBlur
-                                        position="top center"
-                                        content={copied?"Copied!":"Copy to clipboard"}
-                                        inverted
-                                    />
-                                </Input>
+                                <CopyInputField value={claim ? claim.claimURI : ""}/>
                             </Form.Field>
                         </Form>
                     </Grid.Column>

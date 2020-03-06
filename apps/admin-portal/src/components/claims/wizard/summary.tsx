@@ -16,9 +16,10 @@
 * under the License.
 */
 
-import React, { useRef, useState, useEffect } from "react";
-import { Claim, AttributeMapping, Property } from "../../../models";
-import { List, Grid, GridColumn, Icon, Input, Label, Button, Popup, Form, Table, Tab } from "semantic-ui-react";
+import React from "react";
+import { Claim, AttributeMapping } from "../../../models";
+import { Grid, Icon, Label, Form, Table } from "semantic-ui-react";
+import { CopyInputField } from "@wso2is/react-components";
 
 interface SummaryLocalClaimsPropsInterface {
     data: Claim;
@@ -26,17 +27,6 @@ interface SummaryLocalClaimsPropsInterface {
 export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): React.ReactElement => {
 
     const { data } = props;
-
-    const claimURIText = useRef(null);
-    const copyButton = useRef(null);
-
-    const [copied, setCopied] = useState(false);
-
-    useEffect(() => {
-        if (copied) {
-            copyButton.current.focus();
-        }
-    }, [copied]);
 
     const generateSummaryLine = (
         title: string,
@@ -66,44 +56,7 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
     const showClaimURI = (): React.ReactElement => {
         return (
             <Form.Field>
-                <Input
-                    ref={claimURIText}
-                    value={data ? data?.claimURI : ""}
-                    labelPosition="right"
-                    action
-                    fluid
-                >
-                    <input />
-                    <Popup
-                        trigger={
-                            (
-                                <Button
-                                    icon="copy"
-                                    type="button"
-                                    ref={copyButton}
-                                    onMouseEnter={() => {
-                                        setCopied(false);
-                                    }
-                                    }
-                                    onClick={(event: React.MouseEvent) => {
-                                        claimURIText.current.select();
-                                        document.execCommand("copy");
-                                        setCopied(true);
-                                        copyButton?.current?.blur();
-                                        if (window.getSelection) {
-                                            window.getSelection().removeAllRanges();
-                                        }
-                                    }}
-                                />
-                            )
-                        }
-                        openOnTriggerFocus
-                        closeOnTriggerBlur
-                        position="top center"
-                        content={copied ? "Copied!" : "Copy to clipboard"}
-                        inverted
-                    />
-                </Input>
+                <CopyInputField value={data ? data?.claimURI : ""} />
             </Form.Field>
         )
     };
@@ -143,7 +96,7 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
                                 </Table.Row>
                             </Table.Header>
                             <Table.Body>
-                                {data.attributeMapping.map((attribute: AttributeMapping, index:number) => {
+                                {data.attributeMapping.map((attribute: AttributeMapping, index: number) => {
                                     return (
                                         <Table.Row key={index} columns={2}>
                                             <Table.Cell>

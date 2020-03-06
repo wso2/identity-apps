@@ -19,11 +19,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ResourceList, LinkButton, PrimaryButton } from "@wso2is/react-components"
 import { Claim, ExternalClaim, ClaimDialect, AlertLevels } from "../../models";
-import { List, Modal, Input, Popup, Button } from "semantic-ui-react";
+import { List, Modal } from "semantic-ui-react";
 import { history } from "../../helpers";
 import { deleteAClaim, deleteAnExternalClaim, deleteADialect } from "../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../store/actions";
+import { CopyInputField } from "@wso2is/react-components";
 
 export enum ListType {
     LOCAL,
@@ -239,47 +240,10 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                     metaContent={[
                                         listContent(claim.description),
                                         listContent(
-                                            <Input
-                                                ref={claimURIText.current[index]}
+                                            <CopyInputField
                                                 value={claim ? claim.claimURI : ""}
-                                                labelPosition="right"
-                                                readOnly
-                                                action
-                                                fluid
                                                 className="copy-field"
-                                            >
-                                                <input />
-                                                <Popup
-                                                    trigger={
-                                                        (
-                                                            <Button
-                                                                icon="copy"
-                                                                type="button"
-                                                                size="mini"
-                                                                onMouseEnter={() => {
-                                                                    setCopyIndex(null);
-                                                                }}
-                                                                ref={copyButton.current[index]}
-                                                                onClick={(event: React.MouseEvent) => {
-                                                                    claimURIText.current[index].current?.select();
-                                                                    document.execCommand("copy");
-                                                                    setCopyIndex(index);
-                                                                    copyButton.current[index].current.blur();
-                                                                    if (window.getSelection) {
-                                                                        window.getSelection().removeAllRanges();
-                                                                    }
-                                                                }
-                                                                }
-                                                            />
-                                                        )
-                                                    }
-                                                    closeOnTriggerBlur
-                                                    openOnTriggerFocus
-                                                    position="top center"
-                                                    content={copyIndex === index ? "Copied!" : "Copy to clipboard"}
-                                                    inverted
-                                                />
-                                            </Input>
+                                            />
                                         )
                                     ]}
                                 />
