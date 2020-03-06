@@ -21,7 +21,7 @@ import { Input, Popup, Button } from "semantic-ui-react";
 
 interface CopyInputFieldPropsInterface{
     value: string;
-    className: string;
+    className?: string;
 }
 export const CopyInputField = (props:CopyInputFieldPropsInterface): React.ReactElement => {
 
