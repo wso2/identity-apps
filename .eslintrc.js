@@ -55,7 +55,10 @@ module.exports = {
                     }
                 ],
                 "react/no-children-prop": 0,
-                "react/prop-types": "off"
+                "react/prop-types": "off",
+                "@typescript-eslint/no-explicit-any": 0,
+                "@typescript-eslint/explicit-function-return-type": 0,
+                "react/display-name": 0
             }
         }
     ]
