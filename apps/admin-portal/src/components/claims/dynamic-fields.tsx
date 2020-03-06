@@ -33,7 +33,7 @@ interface KeyData {
 
 interface DynamicFieldPropsInterface {
     data: KeyValue[];
-    keyType: "text" | "dropdown"
+    keyType: "text" | "dropdown";
     keyData?: KeyData[];
     submit: boolean;
     keyName: string;
@@ -101,13 +101,13 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
 
     return (
         <Grid>
-            <Grid.Row columns={1}>
-                <Grid.Column width={16}>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column width={ 16 }>
                     {
                         keyData?.length !== fields?.size
                             ? (
                                 <Forms
-                                    onSubmit={(values: Map<string, FormValue>) => {
+                                    onSubmit={ (values: Map<string, FormValue>) => {
                                         const tempFields = new Map<number, KeyValue>(fields);
                                         const newIndex: number = tempFields.size > 0
                                             ? Array.from(tempFields.keys())[tempFields.size - 1] + 1
@@ -121,21 +121,21 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                             listen(Array.from(tempFields.values()));
                                         }
                                         setReset();
-                                    }}
-                                    submitState={add}
-                                    resetState={reset}
+                                    } }
+                                    submitState={ add }
+                                    resetState={ reset }
                                 >
                                     <Grid>
-                                        < Grid.Row columns={3} verticalAlign="top">
-                                            <Grid.Column width={6}>
+                                        < Grid.Row columns={ 3 } verticalAlign="top">
+                                            <Grid.Column width={ 6 }>
                                                 {keyType === "dropdown"
                                                     ? (
                                                         <Field
-                                                            type={keyType}
+                                                            type={ keyType }
                                                             placeholder=""
-                                                            required={true}
-                                                            requiredErrorMessage={keyRequiredMessage}
-                                                            label={keyName}
+                                                            required={ true }
+                                                            requiredErrorMessage={ keyRequiredMessage }
+                                                            label={ keyName }
                                                             name="key"
                                                             children={
                                                                 keyType === "dropdown"
@@ -158,12 +158,12 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                                     values: Map<string, FormValue>
                                                                 ) => {
                                                                     let isSameUserStore = false;
-                                                                    for (let mapping of fields) {
+                                                                    for (const mapping of fields) {
                                                                         if (mapping[1].key === value) {
                                                                             isSameUserStore = true;
                                                                             break;
                                                                         }
-                                                                    };
+                                                                    }
                                                                     if (isSameUserStore) {
                                                                         validation.isValid = false;
                                                                         validation.errorMessages.push(
@@ -177,40 +177,40 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                     )
                                                     : (
                                                         < Field
-                                                            type={keyType}
+                                                            type={ keyType }
                                                             placeholder=""
-                                                            required={true}
-                                                            label={keyName}
-                                                            requiredErrorMessage={keyRequiredMessage}
+                                                            required={ true }
+                                                            label={ keyName }
+                                                            requiredErrorMessage={ keyRequiredMessage }
                                                             name="key"
                                                         />
                                                     )
                                                 }
                                             </Grid.Column>
-                                            <Grid.Column width={6}>
+                                            <Grid.Column width={ 6 }>
                                                 <Field
                                                     type="text"
                                                     placeholder=""
-                                                    required={true}
-                                                    label={valueName}
-                                                    requiredErrorMessage={valueRequiredErrorMessage}
+                                                    required={ true }
+                                                    label={ valueName }
+                                                    requiredErrorMessage={ valueRequiredErrorMessage }
                                                     name="value"
                                                 />
                                             </Grid.Column>
-                                            <Grid.Column width={4} verticalAlign="middle">
+                                            <Grid.Column width={ 4 } verticalAlign="middle">
                                                 <Popup
-                                                    trigger={(
+                                                    trigger={ (
                                                         <Icon
                                                             link
                                                             className="list-icon"
                                                             size="small"
                                                             color="grey"
                                                             name="add"
-                                                            onClick={() => {
+                                                            onClick={ () => {
                                                                 setAdd();
-                                                            }}
+                                                            } }
                                                         />
-                                                    )}
+                                                    ) }
                                                     position="top center"
                                                     content="Add"
                                                     inverted
@@ -224,13 +224,13 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                     }
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row columns={1}>
-                <Grid.Column width={16}>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column width={ 16 }>
                     {
                         fields
                             ? (
                                 <Forms
-                                    onSubmit={(values: Map<string, FormValue>) => {
+                                    onSubmit={ (values: Map<string, FormValue>) => {
                                         const tempFields = new Map(fields);
                                         tempFields.set(updateMapIndex, {
                                             key: values.get("editKey").toString(),
@@ -242,26 +242,26 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                         setUpdateMapIndex(null);
                                     }
                                     }
-                                    submitState={updateTrigger}
+                                    submitState={ updateTrigger }
                                 >
                                     <Grid>
                                         {
                                             Array.from(fields).map(([mapIndex, field], index: number) => {
                                                 return (
-                                                    <Grid.Row key={index} columns={3} verticalAlign="top">
-                                                        <Grid.Column width={6}>
+                                                    <Grid.Row key={ index } columns={ 3 } verticalAlign="top">
+                                                        <Grid.Column width={ 6 }>
                                                             {editIndex === index
                                                                 ? (
                                                                     keyType === "dropdown"
                                                                         ? (
                                                                             <Field
-                                                                                type={keyType}
+                                                                                type={ keyType }
                                                                                 placeholder=""
-                                                                                required={true}
+                                                                                required={ true }
                                                                                 requiredErrorMessage={
                                                                                     keyRequiredMessage
                                                                                 }
-                                                                                name={"editKey"}
+                                                                                name={ "editKey" }
                                                                                 children={
                                                                                     keyType === "dropdown"
                                                                                         ? (
@@ -276,7 +276,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                                                         )
                                                                                         : []
                                                                                 }
-                                                                                value={editKey}
+                                                                                value={ editKey }
                                                                                 displayErrorOn="blur"
                                                                                 validation={
                                                                                     (
@@ -285,7 +285,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                                                         values: Map<string, FormValue>
                                                                                     ) => {
                                                                                         let isSameUserStore = false;
-                                                                                        for (let mapping of fields) {
+                                                                                        for (const mapping of fields) {
                                                                                             if (
                                                                                                 mapping[1].key === value
                                                                                                 && mapping[1] !== field
@@ -293,7 +293,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                                                                 isSameUserStore = true;
                                                                                                 break;
                                                                                             }
-                                                                                        };
+                                                                                        }
                                                                                         if (isSameUserStore) {
                                                                                             validation.isValid = false;
                                                                                             validation
@@ -312,14 +312,14 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                                         )
                                                                         : (
                                                                             <Field
-                                                                                type={keyType}
+                                                                                type={ keyType }
                                                                                 placeholder=""
-                                                                                required={true}
+                                                                                required={ true }
                                                                                 requiredErrorMessage={
                                                                                     valueRequiredErrorMessage
                                                                                 }
-                                                                                name={"editKey"}
-                                                                                value={editKey}
+                                                                                name={ "editKey" }
+                                                                                value={ editKey }
                                                                             />
                                                                         )
                                                                 )
@@ -333,15 +333,15 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                                 )
                                                             }
                                                         </Grid.Column>
-                                                        <Grid.Column width={6}>
+                                                        <Grid.Column width={ 6 }>
                                                             {editIndex === index
                                                                 ? (
                                                                     <Field
-                                                                        name={"editValue"}
-                                                                        required={true}
+                                                                        name={ "editValue" }
+                                                                        required={ true }
                                                                         requiredErrorMessage=""
                                                                         type="text"
-                                                                        value={editValue}
+                                                                        value={ editValue }
                                                                         placeholder=""
                                                                     />
                                                                 )
@@ -354,22 +354,22 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                                 )
                                                             }
                                                         </Grid.Column>
-                                                        <Grid.Column width={4} verticalAlign="middle">
+                                                        <Grid.Column width={ 4 } verticalAlign="middle">
                                                             {editIndex === index
                                                                 ? (
                                                                     <Popup
-                                                                        trigger={(
+                                                                        trigger={ (
                                                                             <Icon
                                                                                 link
                                                                                 className="list-icon"
                                                                                 size="small"
                                                                                 color="grey"
                                                                                 name="checkmark"
-                                                                                onClick={() => {
+                                                                                onClick={ () => {
                                                                                     setUpdateMapIndex(mapIndex);
-                                                                                }}
+                                                                                } }
                                                                             />
-                                                                        )}
+                                                                        ) }
                                                                         position="top center"
                                                                         content="Update"
                                                                         inverted
@@ -377,20 +377,20 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                                 )
                                                                 : (
                                                                     <Popup
-                                                                        trigger={(
+                                                                        trigger={ (
                                                                             <Icon
                                                                                 link
                                                                                 className="list-icon"
                                                                                 size="small"
                                                                                 color="grey"
                                                                                 name="pencil"
-                                                                                onClick={() => {
+                                                                                onClick={ () => {
                                                                                     setEditIndex(index);
                                                                                     setEditKey(field.key);
                                                                                     setEditValue(field.value);
-                                                                                }}
+                                                                                } }
                                                                             />
-                                                                        )}
+                                                                        ) }
                                                                         position="top center"
                                                                         content="Edit"
                                                                         inverted
@@ -400,18 +400,18 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                             {editIndex === index
                                                                 ? (
                                                                     <Popup
-                                                                        trigger={(
+                                                                        trigger={ (
                                                                             <Icon
                                                                                 link
                                                                                 className="list-icon"
                                                                                 size="small"
                                                                                 color="grey"
                                                                                 name="close"
-                                                                                onClick={() => {
+                                                                                onClick={ () => {
                                                                                     setEditIndex(null);
-                                                                                }}
+                                                                                } }
                                                                             />
-                                                                        )}
+                                                                        ) }
                                                                         position="top center"
                                                                         content="Cancel"
                                                                         inverted
@@ -420,21 +420,21 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                                 : null
                                                             }
                                                             <Popup
-                                                                trigger={(
+                                                                trigger={ (
                                                                     <Icon
                                                                         link
                                                                         className="list-icon"
                                                                         size="small"
                                                                         color="grey"
                                                                         name="trash"
-                                                                        onClick={() => {
+                                                                        onClick={ () => {
                                                                             setEditIndex(null);
                                                                             const tempFields = new Map(fields);
                                                                             tempFields.delete(mapIndex);
                                                                             setFields(tempFields);
-                                                                        }}
+                                                                        } }
                                                                     />
-                                                                )}
+                                                                ) }
                                                                 position="top center"
                                                                 content="Delete"
                                                                 inverted

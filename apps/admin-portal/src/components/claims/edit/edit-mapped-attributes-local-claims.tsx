@@ -59,8 +59,8 @@ export const EditMappedAttributesLocalClaims = (
 
     return (
         <Grid>
-            <Grid.Row columns={1}>
-                <Grid.Column width={8}>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column width={ 8 }>
                     <DynamicField
                         data={
                             claim.attributeMapping.map(attribute => {
@@ -83,8 +83,8 @@ export const EditMappedAttributesLocalClaims = (
                         valueName="Attribute to map to"
                         keyRequiredMessage="Please select a User Store"
                         valueRequiredErrorMessage="Please enter an attribute to map to"
-                        submit={submit}
-                        update={(data) => {
+                        submit={ submit }
+                        update={ (data) => {
                             if (data.length > 0) {
                                 setEmpty(false);
                                 const { id, dialectURI, ...claimData } = claim;
@@ -119,19 +119,19 @@ export const EditMappedAttributesLocalClaims = (
                             } else {
                                 setEmpty(true);
                             }
-                        }}
-                        listen={(data: KeyValue[]) => {
+                        } }
+                        listen={ (data: KeyValue[]) => {
                             if (data.length > 0) {
                                 setEmpty(false);
                             }
-                        }}
+                        } }
                     />
                 </Grid.Column>
             </Grid.Row>
             {
                 empty ? (
-                    <Grid.Row columns={1}>
-                        <Grid.Column width={8}>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 8 }>
                             <Message negative>
                                 The claim should be mapped to at least one attribute from a user store.
                             </Message>
@@ -140,12 +140,12 @@ export const EditMappedAttributesLocalClaims = (
                 )
                 :null
             }
-            <Grid.Row columns={1}>
-                <Grid.Column width={8}>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column width={ 8 }>
                     <PrimaryButton
-                        onClick={() => {
+                        onClick={ () => {
                             setSubmit();
-                        }}
+                        } }
                     >
                         Update
                     </PrimaryButton>

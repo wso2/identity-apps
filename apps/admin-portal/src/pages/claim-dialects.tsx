@@ -39,11 +39,6 @@ export const ClaimDialectsPage = (): React.ReactElement => {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
-        getDialect();
-    }, []);
-
     const getDialect = (limit?: number, offset?: number, sort?: string, filter?: string, ) => {
         getDialects({
             limit, offset, sort, filter
@@ -63,6 +58,11 @@ export const ClaimDialectsPage = (): React.ReactElement => {
             ));
         })
     }
+    
+    useEffect(() => {
+        setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
+        getDialect();
+    }, []);
 
     const paginate = (list: ClaimDialect[], limit: number, offset: number): ClaimDialect[] => {
         return list?.slice(offset, offset + limit);
@@ -79,58 +79,58 @@ export const ClaimDialectsPage = (): React.ReactElement => {
     return (
         <>
             <AddEditDialect
-                open={addEditClaim}
-                onClose={() => {
+                open={ addEditClaim }
+                onClose={ () => {
                     setAddEditClaim(false);
                     setDialectID(null);
-                }}
-                update={getDialect}
-                edit={dialectID ? true : false}
-                dialectID={dialectID}
+                } }
+                update={ getDialect }
+                edit={ dialectID ? true : false }
+                dialectID={ dialectID }
             />
             <PageLayout
                 title="External Dialects"
                 description="View, edit and add External Dialects"
-                showBottomDivider={true}
+                showBottomDivider={ true }
             >
                 <ListLayout
                     advancedSearch={
-                        <DialectSearch onFilter={(query) => {
+                        <DialectSearch onFilter={ (query) => {
                             getDialect(null, null, null, query);
-                        }} />
+                        } } />
                     }
-                    currentListSize={listItemLimit}
-                    listItemLimit={listItemLimit}
-                    onItemsPerPageDropdownChange={handleItemsPerPageDropdownChange}
-                    onPageChange={handlePaginationChange}
-                    onSortStrategyChange={null}
+                    currentListSize={ listItemLimit }
+                    listItemLimit={ listItemLimit }
+                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                    onPageChange={ handlePaginationChange }
+                    onSortStrategyChange={ null }
                     rightActionPanel={
                         (
                             <PrimaryButton
-                                onClick={() => {
+                                onClick={ () => {
                                     setAddEditClaim(true);
-                                }}
+                                } }
                             >
                                 <Icon name="add" />Add a dialect
                         </PrimaryButton>
                         )
                     }
-                    showPagination={true}
-                    sortOptions={null}
-                    sortStrategy={null}
-                    totalPages={Math.ceil(dialects?.length / listItemLimit)}
-                    totalListSize={dialects?.length}
+                    showPagination={ true }
+                    sortOptions={ null }
+                    sortStrategy={ null }
+                    totalPages={ Math.ceil(dialects?.length / listItemLimit) }
+                    totalListSize={ dialects?.length }
                 >
                     <ClaimsList
-                        list={paginate(dialects, listItemLimit, offset)}
-                        localClaim={ListType.DIALECT}
+                        list={ paginate(dialects, listItemLimit, offset) }
+                        localClaim={ ListType.DIALECT }
                         openEdit={
                             (id: string) => {
                                 setDialectID(id);
                                 setAddEditClaim(true);
                             }
                         }
-                        update={getDialect}
+                        update={ getDialect }
                     />
                 </ListLayout>
             </PageLayout>

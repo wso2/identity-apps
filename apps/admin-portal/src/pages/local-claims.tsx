@@ -39,22 +39,6 @@ export const LocalClaimsPage = (): React.ReactElement => {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
-        getLocalClaims(null,null,null,null);
-        getADialect("local").then((response) => {
-            setClaimURIBase(response.dialectURI);
-        }).catch(error => {
-            dispatch(addAlert(
-                {
-                    description: error?.description,
-                    level: AlertLevels.ERROR,
-                    message: error?.message
-                }
-            ));
-        });
-    }, []);
-
     const getLocalClaims = (limit?: number, sort?: string, offset?: number, filter?: string) => {
         const params: ClaimsGetParams = {
             limit: limit || null,
@@ -75,6 +59,22 @@ export const LocalClaimsPage = (): React.ReactElement => {
             ));
         });
     };
+    
+    useEffect(() => {
+        setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
+        getLocalClaims(null,null,null,null);
+        getADialect("local").then((response) => {
+            setClaimURIBase(response.dialectURI);
+        }).catch(error => {
+            dispatch(addAlert(
+                {
+                    description: error?.description,
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                }
+            ));
+        });
+    }, []);
 
     const paginate = (list: Claim[], limit: number, offset: number): Claim[] => {
         return list?.slice(offset, offset + limit);
@@ -93,55 +93,55 @@ export const LocalClaimsPage = (): React.ReactElement => {
             {
                 openModal
                     ? <AddLocalClaims
-                        open={openModal}
-                        onClose={() => { setOpenModal(false) }}
-                        claimID={null}
-                        update={getLocalClaims}
-                        claimURIBase={claimURIBase}
+                        open={ openModal }
+                        onClose={ () => { setOpenModal(false) } }
+                        claimID={ null }
+                        update={ getLocalClaims }
+                        claimURIBase={ claimURIBase }
                     />
                     : null
             }
             <PageLayout
                 title="Local Dialect"
                 description="View, edit and add the Local Dialect"
-                showBottomDivider={true}
+                showBottomDivider={ true }
             >
                 <ListLayout
                     advancedSearch={
                         <LocalClaimsSearch
-                            onFilter={(query) => {
+                            onFilter={ (query) => {
                                 getLocalClaims(null, null, null, query);
-                            }}
-                            claimURIBase={claimURIBase}
+                            } }
+                            claimURIBase={ claimURIBase }
                         />
                     }
-                    currentListSize={listItemLimit}
-                    listItemLimit={listItemLimit}
-                    onItemsPerPageDropdownChange={handleItemsPerPageDropdownChange}
-                    onPageChange={handlePaginationChange}
-                    onSortStrategyChange={null}
+                    currentListSize={ listItemLimit }
+                    listItemLimit={ listItemLimit }
+                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                    onPageChange={ handlePaginationChange }
+                    onSortStrategyChange={ null }
                     rightActionPanel={
                         (
                             <PrimaryButton
-                                onClick={() => {
+                                onClick={ () => {
                                     setOpenModal(true);
-                                }}
+                                } }
                             >
                                 <Icon name="add" />Add a Local Claim
                         </PrimaryButton>
                         )
                     }
-                    leftActionPanel={null}
-                    showPagination={true}
-                    sortOptions={null}
-                    sortStrategy={null}
-                    totalPages={Math.ceil(claims?.length / listItemLimit)}
-                    totalListSize={claims?.length}
+                    leftActionPanel={ null }
+                    showPagination={ true }
+                    sortOptions={ null }
+                    sortStrategy={ null }
+                    totalPages={ Math.ceil(claims?.length / listItemLimit) }
+                    totalListSize={ claims?.length }
                 >
                     <ClaimsList
-                        list={paginate(claims, listItemLimit, offset)}
-                        localClaim={ListType.LOCAL}
-                        update={getLocalClaims}
+                        list={ paginate(claims, listItemLimit, offset) }
+                        localClaim={ ListType.LOCAL }
+                        update={ getLocalClaims }
                     />
                 </ListLayout>
             </PageLayout>

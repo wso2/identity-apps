@@ -40,19 +40,19 @@ export const EditBasicDetailsLocalClaims = (
     return (
         <>
             <Grid>
-                <Grid.Row columns={1}>
-                    <Grid.Column width={6}>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 6 }>
                         <Form>
                             <Form.Field>
                                 <label>Claim URI</label>
-                                <CopyInputField value={claim ? claim.claimURI : ""}/>
+                                <CopyInputField value={ claim ? claim.claimURI : "" }/>
                             </Form.Field>
                         </Form>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
             <Forms
-                onSubmit={(values) => {
+                onSubmit={ (values) => {
                     const data: Claim = {
                         claimURI: claim.claimURI,
                         description: values.get("description").toString(),
@@ -84,82 +84,82 @@ export const EditBasicDetailsLocalClaims = (
                             }
                         ));
                     })
-                }}
+                } }
             >
                 <Grid>
-                    <Grid.Row columns={1}>
-                        <Grid.Column width={6}>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 6 }>
                             <Field
                                 type="text"
                                 name="name"
                                 label="Name"
-                                required={true}
+                                required={ true }
                                 requiredErrorMessage="Name is required"
                                 placeholder="Enter a name for the claim"
-                                value={claim?.displayName}
+                                value={ claim?.displayName }
                             />
                             <Field
                                 type="text"
                                 name="description"
                                 label="Description"
-                                required={true}
+                                required={ true }
                                 requiredErrorMessage="Description is required"
                                 placeholder="Enter a description"
-                                value={claim?.description}
+                                value={ claim?.description }
                             />
                             <Field
                                 type="text"
                                 name="regularExpression"
                                 label="Regular Expression"
-                                required={false}
+                                required={ false }
                                 requiredErrorMessage=""
                                 placeholder="Regular expression to validate the claim"
-                                value={claim?.regEx}
+                                value={ claim?.regEx }
                             />
                             <Field
                                 type="number"
                                 min="0"
                                 name="displayOrder"
                                 label="Display Order"
-                                required={false}
+                                required={ false }
                                 requiredErrorMessage=""
                                 placeholder="Enter the display order"
-                                value={claim?.displayOrder.toString()}
+                                value={ claim?.displayOrder.toString() }
                             />
                             <Field
                                 type="checkbox"
-                                toggle={true}
+                                toggle={ true }
                                 name="supportedByDefault"
                                 label="Show on Profile"
-                                required={false}
+                                required={ false }
                                 requiredErrorMessage=""
-                                children={[{ value: "Support", label: "" }]}
-                                value={claim?.supportedByDefault ? ["Support"] : []}
+                                children={ [{ value: "Support", label: "" }] }
+                                value={ claim?.supportedByDefault ? ["Support"] : [] }
                             />
                             <Field
                                 type="checkbox"
-                                toggle={true}
+                                toggle={ true }
                                 name="required"
                                 label="Required"
-                                required={false}
+                                required={ false }
                                 requiredErrorMessage=""
-                                children={[{ value: "Required", label: "" }]}
-                                value={claim?.required ? ["Required"] : []}
+                                children={ [{ value: "Required", label: "" }] }
+                                value={ claim?.required ? ["Required"] : [] }
                             />
                             <Field
                                 type="checkbox"
-                                toggle={true}
+                                toggle={ true }
                                 name="readOnly"
                                 label="Read Only"
-                                required={false}
+                                required={ false }
                                 requiredErrorMessage=""
-                                children={[{ value: "ReadOnly", label: "" }]}
-                                value={claim?.readOnly ? ["ReadOnly"] : []}
+                                children={ [{ value: "ReadOnly", label: "" }] }
+                                value={ claim?.readOnly ? ["ReadOnly"] : [] }
                             />
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row columns={1}>
-                        <Grid.Column width={6}>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 6 }>
                             <Field
                                 type="submit"
                                 value="Update"

@@ -42,17 +42,17 @@ export const EditAdditionalPropertiesLocalClaims = (
 
     return (
         <Grid>
-            <Grid.Row columns={1}>
-                <Grid.Column width={8}>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column width={ 8 }>
                     <DynamicField
-                        data={claim.properties}
+                        data={ claim.properties }
                         keyType="text"
                         keyName="Name"
                         valueName="Value"
-                        submit={submit}
+                        submit={ submit }
                         keyRequiredMessage="Enter a name"
                         valueRequiredErrorMessage="Enter a value"
-                        update={(data) => {
+                        update={ (data) => {
                             const { id, dialectURI, ...claimData } = claim;
                             const submitData = {
                                 ...claimData,
@@ -77,16 +77,16 @@ export const EditAdditionalPropertiesLocalClaims = (
                                     }
                                 ));
                             })
-                        }}
+                        } }
                     />
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row columns={1}>
-                <Grid.Column width={6}>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column width={ 6 }>
                     <PrimaryButton
-                        onClick={() => {
+                        onClick={ () => {
                             setSubmit();
-                        }}
+                        } }
                     >
                         Update
                     </PrimaryButton>

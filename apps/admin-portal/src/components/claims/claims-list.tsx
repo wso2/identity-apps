@@ -30,7 +30,7 @@ export enum ListType {
     LOCAL,
     EXTERNAL,
     DIALECT
-};
+}
 
 interface ClaimsListPropsInterface {
     list: Claim[] | ExternalClaim[] | ClaimDialect[];
@@ -82,6 +82,12 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         </List.Content>
     );
 
+    const closeDeleteConfirm = () => {
+        setDeleteConfirm(false);
+        setDeleteID(null);
+        setDeleteType(null);
+    }
+    
     const deleteLocalClaim = (id: string) => {
         deleteAClaim(id).then(response => {
             update();
@@ -151,8 +157,8 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
     const showDeleteConfirm = (): React.ReactElement => {
         return (
             <Modal
-                open={deleteConfirm}
-                onClose={closeDeleteConfirm}
+                open={ deleteConfirm }
+                onClose={ closeDeleteConfirm }
                 size="mini"
                 dimmer="blurring"
             >
@@ -171,10 +177,10 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                     Do you want to continue deleting it?
                 </Modal.Content>
                 <Modal.Actions>
-                    <LinkButton onClick={closeDeleteConfirm}>
+                    <LinkButton onClick={ closeDeleteConfirm }>
                         Cancel
                     </LinkButton>
-                    <PrimaryButton onClick={() => {
+                    <PrimaryButton onClick={ () => {
                         switch (deleteType) {
                             case ListType.DIALECT:
                                 deleteDialect(deleteID);
@@ -186,7 +192,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                 deleteLocalClaim(deleteID);
                                 break;
                         }
-                    }}>
+                    } }>
                         Delete
                     </PrimaryButton>
                 </Modal.Actions>
@@ -200,12 +206,6 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         setDeleteConfirm(true);
     };
 
-    const closeDeleteConfirm = () => {
-        setDeleteConfirm(false);
-        setDeleteID(null);
-        setDeleteType(null);
-    }
-
     return (
         <>
             {deleteConfirm ? showDeleteConfirm() : null}
@@ -215,8 +215,8 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                         ? list?.map((claim: Claim, index: number) => {
                             return (
                                 <ResourceList.Item
-                                    key={index}
-                                    actions={[
+                                    key={ index }
+                                    actions={ [
                                         {
                                             icon: "pencil alternate",
                                             onClick: () => {
@@ -231,21 +231,21 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                             popupText: "delete",
                                             type: "dropdown"
                                         }
-                                    ]}
-                                    descriptionColumnWidth={4}
-                                    metaColumnWidth={4}
-                                    actionsColumnWidth={4}
+                                    ] }
+                                    descriptionColumnWidth={ 4 }
+                                    metaColumnWidth={ 4 }
+                                    actionsColumnWidth={ 4 }
                                     actionsFloated="right"
-                                    itemHeader={claim.displayName}
-                                    metaContent={[
+                                    itemHeader={ claim.displayName }
+                                    metaContent={ [
                                         listContent(claim.description),
                                         listContent(
                                             <CopyInputField
-                                                value={claim ? claim.claimURI : ""}
+                                                value={ claim ? claim.claimURI : "" }
                                                 className="copy-field"
                                             />
                                         )
-                                    ]}
+                                    ] }
                                 />
                             )
                         })
@@ -253,8 +253,8 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                             ? list?.map((dialect: ClaimDialect, index: number) => {
                                 return (
                                     <ResourceList.Item
-                                        key={index}
-                                        actions={[
+                                        key={ index }
+                                        actions={ [
                                             {
                                                 icon: "eye",
                                                 onClick: () => {
@@ -277,17 +277,17 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                                 popupText: "delete",
                                                 type: "dropdown"
                                             }
-                                        ]}
+                                        ] }
                                         actionsFloated="right"
-                                        itemHeader={dialect.dialectURI}
+                                        itemHeader={ dialect.dialectURI }
                                     />
                                 )
                             })
                             : list?.map((claim: ExternalClaim, index: number) => {
                                 return (
                                     <ResourceList.Item
-                                        key={index}
-                                        actions={[
+                                        key={ index }
+                                        actions={ [
                                             {
                                                 icon: "pencil alternate",
                                                 onClick: () => {
@@ -302,10 +302,10 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                                 popupText: "delete",
                                                 type: "dropdown"
                                             }
-                                        ]}
+                                        ] }
                                         actionsFloated="right"
-                                        itemHeader={claim.claimURI}
-                                        metaContent={listContent(claim.mappedLocalClaimURI)}
+                                        itemHeader={ claim.claimURI }
+                                        metaContent={ listContent(claim.mappedLocalClaimURI) }
                                     />
                                 )
                             })

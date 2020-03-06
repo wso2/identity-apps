@@ -33,11 +33,11 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
         description: string | number | React.ReactElement
     ): React.ReactElement => {
         return (
-            <Grid.Row className="summary-field" columns={2}>
-                <Grid.Column mobile={16} tablet={8} computer={7} textAlign="right">
+            <Grid.Row className="summary-field" columns={ 2 }>
+                <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                     <div className="label">{title}</div>
                 </Grid.Column>
-                <Grid.Column mobile={16} tablet={8} computer={8} textAlign="left">
+                <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                     <div className="value url">{description}</div>
                 </Grid.Column>
             </Grid.Row>
@@ -46,8 +46,8 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
 
     const generateLabels = (name: string, boolean: boolean): React.ReactElement => {
         return (
-            <Label basic color={boolean ? "olive" : "yellow"}>
-                <Icon name={boolean ? "toggle on" : "toggle off"} />
+            <Label basic color={ boolean ? "olive" : "yellow" }>
+                <Icon name={ boolean ? "toggle on" : "toggle off" } />
                 {name}
             </Label>
         )
@@ -56,7 +56,7 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
     const showClaimURI = (): React.ReactElement => {
         return (
             <Form.Field>
-                <CopyInputField value={data ? data?.claimURI : ""} />
+                <CopyInputField value={ data ? data?.claimURI : "" } />
             </Form.Field>
         )
     };
@@ -64,14 +64,14 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
     return (
         <Grid className="wizard-summary">
             <Grid.Row>
-                <Grid.Column mobile={16} tablet={16} computer={16} textAlign="center">
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                     <div className="general-details">
                         <h3>{data.displayName}</h3>
                         <div className="description">{data.displayName}</div>
                     </div>
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row columns={1}>
+            <Grid.Row columns={ 1 }>
                 <Grid.Column textAlign="center">
                     {generateLabels("Show on Profile", data.supportedByDefault)}
                     {generateLabels("Required", data.required)}
@@ -98,7 +98,7 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
                             <Table.Body>
                                 {data.attributeMapping.map((attribute: AttributeMapping, index: number) => {
                                     return (
-                                        <Table.Row key={index} columns={2}>
+                                        <Table.Row key={ index } columns={ 2 }>
                                             <Table.Cell>
                                                 {attribute.userstore}
                                             </Table.Cell>

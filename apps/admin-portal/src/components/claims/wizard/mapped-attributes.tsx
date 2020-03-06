@@ -50,11 +50,11 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): React.R
     }, [])
     return (
         <Grid>
-            <Grid.Row columns={1}>
-                <Grid.Column width={16}>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column width={ 16 }>
                     <h5>Map Attributes</h5>
                     <DynamicField
-                        data={values}
+                        data={ values }
                         keyType="dropdown"
                         keyData={
                             userStore.map(store => {
@@ -68,8 +68,8 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): React.R
                         valueName="Attribute to map to"
                         keyRequiredMessage="Please select a User Store"
                         valueRequiredErrorMessage="Please enter an attribute to map to"
-                        submit={submitState}
-                        update={(data) => {
+                        submit={ submitState }
+                        update={ (data) => {
                             if (data.length > 0) {
                                 setEmpty(false);
                                 const submitData = {
@@ -85,12 +85,12 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): React.R
                                 setEmpty(true);
                             }
 
-                        }}
-                        listen={(data: KeyValue[]) => {
+                        } }
+                        listen={ (data: KeyValue[]) => {
                             if (data.length > 0) {
                                 setEmpty(false);
                             }
-                        }}
+                        } }
                     />
                 </Grid.Column>
             </Grid.Row>
