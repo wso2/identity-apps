@@ -150,7 +150,7 @@ module.exports = (env) => {
                     exclude: /(node_modules)/
                 },
                 {
-                    test: /\.ts$/,
+                    test: /\.(ts|tsx|js|jsx)$/,
                     enforce: "pre",
                     use: [{
                         loader: 'thread-loader',
