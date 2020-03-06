@@ -37,12 +37,8 @@
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
     String username = request.getParameter("username");
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
-    String tenantDomain = null;
+    String tenantDomain = request.getParameter("tenantDomain");
 
-    if (StringUtils.isNotEmpty(username)) {
-        User user = IdentityManagementServiceUtil.getInstance().getUser(username);
-        tenantDomain = user.getTenantDomain();
-    }
     ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
     try {
         ReCaptchaProperties reCaptchaProperties = reCaptchaApi.getReCaptcha(tenantDomain, true, "ReCaptcha",
