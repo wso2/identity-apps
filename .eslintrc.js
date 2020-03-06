@@ -1,8 +1,5 @@
 module.exports = {
-    extends: [
-        "eslint:recommended",
-        "plugin:react/recommended",
-    ],
+    extends: ["eslint:recommended", "plugin:react/recommended"],
     parserOptions: {
         ecmaVersion: 9,
         sourceType: "module"
@@ -11,6 +8,10 @@ module.exports = {
         react: {
             version: "detect"
         }
+    },
+    env: {
+        browser: true,
+        node: true
     },
     rules: {
         "eol-last": "error",
