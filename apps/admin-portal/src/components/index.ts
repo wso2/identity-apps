@@ -17,6 +17,7 @@
  */
 
 export * from "./applications";
+export * from "./identityProviders";
 export * from "./page-header";
 export * from "./notification";
 export * from "./protected-route";

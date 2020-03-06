@@ -23,6 +23,7 @@ import {
     LaunchIcon,
     AngularLogo,
     AppIcon,
+    AuthenticationCapabilityIcon,
     BasicAuthIcon,
     BlockedMagnifierIcon,
     BoxIcon,
@@ -39,10 +40,13 @@ import {
     EmailOTPIcon,
     EmptySearchResultsIllustration,
     ErrorIcon,
+    FacebookIdPIcon,
     FacebookLogo,
     FIDOLogo,
     ForbiddenIcon,
     GearsIcon,
+    GithubIdPIcon,
+    GoogleIdPIcon,
     GoogleLogo,
     HomeTileIcons,
     InfoIcon,
@@ -52,6 +56,7 @@ import {
     OIDCLogo,
     OpenIDLogo,
     PlugIcon,
+    ProvisionCapabilityIcon,
     ReactLogo,
     ReportIcon,
     SamlLogo,
@@ -61,6 +66,7 @@ import {
     SpinWheelIcon,
     SuccessIcon,
     TOTPIcon,
+    TwitterIdPIcon,
     TwitterLogo,
     UserIcon,
     VueLogo,
@@ -190,4 +196,16 @@ export const AuthenticatorIcons = {
 
 export const PlaceHolderIcons = {
     drag: DragIcon
+};
+
+export const IdPIcons = {
+    facebook: FacebookIdPIcon,
+    github: GithubIdPIcon,
+    google: GoogleIdPIcon,
+    twitter: TwitterIdPIcon
+};
+
+export const IdPCapabilityIcons = {
+    authentication: AuthenticationCapabilityIcon,
+    provision: ProvisionCapabilityIcon
 };

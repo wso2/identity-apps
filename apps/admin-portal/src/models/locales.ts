@@ -50,6 +50,7 @@ export interface Common {
     goBackHome: string;
     help: string;
     hidePassword: string;
+    identityProviders: string;
     initiator: string;
     ipAddress: string;
     lastAccessed: string;

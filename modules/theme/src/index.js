@@ -121,6 +121,16 @@ export const FIDOLogo = require("../lib/assets/images/authenticators/fido.png");
 export const SMSOTPIcon = require("../lib/assets/images/authenticators/sms-otp.svg");
 export const TOTPIcon = require("../lib/assets/images/authenticators/totp.png");
 
+// Identity providers
+export const GoogleIdPIcon = require("../lib/assets/images/identity-providers/google.svg");
+export const FacebookIdPIcon = require("../lib/assets/images/identity-providers/facebook.svg");
+export const GithubIdPIcon = require("../lib/assets/images/identity-providers/github.svg");
+export const TwitterIdPIcon = require("../lib/assets/images/identity-providers/twitter.svg");
+
+// Identity provider capabilities
+export const AuthenticationCapabilityIcon = require("../lib/assets/images/identity-provider-capabilities/authentication.svg");
+export const ProvisionCapabilityIcon = require("../lib/assets/images/identity-provider-capabilities/provision.svg");
+
 /**
  * The following has been kept for backward compatibility.
  * These can be removed once the user portal is refactored.
