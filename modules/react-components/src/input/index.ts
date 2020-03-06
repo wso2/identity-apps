@@ -17,3 +17,4 @@
  */
 
 export * from "./advanced-search";
+export * from "./copy-input-field";
