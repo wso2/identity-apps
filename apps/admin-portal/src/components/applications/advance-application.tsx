@@ -69,7 +69,7 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
      */
     const handleAdvancedConfigFormSubmit = (values: any): void => {
         updateAdvanceConfigurations(appId, values)
-            .then((response) => {
+            .then(() => {
                 dispatch(addAlert({
                     description: "Successfully updated the advanced configurations.",
                     level: AlertLevels.SUCCESS,
@@ -78,7 +78,7 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
 
                 onUpdate(appId);
             })
-            .catch((error) => {
+            .catch(() => {
                 dispatch(addAlert({
                     description: "An error occurred while the advanced configurations.",
                     level: AlertLevels.ERROR,
