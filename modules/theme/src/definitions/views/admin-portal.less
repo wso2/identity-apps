@@ -34,6 +34,39 @@
             }
         }
 
+        .main-content {
+            transition: width ease-in-out 0.5s;
+        }
+
+        .authenticators-panel {
+            display: inline-block;
+
+            .drag-handle {
+                cursor: grab;
+
+                &:active, &:focus {
+                    cursor: grabbing;
+                }
+            }
+
+            .authenticators-section {
+                .ui.accordion {
+                    .title {
+                        font-size: 0.9em;
+
+                        .caret-icon {
+                            transition: transform .1s ease-in-out;
+                        }
+                        &.active {
+                            .caret-icon {
+                                transform: rotate(90deg);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         .authentication-steps-section {
             .authentication-step-container {
                 .step-header {
@@ -69,6 +102,13 @@
 
             .add-step-button {
                 padding-left: 0;
+            }
+        }
+        &.flex {
+            display: flex;
+
+            .main-content {
+                padding-right: 2em;
             }
         }
     }
