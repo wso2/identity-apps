@@ -44,6 +44,10 @@ h6.ui.header .sub.header {
         overflow: hidden;
     }
 
+    &.compact {
+        margin: 0;
+    }
+
     &.disabled {
         pointer-events: none;
         opacity: 0.20;

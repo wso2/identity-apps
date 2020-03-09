@@ -32,6 +32,10 @@ interface HeadingPropsInterface extends HeaderProps {
      * Adds intentional omission to the header when a width is defined.
      */
     ellipsis?: boolean;
+    /**
+     * Hide the margins and make the component compact.
+     */
+    compact?: boolean;
 }
 
 /**
@@ -47,6 +51,7 @@ export const Heading: React.FunctionComponent<HeadingPropsInterface> = (
     const {
         ellipsis,
         className,
+        compact,
         disabled,
         ...rest
     } = props;
@@ -54,7 +59,8 @@ export const Heading: React.FunctionComponent<HeadingPropsInterface> = (
     const classes = classNames(
         {
             ellipsis,
-            disabled
+            disabled,
+            compact
         }
         , className
     );
