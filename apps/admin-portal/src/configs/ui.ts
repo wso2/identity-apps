@@ -19,7 +19,10 @@
 import {
     AlertIcon,
     ArrowRight,
+    MaximizeIcon,
+    MinimizeIcon,
     MagnifierIcon,
+    DragSquaresIcon,
     LaunchIcon,
     AngularLogo,
     AppIcon,
@@ -33,7 +36,6 @@ import {
     CrossIcon,
     DashboardIcon,
     DocumentIcon,
-    DotIcon,
     DotNetLogo,
     DragIcon,
     DummyUser,
@@ -208,4 +210,10 @@ export const IdPIcons = {
 export const IdPCapabilityIcons = {
     authentication: AuthenticationCapabilityIcon,
     provision: ProvisionCapabilityIcon
+};
+
+export const OperationIcons = {
+    drag: DragSquaresIcon,
+    maximize: MaximizeIcon,
+    minimize: MinimizeIcon
 };
