@@ -20,10 +20,10 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, Hint, LinkButton, PrimaryButton, GenericIcon } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
-import { Divider, Grid, Icon, Card, Popup } from "semantic-ui-react";
+import { Divider, Grid, Icon, Card, Popup, Accordion } from "semantic-ui-react";
 import { getIdentityProviderDetail, getIdentityProviderList, updateAuthenticationSequence } from "../../../api";
 import {
     AuthenticationSequenceInterface,
@@ -127,6 +127,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
     const [ subjectStepId, setSubjectStepId ] = useState<number>(undefined);
     const [ attributeStepId, setAttributeStepId ] = useState<number>(undefined);
     const [ showAuthenticatorsSidePanel, setAuthenticatorsSidePanelVisibility ] = useState<boolean>(true);
+    const [ authenticatorsAccordionActiveIndexes, setAuthenticatorsAccordionActiveIndexes ] = useState<number[]>([ 0 ]);
 
     /**
      * Add Federated IDP name and ID in to the state.
@@ -500,6 +501,25 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
     };
 
     /**
+     * Handles accordion title click.
+     *
+     * @param {React.SyntheticEvent} e - Click event.
+     * @param {number} index - Clicked on index.
+     */
+    const handleAuthenticatorsAccordionOnClick = (e: SyntheticEvent, { index }: { index: number }): void => {
+        const newIndexes = [ ...authenticatorsAccordionActiveIndexes ];
+
+        if (authenticatorsAccordionActiveIndexes.includes(index)) {
+            const removingIndex = authenticatorsAccordionActiveIndexes.indexOf(index);
+            newIndexes.splice(removingIndex, 1);
+        } else {
+            newIndexes.push(index);
+        }
+
+        setAuthenticatorsAccordionActiveIndexes(newIndexes);
+    };
+
+    /**
      * Loads federated authenticators and local authenticators
      * on component load.
      */
@@ -662,29 +682,64 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                                     </Card.Content>
                                     <Card.Content>
                                         <div className="authenticators-section">
-                                            <Authenticators
-                                                authenticators={
-                                                    filterAuthenticators(AuthenticatorTypes.FIRST_FACTOR)
-                                                }
-                                                droppableId={ LOCAL_AUTHENTICATORS_DROPPABLE_ID }
-                                                heading="Local"
-                                            />
-                                            <Divider/>
-                                            <Authenticators
-                                                authenticators={
-                                                    filterAuthenticators(AuthenticatorTypes.SECOND_FACTOR)
-                                                }
-                                                droppableId={ SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID }
-                                                heading="Second factor"
-                                            />
-                                            <Divider/>
-                                            <Authenticators
-                                                authenticators={
-                                                    filterAuthenticators(AuthenticatorTypes.SOCIAL)
-                                                }
-                                                droppableId={ SOCIAL_AUTHENTICATORS_DROPPABLE_ID }
-                                                heading="Social logins"
-                                            />
+                                            <Accordion>
+                                                <Accordion.Title
+                                                    active={ authenticatorsAccordionActiveIndexes.includes(0) }
+                                                    index={ 0 }
+                                                    onClick={ handleAuthenticatorsAccordionOnClick }
+                                                >
+                                                    <div className="inline floated right" >
+                                                        <Icon name="angle right" className="caret-icon" />
+                                                    </div>
+                                                    Local
+                                                </Accordion.Title>
+                                                <Accordion.Content active={ authenticatorsAccordionActiveIndexes.includes(0) }>
+                                                    <Authenticators
+                                                        authenticators={
+                                                            filterAuthenticators(AuthenticatorTypes.FIRST_FACTOR)
+                                                        }
+                                                        droppableId={ LOCAL_AUTHENTICATORS_DROPPABLE_ID }
+                                                    />
+                                                </Accordion.Content>
+
+                                                <Accordion.Title
+                                                    active={ authenticatorsAccordionActiveIndexes.includes(1) }
+                                                    index={ 1 }
+                                                    onClick={ handleAuthenticatorsAccordionOnClick }
+                                                >
+                                                    <div className="inline floated right" >
+                                                        <Icon name="angle right" className="caret-icon" />
+                                                    </div>
+                                                    Second factor
+                                                </Accordion.Title>
+                                                <Accordion.Content active={ authenticatorsAccordionActiveIndexes.includes(1) }>
+                                                    <Authenticators
+                                                        authenticators={
+                                                            filterAuthenticators(AuthenticatorTypes.SECOND_FACTOR)
+                                                        }
+                                                        droppableId={ SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID }
+                                                    />
+                                                </Accordion.Content>
+
+                                                <Accordion.Title
+                                                    active={ authenticatorsAccordionActiveIndexes.includes(2) }
+                                                    index={ 2 }
+                                                    onClick={ handleAuthenticatorsAccordionOnClick }
+                                                >
+                                                    <div className="inline floated right" >
+                                                        <Icon name="angle right" className="caret-icon" />
+                                                    </div>
+                                                    Social logins
+                                                </Accordion.Title>
+                                                <Accordion.Content active={ authenticatorsAccordionActiveIndexes.includes(2) }>
+                                                    <Authenticators
+                                                        authenticators={
+                                                            filterAuthenticators(AuthenticatorTypes.SOCIAL)
+                                                        }
+                                                        droppableId={ SOCIAL_AUTHENTICATORS_DROPPABLE_ID }
+                                                    />
+                                                </Accordion.Content>
+                                            </Accordion>
                                         </div>
                                     </Card.Content>
                                 </Card>

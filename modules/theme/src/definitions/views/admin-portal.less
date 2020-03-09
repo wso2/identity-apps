@@ -48,6 +48,23 @@
                     cursor: grabbing;
                 }
             }
+
+            .authenticators-section {
+                .ui.accordion {
+                    .title {
+                        font-size: 0.9em;
+
+                        .caret-icon {
+                            transition: transform .1s ease-in-out;
+                        }
+                        &.active {
+                            .caret-icon {
+                                transform: rotate(90deg);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         .authentication-steps-section {
