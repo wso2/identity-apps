@@ -131,7 +131,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         (authenticators && authenticators instanceof Array && authenticators.length > 0)
             ? (
                 <>
-                    <Heading as="h6">{ heading }</Heading>
+                    { heading && <Heading as="h6">{ heading }</Heading> }
                     <Droppable droppableId={ droppableId } direction="horizontal" isDropDisabled={ isDropDisabled }>
                         { (provided: DroppableProvided): React.ReactElement<HTMLElement> => (
                             <div ref={ provided.innerRef } { ...provided.droppableProps } className={ classes }>
