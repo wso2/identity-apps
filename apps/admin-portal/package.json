@@ -43,6 +43,7 @@
         "lodash": "*",
         "log": "*",
         "react-beautiful-dnd": "*",
+        "react-draggable": "*",
         "react-i18next": "*",
         "react-notification-system": "*",
         "react-redux": "*",
