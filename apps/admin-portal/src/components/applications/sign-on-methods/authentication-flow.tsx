@@ -18,12 +18,12 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { Heading, Hint, LinkButton, PrimaryButton, GenericIcon } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
-import { Divider, Grid, Icon } from "semantic-ui-react";
+import { Divider, Grid, Icon, Card, Popup } from "semantic-ui-react";
 import { getIdentityProviderDetail, getIdentityProviderList, updateAuthenticationSequence } from "../../../api";
 import {
     AuthenticationSequenceInterface,
@@ -43,6 +43,8 @@ import {
 } from "../meta";
 import { Authenticators } from "./authenticators";
 import { AuthenticationStep } from "./authentication-step";
+import Draggable from "react-draggable";
+import { OperationIcons } from "../../../configs";
 
 /**
  * Proptypes for the applications settings component.
@@ -116,11 +118,15 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
 
     const dispatch = useDispatch();
 
+    const authenticatorsSidePanelRef = useRef<HTMLDivElement>(null);
+    const mainContentRef = useRef<HTMLDivElement>(null);
+
     const [ federatedAuthenticators, setFederatedAuthenticators ] = useState<AuthenticatorListItemInterface[]>([]);
     const [ localAuthenticators, setLocalAuthenticators ] = useState<AuthenticatorListItemInterface[]>([]);
     const [ authenticationSteps, setAuthenticationSteps ] = useState<AuthenticationStepInterface[]>([]);
     const [ subjectStepId, setSubjectStepId ] = useState<number>(undefined);
     const [ attributeStepId, setAttributeStepId ] = useState<number>(undefined);
+    const [ showAuthenticatorsSidePanel, setAuthenticatorsSidePanelVisibility ] = useState<boolean>(true);
 
     /**
      * Add Federated IDP name and ID in to the state.
@@ -487,6 +493,13 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
     };
 
     /**
+     * Toggles the authenticator side panel visibility.
+     */
+    const toggleAuthenticatorsSidePanelVisibility = (): void => {
+        setAuthenticatorsSidePanelVisibility(!showAuthenticatorsSidePanel);
+    };
+
+    /**
      * Loads federated authenticators and local authenticators
      * on component load.
      */
@@ -509,26 +522,146 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
         setAttributeStepId(authenticationSequence?.attributeStepId);
     }, [ authenticationSequence ]);
 
-    return (
-        <div className="authentication-flow-section">
-            <Grid>
-                <Grid.Row>
-                    <Grid.Column computer={ 16 }>
-                        <Heading as="h4">Authentication flow</Heading>
-                        <Hint>
-                            Create authentication steps by dragging the local/federated authenticators on to the
-                            relevant steps.
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
+    /**
+     * Triggered on `showAuthenticatorsSidePanel` change.
+     */
+    useEffect(() => {
+        let width = "100%";
 
-                <DragDropContext onDragEnd={ handleAuthenticatorDrag }>
-                    <Grid.Row>
-                        <Grid.Column computer={ 16 }>
-                            <div className="authenticators-section">
-                                <Grid>
-                                    <Grid.Row columns={ 2 }>
-                                        <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 5 }>
+        if (showAuthenticatorsSidePanel) {
+            width = `calc(100% - ${ authenticatorsSidePanelRef?.current?.clientWidth }px)`;
+        }
+
+        mainContentRef.current.style.width = width;
+    }, [ showAuthenticatorsSidePanel ]);
+
+    return (
+        <div className={ `authentication-flow-section ${ showAuthenticatorsSidePanel ? "flex" : "" }` }>
+            <DragDropContext onDragEnd={ handleAuthenticatorDrag }>
+                <div className="main-content" ref={ mainContentRef }>
+                    <Grid>
+                        <Grid.Row>
+                            <Grid.Column computer={ showAuthenticatorsSidePanel ? 16 : 14 }>
+                                <Heading as="h4">Authentication flow</Heading>
+                                <Hint>
+                                    Create authentication steps by dragging the local/federated authenticators on to the
+                                    relevant steps.
+                                </Hint>
+                            </Grid.Column>
+                            {
+                                !showAuthenticatorsSidePanel && (
+                                    <Grid.Column computer={ 2 }>
+                                        <Card>
+                                            <Card.Content>
+                                                <Heading as="h6" floated="left" compact>Authenticators</Heading>
+                                                <Popup
+                                                    trigger={ (
+                                                        <div
+                                                            className="inline floated right mt-1"
+                                                            onClick={ toggleAuthenticatorsSidePanelVisibility }
+                                                        >
+                                                            <GenericIcon
+                                                                icon={
+                                                                    showAuthenticatorsSidePanel
+                                                                        ? OperationIcons.minimize
+                                                                        : OperationIcons.maximize
+                                                                }
+                                                                size="nano"
+                                                                transparent
+                                                            />
+                                                        </div>
+                                                    ) }
+                                                    position="top center"
+                                                    content="maximize"
+                                                    inverted
+                                                />
+                                            </Card.Content>
+                                        </Card>
+                                    </Grid.Column>
+                                )
+                            }
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column computer={ 16 }>
+                                <div className="authentication-steps-section">
+                                    {
+                                        authenticationSteps
+                                        && authenticationSteps instanceof Array
+                                        && authenticationSteps.length > 0
+                                            ? authenticationSteps.map((step, stepIndex) => (
+                                                <AuthenticationStep
+                                                    key={ stepIndex }
+                                                    authenticators={ [ ...localAuthenticators, ...federatedAuthenticators ] }
+                                                    attributeStepId={ attributeStepId }
+                                                    droppableId={ AUTHENTICATION_STEP_DROPPABLE_ID + stepIndex }
+                                                    onAttributeCheckboxChange={ handleAttributeCheckboxChange }
+                                                    onStepDelete={ handleStepDelete }
+                                                    onStepOptionDelete={ handleStepOptionDelete }
+                                                    onSubjectCheckboxChange={ handleSubjectCheckboxChange }
+                                                    step={ step }
+                                                    stepIndex={ stepIndex }
+                                                    subjectStepId={ subjectStepId }
+                                                />
+                                            ))
+                                            : null
+                                    }
+                                    <Divider hidden/>
+                                    <LinkButton className="add-step-button" onClick={ handleAuthenticationStepAdd }>
+                                        <Icon name="plus"/>Add authentication step
+                                    </LinkButton>
+                                    <Divider hidden/>
+                                    <PrimaryButton onClick={ handleAuthenticationFlowUpdate }>Update</PrimaryButton>
+                                </div>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </div>
+                {
+                    showAuthenticatorsSidePanel && (
+                        <div className="authenticators-panel" ref={ authenticatorsSidePanelRef }>
+                            <Draggable handle=".drag-handle">
+                                <Card>
+                                    <Card.Content>
+                                        <Heading as="h6" floated="left" compact>Authenticators</Heading>
+                                        <Popup
+                                            trigger={ (
+                                                <div className="inline floated right mt-1">
+                                                    <GenericIcon
+                                                        className="drag-handle"
+                                                        icon={ OperationIcons.drag }
+                                                        size="nano"
+                                                        transparent
+                                                    />
+                                                </div>
+                                            ) }
+                                            position="top center"
+                                            content="drag"
+                                            inverted
+                                        />
+                                        <Popup
+                                            trigger={ (
+                                                <div
+                                                    className="inline floated right mr-2 mt-1"
+                                                    onClick={ toggleAuthenticatorsSidePanelVisibility }
+                                                >
+                                                    <GenericIcon
+                                                        icon={
+                                                            showAuthenticatorsSidePanel
+                                                                ? OperationIcons.minimize
+                                                                : OperationIcons.maximize
+                                                        }
+                                                        size="nano"
+                                                        transparent
+                                                    />
+                                                </div>
+                                            ) }
+                                            position="top center"
+                                            content="minimize"
+                                            inverted
+                                        />
+                                    </Card.Content>
+                                    <Card.Content>
+                                        <div className="authenticators-section">
                                             <Authenticators
                                                 authenticators={
                                                     filterAuthenticators(AuthenticatorTypes.FIRST_FACTOR)
@@ -536,8 +669,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                                                 droppableId={ LOCAL_AUTHENTICATORS_DROPPABLE_ID }
                                                 heading="Local"
                                             />
-                                        </Grid.Column>
-                                        <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 5 }>
+                                            <Divider/>
                                             <Authenticators
                                                 authenticators={
                                                     filterAuthenticators(AuthenticatorTypes.SECOND_FACTOR)
@@ -545,8 +677,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                                                 droppableId={ SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID }
                                                 heading="Second factor"
                                             />
-                                        </Grid.Column>
-                                        <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 5 }>
+                                            <Divider/>
                                             <Authenticators
                                                 authenticators={
                                                     filterAuthenticators(AuthenticatorTypes.SOCIAL)
@@ -554,48 +685,14 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                                                 droppableId={ SOCIAL_AUTHENTICATORS_DROPPABLE_ID }
                                                 heading="Social logins"
                                             />
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            </div>
-                        </Grid.Column>
-                    </Grid.Row>
-
-                    <Grid.Row>
-                        <Grid.Column computer={ 16 }>
-                            <div className="authentication-steps-section">
-                                {
-                                    authenticationSteps
-                                    && authenticationSteps instanceof Array
-                                    && authenticationSteps.length > 0
-                                        ? authenticationSteps.map((step, stepIndex) => (
-                                            <AuthenticationStep
-                                                key={ stepIndex }
-                                                authenticators={ [ ...localAuthenticators, ...federatedAuthenticators ] }
-                                                attributeStepId={ attributeStepId }
-                                                droppableId={ AUTHENTICATION_STEP_DROPPABLE_ID + stepIndex }
-                                                onAttributeCheckboxChange={ handleAttributeCheckboxChange }
-                                                onStepDelete={ handleStepDelete }
-                                                onStepOptionDelete={ handleStepOptionDelete }
-                                                onSubjectCheckboxChange={ handleSubjectCheckboxChange }
-                                                step={ step }
-                                                stepIndex={ stepIndex }
-                                                subjectStepId={ subjectStepId }
-                                            />
-                                        ))
-                                        : null
-                                }
-                                <Divider hidden/>
-                                <LinkButton className="add-step-button" onClick={ handleAuthenticationStepAdd }>
-                                    <Icon name="plus"/>Add authentication step
-                                </LinkButton>
-                                <Divider hidden/>
-                                <PrimaryButton onClick={ handleAuthenticationFlowUpdate }>Update</PrimaryButton>
-                            </div>
-                        </Grid.Column>
-                    </Grid.Row>
-                </DragDropContext>
-            </Grid>
+                                        </div>
+                                    </Card.Content>
+                                </Card>
+                            </Draggable>
+                        </div>
+                    )
+                }
+            </DragDropContext>
         </div>
     );
 };

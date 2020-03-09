@@ -22,6 +22,8 @@
 
 @import (multiple) '../../wso2.config';
 
+@spacer: 1rem;
+
 each(range(5), {
     .ui.divider.hidden.x@{value} {
         margin: (@value * 1rem) 0rem;
@@ -50,6 +52,65 @@ body {
         .user-image {
             width: 100px !important;
         }
+    }
+}
+
+/*****************************************
+         Global Helper Classes
+*****************************************/
+
+.inline {
+    display: inline-block;
+}
+
+.floated {
+    &.right {
+        float: right;
+    }
+    &.left {
+        float: left;
+    }
+}
+
+.mr {
+    &-0 {
+        margin-right: 0 !important;
+    }
+    &-1 {
+        margin-right: @spacer * 0.25 !important;
+    }
+    &-2 {
+        margin-right: @spacer * 0.5 !important;
+    }
+    &-3 {
+        margin-right: @spacer !important;
+    }
+    &-4 {
+        margin-right: @spacer * 1.5 !important;
+    }
+    &-5 {
+        margin-right: @spacer * 3 !important;
+    }
+}
+
+.mt {
+    &-0 {
+        margin-top: 0 !important;
+    }
+    &-1 {
+        margin-top: @spacer * 0.25 !important;
+    }
+    &-2 {
+        margin-top: @spacer * 0.5 !important;
+    }
+    &-3 {
+        margin-top: @spacer !important;
+    }
+    &-4 {
+        margin-top: @spacer * 1.5 !important;
+    }
+    &-5 {
+        margin-top: @spacer * 3 !important;
     }
 }
 
