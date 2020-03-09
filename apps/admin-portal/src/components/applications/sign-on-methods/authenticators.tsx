@@ -18,10 +18,17 @@
 
 import { Heading, LabeledCard } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, { FunctionComponent } from "react";
+import React, {
+    FunctionComponent,
+    PropsWithChildren,
+    ReactElement,
+    ReactPortal
+} from "react";
+import ReactDOM from "react-dom";
 import {
     Draggable,
     DraggableProvided,
+    DraggableStateSnapshot,
     Droppable,
     DroppableProvided
 } from "react-beautiful-dnd";
@@ -57,6 +64,15 @@ interface AuthenticatorsPropsInterface {
     isLoading?: boolean;
 }
 
+const portal: HTMLElement = document.createElement("div");
+portal.classList.add("draggable-portal");
+
+if (!document.body) {
+    throw new Error("document body is not ready for portal creation!");
+}
+
+document.body.appendChild(portal);
+
 /**
  * Component to render the list of authenticators.
  *
@@ -77,6 +93,40 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 
     const classes = classNames("authenticators", className);
 
+    /**
+     * Add a wrapper portal so that the `transform` attributes in the parent
+     * component won't affect the draggable position.
+     *
+     * @see {@link https://github.com/atlassian/react-beautiful-dnd/issues/128)}
+     * @param {React.PropsWithChildren<{provided: DraggableProvided; snapshot: DraggableStateSnapshot}>} props
+     * @return {React.ReactElement | React.ReactPortal}
+     */
+    const PortalAwareDraggable = (
+        props: PropsWithChildren<{ provided: DraggableProvided; snapshot: DraggableStateSnapshot}>
+    ): ReactElement | ReactPortal => {
+
+        const { children, provided, snapshot } = props;
+
+        const usePortal: boolean = snapshot.isDragging;
+
+        const child: ReactElement = (
+            <div
+                ref={ provided.innerRef }
+                { ...provided.draggableProps }
+                { ...provided.dragHandleProps }
+            >
+                { children }
+            </div>
+        );
+
+        if (!usePortal) {
+            return child;
+        }
+
+        // if dragging - put the item in a portal.
+        return ReactDOM.createPortal(child, portal);
+    };
+
     return (
         (authenticators && authenticators instanceof Array && authenticators.length > 0)
             ? (
@@ -92,18 +142,21 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                         index={ index }
                                     >
                                         {
-                                            (providedDraggable: DraggableProvided): React.ReactElement<HTMLElement> => (
-                                                <div
-                                                    ref={ providedDraggable.innerRef }
-                                                    { ...providedDraggable.draggableProps }
-                                                    { ...providedDraggable.dragHandleProps }
+                                            (
+                                                draggableProvided: DraggableProvided,
+                                                draggableSnapshot: DraggableStateSnapshot
+                                            ): React.ReactElement<HTMLElement> => (
+                                                <PortalAwareDraggable
+                                                    provided={ draggableProvided }
+                                                    snapshot={ draggableSnapshot }
                                                 >
                                                     <LabeledCard
                                                         image={ authenticator.image }
                                                         label={ authenticator.displayName }
                                                     />
-                                                </div>
-                                            ) }
+                                                </PortalAwareDraggable>
+                                            )
+                                        }
                                     </Draggable>
                                 ))
                                 }
