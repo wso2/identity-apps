@@ -35,7 +35,7 @@ export const EditMappedAttributesLocalClaims = (
 ): React.ReactElement => {
 
     const [userStore, setUserStore] = useState([]);
-    const [empty, setEmpty]=useState(false);
+    const [empty, setEmpty] = useState(false);
 
     const { claim, update } = props;
     const dispatch = useDispatch();
@@ -87,7 +87,7 @@ export const EditMappedAttributesLocalClaims = (
                         update={ (data) => {
                             if (data.length > 0) {
                                 setEmpty(false);
-                                const claimData = claim;
+                                const claimData = { ...claim };
                                 delete claimData.id;
                                 delete claimData.dialectURI;
                                 const submitData: Claim = {
@@ -140,7 +140,7 @@ export const EditMappedAttributesLocalClaims = (
                         </Grid.Column>
                     </Grid.Row>
                 )
-                :null
+                    : null
             }
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 8 }>
