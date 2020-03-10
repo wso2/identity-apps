@@ -28,6 +28,7 @@ export class EncodeDecodeUtils {
      *
      * @hideconstructor
      */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
     /**
@@ -38,7 +39,7 @@ export class EncodeDecodeUtils {
      * @param {string} separator - Characters to use in separating the string.
      * @return {string[]} An array of URLs.
      */
-    public static decodeURLRegex(raw: string, separator: string = ","): string[] {
+    public static decodeURLRegex(raw: string, separator = ","): string[] {
         if (!this.isRegexURL(raw)) {
             return raw.split(separator);
         }
