@@ -135,14 +135,14 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
                             ? (
                                 metaContent?.map((content,index) => {
                                     return (
-                                        <Grid.Column key={index} width={metaColumnWidth} verticalAlign="middle">
+                                        <Grid.Column key={ index } width={ metaColumnWidth } verticalAlign="middle">
                                             <List.Content>{content}</List.Content>
                                         </Grid.Column>
                                     )
                                 })
                             )
                             : (
-                                <Grid.Column width={metaColumnWidth} verticalAlign="middle">
+                                <Grid.Column width={ metaColumnWidth } verticalAlign="middle">
                                     <List.Content>{metaContent}</List.Content>
                                 </Grid.Column>
                             )
