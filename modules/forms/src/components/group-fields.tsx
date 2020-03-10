@@ -17,8 +17,6 @@
  */
 
 import React from "react";
-import { Field, GroupFields, InnerField } from "../components";
-import { FormField, FormValue } from "../models";
 
 /**
  * prop types for the Group component
