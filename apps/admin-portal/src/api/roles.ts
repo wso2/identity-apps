@@ -59,7 +59,7 @@ export const getGroupsList = (domain: string): Promise<any> => {
  * 
  * @param searchData - search query data
  */
-export const searchRoleList = (searchData: SearchRoleInterface): Promise<RoleListInterface> => {
+export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> => {
     const requestConfig = {
         data: searchData,
         headers: {
@@ -71,7 +71,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<RoleLis
     };
 
     return httpClient.request(requestConfig).then((response) => {
-        return Promise.resolve(response.data as RoleListInterface);
+        return Promise.resolve(response);
     }).catch((error) => {
         return Promise.reject(error)
     })
