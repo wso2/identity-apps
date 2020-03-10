@@ -29,9 +29,7 @@ import { errorLayoutRoutes } from "../configs";
  * @return {JSX.Element}
  * @constructor
  */
-export const ErrorPageLayout: React.FunctionComponent<PropsWithChildren<{}>> = (
-    props: PropsWithChildren<{}>
-): JSX.Element => {
+export const ErrorPageLayout: React.FunctionComponent<PropsWithChildren<{}>> = (): JSX.Element => {
 
     return (
         <Container className="layout-content error-page-layout">

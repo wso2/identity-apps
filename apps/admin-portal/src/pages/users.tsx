@@ -165,11 +165,6 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
             });
     };
 
-    const options = [
-        { key: "import", icon: "download", text: "Import users", value: "import" },
-        { key: "export", icon: "upload", text: "Export users", value: "export" },
-    ];
-
     return (
         <PageLayout
             title="Users page"

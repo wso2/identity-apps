@@ -39,6 +39,7 @@ export const UserEditPage = (): JSX.Element => {
      * Dispatches the alert object to the redux store.
      * @param {AlertInterface} alert - Alert object.
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert(alert));
     };
@@ -52,6 +53,7 @@ export const UserEditPage = (): JSX.Element => {
             .then((response) => {
                 setUserProfile(response);
             })
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             .catch((error) => {
                 // TODO add to notifications
             });

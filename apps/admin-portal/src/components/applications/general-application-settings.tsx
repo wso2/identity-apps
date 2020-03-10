@@ -97,7 +97,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
      */
     const handleApplicationDelete = (): void => {
         deleteApplication(appId)
-            .then((response) => {
+            .then(() => {
                 dispatch(addAlert({
                     description: "Successfully deleted the application",
                     level: AlertLevels.SUCCESS,
@@ -132,7 +132,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
      */
     const handleFormSubmit = (updatedDetails: ApplicationInterface): void => {
         updateApplicationDetails(updatedDetails)
-            .then((response) => {
+            .then(() => {
                 dispatch(addAlert({
                     description: "Successfully updated the application",
                     level: AlertLevels.SUCCESS,

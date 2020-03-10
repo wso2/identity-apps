@@ -88,7 +88,7 @@ export const UserRoles = (): ReactElement => {
      * @param id - Role ID which needs to be deleted
      */
     const handleOnDelete = (id: string): void => {
-        deleteSelectedRole(id).then((response) => {
+        deleteSelectedRole(id).then(() => {
             handleAlerts({
                 description: t(
                     "views:components.roles.notifications.deleteRole.success.description"
