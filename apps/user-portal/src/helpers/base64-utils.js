@@ -16,6 +16,8 @@
  * under the License.
  */
 
+ /* eslint-disable no-undef */
+
 const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 
 /**

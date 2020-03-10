@@ -37,10 +37,6 @@ export const UserSessionsWidget: FunctionComponent<{}> = (): JSX.Element => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        getUserSessions();
-    }, []);
-
     /**
      * Retrieves the user sessions.
      */
@@ -94,6 +90,10 @@ export const UserSessionsWidget: FunctionComponent<{}> = (): JSX.Element => {
                 );
             });
     };
+    
+    useEffect(() => {
+        getUserSessions();
+    }, []);
 
     /**
      * Navigates to the Security page.

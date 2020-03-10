@@ -58,21 +58,6 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
     const { t } = useTranslation();
 
     /**
-     * Fetches the applications list on component mount.
-     */
-    useEffect(() => {
-        getApplications(null, null, null);
-    }, []);
-
-    /**
-     * Trigger the recent application populate method when
-     * the applications array changes.
-     */
-    useEffect(() => {
-        populateRecentApplications();
-    }, [ applications ]);
-
-    /**
      * Fetches the list of applications from the API.
      *
      * @param {number} limit - Results limit.
@@ -125,6 +110,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
         );
 
         // Check if the current logged in user already has an entry in the settings.
+        // eslint-disable-next-line no-prototype-builtins
         if (!applicationSettings || !applicationSettings.hasOwnProperty(username)) {
             return;
         }
@@ -148,6 +134,21 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
     };
 
     /**
+     * Fetches the applications list on component mount.
+     */
+    useEffect(() => {
+        getApplications(null, null, null);
+    }, []);
+
+    /**
+     * Trigger the recent application populate method when
+     * the applications array changes.
+     */
+    useEffect(() => {
+        populateRecentApplications();
+    }, [applications]);
+
+    /**
      * Updates the recent applications list.
      *
      * @param {string} id - Id of the accessed application.
@@ -159,6 +160,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
         );
 
         // Check if the current logged in user already has an entry in the settings.
+        // eslint-disable-next-line no-prototype-builtins
         if (applicationSettings && applicationSettings.hasOwnProperty(username)) {
             if (applicationSettings[username].recentApplications
                 && applicationSettings[username].recentApplications.length
@@ -190,6 +192,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
 
         // If `applicationSettings` doesn't have the logged in user's entry,
         // create a new one.
+        // eslint-disable-next-line no-prototype-builtins
         if (!applicationSettings.hasOwnProperty(username)) {
             applicationSettings[username] = emptyStorageApplicationSettingsItem();
         }

@@ -57,6 +57,14 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
         }
     }, []);
 
+    const setMobileNo = (response) => {
+        let mobileNumber = "";
+        response.phoneNumbers.map((mobileNo) => {
+            mobileNumber = mobileNo.value;
+        });
+        setMobile(mobileNumber);
+    };
+
     useEffect(() => {
         if (!isEmpty(profileInfo)) {
             setMobileNo(profileInfo);
@@ -84,7 +92,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
         };
 
         updateProfileInfo(data)
-            .then((response) => {
+            .then(() => {
                 onAlertFired({
                     description: t(
                         "views:components.mfa.smsOtp.notifications.updateMobile.success.description"
@@ -124,14 +132,6 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                     )
                 });
             });
-    };
-
-    const setMobileNo = (response) => {
-        let mobileNumber = "";
-        response.phoneNumbers.map((mobileNo) => {
-            mobileNumber = mobileNo.value;
-        });
-        setMobile(mobileNumber);
     };
 
     const handleEdit = () => {

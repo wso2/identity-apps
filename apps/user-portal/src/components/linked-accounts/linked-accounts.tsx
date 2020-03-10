@@ -22,7 +22,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
     addAccountAssociation,
-    removeAllLinkedAccounts,
     removeLinkedAccount,
     switchAccount
 } from "../../api";
@@ -241,57 +240,6 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                     level: AlertLevels.ERROR,
                     message: t(
                         "views:components.linkedAccounts.notifications.removeAssociation.genericError.message"
-                    ),
-                });
-            });
-    };
-
-    /**
-     * Handles remove all linked accounts action.
-     *
-     * @remarks
-     * This feature has been temporarily removed.
-     * See {@link removeAllLinkedAccounts()} function for more details.
-     */
-    const handleAllLinkedAccountsRemove = () => {
-        removeAllLinkedAccounts()
-            .then(() => {
-                onAlertFired({
-                    description: t(
-                        "views:components.linkedAccounts.notifications.removeAllAssociations.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "views:components.linkedAccounts.notifications.removeAllAssociations.success.message"
-                    )
-                });
-
-                // Re-fetch the linked accounts list.
-                dispatch(getProfileLinkedAccounts());
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.detail) {
-                    onAlertFired({
-                        description: t(
-                            "views:components.linkedAccounts.notifications.removeAllAssociations.error.description",
-                            { description: error.response.data.detail }
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "views:components.linkedAccounts.notifications.removeAllAssociations.error.message"
-                        ),
-                    });
-
-                    return;
-                }
-
-                onAlertFired({
-                    description: t(
-                        "views:components.linkedAccounts.notifications.removeAllAssociations.genericError.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t(
-                        "views:components.linkedAccounts.notifications.removeAllAssociations.genericError.message"
                     ),
                 });
             });

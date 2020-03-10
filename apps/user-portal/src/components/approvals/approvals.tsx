@@ -61,27 +61,6 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
     const { t } = useTranslation();
 
     /**
-     * Updates the pending approvals list on change.
-     */
-    useEffect(() => {
-        setApprovals(approvals);
-    }, [approvals]);
-
-    /**
-     * Updates the approval list when the filter criteria changes.
-     */
-    useEffect(() => {
-        getApprovals(false);
-    }, [filterStatus]);
-
-    /**
-     * Updates the approvals list when the pagination buttons are being clicked.
-     */
-    useEffect(() => {
-        getApprovals(false);
-    }, [pagination]);
-
-    /**
      * Fetches the list of pending approvals from the API.
      *
      * @remarks
@@ -91,7 +70,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
      *
      * @param {boolean} shallowUpdate - A flag to specify if only the statuses should be updated.
      */
-    const getApprovals = (shallowUpdate: boolean = false): void => {
+    const getApprovals = (shallowUpdate = false): void => {
         fetchPendingApprovals(
             pagination[filterStatus]
                 ? UIConstants.SETTINGS_SECTION_LIST_ITEMS_MAX_COUNT
@@ -152,6 +131,27 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
     };
 
     /**
+      * Updates the pending approvals list on change.
+      */
+    useEffect(() => {
+        setApprovals(approvals);
+    }, [approvals]);
+
+    /**
+     * Updates the approval list when the filter criteria changes.
+     */
+    useEffect(() => {
+        getApprovals(false);
+    }, [filterStatus]);
+
+    /**
+     * Updates the approvals list when the pagination buttons are being clicked.
+     */
+    useEffect(() => {
+        getApprovals(false);
+    }, [pagination]);
+
+    /**
      * Fetches the pending approval details from the API for the once
      * that are in the expanded state and updates the state.
      */
@@ -175,6 +175,24 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
     };
 
     /**
+     *
+     * @param {string} id
+     */
+    const removeApprovalsListIndex = (id: string): boolean => {
+        const indexes = [...approvalsListActiveIndexes];
+
+        if (approvalsListActiveIndexes.includes(id)) {
+            const removingIndex = approvalsListActiveIndexes.indexOf(id);
+            if (removingIndex !== -1) {
+                indexes.splice(removingIndex, 1);
+            }
+            setApprovalsListActiveIndexes(indexes);
+            return true;
+        }
+        return false;
+    };
+
+    /**
      * Updates the approvals status.
      *
      * @param {string} id - ID of the approval.
@@ -186,7 +204,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
         status: ApprovalStatus.CLAIM | ApprovalStatus.RELEASE | ApprovalStatus.APPROVE | ApprovalStatus.REJECT
     ): void => {
         updatePendingApprovalStatus(id, status)
-            .then((response) => {
+            .then(() => {
                 getApprovals(true);
                 updateApprovalDetails();
                 removeApprovalsListIndex(id);
@@ -217,24 +235,6 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                     )
                 });
             });
-    };
-
-    /**
-     *
-     * @param {string} id
-     */
-    const removeApprovalsListIndex = (id: string): boolean => {
-        const indexes = [...approvalsListActiveIndexes];
-
-        if (approvalsListActiveIndexes.includes(id)) {
-            const removingIndex = approvalsListActiveIndexes.indexOf(id);
-            if (removingIndex !== -1) {
-                indexes.splice(removingIndex, 1);
-            }
-            setApprovalsListActiveIndexes(indexes);
-            return true;
-        }
-        return false;
     };
 
     /**

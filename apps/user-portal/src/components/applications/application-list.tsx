@@ -19,7 +19,7 @@
 import React, { Fragment, FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations, GlobalConfig } from "../../configs";
+import { EmptyPlaceholderIllustrations } from "../../configs";
 import { Application } from "../../models";
 import { EmptyPlaceholder } from "../shared";
 import { ApplicationListItem } from "./application-list-item";

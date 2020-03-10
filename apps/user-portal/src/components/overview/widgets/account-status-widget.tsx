@@ -36,6 +36,15 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
     const profileCompletion: ProfileCompletion = useSelector((state: AppState) => state.profile.completion);
 
     /**
+     * Return the profile completion percentage.
+     *
+     * @return {number}
+     */
+    const getProfileCompletionPercentage = (): number => {
+        return profileCompletion && profileCompletion.percentage ? profileCompletion.percentage : 0;
+    };
+
+    /**
      * Get the profile status based on the profile completion percentage.
      *
      * @return {ProfileCompletionStatus}
@@ -51,15 +60,6 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
         }
 
         return ProfileCompletionStatus.SUCCESS;
-    };
-
-    /**
-     * Return the profile completion percentage.
-     *
-     * @return {number}
-     */
-    const getProfileCompletionPercentage = (): number => {
-        return profileCompletion && profileCompletion.percentage ? profileCompletion.percentage : 0;
     };
 
     /**

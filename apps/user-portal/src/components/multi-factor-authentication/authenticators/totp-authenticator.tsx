@@ -106,6 +106,112 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
     };
 
     /**
+     * This renders the QR code page
+     */
+    const renderQRCode = (): JSX.Element => {
+        return (
+            <>
+                <Segment textAlign="center" basic>
+                    <QRCode value={ qrCode } />
+                    <Divider hidden />
+                    <p className="link" onClick={ refreshCode }>{t(translateKey + "modals.scan.generate")}</p>
+                </Segment>
+                <Message info>
+                    <Message.Header>{t(translateKey + "modals.scan.messageHeading")}</Message.Header>
+                    <Message.Content>
+                        {t(translateKey + "modals.scan.messageBody") + " "}
+                        <a
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            href="https://www.g2.com/categories/multi-factor-authentication-mfa"
+                        >
+                            {t(translateKey + "modals.scan.authenticatorApps")}
+                        </a>
+                    </Message.Content>
+                </Message>
+            </>
+        );
+    };
+
+    /**
+     * This renders the code verification content
+     */
+    const renderVerifyCode = (): JSX.Element => {
+        return (
+            <>
+                <Forms
+                    onSubmit={ (values: Map<string, string>) => {
+                        verifyCode(values.get("code"));
+                    } }
+                    submitState={ submit }
+                >
+                    <Field
+                        name="code"
+                        label={ t(translateKey + "modals.verify.label") }
+                        placeholder={ t(translateKey + "modals.verify.placeholder") }
+                        type="text"
+                        required={ true }
+                        requiredErrorMessage={ t(translateKey + "modals.verify.requiredError") }
+                    />
+                </Forms>
+                {
+                    error
+                        ? (
+
+                            <>
+                                <Message error>{t(translateKey + "modals.verify.error")}</Message>
+                                <p>{t(translateKey + "modals.verify.reScanQuestion") + " "}
+                                    <p
+                                        className="link"
+                                        onClick={
+                                            () => { setError(false); setStep(0); }
+                                        }
+                                    >
+                                        {t(translateKey + "modals.verify.reScan")}
+                                    </p>
+                                </p>
+                            </>
+                        )
+                        : null
+                }
+            </>
+        );
+    };
+
+    /**
+     * This renders the success message at the end of the TOTP flow
+     */
+    const renderSuccess = (): JSX.Element => {
+        return (
+            <Segment basic textAlign="center">
+                <div className="svg-box">
+                    <svg className="circular positive-stroke">
+                        <circle
+                            className="path"
+                            cx="75"
+                            cy="75"
+                            r="50"
+                            fill="none"
+                            strokeWidth="5"
+                            strokeMiterlimit="10"
+                        />
+                    </svg>
+                    <svg className="positive-icon positive-stroke">
+                        <g transform="matrix(0.79961,8.65821e-32,8.39584e-32,0.79961,-489.57,-205.679)">
+                            <path
+                                className="positive-icon__check"
+                                fill="none"
+                                d="M616.306,283.025L634.087,300.805L673.361,261.53"
+                            />
+                        </g>
+                    </svg>
+                </div>
+                <p>{t(translateKey + "modals.done")}</p>
+            </Segment>
+        );
+    };
+
+    /**
      * Generates content based on the input step
      * @param stepToDisplay The step number
      */
@@ -177,108 +283,6 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
                 setOpenWizard(false);
                 break;
         }
-    };
-
-    /**
-     * This renders the code verification content
-     */
-    const renderVerifyCode = (): JSX.Element => {
-        return (
-            <>
-                <Forms
-                    onSubmit={ (values: Map<string, string>) => {
-                        verifyCode(values.get("code"));
-                    } }
-                    submitState={ submit }
-                >
-                    <Field
-                        name="code"
-                        label={ t(translateKey + "modals.verify.label") }
-                        placeholder={ t(translateKey + "modals.verify.placeholder") }
-                        type="text"
-                        required={ true }
-                        requiredErrorMessage={ t(translateKey + "modals.verify.requiredError") }
-                    />
-                </Forms>
-                {
-                    error
-                        ? (
-
-                            <>
-                                <Message error>{ t(translateKey + "modals.verify.error") }</Message>
-                                <p>{ t(translateKey + "modals.verify.reScanQuestion") + " " }
-                                    <p
-                                        className="link"
-                                        onClick={
-                                            () => { setError(false); setStep(0); }
-                                        }
-                                    >
-                                        { t(translateKey + "modals.verify.reScan") }
-                                    </p>
-                                </p>
-                            </>
-                        )
-                        : null
-                }
-            </>
-        );
-    };
-
-    /**
-     * This renders the success message at the end of the TOTP flow
-     */
-    const renderSuccess = (): JSX.Element => {
-        return (
-            <Segment basic textAlign="center">
-                <div className="svg-box">
-                    <svg className="circular positive-stroke">
-                        <circle
-                            className="path"
-                            cx="75"
-                            cy="75"
-                            r="50"
-                            fill="none"
-                            strokeWidth="5"
-                            strokeMiterlimit="10"
-                        />
-                    </svg>
-                    <svg className="positive-icon positive-stroke">
-                        <g transform="matrix(0.79961,8.65821e-32,8.39584e-32,0.79961,-489.57,-205.679)">
-                            <path
-                                className="positive-icon__check"
-                                fill="none"
-                                d="M616.306,283.025L634.087,300.805L673.361,261.53"
-                            />
-                        </g>
-                    </svg>
-                </div>
-                <p>{ t(translateKey + "modals.done") }</p>
-            </Segment>
-        );
-    };
-
-    /**
-     * This renders the QR code page
-     */
-    const renderQRCode = (): JSX.Element => {
-        return (
-            <>
-                <Segment textAlign="center" basic>
-                    <QRCode value={ qrCode } />
-                    <Divider hidden />
-                    <p className="link" onClick={ refreshCode }>{ t(translateKey + "modals.scan.generate") }</p>
-                </Segment>
-                <Message info>
-                    <Message.Header>{ t(translateKey + "modals.scan.messageHeading") }</Message.Header>
-                    <Message.Content>
-                        { t(translateKey + "modals.scan.messageBody") + " " }
-                        <a target="_blank" href="https://www.g2.com/categories/multi-factor-authentication-mfa">
-                            { t(translateKey + "modals.scan.authenticatorApps") }
-                        </a>
-                    </Message.Content>
-                </Message>
-            </>
-        );
     };
 
     /**

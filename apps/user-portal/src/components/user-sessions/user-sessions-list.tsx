@@ -82,6 +82,7 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
             }
         };
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for (const [ key, value ] of Object.entries(deviceType)) {
             if (value.values.includes(type)) {
                 return value.icon as SemanticICONS;
