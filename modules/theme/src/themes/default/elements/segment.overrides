@@ -102,6 +102,7 @@
 
     &.user-assigned-roles-segment {
         height: @assignedRolesListSegmentHeight;
+        overflow: auto;
 
         .ui.label {
             margin-top: @assignedRolesListLabelMarginTop;

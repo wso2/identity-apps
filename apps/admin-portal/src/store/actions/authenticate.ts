@@ -28,13 +28,13 @@ import _ from "lodash";
 import { getProfileSchemas } from "../../api";
 import { getProfileInfo } from "@wso2is/core/api";
 import { GlobalConfig, i18n, ServiceResourcesEndpoint } from "../../configs";
-import { SYSTEM_SCOPE } from "../../constants";
 import { history } from "../../helpers";
 import { AlertLevels, ProfileSchema } from "../../models";
 import { store } from "../index";
 import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
 import { authenticateActionTypes, AuthAction } from "./types";
+import { SYSTEM_SCOPE } from "../../constants";
 
 /**
  * Dispatches an action of type `SET_SIGN_IN`.
