@@ -185,7 +185,7 @@ export class AxiosHttpClient implements HttpClient<AxiosRequestConfig, AxiosResp
      * @param requestFinishCallback - Callback function to be triggered on request error.
      */
     public init(
-        isHandlerEnabled: boolean = true,
+        isHandlerEnabled = true,
         requestStartCallback: () => void,
         requestSuccessCallback: (response: AxiosResponse) => void,
         requestErrorCallback: (error: AxiosError) => void,
