@@ -53,7 +53,6 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     const [challenges, setChallenges] = useState(createEmptyChallenge());
     const [isEdit, setIsEdit] = useState<number | string>(-1);
     const [isInit, setIsInit] = useState(false);
-    const [questionIndex, setQuestionIndex] = useState(-1);
     const { onAlertFired } = props;
 
     const { t } = useTranslation();
