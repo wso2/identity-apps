@@ -18,7 +18,7 @@
 
 import { AxiosHttpClient } from "@wso2is/http";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
-import { HttpMethods, CreateRoleInterface, SearchRoleInterface } from "../models";
+import { HttpMethods, CreateRoleInterface, SearchRoleInterface, RoleListInterface } from "../models";
 
 /**
  * Initialize an axios Http client.
@@ -59,7 +59,7 @@ export const getGroupsList = (domain: string): Promise<any> => {
  * 
  * @param searchData - search query data
  */
-export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> => {
+export const searchRoleList = (searchData: SearchRoleInterface): Promise<RoleListInterface> => {
     const requestConfig = {
         data: searchData,
         headers: {
@@ -71,7 +71,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
     };
 
     return httpClient.request(requestConfig).then((response) => {
-        return Promise.resolve(response);
+        return Promise.resolve(response.data as RoleListInterface);
     }).catch((error) => {
         return Promise.reject(error)
     })
