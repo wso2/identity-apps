@@ -11,7 +11,8 @@ module.exports = {
     },
     env: {
         browser: true,
-        node: true
+        node: true,
+        es6: true
     },
     rules: {
         "eol-last": "error",
@@ -43,6 +44,11 @@ module.exports = {
                 react: {
                     version: "detect"
                 }
+            },
+            env: {
+                browser: true,
+                node: true,
+                es6: true
             },
             rules: {
                 "eol-last": "error",
