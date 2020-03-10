@@ -43,7 +43,7 @@ const FILTER_VALUES_FIELD_IDENTIFIER = "filerValues";
 const DEFAULT_SEARCH_STRATEGY = "displayName sw";
 
 /**
- * Prop types for the user search component.
+ * Prop types for the role search component.
  */
 interface RoleSearchProps {
     onFilter: (query: string) => void;
@@ -101,7 +101,6 @@ export const RoleSearch: FunctionComponent<RoleSearchProps> = (props: RoleSearch
     const handleExternalSearchQueryClear = (): void => {
         setExternalSearchQuery("");
     };
-
 
     /**
      * Handles the form submit.
