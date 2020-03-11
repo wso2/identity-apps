@@ -21,6 +21,8 @@ import { IUnControlledCodeMirror, UnControlled as CodeMirror } from "react-codem
 import "codemirror/addon/lint/lint";
 import "codemirror/addon/lint/javascript-lint";
 import "codemirror/mode/javascript/javascript";
+import "codemirror/addon/edit/closebrackets";
+import "codemirror/addon/edit/matchbrackets";
 import "codemirror/addon/hint/show-hint";
 import "codemirror/addon/hint/javascript-hint";
 import { JSHINT } from "jshint/dist/jshint";
@@ -40,13 +42,17 @@ window.JSHINT = JSHINT;
 export interface CodeEditorProps extends IUnControlledCodeMirror {
     sourceCode?: any;
     language?: "javascript" | "json" | "typescript";
+    lint?: boolean;
     readOnly?: boolean;
     showLineNumbers?: boolean;
-    theme?: Themes;
+    smart?: boolean;
     tabSize?: number;
-    lint?: boolean;
+    theme?: Themes;
 }
 
+/**
+ * Supported themes.
+ */
 enum Themes {
     dark = "material",
     light = "default"
@@ -67,12 +73,19 @@ export const CodeEditor: React.FunctionComponent<CodeEditorProps> = (
         lint,
         readOnly,
         showLineNumbers,
+        smart,
         sourceCode,
         tabSize,
         theme,
         ...rest
     } = props;
 
+    /**
+     * Resolves the language mode.
+     *
+     * @param {string} language - Selected language.
+     * @return {object} Resolved mode.
+     */
     const resolveMode = (language: string): object => {
         if (!language) {
             throw new Error("Please define a language.");
@@ -100,6 +113,10 @@ export const CodeEditor: React.FunctionComponent<CodeEditorProps> = (
                     gutters: [ "note-gutter", "CodeMirror-linenumbers", "CodeMirror-lint-markers" ],
                     tabSize,
                     lint,
+                    autoCloseBrackets: smart,
+                    matchBrackets: smart,
+                    matchTags: smart,
+                    autoCloseTags: smart,
                     extraKeys: {
                         "Ctrl-Space": "autocomplete",
                     },
@@ -110,10 +127,11 @@ export const CodeEditor: React.FunctionComponent<CodeEditorProps> = (
 };
 
 CodeEditor.defaultProps = {
-    lint: true,
-    readOnly: false,
-    theme: Themes.dark,
-    showLineNumbers: true,
     language: "javascript",
-    tabSize: 4
+    lint: false,
+    readOnly: false,
+    showLineNumbers: true,
+    smart: false,
+    tabSize: 4,
+    theme: Themes.dark
 };
