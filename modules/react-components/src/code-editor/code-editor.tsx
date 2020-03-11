@@ -118,9 +118,7 @@ export const CodeEditor: React.FunctionComponent<CodeEditorProps> = (
                     matchBrackets: smart,
                     matchTags: smart,
                     autoCloseTags: smart,
-                    extraKeys: {
-                        "Ctrl-Space": "autocomplete",
-                    },
+                    extraKeys: smart ? { "Ctrl-Space": "autocomplete", } : {},
                 }
             }
         />
