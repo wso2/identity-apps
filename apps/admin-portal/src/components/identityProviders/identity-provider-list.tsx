@@ -66,7 +66,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
      */
     const handleIdentityProviderDelete = (idpId: string): void => {
         deleteIdentityProvider(idpId)
-            .then((response) => {
+            .then(() => {
                 dispatch(addAlert({
                     description: "Successfully deleted the identity provider",
                     level: AlertLevels.SUCCESS,
