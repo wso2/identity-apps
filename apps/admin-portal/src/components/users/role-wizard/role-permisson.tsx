@@ -139,9 +139,9 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         applyCheckStateTo(nodeData);
 
         if (nodeData[0].isChecked) {
-            setSelectedPermissions([...selectedPermissions, nodeData[0].fullPath]);
+            setSelectedPermissions([...selectedPermissions, nodeData[0]]);
         } else {
-            setSelectedPermissions(selectedPermissions.filter(item => item.name !== nodeData[0].fullPath));
+            setSelectedPermissions(selectedPermissions.filter(item => item.fullPath !== nodeData[0].fullPath));
         }
     }
 

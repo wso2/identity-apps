@@ -40,3 +40,10 @@
 @assignedRolesListIconMarginLeft: 0.3em;
 @InfoLabelBackgroundColor: #b5b7b7;
 @InfoLabelBorderColor: #b5b7b7;
+
+/*************************************
+    Create Role Summary Variation
+*************************************/
+
+@RoleSummaryUserListBackgroundColor: #f7f7f7;
+@RoleSummaryUserListBackgroundColor: #efefef;
