@@ -20,7 +20,13 @@ import { Button, EmptyPlaceholder, PrimaryButton } from "@wso2is/react-component
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { DropdownProps, Grid, Icon, PaginationProps } from "semantic-ui-react";
+import {
+    DropdownProps,
+    Grid,
+    Icon,
+    PaginationProps,
+    Popup
+} from "semantic-ui-react";
 import { deleteUser, getGroupsList, getUsersList } from "../api";
 import { UserSearch, UsersList } from "../components/users";
 import { AddUserWizard } from "../components/users/wizard/add-user-wizard";
@@ -30,6 +36,8 @@ import { UserListInterface } from "../models/user";
 import { addAlert } from "../store/actions";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
+import { UsersListOptionsComponent } from "../components/users/users-list-options";
+import { string } from "prop-types";
 
 
 /**
@@ -48,9 +56,10 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
     const [ usersList, setUsersList ] = useState<UserListInterface>({});
     const [ rolesList, setRolesList ] = useState([]);
     const [ isListUpdated, setListUpdated ] = useState(false);
+    const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
 
-    const getList = (limit: number, offset: number, filter: string) => {
-        getUsersList(limit, offset, filter)
+    const getList = (limit: number, offset: number, filter: string, attribute: string) => {
+        getUsersList(limit, offset, filter, attribute)
             .then((response) => {
                 setUsersList(response);
             });
@@ -76,16 +85,52 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
 
     useEffect(() => {
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
+        setUserListMetaContent(new Map<string, string>([
+            ["name", "name"],
+            ["emails", "emails"],
+            ["name", "name"],
+            ["userName", "userName"],
+            ["id", ""],
+            ["profileUrl", "profileUrl"],
+            ["meta.lastModified", "meta.lastModified"],
+            ["meta.created", ""]
+        ]));
     }, []);
 
     useEffect(() => {
-        getList(listItemLimit, listOffset, null);
+        if (userListMetaContent) {
+            const attributes = generateAttributesString(userListMetaContent.values());
+            getList(listItemLimit, listOffset, null, attributes);
+        }
     }, [ listOffset, listItemLimit ]);
 
     useEffect(() => {
-        getList(listItemLimit, listOffset, null);
+        if (!isListUpdated) {
+            return;
+        }
+        const attributes = generateAttributesString(userListMetaContent.values());
+        getList(listItemLimit, listOffset, null, attributes);
         setListUpdated(false);
     }, [ isListUpdated ]);
+
+    /**
+     * The following method accepts a Map and returns the values as a string.
+     *
+     * @param attributeMap - IterableIterator<string>
+     * @return string
+     */
+    const generateAttributesString = (attributeMap: IterableIterator<string>) => {
+        const attArray = [];
+        const iterator1 = attributeMap[Symbol.iterator]();
+
+        for (let attribute of iterator1) {
+            if (attribute !== "") {
+                attArray.push(attribute);
+            }
+        }
+
+        return attArray.toString();
+    };
 
     /**
      * Shows list placeholders.
@@ -99,7 +144,7 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                     action={ (
                         <Button
                             className="link-button"
-                            onClick={ () => getList(listItemLimit, listOffset, null) }
+                            onClick={ () => getList(listItemLimit, listOffset, null, null) }
                         >
                             { t("views:placeholders.emptySearchResult.action") }
                         </Button>
@@ -126,19 +171,34 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
     };
 
     /**
+     * The following method set the list of columns selected by the user to
+     * the state.
+     *
+     * @param metaColumns - string[]
+     */
+    const handleMetaColumnChange = (metaColumns: string[]) => {
+        const tempColumns = new Map<string, string> ()
+        metaColumns.map((column) => {
+            tempColumns.set(column, column)
+        });
+        setUserListMetaContent(tempColumns);
+    };
+
+    /**
      * Handles the `onFilter` callback action from the
      * users search component.
      *
      * @param {string} query - Search query.
      */
     const handleUserFilter = (query: string): void => {
+        const attributes = generateAttributesString(userListMetaContent.values());
         if (query === "userName sw ") {
-            getList(null, null, null);
+            getList(null, null, null, attributes);
             return;
         }
 
         setSearchQuery(query);
-        getList(null, null, query);
+        getList(null, null, query, attributes);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
@@ -186,6 +246,25 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                         </PrimaryButton>
                     )
                 }
+                leftActionPanel={
+                    (
+                        <Popup
+                            className={ "list-options-popup" }
+                            flowing
+                            basic
+                            content={ <UsersListOptionsComponent
+                                handleMetaColumnChange={ handleMetaColumnChange }
+                                userListMetaContent={ userListMetaContent }
+                            /> }
+                            position="bottom left"
+                            on='click'
+                            pinned
+                            trigger={
+                                <Button basic icon="columns"/>
+                            }
+                        />
+                    )
+                }
                 showPagination={ true }
                 totalPages={ Math.ceil(usersList.totalResults / listItemLimit) }
                 totalListSize={ usersList.totalResults }
@@ -193,7 +272,11 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                 {
                     (usersList.Resources && usersList.Resources.length > 0) ?
                         (
-                            < UsersList usersList={ usersList } handleUserDelete={ handleUserDelete }/>
+                            <UsersList
+                                usersList={ usersList }
+                                handleUserDelete={ handleUserDelete }
+                                userMetaListContent={ userListMetaContent }
+                            />
                         ) :
                         (
                             <Grid.Column width={ 16 }>

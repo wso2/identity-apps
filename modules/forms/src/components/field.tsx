@@ -275,6 +275,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                                     autoFocus={ inputField.autoFocus || false }
                                     readOnly={ inputField.readOnly }
                                     disabled={ inputField.disabled }
+                                    defaultChecked={ inputField.defaultChecked }
                                 />
                             </Form.Field>
                         );

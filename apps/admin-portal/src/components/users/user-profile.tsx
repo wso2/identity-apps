@@ -19,7 +19,7 @@
 import { Field, Forms } from "@wso2is/forms";
 import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import { isEmpty } from "lodash";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
@@ -43,9 +43,9 @@ interface ProfileProps {
  * Basic details component.
  *
  * @param {ProfileProps} props - Props injected to the basic details component.
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
-export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps): JSX.Element => {
+export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps): ReactElement => {
     const { onAlertFired, user, setUser } = props;
     const { t } = useTranslation();
 

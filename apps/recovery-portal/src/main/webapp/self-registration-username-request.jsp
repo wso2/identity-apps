@@ -16,13 +16,13 @@
   ~ under the License.
   --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.constants.SelfRegistrationStatusCodes" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 
@@ -30,7 +30,10 @@
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
+    boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
+    boolean skipSignUpEnableCheck = Boolean.parseBoolean(request.getParameter("skipsignupenablecheck"));
     String username = request.getParameter("username");
+    String tenantDomain = request.getParameter("tenantDomain");
     User user = IdentityManagementServiceUtil.getInstance().getUser(username);
     Object errorCodeObj = request.getAttribute("errorCode");
     Object errorMsgObj = request.getAttribute("errorMsg");
@@ -52,7 +55,15 @@
     } else if (errorMsgObj != null) {
         errorMsg = errorMsgObj.toString();
     }
-    boolean skipSignUpEnableCheck = Boolean.parseBoolean(request.getParameter("skipsignupenablecheck"));
+
+    String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
+    Boolean isEmailUsernameEnabled = false;
+
+    if (StringUtils.isNotBlank(emailUsernameEnable)) {
+        isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
+    } else {
+        isEmailUsernameEnabled = isEmailUsernameEnabled();
+    }
 %>
 
 <!doctype html>
@@ -81,39 +92,40 @@
             <jsp:directive.include file="includes/product-title.jsp"/>
             <% } %>
             <div class="ui segment">
-                <div class="ui divider hidden"></div>
-                <h2>
+                <h3 class="ui header">
                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Start.signing.up")%>
-                </h2>
+                </h3>
 
-                <div class="ui negative message" id="error-msg" hidden="hidden">
-                </div>
+                <div class="ui negative message" id="error-msg" hidden="hidden"></div>
                 <% if (error) { %>
                 <div class="ui negative message" id="server-error-msg">
-                    <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
+                    <%= IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg) %>
                 </div>
                 <% } %>
                 <!-- validation -->
-                <p>
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.your.username.here")%>
-                </p>
+
                 <div class="ui divider hidden"></div>
                 <div class="segment-form">
                     <form class="ui large form" action="signup.do" method="post" id="register">
 
                         <div class="field">
-                            <label class="control-label"
-                                   for="username"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")%>
+                            <label for="username">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                    "Enter.your.username.here")%>
                             </label>
-                            <input id="username" name="username" type="text"
-                                   required class="form-control"
+                            <input id="usernameUserInput" name="usernameUserInput" type="text" required>
+                            <input id="username" name="username" type="hidden"
                                 <% if(skipSignUpEnableCheck) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
                         </div>
+                        
+                        <% if (isSaaSApp) { %>
                         <p class="ui tiny compact info message">
                             <i class="icon info circle"></i>
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                     "If.you.specify.tenant.domain.you.registered.under.super.tenant")%>
                         </p>
+                        <% } %>
+
                         <input id="callback" name="callback" type="hidden" value="<%=callback%>"
                                class="form-control" required>
 
@@ -130,15 +142,10 @@
                         <div class="ui divider hidden"></div>
 
                         <div class="align-right buttons">
-                            <a href="<%=Encode.forHtmlAttribute(IdentityManagementEndpointUtil.getUserPortalUrl(
-                                        application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL)))%>"
-                               class="ui button link-button"
-                            >
+                            <a href="javascript:goBack()" class="ui button link-button">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                             </a>
-                            <button id="registrationSubmit"
-                                    class="ui primary button"
-                                    type="submit">
+                            <button id="registrationSubmit" class="ui primary button" type="submit">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                         "Proceed.to.self.register")%>
                             </button>
@@ -167,6 +174,70 @@
     <% } else { %>
     <jsp:directive.include file="includes/footer.jsp"/>
     <% } %>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        // Handle form submission preventing double submission.
+        $(document).ready(function(){
+            $.fn.preventDoubleSubmission = function() {
+                $(this).on("submit", function(e){
+                    var $form = $(this);
+
+                    if ($form.data("submitted") === true) {
+                        // Previously submitted - don't submit again.
+                        e.preventDefault();
+                        console.warn("Prevented a possible double submit event");
+                    } else {
+                        e.preventDefault();
+
+                        var isSaaSApp = JSON.parse("<%= isSaaSApp %>");
+                        var tenantDomain = "<%= tenantDomain %>";
+                        var isEmailUsernameEnabled = JSON.parse("<%= isEmailUsernameEnabled %>");
+
+                        var userName = document.getElementById("username");
+                        var usernameUserInput = document.getElementById("usernameUserInput");
+                        var usernameUserInputValue = usernameUserInput.value.trim();
+
+                        if (!isSaaSApp) {
+                            if (!isEmailUsernameEnabled && (usernameUserInputValue.split("@").length >= 2)) {
+                                var errorMessage = document.getElementById("error-msg");
+
+                                errorMessage.innerHTML = 
+                                    "Invalid Username. Username should't have '@' or any other special characters.";
+                                errorMessage.hidden = false;
+
+                                return;
+                            }
+
+                            if (isEmailUsernameEnabled && (usernameUserInputValue.split("@").length <= 1)) {
+                                var errorMessage = document.getElementById("error-msg");
+
+                                errorMessage.innerHTML = "Invalid Username. Username has to be an email address.";
+                                errorMessage.hidden = false;
+
+                                return;
+                            }
+                            
+                            userName.value = usernameUserInputValue + "@" + tenantDomain;      
+                        } else {
+                            userName.value = usernameUserInputValue;
+                        }
+
+                        // Mark it so that the next submit can be ignored.
+                        $form.data("submitted", true);
+                        document.getElementById("register").submit();
+                    }
+                });
+
+                return this;
+            };
+
+            $('#register').preventDoubleSubmission();
+        });
+    </script>
 
 </body>
 </html>

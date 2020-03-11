@@ -29,3 +29,5 @@ export * from "./external-claims";
 export * from "./local-claims";
 export * from "./claim-dialects";
 export * from "./local-claims-edit";
+export * from "./identity-providers";
+export * from "./identity-provider-template";

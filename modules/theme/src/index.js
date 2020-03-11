@@ -41,6 +41,7 @@ export const DashboardIcon = require("../lib/assets/images/icons/dashboard-icon.
 export const DocumentIcon = require("../lib/assets/images/icons/document-icon.svg");
 export const DotIcon = require("../lib/assets/images/icons/dot-icon.svg");
 export const DragIcon = require("../lib/assets/images/icons/drag-icon.svg");
+export const DragSquaresIcon = require("../lib/assets/images/icons/drag-squares-icon.svg");
 export const EmailIcon = require("../lib/assets/images/icons/email-icon.svg");
 export const ErrorIcon = require("../lib/assets/images/icons/error-icon.svg");
 export const FingerprintIcon = require("../lib/assets/images/icons/fingerprint.svg");
@@ -50,6 +51,8 @@ export const InfoIcon = require("../lib/assets/images/icons/info-icon.svg");
 export const LaunchIcon = require("../lib/assets/images/icons/launch-icon.svg");
 export const LockIcon = require("../lib/assets/images/icons/lock-icon.svg");
 export const MagnifierIcon = require("../lib/assets/images/icons/magnifier-icon.svg");
+export const MaximizeIcon = require("../lib/assets/images/icons/maximize-icon.svg");
+export const MinimizeIcon = require("../lib/assets/images/icons/minimize-icon.svg");
 export const MonitorIcon = require("../lib/assets/images/icons/monitor-icon.svg");
 export const PackageIcon = require("../lib/assets/images/icons/package.svg");
 export const PadlockIcon = require("../lib/assets/images/icons/padlock-icon.svg");
@@ -120,6 +123,16 @@ export const EmailOTPIcon = require("../lib/assets/images/authenticators/email-o
 export const FIDOLogo = require("../lib/assets/images/authenticators/fido.png");
 export const SMSOTPIcon = require("../lib/assets/images/authenticators/sms-otp.svg");
 export const TOTPIcon = require("../lib/assets/images/authenticators/totp.png");
+
+// Identity providers
+export const GoogleIdPIcon = require("../lib/assets/images/identity-providers/google.svg");
+export const FacebookIdPIcon = require("../lib/assets/images/identity-providers/facebook.svg");
+export const GithubIdPIcon = require("../lib/assets/images/identity-providers/github.svg");
+export const TwitterIdPIcon = require("../lib/assets/images/identity-providers/twitter.svg");
+
+// Identity provider capabilities
+export const AuthenticationCapabilityIcon = require("../lib/assets/images/identity-provider-capabilities/authentication.svg");
+export const ProvisionCapabilityIcon = require("../lib/assets/images/identity-provider-capabilities/provision.svg");
 
 /**
  * The following has been kept for backward compatibility.

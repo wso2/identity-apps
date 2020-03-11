@@ -75,3 +75,80 @@ export interface IDPNameInterface {
     idp: string;
     image?: string;
 }
+
+/**
+ *  Identity provider template list item interface.
+ */
+export interface IdentityProviderTemplateListItemInterface {
+    description: string;
+    displayName: string;
+    id: SupportedQuickStartTemplates;
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    image: any;
+    authenticators: SupportedAuthenticators;
+    provisioningConnectors: SupportedProvisioningConnectors;
+    services: SupportedServicesInterface[];
+}
+
+/**
+ * Enum for the supported quick start template types.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum SupportedQuickStartTemplates {
+    FACEBOOK = "facebook",
+    GOOGLE = "google",
+    TWITTER = "twitter"
+}
+
+/**
+ * Enum for the supported authenticator types.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum SupportedAuthenticators {
+    NONE ="none",
+    FACEBOOK = "facebook",
+    GOOGLE = "google",
+    TWITTER = "twitter"
+}
+
+/**
+ * Enum for the supported provisioning connector types.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum SupportedProvisioningConnectors {
+    NONE ="none",
+    GOOGLE = "google"
+}
+
+/**
+ * Identity provider supported services interface.
+ */
+export interface SupportedServicesInterface {
+    name: string;
+    displayName: string;
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    logo: any;
+}
+
+/**
+ * Enum for supported identity provider template categories.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum SupportedIdentityProviderTemplateCategories {
+    QUICK_START = "quick_start"
+}
+
+/**
+ *  Identity provider templates interface.
+ */
+export interface IdentityProviderTemplatesInterface {
+    [ key: string ]: IdentityProviderTemplateListItemInterface[];
+}

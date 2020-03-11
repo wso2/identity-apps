@@ -28,13 +28,16 @@ import { HttpMethods, IdentityProviderListResponseInterface, IdentityProviderRes
 const httpClient = AxiosHttpClient.getInstance();
 
 /**
- * Gets the idp list.
+ * Gets the IdP list with limit and offset.
  *
- * @return {Promise<any>} A promise containing the response.
+ * @param {number} limit - Maximum Limit of the IdP List.
+ * @param {number} offset - Offset for get to start.
+ * @param {string} filter - Search filter.
+ *
+ * @return {Promise<IdentityProviderListResponseInterface>} A promise containing the response.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const getIdentityProviderList = (): Promise<any> => {
-    // TODO add limit and offsets
+export const getIdentityProviderList = (limit?: number, offset?: number,
+                                   filter?: string): Promise<IdentityProviderListResponseInterface> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -42,13 +45,18 @@ export const getIdentityProviderList = (): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.identityProvider
+        params: {
+            filter,
+            limit,
+            offset
+        },
+        url: ServiceResourcesEndpoint.identityProviders
     };
 
     return httpClient.request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to get idp list from: "));
+                return Promise.reject(new Error("Failed to get IdP list from: "));
             }
             return Promise.resolve(response.data as IdentityProviderListResponseInterface);
         }).catch((error) => {
@@ -70,7 +78,7 @@ export const getIdentityProviderDetail = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.identityProvider + "/" + id
+        url: ServiceResourcesEndpoint.identityProviders + "/" + id
     };
 
     return httpClient.request(requestConfig)
@@ -83,3 +91,32 @@ export const getIdentityProviderDetail = (id: string): Promise<any> => {
             return Promise.reject(error);
         });
 };
+
+/**
+ * Deletes an IdP when the relevant id is passed in.
+ *
+ * @param id ID of the IdP.
+ * @return {Promise<any>} A promise containing the response.
+ */
+export const deleteIdentityProvider = (id: string): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: ServiceResourcesEndpoint.identityProviders + "/" + id
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 204) {
+                return Promise.reject(new Error("Failed to delete the identity provider."));
+            }
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+

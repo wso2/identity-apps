@@ -34,3 +34,27 @@
         }
     }
 }
+
+.ui.popup {
+    &.list-options-popup {
+        margin: none;
+        font-size: 11px !important;
+        padding: 0 !important;
+
+        .header {
+            font-weight: 500;
+            padding: 0.7em 1.5em;
+            margin-bottom: 0;
+        }
+
+        .ui.list {
+            padding-right: 1.5em !important;
+            padding-left: 1.5em !important;
+            padding-bottom: 1em !important;
+        }
+
+        .ui.divider {
+            margin-top: 0;
+        }
+    }
+}

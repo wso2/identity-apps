@@ -49,6 +49,7 @@ export const common: Common = {
     goBackHome: "Go back home",
     help: "Help",
     hidePassword: "Hide password",
+    identityProviders: "Identity Providers",
     initiator: "Initiator",
     ipAddress: "ip address",
     lastAccessed: "Last accessed",

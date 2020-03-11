@@ -79,20 +79,25 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                 <Grid.Row>
                                     <Grid.Column width={ 4 }>
                                         { /* TODO: Re-enable when the API is ready */ }
-                                        { /* <div className="left-aligned-actions">
-                                {
-                                    sortOptions && sortStrategy && onSortStrategyChange && (
-                                        <Dropdown
-                                            onChange={ onSortStrategyChange }
-                                            options={ sortOptions }
-                                            placeholder={ "Sort by" }
-                                            selection
-                                            value={ sortStrategy.value }
-                                        />
-                                    )
-                                }
-                                { leftActionPanel && leftActionPanel }
-                            </div> */ }
+                                        {
+                                            /* <div className="left-aligned-actions">
+                                                {
+                                                    sortOptions && sortStrategy && onSortStrategyChange && (
+                                                        <Dropdown
+                                                            onChange={ onSortStrategyChange }
+                                                            options={ sortOptions }
+                                                            placeholder={ "Sort by" }
+                                                            selection
+                                                            value={ sortStrategy.value }
+                                                        />
+                                                    )
+                                                }
+                                                { leftActionPanel && leftActionPanel }
+                                            </div> */
+                                        }
+                                        <div className="left-aligned-actions">
+                                            { leftActionPanel && leftActionPanel }
+                                        </div>
                                     </Grid.Column>
                                     <Grid.Column width={ 12 }>
                                         <div className="actions right-aligned">

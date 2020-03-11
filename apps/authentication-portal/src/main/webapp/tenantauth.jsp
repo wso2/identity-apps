@@ -87,6 +87,7 @@
         Boolean isSelfSignUpEPAvailable = false;
         String identityMgtEndpointContext = "";
         String urlEncodedURL = "";
+        String urlParameters = "";
 
         if (StringUtils.isNotBlank(recoveryEPAvailable)) {
             isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
@@ -107,7 +108,9 @@
             String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
             String prmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
             String urlWithoutEncoding = scheme + "://" +serverName + ":" + serverPort + uri + "?" + prmstr;
+
             urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
+            urlParameters = prmstr;
 
             identityMgtEndpointContext =
                     application.getInitParameter("IdentityManagementEndpointContextURL");
@@ -130,7 +133,7 @@
             <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType)) { %>
             <button
                 type="submit"
-                onclick="window.location.href='<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL)%>';"   
+                onclick="window.location.href='<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL, urlParameters)%>';"   
                 class="ui large button link-button"
                 id="registerLink"
                 role="button">

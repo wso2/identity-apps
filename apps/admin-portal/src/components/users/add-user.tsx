@@ -18,7 +18,7 @@
 
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
-import React, { useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
     Grid,
@@ -39,9 +39,9 @@ interface AddUserProps {
 /**
  * Add user page.
  *
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
-export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserProps): JSX.Element => {
+export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserProps): ReactElement => {
 
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ passwordOption, setPasswordOption ] = useState("");

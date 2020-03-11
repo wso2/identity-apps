@@ -114,8 +114,9 @@
             isEmailInClaims = true;
         }
     }
-%>
-<%
+
+    boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
+
     boolean reCaptchaEnabled = false;
     if (request.getAttribute("reCaptcha") != null &&
             "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
@@ -217,27 +218,20 @@
                                     class="form-control"
                                     data-validate="email">
                         </div>
-                        <%}%>
+                        <% } %>
 
-                        <%
-                            if (StringUtils.isNotEmpty(tenantDomain) && !error) {
-                        %>
+                        <% if (!isSaaSApp && (StringUtils.isNotEmpty(tenantDomain) && !error)) { %> 
                         <div>
-                            <input type="hidden" name="tenantDomain" value="<%=Encode.forHtmlAttribute(tenantDomain)%>"/>
+                            <input id="tenant-domain" type="hidden" name="tenantDomain" value="<%=Encode.forHtmlAttribute(tenantDomain)%>"/>
                         </div>
-                        <%
-                        } else {
-                        %>
+                        <% } else { %>
                         <div class="field">
-                            <label class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                    "Tenant.domain")%>
+                            <label class="control-label">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Tenant.domain")%>
                             </label>
-                            <input id="tenant-domain" type="text" name="tenantDomain"
-                                    class="form-control ">
+                            <input id="tenant-domain" type="text" name="tenantDomain" class="form-control">
                         </div>
-                        <%
-                            }
-                        %>
+                        <% } %>
                         
                         <input type="hidden" id="isUsernameRecovery" name="isUsernameRecovery" value="true">
 
@@ -317,15 +311,16 @@
     <% } %>
 
     <script type="text/javascript">
+
         $(document).ready(function () {
 
             $("#recoverDetailsForm").submit(function (e) {
                 var errorMessage = $("#error-msg");
                 errorMessage.hide();
 
-                <%
-                    if (isFirstNameInClaims){
-                %>
+                document.getElementById("tenant-domain").value = "<%= tenantDomain %>";
+
+                <% if (isFirstNameInClaims){ %>
                     var firstName = $("#first-name").val();
 
                     if (firstName == '') {
@@ -335,13 +330,9 @@
 
                         return false;
                     }
-                <%
-                    }
-                %>
+                <% } %>
 
-                <%
-                    if (reCaptchaEnabled) {
-                %>
+                <% if (reCaptchaEnabled) { %>
                     var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
 
                     if (reCaptchaResponse.trim() == '') {
@@ -350,9 +341,7 @@
                         $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
                         return false;
                     }
-                <%
-                    }
-                %>
+                <% } %>
 
                 return true;
             });
