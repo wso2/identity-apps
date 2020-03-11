@@ -18,7 +18,7 @@
 
 import { AxiosHttpClient } from "@wso2is/http";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
-import { HttpMethods, CreateRoleInterface } from "../models";
+import { HttpMethods, CreateRoleInterface, SearchRoleInterface, RoleListInterface } from "../models";
 
 /**
  * Initialize an axios Http client.
@@ -53,6 +53,29 @@ export const getGroupsList = (domain: string): Promise<any> => {
             return Promise.reject(error);
         });
 };
+
+/**
+ * Retrieve a list of matched roles according to the search query.
+ * 
+ * @param searchData - search query data
+ */
+export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> => {
+    const requestConfig = {
+        data: searchData,
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: ServiceResourcesEndpoint.groups + "/.search"
+    };
+
+    return httpClient.request(requestConfig).then((response) => {
+        return Promise.resolve(response);
+    }).catch((error) => {
+        return Promise.reject(error)
+    })
+}
 
 /**
  * Delete a selected role with a given role ID.

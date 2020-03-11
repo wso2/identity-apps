@@ -70,3 +70,12 @@ export interface CreateRoleFormData {
     domain: string;
     roleName: string;
 }
+
+/**
+ * Interface to store data for search role api.
+ */
+export interface SearchRoleInterface {
+    schemas: string[];
+    startIndex: number;
+    filter: string;
+}

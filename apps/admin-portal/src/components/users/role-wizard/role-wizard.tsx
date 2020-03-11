@@ -128,7 +128,6 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
          *        to add the selected permissions to the created role.
          */
         createRole(roleData).then(response => {
-            debugger;
         
             if (response.status === 201) {
                 const createdRoleId = response.data.id;
