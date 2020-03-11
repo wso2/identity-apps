@@ -17,7 +17,7 @@
  *
  */
 
-import { withKnobs } from "@storybook/addon-knobs";
+import { withKnobs, select } from "@storybook/addon-knobs";
 import * as React from "react";
 import { CodeEditor } from "../../../src";
 import { meta, SampleJSCodeSnippet, SampleJSONSnippet, SampleTSCodeSnippet } from "./code-editor.stories.meta";
@@ -166,6 +166,31 @@ TypescriptEditor.story = {
     parameters: {
         docs: {
             storyDescription: meta.stories[ 5 ].description,
+        },
+    }
+};
+
+/**
+ * Story to display the code editor themes.
+ * @return {any}
+ */
+export const Themes = () => {
+
+    return (
+        <CodeEditor
+            language="javascript"
+            smart={ true }
+            lint={ true }
+            theme={ select("Theme", { Dark: "dark", Light: "light" },"light") }
+            sourceCode={ SampleJSCodeSnippet }
+        />
+    );
+};
+
+Themes.story = {
+    parameters: {
+        docs: {
+            storyDescription: meta.stories[ 6 ].description,
         },
     }
 };

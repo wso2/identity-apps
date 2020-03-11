@@ -48,6 +48,10 @@ export const meta: StoryMetaInterface = {
         {
             description: "Code editor for Typescript.",
             title: "Typescript Editor",
+        },
+        {
+            description: "Code editor themes demo.",
+            title: "Themes",
         }
     ],
     title: StoryCategories.COMPONENTS + "/Code Editor",
