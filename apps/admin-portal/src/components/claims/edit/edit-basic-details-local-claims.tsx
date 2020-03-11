@@ -19,11 +19,11 @@
 import React from "react";
 import { Claim, AlertLevels } from "../../../models";
 import { Forms, Field } from "@wso2is/forms";
-import { Grid, Form } from "semantic-ui-react";
+import { Grid, Form, Divider } from "semantic-ui-react";
 import { updateAClaim } from "../../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
-import { CopyInputField } from "@wso2is/react-components";
+import { CopyInputField, Hint } from "@wso2is/react-components";
 
 interface EditBasicDetailsLocalClaimsPropsInterface {
     claim: Claim;
@@ -41,11 +41,11 @@ export const EditBasicDetailsLocalClaims = (
         <>
             <Grid>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 6 }>
+                    <Grid.Column width={ 6 } tablet={ 16 }>
                         <Form>
                             <Form.Field>
                                 <label>Claim URI</label>
-                                <CopyInputField value={ claim ? claim.claimURI : "" }/>
+                                <CopyInputField value={ claim ? claim.claimURI : "" } />
                             </Form.Field>
                         </Form>
                     </Grid.Column>
@@ -80,7 +80,7 @@ export const EditBasicDetailsLocalClaims = (
                             {
                                 description: error?.description,
                                 level: AlertLevels.ERROR,
-                                message: error?.message
+                                message: error?.message || "Something went wrong"
                             }
                         ));
                     })
@@ -88,7 +88,7 @@ export const EditBasicDetailsLocalClaims = (
             >
                 <Grid>
                     <Grid.Row columns={ 1 }>
-                        <Grid.Column width={ 6 }>
+                        <Grid.Column width={ 6 } tablet={ 16 }>
                             <Field
                                 type="text"
                                 name="name"
@@ -126,36 +126,41 @@ export const EditBasicDetailsLocalClaims = (
                                 placeholder="Enter the display order"
                                 value={ claim?.displayOrder.toString() }
                             />
+                            <Divider hidden={ true } />
                             <Field
                                 type="checkbox"
-                                toggle={ true }
                                 name="supportedByDefault"
-                                label="Show on Profile"
                                 required={ false }
                                 requiredErrorMessage=""
-                                children={ [{ value: "Support", label: "" }] }
+                                children={ [{ value: "Support", label: "Show on Profile" }] }
                                 value={ claim?.supportedByDefault ? ["Support"] : [] }
                             />
+                            <Hint>
+                                This displays this claim on the Profile page in the User Portal and prompted during
+                                user registration.
+                            </Hint>
                             <Field
                                 type="checkbox"
-                                toggle={ true }
                                 name="required"
-                                label="Required"
                                 required={ false }
                                 requiredErrorMessage=""
-                                children={ [{ value: "Required", label: "" }] }
+                                children={ [{ value: "Required", label: "Required" }] }
                                 value={ claim?.required ? ["Required"] : [] }
                             />
+                            <Hint>
+                                This makes the claim mandatory to be filled by the user.
+                            </Hint>
                             <Field
                                 type="checkbox"
-                                toggle={ true }
                                 name="readOnly"
-                                label="Read Only"
                                 required={ false }
                                 requiredErrorMessage=""
-                                children={ [{ value: "ReadOnly", label: "" }] }
+                                children={ [{ value: "ReadOnly", label: "Read Only" }] }
                                 value={ claim?.readOnly ? ["ReadOnly"] : [] }
                             />
+                            <Hint>
+                                This makes the claim read only.
+                            </Hint>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row columns={ 1 }>

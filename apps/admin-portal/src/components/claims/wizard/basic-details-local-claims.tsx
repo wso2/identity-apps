@@ -19,6 +19,7 @@
 import React, { useState } from "react";
 import { Forms, FormValue, Field } from "@wso2is/forms";
 import { Grid, Label } from "semantic-ui-react";
+import { Hint } from "@wso2is/react-components";
 
 interface BasicDetailsLocalClaimsPropsInterface {
     submitState: boolean;
@@ -111,41 +112,47 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         <Field
                             type="checkbox"
                             name="supportedByDefault"
-                            label="Show on Profile"
                             required={ false }
                             requiredErrorMessage=""
                             children={ [
                                 {
                                     value: "Support",
-                                    label: "This displays this claim on the Profile page in the" +
-                                        " User Portal and prompted during user registration."
+                                    label: "Show on Profile"
                                 }] }
                             value={ values?.get("supportedByDefault") as string[] }
                         />
+                        <Hint>
+                            This displays this claim on the Profile page in the User Portal and prompted during
+                            user registration.
+                        </Hint>
                         <Field
                             type="checkbox"
                             name="required"
-                            label="Required"
                             required={ false }
                             requiredErrorMessage=""
                             children={ [{
                                 value: "Required",
-                                label: "This makes the claim mandatory to be filled by the user."
+                                label: "Required"
                             }] }
                             value={ values?.get("required") as string[] }
                         />
+                        <Hint>
+                            This makes the claim mandatory to be filled by the user.
+                        </Hint>
                         <Field
                             type="checkbox"
                             name="readOnly"
-                            label="Read Only"
                             required={ false }
                             requiredErrorMessage=""
                             children={ [{
                                 value: "ReadOnly",
-                                label: "This makes the claim read only. "
+                                label: "Read Only"
                             }] }
                             value={ values?.get("readOnly") as string[] }
                         />
+                        <Hint>
+                            This makes the claim read only.
+                        </Hint>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
