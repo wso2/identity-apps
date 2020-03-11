@@ -53,6 +53,7 @@
         "classnames": "*",
         "codemirror": "*",
         "jest": "*",
+        "jshint": "*",
         "lodash": "*",
         "react": "*",
         "react-codemirror2": "*",

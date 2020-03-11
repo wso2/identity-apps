@@ -18,10 +18,21 @@
 
 import React, { ReactElement } from "react";
 import { IUnControlledCodeMirror, UnControlled as CodeMirror } from "react-codemirror2";
+import "codemirror/addon/lint/lint";
+import "codemirror/addon/lint/javascript-lint";
 import "codemirror/mode/javascript/javascript";
+import "codemirror/addon/hint/show-hint";
+import "codemirror/addon/hint/javascript-hint";
+import { JSHINT } from "jshint/dist/jshint";
 
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/material.css";
+import "codemirror/addon/lint/lint.css";
+import "codemirror/addon/hint/show-hint.css";
+
+// Putting the `JSHINT` in the window object.
+// See, https://github.com/scniro/react-codemirror2/issues/21
+window.JSHINT = JSHINT;
 
 /**
  * Code editor component Prop types.
@@ -33,6 +44,7 @@ export interface CodeEditorProps extends IUnControlledCodeMirror {
     showLineNumbers?: boolean;
     theme?: Themes;
     tabSize?: number;
+    lint?: boolean;
 }
 
 enum Themes {
@@ -52,6 +64,7 @@ export const CodeEditor: React.FunctionComponent<CodeEditorProps> = (
 
     const {
         language,
+        lint,
         readOnly,
         showLineNumbers,
         sourceCode,
@@ -84,7 +97,12 @@ export const CodeEditor: React.FunctionComponent<CodeEditorProps> = (
                     theme,
                     lineNumbers: showLineNumbers,
                     readOnly,
-                    tabSize
+                    gutters: [ "note-gutter", "CodeMirror-linenumbers", "CodeMirror-lint-markers" ],
+                    tabSize,
+                    lint,
+                    extraKeys: {
+                        "Ctrl-Space": "autocomplete",
+                    },
                 }
             }
         />
@@ -92,6 +110,7 @@ export const CodeEditor: React.FunctionComponent<CodeEditorProps> = (
 };
 
 CodeEditor.defaultProps = {
+    lint: true,
     readOnly: false,
     theme: Themes.dark,
     showLineNumbers: true,
