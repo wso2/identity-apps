@@ -51,7 +51,7 @@ export const AddEditDialect = (props: AddEditDialectPropsInterface): React.React
                     {
                         description: error?.description,
                         level: AlertLevels.ERROR,
-                        message: error?.message
+                        message: error?.message || "Something went wrong"
                     }
                 ));
             })
@@ -91,7 +91,7 @@ export const AddEditDialect = (props: AddEditDialectPropsInterface): React.React
                                         {
                                             description: error?.description,
                                             level: AlertLevels.ERROR,
-                                            message: error?.message
+                                            message: error?.message || "Something went wrong"
                                         }
                                     ));
                                 });
@@ -111,7 +111,7 @@ export const AddEditDialect = (props: AddEditDialectPropsInterface): React.React
                                         {
                                             description: error?.description,
                                             level: AlertLevels.ERROR,
-                                            message: error?.message
+                                            message: error?.message || "Something went wrong"
                                         }
                                     ));
                                 })

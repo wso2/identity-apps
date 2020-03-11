@@ -99,7 +99,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                 {
                     description: error?.description,
                     level: AlertLevels.ERROR,
-                    message: error?.message
+                    message: error?.message || "Something went wrong"
                 }
             ));
         })
@@ -121,7 +121,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                 {
                     description: error?.description,
                     level: AlertLevels.ERROR,
-                    message: error?.message
+                    message: error?.message || "Something went wrong"
                 }
             ));
         })
@@ -143,7 +143,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                 {
                     description: error?.description,
                     level: AlertLevels.ERROR,
-                    message: error?.message
+                    message: error?.message || "Something went wrong"
                 }
             ));
         })

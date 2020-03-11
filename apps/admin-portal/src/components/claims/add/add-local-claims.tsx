@@ -64,7 +64,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
                 {
                     description: error?.description,
                     level: AlertLevels.ERROR,
-                    message: error?.message
+                    message: error?.message || "Something went wrong"
                 }
             ));
         })

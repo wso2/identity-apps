@@ -51,7 +51,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                 {
                     description: error?.description,
                     level: AlertLevels.ERROR,
-                    message: error?.message
+                    message: error?.message || "Something went wrong"
                 }
             ));
         });
@@ -63,7 +63,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                 {
                     description: error?.description,
                     level: AlertLevels.ERROR,
-                    message: error?.message
+                    message: error?.message || "Something went wrong"
                 }
             ));
         })
@@ -100,7 +100,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                                 {
                                     description: error?.description,
                                     level: AlertLevels.ERROR,
-                                    message: error?.message
+                                    message: error?.message || "Something went wrong"
                                 }
                             ));
                         })
