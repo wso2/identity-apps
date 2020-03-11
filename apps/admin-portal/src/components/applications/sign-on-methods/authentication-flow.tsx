@@ -683,62 +683,75 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                                     <Card.Content>
                                         <div className="authenticators-section">
                                             <Accordion>
-                                                <Accordion.Title
-                                                    active={ authenticatorsAccordionActiveIndexes.includes(0) }
-                                                    index={ 0 }
-                                                    onClick={ handleAuthenticatorsAccordionOnClick }
-                                                >
-                                                    <div className="inline floated right" >
-                                                        <Icon name="angle right" className="caret-icon" />
-                                                    </div>
-                                                    Local
-                                                </Accordion.Title>
-                                                <Accordion.Content active={ authenticatorsAccordionActiveIndexes.includes(0) }>
-                                                    <Authenticators
-                                                        authenticators={
-                                                            filterAuthenticators(AuthenticatorTypes.FIRST_FACTOR)
-                                                        }
-                                                        droppableId={ LOCAL_AUTHENTICATORS_DROPPABLE_ID }
-                                                    />
-                                                </Accordion.Content>
+                                                {
+                                                    filterAuthenticators(AuthenticatorTypes.FIRST_FACTOR).length > 0 && (
+                                                    <>
+                                                        <Accordion.Title
+                                                            active={ authenticatorsAccordionActiveIndexes.includes(0) }
+                                                            index={ 0 }
+                                                            onClick={ handleAuthenticatorsAccordionOnClick }
+                                                        >
+                                                            <div className="inline floated right" >
+                                                                <Icon name="angle right" className="caret-icon" />
+                                                            </div>
+                                                            Local
+                                                        </Accordion.Title>
+                                                        <Accordion.Content active={ authenticatorsAccordionActiveIndexes.includes(0) }>
+                                                            <Authenticators
+                                                                authenticators={
+                                                                    filterAuthenticators(AuthenticatorTypes.FIRST_FACTOR)
+                                                                }
+                                                                droppableId={ LOCAL_AUTHENTICATORS_DROPPABLE_ID }
+                                                            />
+                                                        </Accordion.Content>
+                                                    </>
+                                                ) }
 
-                                                <Accordion.Title
-                                                    active={ authenticatorsAccordionActiveIndexes.includes(1) }
-                                                    index={ 1 }
-                                                    onClick={ handleAuthenticatorsAccordionOnClick }
-                                                >
-                                                    <div className="inline floated right" >
-                                                        <Icon name="angle right" className="caret-icon" />
-                                                    </div>
-                                                    Second factor
-                                                </Accordion.Title>
-                                                <Accordion.Content active={ authenticatorsAccordionActiveIndexes.includes(1) }>
-                                                    <Authenticators
-                                                        authenticators={
-                                                            filterAuthenticators(AuthenticatorTypes.SECOND_FACTOR)
-                                                        }
-                                                        droppableId={ SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID }
-                                                    />
-                                                </Accordion.Content>
+                                                { filterAuthenticators(AuthenticatorTypes.SECOND_FACTOR).length > 0 && (
+                                                    <>
+                                                        <Accordion.Title
+                                                            active={ authenticatorsAccordionActiveIndexes.includes(1) }
+                                                            index={ 1 }
+                                                            onClick={ handleAuthenticatorsAccordionOnClick }
+                                                        >
+                                                            <div className="inline floated right" >
+                                                                <Icon name="angle right" className="caret-icon" />
+                                                            </div>
+                                                            Second factor
+                                                        </Accordion.Title>
+                                                        <Accordion.Content active={ authenticatorsAccordionActiveIndexes.includes(1) }>
+                                                            <Authenticators
+                                                                authenticators={
+                                                                    filterAuthenticators(AuthenticatorTypes.SECOND_FACTOR)
+                                                                }
+                                                                droppableId={ SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID }
+                                                            />
+                                                        </Accordion.Content>
+                                                    </>
+                                                ) }
 
-                                                <Accordion.Title
-                                                    active={ authenticatorsAccordionActiveIndexes.includes(2) }
-                                                    index={ 2 }
-                                                    onClick={ handleAuthenticatorsAccordionOnClick }
-                                                >
-                                                    <div className="inline floated right" >
-                                                        <Icon name="angle right" className="caret-icon" />
-                                                    </div>
-                                                    Social logins
-                                                </Accordion.Title>
-                                                <Accordion.Content active={ authenticatorsAccordionActiveIndexes.includes(2) }>
-                                                    <Authenticators
-                                                        authenticators={
-                                                            filterAuthenticators(AuthenticatorTypes.SOCIAL)
-                                                        }
-                                                        droppableId={ SOCIAL_AUTHENTICATORS_DROPPABLE_ID }
-                                                    />
-                                                </Accordion.Content>
+                                                { filterAuthenticators(AuthenticatorTypes.SOCIAL).length > 0 && (
+                                                    <>
+                                                        <Accordion.Title
+                                                            active={ authenticatorsAccordionActiveIndexes.includes(2) }
+                                                            index={ 2 }
+                                                            onClick={ handleAuthenticatorsAccordionOnClick }
+                                                        >
+                                                            <div className="inline floated right" >
+                                                                <Icon name="angle right" className="caret-icon" />
+                                                            </div>
+                                                            Social logins
+                                                        </Accordion.Title>
+                                                        <Accordion.Content active={ authenticatorsAccordionActiveIndexes.includes(2) }>
+                                                            <Authenticators
+                                                                authenticators={
+                                                                    filterAuthenticators(AuthenticatorTypes.SOCIAL)
+                                                                }
+                                                                droppableId={ SOCIAL_AUTHENTICATORS_DROPPABLE_ID }
+                                                            />
+                                                        </Accordion.Content>
+                                                    </>
+                                                ) }
                                             </Accordion>
                                         </div>
                                     </Card.Content>
