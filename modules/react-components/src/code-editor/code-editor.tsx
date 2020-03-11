@@ -40,12 +40,13 @@ window.JSHINT = JSHINT;
  * Code editor component Prop types.
  */
 export interface CodeEditorProps extends IUnControlledCodeMirror {
-    sourceCode?: any;
     language?: "javascript" | "json" | "typescript";
     lint?: boolean;
     readOnly?: boolean;
     showLineNumbers?: boolean;
     smart?: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    sourceCode?: any;
     tabSize?: number;
     theme?: Themes;
 }
