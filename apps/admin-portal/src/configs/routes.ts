@@ -138,7 +138,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 icon: "childIcon",
                 id: "roles",
                 level: 2,
-                name: "User Roles",
+                name: "Roles",
                 path: "/roles",
                 protected: true,
                 showOnSidePanel: true
