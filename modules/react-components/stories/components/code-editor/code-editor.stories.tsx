@@ -33,17 +33,14 @@ export default {
 
 /**
  * Story to display the default code editor.
- * @return {any}
+ * @return {React.ReactElement}
  */
-export const Default = () => {
-
-    return (
-        <CodeEditor
-            language="javascript"
-            sourceCode={ SampleJSCodeSnippet }
-        />
-    );
-};
+export const Default = (): React.ReactElement => (
+    <CodeEditor
+        language="javascript"
+        sourceCode={ SampleJSCodeSnippet }
+    />
+);
 
 Default.story = {
     parameters: {
@@ -55,18 +52,15 @@ Default.story = {
 
 /**
  * Story to display a code editor with linting.
- * @return {any}
+ * @return {React.ReactElement}
  */
-export const EditorWithLinting = () => {
-
-    return (
-        <CodeEditor
-            language="javascript"
-            lint={ true }
-            sourceCode={ SampleJSCodeSnippet }
-        />
-    );
-};
+export const EditorWithLinting = (): React.ReactElement => (
+    <CodeEditor
+        language="javascript"
+        lint={ true }
+        sourceCode={ SampleJSCodeSnippet }
+    />
+);
 
 EditorWithLinting.story = {
     parameters: {
@@ -78,18 +72,15 @@ EditorWithLinting.story = {
 
 /**
  * Story to display a readonly code editor.
- * @return {any}
+ * @return {React.ReactElement}
  */
-export const ReadOnlyEditor = () => {
-
-    return (
-        <CodeEditor
-            language="javascript"
-            readOnly={ true }
-            sourceCode={ SampleJSCodeSnippet }
-        />
-    );
-};
+export const ReadOnlyEditor = (): React.ReactElement => (
+    <CodeEditor
+        language="javascript"
+        readOnly={ true }
+        sourceCode={ SampleJSCodeSnippet }
+    />
+);
 
 ReadOnlyEditor.story = {
     parameters: {
@@ -101,19 +92,16 @@ ReadOnlyEditor.story = {
 
 /**
  * Story to display a smart code editor.
- * @return {any}
+ * @return {React.ReactElement}
  */
-export const SmartEditor = () => {
-
-    return (
-        <CodeEditor
-            language="javascript"
-            smart={ true }
-            linting={ true }
-            sourceCode={ SampleJSCodeSnippet }
-        />
-    );
-};
+export const SmartEditor = (): React.ReactElement => (
+    <CodeEditor
+        language="javascript"
+        smart={ true }
+        linting={ true }
+        sourceCode={ SampleJSCodeSnippet }
+    />
+);
 
 SmartEditor.story = {
     parameters: {
@@ -125,19 +113,16 @@ SmartEditor.story = {
 
 /**
  * Story to display a JSON code editor.
- * @return {any}
+ * @return {React.ReactElement}
  */
-export const JSONEditor = () => {
-
-    return (
-        <CodeEditor
-            language="json"
-            smart={ true }
-            lint={ true }
-            sourceCode={ SampleJSONSnippet }
-        />
-    );
-};
+export const JSONEditor = (): React.ReactElement => (
+    <CodeEditor
+        language="json"
+        smart={ true }
+        lint={ true }
+        sourceCode={ SampleJSONSnippet }
+    />
+);
 
 JSONEditor.story = {
     parameters: {
@@ -149,18 +134,15 @@ JSONEditor.story = {
 
 /**
  * Story to display a Typescript code editor.
- * @return {any}
+ * @return {React.ReactElement}
  */
-export const TypescriptEditor = () => {
-
-    return (
-        <CodeEditor
-            language="typescript"
-            smart={ true }
-            sourceCode={ SampleTSCodeSnippet }
-        />
-    );
-};
+export const TypescriptEditor = (): React.ReactElement => (
+    <CodeEditor
+        language="typescript"
+        smart={ true }
+        sourceCode={ SampleTSCodeSnippet }
+    />
+);
 
 TypescriptEditor.story = {
     parameters: {
@@ -172,20 +154,17 @@ TypescriptEditor.story = {
 
 /**
  * Story to display the code editor themes.
- * @return {any}
+ * @return {React.ReactElement}
  */
-export const Themes = () => {
-
-    return (
-        <CodeEditor
-            language="javascript"
-            smart={ true }
-            lint={ true }
-            theme={ select("Theme", { Dark: "dark", Light: "light" },"light") }
-            sourceCode={ SampleJSCodeSnippet }
-        />
-    );
-};
+export const Themes = (): React.ReactElement => (
+    <CodeEditor
+        language="javascript"
+        smart={ true }
+        lint={ true }
+        theme={ select("Theme", { Dark: "dark", Light: "light" }, "light") }
+        sourceCode={ SampleJSCodeSnippet }
+    />
+);
 
 Themes.story = {
     parameters: {
