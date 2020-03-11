@@ -48,15 +48,7 @@ export interface CodeEditorProps extends IUnControlledCodeMirror {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sourceCode?: any;
     tabSize?: number;
-    theme?: Themes;
-}
-
-/**
- * Supported themes.
- */
-enum Themes {
-    dark = "material",
-    light = "default"
+    theme?: "dark" | "light";
 }
 
 /**
@@ -100,6 +92,20 @@ export const CodeEditor: React.FunctionComponent<CodeEditorProps> = (
         };
     };
 
+    /**
+     * Resolves the editor theme.
+     *
+     * @param {string} theme - Selected theme.
+     * @return {object} Resolved mode.
+     */
+    const resolveTheme = (theme: string): string => {
+        if (!(theme === "dark" || theme === "light")) {
+            throw new Error("Please select a supported theme. Only `dark` and `light` are supported at the moment.");
+        }
+
+        return (theme === "dark" ? "material" : "default");
+    };
+
     return (
         <CodeMirror
             { ...rest }
@@ -108,7 +114,7 @@ export const CodeEditor: React.FunctionComponent<CodeEditorProps> = (
                 {
                     ...rest.options,
                     mode: props.options?.mode ? props.options.mode : resolveMode(language),
-                    theme,
+                    theme: resolveTheme(theme),
                     lineNumbers: showLineNumbers,
                     readOnly,
                     gutters: [ "note-gutter", "CodeMirror-linenumbers", "CodeMirror-lint-markers" ],
@@ -132,5 +138,5 @@ CodeEditor.defaultProps = {
     showLineNumbers: true,
     smart: false,
     tabSize: 4,
-    theme: Themes.dark
+    theme: "dark"
 };
