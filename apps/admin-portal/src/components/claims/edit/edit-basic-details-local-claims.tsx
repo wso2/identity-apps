@@ -41,7 +41,7 @@ export const EditBasicDetailsLocalClaims = (
         <>
             <Grid>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 6 } tablet={ 16 }>
+                    <Grid.Column width={ 6 } tablet={ 16 } computer={ 6 } mobile={ 16 }>
                         <Form>
                             <Form.Field>
                                 <label>Claim URI</label>
@@ -88,7 +88,7 @@ export const EditBasicDetailsLocalClaims = (
             >
                 <Grid>
                     <Grid.Row columns={ 1 }>
-                        <Grid.Column width={ 6 } tablet={ 16 }>
+                        <Grid.Column width={ 6 } tablet={ 16 } computer={ 6 } mobile={ 16 }>
                             <Field
                                 type="text"
                                 name="name"
