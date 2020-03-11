@@ -36,6 +36,7 @@
         "@svgr/webpack": "*",
         "@types/react-beautiful-dnd": "*",
         "axios": "*",
+        "css-loader": "*",
         "fork-ts-checker-webpack-plugin": "*",
         "history": "*",
         "i18next": "*",
@@ -51,6 +52,7 @@
         "redux": "*",
         "redux-devtools-extension": "*",
         "redux-thunk": "*",
+        "style-loader": "*",
         "thread-loader": "*",
         "ua-parser-js": "*"
     }

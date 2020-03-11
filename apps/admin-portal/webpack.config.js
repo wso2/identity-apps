@@ -113,6 +113,10 @@ module.exports = (env) => {
         module: {
             rules: [
                 {
+                    test: /\.css$/,
+                    use: ['style-loader', 'css-loader']
+                },
+                {
                     test: /\.(png|jpg|cur|gif|eot|ttf|woff|woff2)$/,
                     use: ["url-loader"]
                 },
