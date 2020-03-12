@@ -26,6 +26,7 @@ import { history } from "../../helpers";
 // tslint:disable-next-line:ordered-imports
 import { deleteApplication } from "../../api";
 import { ApplicationListInterface } from "../../models";
+import { GlobalConfig } from "../../configs";
 
 /**
  *
@@ -114,6 +115,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                         type: "button"
                                     },
                                     {
+                                        hidden: GlobalConfig.doNotDeleteApplications.includes(app.name),
                                         icon: "trash alternate",
                                         onClick: (): void => handleApplicationDelete(app.id),
                                         popupText: "delete",
