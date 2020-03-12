@@ -161,3 +161,37 @@
         background-color: @infoColor;
     }
 }
+
+/*******************************
+     Claim Mapping Variation
+*******************************/
+
+.ui.button.toggle.active {
+     &.claim-mapping-button {
+       background-color: #f47b20 !important;
+     }
+}
+
+.ui.button {
+   &.claim-mapping-button {
+       background: #e8e8e8 none;
+   }
+    &.claim-selection-add-button {
+          background: #f4f7f9 none;
+    }
+}
+
+.ui.button:hover {
+   &.claim-mapping-button {
+        background-color: #CACBCD;
+        background-image: none;
+        box-shadow: 0px 0px 0px 1px transparent inset, 0px 0em 0px 0px rgba(34, 36, 38, 0.15) inset;
+        color: rgba(0, 0, 0, 0.8);
+    }
+    &.claim-selection-add-button {
+            background-color: #CACBCD;
+            background-image: none;
+            box-shadow: 0px 0px 0px 1px transparent inset, 0px 0em 0px 0px rgba(34, 36, 38, 0.15) inset;
+            color: rgba(0, 0, 0, 0.8);
+        }
+}

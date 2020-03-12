@@ -137,4 +137,4 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
             </Modal.Actions>
         </Modal>
     )
-}
+};

@@ -207,3 +207,45 @@
 
       }
 }
+
+
+/*-----------------------------------
+ Application Attribute mapping variation
+-------------------------------------*/
+
+
+.ui.grid {
+     &.claim-mapping {
+         .row {
+           &.claim-list-row {
+                 .column {
+                   &.claim-list-column {
+                     overflow-y: auto;
+                     height: 250px;
+                     overflow-x: hidden;
+                     &.selected {
+                       background-color: #f4f7f9
+                     }
+                   }
+                 }
+             }
+          }
+     }
+     &.claim-mapping-item {
+         .row {
+           &.claim-mapping-row {
+              vertical-align: middle;
+              min-height: 75px;
+              .column {
+                 &.claim-mapping-edit-column {
+                     display: flex;
+                     flex-direction: row;
+                 }
+              }
+              &.selected {
+                min-height: 70px
+              }
+           }
+         }
+     }
+}
