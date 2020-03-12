@@ -22,10 +22,11 @@ import { useDispatch } from "react-redux";
 import { AlertInterface, BasicProfileInterface } from "../../models";
 import { addAlert } from "../../store/actions";
 import { UserProfile } from "./user-profile";
+import { UserRolesList } from "./user-roles";
 
 interface EditUserPropsInterface {
     user: BasicProfileInterface;
-    setUser: (userInfo: BasicProfileInterface) => void;
+    handleUserUpdate: (userId: string) => void;
 }
 
 /**
@@ -39,7 +40,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     const {
         user,
-        setUser
+        handleUserUpdate,
     } = props;
     const dispatch = useDispatch();
 
@@ -52,7 +53,23 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             menuItem: "Profile",
             render: () => (
                 <ResourceTab.Pane attached={ false }>
-                    <UserProfile onAlertFired={ handleAlerts }  user={ user } setUser={ setUser }/>
+                    <UserProfile
+                        onAlertFired={ handleAlerts }
+                        user={ user }
+                        handleUserUpdate={ handleUserUpdate }
+                    />
+                </ResourceTab.Pane>
+            ),
+        },
+        {
+            menuItem: "Roles",
+            render: () => (
+                <ResourceTab.Pane attached={ false }>
+                    <UserRolesList
+                        onAlertFired={ handleAlerts }
+                        user={ user }
+                        handleUserUpdate={ handleUserUpdate }
+                    />
                 </ResourceTab.Pane>
             ),
         },

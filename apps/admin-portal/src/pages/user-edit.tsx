@@ -44,8 +44,8 @@ export const UserEditPage = (): JSX.Element => {
         dispatch(addAlert(alert));
     };
 
-    const handleUserUpdate = (userInfo: BasicProfileInterface) => {
-        setUserProfile(userInfo);
+    const handleUserUpdate = (id: string) => {
+        getUser(id);
     };
 
     const getUser = (id: string) => {
@@ -91,7 +91,7 @@ export const UserEditPage = (): JSX.Element => {
             titleTextAlign="left"
             bottomMargin={ false }
         >
-            <EditUser user={ user } setUser={ handleUserUpdate } />
+            <EditUser user={ user } handleUserUpdate={ handleUserUpdate }/>
         </PageLayout>
     );
 };

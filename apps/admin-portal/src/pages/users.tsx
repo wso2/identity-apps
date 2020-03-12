@@ -27,7 +27,7 @@ import {
     PaginationProps,
     Popup
 } from "semantic-ui-react";
-import { deleteUser, getGroupsList, getUsersList } from "../api";
+import { deleteUser, getUsersList } from "../api";
 import { UserSearch, UsersList } from "../components/users";
 import { AddUserWizard } from "../components/users/wizard/add-user-wizard";
 import { ListLayout, PageLayout } from "../layouts";
@@ -63,24 +63,6 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                 setUsersList(response);
             });
     };
-
-    const getRolesList = (domain: string) => {
-        getGroupsList(domain)
-            .then((response) => {
-                setRolesList(response.data.Resources);
-            });
-    };
-
-    const getRoleListForDomain = (domain: string) => {
-        getGroupsList(domain)
-            .then((response) => {
-                setRolesList([ ...rolesList, ...response.data.Resources ] );
-            });
-    };
-
-    useEffect(() => {
-        getRolesList("Application");
-    }, []);
 
     useEffect(() => {
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
@@ -291,7 +273,6 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                         listItemLimit={ listItemLimit }
                         updateList={ () => setListUpdated(true) }
                         rolesList={ rolesList }
-                        onUserListDomainChange={ (domain) => getRoleListForDomain(domain) }
                     />
                     )
                 }
