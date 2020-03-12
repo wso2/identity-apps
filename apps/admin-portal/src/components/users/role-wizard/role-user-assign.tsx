@@ -176,9 +176,7 @@ export const AddRoleUsers: FunctionComponent<AddUserRoleProps> = (props: AddUser
                                                         image={ user.profileUrl }
                                                     />
                                                      { user.userName }
-                                                     <Icon
-                                                         name="add"
-                                                     />
+                                                     <Icon name="add" />
                                                  </List.Item>
                                              )
                                          })
