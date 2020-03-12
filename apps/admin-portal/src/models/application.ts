@@ -114,10 +114,10 @@ export interface ApplicationListInterface {
 export interface AppClaimInterface {
     id?: string;
     uri: string;
-    displayname?: string;
+    displayName?: string;
 }
 
-interface ClaimMappingInterface {
+export interface ClaimMappingInterface {
     applicationClaim: string;
     localClaim: AppClaimInterface;
 }
@@ -139,18 +139,18 @@ interface RoleMappingInterface {
     applicationRole: string;
 }
 
-interface RoleConfigInterface {
+export interface RoleConfigInterface {
     mappings: RoleMappingInterface[];
     includeUserDomain: boolean;
     claim: AppClaimInterface;
 }
 
-interface RequestedClaimConfigurationInterface {
+export interface RequestedClaimConfigurationInterface {
     claim: AppClaimInterface;
     mandatory: boolean;
 }
 
-interface SubjectConfigInterface {
+export interface SubjectConfigInterface {
     claim?: AppClaimInterface;
     includeUserDomain?: boolean;
     includeTenantDomain?: boolean;
@@ -162,7 +162,7 @@ interface SubjectConfigInterface {
  */
 export interface ClaimConfigurationInterface {
     dialect: string;
-    claimMapping: ClaimMappingInterface[];
+    claimMappings: ClaimMappingInterface[];
     requestedClaims: RequestedClaimConfigurationInterface[];
     subject: SubjectConfigInterface;
     role: RoleConfigInterface;
