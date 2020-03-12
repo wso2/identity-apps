@@ -76,7 +76,8 @@ import {
     WebAppTemplateIllustration,
     WSFedLogo,
     WSTrustLogo,
-    ClaimsIcon
+    ClaimsIcon,
+    UserStoreIcon
 } from "@wso2is/theme";
 
 type ImageType = string;
@@ -102,7 +103,8 @@ export const SidePanelIcons = {
     connections: PlugIcon,
     overview: DashboardIcon,
     usersAndRoles: UserIcon,
-    claims: ClaimsIcon
+    claims: ClaimsIcon,
+    userStore: UserStoreIcon
 };
 
 export const SidePanelMiscIcons = {
@@ -175,7 +177,7 @@ export const TechnologyLogos = {
     dotNet: DotNetLogo,
     java: JavaLogo,
     react: ReactLogo,
-    vue: VueLogo,
+    vue: VueLogo
 };
 
 export const ApplicationWizardStepIcons = {
