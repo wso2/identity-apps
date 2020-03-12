@@ -48,7 +48,7 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
     } = props;
 
     const handleRemoveRoleItem = (role: any) => {
-        let userRolesCopy = [ ...initialValues?.tempRoleList ];
+        const userRolesCopy = [ ...initialValues?.tempRoleList ];
         userRolesCopy.splice(initialValues?.tempRoleList.indexOf(role), 1);
         handleTempListChange(userRolesCopy);
 
@@ -63,7 +63,7 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
 
              // When a role is added to the assigned role list it is removed
              // from the initial list.
-             let roleListCopy = [ ...initialValues?.roleList ];
+             const roleListCopy = [ ...initialValues?.roleList ];
              roleListCopy.splice(initialValues?.roleList.indexOf(role), 1);
              handleRoleListChange(roleListCopy);
          }

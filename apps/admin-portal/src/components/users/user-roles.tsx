@@ -51,15 +51,6 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
 
     const { t } = useTranslation();
 
-    const getRolesList = (domain: string) => {
-        setSelectedDomain(domain);
-        getGroupsList(domain)
-            .then((response) => {
-                removeExistingRoles(domain, response.data.Resources);
-                setAddNewRoleModalView(true);
-            });
-    };
-
     /**
      * The following function remove already assigned roles from the initial
      * role specific to it's domain.
@@ -68,9 +59,9 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
      * @param roleList
      */
     const removeExistingRoles = (domain: string, roleList) => {
-        let roleListCopy = [ ...roleList ];
+        const roleListCopy = [ ...roleList ];
         if (domain === "Application") {
-            let addedAppRoles = [];
+            const addedAppRoles = [];
             _.forEachRight(roleListCopy, (role) => {
                 if (appRoles.has(role.displayName)) {
                     addedAppRoles.push(role);
@@ -80,7 +71,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             setTempRoleList(addedAppRoles);
             setRoleList(roleListCopy);
         } else if (domain === "Internal") {
-            let addedInternalRoles = [];
+            const addedInternalRoles = [];
             _.forEachRight(roleListCopy, (role) => {
                 if (internalRoles.has(role.displayName)) {
                     addedInternalRoles.push(role);
@@ -90,7 +81,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             setTempRoleList(addedInternalRoles);
             setRoleList(roleListCopy);
         } else {
-            let addedPrimaryRoles = [];
+            const addedPrimaryRoles = [];
             _.forEachRight(roleListCopy, (role) => {
                 if (primaryRoles.has(role.displayName)) {
                     addedPrimaryRoles.push(role);
@@ -102,8 +93,17 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         }
     };
 
+    const getRolesList = (domain: string) => {
+        setSelectedDomain(domain);
+        getGroupsList(domain)
+            .then((response) => {
+                removeExistingRoles(domain, response.data.Resources);
+                setAddNewRoleModalView(true);
+            });
+    };
+
     const handleRemoveRoleItem = (role: any) => {
-        let userRolesCopy = [ ...tempRoleList ];
+        const userRolesCopy = [ ...tempRoleList ];
         userRolesCopy.splice(tempRoleList.indexOf(role), 1);
         setTempRoleList(userRolesCopy);
 
@@ -118,7 +118,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
 
             // When a role is added to the assigned role list it is removed
             // from the initial list.
-            let roleListCopy = [ ...roleList ];
+            const roleListCopy = [ ...roleList ];
             roleListCopy.splice(roleList.indexOf(role), 1);
             setRoleList(roleListCopy);
         }
@@ -126,7 +126,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
 
     const handleSearchFieldChange = (e, { value }) => {
         let isMatch = false;
-        let filteredRoleList = [];
+        const filteredRoleList = [];
 
         if (!_.isEmpty(value)) {
             const re = new RegExp(_.escapeRegExp(value), 'i');
@@ -142,24 +142,6 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             setRoleList(roleList);
         }
     };
-
-    useEffect(() => {
-        if (!(user)) {
-            return;
-        }
-        mapUserRolesToCategories();
-    }, []);
-
-    /**
-     * The following useEffect will be triggered when the
-     * roles are updated.
-     */
-    useEffect(() => {
-        if (!(user)) {
-            return;
-        }
-        mapUserRolesToCategories();
-    }, [ user ]);
 
     /**
      * The following function maps the role list of the user
@@ -188,6 +170,24 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             setPrimaryRoles(primRoles);
         }
     };
+
+    useEffect(() => {
+        if (!(user)) {
+            return;
+        }
+        mapUserRolesToCategories();
+    }, []);
+
+    /**
+     * The following useEffect will be triggered when the
+     * roles are updated.
+     */
+    useEffect(() => {
+        if (!(user)) {
+            return;
+        }
+        mapUserRolesToCategories();
+    }, [ user ]);
 
     const handelAddNewRoleModalClose = () => {
         setAddNewRoleModalView(false);
@@ -244,8 +244,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             }
         };
 
-        let removeOperations = [];
-        let addOperations = [];
+        const removeOperations = [];
+        const addOperations = [];
         let removedIds = [];
 
         if (selectedDomain === "Application") {
@@ -385,7 +385,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                             </Grid.Row>
                             <Grid.Row>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                    <Segment className={ "user-assigned-roles-segment"}>
+                                    <Segment className={ "user-assigned-roles-segment" }>
                                         {
                                             tempRoleList && tempRoleList.map((role, index) => {
                                                 return (
@@ -393,7 +393,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                         { role.displayName }
                                                         <Icon
                                                             name="delete"
-                                                            onClick={() => handleRemoveRoleItem(role)}
+                                                            onClick={ () => handleRemoveRoleItem(role) }
                                                         />
                                                     </Label>
                                                 );
@@ -424,7 +424,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                         </Hint>
                         {
                             primaryRoles && primaryRoles.size > 0 ? (
-                                <Segment.Group style={{ boxShadow: "none" }}>
+                                <Segment.Group style={ { boxShadow: "none" } }>
                                 <Segment clearing className="user-roles-segment-header">
                                     <Icon
                                         className="floated right"
@@ -460,7 +460,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                 </Segment>
                                 </Segment.Group>
                             ) : (
-                                <Segment.Group style={{ boxShadow: "none" }}>
+                                <Segment.Group style={ { boxShadow: "none" } }>
                                     <Segment clearing className="user-roles-segment-header">
                                         <Icon
                                             className="floated right"
@@ -487,7 +487,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
-                    <Grid.Column computer={8}>
+                    <Grid.Column computer={ 8 }>
                         <Heading as="h4">Application roles</Heading>
                         <Hint>
                             The following are the application roles assigned to the user at the moment.
@@ -521,7 +521,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                 </Segment>
                                 </Segment.Group>
                                 ) : (
-                                    <Segment.Group style={{ boxShadow: "none" }}>
+                                    <Segment.Group style={ { boxShadow: "none" } }>
                                         <Segment clearing className="user-roles-segment-header">
                                             <Icon
                                                 className="floated right"
@@ -555,7 +555,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                         </Hint>
                         {
                             internalRoles && internalRoles.size > 0 ? (
-                                <Segment.Group style={{ boxShadow: "none" }}>
+                                <Segment.Group style={ { boxShadow: "none" } }>
                                     <Segment clearing className="user-roles-segment-header">
                                         <Icon
                                             className="floated right"
@@ -590,7 +590,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                 </Segment>
                                 </Segment.Group>
                                 ): (
-                                    <Segment.Group style={{ boxShadow: "none" }}>
+                                    <Segment.Group style={ { boxShadow: "none" } }>
                                         <Segment clearing className="user-roles-segment-header">
                                             <Icon
                                                 className="floated right"
