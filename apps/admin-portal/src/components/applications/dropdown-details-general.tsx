@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import React, { Component, FunctionComponent, useState } from "react";
-import { Button, Divider, Form, Grid, Header, Portal, Segment } from "semantic-ui-react";
+import React, { FunctionComponent } from "react";
+import { Divider, Form, Grid } from "semantic-ui-react";
 
 interface GeneralDetailsProps {
     name: string;

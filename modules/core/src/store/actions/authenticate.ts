@@ -24,7 +24,6 @@ import {
     SignInUtil,
     SignOutUtil
 } from "@wso2is/authentication";
-import { AxiosHttpClient, AxiosHttpClientInstance } from "@wso2is/http";
 import { CommonServiceResourcesEndpoints } from "../../configs";
 import { ContextUtils } from "../../utils";
 import {
@@ -39,13 +38,6 @@ import {
     SetSignInActionInterface,
     SetSignOutActionInterface
 } from "./types";
-
-/**
- * Get a http client instance.
- *
- * @type {AxiosHttpClientInstance}
- */
-const httpClient: AxiosHttpClientInstance = AxiosHttpClient.getInstance();
 
 /**
  * Redux action to set sign in.
@@ -88,7 +80,7 @@ export const handleSignIn = (clientID: string,
                              clientHost: string,
                              redirectURI: string,
                              scopes: string[],
-                             consentDenied: boolean = false) => (dispatch) => {
+                             consentDenied = false) => (dispatch) => {
 
     const serverHost: string = ContextUtils.getRuntimeConfig().serverHost;
 
@@ -168,6 +160,7 @@ export const handleSignOut = (callbackURL: string) => (dispatch) => {
             AuthenticateSessionUtil.endAuthenticatedSession();
             OPConfigurationUtil.resetOPConfiguration();
         })
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .catch((error) => {
             // TODO: show error page
         })

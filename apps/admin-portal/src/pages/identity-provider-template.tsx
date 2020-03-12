@@ -118,7 +118,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<any> = (): JS
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string },
                                      templateCategory: SupportedIdentityProviderTemplateCategories): void => {
 
-        if (!TEMPLATES.hasOwnProperty(templateCategory)) {
+        if (!Object.prototype.hasOwnProperty.call(TEMPLATES, templateCategory)) {
             return;
         }
 

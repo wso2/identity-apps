@@ -66,7 +66,7 @@ export const All = () => {
                     <div>
                         This image has been retrieved from
                         { " " }
-                        <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener">Gravatar</a>
+                        <a href={ UIConstants.GRAVATAR_URL } rel="noopener noreferrer" target="_blank">Gravatar</a>
                         { " " }
                         service.
                     </div>
@@ -178,7 +178,7 @@ export const Gravatar = () => (
                 <div>
                     This image has been retrieved from
                     { " " }
-                    <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener">Gravatar</a>
+                    <a href={ UIConstants.GRAVATAR_URL } rel="noopener noreferrer" target="_blank" >Gravatar</a>
                     { " " }
                     service.
                 </div>

@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/webapps",
-    "version": "1.0.75",
+    "version": "1.0.78",
     "description": "WSO2 Identity Server Web Applications",
     "keywords": [
         "WSO2",
@@ -18,7 +18,8 @@
         "remove-node-modules": "npx lerna exec -- rm -rf node_modules && rm -rf node_modules",
         "remove-package-lock": "npx lerna exec -- rm -rf package-lock.json && rm -rf package-lock.json",
         "remove-maven-folders": "npx lerna exec -- rm -rf target npm ./apps/user-portal/src/main ./apps/admin-portal/src/main && rm -rf target npm ./apps/user-portal/src/main ./apps/admin-portal/src/main",
-        "update-version": "node scripts/update-version.js"
+        "update-version": "node scripts/update-version.js",
+        "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
     },
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -93,9 +94,7 @@
         "copy-webpack-plugin": "^5.0.4",
         "css-loader": "^1.0.0",
         "eslint": "^6.8.0",
-        "eslint-config-prettier": "^6.10.0",
         "eslint-loader": "^3.0.3",
-        "eslint-plugin-prettier": "^3.1.2",
         "eslint-plugin-react": "^7.18.3",
         "extract-text-webpack-plugin": "^4.0.0-beta.0",
         "fast-xml-parser": "^3.15.0",

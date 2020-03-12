@@ -28,6 +28,7 @@ export class StringUtils {
      *
      * @hideconstructor
      */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
     /**
@@ -44,7 +45,7 @@ export class StringUtils {
      */
     public static constructSeparatedString(raw: string[] | string,
                                            separator: string,
-                                           splitSeparator: string = ","): string {
+                                           splitSeparator = ","): string {
         if (raw instanceof Array) {
             return raw.join(separator + " ");
         } else if (typeof raw === "string") {

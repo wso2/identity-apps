@@ -48,7 +48,7 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
     const [ duplicationError, setError ] = useState(undefined);
 
     const handleRemoveRoleItem = (role: any) => {
-        let userRolesCopy = [ ...tempRoleList ];
+        const userRolesCopy = [ ...tempRoleList ];
         userRolesCopy.splice(tempRoleList.indexOf(role), 1);
         setTempRoleList(userRolesCopy);
     };
@@ -64,7 +64,7 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
 
     const handleSearchFieldChange = (e, { value }) => {
         let isMatch = false;
-        let filteredRoleList = [];
+        const filteredRoleList = [];
 
         if (!_.isEmpty(value)) {
             const re = new RegExp(_.escapeRegExp(value), 'i');
@@ -136,7 +136,7 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
                         </Grid.Row>
                         <Grid.Row>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Segment className={ "user-assigned-roles-segment"}>
+                                <Segment className={ "user-assigned-roles-segment" }>
                                         <Popup
                                           trigger={
                                               <Label className={ "info-label" }>
@@ -157,7 +157,7 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
                                                     { role.displayName }
                                                     <Icon
                                                         name="delete"
-                                                        onClick={() => handleRemoveRoleItem(role)}
+                                                        onClick={ () => handleRemoveRoleItem(role) }
                                                     />
                                                 </Label>
                                             );

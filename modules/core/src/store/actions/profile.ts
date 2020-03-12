@@ -72,6 +72,39 @@ export const toggleSCIMEnabled = (isEnabled: boolean): ToggleSCIMEnabledActionIn
 });
 
 /**
+ * Redux action to get the profile schemas for a specific user.
+ * Makes an API call to the SCIM endpoint and retrieves the profile schemas.
+ *
+ * @param {ProfileInfoInterface} profileInfo - Profile information.
+ * @param {(info: ProfileInfoInterface, schemas: ProfileSchema[]) => void} onProfileCompletionUpdate - Callback to be
+ * fired to calculate the profile completion.
+ * @return {(dispatch) => void}
+ */
+export const getSCIMSchemas = (
+    profileInfo?: ProfileInfoInterface,
+    onProfileCompletionUpdate?: (info: ProfileInfoInterface, schemas: ProfileSchemaInterface[]) => void
+) => (dispatch) => {
+
+    dispatch(setProfileSchemaRequestLoadingStatus(true));
+
+    getProfileSchemas()
+        .then((response: ProfileSchemaInterface[]) => {
+            dispatch(setSCIMSchemas(response));
+
+            if (profileInfo) {
+                onProfileCompletionUpdate(profileInfo, response);
+            }
+        })
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        .catch((error) => {
+            // TODO: show error page
+        })
+        .finally(() => {
+            dispatch(setProfileSchemaRequestLoadingStatus(false));
+        });
+    };
+
+/**
  * Redux action to get profile information.
  * Makes an API request to the SCIM endpoint and retrieves the user information.
  *
@@ -85,7 +118,7 @@ export const toggleSCIMEnabled = (isEnabled: boolean): ToggleSCIMEnabledActionIn
  * @return {(dispatch) => void}
  */
 export const getProfileInformation = (
-    updateProfileCompletion: boolean = false,
+    updateProfileCompletion = false,
     profileSchemas?: ProfileSchemaInterface[],
     onSCIMDisabled?: () => void,
     onRequestError?: (error: string) => void,
@@ -93,7 +126,7 @@ export const getProfileInformation = (
     onProfileCompletionUpdate?: (info: ProfileInfoInterface, schemas: ProfileSchemaInterface[]) => void
 ) => (dispatch) => {
 
-    let isCompletionCalculated: boolean = false;
+    let isCompletionCalculated = false;
 
     dispatch(setProfileInfoRequestLoadingStatus(true));
 
@@ -133,37 +166,5 @@ export const getProfileInformation = (
         })
         .finally(() => {
             dispatch(setProfileInfoRequestLoadingStatus(false));
-        });
-};
-
-/**
- * Redux action to get the profile schemas for a specific user.
- * Makes an API call to the SCIM endpoint and retrieves the profile schemas.
- *
- * @param {ProfileInfoInterface} profileInfo - Profile information.
- * @param {(info: ProfileInfoInterface, schemas: ProfileSchema[]) => void} onProfileCompletionUpdate - Callback to be
- * fired to calculate the profile completion.
- * @return {(dispatch) => void}
- */
-export const getSCIMSchemas = (
-    profileInfo?: ProfileInfoInterface,
-    onProfileCompletionUpdate?: (info: ProfileInfoInterface, schemas: ProfileSchemaInterface[]) => void
-) => (dispatch) => {
-
-    dispatch(setProfileSchemaRequestLoadingStatus(true));
-
-    getProfileSchemas()
-        .then((response: ProfileSchemaInterface[]) => {
-            dispatch(setSCIMSchemas(response));
-
-            if (profileInfo) {
-                onProfileCompletionUpdate(profileInfo, response);
-            }
-        })
-        .catch((error) => {
-            // TODO: show error page
-        })
-        .finally(() => {
-            dispatch(setProfileSchemaRequestLoadingStatus(false));
         });
 };

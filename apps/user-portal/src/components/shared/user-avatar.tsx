@@ -98,6 +98,20 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
     }, [image]);
 
     /**
+     * Checks if the image is from `Gravatar`.
+     *
+     * @return {boolean}
+     */
+    const isGravatarURL = (): boolean => {
+        return (userImage && userImage.includes(UIConstants.GRAVATAR_URL))
+            || (authState && authState.profileInfo && authState.profileInfo.userImage
+                && authState.profileInfo.userImage.includes(UIConstants.GRAVATAR_URL))
+            || (authState && authState.profileInfo && authState.profileInfo.profileUrl
+                && authState.profileInfo.profileUrl.includes(UIConstants.GRAVATAR_URL));
+    };
+
+
+    /**
      * Resolves the top label image.
      *
      * @return {string}
@@ -111,33 +125,18 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
     };
 
     /**
-     * Checks if the image is from `Gravatar`.
-     *
-     * @return {boolean}
-     */
-    const isGravatarURL = (): boolean => {
-        return (userImage && userImage.includes(UIConstants.GRAVATAR_URL))
-            || (authState && authState.profileInfo && authState.profileInfo.userImage
-                && authState.profileInfo.userImage.includes(UIConstants.GRAVATAR_URL))
-            || (authState && authState.profileInfo && authState.profileInfo.profileUrl
-                && authState.profileInfo.profileUrl.includes(UIConstants.GRAVATAR_URL));
-    };
-
-    /**
      * Handles the mouse over event.
      *
-     * @param {MouseEvent} e - Mouse event.
      */
-    const handleOnMouseOver = (e: MouseEvent) => {
+    const handleOnMouseOver = () => {
         setShowPopup(true);
     };
 
     /**
      * Handles the mouse out event.
      *
-     * @param {MouseEvent} e - Mouse event.
      */
-    const handleOnMouseOut = (e: MouseEvent) => {
+    const handleOnMouseOut = () => {
         setShowPopup(false);
     };
 
@@ -203,9 +202,8 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
 
     /**
      * This is called when the save button is clicked
-     * @param event
      */
-    const handleSubmit = async (event: React.MouseEvent) => {
+    const handleSubmit = async () => {
 
         if (_.isEmpty(url)) {
             setUrlError(Error.REQUIRED);

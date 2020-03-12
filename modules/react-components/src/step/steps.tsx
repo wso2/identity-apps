@@ -22,14 +22,6 @@ import { Divider } from "semantic-ui-react";
 import { Step } from "./step";
 
 /**
- * Interface for the steps sub components.
- */
-interface StepsSubComponentsInterface {
-    Group: typeof Steps;
-    Step: typeof Step;
-}
-
-/**
  * Steps component prop types.
  */
 interface StepsPropsInterface {
@@ -124,6 +116,14 @@ export const Steps: React.FunctionComponent<PropsWithChildren<StepsPropsInterfac
         </div>
     );
 };
+
+/**
+ * Interface for the steps sub components.
+ */
+interface StepsSubComponentsInterface {
+    Group: typeof Steps;
+    Step: typeof Step;
+}
 
 Steps.Group = Steps;
 Steps.Step = Step;

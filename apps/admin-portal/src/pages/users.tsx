@@ -37,7 +37,6 @@ import { addAlert } from "../store/actions";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
 import { UsersListOptionsComponent } from "../components/users/users-list-options";
-import { string } from "prop-types";
 
 
 /**
@@ -97,6 +96,25 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
         ]));
     }, []);
 
+    /**
+     * The following method accepts a Map and returns the values as a string.
+     *
+     * @param attributeMap - IterableIterator<string>
+     * @return string
+     */
+    const generateAttributesString = (attributeMap: IterableIterator<string>) => {
+        const attArray = [];
+        const iterator1 = attributeMap[Symbol.iterator]();
+
+        for (const attribute of iterator1) {
+            if (attribute !== "") {
+                attArray.push(attribute);
+            }
+        }
+
+        return attArray.toString();
+    };
+
     useEffect(() => {
         if (userListMetaContent) {
             const attributes = generateAttributesString(userListMetaContent.values());
@@ -112,25 +130,6 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
         getList(listItemLimit, listOffset, null, attributes);
         setListUpdated(false);
     }, [ isListUpdated ]);
-
-    /**
-     * The following method accepts a Map and returns the values as a string.
-     *
-     * @param attributeMap - IterableIterator<string>
-     * @return string
-     */
-    const generateAttributesString = (attributeMap: IterableIterator<string>) => {
-        const attArray = [];
-        const iterator1 = attributeMap[Symbol.iterator]();
-
-        for (let attribute of iterator1) {
-            if (attribute !== "") {
-                attArray.push(attribute);
-            }
-        }
-
-        return attArray.toString();
-    };
 
     /**
      * Shows list placeholders.
@@ -224,11 +223,6 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                 setListUpdated(true);
             });
     };
-
-    const options = [
-        { key: "import", icon: "download", text: "Import users", value: "import" },
-        { key: "export", icon: "upload", text: "Export users", value: "export" },
-    ];
 
     return (
         <PageLayout

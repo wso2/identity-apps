@@ -28,6 +28,8 @@ import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
 import { history } from "../helpers";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
+import { EmptyPlaceholder } from "../components/shared";
+import { EmptyPlaceholderIllustrations } from "../configs";
 
 export const ExternalClaimsPage = (props): React.ReactElement => {
 
@@ -39,7 +41,7 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
     const [editClaim, setEditClaim] = useState(false);
     const [editClaimID, setEditClaimID] = useState("");
 
-    const dispatch=useDispatch();
+    const dispatch = useDispatch();
 
     const dialectID = props.match.params.id;
 
@@ -60,12 +62,8 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
 
     }, []);
 
-    useEffect(() => {
-        getExternalClaims();
-    }, [dialectID]);
-
-    const getExternalClaims = (limit?:number,offset?:number,sort?:string,filter?:string) => {
-        dialectID && getAllExternalClaims(dialectID, {limit,offset,sort,filter}).then(response => {
+    const getExternalClaims = (limit?: number, offset?: number, sort?: string, filter?: string) => {
+        dialectID && getAllExternalClaims(dialectID, { limit, offset, sort, filter }).then(response => {
             setClaims(response);
         }).catch(error => {
             dispatch(addAlert(
@@ -77,6 +75,10 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
             ));
         });
     }
+
+    useEffect(() => {
+        getExternalClaims();
+    }, [dialectID]);
 
     const paginate = (list: ExternalClaim[], limit: number, offset: number): ExternalClaim[] => {
         return list?.slice(offset, offset + limit);
@@ -94,73 +96,93 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
         <>
             {addClaim
                 ? <AddExternalClaims
-                    open={addClaim}
-                    onClose={() => { setAddClaim(false) }}
-                    dialect={dialect}
-                    update={getExternalClaims}
+                    open={ addClaim }
+                    onClose={ () => { setAddClaim(false) } }
+                    dialect={ dialect }
+                    update={ getExternalClaims }
                 />
                 : null
             }
             {
                 editClaim
                     ? <EditExternalClaims
-                        open={editClaim}
-                        onClose={() => {
+                        open={ editClaim }
+                        onClose={ () => {
                             setEditClaim(false);
                             setEditClaimID("");
-                        }}
-                        update={getExternalClaims}
-                        claimID={editClaimID}
-                        dialectID={dialect?.id}
+                        } }
+                        update={ getExternalClaims }
+                        claimID={ editClaimID }
+                        dialectID={ dialect?.id }
                     />
                     : null
             }
             <PageLayout
                 title="External Claims"
-                description={"View, edit and add claims of " + dialect?.dialectURI}
-                showBottomDivider={true}
-                backButton={{
-                    onClick: () => { history.push("/claim-dialects") },
+                description={ "View, edit and add claims of " + dialect?.dialectURI }
+                showBottomDivider={ true }
+                backButton={ {
+                    onClick: () => { history.push("/external-dialects") },
                     text: "Go back to Claim Dialects"
-                }}
+                } }
             >
-                <ListLayout
-                    advancedSearch={<ExternalClaimsSearch onFilter={(query) => {
-                        getExternalClaims(null, null, null, query);
-                    }}/>}
-                    currentListSize={listItemLimit}
-                    listItemLimit={listItemLimit}
-                    onItemsPerPageDropdownChange={handleItemsPerPageDropdownChange}
-                    onPageChange={handlePaginationChange}
-                    onSortStrategyChange={null}
-                    rightActionPanel={
-                        (
-                            <PrimaryButton
-                                onClick={() => {
-                                    setAddClaim(true);
-                                }}
-                            >
-                                <Icon name="add" />Add a claim
-                        </PrimaryButton>
-                        )
-                    }
-                    showPagination={true}
-                    sortOptions={null}
-                    sortStrategy={null}
-                    totalPages={Math.ceil(claims?.length / listItemLimit)}
-                    totalListSize={claims?.length}
-                >
-                    <ClaimsList
-                        list={paginate(claims, listItemLimit, offset)}
-                        localClaim={ListType.EXTERNAL}
-                        openEdit={(claimID: string) => {
-                            setEditClaim(true);
-                            setEditClaimID(claimID);
-                        }}
-                        update={getExternalClaims}
-                        dialectID={dialectID}
-                    />
-                </ListLayout>
+                {claims?.length > 0
+                    ? (
+                        <ListLayout
+                            advancedSearch={ <ExternalClaimsSearch onFilter={ (query) => {
+                                getExternalClaims(null, null, null, query);
+                            } } /> }
+                            currentListSize={ listItemLimit }
+                            listItemLimit={ listItemLimit }
+                            onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                            onPageChange={ handlePaginationChange }
+                            onSortStrategyChange={ null }
+                            rightActionPanel={
+                                (
+                                    <PrimaryButton
+                                        onClick={ () => {
+                                            setAddClaim(true);
+                                        } }
+                                    >
+                                        <Icon name="add" />Add a claim
+                                    </PrimaryButton>
+                                )
+                            }
+                            showPagination={ true }
+                            sortOptions={ null }
+                            sortStrategy={ null }
+                            totalPages={ Math.ceil(claims?.length / listItemLimit) }
+                            totalListSize={ claims?.length }
+                        >
+                            <ClaimsList
+                                list={ paginate(claims, listItemLimit, offset) }
+                                localClaim={ ListType.EXTERNAL }
+                                openEdit={ (claimID: string) => {
+                                    setEditClaim(true);
+                                    setEditClaimID(claimID);
+                                } }
+                                update={ getExternalClaims }
+                                dialectID={ dialectID }
+                            />
+                        </ListLayout>
+                    )
+                    : (
+                        <EmptyPlaceholder
+                            action={
+                                <PrimaryButton
+                                    onClick={ () => {
+                                        setAddClaim(true);
+                                    } }
+                                >
+                                    <Icon name="add" /> Add an External Claim
+                                </PrimaryButton>
+                            }
+                            title="Create an External Claim"
+                            subtitle={ ["Currently, there is no External Claim available for this dialect."] }
+                            image={ EmptyPlaceholderIllustrations.emptyList }
+                            imageSize="tiny"
+                        />
+                    )}
             </PageLayout>
         </>
     );

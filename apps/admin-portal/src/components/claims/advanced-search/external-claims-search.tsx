@@ -27,26 +27,26 @@ import { Form, Grid } from "semantic-ui-react";
  * Filter attribute field identifier.
  * @type {string}
  */
-const FILTER_ATTRIBUTE_FIELD_IDENTIFIER: string = "filerAttribute";
+const FILTER_ATTRIBUTE_FIELD_IDENTIFIER = "filerAttribute";
 
 /**
  * Filter condition field identifier.
  * @type {string}
  */
-const FILTER_CONDITION_FIELD_IDENTIFIER: string = "filerCondition";
+const FILTER_CONDITION_FIELD_IDENTIFIER = "filerCondition";
 
 /**
  * Filter value field identifier.
  * @type {string}
  */
-const FILTER_VALUES_FIELD_IDENTIFIER: string = "filerValues";
+const FILTER_VALUES_FIELD_IDENTIFIER = "filerValues";
 
 /**
  * The default search strategy. Search input will append the text
  * field value to this.
  * @type {string}
  */
-const DEFAULT_SEARCH_STRATEGY: string = "name co";
+const DEFAULT_SEARCH_STRATEGY = "name co";
 
 /**
  * Prop types for the application search component.
@@ -145,96 +145,96 @@ export const ExternalClaimsSearch: FunctionComponent<ExternalClaimsSearchPropsIn
     return (
         <AdvancedSearch
             aligned="left"
-            clearButtonPopupLabel={t("views:components.applications.search.popups.clear")}
-            defaultSearchStrategy={DEFAULT_SEARCH_STRATEGY}
-            dropdownTriggerPopupLabel={t("views:components.applications.search.popups.dropdown")}
-            hintActionKeys={t("views:components.applications.search.hints.querySearch.actionKeys")}
-            hintLabel={t("views:components.applications.search.hints.querySearch.label")}
-            onExternalSearchQueryClear={handleExternalSearchQueryClear}
-            onSearchQuerySubmit={handleSearchQuerySubmit}
-            placeholder={t("views:components.applications.search.placeholder")}
-            resetSubmittedState={handleResetSubmittedState}
-            searchOptionsHeader={t("views:components.applications.search.options.header")}
-            externalSearchQuery={externalSearchQuery}
-            submitted={isFormSubmitted}
+            clearButtonPopupLabel={ t("views:components.applications.search.popups.clear") }
+            defaultSearchStrategy={ DEFAULT_SEARCH_STRATEGY }
+            dropdownTriggerPopupLabel={ t("views:components.applications.search.popups.dropdown") }
+            hintActionKeys={ t("views:components.applications.search.hints.querySearch.actionKeys") }
+            hintLabel={ t("views:components.applications.search.hints.querySearch.label") }
+            onExternalSearchQueryClear={ handleExternalSearchQueryClear }
+            onSearchQuerySubmit={ handleSearchQuerySubmit }
+            placeholder={ t("views:components.applications.search.placeholder") }
+            resetSubmittedState={ handleResetSubmittedState }
+            searchOptionsHeader={ t("views:components.applications.search.options.header") }
+            externalSearchQuery={ externalSearchQuery }
+            submitted={ isFormSubmitted }
         >
             <Grid>
-                <Grid.Row columns={1}>
-                    <Grid.Column width={16}>
-                        <Forms onSubmit={(values) => handleFormSubmit(values)}>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 16 }>
+                        <Forms onSubmit={ (values) => handleFormSubmit(values) }>
                             <Field
-                                children={filterAttributeOptions.map((attribute, index) => {
+                                children={ filterAttributeOptions.map((attribute, index) => {
                                     return {
                                         key: index,
                                         text: attribute.text,
                                         value: attribute.value
                                     };
-                                })}
-                                label={t("views:components.applications.search.forms.searchForm.inputs" +
-                                    ".filerAttribute.label")}
-                                name={FILTER_ATTRIBUTE_FIELD_IDENTIFIER}
-                                placeholder={t("views:components.applications.search.forms.searchForm.inputs" +
-                                    ".filerAttribute.placeholder")}
-                                required={true}
-                                requiredErrorMessage={t("views:components.applications.search.forms.searchForm" +
-                                    ".inputs.filerAttribute.validations.empty")}
+                                }) }
+                                label={ t("views:components.applications.search.forms.searchForm.inputs" +
+                                    ".filerAttribute.label") }
+                                name={ FILTER_ATTRIBUTE_FIELD_IDENTIFIER }
+                                placeholder={ t("views:components.applications.search.forms.searchForm.inputs" +
+                                    ".filerAttribute.placeholder") }
+                                required={ true }
+                                requiredErrorMessage={ t("views:components.applications.search.forms.searchForm" +
+                                    ".inputs.filerAttribute.validations.empty") }
                                 type="dropdown"
-                                width={16}
+                                width={ 16 }
                             />
                             <Grid>
-                                <Grid.Row columns={2}>
-                                    <Grid.Column width={8}>
+                                <Grid.Row columns={ 2 }>
+                                    <Grid.Column width={ 8 }>
                                         <Field
-                                            children={filterConditionOptions.map((condition, index) => {
+                                            children={ filterConditionOptions.map((condition, index) => {
                                                 return {
                                                     key: index,
                                                     text: condition.text,
                                                     value: condition.value
                                                 };
-                                            })}
-                                            label={t("views:components.applications.search.forms.searchForm.inputs" +
-                                                ".filterCondition.label")}
-                                            name={FILTER_CONDITION_FIELD_IDENTIFIER}
-                                            placeholder={t("views:components.applications.search.forms." +
-                                                "searchForm.inputs.filterCondition.placeholder")}
-                                            required={true}
-                                            requiredErrorMessage={t("views:components.applications.search.forms" +
-                                                ".searchForm.inputs.filterCondition.validations.empty")}
+                                            }) }
+                                            label={ t("views:components.applications.search.forms.searchForm.inputs" +
+                                                ".filterCondition.label") }
+                                            name={ FILTER_CONDITION_FIELD_IDENTIFIER }
+                                            placeholder={ t("views:components.applications.search.forms." +
+                                                "searchForm.inputs.filterCondition.placeholder") }
+                                            required={ true }
+                                            requiredErrorMessage={ t("views:components.applications.search.forms" +
+                                                ".searchForm.inputs.filterCondition.validations.empty") }
                                             type="dropdown"
-                                            width={16}
+                                            width={ 16 }
                                         />
                                     </Grid.Column>
-                                    <Grid.Column width={8}>
+                                    <Grid.Column width={ 8 }>
                                         <Field
-                                            label={t("views:components.applications.search.forms.searchForm.inputs" +
-                                                ".filterValue.label")}
-                                            name={FILTER_VALUES_FIELD_IDENTIFIER}
-                                            placeholder={t("views:components.applications.search.forms." +
-                                                "searchForm.inputs.filterValue.placeholder")}
-                                            required={true}
-                                            requiredErrorMessage={t("views:components.applications.search." +
-                                                "forms.searchForm.inputs.filterValue.validations.empty")}
+                                            label={ t("views:components.applications.search.forms.searchForm.inputs" +
+                                                ".filterValue.label") }
+                                            name={ FILTER_VALUES_FIELD_IDENTIFIER }
+                                            placeholder={ t("views:components.applications.search.forms." +
+                                                "searchForm.inputs.filterValue.placeholder") }
+                                            required={ true }
+                                            requiredErrorMessage={ t("views:components.applications.search." +
+                                                "forms.searchForm.inputs.filterValue.validations.empty") }
                                             type="text"
-                                            width={16}
+                                            width={ 16 }
                                         />
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
                             <Field
-                                hidden={true}
+                                hidden={ true }
                                 type="divider"
                             />
-                            <Form.Group inline={true}>
+                            <Form.Group inline={ true }>
                                 <Field
                                     size="small"
                                     type="submit"
-                                    value={t("common:search").toString()}
+                                    value={ t("common:search").toString() }
                                 />
                                 <Field
                                     className="link-button"
                                     size="small"
                                     type="reset"
-                                    value={t("common:resetFilters").toString()}
+                                    value={ t("common:resetFilters").toString() }
                                 />
                             </Form.Group>
                         </Forms>

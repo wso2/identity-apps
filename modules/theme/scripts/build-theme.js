@@ -54,7 +54,7 @@ const generateThemes = () => {
         });
     });
 
-    Promise.all(fileWritePromises).then((buffers) => {
+    Promise.all(fileWritePromises).then(() => {
         copyFiles();
     }).catch((error) => {
         console.error(error);
@@ -93,7 +93,7 @@ const copyCSS = () => {
 };
 
 const copyJS = () => {
-    ["semantic.js", "semantic.min.js"].map((fileName) => {
+    ["semantic.js", "semantic.min.js"].forEach((fileName) => {
         fs.copy(path.join(semanticUICSSModuleDir, fileName), path.join(libDir, fileName))
             .then(() => {
                 console.error("semantic ui " + fileName + " file copied.");

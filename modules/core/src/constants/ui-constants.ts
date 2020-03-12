@@ -27,6 +27,7 @@ export class UIConstants {
      *
      * @hideconstructor
      */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
     /**

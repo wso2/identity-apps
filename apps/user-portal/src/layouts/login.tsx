@@ -35,8 +35,8 @@ export const LoginPageLayout = (props: Props) => (
                 }
             `}
         </style>
-        <Grid textAlign="center" style={{ height: "100%" }} verticalAlign="middle">
-            <Grid.Column style={{ maxWidth: 450 }}>
+        <Grid textAlign="center" style={ { height: "100%" } } verticalAlign="middle">
+            <Grid.Column style={ { maxWidth: 450 } }>
                 <Form size="large">
                     <Segment>
                         <Title />

@@ -18,7 +18,6 @@
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { history } from "../../helpers";
 import { AppState } from "../../store";
 import { handleSignOut } from "../../store/actions";
 

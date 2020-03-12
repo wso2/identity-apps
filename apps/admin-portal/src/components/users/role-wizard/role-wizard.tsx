@@ -190,7 +190,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         
         const roleData: CreateRoleInterface = {
             "schemas": [
-              "urn:ietf:params:scim:schemas:core:2.0:Group"
+                "urn:ietf:params:scim:schemas:core:2.0:Group"
             ],
             "displayName": basicData.BasicDetails.roleName,
             "members" : members
@@ -202,7 +202,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
          *        to add the selected permissions to the created role.
          */
         createRole(roleData).then(response => {
-        
+
             if (response.status === 201) {
                 const createdRoleId = response.data.id;
                 const permData: string[] = [];

@@ -28,7 +28,8 @@ import {
     Popup,
     SemanticFLOATS,
     SemanticICONS,
-    SemanticWIDTHS
+    SemanticWIDTHS,
+    StrictGridRowProps
 } from "semantic-ui-react";
 
 /**
@@ -71,7 +72,7 @@ interface ResourceListItemPropsInterface extends ListItemProps {
     /**
      * Meta info about the list item.
      */
-    metaContent?: React.ReactNode;
+    metaContent?: React.ReactNode | React.ReactNode[];
     /**
      * Width of the meta info area.
      */
@@ -117,7 +118,11 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
     return (
         <List.Item className={ classes }>
             <Grid>
-                <Grid.Row columns={ 3 }>
+                <Grid.Row columns={
+                    metaContent instanceof Array
+                        ? (metaContent.length + 2) as StrictGridRowProps["columns"]
+                        : 3
+                }>
                     <Grid.Column width={ descriptionColumnWidth }>
                         { avatar }
                         <List.Content>
@@ -125,9 +130,23 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
                             <List.Description className="list-item-description">{ itemDescription }</List.Description>
                         </List.Content>
                     </Grid.Column>
-                    <Grid.Column width={ metaColumnWidth } verticalAlign="middle">
-                        <List.Content>{ metaContent }</List.Content>
-                    </Grid.Column>
+                    {
+                        metaContent instanceof Array
+                            ? (
+                                metaContent?.map((content,index) => {
+                                    return (
+                                        <Grid.Column key={ index } width={ metaColumnWidth } verticalAlign="middle">
+                                            <List.Content>{content}</List.Content>
+                                        </Grid.Column>
+                                    )
+                                })
+                            )
+                            : (
+                                <Grid.Column width={ metaColumnWidth } verticalAlign="middle">
+                                    <List.Content>{metaContent}</List.Content>
+                                </Grid.Column>
+                            )
+                    }
                     <Grid.Column width={ actionsColumnWidth }>
                         <List.Content floated={ actionsFloated } className="list-item-action-panel">
                             {

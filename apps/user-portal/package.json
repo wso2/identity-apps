@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/user-portal",
-    "version": "1.0.75",
+    "version": "1.0.78",
     "description": "WSO2 Identity Server User Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -16,17 +16,17 @@
         "build": "run-script-os",
         "build:win32": "..\\..\\node_modules\\.bin\\webpack --env.NODE_ENV=prod --mode development && npm run test",
         "build:default": "../../node_modules/.bin/webpack --env.NODE_ENV=prod --mode development && npm run test",
-        "lint": "tslint -t stylish --project .",
+        "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
         "test": "jest --passWithNoTests",
         "clean": "rm -rf build"
     },
     "dependencies": {
-        "@wso2is/authentication": "^1.0.75",
-        "@wso2is/core": "^1.0.75",
-        "@wso2is/forms": "^1.0.75",
-        "@wso2is/http": "^1.0.75",
-        "@wso2is/theme": "^1.0.75",
-        "@wso2is/validation": "^1.0.75",
+        "@wso2is/authentication": "^1.0.78",
+        "@wso2is/core": "^1.0.78",
+        "@wso2is/forms": "^1.0.78",
+        "@wso2is/http": "^1.0.78",
+        "@wso2is/theme": "^1.0.78",
+        "@wso2is/validation": "^1.0.78",
         "qrcode.react": "^1.0.0"
     },
     "devDependencies": {
