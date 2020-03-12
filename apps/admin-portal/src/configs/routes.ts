@@ -35,7 +35,8 @@ import {
     ExternalClaimsPage,
     ClaimDialectsPage,
     LocalClaimsEditPage,
-    UserStores
+    UserStores,
+    IdentityProviderEditPage
 } from "../pages";
 
 /**
@@ -109,7 +110,17 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 path: "/identity-providers/templates",
                 protected: true,
                 showOnSidePanel: false,
-            }
+            },
+            {
+                component: IdentityProviderEditPage,
+                exact: true,
+                icon: "applications",
+                id: "identityProvidersEdit",
+                name: "Identity-Providers-Edit",
+                path: "/identity-providers/:id",
+                protected: true,
+                showOnSidePanel: false,
+            },
         ],
         component: IdentityProvidersPage,
         exact: true,

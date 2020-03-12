@@ -30,5 +30,6 @@ export * from "./local-claims";
 export * from "./claim-dialects";
 export * from "./local-claims-edit";
 export * from "./identity-providers";
+export * from "./identity-provider-edit";
 export * from "./identity-provider-template";
 export * from "./user-stores";
