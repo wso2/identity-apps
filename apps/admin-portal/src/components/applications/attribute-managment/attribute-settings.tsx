@@ -30,7 +30,6 @@ import {
     ClaimDialect,
     ClaimMappingInterface,
     ExternalClaim,
-    RequestedClaimConfigurationInterface,
     RoleConfigInterface,
     SubjectConfigInterface,
     SupportedAuthProtocolTypes
@@ -96,9 +95,6 @@ export const getLocalDialectURI = (): string => {
             if (!isEmpty(retrieved)) {
                 localDialect = retrieved;
             }
-        })
-        .catch((error) => {
-
         });
     return localDialect;
 };
@@ -116,6 +112,32 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     } = props;
 
     const dispatch = useDispatch();
+
+    // Manage Local Dialect URI
+    const [localDialectURI, setLocalDialectURI] = useState("");
+
+    // available dialects.
+    const [dialect, setDialect] = useState<ClaimDialect[]>([]);
+
+    // Manage selected dialect
+    const [selectedDialect, setSelectedDialect] = useState<SelectedDialectInterface>();
+
+    // Manage available claims in local and external dialects.
+    const [isClaimRequestLoading, setIsClaimRequestLoading] = useState(true);
+    const [claims, setClaims] = useState<ExtendedClaimInterface[]>([]);
+    const [externalClaims, setExternalClaims] = useState<ExtendedExternalClaimInterface[]>([]);
+
+    // Selected claims in local and external dialects.
+    const [selectedClaims, setSelectedClaims] = useState<ExtendedClaimInterface[]>([]);
+    const [selectedExternalClaims, setSelectedExternalClaims] = useState<ExtendedExternalClaimInterface[]>([]);
+
+    // Mapping operation.
+    const [claimMapping, setClaimMapping] = useState<ExtendedClaimMappingInterface[]>([]);
+    const [claimMappingOn, setClaimMappingOn] = useState(false);
+
+    //Advance Settings.
+    const [advanceSettingValues, setAdvanceSettingValues] = useState<AdvanceSettingsSubmissionInterface>();
+    const [triggerAdvanceSettingFormSubmission, setTriggerAdvanceSettingFormSubmission] = useTrigger();
 
     const getClaims = () => {
         getAllLocalClaims(null)
@@ -163,34 +185,18 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 .finally(() => {
                     setIsClaimRequestLoading(false);
                 });
-            ;
         }
     };
-    // Manage Local Dialect URI
-    const [localDialectURI, setLocalDialectURI] = useState("");
 
-    // available dialects.
-    const [dialect, setDialect] = useState<ClaimDialect[]>([]);
-
-    // Manage selected dialect
-    const [selectedDialect, setSelectedDialect] = useState<SelectedDialectInterface>();
-
-    // Manage available claims in local and external dialects.
-    const [isClaimRequestLoading, setIsClaimRequestLoading] = useState(true);
-    const [claims, setClaims] = useState<ExtendedClaimInterface[]>([]);
-    const [externalClaims, setExternalClaims] = useState<ExtendedExternalClaimInterface[]>([]);
-
-    // Selected claims in local and external dialects.
-    const [selectedClaims, setSelectedClaims] = useState<ExtendedClaimInterface[]>([]);
-    const [selectedExternalClaims, setSelectedExternalClaims] = useState<ExtendedExternalClaimInterface[]>([]);
-
-    // Mapping operation.
-    const [claimMapping, setClaimMapping] = useState<ExtendedClaimMappingInterface[]>([]);
-    const [claimMappingOn, setClaimMappingOn] = useState(false);
-
-    //Advance Settings.
-    const [advanceSettingValues, setAdvanceSettingValues] = useState<AdvanceSettingsSubmissionInterface>();
-    const [triggerAdvanceSettingFormSubmission, setTriggerAdvanceSettingFormSubmission] = useTrigger();
+    const findDialectID = (value) => {
+        let id = "";
+        dialect.map((element: ClaimDialect) => {
+            if (element.dialectURI === value) {
+                id = element.id;
+            }
+        });
+        return id;
+    };
 
     const createMapping = (claim: Claim) => {
         const claimMappingList: ExtendedClaimMappingInterface[] = [...claimMapping];
@@ -307,16 +313,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
     };
 
-    const findDialectID = (value) => {
-        let id: string = "";
-        dialect.map((element: ClaimDialect) => {
-            if (element.dialectURI === value) {
-                id = element.id;
-            }
-        });
-        return id;
-    };
-
     // Set local claim URI and maintain it in a state
     const findLocalClaimDialectURI = () => {
         getLocalDialectURI();
@@ -354,8 +350,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 return claimMappingOption;
             } else {
                 claims.map((element: ExtendedClaimInterface) => {
-                    let option: DropdownOptionsInterface;
-                    option = {
+                    const option: DropdownOptionsInterface = {
                         key: element.id,
                         text: element.claimURI,
                         value: element.claimURI,
@@ -365,8 +360,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             }
         } else {
             externalClaims.map((element: ExtendedExternalClaimInterface) => {
-                let option: DropdownOptionsInterface;
-                option = {
+                const option: DropdownOptionsInterface = {
                     key: element.id,
                     text: element.claimURI,
                     value: element.mappedLocalClaimURI,

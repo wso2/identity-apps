@@ -231,6 +231,31 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         }
     };
 
+    const getInitialRequestedClaimsURI = ((): string[] => {
+        const requestURI: string[] = [];
+        if (claimConfigurations.dialect === "CUSTOM") {
+            claimConfigurations.claimMappings?.map((element: ClaimMappingInterface) => {
+                requestURI.push(element.localClaim.uri)
+            })
+        } else if (claimConfigurations.dialect === "LOCAL") {
+            claimConfigurations.requestedClaims.map((element: RequestedClaimConfigurationInterface) => {
+                requestURI.push(element.claim.uri);
+            });
+        }
+        return requestURI;
+    });
+
+    const checkInitialRequestMandatory = (uri: string) => {
+        let requestURI = false;
+        if (claimConfigurations.dialect === "LOCAL") {
+            claimConfigurations.requestedClaims.map((element: RequestedClaimConfigurationInterface) => {
+                if (element.claim.uri === uri) {
+                    requestURI = element.mandatory;
+                }
+            });
+        }
+        return requestURI;
+    };
 
     // search operation for claims
     const searchFilter = (changeValue) => {
@@ -328,32 +353,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             setExternalClaims(initialClaims);
             setFilteredExternalClaims(initialClaims);
         }
-    };
-
-    const getInitialRequestedClaimsURI = ((): string[] => {
-        const requestURI: string[] = [];
-        if (claimConfigurations.dialect === "CUSTOM") {
-            claimConfigurations.claimMappings?.map((element: ClaimMappingInterface) => {
-                requestURI.push(element.localClaim.uri)
-            })
-        } else if (claimConfigurations.dialect === "LOCAL") {
-            claimConfigurations.requestedClaims.map((element: RequestedClaimConfigurationInterface) => {
-                requestURI.push(element.claim.uri);
-            });
-        }
-        return requestURI;
-    });
-
-    const checkInitialRequestMandatory = (uri: string) => {
-        let requestURI = false;
-        if (claimConfigurations.dialect === "LOCAL") {
-            claimConfigurations.requestedClaims.map((element: RequestedClaimConfigurationInterface) => {
-                if (element.claim.uri === uri) {
-                    requestURI = element.mandatory;
-                }
-            });
-        }
-        return requestURI;
     };
 
     useEffect(() => {
@@ -477,7 +476,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                 addToMapping={ addToClaimMapping }
                                                 scope={ "Local" }
                                                 mapping={ getCurrentMapping(claim.claimURI) }
-                                                initialMandatory={claim.mandatory}
+                                                initialMandatory={ claim.mandatory }
                                                 // initialMandatory={true}
                                                 selectMandatory={ updateMandatory }
                                             />
@@ -511,7 +510,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                 claimSelected={ true }
                                                 localDialect={ false }
                                                 selectMandatory={ updateMandatory }
-                                                initialMandatory={claim.mandatory}
+                                                initialMandatory={ claim.mandatory }
                                                 scope={ "Local" }
                                             />
                                         )

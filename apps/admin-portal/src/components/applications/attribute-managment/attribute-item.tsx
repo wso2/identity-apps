@@ -17,21 +17,21 @@
  */
 
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Button, Checkbox, Grid, Input, List, Popup } from "semantic-ui-react";
+import { Button, Checkbox, Grid, List, Popup } from "semantic-ui-react";
 import { ExtendedClaimMappingInterface } from "./attribute-settings";
 
 
 interface AttributeItemPropInterface {
-    scope: string,
-    onClick: any,
-    claimSelected: boolean,
-    id: string,
-    displayName: string,
-    mappedURI: string,
-    claimURI: string,
-    localDialect: boolean,
-    updateMapping?: any
-    addToMapping?: any
+    scope: string;
+    onClick: any;
+    claimSelected: boolean;
+    id: string;
+    displayName: string;
+    mappedURI: string;
+    claimURI: string;
+    localDialect: boolean;
+    updateMapping?: any;
+    addToMapping?: any;
     selectMandatory?: any;
     mapping?: ExtendedClaimMappingInterface;
     initialMandatory?: boolean;
@@ -161,17 +161,17 @@ export const AttributeItem: FunctionComponent<AttributeItemPropInterface> = (
                     }
                     { localDialect && claimSelected &&
                     <Grid.Column mobile={ 14 } tablet={ 6 } computer={ 6 }>
-                        {/*TODO fix the backend and enable the mapping*/}
-                        {/*{ mappingOn &&*/}
-                        {/*<List.Content className="action-bar-mapping" floated={ "right" }>*/}
-                        {/*    <label>Map To </label>*/}
-                        {/*    <Input*/}
-                        {/*        placeholder='Enter  value'*/}
-                        {/*        value={ mapping?.applicationClaim }*/}
-                        {/*        onChange={ (event) => updateMapping(claimURI, event.target.value) }*/}
-                        {/*    />*/}
-                        {/*</List.Content>*/}
-                        {/*}*/}
+                        {/*TODO fix the backend and enable the mapping*/ }
+                        {/*{ mappingOn &&*/ }
+                        {/*<List.Content className="action-bar-mapping" floated={ "right" }>*/ }
+                        {/*    <label>Map To </label>*/ }
+                        {/*    <Input*/ }
+                        {/*        placeholder='Enter  value'*/ }
+                        {/*        value={ mapping?.applicationClaim }*/ }
+                        {/*        onChange={ (event) => updateMapping(claimURI, event.target.value) }*/ }
+                        {/*    />*/ }
+                        {/*</List.Content>*/ }
+                        {/*}*/ }
                     </Grid.Column>
                     }
                     { localDialect && claimSelected &&
@@ -189,35 +189,36 @@ export const AttributeItem: FunctionComponent<AttributeItemPropInterface> = (
                     }
                     { claimSelected && localDialect &&
                     <>
-                        <Grid.Column mobile={ 1 } tablet={1} computer={ 1 } className={ "claim-mapping-edit-column" }/>
+                        <Grid.Column mobile={ 1 } tablet={ 1 } computer={ 1 }
+                                     className={ "claim-mapping-edit-column" }/>
                         <Grid.Column mobile={ 2 } tablet={ 2 } computer={ 2 }
                                      className={ "claim-mapping-edit-column" } floated={ "right" }>
-                            {/*TODO fix the backend and enable the mapping*/}
-                            {/*<List.Content>*/}
-                            {/*    <Popup*/}
-                            {/*        trigger={*/}
-                            {/*            (*/}
-                            {/*                <Button*/}
-                            {/*                    toggle*/}
-                            {/*                    active={ mappingOn }*/}
-                            {/*                    onClick={ handelMapButtonClick }*/}
-                            {/*                    className={ "claim-mapping-button" }*/}
-                            {/*                    circular*/}
-                            {/*                    icon='pencil'*/}
-                            {/*                />*/}
-                            {/*            )*/}
-                            {/*        }*/}
-                            {/*        position="top right"*/}
-                            {/*        content={ mappingOn ? "Disable mapping" : " Enable mapping" }*/}
-                            {/*        inverted*/}
-                            {/*    />*/}
-                            {/*</List.Content>*/}
+                            {/*TODO fix the backend and enable the mapping*/ }
+                            {/*<List.Content>*/ }
+                            {/*    <Popup*/ }
+                            {/*        trigger={*/ }
+                            {/*            (*/ }
+                            {/*                <Button*/ }
+                            {/*                    toggle*/ }
+                            {/*                    active={ mappingOn }*/ }
+                            {/*                    onClick={ handelMapButtonClick }*/ }
+                            {/*                    className={ "claim-mapping-button" }*/ }
+                            {/*                    circular*/ }
+                            {/*                    icon='pencil'*/ }
+                            {/*                />*/ }
+                            {/*            )*/ }
+                            {/*        }*/ }
+                            {/*        position="top right"*/ }
+                            {/*        content={ mappingOn ? "Disable mapping" : " Enable mapping" }*/ }
+                            {/*        inverted*/ }
+                            {/*    />*/ }
+                            {/*</List.Content>*/ }
                             <List.Content floated={ "right" } className="action-bar">
                                 <Popup
-                                    trigger={
+                                    trigger= {
                                         (
                                             <Checkbox
-                                                defaultChecked={initialMandatory}
+                                                defaultChecked={ initialMandatory }
                                                 onClick={ handleMandatoryCheckChange }
                                             />
                                         )
@@ -237,10 +238,10 @@ export const AttributeItem: FunctionComponent<AttributeItemPropInterface> = (
                         <Grid.Column mobile={ 3 } tablet={ 2 } computer={ 2 } className={ "claim-mapping-edit-column" }>
                             <List.Content floated={ "right" } className="action-bar">
                                 <Popup
-                                    trigger={
+                                    trigger= {
                                         (
                                             <Checkbox
-                                                defaultChecked={initialMandatory}
+                                                defaultChecked={ initialMandatory }
                                                 // onChange={ handleMandatoryCheckChange }
                                                 onClick={ handleMandatoryCheckChange }
                                             />
@@ -258,7 +259,7 @@ export const AttributeItem: FunctionComponent<AttributeItemPropInterface> = (
                     <Grid.Column mobile={ 2 } tablet={ 2 } computer={ 2 } onClick={ () => onClick(claimURI) }>
                         <List.Content floated={ "right" } className="action-bar">
                             <Popup
-                                trigger={
+                                trigger= {
                                     (
                                         <Button
                                             toggle
