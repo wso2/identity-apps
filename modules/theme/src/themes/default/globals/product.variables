@@ -92,4 +92,4 @@
 @stepsHeaderFontColor: @dustyGray;
 @stepsHeaderFontSize: 0.9em;
 @stepTrailTransition: all .5s ease-in;;
-@stepMinWidth: 120px;
+@stepMinWidth: 110px;

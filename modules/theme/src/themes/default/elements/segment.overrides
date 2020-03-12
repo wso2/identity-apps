@@ -98,6 +98,20 @@
         margin-top: @userRolesListSegmentMarginTop;
         height: @userRolesListSegmentHeight;
         overflow: auto;
+
+        .user-role-list-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-role-list-item i{
+            margin-left: auto;
+        }
+
+        .user-role-list-item .user-image {
+            background-color: #ccc;
+            padding: 0px !important;
+        }
     }
 
     &.user-assigned-roles-segment {
@@ -107,6 +121,12 @@
         .ui.label {
             margin-top: @assignedRolesListLabelMarginTop;
             margin-left: @assignedRolesListLabelMarginLeft;
+            display: inline-flex;
+            align-items: center;
+
+            .user-avatar {
+                margin: 0px 5px 0px 0px !important;
+            }
 
             &.info-label {
                 background-color: @InfoLabelBackgroundColor !important;
@@ -120,5 +140,23 @@
                 }
             }
         }
+    }
+}
+
+/*************************************
+    Create Role Summary Variation
+*************************************/
+
+.role-summary-user {
+    display: inline-flex;
+    margin: 0.2em;
+    background-color: #f7f7f7;
+    border-radius: 100px;
+    align-items: center;
+    padding: 0 1em 0 0;
+    border: 0.5px solid @RoleSummaryUserListBackgroundColor;
+
+    .circular {
+        margin-right: 0.5em !important;
     }
 }

@@ -61,6 +61,15 @@ export interface RoleListInterface {
 export interface CreateRoleInterface {
     schemas: string[];
     displayName: string;
+    members?: CreateRoleMemberInterface[];
+}
+
+/**
+ * Interface to store User information related to create role api
+ */
+export interface CreateRoleMemberInterface {
+    value: string;
+    display: string;
 }
 
 /**
