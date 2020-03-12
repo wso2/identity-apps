@@ -243,4 +243,29 @@
   }
 }
 
+.empty-placeholder-center {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.claim-scrolling-list {
+  overflow-y: auto;
+  height: 250px;
+  overflow-x: hidden;
+  padding: 10px;
+  &.selected {
+    background-color: #f4f7f9;
+    height: 304px;
+  }
+}
+
+#claim-scroll::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 2px;
+  height: 1px;
+}
+
 .loadUIOverrides();

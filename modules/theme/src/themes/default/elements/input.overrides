@@ -56,3 +56,15 @@
         color: @doveGray!important;
     }
 }
+
+
+/*******************************
+    Claim Search Variation
+*******************************/
+.ui.icon.input {
+    &.available-claim-search {
+       padding-left: 10px;
+       width: 100%;
+       margin: 10px 0px;
+    }
+}
