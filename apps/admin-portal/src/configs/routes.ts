@@ -34,7 +34,8 @@ import {
     LocalClaimsPage,
     ExternalClaimsPage,
     ClaimDialectsPage,
-    LocalClaimsEditPage
+    LocalClaimsEditPage,
+    UserStores
 } from "../pages";
 
 /**
@@ -212,7 +213,15 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             }
         ]
     },
-    {},
+    {
+        component: UserStores,
+        icon: "userStore",
+        id: "user-stores",
+        name: "User Stores",
+        path: "/user-stores",
+        protected: true,
+        showOnSidePanel:true
+    },
     {
         component: PrivacyPage,
         icon: null,
