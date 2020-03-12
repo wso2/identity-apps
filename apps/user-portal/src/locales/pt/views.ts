@@ -18,6 +18,7 @@
 
 import { Views } from "../../models";
 
+/* eslint-disable @typescript-eslint/camelcase */
 export const views: Views = {
     components: {
         accountRecovery: {
@@ -933,22 +934,22 @@ export const views: Views = {
         },
         profile: {
             fields: {
-                addressesHome: "Endereço residencial",
-                addressesWork: "Endereço de trabalho",
+                addresses_home: "Endereço residencial",
+                addresses_work: "Endereço de trabalho",
                 emails: "O email",
-                emailsHome: "E-mail residencial",
-                emailsOther: "Outro email",
-                emailsWork: "Email de trabalho",
+                emails_home: "E-mail residencial",
+                emails_other: "Outro email",
+                emails_work: "Email de trabalho",
                 generic: {
                     default: "Adicionar {{fieldName}}"
                 },
-                nameFamilyName: "Último nome",
-                nameGivenName: "Primeiro nome",
+                name_familyName: "Último nome",
+                name_givenName: "Primeiro nome",
                 phoneNumbers: "Número de telefone",
-                phoneNumbersHome: "Número de telefone residencial",
-                phoneNumbersMobile: "Número de celular",
-                phoneNumbersOther: "Outro número de telefone",
-                phoneNumbersWork: "Número de telefone comercial",
+                phoneNumbers_home: "Número de telefone residencial",
+                phoneNumbers_mobile: "Número de celular",
+                phoneNumbers_other: "Outro número de telefone",
+                phoneNumbers_work: "Número de telefone comercial",
                 profileImage: "Imagem de perfil",
                 profileUrl: "URL",
                 userName: "Nome de usuário"
