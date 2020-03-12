@@ -22,9 +22,7 @@ import { getIdentityProviderDetail } from "../api";
 import { EditApplication } from "../components";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
-import {
-    emptyIdentityProvider, IdentityProviderInterface
-} from "../models";
+import { emptyIdentityProvider, IdentityProviderInterface } from "../models";
 import { IdentityProviderConstants } from "../constants";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";

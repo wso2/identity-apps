@@ -21,10 +21,7 @@ import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useDispatch } from "react-redux";
-import {
-    deleteIdentityProvider,
-    updateIdentityProviderDetails
-} from "../../api";
+import { deleteIdentityProvider, updateIdentityProviderDetails } from "../../api";
 import { GlobalConfig } from "../../configs";
 import { ApplicationInterface, IdentityProviderInterface } from "../../models";
 import { GeneralDetailsForm } from "./forms";

@@ -22,7 +22,8 @@ import { ContentLoader, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
-    getFederatedAuthenticatorDetails, getFederatedAuthenticatorMeta,
+    getFederatedAuthenticatorDetails,
+    getFederatedAuthenticatorMeta,
     updateFederatedAuthenticator
 } from "../../api";
 import {
@@ -61,7 +62,7 @@ interface IdentityProviderSettingsPropsInterface {
  *  Identity Provider and advance settings component.
  *
  * @param {IdentityProviderSettingsPropsInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @return {ReactElement}
  */
 export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPropsInterface> = (
     props: IdentityProviderSettingsPropsInterface
@@ -130,7 +131,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         if (federatedAuthenticators.defaultAuthenticatorId) {
             getFederatedAuthenticatorDetails(idpId, federatedAuthenticators.defaultAuthenticatorId)
                 .then(response => {
-                    console.log("Auth response: " , JSON.stringify(response, null, 4))
                     setAuthenticatorDetails(response);
                 })
                 .catch(error => {

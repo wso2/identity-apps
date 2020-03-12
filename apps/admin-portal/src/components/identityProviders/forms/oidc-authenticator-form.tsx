@@ -37,7 +37,7 @@ interface OIDCFormPropsInterface {
  * Inbound OIDC protocol configurations form.
  *
  * @param {OIDCFormPropsInterface} props
- * @return {JSX.Element}
+ * @return { ReactElement }
  * @constructor
  */
 export const OIDCAuthenticatorForm: FunctionComponent<OIDCFormPropsInterface> = (
@@ -112,158 +112,163 @@ export const OIDCAuthenticatorForm: FunctionComponent<OIDCFormPropsInterface> = 
     );
 
     return (
+        <Forms
+            onSubmit={ (values) => {
+                onSubmit(updateConfiguration(values));
+            } }
+        >
+            <Grid>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            name="ClientId"
+                            label="Client ID"
+                            required={ true }
+                            requiredErrorMessage=""
+                            placeholder="Enter OAuth2/OpenID Connect client identifier value"
+                            type="text"
+                            value={ initialValues?.properties
+                                ?.find(property => property.key === "ClientId")?.value }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
 
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            name="ClientSecret"
+                            label="Client Secret"
+                            hidePassword="Hide secret"
+                            showPassword="Show secret"
+                            required={ true }
+                            requiredErrorMessage="this is needed"
+                            placeholder="Enter OAuth2/OpenID Connect client secret value"
+                            type="password"
+                            value={ initialValues?.properties
+                                ?.find(property => property.key === "ClientSecret")?.value }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
 
-                <Forms
-                    onSubmit={ (values) => {
-                        onSubmit(updateConfiguration(values));
-                    } }
-                >
-                    <Grid>
-                                <Grid.Row columns={ 1 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                        <Field
-                                            name="ClientId"
-                                            label="Client ID"
-                                            required={ true }
-                                            requiredErrorMessage=""
-                                            placeholder="Enter OAuth2/OpenID Connect client identifier value"
-                                            type="text"
-                                            value={ initialValues?.properties?.find(property => property.key === "ClientId")?.value }
-                                        />
-                                    </Grid.Column>
-                                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            name="OAuth2AuthzEPUrl"
+                            label="Authorization Endpoint URL"
+                            required={ true }
+                            requiredErrorMessage="Please fill the Authorization Endpoint URL"
+                            placeholder="Enter OAuth2/OpenID Connect authorization endpoint URL value"
+                            type="text"
+                            value={ initialValues?.properties
+                                ?.find(property => property.key === "OAuth2AuthzEPUrl")?.value }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
 
-                                <Grid.Row columns={ 1 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                        <Field
-                                            name="ClientSecret"
-                                            label="Client Secret"
-                                            hidePassword="Hide secret"
-                                            showPassword="Show secret"
-                                            required={ true }
-                                            requiredErrorMessage="this is needed"
-                                            placeholder="Enter OAuth2/OpenID Connect client secret value"
-                                            type="password"
-                                            value={ initialValues?.properties?.find(property => property.key === "ClientSecret")?.value }
-                                        />
-                                    </Grid.Column>
-                                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            name="OAuth2TokenEPUrl"
+                            label="Token Endpoint URL"
+                            required={ true }
+                            requiredErrorMessage="Please fill the Token Endpoint URL"
+                            placeholder="Enter OAuth2/OpenID Connect token endpoint URL value"
+                            type="text"
+                            value={ initialValues?.properties
+                                ?.find(property => property.key === "OAuth2TokenEPUrl")?.value }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
 
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    name="OAuth2AuthzEPUrl"
-                                    label="Authorization Endpoint URL"
-                                    required={ true }
-                                    requiredErrorMessage="Please fill the Authorization Endpoint URL"
-                                    placeholder="Enter OAuth2/OpenID Connect authorization endpoint URL value"
-                                    type="text"
-                                    value={ initialValues?.properties?.find(property => property.key === "OAuth2AuthzEPUrl")?.value }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            name="callbackUrl"
+                            label="Callback Url"
+                            required={ false }
+                            requiredErrorMessage=""
+                            placeholder="Enter value corresponding to callback url"
+                            type="text"
+                            value={ initialValues?.properties
+                                ?.find(property => property.key === "callbackUrl")?.value }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
 
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    name="OAuth2TokenEPUrl"
-                                    label="Token Endpoint URL"
-                                    required={ true }
-                                    requiredErrorMessage="Please fill the Token Endpoint URL"
-                                    placeholder="Enter OAuth2/OpenID Connect token endpoint URL value"
-                                    type="text"
-                                    value={ initialValues?.properties?.find(property => property.key === "OAuth2TokenEPUrl")?.value }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            name="UserInfoUrl"
+                            label="Userinfo Endpoint URL"
+                            required={ false }
+                            requiredErrorMessage=""
+                            placeholder="Enter value corresponding to userinfo endpoint url"
+                            type="text"
+                            value={ initialValues?.properties
+                                ?.find(property => property.key === "UserInfoUrl")?.value }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
 
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    name="callbackUrl"
-                                    label="Callback Url"
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    placeholder="Enter value corresponding to callback url"
-                                    type="text"
-                                    value={ initialValues?.properties?.find(property => property.key === "callbackUrl")?.value }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            name="IsUserIdInClaims"
+                            required={ false }
+                            requiredErrorMessage=""
+                            type="checkbox"
+                            children={ [
+                                {
+                                    label: "OpenID Connect User ID Location",
+                                    value: "IsUserIdInClaims"
+                                }
+                            ] }
+                            value={ IsUserIdInClaims ? [ "IsUserIdInClaims" ] : [] }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
 
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    name="UserInfoUrl"
-                                    label="Userinfo Endpoint URL"
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    placeholder="Enter value corresponding to userinfo endpoint url"
-                                    type="text"
-                                    value={ initialValues?.properties?.find(property => property.key === "UserInfoUrl")?.value }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            name="commonAuthQueryParams"
+                            label="Additional Query ParametersL"
+                            required={ false }
+                            requiredErrorMessage=""
+                            placeholder="Additional query parameters. e.g: paramName1=value1"
+                            type="text"
+                            value={ initialValues?.properties
+                                ?.find(property => property.key === "commonAuthQueryParams")?.value }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
 
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    name="IsUserIdInClaims"
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    type="checkbox"
-                                    children={ [
-                                        {
-                                            label: "OpenID Connect User ID Location",
-                                            value: "IsUserIdInClaims"
-                                        }
-                                    ] }
-                                    value={ IsUserIdInClaims ? [ "IsUserIdInClaims" ] : [] }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            name="IsBasicAuthEnabled"
+                            required={ false }
+                            requiredErrorMessage=""
+                            type="checkbox"
+                            children={ [
+                                {
+                                    label: "Enable HTTP basic auth for client authentication",
+                                    value: "IsBasicAuthEnabled"
+                                }
+                            ] }
+                            value={ IsBasicAuthEnabled ? [ "IsBasicAuthEnabled" ] : [] }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
 
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    name="commonAuthQueryParams"
-                                    label="Additional Query ParametersL"
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    placeholder="Additional query parameters. e.g: paramName1=value1"
-                                    type="text"
-                                    value={ initialValues?.properties?.find(property => property.key === "commonAuthQueryParams")?.value }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    name="IsBasicAuthEnabled"
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    type="checkbox"
-                                    children={ [
-                                        {
-                                            label: "Enable HTTP basic auth for client authentication",
-                                            value: "IsBasicAuthEnabled"
-                                        }
-                                    ] }
-                                    value={ IsBasicAuthEnabled ? [ "IsBasicAuthEnabled" ] : [] }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Button primary type="submit" size="small" className="form-button">
-                                    Update
-                                </Button>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </Forms>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Button primary type="submit" size="small" className="form-button">
+                            Update
+                        </Button>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </Forms>
     );
 };

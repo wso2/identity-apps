@@ -131,6 +131,7 @@ export const deleteIdentityProvider = (id: string): Promise<any> => {
  * Update identity provider details.
  *
  * @param idp Identity Provider.
+ * @return {Promise<any>} A promise containing the response.
  */
 export const updateIdentityProviderDetails = (idp: IdentityProviderInterface): Promise<any> => {
 
@@ -172,6 +173,7 @@ export const updateIdentityProviderDetails = (idp: IdentityProviderInterface): P
  *
  * @param idpId ID of the Identity Provider.
  * @param authenticator Federated Authenticator.
+ * @return {Promise<any>} A promise containing the response.
  */
 export const updateFederatedAuthenticator = (
     idpId: string,
@@ -194,7 +196,7 @@ export const updateFederatedAuthenticator = (
     return httpClient.request(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to update identity provider from: "));
+                return Promise.reject(new Error("Failed to update identity provider: " + idpId));
             }
             return Promise.resolve(response.data as IdentityProviderInterface);
         }).catch((error) => {
@@ -207,8 +209,10 @@ export const updateFederatedAuthenticator = (
  *
  * @param idpId ID of the Identity Provider.
  * @param authenticatorId ID of the Federated Authenticator.
+ * @return {Promise<any>} A promise containing the response.
  */
 export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId: string): Promise<any> => {
+
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -234,8 +238,10 @@ export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId:
  * Get federated authenticator details.
  *
  * @param id ID of the Federated Authenticator.
+ * @return {Promise<any>} A promise containing the response.
  */
 export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
+
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -256,30 +262,3 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
             return Promise.reject(error);
         });
 };
-
-/**
- * Get federated authenticators list.
- *
- */
-export const getFederatedAuthenticators = (): Promise<any> => {
-    const requestConfig = {
-        headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.identityProviders + "/federated-authenticators/"
-    };
-
-    return httpClient.request(requestConfig)
-        .then((response) => {
-            if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to get federated authenticator meta details for: "));
-            }
-            return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
-        }).catch((error) => {
-            return Promise.reject(error);
-        });
-};
-

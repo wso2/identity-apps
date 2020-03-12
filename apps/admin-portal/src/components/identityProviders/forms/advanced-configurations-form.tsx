@@ -19,7 +19,7 @@
 import _ from "lodash";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
-import React, { FunctionComponent, useState, useEffect } from "react";
+import React, {FunctionComponent, useState, useEffect, ReactElement } from "react";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { IdentityProviderAdvanceInterface} from "../../../models";
 import { FormValidation } from "@wso2is/validation";
@@ -36,11 +36,11 @@ interface AdvanceConfigurationsFormPropsInterface extends IdentityProviderAdvanc
  * Advance configurations form component.
  *
  * @param {AdvanceConfigurationsFormPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
 export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsFormPropsInterface> = (
     props: AdvanceConfigurationsFormPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         config,
@@ -145,8 +145,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                                     label: "PEM",
                                     value: "PEM"
                                 }
-                            ]
-                            }
+                            ] }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -163,8 +162,8 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                                         placeholder={ "Value should be the certificate in PEM format." }
                                         type="textarea"
                                         value={ config?.certificate && config?.certificate.certificates
-                                        && config?.certificate?.certificates.length > 0 &&
-                                        _.first(config.certificate?.certificates) }
+                                            && config?.certificate?.certificates.length > 0 &&
+                                            _.first(config.certificate?.certificates) }
                                     />
                                 ) : (
                                     <Field

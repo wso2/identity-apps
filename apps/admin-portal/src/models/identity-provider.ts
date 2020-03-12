@@ -212,9 +212,9 @@ export interface IdentityProviderTemplatesInterface {
 }
 
 export const emptyIdentityProvider = (): IdentityProviderListItemInterface => ({
-    isEnabled: false,
     description: "",
     id: "",
     image: "",
+    isEnabled: false,
     name: ""
 });

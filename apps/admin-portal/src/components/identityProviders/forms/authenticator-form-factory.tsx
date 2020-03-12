@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, {FunctionComponent } from "react";
+import React, {FunctionComponent, ReactElement} from "react";
 import { SupportedAuthProtocolTypes } from "../../../models";
 import { OIDCAuthenticatorForm } from "./oidc-authenticator-form";
 
@@ -34,11 +34,11 @@ interface AuthenticatorFormFactoryInterface {
  * Authenticator form factory.
  *
  * @param {AuthenticatorFormFactoryInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
 export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactoryInterface> = (
     props: AuthenticatorFormFactoryInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         metadata,
@@ -49,10 +49,8 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
 
     switch (type) {
         case SupportedAuthProtocolTypes.OIDC:
-            return <OIDCAuthenticatorForm initialValues={ initialValues } metadata={ metadata }
-                                          onSubmit={ onSubmit } />;
+            return <OIDCAuthenticatorForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit } />;
         default:
             return null;
     }
 };
-

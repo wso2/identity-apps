@@ -18,9 +18,7 @@
 
 import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import {
-    IdentityProviderAdvanceInterface, IdentityProviderInterface,
-} from "../../models";
+import { IdentityProviderAdvanceInterface, IdentityProviderInterface } from "../../models";
 import { AdvanceSettings } from "./advance-idp-settings";
 import { GeneralIdentityProviderSettings } from "./general-idp-settings";
 import { AuthenticatorSettings } from "./settings-authenticator";
