@@ -19,8 +19,25 @@
 
 .ui.button {
     &.link-button {
-        background: transparent;
+        background: transparent !important;
         color: @primaryColor;
+
+        &:hover {
+            background: transparent;
+        }
+
+        &.positive {
+            color: @positiveColor;
+        }
+        &.negative {
+            color: @negativeColor;
+        }
+        &.warning {
+            color: @warningColor !important;
+        }
+        &.info {
+            color: @infoColor !important;
+        }
 
         &.with-hover {
             &:hover {
@@ -131,5 +148,16 @@
         i {
             background: transparent;
         }
+    }
+}
+
+.ui.button {
+    &.warning {
+        color: @white;
+        background-color: @warningColor;
+    }
+    &.info {
+        color: @white;
+        background-color: @infoColor;
     }
 }

@@ -14,7 +14,27 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-export * from "./confirmation-modal";
+import React, { FunctionComponent, ReactElement } from "react";
+import { Modal, ModalHeaderProps } from "semantic-ui-react";
+
+/**
+ * Confirmation modal header component.
+ *
+ * @param {ModalHeaderProps} props - Props injected to the component.
+ * @return {React.ReactElement}
+ */
+export const ConfirmationModalHeader: FunctionComponent<ModalHeaderProps> = (
+    props: ModalHeaderProps
+): ReactElement => {
+
+    const {
+        children,
+        ...rest
+    } = props;
+
+    return (
+        <Modal.Header { ...rest }>{ children }</Modal.Header>
+    );
+};

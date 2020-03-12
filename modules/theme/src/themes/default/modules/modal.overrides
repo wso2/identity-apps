@@ -309,3 +309,53 @@
         }
     }
 }
+
+/*********************************************
+      Confirmation Modal
+*********************************************/
+
+.ui.modal {
+    &.confirmation-modal[class*="center aligned"] {
+        text-align: center;
+        align-self: inherit;
+    }
+    &.confirmation-modal[class*="left aligned"] {
+        text-align: left;
+        align-self: inherit;
+    }
+    &.confirmation-modal[class*="right aligned"] {
+        text-align: right;
+        align-self: inherit;
+    }
+    &.confirmation-modal {
+        &.justified {
+            text-align: justify;
+            hyphens: auto;
+        }
+    }
+    &.confirmation-modal {
+        .animated-icon {
+            text-align: center;
+            align-self: inherit;
+        }
+        .content {
+            &.no-margin-top {
+                padding-top: 0;
+            }
+        }
+        .actions {
+            .fluid {
+                margin-left: 0;
+            }
+        }
+        .confirmation-modal-message {
+            &.attached {
+                margin: 0;
+                box-shadow: none;
+                border-radius: 0;
+                border: @defaultBorderWidth solid @defaultBorderColor;
+                border-top: none;
+            }
+        }
+    }
+}
