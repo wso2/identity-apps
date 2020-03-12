@@ -118,8 +118,7 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<any> = (): JS
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string },
                                      templateCategory: SupportedIdentityProviderTemplateCategories): void => {
 
-        // eslint-disable-next-line no-prototype-builtins
-        if (!TEMPLATES.hasOwnProperty(templateCategory)) {
+        if (!Object.prototype.hasOwnProperty.call(TEMPLATES, templateCategory)) {
             return;
         }
 

@@ -51,10 +51,10 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
     props: ApplicationsProps
 ): JSX.Element => {
     const { onAlertFired } = props;
-    const [ applications, setApplications ] = useState<Application[]>([]);
-    const [ recentApplications, setRecentApplications ] = useState<Application[]>([]);
-    const [ searchQuery, setSearchQuery ] = useState("");
-    const [ isRequestLoading, setIsRequestLoading ] = useState(false);
+    const [applications, setApplications] = useState<Application[]>([]);
+    const [recentApplications, setRecentApplications] = useState<Application[]>([]);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [isRequestLoading, setIsRequestLoading] = useState(false);
     const { t } = useTranslation();
 
     /**
@@ -110,8 +110,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
         );
 
         // Check if the current logged in user already has an entry in the settings.
-        // eslint-disable-next-line no-prototype-builtins
-        if (!applicationSettings || !applicationSettings.hasOwnProperty(username)) {
+        if (!applicationSettings || !Object.prototype.hasOwnProperty.call(applicationSettings, username)) {
             return;
         }
 
@@ -160,8 +159,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
         );
 
         // Check if the current logged in user already has an entry in the settings.
-        // eslint-disable-next-line no-prototype-builtins
-        if (applicationSettings && applicationSettings.hasOwnProperty(username)) {
+        if (applicationSettings && Object.prototype.hasOwnProperty.call(applicationSettings, username)) {
             if (applicationSettings[username].recentApplications
                 && applicationSettings[username].recentApplications.length
                 && applicationSettings[username].recentApplications.length > 0) {
@@ -192,8 +190,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
 
         // If `applicationSettings` doesn't have the logged in user's entry,
         // create a new one.
-        // eslint-disable-next-line no-prototype-builtins
-        if (!applicationSettings.hasOwnProperty(username)) {
+        if (!Object.prototype.hasOwnProperty.call(applicationSettings, username)) {
             applicationSettings[username] = emptyStorageApplicationSettingsItem();
         }
 
@@ -258,7 +255,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
 
     return (
         <div className="applications-page">
-            <ApplicationSearch onFilter={ handleApplicationFilter }/>
+            <ApplicationSearch onFilter={ handleApplicationFilter } />
             <div className="search-results-indicator">
                 {
                     searchQuery
@@ -266,10 +263,10 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
                         : ""
                 }
             </div>
-            <Divider/>
+            <Divider />
             {
                 (searchQuery || (recentApplications && recentApplications.length <= 0))
-                    ? <Divider hidden className="x1"/>
+                    ? <Divider hidden className="x1" />
                     : null
             }
             {
@@ -277,14 +274,14 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
                     ? (
                         <>
                             <h3 className="section-header">
-                                { t("views:components.applications.recent.heading") }
+                                {t("views:components.applications.recent.heading")}
                             </h3>
                             <RecentApplications
                                 onAppNavigate={ handleAppNavigation }
                                 recentApps={ recentApplications }
                                 showFavourites={ false }
                             />
-                            <h3 className="section-header">{ t("views:components.applications.all.heading") }</h3>
+                            <h3 className="section-header">{t("views:components.applications.all.heading")}</h3>
                         </>
                     )
                     : null

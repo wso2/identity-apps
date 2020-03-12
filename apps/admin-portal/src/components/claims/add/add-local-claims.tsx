@@ -25,7 +25,7 @@ import { ApplicationWizardStepIcons } from "../../../configs";
 import { BasicDetailsLocalClaims, MappedAttributes, SummaryLocalClaims } from "../wizard";
 import { Claim, AlertLevels } from "../../../models";
 import { useDispatch } from "react-redux";
-import { addAlert } from "../../../store/actions";
+import { addAlert } from "@wso2is/core/store";
 import { KeyValue } from "../dynamic-fields";
 
 interface AddLocalClaimsPropsInterface {

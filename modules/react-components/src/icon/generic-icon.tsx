@@ -117,8 +117,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
 
             // Check if the icon is a module and has `ReactComponent` property.
             // Important when used with SVG's imported with `@svgr/webpack`.
-            // eslint-disable-next-line no-prototype-builtins
-            if (icon.hasOwnProperty("ReactComponent") && typeof icon.ReactComponent === "function") {
+            if (Object.prototype.hasOwnProperty.call(icon,"ReactComponent") && typeof icon.ReactComponent === "function") {
                 return <icon.ReactComponent/>;
             }
 

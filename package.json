@@ -18,7 +18,8 @@
         "remove-node-modules": "npx lerna exec -- rm -rf node_modules && rm -rf node_modules",
         "remove-package-lock": "npx lerna exec -- rm -rf package-lock.json && rm -rf package-lock.json",
         "remove-maven-folders": "npx lerna exec -- rm -rf target npm ./apps/user-portal/src/main ./apps/admin-portal/src/main && rm -rf target npm ./apps/user-portal/src/main ./apps/admin-portal/src/main",
-        "update-version": "node scripts/update-version.js"
+        "update-version": "node scripts/update-version.js",
+        "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
     },
     "author": "WSO2",
     "license": "Apache-2.0",

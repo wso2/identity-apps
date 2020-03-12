@@ -16,8 +16,8 @@
  * under the License.
  */
 
-export = index;
 declare function index(msgItemIgnored: any, ...args: any[]): void;
+export = index;
 declare namespace index {
     const debug: any;
     function disable(): any;

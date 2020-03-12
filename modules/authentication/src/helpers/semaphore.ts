@@ -25,10 +25,10 @@ export const getSemaphore = () => {
         release: () => void;
 
         constructor() {
-            let currentPromise = sharedPromise;
+            const currentPromise = sharedPromise;
             let resolver;
 
-            let newPromise = new Promise<void>(resolve => {
+            const newPromise = new Promise<void>(resolve => {
                 resolver = resolve;
             });
 

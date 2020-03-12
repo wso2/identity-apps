@@ -25,8 +25,8 @@ interface CopyInputFieldPropsInterface{
 }
 export const CopyInputField = (props: CopyInputFieldPropsInterface): React.ReactElement => {
 
-    const claimURIText = useRef(null);
-    const copyButton = useRef(null);
+    const claimURIText = useRef<HTMLInputElement>(null);
+    const copyButton = useRef<HTMLButtonElement>(null);
     
     const { value, className } = props;
 
