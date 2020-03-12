@@ -20,7 +20,7 @@ import React, { useEffect, useState } from "react";
 import { PageLayout } from "../layouts";
 import { ListLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
-import { Icon, DropdownProps, PaginationProps, Grid } from "semantic-ui-react";
+import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
 import { ClaimsList, ListType, AddExternalClaims, EditExternalClaims, ExternalClaimsSearch } from "../components";
 import { ExternalClaim, ClaimDialect, AlertLevels } from "../models";
 import { getAllExternalClaims, getADialect } from "../api";
