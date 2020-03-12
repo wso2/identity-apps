@@ -101,7 +101,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                                                         floated="left"
                                                         image={ user.profileUrl }
                                                     />
-                                                    {user.userName}
+                                                    { user.userName }
                                                 </div>
                                             ))
                                     }
