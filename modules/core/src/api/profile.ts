@@ -65,6 +65,32 @@ export const getUserInfo = (): Promise<ProfileInfoInterface> => {
 };
 
 /**
+ *  Get Gravatar image using the email address.
+ *
+ * @param email - Email address.
+ * @return {Promise<string>} Valid Gravatar URL as a Promise.
+ */
+export const getGravatarImage = (email: string): Promise<string> => {
+
+    const requestConfig = {
+        method: HttpMethods.GET,
+        url: SignInUtil.getGravatar(email)
+    };
+
+    return axios.request(requestConfig)
+        .then(() => {
+            return Promise.resolve(requestConfig.url.split("?")[ 0 ]);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        })
+        .finally(() => {
+            // Re-enable the handler.
+            httpClient.enableHandler();
+        });
+};
+
+/**
  * Retrieve the user profile details of the currently authenticated user.
  *
  * @param {() => void} onSCIMDisabled - Callback to be fired if SCIM is disabled for the user store.
@@ -84,7 +110,6 @@ export const getProfileInfo = (onSCIMDisabled: () => void): Promise<ProfileInfoI
     return httpClient.request(requestConfig)
         .then(async (response) => {
             let gravatar = "";
-            let profileImage: string;
 
             if (response.status !== 200) {
                 return Promise.reject("Failed get user profile info.");
@@ -102,7 +127,7 @@ export const getProfileInfo = (onSCIMDisabled: () => void): Promise<ProfileInfoI
                 }
             }
 
-            profileImage = response.data.profileUrl ? response.data.profileUrl : gravatar;
+            const profileImage: string = response.data.profileUrl ? response.data.profileUrl : gravatar;
 
             const profileResponse: ProfileInfoInterface = {
                 emails: response.data.emails || "",
@@ -160,32 +185,6 @@ export const updateProfileInfo = (info: object): Promise<ProfileInfoInterface> =
         })
         .catch((error) => {
             return Promise.reject(error);
-        });
-};
-
-/**
- *  Get Gravatar image using the email address.
- *
- * @param email - Email address.
- * @return {Promise<string>} Valid Gravatar URL as a Promise.
- */
-export const getGravatarImage = (email: string): Promise<string> => {
-
-    const requestConfig = {
-        method: HttpMethods.GET,
-        url: SignInUtil.getGravatar(email)
-    };
-
-    return axios.request(requestConfig)
-        .then(() => {
-            return Promise.resolve(requestConfig.url.split("?")[ 0 ]);
-        })
-        .catch((error) => {
-            return Promise.reject(error);
-        })
-        .finally(() => {
-            // Re-enable the handler.
-            httpClient.enableHandler();
         });
 };
 

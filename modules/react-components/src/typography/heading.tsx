@@ -36,6 +36,10 @@ interface HeadingPropsInterface extends HeaderProps {
      * Hide the margins and make the component compact.
      */
     compact?: boolean;
+    /**
+     * De-emphasises the heading.
+     */
+    subHeading?: boolean;
 }
 
 /**
@@ -53,13 +57,16 @@ export const Heading: React.FunctionComponent<HeadingPropsInterface> = (
         className,
         compact,
         disabled,
+        subHeading,
         ...rest
     } = props;
 
     const classes = classNames(
+        "heading",
         {
             ellipsis,
             disabled,
+            [ "subheading" ]: subHeading,
             compact
         }
         , className

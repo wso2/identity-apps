@@ -16,17 +16,18 @@
  * under the License.
  */
 
-import React, { useEffect, useState, ReactElement } from "react";
-import { PageLayout, ListLayout } from "../layouts";
-import { getGroupsList, deleteSelectedRole } from "../api";
-import { RoleList } from "../components/users";
-import { RoleListInterface, AlertInterface, AlertLevels } from "../models"
-import { PrimaryButton } from "@wso2is/react-components";
-import { Icon, PaginationProps, DropdownProps } from "semantic-ui-react";
-import { DEFAULT_ROLE_LIST_ITEM_LIMIT } from "../constants";
+import { AlertInterface, AlertLevels, RoleListInterface, SearchRoleInterface } from "../models"
+import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { ListLayout, PageLayout } from "../layouts";
+import React, { ReactElement, useEffect, useState } from "react";
+import { deleteSelectedRole, getGroupsList, searchRoleList } from "../api";
+
 import { CreateRoleWizard } from "../components/users/role-wizard";
-import { useDispatch } from "react-redux";
+import { DEFAULT_ROLE_LIST_ITEM_LIMIT } from "../constants";
+import { PrimaryButton } from "@wso2is/react-components";
+import { RoleList, RoleSearch } from "../components/users";
 import { addAlert } from "../store/actions";
+import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 /**
@@ -55,6 +56,22 @@ export const UserRoles = (): ReactElement => {
             }
         });
     };
+
+    const searchRoleListHandler = (searchQuery: string) => {
+        const searchData: SearchRoleInterface = {
+            schemas: [
+                "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
+            ],
+            startIndex: 1,
+            filter: searchQuery,
+        }
+
+        searchRoleList(searchData).then(response => {
+            if (response.status === 200) {
+                setRoleList(response.data);
+            }
+        })
+    }
 
     useEffect(() => {
         getRoleList();
@@ -88,7 +105,7 @@ export const UserRoles = (): ReactElement => {
      * @param id - Role ID which needs to be deleted
      */
     const handleOnDelete = (id: string): void => {
-        deleteSelectedRole(id).then((response) => {
+        deleteSelectedRole(id).then(() => {
             handleAlerts({
                 description: t(
                     "views:components.roles.notifications.deleteRole.success.description"
@@ -102,13 +119,48 @@ export const UserRoles = (): ReactElement => {
         });
     };
 
+    /**
+     * The following method accepts a Map and returns the values as a string.
+     *
+     * @param attributeMap - IterableIterator<string>
+     * @return string
+     */
+    const generateAttributesString = (attributeMap: IterableIterator<string>) => {
+        const attArray = [];
+        const iterator1 = attributeMap[Symbol.iterator]();
+
+        for (const attribute of iterator1) {
+            if (attribute !== "") {
+                attArray.push(attribute);
+            }
+        }
+
+        return attArray.toString();
+    };
+
+    /**
+     * Handles the `onFilter` callback action from the
+     * roles search component.
+     *
+     * @param {string} query - Search query.
+     */
+    const handleUserFilter = (query: string): void => {
+        if (query === null || query === "displayName sw ") {
+            getRoleList();
+            return;
+        }
+
+        searchRoleListHandler(query);
+    };
+
     return (
         <PageLayout
-            title="Users Roles page"
+            title="Roles"
             description="Create and manage roles, assign permissions for roles."
             showBottomDivider={ true } 
         >
             <ListLayout
+                advancedSearch={ <RoleSearch onFilter={ handleUserFilter }/> }
                 currentListSize={ roleList?.itemsPerPage }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }

@@ -31,6 +31,7 @@ export class ContextUtils {
      *
      * @hideconstructor
      */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
     /**

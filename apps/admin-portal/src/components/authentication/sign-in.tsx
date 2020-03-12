@@ -33,16 +33,6 @@ export const SignIn = (props) => {
 
     const error = new URLSearchParams(props.location.search).get("error_description");
 
-    useEffect(() => {
-        if (!isAuth && !error) {
-            dispatch(handleSignIn());
-        } else if (error === USER_DENIED_CONSENT) {
-            dispatch(handleSignIn(true));
-        } else {
-            loginSuccessRedirect();
-        }
-    }, [isAuth]);
-
     const getAuthenticationCallbackUrl = () => {
         return window.sessionStorage.getItem("auth_callback_url");
     };
@@ -56,6 +46,16 @@ export const SignIn = (props) => {
 
         history.push(location);
     };
+
+    useEffect(() => {
+        if (!isAuth && !error) {
+            dispatch(handleSignIn());
+        } else if (error === USER_DENIED_CONSENT) {
+            dispatch(handleSignIn(true));
+        } else {
+            loginSuccessRedirect();
+        }
+    }, [isAuth]);
 
     return null;
 };

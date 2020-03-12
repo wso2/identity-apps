@@ -19,7 +19,7 @@
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, useState } from "react";
-import { Button, Divider, Grid, Segment } from "semantic-ui-react";
+import { Button, Divider, Grid } from "semantic-ui-react";
 import { AdvancedConfigurationsInterface } from "../../../models";
 import { FormValidation } from "@wso2is/validation";
 
@@ -89,8 +89,9 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             ] }
                         />
                         <Hint>
-                            Applications are by default restricted for usage by users of the service provider's tenant.
-                            If this application is SaaS enabled it is opened up for all the users of all the tenants.
+                            Applications are by default restricted for usage by users of the service provider&apos;s 
+                            tenant. If this application is SaaS enabled it is opened up for all the users of all the 
+                            tenants.
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

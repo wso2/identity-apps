@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import React, { ReactElement, useState } from "react";
-import { Grid, Icon, Input, Label, List, Message, Popup, Segment } from "semantic-ui-react";
+import React, { ReactElement } from "react";
+import { Grid, Icon, Input, Label, List, Popup, Segment } from "semantic-ui-react";
 import _ from "lodash";
 import { Forms } from "@wso2is/forms";
 
@@ -28,6 +28,8 @@ interface AddUserRoleProps {
     initialValues: any;
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
+    handleRoleListChange: (roles: any) => void;
+    handleTempListChange: (roles: any) => void;
 }
 
 /**
@@ -40,51 +42,56 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
     const {
         initialValues,
         triggerSubmit,
-        onSubmit
+        onSubmit,
+        handleRoleListChange,
+        handleTempListChange
     } = props;
 
-    const [ roleList, setRoleList ] = useState(initialValues);
-    const [ tempRoleList, setTempRoleList ] = useState([]);
-    const [ duplicationError, setError ] = useState(undefined);
-
     const handleRemoveRoleItem = (role: any) => {
-        let userRolesCopy = [ ...tempRoleList ];
-        userRolesCopy.splice(tempRoleList.indexOf(role), 1);
-        setTempRoleList(userRolesCopy);
+        const userRolesCopy = [ ...initialValues?.tempRoleList ];
+        userRolesCopy.splice(initialValues?.tempRoleList.indexOf(role), 1);
+        handleTempListChange(userRolesCopy);
+
+        // When a role is removed from the assigned list it is appended
+        // back to the initial list.
+        handleRoleListChange([ ...initialValues?.roleList, role]);
     };
 
     const addRole = (role: any) => {
-         if (!(tempRoleList.includes(role))) {
-             setTempRoleList([ ...tempRoleList, role ]);
-             setError(undefined);
-         } else {
-             setError("You have already added the role:" + " " + role.displayName);
+         if (!(initialValues?.tempRoleList.includes(role))) {
+             handleTempListChange([ ...initialValues?.tempRoleList, role ]);
+
+             // When a role is added to the assigned role list it is removed
+             // from the initial list.
+             const roleListCopy = [ ...initialValues?.roleList ];
+             roleListCopy.splice(initialValues?.roleList.indexOf(role), 1);
+             handleRoleListChange(roleListCopy);
          }
     };
 
     const handleSearchFieldChange = (e, { value }) => {
         let isMatch = false;
-        let filteredRoleList = [];
+        const filteredRoleList = [];
 
         if (!_.isEmpty(value)) {
             const re = new RegExp(_.escapeRegExp(value), 'i');
 
-            roleList && roleList.map((role) => {
+            initialValues.roleList && initialValues.roleList.map((role) => {
                 isMatch = re.test(role.displayName);
                 if (isMatch) {
                     filteredRoleList.push(role);
-                    setRoleList(filteredRoleList);
+                    handleRoleListChange(filteredRoleList);
                 }
             });
         } else {
-            setRoleList(initialValues);
+            handleRoleListChange(initialValues.roleList);
         }
     };
 
     return (
         <Forms
             onSubmit={ () => {
-                onSubmit({ roles: tempRoleList });
+                onSubmit({ roles: initialValues?.tempRoleList });
             } }
             submitState={ triggerSubmit }
         >
@@ -107,8 +114,8 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
                            <Grid.Column>
                                <Segment className={ "user-role-list-segment" }>
                                    <List className={ "user-role-list" }>
-                                       { roleList &&
-                                         roleList.map((role, index) =>{
+                                       { initialValues.roleList &&
+                                       initialValues.roleList.map((role, index) =>{
                                              return (
                                                  <List.Item
                                                      key={ index }
@@ -136,7 +143,7 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
                         </Grid.Row>
                         <Grid.Row>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Segment className={ "user-assigned-roles-segment"}>
+                                <Segment className={ "user-assigned-roles-segment" }>
                                         <Popup
                                           trigger={
                                               <Label className={ "info-label" }>
@@ -151,28 +158,19 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
                                           content="This role will be assigned to all the users by default."
                                         />
                                     {
-                                        tempRoleList && tempRoleList.map((role, index) => {
+                                        initialValues.tempRoleList && initialValues.tempRoleList.map((role, index) => {
                                             return (
                                                 <Label key={ index }>
                                                     { role.displayName }
                                                     <Icon
                                                         name="delete"
-                                                        onClick={() => handleRemoveRoleItem(role)}
+                                                        onClick={ () => handleRemoveRoleItem(role) }
                                                     />
                                                 </Label>
                                             );
                                         })
                                     }
                                 </Segment>
-                                {
-                                    duplicationError && (
-                                        <Message negative>
-                                            <p>
-                                                { duplicationError }
-                                            </p>
-                                        </Message>
-                                    )
-                                }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid.Column>

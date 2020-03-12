@@ -36,3 +36,12 @@
         }
     }
 }
+
+.ui.label {
+    &.properties-label {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 11px 14.5px;
+    }
+}

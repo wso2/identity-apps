@@ -51,7 +51,7 @@ export const AddEditDialect = (props: AddEditDialectPropsInterface): React.React
                     {
                         description: error?.description,
                         level: AlertLevels.ERROR,
-                        message: error?.message
+                        message: error?.message || "Something went wrong"
                     }
                 ));
             })
@@ -60,8 +60,8 @@ export const AddEditDialect = (props: AddEditDialectPropsInterface): React.React
 
     return (
         <Modal
-            open={open}
-            onClose={onClose}
+            open={ open }
+            onClose={ onClose }
             dimmer="blurring"
             size="mini"
         >
@@ -71,12 +71,12 @@ export const AddEditDialect = (props: AddEditDialectPropsInterface): React.React
             <Modal.Content>
                 <Forms
                     onSubmit={
-                        (values:Map<string,FormValue>) => {
+                        (values: Map<string,FormValue>) => {
                             if (edit) {
                                 updateADialect(
                                     dialectID,
                                     values.get("dialectURI").toString()
-                                ).then(response => {
+                                ).then(() => {
                                     update();
                                     onClose();
                                     dispatch(addAlert(
@@ -91,18 +91,18 @@ export const AddEditDialect = (props: AddEditDialectPropsInterface): React.React
                                         {
                                             description: error?.description,
                                             level: AlertLevels.ERROR,
-                                            message: error?.message
+                                            message: error?.message || "Something went wrong"
                                         }
                                     ));
                                 });
                             } else {
-                                addDialect(values.get("dialectURI").toString()).then(response => {
+                                addDialect(values.get("dialectURI").toString()).then(() => {
                                     update();
                                     onClose();
                                     dispatch(addAlert(
                                         {
                                             description: "The dialect has been added successfully!",
-                                            level: AlertLevels.ERROR,
+                                            level: AlertLevels.SUCCESS,
                                             message: "Dialect added successfully"
                                         }
                                     ));
@@ -111,36 +111,36 @@ export const AddEditDialect = (props: AddEditDialectPropsInterface): React.React
                                         {
                                             description: error?.description,
                                             level: AlertLevels.ERROR,
-                                            message: error?.message
+                                            message: error?.message || "Something went wrong"
                                         }
                                     ));
                                 })
                             }
                         }
                     }
-                    submitState={submit}
+                    submitState={ submit }
                 >
                     <Field
                         type="text"
                         name="dialectURI"
                         label="Dialect URI"
-                        required={true}
+                        required={ true }
                         requiredErrorMessage="Enter a Dialect URI"
                         placeholder="Enter a Dialect URI"
-                        value={edit?dialect?.dialectURI:""}
+                        value={ edit?dialect?.dialectURI:"" }
                     />
                 </Forms>
             </Modal.Content>
             <Modal.Actions>
                 <LinkButton
-                    onClick={onClose}
+                    onClick={ onClose }
                 >
                     Cancel
                 </LinkButton>
                 <PrimaryButton
-                    onClick={() => {
+                    onClick={ () => {
                         setSubmit();
-                    }}
+                    } }
                 >
                     {edit?"Update":"Add"}
                 </PrimaryButton>

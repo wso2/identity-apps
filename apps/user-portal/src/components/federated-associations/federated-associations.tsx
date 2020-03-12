@@ -49,13 +49,6 @@ export const FederatedAssociations = (props: FederatedAssociationsPropsInterface
     const [federatedAssociations, setFederatedAssociations] = useState<FederatedAssociation[]>([]);
 
     /**
-     * This calls the `getFederatedAssociationsList` function on component mount
-     */
-    useEffect(() => {
-        getFederatedAssociationsList();
-    }, []);
-
-    /**
      * This calls the `getFederatedAssociations` api call
      */
     const getFederatedAssociationsList = () => {
@@ -80,12 +73,19 @@ export const FederatedAssociations = (props: FederatedAssociationsPropsInterface
     };
 
     /**
+     * This calls the `getFederatedAssociationsList` function on component mount
+     */
+    useEffect(() => {
+        getFederatedAssociationsList();
+    }, []);
+
+    /**
      * This function calls the `deleteFederatedAssociation` api call
      * @param id
      */
     const removeFederatedAssociation = (id: string) => {
         deleteFederatedAssociation(id)
-            .then((response) => {
+            .then(() => {
                 getFederatedAssociationsList();
                 onAlertFired({
                     description: t("views:components.federatedAssociations.notifications"

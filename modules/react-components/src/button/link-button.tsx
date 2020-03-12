@@ -20,19 +20,30 @@ import classNames from "classnames";
 import React from "react";
 import { Button as SemanticButton, ButtonProps } from "semantic-ui-react";
 
+interface LinkButtonPropsInterface extends ButtonProps {
+    warning?: boolean;
+    info?: boolean;
+}
 /**
  * Link button component.
  *
- * @param {ButtonProps} props - Props injected to the component.
+ * @param {LinkButtonPropsInterface} props - Props injected to the component.
  * @return {JSX.Element}
  */
-export const LinkButton: React.FunctionComponent<ButtonProps> = (
+export const LinkButton: React.FunctionComponent<LinkButtonPropsInterface> = (
     props: ButtonProps
 ): JSX.Element => {
 
-    const { className } = props;
+    const { className, warning, info } = props;
 
-    const classes = classNames("link-button", className);
+    const classes = classNames(
+        "link-button",
+        {
+            warning,
+            info
+        },
+        className
+    );
 
     return (
         <SemanticButton { ...props } className={ classes } />

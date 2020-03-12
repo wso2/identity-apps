@@ -26,9 +26,6 @@ import {
     ApplicationInterface,
     ApplicationListInterface,
     AuthProtocolMetaListItemInterface,
-    Claim,
-    ClaimDialect,
-    ExternalClaim,
     HttpMethods,
     OIDCDataInterface,
     SupportedAuthProtocolMetaTypes,
@@ -45,90 +42,6 @@ import {
  * @type {AxiosHttpClientInstance}.
  */
 const httpClient = AxiosHttpClient.getInstance();
-
-/**
- * Retrieve claims in local dialect.
- *
- * @return {Promise<any>} a promise containing the response.
- */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const getLocalClaims = (): Promise<any> => {
-    const requestConfig = {
-        headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.claims + "/local/claims"
-    };
-
-    return httpClient.request(requestConfig)
-        .then((response) => {
-            if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to get local claims from: "));
-            }
-            return Promise.resolve(response.data as Claim);
-        }).catch((error) => {
-            return Promise.reject(error);
-        });
-};
-
-/**
- * Retrieve claims dialects.
- *
- * @return {Promise<any>} a promise containing the response.
- */
-export const getClaimDialect = (): Promise<any> => {
-    const requestConfig = {
-        headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.claims
-    };
-
-    return httpClient.request(requestConfig)
-        .then((response) => {
-            if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to get claim dialect from: "));
-            }
-            return Promise.resolve(response.data as ClaimDialect);
-        }).catch((error) => {
-            return Promise.reject(error);
-        });
-};
-
-/**
- * Gets claims in other dialects.
- *
- * @param dialectID Selected dialectID.
- *
- * @return {Promise<any>} A promise containing the response.
- */
-export const getExternalClaims = (dialectID: string): Promise<any> => {
-    const requestConfig = {
-        headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.claims + "/" + dialectID + "/claims"
-    };
-
-    return httpClient.request(requestConfig)
-        .then((response) => {
-            if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to get external claims: "));
-            }
-            return Promise.resolve(response.data as ExternalClaim);
-        }).catch((error) => {
-            return Promise.reject(error);
-        });
-};
 
 /**
  * Gets the basic information about the application.
@@ -539,6 +452,34 @@ export const updateAuthenticationSequence = (id: string, data: object): Promise<
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update authentication sequence"));
+            }
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Updates Authentication sequence of the application.
+ * @param id ID of the application
+ * @param data Claim configurations of the application.
+ */
+export const updateClaimConfiguration = (id: string, data: object): Promise<any> => {
+    const requestConfig = {
+        data,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: ServiceResourcesEndpoint.applications + "/" + id
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to update claim configuration"));
             }
             return Promise.resolve(response);
         }).catch((error) => {

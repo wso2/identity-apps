@@ -19,14 +19,9 @@
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, Heading, Hint, SelectionCard } from "@wso2is/react-components";
-import _ from "lodash";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    getAuthProtocolMetadata,
-    getInboundProtocolConfig,
-    updateAuthProtocolConfig
-} from "../../api";
+import { getAuthProtocolMetadata, updateAuthProtocolConfig } from "../../api";
 import {
     AuthProtocolMetaListItemInterface,
     InboundProtocolListItemInterface,
@@ -36,10 +31,8 @@ import {
 import { AppState } from "../../store";
 import { setAuthProtocolMeta } from "../../store/actions";
 import { InboundFormFactory } from "./forms";
-import { InboundProtocolsMeta } from "./meta";
 import { Divider } from "semantic-ui-react";
 import { InboundProtocolLogos } from "../../configs";
-import { ApplicationManagementUtils } from "../../utils";
 
 /**
  * Proptypes for the applications settings component.
@@ -61,6 +54,26 @@ interface ApplicationSettingsPropsInterface {
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * Show protocol selection option.
+     */
+    showProtocolSelection: boolean;
+    /**
+     * Selected protocol configurations.
+     */
+    selectedInboundProtocolConfig: any;
+    /**
+     *  Selected inbound protocol.
+     */
+    selectedInboundProtocol: AuthProtocolMetaListItemInterface;
+    /**
+     *  Change selected inbound protocol
+     */
+    setSelectedInboundProtocol: (protocol: AuthProtocolMetaListItemInterface) => void;
+    /**
+     *  Is inbound protocol config request is still loading.
+     */
+    isInboundProtocolConfigRequestLoading: boolean;
 }
 
 /**
@@ -77,7 +90,12 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
         appId,
         inboundProtocols,
         isLoading,
-        onUpdate
+        onUpdate,
+        showProtocolSelection,
+        selectedInboundProtocol,
+        selectedInboundProtocolConfig,
+        setSelectedInboundProtocol,
+        isInboundProtocolConfigRequestLoading
     } = props;
 
     const dispatch = useDispatch();
@@ -85,66 +103,7 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
     const availableInboundProtocols = useSelector((state: AppState) => state.application.meta.inboundProtocols);
     const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
 
-    const [ selectedInboundProtocol, setSelectedInboundProtocol ] = useState<AuthProtocolMetaListItemInterface>(null);
-    const [ selectedInboundProtocolConfig, setSelectedInboundProtocolConfig ] = useState<any>(undefined);
     const [ isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading ] = useState<boolean>(false);
-    const [ showProtocolSelection, setShowProtocolSelection ] = useState<boolean>(true);
-    const [ isInboundProtocolConfigRequestLoading, setIsInboundProtocolConfigRequestLoading ] = useState<boolean>(true);
-
-    /**
-     * Finds the configured inbound protocol.
-     */
-    const findConfiguredInboundProtocol = (): void => {
-
-        let found = false;
-
-        for (const protocol of availableInboundProtocols) {
-            if (Object.values(SupportedAuthProtocolTypes).includes(protocol.id as SupportedAuthProtocolTypes)) {
-
-                setIsInboundProtocolConfigRequestLoading(true);
-
-                getInboundProtocolConfig(appId, protocol.id)
-                    .then((response) => {
-                        found = true;
-
-                        setSelectedInboundProtocol(protocol);
-                        setSelectedInboundProtocolConfig({
-                            ...selectedInboundProtocolConfig,
-                            [ protocol.id ]: response
-                        });
-                        setShowProtocolSelection(false);
-                    })
-                    .catch((error) => {
-                        if (error.response.status === 404) {
-                            return;
-                        }
-
-                        if (error.response && error.response.data && error.response.data.description) {
-                            dispatch(addAlert({
-                                description: error.response.data.description,
-                                level: AlertLevels.ERROR,
-                                message: "Retrieval error"
-                            }));
-
-                            return;
-                        }
-
-                        dispatch(addAlert({
-                            description: "An error occurred retrieving the protocol configurations.",
-                            level: AlertLevels.ERROR,
-                            message: "Retrieval error"
-                        }));
-                    })
-                    .finally(() => {
-                        setIsInboundProtocolConfigRequestLoading(false);
-                    });
-            }
-
-            if (found) {
-                break;
-            }
-        }
-    };
 
     /**
      * Handles the inbound protocol selection.
@@ -237,31 +196,6 @@ export const ApplicationSettings: FunctionComponent<ApplicationSettingsPropsInte
                 return null;
         }
     };
-
-    /**
-     * Use effect hook to be run on component init.
-     */
-    useEffect(() => {
-
-        // Checks if the `inboundProtocols` is undefined. Terminate the rest of the operations.
-        // If this check isn't done, fast navigation to the settings tab will potentially
-        // break the UI.
-        if (!inboundProtocols) {
-            return;
-        }
-
-        if (!_.isEmpty(availableInboundProtocols)) {
-            findConfiguredInboundProtocol();
-            return;
-        }
-
-        setInboundProtocolsRequestLoading(true);
-
-        ApplicationManagementUtils.getInboundProtocols(InboundProtocolsMeta, false)
-            .finally(() => {
-                setInboundProtocolsRequestLoading(false);
-            });
-    }, [ inboundProtocols, availableInboundProtocols ]);
 
     /**
      * Use effect hook to be run when an inbound protocol is selected.

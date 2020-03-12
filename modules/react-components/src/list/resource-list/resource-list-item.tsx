@@ -28,7 +28,8 @@ import {
     Popup,
     SemanticFLOATS,
     SemanticICONS,
-    SemanticWIDTHS
+    SemanticWIDTHS,
+    StrictGridRowProps
 } from "semantic-ui-react";
 
 /**
@@ -59,7 +60,7 @@ interface ResourceListItemPropsInterface extends ListItemProps {
     /**
      * List item header.
      */
-    itemHeader: string|React.ReactNode;
+    itemHeader: string | React.ReactNode;
     /**
      * List item description
      */
@@ -71,7 +72,7 @@ interface ResourceListItemPropsInterface extends ListItemProps {
     /**
      * Meta info about the list item.
      */
-    metaContent?: React.ReactNode;
+    metaContent?: React.ReactNode | React.ReactNode[];
     /**
      * Width of the meta info area.
      */
@@ -82,6 +83,8 @@ interface ResourceListItemPropsInterface extends ListItemProps {
  * Resource list action interface.
  */
 interface ResourceListAction {
+    disabled?: boolean;
+    hidden?: boolean;
     icon: SemanticICONS;
     onClick?: () => void;
     popupText?: string;
@@ -117,7 +120,11 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
     return (
         <List.Item className={ classes }>
             <Grid>
-                <Grid.Row columns={ 3 }>
+                <Grid.Row columns={
+                    metaContent instanceof Array
+                        ? (metaContent.length + 2) as StrictGridRowProps["columns"]
+                        : 3
+                }>
                     <Grid.Column width={ descriptionColumnWidth }>
                         { avatar }
                         <List.Content>
@@ -125,60 +132,80 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
                             <List.Description className="list-item-description">{ itemDescription }</List.Description>
                         </List.Content>
                     </Grid.Column>
-                    <Grid.Column width={ metaColumnWidth } verticalAlign="middle">
-                        <List.Content>{ metaContent }</List.Content>
-                    </Grid.Column>
+                    {
+                        metaContent instanceof Array
+                            ? (
+                                metaContent?.map((content,index) => {
+                                    return (
+                                        <Grid.Column key={ index } width={ metaColumnWidth } verticalAlign="middle">
+                                            <List.Content>{content}</List.Content>
+                                        </Grid.Column>
+                                    )
+                                })
+                            )
+                            : (
+                                <Grid.Column width={ metaColumnWidth } verticalAlign="middle">
+                                    <List.Content>{metaContent}</List.Content>
+                                </Grid.Column>
+                            )
+                    }
                     <Grid.Column width={ actionsColumnWidth }>
                         <List.Content floated={ actionsFloated } className="list-item-action-panel">
                             {
                                 (actions && actions.length && actions.length > 0)
                                     ? actions.map((action, index) => (
-                                        <div className="list-item-action" key={ index }>
-                                            {
-                                                action.type === "dropdown"
-                                                    ? (
-                                                        <Dropdown
-                                                            direction="left"
-                                                            icon={ null }
-                                                            trigger={ (
-                                                                <Popup
-                                                                    trigger={ (
-                                                                        <Icon
-                                                                            link
-                                                                            className="list-icon"
-                                                                            size="small"
-                                                                            color="grey"
-                                                                            name={ action.icon }
-                                                                            onClick={ action.onClick }
-                                                                        />
-                                                                    ) }
-                                                                    position="top center"
-                                                                    content={ action.popupText }
-                                                                    inverted
-                                                                />
-                                                            ) }
-                                                            options={ action.subActions }
-                                                        />
-                                                    ) :
-                                                    (
-                                                        <Popup
-                                                            trigger={ (
-                                                                <Icon
-                                                                    link
-                                                                    className="list-icon"
-                                                                    size="small"
-                                                                    color="grey"
-                                                                    name={ action.icon }
-                                                                    onClick={ action.onClick }
-                                                                />
-                                                            ) }
-                                                            position="top center"
-                                                            content={ action.popupText }
-                                                            inverted
-                                                        />
-                                                    )
-                                            }
-                                        </div>
+                                        !action.hidden && (
+                                            <div className="list-item-action" key={ index }>
+                                                {
+                                                    action.type === "dropdown"
+                                                        ? (
+                                                            <Dropdown
+                                                                direction="left"
+                                                                icon={ null }
+                                                                trigger={ (
+                                                                    <Popup
+                                                                        disabled={ action.disabled }
+                                                                        trigger={ (
+                                                                            <Icon
+                                                                                link
+                                                                                className="list-icon"
+                                                                                disabled={ action.disabled }
+                                                                                size="small"
+                                                                                color="grey"
+                                                                                name={ action.icon }
+                                                                                onClick={ action.onClick }
+                                                                            />
+                                                                        ) }
+                                                                        position="top center"
+                                                                        content={ action.popupText }
+                                                                        inverted
+                                                                    />
+                                                                ) }
+                                                                options={ action.subActions }
+                                                            />
+                                                        ) :
+                                                        (
+                                                            <Popup
+                                                                disabled={ action.disabled }
+                                                                trigger={ (
+                                                                    <Icon
+                                                                        link
+                                                                        className="list-icon"
+                                                                        disabled={ action.disabled }
+                                                                        size="small"
+                                                                        color="grey"
+                                                                        name={ action.icon }
+                                                                        onClick={ action.onClick }
+                                                                    />
+                                                                ) }
+                                                                position="top center"
+                                                                content={ action.popupText }
+                                                                inverted
+                                                            />
+                                                        )
+                                                }
+                                            </div>
+                                        )
                                     ))
                                     : null
                             }

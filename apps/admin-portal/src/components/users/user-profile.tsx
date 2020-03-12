@@ -36,7 +36,7 @@ import * as _ from "lodash";
 interface ProfileProps {
     onAlertFired: (alert: AlertInterface) => void;
     user: BasicProfileInterface;
-    setUser: (userInfo: BasicProfileInterface) => void;
+    handleUserUpdate: (userId: string) => void;
 }
 
 /**
@@ -46,13 +46,59 @@ interface ProfileProps {
  * @return {ReactElement}
  */
 export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps): ReactElement => {
-    const { onAlertFired, user, setUser } = props;
+    const { onAlertFired, user, handleUserUpdate } = props;
     const { t } = useTranslation();
 
     const [profileInfo, setProfileInfo] = useState(new Map<string, string>());
     const [profileSchema, setProfileSchema] = useState<ProfileSchema[]>();
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const [urlSchema, setUrlSchema] = useState<ProfileSchema>();
+
+    /**
+     * The following function maps profile details to the SCIM schemas.
+     *
+     * @param proSchema ProfileSchema
+     * @param userInfo BasicProfileInterface
+     */
+    const mapUserToSchema = (proSchema: ProfileSchema[], userInfo: BasicProfileInterface): void => {
+        if (!isEmpty(profileSchema) && !isEmpty(userInfo)) {
+            const tempProfileInfo: Map<string, string> = new Map<string, string>();
+
+            proSchema.forEach((schema: ProfileSchema) => {
+                const schemaNames = schema.name.split(".");
+
+                if (schemaNames.length === 1) {
+                    if (schemaNames[0] === "emails") {
+                        if (userInfo?.hasOwnProperty(schemaNames[0]) && userInfo[schemaNames[0]][0]) {
+                            userInfo[[schemaNames[0]][0]][0].value &&
+                                userInfo[[schemaNames[0]][0]][0].value !== "" ? tempProfileInfo.set(schema.name,
+                                    userInfo[[schemaNames[0]][0]][0].value as string)
+                                : tempProfileInfo.set(schema.name, userInfo[schemaNames[0]][0] as string);
+                        }
+                    } else {
+                        tempProfileInfo.set(schema.name, userInfo[schemaNames[0]]);
+                    }
+                } else {
+                    if (schemaNames[0] === "name") {
+                        const name = schemaNames[1] && userInfo[schemaNames[0]] &&
+                            userInfo[schemaNames[0]][schemaNames[1]] && (
+                                tempProfileInfo.set(schema.name, userInfo[schemaNames[0]][schemaNames[1]])
+                            );
+                    } else {
+                        const subValue = userInfo[schemaNames[0]]
+                            && userInfo[schemaNames[0]]
+                                .find((subAttribute) => subAttribute.type === schemaNames[1]);
+                        tempProfileInfo.set(
+                            schema.name,
+                            subValue ? subValue.value : ""
+                        );
+                    }
+                }
+            });
+
+            setProfileInfo(tempProfileInfo);
+        }
+    };
 
     /**
      * Sort the elements of the profileSchema state according by the displayOrder attribute in the ascending order.
@@ -84,52 +130,6 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
     useEffect(() => {
         mapUserToSchema(profileSchema, user);
     }, [profileSchema, user]);
-
-    /**
-     * The following function maps profile details to the SCIM schemas.
-     *
-     * @param proSchema ProfileSchema
-     * @param userInfo BasicProfileInterface
-     */
-    const mapUserToSchema = (proSchema: ProfileSchema[], userInfo: BasicProfileInterface): void => {
-        if (!isEmpty(profileSchema) && !isEmpty(userInfo)) {
-            const tempProfileInfo: Map<string, string> = new Map<string, string>();
-
-            proSchema.forEach((schema: ProfileSchema) => {
-                const schemaNames = schema.name.split(".");
-
-                if (schemaNames.length === 1) {
-                    if (schemaNames[0] === "emails") {
-                        if (userInfo.hasOwnProperty(schemaNames[0]) && userInfo[schemaNames[0]][0]) {
-                            userInfo[[schemaNames[0]][0]][0].value &&
-                            userInfo[[schemaNames[0]][0]][0].value !== "" ? tempProfileInfo.set(schema.name,
-                                userInfo[[schemaNames[0]][0]][0].value as string)
-                                : tempProfileInfo.set(schema.name, userInfo[schemaNames[0]][0] as string);
-                        }
-                    } else {
-                        tempProfileInfo.set(schema.name, userInfo[schemaNames[0]]);
-                    }
-                } else {
-                    if (schemaNames[0] === "name") {
-                        const name = schemaNames[1] && userInfo[schemaNames[0]] &&
-                            userInfo[schemaNames[0]][schemaNames[1]] && (
-                            tempProfileInfo.set(schema.name, userInfo[schemaNames[0]][schemaNames[1]])
-                        );
-                    } else {
-                        const subValue = userInfo[schemaNames[0]]
-                            && userInfo[schemaNames[0]]
-                                .find((subAttribute) => subAttribute.type === schemaNames[1]);
-                        tempProfileInfo.set(
-                            schema.name,
-                            subValue ? subValue.value : ""
-                        );
-                    }
-                }
-            });
-
-            setProfileInfo(tempProfileInfo);
-        }
-    };
 
     /**
      * This function handles deletion of the user.
@@ -219,7 +219,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
                         "views:components.user.profile.notifications.updateProfileInfo.success.message"
                     )
                 });
-            setUser(response);
+            handleUserUpdate(user.id);
         });
     };
 

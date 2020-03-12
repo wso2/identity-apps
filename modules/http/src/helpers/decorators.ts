@@ -17,12 +17,14 @@
  *
  */
 
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /**
  * A decorator to supplement static interface support.
  *
  * @return {<U extends T>(constructor: U) => void}
  */
 export function staticDecorator<T>() {
-    // tslint:disable-next-line:no-empty
     return <U extends T>(constructor: U) => {};
 }

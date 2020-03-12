@@ -17,7 +17,7 @@
  */
 
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
 import { Modal, Grid, Icon } from "semantic-ui-react";
 import { Heading, Steps, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { useTrigger } from "@wso2is/forms";
@@ -25,10 +25,12 @@ import { ApplicationWizardStepIcons } from "../../../configs";
 import { RoleBasics } from "./role-basics";
 import { PermissionList } from "./role-permisson";
 import { createRole, updatePermissionForRole } from "../../../api";
-import { CreateRoleInterface, AlertLevels } from "../../../models";
+import { CreateRoleInterface, AlertLevels, CreateRoleMemberInterface } from "../../../models";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
+import { AddRoleUsers } from "./role-user-assign";
+import { CreateRoleSummary } from "./role-sumary";
 
 
 /**
@@ -38,6 +40,18 @@ interface CreateRoleProps {
     closeWizard: () => void;
     updateList: () => void;
     initStep?: number;
+}
+
+/**
+ * Enum for wizard steps form types.
+ * @readonly
+ * @enum {string}
+ */
+enum WizardStepsFormTypes {
+    BASIC_DETAILS = "BasicDetails",
+    PERM_LIST = "PermissionList",
+    USER_LIST = "RoleUserList",
+    SUMMARY = "summary"
 }
 
 /**
@@ -64,17 +78,46 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     const dispatch = useDispatch();
 
     const [ currentStep, setCurrentWizardStep ] = useState<number>(initStep);
+    const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
+
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
+    const [ submitRoleUserList, setSubmitRoleUserList ] = useTrigger();
+    const [ submitPermissionList, setSubmitPermissionList ] = useTrigger();
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
+
+    /**
+     * Sets the current wizard step to the previous on every `partiallyCompletedStep`
+     * value change , and resets the partially completed step value.
+     */
+    useEffect(() => {
+        if (partiallyCompletedStep === undefined) {
+            return;
+        }
+
+        setCurrentWizardStep(currentStep - 1);
+        setPartiallyCompletedStep(undefined);
+    }, [ partiallyCompletedStep ]);
 
     /**
      * Method to handle the create role wizard finish action.
      * 
-     * @param permissions - permission list which was created by the user.
      */
-    const handleRoleWizardFinish = (permissions: string[]) => {
-        addRole(wizardState, permissions)
+    const handleRoleWizardFinish = () => {
+        addRole(wizardState)
+    };
+
+    /**
+     * Generates a summary of the wizard.
+     *
+     * @return {any}
+     */
+    const generateWizardSummary = () => {
+        if (!wizardState) {
+            return;
+        }
+
+        return wizardState;
     };
 
     // Create role wizard steps
@@ -82,7 +125,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         content: (
             <RoleBasics
                 triggerSubmit={ submitGeneralSettings }
-                onSubmit={ (values) => handleWizardSubmit(values) }
+                onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
             />
         ),
         icon: ApplicationWizardStepIcons.general,
@@ -90,23 +133,43 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     },{
         content: (
             <PermissionList
-                triggerSubmit={ finishSubmit }
-                onSubmit={ handleRoleWizardFinish }
+                triggerSubmit={ submitPermissionList }
+                onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.PERM_LIST) }
             />
         ),
-        icon: ApplicationWizardStepIcons.general,
+        icon: ApplicationWizardStepIcons.protocolConfig,
         title: "Permission Selection"
+    },{
+        content: (
+            <AddRoleUsers
+                triggerSubmit={ submitRoleUserList }
+                onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.USER_LIST) }
+            />
+        ),
+        icon: ApplicationWizardStepIcons.protocolSelection,
+        title: "Assign user roles"
+    },{
+        content: (
+            <CreateRoleSummary
+                triggerSubmit={ finishSubmit }
+                onSubmit={ handleRoleWizardFinish }
+                summary={ generateWizardSummary() }
+            />
+        ),
+        icon: ApplicationWizardStepIcons.summary,
+        title: "Summary"
     }]
     
     /**
-     * Create role wizard handler.
-     * 
-     * @param values values which will be taken from the previous wizard step
+     * Handles wizard step submit.
+     *
+     * @param values - Forms values to be stored in state.
+     * @param {WizardStepsFormTypes} formType - Type of the form.
      */
-    const handleWizardSubmit = (values: any) => {
+    const handleWizardSubmit = (values: any, formType: WizardStepsFormTypes) => {
         setCurrentWizardStep(currentStep + 1);
-        setWizardState(_.merge(wizardState, { values }));
-    }
+        setWizardState(_.merge(wizardState, { [ formType ]: values }));
+    };
 
     /**
      * Method to handle create role action when create role wizard finish action is triggered.
@@ -114,12 +177,24 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
      * @param basicData - basic data required to create role.
      * @param permissions - permissions selected for the created role.
      */
-    const addRole = (basicData: any, permissions: string[]): void => {
+    const addRole = (basicData: any): void => {
+        let members: CreateRoleMemberInterface[] = [];
+
+        if (basicData.RoleUserList.length > 0) {
+            basicData.RoleUserList.forEach(user => {
+                members.push({
+                    value: user.id,
+                    display: user.userName
+                })
+            })
+        }
+        
         const roleData: CreateRoleInterface = {
             "schemas": [
-              "urn:ietf:params:scim:schemas:core:2.0:Group"
+                "urn:ietf:params:scim:schemas:core:2.0:Group"
             ],
-            "displayName": basicData.values.roleName,
+            "displayName": basicData.BasicDetails.roleName,
+            "members" : members
         }
 
         /**
@@ -128,11 +203,17 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
          *        to add the selected permissions to the created role.
          */
         createRole(roleData).then(response => {
-            debugger;
-        
+
             if (response.status === 201) {
                 const createdRoleId = response.data.id;
-                const permData = permissions;
+                const permData: string[] = [];
+
+                if (basicData.PermissionList) {
+                    basicData.PermissionList.forEach(perm => {
+                        permData.push(perm.fullPath);
+                    })
+                }
+
                 updatePermissionForRole(createdRoleId, permData).then(response => {
                     dispatch(addAlert({
                         description: t(
@@ -225,17 +306,21 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 setSubmitGeneralSettings();
                 break;
             case 1:
+                setSubmitPermissionList();
+                break;
+            case 2:
+                setSubmitRoleUserList();
+                break;
+            case 3:
                 setFinishSubmit();
                 break;
+            
         }
     }
 
-    /**
-     * Function to change the current wizard step to previous.
-     */
-    const changeStepToPrevious = (): void => {
-        setCurrentWizardStep(currentStep == 0 ? currentStep : currentStep - 1);
-    }
+    const navigateToPrevious = () => {
+        setPartiallyCompletedStep(currentStep);
+    };
 
     return (
         <Modal
@@ -283,7 +368,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                                 </PrimaryButton>
                             ) }
                             { currentStep > 0 && (
-                                <LinkButton floated="right" onClick={ changeStepToPrevious }>
+                                <LinkButton floated="right" onClick={ navigateToPrevious }>
                                     <Icon name="arrow left"/> Previous step
                                 </LinkButton>
                             ) }

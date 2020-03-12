@@ -19,7 +19,6 @@
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Button, Grid, Icon, Input, Label, Popup } from "semantic-ui-react";
-import { isEmpty } from "lodash";
 
 interface URLInputComponentInterface {
     urlState: string;
@@ -33,7 +32,7 @@ interface URLInputComponentInterface {
     hint?: string;
     showError?: boolean;
     setShowError?: any;
-    required?:boolean;
+    required?: boolean;
     disabled?: boolean;
 }
 
@@ -63,6 +62,39 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
     const [validURL, setValidURL] = useState(true);
     const [duplicateURL, setDuplicateURL] = useState(false);
     const [keepFocus, setKeepFocus] = useState(false);
+
+    /**
+     * Add URL to the URL list.
+     */
+    const addUrl = () => {
+        const url = changeUrl;
+        const urlValid = validation(url);
+        setValidURL(urlValid);
+        const availableURls = urlState.split(",");
+        const duplicate = availableURls.includes(url);
+        setDuplicateURL(duplicate);
+        if (urlValid && !duplicate) {
+            if (urlState === "") {
+                setURLState(url);
+                setChangeUrl("");
+            } else {
+                setURLState((url + "," + urlState));
+                setChangeUrl("");
+            }
+        }
+    };
+
+    /**
+     * Initial prediction for the URL.
+     * @param changeValue input by the user.
+     */
+    const getPredictions = (changeValue) => {
+
+        return [
+            "https://",
+            "http://"
+        ].filter((item) => item.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+    };
 
     /**
      * Enter button option.
@@ -107,45 +139,12 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
     };
 
     /**
-     * Initial prediction for the URL.
-     * @param changeValue input by the user.
-     */
-    const getPredictions = (changeValue) => {
-
-        return [
-            "https://",
-            "http://"
-        ].filter((item) => item.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
-    };
-
-    /**
      * When the predicted element is clicked select the predict.
      * @param predict filter prediction.
      */
     const onPredictClick = (predict: string) => {
         setChangeUrl(predict);
         setPredictValue([]);
-    };
-
-    /**
-     * Add URL to the URL list.
-     */
-    const addUrl = () => {
-        const url = changeUrl;
-        const urlValid = validation(url);
-        setValidURL(urlValid);
-        const availableURls = urlState.split(",");
-        const duplicate = availableURls.includes(url);
-        setDuplicateURL(duplicate);
-        if (urlValid && !duplicate) {
-            if (urlState === "") {
-                setURLState(url);
-                setChangeUrl("");
-            } else {
-                setURLState((url + "," + urlState));
-                setChangeUrl("");
-            }
-        }
     };
 
     const addFromButton = (e) => {
@@ -189,11 +188,11 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                     {
                         required ? (
                             <div className={ "required field" }>
-                                <label>{ labelName }</label>
+                                <label>{labelName}</label>
                             </div>
                         ) : (
-                            <label>{ labelName }</label>
-                        )
+                                <label>{labelName}</label>
+                            )
                     }
                 </Grid.Column>
             </Grid.Row>
@@ -233,7 +232,7 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                         !validURL &&
                         (
                             <Label basic color="red" pointing>
-                                { validationErrorMsg }
+                                {validationErrorMsg}
                             </Label>
                         )
                     }
@@ -259,20 +258,20 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                                     color="grey"
                                     onClick={ () => onPredictClick(predict) }
                                 >
-                                    { predict }
+                                    {predict}
                                 </Label>
                             );
                         })
                     }
                 </Grid.Column>
             </Grid.Row>
-            { urlState && urlState.split(",").map((url) => {
+            {urlState && urlState.split(",").map((url) => {
                 if (url !== "") {
                     return (
-                        <Grid.Row  key={ url } className={ "urlComponentTagRow" }>
+                        <Grid.Row key={ url } className={ "urlComponentTagRow" }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Label>
-                                    { url }
+                                    {url}
                                     <Icon
                                         name="delete"
                                         onClick={ () => removeValue(url) }
@@ -282,12 +281,12 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                         </Grid.Row>
                     );
                 }
-            }) }
-            { hint && (
+            })}
+            {hint && (
                 <Grid.Row className={ "urlComponentTagRow" }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Hint>
-                            { hint }
+                            {hint}
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

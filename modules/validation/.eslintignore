@@ -1,0 +1,3 @@
+dist/
+plugins/text-encoder-polyfill/
+node_modules/

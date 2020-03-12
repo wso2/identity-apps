@@ -157,5 +157,5 @@ LabeledCard.defaultProps = {
     bottomMargin: true,
     imageSize: "mini",
     inline: true,
-    onClick: (event: React.MouseEvent<HTMLAnchorElement>, data: CardProps) => null
+    onClick: () => null
 };

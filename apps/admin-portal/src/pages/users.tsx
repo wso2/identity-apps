@@ -27,7 +27,7 @@ import {
     PaginationProps,
     Popup
 } from "semantic-ui-react";
-import { deleteUser, getGroupsList, getUsersList } from "../api";
+import { deleteUser, getUsersList } from "../api";
 import { UserSearch, UsersList } from "../components/users";
 import { AddUserWizard } from "../components/users/wizard/add-user-wizard";
 import { ListLayout, PageLayout } from "../layouts";
@@ -37,7 +37,6 @@ import { addAlert } from "../store/actions";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
 import { UsersListOptionsComponent } from "../components/users/users-list-options";
-import { string } from "prop-types";
 
 
 /**
@@ -65,24 +64,6 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
             });
     };
 
-    const getRolesList = (domain: string) => {
-        getGroupsList(domain)
-            .then((response) => {
-                setRolesList(response.data.Resources);
-            });
-    };
-
-    const getRoleListForDomain = (domain: string) => {
-        getGroupsList(domain)
-            .then((response) => {
-                setRolesList([ ...rolesList, ...response.data.Resources ] );
-            });
-    };
-
-    useEffect(() => {
-        getRolesList("Application");
-    }, []);
-
     useEffect(() => {
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
         setUserListMetaContent(new Map<string, string>([
@@ -96,6 +77,25 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
             ["meta.created", ""]
         ]));
     }, []);
+
+    /**
+     * The following method accepts a Map and returns the values as a string.
+     *
+     * @param attributeMap - IterableIterator<string>
+     * @return string
+     */
+    const generateAttributesString = (attributeMap: IterableIterator<string>) => {
+        const attArray = [];
+        const iterator1 = attributeMap[Symbol.iterator]();
+
+        for (const attribute of iterator1) {
+            if (attribute !== "") {
+                attArray.push(attribute);
+            }
+        }
+
+        return attArray.toString();
+    };
 
     useEffect(() => {
         if (userListMetaContent) {
@@ -112,25 +112,6 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
         getList(listItemLimit, listOffset, null, attributes);
         setListUpdated(false);
     }, [ isListUpdated ]);
-
-    /**
-     * The following method accepts a Map and returns the values as a string.
-     *
-     * @param attributeMap - IterableIterator<string>
-     * @return string
-     */
-    const generateAttributesString = (attributeMap: IterableIterator<string>) => {
-        const attArray = [];
-        const iterator1 = attributeMap[Symbol.iterator]();
-
-        for (let attribute of iterator1) {
-            if (attribute !== "") {
-                attArray.push(attribute);
-            }
-        }
-
-        return attArray.toString();
-    };
 
     /**
      * Shows list placeholders.
@@ -225,11 +206,6 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
             });
     };
 
-    const options = [
-        { key: "import", icon: "download", text: "Import users", value: "import" },
-        { key: "export", icon: "upload", text: "Export users", value: "export" },
-    ];
-
     return (
         <PageLayout
             title="Users page"
@@ -297,7 +273,6 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                         listItemLimit={ listItemLimit }
                         updateList={ () => setListUpdated(true) }
                         rolesList={ rolesList }
-                        onUserListDomainChange={ (domain) => getRoleListForDomain(domain) }
                     />
                     )
                 }

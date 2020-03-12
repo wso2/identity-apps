@@ -30,6 +30,7 @@ export class HttpUtils {
      *
      * @hideconstructor
      */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
     /**
@@ -55,7 +56,7 @@ export class HttpUtils {
      * @param {(error: any) => void} requestErrorCallback - Callback function to be triggered on request error.
      * @param {() => void} requestFinishCallback - Callback function to be triggered on request error.
      */
-    public static setupHttpClient(isHandlerEnabled: boolean = true,
+    public static setupHttpClient(isHandlerEnabled = true,
                                   requestStartCallback: () => void,
                                   requestSuccessCallback: (response: any) => void,
                                   requestErrorCallback: (error: any) => void,

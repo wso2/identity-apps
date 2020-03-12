@@ -23,7 +23,6 @@ import {
     LogoutMethods,
     MetadataPropertyInterface,
     SAML2ServiceProviderInterface,
-    SAMLAttributeProfileInterface,
     SAMLMetaDataInterface
 } from "../../../models";
 import { Heading, Hint } from "@wso2is/react-components";
@@ -69,17 +68,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
         return allowedOptions;
     };
 
-    const createDefaultAssertionConsumerUrl = () => {
-        const allowedOptions = [];
-        if (!isEmpty(assertionConsumerUrls)) {
-            const assertionUrlArray = assertionConsumerUrls.split(",");
-            assertionUrlArray.map((url) => {
-                allowedOptions.push({ text: url, value: url, key: assertionUrlArray.indexOf(url) });
-            })
-        }
-        return allowedOptions;
-    };
-
     // State to manage the URLS
     const [assertionConsumerUrls, setAssertionConsumerUrls] = useState("");
     const [audiences, setAudiences] = useState("");
@@ -95,9 +83,19 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
     const [isSingleLogoutProfileEnabled, setIsSingleLogoutProfileEnabled] = useState(false);
     const [isIdpInitiatedSingleLogoutEnabled, setIsIdpInitiatedSingleLogoutEnabled] = useState(false);
     const [isAttributeProfileEnabled, setIsAttributeProfileEnabled] = useState(false);
-    const [isResponseSigningEnabled, setIsResponseSigningEnabled] = useState(false);
     const [isRequestSignatureValidationEnabled, setIsRequestSignatureValidationEnabled] = useState(false);
     const [isAssertionEncryptionEnabled, setAssertionEncryptionEnabled] = useState(false);
+
+    const createDefaultAssertionConsumerUrl = () => {
+        const allowedOptions = [];
+        if (!isEmpty(assertionConsumerUrls)) {
+            const assertionUrlArray = assertionConsumerUrls.split(",");
+            assertionUrlArray.map((url) => {
+                allowedOptions.push({ text: url, value: url, key: assertionUrlArray.indexOf(url) });
+            })
+        }
+        return allowedOptions;
+    };
 
     const updateConfiguration = (values) => {
 
@@ -162,7 +160,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                 setIsIdpInitiatedSingleLogoutEnabled(initialValues?.singleLogoutProfile.idpInitiatedSingleLogout.enabled);
                 setIsAttributeProfileEnabled(initialValues?.attributeProfile.enabled);
                 setIsRequestSignatureValidationEnabled(initialValues?.requestValidation.enableSignatureValidation);
-                setIsResponseSigningEnabled(initialValues?.responseSigning.enabled);
                 setAssertionEncryptionEnabled(initialValues?.singleSignOnProfile.assertion.encryption.enabled)
             }
         }, [initialValues]
@@ -194,7 +191,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     readOnly={ !isEmpty(initialValues?.issuer) }
                                 />
                                 <Hint>
-                                    This specifies the issuer. This is the "saml:Issuer" element that contains
+                                    This specifies the issuer. This is the &quot;saml:Issuer&quot; element that contains
                                     the unique identifier of the Application. This is also the issuer value
                                     specified in the SAML Authentication Request issued by the Application.
                                 </Hint>
@@ -447,7 +444,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     ] }
                                 />
                                 <Hint>
-                                    Artifact resolve request's signature will be validated against
+                                    Artifact resolve request&apos;s signature will be validated against
                                     the Application certificate.
                                 </Hint>
                             </Grid.Column>
@@ -482,7 +479,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     name="nameIdFormat"
                                     placeholder={ "Enter name Id format" }
                                     type="text"
-                                    defult={ metadata?.certificateAlias }
+                                    default={ metadata?.certificateAlias }
                                     required={ false }
                                     requiredErrorMessage="This is needed"
                                     value={ initialValues?.singleSignOnProfile.assertion.nameIdFormat }

@@ -34,7 +34,9 @@ import {
     LocalClaimsPage,
     ExternalClaimsPage,
     ClaimDialectsPage,
-    LocalClaimsEditPage
+    LocalClaimsEditPage,
+    UserStores,
+    IdentityProviderEditPage
 } from "../pages";
 
 /**
@@ -108,7 +110,17 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 path: "/identity-providers/templates",
                 protected: true,
                 showOnSidePanel: false,
-            }
+            },
+            {
+                component: IdentityProviderEditPage,
+                exact: true,
+                icon: "applications",
+                id: "identityProvidersEdit",
+                name: "Identity-Providers-Edit",
+                path: "/identity-providers/:id",
+                protected: true,
+                showOnSidePanel: false,
+            },
         ],
         component: IdentityProvidersPage,
         exact: true,
@@ -138,7 +150,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 icon: "childIcon",
                 id: "roles",
                 level: 2,
-                name: "User Roles",
+                name: "Roles",
                 path: "/roles",
                 protected: true,
                 showOnSidePanel: true
@@ -166,7 +178,6 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         exact: true,
         icon: "claims",
         name: "Claims",
-        path: "/claims",
         protected: true,
         showOnSidePanel: true,
         children: [
@@ -174,6 +185,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 component: LocalClaimsPage,
                 exact: true,
                 icon: "childIcon",
+                id: "localDialect",
                 level: 2,
                 name: "Local Dialect",
                 path: "/local-dialect",
@@ -184,6 +196,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 component: ExternalClaimsPage,
                 exact: true,
                 icon: "childIcon",
+                id: "externalClaims",
                 level: 2,
                 name: "External Claims",
                 path: "/external-claims/:id",
@@ -194,9 +207,10 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 component: ClaimDialectsPage,
                 exact: true,
                 icon: "childIcon",
+                id: "claimDialects",
                 level: 2,
-                name: "Claim Dialects",
-                path: "/claim-dialects",
+                name: "External Dialects",
+                path: "/external-dialects",
                 protected: true,
                 showOnSidePanel:true
             },
@@ -204,6 +218,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 component: LocalClaimsEditPage,
                 exact: true,
                 icon: "childIcon",
+                id: "editLocalClaims",
                 level: 2,
                 name: "Edit Local Claims",
                 path: "/edit-local-claims/:id",
@@ -212,7 +227,15 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             }
         ]
     },
-    {},
+    {
+        component: UserStores,
+        icon: "userStore",
+        id: "user-stores",
+        name: "User Stores",
+        path: "/user-stores",
+        protected: true,
+        showOnSidePanel:true
+    },
     {
         component: PrivacyPage,
         icon: null,

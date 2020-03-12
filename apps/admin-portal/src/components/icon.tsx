@@ -126,7 +126,7 @@ export const ThemeIcon: React.FunctionComponent<ThemeIconProps> = (props): JSX.E
     };
 
     return (
-        <div className={ `theme-icon ${classes}` } style={style}>
+        <div className={ `theme-icon ${classes}` } style={ style }>
             { constructContent() }
         </div>
     );

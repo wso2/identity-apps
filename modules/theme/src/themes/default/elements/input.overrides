@@ -45,3 +45,26 @@
         }
     }
 }
+
+.copy-field {
+    input {
+        font-size: 0.9em;
+        padding: 0.7em!important;
+        background-color: @galleryGray!important;
+        border: none!important;
+        font-style: italic;
+        color: @doveGray!important;
+    }
+}
+
+
+/*******************************
+    Claim Search Variation
+*******************************/
+.ui.icon.input {
+    &.available-claim-search {
+       padding-left: 10px;
+       width: 100%;
+       margin: 10px 0px;
+    }
+}

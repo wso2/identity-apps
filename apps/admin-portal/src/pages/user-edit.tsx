@@ -39,12 +39,9 @@ export const UserEditPage = (): JSX.Element => {
      * Dispatches the alert object to the redux store.
      * @param {AlertInterface} alert - Alert object.
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert(alert));
-    };
-
-    const handleUserUpdate = (userInfo: BasicProfileInterface) => {
-        setUserProfile(userInfo);
     };
 
     const getUser = (id: string) => {
@@ -52,9 +49,14 @@ export const UserEditPage = (): JSX.Element => {
             .then((response) => {
                 setUserProfile(response);
             })
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             .catch((error) => {
                 // TODO add to notifications
             });
+    };
+
+    const handleUserUpdate = (id: string) => {
+        getUser(id);
     };
 
     useEffect(() => {
@@ -89,7 +91,7 @@ export const UserEditPage = (): JSX.Element => {
             titleTextAlign="left"
             bottomMargin={ false }
         >
-            <EditUser user={ user } setUser={ handleUserUpdate } />
+            <EditUser user={ user } handleUserUpdate={ handleUserUpdate }/>
         </PageLayout>
     );
 };

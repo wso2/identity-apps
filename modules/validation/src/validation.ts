@@ -47,7 +47,7 @@ export const email: ValidationFunction = (value: string): boolean => {
 export const mobileNumber: ValidationFunction = (value: string): boolean => {
     if (
         Joi.string()
-            .pattern(/^[\d+].[\d-\s\+]+[\d]$/)
+            .pattern(/^[\d+].[\d-\s+]+[\d]$/)
             .validate(value).error
     ) {
         return false;

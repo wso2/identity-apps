@@ -19,7 +19,7 @@
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, useEffect, useRef } from "react";
+import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 import { Divider, Grid } from "semantic-ui-react";
 
 /**
@@ -46,6 +46,9 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
         triggerSubmit,
         onSubmit
     } = props;
+
+    // Check whether discoverableByEndUsers option is selected or not
+    const [isDiscoverable, setIsDiscoverable] = useState(false);
 
     /**
      * Sanitizes and prepares the form values for submission.
@@ -124,6 +127,13 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                                 required={ false }
                                 requiredErrorMessage=""
                                 type="checkbox"
+                                listen={
+                                    (values) => {
+                                        setIsDiscoverable(
+                                            values.get("discoverableByEndUsers").includes("discoverableByEndUsers")
+                                        );
+                                    }
+                                }
                                 children={ [
                                     {
                                         label: "Discoverable application",
@@ -143,7 +153,7 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                             <Field
                                 name="accessUrl"
                                 label="Access URL"
-                                required={ false }
+                                required={ isDiscoverable }
                                 requiredErrorMessage={ "A valid access URL needs to be defined for an application " +
                                     "to be marked as discoverable" }
                                 validation={ (value: string, validation: Validation) => {

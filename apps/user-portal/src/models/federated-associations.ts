@@ -21,14 +21,14 @@
  */
 export interface FederatedAssociation {
     id: string;
-    idp: IDP ;
+    idp: IdentityProvider;
     federatedUserId: string;
 }
 
 /**
  * Model of the IDP attribute in FederatedAssociation
  */
-export interface IDP {
+export interface IdentityProvider {
     id: string;
     name: string;
     displayName: string;

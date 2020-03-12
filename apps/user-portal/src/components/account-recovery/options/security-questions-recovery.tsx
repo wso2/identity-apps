@@ -53,22 +53,52 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     const [challenges, setChallenges] = useState(createEmptyChallenge());
     const [isEdit, setIsEdit] = useState<number | string>(-1);
     const [isInit, setIsInit] = useState(false);
-    const [questionIndex, setQuestionIndex] = useState(-1);
     const { onAlertFired } = props;
 
     const { t } = useTranslation();
 
-    useEffect(() => {
-        if (!isInit) {
-            getSecurityQs().then((response) => {
-                setSecurityDetails(response);
-            });
-        }
-    }, []);
+    /**
+     * Set the fetched security questions and answers to the state
+     * @param response
+     */
+    const setSecurityDetails = (response) => {
+        setIsInit(true);
+        setChallenges({
+            answers: [...response[1]],
+            isEdit: false,
+            isInit: false,
+            options: [],
+            questions: [...response[0]]
+        });
+    };
 
-    useEffect(() => {
-        initModel();
-    }, [challenges]);
+    /**
+     * This function returns the saved answer for a questionSet
+     * @param {string} questionSetId
+     * @returns {AnswersInterface} answer
+     */
+    const findAnswer = (questionSetId: string): AnswersInterface => {
+        return challenges.answers.find((answerParam: AnswersInterface) => {
+            return answerParam.questionSetId === questionSetId;
+        });
+    };
+
+    /**
+     * This function returns the question object for a saved answer
+     * @param {string} questionSetId
+     * @param {QuestionsInterface[]} questions
+     *
+     * @returns {QuestionsInterface} question
+     */
+    const findQuestion = (questionSetId: string, questions: QuestionsInterface[]): QuestionsInterface => {
+        const answer: AnswersInterface = challenges.answers.find((answerParam) => {
+            return answerParam.questionSetId === questionSetId;
+        });
+
+        return questions.find((questionParam) => {
+            return questionParam.question === answer.question;
+        });
+    };
 
     /**
      * The following method initializes an array in the state with all the
@@ -99,9 +129,8 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     /**
      * The following method handles the onClick event of the change button
      */
-    const handleEdit = (question: string | number, index: number) => {
+    const handleEdit = (question: string | number) => {
         setIsEdit(question);
-        setQuestionIndex(index);
     };
 
     /**
@@ -176,7 +205,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
 
         if (challenges.answers && challenges.answers.length > 0 && isEdit !== -1) {
             updateSecurityQs(data)
-                .then((response) => {
+                .then(() => {
                     // Re-fetch the security questions.
                     getSecurityQs()
                         .then((res) => {
@@ -199,7 +228,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                 });
         } else {
             addSecurityQs(data)
-                .then((status) => {
+                .then(() => {
                     // Re-fetch the security questions.
                     getSecurityQs()
                         .then((response) => {
@@ -227,48 +256,17 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
         }
     };
 
-    /**
-     * Set the fetched security questions and answers to the state
-     * @param response
-     */
-    const setSecurityDetails = (response) => {
-        setIsInit(true);
-        setChallenges({
-            answers: [...response[1]],
-            isEdit: false,
-            isInit: false,
-            options: [],
-            questions: [...response[0]]
-        });
-    };
+    useEffect(() => {
+        if (!isInit) {
+            getSecurityQs().then((response) => {
+                setSecurityDetails(response);
+            });
+        }
+    }, []);
 
-    /**
-     * This function returns the question object for a saved answer
-     * @param {string} questionSetId
-     * @param {QuestionsInterface[]} questions
-     *
-     * @returns {QuestionsInterface} question
-     */
-    const findQuestion = (questionSetId: string, questions: QuestionsInterface[]): QuestionsInterface => {
-        const answer: AnswersInterface = challenges.answers.find((answerParam) => {
-            return answerParam.questionSetId === questionSetId;
-        });
-
-        return questions.find((questionParam) => {
-            return questionParam.question === answer.question;
-        });
-    };
-
-    /**
-     * This function returns the saved answer for a questionSet
-     * @param {string} questionSetId
-     * @returns {AnswersInterface} answer
-     */
-    const findAnswer = (questionSetId: string): AnswersInterface => {
-        return challenges.answers.find((answerParam: AnswersInterface) => {
-            return answerParam.questionSetId === questionSetId;
-        });
-    };
+    useEffect(() => {
+        initModel();
+    }, [challenges]);
 
     /**
      * This function returns the question and answer chosen by the user for a questionSetId
@@ -362,7 +360,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                             />
                             <Field
                                 className="link-button"
-                                onClick={ () => handleEdit(-1, -1) }
+                                onClick={ () => handleEdit(-1) }
                                 size="small"
                                 type="button"
                                 value={ t("common:cancel").toString() }
@@ -407,7 +405,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                     <Icon
                                         link={ true }
                                         onClick={ () => {
-                                            handleEdit(0, 0);
+                                            handleEdit(0);
                                         } }
                                         className="list-icon"
                                         size="small"
@@ -447,7 +445,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                                         <Icon
                                                             link={ true }
                                                             onClick={ () => {
-                                                                handleEdit(answer.questionSetId, index);
+                                                                handleEdit(answer.questionSetId);
                                                             } }
                                                             className="list-icon"
                                                             size="small"
@@ -490,21 +488,4 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     };
 
     return <>{ listItems() }</>;
-};
-
-/**
- * This component wraps the save and submit buttons of the form in a Grid
- * @param props
- */
-const WrapButtons: React.FunctionComponent = (props): JSX.Element => {
-    return (
-        <Grid>
-            <Grid.Row column={ 2 }>
-                <Grid.Column width={ 4 } />
-                <Grid.Column width={ 12 }>
-                    <Form.Group inline={ true }>{ props.children }</Form.Group>
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
-    );
 };

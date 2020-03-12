@@ -22,6 +22,7 @@ import { FormField } from "../models";
  * This component renders Form elements based on the provided `type` prop
  * @param props
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const Field = (props: FormField): JSX.Element => {
     return null;
 };
@@ -38,6 +39,7 @@ interface GroupFieldsPropsInterface {
  * This component groups form elements together
  * @param props
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const GroupFields = (props: React.PropsWithChildren<GroupFieldsPropsInterface>): JSX.Element => {
     return null;
 };

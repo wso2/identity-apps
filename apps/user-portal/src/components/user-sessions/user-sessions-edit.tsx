@@ -79,6 +79,7 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
             }
         };
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for (const [ key, value ] of Object.entries(osType)) {
             if (value.values.includes(type)) {
                 return value.icon as SemanticICONS;
@@ -116,6 +117,7 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
             }
         };
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for (const [ key, value ] of Object.entries(browserType)) {
             if (value.values.includes(type)) {
                 return value.icon as SemanticICONS;

@@ -24,7 +24,7 @@ import { useEffect, useRef, useState } from "react";
  * @param {boolean} initialValue - Initial value.
  * @return {object} - ref, isComponentVisible & setIsComponentVisible
  */
-export function useClickOutside(initialValue: boolean = false) {
+export function useClickOutside(initialValue = false) {
 
     const [ isComponentVisible, setIsComponentVisible ] = useState(initialValue);
 

@@ -16,7 +16,9 @@
  * under the License.
  */
 
- /**
+ import { RolesMemberInterface } from "./roles";
+
+/**
   * Multi-valued attribute model
   */
 export interface MultiValue {
@@ -49,6 +51,7 @@ export interface BasicProfileInterface {
     userimage?: string;
     userName?: string;
     associations?: LinkedAccountInterface[];
+    groups?: RolesMemberInterface[];
 }
 
 /**
@@ -104,6 +107,7 @@ export const createEmptyProfile = (): BasicProfileInterface => ({
     associations: [],
     email: "",
     emails: [],
+    groups: [],
     id: "",
     isSecurity: false,
     name: { givenName: "", familyName: "" },

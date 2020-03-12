@@ -32,6 +32,20 @@ export const SignIn = (props) => {
 
     const error = new URLSearchParams(props.location.search).get("error_description");
 
+    const getAuthenticationCallbackUrl = () => {
+        return window.sessionStorage.getItem("auth_callback_url");
+    };
+    
+    const loginSuccessRedirect = () => {
+        const AuthenticationCallbackUrl = getAuthenticationCallbackUrl();
+        const location =
+            !AuthenticationCallbackUrl || AuthenticationCallbackUrl === GlobalConfig.appLoginPath
+                ? GlobalConfig.appHomePath
+                : AuthenticationCallbackUrl;
+
+        history.push(location);
+    };
+
     useEffect(() => {
         if (!isAuth && !error) {
             dispatch(handleSignIn());
@@ -49,20 +63,6 @@ export const SignIn = (props) => {
             }
         }
     }, [isAuth]);
-
-    const getAuthenticationCallbackUrl = () => {
-        return window.sessionStorage.getItem("auth_callback_url");
-    };
-
-    const loginSuccessRedirect = () => {
-        const AuthenticationCallbackUrl = getAuthenticationCallbackUrl();
-        const location =
-            !AuthenticationCallbackUrl || AuthenticationCallbackUrl === GlobalConfig.appLoginPath
-                ? GlobalConfig.appHomePath
-                : AuthenticationCallbackUrl;
-
-        history.push(location);
-    };
 
     return null;
 };

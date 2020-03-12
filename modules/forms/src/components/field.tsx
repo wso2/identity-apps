@@ -17,7 +17,7 @@
  */
 
 import React from "react";
-import { Button, Divider, Form, Radio, TextArea } from "semantic-ui-react";
+import { Button, Divider, Form, Radio } from "semantic-ui-react";
 import {
     isButtonField,
     isCheckBoxField,
@@ -40,7 +40,7 @@ import { Password } from "./password";
 interface InnerFieldPropsInterface {
     passedProps: any;
     formProps: {
-        checkError: (inputField: FormField) => { isError: boolean, errorMessages: string[] };
+        checkError: (inputField: FormField) => { isError: boolean; errorMessages: string[] };
         handleBlur: (event: React.KeyboardEvent, name: string) => void;
         handleChange: (value: string, name: string) => void;
         handleChangeCheckBox: (value: string, name: string) => void;

@@ -22,7 +22,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { addUser, addUserRole } from "../../../api";
+import { addUser, addUserRole, getGroupsList } from "../../../api";
 import { ApplicationWizardStepIcons } from "../../../configs";
 import { AlertLevels } from "../../../models";
 import { addAlert } from "../../../store/actions";
@@ -38,7 +38,6 @@ interface AddUserWizardPropsInterface {
     listItemLimit: number;
     updateList: () => void;
     rolesList: any;
-    onUserListDomainChange: (domain: string) => void;
 }
 
 /**
@@ -72,8 +71,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         updateList,
         closeWizard,
         currentStep,
-        rolesList,
-        onUserListDomainChange
     } = props;
 
     const { t } = useTranslation();
@@ -87,6 +84,31 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
 
+    const [ roleList, setRoleList ] = useState([]);
+    const [ tempRoleList, setTempRoleList ] = useState([]);
+
+    const getRolesList = (domain: string) => {
+        getGroupsList(domain)
+            .then((response) => {
+                setRoleList(response.data.Resources);
+            });
+    };
+
+    const getRoleListForDomain = (domain: string) => {
+        getGroupsList(domain)
+            .then((response) => {
+                setRoleList([ ...roleList, ...response.data.Resources ]);
+            });
+    };
+
+    const handleRoleListChange = (roleList) => {
+        setRoleList(roleList);
+    };
+
+    const handleAddedListChange = (newRoleList) => {
+        setTempRoleList(newRoleList);
+    };
+
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
      * value change , and resets the partially completed step value.
@@ -99,6 +121,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setCurrentWizardStep(currentWizardStep - 1);
         setPartiallyCompletedStep(undefined);
     }, [ partiallyCompletedStep ]);
+
+    useEffect(() => {
+        getRolesList("Application");
+    }, []);
 
     const navigateToNext = () => {
         switch (currentWizardStep) {
@@ -117,6 +143,73 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setPartiallyCompletedStep(currentWizardStep);
     };
 
+    /**
+     * This function handles assigning the roles to the user.
+     */
+    const assignUserRole = (user: any, roles: any) => {
+        const roleIds = [];
+
+        roles.map((role) => {
+            roleIds.push(role.id);
+        });
+        const data = {
+            Operations: [
+                {
+                    op: "add",
+                    value: {
+                        members: [
+                            {
+                                display: user.userName,
+                                value: user.id
+                            }
+                        ]
+                    }
+                }
+            ],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
+        };
+
+        for (const roleId of roleIds) {
+            addUserRole(data, roleId)
+                .catch((error) => {
+                    if (!error.response || error.response.status === 401) {
+                        dispatch(addAlert({
+                            description: t(
+                                "views:components.users.notifications.addUser.error.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "views:components.users.notifications.addUser.error.message"
+                            )
+                        }));
+                    } else if (error.response && error.response.data && error.response.data.detail) {
+
+                        dispatch(addAlert({
+                            description: t(
+                                "views:components.users.notifications.addUser.error.description",
+                                { description: error.response.data.detail }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "views:components.users.notifications.addUser.error.message"
+                            )
+                        }));
+                    } else {
+                        // Generic error message
+                        dispatch(addAlert({
+                            description: t(
+                                "views:components.users.notifications.addUser.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "views:components.users.notifications.addUser.genericError.message"
+                            )
+                        }));
+                    }
+                });
+        }
+    };
+    
     /**
      * This function handles adding the user.
      */
@@ -225,73 +318,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     };
 
     /**
-     * This function handles assigning the roles to the user.
-     */
-    const assignUserRole = (user: any, roles: any) => {
-        const roleIds = [];
-
-        roles.map((role) => {
-            roleIds.push(role.id);
-        });
-        const data = {
-            Operations: [
-                {
-                    op: "add",
-                    value: {
-                        members: [
-                            {
-                                display: user.userName,
-                                value: user.id
-                            }
-                        ]
-                    }
-                }
-            ],
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
-        };
-
-        for (const roleId of roleIds) {
-            addUserRole(data, roleId)
-                .catch((error) => {
-                    if (!error.response || error.response.status === 401) {
-                        dispatch(addAlert({
-                            description: t(
-                                "views:components.users.notifications.addUser.error.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "views:components.users.notifications.addUser.error.message"
-                            )
-                        }));
-                    } else if (error.response && error.response.data && error.response.data.detail) {
-
-                        dispatch(addAlert({
-                            description: t(
-                                "views:components.users.notifications.addUser.error.description",
-                                { description: error.response.data.detail }
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "views:components.users.notifications.addUser.error.message"
-                            )
-                        }));
-                    } else {
-                        // Generic error message
-                        dispatch(addAlert({
-                            description: t(
-                                "views:components.users.notifications.addUser.genericError.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "views:components.users.notifications.addUser.genericError.message"
-                            )
-                        }));
-                    }
-                });
-        }
-    };
-
-    /**
      * Handles wizard step submit.
      *
      * @param values - Forms values to be stored in state.
@@ -332,7 +358,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         {
             content: (
                 <AddUser
-                    onUserStoreDomainChange={ (domain) => onUserListDomainChange(domain) }
+                    onUserStoreDomainChange={ (domain) => getRoleListForDomain(domain) }
                     triggerSubmit={ submitGeneralSettings }
                     initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
                     onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
@@ -346,7 +372,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 <AddUserRole
                     triggerSubmit={ submitRoleList }
                     onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.ROLE_LIST) }
-                    initialValues={ rolesList }
+                    initialValues={ { roleList: roleList, tempRoleList: tempRoleList } }
+                    handleRoleListChange={ (roles) => handleRoleListChange(roles) }
+                    handleTempListChange={ (roles) => handleAddedListChange(roles) }
                 />
             ),
             icon: ApplicationWizardStepIcons.general,

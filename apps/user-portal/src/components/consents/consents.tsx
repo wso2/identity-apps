@@ -56,10 +56,6 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     const { onAlertFired } = props;
     const { t } = useTranslation();
 
-    useEffect(() => {
-        getConsentedApps();
-    }, []);
-
     /**
      * Retrieves the consented applications of the user.
      */
@@ -96,6 +92,10 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 });
             });
     };
+
+    useEffect(() => {
+        getConsentedApps();
+    }, []);
 
     /**
      * Fetches the consent receipt for the corresponding id.
@@ -154,7 +154,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
      */
     const handleClaimRevokeToggle = (receiptId: string, claimId: number): void => {
         const list = [ ...revokedClaimList ];
-        let found: boolean = false;
+        let found = false;
 
         for (const item of list) {
             if (item.id === receiptId) {
@@ -186,6 +186,21 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     const handleAppConsentRevoke = (consent: ConsentInterface): void => {
         setRevokingConsent(consent);
         setConsentRevokeModalVisibility(true);
+    };
+
+    /**
+     * Resets the consented apps list.
+     *
+     * @param {boolean} refetch - Flag to set the if re-fetch is enabled.
+     */
+    const resetConsentedAppList = (refetch = true): void => {
+        // Close all the opened drawers.
+        setConsentListActiveIndexes([]);
+
+        if (refetch) {
+            // Re-fetch the consented apps list
+            getConsentedApps();
+        }
     };
 
     /**
@@ -263,7 +278,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         const updatingConsent = _.cloneDeep(consentedApps).find((consent) => consent.consentReceiptID === receiptId);
         const claimList = [ ...revokedClaimList ].find((item) => item.id === receiptId);
 
-        let isPIIEmpty: boolean = false;
+        let isPIIEmpty = false;
 
         // If the `piiCategory` id is in the `revokedClaimIds`,
         // then the category is removed from the list.
@@ -370,21 +385,6 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
      */
     const handleConsentRevokeModalClose = (): void => {
         setConsentRevokeModalVisibility(false);
-    };
-
-    /**
-     * Resets the consented apps list.
-     *
-     * @param {boolean} refetch - Flag to set the if re-fetch is enabled.
-     */
-    const resetConsentedAppList = (refetch: boolean = true): void => {
-        // Close all the opened drawers.
-        setConsentListActiveIndexes([]);
-
-        if (refetch) {
-            // Re-fetch the consented apps list
-            getConsentedApps();
-        }
     };
 
     /**

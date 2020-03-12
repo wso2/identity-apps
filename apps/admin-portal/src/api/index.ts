@@ -24,3 +24,4 @@ export * from "./roles";
 export * from "./application";
 export * from "./identity-provider";
 export * from "./claims";
+export * from "./user-stores";

@@ -43,9 +43,6 @@ interface AddUserProps {
  */
 export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserProps): ReactElement => {
 
-    const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ passwordOption, setPasswordOption ] = useState("");
-
     const {
         initialValues,
         triggerSubmit,
@@ -53,19 +50,15 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         onUserStoreDomainChange
     } = props;
 
+    const [ userStoreOptions, setUserStoresList ] = useState([]);
+    const [ passwordOption, setPasswordOption ] = useState(initialValues && initialValues.passwordOption);
+
     const { t } = useTranslation();
 
     const passwordOptions = [
         { label: "Invite user to set password", value: "askPw" },
         { label: "Set user password", value: "createPw" },
     ];
-
-    /**
-     * Fetch the list of available user stores.
-     */
-    useEffect(() => {
-        getUserStores();
-    }, []);
 
     /**
      * The following function fetch the user store list and set it to the state.
@@ -92,6 +85,13 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
         setUserStoresList(storeOptions);
     };
+    
+    /**
+     * Fetch the list of available user stores.
+     */
+    useEffect(() => {
+        getUserStores();
+    }, []);
 
     const getFormValues = (values) => {
         return {
@@ -101,6 +101,8 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             lastName: values.get("lastName").toString(),
             newPassword: values.get("newPassword") && values.get("newPassword") !== undefined  ?
                 values.get("newPassword").toString() : "",
+            confirmPassword: values.get("confirmPassword") && values.get("confirmPassword") !== undefined  ?
+                values.get("confirmPassword").toString() : "",
             passwordOption: values.get("passwordOption").toString(),
             userName: values.get("userName").toString(),
         };
@@ -129,6 +131,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 ) }
                                 showPassword={ t("common:showPassword") }
                                 type="password"
+                                value={ initialValues && initialValues.newPassword }
                             />
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -149,6 +152,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 ) }
                                 showPassword={ t("common:showPassword") }
                                 type="password"
+                                value={ initialValues && initialValues.confirmPassword }
                                 validation={ (value: string, validation: Validation, formValues) => {
                                     if (formValues.get("newPassword") !== value) {
                                         validation.isValid = false;
@@ -201,15 +205,14 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             ) }
                             name="domain"
                             children={ userStoreOptions }
-                            placeholder={ t(
-                                "views:components.user.forms.addUserForm.inputs.domain.placeholder"
-                            ) }
                             requiredErrorMessage={ t(
                                 "views:components.user.forms.addUserForm.inputs.domain.validations.empty"
                             ) }
                             required={ true }
                             value={ initialValues && initialValues.domain }
                             listen={ (values) => onUserStoreDomainChange(values.get("domain").toString()) }
+                            text="Primary"
+                            default="primary"
                         />
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>

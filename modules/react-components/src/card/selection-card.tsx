@@ -109,6 +109,6 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
 SelectionCard.defaultProps = {
     imageSize: "tiny",
     inline: false,
-    onClick: (event: React.MouseEvent<HTMLAnchorElement>, data: CardProps) => null,
+    onClick: () => null,
     textAlign: "center"
 };

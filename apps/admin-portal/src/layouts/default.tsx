@@ -37,10 +37,7 @@ interface DefaultPageLayoutPropsInterface {
  * @param {DefaultPageLayoutPropsInterface} props - Props injected to the default page layout component.
  * @return {JSX.Element}
  */
-export const DefaultPageLayout: React.FunctionComponent<DefaultPageLayoutPropsInterface> = (
-    props: DefaultPageLayoutPropsInterface
-): JSX.Element => {
-    const { children, pageTitle, pageDescription, pageTitleTextAlign } = props;
+export const DefaultPageLayout: React.FunctionComponent<DefaultPageLayoutPropsInterface> = (): JSX.Element => {
     return (
         <Switch>
             {

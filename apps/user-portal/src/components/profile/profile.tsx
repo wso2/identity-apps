@@ -134,6 +134,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     }, [profileSchema, profileDetails.profileInfo]);
 
     /**
+     * The following method handles the onClick event of the cancel button.
+     *
+     * @param formName - Name of the form
+     */
+    const hideFormEditView = (formName: string): void => {
+        const tempEditingForm: Map<string, boolean> = new Map<string, boolean>(editingForm);
+        tempEditingForm.set(formName, false);
+        setEditingForm(tempEditingForm);
+    };
+
+    /**
      * The following method handles the `onSubmit` event of forms.
      *
      * @param values
@@ -209,17 +220,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     };
 
     /**
-     * The following method handles the onClick event of the cancel button.
-     *
-     * @param formName - Name of the form
-     */
-    const hideFormEditView = (formName: string): void => {
-        const tempEditingForm: Map<string, boolean> = new Map<string, boolean>(editingForm);
-        tempEditingForm.set(formName, false);
-        setEditingForm(tempEditingForm);
-    };
-
-    /**
      * This takes the schema name and a type and sees if the schema is of the specified type
      * @param {string} schema The schema name eg: 'emails.workEmail'
      * @param {string}type The type to check for eg: 'emails'
@@ -246,7 +246,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 <EditSection>
                     <Grid>
                         <Grid.Row columns={ 2 }>
-                            <Grid.Column width={ 4 }>{ fieldName }</Grid.Column>
+                            <Grid.Column width={ 4 }>{fieldName}</Grid.Column>
                             <Grid.Column width={ 12 }>
                                 <Forms
                                     onSubmit={ (values) => {
@@ -332,7 +332,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 <Grid padded={ true }>
                     <Grid.Row columns={ 3 }>
                         < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
-                            <List.Content>{ fieldName }</List.Content>
+                            <List.Content>{fieldName}</List.Content>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
                             <List.Content>
@@ -348,7 +348,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                     className="placeholder-text"
                                                     onClick={ () => { showFormEditView(schema.name); } }
                                                 >
-                                                    { t("views:components.profile.forms.generic.inputs.placeholder",
+                                                    {t("views:components.profile.forms.generic.inputs.placeholder",
                                                         {
                                                             fieldName
                                                         })
@@ -368,7 +368,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             }
                         >
                             <List.Content floated="right">
-                                { schema.mutability !== "READ_ONLY"
+                                {schema.mutability !== "READ_ONLY"
                                     && schema.name !== "userName"
                                     && !isEmpty(profileInfo.get(schema.name))
                                     ? (
@@ -394,7 +394,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             inverted={ true }
                                         />
                                     )
-                                    : null }
+                                    : null}
                             </List.Content>
                         </Grid.Column>
                     </Grid.Row>
@@ -419,7 +419,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     gravatarInfoPopoverText={ (
                         <Trans i18nKey="views:components.userAvatar.infoPopover">
                             This image has been retrieved from
-                            <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener">Gravatar</a> service.
+                            <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener noreferrer">
+                                Gravatar
+                                </a> service.
                         </Trans>
                     ) }
                 />
@@ -436,10 +438,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     gravatarInfoPopoverText={ (
                         <Trans i18nKey="views:components.userAvatar.infoPopover">
                             This image has been retrieved from
-                                <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener">
+                            <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener noreferrer">
                                 Gravatar
                                 </a> service.
-                            </Trans>
+                        </Trans>
                     ) }
                 />
             ) }
@@ -455,7 +457,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         if (schema.name !== "roles.default" && schema.name !== "profileUrl") {
                             return (
                                 <List.Item key={ index } className="inner-list-item">
-                                    { generateSchemaForm(schema) }
+                                    {generateSchemaForm(schema)}
                                 </List.Item>
                             );
                         }
