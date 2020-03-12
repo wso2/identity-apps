@@ -82,7 +82,7 @@ export interface TextField extends FormRequiredFieldModel {
     width?: SemanticWIDTHS;
     validation?: (value: string, validation: Validation, allValues?: Map<string, FormValue>) => void;
     value?: string;
-    placeholder: string;
+    placeholder?: string;
     [extra: string]: any;
 }
 
@@ -96,7 +96,7 @@ export interface PasswordField extends FormRequiredFieldModel {
     value?: string;
     showPassword: string;
     hidePassword: string;
-    placeholder: string;
+    placeholder?: string;
     [extra: string]: any;
 }
 

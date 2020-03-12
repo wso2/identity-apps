@@ -29,7 +29,7 @@ import { EditSection, SettingsSection } from "../shared";
  * Constant to store the change password from identifier.
  * @type {string}
  */
-const CHANGE_PASSWORD_FORM_IDENTIFIER: string = "changePasswordForm";
+const CHANGE_PASSWORD_FORM_IDENTIFIER = "changePasswordForm";
 
 /**
  * Prop types for the change password component.
@@ -66,8 +66,20 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
      *
      * @param {string} formName - Name of the form
      */
-    const handleSubmit = (formName: string): void => {
+    const handleSubmit = (): void => {
         setShowConfirmationModal(true);
+    };
+
+    /**
+     * Handles the onClick event of the cancel button.
+     *
+     * @param formName - Name of the form
+     */
+    const hideFormEditView = (formName: string): void => {
+        setEditingForm({
+            ...editingForm,
+            [formName]: false
+        });
     };
 
     /**
@@ -184,18 +196,6 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
         });
     };
 
-    /**
-     * Handles the onClick event of the cancel button.
-     *
-     * @param formName - Name of the form
-     */
-    const hideFormEditView = (formName: string): void => {
-        setEditingForm({
-            ...editingForm,
-            [formName]: false
-        });
-    };
-
     const confirmationModal = (
         <Modal size="mini" open={ showConfirmationModal } onClose={ handleConfirmationModalClose } dimmer="blurring">
             <Modal.Content>
@@ -222,7 +222,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                 onSubmit={ (value) => {
                     setCurrentPassword(value.get("currentPassword").toString());
                     setNewPassword(value.get("newPassword").toString());
-                    handleSubmit(CHANGE_PASSWORD_FORM_IDENTIFIER);
+                    handleSubmit();
                 } }
                 resetState={ reset }
             >

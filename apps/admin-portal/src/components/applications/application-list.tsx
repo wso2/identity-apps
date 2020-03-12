@@ -69,7 +69,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      */
     const handleApplicationDelete = (appId: string): void => {
         deleteApplication(appId)
-            .then((response) => {
+            .then(() => {
                 dispatch(addAlert({
                     description: "Successfully deleted the application",
                     level: AlertLevels.SUCCESS,

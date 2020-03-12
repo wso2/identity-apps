@@ -18,7 +18,7 @@
 
 import { AxiosHttpClient } from "@wso2is/http";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
-import { HttpMethods, CreateRoleInterface, SearchRoleInterface, RoleListInterface } from "../models";
+import { HttpMethods, CreateRoleInterface, SearchRoleInterface } from "../models";
 
 /**
  * Initialize an axios Http client.

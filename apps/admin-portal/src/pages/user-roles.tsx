@@ -105,7 +105,7 @@ export const UserRoles = (): ReactElement => {
      * @param id - Role ID which needs to be deleted
      */
     const handleOnDelete = (id: string): void => {
-        deleteSelectedRole(id).then((response) => {
+        deleteSelectedRole(id).then(() => {
             handleAlerts({
                 description: t(
                     "views:components.roles.notifications.deleteRole.success.description"
@@ -129,7 +129,7 @@ export const UserRoles = (): ReactElement => {
         const attArray = [];
         const iterator1 = attributeMap[Symbol.iterator]();
 
-        for (let attribute of iterator1) {
+        for (const attribute of iterator1) {
             if (attribute !== "") {
                 attArray.push(attribute);
             }

@@ -38,10 +38,6 @@ export const LocalClaimsEditPage = (props): React.ReactElement => {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        getClaim();
-    }, []);
-
     const getClaim = () => {
         getAClaim(claimID).then(response => {
             setClaim(response);
@@ -56,21 +52,25 @@ export const LocalClaimsEditPage = (props): React.ReactElement => {
         })
     }
 
+    useEffect(() => {
+        getClaim();
+    }, []);
+
     const panes = [
         {
             menuItem: "Basic Details",
             render: () => (
                 <EditBasicDetailsLocalClaims
-                    claim={claim}
-                    update={getClaim} />
+                    claim={ claim }
+                    update={ getClaim } />
             )
         },
         {
             menuItem: "Mapped Attributes",
             render: () => (
                 <EditMappedAttributesLocalClaims
-                    claim={claim}
-                    update={getClaim}
+                    claim={ claim }
+                    update={ getClaim }
                 />
             )
         },
@@ -78,8 +78,8 @@ export const LocalClaimsEditPage = (props): React.ReactElement => {
             menuItem: "Additional Properties",
             render: () => (
                 <EditAdditionalPropertiesLocalClaims
-                    claim={claim}
-                    update={getClaim}
+                    claim={ claim }
+                    update={ getClaim }
                 />
             )
         }
@@ -87,18 +87,18 @@ export const LocalClaimsEditPage = (props): React.ReactElement => {
 
     return (
         <PageLayout
-            title={claim?.displayName}
-            description={"Edit Local Claim"}
-            backButton={{
+            title={ claim?.displayName }
+            description={ "Edit Local Claim" }
+            backButton={ {
                 onClick: () => {
                     history.push("/local-dialect");
                 },
                 text: "Go back to Local Claims"
-            }}
+            } }
             titleTextAlign="left"
-            bottomMargin={false}
+            bottomMargin={ false }
         >
-            <ResourceTab panes={panes} />
+            <ResourceTab panes={ panes } />
         </PageLayout>
     )
 }

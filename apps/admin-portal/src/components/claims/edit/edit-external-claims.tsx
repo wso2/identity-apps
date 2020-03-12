@@ -20,7 +20,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Header } from "semantic-ui-react";
 import { Claim, ExternalClaim, AlertLevels } from "../../../models";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
-import { getLocalClaims, getAnExternalClaim, updateAnExternalClaim } from "../../../api";
+import { getAllLocalClaims, getAnExternalClaim, updateAnExternalClaim } from "../../../api";
 import { Forms, Field, FormValue, useTrigger } from "@wso2is/forms";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
@@ -44,14 +44,14 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
     const dispatch = useDispatch();
 
     useEffect(() => {
-        getLocalClaims().then(response => {
+        getAllLocalClaims(null).then(response => {
             setLocalClaims(response);
         }).catch(error => {
             dispatch(addAlert(
                 {
                     description: error?.description,
                     level: AlertLevels.ERROR,
-                    message: error?.message
+                    message: error?.message || "Something went wrong"
                 }
             ));
         });
@@ -63,7 +63,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                 {
                     description: error?.description,
                     level: AlertLevels.ERROR,
-                    message: error?.message
+                    message: error?.message || "Something went wrong"
                 }
             ));
         })
@@ -73,19 +73,19 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
         <Modal
             dimmer="blurring"
             size="tiny"
-            open={open}
-            onClose={onClose}
+            open={ open }
+            onClose={ onClose }
         >
             <Modal.Header>
-                <Header as="h3" content={"Edit External Claim"} subheader={claim?.claimURI} />
+                <Header as="h3" content={ "Edit External Claim" } subheader={ claim?.claimURI } />
             </Modal.Header>
             <Modal.Content>
                 <Forms
-                    onSubmit={(values: Map<string, FormValue>) => {
-                        updateAnExternalClaim(dialectID,claimID, {
+                    onSubmit={ (values: Map<string, FormValue>) => {
+                        updateAnExternalClaim(dialectID, claimID, {
                             claimURI: values.get("claimURI").toString(),
                             mappedLocalClaimURI: values.get("localClaim").toString()
-                        }).then(response => {
+                        }).then(() => {
                             dispatch(addAlert(
                                 {
                                     description: "The external claim has been updated successfully!",
@@ -100,31 +100,32 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                                 {
                                     description: error?.description,
                                     level: AlertLevels.ERROR,
-                                    message: error?.message
+                                    message: error?.message || "Something went wrong"
                                 }
                             ));
                         })
-                    }}
-                    submitState={submit}
+                    } }
+                    submitState={ submit }
                 >
                     <Field
                         name="claimURI"
                         label="Claim URI"
-                        required={true}
+                        required={ true }
                         requiredErrorMessage="Claim URI is required"
                         placeholder="Enter a claim URI"
                         type="text"
-                        value={claim?.claimURI}
+                        readOnly
+                        value={ claim?.claimURI }
                     />
                     <Field
                         type="dropdown"
                         name="localClaim"
                         label="Local Claim URI to map to"
-                        required={true}
+                        required={ true }
                         requiredErrorMessage="Select a local claim to map to"
                         placeholder="Select a Local Claim"
                         search
-                        value={claim?.mappedLocalClaimURI}
+                        value={ claim?.mappedLocalClaimURI }
                         children={
                             localClaims?.map((claim: Claim, index) => {
                                 return {
@@ -139,14 +140,14 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
             </Modal.Content>
             <Modal.Actions>
                 <LinkButton
-                    onClick={onClose}
+                    onClick={ onClose }
                 >
                     Cancel
                 </LinkButton>
                 <PrimaryButton
-                    onClick={() => {
+                    onClick={ () => {
                         setSubmit();
-                    }}
+                    } }
                 >
                     Add
                 </PrimaryButton>

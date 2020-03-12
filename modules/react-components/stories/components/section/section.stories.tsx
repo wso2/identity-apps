@@ -23,7 +23,6 @@ import React from "react";
 import { Section } from "../../../src";
 import { UserAvatar } from "../../../src";
 import { meta } from "./section.stories.meta";
-import { Playground } from "../danger-zone";
 
 export default {
     parameters: {

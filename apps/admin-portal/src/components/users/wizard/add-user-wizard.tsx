@@ -118,6 +118,73 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     };
 
     /**
+     * This function handles assigning the roles to the user.
+     */
+    const assignUserRole = (user: any, roles: any) => {
+        const roleIds = [];
+
+        roles.map((role) => {
+            roleIds.push(role.id);
+        });
+        const data = {
+            Operations: [
+                {
+                    op: "add",
+                    value: {
+                        members: [
+                            {
+                                display: user.userName,
+                                value: user.id
+                            }
+                        ]
+                    }
+                }
+            ],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
+        };
+
+        for (const roleId of roleIds) {
+            addUserRole(data, roleId)
+                .catch((error) => {
+                    if (!error.response || error.response.status === 401) {
+                        dispatch(addAlert({
+                            description: t(
+                                "views:components.users.notifications.addUser.error.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "views:components.users.notifications.addUser.error.message"
+                            )
+                        }));
+                    } else if (error.response && error.response.data && error.response.data.detail) {
+
+                        dispatch(addAlert({
+                            description: t(
+                                "views:components.users.notifications.addUser.error.description",
+                                { description: error.response.data.detail }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "views:components.users.notifications.addUser.error.message"
+                            )
+                        }));
+                    } else {
+                        // Generic error message
+                        dispatch(addAlert({
+                            description: t(
+                                "views:components.users.notifications.addUser.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "views:components.users.notifications.addUser.genericError.message"
+                            )
+                        }));
+                    }
+                });
+        }
+    };
+    
+    /**
      * This function handles adding the user.
      */
     const addUserBasic = (userInfo: any) => {
@@ -222,73 +289,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     }));
                 }
             });
-    };
-
-    /**
-     * This function handles assigning the roles to the user.
-     */
-    const assignUserRole = (user: any, roles: any) => {
-        const roleIds = [];
-
-        roles.map((role) => {
-            roleIds.push(role.id);
-        });
-        const data = {
-            Operations: [
-                {
-                    op: "add",
-                    value: {
-                        members: [
-                            {
-                                display: user.userName,
-                                value: user.id
-                            }
-                        ]
-                    }
-                }
-            ],
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
-        };
-
-        for (const roleId of roleIds) {
-            addUserRole(data, roleId)
-                .catch((error) => {
-                    if (!error.response || error.response.status === 401) {
-                        dispatch(addAlert({
-                            description: t(
-                                "views:components.users.notifications.addUser.error.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "views:components.users.notifications.addUser.error.message"
-                            )
-                        }));
-                    } else if (error.response && error.response.data && error.response.data.detail) {
-
-                        dispatch(addAlert({
-                            description: t(
-                                "views:components.users.notifications.addUser.error.description",
-                                { description: error.response.data.detail }
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "views:components.users.notifications.addUser.error.message"
-                            )
-                        }));
-                    } else {
-                        // Generic error message
-                        dispatch(addAlert({
-                            description: t(
-                                "views:components.users.notifications.addUser.genericError.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "views:components.users.notifications.addUser.genericError.message"
-                            )
-                        }));
-                    }
-                });
-        }
     };
 
     /**

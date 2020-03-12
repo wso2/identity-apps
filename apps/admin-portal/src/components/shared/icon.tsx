@@ -119,14 +119,14 @@ export const ThemeIcon: React.FunctionComponent<ThemeIconProps> = (props): JSX.E
 
         // Check if icon passed in is a string. Can be a URL or a base64 encoded.
         if (typeof icon === "string") {
-            return <img src={icon} className="icon" alt="icon" />;
+            return <img src={ icon } className="icon" alt="icon" />;
         }
 
         throw new Error("The provided icon type is not supported.");
     };
 
     return (
-        <div className={ `theme-icon ${classes}` } style={style}>
+        <div className={ `theme-icon ${classes}` } style={ style }>
             { constructContent() }
         </div>
     );

@@ -19,7 +19,7 @@
 import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Container, Menu, Modal } from "semantic-ui-react";
+import { Button, Container, Modal } from "semantic-ui-react";
 import { fetchUserSessions, terminateAllUserSessions, terminateUserSession } from "../../api";
 import {
     AlertInterface,
@@ -56,20 +56,13 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
     const { t } = useTranslation();
 
     /**
-     * Fetches the user sessions on component load.
-     */
-    useEffect(() => {
-        getUserSessions();
-    }, []);
-
-    /**
      * Retrieves the user sessions.
      */
     const getUserSessions = (): void => {
         fetchUserSessions()
             .then((response) => {
                 if (response && response.sessions && response.sessions.length && response.sessions.length > 0) {
-                    let sessions = [ ...response.sessions ];
+                    let sessions = [...response.sessions];
 
                     // Sort the array by last access time
                     sessions = _.reverse(_.sortBy(sessions, (session) => session.lastAccessTime));
@@ -111,6 +104,13 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                 });
             });
     };
+
+    /**
+     * Fetches the user sessions on component load.
+     */
+    useEffect(() => {
+        getUserSessions();
+    }, []);
 
     /**
      * Handler for the session detail button click.

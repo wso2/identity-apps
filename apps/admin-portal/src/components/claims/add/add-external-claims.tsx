@@ -20,7 +20,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Header } from "semantic-ui-react";
 import { ClaimDialect, Claim, AlertLevels } from "../../../models";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
-import { getLocalClaims, addExternalClaim } from "../../../api";
+import { getAllLocalClaims, addExternalClaim } from "../../../api";
 import { Forms, Field, FormValue, useTrigger } from "@wso2is/forms";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
@@ -42,14 +42,14 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
     const dispatch = useDispatch();
 
     useEffect(() => {
-        getLocalClaims().then(response => {
+        getAllLocalClaims(null).then(response => {
             setLocalClaims(response);
         }).catch(error => {
             dispatch(addAlert(
                 {
                     description: error?.description,
                     level: AlertLevels.ERROR,
-                    message: error?.message
+                    message: error?.message || "Something went wrong"
                 }
             ));
         })
@@ -59,19 +59,19 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
         <Modal
             dimmer="blurring"
             size="tiny"
-            open={open}
-            onClose={onClose}
+            open={ open }
+            onClose={ onClose }
         >
             <Modal.Header>
-                <Header as="h3" content="Add an External Claim" subheader={"to " + dialect?.dialectURI} />
+                <Header as="h3" content="Add an External Claim" subheader={ "to " + dialect?.dialectURI } />
             </Modal.Header>
             <Modal.Content>
                 <Forms
-                    onSubmit={(values:Map<string,FormValue>) => {
+                    onSubmit={ (values: Map<string,FormValue>) => {
                         addExternalClaim(dialect.id, {
                             claimURI: values.get("claimURI").toString(),
                             mappedLocalClaimURI: values.get("localClaim").toString()
-                        }).then(response => {
+                        }).then(() => {
                             dispatch(addAlert(
                                 {
                                     description: "The external claim has been added to the dialect successfully!",
@@ -86,17 +86,17 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                                 {
                                     description: error?.description,
                                     level: AlertLevels.ERROR,
-                                    message: error?.message
+                                    message: error?.message || "Something went wrong"
                                 }
                             ));
                         })
-                    }}
-                    submitState={submit}
+                    } }
+                    submitState={ submit }
                 >
                     <Field
                         name="claimURI"
                         label="Claim URI"
-                        required={true}
+                        required={ true }
                         requiredErrorMessage="Claim URI is required"
                         placeholder="Enter a claim URI"
                         type="text"
@@ -105,7 +105,7 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
                         type="dropdown"
                         name="localClaim"
                         label="Local Claim URI to map to"
-                        required={true}
+                        required={ true }
                         requiredErrorMessage="Select a local claim to map to"
                         placeholder="Select a Local Claim"
                         search
@@ -123,14 +123,14 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
             </Modal.Content>
             <Modal.Actions>
                 <LinkButton
-                    onClick={onClose}
+                    onClick={ onClose }
                 >
                     Cancel
                 </LinkButton>
                 <PrimaryButton
-                    onClick={() => {
+                    onClick={ () => {
                         setSubmit();
-                    }}
+                    } }
                 >
                     Add
                 </PrimaryButton>

@@ -99,6 +99,19 @@ export const UserAvatar: FunctionComponent<UserAvatarPropsInterface> = (
     }, [ image ]);
 
     /**
+     * Checks if the image is from `Gravatar`.
+     *
+     * @return {boolean}
+     */
+    const isGravatarURL = (): boolean => {
+        return (userImage && userImage.includes(UIConstants.GRAVATAR_URL))
+            || (profileInfo && profileInfo.userImage
+                && profileInfo.userImage.includes(UIConstants.GRAVATAR_URL))
+            || (profileInfo && profileInfo.profileUrl
+                && profileInfo.profileUrl.includes(UIConstants.GRAVATAR_URL));
+    };
+
+    /**
      * Resolves the top label image.
      *
      * @return {string}
@@ -133,24 +146,11 @@ export const UserAvatar: FunctionComponent<UserAvatarPropsInterface> = (
     };
 
     /**
-     * Checks if the image is from `Gravatar`.
-     *
-     * @return {boolean}
-     */
-    const isGravatarURL = (): boolean => {
-        return (userImage && userImage.includes(UIConstants.GRAVATAR_URL))
-            || (profileInfo && profileInfo.userImage
-                && profileInfo.userImage.includes(UIConstants.GRAVATAR_URL))
-            || (profileInfo && profileInfo.profileUrl
-                && profileInfo.profileUrl.includes(UIConstants.GRAVATAR_URL));
-    };
-
-    /**
      * Handles the mouse over event.
      *
      * @param {MouseEvent} e - Mouse event.
      */
-    const handleOnMouseOver = (e: MouseEvent) => {
+    const handleOnMouseOver = () => {
         setShowPopup(true);
     };
 
@@ -159,7 +159,7 @@ export const UserAvatar: FunctionComponent<UserAvatarPropsInterface> = (
      *
      * @param {MouseEvent} e - Mouse event.
      */
-    const handleOnMouseOut = (e: MouseEvent) => {
+    const handleOnMouseOut = () => {
         setShowPopup(false);
     };
 

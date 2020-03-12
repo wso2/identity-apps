@@ -314,7 +314,7 @@ export const PrivacyPage = (): JSX.Element => {
                             { t("views:components.privacy.privacyPolicy.moreInfo.contactUs.heading") }
                         </Header>
                         <p>{ t("views:components.privacy.privacyPolicy.moreInfo.contactUs.description.para1") }</p>
-                        <a href="https://wso2.com/contact/" target="_blank">https://wso2.com/contact/</a>
+                        <a href="https://wso2.com/contact/" rel="noopener noreferrer" target="_blank">https://wso2.com/contact/</a>
                     </Grid.Column>
                 </Grid.Row>
 

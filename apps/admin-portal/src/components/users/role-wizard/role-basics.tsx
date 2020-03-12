@@ -85,7 +85,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                             placeholder="Domain"
                             requiredErrorMessage="Select Domain"
                             required={ true }
-                            element={<div></div>}
+                            element={ <div></div> }
                         />
                     </GridColumn>
                     <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>

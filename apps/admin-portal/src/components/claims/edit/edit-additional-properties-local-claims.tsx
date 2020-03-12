@@ -16,15 +16,17 @@
 * under the License.
 */
 
-import React, { useState, useEffect } from "react";
-import { Button, Grid } from "semantic-ui-react";
-import { Field, FormValue, Forms } from "@wso2is/forms";
-import { Property, Claim, AlertLevels } from "../../../models";
+import React from "react";
+import { Grid } from "semantic-ui-react";
+import { useTrigger } from "@wso2is/forms";
+import { Claim, AlertLevels } from "../../../models";
 import { updateAClaim } from "../../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
+import { DynamicField } from "../dynamic-fields";
+import { PrimaryButton } from "@wso2is/react-components";
 
-interface EditAdditionalPropertiesLocalClaimsPropsInterface{
+interface EditAdditionalPropertiesLocalClaimsPropsInterface {
     claim: Claim;
     update: () => void;
 }
@@ -34,153 +36,65 @@ export const EditAdditionalPropertiesLocalClaims = (
 
     const { claim, update } = props;
 
+    const [submit, setSubmit] = useTrigger();
+
     const dispatch = useDispatch();
 
-    const [properties, setProperties] = useState<Set<number>>(new Set([0]));
+    return (
+        <Grid>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column width={ 8 } tablet={ 16 } computer={ 6 } mobile={ 16 }>
+                    <DynamicField
+                        data={ claim.properties }
+                        keyType="text"
+                        keyName="Name"
+                        valueName="Value"
+                        submit={ submit }
+                        keyRequiredMessage="Enter a name"
+                        valueRequiredErrorMessage="Enter a value"
+                        update={ (data) => {
+                            const claimData = { ...claim };
+                            delete claimData.id;
+                            delete claimData.dialectURI;
+                            const submitData = {
+                                ...claimData,
+                                properties: [...data]
+                            }
 
-    useEffect(() => {
-        const tempProperties = new Set(properties);
-        claim?.properties.forEach((property, index) => {
-            tempProperties.add(index);
-        });
-        setProperties(tempProperties);
-    }, []);
-
-    const generateProperties = (): React.ReactElement[] => {
-
-        const mappedElements: React.ReactElement[] = [];
-        properties?.forEach((property: number) => {
-
-            const isOnlyElement: boolean = properties.size === 1;
-            const isFirstElement: boolean = property === Array.from(properties)[0];
-
-            mappedElements.push(
-                <Grid.Row attribute={property} columns={3}>
-                    <Grid.Column width={7}>
-                        <Field
-                            type="text"
-                            name={"key" + property}
-                            label={isFirstElement ? "Name" : null}
-                            required={false}
-                            requiredErrorMessage="Enter a name"
-                            placeholder="Enter a name"
-                            value={claim?.properties[property]?.key}
-                        />
-                    </Grid.Column>
-                    <Grid.Column width={7}>
-                        <Field
-                            type="text"
-                            name={"value" + property}
-                            label={isFirstElement ? "Value" : null}
-                            required={false}
-                            requiredErrorMessage="Enter a value or delete the property"
-                            placeholder="Enter a value"
-                            value={claim?.properties[property]?.value}
-                        />
-                    </Grid.Column>
-                    <Grid.Column width={2} verticalAlign="bottom">
-                        {
-                            !isOnlyElement
-                                ? (
-                                    <Button
-                                        type="button"
-                                        size="mini"
-                                        primary
-                                        circular
-                                        icon={"trash"}
-                                        onClick={() => {
-                                            const tempProperties = new Set(properties);
-                                            if (!isOnlyElement) {
-                                                tempProperties.delete(property);
-                                            }
-                                            setProperties(tempProperties);
-                                        }}
-                                    />
-                                )
-                                : null
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-            );
-        });
-        const lastElement: number = Array.from(properties)[properties.size - 1];
-        mappedElements.push(
-            <Grid.Row key={lastElement + 1} textAlign="center" columns={1}>
-                <Grid.Column width={14}>
-                    <Button
-                        type="button"
-                        size="mini"
-                        primary
-                        circular
-                        icon="add"
-                        onClick={() => {
-                            const tempProperties = new Set(properties);
-                            tempProperties.add(lastElement + 1);
-                            setProperties(tempProperties);
-                        }}
+                            updateAClaim(claim.id, submitData).then(() => {
+                                dispatch(addAlert(
+                                    {
+                                        description: "Additional Properties of this local claim have been updated successfully!",
+                                        level: AlertLevels.SUCCESS,
+                                        message: "Additional Properties updated successfully"
+                                    }
+                                ));
+                                update();
+                            }).catch(error => {
+                                dispatch(addAlert(
+                                    {
+                                        description: error?.description,
+                                        level: AlertLevels.ERROR,
+                                        message: error?.message || "Something went wrong"
+                                    }
+                                ));
+                            })
+                        } }
                     />
                 </Grid.Column>
             </Grid.Row>
-        );
-        return mappedElements;
-    };
+            <Grid.Row columns={ 1 }>
+                <Grid.Column width={ 6 }>
+                    <PrimaryButton
+                        onClick={ () => {
+                            setSubmit();
+                        } }
+                    >
+                        Update
+                    </PrimaryButton>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
 
-    const getProperties = (values: Map<string, FormValue>): Property[] => {
-        const attributes: Property[] = [];
-        properties.forEach((property: number) => {
-            attributes.push({
-                key: values.get("key" + property)?.toString(),
-                value: values.get("value" + property)?.toString()
-            });
-        });
-        return attributes;
-    };
-
-    return (
-        <Forms
-            onSubmit={(values) => {
-                const { id,dialectURI, ...claimData } = claim;
-                const data: Claim = {
-                    ...claimData,
-                    properties: getProperties(values)
-                }
-                updateAClaim(claim.id, data).then((response) => {
-                    dispatch(addAlert(
-                        {
-                            description: "Additional Properties of this local claim have been updated successfully!",
-                            level: AlertLevels.SUCCESS,
-                            message: "Additional Properties updated successfully"
-                        }
-                    ));
-                    update();
-                }).catch(error => {
-                    dispatch(addAlert(
-                        {
-                            description: error?.description,
-                            level: AlertLevels.ERROR,
-                            message: error?.message
-                        }
-                    ));
-                })
-            }}
-        >
-            <Grid>
-                <Grid.Row columns={1} >
-                    <Grid.Column width={6}>
-                        <h5>Additional Properties</h5>
-                        <Grid>
-                            {
-                                generateProperties()
-                            }
-                        </Grid>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={1}>
-                    <Grid.Column width={6}>
-                        <Field type="submit" value="Update" />
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        </Forms>
-    )
+    );
 };

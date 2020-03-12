@@ -76,7 +76,7 @@ const generateThemes = () => {
         });
     });
 
-    Promise.all(fileWritePromises).then(function(buffers) {
+    Promise.all(fileWritePromises).then(function() {
         copyFiles();
     }).catch(function(error) {
         console.error(error);

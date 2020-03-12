@@ -18,7 +18,7 @@
 
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent } from "react";
-import { Card, CardProps, Icon, Popup } from "semantic-ui-react";
+import { Card, CardProps, Popup } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
 
 /**

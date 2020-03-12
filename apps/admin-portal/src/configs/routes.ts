@@ -195,8 +195,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 exact: true,
                 icon: "childIcon",
                 level: 2,
-                name: "Claim Dialects",
-                path: "/claim-dialects",
+                name: "External Dialects",
+                path: "/external-dialects",
                 protected: true,
                 showOnSidePanel:true
             },

@@ -20,7 +20,7 @@ import { Field, Forms } from "@wso2is/forms";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Form, Grid, Icon, Input, List, ModalContent, Popup } from "semantic-ui-react";
+import { Button, Form, Grid, Icon, List, ModalContent, Popup } from "semantic-ui-react";
 import { deleteDevice, getMetaData, startFidoFlow, startFidoUsernamelessFlow, updateDeviceName } from "../../../api";
 import { MFAIcons } from "../../../configs";
 import { AlertInterface, AlertLevels } from "../../../models";
@@ -51,18 +51,20 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const [editFIDO, setEditFido] = useState<Map<string, boolean>>();
     const { onAlertFired } = props;
 
-    useEffect(() => {
-        getFidoMetaData();
-    }, []);
-
     /**
-     * This calls `getFidoMetaData` every time a new device is registered
+     * This function fires a notification on failure.
      */
-    useEffect(() => {
-        if (!_.isEmpty(recentlyAddedDevice)) {
-            getFidoMetaData();
-        }
-    }, [recentlyAddedDevice]);
+    const fireFailureNotification = () => {
+        onAlertFired({
+            description: t(
+                "views:components.mfa.fido.notifications.startFidoFlow.genericError.description"
+            ),
+            level: AlertLevels.ERROR,
+            message: t(
+                "views:components.mfa.fido.notifications.startFidoFlow.genericError.message"
+            )
+        });
+    };
 
     const getFidoMetaData = () => {
         let devices: FIDODevice[] = [];
@@ -75,10 +77,23 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                     setDeviceList(devices);
                 }
             })
-            .catch((error) => {
+            .catch(() => {
                 fireFailureNotification();
             });
     };
+
+    useEffect(() => {
+        getFidoMetaData();
+    }, []);
+
+    /**
+     * This calls `getFidoMetaData` every time a new device is registered
+     */
+    useEffect(() => {
+        if (!_.isEmpty(recentlyAddedDevice)) {
+            getFidoMetaData();
+        }
+    }, [recentlyAddedDevice]);
 
     /**
      * This function fires a notification on successful removal of a device.
@@ -109,21 +124,6 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             level: AlertLevels.ERROR,
             message: t(
                 "views:components.mfa.fido.notifications.removeDevice.error.message"
-            )
-        });
-    };
-
-    /**
-     * This function fires a notification on failure.
-     */
-    const fireFailureNotification = () => {
-        onAlertFired({
-            description: t(
-                "views:components.mfa.fido.notifications.startFidoFlow.genericError.description"
-            ),
-            level: AlertLevels.ERROR,
-            message: t(
-                "views:components.mfa.fido.notifications.startFidoFlow.genericError.message"
             )
         });
     };
@@ -191,6 +191,16 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             });
     };
 
+    /**
+     * Closes the edit form of the concerned FIDO device.
+     * @param id
+     */
+    const cancelEdit = (id: string) => {
+        const tempEditFido: Map<string, boolean> = new Map(editFIDO);
+        tempEditFido.set(id, false);
+        setEditFido(tempEditFido);
+    };
+
     const removeDevice = (id: string) => {
         deleteDevice(id)
             .then(() => {
@@ -203,6 +213,14 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     };
 
     /**
+     * Handles the device successful registration modal close action
+     */
+    const handleDeviceSuccessModalClose = (): void => {
+        setRecentlyAddedDevice("");
+        setIsDeviceSuccessModalVisibility(false);
+    };
+
+    /**
      * This function posts the name of the FIDO device
      */
     const submitName = (name: string, id: string): void => {
@@ -212,7 +230,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
             setRecentFIDONameError(false);
 
             updateDeviceName(id, name)
-                .then((response) => {
+                .then(() => {
                     getFidoMetaData();
                     handleDeviceSuccessModalClose();
                     cancelEdit(id);
@@ -236,14 +254,6 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     };
 
     /**
-     * Handles the device successful registration modal close action
-     */
-    const handleDeviceSuccessModalClose = (): void => {
-        setRecentlyAddedDevice("");
-        setIsDeviceSuccessModalVisibility(false);
-    };
-
-    /**
      * Handles the device registration error modal close action.
      */
     const handleDeviceErrorModalClose = (): void => {
@@ -259,16 +269,6 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const showEdit = (id: string) => {
         const tempEditFido: Map<string, boolean> = new Map(editFIDO);
         tempEditFido.set(id, true);
-        setEditFido(tempEditFido);
-    };
-
-    /**
-     * Closes the edit form of the concerned FIDO device.
-     * @param id
-     */
-    const cancelEdit = (id: string) => {
-        const tempEditFido: Map<string, boolean> = new Map(editFIDO);
-        tempEditFido.set(id, false);
         setEditFido(tempEditFido);
     };
 
@@ -547,7 +547,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                         floated="left"
                                         name="info circle"
                                     />
-                                    You don't have any devices registered yet.
+                                    You don&apos;t have any devices registered yet.
                             </p>
                             </>
                         )

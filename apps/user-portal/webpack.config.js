@@ -135,37 +135,44 @@ module.exports = (env) => {
                 },
                 {
                     test: /\.tsx?$/,
-                    use: [{
-                        loader: 'thread-loader',
-                        options: {
-                            // there should be 1 cpu for the fork-ts-checker-webpack-plugin
-                            workers: require('os').cpus().length - 1,
+                    use: [
+                        {
+                            loader: "thread-loader",
+                            options: {
+                                // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                                workers: require("os").cpus().length - 1
+                            }
                         },
-                    },{
-                        loader: "ts-loader",
-                        options: {
-                            happyPackMode: true,
-                            transpileOnly: false
+                        {
+                            loader: "ts-loader",
+                            options: {
+                                happyPackMode: true,
+                                transpileOnly: false
+                            }
                         }
-                    }],
+                    ],
                     exclude: /(node_modules)/
                 },
                 {
-                    test: /\.ts$/,
+                    test: /\.(ts|tsx|js|jsx)$/,
                     enforce: "pre",
-                    use: [{
-                        loader: 'thread-loader',
-                        options: {
-                            // there should be 1 cpu for the fork-ts-checker-webpack-plugin
-                            workers: require('os').cpus().length - 1,
+                    exclude: /(node_modules|dist|build|target|plugins)/,
+                    use: [
+                        {
+                            loader: "thread-loader",
+                            options: {
+                                // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                                workers: require("os").cpus().length - 1
+                            }
                         },
-                    },{
-                        loader:"eslint-loader",
-                        options: {
-                            happyPackMode: true,
-                            transpileOnly: false
+                        {
+                            loader: "eslint-loader",
+                            options: {
+                                happyPackMode: true,
+                                transpileOnly: false
+                            }
                         }
-                    }]
+                    ]
                 },
                 {
                     test: /\.js$/,
@@ -249,11 +256,12 @@ module.exports = (env) => {
         optimization: {
             minimize: true,
             minimizer: [
-                isProd && new TaserJSPlugin({
-                     terserOptions: {
-                         keep_fnames: true
-                     }
-                })
+                isProd &&
+                    new TaserJSPlugin({
+                        terserOptions: {
+                            keep_fnames: true
+                        }
+                    })
             ].filter(Boolean)
         }
     };

@@ -45,3 +45,14 @@
         }
     }
 }
+
+.copy-field {
+    input {
+        font-size: 0.9em;
+        padding: 0.7em!important;
+        background-color: @galleryGray!important;
+        border: none!important;
+        font-style: italic;
+        color: @doveGray!important;
+    }
+}

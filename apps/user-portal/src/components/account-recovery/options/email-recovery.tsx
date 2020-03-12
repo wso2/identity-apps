@@ -70,12 +70,6 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
         }
     }, []);
 
-    useEffect(() => {
-        if (!isEmpty(profileInfo)) {
-            setEmailAddress(profileInfo);
-        }
-    }, [profileInfo]);
-
     const handleUpdate = (emailAddress: string) => {
         const data = {
             Operations: [
@@ -132,7 +126,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                 }
 
                 onAlertFired({
-                    description:  t(
+                    description: t(
                         "views:components.accountRecovery.emailRecovery." +
                         "notifications.updateEmail.genericError.description"
                     ),
@@ -153,7 +147,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
      * In the future, we need to decide whether or not to allow multiple recovery emails
      */
     const setEmailAddress = (response) => {
-        let emailAddress: string = "";
+        let emailAddress = "";
         if (response.emails) {
             if (typeof response.emails[0] === "object" && response.emails[0] !== null) {
                 emailAddress = response.emails[0].value;
@@ -167,6 +161,12 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
         setEditedEmail(emailAddress);
     };
 
+    useEffect(() => {
+        if (!isEmpty(profileInfo)) {
+            setEmailAddress(profileInfo);
+        }
+    }, [profileInfo]);
+    
     /**
      * This is called when the edit icon is clicked.
      *
@@ -193,9 +193,9 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
         const indexOfAt = emailAddress.indexOf("@");
         const textToBeMasked = emailAddress.slice(2, indexOfAt);
 
-        for (const i of textToBeMasked) {
+        Array.from(textToBeMasked).forEach(() => {
             mask += "*";
-        }
+        })
 
         return email.replace(textToBeMasked, mask);
     };
@@ -226,17 +226,17 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                     t("views:components.accountRecovery.emailRecovery.heading")
                                 }</List.Header>
                                 <List.Description>
-                                    { email || email !== ""
+                                    {email || email !== ""
                                         ? t("views:components.accountRecovery.emailRecovery.descriptions.update", {
                                             email: email ? maskEmail(email) : ""
                                         })
-                                        : t("views:components.accountRecovery.emailRecovery.descriptions.add") }
+                                        : t("views:components.accountRecovery.emailRecovery.descriptions.add")}
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
                         <Grid.Column width={ 5 } className="last-column">
                             <List.Content floated="right">
-                                { email || email !== "" ? (
+                                {email || email !== "" ? (
                                     <Icon
                                         link={ true }
                                         onClick={ handleEdit }
@@ -254,7 +254,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                             color="grey"
                                             name="plus"
                                         />
-                                    ) }
+                                    )}
                             </List.Content>
                         </Grid.Column>
                     </Grid.Row>
@@ -309,10 +309,10 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                             />
                                             <p style={ { fontSize: "12px" } }>
                                                 <Icon color="grey" floated="left" name="info circle" />
-                                                { t(
+                                                {t(
                                                     "views:components.profile.forms.emailChangeForm" +
                                                     ".inputs.email.note"
-                                                ) }
+                                                )}
                                             </p>
                                             <Field
                                                 hidden={ true }
