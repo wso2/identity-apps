@@ -23,7 +23,7 @@ import { LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { getAllLocalClaims, addExternalClaim } from "../../../api";
 import { Forms, Field, FormValue, useTrigger } from "@wso2is/forms";
 import { useDispatch } from "react-redux";
-import { addAlert } from "../../../store/actions";
+import { addAlert } from "@wso2is/core/store";
 
 interface AddExternalClaimsPropsInterface {
     open: boolean;
