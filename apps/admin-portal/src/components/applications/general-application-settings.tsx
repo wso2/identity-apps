@@ -199,7 +199,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         onPrimaryActionClick={ (): void => handleApplicationDelete() }
                     >
                         <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning="warning">
+                        <ConfirmationModal.Message attached warning>
                             This action is irreversible and will permanently delete the application.
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>

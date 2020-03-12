@@ -162,7 +162,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         onPrimaryActionClick={ (): void => handleApplicationDelete(deletingApplication.id) }
                     >
                         <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning="warning">
+                        <ConfirmationModal.Message attached warning>
                             This action is irreversible and will permanently delete the application.
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
