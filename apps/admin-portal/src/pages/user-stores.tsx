@@ -132,11 +132,11 @@ export const UserStores = (): React.ReactElement => {
                                             setOpenModal(true);
                                         } }
                                     >
-                                        <Icon name="add" /> Add an External Claim
+                                        <Icon name="add" /> Add a User Store
                                 </PrimaryButton>
                                 }
-                                title="Create an External Claim"
-                                subtitle={ ["Currently, there is no External Claim available for this dialect."] }
+                                title="Create a User Store"
+                                subtitle={ ["Currently, there are no User Stores available."] }
                                 image={ EmptyPlaceholderIllustrations.emptyList }
                                 imageSize="tiny"
                             />
