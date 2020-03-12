@@ -44,10 +44,6 @@ export const UserEditPage = (): JSX.Element => {
         dispatch(addAlert(alert));
     };
 
-    const handleUserUpdate = (userInfo: BasicProfileInterface) => {
-        setUserProfile(userInfo);
-    };
-
     const getUser = (id: string) => {
         getUserDetails(id)
             .then((response) => {
@@ -57,6 +53,10 @@ export const UserEditPage = (): JSX.Element => {
             .catch((error) => {
                 // TODO add to notifications
             });
+    };
+
+    const handleUserUpdate = (id: string) => {
+        getUser(id);
     };
 
     useEffect(() => {
@@ -91,7 +91,7 @@ export const UserEditPage = (): JSX.Element => {
             titleTextAlign="left"
             bottomMargin={ false }
         >
-            <EditUser user={ user } setUser={ handleUserUpdate } />
+            <EditUser user={ user } handleUserUpdate={ handleUserUpdate }/>
         </PageLayout>
     );
 };

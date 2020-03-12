@@ -141,6 +141,47 @@
             }
         }
     }
+
+    &.user-roles-segment {
+        background-color: #f5f5f5;
+        padding: 15px;
+        border: none;
+        box-shadow: none;
+        overflow: auto;
+
+        .ui.label {
+            margin-top: @assignedRolesListLabelMarginTop;
+            margin-left: @assignedRolesListLabelMarginLeft;
+            background-color: #dcdcdc;
+
+            &.info-label {
+                background-color: @InfoLabelBackgroundColor !important;
+                border-color: @InfoLabelBorderColor !important;
+                color: white;
+                margin-left: @assignedRolesListLabelMarginLeft;
+
+                i {
+                    margin-right: auto;
+                    margin-left: @assignedRolesListIconMarginLeft;
+                }
+            }
+        }
+    }
+
+    &.user-roles-segment-header {
+        padding: 0;
+        border-bottom: #dededf solid 0.1em !important;
+
+        i {
+            padding-bottom: 1.5em;
+            padding-top: 0.2em;
+            color: #9c9c9c !important;
+
+            &:hover {
+                color: @primaryColor !important;
+            }
+        }
+    }
 }
 
 /*************************************
