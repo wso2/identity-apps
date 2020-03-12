@@ -18,6 +18,7 @@
 
 import { Views } from "../../models";
 
+/* eslint-disable @typescript-eslint/camelcase */
 export const views: Views = {
     components: {
         accountRecovery: {
@@ -943,22 +944,22 @@ export const views: Views = {
         },
         profile: {
             fields: {
-                addressesHome: "නිවසේ ලිපිනය",
-                addressesWork: "වැඩ ලිපිනය",
+                addresses_home: "නිවසේ ලිපිනය",
+                addresses_work: "වැඩ ලිපිනය",
                 emails: "විද්යුත් තැපෑල",
-                emailsHome: "නිවසේ විද්‍යුත් තැපෑල",
-                emailsOther: "වෙනත් විද්‍යුත් තැපෑල",
-                emailsWork: "වැඩ ඊමේල්",
+                emails_home: "නිවසේ විද්‍යුත් තැපෑල",
+                emails_other: "වෙනත් විද්‍යුත් තැපෑල",
+                emails_work: "වැඩ ඊමේල්",
                 generic: {
                     default: "එකතු කරන්න {{fieldName}}"
                 },
-                nameFamilyName: "අවසන් නම",
-                nameGivenName: "මුල් නම",
+                name_familyName: "අවසන් නම",
+                name_givenName: "මුල් නම",
                 phoneNumbers: "දුරකතන අංකය",
-                phoneNumbersHome: "නිවසේ දුරකථන අංකය",
-                phoneNumbersMobile: "ජංගම දූරකථන අංකය",
-                phoneNumbersOther: "වෙනත් දුරකථන අංකය",
-                phoneNumbersWork: "රැකියා දුරකථන අංකය",
+                phoneNumbers_home: "නිවසේ දුරකථන අංකය",
+                phoneNumbers_mobile: "ජංගම දූරකථන අංකය",
+                phoneNumbers_other: "වෙනත් දුරකථන අංකය",
+                phoneNumbers_work: "රැකියා දුරකථන අංකය",
                 profileImage: "පැතිකඩ රූපය",
                 profileUrl: "URL",
                 userName: "පරිශීලක නාමය"

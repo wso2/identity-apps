@@ -18,6 +18,7 @@
 
 import { Views } from "../../models";
 
+/* eslint-disable @typescript-eslint/camelcase */
 export const views: Views = {
     components: {
         accountRecovery: {
@@ -946,22 +947,22 @@ export const views: Views = {
         },
         profile: {
             fields: {
-                addressesHome: "Home address",
-                addressesWork: "Work address",
+                addresses_home: "Home address",
+                addresses_work: "Work address",
                 emails: "Email",
-                emailsHome: "Home email",
-                emailsOther: "Other email",
-                emailsWork: "Work email",
+                emails_home: "Home email",
+                emails_other: "Other email",
+                emails_work: "Work email",
                 generic: {
                     default: "Add {{fieldName}}"
                 },
-                nameFamilyName: "Last name",
-                nameGivenName: "First name",
+                name_familyName: "Last name",
+                name_givenName: "First name",
                 phoneNumbers: "Phone number",
-                phoneNumbersHome: "Home phone number",
-                phoneNumbersMobile: "Mobile number",
-                phoneNumbersOther: "Other phone number",
-                phoneNumbersWork: "Work phone number",
+                phoneNumbers_home: "Home phone number",
+                phoneNumbers_mobile: "Mobile number",
+                phoneNumbers_other: "Other phone number",
+                phoneNumbers_work: "Work phone number",
                 profileImage: "Profile Image",
                 profileUrl: "URL",
                 userName: "Username"

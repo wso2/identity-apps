@@ -620,7 +620,7 @@ export interface Views {
                 emailsHome: string;
                 emailsOther: string;
                 emailsWork: string;
-                nameFamilyName: string;
+                name_familyName: string;
                 nameGivenName: string;
                 profileImage: string;
                 phoneNumbers: string;
