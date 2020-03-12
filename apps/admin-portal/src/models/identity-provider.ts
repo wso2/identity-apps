@@ -44,15 +44,73 @@ export interface IdentityProviderListItemInterface {
     self?: string;
 }
 
-interface FederatedAuthenticatorListItemInterface {
+export interface IdentityProviderInterface {
+    id?: string;
+    name?: string;
+    description?: string;
+    isEnabled?: boolean;
+    isPrimary?: boolean;
+    isFederationHub?: boolean;
+    image?: string;
+    homeRealmIdentifier?: string;
+    alias?: string;
+    claims?: string;
+    roles?: string;
+    federatedAuthenticators?: FederatedAuthenticatorListResponseInterface;
+    certificate?: CertificateConfigInterface;
+    provisioning?: any;
+}
+
+export interface IdentityProviderAdvanceInterface {
+    isFederationHub?: boolean;
+    homeRealmIdentifier?: string;
+    alias?: string;
+    certificate?: CertificateConfigInterface;
+}
+
+export interface CertificateConfigInterface {
+    certificates?: string[];
+    jwksUri?: string; // TODO  Check for upload option.
+}
+
+export interface FederatedAuthenticatorListItemInterface {
     authenticatorId?: string;
     name?: string;
     isEnabled?: boolean;
+    isDefault?: boolean;
+    properties?: AuthenticatorProperty[];
     self?: string;
 }
+
+export interface AuthenticatorProperty {
+    key: string;
+    value: string;
+}
+
 export interface FederatedAuthenticatorListResponseInterface {
     defaultAuthenticatorId?: string;
     authenticators?: FederatedAuthenticatorListItemInterface[];
+}
+
+export interface FederatedAuthenticatorMetaPropertyInterface {
+    key?: string;
+    displayName?: string;
+    description?: string;
+    type?: string;
+    displayOrder?: number;
+    regex?: string;
+    isMandatory?: boolean;
+    isConfidential?: boolean;
+    options?: string[];
+    defaultValue?: string;
+    subProperties?: FederatedAuthenticatorMetaPropertyInterface[];
+}
+
+export interface FederatedAuthenticatorMetaInterface {
+    authenticatorId?: string;
+    name?: string;
+    displayName?: string;
+    properties?: FederatedAuthenticatorMetaPropertyInterface[];
 }
 
 /**
@@ -152,3 +210,11 @@ export enum SupportedIdentityProviderTemplateCategories {
 export interface IdentityProviderTemplatesInterface {
     [ key: string ]: IdentityProviderTemplateListItemInterface[];
 }
+
+export const emptyIdentityProvider = (): IdentityProviderListItemInterface => ({
+    isEnabled: false,
+    description: "",
+    id: "",
+    image: "",
+    name: ""
+});
