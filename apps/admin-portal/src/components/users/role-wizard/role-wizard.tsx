@@ -49,8 +49,8 @@ interface CreateRoleProps {
  */
 enum WizardStepsFormTypes {
     BASIC_DETAILS = "BasicDetails",
-    PERM_LIST= "PermissionList",
-    USER_LIST= "RoleUserList",
+    PERM_LIST = "PermissionList",
+    USER_LIST = "RoleUserList",
     SUMMARY = "summary"
 }
 
