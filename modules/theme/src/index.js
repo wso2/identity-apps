@@ -66,6 +66,7 @@ export const TickCircleIcon = require("../lib/assets/images/icons/tick-circle-ic
 export const ToolsIcon = require("../lib/assets/images/icons/tools-icon.svg");
 export const AuthenticatorAppIcon = require("../lib/assets/images/icons/authenticator-app-icon.svg");
 export const UserIcon = require("../lib/assets/images/icons/user-icon.svg");
+export const UserStoreIcon = require("../lib/assets/images/icons/user-store.svg");
 export const WarningIcon = require("../lib/assets/images/icons/warning-icon.svg");
 
 // Illustrations
