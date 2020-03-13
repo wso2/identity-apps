@@ -15,6 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+/* eslint-disable */
+//TODO Temporary disable of lint due to merge conflicts
 
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";

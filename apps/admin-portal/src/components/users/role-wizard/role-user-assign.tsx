@@ -15,6 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+/* eslint-disable */
+//TODO Temporary disable of lint due to merge conflicts
 
 import React, { ReactElement, useState, FunctionComponent, useEffect } from "react";
 import { Grid, Input, Icon, Segment, List, Label, Message } from "semantic-ui-react";
