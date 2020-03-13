@@ -306,10 +306,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     initialAvailableClaims.push(claim);
                 }
             });
-            const initialClaims = claims.filter((el) => !initialSelectedClaims.includes(el));
             setSelectedClaims(initialSelectedClaims);
-            setClaims(initialClaims);
-            setFilteredClaims(initialClaims);
+            setClaims(initialAvailableClaims);
+            setFilteredClaims(initialAvailableClaims);
 
             //Handle claim mapping initialization
             if (claimConfigurations.dialect === "CUSTOM") {
@@ -348,10 +347,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     initialAvailableClaims.push(claim);
                 }
             });
-            const initialClaims = externalClaims.filter((el) => !initialSelectedClaims.includes(el));
             setSelectedExternalClaims(initialSelectedClaims);
-            setExternalClaims(initialClaims);
-            setFilteredExternalClaims(initialClaims);
+            setExternalClaims(initialAvailableClaims);
+            setFilteredExternalClaims(initialAvailableClaims);
         }
     };
 
