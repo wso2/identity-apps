@@ -60,7 +60,7 @@ interface ResourceListItemPropsInterface extends ListItemProps {
     /**
      * List item header.
      */
-    itemHeader: string|React.ReactNode;
+    itemHeader: string | React.ReactNode;
     /**
      * List item description
      */
@@ -83,6 +83,8 @@ interface ResourceListItemPropsInterface extends ListItemProps {
  * Resource list action interface.
  */
 interface ResourceListAction {
+    disabled?: boolean;
+    hidden?: boolean;
     icon: SemanticICONS;
     onClick?: () => void;
     popupText?: string;
@@ -152,52 +154,58 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
                             {
                                 (actions && actions.length && actions.length > 0)
                                     ? actions.map((action, index) => (
-                                        <div className="list-item-action" key={ index }>
-                                            {
-                                                action.type === "dropdown"
-                                                    ? (
-                                                        <Dropdown
-                                                            direction="left"
-                                                            icon={ null }
-                                                            trigger={ (
-                                                                <Popup
-                                                                    trigger={ (
-                                                                        <Icon
-                                                                            link
-                                                                            className="list-icon"
-                                                                            size="small"
-                                                                            color="grey"
-                                                                            name={ action.icon }
-                                                                            onClick={ action.onClick }
-                                                                        />
-                                                                    ) }
-                                                                    position="top center"
-                                                                    content={ action.popupText }
-                                                                    inverted
-                                                                />
-                                                            ) }
-                                                            options={ action.subActions }
-                                                        />
-                                                    ) :
-                                                    (
-                                                        <Popup
-                                                            trigger={ (
-                                                                <Icon
-                                                                    link
-                                                                    className="list-icon"
-                                                                    size="small"
-                                                                    color="grey"
-                                                                    name={ action.icon }
-                                                                    onClick={ action.onClick }
-                                                                />
-                                                            ) }
-                                                            position="top center"
-                                                            content={ action.popupText }
-                                                            inverted
-                                                        />
-                                                    )
-                                            }
-                                        </div>
+                                        !action.hidden && (
+                                            <div className="list-item-action" key={ index }>
+                                                {
+                                                    action.type === "dropdown"
+                                                        ? (
+                                                            <Dropdown
+                                                                direction="left"
+                                                                icon={ null }
+                                                                trigger={ (
+                                                                    <Popup
+                                                                        disabled={ action.disabled }
+                                                                        trigger={ (
+                                                                            <Icon
+                                                                                link
+                                                                                className="list-icon"
+                                                                                disabled={ action.disabled }
+                                                                                size="small"
+                                                                                color="grey"
+                                                                                name={ action.icon }
+                                                                                onClick={ action.onClick }
+                                                                            />
+                                                                        ) }
+                                                                        position="top center"
+                                                                        content={ action.popupText }
+                                                                        inverted
+                                                                    />
+                                                                ) }
+                                                                options={ action.subActions }
+                                                            />
+                                                        ) :
+                                                        (
+                                                            <Popup
+                                                                disabled={ action.disabled }
+                                                                trigger={ (
+                                                                    <Icon
+                                                                        link
+                                                                        className="list-icon"
+                                                                        disabled={ action.disabled }
+                                                                        size="small"
+                                                                        color="grey"
+                                                                        name={ action.icon }
+                                                                        onClick={ action.onClick }
+                                                                    />
+                                                                ) }
+                                                                position="top center"
+                                                                content={ action.popupText }
+                                                                inverted
+                                                            />
+                                                        )
+                                                }
+                                            </div>
+                                        )
                                     ))
                                     : null
                             }

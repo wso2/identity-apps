@@ -34,3 +34,4 @@ export * from "./application-inbound";
 export * from "./user";
 export * from "./identity-provider";
 export * from "./roles";
+export * from "./user-stores";

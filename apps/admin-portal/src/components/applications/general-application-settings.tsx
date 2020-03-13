@@ -18,8 +18,8 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteApplication, updateApplicationDetails } from "../../api";
 import { GlobalConfig } from "../../configs";
@@ -90,6 +90,8 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         onUpdate
     } = props;
 
+    const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+
     const dispatch = useDispatch();
 
     /**
@@ -104,6 +106,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                     message: "Delete successful"
                 }));
 
+                setShowDeleteConfirmationModal(false);
                 onDelete();
             })
             .catch((error) => {
@@ -179,10 +182,31 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                 actionTitle="Delete application"
                                 header="Delete the application"
                                 subheader="This action is irreversible. Please proceed with caution."
-                                onActionClick={ handleApplicationDelete }
+                                onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
                             />
                         </DangerZoneGroup>
                     ) }
+                    <ConfirmationModal
+                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                        type="warning"
+                        open={ showDeleteConfirmationModal }
+                        assertion={ name }
+                        assertionHint={ <p>Please type <strong>{ name }</strong> to confirm.</p> }
+                        assertionType="input"
+                        primaryAction="Confirm"
+                        secondaryAction="Cancel"
+                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                        onPrimaryActionClick={ (): void => handleApplicationDelete() }
+                    >
+                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+                        <ConfirmationModal.Message attached warning>
+                            This action is irreversible and will permanently delete the application.
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                            If you delete this application, you will not be able to get it back. All the applications
+                            depending on this also might stop working. Please proceed with caution.
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
                 </>
             )
             : <ContentLoader/>

@@ -17,7 +17,11 @@
  */
 
 import React, { ReactElement } from "react";
-import { ResourceList, ResourceListItem, UserAvatar } from "@wso2is/react-components";
+import {
+    ResourceList,
+    ResourceListItem,
+    UserAvatar
+} from "@wso2is/react-components";
 import { Grid, List, SemanticWIDTHS } from "semantic-ui-react";
 import { history } from "../../helpers";
 import { UserBasicInterface, UserListInterface } from "../../models";
@@ -79,14 +83,14 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
         let metaColumnWidth: SemanticWIDTHS = 1;
          const metaList = attributes.map((metaAttribute, index) => {
-             if (metaAttribute?.toString().length < 10) {
-                 metaColumnWidth = 2
+             if (metaAttribute?.toString().length <= 10) {
+                 metaColumnWidth = 2;
              }
-             if (metaAttribute?.toString().length > 20) {
-                 metaColumnWidth = 4
+             if (metaAttribute?.toString().length >= 20) {
+                 metaColumnWidth = 4;
              }
-             if (metaAttribute?.toString().length > 30 && metaAttribute?.toString().length < 40) {
-                 metaColumnWidth = 6
+             if (metaAttribute?.toString().length >= 30 && metaAttribute?.toString().length <= 40) {
+                 metaColumnWidth = 6;
              }
             return (
                 <Grid.Column width={ metaColumnWidth } key={ index }>

@@ -154,4 +154,4 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
             </Modal.Actions>
         </Modal>
     )
-}
+};
