@@ -26,7 +26,9 @@ interface AddUserWizardSummaryProps {
     onSubmit: (application: any) => void;
 }
 
-export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (props: AddUserWizardSummaryProps): ReactElement => {
+export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
+    props: AddUserWizardSummaryProps
+): ReactElement => {
     
     const {
         summary,
