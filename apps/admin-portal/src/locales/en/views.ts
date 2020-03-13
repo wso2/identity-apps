@@ -18,6 +18,7 @@
 
 import { Views } from "../../models";
 
+/* eslint-disable @typescript-eslint/camelcase */
 export const views: Views = {
     components: {
         applications: {
