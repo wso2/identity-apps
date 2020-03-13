@@ -21,7 +21,7 @@ import { PageLayout } from "../layouts";
 import { ListLayout } from "../layouts";
 import { PrimaryButton, EmptyPlaceholder } from "@wso2is/react-components";
 import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
-import { UserStoresSearch, AddEditUserStore } from "../components";
+import { UserStoresSearch, AddUserStore } from "../components";
 import { AlertLevels, QueryParams, UserStoreListItem } from "../models";
 import { getUserStores } from "../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
@@ -81,7 +81,7 @@ export const UserStores = (): React.ReactElement => {
         <>
             {
                 openModal
-                    ? <AddEditUserStore
+                    ? <AddUserStore
                         open={ openModal }
                         onClose={ ()=>{setOpenModal(false)} }
                 />

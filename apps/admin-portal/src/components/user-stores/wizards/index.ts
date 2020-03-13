@@ -16,6 +16,5 @@
 * under the License.
 */
 
-export * from "./user-stores-list";
-export * from "./advanced-search-user-stores";
-export * from "./add-user-store";
+export * from "./basic-details-user-store";
+export * from "./connection-details";
