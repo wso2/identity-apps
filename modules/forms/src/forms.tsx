@@ -497,7 +497,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             });
         };
 
-        const mutatedChildren: React.ReactElement[] = [...parseChildren(children, formFields)];
+        const mutatedChildren: React.ReactElement[] = children?[...parseChildren(children, formFields)]:null;
 
         return <Form onSubmit={ handleSubmit }>{mutatedChildren}</Form>;
     };
