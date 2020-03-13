@@ -25,6 +25,7 @@ export interface Permission {
     isExpanded?: boolean;
     children?: Permission[];
     fullPath?: string;
+    isChecked: boolean;
 }
 
 /**

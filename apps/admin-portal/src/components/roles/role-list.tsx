@@ -17,9 +17,10 @@
  */
 
 import React, { ReactElement } from "react";
-import { RolesInterface } from "../../../models";
-import { ResourceList, ResourceListItem } from "@wso2is/react-components";
-import { CommonUtils } from "../../../utils";
+import { RolesInterface } from "../../models";
+import { ResourceList, ResourceListItem, UserAvatar } from "@wso2is/react-components";
+import { CommonUtils } from "../../utils";
+import { history } from "../../helpers";
 
 interface RoleListProps {
     roleList: RolesInterface[];
@@ -37,6 +38,10 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
         handleRoleDelete
     } = props;
 
+    const handleRoleEdit = (roleId: string) => {
+        history.push(`roles/${ roleId }`);
+    };
+
     return (
         <ResourceList className="roles-list">
             {
@@ -44,14 +49,18 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     <ResourceListItem
                         key={ index }
                         actionsFloated="right"
-                        actions={ [
+                        actions={ [{
+                                icon: "pencil alternate",
+                                onClick: () => handleRoleEdit(role.id),
+                                popupText: "Edit Role",
+                                type: "button"
+                            },
                             {
                                 icon: "trash alternate",
                                 onClick: () => handleRoleDelete(role.id),
                                 popupText: "Delete Role",
                                 type: "button"
-                            }
-                        ] }
+                        }] }
                         itemHeader={ role.displayName }
                         metaContent={ CommonUtils.humanizeDateDifference(role.meta.created) }
                     />

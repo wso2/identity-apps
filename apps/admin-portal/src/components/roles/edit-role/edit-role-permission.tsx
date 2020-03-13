@@ -13,9 +13,26 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
- * under the License.
+ * under the License
  */
 
-export * from "./users-search";
-export * from "./users-list";
-export * from "./add-user";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react"
+import { PermissionList } from "../create-role-wizard/role-permisson";
+import { getPermissionsPerRole } from "../../../api";
+import { string } from "prop-types";
+
+interface RolePermissionDetailProps {
+    role: string;
+}
+
+export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps> = (props: 
+    RolePermissionDetailProps): ReactElement => {
+
+    const {
+        role
+    } = props;
+    
+    return (
+        <PermissionList role={ role } />
+    )
+}

@@ -19,7 +19,7 @@
 import React, { FunctionComponent, ReactElement } from "react";
 import { Forms, Field } from "@wso2is/forms";
 import { Grid, GridRow, GridColumn } from "semantic-ui-react";
-import { CreateRoleFormData } from "../../../../src/models";
+import { CreateRoleFormData } from "../../../models";
 
 /**
  * Interface to capture role basics props.

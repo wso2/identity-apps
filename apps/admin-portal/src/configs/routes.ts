@@ -30,7 +30,8 @@ import {
     PrivacyPage,
     UserEditPage,
     UsersPage,
-    UserRoles,
+    RolesPage,
+    RoleEditPage,
     LocalClaimsPage,
     ExternalClaimsPage,
     ClaimDialectsPage,
@@ -133,7 +134,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: true
             },
             {
-                component: UserRoles,
+                component: RolesPage,
                 exact: true,
                 icon: "childIcon",
                 id: "roles",
@@ -142,6 +143,16 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 path: "/roles",
                 protected: true,
                 showOnSidePanel: true
+            },
+            {
+                component: RoleEditPage,
+                exact: true,
+                icon: "usersAndRoles",
+                id: "rolesEdit",
+                name: "Role-Edit",
+                path: "/roles/:id",
+                protected: true,
+                showOnSidePanel: false,
             },
             {
                 component: UserEditPage,

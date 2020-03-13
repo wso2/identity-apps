@@ -620,6 +620,13 @@ export const views: Views = {
             }
         },
         roles: {
+            edit: {
+                basics: {
+                    fields: {
+                        roleName: "Role Name"
+                    }
+                }
+            },
             notifications: {
                 deleteRole: {
                     error: {
