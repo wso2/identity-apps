@@ -21,7 +21,7 @@ const fs = require("fs-extra");
 const chalk = require("chalk");
 const { execSync } = require("child_process");
 
-// tslint:disable-next-line:no-console
+// eslint-disable-next-line no-console
 const log = console.log;
 
 const OUTPUT_DIR_NAME = "bundle";
@@ -68,7 +68,7 @@ const content = require(contentPath);
 let metaFileContent = {};
 
 // Create directories to store the locales for the corresponding language.
-for (const [key, value] of Object.entries(content)) {
+for (const value of Object.values(content)) {
 
     const langDirPath = path.join(outputPath, value.meta.code);
 
@@ -79,7 +79,7 @@ for (const [key, value] of Object.entries(content)) {
         log(chalk.whiteBright.bgYellow("\nWARNING") +
             chalk.yellowBright(" - Could not find the relevant locale meta or resources for the language"));
 
-        return;
+        break;
     }
 
     // Create the language directories
@@ -87,20 +87,28 @@ for (const [key, value] of Object.entries(content)) {
 
     log(chalk.blueBright.bold("\nCreating a directory for the language - " + value.meta.name + "\n"));
 
-    // Iterate through the resources object to extract the namespaces.
-    // These names will be used to create the corresponding resource JSON files.
+    // Iterate through the resources object to extract the sub folders.
     for (const [objKey, objValue] of Object.entries(value.resources)) {
-        const fileName = objKey + ".json";
-        const filePath = path.join(langDirPath, fileName);
+        const subFolderPath = path.join(langDirPath, objKey);
 
-        createFile(filePath, JSON.stringify(objValue, undefined, 4), null, true);
+        createDirectory(subFolderPath, true);
 
-        log(chalk.whiteBright.bold("Creating " + fileName + " to store relevant namespace resources"));
+        log(chalk.magentaBright.bold("Creating " + objKey + " sub folder to store relevant namespace resources."));
 
-        resourcePaths = {
-            ...resourcePaths,
-            [ objKey ]: path.join(value.meta.code, fileName),
-        };
+        // Extract and create the JSON files from the namespaces.
+        for (const [nsObjKey, nsObjValue] of Object.entries(objValue)) {
+            const fileName = nsObjKey + ".json";
+            const filePath = path.join(subFolderPath, fileName);
+
+            createFile(filePath, JSON.stringify(nsObjValue, undefined, 4), null, true);
+
+            log(chalk.whiteBright.bold("Generating the JSON - " + fileName));
+
+            resourcePaths = {
+                ...resourcePaths,
+                [ nsObjKey ]: path.join(value.meta.code, objKey, fileName),
+            };
+        }
     }
 
     metaFileContent = {

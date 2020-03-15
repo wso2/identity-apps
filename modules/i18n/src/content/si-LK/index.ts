@@ -16,11 +16,13 @@
  * under the License.
  */
 
+import * as portals from "./portals";
 import { LocaleBundle } from "../../models";
 import { meta } from "./meta";
-import * as namespaces from "./namespaces";
 
 export const SI_LK: LocaleBundle = {
     meta,
-    resources: namespaces
+    resources: {
+        portals
+    }
 };
