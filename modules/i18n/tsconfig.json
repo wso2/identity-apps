@@ -6,7 +6,7 @@
         "rootDir": "src",
         "outDir": "dist/src",
         "declaration": true,
-        "declarationDir": "dist/typings"
+        "declarationDir": "dist/types"
     },
     "extends": "../../configs/common.tsconfig.json"
 }
