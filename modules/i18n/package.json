@@ -23,7 +23,7 @@
         "clean": "rimraf ./dist",
         "clean:bundle": "rimraf ./dist/bundle",
         "compile": "tsc -p tsconfig.json",
-        "lint": "tslint -t stylish --project ."
+        "lint": "eslint --ext .js,.ts ."
     },
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -39,7 +39,6 @@
         "lodash": "*",
         "react-i18next": "*",
         "rimraf": "*",
-        "tslint": "*",
         "typescript": "*"
     }
 }
