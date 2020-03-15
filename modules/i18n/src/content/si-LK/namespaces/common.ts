@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { Common } from "../../../models";
+import { CommonNS } from "../../../models";
 
-export const common: Common = {
+export const common: CommonNS = {
     access: "ප්\u200Dරවේශය",
     active: "සක්\u200Dරීයයි",
     add: "එකතු කරන්න",

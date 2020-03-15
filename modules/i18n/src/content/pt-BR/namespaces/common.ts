@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { Common } from "../../../models";
+import { CommonNS } from "../../../models";
 
-export const common: Common = {
+export const common: CommonNS = {
     access: "Acesso",
     active: "Activo",
     add: "AAdicionar",

@@ -19,7 +19,7 @@
 /**
  * Schema for the common namespace
  */
-export interface Common {
+export interface CommonNS {
     access: string;
     active: string;
     add: string;
