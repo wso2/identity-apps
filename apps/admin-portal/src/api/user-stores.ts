@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { QueryParams, HttpMethods, UserStore, UserStorePostData, TestConnection } from "../models";
+import { QueryParams, HttpMethods, UserStorePostData, TestConnection } from "../models";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { AxiosHttpClient } from "@wso2is/http";
 
@@ -135,7 +135,7 @@ export const deleteUserStore = (id: string): Promise<any> => {
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status !== 200) {
+            if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
             return Promise.resolve(response.data);
@@ -187,7 +187,7 @@ export const addUserStore = (data: UserStorePostData): Promise<any> => {
     return httpClient
         .request(requestConfig)
         .then((response) => {
-            if (response.status !== 200) {
+            if (response.status !== 201) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
             return Promise.resolve(response.data);
