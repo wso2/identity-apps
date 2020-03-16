@@ -26,7 +26,7 @@ import { useDispatch } from "react-redux";
 
 interface ConnectionDetailsPropsInterface {
     submitState: boolean;
-    onSubmit: (values: Map<string, FormValue>) => void;
+    onSubmit: (values: Map<string, FormValue>, type: Type) => void;
     values: Map<string, FormValue>;
     typeId: string;
 }
@@ -43,7 +43,7 @@ export const ConnectionDetails = (
     useEffect(() => {
         if (typeId !== null) {
             getAType(typeId, null).then(response => {
-                setType(response);
+                setType(response[0]);
             }).catch(error => {
                 dispatch(addAlert({
                     description: error?.description,
@@ -60,7 +60,7 @@ export const ConnectionDetails = (
                 <Grid.Column>
                     <Forms
                         onSubmit={ (values: Map<string, FormValue>) => {
-                            if (values.get("type").toString() === "SkRCQ1VzZXJTdG9yZU1hbmFnZXI") {
+                            if (type.typeId === "SkRCQ1VzZXJTdG9yZU1hbmFnZXI") {
                                 const testData: TestConnection = {
                                     driverName: values.get("driverName").toString(),
                                     connectionURL: values.get("url").toString(),
@@ -68,7 +68,7 @@ export const ConnectionDetails = (
                                     connectionPassword: values.get("password").toString()
                                 };
                                 testConnection(testData).then(() => {
-                                    onSubmit(values);
+                                    onSubmit(values,type);
                                 }).catch(() => {
                                     setConnectionFailed(true);
                                 })
