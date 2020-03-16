@@ -41,7 +41,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                     description: values.get("description").toString(),
                     displayOrder: parseInt(values.get("displayOrder").toString()),
                     regEx: values.get("regularExpression").toString(),
-                    displayName: values.get("name").toString(),
+                    displayName: values.get("name").toString() ?? "0",
                     readOnly: values.get("readOnly").length > 0,
                     required: values.get("required").length > 0,
                     supportedByDefault: values.get("supportedByDefault").length > 0,
@@ -63,7 +63,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             value={ values?.get("name")?.toString() }
                         />
                         <Field
-                            type="text"
+                            type="textarea"
                             name="description"
                             label="Description"
                             required={ true }
@@ -101,9 +101,9 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             name="displayOrder"
                             label="Display Order"
                             required={ false }
-                            requiredErrorMessage=""
+                            requiredErrorMessage="Display Order is required"
                             placeholder="Enter the display order"
-                            value={ values?.get("displayOrder")?.toString() }
+                            value={ values?.get("displayOrder")?.toString() ?? "0" }
                         />
                     </Grid.Column>
                 </Grid.Row>
