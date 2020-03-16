@@ -1,13 +1,5 @@
 # Security Policy
 
-## Supported Versions
-
-Please find below the versions that are currently being supported with security updates.
-
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.0.x   | :white_check_mark: |
-
 ## Reporting Vulnerabilities
 
 > **Warning** : Please do not create GitHub issues for security vulnerabilities.
