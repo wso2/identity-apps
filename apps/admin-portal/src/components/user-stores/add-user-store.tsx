@@ -22,6 +22,11 @@ import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { ApplicationWizardStepIcons } from "../../configs";
 import { BasicDetailsUserStore, ConnectionDetails } from "./wizards";
+import { SummaryUserStores } from "./wizards/summary";
+import { Type, UserStorePostData, AlertLevels } from "../../models";
+import { addUserStore } from "../../api";
+import { useDispatch } from "react-redux";
+import { addAlert } from "../../store/actions";
 
 interface AddUserStoreProps {
     open: boolean;
@@ -35,20 +40,53 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
     const [currentWizardStep, setCurrentWizardStep] = useState(0);
     const [basicDetailsData, setBasicDetailsData] = useState<Map<string, FormValue>>(null);
     const [connectionDetailsData, setConnectionDetailsData] = useState<Map<string, FormValue>>(null);
+    const [type, setType] = useState<Type>(null);
+    const [userStore, setUserStore] = useState<UserStorePostData>(null);
 
     const [firstStep, setFirstStep] = useTrigger();
     const [secondStep, setSecondStep] = useTrigger();
 
+    const dispatch = useDispatch();
+
     const handleSubmit = () => {
-        alert("")
+        addUserStore(userStore).then(() => {
+            dispatch(addAlert({
+                message: "User Store added successfully!",
+                description: "The user store has been added successfully!",
+                level: AlertLevels.SUCCESS
+            }))
+            onClose();
+        }).catch(error => {
+                dispatch(addAlert({
+                    message: error?.message ?? "Something went wrong!",
+                    description: error?.description ?? "There was an error while creating the user store",
+                    level: AlertLevels.ERROR
+                }))
+            })
     };
     const onSubmitBasicDetails = (values: Map<string, FormValue>) => {
         setBasicDetailsData(values);
         setCurrentWizardStep(1);
     }
 
-    const onSubmitConnectionDetails = (values: Map<string, FormValue>) => {
+    const onSubmitConnectionDetails = (values: Map<string, FormValue>, type: Type) => {
         setConnectionDetailsData(values);
+        setType(type);
+
+        const data = new Map([...Array.from(basicDetailsData ?? []), ...Array.from(values ?? [])]);
+        const userStore: UserStorePostData = {
+            typeId: data.get("type")?.toString(),
+            description: data.get("description")?.toString(),
+            name: data.get("name")?.toString(),
+            properties: type?.properties?.Mandatory?.map(property => {
+                return {
+                    name: property.name,
+                    value: data.get(property.name)?.toString()
+                }
+            })
+        };
+
+        setUserStore(userStore);
         setCurrentWizardStep(2);
     }
 
@@ -78,7 +116,11 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
         },
         {
             content: (
-                null
+                <SummaryUserStores
+                    data={ userStore }
+                    properties={ type?.properties?.Mandatory }
+                    type={ type?.name }
+                />
             ),
             icon: ApplicationWizardStepIcons.general,
             title: "Summary"
@@ -116,7 +158,10 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
                 Add a User Store
             </Modal.Header>
             <Modal.Content className="steps-container">
-                <Steps.Group header="Fill in the following details to create a local claim." current={ currentWizardStep }>
+                <Steps.Group
+                    header="Fill in the following details to create a user store."
+                    current={ currentWizardStep }
+                >
                     {STEPS.map((step, index) => (
                         <Steps.Step
                             key={ index }
