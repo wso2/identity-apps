@@ -16,10 +16,6 @@
  * under the License.
  */
 
-import i18next, { i18n as i18nInterface, InitOptions, Module } from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
-import { initReactI18next } from "react-i18next";
-import { I18nModuleConstants } from "./constants";
 import {
     I18nInstanceInitException,
     LanguageChangeException,
@@ -27,7 +23,11 @@ import {
     UnsupportedI18nFrameworkException
 } from "./exceptions";
 import { generateI18nOptions, getSupportedLanguages } from "./helpers";
+import i18next, { InitOptions, Module, i18n as i18nInterface } from "i18next";
+import { I18nModuleConstants } from "./constants";
+import LanguageDetector from "i18next-browser-languagedetector";
 import { SupportedLanguages } from "./models";
+import { initReactI18next } from "react-i18next";
 
 export enum SupportedI18nFrameworks {
     REACT = "react"
@@ -36,7 +36,7 @@ export enum SupportedI18nFrameworks {
 export class I18n {
 
     private static i18nInstance: i18nInterface = null;
-    private static debug: boolean = false;
+    private static debug = false;
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -44,10 +44,20 @@ export class I18n {
      *
      * @hideconstructor
      */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
+    public static getInstance(): i18nInterface {
+
+        if (!this.i18nInstance) {
+            throw new UninitializedI18nInstanceException();
+        }
+
+        return this.i18nInstance;
+    }
+
     public static init(options?: InitOptions, override?: boolean, plugins?: Module[], autoDetect?: boolean,
-                       debug: boolean = false, framework: SupportedI18nFrameworks = SupportedI18nFrameworks.REACT) {
+                       debug = false, framework: SupportedI18nFrameworks = SupportedI18nFrameworks.REACT) {
 
         this.i18nInstance = i18next;
 
@@ -57,19 +67,17 @@ export class I18n {
         }
 
         // Activate the corresponding i18n framework.
-        switch (framework) {
-            case SupportedI18nFrameworks.REACT:
-                this.i18nInstance.use(initReactI18next);
-                break;
-            default:
-                throw new UnsupportedI18nFrameworkException(framework);
+        if (framework === SupportedI18nFrameworks.REACT) {
+            this.i18nInstance.use(initReactI18next);
+        } else {
+            throw new UnsupportedI18nFrameworkException(framework);
         }
 
         this.i18nInstance.init(generateI18nOptions(options, override, debug))
             .then((response) => {
                 if (debug) {
                     // TODO: Implement a logger module and use here.
-                    // tslint:disable-next-line:no-console
+                    // eslint-disable-next-line no-console
                     console.log("i18n module initialized. - ", response);
                 }
             })
@@ -79,15 +87,6 @@ export class I18n {
 
         // Check if the detected language is supported
         this.checkDetectedLanguage(this.i18nInstance.language);
-    }
-
-    public static getInstance(): i18nInterface {
-
-        if (!this.i18nInstance) {
-            throw new UninitializedI18nInstanceException();
-        }
-
-        return this.i18nInstance;
     }
 
     public static getSupportedLanguages(): SupportedLanguages {
@@ -110,7 +109,7 @@ export class I18n {
                 .then(() => {
                     if (this.debug) {
                         // TODO: Implement a logger module and use here.
-                        // tslint:disable-next-line:no-console
+                        // eslint-disable-next-line no-console
                         console.log(`The detected language (${ detectedLang }) is not supported.
                         Falling back to default (${ I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE })`);
                     }
