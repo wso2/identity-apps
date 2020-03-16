@@ -55,6 +55,12 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
                 description: "The user store has been added successfully!",
                 level: AlertLevels.SUCCESS
             }))
+            dispatch(addAlert({
+                message: "Updating User Store list takes time",
+                description: "It may take a while for the user store list to be updated. " +
+                    "Refresh in a few seconds to get the updated user store list.",
+                level: AlertLevels.WARNING
+            }));
             onClose();
         }).catch(error => {
                 dispatch(addAlert({

@@ -76,6 +76,12 @@ export const UserStoresList = (props: UserStoresListPropsInterface): React.React
                                     description: "The user store has been deleted successfully!",
                                     level: AlertLevels.SUCCESS
                                 }));
+                                dispatch(addAlert({
+                                    message: "Updating User Store list takes time",
+                                    description: "It may take a while for the user store list to be updated. " +
+                                        "Refresh in a few seconds to get the updated user store list.",
+                                    level: AlertLevels.WARNING
+                                }));
                                 update();
                                 closeDeleteConfirm();
                             })
