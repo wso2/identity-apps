@@ -122,7 +122,7 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                 description={ "View, edit and add claims of " + dialect?.dialectURI }
                 showBottomDivider={ true }
                 backButton={ {
-                    onClick: () => { history.push("/external-dialects") },
+                    onClick: () => { history.push("/claim-dialects") },
                     text: "Go back to Claim Dialects"
                 } }
             >
