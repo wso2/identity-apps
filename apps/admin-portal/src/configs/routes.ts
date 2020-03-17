@@ -173,7 +173,6 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         protected: true,
         showOnSidePanel: true
     },
-
     {
         component: LocalClaimsPage,
         exact: true,
