@@ -19,7 +19,7 @@
 import React, { FunctionComponent, ReactElement, useEffect, useState} from "react";
 import { getPermissionList, getPermissionsPerRole } from "../../../api";
 import { Permission } from "../../../models/permission";
-import SuperTreeview from 'react-super-treeview';
+import { TreeView } from "@wso2is/react-components";
 import { Forms } from "@wso2is/forms";
 import { addPath } from "../role-utils";
 import { Segment } from "semantic-ui-react";
@@ -122,7 +122,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                 onSubmit(selectedPermissions);
             } }>
                 {
-                    !permissionsLoading ? <SuperTreeview
+                    !permissionsLoading ? <TreeView
                         data={ permissionTree }
                         keywordLabel= "label"
                         isDeletable= { () => { return false } }
