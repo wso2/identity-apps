@@ -44,10 +44,14 @@ export const ClaimDialectsPage = (): React.ReactElement => {
             limit, offset, sort, filter
 
         }).then((response: ClaimDialect[]) => {
-            const filteredResponse = response.filter((claim: ClaimDialect) => {
+            const localDialect: ClaimDialect[] = response.filter((claim: ClaimDialect) => {
+                return claim.id === "local";
+            });
+            const filteredDialect: ClaimDialect[] = response.filter((claim: ClaimDialect) => {
                 return claim.id !== "local";
             });
-            setDialects(filteredResponse);
+
+            setDialects([localDialect[0], ...filteredDialect]);
         }).catch(error => {
             dispatch(addAlert(
                 {
@@ -58,7 +62,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
             ));
         })
     }
-    
+
     useEffect(() => {
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
         getDialect();
@@ -89,8 +93,8 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                 dialectID={ dialectID }
             />
             <PageLayout
-                title="External Dialects"
-                description="View, edit and add External Dialects"
+                title="Claim Dialects"
+                description="View, edit and add Claim Dialects"
                 showBottomDivider={ true }
             >
                 <ListLayout
@@ -112,7 +116,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                                 } }
                             >
                                 <Icon name="add" />Add a dialect
-                        </PrimaryButton>
+                            </PrimaryButton>
                         )
                     }
                     showPagination={ true }
