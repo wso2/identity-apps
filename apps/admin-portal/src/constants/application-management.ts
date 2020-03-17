@@ -39,4 +39,10 @@ export class ApplicationManagementConstants {
         "status code while updating the auth protocol config.";
     public static readonly AUTH_PROTOCOL_CONFIG_UPDATE_ERROR: string = "An error occurred while updating the auth" +
         "protocol config.";
+
+    public static readonly DEFAULT_ADAPTIVE_AUTH_SCRIPT: string[] = [
+        "var onLoginRequest = function(context) {",
+        "};",
+        ""
+    ]
 }

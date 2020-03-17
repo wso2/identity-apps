@@ -19,6 +19,8 @@
 import React, { FunctionComponent, ReactElement } from "react";
 import { AuthenticationFlow } from "./authentication-flow";
 import { AuthenticationSequenceInterface } from "../../../models";
+import { AdaptiveScripts } from "./adaptive-scripts";
+import { Divider } from "semantic-ui-react";
 
 /**
  * Proptypes for the sign on methods component.
@@ -62,6 +64,13 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     return (
         <div className="sign-on-methods-tab-content">
             <AuthenticationFlow
+                appId={ appId }
+                authenticationSequence={ authenticationSequence }
+                isLoading={ isLoading }
+                onUpdate={ onUpdate }
+            />
+            <Divider hidden />
+            <AdaptiveScripts
                 appId={ appId }
                 authenticationSequence={ authenticationSequence }
                 isLoading={ isLoading }
