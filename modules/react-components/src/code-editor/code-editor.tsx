@@ -41,15 +41,42 @@ window.JSHINT = JSHINT;
  * Code editor component Prop types.
  */
 export interface CodeEditorProps extends IUnControlledCodeMirror {
+    /**
+     * Whether to format the code.
+     */
     beautify?: boolean;
+    /**
+     * Language the code is written in.
+     */
     language?: "javascript" | "json" | "typescript";
+    /**
+     * Whether to enable linting or not.
+     */
     lint?: boolean;
+    /**
+     * If the editor is read only or not.
+     */
     readOnly?: boolean;
+    /**
+     * Whether to show line numbers.
+     */
     showLineNumbers?: boolean;
+    /**
+     * Whether to enable smart mode which will enable auto bracket
+     * closing etc.
+     */
     smart?: boolean;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    /**
+     * Code to be displayed on the editor.
+     */
     sourceCode?: any;
+    /**
+     * Tab indent size.
+     */
     tabSize?: number;
+    /**
+     * Editor theme.
+     */
     theme?: "dark" | "light";
 }
 
@@ -67,6 +94,7 @@ export const CodeEditor: React.FunctionComponent<CodeEditorProps> = (
         beautify,
         language,
         lint,
+        options,
         readOnly,
         showLineNumbers,
         smart,
@@ -98,10 +126,9 @@ export const CodeEditor: React.FunctionComponent<CodeEditorProps> = (
     /**
      * Resolves the editor theme.
      *
-     * @param {string} theme - Selected theme.
      * @return {object} Resolved mode.
      */
-    const resolveTheme = (theme: string): string => {
+    const resolveTheme = (): string => {
         if (!(theme === "dark" || theme === "light")) {
             throw new Error("Please select a supported theme. Only `dark` and `light` are supported at the moment.");
         }
@@ -135,9 +162,9 @@ export const CodeEditor: React.FunctionComponent<CodeEditorProps> = (
             value={ beautify ? beautifyCode() : sourceCode }
             options={
                 {
-                    ...rest.options,
-                    mode: props.options?.mode ? props.options.mode : resolveMode(language),
-                    theme: resolveTheme(theme),
+                    ...options,
+                    mode: options?.mode ? options.mode : resolveMode(language),
+                    theme: resolveTheme(),
                     lineNumbers: showLineNumbers,
                     readOnly,
                     gutters: [ "note-gutter", "CodeMirror-linenumbers", "CodeMirror-lint-markers" ],
