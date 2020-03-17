@@ -104,4 +104,4 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): React.R
             }
         </Grid>
     )
-}
+};
