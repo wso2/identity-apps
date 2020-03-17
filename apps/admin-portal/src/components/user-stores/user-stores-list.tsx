@@ -23,15 +23,15 @@ import { Modal } from "semantic-ui-react";
 import { deleteUserStore } from "../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../store/actions";
+import { history } from "../../helpers";
 
 interface UserStoresListPropsInterface {
     list: UserStoreListItem[];
-    openEdit: (id: string) => void;
     update: () => void;
 }
 export const UserStoresList = (props: UserStoresListPropsInterface): React.ReactElement => {
 
-    const { list, openEdit, update } = props;
+    const { list, update } = props;
 
     const [deleteConfirm, setDeleteConfirm] = useState(false);
     const [deleteID, setDeleteID] = useState<string>(null);
@@ -115,14 +115,14 @@ export const UserStoresList = (props: UserStoresListPropsInterface): React.React
                                     {
                                         icon: "pencil alternate",
                                         onClick: () => {
-                                            openEdit(userStore.id);
+                                            history.push("/edit-user-store/"+userStore?.id);
                                         },
                                         popupText: "edit",
                                         type: "button"
                                     },
                                     {
                                         icon: "trash alternate",
-                                        onClick: () => { initDelete(userStore.id) },
+                                        onClick: () => { initDelete(userStore?.id) },
                                         popupText: "delete",
                                         type: "dropdown"
                                     }

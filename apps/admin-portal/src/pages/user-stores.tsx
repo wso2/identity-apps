@@ -127,7 +127,6 @@ export const UserStores = (): React.ReactElement => {
                         >
                             <UserStoresList
                                 list={ paginate(userStores, listItemLimit, offset) }
-                                openEdit={ () => { setOpenModal(true) } }
                                 update={ fetchUserStores }
                             />
                         </ListLayout>

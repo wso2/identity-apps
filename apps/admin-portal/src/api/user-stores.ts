@@ -103,7 +103,7 @@ export const getAUserStore = (id: string): Promise<any> => {
         headers: {
             'Accept': 'application/json',
             'Access-Control-Allow-Origin': GlobalConfig.clientHost,
-'			Content-Type': 'application/json'
+            'Content-Type': 'application/json'
         },
         method: HttpMethods.GET,
         url: `${ServiceResourcesEndpoint.userStores}/${id}`

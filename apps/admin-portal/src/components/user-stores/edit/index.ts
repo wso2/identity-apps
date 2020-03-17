@@ -16,6 +16,7 @@
 * under the License.
 */
 
-export * from "./basic-details-user-store";
-export * from "./connection-details";
-export * from "./summary";
+export * from "./edit-advanced-properties-user-store";
+export * from "./edit-basic-details-user-store";
+export * from "./edit-connection-details-user-store";
+export * from "./edit-optional-properties-user-store";

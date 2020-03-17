@@ -22,7 +22,7 @@ import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { ApplicationWizardStepIcons } from "../../configs";
 import { BasicDetailsUserStore, ConnectionDetails } from "./wizards";
-import { SummaryUserStores } from "./wizards/summary";
+import { SummaryUserStores } from "./wizards";
 import { Type, UserStorePostData, AlertLevels } from "../../models";
 import { addUserStore } from "../../api";
 import { useDispatch } from "react-redux";
