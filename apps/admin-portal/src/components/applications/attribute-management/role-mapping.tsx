@@ -81,7 +81,7 @@ export const RoleMapping = (props: RoleMappingPropsInterface): React.ReactElemen
                     message: "Get Error"
                 }));
             });
-    }, initialMappings);
+    }, [initialMappings]);
 
     return (
         <>
@@ -112,7 +112,6 @@ export const RoleMapping = (props: RoleMappingPropsInterface): React.ReactElemen
                         keyRequiredMessage="Please enter the local role"
                         valueRequiredErrorMessage="Please enter an attribute to map to"
                         duplicateKeyErrorMsg="This role is already mapped. Please select another role"
-                        requiredField={ false }
                         submit={ submitState }
                         update={ (data) => {
                             if (data.length > 0) {
@@ -122,13 +121,10 @@ export const RoleMapping = (props: RoleMappingPropsInterface): React.ReactElemen
                                         applicationRole: mapping.value
                                     }
                                 });
-
-                                console.log(finalData);
                                 onSubmit(finalData);
                             } else {
                                 onSubmit([]);
                             }
-
                         } }
                     />
                 </Grid.Column>
