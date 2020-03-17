@@ -77,7 +77,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 name: "Application Templates",
                 path: "/applications/templates",
                 protected: true,
-                showOnSidePanel: false,
+                showOnSidePanel: false
             },
             {
                 component: ApplicationEditPage,
@@ -87,8 +87,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 name: "Application-Edit",
                 path: "/applications/:id",
                 protected: true,
-                showOnSidePanel: false,
-            },
+                showOnSidePanel: false
+            }
         ],
         component: ApplicationsPage,
         exact: true,
@@ -97,7 +97,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         name: "Applications",
         path: "/applications",
         protected: true,
-        showOnSidePanel: true,
+        showOnSidePanel: true
     },
     {
         children: [
@@ -109,7 +109,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 name: "Identity-Provider-Template",
                 path: "/identity-providers/templates",
                 protected: true,
-                showOnSidePanel: false,
+                showOnSidePanel: false
             },
             {
                 component: IdentityProviderEditPage,
@@ -119,8 +119,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 name: "Identity-Providers-Edit",
                 path: "/identity-providers/:id",
                 protected: true,
-                showOnSidePanel: false,
-            },
+                showOnSidePanel: false
+            }
         ],
         component: IdentityProvidersPage,
         exact: true,
@@ -129,7 +129,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         name: "Identity Providers",
         path: "/identity-providers",
         protected: true,
-        showOnSidePanel: true,
+        showOnSidePanel: true
     },
     {
         children: [
@@ -163,7 +163,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 name: "User-Edit",
                 path: "/users/:id",
                 protected: true,
-                showOnSidePanel: false,
+                showOnSidePanel: false
             }
         ],
         exact: true,
@@ -173,59 +173,50 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         protected: true,
         showOnSidePanel: true
     },
+
     {
         component: LocalClaimsPage,
         exact: true,
-        icon: "claims",
-        name: "Claims",
+        icon: "childIcon",
+        id: "localDialect",
+        level: 2,
+        name: "Local Dialect",
+        path: "/local-dialect",
         protected: true,
-        showOnSidePanel: true,
-        children: [
-            {
-                component: LocalClaimsPage,
-                exact: true,
-                icon: "childIcon",
-                id: "localDialect",
-                level: 2,
-                name: "Local Dialect",
-                path: "/local-dialect",
-                protected: true,
-                showOnSidePanel: true
-            },
-            {
-                component: ExternalClaimsPage,
-                exact: true,
-                icon: "childIcon",
-                id: "externalClaims",
-                level: 2,
-                name: "External Claims",
-                path: "/external-claims/:id",
-                protected: true,
-                showOnSidePanel: false
-            },
-            {
-                component: ClaimDialectsPage,
-                exact: true,
-                icon: "childIcon",
-                id: "claimDialects",
-                level: 2,
-                name: "External Dialects",
-                path: "/external-dialects",
-                protected: true,
-                showOnSidePanel:true
-            },
-            {
-                component: LocalClaimsEditPage,
-                exact: true,
-                icon: "childIcon",
-                id: "editLocalClaims",
-                level: 2,
-                name: "Edit Local Claims",
-                path: "/edit-local-claims/:id",
-                protected: true,
-                showOnSidePanel:false
-            }
-        ]
+        showOnSidePanel: false
+    },
+    {
+        component: ExternalClaimsPage,
+        exact: true,
+        icon: "childIcon",
+        id: "externalClaims",
+        level: 2,
+        name: "External Claims",
+        path: "/external-claims/:id",
+        protected: true,
+        showOnSidePanel: false
+    },
+    {
+        component: ClaimDialectsPage,
+        exact: true,
+        icon: "claims",
+        id: "claimDialects",
+        level: 2,
+        name: "Claim Dialects",
+        path: "/claim-dialects",
+        protected: true,
+        showOnSidePanel: true
+    },
+    {
+        component: LocalClaimsEditPage,
+        exact: true,
+        icon: "childIcon",
+        id: "editLocalClaims",
+        level: 2,
+        name: "Edit Local Claims",
+        path: "/edit-local-claims/:id",
+        protected: true,
+        showOnSidePanel: false
     },
     {
         component: UserStores,
@@ -234,7 +225,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         name: "User Stores",
         path: "/user-stores",
         protected: true,
-        showOnSidePanel:true
+        showOnSidePanel: true
     },
     {
         component: PrivacyPage,
@@ -268,8 +259,8 @@ const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
         name: "Privacy",
         path: "/privacy",
         protected: true,
-        showOnSidePanel: false,
-    },
+        showOnSidePanel: false
+    }
 ];
 
 /**
@@ -283,7 +274,7 @@ const ERROR_LAYOUT_ROUTES: RouteInterface[] = [
         name: "404",
         path: "/404",
         protected: true,
-        showOnSidePanel: false,
+        showOnSidePanel: false
     }
 ];
 
@@ -340,7 +331,7 @@ const APP_ROUTES: RouteInterface[] = [
         name: "Privacy",
         path: "/privacy",
         protected: true,
-        showOnSidePanel: false,
+        showOnSidePanel: false
     },
     {
         component: ErrorPageLayout,
@@ -350,7 +341,7 @@ const APP_ROUTES: RouteInterface[] = [
         name: "Error",
         path: "/404",
         protected: true,
-        showOnSidePanel: false,
+        showOnSidePanel: false
     },
     {
         component: DashboardLayout,
@@ -384,4 +375,4 @@ export const authLayoutRoutes = AUTH_LAYOUT_ROUTES;
 export const dashboardLayoutRoutes = DASHBOARD_LAYOUT_ROUTES;
 export const defaultLayoutRoutes = DEFAULT_LAYOUT_ROUTES;
 export const errorLayoutRoutes = ERROR_LAYOUT_ROUTES;
-export const routes = [ ...DASHBOARD_LAYOUT_ROUTES ];
+export const routes = [...DASHBOARD_LAYOUT_ROUTES];
