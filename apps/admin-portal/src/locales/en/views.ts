@@ -643,6 +643,20 @@ export const views: Views = {
                         message: "Role deleted successfully"
                     }
                 },
+                updateRole: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error updating the selected role."
+                    },
+                    genericError: {
+                        description: "Couldn't update the selected role.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The selected role was updated successfully.",
+                        message: "Role updated successfully"
+                    }
+                },
                 createRole: {
                     error: {
                         description: "{{description}}",

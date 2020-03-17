@@ -18,7 +18,7 @@
 
 import React, { FunctionComponent, ReactElement } from "react";
 import { useDispatch } from "react-redux";
-import { AlertInterface } from "../../../models";
+import { AlertInterface, RolesInterface } from "../../../models";
 import { addAlert } from "../../../store/actions";
 import { ResourceTab } from "@wso2is/react-components";
 import { BaiscRoleDetails } from "./edit-role-basic";
@@ -26,13 +26,15 @@ import { RolePermissionDetails } from "./edit-role-permission";
 import { RoleUserDetails } from "./edit-role-users";
 
 interface EditRoleProps {
-    role: string;
+    roleId: string;
+    roleObject: RolesInterface;
 }
 
 export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps): ReactElement => {
 
     const {
-        role
+        roleId,
+        roleObject
     } = props;
 
     const panes = () => ([
@@ -40,21 +42,14 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
             menuItem: "Basics",
             render: () => (
                 <ResourceTab.Pane attached={ false }>
-                    <BaiscRoleDetails />
+                    <BaiscRoleDetails roleId={ roleId } roleObject={ roleObject } />
                 </ResourceTab.Pane>
             ),
         },{
             menuItem: "Permissions",
             render: () => (
                 <ResourceTab.Pane attached={ false }>
-                    <RolePermissionDetails role={ role }/>
-                </ResourceTab.Pane>
-            ),
-        },{
-            menuItem: "Users",
-            render: () => (
-                <ResourceTab.Pane attached={ false }>
-                    <RoleUserDetails/>
+                    <RolePermissionDetails role={ roleId }/>
                 </ResourceTab.Pane>
             ),
         }

@@ -16,19 +16,32 @@
  * under the License
  */
 
-import React, { FunctionComponent, ReactElement } from "react"
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react"
 import { Grid, Divider, Button } from "semantic-ui-react"
 import { Field, Forms } from "@wso2is/forms"
 import { useTranslation } from "react-i18next";
 import { DangerZoneGroup, DangerZone } from "@wso2is/react-components";
-import { deleteSelectedRole } from "../../../api";
-import { AlertLevels, AlertInterface } from "../../../models";
+import { deleteSelectedRole, getRoleById, updateRoleDetails } from "../../../api";
+import { AlertLevels, AlertInterface, RolesInterface, CreateRoleInterface } from "../../../models";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
+import { history } from "../../../helpers";
 
-export const BaiscRoleDetails: FunctionComponent<any> = (): ReactElement => {
+interface BasicRoleProps {
+    roleObject: RolesInterface;
+    roleId: string;
+}
+
+export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: BasicRoleProps): ReactElement => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
+
+    const {
+        roleObject,
+        roleId
+    } = props;
+
+
 
     /**
      * Dispatches the alert object to the redux store.
@@ -38,6 +51,7 @@ export const BaiscRoleDetails: FunctionComponent<any> = (): ReactElement => {
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert(alert));
     };
+
 
     /**
      * Function which will handle role deletion action.
@@ -55,13 +69,43 @@ export const BaiscRoleDetails: FunctionComponent<any> = (): ReactElement => {
                     "views:components.roles.notifications.deleteRole.success.message"
                 )
             });
+            history.push("/roles");
         });
     };
+
+
+    const updateRoleName = (values: any): void => {
+        const roleData: CreateRoleInterface = {
+            displayName: values.get("rolename")
+        }
+
+        updateRoleDetails(roleId, roleData).then(response => {
+            handleAlerts({
+                description: t(
+                    "views:components.roles.notifications.updateRole.success.description"
+                ),
+                level: AlertLevels.SUCCESS,
+                message: t(
+                    "views:components.roles.notifications.updateRole.success.message"
+                )
+            });
+        }).catch(error => {
+            handleAlerts({
+                description: t(
+                    "views:components.roles.notifications.updateRole.error.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "views:components.roles.notifications.updateRole.error.message"
+                )
+            });
+        })
+    }
 
     return (
         <>
             <Forms 
-                onSubmit={ () => { console.log() } }
+                onSubmit={ (values) => { updateRoleName(values) } }
             >
                 <Grid>
                     <Grid.Row columns={ 1 }>
@@ -72,6 +116,7 @@ export const BaiscRoleDetails: FunctionComponent<any> = (): ReactElement => {
                                 required={ true }
                                 requiredErrorMessage={ "Role name is required" }
                                 placeholder={ "Enter your role name" }
+                                value={ roleObject? roleObject.displayName : "" }
                                 type="text"
                             />
                         </Grid.Column>
@@ -92,7 +137,7 @@ export const BaiscRoleDetails: FunctionComponent<any> = (): ReactElement => {
                     actionTitle="Delete Role"
                     header="Delete this role"
                     subheader="This action is irreversible. Please proceed with caution."
-                    onActionClick={ () => handleOnDelete("") }
+                    onActionClick={ () => handleOnDelete(roleId) }
                 />
             </DangerZoneGroup>
         </>

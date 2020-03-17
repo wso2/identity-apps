@@ -27,7 +27,7 @@ import { PermissionObject, Permission } from "../../models/permission"
  * 
  * @returns {Permission[]} - Permission arra with tree structure
  */
-export const addPath = (permObj: PermissionObject, pathcomponents: string[], arr: Permission[], selectedPerms: string[]): Permission[] => {
+export const addPath = (permObj: PermissionObject, pathcomponents: string[], arr: Permission[]): Permission[] => {
     const component = pathcomponents.shift()
     let comp = arr.find(item => item.name === component)
     if (!comp) {
@@ -35,13 +35,13 @@ export const addPath = (permObj: PermissionObject, pathcomponents: string[], arr
             label: permObj.displayName,
             fullPath: permObj.resourcePath,
             isExpanded: true,
-            isChecked: selectedPerms && selectedPerms.includes(permObj.resourcePath),
+            isChecked: false,
             name: component
         }
         arr.push(comp)
     }
     if(pathcomponents.length){
-        addPath(permObj, pathcomponents, comp.children || (comp.children = []), selectedPerms)
+        addPath(permObj, pathcomponents, comp.children || (comp.children = []))
     }
     return arr;
 }

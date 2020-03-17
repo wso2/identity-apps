@@ -22,7 +22,8 @@ import { Permission } from "../../../models/permission";
 import { TreeView } from "@wso2is/react-components";
 import { Forms } from "@wso2is/forms";
 import { addPath } from "../role-utils";
-import { Segment } from "semantic-ui-react";
+import { Segment, Button, Grid } from "semantic-ui-react";
+import _ from "lodash";
 
 /**
  * Interface to capture permission list props
@@ -42,13 +43,42 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
 
     const [ permissionTree, setPermissionTree ] = useState([]);
     const [ selectedPermissions, setSelectedPermissions ] = useState([]);
+    const [ permissionsOfRole, setPermissionsOfRole ] = useState([]);
     const [ permissionsLoading, setPermissionsLoading ] = useState(Boolean);
+    const [ collapseAll, setCollapseAll ] = useState(Boolean);
 
     const {
         triggerSubmit,
         onSubmit,
         role
     } = props;
+
+    /**
+     * Util method to check permissions already in the selected role.
+     * 
+     * @param permList - Permissions which are available in the selected role
+     * @param nodes - Permmission Node List
+     * @param isParentChecked - Check whether parent is selected
+     */
+    const checkRolePerms = (permList: string[], nodes: any, isParentChecked: boolean): void  => {
+        nodes.forEach(node => {
+            if (permList.includes(node.fullPath)) {
+                node.isChecked = true;
+                if(node.children){
+                    checkRolePerms(permList, node.children, true);
+                }
+            } else if (isParentChecked) {
+                node.isChecked = true;
+                if(node.children){
+                    checkRolePerms(permList, node.children, true);
+                }
+            } else {
+                if(node.children){
+                    checkRolePerms(permList, node.children, false);
+                }
+            }
+        });
+    }
 
     const getPermsList = (rolePerms?: string[]): void => {
         getPermissionList().then((response)=> {
@@ -57,8 +87,14 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                 let permTree: Permission[] = [];
 
                 permTree = permList.reduce((arr, path) => addPath(
-                    path, path.resourcePath.replace(/^\/|\/$/g, "").split('/'), arr, rolePerms
+                    path, path.resourcePath.replace(/^\/|\/$/g, "").split('/'), arr,
                 ),[]);
+
+                if (rolePerms) {
+                    checkRolePerms(rolePerms, permTree, false);
+                    setPermissionsOfRole(rolePerms);
+                    setSelectedPermissions(rolePerms)
+                }
 
                 setPermissionTree(permTree);
                 setPermissionsLoading(false);
@@ -110,30 +146,62 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         applyCheckStateTo(nodeData, checkState);
 
         if (nodeData[0].isChecked) {
-            setSelectedPermissions([...selectedPermissions, nodeData[0]]);
+            if (permissionsOfRole.length > 0) {
+                setSelectedPermissions([...selectedPermissions, nodeData[0].fullPath]);
+            } else {
+                setSelectedPermissions([...selectedPermissions, nodeData[0]]);
+            }
         } else {
-            setSelectedPermissions(selectedPermissions.filter(item => item.fullPath !== nodeData[0].fullPath));
+            if (permissionsOfRole.length > 0) {
+                setSelectedPermissions(selectedPermissions.filter(item => item !== nodeData[0].fullPath));
+            } else {
+                setSelectedPermissions(selectedPermissions.filter(item => item.fullPath !== nodeData[0].fullPath));
+            }
         }
     }
 
     return (
-        <Segment padded loading={ permissionsLoading }>
+        <Segment padded clearing loading={ permissionsLoading }>
+            <Button.Group size="tiny" vertical labeled icon>
+                <Button 
+                    onClick={ () => {
+                        const collapsedState = _.cloneDeep(permissionTree);
+                        collapsedState[0].isExpanded = collapseAll;
+                        setPermissionTree(collapsedState);
+                        setCollapseAll(!collapseAll);
+                    } } 
+                    icon={ collapseAll? "compress" : "expand" } 
+                    content={ collapseAll? "Expand All" : "Collapse All" } 
+                />
+            </Button.Group>
+            
             <Forms submitState={ triggerSubmit } onSubmit={ () => {
                 onSubmit(selectedPermissions);
             } }>
                 {
-                    !permissionsLoading ? <TreeView
-                        data={ permissionTree }
-                        keywordLabel= "label"
-                        isDeletable= { () => { return false } }
-                        noChildrenAvailableMessage= ""
-                        onUpdateCb={ updatedData => setPermissionTree(updatedData) }
-                        onCheckToggleCb={ handlePermssionCheck }
-                    /> : <div></div>
+                    !permissionsLoading ? 
+                        <div className="super-treeview-container">
+                            <TreeView
+                                data={ permissionTree }
+                                keywordLabel= "label"
+                                isDeletable= { () => { return false } }
+                                noChildrenAvailableMessage= ""
+                                onUpdateCb={ updatedData => setPermissionTree(updatedData) }
+                                onCheckToggleCb={ handlePermssionCheck }
+                            /> 
+                        </div> : <div></div>
+                }
+                {permissionsOfRole && permissionsOfRole.length && 
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Button primary type="submit" size="small" className="form-button">
+                                Update
+                            </Button>
+                        </Grid.Column>
+                    </Grid.Row>
                 }
             </Forms>
+            
         </Segment>
-        
-        
     );
 }

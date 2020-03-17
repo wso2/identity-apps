@@ -21,17 +21,21 @@ import { PageLayout } from "../layouts";
 import { history } from "../helpers";
 import { getRoleById } from "../api";
 import { EditRole } from "../components/roles/edit-role/edit-role";
+import { RolesInterface } from "../models";
 
 export const RoleEditPage: FunctionComponent<any> = (props: any): ReactElement => {
 
     const [ roleId, setRoleId ] = useState<string>(undefined);
+    const [ roleObject, setRoleObject ] = useState<RolesInterface>();
 
     const getRoleDetails = (roleId: string ): void => {
         getRoleById(roleId).then(response => {
-            console.log(response);
+            if (response.status === 200) {
+                setRoleObject(response.data);
+            }
         }).catch(error => {
-            //handle error
-        });
+            //TODO handle error
+        })
     }
 
     /**
@@ -51,7 +55,7 @@ export const RoleEditPage: FunctionComponent<any> = (props: any): ReactElement =
     
     return (
         <PageLayout
-            title={ "Administrator" }
+            title={ "Edit Role" }
             backButton={ {
                 onClick: handleBackButtonClick,
                 text: "Go back to roles"
@@ -59,7 +63,7 @@ export const RoleEditPage: FunctionComponent<any> = (props: any): ReactElement =
             titleTextAlign="left"
             bottomMargin={ false }
         >
-            <EditRole role={ roleId } />
+            <EditRole roleObject={ roleObject } roleId={ roleId } />
         </PageLayout>
     );
 }

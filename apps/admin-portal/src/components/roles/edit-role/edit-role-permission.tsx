@@ -18,8 +18,11 @@
 
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react"
 import { PermissionList } from "../create-role-wizard/role-permisson";
-import { getPermissionsPerRole } from "../../../api";
-import { string } from "prop-types";
+import { updatePermissionForRole } from "../../../api";
+import { addAlert } from "../../../store/actions";
+import { AlertLevels } from "../../../models";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 
 interface RolePermissionDetailProps {
     role: string;
@@ -28,11 +31,61 @@ interface RolePermissionDetailProps {
 export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps> = (props: 
     RolePermissionDetailProps): ReactElement => {
 
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
+
     const {
         role
     } = props;
     
+    const onPermissionUpdate = (updatedPerms: string[]) => {
+        updatePermissionForRole(role, updatedPerms).then(() => {
+            dispatch(addAlert({
+                description: t(
+                    "views:components.roles.notifications.updateRole.success.description"
+                ),
+                level: AlertLevels.SUCCESS,
+                message: t(
+                    "views:components.roles.notifications.updateRole.success.message"
+                )
+            }));
+        }).catch(error => {
+            if (!error.response || error.response.status === 401) {
+                dispatch(addAlert({
+                    description: t(
+                        "views:components.roles.notifications.updateRole.error.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.roles.notifications.updateRole.error.message"
+                    )
+                }));
+            } else if (error.response && error.response.data.detail) {
+                dispatch(addAlert({
+                    description: t(
+                        "views:components.roles.notifications.updateRole.error.description",
+                        { description: error.response.data.detail }
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.roles.notifications.updateRole.error.message"
+                    )
+                }));
+            } else {
+                dispatch(addAlert({
+                    description: t(
+                        "views:components.roles.notifications.updateRole.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.roles.notifications.updateRole.genericError.message"
+                    )
+                }));
+            }
+        })
+    }
+    
     return (
-        <PermissionList role={ role } />
+        <PermissionList onSubmit={ onPermissionUpdate } role={ role } />
     )
 }

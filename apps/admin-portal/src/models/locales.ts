@@ -401,6 +401,7 @@ export interface Views {
             };
             notifications: {
                 deleteRole: Notification;
+                updateRole: Notification;
                 createRole: Notification;
                 createPermission: Notification;
             };
