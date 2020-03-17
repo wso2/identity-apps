@@ -28,6 +28,7 @@ import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
 import { AddLocalClaims } from "../components";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
+import { history } from "../helpers";
 
 export const LocalClaimsPage = (): React.ReactElement => {
 
@@ -105,6 +106,10 @@ export const LocalClaimsPage = (): React.ReactElement => {
                 title="Local Dialect"
                 description="View, edit and add the Local Dialect"
                 showBottomDivider={ true }
+                backButton={ {
+                    onClick: () => { history.push("/claim-dialects") },
+                    text: "Go back to Claim Dialects"
+                } }
             >
                 <ListLayout
                     advancedSearch={
