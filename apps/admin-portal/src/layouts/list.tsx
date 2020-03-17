@@ -77,7 +77,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                         <div className="top-action-panel">
                             <Grid>
                                 <Grid.Row>
-                                    <Grid.Column width={ 4 }>
+                                    <Grid.Column width={ 8 }>
                                         { /* TODO: Re-enable when the API is ready */ }
                                         {
                                             /* <div className="left-aligned-actions">
@@ -99,7 +99,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                             { leftActionPanel && leftActionPanel }
                                         </div>
                                     </Grid.Column>
-                                    <Grid.Column width={ 12 }>
+                                    <Grid.Column width={ 8 }>
                                         <div className="actions right-aligned">
                                             { advancedSearch && advancedSearch }
                                             { rightActionPanel && rightActionPanel }
