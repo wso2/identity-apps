@@ -26,6 +26,7 @@ import "codemirror/addon/edit/matchbrackets";
 import "codemirror/addon/hint/show-hint";
 import "codemirror/addon/hint/javascript-hint";
 import { JSHINT } from "jshint/dist/jshint";
+import JSBeautify from "js-beautify";
 
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/material.css";
@@ -40,6 +41,7 @@ window.JSHINT = JSHINT;
  * Code editor component Prop types.
  */
 export interface CodeEditorProps extends IUnControlledCodeMirror {
+    beautify?: boolean;
     language?: "javascript" | "json" | "typescript";
     lint?: boolean;
     readOnly?: boolean;
@@ -62,6 +64,7 @@ export const CodeEditor: React.FunctionComponent<CodeEditorProps> = (
 ): ReactElement => {
 
     const {
+        beautify,
         language,
         lint,
         readOnly,
@@ -106,10 +109,30 @@ export const CodeEditor: React.FunctionComponent<CodeEditorProps> = (
         return (theme === "dark" ? "material" : "default");
     };
 
+    /**
+     * Beautifies the source code.
+     *
+     * @return {string} Beautified source code snippet.
+     */
+    const beautifyCode = (): string => {
+        let code = sourceCode;
+
+        if (code instanceof Array) {
+            code = code.join("");
+        }
+
+        if (language === "javascript") {
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            return JSBeautify(code, { indent_size: tabSize, space_in_empty_paren: true });
+        }
+
+        return code;
+    };
+
     return (
         <CodeMirror
             { ...rest }
-            value={ sourceCode }
+            value={ beautify ? beautifyCode() : sourceCode }
             options={
                 {
                     ...rest.options,
