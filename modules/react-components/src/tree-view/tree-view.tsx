@@ -17,13 +17,8 @@
  */
 
 import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
-import isNil from 'lodash/isNil';
-import isEmpty from 'lodash/isEmpty';
-import isEqual from 'lodash/isEqual';
-import find from 'lodash/find';
-import get from 'lodash/get';
-import cloneDeep from 'lodash/cloneDeep';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import _ from "lodash";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 interface TreeViewProps {
     data: TreeNode[];
@@ -31,9 +26,9 @@ interface TreeViewProps {
     deleteElement?: ReactElement;
     getStyleClassCb?: (node, depth?) => {};
 
-    isCheckable?: (node, depth) => {};
-    isDeletable?: (node, depth) => {};
-    isExpandable?: (node, depth) => {};
+    isCheckable?: (node: TreeNode, depth: number) => {};
+    isDeletable?: (node: TreeNode, depth: number) => {};
+    isExpandable?: (node: TreeNode, depth: number) => {};
 
     keywordChildren?: string;
     keywordChildrenLoading?: string;
@@ -43,10 +38,10 @@ interface TreeViewProps {
     loadingElement?: ReactElement;
     noChildrenAvailableMessage?: string;
 
-    onCheckToggleCb?: (arrayOfNodes, depth) => void;
-    onDeleteCb?: (node, updatedData, depth) => {};
-    onExpandToggleCb?: (node, depth) => void;
-    onUpdateCb?: (updatedData, depth) => void;
+    onCheckToggleCb?: (arrayOfNodes: TreeNode[], depth: number) => void;
+    onDeleteCb?: (node: TreeNode, updatedData: any, depth: number) => {};
+    onExpandToggleCb?: (node: TreeNode, depth: number) => void;
+    onUpdateCb?: (updatedData: any, depth: number) => void;
 
     transitionEnterTimeout?: number;
     transitionExitTimeout?: number;
@@ -65,9 +60,13 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
     const [ treeData, setTreeData ] = useState<TreeNode[]>();
     const [ lastCheckToggledNodeIndex, setLastCheckToggledNodeIndex ] = useState<number>();
 
+    const {
+        data
+    } = props;
+
     useEffect(() => {
-        setTreeData(cloneDeep(props.data));
-    },[props.data]);
+        setTreeData(_.cloneDeep(data));
+    },[data]);
 
     const handleUpdate = (updatedData: any): void => {
         const { depth, onUpdateCb } = props;
@@ -76,11 +75,11 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
     const handleCheckToggle = (node: TreeNode, e: any) => {
         const { onCheckToggleCb, depth } = props;
-        const data = cloneDeep(treeData);
-        const currentNode = find(data, node);
+        const data = _.cloneDeep(treeData);
+        const currentNode = _.find(data, node);
         const currentNodeIndex = data.indexOf(currentNode);
         const toggledNodes = [];
-        if (e.shiftKey && !isNil(lastCheckToggledNodeIndex)) {
+        if (e.shiftKey && !_.isNil(lastCheckToggledNodeIndex)) {
             const rangeStart = Math.min(
                 currentNodeIndex,
                 lastCheckToggledNodeIndex
@@ -108,10 +107,10 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
     const handleDelete = (node: any) => {
         const { onDeleteCb, depth } = props;
-        const data = cloneDeep(treeData);
+        const data = _.cloneDeep(treeData);
 
         const newData = data.filter((nodeItem) => {
-            return !isEqual(node, nodeItem);
+            return !_.isEqual(node, nodeItem);
         });
 
         onDeleteCb(node, newData, depth) && handleUpdate(newData);
@@ -119,8 +118,8 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
     const handleExpandToggle = (node: TreeNode) => {
         const { onExpandToggleCb, depth } = props;
-        const data = cloneDeep(treeData);
-        const currentNode = find(data, node);
+        const data = _.cloneDeep(treeData);
+        const currentNode = _.find(data, node);
 
         currentNode.isExpanded = !currentNode.isExpanded;
 
@@ -133,7 +132,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
     const printCheckbox = (node: TreeNode) => {
         const { isCheckable, keywordLabel, depth } = props;
-        const nodeText = get(node, keywordLabel, '');
+        const nodeText = _.get(node, keywordLabel, '');
 
         if (isCheckable(node, depth)) {
             return (
@@ -260,7 +259,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
         return (
             <TransitionGroup>
-                {isEmpty(nodeArray)
+                {_.isEmpty(nodeArray)
                     ? printNoChildrenMessage()
                     : nodeArray.map((node, index) => {
                           return (
@@ -294,11 +293,11 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         }
 
         const { keywordChildren, keywordChildrenLoading, depth } = props;
-        const isChildrenLoading = get(node, keywordChildrenLoading, false);
+        const isChildrenLoading = _.get(node, keywordChildrenLoading, false);
         let childrenElement;
 
         if (isChildrenLoading) {
-            childrenElement = get(props, 'loadingElement');
+            childrenElement = _.get(props, 'loadingElement');
         } else {
             childrenElement = (
                 <TreeView
@@ -317,8 +316,8 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         );
 
         function onChildrenUpdateCb(updatedData) {
-            const data = cloneDeep(treeData);
-            const currentNode = find(data, node);
+            const data = _.cloneDeep(treeData);
+            const currentNode = _.find(data, node);
 
             currentNode[keywordChildren] = updatedData;
             handleUpdate(data);

@@ -16,5 +16,4 @@
  * under the License.
  */
 
- export * from "./tree-view";
- 
+export * from "./tree-view";
