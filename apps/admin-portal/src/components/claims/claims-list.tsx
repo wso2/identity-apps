@@ -245,39 +245,58 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                             )
                         })
                         : isDialect(list)
-                            ? list?.map((dialect: ClaimDialect, index: number) => {
-                                return (
-                                    <ResourceList.Item
-                                        key={ index }
-                                        actions={ [
-                                            {
-                                                icon: "eye",
-                                                onClick: () => {
-                                                    history.push("/external-claims/" + dialect.id);
-                                                },
-                                                popupText: "View External Claims",
-                                                type: "button"
+                            ? <>
+                                <ResourceList.Item
+                                    actions={ [
+                                        {
+                                            icon: "eye",
+                                            onClick: () => {
+                                                history.push("local-dialect");
                                             },
-                                            {
-                                                icon: "pencil alternate",
-                                                onClick: () => {
-                                                    openEdit(dialect.id);
-                                                },
-                                                popupText: "edit",
-                                                type: "button"
-                                            },
-                                            {
-                                                icon: "trash alternate",
-                                                onClick: () => { initDelete(ListType.DIALECT, dialect?.id) },
-                                                popupText: "delete",
-                                                type: "dropdown"
-                                            }
-                                        ] }
-                                        actionsFloated="right"
-                                        itemHeader={ dialect.dialectURI }
-                                    />
-                                )
-                            })
+                                            popupText: "View Local Claims",
+                                            type: "button"
+                                        }
+                                    ] }
+                                    actionsFloated="right"
+                                    itemHeader={ "Local Dialect" }
+                                />
+                                {
+                                    list?.map((dialect: ClaimDialect, index: number) => {
+                                        return (
+                                            <ResourceList.Item
+                                                key={ index }
+                                                actions={ [
+                                                    {
+                                                        icon: "eye",
+                                                        onClick: () => {
+                                                            history.push("/external-claims/" + dialect.id);
+                                                        },
+                                                        popupText: "View Claims belonging to this dialect",
+                                                        type: "button"
+                                                    },
+                                                    {
+                                                        icon: "pencil alternate",
+                                                        onClick: () => {
+                                                            openEdit(dialect.id);
+                                                        },
+                                                        popupText: "edit",
+                                                        type: "button"
+                                                    },
+                                                    {
+                                                        icon: "trash alternate",
+                                                        onClick: () => { initDelete(ListType.DIALECT, dialect?.id) },
+                                                        popupText: "delete",
+                                                        type: "dropdown"
+                                                    }
+                                                ] }
+                                                actionsFloated="right"
+                                                itemHeader={ dialect.dialectURI }
+                                            />
+                                        );
+                                    })
+
+                                }
+                            </>
                             : list?.map((claim: ExternalClaim, index: number) => {
                                 return (
                                     <ResourceList.Item
