@@ -62,6 +62,10 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): React.R
                                 }
                             })
                         }
+                        requiredField={ true }
+                        duplicateKeyErrorMsg={
+                            "This User Store has been selected twice. A User Store can only be selected once."
+                        }
                         keyName="User Store"
                         valueName="Attribute to map to"
                         keyRequiredMessage="Please select a User Store"

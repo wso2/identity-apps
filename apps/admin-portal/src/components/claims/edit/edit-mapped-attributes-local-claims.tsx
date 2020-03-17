@@ -83,6 +83,10 @@ export const EditMappedAttributesLocalClaims = (
                         valueName="Attribute to map to"
                         keyRequiredMessage="Please select a User Store"
                         valueRequiredErrorMessage="Please enter an attribute to map to"
+                        requiredField={ true }
+                        duplicateKeyErrorMsg={
+                            "This User Store has been selected twice. A User Store can only be selected once."
+                        }
                         submit={ submit }
                         update={ (data) => {
                             if (data.length > 0) {
