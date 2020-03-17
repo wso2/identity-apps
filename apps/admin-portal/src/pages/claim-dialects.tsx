@@ -44,14 +44,12 @@ export const ClaimDialectsPage = (): React.ReactElement => {
             limit, offset, sort, filter
 
         }).then((response: ClaimDialect[]) => {
-            const localDialect: ClaimDialect[] = response.filter((claim: ClaimDialect) => {
-                return claim.id === "local";
-            });
+
             const filteredDialect: ClaimDialect[] = response.filter((claim: ClaimDialect) => {
                 return claim.id !== "local";
             });
 
-            setDialects([localDialect[0], ...filteredDialect]);
+            setDialects(filteredDialect);
         }).catch(error => {
             dispatch(addAlert(
                 {
