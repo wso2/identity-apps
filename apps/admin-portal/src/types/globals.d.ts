@@ -25,6 +25,7 @@ declare const CLIENT_ID_DEFAULT: string;
 declare const CLIENT_HOST_DEFAULT: string;
 declare const CLIENT_ORIGIN_DEFAULT: string;
 declare const COPYRIGHT_TEXT_DEFAULT: string;
+declare const DEBUG_MODE: boolean;
 declare const LOGIN_CALLBACK_URL: string;
 declare const SERVER_HOST_DEFAULT: string;
 declare const SERVER_ORIGIN_DEFAULT: string;

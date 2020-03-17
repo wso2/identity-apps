@@ -29,6 +29,7 @@ module.exports = (env) => {
     const devServerPort = 9001;
     const publicPath = `/${basename}`;
     const isProd = env.NODE_ENV === "prod";
+    const debug = false;
 
     // user-portal related variables
     const userPortalBaseName = "user-portal";
@@ -239,6 +240,7 @@ module.exports = (env) => {
                 CLIENT_ID_DEFAULT: JSON.stringify(clientIdDefault),
                 CLIENT_HOST_DEFAULT: JSON.stringify(clientHostDefault),
                 CLIENT_ORIGIN_DEFAULT: JSON.stringify(clientOriginDefault),
+                DEBUG_MODE: JSON.stringify(debug),
                 LOGIN_CALLBACK_URL: JSON.stringify(externalLoginCallbackURL),
                 SERVER_HOST_DEFAULT: JSON.stringify(serverHostDefault),
                 SERVER_ORIGIN_DEFAULT: JSON.stringify(serverOriginDefault),
