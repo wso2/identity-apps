@@ -86,6 +86,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     const [ roleList, setRoleList ] = useState([]);
     const [ tempRoleList, setTempRoleList ] = useState([]);
+    const [ initialRoleList, setInitialRoleList ] = useState([]);
 
     const getRolesList = (domain: string) => {
         getGroupsList(domain)
@@ -98,6 +99,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         getGroupsList(domain)
             .then((response) => {
                 setRoleList([ ...roleList, ...response.data.Resources ]);
+                setInitialRoleList([ ...roleList, ...response.data.Resources ]);
             });
     };
 
@@ -125,6 +127,12 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     useEffect(() => {
         getRolesList("Application");
     }, []);
+
+    useEffect(() => {
+        if ( wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain) {
+            getRoleListForDomain(wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain);
+        }
+    }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain ]);
 
     const navigateToNext = () => {
         switch (currentWizardStep) {
@@ -358,7 +366,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         {
             content: (
                 <AddUser
-                    onUserStoreDomainChange={ (domain) => getRoleListForDomain(domain) }
                     triggerSubmit={ submitGeneralSettings }
                     initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
                     onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
@@ -372,7 +379,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 <AddUserRole
                     triggerSubmit={ submitRoleList }
                     onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.ROLE_LIST) }
-                    initialValues={ { roleList: roleList, tempRoleList: tempRoleList } }
+                    initialValues={ { initialRoleList: initialRoleList, roleList: roleList, tempRoleList: tempRoleList } }
                     handleRoleListChange={ (roles) => handleRoleListChange(roles) }
                     handleTempListChange={ (roles) => handleAddedListChange(roles) }
                 />
