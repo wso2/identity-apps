@@ -17,9 +17,11 @@
  */
 
 import React, { ReactElement } from "react";
-import { Grid, Icon, Input, Label, List, Popup, Segment } from "semantic-ui-react";
+import { Button, Grid, Icon, Input, Label, List, Popup, Segment } from "semantic-ui-react";
 import _ from "lodash";
 import { Forms } from "@wso2is/forms";
+import { EmptyPlaceholder } from "@wso2is/react-components";
+import { EmptyPlaceholderIllustrations } from "../../configs";
 
 /**
  * Proptypes for the application consents list component.
@@ -69,6 +71,24 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
          }
     };
 
+    /**
+     * The following function enables the user to select all the roles
+     * at once.
+     */
+    const handleSelectAll = () => {
+        handleTempListChange(initialValues.initialRoleList);
+        handleRoleListChange([]);
+    };
+
+    /**
+     * The following function enables the user to deselect all the roles
+     * at once.
+     */
+    const handleRemoveAll = () => {
+        handleRoleListChange(initialValues.initialRoleList);
+        handleTempListChange([]);
+    };
+
     const handleSearchFieldChange = (e, { value }) => {
         let isMatch = false;
         const filteredRoleList = [];
@@ -84,11 +104,12 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
                 }
             });
         } else {
-            handleRoleListChange(initialValues.roleList);
+            handleRoleListChange(initialValues?.initialRoleList);
         }
     };
 
     return (
+        <>
         <Forms
             onSubmit={ () => {
                 onSubmit({ roles: initialValues?.tempRoleList });
@@ -113,24 +134,37 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
                         <Grid.Row columns={ 2 }>
                            <Grid.Column>
                                <Segment className={ "user-role-list-segment" }>
-                                   <List className={ "user-role-list" }>
-                                       { initialValues.roleList &&
-                                       initialValues.roleList.map((role, index) =>{
-                                             return (
-                                                 <List.Item
-                                                     key={ index }
-                                                     className={ "user-role-list-item" }
-                                                     onClick={ () => addRole(role) }
-                                                 >
-                                                     { role.displayName }
-                                                     <Icon
-                                                         name="add"
-                                                     />
-                                                 </List.Item>
-                                             )
-                                         })
-                                       }
-                                   </List>
+                                   {
+                                       !_.isEmpty(initialValues.roleList) ?
+                                           <List className={ "user-role-list" }>
+                                               { initialValues.roleList &&
+                                               initialValues.roleList.map((role, index) => {
+                                                   return (
+                                                       <List.Item
+                                                           key={ index }
+                                                           className={ "user-role-list-item" }
+                                                           onClick={ () => addRole(role) }
+                                                       >
+                                                           { role.displayName }
+                                                           <Icon
+                                                               name="add"
+                                                           />
+                                                       </List.Item>
+                                                   )
+                                               })
+                                               }
+                                           </List>
+                                           : (
+                                               <div className={ "empty-placeholder-center" }>
+                                                   <EmptyPlaceholder
+                                                       image={ EmptyPlaceholderIllustrations.emptyList }
+                                                       imageSize="mini"
+                                                       title={ "The role list is empty" }
+                                                       subtitle={ [ "You have assigned all the roles to user." ] }
+                                                   />
+                                               </div>
+                                           )
+                                   }
                                </Segment>
                            </Grid.Column>
                         </Grid.Row>
@@ -177,5 +211,28 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
                 </Grid.Row>
             </Grid>
         </Forms>
+            <Grid>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column>
+                        <Button
+                            fluid
+                            onClick={ () => handleSelectAll() }
+                        >
+                            <Icon name="check circle outline"/>
+                            Select all
+                        </Button>
+                    </Grid.Column>
+                    <Grid.Column>
+                        <Button
+                            fluid
+                            onClick={ () => handleRemoveAll() }
+                        >
+                            <Icon name="times circle outline"/>
+                            Remove all
+                        </Button>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </>
     );
 };
