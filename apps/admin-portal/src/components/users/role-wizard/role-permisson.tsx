@@ -20,7 +20,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { getPermissionList } from "../../../../src/api";
 import { Permission, PermissionObject } from "../../../models/permission";
 import { TreeView } from "@wso2is/react-components";
-import SuperTreeview from 'react-super-treeview';
 
 /**
  * Interface to capture permission list props
@@ -64,7 +63,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                 label: permObj.displayName,
                 fullPath: permObj.resourcePath,
                 isExpanded: true,
-                name: component,
+                name: component
             }
             arr.push(comp)
         }
