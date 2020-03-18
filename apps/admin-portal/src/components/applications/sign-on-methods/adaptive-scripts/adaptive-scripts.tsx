@@ -52,14 +52,10 @@ interface AdaptiveScriptsPropsInterface {
      */
     onTemplateSelect: (template: AdaptiveAuthTemplateInterface) => void;
     /**
-     * Callback to update the application details.
-     * @param {AuthenticationSequenceInterface} sequence - Authentication sequence.
+     * Callback when the script changes.
+     * @param {string | string[]} script - Authentication script.
      */
-    onUpdate: (sequence: AuthenticationSequenceInterface) => void;
-    /**
-     * Trigger for update.
-     */
-    triggerUpdate: boolean;
+    onScriptChange: (script: string | string[]) => void;
 }
 
 /**
@@ -75,8 +71,7 @@ export const AdaptiveScripts: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const {
         authenticationSequence,
         onTemplateSelect,
-        onUpdate,
-        triggerUpdate
+        onScriptChange
     } = props;
 
     const dispatch = useDispatch();
@@ -87,7 +82,6 @@ export const AdaptiveScripts: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ scriptTemplates, setScriptTemplates ] = useState<AdaptiveAuthTemplatesListInterface>(undefined);
     const [ showAuthTemplatesSidePanel, setAuthTemplatesSidePanelVisibility ] = useState<boolean>(true);
     const [ sourceCode, setSourceCode ] = useState<string | string[]>(undefined);
-    const [ editedCode, setEditedCode ] = useState<string | string[]>(undefined);
 
     useEffect(() => {
         getAdaptiveAuthTemplates()
@@ -132,19 +126,6 @@ export const AdaptiveScripts: FunctionComponent<AdaptiveScriptsPropsInterface> =
     useEffect(() => {
         resolveAdaptiveScript(authenticationSequence?.script);
     }, [ authenticationSequence?.steps, authenticationSequence?.script ]);
-
-    /**
-     * Called when update is triggered.
-     */
-    useEffect(() => {
-        if (!triggerUpdate) {
-            return;
-        }
-
-        onUpdate({
-            script: JSON.stringify(editedCode)
-        })
-    }, [ triggerUpdate ]);
 
     /**
      * Resolves the adaptive script.
@@ -234,7 +215,7 @@ export const AdaptiveScripts: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 lineWrapping: true
                                             } }
                                             onChange={ (editor, data, value) => {
-                                                setEditedCode(value)
+                                                onScriptChange(value)
                                             } }
                                         />
                                     </div>

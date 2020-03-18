@@ -74,6 +74,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
     const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(authenticationSequence);
     const [ updateTrigger, setUpdateTrigger ] = useState<boolean>(false);
+    const [ adaptiveScript, setAdaptiveScript ] = useState<string | string[]>(undefined);
 
     /**
      * Toggles the update trigger.
@@ -137,7 +138,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      */
     const handleSequenceUpdate = (sequence: AuthenticationSequenceInterface) => {
         const requestBody = {
-            authenticationSequence: sequence
+            authenticationSequence: {
+                ...sequence,
+                script: JSON.stringify(adaptiveScript)
+            }
         };
 
         updateAuthenticationSequence(appId, requestBody)
@@ -170,6 +174,15 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     };
 
     /**
+     * Handles adaptive script change event.
+     *
+     * @param {string | string[]} script - Adaptive script from the editor.
+     */
+    const handleAdaptiveScriptChange = (script: string | string[]) => {
+        setAdaptiveScript(script);
+    };
+
+    /**
      * Handles the update button click event.
      */
     const handleUpdateClick = () => {
@@ -189,8 +202,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 authenticationSequence={ sequence }
                 isLoading={ isLoading }
                 onTemplateSelect={ handleLoadingDataFromTemplate }
-                onUpdate={ handleSequenceUpdate }
-                triggerUpdate={ updateTrigger }
+                onScriptChange={ handleAdaptiveScriptChange }
             />
             <Divider hidden/>
             <PrimaryButton onClick={ handleUpdateClick }>Update</PrimaryButton>
