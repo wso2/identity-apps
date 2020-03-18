@@ -141,7 +141,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                 <label htmlFor={ node.name } className="tree-label">
                     <input
                         type="checkbox"
-                        name={node[keywordLabel]}
+                        name={ node[keywordLabel] }
                         className="invisible"
                         onClick={(e) => {
                             handleCheckToggle(node, e);
