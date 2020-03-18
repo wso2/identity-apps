@@ -62,5 +62,9 @@ h6.ui.header .sub.header {
             white-space: nowrap;
             overflow: hidden;
         }
+
+        &.bold {
+            font-weight: bold;
+        }
     }
 }
