@@ -16,3 +16,6 @@
  * under the License.
  *
  */
+
+@super-treeview-tree-stem-color: #f3f3f3;
+@treeFill: #20C2E0;

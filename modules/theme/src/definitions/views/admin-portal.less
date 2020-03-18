@@ -114,11 +114,6 @@
     }
 }
 
-
-// VARIABLES
-@super-treeview-tree-stem-color: #f3f3f3;
-
-
 .empty-placeholder-center {
   position: absolute;
   top: 50%;
@@ -312,11 +307,11 @@ TODO: Need to revisit these styling
     }
 
     .tree-label input:checked+.checkbox {
-        border-color: #20C2E0;
+        border-color: @treeFill;
     }
 
     .tree-label input:checked+.checkbox svg path {
-        fill: #20C2E0;
+        fill: @treeFill;
     }
 
     .tree-label input:checked+.checkbox svg polyline {
@@ -346,7 +341,7 @@ TODO: Need to revisit these styling
 
     .tree-label .checkbox svg path {
         fill: none;
-        stroke: #20C2E0;
+        stroke: @treeFill;
         stroke-width: 2;
         stroke-linecap: round;
         stroke-linejoin: round;

@@ -134,7 +134,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
     const printCheckbox = (node: TreeNode) => {
         const { isCheckable, keywordLabel, depth } = props;
-        const nodeText = _.get(node, keywordLabel, '');
+        const nodeText = _.get(node, keywordLabel, "");
 
         if (isCheckable(node, depth)) {
             return (
@@ -181,8 +181,8 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
     const printExpandButton = (node: TreeNode): ReactElement => {
         const className = node.isExpanded
-            ? ''
-            : 'active';
+            ? ""
+            : "active";
         const { isExpandable, depth } = props;
 
         if (isExpandable(node, depth)) {
@@ -218,8 +218,8 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         } = props;
 
         const noChildrenTransitionProps = {
-            classNames: 'super-treeview-no-children-transition',
-            key: 'super-treeview-no-children',
+            classNames: "super-treeview-no-children-transition",
+            key: "super-treeview-no-children",
             style: {
                 transitionDuration: `${transitionExitTimeout}ms`,
                 transitionDelay: `${transitionExitTimeout}ms`
@@ -250,7 +250,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         } = props;
 
         const nodeTransitionProps = {
-            classNames: 'super-treeview-node-transition',
+            classNames: "super-treeview-node-transition",
             style: {
                 transitionDuration: `${transitionEnterTimeout}ms`
             },
@@ -272,7 +272,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                               >
                                   <div
                                       className={
-                                          'super-treeview-node' + getStyleClassCb(node)
+                                          "super-treeview-node" + getStyleClassCb(node)
                                       }
                                   >
                                       <div className={`super-treeview-node-content ${!node.children 
@@ -300,7 +300,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         let childrenElement;
 
         if (isChildrenLoading) {
-            childrenElement = _.get(props, 'loadingElement');
+            childrenElement = _.get(props, "loadingElement");
         } else {
             childrenElement = (
                 <TreeView
@@ -340,12 +340,12 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 TreeView.defaultProps = {
     depth: 0,
     deleteElement: <div>(X)</div>,
-    keywordChildren: 'children',
-    keywordChildrenLoading: 'isChildrenLoading',
-    keywordLabel: 'name',
-    keywordKey: 'id',
+    keywordChildren: "children",
+    keywordChildrenLoading: "isChildrenLoading",
+    keywordLabel: "name",
+    keywordKey: "id",
     loadingElement: <div>loading...</div>,
-    noChildrenAvailableMessage: 'No data found',
+    noChildrenAvailableMessage: "No data found",
     transitionEnterTimeout: 1200,
     transitionExitTimeout: 1200,
 
