@@ -22,6 +22,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { ApplicationManagementConstants } from "../constants";
 import {
+    AdaptiveAuthTemplatesInterface,
     ApplicationBasicInterface,
     ApplicationInterface,
     ApplicationListInterface,
@@ -540,5 +541,47 @@ export const revokeClientSecret = (appId: string): Promise<any> => {
             return Promise.resolve(response);
         }).catch((error) => {
             return Promise.reject(error);
+        });
+};
+
+/**
+ * Get all the sample adaptive authentication templates.
+ *
+ * @return {Promise<AdaptiveAuthTemplatesInterface>} Response as a promise.
+ */
+export const getAdaptiveAuthTemplates = (): Promise<AdaptiveAuthTemplatesInterface> => {
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${ ServiceResourcesEndpoint.applications }/meta/adaptive-auth-templates`
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ApplicationManagementConstants.ADAPTIVE_AUTH_TEMPLATES_FETCH_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve({
+                templatesJSON: JSON.parse(response?.data?.templatesJSON)
+            } as AdaptiveAuthTemplatesInterface);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ApplicationManagementConstants.ADAPTIVE_AUTH_TEMPLATES_FETCH_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };

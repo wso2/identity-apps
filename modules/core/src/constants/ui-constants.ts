@@ -50,4 +50,11 @@ export class UIConstants {
      * @type {number}
      */
     public static readonly DEFAULT_SIDE_PANEL_ITEM_HEIGHT: number = 75;
+
+    /**
+     * Error message to be shown in the alerting component on API retrieval errors.
+     * @constant
+     * @type {string}
+     */
+    public static readonly API_RETRIEVAL_ERROR_ALERT_MESSAGE: string = "Retrieval Error";
 }
