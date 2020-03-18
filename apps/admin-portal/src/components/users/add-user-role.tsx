@@ -72,8 +72,7 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
     };
 
     /**
-     * The following function enables the user to select all the roles
-     * at once.
+     * The following function enables the user to select all the roles at once.
      */
     const handleSelectAll = () => {
         handleTempListChange(initialValues.initialRoleList);
@@ -81,8 +80,7 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
     };
 
     /**
-     * The following function enables the user to deselect all the roles
-     * at once.
+     * The following function enables the user to deselect all the roles at once.
      */
     const handleRemoveAll = () => {
         handleRoleListChange(initialValues.initialRoleList);
@@ -146,9 +144,7 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
                                                            onClick={ () => addRole(role) }
                                                        >
                                                            { role.displayName }
-                                                           <Icon
-                                                               name="add"
-                                                           />
+                                                           <Icon name="add"/>
                                                        </List.Item>
                                                    )
                                                })
@@ -219,7 +215,7 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
                             onClick={ () => handleSelectAll() }
                         >
                             <Icon name="check circle outline"/>
-                            Select all
+                            Add all
                         </Button>
                     </Grid.Column>
                     <Grid.Column>

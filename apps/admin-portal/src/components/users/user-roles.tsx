@@ -412,7 +412,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                         onClick={ () => handleSelectAll() }
                                     >
                                         <Icon name="check circle outline"/>
-                                        Select all
+                                        Add all
                                     </Button>
                                 </Grid.Column>
                             </Grid.Row>
@@ -517,39 +517,39 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                         {
                             primaryRoles && primaryRoles.size > 0 ? (
                                 <Segment.Group style={ { boxShadow: "none" } }>
-                                <Segment clearing className="user-roles-segment-header">
-                                    <Icon
-                                        className="floated right"
-                                        color="grey"
-                                        name="plus"
-                                    />
-                                    <Icon
-                                        onClick={ () => getRolesList("Primary") }
-                                        className="floated right"
-                                        color="grey"
-                                        name="pencil alternate"
-                                    />
-                                </Segment>
-                                <Segment className="user-roles-segment">
-                                    {
-                                        [ ...primaryRoles.keys() ].map((roleName, index) => {
-                                            return (
-                                            roleName === "admin" ?
-                                                (
-                                                    <Label color="teal" key={ index }>
+                                    <Segment clearing className="user-roles-segment-header">
+                                        <Icon
+                                            className="floated right"
+                                            color="grey"
+                                            name="plus"
+                                        />
+                                        <Icon
+                                            onClick={ () => getRolesList("Primary") }
+                                            className="floated right"
+                                            color="grey"
+                                            name="pencil alternate"
+                                        />
+                                    </Segment>
+                                    <Segment className="user-roles-segment">
+                                        {
+                                            [ ...primaryRoles.keys() ].map((roleName, index) => {
+                                                return (
+                                                roleName === "admin" ?
+                                                    (
+                                                        <Label color="teal" key={ index }>
+                                                            { roleName }
+                                                        </Label>
+                                                    ) :
+                                                    (
+                                                    <Label key={ index }>
                                                         { roleName }
                                                     </Label>
-                                                ) :
-                                                (
-                                                <Label key={ index }>
-                                                    { roleName }
-                                                </Label>
-                                                )
-                                            );
+                                                    )
+                                                );
 
-                                        })
-                                    }
-                                </Segment>
+                                            })
+                                        }
+                                    </Segment>
                                 </Segment.Group>
                             ) : (
                                 <Segment.Group style={ { boxShadow: "none" } }>
@@ -600,17 +600,17 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             name="pencil alternate"
                                         />
                                     </Segment>
-                                <Segment className="user-roles-segment">
-                                    {
-                                        [ ...appRoles.keys() ].map((roleName, index) => {
-                                            return (
-                                                <Label key={ index }>
-                                                    { roleName }
-                                                </Label>
-                                            );
-                                        })
-                                    }
-                                </Segment>
+                                    <Segment className="user-roles-segment">
+                                        {
+                                            [ ...appRoles.keys() ].map((roleName, index) => {
+                                                return (
+                                                    <Label key={ index }>
+                                                        { roleName }
+                                                    </Label>
+                                                );
+                                            })
+                                        }
+                                    </Segment>
                                 </Segment.Group>
                                 ) : (
                                     <Segment.Group style={ { boxShadow: "none" } }>
@@ -659,30 +659,30 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                         name="pencil alternate"
                                     />
                                 </Segment>
-                            <Segment className="user-roles-segment">
-                                <Popup
-                                    trigger={
-                                        <Label className={ "info-label" }>
-                                            Internal/everyone
-                                            <Icon
-                                                name="info circle"
-                                                inverted
-                                            />
-                                        </Label>
-                                    }
-                                    inverted
-                                    content="This role is assigned to all the users by default."
-                                />
-                                {
-                                    [ ...internalRoles.keys() ].map((roleName, index) => {
-                                        return (
-                                            <Label key={ index }>
-                                                { roleName }
+                                <Segment className="user-roles-segment">
+                                    <Popup
+                                        trigger={
+                                            <Label className={ "info-label" }>
+                                                Internal/everyone
+                                                <Icon
+                                                    name="info circle"
+                                                    inverted
+                                                />
                                             </Label>
-                                        );
-                                    })
-                                }
-                            </Segment>
+                                        }
+                                        inverted
+                                        content="This role is assigned to all the users by default."
+                                    />
+                                    {
+                                        [ ...internalRoles.keys() ].map((roleName, index) => {
+                                            return (
+                                                <Label key={ index }>
+                                                    { roleName }
+                                                </Label>
+                                            );
+                                        })
+                                    }
+                                </Segment>
                             </Segment.Group>
                     </Grid.Column>
                 </Grid.Row>

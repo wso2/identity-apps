@@ -85,7 +85,10 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
      * The following function fetch the user store list and set it to the state.
      */
     const getUserStores = () => {
-        const storeOptions = [{ text: "Primary", key: -1, value: "primary" }];
+        const storeOptions = [
+                { text: "All user stores", key: -2, value: null },
+                { text: "Primary", key: -1, value: "primary" }
+            ];
         let storeOption = { text: "", key: null, value: "" };
         getUserStoreList()
             .then((response) => {

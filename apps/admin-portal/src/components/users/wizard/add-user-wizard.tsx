@@ -333,7 +333,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      */
     const handleWizardFormSubmit = (values: any, formType: WizardStepsFormTypes) => {
         setCurrentWizardStep(currentWizardStep + 1);
-        setWizardState(_.merge(wizardState, { [ formType ]: values }));
+        setWizardState({ ...wizardState, [ formType ]: values } );
     };
 
     /**
