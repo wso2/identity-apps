@@ -39,9 +39,12 @@ interface DynamicFieldPropsInterface {
     valueName: string;
     keyRequiredMessage: string;
     valueRequiredErrorMessage: string;
+    requiredField: boolean;
+    duplicateKeyErrorMsg?: string;
     listen?: (data: KeyValue[]) => void;
     update: (data: KeyValue[]) => void;
 }
+
 export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElement => {
 
     const {
@@ -54,7 +57,9 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
         valueName,
         keyRequiredMessage,
         valueRequiredErrorMessage,
-        listen
+        listen,
+        requiredField,
+        duplicateKeyErrorMsg
     } = props;
 
     const [fields, setFields] = useState<Map<number, KeyValue>>();
@@ -132,7 +137,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                         <Field
                                                             type={ keyType }
                                                             placeholder=""
-                                                            required={ true }
+                                                            required={ requiredField }
                                                             requiredErrorMessage={ keyRequiredMessage }
                                                             label={ keyName }
                                                             name="key"
@@ -166,8 +171,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                                     if (isSameUserStore) {
                                                                         validation.isValid = false;
                                                                         validation.errorMessages.push(
-                                                                            "This User Store has been selected twice. " +
-                                                                            "A User Store can only be selected once."
+                                                                            duplicateKeyErrorMsg
                                                                         )
                                                                     }
                                                                 }
@@ -178,7 +182,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                         < Field
                                                             type={ keyType }
                                                             placeholder=""
-                                                            required={ true }
+                                                            required={ requiredField }
                                                             label={ keyName }
                                                             requiredErrorMessage={ keyRequiredMessage }
                                                             name="key"
@@ -190,7 +194,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                 <Field
                                                     type="text"
                                                     placeholder=""
-                                                    required={ true }
+                                                    required={ requiredField }
                                                     label={ valueName }
                                                     requiredErrorMessage={ valueRequiredErrorMessage }
                                                     name="value"
@@ -256,7 +260,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                                             <Field
                                                                                 type={ keyType }
                                                                                 placeholder=""
-                                                                                required={ true }
+                                                                                required={ requiredField }
                                                                                 requiredErrorMessage={
                                                                                     keyRequiredMessage
                                                                                 }
@@ -297,11 +301,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                                                             validation
                                                                                                 .errorMessages
                                                                                                 .push(
-                                                                                                    "This User Store has" +
-                                                                                                    " been selected" +
-                                                                                                    " twice. A User Store" +
-                                                                                                    " can only be " +
-                                                                                                    "selected once."
+                                                                                                    duplicateKeyErrorMsg
                                                                                                 )
                                                                                         }
                                                                                     }
@@ -312,7 +312,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                                             <Field
                                                                                 type={ keyType }
                                                                                 placeholder=""
-                                                                                required={ true }
+                                                                                required={ requiredField }
                                                                                 requiredErrorMessage={
                                                                                     valueRequiredErrorMessage
                                                                                 }
@@ -450,6 +450,11 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                 </Grid.Column>
             </Grid.Row>
         </Grid>
-
     )
+};
+
+// Set default props
+DynamicField.defaultProps = {
+    requiredField: false,
+    duplicateKeyErrorMsg: "This is key is already selected. Please choose another key."
 };

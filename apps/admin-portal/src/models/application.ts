@@ -134,7 +134,7 @@ interface RoleInterface {
     includeUserDomain: boolean;
 }
 
-interface RoleMappingInterface {
+export interface RoleMappingInterface {
     localRole: string;
     applicationRole: string;
 }
