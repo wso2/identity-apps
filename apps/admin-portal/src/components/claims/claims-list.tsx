@@ -217,13 +217,13 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                             onClick: () => {
                                                 history.push("/edit-local-claims/" + claim?.id)
                                             },
-                                            popupText: "edit",
+                                            popupText: "Edit",
                                             type: "button"
                                         },
                                         {
                                             icon: "trash alternate",
                                             onClick: () => { initDelete(ListType.LOCAL, claim?.id) },
-                                            popupText: "delete",
+                                            popupText: "Delete",
                                             type: "dropdown"
                                         }
                                     ] }
@@ -279,13 +279,13 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                                         onClick: () => {
                                                             openEdit(dialect.id);
                                                         },
-                                                        popupText: "edit",
+                                                        popupText: "Edit",
                                                         type: "button"
                                                     },
                                                     {
                                                         icon: "trash alternate",
                                                         onClick: () => { initDelete(ListType.DIALECT, dialect?.id) },
-                                                        popupText: "delete",
+                                                        popupText: "Delete",
                                                         type: "dropdown"
                                                     }
                                                 ] }
@@ -307,13 +307,13 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                                 onClick: () => {
                                                     openEdit(claim?.id);
                                                 },
-                                                popupText: "edit",
+                                                popupText: "Edit",
                                                 type: "button"
                                             },
                                             {
                                                 icon: "trash alternate",
                                                 onClick: () => { initDelete(ListType.EXTERNAL, claim?.id) },
-                                                popupText: "delete",
+                                                popupText: "Delete",
                                                 type: "dropdown"
                                             }
                                         ] }
