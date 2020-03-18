@@ -40,7 +40,7 @@ export const addPath = (permObj: PermissionObject, pathcomponents: string[], arr
         }
         arr.push(comp)
     }
-    if(pathcomponents.length){
+    if (pathcomponents.length) {
         addPath(permObj, pathcomponents, comp.children || (comp.children = []))
     }
     return arr;
