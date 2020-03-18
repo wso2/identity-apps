@@ -262,21 +262,21 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
         return (
             <TransitionGroup>
-                {_.isEmpty(nodeArray)
+                { _.isEmpty(nodeArray)
                     ? printNoChildrenMessage()
                     : nodeArray.map((node, index) => {
                           return (
                               <CSSTransition
-                                  {...nodeTransitionProps}
-                                  key={node[keywordKey] || index}
+                                  { ...nodeTransitionProps }
+                                  key={ node[keywordKey] || index }
                               >
                                   <div
                                       className={
                                           "super-treeview-node" + getStyleClassCb(node)
                                       }
                                   >
-                                      <div className={`super-treeview-node-content ${!node.children 
-                                            || node.children.length == 0 ? "no-child" : ""}`}>
+                                      <div className={ `super-treeview-node-content ${ !node.children 
+                                            || node.children.length == 0 ? "no-child" : "" }` }>
                                           { node.children && node.children.length != 0 ? printExpandButton(node) : "" }
                                           { printCheckbox(node) }
                                           { printDeleteButton(node) }
@@ -285,7 +285,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                                   </div>
                               </CSSTransition>
                           );
-                      })}
+                      }) }
             </TransitionGroup>
         );
     }
