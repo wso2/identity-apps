@@ -281,7 +281,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                                           {printCheckbox(node)}
                                           {printDeleteButton(node)}
                                       </div>
-                                      {printChildren(node)}
+                                      { printChildren(node) }
                                   </div>
                               </CSSTransition>
                           );
