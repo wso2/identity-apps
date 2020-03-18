@@ -26,6 +26,7 @@ import React, {
 } from "react";
 import { Accordion, Icon, Menu, Popup, Segment, Sidebar } from "semantic-ui-react";
 import { Heading } from "@wso2is/react-components";
+import { AdaptiveAuthTemplateInterface } from "../../../../models";
 
 /**
  * Component ref type.
@@ -38,9 +39,9 @@ export type ScriptTemplatesSidePanelRefType = HTMLFormElement;
 interface ScriptTemplatesSidePanelInterface {
     /**
      * Fired on template selection.
-     * @param {string[]} code - Source code.
+     * @param {AdaptiveAuthTemplateInterface} template -Auth template.
      */
-    onTemplateSelect: (code: string[]) => void;
+    onTemplateSelect: (template: AdaptiveAuthTemplateInterface) => void;
     /**
      * Adaptive script templates.
      */
@@ -161,7 +162,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                                                             className="add-button"
                                                                             name="add"
                                                                             onClick={
-                                                                                () => onTemplateSelect(template.code)
+                                                                                () => onTemplateSelect(template)
                                                                             }
                                                                         />
                                                                     ) }
