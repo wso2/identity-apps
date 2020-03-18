@@ -43,7 +43,7 @@ export const EditAdditionalPropertiesLocalClaims = (
     return (
         <Grid>
             <Grid.Row columns={ 1 }>
-                <Grid.Column width={ 8 } tablet={ 16 } computer={ 6 } mobile={ 16 }>
+                <Grid.Column tablet={ 16 } computer={ 6 } mobile={ 16 }>
                     <DynamicField
                         data={ claim.properties }
                         keyType="text"
@@ -52,6 +52,7 @@ export const EditAdditionalPropertiesLocalClaims = (
                         submit={ submit }
                         keyRequiredMessage="Enter a name"
                         valueRequiredErrorMessage="Enter a value"
+                        requiredField={ true }
                         update={ (data) => {
                             const claimData = { ...claim };
                             delete claimData.id;

@@ -25,7 +25,7 @@ import { AdvanceSettings } from "./advance-application";
 import { GeneralApplicationSettings } from "./general-application-settings";
 import { ApplicationSettings } from "./settings-application";
 import { SignOnMethods } from "./sign-on-methods";
-import { AttributeSettings } from "./attribute-managment";
+import { AttributeSettings } from "./attribute-management";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../store";
 import { getInboundProtocolConfig } from "../../api";

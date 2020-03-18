@@ -29,6 +29,7 @@ import {
 import { history } from "../helpers";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
+import { LOCAL_CLAIMS_PATH } from "../constants";
 
 export const LocalClaimsEditPage = (props): React.ReactElement => {
 
@@ -91,7 +92,7 @@ export const LocalClaimsEditPage = (props): React.ReactElement => {
             description={ "Edit Local Claim" }
             backButton={ {
                 onClick: () => {
-                    history.push("/local-dialect");
+                    history.push(LOCAL_CLAIMS_PATH);
                 },
                 text: "Go back to Local Claims"
             } }

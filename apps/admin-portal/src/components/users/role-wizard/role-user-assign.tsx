@@ -15,6 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+/* eslint-disable */
+//TODO Temporary disable of lint due to merge conflicts
 
 import React, { ReactElement, useState, FunctionComponent, useEffect } from "react";
 import { Grid, Input, Icon, Segment, List, Label, Message } from "semantic-ui-react";
@@ -47,7 +49,7 @@ export const AddRoleUsers: FunctionComponent<AddUserRoleProps> = (props: AddUser
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
 
     const getList = (limit: number, offset: number, filter: string, attribute: string) => {
-        getUsersList(limit, offset, filter, attribute)
+        getUsersList(limit, offset, filter, attribute, null)
             .then((response) => {
                 setUsersList(response.Resources);
             });

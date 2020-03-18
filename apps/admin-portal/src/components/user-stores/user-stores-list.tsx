@@ -41,13 +41,13 @@ export const UserStoresList = (props: UserStoresListPropsInterface): React.React
                                     onClick: () => {
                                         openEdit(userStore.id);
                                     },
-                                    popupText: "edit",
+                                    popupText: "Edit",
                                     type: "button"
                                 },
                                 {
                                     icon: "trash alternate",
                                     onClick: () => {update()},
-                                    popupText: "delete",
+                                    popupText: "Delete",
                                     type: "dropdown"
                                 }
                             ] }

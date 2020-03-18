@@ -118,7 +118,7 @@
 <head>
     <!-- header -->
     <%
-        File headerFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+        File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
     %>
         <jsp:include page="extensions/header.jsp"/>
