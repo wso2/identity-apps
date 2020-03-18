@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, SyntheticEvent } from "react";
 import { PageLayout } from "../layouts";
 import { ListLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
-import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
+import { Icon, DropdownProps, PaginationProps, DropdownItemProps } from "semantic-ui-react";
 import { ClaimsList, ListType, LocalClaimsSearch } from "../components";
 import { Claim, ClaimsGetParams, AlertLevels } from "../models";
 import { getAllLocalClaims, getADialect } from "../api";
@@ -29,9 +29,22 @@ import { AddLocalClaims } from "../components";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
 import { history } from "../helpers";
-import { filterList } from "../utils";
+import { filterList, sortList } from "../utils";
 
 export const LocalClaimsPage = (): React.ReactElement => {
+
+    const SORT_BY = [
+        {
+            text: "Name",
+            key: 0,
+            value: "displayName"
+        },
+        {
+            text: "Claim URI",
+            key: 1,
+            value: "claimURI"
+        }
+    ];
 
     const [claims, setClaims] = useState<Claim[]>(null);
     const [offset, setOffset] = useState(0);
@@ -39,6 +52,8 @@ export const LocalClaimsPage = (): React.ReactElement => {
     const [openModal, setOpenModal] = useState(false);
     const [claimURIBase, setClaimURIBase] = useState("");
     const [filteredClaims, setFilteredClaims] = useState<Claim[]>(null);
+    const [sortBy, setSortBy] = useState<DropdownItemProps>(SORT_BY[0]);
+    const [sortOrder, setSortOrder] = useState(true);
 
     const dispatch = useDispatch();
 
@@ -63,6 +78,10 @@ export const LocalClaimsPage = (): React.ReactElement => {
             ));
         });
     };
+
+    useEffect(() => {
+        setFilteredClaims(sortList(filteredClaims, sortBy.value as string, sortOrder));
+    }, [sortBy, sortOrder]);
 
     useEffect(() => {
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
@@ -90,6 +109,14 @@ export const LocalClaimsPage = (): React.ReactElement => {
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         setOffset((data.activePage as number - 1) * listItemLimit);
+    };
+
+    const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
+        setSortBy(SORT_BY.filter(option => option.value === data.value)[0]);
+    };
+
+    const handleSortOrderChange = (isAscending: boolean) => {
+        setSortOrder(isAscending);
     };
 
     return (
@@ -120,7 +147,9 @@ export const LocalClaimsPage = (): React.ReactElement => {
                             onFilter={ (query) => {
                                 //getLocalClaims(null, null, null, query);
                                 try {
-                                    const filteredClaims = filterList(claims, query);
+                                    const filteredClaims = filterList(
+                                        claims, query, sortBy.value as string, sortOrder
+                                    );
                                     setFilteredClaims(filteredClaims);
                                 } catch (error) {
                                     dispatch(addAlert({
@@ -137,7 +166,7 @@ export const LocalClaimsPage = (): React.ReactElement => {
                     listItemLimit={ listItemLimit }
                     onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                     onPageChange={ handlePaginationChange }
-                    onSortStrategyChange={ null }
+                    onSortStrategyChange={ handleSortStrategyChange }
                     rightActionPanel={
                         (
                             <PrimaryButton
@@ -151,10 +180,11 @@ export const LocalClaimsPage = (): React.ReactElement => {
                     }
                     leftActionPanel={ null }
                     showPagination={ true }
-                    sortOptions={ null }
-                    sortStrategy={ null }
+                    sortOptions={ SORT_BY }
+                    sortStrategy={ sortBy }
                     totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
                     totalListSize={ filteredClaims?.length }
+                    onSortOrderChange={ handleSortOrderChange }
                 >
                     <ClaimsList
                         list={ paginate(filteredClaims, listItemLimit, offset) }

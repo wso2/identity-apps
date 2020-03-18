@@ -28,9 +28,18 @@ import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
 import { AddEditDialect, DialectSearch } from "../components";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
-import { filterList } from "../utils";
+import { filterList, sortList } from "../utils";
 
 export const ClaimDialectsPage = (): React.ReactElement => {
+
+    const SORT_BY = [
+        {
+            key: 0,
+            text: "Dialect URI",
+            value: "dialectURI"
+            
+        }
+    ];
 
     const [dialects, setDialects] = useState<ClaimDialect[]>(null);
     const [offset, setOffset] = useState(0);
@@ -38,6 +47,8 @@ export const ClaimDialectsPage = (): React.ReactElement => {
     const [addEditClaim, setAddEditClaim] = useState(false);
     const [dialectID, setDialectID] = useState<string>(null);
     const [filteredDialects, setFilteredDialects] = useState<ClaimDialect[]>(null);
+    const [sortBy, setSortBy] = useState(SORT_BY[0]);
+    const [sortOrder, setSortOrder] = useState(true);
 
     const dispatch = useDispatch();
 
@@ -67,6 +78,10 @@ export const ClaimDialectsPage = (): React.ReactElement => {
         getDialect();
     }, []);
 
+    useEffect(() => {
+        setFilteredDialects(sortList(filteredDialects, sortBy.value, sortOrder));
+    }, [sortBy, sortOrder]);
+
     const paginate = (list: ClaimDialect[], limit: number, offset: number): ClaimDialect[] => {
         return list?.slice(offset, offset + limit);
     };
@@ -77,6 +92,14 @@ export const ClaimDialectsPage = (): React.ReactElement => {
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         setOffset((data.activePage as number - 1) * listItemLimit);
+    };
+
+    const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
+        setSortBy(SORT_BY.filter(option => option.value === data.value)[0]);
+    };
+
+    const handleSortOrderChange = (isAscending: boolean) => {
+        setSortOrder(isAscending);
     };
 
     return (
@@ -101,7 +124,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                         <DialectSearch onFilter={ (query) => {
                             // getDialect(null, null, null, query);
                             try {
-                                const filteredDialects = filterList(dialects, query);
+                                const filteredDialects = filterList(dialects, query,sortBy.value, sortOrder);
                                 setFilteredDialects(filteredDialects);
                             } catch (error) {
                                 dispatch(addAlert({
@@ -116,7 +139,8 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                     listItemLimit={ listItemLimit }
                     onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                     onPageChange={ handlePaginationChange }
-                    onSortStrategyChange={ null }
+                    onSortStrategyChange={ handleSortStrategyChange }
+                    onSortOrderChange={ handleSortOrderChange }
                     rightActionPanel={
                         (
                             <PrimaryButton
@@ -129,8 +153,8 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                         )
                     }
                     showPagination={ true }
-                    sortOptions={ null }
-                    sortStrategy={ null }
+                    sortOptions={ SORT_BY }
+                    sortStrategy={ sortBy }
                     totalPages={ Math.ceil(filteredDialects?.length / listItemLimit) }
                     totalListSize={ filteredDialects?.length }
                 >

@@ -30,9 +30,22 @@ import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
 import { EmptyPlaceholder } from "../components/shared";
 import { EmptyPlaceholderIllustrations } from "../configs";
-import { filterList } from "../utils";
+import { filterList, sortList } from "../utils";
 
 export const ExternalClaimsPage = (props): React.ReactElement => {
+
+    const SORT_BY = [
+        {
+            key: 0,
+            text: "Claim URI",
+            value:"claimURI"
+        },
+        {
+            key: 1,
+            text: "Mapped Local Claim URI",
+            value:"mappedLocalClaimURI"
+        }
+    ];
 
     const [claims, setClaims] = useState<ExternalClaim[]>(null);
     const [offset, setOffset] = useState(0);
@@ -42,6 +55,8 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
     const [editClaim, setEditClaim] = useState(false);
     const [editClaimID, setEditClaimID] = useState("");
     const [filteredClaims, setFilteredClaims] = useState<ExternalClaim[]>(null);
+    const [sortBy, setSortBy] = useState(SORT_BY[0]);
+    const [sortOrder, setSortOrder] = useState(true);
 
     const dispatch = useDispatch();
 
@@ -83,6 +98,10 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
         getExternalClaims();
     }, [dialectID]);
 
+    useEffect(() => {
+        setFilteredClaims(sortList(filteredClaims, sortBy.value, sortOrder));
+    }, [sortBy, sortOrder]);
+
     const paginate = (list: ExternalClaim[], limit: number, offset: number): ExternalClaim[] => {
         return list?.slice(offset, offset + limit);
     };
@@ -93,6 +112,14 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         setOffset((data.activePage as number - 1) * listItemLimit);
+    };
+
+    const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
+        setSortBy(SORT_BY.filter(option => option.value === data.value)[0]);
+    };
+
+    const handleSortOrderChange = (isAscending: boolean) => {
+        setSortOrder(isAscending);
     };
 
     return (
@@ -129,13 +156,15 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                     text: "Go back to Claim Dialects"
                 } }
             >
-                {filteredClaims?.length > 0
+                {claims?.length > 0
                     ? (
                         <ListLayout
                             advancedSearch={ <ExternalClaimsSearch onFilter={ (query) => {
                                 //getExternalClaims(null, null, null, query);
                                 try {
-                                    const filteredList: ExternalClaim[] = filterList(claims, query);
+                                    const filteredList: ExternalClaim[] = filterList(
+                                        claims, query, sortBy.value, sortOrder
+                                    );
                                     setFilteredClaims(filteredList);
                                 } catch (error) {
                                     dispatch(addAlert({
@@ -149,7 +178,8 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                             listItemLimit={ listItemLimit }
                             onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                             onPageChange={ handlePaginationChange }
-                            onSortStrategyChange={ null }
+                            onSortStrategyChange={ handleSortStrategyChange }
+                            onSortOrderChange={ handleSortOrderChange }
                             rightActionPanel={
                                 (
                                     <PrimaryButton
@@ -162,8 +192,8 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                                 )
                             }
                             showPagination={ true }
-                            sortOptions={ null }
-                            sortStrategy={ null }
+                            sortOptions={ SORT_BY }
+                            sortStrategy={ sortBy }
                             totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
                             totalListSize={ filteredClaims?.length }
                         >
