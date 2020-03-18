@@ -20,6 +20,9 @@ import React, { FunctionComponent, ReactElement, useState, useEffect } from "rea
 import _ from "lodash";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
+/**
+ *Interface to contain props needed for treeview component
+ */
 interface TreeViewProps {
     data: TreeNode[];
     depth?: number;
@@ -47,6 +50,9 @@ interface TreeViewProps {
     transitionExitTimeout?: number;
 }
 
+/**
+ * Interface to contain Tree node data
+ */
 interface TreeNode {
     id: number;
     name: string;
@@ -55,6 +61,11 @@ interface TreeNode {
     children: TreeNode[];
 }
 
+/**
+ * A Component which will return a tree view for a given set of node data.
+ * 
+ * @param props Props to create a tree view component
+ */
 export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps): ReactElement => {
 
     const [ treeData, setTreeData ] = useState<TreeNode[]>();
@@ -68,11 +79,22 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         setTreeData(_.cloneDeep(data));
     },[data]);
 
+    /**
+     * Util method to handle tree update function.
+     * 
+     * @param updatedData object with updated tree data
+     */
     const handleUpdate = (updatedData: any): void => {
         const { depth, onUpdateCb } = props;
         onUpdateCb(updatedData, depth);
     }
 
+    /**
+     * Util method to handle tree node check.
+     * 
+     * @param node Tree node
+     * @param e Event Object
+     */
     const handleCheckToggle = (node: TreeNode, e: any) => {
         const { onCheckToggleCb, depth } = props;
         const data = _.cloneDeep(treeData);
@@ -105,6 +127,11 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         handleUpdate(data);
     }
 
+    /**
+     * Util method to handle tree node delete.
+     * 
+     * @param node Tree node
+     */
     const handleDelete = (node: any) => {
         const { onDeleteCb, depth } = props;
         const data = _.cloneDeep(treeData);
@@ -116,6 +143,11 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         onDeleteCb(node, newData, depth) && handleUpdate(newData);
     }
 
+    /**
+     * Util method to handle expanding of a selected tree node.
+     * 
+     * @param node Expanded tree node
+     */
     const handleExpandToggle = (node: TreeNode) => {
         const { onExpandToggleCb, depth } = props;
         const data = _.cloneDeep(treeData);
@@ -130,6 +162,11 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         handleUpdate(data);
     }
 
+    /**
+     * Util method to print a checkbox for a given tree node.
+     * 
+     * @param node Tree node to print the check box
+     */
     const printCheckbox = (node: TreeNode) => {
         const { isCheckable, keywordLabel, depth } = props;
         const nodeText = _.get(node, keywordLabel, '');
@@ -161,6 +198,11 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         }
     }
 
+    /**
+     * Util method to print a delete button for a given tree node.
+     * 
+     * @param node Tree node to print delete button
+     */
     const printDeleteButton = (node: TreeNode) => {
         const { isDeletable, depth, deleteElement } = props;
 
@@ -177,6 +219,11 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         }
     }
 
+    /**
+     * Util method to print the expand button of a given tree node.
+     * 
+     * @param node Tree node to draw the expand button
+     */
     const printExpandButton = (node: TreeNode): ReactElement => {
         const className = node.isExpanded ? '' : 'active';
         const { isExpandable, depth } = props;
@@ -189,7 +236,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                         handleExpandToggle(node);
                     }}
                 >
-                    <span className={`arrow ${className}`}>
+                    <span className={`tree-arrow ${className}`}>
                         <span></span>
                         <span></span>
                     </span>
@@ -198,7 +245,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         } else {
             return (
                 <div className="wrap">
-                    <span className="arrow">
+                    <span className="tree-arrow">
                         <span></span>
                         <span></span>
                     </span>
@@ -207,14 +254,17 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         }
     }
 
+    /**
+     * Util method to print a text where no children is available.
+     */
     const printNoChildrenMessage = () => {
         const {
             transitionExitTimeout,
             noChildrenAvailableMessage
         } = props;
         const noChildrenTransitionProps = {
-            classNames: 'super-treeview-no-children-transition',
-            key: 'super-treeview-no-children',
+            classNames: 'treeview-no-children-transition',
+            key: 'treeview-no-children',
             style: {
                 transitionDuration: `${transitionExitTimeout}ms`,
                 transitionDelay: `${transitionExitTimeout}ms`
@@ -227,8 +277,8 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
         return (
             <CSSTransition {...noChildrenTransitionProps}>
-                <div className="super-treeview-no-children">
-                    <div className="super-treeview-no-children-content">
+                <div className="treeview-no-children">
+                    <div className="treeview-no-children-content">
                         {noChildrenAvailableMessage}
                     </div>
                 </div>
@@ -245,7 +295,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         } = props;
 
         const nodeTransitionProps = {
-            classNames: 'super-treeview-node-transition',
+            classNames: 'treeview-node-transition',
             style: {
                 transitionDuration: `${transitionEnterTimeout}ms`
             },
@@ -267,10 +317,10 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                               >
                                   <div
                                       className={
-                                          'super-treeview-node' + getStyleClassCb(node)
+                                          'treeview-node' + getStyleClassCb(node)
                                       }
                                   >
-                                      <div className={`super-treeview-node-content ${!node.children 
+                                      <div className={`treeview-node-content ${!node.children 
                                             || node.children.length == 0 ? "no-child" : ""}`}>
                                           {node.children && node.children.length != 0 ? printExpandButton(node) : ""}
                                           {printCheckbox(node)}
@@ -308,7 +358,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         }
 
         return (
-            <div className="super-treeview-children-container">
+            <div className="treeview-children-container">
                 {childrenElement}
             </div>
         );
@@ -323,7 +373,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
     }
 
     return (
-        <div className="super-treeview">
+        <div className="treeview">
             {printNodes(treeData)}
         </div>
     )
