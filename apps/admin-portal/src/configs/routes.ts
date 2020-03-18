@@ -38,6 +38,13 @@ import {
     UserStores,
     IdentityProviderEditPage
 } from "../pages";
+import {
+    USER_STORES_PATH,
+    LOCAL_CLAIMS_PATH,
+    EXTERNAL_CLAIMS_PATH,
+    CLAIM_DIALECTS_PATH,
+    EDIT_LOCAL_CLAIMS_PATH
+} from "../constants";
 
 /**
  * Dashboard Layout Routes array.
@@ -180,7 +187,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         id: "localDialect",
         level: 2,
         name: "Local Dialect",
-        path: "/local-dialect",
+        path: LOCAL_CLAIMS_PATH,
         protected: true,
         showOnSidePanel: false
     },
@@ -191,7 +198,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         id: "externalClaims",
         level: 2,
         name: "External Claims",
-        path: "/external-claims/:id",
+        path: `${EXTERNAL_CLAIMS_PATH}/:id`,
         protected: true,
         showOnSidePanel: false
     },
@@ -202,7 +209,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         id: "claimDialects",
         level: 2,
         name: "Claim Dialects",
-        path: "/claim-dialects",
+        path: CLAIM_DIALECTS_PATH,
         protected: true,
         showOnSidePanel: true
     },
@@ -213,7 +220,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         id: "editLocalClaims",
         level: 2,
         name: "Edit Local Claims",
-        path: "/edit-local-claims/:id",
+        path: `${EDIT_LOCAL_CLAIMS_PATH}/:id`,
         protected: true,
         showOnSidePanel: false
     },
@@ -222,7 +229,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         icon: "userStore",
         id: "user-stores",
         name: "User Stores",
-        path: "/user-stores",
+        path: USER_STORES_PATH,
         protected: true,
         showOnSidePanel: true
     },
