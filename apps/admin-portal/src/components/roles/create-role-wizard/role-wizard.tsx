@@ -51,8 +51,8 @@ interface CreateRoleProps {
  */
 enum WizardStepsFormTypes {
     BASIC_DETAILS = "BasicDetails",
-    PERM_LIST= "PermissionList",
-    USER_LIST= "RoleUserList",
+    PERM_LIST = "PermissionList",
+    USER_LIST = "RoleUserList",
     SUMMARY = "summary"
 }
 
@@ -132,7 +132,6 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
          *        to add the selected permissions to the created role.
          */
         createRole(roleData).then(response => {
-        
             if (response.status === 201) {
                 const createdRoleId = response.data.id;
                 const permData: string[] = [];

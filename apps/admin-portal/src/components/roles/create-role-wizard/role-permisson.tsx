@@ -56,31 +56,31 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     /**
      * Util method to check permissions already in the selected role.
      * 
-     * @param permList - Permissions which are available in the selected role
+     * @param permissionList - Permissions which are available in the selected role
      * @param nodes - Permmission Node List
      * @param isParentChecked - Check whether parent is selected
      */
-    const checkRolePerms = (permList: string[], nodes: any, isParentChecked: boolean): void  => {
+    const checkRolePermissions = (permissionList: string[], nodes: any, isParentChecked: boolean): void  => {
         nodes.forEach(node => {
-            if (permList.includes(node.fullPath)) {
+            if (permissionList.includes(node.fullPath)) {
                 node.isChecked = true;
                 if(node.children){
-                    checkRolePerms(permList, node.children, true);
+                    checkRolePermissions(permissionList, node.children, true);
                 }
             } else if (isParentChecked) {
                 node.isChecked = true;
                 if(node.children){
-                    checkRolePerms(permList, node.children, true);
+                    checkRolePermissions(permissionList, node.children, true);
                 }
             } else {
                 if(node.children){
-                    checkRolePerms(permList, node.children, false);
+                    checkRolePermissions(permissionList, node.children, false);
                 }
             }
         });
     }
 
-    const getPermsList = (rolePerms?: string[]): void => {
+    const getPermissions = (rolePerms?: string[]): void => {
         getPermissionList().then((response)=> {
             if (response.status === 200) {
                 const permList = response.data;
@@ -91,7 +91,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                 ),[]);
 
                 if (rolePerms) {
-                    checkRolePerms(rolePerms, permTree, false);
+                    checkRolePermissions(rolePerms, permTree, false);
                     setPermissionsOfRole(rolePerms);
                     setSelectedPermissions(rolePerms)
                 }
@@ -111,13 +111,13 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         if (role) {
             getPermissionsPerRole(role).then(response => {
                 if (response.status === 200) {
-                    getPermsList(response.data);
+                    getPermissions(response.data);
                 }
             }).catch(error => {
                 //TODO: Handle Error
             })
         } else {
-            getPermsList();
+            getPermissions();
         }
     },[]);
 
@@ -126,11 +126,11 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
      * 
      * @param nodes child nodes need to be checked.
      */
-    const applyCheckStateTo = (nodes: any, checked: boolean): void => {
+    const markChildrenAsChecked = (nodes: any, checked: boolean): void => {
         nodes.forEach((node)=>{
             node.isChecked = checked
             if(node.children){
-                applyCheckStateTo(node.children, checked);
+                markChildrenAsChecked(node.children, checked);
             }
         })
     }
@@ -143,7 +143,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     const handlePermssionCheck = (nodeData): void => {
         const checkState = nodeData[0].isChecked;
 
-        applyCheckStateTo(nodeData, checkState);
+        markChildrenAsChecked(nodeData, checkState);
 
         if (nodeData[0].isChecked) {
             if (permissionsOfRole.length > 0) {
