@@ -314,7 +314,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
         return (
             <div className="super-treeview-children-container">
-                {childrenElement}
+                { childrenElement }
             </div>
         );
 
