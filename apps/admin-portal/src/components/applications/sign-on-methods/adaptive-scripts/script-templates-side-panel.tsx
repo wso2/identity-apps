@@ -134,6 +134,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                                 className="category-name"
                                                 content={ category.displayName }
                                                 index={ index }
+                                                icon={ <Icon className="angle right caret-icon" /> }
                                                 onClick={ handleAccordionOnClick }
                                             />
                                             <Accordion.Content
@@ -188,6 +189,6 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
  * Default props for the script templates side panel component.
  */
 ScriptTemplatesSidePanel.defaultProps = {
-    defaultActiveIndexes: [ 0 ],
+    defaultActiveIndexes: [ -1 ],
     visible: false
 };

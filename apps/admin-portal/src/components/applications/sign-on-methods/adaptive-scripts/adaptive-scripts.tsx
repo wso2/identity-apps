@@ -198,7 +198,6 @@ export const AdaptiveScripts: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             <ScriptTemplatesSidePanel
                                 title="Templates"
                                 ref={ authTemplatesSidePanelRef }
-                                defaultActiveIndexes={ [ 0 ] }
                                 onTemplateSelect={ handleTemplateSelection }
                                 templates={
                                     scriptTemplates?.templatesJSON && Object.values(scriptTemplates.templatesJSON)
