@@ -79,6 +79,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         const currentNode = _.find(data, node);
         const currentNodeIndex = data.indexOf(currentNode);
         const toggledNodes = [];
+
         if (e.shiftKey && !_.isNil(lastCheckToggledNodeIndex)) {
             const rangeStart = Math.min(
                 currentNodeIndex,
