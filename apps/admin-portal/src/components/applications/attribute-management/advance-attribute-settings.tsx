@@ -84,7 +84,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             required={ false }
                             requiredErrorMessage="this is needed"
                             type="dropdown"
-                            value={ initialSubject?.claim.uri }
+                            value={ initialSubject?.claim?.uri }
                             placeholder="select the attribute"
                             children={ dropDownOptions }
                         />
@@ -176,7 +176,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             required={ false }
                             requiredErrorMessage="this is needed"
                             type="dropdown"
-                            value={ initialRole?.claim.uri }
+                            value={ initialRole?.claim?.uri }
                             placeholder="select the attribute"
                             children={ dropDownOptions }
                         />
@@ -206,41 +206,6 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         <Hint>This option will append the user store domain that the user resides to role</Hint>
                     </Grid.Column>
                 </Grid.Row>
-                {/* TODO need to replace role mapping with proper component*/ }
-                {/*<Grid.Row columns={ 2 }>*/ }
-                {/*    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>*/ }
-                {/*        <Divider/>*/ }
-                {/*        <Divider hidden/>*/ }
-                {/*    </Grid.Column>*/ }
-                {/*    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>*/ }
-                {/*        <Heading as="h6">Role mapping</Heading>*/ }
-                {/*        <Hint>Create mappings for the roles here</Hint>*/ }
-                {/*    </Grid.Column>*/ }
-                {/*</Grid.Row>*/ }
-                {/*<Grid.Row>*/ }
-                {/*    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 4 }>*/ }
-                {/*        <Field*/ }
-                {/*            name="localRole"*/ }
-                {/*            label="Local Role"*/ }
-                {/*            required={ false }*/ }
-                {/*            requiredErrorMessage=""*/ }
-                {/*            placeholder="Enter role name"*/ }
-                {/*            type="text"*/ }
-                {/*            readOnly*/ }
-                {/*        />*/ }
-                {/*    </Grid.Column>*/ }
-                {/*    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 4 }>*/ }
-                {/*        <Field*/ }
-                {/*            name="applicationRole"*/ }
-                {/*            label="Application Role"*/ }
-                {/*            required={ false }*/ }
-                {/*            requiredErrorMessage=""*/ }
-                {/*            placeholder="Enter role name"*/ }
-                {/*            type="text"*/ }
-                {/*            readOnly*/ }
-                {/*        />*/ }
-                {/*    </Grid.Column>*/ }
-                {/*</Grid.Row>*/ }
             </Grid>
         </Forms>
     )
