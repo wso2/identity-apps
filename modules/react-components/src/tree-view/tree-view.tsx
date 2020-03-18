@@ -85,6 +85,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                 currentNodeIndex,
                 lastCheckToggledNodeIndex
             );
+
             const rangeEnd = Math.max(
                 currentNodeIndex,
                 lastCheckToggledNodeIndex
