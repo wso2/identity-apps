@@ -26,7 +26,7 @@ export const RoleUserDetails: FunctionComponent<any> = (): ReactElement => {
         <>
             <AddRoleUsers/>
             <Forms onSubmit={() => {
-                //TODO handle form submit
+                // TODO: handle form submit
             } } >
                 <Grid>
                     <Grid.Row columns={ 1 }>
