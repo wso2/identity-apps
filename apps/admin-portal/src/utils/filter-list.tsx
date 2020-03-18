@@ -16,9 +16,14 @@
 * under the License.
 */
 
-export const filterList = <T extends unknown>(list: T[], query: string): T[] => {
+import { sortList } from ".";
+
+export const filterList = <T extends unknown>(
+    list: T[], query: string, sortBy: string, isAscending: boolean
+): T[] => {
+    
     if (!query) {
-        return list;
+        return sortList(list, sortBy, isAscending);
     }
 
     const queryElements: string[] = query.split(" ");
@@ -48,6 +53,7 @@ export const filterList = <T extends unknown>(list: T[], query: string): T[] => 
             }
             return false;
         });
-        return filteredList;
+
+        return sortList(filteredList, sortBy, isAscending);
     }
-}
+};
