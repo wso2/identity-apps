@@ -24,7 +24,7 @@ import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
 import { ClaimsList, ListType, AddExternalClaims, EditExternalClaims, ExternalClaimsSearch } from "../components";
 import { ExternalClaim, ClaimDialect, AlertLevels } from "../models";
 import { getAllExternalClaims, getADialect } from "../api";
-import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
+import { DEFAULT_USER_LIST_ITEM_LIMIT, CLAIM_DIALECTS_PATH } from "../constants";
 import { history } from "../helpers";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
@@ -122,7 +122,7 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                 description={ "View, edit and add claims of " + dialect?.dialectURI }
                 showBottomDivider={ true }
                 backButton={ {
-                    onClick: () => { history.push("/external-dialects") },
+                    onClick: () => { history.push(CLAIM_DIALECTS_PATH) },
                     text: "Go back to Claim Dialects"
                 } }
             >

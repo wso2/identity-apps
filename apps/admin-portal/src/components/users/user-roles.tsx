@@ -19,16 +19,28 @@
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { AlertInterface, BasicProfileInterface } from "../../models";
 import { useTranslation } from "react-i18next";
-import { Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import { Grid, Icon, Input, Label, List, Modal, Segment } from "semantic-ui-react";
+import { EmptyPlaceholder, Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { Button, Grid, Icon, Input, Label, List, Modal, Popup, Segment } from "semantic-ui-react";
 import { getGroupsList, updateUserRoles } from "../../api";
 import _ from "lodash";
 import { AlertLevels } from "@wso2is/core/dist/src/models";
+import { EmptyPlaceholderIllustrations } from "../../configs";
 
 interface UserRolesPropsInterface {
     user: BasicProfileInterface;
     onAlertFired: (alert: AlertInterface) => void;
     handleUserUpdate: (userId: string) => void;
+}
+
+/**
+ * Enum for role types.
+ * @readonly
+ * @enum { string }
+ */
+enum RoleTypes {
+    APPLICATION = "Application",
+    INTERNAL= "Internal",
+    PRIMARY = "Primary"
 }
 
 export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
@@ -47,6 +59,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     const [ showAddNewRoleModal, setAddNewRoleModalView ] = useState(false);
     const [ roleList, setRoleList ] = useState<any>([]);
     const [ tempRoleList, setTempRoleList ] = useState([]);
+    const [ initialRoleList, setInitialRoleList ] = useState([]);
     const [ selectedDomain, setSelectedDomain ] = useState("");
 
     const { t } = useTranslation();
@@ -60,37 +73,28 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
      */
     const removeExistingRoles = (domain: string, roleList) => {
         const roleListCopy = [ ...roleList ];
-        if (domain === "Application") {
-            const addedAppRoles = [];
+        const addedRoles = [];
             _.forEachRight(roleListCopy, (role) => {
-                if (appRoles.has(role.displayName)) {
-                    addedAppRoles.push(role);
-                    roleListCopy.splice(roleListCopy.indexOf(role), 1);
+                if (domain === RoleTypes.APPLICATION) {
+                    if (appRoles.has(role.displayName)) {
+                        addedRoles.push(role);
+                        roleListCopy.splice(roleListCopy.indexOf(role), 1);
+                    }
+                } else if (domain === RoleTypes.INTERNAL) {
+                    if (internalRoles.has(role.displayName)) {
+                        addedRoles.push(role);
+                        roleListCopy.splice(roleListCopy.indexOf(role), 1);
+                    }
+                } else {
+                    if (primaryRoles.has(role.displayName)) {
+                        addedRoles.push(role);
+                        roleListCopy.splice(roleListCopy.indexOf(role), 1);
+                    }
                 }
             });
-            setTempRoleList(addedAppRoles);
+            setTempRoleList(addedRoles);
             setRoleList(roleListCopy);
-        } else if (domain === "Internal") {
-            const addedInternalRoles = [];
-            _.forEachRight(roleListCopy, (role) => {
-                if (internalRoles.has(role.displayName)) {
-                    addedInternalRoles.push(role);
-                    roleListCopy.splice(roleListCopy.indexOf(role), 1);
-                }
-            });
-            setTempRoleList(addedInternalRoles);
-            setRoleList(roleListCopy);
-        } else {
-            const addedPrimaryRoles = [];
-            _.forEachRight(roleListCopy, (role) => {
-                if (primaryRoles.has(role.displayName)) {
-                    addedPrimaryRoles.push(role);
-                    roleListCopy.splice(roleListCopy.indexOf(role), 1);
-                }
-            });
-            setTempRoleList(addedPrimaryRoles);
-            setRoleList(roleListCopy);
-        }
+            setInitialRoleList(roleListCopy);
     };
 
     const getRolesList = (domain: string) => {
@@ -139,8 +143,33 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 }
             });
         } else {
-            setRoleList(roleList);
+            setRoleList(initialRoleList);
         }
+    };
+
+    /**
+     * The following function enables the user to select all the roles
+     * at once.
+     */
+    const handleSelectAll = () => {
+        if (!_.isEmpty(initialRoleList)) {
+            setTempRoleList(initialRoleList);
+            setRoleList([]);
+        }
+    };
+
+    /**
+     * The following function enables the user to deselect all the roles
+     * at once.
+     */
+    const handleRemoveAll = () => {
+        if (_.isEmpty(initialRoleList)) {
+            setRoleList(tempRoleList);
+            setTempRoleList([]);
+            return;
+        }
+        setRoleList(initialRoleList);
+        setTempRoleList([]);
     };
 
     /**
@@ -157,9 +186,9 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 const role = group.display.split("/");
                 const prefix = role[0];
 
-                if (prefix === "Application") {
+                if (prefix === RoleTypes.APPLICATION) {
                     applicationRoles.set(group.display, group.value);
-                } else if (prefix === "Internal") {
+                } else if (prefix === RoleTypes.INTERNAL) {
                     intRoles.set(group.display, group.value);
                 } else {
                     primRoles.set(group.display, group.value);
@@ -248,9 +277,9 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         const addOperations = [];
         let removedIds = [];
 
-        if (selectedDomain === "Application") {
+        if (selectedDomain === RoleTypes.APPLICATION) {
             removedIds = [ ...appRoles?.values()];
-        } else if (selectedDomain === "Internal") {
+        } else if (selectedDomain === RoleTypes.INTERNAL) {
             removedIds = [ ...internalRoles?.values()];
         } else {
             removedIds = [ ...primaryRoles?.values()];
@@ -328,7 +357,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     };
 
     const addNewRoleModal = () => (
-        <Modal open={ showAddNewRoleModal } size="small">
+        <Modal open={ showAddNewRoleModal } size="small" className="user-roles">
             <Modal.Header>
                 Edit user roles
                 <Heading subHeading ellipsis as="h6">
@@ -356,7 +385,9 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                 <Grid.Column>
                                     <Segment className={ "user-role-list-segment" }>
                                         <List className={ "user-role-list" }>
-                                            { roleList &&
+                                            {
+                                                !_.isEmpty(roleList) ? (
+                                                roleList &&
                                             roleList.map((role, index) =>{
                                                 return (
                                                     <List.Item
@@ -371,9 +402,29 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                     </List.Item>
                                                 )
                                             })
+                                            ) : (
+                                                <div className={ "empty-placeholder-center" }>
+                                                    <EmptyPlaceholder
+                                                        image={ EmptyPlaceholderIllustrations.emptyList }
+                                                        imageSize="mini"
+                                                        title={ "The role list is empty" }
+                                                        subtitle={ [ "You have assigned all the roles to user." ] }
+                                                    />
+                                                </div>
+
+                                                )
                                             }
                                         </List>
                                     </Segment>
+                                </Grid.Column>
+                                <Grid.Column>
+                                    <Button
+                                        fluid
+                                        onClick={ () => handleSelectAll() }
+                                    >
+                                        <Icon name="check circle outline"/>
+                                        Add all
+                                    </Button>
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid.Column>
@@ -387,19 +438,71 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                     <Segment className={ "user-assigned-roles-segment" }>
                                         {
-                                            tempRoleList && tempRoleList.map((role, index) => {
-                                                return (
-                                                    <Label key={ index }>
-                                                        { role.displayName }
-                                                        <Icon
+                                            selectedDomain == RoleTypes.INTERNAL ? (
+                                                <>
+                                                <Popup
+                                                    trigger={
+                                                        <Label className={ "info-label" }>
+                                                            Internal/everyone
+                                                            <Icon
+                                                                name="info circle"
+                                                                inverted
+                                                            />
+                                                        </Label>
+                                                    }
+                                                    inverted
+                                                    content="This role will be assigned to all the users by default."
+                                                />
+                                                    {
+                                                        tempRoleList && tempRoleList.map((role, index) => {
+                                                        return (
+                                                            <Label key={ index }>
+                                                                { role.displayName }
+                                                                <Icon
+                                                                    name="delete"
+                                                                    onClick={ () => handleRemoveRoleItem(role) }
+                                                                />
+                                                            </Label>
+                                                        );
+                                                    })
+                                                }
+                                                </>
+                                            ) : (
+                                                !_.isEmpty(tempRoleList) ? (
+                                                    tempRoleList && tempRoleList.map((role, index) => {
+                                                    return (
+                                                        <Label key={ index }>
+                                                            { role.displayName }
+                                                            <Icon
                                                             name="delete"
                                                             onClick={ () => handleRemoveRoleItem(role) }
+                                                            />
+                                                        </Label>
+                                                    );
+                                                })
+                                                ) : (
+                                                    <div className={ "empty-placeholder-center" }>
+                                                        <EmptyPlaceholder
+                                                            image={ EmptyPlaceholderIllustrations.emptyList }
+                                                            imageSize="mini"
+                                                            title={ "The role list is empty" }
+                                                            subtitle={ [ "You have not assigned any roles to the user."
+                                                            ] }
                                                         />
-                                                    </Label>
-                                                );
-                                            })
+                                                    </div>
+                                                )
+                                            )
                                         }
                                     </Segment>
+                                </Grid.Column>
+                                <Grid.Column>
+                                    <Button
+                                        fluid
+                                        onClick={ () => handleRemoveAll() }
+                                    >
+                                        <Icon name="times circle outline"/>
+                                        Remove all
+                                    </Button>
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid.Column>
@@ -425,39 +528,39 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                         {
                             primaryRoles && primaryRoles.size > 0 ? (
                                 <Segment.Group style={ { boxShadow: "none" } }>
-                                <Segment clearing className="user-roles-segment-header">
-                                    <Icon
-                                        className="floated right"
-                                        color="grey"
-                                        name="plus"
-                                    />
-                                    <Icon
-                                        onClick={ () => getRolesList("Primary") }
-                                        className="floated right"
-                                        color="grey"
-                                        name="pencil alternate"
-                                    />
-                                </Segment>
-                                <Segment className="user-roles-segment">
-                                    {
-                                        [ ...primaryRoles.keys() ].map((roleName, index) => {
-                                            return (
-                                            roleName === "admin" ?
-                                                (
-                                                    <Label color="teal" key={ index }>
+                                    <Segment clearing className="user-roles-segment-header">
+                                        <Icon
+                                            className="floated right"
+                                            color="grey"
+                                            name="plus"
+                                        />
+                                        <Icon
+                                            onClick={ () => getRolesList(RoleTypes.PRIMARY) }
+                                            className="floated right"
+                                            color="grey"
+                                            name="pencil alternate"
+                                        />
+                                    </Segment>
+                                    <Segment className="user-roles-segment">
+                                        {
+                                            [ ...primaryRoles.keys() ].map((roleName, index) => {
+                                                return (
+                                                roleName === "admin" ?
+                                                    (
+                                                        <Label color="teal" key={ index }>
+                                                            { roleName }
+                                                        </Label>
+                                                    ) :
+                                                    (
+                                                    <Label key={ index }>
                                                         { roleName }
                                                     </Label>
-                                                ) :
-                                                (
-                                                <Label key={ index }>
-                                                    { roleName }
-                                                </Label>
-                                                )
-                                            );
+                                                    )
+                                                );
 
-                                        })
-                                    }
-                                </Segment>
+                                            })
+                                        }
+                                    </Segment>
                                 </Segment.Group>
                             ) : (
                                 <Segment.Group style={ { boxShadow: "none" } }>
@@ -475,7 +578,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                         <PrimaryButton
                                             size="mini"
                                             style={ { padding: "0.7em"} }
-                                            onClick={ () => getRolesList("Primary") }
+                                            onClick={ () => getRolesList(RoleTypes.PRIMARY) }
                                         >
                                             <Icon name="plus"/>
                                             Assign new role
@@ -502,23 +605,23 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             name="plus"
                                         />
                                         <Icon
-                                            onClick={ () => getRolesList("Application") }
+                                            onClick={ () => getRolesList(RoleTypes.APPLICATION) }
                                             className="floated right"
                                             color="grey"
                                             name="pencil alternate"
                                         />
                                     </Segment>
-                                <Segment className="user-roles-segment">
-                                    {
-                                        [ ...appRoles.keys() ].map((roleName, index) => {
-                                            return (
-                                                <Label key={ index }>
-                                                    { roleName }
-                                                </Label>
-                                            );
-                                        })
-                                    }
-                                </Segment>
+                                    <Segment className="user-roles-segment">
+                                        {
+                                            [ ...appRoles.keys() ].map((roleName, index) => {
+                                                return (
+                                                    <Label key={ index }>
+                                                        { roleName }
+                                                    </Label>
+                                                );
+                                            })
+                                        }
+                                    </Segment>
                                 </Segment.Group>
                                 ) : (
                                     <Segment.Group style={ { boxShadow: "none" } }>
@@ -536,7 +639,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             <PrimaryButton
                                                 size="mini"
                                                 style={ { padding: "0.7em"} }
-                                                onClick={ () => getRolesList("Application") }
+                                                onClick={ () => getRolesList(RoleTypes.APPLICATION) }
                                             >
                                                 <Icon name="plus"/>
                                                 Assign new role
@@ -553,67 +656,45 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                         <Hint>
                             The following are the internal roles assigned to the user at the moment.
                         </Hint>
-                        {
-                            internalRoles && internalRoles.size > 0 ? (
-                                <Segment.Group style={ { boxShadow: "none" } }>
-                                    <Segment clearing className="user-roles-segment-header">
-                                        <Icon
-                                            className="floated right"
-                                            color="grey"
-                                            name="plus"
-                                        />
-                                        <Icon
-                                            onClick={ () => getRolesList("Internal") }
-                                            className="floated right"
-                                            color="grey"
-                                            name="pencil alternate"
-                                        />
-                                    </Segment>
+                            <Segment.Group style={ { boxShadow: "none" } }>
+                                <Segment clearing className="user-roles-segment-header">
+                                    <Icon
+                                        className="floated right"
+                                        color="grey"
+                                        name="plus"
+                                    />
+                                    <Icon
+                                        onClick={ () => getRolesList(RoleTypes.INTERNAL) }
+                                        className="floated right"
+                                        color="grey"
+                                        name="pencil alternate"
+                                    />
+                                </Segment>
                                 <Segment className="user-roles-segment">
+                                    <Popup
+                                        trigger={
+                                            <Label className={ "info-label" }>
+                                                Internal/everyone
+                                                <Icon
+                                                    name="info circle"
+                                                    inverted
+                                                />
+                                            </Label>
+                                        }
+                                        inverted
+                                        content="This role is assigned to all the users by default."
+                                    />
                                     {
                                         [ ...internalRoles.keys() ].map((roleName, index) => {
                                             return (
-                                                roleName === "Internal/everyone" ?
-                                                    (
-                                                        <Label className="info-label" key={ index }>
-                                                            { roleName }
-                                                        </Label>
-                                                    ) :
-                                                    (
-                                                        <Label key={ index }>
-                                                            { roleName }
-                                                        </Label>
-                                                    )
+                                                <Label key={ index }>
+                                                    { roleName }
+                                                </Label>
                                             );
                                         })
                                     }
                                 </Segment>
-                                </Segment.Group>
-                                ): (
-                                    <Segment.Group style={ { boxShadow: "none" } }>
-                                        <Segment clearing className="user-roles-segment-header">
-                                            <Icon
-                                                className="floated right"
-                                                color="grey"
-                                                name="plus"
-                                            />
-                                        </Segment>
-                                        <Segment textAlign="center" size="small" className="user-roles-segment">
-                                            <Heading style={ { fontSize: "small", color: "#767676" } }>
-                                                No internal roles assigned to this user at the moment.
-                                            </Heading>
-                                            <PrimaryButton
-                                                size="mini"
-                                                style={ { padding: "0.7em"} }
-                                                onClick={ () => getRolesList("Internal") }
-                                            >
-                                                <Icon name="plus"/>
-                                                Assign new role
-                                            </PrimaryButton>
-                                        </Segment>
-                                    </Segment.Group>
-                                )
-                            }
+                            </Segment.Group>
                     </Grid.Column>
                 </Grid.Row>
                 { addNewRoleModal() }

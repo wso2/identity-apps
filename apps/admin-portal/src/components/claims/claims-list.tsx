@@ -25,6 +25,7 @@ import { deleteAClaim, deleteAnExternalClaim, deleteADialect } from "../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../store/actions";
 import { CopyInputField } from "@wso2is/react-components";
+import { EDIT_LOCAL_CLAIMS_PATH, LOCAL_CLAIMS_PATH, EXTERNAL_CLAIMS_PATH } from "../../constants";
 
 export enum ListType {
     LOCAL,
@@ -215,15 +216,15 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                         {
                                             icon: "pencil alternate",
                                             onClick: () => {
-                                                history.push("/edit-local-claims/" + claim?.id)
+                                                history.push(`${EDIT_LOCAL_CLAIMS_PATH}/${claim?.id}`)
                                             },
-                                            popupText: "edit",
+                                            popupText: "Edit",
                                             type: "button"
                                         },
                                         {
                                             icon: "trash alternate",
                                             onClick: () => { initDelete(ListType.LOCAL, claim?.id) },
-                                            popupText: "delete",
+                                            popupText: "Delete",
                                             type: "dropdown"
                                         }
                                     ] }
@@ -245,39 +246,58 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                             )
                         })
                         : isDialect(list)
-                            ? list?.map((dialect: ClaimDialect, index: number) => {
-                                return (
-                                    <ResourceList.Item
-                                        key={ index }
-                                        actions={ [
-                                            {
-                                                icon: "eye",
-                                                onClick: () => {
-                                                    history.push("/external-claims/" + dialect.id);
-                                                },
-                                                popupText: "View External Claims",
-                                                type: "button"
+                            ? <>
+                                <ResourceList.Item
+                                    actions={ [
+                                        {
+                                            icon: "eye",
+                                            onClick: () => {
+                                                history.push(LOCAL_CLAIMS_PATH);
                                             },
-                                            {
-                                                icon: "pencil alternate",
-                                                onClick: () => {
-                                                    openEdit(dialect.id);
-                                                },
-                                                popupText: "edit",
-                                                type: "button"
-                                            },
-                                            {
-                                                icon: "trash alternate",
-                                                onClick: () => { initDelete(ListType.DIALECT, dialect?.id) },
-                                                popupText: "delete",
-                                                type: "dropdown"
-                                            }
-                                        ] }
-                                        actionsFloated="right"
-                                        itemHeader={ dialect.dialectURI }
-                                    />
-                                )
-                            })
+                                            popupText: "View Local Claims",
+                                            type: "button"
+                                        }
+                                    ] }
+                                    actionsFloated="right"
+                                    itemHeader={ "Local Dialect" }
+                                />
+                                {
+                                    list?.map((dialect: ClaimDialect, index: number) => {
+                                        return (
+                                            <ResourceList.Item
+                                                key={ index }
+                                                actions={ [
+                                                    {
+                                                        icon: "eye",
+                                                        onClick: () => {
+                                                            history.push(`${EXTERNAL_CLAIMS_PATH}/${dialect.id}`);
+                                                        },
+                                                        popupText: "View Claims belonging to this dialect",
+                                                        type: "button"
+                                                    },
+                                                    {
+                                                        icon: "pencil alternate",
+                                                        onClick: () => {
+                                                            openEdit(dialect.id);
+                                                        },
+                                                        popupText: "Edit",
+                                                        type: "button"
+                                                    },
+                                                    {
+                                                        icon: "trash alternate",
+                                                        onClick: () => { initDelete(ListType.DIALECT, dialect?.id) },
+                                                        popupText: "Delete",
+                                                        type: "dropdown"
+                                                    }
+                                                ] }
+                                                actionsFloated="right"
+                                                itemHeader={ dialect.dialectURI }
+                                            />
+                                        );
+                                    })
+
+                                }
+                            </>
                             : list?.map((claim: ExternalClaim, index: number) => {
                                 return (
                                     <ResourceList.Item
@@ -288,13 +308,13 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                                 onClick: () => {
                                                     openEdit(claim?.id);
                                                 },
-                                                popupText: "edit",
+                                                popupText: "Edit",
                                                 type: "button"
                                             },
                                             {
                                                 icon: "trash alternate",
                                                 onClick: () => { initDelete(ListType.EXTERNAL, claim?.id) },
-                                                popupText: "delete",
+                                                popupText: "Delete",
                                                 type: "dropdown"
                                             }
                                         ] }

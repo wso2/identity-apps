@@ -31,12 +31,14 @@ import {
     ClaimMappingInterface,
     ExternalClaim,
     RoleConfigInterface,
+    RoleMappingInterface,
     SubjectConfigInterface,
     SupportedAuthProtocolTypes
 } from "../../../models";
 import { isEmpty } from "lodash";
 import { useTrigger } from "@wso2is/forms";
 import { useDispatch } from "react-redux";
+import { RoleMapping } from "./role-mapping";
 
 
 export interface SelectedDialectInterface {
@@ -138,6 +140,9 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     //Advance Settings.
     const [advanceSettingValues, setAdvanceSettingValues] = useState<AdvanceSettingsSubmissionInterface>();
     const [triggerAdvanceSettingFormSubmission, setTriggerAdvanceSettingFormSubmission] = useTrigger();
+
+    // Role Mapping.
+    const [roleMapping, setRoleMapping] = useState<RoleMappingInterface[]>([]);
 
     const getClaims = () => {
         getAllLocalClaims(null)
@@ -426,6 +431,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     useMappedLocalSubject: advanceSettingValues?.subject.useMappedLocalSubject
                 },
                 role: {
+                    mappings: roleMapping.length > 0 ? roleMapping : [],
                     claim: {
                         uri: advanceSettingValues?.role.claim
                     },
@@ -433,9 +439,15 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                 }
             }
         };
+
         if (isEmpty(submitValue.claimConfiguration.claimMappings)) {
             delete submitValue.claimConfiguration.claimMappings;
         }
+
+        if (isEmpty(submitValue.claimConfiguration.role.mappings)) {
+            delete submitValue.claimConfiguration.role.mappings;
+        }
+
         updateClaimConfiguration(appId, submitValue)
             .then((response) => {
                 dispatch(addAlert({
@@ -508,6 +520,11 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     setSubmissionValues={ setAdvanceSettingValues }
                     initialRole={ claimConfigurations.role }
                     initialSubject={ claimConfigurations.subject }
+                />
+                <RoleMapping
+                    submitState={ triggerAdvanceSettingFormSubmission }
+                    onSubmit={ setRoleMapping }
+                    initialMappings={ claimConfigurations.role?.mappings }
                 />
                 <Grid.Row>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>

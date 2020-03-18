@@ -49,8 +49,7 @@ export const UserEditPage = (): JSX.Element => {
             .then((response) => {
                 setUserProfile(response);
             })
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            .catch((error) => {
+            .catch(() => {
                 // TODO add to notifications
             });
     };
