@@ -216,6 +216,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
             transitionExitTimeout,
             noChildrenAvailableMessage
         } = props;
+
         const noChildrenTransitionProps = {
             classNames: 'super-treeview-no-children-transition',
             key: 'super-treeview-no-children',
