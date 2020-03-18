@@ -240,115 +240,133 @@
 }
 
 .wrap {
-  float: left;
-  margin-right: 5px;
-  cursor: pointer;
-  margin-left: -3px;
+	cursor: pointer;
+	float: left;
+	margin-left: -3px;
+	margin-right: 5px;
 }
 .arrow {
-  width: 18px;
-  height: 18px;
-  display: inline-block;
-  position: relative;
-  cursor: pointer;
-  top: 4px;
+	cursor: pointer;
+	display: inline-block;
+	height: 18px;
+	position: relative;
+	top: 4px;
+	width: 18px;
+	span {
+		-webkit-transition: all 0.2s ease;
+		background-color: #bfbfbf;
+		display: inline-block;
+		height: 0.1rem;
+		position: absolute;
+		top: 0.5rem;
+		transition: all 0.2s ease;
+		width: 0.75rem;
+		&:first-of-type {
+			-webkit-transform: rotate(45deg);
+			left: 0;
+			transform: rotate(45deg);
+		}
+		&:last-of-type {
+			-webkit-transform: rotate(-45deg);
+			right: 0;
+			transform: rotate(-45deg);
+		}
+	}
 }
-.arrow span {
-  top: 0.5rem;
-  position: absolute;
-  width: 0.75rem;
-  height: 0.1rem;
-  background-color: #bfbfbf;
-  display: inline-block;
-  -webkit-transition: all 0.2s ease;
-  transition: all 0.2s ease;
-}
-.arrow span:first-of-type {
-  left: 0;
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-.arrow span:last-of-type {
-  right: 0;
-  -webkit-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-}
-.arrow.active span:first-of-type {
-  -webkit-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-}
-.arrow.active span:last-of-type {
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg);
+.arrow.active {
+	span {
+		&:first-of-type {
+			-webkit-transform: rotate(-45deg);
+			transform: rotate(-45deg);
+		}
+		&:last-of-type {
+			-webkit-transform: rotate(45deg);
+			transform: rotate(45deg);
+		}
+	}
 }
 .no-child {
-  padding-left: 23px !important;
+	padding-left: 23px !important;
 }
+
+
+// Color variables (appears count calculates by raw css)
+@color0: #20c2e0; // Appears 3 times
+
 
 
 .tree-label {
-  user-select: none;
-  cursor: pointer;
-  margin-bottom: 0;
+	cursor: pointer;
+	margin-bottom: 0;
+	user-select: none;
+	input {
+		&:checked+.checkbox {
+			border-color: @color0;
+			svg {
+				path {
+					fill: @color0;
+				}
+				polyline {
+					stroke-dashoffset: 0;
+				}
+			}
+		}
+	}
+	&:hover {
+		.checkbox {
+			svg {
+				path {
+					stroke-dashoffset: 0;
+				}
+			}
+		}
+	}
+	.checkbox {
+		border-radius: 3px;
+		border: 2px solid #C8CCD4;
+		float: left;
+		height: 17px;
+		margin-right: 5px;
+		position: relative;
+		top: 2px;
+		width: 17px;
+		svg {
+			left: -2px;
+			position: absolute;
+			top: -2px;
+			path {
+				fill: none;
+				stroke-dasharray: 71px;
+				stroke-dashoffset: 71px;
+				stroke-linecap: round;
+				stroke-linejoin: round;
+				stroke-width: 2;
+				stroke: @color0;
+				transition: all 0.6s ease;
+			}
+			polyline {
+				fill: none;
+				stroke-dasharray: 18px;
+				stroke-dashoffset: 18px;
+				stroke-linecap: round;
+				stroke-linejoin: round;
+				stroke-width: 2;
+				stroke: #ffffff;
+				transition: all 0.3s ease;
+			}
+		}
+	}
 }
-.tree-label input:checked + .checkbox {
-  border-color: #20C2E0;
+.tree-label>span {
+	pointer-events: none;
+	vertical-align: middle;
 }
-.tree-label input:checked + .checkbox svg path {
-  fill: #20C2E0;
-}
-.tree-label input:checked + .checkbox svg polyline {
-  stroke-dashoffset: 0;
-}
-.tree-label:hover .checkbox svg path {
-  stroke-dashoffset: 0;
-}
-.tree-label .checkbox {
-  position: relative;
-  top: 2px;
-  float: left;
-  margin-right: 5px;
-  width: 17px;
-  height: 17px;
-  border: 2px solid #C8CCD4;
-  border-radius: 3px;
-}
-.tree-label .checkbox svg {
-  position: absolute;
-  top: -2px;
-  left: -2px;
-}
-.tree-label .checkbox svg path {
-  fill: none;
-  stroke: #20C2E0;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 71px;
-  stroke-dashoffset: 71px;
-  transition: all 0.6s ease;
-}
-.tree-label .checkbox svg polyline {
-  fill: none;
-  stroke: #FFF;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 18px;
-  stroke-dashoffset: 18px;
-  transition: all 0.3s ease;
-}
-.tree-label > span {
-  pointer-events: none;
-  vertical-align: middle;
-}
-
 .invisible {
-  position: absolute;
-  z-index: -1;
-  width: 0;
-  height: 0;
-  opacity: 0;
+	height: 0;
+	opacity: 0;
+	position: absolute;
+	width: 0;
+	z-index: -1;
 }
 
 .loadUIOverrides();

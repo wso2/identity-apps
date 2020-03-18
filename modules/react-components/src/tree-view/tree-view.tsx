@@ -178,9 +178,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
     }
 
     const printExpandButton = (node: TreeNode): ReactElement => {
-        const className = node.isExpanded
-            ? ''
-            : 'active';
+        const className = node.isExpanded ? '' : 'active';
         const { isExpandable, depth } = props;
 
         if (isExpandable(node, depth)) {
