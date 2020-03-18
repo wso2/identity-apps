@@ -114,7 +114,9 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     return (
         <>
             <Forms 
-                onSubmit={ (values) => { updateRoleName(values) } }
+                onSubmit={ (values) => { 
+                    updateRoleName(values) 
+                } }
             >
                 <Grid>
                     <Grid.Row columns={ 1 }>

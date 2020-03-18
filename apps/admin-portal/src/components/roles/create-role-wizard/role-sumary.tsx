@@ -31,7 +31,9 @@ interface AddUserWizardSummaryProps {
  * 
  * @param props props containing summary data for the view.
  */
-export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (props: AddUserWizardSummaryProps): ReactElement => {
+export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
+    props: AddUserWizardSummaryProps
+): ReactElement => {
     
     const {
         summary,
@@ -106,7 +108,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                                                         floated="left"
                                                         image={ user.profileUrl }
                                                     />
-                                                    {user.userName}
+                                                    { user.userName }
                                                 </div>
                                             ))
                                     }
