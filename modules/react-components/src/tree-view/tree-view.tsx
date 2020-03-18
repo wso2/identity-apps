@@ -346,7 +346,7 @@ TreeView.defaultProps = {
     transitionEnterTimeout: 1200,
     transitionExitTimeout: 1200,
 
-    getStyleClassCb: (/* node, depth */) => { return ''; },
+    getStyleClassCb: (/* node, depth */) => { return ""; },
     isCheckable: (/* node, depth */) => { return true; },
     isDeletable: (/* node, depth */) => { return true; },
     isExpandable: (/* node, depth */) => { return true; },
