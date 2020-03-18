@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { useEffect, useState, SyntheticEvent } from "react";
+import React, { useEffect, useState } from "react";
 import { PageLayout } from "../layouts";
 import { ListLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";

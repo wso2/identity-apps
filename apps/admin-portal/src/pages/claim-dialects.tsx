@@ -37,7 +37,6 @@ export const ClaimDialectsPage = (): React.ReactElement => {
             key: 0,
             text: "Dialect URI",
             value: "dialectURI"
-            
         }
     ];
 
@@ -56,7 +55,6 @@ export const ClaimDialectsPage = (): React.ReactElement => {
         getDialects({
             limit, offset, sort, filter
         }).then((response: ClaimDialect[]) => {
-
             const filteredDialect: ClaimDialect[] = response.filter((claim: ClaimDialect) => {
                 return claim.id !== "local";
             });

@@ -90,7 +90,7 @@ export const AddEditDialect = (props: AddEditDialectPropsInterface): React.React
                                     dispatch(addAlert(
                                         {
                                             description: error?.description || "There was an error while updating the" +
-                                            " dialect",
+                                                " dialect",
                                             level: AlertLevels.ERROR,
                                             message: error?.message || "Something went wrong"
                                         }
