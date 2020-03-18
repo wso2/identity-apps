@@ -52,6 +52,7 @@ export const EditAdditionalPropertiesLocalClaims = (
                         submit={ submit }
                         keyRequiredMessage="Enter a name"
                         valueRequiredErrorMessage="Enter a value"
+                        requiredField={ true }
                         update={ (data) => {
                             const claimData = { ...claim };
                             delete claimData.id;

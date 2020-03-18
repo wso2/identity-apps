@@ -46,7 +46,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
 
     const getList = (limit: number, offset: number, filter: string, attribute: string) => {
-        getUsersList(limit, offset, filter, attribute)
+        getUsersList(limit, offset, filter, attribute, null)
             .then((response) => {
                 setUsersList(response.Resources);
             });
