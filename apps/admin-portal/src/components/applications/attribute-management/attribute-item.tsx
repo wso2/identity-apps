@@ -17,7 +17,7 @@
  */
 
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Button, Checkbox, Grid, List, Popup } from "semantic-ui-react";
+import { Button, Checkbox, Grid, Input, List, Popup } from "semantic-ui-react";
 import { ExtendedClaimMappingInterface } from "./attribute-settings";
 
 
@@ -32,9 +32,11 @@ interface AttributeItemPropInterface {
     localDialect: boolean;
     updateMapping?: any;
     addToMapping?: any;
-    selectMandatory?: any;
+    selectMandatory?: (claimURI: string, mandatory: boolean) => void;
+    selectRequested?: (claimURI: string, requested: boolean) => void;
     mapping?: ExtendedClaimMappingInterface;
     initialMandatory?: boolean;
+    initialRequested?: boolean;
 }
 
 export const AttributeItem: FunctionComponent<AttributeItemPropInterface> = (
@@ -52,12 +54,15 @@ export const AttributeItem: FunctionComponent<AttributeItemPropInterface> = (
         updateMapping,
         addToMapping,
         selectMandatory,
+        selectRequested,
         mapping,
-        initialMandatory
+        initialMandatory,
+        initialRequested
     } = props;
 
     const [mappingOn, setMappingOn] = useState(false);
     const [mandatory, setMandatory] = useState(false);
+    const [requested, setRequested] = useState(true);
 
     const capitalizeFirstLetter = (appName) => {
         return appName[0].toUpperCase() + appName.slice(1);
@@ -98,6 +103,24 @@ export const AttributeItem: FunctionComponent<AttributeItemPropInterface> = (
             selectMandatory(claimURI, true);
         }
     };
+
+    const handleRequestCheckChange = () => {
+        if (requested) {
+            selectRequested(claimURI, false);
+            setRequested(false);
+        } else {
+            setRequested(true);
+            selectRequested(claimURI, true);
+        }
+    };
+
+    useEffect(() => {
+        setMandatory(initialMandatory);
+    }, [initialMandatory]);
+
+    useEffect(() => {
+        setRequested(initialRequested);
+    }, [initialRequested]);
 
     useEffect(() => {
         if (mapping?.addMapping) {
@@ -162,57 +185,66 @@ export const AttributeItem: FunctionComponent<AttributeItemPropInterface> = (
                     { localDialect && claimSelected &&
                     <Grid.Column mobile={ 14 } tablet={ 6 } computer={ 6 }>
                         {/*TODO fix the backend and enable the mapping*/ }
-                        {/*{ mappingOn &&*/ }
-                        {/*<List.Content className="action-bar-mapping" floated={ "right" }>*/ }
-                        {/*    <label>Map To </label>*/ }
-                        {/*    <Input*/ }
-                        {/*        placeholder='Enter  value'*/ }
-                        {/*        value={ mapping?.applicationClaim }*/ }
-                        {/*        onChange={ (event) => updateMapping(claimURI, event.target.value) }*/ }
-                        {/*    />*/ }
-                        {/*</List.Content>*/ }
-                        {/*}*/ }
+                        { mappingOn &&
+                        <List.Content className="action-bar-mapping" floated={ "right" }>
+                            <label>Map To </label>
+                            <Input
+                                placeholder='Enter  value'
+                                value={ mapping?.applicationClaim }
+                                onChange={ (event) => updateMapping(claimURI, event.target.value) }
+                            />
+                        </List.Content>
+                        }
                     </Grid.Column>
                     }
                     { localDialect && claimSelected &&
                     <Grid.Column mobile={ 10 } tablet={ 1 } computer={ 1 }>
                         {/*TODO introduce requested check box to support provisioning*/ }
-                        {/*{ mappingOn &&
-                        <List.Content className="action-bar-mapping" floated={"right"}>
-                            <Checkbox
-                                // onChange={ handleMandatoryCheckChange }
-                                // onClick={ handleMandatoryCheckChange }
+                        { mappingOn &&
+                        <List.Content floated={ "right" } className="action-bar">
+                            <Popup
+                                trigger= {
+                                    (
+                                        <Checkbox
+                                            defaultChecked={ initialRequested }
+                                            onClick={ handleRequestCheckChange }
+                                        />
+                                    )
+                                }
+                                position="top right"
+                                content={ requested ? "Remove requested" : "Make requested" }
+                                inverted
                             />
                         </List.Content>
-                        }*/ }
+                        }
                     </Grid.Column>
                     }
                     { claimSelected && localDialect &&
                     <>
-                        <Grid.Column mobile={ 1 } tablet={ 1 } computer={ 1 }
-                                     className={ "claim-mapping-edit-column" }/>
+                        {/*<Grid.Column mobile={ 1 } tablet={ 1 } computer={ 1 }*/}
+                        {/*             className={ "claim-mapping-edit-column" }/>*/}
                         <Grid.Column mobile={ 2 } tablet={ 2 } computer={ 2 }
-                                     className={ "claim-mapping-edit-column" } floated={ "right" }>
+                                     className={ "claim-mapping-edit-column" } floated={ "left" }>
                             {/*TODO fix the backend and enable the mapping*/ }
-                            {/*<List.Content>*/ }
-                            {/*    <Popup*/ }
-                            {/*        trigger={*/ }
-                            {/*            (*/ }
-                            {/*                <Button*/ }
-                            {/*                    toggle*/ }
-                            {/*                    active={ mappingOn }*/ }
-                            {/*                    onClick={ handelMapButtonClick }*/ }
-                            {/*                    className={ "claim-mapping-button" }*/ }
-                            {/*                    circular*/ }
-                            {/*                    icon='pencil'*/ }
-                            {/*                />*/ }
-                            {/*            )*/ }
-                            {/*        }*/ }
-                            {/*        position="top right"*/ }
-                            {/*        content={ mappingOn ? "Disable mapping" : " Enable mapping" }*/ }
-                            {/*        inverted*/ }
-                            {/*    />*/ }
-                            {/*</List.Content>*/ }
+                           <List.Content>
+                               <Popup
+                                   trigger={
+                                       (
+                                           <Button
+                                               toggle
+                                               active={ mappingOn }
+                                               onClick={ handelMapButtonClick }
+                                               className={ "claim-mapping-button" }
+                                               circular
+                                               icon='pencil'
+                                           />
+                                       )
+                                   }
+                                   position="top right"
+                                   content={ mappingOn ? "Disable mapping" : " Enable mapping" }
+                                   inverted
+                               />
+                           </List.Content>
                             <List.Content floated={ "right" } className="action-bar">
                                 <Popup
                                     trigger= {
