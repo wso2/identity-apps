@@ -26,6 +26,7 @@ import { AlertLevels, AlertInterface, RolesInterface, CreateRoleInterface } from
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
 import { history } from "../../../helpers";
+import { ROLE_VIEW_PATH } from "../../../constants";
 
 /**
  * Interface to contain props needed for component
@@ -74,7 +75,7 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                     "views:components.roles.notifications.deleteRole.success.message"
                 )
             });
-            history.push("/roles");
+            history.push(ROLE_VIEW_PATH);
         });
     };
 

@@ -114,107 +114,10 @@
     }
 }
 
+
 // VARIABLES
 @super-treeview-tree-stem-color: #f3f3f3;
 
-.super-treeview * {
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-}
-.super-treeview-container {
-  padding: 1em 0;
-}
-.super-treeview {
-  font-size: 100%;
-
-  > div {
-    > .super-treeview-no-children-transition {
-      transition-property: all;
-    }
-
-    > .super-treeview-no-children-transition-enter {
-      opacity: 0;
-      height: 0;
-      overflow: hidden;
-
-      &.super-treeview-no-children-transition-enter-active {
-        opacity: 1;
-        height: 0;
-      }
-    }
-
-    > .super-treeview-no-children {
-      overflow: hidden;
-      > .super-treeview-no-children-content {
-        margin: 2px 0;
-      }
-    }
-
-    > .super-treeview-node {
-      overflow: hidden;
-      padding: 2px 5px;
-
-      > .super-treeview-children-container {
-        margin-left: 8px;
-        padding-left: 20px;
-
-        > .super-treeview-loading {
-          padding: 0 3px;
-          margin: 2px 0;
-        }
-      }
-
-      > .super-treeview-node-content {
-        padding: 0 3px;
-        margin: 2px 0;
-
-        > label {
-          vertical-align: top;
-          text-overflow: ellipsis;
-          width: calc(100% - 55px);
-          overflow: hidden;
-          white-space: nowrap;
-          display: inline-block;
-          margin: 0;
-          font-weight: normal;
-          font-size: 100%;
-        }
-
-        > input[type=checkbox] {
-          float: left;
-          margin: 4px 5px 0 0;
-          line-height: normal;
-        }
-
-        > .delete-btn {
-          float: right;
-          cursor: pointer;
-        }
-      }
-    }
-
-    > .super-treeview-node-transition {
-      transition-property: all;
-    }
-
-    > .super-treeview-node-transition-enter {
-      opacity: 0;
-
-      &.super-treeview-node-transition-enter-active {
-        opacity: 1;
-      }
-    }
-
-    > .super-treeview-node-transition-exit {
-      opacity: 1;
-
-      &.super-treeview-node-transition-exit-active {
-        opacity: 0;
-        background-color: red;
-      }
-    }
-  }
-}
 
 .empty-placeholder-center {
   position: absolute;
@@ -241,116 +144,241 @@
   height: 1px;
 }
 
-.wrap {
-  float: left;
-  margin-right: 5px;
-  cursor: pointer;
-  margin-left: -3px;
-}
-.arrow {
-  width: 18px;
-  height: 18px;
-  display: inline-block;
-  position: relative;
-  cursor: pointer;
-  top: 4px;
-}
-.arrow span {
-  top: 0.5rem;
-  position: absolute;
-  width: 0.75rem;
-  height: 0.1rem;
-  background-color: #bfbfbf;
-  display: inline-block;
-  -webkit-transition: all 0.2s ease;
-  transition: all 0.2s ease;
-}
-.arrow span:first-of-type {
-  left: 0;
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-.arrow span:last-of-type {
-  right: 0;
-  -webkit-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-}
-.arrow.active span:first-of-type {
-  -webkit-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-}
-.arrow.active span:last-of-type {
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-.no-child {
-  padding-left: 23px !important;
-}
+/*****************************************
+        TreeView Component
+TODO: Need to revisit these styling
+*****************************************/
+.tree-vew {
+    .super-treeview * {
+        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+    }
+
+    .super-treeview-container {
+        padding: 1em 0;
+    }
+
+    .super-treeview {
+        font-size: 100%;
+
+        >div {
+            >.super-treeview-no-children-transition {
+                transition-property: all;
+            }
+
+            >.super-treeview-no-children-transition-enter {
+                opacity: 0;
+                height: 0;
+                overflow: hidden;
+
+                &.super-treeview-no-children-transition-enter-active {
+                    opacity: 1;
+                    height: 0;
+                }
+            }
+
+            >.super-treeview-no-children {
+                overflow: hidden;
+
+                >.super-treeview-no-children-content {
+                    margin: 2px 0;
+                }
+            }
+
+            >.super-treeview-node {
+                overflow: hidden;
+                padding: 2px 5px;
+
+                >.super-treeview-children-container {
+                    margin-left: 8px;
+                    padding-left: 20px;
+
+                    >.super-treeview-loading {
+                        padding: 0 3px;
+                        margin: 2px 0;
+                    }
+                }
+
+                >.super-treeview-node-content {
+                    padding: 0 3px;
+                    margin: 2px 0;
+
+                    >label {
+                        vertical-align: top;
+                        text-overflow: ellipsis;
+                        width: calc(100% - 55px);
+                        overflow: hidden;
+                        white-space: nowrap;
+                        display: inline-block;
+                        margin: 0;
+                        font-weight: normal;
+                        font-size: 100%;
+                    }
+
+                    >input[type=checkbox] {
+                        float: left;
+                        margin: 4px 5px 0 0;
+                        line-height: normal;
+                    }
+
+                    >.delete-btn {
+                        float: right;
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            >.super-treeview-node-transition {
+                transition-property: all;
+            }
+
+            >.super-treeview-node-transition-enter {
+                opacity: 0;
+
+                &.super-treeview-node-transition-enter-active {
+                    opacity: 1;
+                }
+            }
+
+            >.super-treeview-node-transition-exit {
+                opacity: 1;
+
+                &.super-treeview-node-transition-exit-active {
+                    opacity: 0;
+                    background-color: red;
+                }
+            }
+        }
+    }
 
 
-.tree-label {
-  user-select: none;
-  cursor: pointer;
-  margin-bottom: 0;
-}
-.tree-label input:checked + .checkbox {
-  border-color: #20C2E0;
-}
-.tree-label input:checked + .checkbox svg path {
-  fill: #20C2E0;
-}
-.tree-label input:checked + .checkbox svg polyline {
-  stroke-dashoffset: 0;
-}
-.tree-label:hover .checkbox svg path {
-  stroke-dashoffset: 0;
-}
-.tree-label .checkbox {
-  position: relative;
-  top: 2px;
-  float: left;
-  margin-right: 5px;
-  width: 17px;
-  height: 17px;
-  border: 2px solid #C8CCD4;
-  border-radius: 3px;
-}
-.tree-label .checkbox svg {
-  position: absolute;
-  top: -2px;
-  left: -2px;
-}
-.tree-label .checkbox svg path {
-  fill: none;
-  stroke: #20C2E0;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 71px;
-  stroke-dashoffset: 71px;
-  transition: all 0.6s ease;
-}
-.tree-label .checkbox svg polyline {
-  fill: none;
-  stroke: #FFF;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 18px;
-  stroke-dashoffset: 18px;
-  transition: all 0.3s ease;
-}
-.tree-label > span {
-  pointer-events: none;
-  vertical-align: middle;
-}
+    .wrap {
+        float: left;
+        margin-right: 5px;
+        cursor: pointer;
+        margin-left: -3px;
+    }
 
-.invisible {
-  position: absolute;
-  z-index: -1;
-  width: 0;
-  height: 0;
-  opacity: 0;
+    .arrow {
+        width: 18px;
+        height: 18px;
+        display: inline-block;
+        position: relative;
+        cursor: pointer;
+        top: 4px;
+    }
+
+    .arrow span {
+        top: 0.5rem;
+        position: absolute;
+        width: 0.75rem;
+        height: 0.1rem;
+        background-color: #bfbfbf;
+        display: inline-block;
+        -webkit-transition: all 0.2s ease;
+        transition: all 0.2s ease;
+    }
+
+    .arrow span:first-of-type {
+        left: 0;
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+
+    .arrow span:last-of-type {
+        right: 0;
+        -webkit-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+    }
+
+    .arrow.active span:first-of-type {
+        -webkit-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+    }
+
+    .arrow.active span:last-of-type {
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+
+    .no-child {
+        padding-left: 23px !important;
+    }
+
+    .tree-label {
+        user-select: none;
+        cursor: pointer;
+        margin-bottom: 0;
+    }
+
+    .tree-label input:checked+.checkbox {
+        border-color: #20C2E0;
+    }
+
+    .tree-label input:checked+.checkbox svg path {
+        fill: #20C2E0;
+    }
+
+    .tree-label input:checked+.checkbox svg polyline {
+        stroke-dashoffset: 0;
+    }
+
+    .tree-label:hover .checkbox svg path {
+        stroke-dashoffset: 0;
+    }
+
+    .tree-label .checkbox {
+        position: relative;
+        top: 2px;
+        float: left;
+        margin-right: 5px;
+        width: 17px;
+        height: 17px;
+        border: 2px solid #C8CCD4;
+        border-radius: 3px;
+    }
+
+    .tree-label .checkbox svg {
+        position: absolute;
+        top: -2px;
+        left: -2px;
+    }
+
+    .tree-label .checkbox svg path {
+        fill: none;
+        stroke: #20C2E0;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-dasharray: 71px;
+        stroke-dashoffset: 71px;
+        transition: all 0.6s ease;
+    }
+
+    .tree-label .checkbox svg polyline {
+        fill: none;
+        stroke: #FFF;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-dasharray: 18px;
+        stroke-dashoffset: 18px;
+        transition: all 0.3s ease;
+    }
+
+    .tree-label>span {
+        pointer-events: none;
+        vertical-align: middle;
+    }
+
+    .invisible {
+        position: absolute;
+        z-index: -1;
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+
 }
 
 .loadUIOverrides();

@@ -23,25 +23,28 @@ import { PermissionObject, Permission } from "../../models/permission"
  * 
  * @param permObj - Permission Object
  * @param pathcomponents - Permission path array
- * @param arr - Empty array to start with
+ * @param permissionTreeArray - Empty array to start with
  * 
  * @returns {Permission[]} - Permission arra with tree structure
  */
-export const addPath = (permObj: PermissionObject, pathcomponents: string[], arr: Permission[]): Permission[] => {
+export const addPath = (permObj: PermissionObject, pathcomponents: string[],
+        permissionTreeArray: Permission[]): Permission[] => {
+
     const component = pathcomponents.shift()
-    let comp = arr.find(item => item.name === component)
+    let comp = permissionTreeArray.find(item => item.name === component)
     if (!comp) {
-        comp =  {
+        comp = {
             label: permObj.displayName,
             fullPath: permObj.resourcePath,
             isExpanded: true,
             isChecked: false,
             name: component
         }
-        arr.push(comp)
+        permissionTreeArray.push(comp)
     }
-    if(pathcomponents.length){
+    if (pathcomponents.length) {
         addPath(permObj, pathcomponents, comp.children || (comp.children = []))
     }
-    return arr;
+    
+    return permissionTreeArray;
 }

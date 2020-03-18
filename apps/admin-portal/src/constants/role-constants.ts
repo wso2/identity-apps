@@ -16,10 +16,4 @@
  * under the License.
  */
 
-export * from "./application-constants";
-export * from "./application-management";
-export * from "./identity-provider-constants";
-export * from "./token-constants";
-export * from "./ui-constants";
-export * from "./user-constants";
-export * from "./role-constants";
+export const ROLE_VIEW_PATH = "/roles/";

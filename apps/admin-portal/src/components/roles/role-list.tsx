@@ -21,6 +21,7 @@ import { RolesInterface } from "../../models";
 import { ResourceList, ResourceListItem, UserAvatar } from "@wso2is/react-components";
 import { CommonUtils } from "../../utils";
 import { history } from "../../helpers";
+import { ROLE_VIEW_PATH } from "../../constants";
 
 interface RoleListProps {
     roleList: RolesInterface[];
@@ -39,7 +40,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     } = props;
 
     const handleRoleEdit = (roleId: string) => {
-        history.push(`roles/${ roleId }`);
+        history.push(ROLE_VIEW_PATH + roleId);
     };
 
     return (
