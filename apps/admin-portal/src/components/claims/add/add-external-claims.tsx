@@ -47,7 +47,7 @@ export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description,
+                    description: error?.description || "There was an error while fetching local claims",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }

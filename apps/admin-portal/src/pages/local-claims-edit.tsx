@@ -45,9 +45,9 @@ export const LocalClaimsEditPage = (props): React.ReactElement => {
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description,
+                    description: error?.description||"There was an error while fetching the local claim",
                     level: AlertLevels.ERROR,
-                    message: error?.message
+                    message: error?.message||"Something went wrong"
                 }
             ));
         })

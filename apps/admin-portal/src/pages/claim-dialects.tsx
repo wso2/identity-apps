@@ -53,9 +53,9 @@ export const ClaimDialectsPage = (): React.ReactElement => {
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description,
+                    description: error?.description || "There was an error while getting the dialects",
                     level: AlertLevels.ERROR,
-                    message: error?.message
+                    message: error?.message || "Something went wrong"
                 }
             ));
         })

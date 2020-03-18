@@ -53,25 +53,25 @@ export const LocalClaimsPage = (): React.ReactElement => {
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description,
+                    description: error?.description || "There was an error while fetching the local claims",
                     level: AlertLevels.ERROR,
-                    message: error?.message
+                    message: error?.message || "Something went wrong"
                 }
             ));
         });
     };
-    
+
     useEffect(() => {
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
-        getLocalClaims(null,null,null,null);
+        getLocalClaims(null, null, null, null);
         getADialect("local").then((response) => {
             setClaimURIBase(response.dialectURI);
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description,
+                    description: error?.description||"There was an error while fetching the local dialect",
                     level: AlertLevels.ERROR,
-                    message: error?.message
+                    message: error?.message||"Something went wrong"
                 }
             ));
         });
@@ -133,7 +133,7 @@ export const LocalClaimsPage = (): React.ReactElement => {
                                 } }
                             >
                                 <Icon name="add" />Add a Local Claim
-                        </PrimaryButton>
+                            </PrimaryButton>
                         )
                     }
                     leftActionPanel={ null }

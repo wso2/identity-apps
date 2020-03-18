@@ -49,7 +49,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description,
+                    description: error?.description || "There was an error while fetching local claims",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }
@@ -61,7 +61,7 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description,
+                    description: error?.description || "There was an error while fetching the external claim",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }
@@ -98,7 +98,8 @@ export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): Rea
                         }).catch(error => {
                             dispatch(addAlert(
                                 {
-                                    description: error?.description,
+                                    description: error?.description || "There was an error while updating the" +
+                                        " external claim",
                                     level: AlertLevels.ERROR,
                                     message: error?.message || "Something went wrong"
                                 }

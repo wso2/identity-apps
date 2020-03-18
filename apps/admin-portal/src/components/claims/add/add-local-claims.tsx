@@ -62,7 +62,7 @@ export const AddLocalClaims = (props: AddLocalClaimsPropsInterface): React.React
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description,
+                    description: error?.description || "There was an error while adding the local claim",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }

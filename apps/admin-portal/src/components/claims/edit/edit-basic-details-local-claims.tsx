@@ -78,7 +78,7 @@ export const EditBasicDetailsLocalClaims = (
                     }).catch(error => {
                         dispatch(addAlert(
                             {
-                                description: error?.description,
+                                description: error?.description || "There was an error while updating the local claim",
                                 level: AlertLevels.ERROR,
                                 message: error?.message || "Something went wrong"
                             }

@@ -98,7 +98,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description,
+                    description: error?.description || "There was an error while deleting the local claim",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }
@@ -120,7 +120,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description,
+                    description: error?.description || "There was an error while deleting the external claim",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }
@@ -142,7 +142,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description,
+                    description: error?.description || "There was an error while deleting the dialect",
                     level: AlertLevels.ERROR,
                     message: error?.message || "Something went wrong"
                 }
