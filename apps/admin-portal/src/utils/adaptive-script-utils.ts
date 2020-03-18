@@ -44,7 +44,9 @@ export class AdaptiveScriptUtils {
      * @return {string[]} Auth script.
      */
     public static generateScript(stepCount: number): string[] {
-        const newStepIdentifier = "executeStep(:index);";
+        // TODO: Beautify JS doesn't work when there are code comments. Therefore, wont work with the templates.
+        // Remove the spaces once the above issue is fixed in the code editor component.
+        const newStepIdentifier = "    executeStep(:index);";
         const steps: string[] = [];
 
         for (let i = 0; i < stepCount; i++) {
