@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { CodeEditor, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
+import { CodeEditor, Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Grid, Icon, Menu, Sidebar } from "semantic-ui-react";
 import {
@@ -25,7 +25,7 @@ import {
     AuthenticationSequenceInterface
 } from "../../../../models";
 import { AdaptiveScriptUtils } from "../../../../utils";
-import { getAdaptiveAuthTemplates, updateAuthenticationSequence } from "../../../../api";
+import { getAdaptiveAuthTemplates } from "../../../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
@@ -38,10 +38,6 @@ import { StringUtils } from "@wso2is/core/utils";
  * Proptypes for the adaptive scripts component.
  */
 interface AdaptiveScriptsPropsInterface {
-    /**
-     * ID of the application.
-     */
-    appId: string;
     /**
      * Currently configured authentication sequence for the application.
      */
@@ -57,8 +53,13 @@ interface AdaptiveScriptsPropsInterface {
     onTemplateSelect: (template: AdaptiveAuthTemplateInterface) => void;
     /**
      * Callback to update the application details.
+     * @param {AuthenticationSequenceInterface} sequence - Authentication sequence.
      */
-    onUpdate: (id: string) => void;
+    onUpdate: (sequence: AuthenticationSequenceInterface) => void;
+    /**
+     * Trigger for update.
+     */
+    triggerUpdate: boolean;
 }
 
 /**
@@ -72,10 +73,10 @@ export const AdaptiveScripts: FunctionComponent<AdaptiveScriptsPropsInterface> =
 ): ReactElement => {
 
     const {
-        appId,
         authenticationSequence,
         onTemplateSelect,
-        onUpdate
+        onUpdate,
+        triggerUpdate
     } = props;
 
     const dispatch = useDispatch();
@@ -133,6 +134,19 @@ export const AdaptiveScripts: FunctionComponent<AdaptiveScriptsPropsInterface> =
     }, [ authenticationSequence?.steps, authenticationSequence?.script ]);
 
     /**
+     * Called when update is triggered.
+     */
+    useEffect(() => {
+        if (!triggerUpdate) {
+            return;
+        }
+
+        onUpdate({
+            script: JSON.stringify(editedCode)
+        })
+    }, [ triggerUpdate ]);
+
+    /**
      * Resolves the adaptive script.
      *
      * @param {string} script - Script passed through props.
@@ -175,51 +189,12 @@ export const AdaptiveScripts: FunctionComponent<AdaptiveScriptsPropsInterface> =
         onTemplateSelect(template);
     };
 
-    /**
-     * Handles script update.
-     */
-    const handleAdaptiveScriptUpdate = () => {
-        const requestBody = {
-            authenticationSequence: {
-                script: JSON.stringify(editedCode)
-            }
-        };
-
-        updateAuthenticationSequence(appId, requestBody)
-            .then(() => {
-                dispatch(addAlert({
-                    description: "Successfully updated the application",
-                    level: AlertLevels.SUCCESS,
-                    message: "Update successful"
-                }));
-
-                onUpdate(appId);
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Update Error"
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: "An error occurred while updating authentication steps of the application",
-                    level: AlertLevels.ERROR,
-                    message: "Update Error"
-                }));
-            });
-    };
-
     return (
         <div className="adaptive-scripts-section">
             <Grid>
                 <Grid.Row>
                     <Grid.Column computer={ 16 }>
-                        <Heading as="h4">Adaptive scripts</Heading>
+                        <Heading as="h5">Script based configuration</Heading>
                         <Hint>
                             Define the authentication flow via an adaptive script. You can select one of the
                             following templates to get started.
@@ -266,11 +241,6 @@ export const AdaptiveScripts: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 </div>
                             </Sidebar.Pusher>
                         </Sidebar.Pushable>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column width={ 16 }>
-                        <PrimaryButton onClick={ handleAdaptiveScriptUpdate }>Update</PrimaryButton>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

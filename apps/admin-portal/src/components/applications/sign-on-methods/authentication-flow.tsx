@@ -51,10 +51,6 @@ import { OperationIcons } from "../../../configs";
  */
 interface AuthenticationFlowPropsInterface {
     /**
-     * ID of the application.
-     */
-    appId: string;
-    /**
      * Currently configured authentication sequence for the application.
      */
     authenticationSequence: AuthenticationSequenceInterface;
@@ -64,8 +60,13 @@ interface AuthenticationFlowPropsInterface {
     isLoading?: boolean;
     /**
      * Callback to update the application details.
+     * @param {AuthenticationSequenceInterface} sequence - Authentication sequence.
      */
-    onUpdate: (id: string) => void;
+    onUpdate: (sequence: AuthenticationSequenceInterface) => void;
+    /**
+     * Trigger for update.
+     */
+    triggerUpdate: boolean;
 }
 
 /**
@@ -111,9 +112,9 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
 ): ReactElement => {
 
     const {
-        appId,
         authenticationSequence,
-        onUpdate
+        onUpdate,
+        triggerUpdate
     } = props;
 
     const dispatch = useDispatch();
@@ -128,6 +129,29 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
     const [ attributeStepId, setAttributeStepId ] = useState<number>(undefined);
     const [ showAuthenticatorsSidePanel, setAuthenticatorsSidePanelVisibility ] = useState<boolean>(true);
     const [ authenticatorsAccordionActiveIndexes, setAuthenticatorsAccordionActiveIndexes ] = useState<number[]>([ 0 ]);
+
+    /**
+     * Called when update is triggered.
+     */
+    useEffect(() => {
+        if (!triggerUpdate) {
+            return;
+        }
+
+        const isValid: boolean = validateSteps();
+
+        if (!isValid) {
+            return;
+        }
+
+        onUpdate({
+            attributeStepId,
+            requestPathAuthenticators: [],
+            steps: authenticationSteps,
+            subjectStepId,
+            type: AuthenticationSequenceType.USER_DEFINED
+        })
+    }, [ triggerUpdate ]);
 
     /**
      * Add Federated IDP name and ID in to the state.
@@ -431,56 +455,6 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
     };
 
     /**
-     * Handles the authentication flow update action.
-     */
-    const handleAuthenticationFlowUpdate = (): void => {
-
-        const isValid: boolean = validateSteps();
-
-        if (!isValid) {
-            return;
-        }
-
-        const requestBody = {
-            authenticationSequence: {
-                attributeStepId,
-                requestPathAuthenticators: [],
-                steps: authenticationSteps,
-                subjectStepId,
-                type: AuthenticationSequenceType.USER_DEFINED
-            }
-        };
-
-        updateAuthenticationSequence(appId, requestBody)
-            .then(() => {
-                dispatch(addAlert({
-                    description: "Successfully updated the application",
-                    level: AlertLevels.SUCCESS,
-                    message: "Update successful"
-                }));
-
-                onUpdate(appId);
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Update Error"
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: "An error occurred while updating authentication steps of the application",
-                    level: AlertLevels.ERROR,
-                    message: "Update Error"
-                }));
-            });
-    };
-
-    /**
      * Filters the list of federated & local authenticators and returns a list of
      * authenticators of the selected type.
      *
@@ -563,6 +537,7 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                         <Grid.Row>
                             <Grid.Column computer={ showAuthenticatorsSidePanel ? 16 : 14 }>
                                 <Heading as="h4">Authentication flow</Heading>
+                                <Heading as="h5">Step based configuration</Heading>
                                 <Hint>
                                     Create authentication steps by dragging the local/federated authenticators on to the
                                     relevant steps.
@@ -629,8 +604,6 @@ export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterf
                                     <LinkButton className="add-step-button" onClick={ handleAuthenticationStepAdd }>
                                         <Icon name="plus"/>Add authentication step
                                     </LinkButton>
-                                    <Divider hidden/>
-                                    <PrimaryButton onClick={ handleAuthenticationFlowUpdate }>Update</PrimaryButton>
                                 </div>
                             </Grid.Column>
                         </Grid.Row>
