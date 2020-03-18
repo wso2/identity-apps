@@ -288,6 +288,16 @@ export interface ApplicationTemplateTechnology {
     logo: any;
 }
 
+/**
+ * Adaptive auth templates interface.
+ */
+export interface AdaptiveAuthTemplatesInterface {
+    /**
+     * Templates as a JSON.
+     */
+    templatesJSON: object;
+}
+
 export const emptyApplication = (): ApplicationInterface => ({
     accessUrl: "",
     advancedConfigurations: {
