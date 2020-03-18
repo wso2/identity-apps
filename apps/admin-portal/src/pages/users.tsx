@@ -21,13 +21,14 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import {
+    Dropdown,
     DropdownProps,
     Grid,
     Icon,
     PaginationProps,
     Popup
 } from "semantic-ui-react";
-import { deleteUser, getUsersList } from "../api";
+import { deleteUser, getUsersList, getUserStoreList } from "../api";
 import { UserSearch, UsersList } from "../components/users";
 import { AddUserWizard } from "../components/users/wizard/add-user-wizard";
 import { ListLayout, PageLayout } from "../layouts";
@@ -56,9 +57,11 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
     const [ rolesList, setRolesList ] = useState([]);
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
+    const [ userStoreOptions, setUserStoresList ] = useState([]);
+    const [ userStore, setUserStore ] = useState(undefined);
 
-    const getList = (limit: number, offset: number, filter: string, attribute: string) => {
-        getUsersList(limit, offset, filter, attribute)
+    const getList = (limit: number, offset: number, filter: string, attribute: string, domain: string) => {
+        getUsersList(limit, offset, filter, attribute, domain)
             .then((response) => {
                 setUsersList(response);
             });
@@ -79,6 +82,35 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
     }, []);
 
     /**
+     * The following function fetch the user store list and set it to the state.
+     */
+    const getUserStores = () => {
+        const storeOptions = [
+                { text: "All user stores", key: -2, value: null },
+                { text: "Primary", key: -1, value: "primary" }
+            ];
+        let storeOption = { text: "", key: null, value: "" };
+        getUserStoreList()
+            .then((response) => {
+                if (storeOptions === []) {
+                    storeOptions.push(storeOption);
+                }
+                response.data.map((store, index) => {
+                        storeOption = {
+                            key: index,
+                            text: store.name,
+                            value: store.name
+                        };
+                        storeOptions.push(storeOption);
+                    }
+                );
+                setUserStoresList(storeOptions);
+            });
+
+        setUserStoresList(storeOptions);
+    };
+
+    /**
      * The following method accepts a Map and returns the values as a string.
      *
      * @param attributeMap - IterableIterator<string>
@@ -97,10 +129,22 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
         return attArray.toString();
     };
 
+    /**
+     * Fetch the list of available user stores.
+     */
+    useEffect(() => {
+        getUserStores();
+    }, []);
+
+    useEffect(() => {
+        const attributes = userListMetaContent ? generateAttributesString(userListMetaContent.values()) : null;
+        getList(listItemLimit, listOffset, null, attributes, userStore);
+    }, [ userStore ]);
+
     useEffect(() => {
         if (userListMetaContent) {
             const attributes = generateAttributesString(userListMetaContent.values());
-            getList(listItemLimit, listOffset, null, attributes);
+            getList(listItemLimit, listOffset, null, attributes, "primary");
         }
     }, [ listOffset, listItemLimit ]);
 
@@ -109,7 +153,7 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
             return;
         }
         const attributes = generateAttributesString(userListMetaContent.values());
-        getList(listItemLimit, listOffset, null, attributes);
+        getList(listItemLimit, listOffset, null, attributes, userStore);
         setListUpdated(false);
     }, [ isListUpdated ]);
 
@@ -125,7 +169,7 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                     action={ (
                         <Button
                             className="link-button"
-                            onClick={ () => getList(listItemLimit, listOffset, null, null) }
+                            onClick={ () => getList(listItemLimit, listOffset, null, null, null) }
                         >
                             { t("views:placeholders.emptySearchResult.action") }
                         </Button>
@@ -158,7 +202,7 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
      * @param metaColumns - string[]
      */
     const handleMetaColumnChange = (metaColumns: string[]) => {
-        const tempColumns = new Map<string, string> ()
+        const tempColumns = new Map<string, string> ();
         metaColumns.map((column) => {
             tempColumns.set(column, column)
         });
@@ -174,12 +218,12 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
     const handleUserFilter = (query: string): void => {
         const attributes = generateAttributesString(userListMetaContent.values());
         if (query === "userName sw ") {
-            getList(null, null, null, attributes);
+            getList(null, null, null, attributes, userStore);
             return;
         }
 
         setSearchQuery(query);
-        getList(null, null, query, attributes);
+        getList(null, null, query, attributes, userStore);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
@@ -188,6 +232,10 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
 
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
+    };
+
+    const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+        setUserStore(data.value as string);
     };
 
     const handleUserDelete = (userId: string): void => {
@@ -208,7 +256,7 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
 
     return (
         <PageLayout
-            title="Users page"
+            title="Users"
             description="Create and manage users, user access and user profiles."
             showBottomDivider={ true }
         >
@@ -229,21 +277,30 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                 }
                 leftActionPanel={
                     (
-                        <Popup
-                            className={ "list-options-popup" }
-                            flowing
-                            basic
-                            content={ <UsersListOptionsComponent
-                                handleMetaColumnChange={ handleMetaColumnChange }
-                                userListMetaContent={ userListMetaContent }
-                            /> }
-                            position="bottom left"
-                            on='click'
-                            pinned
-                            trigger={
-                                <Button basic icon="columns"/>
-                            }
-                        />
+                        <>
+                            <Popup
+                                className={ "list-options-popup" }
+                                flowing
+                                basic
+                                content={ <UsersListOptionsComponent
+                                    handleMetaColumnChange={ handleMetaColumnChange }
+                                    userListMetaContent={ userListMetaContent }
+                                /> }
+                                position="bottom left"
+                                on='click'
+                                pinned
+                                trigger={
+                                    <Button basic><Icon name="columns"/>Columns</Button>
+                                }
+                            />
+                            <Dropdown
+                                selection
+                                options={ userStoreOptions && userStoreOptions }
+                                placeholder="Select user store"
+                                value={ userStore && userStore }
+                                onChange={ handleDomainChange }
+                            />
+                        </>
                     )
                 }
                 showPagination={ true }

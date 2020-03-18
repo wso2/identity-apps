@@ -612,7 +612,7 @@ export const views: Views = {
                 options: {
                     header: "Advanced search",
                 },
-                placeholder: "Search by name",
+                placeholder: "Search by  user name",
                 popups: {
                     clear: "clear search",
                     dropdown: "show options"

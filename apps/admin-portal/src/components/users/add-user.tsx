@@ -30,7 +30,6 @@ import { getUserStoreList } from "../../api";
  * Proptypes for the application consents list component.
  */
 interface AddUserProps {
-    onUserStoreDomainChange: (domain: string) => void;
     initialValues: any;
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
@@ -47,7 +46,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         initialValues,
         triggerSubmit,
         onSubmit,
-        onUserStoreDomainChange
     } = props;
 
     const [ userStoreOptions, setUserStoresList ] = useState([]);
@@ -209,10 +207,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 "views:components.user.forms.addUserForm.inputs.domain.validations.empty"
                             ) }
                             required={ true }
-                            value={ initialValues && initialValues.domain }
-                            listen={ (values) => onUserStoreDomainChange(values.get("domain").toString()) }
-                            text="Primary"
-                            default="primary"
+                            value={ initialValues?.domain ? initialValues?.domain : userStoreOptions[0]?.value }
                         />
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
