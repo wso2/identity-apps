@@ -25,6 +25,7 @@ import { deleteAClaim, deleteAnExternalClaim, deleteADialect } from "../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../store/actions";
 import { CopyInputField } from "@wso2is/react-components";
+import { EDIT_LOCAL_CLAIMS_PATH, LOCAL_CLAIMS_PATH, EXTERNAL_CLAIMS_PATH } from "../../constants";
 
 export enum ListType {
     LOCAL,
@@ -215,7 +216,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                         {
                                             icon: "pencil alternate",
                                             onClick: () => {
-                                                history.push("/edit-local-claims/" + claim?.id)
+                                                history.push(`${EDIT_LOCAL_CLAIMS_PATH}/${claim?.id}`)
                                             },
                                             popupText: "Edit",
                                             type: "button"
@@ -251,7 +252,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                         {
                                             icon: "eye",
                                             onClick: () => {
-                                                history.push("local-dialect");
+                                                history.push(LOCAL_CLAIMS_PATH);
                                             },
                                             popupText: "View Local Claims",
                                             type: "button"
@@ -269,7 +270,7 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                                     {
                                                         icon: "eye",
                                                         onClick: () => {
-                                                            history.push("/external-claims/" + dialect.id);
+                                                            history.push(`${EXTERNAL_CLAIMS_PATH}/${dialect.id}`);
                                                         },
                                                         popupText: "View Claims belonging to this dialect",
                                                         type: "button"
