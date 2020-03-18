@@ -279,7 +279,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                                             || node.children.length == 0 ? "no-child" : ""}`}>
                                           { node.children && node.children.length != 0 ? printExpandButton(node) : "" }
                                           { printCheckbox(node) }
-                                          {printDeleteButton(node)}
+                                          { printDeleteButton(node) }
                                       </div>
                                       { printChildren(node) }
                                   </div>
