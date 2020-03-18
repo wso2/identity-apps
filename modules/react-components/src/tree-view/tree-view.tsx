@@ -79,11 +79,13 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         const currentNode = _.find(data, node);
         const currentNodeIndex = data.indexOf(currentNode);
         const toggledNodes = [];
+
         if (e.shiftKey && !_.isNil(lastCheckToggledNodeIndex)) {
             const rangeStart = Math.min(
                 currentNodeIndex,
                 lastCheckToggledNodeIndex
             );
+
             const rangeEnd = Math.max(
                 currentNodeIndex,
                 lastCheckToggledNodeIndex
@@ -214,6 +216,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
             transitionExitTimeout,
             noChildrenAvailableMessage
         } = props;
+
         const noChildrenTransitionProps = {
             classNames: 'super-treeview-no-children-transition',
             key: 'super-treeview-no-children',
@@ -278,7 +281,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                                           {printCheckbox(node)}
                                           {printDeleteButton(node)}
                                       </div>
-                                      {printChildren(node)}
+                                      { printChildren(node) }
                                   </div>
                               </CSSTransition>
                           );
@@ -311,7 +314,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
         return (
             <div className="super-treeview-children-container">
-                {childrenElement}
+                { childrenElement }
             </div>
         );
 
@@ -346,7 +349,7 @@ TreeView.defaultProps = {
     transitionEnterTimeout: 1200,
     transitionExitTimeout: 1200,
 
-    getStyleClassCb: (/* node, depth */) => { return ''; },
+    getStyleClassCb: (/* node, depth */) => { return ""; },
     isCheckable: (/* node, depth */) => { return true; },
     isDeletable: (/* node, depth */) => { return true; },
     isExpandable: (/* node, depth */) => { return true; },
