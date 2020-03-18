@@ -331,7 +331,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         //TODO: The extra container will be removed when styling is fixed.
         <div className="tree-vew">
             <div className="super-treeview">
-                {printNodes(treeData)}
+                { printNodes(treeData) }
             </div>
         </div>
     )
