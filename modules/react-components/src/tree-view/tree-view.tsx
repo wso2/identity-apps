@@ -138,7 +138,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
         if (isCheckable(node, depth)) {
             return (
-                <label htmlFor={node.name} className="tree-label">
+                <label htmlFor={ node.name } className="tree-label">
                     <input
                         type="checkbox"
                         name={node[keywordLabel]}
