@@ -25,11 +25,19 @@ import { BaiscRoleDetails } from "./edit-role-basic";
 import { RolePermissionDetails } from "./edit-role-permission";
 import { RoleUserDetails } from "./edit-role-users";
 
+/**
+ * Captures props needed for edit role component
+ */
 interface EditRoleProps {
     roleId: string;
     roleObject: RolesInterface;
 }
 
+/**
+ * Component which will allow editing of a selected role.
+ * 
+ * @param props contains role details to be edited.
+ */
 export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps): ReactElement => {
 
     const {
@@ -56,8 +64,6 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     ]);
 
     return (
-        <ResourceTab
-            panes={ panes() }
-        />
+        <ResourceTab panes={ panes() } />
     );
 }

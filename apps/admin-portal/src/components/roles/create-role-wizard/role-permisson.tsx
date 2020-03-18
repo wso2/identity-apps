@@ -80,7 +80,14 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         });
     }
 
-    const getPermissions = (rolePerms?: string[]): void => {
+    /**
+     * Will retrieve All permissions to map the tree. If
+     * `rolepermissions` is available, will add checks for the existing
+     * permission list.
+     * 
+     * @param rolePermissions 
+     */
+    const getPermissions = (rolePermissions?: string[]): void => {
         getPermissionList().then((response)=> {
             if (response.status === 200) {
                 const permList = response.data;
@@ -90,10 +97,10 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                     path, path.resourcePath.replace(/^\/|\/$/g, "").split('/'), arr,
                 ),[]);
 
-                if (rolePerms) {
-                    checkRolePermissions(rolePerms, permTree, false);
-                    setPermissionsOfRole(rolePerms);
-                    setSelectedPermissions(rolePerms)
+                if (rolePermissions) {
+                    checkRolePermissions(rolePermissions, permTree, false);
+                    setPermissionsOfRole(rolePermissions);
+                    setSelectedPermissions(rolePermissions)
                 }
 
                 setPermissionTree(permTree);

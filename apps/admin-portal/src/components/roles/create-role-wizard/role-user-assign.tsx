@@ -15,9 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-/* eslint-disable */
-//TODO Temporary disable of lint due to merge conflicts
-
 import React, { ReactElement, useState, FunctionComponent, useEffect } from "react";
 import { Grid, Input, Icon, Segment, List, Label, Message } from "semantic-ui-react";
 import { Forms } from "@wso2is/forms";
@@ -157,22 +154,20 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                    <List className={ "user-role-list" }>
                                        { usersList && usersList.map((user, index): ReactElement =>{
                                              return (
-                                                 <List.Item
-                                                     key={ index }
-                                                     className={ "user-role-list-item" }
-                                                     onClick={ () => addRole(user) }
-                                                 >
+                                                <List.Item
+                                                    key={ index }
+                                                    className={ "user-role-list-item" }
+                                                    onClick={ () => addRole(user) }
+                                                >
                                                     <UserAvatar
                                                         name={ user.userName }
                                                         size="mini"
                                                         floated="left"
                                                         image={ user.profileUrl }
                                                     />
-                                                     { user.userName }
-                                                     <Icon
-                                                         name="add"
-                                                     />
-                                                 </List.Item>
+                                                    { user.userName }
+                                                    <Icon name="add" />
+                                                </List.Item>
                                              )
                                          })
                                        }

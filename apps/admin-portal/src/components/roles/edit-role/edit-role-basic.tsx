@@ -27,11 +27,19 @@ import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
 import { history } from "../../../helpers";
 
+/**
+ * Interface to contain props needed for component
+ */
 interface BasicRoleProps {
     roleObject: RolesInterface;
     roleId: string;
 }
 
+/**
+ * Component to edit basic role details.
+ * 
+ * @param props Role object containing details which needs to be edited.
+ */
 export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: BasicRoleProps): ReactElement => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -41,8 +49,6 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         roleId
     } = props;
 
-
-
     /**
      * Dispatches the alert object to the redux store.
      *
@@ -51,7 +57,6 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert(alert));
     };
-
 
     /**
      * Function which will handle role deletion action.
@@ -73,7 +78,11 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         });
     };
 
-
+    /**
+     * Method to update role name for the selected role.
+     * 
+     * @param values Form values which will be used to update the role
+     */
     const updateRoleName = (values: any): void => {
         const roleData: CreateRoleInterface = {
             displayName: values.get("rolename")
@@ -130,7 +139,6 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                     </Grid.Row>
                 </Grid>
             </Forms>
-            
             <Divider hidden />
             <DangerZoneGroup sectionHeader="Danger Zone">
                 <DangerZone

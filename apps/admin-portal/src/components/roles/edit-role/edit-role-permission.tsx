@@ -24,10 +24,17 @@ import { AlertLevels } from "../../../models";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 
+/**
+ * Interface to capture permission edit props.
+ */
 interface RolePermissionDetailProps {
     role: string;
 }
 
+/**
+ * Component to update permissions of the selected role.
+ * @param props Contains role id to get permission details.
+ */
 export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps> = (props: 
     RolePermissionDetailProps): ReactElement => {
 

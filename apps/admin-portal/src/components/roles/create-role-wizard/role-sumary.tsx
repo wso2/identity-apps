@@ -26,6 +26,11 @@ interface AddUserWizardSummaryProps {
     onSubmit: (application: any) => void;
 }
 
+/**
+ * Component to create a summary of the role which will be created.
+ * 
+ * @param props props containing summary data for the view.
+ */
 export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (props: AddUserWizardSummaryProps): ReactElement => {
     
     const {

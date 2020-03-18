@@ -25,9 +25,9 @@ export const RoleUserDetails: FunctionComponent<any> = (): ReactElement => {
     return (
         <>
             <AddRoleUsers/>
-            <Forms 
-                    onSubmit={ () => { console.log() } }
-                >
+            <Forms onSubmit={() => {
+                console.log() 
+            } } >
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
