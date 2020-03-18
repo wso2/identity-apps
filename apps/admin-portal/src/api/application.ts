@@ -22,7 +22,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { ApplicationManagementConstants } from "../constants";
 import {
-    AdaptiveAuthTemplatesInterface,
+    AdaptiveAuthTemplatesListInterface,
     ApplicationBasicInterface,
     ApplicationInterface,
     ApplicationListInterface,
@@ -547,9 +547,9 @@ export const revokeClientSecret = (appId: string): Promise<any> => {
 /**
  * Get all the sample adaptive authentication templates.
  *
- * @return {Promise<AdaptiveAuthTemplatesInterface>} Response as a promise.
+ * @return {Promise<AdaptiveAuthTemplatesListInterface>} Response as a promise.
  */
-export const getAdaptiveAuthTemplates = (): Promise<AdaptiveAuthTemplatesInterface> => {
+export const getAdaptiveAuthTemplates = (): Promise<AdaptiveAuthTemplatesListInterface> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -574,7 +574,7 @@ export const getAdaptiveAuthTemplates = (): Promise<AdaptiveAuthTemplatesInterfa
 
             return Promise.resolve({
                 templatesJSON: JSON.parse(response?.data?.templatesJSON)
-            } as AdaptiveAuthTemplatesInterface);
+            } as AdaptiveAuthTemplatesListInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ApplicationManagementConstants.ADAPTIVE_AUTH_TEMPLATES_FETCH_ERROR,

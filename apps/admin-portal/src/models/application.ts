@@ -291,11 +291,76 @@ export interface ApplicationTemplateTechnology {
 /**
  * Adaptive auth templates interface.
  */
-export interface AdaptiveAuthTemplatesInterface {
+export interface AdaptiveAuthTemplatesListInterface {
     /**
      * Templates as a JSON.
      */
-    templatesJSON: object;
+    templatesJSON: AdaptiveAuthTemplateCategoryListItemInterface;
+}
+
+/**
+ * Adaptive auth template category list item interface.
+ * Category name will be the key.
+ */
+export interface AdaptiveAuthTemplateCategoryListItemInterface {
+    [ key: string ]: AdaptiveAuthTemplateCategoryInterface;
+}
+
+/**
+ * Adaptive auth template category interface.
+ */
+export interface AdaptiveAuthTemplateCategoryInterface {
+    displayName: string;
+    templates?: AdaptiveAuthTemplateInterface[];
+    icon?: string;
+    order: number;
+}
+
+
+/**
+ * Adaptive auth template interface.
+ */
+export interface AdaptiveAuthTemplateInterface {
+    summary: string;
+    preRequisites: string[];
+    helpLink: string;
+    code: string[];
+    defaultStepsDescription: AdaptiveAuthTemplateDefaultStepsDescriptionInterface;
+    parametersDescription: AdaptiveAuthTemplateParametersDescriptionInterface;
+    name: string;
+    defaultAuthenticators: AdaptiveAuthTemplateDefaultAuthenticatorsListInterface;
+    category: string;
+    title: string;
+    authenticationSteps: number;
+}
+
+/**
+ * Adaptive auth template parameters description interface.
+ */
+interface AdaptiveAuthTemplateParametersDescriptionInterface {
+    [ key: string ]: string;
+}
+
+/**
+ * Adaptive auth template default steps description interface.
+ */
+interface AdaptiveAuthTemplateDefaultStepsDescriptionInterface {
+    [ key: string ]: string;
+}
+
+/**
+ * Adaptive auth template default authenticators list interface.
+ */
+interface AdaptiveAuthTemplateDefaultAuthenticatorsListInterface {
+    [ key: string ]: AdaptiveAuthTemplateDefaultAuthenticatorInterface;
+}
+
+/**
+ * Adaptive auth template default authenticator interface.
+ */
+interface AdaptiveAuthTemplateDefaultAuthenticatorInterface {
+    federated: string[];
+    local: string[];
 }
 
 export const emptyApplication = (): ApplicationInterface => ({
