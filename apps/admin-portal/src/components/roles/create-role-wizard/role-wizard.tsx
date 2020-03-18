@@ -121,7 +121,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         
         const roleData: CreateRoleInterface = {
             "schemas": [
-              "urn:ietf:params:scim:schemas:core:2.0:Group"
+                "urn:ietf:params:scim:schemas:core:2.0:Group"
             ],
             "displayName": basicData.BasicDetails.roleName,
             "members" : members
