@@ -138,16 +138,16 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
         if (isCheckable(node, depth)) {
             return (
-                <label htmlFor={node.name} className="tree-label">
+                <label htmlFor={ node.name } className="tree-label">
                     <input
                         type="checkbox"
-                        name={node[keywordLabel]}
+                        name={ node[keywordLabel] }
                         className="invisible"
                         onClick={(e) => {
                             handleCheckToggle(node, e);
                         }}
-                        checked={!!node.isChecked}
-                        id={node.name}
+                        checked={ !!node.isChecked }
+                        id={ node.name }
                     />
                     <div className="checkbox">
                         <svg width="17px" height="17px" viewBox="0 0 20 20">
@@ -173,7 +173,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                         handleDelete(node);
                     }}
                 >
-                    {deleteElement}
+                    { deleteElement }
                 </div>
             );
         }
@@ -262,30 +262,30 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
         return (
             <TransitionGroup>
-                {_.isEmpty(nodeArray)
+                { _.isEmpty(nodeArray)
                     ? printNoChildrenMessage()
                     : nodeArray.map((node, index) => {
                           return (
                               <CSSTransition
-                                  {...nodeTransitionProps}
-                                  key={node[keywordKey] || index}
+                                  { ...nodeTransitionProps }
+                                  key={ node[keywordKey] || index }
                               >
                                   <div
                                       className={
                                           "super-treeview-node" + getStyleClassCb(node)
                                       }
                                   >
-                                      <div className={`super-treeview-node-content ${!node.children 
-                                            || node.children.length == 0 ? "no-child" : ""}`}>
-                                          {node.children && node.children.length != 0 ? printExpandButton(node) : ""}
-                                          {printCheckbox(node)}
-                                          {printDeleteButton(node)}
+                                      <div className={ `super-treeview-node-content ${ !node.children 
+                                            || node.children.length == 0 ? "no-child" : "" }` }>
+                                          { node.children && node.children.length != 0 ? printExpandButton(node) : "" }
+                                          { printCheckbox(node) }
+                                          { printDeleteButton(node) }
                                       </div>
                                       { printChildren(node) }
                                   </div>
                               </CSSTransition>
                           );
-                      })}
+                      }) }
             </TransitionGroup>
         );
     }
@@ -304,7 +304,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         } else {
             childrenElement = (
                 <TreeView
-                    {...props}
+                    { ...props }
                     data={node[keywordChildren] || []}
                     depth={depth + 1}
                     onUpdateCb={onChildrenUpdateCb.bind(this)}
@@ -328,10 +328,10 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
     }
 
     return (
-        //TODO: The extra container will be removed when styling is fixed.
+        // TODO: The extra container will be removed when styling is fixed.
         <div className="tree-vew">
             <div className="super-treeview">
-                {printNodes(treeData)}
+                { printNodes(treeData) }
             </div>
         </div>
     )

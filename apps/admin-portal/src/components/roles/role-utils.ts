@@ -32,6 +32,7 @@ export const addPath = (permObj: PermissionObject, pathcomponents: string[],
 
     const component = pathcomponents.shift()
     let comp = permissionTreeArray.find(item => item.name === component)
+
     if (!comp) {
         comp = {
             label: permObj.displayName,
@@ -42,6 +43,7 @@ export const addPath = (permObj: PermissionObject, pathcomponents: string[],
         }
         permissionTreeArray.push(comp)
     }
+
     if (pathcomponents.length) {
         addPath(permObj, pathcomponents, comp.children || (comp.children = []))
     }
