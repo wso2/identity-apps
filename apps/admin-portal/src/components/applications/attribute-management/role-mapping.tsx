@@ -45,7 +45,6 @@ interface RoleMappingPropsInterface {
 export const RoleMapping = (props: RoleMappingPropsInterface): React.ReactElement => {
 
     const { onSubmit, submitState, initialMappings } = props;
-
     const [roleList, setRoleList] = useState<RolesInterface[]>();
     const dispatch = useDispatch();
 
@@ -57,12 +56,14 @@ export const RoleMapping = (props: RoleMappingPropsInterface): React.ReactElemen
             (role) => {
                 return !(role.displayName.includes("Application/") || role.displayName.includes("Internal/"))
             });
+
         const finalRoles = filterRole.map(role => {
             return {
                 value: role.displayName,
                 id: role.displayName
             }
         });
+
         return finalRoles;
     };
 
@@ -103,10 +104,7 @@ export const RoleMapping = (props: RoleMappingPropsInterface): React.ReactElemen
                                 }) : []
                         }
                         keyType="dropdown"
-                        keyData={
-                            roleList ?
-                                getFilteredRoles() : []
-                        }
+                        keyData={ roleList ? getFilteredRoles() : [] }
                         keyName="Local Role"
                         valueName="Application Role"
                         keyRequiredMessage="Please enter the local role"
