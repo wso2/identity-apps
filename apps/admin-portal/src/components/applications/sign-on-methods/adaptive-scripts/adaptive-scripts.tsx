@@ -18,7 +18,7 @@
 
 import { CodeEditor, Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
-import { Grid, Icon, Menu, Sidebar } from "semantic-ui-react";
+import { Checkbox, Grid, Icon, Menu, Sidebar } from "semantic-ui-react";
 import {
     AdaptiveAuthTemplateInterface,
     AdaptiveAuthTemplatesListInterface,
@@ -82,6 +82,7 @@ export const AdaptiveScripts: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ scriptTemplates, setScriptTemplates ] = useState<AdaptiveAuthTemplatesListInterface>(undefined);
     const [ showAuthTemplatesSidePanel, setAuthTemplatesSidePanelVisibility ] = useState<boolean>(true);
     const [ sourceCode, setSourceCode ] = useState<string | string[]>(undefined);
+    const [ isEditorDarkMode, setIsEditorDarkMode ] = useState<boolean>(true);
 
     useEffect(() => {
         getAdaptiveAuthTemplates()
@@ -170,6 +171,13 @@ export const AdaptiveScripts: FunctionComponent<AdaptiveScriptsPropsInterface> =
         onTemplateSelect(template);
     };
 
+    /**
+     * Toggles editor dark mode.
+     */
+    const handleEditorDarkModeToggle = () => {
+        setIsEditorDarkMode(!isEditorDarkMode);
+    };
+
     return (
         <div className="adaptive-scripts-section">
             <Grid>
@@ -178,7 +186,7 @@ export const AdaptiveScripts: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         <Heading as="h5">Script based configuration</Heading>
                         <Hint>
                             Define the authentication flow via an adaptive script. You can select one of the
-                            following templates to get started.
+                            templates fom the panel to get started.
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -197,6 +205,14 @@ export const AdaptiveScripts: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             <Sidebar.Pusher>
                                 <div className="script-editor-container" ref={ scriptEditorSectionRef }>
                                     <Menu attached="top" className="action-panel" secondary>
+                                        <Menu.Item>
+                                            <Checkbox
+                                                label="Dark mode"
+                                                checked={ isEditorDarkMode }
+                                                onChange={ handleEditorDarkModeToggle }
+                                                slider
+                                            />
+                                        </Menu.Item>
                                         <Menu.Menu position="right">
                                             <Menu.Item onClick={ handleScriptTemplateSidebarToggle } className="action">
                                                 <Icon name="bars" />
@@ -217,6 +233,7 @@ export const AdaptiveScripts: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                             onChange={ (editor, data, value) => {
                                                 onScriptChange(value)
                                             } }
+                                            theme={ isEditorDarkMode ? "dark" : "light" }
                                         />
                                     </div>
                                 </div>
