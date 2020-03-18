@@ -173,7 +173,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                         handleDelete(node);
                     }}
                 >
-                    {deleteElement}
+                    { deleteElement }
                 </div>
             );
         }
