@@ -147,7 +147,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                             handleCheckToggle(node, e);
                         }}
                         checked={ !!node.isChecked }
-                        id={node.name}
+                        id={ node.name }
                     />
                     <div className="checkbox">
                         <svg width="17px" height="17px" viewBox="0 0 20 20">
