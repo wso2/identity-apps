@@ -34,7 +34,7 @@ export const RoleEditPage: FunctionComponent<any> = (props: any): ReactElement =
                 setRoleObject(response.data);
             }
         }).catch(error => {
-            //TODO handle error
+            // TODO: handle error
         })
     }
 
