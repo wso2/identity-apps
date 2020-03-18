@@ -304,7 +304,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         } else {
             childrenElement = (
                 <TreeView
-                    {...props}
+                    { ...props }
                     data={node[keywordChildren] || []}
                     depth={depth + 1}
                     onUpdateCb={onChildrenUpdateCb.bind(this)}
