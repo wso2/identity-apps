@@ -24,10 +24,11 @@ import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
 import { ClaimsList, ListType, LocalClaimsSearch } from "../components";
 import { Claim, ClaimsGetParams, AlertLevels } from "../models";
 import { getAllLocalClaims, getADialect } from "../api";
-import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
+import { DEFAULT_USER_LIST_ITEM_LIMIT, CLAIM_DIALECTS_PATH } from "../constants";
 import { AddLocalClaims } from "../components";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
+import { history } from "../helpers";
 
 export const LocalClaimsPage = (): React.ReactElement => {
 
@@ -105,6 +106,10 @@ export const LocalClaimsPage = (): React.ReactElement => {
                 title="Local Dialect"
                 description="View, edit and add the Local Dialect"
                 showBottomDivider={ true }
+                backButton={ {
+                    onClick: () => { history.push(CLAIM_DIALECTS_PATH) },
+                    text: "Go back to Claim Dialects"
+                } }
             >
                 <ListLayout
                     advancedSearch={

@@ -49,6 +49,46 @@ export const LOGIN_ERROR_PAGE_PATH = "/login-error";
 export const APPLICATIONS_PAGE_PATH = "/applications";
 
 /**
+ * Path to the applications page.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const LOCAL_CLAIMS_PATH = "/local-dialect";
+
+/**
+ * Path to the applications page.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const EXTERNAL_CLAIMS_PATH = "/external-claims";
+
+/**
+ * Path to the applications page.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const CLAIM_DIALECTS_PATH = "/claim-dialects";
+
+/**
+ * Path to the applications page.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const EDIT_LOCAL_CLAIMS_PATH = "/edit-local-claims";
+
+/**
+ * Path to the applications page.
+ * @constant
+ * @type {string}
+ * @default
+ */
+export const USER_STORES_PATH = "/user-stores";
+
+/**
  * User portal application identifier.
  * @constant
  * @type {string}
