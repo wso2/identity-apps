@@ -109,8 +109,9 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
      */
     const addRole = (basicData: any): void => {
         const members: CreateRoleMemberInterface[] = [];
-        if (basicData.RoleUserList.users.length > 0) {
-            basicData.RoleUserList.users.forEach(user => {
+        const users = basicData.RoleUserList.users
+        if (users.length > 0) {
+            users.forEach(user => {
                 members.push({
                     value: user.id,
                     display: user.userName
