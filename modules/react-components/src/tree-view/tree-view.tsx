@@ -101,11 +101,13 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         const currentNode = _.find(data, node);
         const currentNodeIndex = data.indexOf(currentNode);
         const toggledNodes = [];
+
         if (e.shiftKey && !_.isNil(lastCheckToggledNodeIndex)) {
             const rangeStart = Math.min(
                 currentNodeIndex,
                 lastCheckToggledNodeIndex
             );
+
             const rangeEnd = Math.max(
                 currentNodeIndex,
                 lastCheckToggledNodeIndex
@@ -169,20 +171,20 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
      */
     const printCheckbox = (node: TreeNode) => {
         const { isCheckable, keywordLabel, depth } = props;
-        const nodeText = _.get(node, keywordLabel, '');
+        const nodeText = _.get(node, keywordLabel, "");
 
         if (isCheckable(node, depth)) {
             return (
                 <label htmlFor={node.name} className="tree-label">
                     <input
                         type="checkbox"
-                        name={node[keywordLabel]}
+                        name={ node[keywordLabel] }
                         className="invisible"
-                        onClick={(e) => {
+                        onClick={ (e) => {
                             handleCheckToggle(node, e);
-                        }}
-                        checked={!!node.isChecked}
-                        id={node.name}
+                        } }
+                        checked={ !!node.isChecked }
+                        id={ node.name }
                     />
                     <div className="checkbox">
                         <svg width="17px" height="17px" viewBox="0 0 20 20">
@@ -192,7 +194,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                             <polyline points="4 11 8 15 16 6"></polyline>
                         </svg>
                     </div>
-                    <span>{nodeText}</span>
+                    <span>{ nodeText }</span>
                 </label>
             );
         }
@@ -209,11 +211,11 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         if (isDeletable(node, depth)) {
             return (
                 <div className="delete-btn"
-                    onClick={() => {
+                    onClick={ () => {
                         handleDelete(node);
-                    }}
+                    } }
                 >
-                    {deleteElement}
+                    { deleteElement }
                 </div>
             );
         }
@@ -225,18 +227,18 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
      * @param node Tree node to draw the expand button
      */
     const printExpandButton = (node: TreeNode): ReactElement => {
-        const className = node.isExpanded ? '' : 'active';
+        const className = node.isExpanded ? "" : "active";
         const { isExpandable, depth } = props;
 
         if (isExpandable(node, depth)) {
             return (
                 <div 
                     className="wrap"
-                    onClick={() => {
+                    onClick={ () => {
                         handleExpandToggle(node);
-                    }}
+                    } }
                 >
-                    <span className={`tree-arrow ${className}`}>
+                    <span className={ `tree-arrow ${className}` }>
                         <span></span>
                         <span></span>
                     </span>
@@ -262,9 +264,10 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
             transitionExitTimeout,
             noChildrenAvailableMessage
         } = props;
+        
         const noChildrenTransitionProps = {
-            classNames: 'treeview-no-children-transition',
-            key: 'treeview-no-children',
+            classNames: "treeview-no-children-transition",
+            key: "treeview-no-children",
             style: {
                 transitionDuration: `${transitionExitTimeout}ms`,
                 transitionDelay: `${transitionExitTimeout}ms`
@@ -276,10 +279,10 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         };
 
         return (
-            <CSSTransition {...noChildrenTransitionProps}>
+            <CSSTransition { ...noChildrenTransitionProps }>
                 <div className="treeview-no-children">
                     <div className="treeview-no-children-content">
-                        {noChildrenAvailableMessage}
+                        { noChildrenAvailableMessage }
                     </div>
                 </div>
             </CSSTransition>
@@ -295,7 +298,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         } = props;
 
         const nodeTransitionProps = {
-            classNames: 'treeview-node-transition',
+            classNames: "treeview-node-transition",
             style: {
                 transitionDuration: `${transitionEnterTimeout}ms`
             },
@@ -307,30 +310,26 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
         return (
             <TransitionGroup>
-                {_.isEmpty(nodeArray)
-                    ? printNoChildrenMessage()
-                    : nodeArray.map((node, index) => {
-                          return (
-                              <CSSTransition
-                                  {...nodeTransitionProps}
-                                  key={node[keywordKey] || index}
-                              >
-                                  <div
-                                      className={
-                                          'treeview-node' + getStyleClassCb(node)
-                                      }
-                                  >
-                                      <div className={`treeview-node-content ${!node.children 
-                                            || node.children.length == 0 ? "no-child" : ""}`}>
-                                          {node.children && node.children.length != 0 ? printExpandButton(node) : ""}
-                                          {printCheckbox(node)}
-                                          {printDeleteButton(node)}
-                                      </div>
-                                      {printChildren(node)}
-                                  </div>
-                              </CSSTransition>
-                          );
-                      })}
+                { _.isEmpty(nodeArray) ? printNoChildrenMessage() : nodeArray.map((node, index) => {
+                    return (
+                        <CSSTransition
+                            { ...nodeTransitionProps }
+                            key={ node[keywordKey] || index }
+                        >
+                            <div
+                                className={ "treeview-node" + getStyleClassCb(node) }
+                            >
+                                <div className={`treeview-node-content ${!node.children 
+                                    || node.children.length == 0 ? "no-child" : ""}`}>
+                                    { node.children && node.children.length != 0 ? printExpandButton(node) : "" }
+                                    { printCheckbox(node) }
+                                    { printDeleteButton(node) }
+                                </div>
+                                { printChildren(node) }
+                            </div>
+                        </CSSTransition>
+                    );
+                }) }
             </TransitionGroup>
         );
     }
@@ -345,21 +344,21 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         let childrenElement;
 
         if (isChildrenLoading) {
-            childrenElement = _.get(props, 'loadingElement');
+            childrenElement = _.get(props, "loadingElement");
         } else {
             childrenElement = (
                 <TreeView
-                    {...props}
-                    data={node[keywordChildren] || []}
-                    depth={depth + 1}
-                    onUpdateCb={onChildrenUpdateCb.bind(this)}
+                    { ...props }
+                    data={ node[keywordChildren] || [] }
+                    depth={ depth + 1 }
+                    onUpdateCb={ onChildrenUpdateCb.bind(this) }
                 />
             );
         }
 
         return (
             <div className="treeview-children-container">
-                {childrenElement}
+                { childrenElement }
             </div>
         );
 
@@ -374,7 +373,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
     return (
         <div className="treeview">
-            {printNodes(treeData)}
+            { printNodes(treeData) }
         </div>
     )
 }
@@ -382,16 +381,16 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 TreeView.defaultProps = {
     depth: 0,
     deleteElement: <div>(X)</div>,
-    keywordChildren: 'children',
-    keywordChildrenLoading: 'isChildrenLoading',
-    keywordLabel: 'name',
-    keywordKey: 'id',
+    keywordChildren: "children",
+    keywordChildrenLoading: "isChildrenLoading",
+    keywordLabel: "name",
+    keywordKey: "id",
     loadingElement: <div>loading...</div>,
-    noChildrenAvailableMessage: 'No data found',
+    noChildrenAvailableMessage: "No data found",
     transitionEnterTimeout: 1200,
     transitionExitTimeout: 1200,
 
-    getStyleClassCb: (/* node, depth */) => { return ''; },
+    getStyleClassCb: (/* node, depth */) => { return ""; },
     isCheckable: (/* node, depth */) => { return true; },
     isDeletable: (/* node, depth */) => { return true; },
     isExpandable: (/* node, depth */) => { return true; },
