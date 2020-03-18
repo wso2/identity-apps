@@ -22,6 +22,7 @@ import { history } from "../helpers";
 import { getRoleById } from "../api";
 import { EditRole } from "../components/roles/edit-role/edit-role";
 import { RolesInterface } from "../models";
+import { ROLE_VIEW_PATH } from "../constants";
 
 export const RoleEditPage: FunctionComponent<any> = (props: any): ReactElement => {
 
@@ -50,7 +51,7 @@ export const RoleEditPage: FunctionComponent<any> = (props: any): ReactElement =
     }, []);
 
     const handleBackButtonClick = () => {
-        history.push("/roles");
+        history.push(ROLE_VIEW_PATH);
     };
     
     return (
