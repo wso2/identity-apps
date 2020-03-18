@@ -32,6 +32,17 @@ interface UserRolesPropsInterface {
     handleUserUpdate: (userId: string) => void;
 }
 
+/**
+ * Enum for role types.
+ * @readonly
+ * @enum { string }
+ */
+enum RoleTypes {
+    APPLICATION = "Application",
+    INTERNAL= "Internal",
+    PRIMARY = "Primary"
+}
+
 export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     props: UserRolesPropsInterface
 ): ReactElement => {
@@ -64,12 +75,12 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         const roleListCopy = [ ...roleList ];
         const addedRoles = [];
             _.forEachRight(roleListCopy, (role) => {
-                if (domain === "Application") {
+                if (domain === RoleTypes.APPLICATION) {
                     if (appRoles.has(role.displayName)) {
                         addedRoles.push(role);
                         roleListCopy.splice(roleListCopy.indexOf(role), 1);
                     }
-                } else if (domain === "Internal") {
+                } else if (domain === RoleTypes.INTERNAL) {
                     if (internalRoles.has(role.displayName)) {
                         addedRoles.push(role);
                         roleListCopy.splice(roleListCopy.indexOf(role), 1);
@@ -175,9 +186,9 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 const role = group.display.split("/");
                 const prefix = role[0];
 
-                if (prefix === "Application") {
+                if (prefix === RoleTypes.APPLICATION) {
                     applicationRoles.set(group.display, group.value);
-                } else if (prefix === "Internal") {
+                } else if (prefix === RoleTypes.INTERNAL) {
                     intRoles.set(group.display, group.value);
                 } else {
                     primRoles.set(group.display, group.value);
@@ -266,9 +277,9 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         const addOperations = [];
         let removedIds = [];
 
-        if (selectedDomain === "Application") {
+        if (selectedDomain === RoleTypes.APPLICATION) {
             removedIds = [ ...appRoles?.values()];
-        } else if (selectedDomain === "Internal") {
+        } else if (selectedDomain === RoleTypes.INTERNAL) {
             removedIds = [ ...internalRoles?.values()];
         } else {
             removedIds = [ ...primaryRoles?.values()];
@@ -427,7 +438,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                     <Segment className={ "user-assigned-roles-segment" }>
                                         {
-                                            selectedDomain == "Internal" ? (
+                                            selectedDomain == RoleTypes.INTERNAL ? (
                                                 <>
                                                 <Popup
                                                     trigger={
@@ -524,7 +535,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             name="plus"
                                         />
                                         <Icon
-                                            onClick={ () => getRolesList("Primary") }
+                                            onClick={ () => getRolesList(RoleTypes.PRIMARY) }
                                             className="floated right"
                                             color="grey"
                                             name="pencil alternate"
@@ -567,7 +578,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                         <PrimaryButton
                                             size="mini"
                                             style={ { padding: "0.7em"} }
-                                            onClick={ () => getRolesList("Primary") }
+                                            onClick={ () => getRolesList(RoleTypes.PRIMARY) }
                                         >
                                             <Icon name="plus"/>
                                             Assign new role
@@ -594,7 +605,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             name="plus"
                                         />
                                         <Icon
-                                            onClick={ () => getRolesList("Application") }
+                                            onClick={ () => getRolesList(RoleTypes.APPLICATION) }
                                             className="floated right"
                                             color="grey"
                                             name="pencil alternate"
@@ -628,7 +639,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             <PrimaryButton
                                                 size="mini"
                                                 style={ { padding: "0.7em"} }
-                                                onClick={ () => getRolesList("Application") }
+                                                onClick={ () => getRolesList(RoleTypes.APPLICATION) }
                                             >
                                                 <Icon name="plus"/>
                                                 Assign new role
@@ -653,7 +664,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                         name="plus"
                                     />
                                     <Icon
-                                        onClick={ () => getRolesList("Internal") }
+                                        onClick={ () => getRolesList(RoleTypes.INTERNAL) }
                                         className="floated right"
                                         color="grey"
                                         name="pencil alternate"
