@@ -26,4 +26,8 @@ i.icon {
     &.bordered {
         border-radius: @defaultBorderRadius;
     }
+
+    &.left-aligned-action {
+        margin-left: 10px;
+    }
 }
