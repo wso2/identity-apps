@@ -128,54 +128,54 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                             >
                                 {
                                     templates.map((category, index) => (
-                                        <Menu.Item key={ index }>
-                                            <Accordion.Title
-                                                active={ accordionActiveIndexes.includes(index) }
-                                                className="category-name"
-                                                content={ category.displayName }
-                                                index={ index }
-                                                icon={ <Icon className="angle right caret-icon" /> }
-                                                onClick={ handleAccordionOnClick }
-                                            />
-                                            <Accordion.Content
-                                                className="template-list"
-                                                active={ accordionActiveIndexes.includes(index) }
-                                            >
-                                                {
-                                                    category?.templates
-                                                    && category.templates instanceof Array
-                                                    && category.templates.map((template, index) => (
-                                                        <Menu.Item key={ index }>
-                                                            <Popup
-                                                                trigger={ (
-                                                                    <div className="template-name">
-                                                                        { template.name }
-                                                                    </div>
-                                                                ) }
-                                                                position="top center"
-                                                                content={ template.name }
-                                                                inverted
-                                                            />
-                                                            <Popup
-                                                                trigger={ (
-                                                                    <Icon
-                                                                        className="add-button"
-                                                                        name="add"
-                                                                        onClick={
-                                                                            () => onTemplateSelect(template.code)
-                                                                        }
-                                                                    />
-                                                                ) }
-                                                                position="top center"
-                                                                content="Add"
-                                                                inverted
-                                                            />
-                                                        </Menu.Item>
-                                                    ))
-                                                }
-                                            </Accordion.Content>
-                                        </Menu.Item>
-                                    ))
+                                        category?.templates && category.templates instanceof Array && (
+                                            <Menu.Item key={ index }>
+                                                <Accordion.Title
+                                                    active={ accordionActiveIndexes.includes(index) }
+                                                    className="category-name"
+                                                    content={ category.displayName }
+                                                    index={ index }
+                                                    icon={ <Icon className="angle right caret-icon"/> }
+                                                    onClick={ handleAccordionOnClick }
+                                                />
+                                                <Accordion.Content
+                                                    className="template-list"
+                                                    active={ accordionActiveIndexes.includes(index) }
+                                                >
+                                                    {
+                                                        category.templates.map((template, index) => (
+                                                            <Menu.Item key={ index }>
+                                                                <Popup
+                                                                    trigger={ (
+                                                                        <div className="template-name">
+                                                                            { template.name }
+                                                                        </div>
+                                                                    ) }
+                                                                    position="top center"
+                                                                    content={ template.name }
+                                                                    inverted
+                                                                />
+                                                                <Popup
+                                                                    trigger={ (
+                                                                        <Icon
+                                                                            className="add-button"
+                                                                            name="add"
+                                                                            onClick={
+                                                                                () => onTemplateSelect(template.code)
+                                                                            }
+                                                                        />
+                                                                    ) }
+                                                                    position="top center"
+                                                                    content="Add"
+                                                                    inverted
+                                                                />
+                                                            </Menu.Item>
+                                                        ))
+                                                    }
+                                                </Accordion.Content>
+                                            </Menu.Item>
+                                        ))
+                                    )
                                 }
                             </Accordion>
                         )
