@@ -29,6 +29,7 @@ import { AddLocalClaims } from "../components";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
 import { history } from "../helpers";
+import { filterList } from "../utils";
 
 export const LocalClaimsPage = (): React.ReactElement => {
 
@@ -37,6 +38,7 @@ export const LocalClaimsPage = (): React.ReactElement => {
     const [listItemLimit, setListItemLimit] = useState<number>(0);
     const [openModal, setOpenModal] = useState(false);
     const [claimURIBase, setClaimURIBase] = useState("");
+    const [filteredClaims, setFilteredClaims] = useState<Claim[]>(null);
 
     const dispatch = useDispatch();
 
@@ -50,6 +52,7 @@ export const LocalClaimsPage = (): React.ReactElement => {
 
         getAllLocalClaims(params).then(response => {
             setClaims(response);
+            setFilteredClaims(response);
         }).catch(error => {
             dispatch(addAlert(
                 {
@@ -69,9 +72,9 @@ export const LocalClaimsPage = (): React.ReactElement => {
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description||"There was an error while fetching the local dialect",
+                    description: error?.description || "There was an error while fetching the local dialect",
                     level: AlertLevels.ERROR,
-                    message: error?.message||"Something went wrong"
+                    message: error?.message || "Something went wrong"
                 }
             ));
         });
@@ -115,7 +118,17 @@ export const LocalClaimsPage = (): React.ReactElement => {
                     advancedSearch={
                         <LocalClaimsSearch
                             onFilter={ (query) => {
-                                getLocalClaims(null, null, null, query);
+                                //getLocalClaims(null, null, null, query);
+                                try {
+                                    const filteredClaims = filterList(claims, query);
+                                    setFilteredClaims(filteredClaims);
+                                } catch (error) {
+                                    dispatch(addAlert({
+                                        message: "Filter query format incorrect",
+                                        description: error,
+                                        level: AlertLevels.ERROR
+                                    }));
+                                }
                             } }
                             claimURIBase={ claimURIBase }
                         />
@@ -140,11 +153,11 @@ export const LocalClaimsPage = (): React.ReactElement => {
                     showPagination={ true }
                     sortOptions={ null }
                     sortStrategy={ null }
-                    totalPages={ Math.ceil(claims?.length / listItemLimit) }
-                    totalListSize={ claims?.length }
+                    totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
+                    totalListSize={ filteredClaims?.length }
                 >
                     <ClaimsList
-                        list={ paginate(claims, listItemLimit, offset) }
+                        list={ paginate(filteredClaims, listItemLimit, offset) }
                         localClaim={ ListType.LOCAL }
                         update={ getLocalClaims }
                     />

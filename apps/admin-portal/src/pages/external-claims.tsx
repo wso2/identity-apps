@@ -30,6 +30,7 @@ import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
 import { EmptyPlaceholder } from "../components/shared";
 import { EmptyPlaceholderIllustrations } from "../configs";
+import { filterList } from "../utils";
 
 export const ExternalClaimsPage = (props): React.ReactElement => {
 
@@ -40,6 +41,7 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
     const [addClaim, setAddClaim] = useState(false);
     const [editClaim, setEditClaim] = useState(false);
     const [editClaimID, setEditClaimID] = useState("");
+    const [filteredClaims, setFilteredClaims] = useState<ExternalClaim[]>(null);
 
     const dispatch = useDispatch();
 
@@ -65,6 +67,7 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
     const getExternalClaims = (limit?: number, offset?: number, sort?: string, filter?: string) => {
         dialectID && getAllExternalClaims(dialectID, { limit, offset, sort, filter }).then(response => {
             setClaims(response);
+            setFilteredClaims(response);
         }).catch(error => {
             dispatch(addAlert(
                 {
@@ -126,11 +129,21 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                     text: "Go back to Claim Dialects"
                 } }
             >
-                {claims?.length > 0
+                {filteredClaims?.length > 0
                     ? (
                         <ListLayout
                             advancedSearch={ <ExternalClaimsSearch onFilter={ (query) => {
-                                getExternalClaims(null, null, null, query);
+                                //getExternalClaims(null, null, null, query);
+                                try {
+                                    const filteredList: ExternalClaim[] = filterList(claims, query);
+                                    setFilteredClaims(filteredList);
+                                } catch (error) {
+                                    dispatch(addAlert({
+                                        message: "Filter query format incorrect",
+                                        description: error,
+                                        level: AlertLevels.ERROR
+                                    }));
+                                }
                             } } /> }
                             currentListSize={ listItemLimit }
                             listItemLimit={ listItemLimit }
@@ -151,11 +164,11 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                             showPagination={ true }
                             sortOptions={ null }
                             sortStrategy={ null }
-                            totalPages={ Math.ceil(claims?.length / listItemLimit) }
-                            totalListSize={ claims?.length }
+                            totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
+                            totalListSize={ filteredClaims?.length }
                         >
                             <ClaimsList
-                                list={ paginate(claims, listItemLimit, offset) }
+                                list={ paginate(filteredClaims, listItemLimit, offset) }
                                 localClaim={ ListType.EXTERNAL }
                                 openEdit={ (claimID: string) => {
                                     setEditClaim(true);

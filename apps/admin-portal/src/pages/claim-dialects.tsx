@@ -28,6 +28,7 @@ import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
 import { AddEditDialect, DialectSearch } from "../components";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
+import { filterList } from "../utils";
 
 export const ClaimDialectsPage = (): React.ReactElement => {
 
@@ -36,20 +37,20 @@ export const ClaimDialectsPage = (): React.ReactElement => {
     const [listItemLimit, setListItemLimit] = useState<number>(0);
     const [addEditClaim, setAddEditClaim] = useState(false);
     const [dialectID, setDialectID] = useState<string>(null);
+    const [filteredDialects, setFilteredDialects] = useState<ClaimDialect[]>(null);
 
     const dispatch = useDispatch();
 
     const getDialect = (limit?: number, offset?: number, sort?: string, filter?: string, ) => {
         getDialects({
             limit, offset, sort, filter
-
         }).then((response: ClaimDialect[]) => {
 
             const filteredDialect: ClaimDialect[] = response.filter((claim: ClaimDialect) => {
                 return claim.id !== "local";
             });
-
-            setDialects(filteredDialect);
+			setDialects(filteredDialect);
+            setFilteredDialects(filteredDialect);
         }).catch(error => {
             dispatch(addAlert(
                 {
@@ -98,7 +99,17 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                 <ListLayout
                     advancedSearch={
                         <DialectSearch onFilter={ (query) => {
-                            getDialect(null, null, null, query);
+                            // getDialect(null, null, null, query);
+                            try {
+                                const filteredDialects = filterList(dialects, query);
+                                setFilteredDialects(filteredDialects);
+                            } catch (error) {
+                                dispatch(addAlert({
+                                    message: "Filter query format incorrect",
+                                    description: error,
+                                    level: AlertLevels.ERROR
+                                }));
+                            }
                         } } />
                     }
                     currentListSize={ listItemLimit }
@@ -120,11 +131,11 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                     showPagination={ true }
                     sortOptions={ null }
                     sortStrategy={ null }
-                    totalPages={ Math.ceil(dialects?.length / listItemLimit) }
-                    totalListSize={ dialects?.length }
+                    totalPages={ Math.ceil(filteredDialects?.length / listItemLimit) }
+                    totalListSize={ filteredDialects?.length }
                 >
                     <ClaimsList
-                        list={ paginate(dialects, listItemLimit, offset) }
+                        list={ paginate(filteredDialects, listItemLimit, offset) }
                         localClaim={ ListType.DIALECT }
                         openEdit={
                             (id: string) => {
