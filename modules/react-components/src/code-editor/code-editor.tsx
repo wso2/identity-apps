@@ -163,6 +163,7 @@ export const CodeEditor: React.FunctionComponent<CodeEditorProps> = (
             options={
                 {
                     ...options,
+                    indentUnit: tabSize,
                     mode: options?.mode ? options.mode : resolveMode(language),
                     theme: resolveTheme(),
                     lineNumbers: showLineNumbers,
