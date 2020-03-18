@@ -81,7 +81,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                         <div className="top-action-panel">
                             <Grid>
                                 <Grid.Row>
-                                    <Grid.Column width={ 4 }>
+                                    <Grid.Column width={ 8 }>
                                         <div className="left-aligned-actions">
                                             {
                                                 sortOptions && sortStrategy && onSortStrategyChange && (
