@@ -43,6 +43,7 @@ export const addPath = (permObj: PermissionObject, pathcomponents: string[],
         }
         permissionTreeArray.push(comp)
     }
+
     if (pathcomponents.length) {
         addPath(permObj, pathcomponents, comp.children || (comp.children = []))
     }
