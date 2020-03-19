@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, {ReactElement, useState} from "react";
+import React, { ReactElement, useState } from "react";
 import {
     ConfirmationModal,
     ResourceList,

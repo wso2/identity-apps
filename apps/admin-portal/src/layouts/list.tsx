@@ -125,7 +125,6 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                                     </>
                                                 )
                                             }
-                                            { leftActionPanel }
                                         </div>
                                         <div className="left-aligned-actions">
                                             { leftActionPanel }
