@@ -55,8 +55,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
     const [ urlSchema, setUrlSchema ] = useState<ProfileSchema>();
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<BasicProfileInterface>(undefined);
-    const profileDetails: AuthStateInterface = useSelector((state: AppState) =>
-        state.authenticationInformation);
+    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
 
     /**
      * The following function maps profile details to the SCIM schemas.
