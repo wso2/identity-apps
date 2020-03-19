@@ -145,7 +145,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                 )
             }
             <div className="list-container">
-                {children}
+                { children }
                 {
                     (showPagination && totalListSize)
                         ? (
