@@ -13,7 +13,7 @@
     "scripts": {
         "prebuild": "npm run clean",
         "build": "npm run compile",
-        "clean": "rimraf ./lib",
+        "clean": "rimraf ./dist",
         "compile": "node scripts/build.js",
         "watch": "watch \"npm run build\" src"
     },
