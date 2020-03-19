@@ -197,4 +197,5 @@ const createSemanticUICore = () => {
 };
 
 // Start the build with creating the src/semantic-ui-core folder dynamically
+fs.removeSync(distDir); 
 createSemanticUICore();
