@@ -23,5 +23,6 @@ export const sortList = <T extends unknown>(list: T[], sortBy: string, isAscendi
             ? a[sortBy]?.localeCompare(b[sortBy])
             : b[sortBy]?.localeCompare(a[sortBy])
     });
+
     return sortedList;
 };
