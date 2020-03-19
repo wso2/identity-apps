@@ -133,8 +133,8 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                     </Grid.Column>
                                     <Grid.Column width={ 8 }>
                                         <div className="actions right-aligned">
-                                            {advancedSearch}
-                                            {rightActionPanel}
+                                            { advancedSearch }
+                                            { rightActionPanel }
                                         </div>
                                     </Grid.Column>
                                 </Grid.Row>
