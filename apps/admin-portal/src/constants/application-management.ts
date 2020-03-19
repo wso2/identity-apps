@@ -39,4 +39,14 @@ export class ApplicationManagementConstants {
         "status code while updating the auth protocol config.";
     public static readonly AUTH_PROTOCOL_CONFIG_UPDATE_ERROR: string = "An error occurred while updating the auth" +
         "protocol config.";
+    public static readonly ADAPTIVE_AUTH_TEMPLATES_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while fetching adaptive authentication templates.";
+    public static readonly ADAPTIVE_AUTH_TEMPLATES_FETCH_ERROR: string = "An error occurred while fetching the " +
+        "metadata related to the required auth protocol.";
+
+    public static readonly DEFAULT_ADAPTIVE_AUTH_SCRIPT: string[] = [
+        "var onLoginRequest = function(context) {",
+        "};",
+        ""
+    ]
 }

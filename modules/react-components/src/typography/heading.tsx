@@ -29,6 +29,10 @@ interface HeadingPropsInterface extends HeaderProps {
      */
     disabled?: boolean;
     /**
+     * Determines if the font weight should be bold.
+     */
+    bold?: boolean;
+    /**
      * Adds intentional omission to the header when a width is defined.
      */
     ellipsis?: boolean;
@@ -53,6 +57,7 @@ export const Heading: React.FunctionComponent<HeadingPropsInterface> = (
 ): JSX.Element => {
 
     const {
+        bold,
         ellipsis,
         className,
         compact,
@@ -64,6 +69,7 @@ export const Heading: React.FunctionComponent<HeadingPropsInterface> = (
     const classes = classNames(
         "heading",
         {
+            bold,
             ellipsis,
             disabled,
             [ "subheading" ]: subHeading,

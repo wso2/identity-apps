@@ -22,6 +22,7 @@ export * from "./avatar";
 export * from "./brand";
 export * from "./button";
 export * from "./card";
+export * from "./code-editor";
 export * from "./danger-zone";
 export * from "./error";
 export * from "./footer";

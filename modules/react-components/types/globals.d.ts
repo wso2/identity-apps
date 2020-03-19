@@ -16,4 +16,11 @@
  * under the License.
  */
 
-export * from "./sign-on-methods";
+export {};
+
+declare global {
+    interface Window {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        JSHINT: any;
+    }
+}

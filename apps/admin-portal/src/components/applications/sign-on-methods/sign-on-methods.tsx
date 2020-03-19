@@ -16,9 +16,20 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement } from "react";
-import { AuthenticationFlow } from "./authentication-flow";
-import { AuthenticationSequenceInterface } from "../../../models";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { StepBasedFlow } from "./step-based-flow";
+import {
+    AdaptiveAuthTemplateInterface,
+    AuthenticationSequenceInterface,
+    AuthenticationStepInterface
+} from "../../../models";
+import { ScriptBasedFlow } from "./script-based-flow";
+import { Divider } from "semantic-ui-react";
+import { updateAuthenticationSequence } from "../../../api";
+import { useDispatch } from "react-redux";
+import { addAlert } from "@wso2is/core/store";
+import { AlertLevels } from "@wso2is/core/models";
+import { PrimaryButton } from "@wso2is/react-components";
 
 /**
  * Proptypes for the sign on methods component.
@@ -59,14 +70,142 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         onUpdate
     } = props;
 
+    const dispatch = useDispatch();
+
+    const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(authenticationSequence);
+    const [ updateTrigger, setUpdateTrigger ] = useState<boolean>(false);
+    const [ adaptiveScript, setAdaptiveScript ] = useState<string | string[]>(undefined);
+
+    /**
+     * Toggles the update trigger.
+     */
+    useEffect(() => {
+        if (!updateTrigger) {
+            return;
+        }
+
+        setUpdateTrigger(false);
+    }, [ updateTrigger ]);
+
+    /**
+     * Handles the data loading from a adaptive auth template when it is selected
+     * from the panel.
+     *
+     * @param {AdaptiveAuthTemplateInterface} template - Adaptive authentication templates.
+     */
+    const handleLoadingDataFromTemplate = (template: AdaptiveAuthTemplateInterface) => {
+        if (!template) {
+            return;
+        }
+
+        let newSequence = { ...sequence };
+
+        if (template.code) {
+            newSequence = {
+                ...newSequence,
+                script: JSON.stringify(template.code)
+            }
+        }
+
+        if (template.defaultAuthenticators) {
+            const steps: AuthenticationStepInterface[] = [];
+
+            for (const [ key, value ] of Object.entries(template.defaultAuthenticators)) {
+                steps.push({
+                    id: parseInt(key, 10),
+                    options: value.local.map((authenticator) => {
+                        return {
+                            idp: "LOCAL",
+                            authenticator
+                        }
+                    })
+                })
+            }
+
+            newSequence = {
+                ...newSequence,
+                subjectStepId: 1,
+                attributeStepId: 1,
+                steps
+            }
+        }
+
+        setSequence(newSequence);
+    };
+
+    /**
+     * Handles authentication sequence update.
+     */
+    const handleSequenceUpdate = (sequence: AuthenticationSequenceInterface) => {
+        const requestBody = {
+            authenticationSequence: {
+                ...sequence,
+                script: JSON.stringify(adaptiveScript)
+            }
+        };
+
+        updateAuthenticationSequence(appId, requestBody)
+            .then(() => {
+                dispatch(addAlert({
+                    description: "Successfully updated the application",
+                    level: AlertLevels.SUCCESS,
+                    message: "Update successful"
+                }));
+
+                onUpdate(appId);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Update Error"
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: "An error occurred while updating authentication steps of the application",
+                    level: AlertLevels.ERROR,
+                    message: "Update Error"
+                }));
+            });
+    };
+
+    /**
+     * Handles adaptive script change event.
+     *
+     * @param {string | string[]} script - Adaptive script from the editor.
+     */
+    const handleAdaptiveScriptChange = (script: string | string[]) => {
+        setAdaptiveScript(script);
+    };
+
+    /**
+     * Handles the update button click event.
+     */
+    const handleUpdateClick = () => {
+        setUpdateTrigger(true);
+    };
+
     return (
         <div className="sign-on-methods-tab-content">
-            <AuthenticationFlow
-                appId={ appId }
-                authenticationSequence={ authenticationSequence }
+            <StepBasedFlow
+                authenticationSequence={ sequence }
                 isLoading={ isLoading }
-                onUpdate={ onUpdate }
+                onUpdate={ handleSequenceUpdate }
+                triggerUpdate={ updateTrigger }
             />
+            <Divider hidden />
+            <ScriptBasedFlow
+                authenticationSequence={ sequence }
+                isLoading={ isLoading }
+                onTemplateSelect={ handleLoadingDataFromTemplate }
+                onScriptChange={ handleAdaptiveScriptChange }
+            />
+            <Divider hidden/>
+            <PrimaryButton onClick={ handleUpdateClick }>Update</PrimaryButton>
         </div>
     );
 };

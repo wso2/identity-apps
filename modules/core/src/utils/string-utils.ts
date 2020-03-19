@@ -77,4 +77,21 @@ export class StringUtils {
 
         return newStr;
     }
+
+    /**
+     * Checks if a string is a valid JSON string.
+     * Useful when trying to parse JSON to avoid errors.
+     *
+     * @param {string} str - Evaluating string
+     * @return {boolean} If valid or not.
+     */
+    public static isValidJSONString(str: string): boolean {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+
+        return true;
+    }
 }
