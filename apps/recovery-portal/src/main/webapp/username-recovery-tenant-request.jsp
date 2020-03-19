@@ -30,136 +30,121 @@
 
 <html>
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- title -->
+    <!-- header -->
     <%
-        File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
-        if (titleFile.exists()) {
+        File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
+        if (headerFile.exists()) {
     %>
-            <jsp:include page="extensions/title.jsp"/>
-    <% } else { %>
-            <jsp:directive.include file="includes/title.jsp"/>
-    <% } %>
-    
-    <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
-    <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/Roboto.css" rel="stylesheet">
-    <link href="css/custom-common.css" rel="stylesheet">
-    
-    <!--[if lt IE 9]>
-    <script src="js/html5shiv.min.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
-</head>
-
-<body>
-
-<!-- header -->
-<%
-    File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-    if (headerFile.exists()) {
-%>
         <jsp:include page="extensions/header.jsp"/>
-<% } else { %>
+    <% } else { %>
         <jsp:directive.include file="includes/header.jsp"/>
-<% } %>
-
+    <% } %>
+</head>
+<body>
 <!-- page content -->
-<div class="container-fluid body-wrapper">
-    
-    <div class="row">
+<main class="center-segment">  
+    <div class="ui container large center aligned middle aligned">
+        <!-- product-title -->
+        <%
+            File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+            if (productTitleFile.exists()) {
+        %>
+        <jsp:include page="extensions/product-title.jsp"/>
+        <% } else { %>
+        <jsp:directive.include file="includes/product-title.jsp"/>
+        <% } %>
         <!-- content -->
-        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 col-centered wr-login">
+        <div class="ui segment">
             <h2 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none">
                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Start.username.recovery")%>
             </h2>
-            
-            <div class="clearfix"></div>
-            <div class="boarder-all ">
-                <div class="alert alert-danger margin-left-double margin-right-double margin-top-double"
-                     id="error-msg" hidden="hidden">
+            <% if (error) { %>
+                <div class="ui visible negative message" id="server-error-msg">
+                    <%= IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg) %>
                 </div>
-                <% if (error) { %>
-                <div class="alert alert-danger margin-left-double margin-right-double margin-top-double"
-                     id="server-error-msg">
-                    <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
-                </div>
-                <% } %>
-                
-                <div class="padding-double">
-                    <form action="recoverusername.do" method="post" id="tenantBasedRecovery">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group required">
-                            <div class="margin-bottom-double">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.tenant.here")%>
-                            </div>
-                            
-                            <input id="tenant-domain" type="text" name="tenantDomain"
-                                   class="form-control ">
-                            
-                            <%
-                                String callback = Encode.forHtmlAttribute
-                                        (request.getParameter("callback"));
-                                if (callback != null) {
-                            %>
-                            <div>
-                                <input type="hidden" name="callback" value="<%=callback %>"/>
-                            </div>
-                            <%
-                                }
-                            %>
+            <% } %>
+            <div class="ui negative message" id="error-msg" hidden="hidden"></div>
+
+            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.tenant.here")%>
+
+            <div class="ui divider hidden"></div>
+
+            <div class="segment-form">
+                <form class="ui large form" method="post" action="recoverusername.do" id="tenantBasedRecovery">
+                    <input id="tenant-domain" type="text" name="tenantDomain"
+                                class="form-control ">
+                        
+                        <%
+                            String callback = Encode.forHtmlAttribute
+                                    (request.getParameter("callback"));
+                            if (callback != null) {
+                        %>
+                        <div>
+                            <input type="hidden" name="callback" value="<%=callback %>"/>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group username-proceed">
-                            <button id="recoverSubmit"
-                                    class="wr-btn grey-bg uppercase font-large full-width-xs"
-                                    type="submit">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Proceed.username.recovery")%>
-                            </button>
-                            <a href="<%=Encode.forHtmlAttribute(IdentityManagementEndpointUtil.getUserPortalUrl(
-                                    application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL)))%>"
-                               class="light-btn uppercase font-large full-width-xs">
+                        <%
+                            }
+                        %>
+                        <div class="ui divider hidden"></div>
+
+                        <div class="align-right buttons">
+                            <a href="javascript:goBack()" class="ui button link-button">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                             </a>
+                            <button id="recoverSubmit"
+                                    class="ui primary large button"
+                                    type="submit">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                "Proceed.username.recovery")%>
+                            </button>
                         </div>
-                        <div class="clearfix"></div>
-                    </form>
-                </div>
-            </div>
+                </form>
+            </div>    
         </div>
     </div>
-</div>
+</main>
 
 
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
+    <!-- product-footer -->
+    <%
+        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+        if (productFooterFile.exists()) {
+    %>
+        <jsp:include page="extensions/product-footer.jsp"/>
+    <% } else { %>
+        <jsp:directive.include file="includes/product-footer.jsp"/>
+    <% } %>
+
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
         <jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
+    <% } else { %>
         <jsp:directive.include file="includes/footer.jsp"/>
-<% } %>
+    <% } %>
 
-<script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/bootstrap_3.4.1/js/bootstrap.min.js"></script>
-<script type="text/javascript">
+    <script type="text/javascript">
+        function goBack() {
+            window.history.back();
+        }
 
-    $(document).ready(function () {
-        $("#tenantBasedRecovery").submit(function (e) {
-            var errorMessage = $("#error-msg");
-            errorMessage.hide();
-            var tenantDomain = $("#tenant-domain").val();
+        $(document).ready(function () {
+            $("#tenantBasedRecovery").submit(function (e) {
+                var errorMessage = $("#error-msg");
+                errorMessage.hide();
+                var tenantDomain = $("#tenant-domain").val();
 
-            if (tenantDomain == '') {
-                errorMessage.text("Please enter your tenant domain.");
-                errorMessage.show();
-                $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
-                return false;
-            }
-            return true;
+                if (tenantDomain == '') {
+                    errorMessage.text("Please enter your tenant domain.");
+                    errorMessage.show();
+                    $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+                    return false;
+                }
+                return true;
+            });
         });
-    });
-</script>
+    </script>
 </body>
 </html>
