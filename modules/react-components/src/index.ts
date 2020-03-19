@@ -42,3 +42,4 @@ export * from "./side-panel";
 export * from "./step";
 export * from "./tab";
 export * from "./typography";
+export * from "./tree-view";
