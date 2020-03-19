@@ -273,15 +273,13 @@
                         <div class="ui divider hidden"></div>
 
                         <div class="align-right buttons">
-                            <button id="recoveryCancel"
-                                class="ui large button link-button"
-                                type="button"
-                                onclick="location.href='<%=Encode.forJavaScript(IdentityManagementEndpointUtil.getURLEncodedCallback(callback))%>';">
+                            <a href="javascript:goBack()" class="ui button link-button">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
-                            </button>
+                            </a>
                             <button id="recoverySubmit"
                                     class="ui primary large button"
-                                    type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
+                                    type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                    "Submit")%>
                             </button>
                         </div>
                     </form>
@@ -311,6 +309,9 @@
     <% } %>
 
     <script type="text/javascript">
+        function goBack() {
+            window.history.back();
+        }
 
         $(document).ready(function () {
 

@@ -51,7 +51,7 @@
         var userName = document.getElementById("username");
         var usernameUserInput = document.getElementById("usernameUserInput");
 
-        if (getParameterByName("isSaaSApp") === "false") {
+        if (!getParameterByName("isSaaSApp") && tenantName) {
             
             if ((!isEmailUsernameEnabled) && (usernameUserInputValue.split("@").length > 1)) {
                 userName.value = usernameUserInputValue;

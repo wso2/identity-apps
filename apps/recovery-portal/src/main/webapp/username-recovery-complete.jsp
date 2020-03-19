@@ -83,12 +83,13 @@
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {
     %>
-    <jsp:include page="extensions/footer.jsp"/>
+        <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:directive.include file="includes/footer.jsp"/>
     <% } %>
 
     <script type="application/javascript">
+        
         $(document).ready(function () {
             $(".notify").modal({
                 blurring: true,
@@ -96,9 +97,11 @@
                 onHide: function () {
                     <%
                     try {
+                        if (callback == null) {
                     %>
                     location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>";
                     <%
+                    }
                     } catch (URISyntaxException e) {
                         request.setAttribute("error", true);
                         request.setAttribute("errorMsg", "Invalid callback URL found in the request.");

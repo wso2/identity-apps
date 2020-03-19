@@ -201,12 +201,12 @@
                         var usernameUserInput = document.getElementById("usernameUserInput");
                         var usernameUserInputValue = usernameUserInput.value.trim();
 
-                        if (!isSaaSApp) {
+                        if ((tenantDomain !== "null") && !isSaaSApp) {
                             if (!isEmailUsernameEnabled && (usernameUserInputValue.split("@").length >= 2)) {
                                 var errorMessage = document.getElementById("error-msg");
 
                                 errorMessage.innerHTML = 
-                                    "Invalid Username. Username should't have '@' or any other special characters.";
+                                    "Invalid Username. Username shouldn't have '@' or any other special characters.";
                                 errorMessage.hidden = false;
 
                                 return;
