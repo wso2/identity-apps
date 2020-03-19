@@ -187,7 +187,7 @@ const createSemanticUICore = () => {
             silent: true,
         });
 
-        console.log("semantic-ui-less/definitions changes updated.");
+        console.log("semantic-ui-core/definitions changes updated.");
 
         generateThemes();
 
