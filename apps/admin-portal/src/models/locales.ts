@@ -392,8 +392,16 @@ export interface Views {
             };
         };
         roles: {
+            edit: {
+                basics: {
+                    fields: {
+                        roleName: string;
+                    };
+                };
+            };
             notifications: {
                 deleteRole: Notification;
+                updateRole: Notification;
                 createRole: Notification;
                 createPermission: Notification;
             };

@@ -622,6 +622,13 @@ export const views: Views = {
             }
         },
         roles: {
+            edit: {
+                basics: {
+                    fields: {
+                        roleName: "Role Name"
+                    }
+                }
+            },
             notifications: {
                 deleteRole: {
                     error: {
@@ -635,6 +642,20 @@ export const views: Views = {
                     success: {
                         description: "The selected role was deleted successfully.",
                         message: "Role deleted successfully"
+                    }
+                },
+                updateRole: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error updating the selected role."
+                    },
+                    genericError: {
+                        description: "Couldn't update the selected role.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The selected role was updated successfully.",
+                        message: "Role updated successfully"
                     }
                 },
                 createRole: {

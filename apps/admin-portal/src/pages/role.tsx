@@ -22,10 +22,10 @@ import { ListLayout, PageLayout } from "../layouts";
 import React, { ReactElement, useEffect, useState } from "react";
 import { deleteSelectedRole, getGroupsList, searchRoleList } from "../api";
 
-import { CreateRoleWizard } from "../components/users/role-wizard";
+import { CreateRoleWizard } from "../components/roles/create-role-wizard";
 import { DEFAULT_ROLE_LIST_ITEM_LIMIT } from "../constants";
 import { PrimaryButton } from "@wso2is/react-components";
-import { RoleList, RoleSearch } from "../components/users";
+import { RoleList, RoleSearch } from "../components/roles";
 import { addAlert } from "../store/actions";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -35,7 +35,7 @@ import { useTranslation } from "react-i18next";
  * 
  * @return {ReactElement}
  */
-export const UserRoles = (): ReactElement => {
+export const RolesPage = (): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
@@ -117,25 +117,6 @@ export const UserRoles = (): ReactElement => {
             });
             setListUpdated(true);
         });
-    };
-
-    /**
-     * The following method accepts a Map and returns the values as a string.
-     *
-     * @param attributeMap - IterableIterator<string>
-     * @return string
-     */
-    const generateAttributesString = (attributeMap: IterableIterator<string>) => {
-        const attArray = [];
-        const iterator1 = attributeMap[Symbol.iterator]();
-
-        for (const attribute of iterator1) {
-            if (attribute !== "") {
-                attArray.push(attribute);
-            }
-        }
-
-        return attArray.toString();
     };
 
     /**

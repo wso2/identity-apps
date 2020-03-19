@@ -175,7 +175,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
         if (isCheckable(node, depth)) {
             return (
-                <label htmlFor={node.name} className="tree-label">
+                <label htmlFor={ node.name } className="tree-label">
                     <input
                         type="checkbox"
                         name={ node[keywordLabel] }
@@ -233,7 +233,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         if (isExpandable(node, depth)) {
             return (
                 <div 
-                    className="wrap"
+                    className="tree-arrow-wrap"
                     onClick={ () => {
                         handleExpandToggle(node);
                     } }
@@ -246,7 +246,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
             );
         } else {
             return (
-                <div className="wrap">
+                <div className="tree-arrow-wrap">
                     <span className="tree-arrow">
                         <span></span>
                         <span></span>

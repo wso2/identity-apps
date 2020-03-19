@@ -102,88 +102,16 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     }, [ partiallyCompletedStep ]);
 
     /**
-     * Method to handle the create role wizard finish action.
-     * 
-     */
-    const handleRoleWizardFinish = () => {
-        addRole(wizardState)
-    };
-
-    /**
-     * Generates a summary of the wizard.
-     *
-     * @return {any}
-     */
-    const generateWizardSummary = () => {
-        if (!wizardState) {
-            return;
-        }
-
-        return wizardState;
-    };
-
-    // Create role wizard steps
-    const WIZARD_STEPS = [{
-        content: (
-            <RoleBasics
-                triggerSubmit={ submitGeneralSettings }
-                onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
-            />
-        ),
-        icon: ApplicationWizardStepIcons.general,
-        title: "Basic Details"
-    },{
-        content: (
-            <PermissionList
-                triggerSubmit={ submitPermissionList }
-                onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.PERM_LIST) }
-            />
-        ),
-        icon: ApplicationWizardStepIcons.protocolConfig,
-        title: "Permission Selection"
-    },{
-        content: (
-            <AddRoleUsers
-                triggerSubmit={ submitRoleUserList }
-                onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.USER_LIST) }
-            />
-        ),
-        icon: ApplicationWizardStepIcons.protocolSelection,
-        title: "Assign user roles"
-    },{
-        content: (
-            <CreateRoleSummary
-                triggerSubmit={ finishSubmit }
-                onSubmit={ handleRoleWizardFinish }
-                summary={ generateWizardSummary() }
-            />
-        ),
-        icon: ApplicationWizardStepIcons.summary,
-        title: "Summary"
-    }]
-    
-    /**
-     * Handles wizard step submit.
-     *
-     * @param values - Forms values to be stored in state.
-     * @param {WizardStepsFormTypes} formType - Type of the form.
-     */
-    const handleWizardSubmit = (values: any, formType: WizardStepsFormTypes) => {
-        setCurrentWizardStep(currentStep + 1);
-        setWizardState(_.merge(wizardState, { [ formType ]: values }));
-    };
-
-    /**
      * Method to handle create role action when create role wizard finish action is triggered.
      * 
      * @param basicData - basic data required to create role.
      * @param permissions - permissions selected for the created role.
      */
     const addRole = (basicData: any): void => {
-        let members: CreateRoleMemberInterface[] = [];
-
-        if (basicData.RoleUserList.length > 0) {
-            basicData.RoleUserList.forEach(user => {
+        const members: CreateRoleMemberInterface[] = [];
+        const users = basicData.RoleUserList.users
+        if (users.length > 0) {
+            users.forEach(user => {
                 members.push({
                     value: user.id,
                     display: user.userName
@@ -205,7 +133,6 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
          *        to add the selected permissions to the created role.
          */
         createRole(roleData).then(response => {
-
             if (response.status === 201) {
                 const createdRoleId = response.data.id;
                 const permData: string[] = [];
@@ -216,7 +143,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                     })
                 }
 
-                updatePermissionForRole(createdRoleId, permData).then(response => {
+                updatePermissionForRole(createdRoleId, permData).then(() => {
                     dispatch(addAlert({
                         description: t(
                             "views:components.roles.notifications.createRole.success.description"
@@ -298,6 +225,78 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             }
         });
     }
+
+    /**
+     * Method to handle the create role wizard finish action.
+     * 
+     */
+    const handleRoleWizardFinish = () => {
+        addRole(wizardState)
+    };
+
+    /**
+     * Generates a summary of the wizard.
+     *
+     * @return {any}
+     */
+    const generateWizardSummary = () => {
+        if (!wizardState) {
+            return;
+        }
+
+        return wizardState;
+    };
+
+    /**
+     * Handles wizard step submit.
+     *
+     * @param values - Forms values to be stored in state.
+     * @param {WizardStepsFormTypes} formType - Type of the form.
+     */
+    const handleWizardSubmit = (values: any, formType: WizardStepsFormTypes) => {
+        setCurrentWizardStep(currentStep + 1);
+        setWizardState(_.merge(wizardState, { [ formType ]: values }));
+    };
+
+    // Create role wizard steps
+    const WIZARD_STEPS = [{
+        content: (
+            <RoleBasics
+                triggerSubmit={ submitGeneralSettings }
+                onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
+            />
+        ),
+        icon: ApplicationWizardStepIcons.general,
+        title: "Basic Details"
+    },{
+        content: (
+            <PermissionList
+                triggerSubmit={ submitPermissionList }
+                onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.PERM_LIST) }
+            />
+        ),
+        icon: ApplicationWizardStepIcons.protocolConfig,
+        title: "Permission Selection"
+    },{
+        content: (
+            <AddRoleUsers
+                triggerSubmit={ submitRoleUserList }
+                onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.USER_LIST) }
+            />
+        ),
+        icon: ApplicationWizardStepIcons.protocolSelection,
+        title: "Assign user roles"
+    },{
+        content: (
+            <CreateRoleSummary
+                triggerSubmit={ finishSubmit }
+                onSubmit={ handleRoleWizardFinish }
+                summary={ generateWizardSummary() }
+            />
+        ),
+        icon: ApplicationWizardStepIcons.summary,
+        title: "Summary"
+    }]
 
     /**
      * Function to change the current wizard step to next.

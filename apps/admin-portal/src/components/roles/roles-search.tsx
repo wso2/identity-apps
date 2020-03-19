@@ -20,7 +20,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Field, Forms } from "@wso2is/forms";
 import { Form, Grid } from "semantic-ui-react";
 import { AdvancedSearch } from "@wso2is/react-components";
-import { buildSearchQuery } from "../../../utils";
+import { buildSearchQuery } from "../../utils";
 import { useTranslation } from "react-i18next";
 
 /**

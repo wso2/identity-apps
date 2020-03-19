@@ -26,6 +26,11 @@ interface AddUserWizardSummaryProps {
     onSubmit: (application: any) => void;
 }
 
+/**
+ * Component to create a summary of the role which will be created.
+ * 
+ * @param props props containing summary data for the view.
+ */
 export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
     props: AddUserWizardSummaryProps
 ): ReactElement => {
@@ -73,7 +78,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                                     {
                                         summary.PermissionList
                                             .map((perm, index) => (
-                                                <Label key={ index } basic circular>{ perm.name }</Label>
+                                                <Label key={ index } basic circular>{ perm.label }</Label>
                                             ))
                                     }
                                 </Label.Group>
@@ -83,9 +88,9 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                     : null
             }
             {
-                summary?.RoleUserList &&
-                summary.RoleUserList instanceof Array &&
-                summary.RoleUserList.length > 0
+                summary?.RoleUserList && summary.RoleUserList.users && 
+                summary.RoleUserList.users instanceof Array &&
+                summary.RoleUserList.users.length > 0
                     ? (
                         <Grid.Row className="summary-field" columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
@@ -94,7 +99,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                                 <Label.Group>
                                     {
-                                        summary.RoleUserList
+                                        summary.RoleUserList.users
                                             .map((user, index) => (
                                                 <div key={ index } className="role-summary-user">
                                                     <UserAvatar

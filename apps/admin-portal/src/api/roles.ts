@@ -55,6 +55,52 @@ export const getGroupsList = (domain: string): Promise<any> => {
 };
 
 /**
+ * Retrive Role details for a give role id.
+ * 
+ * @param roleId role id to retrive role details
+ */
+export const getRoleById = (roleId: string): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: ServiceResourcesEndpoint.groups + "/" + roleId
+    };
+
+    return httpClient.request(requestConfig).then((response) => {
+        return Promise.resolve(response);
+    }).catch((error) => {
+        return Promise.reject(error);
+    });
+}
+
+/**
+ * Update Data of the matched ID or the role
+ * 
+ * @param roleId role id to update role details
+ * @param roleData Data that needs to be updated.
+ */
+export const updateRoleDetails = (roleId: string, roleData: any): Promise<any> => {
+    const requestConfig = {
+        data: roleData,
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: ServiceResourcesEndpoint.groups + "/" + roleId
+    };
+
+    return httpClient.request(requestConfig).then((response) => {
+        return Promise.resolve(response);
+    }).catch((error) => {
+        return Promise.reject(error);
+    });
+}
+
+/**
  * Retrieve a list of matched roles according to the search query.
  * 
  * @param searchData - search query data
@@ -163,6 +209,28 @@ export const getPermissionList = (): Promise<any> => {
         url: ServiceResourcesEndpoint.permission
     };
 
+    return httpClient.request(requestConfig).then((response) => {
+        return Promise.resolve(response);
+    }).catch((error) => {
+        return Promise.reject(error);
+    });
+}
+
+/**
+ * Retrieve the list of permissions available for a given Role Id.
+ * 
+ * @param roleId Role Id to retrieve relevent permissions
+ */
+export const getPermissionsPerRole = (roleId: string): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: ServiceResourcesEndpoint.groups + "/" + roleId + "/permissions"
+    };
+    
     return httpClient.request(requestConfig).then((response) => {
         return Promise.resolve(response);
     }).catch((error) => {

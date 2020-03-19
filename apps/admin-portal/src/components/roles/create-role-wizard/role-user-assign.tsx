@@ -15,9 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-/* eslint-disable */
-//TODO Temporary disable of lint due to merge conflicts
-
 import React, { ReactElement, useState, FunctionComponent, useEffect } from "react";
 import { Grid, Input, Icon, Segment, List, Label, Message } from "semantic-ui-react";
 import { Forms } from "@wso2is/forms";
@@ -30,12 +27,12 @@ import { UserAvatar } from "@wso2is/react-components";
 /**
  * Proptypes for the application consents list component.
  */
-interface AddUserRoleProps {
-    triggerSubmit: boolean;
-    onSubmit: (values: any) => void;
+interface AddRoleUserProps {
+    triggerSubmit?: boolean;
+    onSubmit?: (values: any) => void;
 }
 
-export const AddRoleUsers: FunctionComponent<AddUserRoleProps> = (props: AddUserRoleProps): ReactElement => {
+export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRoleUserProps): ReactElement => {
     const {
         triggerSubmit,
         onSubmit
@@ -54,15 +51,6 @@ export const AddRoleUsers: FunctionComponent<AddUserRoleProps> = (props: AddUser
                 setUsersList(response.Resources);
             });
     };
-
-    //Submits the form programmatically if triggered from outside.
-    useEffect(() => {
-        if (!triggerSubmit) {
-            return;
-        }
-
-        onSubmit(tempUserList);
-    }, [ triggerSubmit ]);
 
     useEffect(() => {
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
@@ -88,7 +76,7 @@ export const AddRoleUsers: FunctionComponent<AddUserRoleProps> = (props: AddUser
         const attArray = [];
         const iterator1 = attributeMap[Symbol.iterator]();
 
-        for (let attribute of iterator1) {
+        for (const attribute of iterator1) {
             if (attribute !== "") {
                 attArray.push(attribute);
             }
@@ -105,7 +93,7 @@ export const AddRoleUsers: FunctionComponent<AddUserRoleProps> = (props: AddUser
     }, [ listOffset, listItemLimit ]);
 
     const handleRemoveRoleItem = (role: any) => {
-        let userRolesCopy = [ ...tempUserList ];
+        const userRolesCopy = [ ...tempUserList ];
         userRolesCopy.splice(tempUserList.indexOf(role), 1);
         setTempUserList(userRolesCopy);
     };
@@ -121,7 +109,7 @@ export const AddRoleUsers: FunctionComponent<AddUserRoleProps> = (props: AddUser
 
     const handleSearchFieldChange = (e, { value }) => {
         let isMatch = false;
-        let filteredRoleList: UserBasicInterface[] = [];
+        const filteredRoleList: UserBasicInterface[] = [];
 
         if (!_.isEmpty(value)) {
             const re = new RegExp(_.escapeRegExp(value), 'i');
@@ -166,20 +154,20 @@ export const AddRoleUsers: FunctionComponent<AddUserRoleProps> = (props: AddUser
                                    <List className={ "user-role-list" }>
                                        { usersList && usersList.map((user, index): ReactElement =>{
                                              return (
-                                                 <List.Item
-                                                     key={ index }
-                                                     className={ "user-role-list-item" }
-                                                     onClick={ () => addRole(user) }
-                                                 >
+                                                <List.Item
+                                                    key={ index }
+                                                    className={ "user-role-list-item" }
+                                                    onClick={ () => addRole(user) }
+                                                >
                                                     <UserAvatar
                                                         name={ user.userName }
                                                         size="mini"
                                                         floated="left"
                                                         image={ user.profileUrl }
                                                     />
-                                                     { user.userName }
-                                                     <Icon name="add" />
-                                                 </List.Item>
+                                                    { user.userName }
+                                                    <Icon name="add" />
+                                                </List.Item>
                                              )
                                          })
                                        }
@@ -196,7 +184,7 @@ export const AddRoleUsers: FunctionComponent<AddUserRoleProps> = (props: AddUser
                         </Grid.Row>
                         <Grid.Row>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Segment className={ "user-assigned-roles-segment"}>
+                                <Segment className={ "user-assigned-roles-segment" }>
                                     {
                                         tempUserList && tempUserList.map((user, index): ReactElement => {
                                             return (
@@ -210,7 +198,7 @@ export const AddRoleUsers: FunctionComponent<AddUserRoleProps> = (props: AddUser
                                                     { user.userName }
                                                     <Icon
                                                         name="delete"
-                                                        onClick={() => handleRemoveRoleItem(user)}
+                                                        onClick={ () => handleRemoveRoleItem(user) }
                                                     />
                                                 </Label>
                                             );

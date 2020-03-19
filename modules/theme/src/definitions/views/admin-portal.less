@@ -319,6 +319,149 @@ TODO : Revist the styling in the component
             }
         }
     }
+
+    .tree-arrow {
+        cursor: pointer;
+        display: inline-block;
+        height: 18px;
+        position: relative;
+        top: 4px;
+        width: 18px;
+    
+        span {
+            -webkit-transition: all 0.2s ease;
+            background-color: #bfbfbf;
+            display: inline-block;
+            height: 0.1rem;
+            position: absolute;
+            top: 0.5rem;
+            transition: all 0.2s ease;
+            width: 0.75rem;
+    
+            &:first-of-type {
+                -webkit-transform: rotate(45deg);
+                left: 0;
+                transform: rotate(45deg);
+            }
+    
+            &:last-of-type {
+                -webkit-transform: rotate(-45deg);
+                right: 0;
+                transform: rotate(-45deg);
+            }
+        }
+    }
+
+    .tree-arrow.active {
+        span {
+    
+            &:first-of-type {
+                -webkit-transform: rotate(-45deg);
+                transform: rotate(-45deg);
+            }
+    
+            &:last-of-type {
+                -webkit-transform: rotate(45deg);
+                transform: rotate(45deg);
+            }
+        }
+    }
+    
+    .tree-label {
+        cursor: pointer;
+        margin-bottom: 0;
+        user-select: none;
+    
+        input {
+            &:checked+.checkbox {
+                border-color: @checkboxfill;
+    
+                svg {
+                    path {
+                        fill: @checkboxfill;
+                    }
+    
+                    polyline {
+                        stroke-dashoffset: 0;
+                    }
+                }
+            }
+        }
+    
+        &:hover {
+            .checkbox {
+                svg {
+                    path {
+                        stroke-dashoffset: 0;
+                    }
+                }
+            }
+        }
+    
+        .checkbox {
+            border-radius: 3px;
+            border: 2px solid #C8CCD4;
+            float: left;
+            height: 17px;
+            margin-right: 5px;
+            position: relative;
+            top: 2px;
+            width: 17px;
+    
+            svg {
+                left: -2px;
+                position: absolute;
+                top: -2px;
+    
+                path {
+                    fill: none;
+                    stroke-dasharray: 71px;
+                    stroke-dashoffset: 71px;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+                    stroke-width: 2;
+                    stroke: @checkboxfill;
+                    transition: all 0.6s ease;
+                }
+    
+                polyline {
+                    fill: none;
+                    stroke-dasharray: 18px;
+                    stroke-dashoffset: 18px;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+                    stroke-width: 2;
+                    stroke: #ffffff;
+                    transition: all 0.3s ease;
+                }
+            }
+        }
+    }
+    
+    .tree-label > span {
+        pointer-events: none;
+        vertical-align: middle;
+    }
+    
+    .invisible {
+        height: 0;
+        opacity: 0;
+        position: absolute;
+        width: 0;
+        z-index: -1;
+    }
+
+    .no-child {
+        padding-left: 23px !important;
+    }
+
+    .tree-arrow-wrap {
+        cursor: pointer;
+        float: left;
+        margin-left: -3px;
+        margin-right: 5px;
+    }
+    
 }
 
 .empty-placeholder-center {
@@ -345,149 +488,6 @@ TODO : Revist the styling in the component
     -webkit-appearance: none;
     width: 2px;
     height: 1px;
-}
-
-.wrap {
-    cursor: pointer;
-    float: left;
-    margin-left: -3px;
-    margin-right: 5px;
-}
-
-.tree-arrow {
-    cursor: pointer;
-    display: inline-block;
-    height: 18px;
-    position: relative;
-    top: 4px;
-    width: 18px;
-
-    span {
-        -webkit-transition: all 0.2s ease;
-        background-color: #bfbfbf;
-        display: inline-block;
-        height: 0.1rem;
-        position: absolute;
-        top: 0.5rem;
-        transition: all 0.2s ease;
-        width: 0.75rem;
-
-        &:first-of-type {
-            -webkit-transform: rotate(45deg);
-            left: 0;
-            transform: rotate(45deg);
-        }
-
-        &:last-of-type {
-            -webkit-transform: rotate(-45deg);
-            right: 0;
-            transform: rotate(-45deg);
-        }
-    }
-}
-
-.tree-arrow.active {
-    span {
-
-        &:first-of-type {
-            -webkit-transform: rotate(-45deg);
-            transform: rotate(-45deg);
-        }
-
-        &:last-of-type {
-            -webkit-transform: rotate(45deg);
-            transform: rotate(45deg);
-        }
-    }
-}
-
-.no-child {
-    padding-left: 23px !important;
-}
-
-.tree-label {
-    cursor: pointer;
-    margin-bottom: 0;
-    user-select: none;
-
-    input {
-
-        &:checked+.checkbox {
-            border-color: @checkboxfill;
-
-            svg {
-                path {
-                    fill: @checkboxfill;
-                }
-
-                polyline {
-                    stroke-dashoffset: 0;
-                }
-            }
-        }
-    }
-
-    &:hover {
-        .checkbox {
-            svg {
-                path {
-                    stroke-dashoffset: 0;
-                }
-            }
-        }
-    }
-
-    .checkbox {
-        border-radius: 3px;
-        border: 2px solid #C8CCD4;
-        float: left;
-        height: 17px;
-        margin-right: 5px;
-        position: relative;
-        top: 2px;
-        width: 17px;
-
-        svg {
-            left: -2px;
-            position: absolute;
-            top: -2px;
-
-            path {
-                fill: none;
-                stroke-dasharray: 71px;
-                stroke-dashoffset: 71px;
-                stroke-linecap: round;
-                stroke-linejoin: round;
-                stroke-width: 2;
-                stroke: @checkboxfill;
-                transition: all 0.6s ease;
-            }
-
-            polyline {
-                fill: none;
-                stroke-dasharray: 18px;
-                stroke-dashoffset: 18px;
-                stroke-linecap: round;
-                stroke-linejoin: round;
-                stroke-width: 2;
-                stroke: #ffffff;
-                transition: all 0.3s ease;
-            }
-        }
-    }
-}
-
-.tree-label > span {
-	pointer-events: none;
-	vertical-align: middle;
-}
-
-.invisible {
-	height: 0;
-	opacity: 0;
-	position: absolute;
-	width: 0;
-	z-index: -1;
 }
 
 .loadUIOverrides();

@@ -59,7 +59,7 @@ export interface RoleListInterface {
  * Interface to store data for create role api.
  */
 export interface CreateRoleInterface {
-    schemas: string[];
+    schemas?: string[];
     displayName: string;
     members?: CreateRoleMemberInterface[];
 }
