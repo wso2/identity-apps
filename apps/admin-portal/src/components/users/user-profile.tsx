@@ -16,8 +16,9 @@
  * under the License
  */
 
+import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
-import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
+import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -25,7 +26,7 @@ import { useSelector } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { deleteUser, updateUserInfo } from "../../api";
 import { history } from "../../helpers";
-import { AlertInterface, AlertLevels, AuthStateInterface, BasicProfileInterface, ProfileSchema } from "../../models";
+import { AuthStateInterface, BasicProfileInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
 import { flattenSchemas } from "../../utils";
 import * as _ from "lodash";
@@ -49,10 +50,12 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
     const { onAlertFired, user, handleUserUpdate } = props;
     const { t } = useTranslation();
 
-    const [profileInfo, setProfileInfo] = useState(new Map<string, string>());
-    const [profileSchema, setProfileSchema] = useState<ProfileSchema[]>();
+    const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
+    const [ profileSchema, setProfileSchema ] = useState<ProfileSchema[]>();
+    const [ urlSchema, setUrlSchema ] = useState<ProfileSchema>();
+    const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ deletingUser, setDeletingUser ] = useState<BasicProfileInterface>(undefined);
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
-    const [urlSchema, setUrlSchema] = useState<ProfileSchema>();
 
     /**
      * The following function maps profile details to the SCIM schemas.
@@ -285,9 +288,37 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
                     actionTitle="Delete user"
                     header="Delete the user"
                     subheader="This action is irreversible. Please proceed with caution."
-                    onActionClick={ () => handleUserDelete(user.id) }
+                    onActionClick={ (): void => {
+                        setShowDeleteConfirmationModal(true);
+                        setDeletingUser(user);
+                    } }
                 />
             </DangerZoneGroup>
+            {
+                deletingUser && (
+                    <ConfirmationModal
+                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                        type="warning"
+                        open={ showDeleteConfirmationModal }
+                        assertion={ deletingUser.userName }
+                        assertionHint={ <p>Please type <strong>{ deletingUser.userName }</strong> to confirm.</p> }
+                        assertionType="input"
+                        primaryAction="Confirm"
+                        secondaryAction="Cancel"
+                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                        onPrimaryActionClick={ (): void => handleUserDelete(deletingUser.id) }
+                    >
+                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+                        <ConfirmationModal.Message attached warning>
+                            This action is irreversible and will permanently delete the user.
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                            If you delete this user, the user will not be able to login to the developer portal or any
+                            other application the user was subscribed before. Please proceed with caution.
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                )
+            }
         </>
     );
 };
