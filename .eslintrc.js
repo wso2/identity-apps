@@ -16,6 +16,8 @@ module.exports = {
     },
     rules: {
         "eol-last": "error",
+        "quotes": ["warn", "double"],
+        "max-len": ["warn", { "code": 120 }],
         "react/jsx-curly-spacing": [
             2,
             "always",
