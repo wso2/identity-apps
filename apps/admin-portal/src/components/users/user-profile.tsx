@@ -16,6 +16,7 @@
  * under the License
  */
 
+import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import { isEmpty } from "lodash";
@@ -26,8 +27,6 @@ import { Button, Divider, Grid } from "semantic-ui-react";
 import { deleteUser, updateUserInfo } from "../../api";
 import { history } from "../../helpers";
 import {
-    AlertInterface,
-    AlertLevels,
     AuthStateInterface,
     BasicProfileInterface,
     ProfileSchema,
@@ -57,12 +56,11 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchema[]>();
-    const profileDetails: AuthStateInterface = useSelector((state: AppState) =>
-        state.authenticationInformation);
     const [ urlSchema, setUrlSchema ] = useState<ProfileSchema>();
-
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<BasicProfileInterface>(undefined);
+    const profileDetails: AuthStateInterface = useSelector((state: AppState) =>
+        state.authenticationInformation);
 
     /**
      * The following function maps profile details to the SCIM schemas.
