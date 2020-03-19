@@ -93,7 +93,9 @@ typings/
 # project build folders & files
 .project
 .repository/
-modules/theme/lib/
+modules/theme/dist
+modules/theme/src/semantic-ui-core/default
+modules/theme/src/semantic-ui-core/definitions
 modules/http/dist
 modules/validation/dist
 modules/forms/dist
@@ -106,14 +108,12 @@ npm/
 apps/*/build/
 apps/user-portal/src/main/
 apps/admin-portal/src/main/
-apps/authenticationendpoint/src/main/
-apps/authenticationendpoint/src/libs/theme/
-apps/authentication-portal/src/main/webapp/libs/theme/
-apps/recovery-portal/src/main/webapp/libs/theme/
-apps/email-otp-authentication-portal/src/main/webapp/libs/theme/
-apps/sms-otp-authentication-portal/src/main/webapp/libs/theme/
-apps/totp-authentication-portal/src/main/webapp/libs/theme/
-apps/x509-certificate-authentication-portal/src/main/webapp/libs/theme/
+apps/authentication-portal/src/main/webapp/libs/themes
+apps/recovery-portal/src/main/webapp/libs/themes
+apps/email-otp-authentication-portal/src/main/webapp/libs/themes
+apps/sms-otp-authentication-portal/src/main/webapp/libs/themes
+apps/totp-authentication-portal/src/main/webapp/libs/themes
+apps/x509-certificate-authentication-portal/src/main/webapp/libs/themes
 
 .classpath
 .settings

@@ -213,7 +213,6 @@
  Application Attribute mapping variation
 -------------------------------------*/
 
-
 .ui.grid {
      &.claim-mapping {
          .row {

@@ -54,7 +54,8 @@ module.exports = (env) => {
      * Build configurations
      */
     const distFolder = path.resolve(__dirname, "build", basename);
-    const faviconImage = path.resolve(__dirname, "node_modules", "@wso2is/theme/lib/assets/images/favicon.ico");
+    const faviconImage = path.resolve(__dirname, "node_modules",
+        "@wso2is/theme/dist/lib/themes/default/assets/images/favicon.ico");
     const titleText = "WSO2 Identity Server";
     const copyrightText = `${titleText} \u00A9 ${ new Date().getFullYear() }`;
 
@@ -202,21 +203,10 @@ module.exports = (env) => {
             }),
             new CopyWebpackPlugin([
                 {
-                    context: path.join(__dirname, "node_modules", "@wso2is", "theme"),
+                    context: path.join(__dirname, "node_modules", "@wso2is", "theme", "dist"),
                     from: "lib",
-                    to: "libs/styles/css"
+                    to: "libs"
                 },
-                // TODO: Removed temporally. Currently we don't use it in runtime
-                // {
-                //     context: path.resolve(__dirname, 'node_modules', '@wso2is', 'theme'),
-                //     from: 'src',
-                //     to: 'libs/styles/less/theme-module'
-                // },
-                // {
-                //     context: path.resolve(__dirname, 'node_modules'),
-                //     from: 'semantic-ui-less',
-                //     to: 'libs/styles/less/semantic-ui-less'
-                // },
                 {
                     context: path.join(__dirname, "src"),
                     from: "public",

@@ -14,8 +14,9 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-@import "~semantic-ui-less/semantic.less";
-@import "../../definitions/all.less";
+@isSubTheme: false; // Keep it "false" for sub-themes.
+@theme: "default"; // Change it to your theme name. Folder name also has to be the same
+
+@import "../import"; // This will import the base theme.
