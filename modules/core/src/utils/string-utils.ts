@@ -83,7 +83,7 @@ export class StringUtils {
      * Useful when trying to parse JSON to avoid errors.
      *
      * @param {string} str - Evaluating string
-     * * @return {boolean} If valid or not.
+     * @return {boolean} If valid or not.
      */
     public static isValidJSONString(str: string): boolean {
         try {
