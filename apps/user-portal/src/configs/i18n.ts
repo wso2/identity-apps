@@ -20,6 +20,7 @@ import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 import * as locales from "../locales";
+import * as moment from "moment";
 
 /**
  * Supported language list.
@@ -86,6 +87,16 @@ const defaultLanguageFallback = (): void => {
     }
 };
 
+/**
+ * Sets the moment JS locale.
+ *
+ * @param {string} localeCode - Locale code.
+ */
+export const setMomentJSLocale = (localeCode = i18n.language): void => {
+    moment.locale(localeCode);
+};
+
 defaultLanguageFallback();
+setMomentJSLocale();
 
 export { i18n, SupportedLanguages };

@@ -17,7 +17,7 @@
  */
 
 import React, { SyntheticEvent } from "react";
-import { i18n, SupportedLanguages } from "../../../configs";
+import { i18n, setMomentJSLocale, SupportedLanguages } from "../../../configs";
 import { LanguageSwitcherDropdown } from "./language-switcher-dropdown";
 
 /**
@@ -48,6 +48,7 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
      * @param data - data object returned from the dropdown item.
      */
     const handleLanguageChange = (event: SyntheticEvent, data: any) => {
+        setMomentJSLocale(data.value);
         i18n.changeLanguage(data.value);
     };
 
