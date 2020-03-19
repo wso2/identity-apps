@@ -1,0 +1,993 @@
+/*!
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+@type    : "global";
+@element : "product";
+
+@import (multiple) '../../theme.less';
+.loadVariables();
+
+@spacer: 1rem;
+
+each(range(5), {
+    .ui.divider.hidden.x@{value} {
+        margin: (@value * 1rem) 0rem;
+    }
+});
+
+body {
+    .user-dropdown .ui.items {
+        margin: 0;
+    }
+
+    .product-title {
+        .product-logo {
+            width: 60px;
+            vertical-align: text-top;
+            margin-right: 5px;
+        }
+        .product-title-text {
+            text-transform: uppercase;
+            font-weight: 400;
+            font-size: 1.4rem;
+            display: inline-block;
+            vertical-align: sub;
+            margin-left: 0.2em;
+        }
+        .user-image {
+            width: 100px !important;
+        }
+    }
+}
+
+/*****************************************
+         Global Helper Classes
+*****************************************/
+
+.inline {
+    display: inline-block;
+}
+
+.floated {
+    &.right {
+        float: right;
+    }
+    &.left {
+        float: left;
+    }
+}
+
+.mr {
+    &-0 {
+        margin-right: 0 !important;
+    }
+    &-1 {
+        margin-right: @spacer * 0.25 !important;
+    }
+    &-2 {
+        margin-right: @spacer * 0.5 !important;
+    }
+    &-3 {
+        margin-right: @spacer !important;
+    }
+    &-4 {
+        margin-right: @spacer * 1.5 !important;
+    }
+    &-5 {
+        margin-right: @spacer * 3 !important;
+    }
+}
+
+.mt {
+    &-0 {
+        margin-top: 0 !important;
+    }
+    &-1 {
+        margin-top: @spacer * 0.25 !important;
+    }
+    &-2 {
+        margin-top: @spacer * 0.5 !important;
+    }
+    &-3 {
+        margin-top: @spacer !important;
+    }
+    &-4 {
+        margin-top: @spacer * 1.5 !important;
+    }
+    &-5 {
+        margin-top: @spacer * 3 !important;
+    }
+}
+
+/*****************************************
+                Layout
+*****************************************/
+
+.layout {
+    &.dashboard-layout {
+        .layout-content {
+            min-height: 100vh;
+
+            .desktop-container {
+                max-width: 100%;
+                display: flex;
+
+                .side-panel-wrapper {
+                    width: @dashboardLayoutSidePanelWidth;
+                    padding: @fluidDashboardLayoutSidePanelPadding;
+
+                    &.bordered {
+                        &.all {
+                            border: @defaultBorderWidth solid @defaultBorderColor;
+                        }
+
+                        &.right {
+                            border-right: @defaultBorderWidth solid @defaultBorderColor;
+                        }
+
+                        &.left {
+                            border-left: @defaultBorderWidth solid @defaultBorderColor;
+                        }
+
+                        &.top {
+                            border-top: @defaultBorderWidth solid @defaultBorderColor;
+                        }
+
+                        &.bottom {
+                            border-bottom: @defaultBorderWidth solid @defaultBorderColor;
+                        }
+                    }
+                }
+
+                .content-wrapper {
+                    width: 100%;
+                }
+            }
+
+            .mobile-container {
+                .content-wrapper {
+                    padding: @dashboardLayoutMobileContentPadding;
+                }
+            }
+        }
+
+        &.fluid-dashboard-layout {
+            .app-header {
+                padding: @fluidDashboardLayoutHeaderPadding;
+            }
+
+            .layout-content {
+                .desktop-container {
+                    .content-wrapper {
+                        padding: @fluidDashboardLayoutDesktopContentPadding;
+                    }
+                }
+            }
+
+            .app-footer {
+                padding: @fluidDashboardLayoutFooterPadding;
+            }
+        }
+    }
+
+    &.list-layout {
+        .top-action-panel {
+            .actions {
+                display: flex;
+
+                &.right-aligned {
+                    float: right;
+                }
+                &.left-aligned {
+                    float: left;
+                }
+
+                > div, > button {
+                    &:not(:last-child) {
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/*****************************************
+                Theme Icon
+*****************************************/
+
+.theme-icon {
+    background-color: @iconWrapperBgColor;
+    overflow: hidden;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+    &.inline {
+        display: inline-block;
+    }
+    &.transparent {
+        background-color: transparent;
+    }
+    &.relaxed {
+        padding: @iconWrapperPadding;
+
+        &.very {
+            padding: @iconWrapperVeryPadding;
+        }
+    }
+    &.bordered {
+        border-width: @iconWrapperBorderWidth;
+        border-style: solid;
+        border-color: @iconWrapperBorderColor;
+    }
+    &.rounded {
+        border-radius: @defaultBorderRadius;
+    }
+    &.nano {
+        .icon {
+            width: @iconNano;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconNano;
+            }
+        }
+    }
+    &.micro {
+        .icon {
+            width: @iconMicro;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconMicro;
+            }
+        }
+    }
+    &.mini {
+        .icon {
+            width: @iconMini;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconMini;
+            }
+        }
+    }
+    &.tiny {
+        .icon {
+            width: @iconTiny;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconTiny;
+            }
+        }
+    }
+    &.small {
+        .icon {
+            width: @iconSmall;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconSmall;
+            }
+        }
+    }
+    &.medium {
+        .icon {
+            width: @iconMedium;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconMedium;
+            }
+        }
+    }
+    &.large {
+        .icon {
+            width: @iconLarge;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconLarge;
+            }
+        }
+    }
+    &.big {
+        .icon {
+            width: @iconBig;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconBig;
+            }
+        }
+    }
+    &.huge {
+        .icon {
+            width: @iconHuge;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconHuge;
+            }
+        }
+    }
+    &.massive {
+        .icon {
+            width: @iconMassive;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconMassive;
+            }
+        }
+    }
+    svg.icon {
+        .fill {
+            &.faded {
+                &.primary {
+                    fill: @primaryColor;
+                    fill-opacity: 0.15;
+                }
+            }
+        }
+    }
+    &.default {
+        svg.icon {
+            path {
+                fill: @iconDefaultBgColor;
+            }
+            &:hover {
+                path {
+                    fill: @iconDefaultBgHoverColor;
+                }
+            }
+        }
+    }
+    &.two-tone {
+        svg.icon {
+            .stroke {
+                &.primary {
+                    stroke: @iconWrapperTwoTonePrimaryColor;
+                }
+                &.secondary {
+                    stroke: @iconWrapperTwoToneSecondaryColor;
+                }
+                &.white {
+                    stroke: @white;
+                }
+                &.tertiary {
+                    stroke: @paleGray;
+                }
+                &.blue {
+                    stroke: @blue;
+                }
+                &.green {
+                    stroke: @dullGreen;
+                }
+            }
+            .fill{
+                &.primary {
+                    fill: @iconWrapperTwoTonePrimaryColor;
+                }
+                &.secondary {
+                    fill: @iconWrapperTwoToneSecondaryColor;
+                }
+                &.white {
+                    fill: @white;
+                }
+                &.tertiary {
+                    fill: @paleGray;
+                }
+                &.blue {
+                    fill: @blue;
+                }
+                &.green {
+                    fill: @dullGreen;
+                }
+            }
+        }
+    }
+    &.colored {
+        svg.icon {
+            .stroke{
+                &.primary {
+                    stroke: @iconWrapperTwoTonePrimaryColor;
+                }
+                &.secondary {
+                    stroke: @iconWrapperTwoToneSecondaryColor;
+                }
+                &.white {
+                    stroke: @white;
+                }
+                &.positive {
+                    stroke: @positiveColor;
+                }
+                &.negative {
+                    stroke: @negativeColor;
+                }
+                &.info {
+                    stroke: @infoColor;
+                }
+                &.warning {
+                    stroke: @warningColor;
+                }
+                &.tertiary {
+                    stroke: @paleGray;
+                }
+                &.blue {
+                    stroke: @blue;
+                }
+                &.green {
+                    stroke: @dullGreen;
+                }
+            }
+            .fill{
+                &.primary {
+                fill: @iconWrapperTwoTonePrimaryColor;
+                }
+                &.secondary {
+                    fill: @iconWrapperTwoToneSecondaryColor;
+                }
+                &.white {
+                    fill: @white;
+                }
+                &.positive {
+                    fill: @positiveColor;
+                }
+                &.negative {
+                    fill: @negativeColor;
+                }
+                &.info {
+                    fill: @infoColor;
+                }
+                &.warning {
+                    fill: @warningColor;
+                }
+                &.tertiary {
+                    fill: @paleGray;
+                }
+                &.blue {
+                    fill: @blue;
+                    &.stroke {
+                        &.white {
+                            stroke: @white;
+                        }
+                    }
+                }
+                &.green {
+                    fill: @dullGreen;
+                    &.stroke {
+                        &.white {
+                            stroke: @white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &.spaced-right {
+        margin-right: @iconWrapperSpacingRight;
+    }
+    &.spaced-left {
+        margin-left: @iconWrapperSpacingLeft;
+    }
+    &.floated-right {
+        float: right;
+    }
+    &.floated-left {
+        float: left;
+    }
+    .custom-label {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+
+        img {
+            padding: 3px;
+        }
+    }
+}
+
+/*****************************************
+        Empty placeholder Styles
+*****************************************/
+
+.empty-placeholder {
+    text-align: center;
+    padding: 2em;
+
+    .subtitle {
+        margin: 0 auto;
+        max-width: 400px;
+        color: @lightTextColor;
+    }
+    .action-container {
+        margin-top: 12px;
+    }
+}
+
+/*****************************************
+    Advanced Search Related Styles
+*****************************************/
+
+.search-results-indicator {
+    height: 28px;
+    padding-top: 16px;
+    color: @lightTextColor;
+}
+
+/*****************************************
+         Advanced Search Wrapper
+*****************************************/
+
+.advanced-search-wrapper {
+    &.aligned-left {
+        text-align: left;
+    }
+    &.aligned-right {
+        text-align: right;
+    }
+    &.aligned-center {
+        text-align: center;
+    }
+    .search-query-hint {
+        position: absolute;
+        visibility: hidden;
+        padding: 5px 16px;
+        border-bottom-right-radius: 4px;
+        border-bottom-left-radius: 4px;
+        width: @advancedSearchWidth;
+        font-size: 12px;
+        background: @white;
+        border: @advancedSearchHintBorder;
+
+        .query {
+            display: inline-block;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            max-width: 200px;
+        }
+        .short-cut {
+            color: @lightTextColor;
+            float: right;
+        }
+        &.active {
+            visibility: visible;
+        }
+    }
+    .advanced-search-options {
+        max-width: @advancedSearchDropdownMaxWidth;
+        min-width: @advancedSearchDropdownMinWidth;
+        position: absolute;
+        width: 100%;
+        z-index: 9;
+        background: white;
+        box-shadow: @advancedSearchOptionsShadow;
+        border: @advancedSearchOptionsBorder;
+        margin-top: 10px;
+
+        &.hidden {
+            display: none;
+        }
+        .header {
+            padding: 0.7em 1em;
+            border-bottom: @advancedSearchOptionsHeaderBorderBottom;
+            font-weight: 500;
+        }
+        .form-wrapper {
+            padding: 0.7em 1em;
+        }
+    }
+}
+
+/*****************************************
+    Global loading bar style overrides
+*****************************************/
+
+.styles_loading-bar__13vNf {
+    &.app-top-loading-bar {
+        background: @primaryColor !important;
+    }
+}
+
+/*****************************************
+                Active Label
+*****************************************/
+
+.active-label {
+    display: inline-block;
+    border-radius: 50%;
+    width: 9px;
+    height: 9px;
+    margin-right: 5px;
+
+    &.positive {
+        background: @positiveColor;
+    }
+    &.negative {
+        background: @negativeColor;
+    }
+    &.info {
+        background: @infoColor;
+    }
+    &.warning {
+        background: @warningColor;
+    }
+}
+
+/*****************************************
+            Helper Classes
+*****************************************/
+
+.bold-text {
+    font-weight: 500 !important;
+}
+
+.mb-1x {
+    margin-bottom: 1em !important;
+}
+
+.mt-1x {
+    margin-top: 1em !important;
+}
+
+/*****************************************
+    Alert Component Style Overrides
+*****************************************/
+
+.alert-wrapper {
+    .notifications-wrapper {
+        .notifications-br,
+        .notifications-bl,
+        .notifications-tr,
+        .notifications-tl,
+        .notifications-tc,
+        .notifications-bc {
+            width: @alertWidth !important;
+        }
+
+        .notification {
+            background-color: @alertBackgroundColor !important;
+            box-shadow: @alertBoxShadow !important;
+            height: unset !important;
+
+            &.notification-error {
+                border-top-color: @negativeColor !important;
+            }
+
+            &.notification-info {
+                border-top-color: @infoColor !important;
+            }
+
+            &.notification-warning {
+                border-top-color: @warningColor !important;
+            }
+
+            &.notification-success {
+                border-top-color: @positiveColor !important;
+            }
+
+            .notification-message {
+                .alert-message {
+                    max-width: @alertMessageMaxWidth;
+
+                    .header {
+                        font-size: 1.2em;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
+                    }
+
+                    .description {
+                        display: block;
+                        text-overflow: ellipsis;
+                        word-wrap: break-word;
+                        overflow: hidden;
+                        max-height: 3.6em;
+                        line-height: 1.8em;
+                    }
+                }
+            }
+
+            .notification-dismiss {
+                background-color: transparent !important;
+                color: @black !important;
+                opacity: 0.4;
+
+                &:hover {
+                    opacity: 0.6;
+                }
+            }
+        }
+    }
+
+    &.absolute {
+        .notifications-br,
+        .notifications-bl,
+        .notifications-tr,
+        .notifications-tl,
+        .notifications-tc,
+        .notifications-bc {
+            right: unset !important;
+            top: unset !important;
+            left: unset !important;
+            bottom: unset !important;
+            font-family: inherit;
+            position: relative !important;
+        }
+    }
+}
+
+/*****************************************
+            Vertical Steps
+*****************************************/
+
+.vertical-step-progress {
+    position: relative;
+    padding-left: 38px;
+    list-style: none;
+
+    &::before {
+        display: inline-block;
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 6px;
+        width: 10px;
+        height: 100%;
+        border-left: 2px solid @lightGray;
+    }
+
+    .progress-item {
+        position: relative;
+        counter-increment: list;
+        font-size: 11px;
+
+        &:not(:last-child) {
+            padding-bottom: 20px;
+        }
+
+        &::before {
+            display: inline-block;
+            content: '';
+            position: absolute;
+            left: -32px;
+            height: 100%;
+            width: 10px;
+        }
+
+        &::after {
+            content: '';
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: -37px;
+            width: 12px;
+            height: 12px;
+            border: 2px solid @lightGray;
+            border-radius: 50%;
+            background-color: @white;
+        }
+
+        &:last-child {
+            &::after {
+                top: 7px;
+            }
+        }
+
+        &.success {
+            &::after {
+                background-color: @positiveColor;
+            }
+        }
+
+        &.error {
+            &::after {
+                background-color: @negativeColor;
+            }
+        }
+
+        &.warning {
+            &::after {
+                background-color: @warningColor;
+            }
+        }
+    }
+}
+
+/*****************************************
+            Pagination
+*****************************************/
+
+.pagination-bar {
+    margin-top: 20px;
+
+    .list-summary {
+        font-size: 0.8em;
+        color: @doveGray;
+        float: left;
+    }
+
+    .list-pagination {
+        float: right;
+    }
+}
+
+/*****************************************
+            Page Header
+*****************************************/
+
+.page-header-wrapper {
+    .back-button {
+        margin-bottom: 15px;
+        cursor: pointer;
+        color: @doveGray;
+        display: inline-block;
+
+        &:hover {
+            color: darken(@doveGray, 30);
+        }
+    }
+
+    .page-header-inner {
+        &.with-image {
+            display: flex;
+
+            .page-header {
+                margin: 0 0 0 10px;
+            }
+        }
+    }
+}
+
+/*****************************************
+            UI Hints
+*****************************************/
+
+.ui-hint {
+    color: @inputAddonColor;
+    font-size: @inputAddonFontSize;
+    margin: @inputAddonMargin;
+
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.45;
+    }
+    &.compact {
+        margin: 0;
+    }
+}
+
+/*****************************************
+                Steps
+*****************************************/
+
+.steps {
+    text-align: center;
+
+    .header {
+        color: @stepsHeaderFontColor;
+        font-size: @stepsHeaderFontSize;
+    }
+    .step {
+        display: inline-block;
+        text-align: center;
+        color: @stepDefaultFontColor;
+        font-size: @stepFontSize;
+        min-width: @stepMinWidth;
+        margin: 0 @stepHorizontalSpacing;
+
+        .step-icon-wrapper {
+            width: @stepIconSize;
+            height: @stepIconSize;
+            border-radius: 50%;
+            background: @stepIconDefaultBgColor;
+            text-align: center;
+            display: inline-table;
+
+            .theme-icon {
+                display: table-cell;
+                vertical-align: middle;
+
+                .icon {
+                    margin-top: 5px;
+                }
+                .path {
+                    fill: @white;
+                }
+            }
+            &:after {
+                content: "- - - -";
+                color: @stepDefaultFontColor;
+                display: inline-block;
+                position: absolute;
+                margin-top: 10px;
+                margin-left: 40px;
+                font-weight: bold;
+                font-size: 1.5em;
+                -moz-transition: @stepTrailTransition;
+                -webkit-transition: @stepTrailTransition;
+                -o-transition: @stepTrailTransition;
+                transition: @stepTrailTransition;
+            }
+        }
+
+        .step-title {
+            margin-top: 8px;
+        }
+
+        &.completed {
+            color: @stepCompleteFontColor;
+
+            .step-icon-wrapper {
+                background: @stepIconCompleteBgColor;
+
+                &:after {
+                    color: @stepCompleteFontColor;
+                }
+            }
+        }
+        &.active {
+            color: @stepActiveFontColor;
+
+            .step-icon-wrapper {
+                background: @stepIconActiveBgColor;
+
+                &:after {
+                    color: @stepActiveFontColor;
+                }
+            }
+        }
+        &:last-child {
+            .step-icon-wrapper {
+                &:after {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+/**
+ * The following style was added to overcome the issue
+ * with rendering the popup on a modal when the modal
+ * dimmer is set to blurring.
+ *
+ * This is a known issue: https://github.com/Semantic-Org/Semantic-UI-React/issues/1803
+ */
+.blurring.dimmed.dimmable > :not(.dimmer).popup {
+    filter: none;
+}
+
+.loadUIOverrides();

@@ -26,7 +26,7 @@
         <%= htmlWebpackPlugin.options.contentType %>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-        <link href="<%= htmlWebpackPlugin.options.publicPath %>/libs/styles/css/wso2-default.css" rel="stylesheet" type="text/css"/>
+        <link href="<%= htmlWebpackPlugin.options.publicPath %>/libs/themes/default/theme.css" rel="stylesheet" type="text/css"/>
 
         <title><%= htmlWebpackPlugin.options.title %></title>
 
