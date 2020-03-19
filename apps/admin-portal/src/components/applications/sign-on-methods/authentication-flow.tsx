@@ -18,13 +18,13 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Heading, Hint, LinkButton, PrimaryButton, GenericIcon } from "@wso2is/react-components";
+import { Heading, Hint, LinkButton, GenericIcon } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon, Card, Popup, Accordion } from "semantic-ui-react";
-import { getIdentityProviderDetail, getIdentityProviderList, updateAuthenticationSequence } from "../../../api";
+import { getIdentityProviderDetail, getIdentityProviderList } from "../../../api";
 import {
     AuthenticationSequenceInterface,
     AuthenticationSequenceType,
