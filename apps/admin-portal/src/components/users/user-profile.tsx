@@ -26,11 +26,7 @@ import { useSelector } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { deleteUser, updateUserInfo } from "../../api";
 import { history } from "../../helpers";
-import {
-    AuthStateInterface,
-    BasicProfileInterface,
-    ProfileSchema,
-} from "../../models";
+import { AuthStateInterface, BasicProfileInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
 import { flattenSchemas } from "../../utils";
 import * as _ from "lodash";
