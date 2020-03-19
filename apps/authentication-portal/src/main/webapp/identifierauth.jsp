@@ -51,17 +51,21 @@
         var userName = document.getElementById("username");
         var usernameUserInput = document.getElementById("usernameUserInput");
 
-        if (!getParameterByName("isSaaSApp") && tenantName) {
-            
-            if ((!isEmailUsernameEnabled) && (usernameUserInputValue.split("@").length > 1)) {
-                userName.value = usernameUserInputValue;
+        if (usernameUserInput) {
+            var usernameUserInputValue = usernameUserInput.value.trim();
+
+            if (!getParameterByName("isSaaSApp") || tenantName) {
+
+                if ((!isEmailUsernameEnabled) && (usernameUserInputValue.split("@").length > 1)) {
+                    userName.value = usernameUserInputValue;
+                }
+                else {
+                    userName.value = usernameUserInputValue + "@" + tenantName;
+                }
             }
             else {
-                userName.value = usernameUserInputValue + "@" + tenantName;
+                userName.value = usernameUserInputValue;
             }
-        }
-        else {
-            userName.value = usernameUserInputValue;
         }
 
         if (username.value) {
