@@ -64,7 +64,7 @@ interface AdaptiveScriptsPropsInterface {
  * @param {AdaptiveScriptsPropsInterface} props - Props injected to the component.
  * @return {ReactElement}
  */
-export const AdaptiveScripts: FunctionComponent<AdaptiveScriptsPropsInterface> = (
+export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> = (
     props: AdaptiveScriptsPropsInterface
 ): ReactElement => {
 

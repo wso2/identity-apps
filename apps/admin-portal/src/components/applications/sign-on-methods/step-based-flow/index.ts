@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export * from "./adaptive-scripts";
+export * from "./step-based-flow";

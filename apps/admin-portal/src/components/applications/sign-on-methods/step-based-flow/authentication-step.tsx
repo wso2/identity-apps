@@ -21,8 +21,8 @@ import { EmptyPlaceholder, Heading, LabeledCard } from "@wso2is/react-components
 import React, { FunctionComponent, ReactElement } from "react";
 import { Droppable, DroppableProvided } from "react-beautiful-dnd";
 import { Checkbox, Icon } from "semantic-ui-react";
-import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../models";
-import { AuthenticatorListItemInterface } from "../meta";
+import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../../models";
+import { AuthenticatorListItemInterface } from "../../meta";
 
 /**
  * Proptypes for the authentication step component.

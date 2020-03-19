@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export * from "./sign-on-methods";
+export * from "./script-based-flow";

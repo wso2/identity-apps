@@ -17,13 +17,13 @@
  */
 
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { AuthenticationFlow } from "./authentication-flow";
+import { StepBasedFlow } from "./step-based-flow";
 import {
     AdaptiveAuthTemplateInterface,
     AuthenticationSequenceInterface,
     AuthenticationStepInterface
 } from "../../../models";
-import { AdaptiveScripts } from "./adaptive-scripts";
+import { ScriptBasedFlow } from "./script-based-flow";
 import { Divider } from "semantic-ui-react";
 import { updateAuthenticationSequence } from "../../../api";
 import { useDispatch } from "react-redux";
@@ -191,14 +191,14 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
     return (
         <div className="sign-on-methods-tab-content">
-            <AuthenticationFlow
+            <StepBasedFlow
                 authenticationSequence={ sequence }
                 isLoading={ isLoading }
                 onUpdate={ handleSequenceUpdate }
                 triggerUpdate={ updateTrigger }
             />
             <Divider hidden />
-            <AdaptiveScripts
+            <ScriptBasedFlow
                 authenticationSequence={ sequence }
                 isLoading={ isLoading }
                 onTemplateSelect={ handleLoadingDataFromTemplate }

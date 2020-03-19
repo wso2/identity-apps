@@ -32,7 +32,7 @@ import {
     Droppable,
     DroppableProvided
 } from "react-beautiful-dnd";
-import { AuthenticatorListItemInterface } from "../meta";
+import { AuthenticatorListItemInterface } from "../../meta";
 
 /**
  * Proptypes for the authenticators component.

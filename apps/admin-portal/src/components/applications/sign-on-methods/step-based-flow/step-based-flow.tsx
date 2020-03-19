@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useR
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon, Card, Popup, Accordion } from "semantic-ui-react";
-import { getIdentityProviderDetail, getIdentityProviderList } from "../../../api";
+import { getIdentityProviderDetail, getIdentityProviderList } from "../../../../api";
 import {
     AuthenticationSequenceInterface,
     AuthenticationSequenceType,
@@ -34,17 +34,17 @@ import {
     IdentityProviderListResponseInterface,
     IdentityProviderResponseInterface,
     IDPNameInterface
-} from "../../../models";
+} from "../../../../models";
 import {
     AuthenticatorListItemInterface,
     AuthenticatorTypes,
     selectedFederatedAuthenticators,
     selectedLocalAuthenticators
-} from "../meta";
+} from "../../meta";
 import { Authenticators } from "./authenticators";
 import { AuthenticationStep } from "./authentication-step";
 import Draggable from "react-draggable";
-import { OperationIcons } from "../../../configs";
+import { OperationIcons } from "../../../../configs";
 
 /**
  * Proptypes for the applications settings component.
@@ -107,7 +107,7 @@ const SOCIAL_AUTHENTICATORS_DROPPABLE_ID = "social-authenticators";
  * @param {AuthenticationFlowPropsInterface} props - Props injected to the component.
  * @return {ReactElement}
  */
-export const AuthenticationFlow: FunctionComponent<AuthenticationFlowPropsInterface> = (
+export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> = (
     props: AuthenticationFlowPropsInterface
 ): ReactElement => {
 
