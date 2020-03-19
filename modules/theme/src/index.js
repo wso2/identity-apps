@@ -64,6 +64,7 @@ export const ToolsIcon = require("../dist/lib/themes/default/assets/images/icons
 export const AuthenticatorAppIcon = 
     require("../dist/lib/themes/default/assets/images/icons/authenticator-app-icon.svg");
 export const UserIcon = require("../dist/lib/themes/default/assets/images/icons/user-icon.svg");
+export const UserStoreIcon = require("../dist/lib/themes/default/assets/images/icons/user-store.svg");
 export const WarningIcon = require("../dist/lib/themes/default/assets/images/icons/warning-icon.svg");
 
 // Illustrations
