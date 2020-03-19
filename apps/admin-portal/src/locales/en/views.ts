@@ -18,7 +18,6 @@
 
 import { Views } from "../../models";
 
-/* eslint-disable @typescript-eslint/camelcase */
 export const views: Views = {
     components: {
         applications: {
@@ -391,6 +390,7 @@ export const views: Views = {
             },
             profile: {
                 fields: {
+                    /* eslint-disable @typescript-eslint/camelcase */
                     addresses_home: "Home address",
                     addresses_work: "Work address",
                     emails: "Email",
@@ -409,6 +409,7 @@ export const views: Views = {
                     phoneNumbers_work: "Work phone number",
                     profileUrl: "URL",
                     userName: "Username"
+                    /* eslint-enable @typescript-eslint/camelcase */
                 },
                 forms: {
                     emailChangeForm: {
