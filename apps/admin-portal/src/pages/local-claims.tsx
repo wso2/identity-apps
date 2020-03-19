@@ -20,7 +20,7 @@ import React, { useEffect, useState } from "react";
 import { PageLayout } from "../layouts";
 import { ListLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
-import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
+import { Icon, DropdownProps, PaginationProps, DropdownItemProps } from "semantic-ui-react";
 import { ClaimsList, ListType, LocalClaimsSearch } from "../components";
 import { Claim, ClaimsGetParams, AlertLevels } from "../models";
 import { getAllLocalClaims, getADialect } from "../api";
@@ -29,14 +29,31 @@ import { AddLocalClaims } from "../components";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
 import { history } from "../helpers";
+import { filterList, sortList } from "../utils";
 
 export const LocalClaimsPage = (): React.ReactElement => {
+
+    const SORT_BY = [
+        {
+            text: "Name",
+            key: 0,
+            value: "displayName"
+        },
+        {
+            text: "Claim URI",
+            key: 1,
+            value: "claimURI"
+        }
+    ];
 
     const [claims, setClaims] = useState<Claim[]>(null);
     const [offset, setOffset] = useState(0);
     const [listItemLimit, setListItemLimit] = useState<number>(0);
     const [openModal, setOpenModal] = useState(false);
     const [claimURIBase, setClaimURIBase] = useState("");
+    const [filteredClaims, setFilteredClaims] = useState<Claim[]>(null);
+    const [sortBy, setSortBy] = useState<DropdownItemProps>(SORT_BY[0]);
+    const [sortOrder, setSortOrder] = useState(true);
 
     const dispatch = useDispatch();
 
@@ -50,28 +67,33 @@ export const LocalClaimsPage = (): React.ReactElement => {
 
         getAllLocalClaims(params).then(response => {
             setClaims(response);
+            setFilteredClaims(response);
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description,
+                    description: error?.description || "There was an error while fetching the local claims",
                     level: AlertLevels.ERROR,
-                    message: error?.message
+                    message: error?.message || "Something went wrong"
                 }
             ));
         });
     };
-    
+
+    useEffect(() => {
+        setFilteredClaims(sortList(filteredClaims, sortBy.value as string, sortOrder));
+    }, [sortBy, sortOrder]);
+
     useEffect(() => {
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
-        getLocalClaims(null,null,null,null);
+        getLocalClaims(null, null, null, null);
         getADialect("local").then((response) => {
             setClaimURIBase(response.dialectURI);
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description,
+                    description: error?.description || "There was an error while fetching the local dialect",
                     level: AlertLevels.ERROR,
-                    message: error?.message
+                    message: error?.message || "Something went wrong"
                 }
             ));
         });
@@ -87,6 +109,14 @@ export const LocalClaimsPage = (): React.ReactElement => {
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         setOffset((data.activePage as number - 1) * listItemLimit);
+    };
+
+    const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
+        setSortBy(SORT_BY.filter(option => option.value === data.value)[0]);
+    };
+
+    const handleSortOrderChange = (isAscending: boolean) => {
+        setSortOrder(isAscending);
     };
 
     return (
@@ -115,7 +145,19 @@ export const LocalClaimsPage = (): React.ReactElement => {
                     advancedSearch={
                         <LocalClaimsSearch
                             onFilter={ (query) => {
-                                getLocalClaims(null, null, null, query);
+                                //TODO: getLocalClaims(null, null, null, query);
+                                try {
+                                    const filteredClaims = filterList(
+                                        claims, query, sortBy.value as string, sortOrder
+                                    );
+                                    setFilteredClaims(filteredClaims);
+                                } catch (error) {
+                                    dispatch(addAlert({
+                                        message: "Filter query format incorrect",
+                                        description: error,
+                                        level: AlertLevels.ERROR
+                                    }));
+                                }
                             } }
                             claimURIBase={ claimURIBase }
                         />
@@ -124,7 +166,7 @@ export const LocalClaimsPage = (): React.ReactElement => {
                     listItemLimit={ listItemLimit }
                     onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                     onPageChange={ handlePaginationChange }
-                    onSortStrategyChange={ null }
+                    onSortStrategyChange={ handleSortStrategyChange }
                     rightActionPanel={
                         (
                             <PrimaryButton
@@ -133,18 +175,19 @@ export const LocalClaimsPage = (): React.ReactElement => {
                                 } }
                             >
                                 <Icon name="add" />Add a Local Claim
-                        </PrimaryButton>
+                            </PrimaryButton>
                         )
                     }
                     leftActionPanel={ null }
                     showPagination={ true }
-                    sortOptions={ null }
-                    sortStrategy={ null }
-                    totalPages={ Math.ceil(claims?.length / listItemLimit) }
-                    totalListSize={ claims?.length }
+                    sortOptions={ SORT_BY }
+                    sortStrategy={ sortBy }
+                    totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
+                    totalListSize={ filteredClaims?.length }
+                    onSortOrderChange={ handleSortOrderChange }
                 >
                     <ClaimsList
-                        list={ paginate(claims, listItemLimit, offset) }
+                        list={ paginate(filteredClaims, listItemLimit, offset) }
                         localClaim={ ListType.LOCAL }
                         update={ getLocalClaims }
                     />

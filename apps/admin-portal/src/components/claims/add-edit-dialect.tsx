@@ -49,7 +49,7 @@ export const AddEditDialect = (props: AddEditDialectPropsInterface): React.React
             }).catch(error => {
                 dispatch(addAlert(
                     {
-                        description: error?.description,
+                        description: error?.description || "There was an error while fetching the dialect",
                         level: AlertLevels.ERROR,
                         message: error?.message || "Something went wrong"
                     }
@@ -89,7 +89,8 @@ export const AddEditDialect = (props: AddEditDialectPropsInterface): React.React
                                 }).catch(error => {
                                     dispatch(addAlert(
                                         {
-                                            description: error?.description,
+                                            description: error?.description || "There was an error while updating the" +
+                                                " dialect",
                                             level: AlertLevels.ERROR,
                                             message: error?.message || "Something went wrong"
                                         }
@@ -109,7 +110,8 @@ export const AddEditDialect = (props: AddEditDialectPropsInterface): React.React
                                 }).catch(error => {
                                     dispatch(addAlert(
                                         {
-                                            description: error?.description,
+                                            description: error?.description || "There was an error while adding" +
+                                                " the dialect",
                                             level: AlertLevels.ERROR,
                                             message: error?.message || "Something went wrong"
                                         }

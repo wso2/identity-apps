@@ -53,11 +53,7 @@ export const addLocalClaim = (data: Claim): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            if (error) {
-              return Promise.reject(error?.response?.data);  
-            } else {
-                return Promise.reject("An error occurred while adding the local claim")
-            }
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -86,11 +82,7 @@ export const getAllLocalClaims = (params: ClaimsGetParams): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            if (error) {
-               return Promise.reject(error?.response?.data); 
-            } else {
-                return Promise.reject("An error occurred while fetching the local claims.")
-            }   
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -119,11 +111,7 @@ export const getAClaim = (id: string): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            if (error) {
-                return Promise.reject(error?.response?.data);
-            } else {
-                return Promise.reject("An error occurred while fetching the local claim.")
-            } 
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -153,11 +141,7 @@ export const updateAClaim = (id: string, data: Claim): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            if (error) {
-                return Promise.reject(error?.response?.data);
-            } else {
-                return Promise.reject("An error occurred while updating the local claim.");
-            } 
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -184,11 +168,7 @@ export const deleteAClaim = (id: string): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            if (error) {
-                return Promise.reject(error?.response?.data);
-            } else {
-                return Promise.reject("Amn error occurred while deleting the local claim.")
-            }     
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -218,11 +198,7 @@ export const addDialect = (dialectURI: string): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            if (error) {
-                return Promise.reject(error?.response?.data);
-            } else {
-                return Promise.reject("An error occurred while adding the dialect.")
-            }
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -249,11 +225,7 @@ export const getADialect = (id: string): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            if (error) {
-                return Promise.reject(error?.response?.data);
-            } else {
-                return Promise.reject("An error occurred while fetching the dialect.")
-            }
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -280,12 +252,7 @@ export const getDialects = (params: ClaimsGetParams): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            if (error) {
-                return Promise.reject(error?.response?.data);
-            } else {
-                return Promise.reject("An error occurred while fetching dialects.")
-            }
-            
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -316,12 +283,7 @@ export const updateADialect = (id: string, dialectURI: string): Promise<any> => 
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            if (error) {
-                return Promise.reject(error?.response?.data);
-            } else {
-                return Promise.reject("An error occurred while updating the dialect.");
-            }
-            
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -348,12 +310,7 @@ export const deleteADialect = (id: string): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            if (error) {
-                return Promise.reject(error?.response?.data);
-            } else {
-                return Promise.reject("An error occurred while deleting the dialect.")
-            }
-            
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -382,11 +339,7 @@ export const addExternalClaim = (dialectID: string, data: AddExternalClaim): Pro
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            if (error) {
-               return Promise.reject(error?.response?.data); 
-            } else {
-                return Promise.reject("Ann error occurred while add the external claim.");
-            }
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -414,11 +367,7 @@ export const getAllExternalClaims = (dialectID: string, params: ClaimsGetParams)
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            if (error) {
-                return Promise.reject(error?.response?.data);
-            } else {
-                return Promise.reject("An error occurred while fetching external claims.");
-            }
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -446,11 +395,7 @@ export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-             if (error) {
-                 return Promise.reject(error?.response?.data);
-             } else {
-                 return Promise.reject("An error occurred while fetching the external claim.");
-             }
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -480,11 +425,7 @@ export const updateAnExternalClaim = (dialectID: string, claimID: string, data: 
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-             if (error) {
-                 return Promise.reject(error?.response?.data);
-             } else {
-                 return Promise.reject("An error occurred while updating the external claim.");
-             }
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -512,10 +453,6 @@ export const deleteAnExternalClaim = (dialectID: string, claimID: string): Promi
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-             if (error) {
-                 return Promise.reject(error?.response?.data);
-             } else {
-                 return Promise.reject("An error occurred while deleting the external claim.");
-             }
+            return Promise.reject(error?.response?.data);
         });
 };

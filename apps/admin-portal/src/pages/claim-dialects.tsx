@@ -28,34 +28,45 @@ import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
 import { AddEditDialect, DialectSearch } from "../components";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
+import { filterList, sortList } from "../utils";
 
 export const ClaimDialectsPage = (): React.ReactElement => {
+
+    const SORT_BY = [
+        {
+            key: 0,
+            text: "Dialect URI",
+            value: "dialectURI"
+        }
+    ];
 
     const [dialects, setDialects] = useState<ClaimDialect[]>(null);
     const [offset, setOffset] = useState(0);
     const [listItemLimit, setListItemLimit] = useState<number>(0);
     const [addEditClaim, setAddEditClaim] = useState(false);
     const [dialectID, setDialectID] = useState<string>(null);
+    const [filteredDialects, setFilteredDialects] = useState<ClaimDialect[]>(null);
+    const [sortBy, setSortBy] = useState(SORT_BY[0]);
+    const [sortOrder, setSortOrder] = useState(true);
 
     const dispatch = useDispatch();
 
     const getDialect = (limit?: number, offset?: number, sort?: string, filter?: string, ) => {
         getDialects({
             limit, offset, sort, filter
-
         }).then((response: ClaimDialect[]) => {
-
             const filteredDialect: ClaimDialect[] = response.filter((claim: ClaimDialect) => {
                 return claim.id !== "local";
             });
 
             setDialects(filteredDialect);
+            setFilteredDialects(filteredDialect);
         }).catch(error => {
             dispatch(addAlert(
                 {
-                    description: error?.description,
+                    description: error?.description || "There was an error while getting the dialects",
                     level: AlertLevels.ERROR,
-                    message: error?.message
+                    message: error?.message || "Something went wrong"
                 }
             ));
         })
@@ -65,6 +76,10 @@ export const ClaimDialectsPage = (): React.ReactElement => {
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
         getDialect();
     }, []);
+
+    useEffect(() => {
+        setFilteredDialects(sortList(filteredDialects, sortBy.value, sortOrder));
+    }, [sortBy, sortOrder]);
 
     const paginate = (list: ClaimDialect[], limit: number, offset: number): ClaimDialect[] => {
         return list?.slice(offset, offset + limit);
@@ -76,6 +91,14 @@ export const ClaimDialectsPage = (): React.ReactElement => {
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         setOffset((data.activePage as number - 1) * listItemLimit);
+    };
+
+    const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
+        setSortBy(SORT_BY.filter(option => option.value === data.value)[0]);
+    };
+
+    const handleSortOrderChange = (isAscending: boolean) => {
+        setSortOrder(isAscending);
     };
 
     return (
@@ -98,14 +121,25 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                 <ListLayout
                     advancedSearch={
                         <DialectSearch onFilter={ (query) => {
-                            getDialect(null, null, null, query);
+                            // TODO: getDialect(null, null, null, query);
+                            try {
+                                const filteredDialects = filterList(dialects, query,sortBy.value, sortOrder);
+                                setFilteredDialects(filteredDialects);
+                            } catch (error) {
+                                dispatch(addAlert({
+                                    message: "Filter query format incorrect",
+                                    description: error,
+                                    level: AlertLevels.ERROR
+                                }));
+                            }
                         } } />
                     }
                     currentListSize={ listItemLimit }
                     listItemLimit={ listItemLimit }
                     onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                     onPageChange={ handlePaginationChange }
-                    onSortStrategyChange={ null }
+                    onSortStrategyChange={ handleSortStrategyChange }
+                    onSortOrderChange={ handleSortOrderChange }
                     rightActionPanel={
                         (
                             <PrimaryButton
@@ -118,13 +152,13 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                         )
                     }
                     showPagination={ true }
-                    sortOptions={ null }
-                    sortStrategy={ null }
-                    totalPages={ Math.ceil(dialects?.length / listItemLimit) }
-                    totalListSize={ dialects?.length }
+                    sortOptions={ SORT_BY }
+                    sortStrategy={ sortBy }
+                    totalPages={ Math.ceil(filteredDialects?.length / listItemLimit) }
+                    totalListSize={ filteredDialects?.length }
                 >
                     <ClaimsList
-                        list={ paginate(dialects, listItemLimit, offset) }
+                        list={ paginate(filteredDialects, listItemLimit, offset) }
                         localClaim={ ListType.DIALECT }
                         openEdit={
                             (id: string) => {

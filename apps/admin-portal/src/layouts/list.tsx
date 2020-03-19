@@ -19,8 +19,8 @@
 
 import { Pagination } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
-import { Divider, DropdownItemProps, DropdownProps, Grid, PaginationProps } from "semantic-ui-react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, useState } from "react";
+import { Divider, DropdownItemProps, DropdownProps, Grid, PaginationProps, Dropdown, Popup, Icon } from "semantic-ui-react";
 
 /**
  * List layout component Prop types.
@@ -30,6 +30,7 @@ interface ListLayoutPropsInterface extends PaginationProps {
     leftActionPanel?: React.ReactNode;
     listItemLimit?: number;
     onSortStrategyChange?: (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => void;
+    onSortOrderChange?: (isAscending: boolean) => void;
     rightActionPanel?: React.ReactNode;
     showPagination?: boolean;
     showTopActionPanel?: boolean;
@@ -54,6 +55,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         leftActionPanel,
         listItemLimit,
         onSortStrategyChange,
+        onSortOrderChange,
         rightActionPanel,
         showPagination,
         showTopActionPanel,
@@ -63,6 +65,8 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         totalPages,
         ...rest
     } = props;
+
+    const [isAscending, setIsAscending] = useState(true);
 
     const classes = classNames(
         "layout",
@@ -78,11 +82,10 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                             <Grid>
                                 <Grid.Row>
                                     <Grid.Column width={ 8 }>
-                                        { /* TODO: Re-enable when the API is ready */ }
-                                        {
-                                            /* <div className="left-aligned-actions">
-                                                {
-                                                    sortOptions && sortStrategy && onSortStrategyChange && (
+                                        <div className="left-aligned-actions">
+                                            {
+                                                sortOptions && sortStrategy && onSortStrategyChange && (
+                                                    <>
                                                         <Dropdown
                                                             onChange={ onSortStrategyChange }
                                                             options={ sortOptions }
@@ -90,19 +93,48 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                                             selection
                                                             value={ sortStrategy.value }
                                                         />
-                                                    )
-                                                }
-                                                { leftActionPanel && leftActionPanel }
-                                            </div> */
-                                        }
+                                                        {
+                                                            onSortOrderChange
+                                                            && (
+                                                                <Popup
+                                                                    trigger={
+                                                                        <Icon
+                                                                            className="left-aligned-action"
+                                                                            name={
+                                                                                isAscending
+                                                                                    ? "sort amount down"
+                                                                                    : "sort amount up"
+                                                                            }
+                                                                            size="large"
+                                                                            onClick={ () => {
+                                                                                setIsAscending(!isAscending);
+                                                                                onSortOrderChange(!isAscending);
+                                                                            } }
+                                                                            link
+                                                                        />
+                                                                    }
+                                                                    content={
+                                                                        isAscending
+                                                                            ? "Sort in the descending order"
+                                                                            : "Sort in the ascending order"
+                                                                    }
+                                                                    inverted
+                                                                />
+                                                            )
+                                                        }
+                                                    </>
+                                                )
+                                            }
+                                            { leftActionPanel }
+                                        </div>
                                         <div className="left-aligned-actions">
-                                            { leftActionPanel && leftActionPanel }
+                                            { leftActionPanel }
                                         </div>
                                     </Grid.Column>
                                     <Grid.Column width={ 8 }>
                                         <div className="actions right-aligned">
-                                            { advancedSearch && advancedSearch }
-                                            { rightActionPanel && rightActionPanel }
+                                            { advancedSearch }
+                                            { rightActionPanel }
                                         </div>
                                     </Grid.Column>
                                 </Grid.Row>
