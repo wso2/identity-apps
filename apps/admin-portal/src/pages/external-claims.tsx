@@ -160,7 +160,7 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                     ? (
                         <ListLayout
                             advancedSearch={ <ExternalClaimsSearch onFilter={ (query) => {
-                                //getExternalClaims(null, null, null, query);
+                                //TODO: getExternalClaims(null, null, null, query);
                                 try {
                                     const filteredList: ExternalClaim[] = filterList(
                                         claims, query, sortBy.value, sortOrder

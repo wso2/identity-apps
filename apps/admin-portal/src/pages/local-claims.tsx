@@ -145,7 +145,7 @@ export const LocalClaimsPage = (): React.ReactElement => {
                     advancedSearch={
                         <LocalClaimsSearch
                             onFilter={ (query) => {
-                                //getLocalClaims(null, null, null, query);
+                                //TODO: getLocalClaims(null, null, null, query);
                                 try {
                                     const filteredClaims = filterList(
                                         claims, query, sortBy.value as string, sortOrder

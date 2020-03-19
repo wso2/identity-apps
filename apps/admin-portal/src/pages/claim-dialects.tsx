@@ -121,7 +121,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                 <ListLayout
                     advancedSearch={
                         <DialectSearch onFilter={ (query) => {
-                            // getDialect(null, null, null, query);
+                            // TODO: getDialect(null, null, null, query);
                             try {
                                 const filteredDialects = filterList(dialects, query,sortBy.value, sortOrder);
                                 setFilteredDialects(filteredDialects);
