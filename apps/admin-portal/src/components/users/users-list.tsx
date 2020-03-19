@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import React, { ReactElement } from "react";
+import React, {ReactElement, useState} from "react";
 import {
+    ConfirmationModal,
     ResourceList,
     ResourceListItem,
     UserAvatar
@@ -48,8 +49,16 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         userMetaListContent
     } = props;
 
+    const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
+
     const handleUserEdit = (userId: string) => {
         history.push(`users/${ userId }`);
+    };
+
+    const deleteUser = (id: string): void => {
+        handleUserDelete(id);
+        setShowDeleteConfirmationModal(false);
     };
 
     /**
@@ -128,46 +137,77 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     };
 
     return (
-        <ResourceList className="applications-list">
+        <>
+            <ResourceList className="applications-list">
+                {
+                    usersList && usersList.Resources && usersList.Resources instanceof Array &&
+                    usersList.Resources.map((user, index) => (
+                        <ResourceListItem
+                            key={ index }
+                            actions={ [
+                                {
+                                    icon: "pencil alternate",
+                                    onClick: () => handleUserEdit(user.id),
+                                    popupText: "edit",
+                                    type: "button"
+                                },
+                                {
+                                    hidden: user.userName === "admin",
+                                    icon: "trash alternate",
+                                    onClick: (): void => {
+                                        setShowDeleteConfirmationModal(true);
+                                        setDeletingUser(user);
+                                    },
+                                    popupText: "delete user",
+                                    type: "button"
+                                }
+                            ] }
+                            actionsFloated="right"
+                            avatar={ (
+                                <UserAvatar
+                                    name={ user.userName }
+                                    size="mini"
+                                    floated="left"
+                                    image={ user.profileUrl }
+                                />
+                            ) }
+                            itemHeader={ user.name && user.name.givenName !== undefined ? user.name.givenName +
+                                " " + user.name.familyName : user.userName }
+                            itemDescription={ user.emails ? user.emails[0].toString() :
+                                user.userName }
+                            metaContent={ listContent(user) }
+                            metaColumnWidth={ 10 }
+                            descriptionColumnWidth={ 3 }
+                            actionsColumnWidth={ 3 }
+                        />
+                    ))
+                }
+            </ResourceList>
             {
-                usersList && usersList.Resources && usersList.Resources instanceof Array &&
-                usersList.Resources.map((user, index) => (
-                    <ResourceListItem
-                        key={ index }
-                        actions={ [
-                            {
-                                icon: "pencil alternate",
-                                onClick: () => handleUserEdit(user.id),
-                                popupText: "edit",
-                                type: "button"
-                            },
-                            {
-                                icon: "trash alternate",
-                                onClick: () => handleUserDelete(user.id),
-                                popupText: "delete user",
-                                type: "button"
-                            }
-                        ] }
-                        actionsFloated="right"
-                        avatar={ (
-                            <UserAvatar
-                                name={ user.userName }
-                                size="mini"
-                                floated="left"
-                                image={ user.profileUrl }
-                            />
-                        ) }
-                        itemHeader={ user.name && user.name.givenName !== undefined ? user.name.givenName +
-                            " " + user.name.familyName : user.userName }
-                        itemDescription={ user.emails ? user.emails[0].toString() :
-                            user.userName }
-                        metaContent={ listContent(user) }
-                        metaColumnWidth={ 10 }
-                        descriptionColumnWidth={ 3 }
-                        actionsColumnWidth={ 3 }
-                    />
-                ))
+                deletingUser && (
+                    <ConfirmationModal
+                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                        type="warning"
+                        open={ showDeleteConfirmationModal }
+                        assertion={ deletingUser.userName }
+                        assertionHint={ <p>Please type <strong>{ deletingUser.userName }</strong> to confirm.</p> }
+                        assertionType="input"
+                        primaryAction="Confirm"
+                        secondaryAction="Cancel"
+                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                        onPrimaryActionClick={ (): void => deleteUser(deletingUser.id) }
+                    >
+                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+                        <ConfirmationModal.Message attached warning>
+                            This action is irreversible and will permanently delete the user.
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                            If you delete this user, the user will not be able to login to the developer portal or any
+                            other application the user was subscribed before. Please proceed with caution.
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                )
             }
-        </ResourceList>
+        </>
     );
 };
