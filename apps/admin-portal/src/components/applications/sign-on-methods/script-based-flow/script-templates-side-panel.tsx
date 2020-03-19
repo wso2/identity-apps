@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import _ from "lodash";
 import React, {
     forwardRef,
     FunctionComponent,
@@ -128,7 +129,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                 vertical
                             >
                                 {
-                                    templates.map((category, index) => (
+                                    _.sortBy(templates, "order").map((category, index) => (
                                         category?.templates && category.templates instanceof Array && (
                                             <Menu.Item key={ index }>
                                                 <Accordion.Title
