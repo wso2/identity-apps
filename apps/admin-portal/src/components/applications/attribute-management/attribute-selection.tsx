@@ -106,6 +106,18 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         }
     };
 
+    const updateRequested = (claimURI: string, requested: boolean) => {
+        if (selectedDialect.localDialect) {
+            const localClaims = [...selectedClaims];
+            localClaims.forEach((mapping) => {
+                if (mapping.claimURI === claimURI) {
+                    mapping.requested = requested;
+                }
+            });
+            setSelectedClaims(localClaims);
+        }
+    };
+
     const selectAttribute = (claimURI) => {
         const allAttributes = [...filteredClaims];
         const oldAttributes = [...selectedClaims];
@@ -231,7 +243,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         }
     };
 
-    const getInitialRequestedClaimsURI = ((): string[] => {
+    const getInitiallySelectedClaimsURI = ((): string[] => {
         const requestURI: string[] = [];
         if (claimConfigurations.dialect === "CUSTOM") {
             claimConfigurations.claimMappings?.map((element: ClaimMappingInterface) => {
@@ -245,16 +257,55 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         return requestURI;
     });
 
+    /**
+     * Check whether claim is mandatory or not
+     *
+     * @param uri Claim URI to be checked.
+     */
     const checkInitialRequestMandatory = (uri: string) => {
         let requestURI = false;
-        if (claimConfigurations.dialect === "LOCAL") {
-            claimConfigurations.requestedClaims.map((element: RequestedClaimConfigurationInterface) => {
-                if (element.claim.uri === uri) {
-                    requestURI = element.mandatory;
+        // If custom mapping there then retrieve the relevant uri and check for requested section.
+        if (claimConfigurations.dialect === "CUSTOM") {
+            const requestURI = claimConfigurations.claimMappings.find(
+                (mapping) => mapping?.localClaim?.uri === uri)?.applicationClaim;
+            if (requestURI) {
+                const checkInRequested = claimConfigurations.requestedClaims.find(
+                    (requestClaims) => requestClaims?.claim?.uri === requestURI);
+                if (checkInRequested) {
+                    return checkInRequested.mandatory;
                 }
-            });
+            }
         }
+        // If it is mapped directly check the requested section
+        requestURI = claimConfigurations.requestedClaims.find(
+            (requestClaims) => requestClaims?.claim?.uri === uri)?.mandatory;
+
         return requestURI;
+    };
+
+    /**
+     * Check whether claim is requested or not.
+     *
+     * @param uri Claim URI to be checked.
+     */
+    const checkInitialRequested = (uri: string): boolean => {
+        if (claimConfigurations.dialect === "CUSTOM") {
+            const requestURI = claimConfigurations.claimMappings.find(
+                (mapping) => mapping?.localClaim?.uri === uri)?.applicationClaim;
+            let checkInRequested;
+            if (requestURI) {
+                checkInRequested = claimConfigurations.requestedClaims.find(
+                    (requestClaims) => requestClaims?.claim?.uri === requestURI);
+            } else {
+                checkInRequested = claimConfigurations.requestedClaims.find(
+                    (requestClaims) => requestClaims?.claim?.uri === uri);
+            }
+            return checkInRequested ? true : false;
+        } else {
+            // If the dialect is not custom, the initial selected claim is decided by requested claims
+            // So it is always true.
+            return true;
+        }
     };
 
     // search operation for claims
@@ -292,14 +343,15 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
     const setInitialValues = () => {
         // set local dialect values.
         if (selectedDialect.localDialect) {
-            const initialRequest = getInitialRequestedClaimsURI();
+            const initialRequest = getInitiallySelectedClaimsURI();
             const initialSelectedClaims: ExtendedClaimInterface[] = [];
             const initialAvailableClaims: ExtendedClaimInterface[] = [];
             claims.map((claim) => {
                 if (initialRequest.includes(claim.claimURI)) {
-                    const newClaim = {
+                    const newClaim: ExtendedClaimInterface = {
                         ...claim,
-                        mandatory: checkInitialRequestMandatory(claim.claimURI)
+                        mandatory: checkInitialRequestMandatory(claim.claimURI),
+                        requested: checkInitialRequested(claim.claimURI)
                     };
                     initialSelectedClaims.push(newClaim);
                 } else {
@@ -332,12 +384,12 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 })
             }
         } else {
-            const initialRequest = getInitialRequestedClaimsURI();
+            const initialRequest = getInitiallySelectedClaimsURI();
             const initialSelectedClaims: ExtendedExternalClaimInterface[] = [];
             const initialAvailableClaims: ExtendedExternalClaimInterface[] = [];
             externalClaims.map((claim) => {
                 if (initialRequest.includes(claim.mappedLocalClaimURI)) {
-                    const newClaim = {
+                    const newClaim: ExtendedExternalClaimInterface = {
                         ...claim,
                         mandatory: checkInitialRequestMandatory(claim.mappedLocalClaimURI)
                     };
@@ -475,8 +527,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                 scope={ "Local" }
                                                 mapping={ getCurrentMapping(claim.claimURI) }
                                                 initialMandatory={ claim.mandatory }
-                                                // initialMandatory={true}
+                                                initialRequested={ claim.requested }
                                                 selectMandatory={ updateMandatory }
+                                                selectRequested={ updateRequested }
                                             />
                                         );
                                     })

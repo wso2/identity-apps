@@ -404,7 +404,14 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     },
                     mandatory: claim.mandatory
                 };
-                RequestedClaims.push(requestedClaim);
+                // If claim mapping is there then check whether claim is requested or not.
+                if (claimMappingFinal.length > 0) {
+                    if (claim.requested) {
+                        RequestedClaims.push(requestedClaim);
+                    }
+                } else {
+                    RequestedClaims.push(requestedClaim);
+                }
             })
         } else {
             selectedExternalClaims.map((claim: ExtendedExternalClaimInterface) => {
