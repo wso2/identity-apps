@@ -128,7 +128,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                             { leftActionPanel }
                                         </div>
                                         <div className="left-aligned-actions">
-                                            {leftActionPanel}
+                                            { leftActionPanel }
                                         </div>
                                     </Grid.Column>
                                     <Grid.Column width={ 8 }>
