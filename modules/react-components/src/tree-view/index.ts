@@ -14,8 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
- @treeview-tree-stem-color: #f3f3f3;
- @checkboxfill: #20c2e0;
+export * from "./tree-view";

@@ -19,7 +19,7 @@
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { getPermissionList } from "../../../../src/api";
 import { Permission, PermissionObject } from "../../../models/permission";
-import SuperTreeview from 'react-super-treeview';
+import { TreeView } from "@wso2is/react-components";
 
 /**
  * Interface to capture permission list props
@@ -103,8 +103,8 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
      * 
      * @param nodeData - array of checked elements returned.
      */
-    const handlePermissionCheck = (nodeData): void => {
-        const checkState = nodeData[0].isChecked;
+    const handlePermissionCheck = (arrayOfNodes, depth) => {
+        const checkState = arrayOfNodes[0].isChecked;
 
         /**
          * A util method which will check all the child elements.
@@ -120,17 +120,17 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
             })
         }
 
-        applyCheckStateTo(nodeData);
+        applyCheckStateTo(arrayOfNodes);
 
-        if (nodeData[0].isChecked) {
-            setSelectedPermissions([...selectedPermissions, nodeData[0]]);
+        if (arrayOfNodes[0].isChecked) {
+            setSelectedPermissions([...selectedPermissions, arrayOfNodes[0]]);
         } else {
-            setSelectedPermissions(selectedPermissions.filter(item => item.fullPath !== nodeData[0].fullPath));
+            setSelectedPermissions(selectedPermissions.filter(item => item.fullPath !== arrayOfNodes[0].fullPath));
         }
     }
 
     return (
-        permissionTree && permissionTree.length != 0 ? <SuperTreeview
+        permissionTree && permissionTree.length != 0 ? <TreeView
             data={ permissionTree }
             keywordLabel= "label"
             isDeletable= { () => { return false } }
