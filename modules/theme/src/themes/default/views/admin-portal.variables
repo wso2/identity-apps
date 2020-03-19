@@ -17,5 +17,5 @@
  *
  */
 
-@super-treeview-tree-stem-color: #f3f3f3;
-@treeFill: #20C2E0;
+ @treeview-tree-stem-color: #f3f3f3;
+ @checkboxfill: #20c2e0;
