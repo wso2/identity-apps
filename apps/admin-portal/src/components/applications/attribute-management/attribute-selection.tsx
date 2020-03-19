@@ -106,7 +106,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         }
     };
 
-
     const updateRequested = (claimURI: string, requested: boolean) => {
         if (selectedDialect.localDialect) {
             const localClaims = [...selectedClaims];
