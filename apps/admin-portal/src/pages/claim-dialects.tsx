@@ -58,7 +58,8 @@ export const ClaimDialectsPage = (): React.ReactElement => {
             const filteredDialect: ClaimDialect[] = response.filter((claim: ClaimDialect) => {
                 return claim.id !== "local";
             });
-			setDialects(filteredDialect);
+
+            setDialects(filteredDialect);
             setFilteredDialects(filteredDialect);
         }).catch(error => {
             dispatch(addAlert(
