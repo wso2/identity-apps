@@ -316,7 +316,6 @@ export interface AdaptiveAuthTemplateCategoryInterface {
     order: number;
 }
 
-
 /**
  * Adaptive auth template interface.
  */
