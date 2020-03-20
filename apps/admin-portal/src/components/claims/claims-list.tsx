@@ -228,13 +228,9 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                             type: "dropdown"
                                         }
                                     ] }
-                                    descriptionColumnWidth={ 4 }
-                                    metaColumnWidth={ 4 }
-                                    actionsColumnWidth={ 4 }
                                     actionsFloated="right"
                                     itemHeader={ claim.displayName }
                                     metaContent={ [
-                                        listContent(claim.description),
                                         listContent(
                                             <CopyInputField
                                                 value={ claim ? claim.claimURI : "" }
