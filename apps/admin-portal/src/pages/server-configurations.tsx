@@ -23,8 +23,7 @@ import { Grid } from "semantic-ui-react";
 import { AlertInterface } from "../../../user-portal/src/models";
 import { addAlert } from "../../../user-portal/src/store/actions";
 import {
-	UsernameRecovery,
-	PasswordRecovery,
+	AccountRecovery,
 	UserSelfRegistration
 } from "../components/serverConfigurations";
 
@@ -55,8 +54,7 @@ export const ServerConfigurationsPage: FunctionComponent<{}> = (): ReactElement 
 				<Grid.Row>
 					<Grid.Column width={ 16 }>
 						<UserSelfRegistration onAlertFired={ handleAlerts }/>
-						<UsernameRecovery onAlertFired={ handleAlerts }/>
-						<PasswordRecovery onAlertFired={ handleAlerts }/>
+						<AccountRecovery onAlertFired={ handleAlerts }/>
 					</Grid.Column>
 				</Grid.Row>
 			</Grid>

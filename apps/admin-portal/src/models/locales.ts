@@ -453,19 +453,97 @@ export interface Views {
                     };
                 };
             };
-            usernameRecovery: {
+            accountRecovery: {
                 actionTitles: {
                     config: string;
                 };
                 description: string;
                 heading: string;
-            };
-            passwordRecovery: {
-                actionTitles: {
-                    config: string;
+                usernameRecovery: {
+                    actionTitles: {
+                        config: string;
+                    };
+                    description: string;
+                    heading: string;
+                    form: {
+                        enable: {
+                            label: string;
+                        };
+                        enableReCaptcha: {
+                            label: string;
+                        };
+                    };
                 };
-                description: string;
-                heading: string;
+                passwordRecovery: {
+                    actionTitles: {
+                        config: string;
+                    };
+                    description: string;
+                    heading: string;
+                    form: {
+                        enableNotificationBasedRecovery: {
+                            label: string;
+                        };
+                        enableReCaptchaBasedRecovery: {
+                            label: string;
+                        };
+                        enableSecurityQuestionBasedRecovery: {
+                            label: string;
+                        };
+                        noOfQuestionsRequired: {
+                            label: string;
+                            hint: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        enableReCaptchaForSecurityQuestionBasedRecovery: {
+                            label: string;
+                            hint: string;
+                        };
+                    };
+                };
+                otherSettings: {
+                    form: {
+                        reCaptchaMaxFailedAttempts: {
+                            label: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        enableInternalNotificationManagement: {
+                            label: string;
+                            hint: string;
+                        };
+                        notifyRecoverySuccess: {
+                            label: string;
+                        };
+                        notifyQuestionRecoveryStart: {
+                            label: string;
+                        };
+                        recoveryLinkExpiryTime: {
+                            label: string;
+                            hint: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        smsOTPExpiryTime: {
+                            label: string;
+                            hint: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        recoveryCallbackURLRegex: {
+                            label: string;
+                            hint: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                    };
+                };
             };
         };
         footer: {

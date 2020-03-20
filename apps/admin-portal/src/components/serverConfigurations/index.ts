@@ -17,5 +17,4 @@
  */
 
 export * from "./user-self-registration";
-export * from "./username-recovery";
-export * from "./password-recovery";
+export * from "./account-recovery";

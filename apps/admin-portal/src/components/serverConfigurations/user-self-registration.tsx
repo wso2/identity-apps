@@ -176,7 +176,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 					requiredErrorMessage={ t(
 						"views:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime.validations.empty"
 					) }
-					type="text"
+					type="number"
 					value="1440"
 					width={ 9 }
 				/>
@@ -195,7 +195,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 					requiredErrorMessage={ t(
 						"views:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.validations.empty"
 					) }
-					type="text"
+					type="number"
 					value="1"
 					width={ 9 }
 				/>
@@ -218,9 +218,6 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 					value="https://localhost:9443/authenticationendpoint/login.do"
 					width={ 9 }
 				/>
-				<Hint>
-					{ t("views:components.serverConfigs.selfRegistration.form.callbackURLRegex.placeholder" ) }
-				</Hint>
 				<Field
 					hidden={ true }
 					type="divider"
