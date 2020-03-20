@@ -406,6 +406,29 @@ export interface Views {
                 createPermission: Notification;
             };
         };
+        governance: {
+            selfRegistration: {
+                actionTitles: {
+                    config: string;
+                };
+                description: string;
+                heading: string;
+            };
+            usernameRecovery: {
+                actionTitles: {
+                    config: string;
+                };
+                description: string;
+                heading: string;
+            };
+            passwordRecovery: {
+                actionTitles: {
+                    config: string;
+                };
+                description: string;
+                heading: string;
+            };
+        };
         footer: {
             copyright: string;
         };

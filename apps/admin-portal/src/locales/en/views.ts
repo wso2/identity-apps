@@ -687,6 +687,29 @@ export const views: Views = {
                     }
                 }
             }
+        },
+        governance: {
+            selfRegistration: {
+                actionTitles: {
+                    config: "Configure"
+                },
+                description: "Configure how the User Self Registration should happen with your users.",
+                heading: "User Self Registration"
+            },
+            usernameRecovery: {
+                actionTitles: {
+                    config: "Configure"
+                },
+                description: "Configure how account recovery should happen with your users.",
+                heading: "Username Recovery"
+            },
+            passwordRecovery: {
+                actionTitles: {
+                    config: "Configure"
+                },
+                description: "Configure how password recovery should happen with your users.",
+                heading: "Password Recovery"
+            }
         }
     },
     pages: {
