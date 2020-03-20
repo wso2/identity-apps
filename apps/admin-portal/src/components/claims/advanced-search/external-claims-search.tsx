@@ -46,7 +46,7 @@ const FILTER_VALUES_FIELD_IDENTIFIER = "filerValues";
  * field value to this.
  * @type {string}
  */
-const DEFAULT_SEARCH_STRATEGY = "name co";
+const DEFAULT_SEARCH_STRATEGY = "claimURI co";
 
 /**
  * Prop types for the application search component.
@@ -152,7 +152,7 @@ export const ExternalClaimsSearch: FunctionComponent<ExternalClaimsSearchPropsIn
             hintLabel={ t("devPortal:components.applications.search.hints.querySearch.label") }
             onExternalSearchQueryClear={ handleExternalSearchQueryClear }
             onSearchQuerySubmit={ handleSearchQuerySubmit }
-            placeholder={ t("devPortal:components.applications.search.placeholder") }
+            placeholder="Search by Claim URI"
             resetSubmittedState={ handleResetSubmittedState }
             searchOptionsHeader={ t("devPortal:components.applications.search.options.header") }
             externalSearchQuery={ externalSearchQuery }
@@ -180,6 +180,8 @@ export const ExternalClaimsSearch: FunctionComponent<ExternalClaimsSearchPropsIn
                                     ".inputs.filerAttribute.validations.empty") }
                                 type="dropdown"
                                 width={ 16 }
+                                value={ filterAttributeOptions?.length === 1 ? filterAttributeOptions[0]?.value : null }
+                                disabled={ filterAttributeOptions?.length === 1 }
                             />
                             <Grid>
                                 <Grid.Row columns={ 2 }>
