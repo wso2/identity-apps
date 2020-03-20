@@ -982,6 +982,30 @@ body {
     }
 }
 
+/*****************************************
+            Sort List Box
+*****************************************/
+
+.sort-list {
+    display: flex;
+    border-radius: @menuBorderRadius;
+    border: @menuBorder;
+
+    .ui.selection.dropdown {
+        border: none;
+        border-radius: unset;
+        border-top-left-radius: @menuBorderRadius;
+        border-bottom-left-radius: @menuBorderRadius;
+    }
+
+    .ui.button {
+        margin: 0;
+        border-radius: unset;
+        border-top-right-radius: @menuBorderRadius - 1;
+        border-bottom-right-radius: @menuBorderRadius - 1 ;
+    }
+}
+
 /**
  * The following style was added to overcome the issue
  * with rendering the popup on a modal when the modal
