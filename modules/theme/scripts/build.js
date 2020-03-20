@@ -25,14 +25,18 @@ const fs = require("fs-extra");
 const CleanCSS = require("clean-css");
 const replace = require("replace");
 
+const srcDir = path.join(__dirname, "..", "src");
 const distDir = path.join(__dirname, "..", "dist");
-const themesDir = path.join(__dirname, "..", "src", "themes");
+const themesDir = path.join(srcDir, "themes");
 const semanticUICorePath = path.join("src", "semantic-ui-core");
 const semanticUICoreDefinitions = path.join(semanticUICorePath, "definitions");
 
 const lessNpmModuleDir = path.dirname(require.resolve("less"));
 const semanticUICSSModuleDir = path.join(lessNpmModuleDir, "..", "semantic-ui-css");
 const semanticUILessModuleDir = path.join(lessNpmModuleDir, "..", "semantic-ui-less");
+
+const SAMPLE_THEME_NAME = "sample";
+const DEFAULT_THEME_NAME = "default";
 
 /*
  * Export compiled theme string to files
@@ -100,7 +104,7 @@ const generateThemes = () => {
             return;
         }
 
-        if (theme === "sample") {
+        if (theme === SAMPLE_THEME_NAME) {
             return;
         }
 
@@ -124,6 +128,81 @@ const generateThemes = () => {
     }).catch((error) => {
         console.error(error);
     });
+};
+
+/*
+ * Util method to convert string to title case
+ */
+const titleCase = (string, spliter) => {
+    const sentence = string.toLowerCase().split(spliter);
+
+    for(var i = 0; i< sentence.length; i++){
+       sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
+    }
+
+    return sentence.join(" ");
+};
+
+/*
+ * Create example sub theme folder
+ */
+const createSampleTheme = () => {
+    const sampleThemePath = path.join(themesDir, SAMPLE_THEME_NAME);
+    const defaultThemePath = path.join(themesDir, DEFAULT_THEME_NAME);
+
+    fs.ensureDirSync(sampleThemePath);
+    fs.emptyDirSync(sampleThemePath);
+
+    /*
+     * Remove empty definition folders from the copied
+     */
+    const defaultThemeContent = fs.readdirSync(defaultThemePath);
+    
+    defaultThemeContent.map((contentItem) => {
+        const contentItemPath = path.join(defaultThemePath, contentItem);
+    
+        if (fs.lstatSync(contentItemPath).isDirectory()) {
+            const folder = contentItem;
+            const folderPath = path.join(sampleThemePath, folder);
+
+            if (folder === "assets") {
+                const assetsFolderPath = path.join(defaultThemePath, folder);
+
+                // fs.ensureDirSync(assetsFolderPath);
+                fs.copySync(path.join(assetsFolderPath), folderPath);
+            }
+            else {
+                fs.ensureDirSync(folderPath);
+
+                const files = fs.readdirSync(path.join(defaultThemePath, folder));
+
+                files.map((file) => {
+                    const fileNameSplit = file.split(".");
+                    const content = "/*******************************\n" +
+                        `     ${titleCase(fileNameSplit[0], "-")} ${titleCase(fileNameSplit[1], " ")}\n` +  
+                        "********************************\n";
+
+                    fs.writeFileSync(path.join(folderPath, file), content, (error) => {
+                        console.error(error);
+                    });
+                });
+            }
+        }
+    });
+
+    console.log("themes/sample/assets created.");
+    console.log("themes/sample .variables & .overrides files created.");
+
+    /*
+     * Copy index.less to sample theme
+     */
+    fs.copySync(path.join(srcDir, "templates", "index.less"), path.join(sampleThemePath, "index.less"));
+    console.log("themes/sample/index.less copied.");
+
+    /*
+     * Start compile themes
+     */
+    generateThemes();
 };
 
 /*
@@ -171,8 +250,8 @@ const createSemanticUICore = () => {
         /*
          * Copy default theme .variable & .override files from semantic ui less module to src/semantic-ui-core folder
          */
-        fs.copySync(path.join(semanticUILessModuleDir, "themes", "default"),
-            path.join(semanticUICorePath, "default"));
+        fs.copySync(path.join(semanticUILessModuleDir, "themes", DEFAULT_THEME_NAME),
+            path.join(semanticUICorePath, DEFAULT_THEME_NAME));
 
         console.log("node_modules/semantic-ui-less/themes/default copied.");
 
@@ -187,9 +266,9 @@ const createSemanticUICore = () => {
             silent: true,
         });
 
-        console.log("semantic-ui-less/definitions changes updated.");
+        console.log("semantic-ui-core/definitions changes updated.");
 
-        generateThemes();
+        createSampleTheme();
 
     } catch (error) {
         console.error(error);
