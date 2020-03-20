@@ -154,7 +154,7 @@ export const LocalClaimsPage = (): React.ReactElement => {
                                 } catch (error) {
                                     dispatch(addAlert({
                                         message: "Filter query format incorrect",
-                                        description: error,
+                                        description: error?.message,
                                         level: AlertLevels.ERROR
                                     }));
                                 }

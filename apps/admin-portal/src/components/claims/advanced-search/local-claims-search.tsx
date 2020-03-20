@@ -46,7 +46,7 @@ const FILTER_VALUES_FIELD_IDENTIFIER = "filerValues";
  * field value to this.
  * @type {string}
  */
-const DEFAULT_SEARCH_STRATEGY = "name co";
+const DEFAULT_SEARCH_STRATEGY = "displayName co";
 
 /**
  * Prop types for the application search component.
@@ -186,6 +186,8 @@ export const LocalClaimsSearch: FunctionComponent<LocalClaimsSearchPropsInterfac
                                     ".inputs.filerAttribute.validations.empty") }
                                 type="dropdown"
                                 width={ 16 }
+                                value={ filterAttributeOptions?.length === 1 ? filterAttributeOptions[0]?.value : null }
+                                disabled={ filterAttributeOptions?.length === 1 }
                             />
                             <Grid>
                                 <Grid.Row columns={ 2 }>
