@@ -197,11 +197,9 @@
                         %>
                         <div class="ui divider hidden"></div>
                         <div class="align-right buttons">
-                            <button type="button" id="recoveryCancel"
-                                    class="ui button link-button"
-                                    onclick="location.href='<%=Encode.forJavaScript(IdentityManagementEndpointUtil.getURLEncodedCallback(callback))%>';">
+                            <a href="javascript:goBack()" class="ui button link-button">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
-                            </button>
+                            </a>
                             <button id="recoverySubmit"
                                     class="ui primary button"
                                     type="submit">
@@ -234,6 +232,9 @@
     <% } %>
 
     <script type="text/javascript">
+        function goBack() {
+            window.history.back();
+        }
 
         $(document).ready(function () {
 
@@ -249,11 +250,11 @@
                 var usernameUserInput = document.getElementById("usernameUserInput");
                 var usernameUserInputValue = usernameUserInput.value.trim();
 
-                if (!isSaaSApp) {
+                if ((tenantDomain !== "null") && !isSaaSApp) {
                     if (!isEmailUsernameEnabled && (usernameUserInputValue.split("@").length >= 2)) {
 
                         errorMessage.text(
-                            "Invalid Username. Username should't have '@' or any other special characters.");
+                            "Invalid Username. Username shouldn't have '@' or any other special characters.");
                         errorMessage.show();
 
                         return;

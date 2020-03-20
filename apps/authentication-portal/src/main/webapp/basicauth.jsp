@@ -75,7 +75,7 @@
                     if (usernameUserInput) {
                         var usernameUserInputValue = usernameUserInput.value.trim();
 
-                        if (getParameterByName("isSaaSApp") === "false") {
+                        if (!getParameterByName("isSaaSApp") && tenantName) {
 
                             if ((!isEmailUsernameEnabled) && (usernameUserInputValue.split("@").length > 1)) {
                                 userName.value = usernameUserInputValue;
