@@ -16,11 +16,13 @@ Install NodeJS from [https://nodejs.org/en/download/](https://nodejs.org/en/down
 
 This theme module is build with customized [Semantic-UI](https://semantic-ui.com/) less distribution files along with some enhancements to support our product styling and capabilities.
 
-1. Create a copy from the sample theme folder `src/themes/sample` => E.g. `src/themes/foo-theme`.
+1. Run `npm run build` once. And there will be new sample theme generated under `src/themes/` folder.
 
-2. Use less overrides and variables to override existing styles. Use files in `src/semantic-ui-core/default` & `src/themes/default` as reference.
+1. Create a duplicate from the generated sample theme folder `src/themes/sample` => E.g. `src/themes/foo-theme`.
 
-3. Re-build the project. And your new sub-theme will creates in the `dist` folder.
+1. Use less overrides and variables to override existing styles. Use files in `src/semantic-ui-core/default` & `src/themes/default` as reference.
+
+1. Re-build the project. And your new sub-theme will creates in the `dist` folder.
 
 ## Reporting Issues
 
