@@ -406,13 +406,52 @@ export interface Views {
                 createPermission: Notification;
             };
         };
-        governance: {
+        serverConfigs: {
             selfRegistration: {
                 actionTitles: {
                     config: string;
                 };
                 description: string;
                 heading: string;
+                confirmation: {
+                    heading: string;
+                    message: string;
+                };
+                form: {
+                    enable: {
+                        label: string;
+                    };
+                    enableAccountLockOnCreation: {
+                        label: string;
+                    };
+                    internalNotificationManagement: {
+                        label: string;
+                    };
+                    enableReCaptcha: {
+                        label: string;
+                    };
+                    verificationLinkExpiryTime: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                        };
+                    };
+                    smsOTPExpiryTime: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                        };
+                    };
+                    callbackURLRegex: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                        };
+                    };
+                };
             };
             usernameRecovery: {
                 actionTitles: {

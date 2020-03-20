@@ -688,13 +688,52 @@ export const views: Views = {
                 }
             }
         },
-        governance: {
+        serverConfigs: {
             selfRegistration: {
                 actionTitles: {
                     config: "Configure"
                 },
                 description: "Configure how the User Self Registration should happen with your users.",
-                heading: "User Self Registration"
+                heading: "User Self Registration",
+                confirmation: {
+                    heading: "Confirmation",
+                    message: "Do you wish to save the configurations related to user self registration?"
+                },
+                form: {
+                    enable: {
+                        label: "Enable User Self Registration",
+                    },
+                    enableAccountLockOnCreation: {
+                        label: "Enable Account Lock On Creation"
+                    },
+                    internalNotificationManagement: {
+                        label: "Internal Notification Management"
+                    },
+                    enableReCaptcha: {
+                        label: "Enable reCaptcha"
+                    },
+                    verificationLinkExpiryTime: {
+                        label: "User self registration verification link expiry time",
+                        placeholder: "Set the number of minutes for the self registration verification e-mail would be valid.",
+                        validations: {
+                            empty: "User self registration verification link expiry time is required."
+                        }
+                    },
+                    smsOTPExpiryTime: {
+                        label: "User self registration SMS OTP expiry time",
+                        placeholder: "Set the number of minutes that the SMS OTP would be valid.",
+                        validations: {
+                            empty: "User self registration SMS OTP expiry time is required."
+                        }
+                    },
+                    callbackURLRegex: {
+                        label: "User self registration callback URL regex",
+                        placeholder: "User self registration callback URL regex.",
+                        validations: {
+                            empty: "User self registration callback URL regex is required."
+                        }
+                    }
+                }
             },
             usernameRecovery: {
                 actionTitles: {

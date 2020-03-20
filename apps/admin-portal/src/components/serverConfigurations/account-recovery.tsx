@@ -41,15 +41,15 @@ export const UsernameRecovery: FunctionComponent<UsernameRecoveryProps> = (props
 
 	return (
 		<Section
-			description={ t("views:components.governance.usernameRecovery.description") }
-			header={ t("views:components.governance.usernameRecovery.heading") }
+			description={ t("views:components.serverConfigs.usernameRecovery.description") }
+			header={ t("views:components.serverConfigs.usernameRecovery.heading") }
 			icon={ SettingsSectionIcons.profileExport }
 			iconMini={ SettingsSectionIcons.profileExportMini }
 			iconSize="auto"
 			iconStyle="colored"
 			iconFloated="right"
 			onPrimaryActionClick={ () => console.log("Clicked") }
-			primaryAction={ t("views:components.governance.usernameRecovery.actionTitles.config") }
+			primaryAction={ t("views:components.serverConfigs.usernameRecovery.actionTitles.config") }
 			primaryActionIcon="key"
 		>
 
