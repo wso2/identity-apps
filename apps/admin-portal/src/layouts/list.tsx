@@ -20,7 +20,16 @@
 import { Pagination } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useState } from "react";
-import { Divider, DropdownItemProps, DropdownProps, Grid, PaginationProps, Dropdown, Popup, Icon, Button } from "semantic-ui-react";
+import {
+    Divider,
+    DropdownItemProps,
+    DropdownProps, Grid,
+    PaginationProps,
+    Dropdown,
+    Popup,
+    Icon,
+    Button
+} from "semantic-ui-react";
 
 /**
  * List layout component Prop types.
@@ -84,7 +93,10 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                     <Grid.Column width={ 8 }>
                                         <div className="left-aligned actions">
                                             {
-                                                sortOptions && sortStrategy && onSortStrategyChange && onSortOrderChange &&
+                                                sortOptions &&
+                                                sortStrategy &&
+                                                onSortStrategyChange &&
+                                                onSortOrderChange &&
                                                 <div className="sort-list">
                                                     <Dropdown
                                                         onChange={ onSortStrategyChange }
