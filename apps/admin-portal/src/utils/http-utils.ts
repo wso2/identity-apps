@@ -72,9 +72,9 @@ export const onHttpRequestError = (error: any): void => {
     }
 
     // Terminate the session if the requests returns an un-authorized status code (401)
-    // or a forbidden status code (403). NOTE: Axios is unable to handle 401 errors.
-    // `!error.response` will usually catch the `401` error. Check the link in the doc comment.
-    if (!error.response || error.response.status === 403 || error.response.status === 401) {
+    // NOTE: Axios is unable to handle 401 errors. `!error.response` will usually catch
+    // the `401` error. Check the link in the doc comment.
+    if (!error.response || error.response.status === 401) {
         history.push(APP_LOGOUT_PATH);
     }
 };
