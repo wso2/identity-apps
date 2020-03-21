@@ -19,14 +19,13 @@
 import {
     I18nInstanceInitException,
     LanguageChangeException,
-    UninitializedI18nInstanceException,
     UnsupportedI18nFrameworkException
 } from "./exceptions";
 import { generateI18nOptions, getSupportedLanguages } from "./helpers";
 import i18next, { InitOptions, Module, i18n as i18nInterface } from "i18next";
 import { I18nModuleConstants } from "./constants";
 import LanguageDetector from "i18next-browser-languagedetector";
-import { SupportedLanguages } from "./models";
+import XHR from "i18next-xhr-backend";
 import { initReactI18next } from "react-i18next";
 
 export enum SupportedI18nFrameworks {
@@ -35,7 +34,7 @@ export enum SupportedI18nFrameworks {
 
 export class I18n {
 
-    private static i18nInstance: i18nInterface = null;
+    public static instance: i18nInterface = i18next;
     private static debug = false;
 
     /**
@@ -47,33 +46,28 @@ export class I18n {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
-    public static getInstance(): i18nInterface {
-
-        if (!this.i18nInstance) {
-            throw new UninitializedI18nInstanceException();
-        }
-
-        return this.i18nInstance;
-    }
-
-    public static init(options?: InitOptions, override?: boolean, plugins?: Module[], autoDetect?: boolean,
-                       debug = false, framework: SupportedI18nFrameworks = SupportedI18nFrameworks.REACT) {
-
-        this.i18nInstance = i18next;
+    public static init(options?: InitOptions, override?: boolean, autoDetect?: boolean, useBackend?: boolean,
+                       debug = false, framework: SupportedI18nFrameworks = SupportedI18nFrameworks.REACT,
+                       plugins?: Module[]) {
 
         // If `autoDetect` flag is enabled, activate the language detector plugin.
         if (autoDetect) {
-            this.i18nInstance.use(LanguageDetector);
+            this.instance.use(LanguageDetector);
+        }
+
+        // If `useBackend` flag is enabled, activate the XHR backend plugin.
+        if (useBackend) {
+            this.instance.use(XHR);
         }
 
         // Activate the corresponding i18n framework.
         if (framework === SupportedI18nFrameworks.REACT) {
-            this.i18nInstance.use(initReactI18next);
+            this.instance.use(initReactI18next);
         } else {
             throw new UnsupportedI18nFrameworkException(framework);
         }
 
-        this.i18nInstance.init(generateI18nOptions(options, override, debug))
+        this.instance.init(generateI18nOptions(options, override, debug))
             .then((response) => {
                 if (debug) {
                     // TODO: Implement a logger module and use here.
@@ -86,26 +80,22 @@ export class I18n {
             });
 
         // Check if the detected language is supported
-        this.checkDetectedLanguage(this.i18nInstance.language);
+        this.checkDetectedLanguage(this.instance.language);
     }
 
-    public static getSupportedLanguages(): SupportedLanguages {
-        return getSupportedLanguages();
-    }
-
-    public static checkDetectedLanguage(detectedLang: string) {
+    private static checkDetectedLanguage(detectedLang: string) {
 
         let unSupportedLanguage = true;
 
-        for (const lang of Object.keys(this.getSupportedLanguages())) {
+        for (const lang of Object.keys(getSupportedLanguages())) {
             if (lang === detectedLang) {
                 unSupportedLanguage = false;
-                return;
+                break;
             }
         }
 
         if (unSupportedLanguage) {
-            this.i18nInstance.changeLanguage(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE)
+            this.instance.changeLanguage(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE)
                 .then(() => {
                     if (this.debug) {
                         // TODO: Implement a logger module and use here.

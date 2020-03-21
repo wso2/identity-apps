@@ -51,5 +51,5 @@ export class I18nModuleConstants {
      * @type {string}
      * @default
      */
-    public static readonly DEFAULT_FALLBACK_LANGUAGE: string = "en";
+    public static readonly DEFAULT_FALLBACK_LANGUAGE: string = "en-US";
 }

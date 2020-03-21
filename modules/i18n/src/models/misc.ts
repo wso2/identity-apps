@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { Resource } from "i18next";
-
 /**
  * Model for locale meta information.
  */
@@ -38,6 +36,17 @@ export interface LocaleMeta {
      * Set of available namespaces
      */
     namespaces: string[];
+    /**
+     * Set of namespace paths.
+     */
+    paths?: NamespacePathInterface;
+}
+
+/**
+ * Namespace path interface.
+ */
+interface NamespacePathInterface {
+    [ ns: string ]: string;
 }
 
 /**
