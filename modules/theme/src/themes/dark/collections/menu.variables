@@ -1,0 +1,7 @@
+/*******************************
+        Menu Variables
+*******************************/
+
+@background: @pageBackground;
+@verticalBackground: @pageBackground;
+@sidePanelDefaultFontColor: @textColor;
