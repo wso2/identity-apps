@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/i18n",
-    "version": "1.0.84",
+    "version": "1.0.96",
     "description": "This module contains the configs and common namespaces required to make an identity app available in multiple languages.",
     "keywords": [
         "WSO2",
@@ -32,10 +32,12 @@
     },
     "peerDependencies": {
         "@types/i18next": "*",
+        "@types/i18next-xhr-backend": "*",
         "@types/lodash": "*",
         "chalk": "*",
         "i18next": "*",
         "i18next-browser-languagedetector": "*",
+        "i18next-xhr-backend": "*",
         "lodash": "*",
         "react-i18next": "*",
         "rimraf": "*",
