@@ -26,26 +26,27 @@ const log = console.log;
 
 const OUTPUT_DIR_NAME = "bundle";
 const META_FILE_NAME = "meta.json";
+const TRANSLATIONS_FOLDER_NAME = "translations";
 
 // Path for the distribution directory.
 const dist = path.join(__dirname, "..", "dist");
 
-// Path for the locale content after the build.
-const contentPath = path.join(dist, "src", "content");
+// Path for the translations after the build.
+const translationsPath = path.join(dist, "src", TRANSLATIONS_FOLDER_NAME);
 
 // Path for the directory to store final transpiled JSON files.
 const outputPath = path.join(dist, OUTPUT_DIR_NAME);
 
 log(chalk.greenBright.bold("Running ", chalk.yellowBright("@wso2is/i18n"), " module's post build script."));
 
-// Check if the `dist` and the `content` folder exists and if not terminate the script.
+// Check if the `dist` and the `translations` folder exists and if not terminate the script.
 // If the folders doesn't exist that means the build hasn't been performed.
-if (!fs.existsSync(dist) || !fs.existsSync(contentPath)) {
+if (!fs.existsSync(dist) || !fs.existsSync(translationsPath)) {
 
     log(chalk.whiteBright.bgRed("\nERROR") + " in " +
         chalk.yellowBright("@wso2is/i18") + " module");
 
-    log(chalk.redBright("\nCould not locate the i18 content build artifacts." +
+    log(chalk.redBright("\nCould not locate the i18 translation build artifacts." +
         "Please execute the build command before running this script."));
 
     // Terminate the script.
@@ -61,14 +62,14 @@ if (fs.existsSync(outputPath)) {
 // Create the output directory if it doesn't exist.
 createDirectory(outputPath, true);
 
-// Load the locale content.
-const content = require(contentPath);
+// Load the translations.
+const translations = require(translationsPath);
 
 // Object to store the meta info of all the languages.
 let metaFileContent = {};
 
 // Create directories to store the locales for the corresponding language.
-for (const value of Object.values(content)) {
+for (const value of Object.values(translations)) {
 
     const langDirPath = path.join(outputPath, value.meta.code);
 

@@ -22,5 +22,5 @@ export const meta: LocaleMeta = {
     code: "en-US",
     flag: "us",
     name: "English (United States)",
-    namespaces: [ "common" ]
+    namespaces: [ "common", "adminPortal" ]
 };

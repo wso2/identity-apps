@@ -18,7 +18,7 @@
 
 import { InitOptions, Resource } from "i18next";
 import { I18nModuleConstants } from "./constants";
-import * as LOCALES from "./content";
+import * as LOCALES from "./translations";
 import { SupportedLanguages } from "./models";
 
 /**
