@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export const adminPortal = {
+export const devPortal = {
     components: {
         applications: {
             notifications: {

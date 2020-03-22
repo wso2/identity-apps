@@ -17,10 +17,11 @@
  */
 
 import { LocaleMeta } from "../../models";
+import { I18nModuleConstants } from "../../constants";
 
 export const meta: LocaleMeta = {
     code: "ta-IN",
     flag: "in",
     name: "தமிழ் (India)",
-    namespaces: [ "common" ]
+    namespaces: [ I18nModuleConstants.DEFAULT_NAMESPACE ]
 };

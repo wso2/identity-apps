@@ -17,10 +17,11 @@
  */
 
 import { LocaleMeta } from "../../models";
+import { I18nModuleConstants } from "../../constants";
 
 export const meta: LocaleMeta = {
     code: "en-US",
     flag: "us",
     name: "English (United States)",
-    namespaces: [ "common", "adminPortal" ]
+    namespaces: [ I18nModuleConstants.DEFAULT_NAMESPACE, I18nModuleConstants.DEV_PORTAL_NAMESPACE ]
 };

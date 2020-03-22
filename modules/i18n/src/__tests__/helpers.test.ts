@@ -24,6 +24,7 @@ import {
     isLanguageSupported
 } from "../helpers";
 import { SupportedLanguagesMeta } from "../models";
+import { I18nModuleConstants } from "../constants";
 
 const DEFAULT_SUPPORTED_LANGUAGES = [ "en-US", "pt-BR", "si-LK", "ta-IN" ];
 
@@ -41,7 +42,10 @@ describe("If default supported language retrieval helper function", () => {
 
 describe("If default supported namespaces retrieval helper function", () => {
 
-    const DEFAULT_SUPPORTED_NAMESPACES = [ "common", "adminPortal" ];
+    const DEFAULT_SUPPORTED_NAMESPACES = [
+        I18nModuleConstants.DEFAULT_NAMESPACE,
+        I18nModuleConstants.DEV_PORTAL_NAMESPACE
+    ];
 
     test("Should return the default supported namespaces as an array", () => {
         expect(Array.isArray(getNamespacesSupportedByDefault())).toBe(true);
@@ -70,9 +74,9 @@ describe("If supported language checker helper function", () => {
             "code": "en-US",
             "flag": "si",
             "name": "",
-            "namespaces": ["common"],
+            "namespaces": [ I18nModuleConstants.DEFAULT_NAMESPACE ],
             "paths": {
-                "common": "/path"
+                [ I18nModuleConstants.DEFAULT_NAMESPACE ]: "/path"
             }
         }
     };

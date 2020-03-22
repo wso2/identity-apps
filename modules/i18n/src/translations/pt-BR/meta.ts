@@ -17,10 +17,11 @@
  */
 
 import { LocaleMeta } from "../../models";
+import { I18nModuleConstants } from "../../constants";
 
 export const meta: LocaleMeta = {
     code: "pt-BR",
     flag: "br",
     name: "Português (Brazil)",
-    namespaces: [ "common" ]
+    namespaces: [ I18nModuleConstants.DEFAULT_NAMESPACE ]
 };

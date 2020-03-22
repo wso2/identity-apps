@@ -17,10 +17,11 @@
  */
 
 import { LocaleMeta } from "../../models";
+import { I18nModuleConstants } from "../../constants";
 
 export const meta: LocaleMeta = {
     code: "si-LK",
     flag: "lk",
     name: "සිංහල (Sri Lanka)",
-    namespaces: [ "common" ]
+    namespaces: [ I18nModuleConstants.DEFAULT_NAMESPACE ]
 };
