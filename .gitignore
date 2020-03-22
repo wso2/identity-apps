@@ -96,6 +96,7 @@ typings/
 modules/theme/dist
 modules/theme/src/semantic-ui-core/default
 modules/theme/src/semantic-ui-core/definitions
+modules/theme/src/themes/sample
 modules/http/dist
 modules/validation/dist
 modules/forms/dist
