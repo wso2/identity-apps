@@ -20,7 +20,6 @@
  *  Captures the basic details in the applications.
  */
 export interface SelfSignUpConfigurationsInterface {
-
 	checkboxValues?: string[];
 	verificationCodeExpiryTime?: string;
 	smsOTPExpiryTime?: string;
