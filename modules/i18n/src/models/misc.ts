@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { InitOptions } from "i18next";
+
 /**
  * Model for locale meta information.
  */
@@ -64,8 +66,25 @@ export interface LocaleBundle {
 }
 
 /**
- * Model for supported languages.
+ * Model for supported languages metadata.
  */
-export interface SupportedLanguages {
+export interface SupportedLanguagesMeta {
     [ language: string ]: LocaleMeta;
+}
+
+/**
+ * Type for i18n module init options.
+ */
+export type I18nModuleInitOptions = InitOptions
+
+/**
+ * Model for defining i18n module options.
+ */
+export interface I18nModuleOptionsInterface {
+    initOptions?: I18nModuleInitOptions;
+    langAutoDetectEnabled?: boolean;
+    namespaceDirectories?: Map<string, string>;
+    overrideOptions?: boolean;
+    resourcePath?: string;
+    xhrBackendPluginEnabled?: boolean;
 }
