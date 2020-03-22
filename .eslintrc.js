@@ -27,7 +27,10 @@ module.exports = {
                 spacing: { objectLiterals: "always" }
             }
         ],
-        "react/no-children-prop": 0
+        "react/no-children-prop": 0,
+        "sort-keys": ["warn", "asc", {"caseSensitive": true, "natural": false, "minKeys": 2}],
+        "object-curly-spacing": ["warn", "always"],
+        "no-console": "warn",
     },
     overrides: [
         {
@@ -77,7 +80,7 @@ module.exports = {
                         variables: false,
                         typedefs: false
                     }
-                ]
+                ],
             }
         }
     ]
