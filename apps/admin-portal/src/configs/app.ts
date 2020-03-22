@@ -17,6 +17,10 @@
  */
 
 import { GlobalConfig } from "./globals";
+import {
+    IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID,
+    SELF_SIGN_UP_CONNECTOR_ID
+} from "../constants/server-configurations-constants";
 
 interface ServiceResourcesType {
     applications: string;
@@ -44,6 +48,7 @@ interface ServiceResourcesType {
     userStores: string;
     revoke: string;
     wellKnown: string;
+    selfSignUp: string;
 }
 
 export const ServiceResourcesEndpoint: ServiceResourcesType = {
@@ -71,5 +76,6 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     user: `${GlobalConfig.serverHost}/api/identity/user/v1.0/me`,
     userStores: `${GlobalConfig.serverHost}/api/server/v1/userstores`,
     users: `${GlobalConfig.serverHost}/scim2/Users`,
-    wellKnown: `${GlobalConfig.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
+    wellKnown: `${GlobalConfig.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`,
+    selfSignUp: `${GlobalConfig.serverHost}/api/server/v1/identity-governance/${IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID}/connectors/${SELF_SIGN_UP_CONNECTOR_ID}`
 };

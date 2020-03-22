@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { SettingsSectionIcons } from "../../configs";
 import { AlertInterface } from "../../models";
 import {
@@ -25,7 +25,9 @@ import {
 } from "@wso2is/react-components";
 import { useTranslation } from "react-i18next";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
-import { Field, Forms, useTrigger, Validation } from "@wso2is/forms";
+import { Field, Forms, useTrigger } from "@wso2is/forms";
+import { getSelfSignUpConfigurations } from "../../api/user-self-registration";
+import { SelfSignUpConfigurationsInterface } from "../../models/server-configurations";
 
 /**
  * Constant to store the self registration from identifier.
@@ -52,8 +54,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		[USER_SELF_REGISTRATION_FORM_IDENTIFIER]: false
 	});
 
-	const [currentPassword, setCurrentPassword] = useState("");
-	const [newPassword, setNewPassword] = useState("");
+	const [selfSignUpConfigs, setSelfSignUpConfigs] = useState<SelfSignUpConfigurationsInterface>({});
 	const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 	const [reset, resetForm] = useTrigger();
 
@@ -100,11 +101,55 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 	};
 
 	/**
-	 * Calls the API and updates the user password.
+	 * Calls the API and updates the self registrations configurations.
 	 */
 	const saveSelfRegistrationConfigs = () => {
-		// Todo Implement method.
-		console.log("Save self registration configs...");
+		console.log("Saving...");
+	};
+
+	/**
+	 * Load self registration configurations from the API, on page load.
+	 */
+	useEffect(() => {
+		getSelfSignUpConfigurations()
+			.then((response) => {
+				const checkboxValues = getSelfRegistrationCheckboxValues(response);
+				const configs = {
+					checkboxValues: checkboxValues,
+					verificationCodeExpiryTime: response.properties.find(
+						property => property.name == "SelfRegistration.VerificationCode.ExpiryTime" ).value,
+					smsOTPExpiryTime: response.properties.find(
+						property => property.name == "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime" ).value,
+					callbackRegex: response.properties.find(
+						property => property.name == "SelfRegistration.CallbackRegex" ).value
+				};
+				setSelfSignUpConfigs(configs);
+			});
+	}, []);
+
+	/**
+	 * Loop through the properties array of the API response and extract the checkbox values.
+	 *
+	 * @param data API Response data.
+	 * @return String array. Ex: [ "Enable", "LockOnCreation", ...]
+	 */
+	const getSelfRegistrationCheckboxValues = (data) => {
+		const values = [];
+		data.properties.map((property => {
+			if (property.name === "SelfRegistration.Enable") {
+				property.value === "true" ? values.push("Enable") : "";
+			}
+			if (property.name === "SelfRegistration.LockOnCreation") {
+				property.value === "true" ? values.push("LockOnCreation") : "";
+			}
+			if (property.name === "SelfRegistration.Notification.InternallyManage") {
+				property.value === "true" ? values.push("Notification.InternallyManage") : "";
+			}
+			if (property.name === "SelfRegistration.ReCaptcha") {
+				property.value === "true" ? values.push("ReCaptcha") : "";
+			}
+		}));
+		return values;
 	};
 
 	const confirmationModal = (
@@ -139,36 +184,35 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 				resetState={ reset }
 			>
 				<Field
-					name="UserSelfRegistrationOptions"
+					name="SelfRegistration"
 					required={ false }
 					requiredErrorMessage=""
 					type="checkbox"
 					children={ [
 						{
 							label: t("views:components.serverConfigs.selfRegistration.form.enable.label"),
-							value: "enableUserSelfRegistration"
+							value: "Enable"
 						},
 						{
 							label: t("views:components.serverConfigs.selfRegistration.form.enableAccountLockOnCreation.label"),
-							value: "enableAccountLockOnCreation"
+							value: "LockOnCreation"
 						},
 						{
 							label: t("views:components.serverConfigs.selfRegistration.form.internalNotificationManagement.label"),
-							value: "internalNotificationManagement"
+							value: "Notification.InternallyManage"
 						},
 						{
 							label: t("views:components.serverConfigs.selfRegistration.form.enableReCaptcha.label"),
-							value: "enableReCaptcha"
+							value: "ReCaptcha"
 						}
 					] }
-					value={ ["enableAccountLockOnCreation", "internalNotificationManagement", "enableReCaptcha"] }
-					// value={ isDiscoverable ? [ "discoverable" ] : [] }
+					value={ selfSignUpConfigs.checkboxValues }
 				/>
 				<Field
 					label={ t(
 						"views:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime.label"
 					) }
-					name="verificationExpiryTime"
+					name="SelfRegistration.VerificationCode.ExpiryTime"
 					placeholder={ t(
 						"views:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime.placeholder"
 					) }
@@ -177,7 +221,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 						"views:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime.validations.empty"
 					) }
 					type="number"
-					value="1440"
+					value={ selfSignUpConfigs.verificationCodeExpiryTime }
 					width={ 9 }
 				/>
 				<Hint>
@@ -187,7 +231,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 					label={ t(
 						"views:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.label"
 					) }
-					name="smsOTPExpiryTime"
+					name="SelfRegistration.VerificationCode.SMSOTP.ExpiryTime"
 					placeholder={ t(
 						"views:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.placeholder"
 					) }
@@ -196,7 +240,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 						"views:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.validations.empty"
 					) }
 					type="number"
-					value="1"
+					value={ selfSignUpConfigs.smsOTPExpiryTime }
 					width={ 9 }
 				/>
 				<Hint>
@@ -206,7 +250,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 					label={ t(
 						"views:components.serverConfigs.selfRegistration.form.callbackURLRegex.label"
 					) }
-					name="callbackURLRegex"
+					name="SelfRegistration.CallbackRegex"
 					placeholder={ t(
 						"views:components.serverConfigs.selfRegistration.form.callbackURLRegex.placeholder"
 					) }
@@ -215,7 +259,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 						"views:components.serverConfigs.selfRegistration.form.callbackURLRegex.validations.empty"
 					) }
 					type="text"
-					value="https://localhost:9443/authenticationendpoint/login.do"
+					value={ selfSignUpConfigs.callbackRegex }
 					width={ 9 }
 				/>
 				<Field
