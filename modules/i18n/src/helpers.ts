@@ -17,19 +17,21 @@
  */
 
 import * as translations from "./translations";
+import { I18nModuleOptionsInterface, SupportedLanguagesMeta } from "./models";
 import { InitOptions, Resource } from "i18next";
 import { I18nModuleConstants } from "./constants";
-import { SupportedLanguagesMeta } from "./models";
 
 /**
  * Generate the i18n options.
  *
  * @param {i18next.InitOptions} options - Options override.
  * @param {boolean} override - Should the passed in options replace the default.
+ * @param {boolean} useBackend - XHR back end plugin is used or not. If false, static resources will be loaded.
  * @param {boolean} debug - Debug enabled flag.
  * @return {InitOptions} Init options config.
  */
-export const generateI18nOptions = (options: InitOptions, override: boolean, debug: boolean): InitOptions => {
+export const generateI18nOptions = (options: InitOptions, override: boolean, useBackend: boolean,
+                                    debug: boolean): InitOptions => {
 
     const DEFAULT_INIT_OPTIONS: InitOptions = {
         contextSeparator: "_",
@@ -43,7 +45,7 @@ export const generateI18nOptions = (options: InitOptions, override: boolean, deb
         ns: getNamespacesSupportedByDefault(),
         nsSeparator: ":",
         pluralSeparator: "_",
-        resources: getResourcesSupportedByDefault()
+        resources: !useBackend ? getResourcesSupportedByDefault() : undefined
     };
 
     if (override) {
@@ -148,4 +150,27 @@ export const isLanguageSupported = (detectedLanguage: string, supportedLanguages
     }
 
     return false;
+};
+
+/**
+ * Generates the paths for the XHR backend plugin.
+ * Required to fetch namespaces when they are placed in multiple folders.
+ *
+ * Ex. `resources/i18n/en-US/docs/licence.json`
+ *     `resources/i18n/en-US/portals/common.json`
+ *
+ * @param {string[]} language - Language code.
+ * @param {string[]} namespace - Namespace.
+ * @param {I18nModuleOptionsInterface} i18nBundleOptions - I18n module options.
+ * @return {string} Resolved path.
+ */
+export const generateBackendPaths = (language: string[], namespace: string[],
+                                     i18nBundleOptions: I18nModuleOptionsInterface): string => {
+
+    if (i18nBundleOptions.namespaceDirectories.has(namespace[0])) {
+        return `/${ i18nBundleOptions.resourcePath }/${ language[0] }/${
+            i18nBundleOptions.namespaceDirectories.get(namespace[0]) }/${ namespace[0] }.json`;
+    }
+
+    return `/${ i18nBundleOptions.resourcePath }/${ language[0] }/${ namespace[0] }.json`;
 };
