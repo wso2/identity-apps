@@ -31,6 +31,7 @@ import { RoleUserDetails } from "./edit-role-users";
 interface EditRoleProps {
     roleId: string;
     roleObject: RolesInterface;
+    onRoleUpdate: () => void;
 }
 
 /**
@@ -41,8 +42,8 @@ interface EditRoleProps {
 export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps): ReactElement => {
 
     const {
-        roleId,
-        roleObject
+        roleObject,
+        onRoleUpdate
     } = props;
 
     const panes = () => ([
@@ -50,14 +51,21 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
             menuItem: "Basics",
             render: () => (
                 <ResourceTab.Pane attached={ false }>
-                    <BaiscRoleDetails roleId={ roleId } roleObject={ roleObject } />
+                    <BaiscRoleDetails roleObject={ roleObject } onRoleUpdate={ onRoleUpdate } />
                 </ResourceTab.Pane>
             ),
         },{
             menuItem: "Permissions",
             render: () => (
                 <ResourceTab.Pane attached={ false }>
-                    <RolePermissionDetails role={ roleId }/>
+                    <RolePermissionDetails roleObject={ roleObject } onRoleUpdate={ onRoleUpdate }/>
+                </ResourceTab.Pane>
+            ),
+        },{
+            menuItem: "Users",
+            render: () => (
+                <ResourceTab.Pane attached={ false }>
+                    <RoleUserDetails roleObject={ roleObject } onRoleUpdate={ onRoleUpdate }/>
                 </ResourceTab.Pane>
             ),
         }

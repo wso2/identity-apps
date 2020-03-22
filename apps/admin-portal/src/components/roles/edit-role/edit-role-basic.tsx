@@ -22,7 +22,7 @@ import { Field, Forms } from "@wso2is/forms"
 import { useTranslation } from "react-i18next";
 import { DangerZoneGroup, DangerZone } from "@wso2is/react-components";
 import { deleteSelectedRole, getRoleById, updateRoleDetails } from "../../../api";
-import { AlertLevels, AlertInterface, RolesInterface, CreateRoleInterface } from "../../../models";
+import { AlertLevels, AlertInterface, RolesInterface, CreateRoleInterface, PatchRoleData } from "../../../models";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
 import { history } from "../../../helpers";
@@ -33,7 +33,7 @@ import { ROLE_VIEW_PATH } from "../../../constants";
  */
 interface BasicRoleProps {
     roleObject: RolesInterface;
-    roleId: string;
+    onRoleUpdate: () => void;
 }
 
 /**
@@ -47,7 +47,7 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
 
     const {
         roleObject,
-        roleId
+        onRoleUpdate
     } = props;
 
     /**
@@ -85,11 +85,20 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
      * @param values Form values which will be used to update the role
      */
     const updateRoleName = (values: any): void => {
-        const roleData: CreateRoleInterface = {
-            displayName: values.get("rolename")
+        const roleData: PatchRoleData = {
+            schemas: [
+                "urn:ietf:params:scim:api:messages:2.0:PatchOp"
+            ],
+            Operations: [{
+                "op": "replace",
+                "value": {
+                    "displayName": values.get("rolename")
+                }
+            }]
         }
 
-        updateRoleDetails(roleId, roleData).then(response => {
+        updateRoleDetails(roleObject.id, roleData).then(response => {
+            onRoleUpdate();
             handleAlerts({
                 description: t(
                     "views:components.roles.notifications.updateRole.success.description"
@@ -109,7 +118,7 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                     "views:components.roles.notifications.updateRole.error.message"
                 )
             });
-        })
+        });
     }
 
     return (
@@ -148,7 +157,7 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                     actionTitle="Delete Role"
                     header="Delete this role"
                     subheader="This action is irreversible. Please proceed with caution."
-                    onActionClick={ () => handleOnDelete(roleId) }
+                    onActionClick={ () => handleOnDelete(roleObject.id) }
                 />
             </DangerZoneGroup>
         </>

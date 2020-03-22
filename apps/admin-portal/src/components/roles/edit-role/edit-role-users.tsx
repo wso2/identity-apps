@@ -16,28 +16,94 @@
  * under the License
  */
 
-import React, { FunctionComponent, ReactElement } from "react"
-import { AddRoleUsers } from "../create-role-wizard/role-user-assign"
-import { Forms } from "@wso2is/forms"
-import { Grid, Button } from "semantic-ui-react"
+import React, { FunctionComponent, ReactElement } from "react";
+import { AddRoleUsers } from "../create-role-wizard/role-user-assign";
+import { 
+    RolesInterface,     
+    AlertLevels,
+    AlertInterface,
+    CreateRoleInterface,
+    CreateRoleMemberInterface,
+    PatchRoleData
+} from "../../../models";
+import { updateRoleDetails } from "../../../api";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { addAlert } from "../../../store/actions";
+import { values } from "lodash";
 
-export const RoleUserDetails: FunctionComponent<any> = (): ReactElement => {
+interface RoleUserDetailsProps {
+    roleObject: RolesInterface;
+    onRoleUpdate: () => void;
+}
+
+export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (props: RoleUserDetailsProps): ReactElement => {
+    const {
+        roleObject,
+        onRoleUpdate
+    } = props;
+
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
+
+    /**
+     * Dispatches the alert object to the redux store.
+     *
+     * @param {AlertInterface} alert - Alert object.
+     */
+    const handleAlerts = (alert: AlertInterface) => {
+        dispatch(addAlert(alert));
+    };
+
+
+    const onUserUpdate = (userList: any) => {
+        const selectedUsers = userList.users;
+        const newUsers: CreateRoleMemberInterface[] = [];
+        
+        selectedUsers.forEach(selectedUser => {
+            newUsers.push({
+                value: selectedUser.id,
+                display: selectedUser.userName
+            })
+        });
+
+        const roleData: PatchRoleData = {
+            schemas: [
+                "urn:ietf:params:scim:api:messages:2.0:PatchOp"
+            ],
+            Operations: [{
+                "op": "replace",
+                "value": {
+                    "members": newUsers
+                }
+            }]
+        }
+        
+        updateRoleDetails(roleObject.id, roleData).then(response => {
+            handleAlerts({
+                description: t(
+                    "views:components.roles.notifications.updateRole.success.description"
+                ),
+                level: AlertLevels.SUCCESS,
+                message: t(
+                    "views:components.roles.notifications.updateRole.success.message"
+                )
+            });
+            onRoleUpdate();
+        }).catch(error => {
+            handleAlerts({
+                description: t(
+                    "views:components.roles.notifications.updateRole.error.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "views:components.roles.notifications.updateRole.error.message"
+                )
+            });
+        })
+    }
+
     return (
-        <>
-            <AddRoleUsers/>
-            <Forms onSubmit={() => {
-                // TODO: handle form submit
-            } } >
-                <Grid>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Button primary type="submit" size="small" className="form-button">
-                                Update
-                            </Button>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Forms>
-        </>
+        <AddRoleUsers isEdit={ true } assignedUsers={ roleObject.members } onSubmit={ onUserUpdate }/>
     )
 }
