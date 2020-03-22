@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import * as translations from "./translations";
 import { InitOptions, Resource } from "i18next";
 import { I18nModuleConstants } from "./constants";
-import * as LOCALES from "./translations";
-import { SupportedLanguages } from "./models";
+import { SupportedLanguagesMeta } from "./models";
 
 /**
  * Generate the i18n options.
@@ -40,10 +40,10 @@ export const generateI18nOptions = (options: InitOptions, override: boolean, deb
             escapeValue: false
         },
         keySeparator: ".",
-        ns: loadDefaultNamespaces(),
+        ns: getNamespacesSupportedByDefault(),
         nsSeparator: ":",
         pluralSeparator: "_",
-        resources: loadDefaultResources()
+        resources: getResourcesSupportedByDefault()
     };
 
     if (override) {
@@ -65,11 +65,11 @@ export const generateI18nOptions = (options: InitOptions, override: boolean, deb
  *
  * @return {string[]} Namespace array.
  */
-const loadDefaultNamespaces = (): string[] => {
+export const getNamespacesSupportedByDefault = (): string[] => {
 
     const namespaces: string[] = [];
 
-    for (const value of Object.values(LOCALES)) {
+    for (const value of Object.values(translations)) {
         for (const namespace of value.meta.namespaces) {
             if (!namespaces.includes(namespace)) {
                 namespaces.push(namespace);
@@ -85,11 +85,11 @@ const loadDefaultNamespaces = (): string[] => {
  *
  * @return {i18next.Resource} Resource bundle.
  */
-const loadDefaultResources = (): Resource => {
+export const getResourcesSupportedByDefault = (): Resource => {
 
     let resources: Resource = {};
 
-    for (const locale of Object.values(LOCALES)) {
+    for (const locale of Object.values(translations)) {
         // Try to find the namespace resource file based on the namespaces array declared in meta.
         for(const resource of Object.values(locale.resources)) {
             resources = {
@@ -106,53 +106,46 @@ const loadDefaultResources = (): Resource => {
 };
 
 /**
- * Custom backend to fetch resources at runtime.
+ * Get the supported list of languages that are supported by default.
+ * i.e. The languages that are packed by default.
  *
- * @param {SupportedLanguages} meta - Meta information.
- * @param {string} bundleLocation - Resource bundle path.
- * @return {Promise<i18next.Resource>} Resources as a promise.
+ * @return {string[]} Supported languages.
  */
-export const loadResourcesAtRuntime = async (meta: SupportedLanguages, bundleLocation: string): Promise<Resource> => {
+export const getLanguagesSupportedByDefault = (): string[] => {
 
-    let resources: Resource = {};
+    const languages: string[] = [];
 
-    for (const locale of Object.values(meta)) {
-        for (const [ nsKey, nsPath ] of Object.entries(locale.paths)) {
-            try {
-                const response = await fetch(`${ bundleLocation }/${ nsPath }`);
-                const payload = await response.json();
-
-                resources = {
-                    ...resources,
-                    [ locale.code ]: {
-                        ...resources[ locale.code ],
-                        [ nsKey ]: payload as any
-                    }
-                }
-            } catch (e) {
-                // Handle error.
-            }
-        }
+    for (const value of Object.values(translations)) {
+        languages.push(value.meta.code);
     }
 
-    return resources;
+    return languages;
 };
 
 /**
- * Get the supported list of languages.
+ * Checks if a passed in language is supported or not.
  *
- * @return {SupportedLanguages} Supported languages.
+ * @param {string} detectedLanguage - Detected language.
+ * @param {string[]} supportedLanguages - Supported languages.
+ * @param {SupportedLanguagesMeta} meta - Meta file.
+ * @return {boolean} Returns true if supported, else returns false.
  */
-export const getSupportedLanguages = (): SupportedLanguages => {
+export const isLanguageSupported = (detectedLanguage: string, supportedLanguages?: string[],
+                                    meta?: SupportedLanguagesMeta): boolean => {
 
-    let meta = {};
+    let languages: string[] = getLanguagesSupportedByDefault();
 
-    for (const value of Object.values(LOCALES)) {
-        meta = {
-            ...meta,
-            [ value.meta.code ]: value.meta
-        };
+    if (supportedLanguages && supportedLanguages instanceof Array && supportedLanguages.length > 0) {
+        languages = supportedLanguages;
+    } else if (meta) {
+        languages = Object.keys(meta);
     }
 
-    return meta;
+    for (const lang of languages) {
+        if (lang === detectedLanguage) {
+            return true;
+        }
+    }
+
+    return false;
 };
