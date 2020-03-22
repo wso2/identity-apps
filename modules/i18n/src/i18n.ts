@@ -16,14 +16,9 @@
  * under the License.
  */
 
-import {
-    I18nInstanceInitException,
-    LanguageChangeException,
-    UnsupportedI18nFrameworkException
-} from "./exceptions";
-import { generateI18nOptions, getSupportedLanguages } from "./helpers";
-import i18next, { InitOptions, Module, i18n as i18nInterface } from "i18next";
-import { I18nModuleConstants } from "./constants";
+import { UnsupportedI18nFrameworkException } from "./exceptions";
+import { generateI18nOptions } from "./helpers";
+import i18next, { InitOptions, Module, TFunction, i18n as i18nInterface } from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import XHR from "i18next-xhr-backend";
 import { initReactI18next } from "react-i18next";
@@ -35,6 +30,7 @@ export enum SupportedI18nFrameworks {
 export class I18n {
 
     public static instance: i18nInterface = i18next;
+    private static defaultFramework = SupportedI18nFrameworks.REACT;
     private static debug = false;
 
     /**
@@ -46,9 +42,21 @@ export class I18n {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
+    /**
+     * Initializes the i18next instance.
+     *
+     * @param {i18next.InitOptions} options - Passed in init options.
+     * @param {boolean} override - Should the passed in options replace the default.
+     * @param {boolean} autoDetect - If autodetect plugin should be used or not.
+     * @param {boolean} useBackend - If XHR back end plugin should be used or not.
+     * @param {boolean} debug - If debug is enabled.
+     * @param {SupportedI18nFrameworks} framework - The framework to use.
+     * @param {i18next.Module[]} plugins - Other plugins to use.
+     * @return {Promise<i18next.TFunction>} Init promise.
+     */
     public static init(options?: InitOptions, override?: boolean, autoDetect?: boolean, useBackend?: boolean,
-                       debug = false, framework: SupportedI18nFrameworks = SupportedI18nFrameworks.REACT,
-                       plugins?: Module[]) {
+                       debug = this.debug, framework: SupportedI18nFrameworks = this.defaultFramework,
+                       plugins?: Module[]): Promise<TFunction> {
 
         // If `autoDetect` flag is enabled, activate the language detector plugin.
         if (autoDetect) {
@@ -67,46 +75,6 @@ export class I18n {
             throw new UnsupportedI18nFrameworkException(framework);
         }
 
-        this.instance.init(generateI18nOptions(options, override, debug))
-            .then((response) => {
-                if (debug) {
-                    // TODO: Implement a logger module and use here.
-                    // eslint-disable-next-line no-console
-                    console.log("i18n module initialized. - ", response);
-                }
-            })
-            .catch((error) => {
-                throw new I18nInstanceInitException(error);
-            });
-
-        // Check if the detected language is supported
-        this.checkDetectedLanguage(this.instance.language);
-    }
-
-    private static checkDetectedLanguage(detectedLang: string) {
-
-        let unSupportedLanguage = true;
-
-        for (const lang of Object.keys(getSupportedLanguages())) {
-            if (lang === detectedLang) {
-                unSupportedLanguage = false;
-                break;
-            }
-        }
-
-        if (unSupportedLanguage) {
-            this.instance.changeLanguage(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE)
-                .then(() => {
-                    if (this.debug) {
-                        // TODO: Implement a logger module and use here.
-                        // eslint-disable-next-line no-console
-                        console.log(`The detected language (${ detectedLang }) is not supported.
-                        Falling back to default (${ I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE })`);
-                    }
-                })
-                .catch((error) => {
-                    throw new LanguageChangeException(detectedLang, error);
-                });
-        }
+        return this.instance.init(generateI18nOptions(options, override, debug))
     }
 }
