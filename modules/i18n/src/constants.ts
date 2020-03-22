@@ -27,6 +27,7 @@ export class I18nModuleConstants {
      *
      * @hideconstructor
      */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
     /**
