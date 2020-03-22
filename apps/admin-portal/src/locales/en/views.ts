@@ -699,6 +699,22 @@ export const views: Views = {
                     heading: "Confirmation",
                     message: "Do you wish to save the configurations related to user self registration?"
                 },
+                notifications: {
+                    updateConfigurations: {
+                        error: {
+                            description: "An error occurred while updating the self sign up configurations.",
+                            message: "Error updating the configurations"
+                        },
+                        genericError: {
+                            description: "Couldn't update the self sign up configurations.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the self sign up configurations.",
+                            message: "Configurations updated successfully"
+                        }
+                    }
+                },
                 form: {
                     enable: {
                         label: "Enable User Self Registration",

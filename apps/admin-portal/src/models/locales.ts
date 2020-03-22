@@ -417,6 +417,9 @@ export interface Views {
                     heading: string;
                     message: string;
                 };
+                notifications: {
+                    updateConfigurations: Notification;
+                };
                 form: {
                     enable: {
                         label: string;

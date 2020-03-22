@@ -18,16 +18,15 @@
 
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { SettingsSectionIcons } from "../../configs";
-import { AlertInterface } from "../../models";
-import {
-	Section,
-	EditSection, Hint
-} from "@wso2is/react-components";
+import { AlertInterface, AlertLevels } from "../../models";
+import { EditSection, Hint, Section } from "@wso2is/react-components";
 import { useTranslation } from "react-i18next";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
-import { getSelfSignUpConfigurations } from "../../api/user-self-registration";
+import { getSelfSignUpConfigurations, updateSelfSignUpConfigurations } from "../../api/user-self-registration";
 import { SelfSignUpConfigurationsInterface } from "../../models/server-configurations";
+import { addAlert } from "../../store/actions";
+import { useDispatch } from "react-redux";
 
 /**
  * Constant to store the self registration from identifier.
@@ -48,7 +47,8 @@ interface UserSelfRegistrationProps {
  * @param {UserSelfRegistrationProps} props - Props injected to the change password component.
  * @return {JSX.Element}
  */
-export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> = (props: UserSelfRegistrationProps): JSX.Element => {
+export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> = (props: UserSelfRegistrationProps):
+	JSX.Element => {
 
 	const [editingForm, setEditingForm] = useState({
 		[USER_SELF_REGISTRATION_FORM_IDENTIFIER]: false
@@ -56,14 +56,14 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 
 	const [selfSignUpConfigs, setSelfSignUpConfigs] = useState<SelfSignUpConfigurationsInterface>({});
 	const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-	const [reset, resetForm] = useTrigger();
+	const [reset] = useTrigger();
+
+	const dispatch = useDispatch();
 
 	const {t} = useTranslation();
 
 	/**
 	 * Handles the `onSubmit` event of the forms.
-	 *
-	 * @param {string} formName - Name of the form
 	 */
 	const handleSubmit = (): void => {
 		setShowConfirmationModal(true);
@@ -101,10 +101,110 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 	};
 
 	/**
+	 * Create and return the PATCH request data by reading the form values.
+	 */
+	const getSelfSignUpPatchCallData = () => {
+		return {
+			"operation": "UPDATE",
+			"properties": [
+				{
+					"name": "SelfRegistration.Enable",
+					"value": selfSignUpConfigs.checkboxValues.includes("Enable") ? "true" : "false"
+				},
+				{
+					"name": "SelfRegistration.LockOnCreation",
+					"value": selfSignUpConfigs.checkboxValues.includes("LockOnCreation") ? "true" : "false"
+				},
+				{
+					"name": "SelfRegistration.Notification.InternallyManage",
+					"value": selfSignUpConfigs.checkboxValues.includes("Notification.InternallyManage") ?
+						"true" : "false"
+				},
+				{
+					"name": "SelfRegistration.ReCaptcha",
+					"value": selfSignUpConfigs.checkboxValues.includes("ReCaptcha") ? "true" : "false"
+				},
+				{
+					"name": "SelfRegistration.VerificationCode.ExpiryTime",
+					"value": selfSignUpConfigs.verificationCodeExpiryTime
+				},
+				{
+					"name": "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime",
+					"value": selfSignUpConfigs.smsOTPExpiryTime
+				},
+				{
+					"name": "SelfRegistration.CallbackRegex",
+					"value": selfSignUpConfigs.callbackRegex
+				},
+			]
+		};
+	};
+
+	/**
 	 * Calls the API and updates the self registrations configurations.
 	 */
 	const saveSelfRegistrationConfigs = () => {
-		console.log("Saving...");
+		const data = getSelfSignUpPatchCallData();
+		updateSelfSignUpConfigurations(data)
+			.then(() => {
+				dispatch(addAlert({
+					description: t(
+						"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
+						"success.description"
+					),
+					level: AlertLevels.SUCCESS,
+					message: t(
+						"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
+						"success.message"
+					)
+				}));
+				handleConfirmationModalClose();
+				hideFormEditView(USER_SELF_REGISTRATION_FORM_IDENTIFIER);
+			})
+			.catch((error) => {
+				// Axios throws a generic `Network Error` for 401 status.
+				// As a temporary solution, a check to see if a response is available has been used.
+				if (!error.response || error.response.status === 401) {
+					dispatch(addAlert({
+						description: t(
+							"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
+							"error.description"
+						),
+						level: AlertLevels.ERROR,
+						message: t(
+							"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
+							"error.message"
+						)
+					}));
+				} else if (error.response && error.response.data && error.response.data.detail) {
+
+					dispatch(addAlert({
+						description: t(
+							"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
+							"error.description",
+							{description: error.response.data.detail}
+						),
+						level: AlertLevels.ERROR,
+						message: t(
+							"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
+							"error.message"
+						)
+					}));
+				} else {
+					// Generic error message
+					dispatch(addAlert({
+						description: t(
+							"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
+							"genericError.description"
+						),
+						level: AlertLevels.ERROR,
+						message: t(
+							"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
+							"genericError.message"
+						)
+					}));
+				}
+			});
 	};
 
 	/**
@@ -117,11 +217,11 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 				const configs = {
 					checkboxValues: checkboxValues,
 					verificationCodeExpiryTime: response.properties.find(
-						property => property.name == "SelfRegistration.VerificationCode.ExpiryTime" ).value,
+						property => property.name == "SelfRegistration.VerificationCode.ExpiryTime").value,
 					smsOTPExpiryTime: response.properties.find(
-						property => property.name == "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime" ).value,
+						property => property.name == "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime").value,
 					callbackRegex: response.properties.find(
-						property => property.name == "SelfRegistration.CallbackRegex" ).value
+						property => property.name == "SelfRegistration.CallbackRegex").value
 				};
 				setSelfSignUpConfigs(configs);
 			});
@@ -158,7 +258,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 				<Container>
 					<h3>{ t("views:components.serverConfigs.selfRegistration.confirmation.heading") }</h3>
 				</Container>
-				<Divider hidden={ true } />
+				<Divider hidden={ true }/>
 				<p>{ t("views:components.serverConfigs.selfRegistration.confirmation.message") }</p>
 			</Modal.Content>
 			<Modal.Actions>
@@ -172,13 +272,21 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		</Modal>
 	);
 
+	const getFormValues = (values) => {
+		console.log(values);
+		return {
+			checkboxValues: values.get("SelfRegistration"),
+			verificationCodeExpiryTime: values.get("SelfRegistration.VerificationCode.ExpiryTime"),
+			smsOTPExpiryTime: values.get("SelfRegistration.VerificationCode.SMSOTP.ExpiryTime"),
+			callbackRegex: values.get("SelfRegistration.CallbackRegex")
+		}
+	};
+
 	const showUserSelfRegistrationView = editingForm[USER_SELF_REGISTRATION_FORM_IDENTIFIER] ? (
 		<EditSection>
 			<Forms
-				onSubmit={ (value) => {
-					// Todo complete method
-					// setCurrentPassword(value.get("currentPassword").toString());
-					console.log(value);
+				onSubmit={ (values) => {
+					setSelfSignUpConfigs(getFormValues(values));
 					handleSubmit();
 				} }
 				resetState={ reset }
@@ -194,11 +302,13 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 							value: "Enable"
 						},
 						{
-							label: t("views:components.serverConfigs.selfRegistration.form.enableAccountLockOnCreation.label"),
+							label: t("views:components.serverConfigs.selfRegistration.form." +
+								"enableAccountLockOnCreation.label"),
 							value: "LockOnCreation"
 						},
 						{
-							label: t("views:components.serverConfigs.selfRegistration.form.internalNotificationManagement.label"),
+							label: t("views:components.serverConfigs.selfRegistration.form." +
+								"internalNotificationManagement.label"),
 							value: "Notification.InternallyManage"
 						},
 						{
@@ -218,7 +328,8 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 					) }
 					required={ true }
 					requiredErrorMessage={ t(
-						"views:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime.validations.empty"
+						"views:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime." +
+						"validations.empty"
 					) }
 					type="number"
 					value={ selfSignUpConfigs.verificationCodeExpiryTime }
