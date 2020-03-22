@@ -16,10 +16,10 @@
  * under the License.
  */
 import React, { ReactElement, useState, FunctionComponent, useEffect } from "react";
-import { Grid, Input, Icon, Segment, List, Label, Message } from "semantic-ui-react";
+import { Grid, Input, Icon, Segment, List, Label, Message, Button } from "semantic-ui-react";
 import { Forms } from "@wso2is/forms";
 import _ from "lodash";
-import { UserBasicInterface } from "../../../models";
+import { UserBasicInterface, RolesMemberInterface } from "../../../models";
 import { getUsersList } from "../../../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../../../constants";
 import { UserAvatar } from "@wso2is/react-components";
@@ -30,12 +30,16 @@ import { UserAvatar } from "@wso2is/react-components";
 interface AddRoleUserProps {
     triggerSubmit?: boolean;
     onSubmit?: (values: any) => void;
+    assignedUsers?: RolesMemberInterface[];
+    isEdit: boolean;
 }
 
 export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRoleUserProps): ReactElement => {
     const {
         triggerSubmit,
-        onSubmit
+        onSubmit,
+        assignedUsers,
+        isEdit
     } = props;
 
     const [ tempUserList, setTempUserList ] = useState([]);
@@ -49,6 +53,18 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         getUsersList(limit, offset, filter, attribute, null)
             .then((response) => {
                 setUsersList(response.Resources);
+
+                if (assignedUsers && assignedUsers.length != 0) {
+                    const selectedUserList: UserBasicInterface[] = [];
+                    response.Resources.forEach(user => {
+                        assignedUsers.forEach(assignedUser => {
+                            if (user.id === assignedUser.value) {
+                                selectedUserList.push(user);
+                            }
+                        })
+                    })
+                    setTempUserList(selectedUserList);
+                }
             });
     };
 
@@ -218,6 +234,15 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         </Grid.Row>
                     </Grid.Column>
                 </Grid.Row>
+                {isEdit && 
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Button primary type="submit" size="small" className="form-button">
+                                Update
+                            </Button>
+                        </Grid.Column>
+                    </Grid.Row>
+                }
             </Grid>
         </Forms>
     )
