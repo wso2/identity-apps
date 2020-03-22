@@ -190,7 +190,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
             } }>
                 {
                     !permissionsLoading ? 
-                        <div className="super-treeview-container">
+                        <div className="treeview-container">
                             <TreeView
                                 data={ permissionTree }
                                 keywordLabel= "label"
