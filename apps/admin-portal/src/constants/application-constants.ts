@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { GlobalConfig } from "../configs";
+import { generateBackendPaths, I18nModuleInitOptions } from "@wso2is/i18n";
+
 /**
  * Application settings key in local storage.
  * @constant
@@ -137,6 +140,56 @@ export class ApplicationConstants {
         .set("APPLICATIONS", "/applications")
         .set("APPLICATION_TEMPLATES", "/applications/templates")
         .set("APPLICATION_EDIT", "/applications/:id");
+
+    /**
+     * Locations of the I18n namespaces.
+     * @constant
+     * @type {Map<string, string>}
+     * @default
+     */
+    public static readonly I18N_BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
+        [ "common", "portals" ],
+        [ "adminPortal", "portals" ]
+    ]);
+
+    /**
+     * I18n init options.
+     * @constant
+     * @type {I18nModuleInitOptions}
+     * @default
+     */
+    public static readonly I18N_MODULE_INIT_OPTIONS: I18nModuleInitOptions = {
+        backend: {
+            loadPath: (language, namespace) => generateBackendPaths(
+                language, namespace, GlobalConfig?.i18nModuleOptions
+            )
+        },
+        ns: [ "common", "adminPortal" ]
+    };
+
+    /**
+     * I18n init options override flag. The default options in the module will be overridden if set to true.
+     * @constant
+     * @type {boolean}
+     * @default
+     */
+    public static readonly I18N_INIT_OPTIONS_OVERRIDE: boolean = false;
+
+    /**
+     * If the language detector plugin should be enabled or not.
+     * @constant
+     * @type {boolean}
+     * @default
+     */
+    public static readonly I18N_LANG_AUTO_DETECT_ENABLED: boolean = true;
+
+    /**
+     * If the xhr backend plugin should be enabled or not.
+     * @constant
+     * @type {boolean}
+     * @default
+     */
+    public static readonly I18N_XHR_BACKEND_PLUGIN_ENABLED: boolean = true;
 }
 
 /**
