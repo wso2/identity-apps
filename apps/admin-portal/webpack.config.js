@@ -66,6 +66,7 @@ module.exports = (env) => {
         "@wso2is/theme/dist/lib/themes/default/assets/images/favicon.ico");
     const titleText = "WSO2 Identity Server";
     const copyrightText = `${titleText} \u00A9 ${ new Date().getFullYear() }`;
+    const i18nResourcePath = path.join("resources", "i18n");
 
     const compileAppIndex = () => {
         if (isProd) {
@@ -218,6 +219,11 @@ module.exports = (env) => {
                     to: 'themes-less'
                 },
                 {
+                    context: path.join(__dirname, "node_modules", "@wso2is", "i18n"),
+                    from: path.join("dist", "bundle"),
+                    to: i18nResourcePath
+                },
+                {
                     context: path.join(__dirname, "src"),
                     from: "public",
                     to: ".",
@@ -241,6 +247,7 @@ module.exports = (env) => {
                 CLIENT_HOST_DEFAULT: JSON.stringify(clientHostDefault),
                 CLIENT_ORIGIN_DEFAULT: JSON.stringify(clientOriginDefault),
                 DEBUG_MODE: JSON.stringify(debug),
+                I18N_RESOURCE_PATH: JSON.stringify(i18nResourcePath),
                 LOGIN_CALLBACK_URL: JSON.stringify(externalLoginCallbackURL),
                 SERVER_HOST_DEFAULT: JSON.stringify(serverHostDefault),
                 SERVER_ORIGIN_DEFAULT: JSON.stringify(serverOriginDefault),
