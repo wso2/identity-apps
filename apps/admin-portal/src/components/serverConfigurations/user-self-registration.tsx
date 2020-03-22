@@ -42,6 +42,17 @@ interface UserSelfRegistrationProps {
 }
 
 /**
+ * Self registration API Key constants.
+ */
+const SELF_REGISTRATION_ENABLE = "SelfRegistration.Enable";
+const ACCOUNT_LOCK_ON_CREATION = "SelfRegistration.LockOnCreation";
+const NOTIFICATION_INTERNALLY_MANAGED = "SelfRegistration.Notification.InternallyManage";
+const RE_CAPTCHA = "SelfRegistration.ReCaptcha";
+const VERIFICATION_CODE_EXPIRY_TIME = "SelfRegistration.VerificationCode.ExpiryTime";
+const SMS_OTP_EXPIRY_TIME = "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime";
+const CALLBACK_REGEX = "SelfRegistration.CallbackRegex";
+
+/**
  * User Self Registration component.
  *
  * @param {UserSelfRegistrationProps} props - Props injected to the change password component.
@@ -108,32 +119,32 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 			"operation": "UPDATE",
 			"properties": [
 				{
-					"name": "SelfRegistration.Enable",
-					"value": selfSignUpConfigs.checkboxValues.includes("Enable") ? "true" : "false"
+					"name": SELF_REGISTRATION_ENABLE,
+					"value": selfSignUpConfigs.checkboxValues.includes(SELF_REGISTRATION_ENABLE) ? "true" : "false"
 				},
 				{
-					"name": "SelfRegistration.LockOnCreation",
-					"value": selfSignUpConfigs.checkboxValues.includes("LockOnCreation") ? "true" : "false"
+					"name": ACCOUNT_LOCK_ON_CREATION,
+					"value": selfSignUpConfigs.checkboxValues.includes(ACCOUNT_LOCK_ON_CREATION) ? "true" : "false"
 				},
 				{
-					"name": "SelfRegistration.Notification.InternallyManage",
-					"value": selfSignUpConfigs.checkboxValues.includes("Notification.InternallyManage") ?
+					"name": NOTIFICATION_INTERNALLY_MANAGED,
+					"value": selfSignUpConfigs.checkboxValues.includes(NOTIFICATION_INTERNALLY_MANAGED) ?
 						"true" : "false"
 				},
 				{
-					"name": "SelfRegistration.ReCaptcha",
-					"value": selfSignUpConfigs.checkboxValues.includes("ReCaptcha") ? "true" : "false"
+					"name": RE_CAPTCHA,
+					"value": selfSignUpConfigs.checkboxValues.includes(RE_CAPTCHA) ? "true" : "false"
 				},
 				{
-					"name": "SelfRegistration.VerificationCode.ExpiryTime",
+					"name": VERIFICATION_CODE_EXPIRY_TIME,
 					"value": selfSignUpConfigs.verificationCodeExpiryTime
 				},
 				{
-					"name": "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime",
+					"name": SMS_OTP_EXPIRY_TIME,
 					"value": selfSignUpConfigs.smsOTPExpiryTime
 				},
 				{
-					"name": "SelfRegistration.CallbackRegex",
+					"name": CALLBACK_REGEX,
 					"value": selfSignUpConfigs.callbackRegex
 				},
 			]
@@ -217,11 +228,11 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 				const configs = {
 					checkboxValues: checkboxValues,
 					verificationCodeExpiryTime: response.properties.find(
-						property => property.name == "SelfRegistration.VerificationCode.ExpiryTime").value,
+						property => property.name == VERIFICATION_CODE_EXPIRY_TIME).value,
 					smsOTPExpiryTime: response.properties.find(
-						property => property.name == "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime").value,
+						property => property.name == SMS_OTP_EXPIRY_TIME).value,
 					callbackRegex: response.properties.find(
-						property => property.name == "SelfRegistration.CallbackRegex").value
+						property => property.name == CALLBACK_REGEX).value
 				};
 				setSelfSignUpConfigs(configs);
 			});
@@ -236,17 +247,17 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 	const getSelfRegistrationCheckboxValues = (data) => {
 		const values = [];
 		data.properties.map((property => {
-			if (property.name === "SelfRegistration.Enable") {
-				property.value === "true" ? values.push("Enable") : "";
+			if (property.name === SELF_REGISTRATION_ENABLE) {
+				property.value === "true" ? values.push(SELF_REGISTRATION_ENABLE) : "";
 			}
-			if (property.name === "SelfRegistration.LockOnCreation") {
-				property.value === "true" ? values.push("LockOnCreation") : "";
+			if (property.name === ACCOUNT_LOCK_ON_CREATION) {
+				property.value === "true" ? values.push(ACCOUNT_LOCK_ON_CREATION) : "";
 			}
-			if (property.name === "SelfRegistration.Notification.InternallyManage") {
-				property.value === "true" ? values.push("Notification.InternallyManage") : "";
+			if (property.name === NOTIFICATION_INTERNALLY_MANAGED) {
+				property.value === "true" ? values.push(NOTIFICATION_INTERNALLY_MANAGED) : "";
 			}
-			if (property.name === "SelfRegistration.ReCaptcha") {
-				property.value === "true" ? values.push("ReCaptcha") : "";
+			if (property.name === RE_CAPTCHA) {
+				property.value === "true" ? values.push(RE_CAPTCHA) : "";
 			}
 		}));
 		return values;
@@ -275,10 +286,10 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 	const getFormValues = (values) => {
 		console.log(values);
 		return {
-			checkboxValues: values.get("SelfRegistration"),
-			verificationCodeExpiryTime: values.get("SelfRegistration.VerificationCode.ExpiryTime"),
-			smsOTPExpiryTime: values.get("SelfRegistration.VerificationCode.SMSOTP.ExpiryTime"),
-			callbackRegex: values.get("SelfRegistration.CallbackRegex")
+			checkboxValues: values.get("SelfRegistrationCheckBoxes"),
+			verificationCodeExpiryTime: values.get(VERIFICATION_CODE_EXPIRY_TIME),
+			smsOTPExpiryTime: values.get(SMS_OTP_EXPIRY_TIME),
+			callbackRegex: values.get(CALLBACK_REGEX)
 		}
 	};
 
@@ -292,28 +303,28 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 				resetState={ reset }
 			>
 				<Field
-					name="SelfRegistration"
+					name="SelfRegistrationCheckBoxes"
 					required={ false }
 					requiredErrorMessage=""
 					type="checkbox"
 					children={ [
 						{
 							label: t("views:components.serverConfigs.selfRegistration.form.enable.label"),
-							value: "Enable"
+							value: SELF_REGISTRATION_ENABLE
 						},
 						{
 							label: t("views:components.serverConfigs.selfRegistration.form." +
 								"enableAccountLockOnCreation.label"),
-							value: "LockOnCreation"
+							value: ACCOUNT_LOCK_ON_CREATION
 						},
 						{
 							label: t("views:components.serverConfigs.selfRegistration.form." +
 								"internalNotificationManagement.label"),
-							value: "Notification.InternallyManage"
+							value: NOTIFICATION_INTERNALLY_MANAGED
 						},
 						{
 							label: t("views:components.serverConfigs.selfRegistration.form.enableReCaptcha.label"),
-							value: "ReCaptcha"
+							value: RE_CAPTCHA
 						}
 					] }
 					value={ selfSignUpConfigs.checkboxValues }
@@ -322,7 +333,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 					label={ t(
 						"views:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime.label"
 					) }
-					name="SelfRegistration.VerificationCode.ExpiryTime"
+					name={ VERIFICATION_CODE_EXPIRY_TIME }
 					placeholder={ t(
 						"views:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime.placeholder"
 					) }
@@ -342,7 +353,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 					label={ t(
 						"views:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.label"
 					) }
-					name="SelfRegistration.VerificationCode.SMSOTP.ExpiryTime"
+					name={ SMS_OTP_EXPIRY_TIME }
 					placeholder={ t(
 						"views:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.placeholder"
 					) }
@@ -361,7 +372,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 					label={ t(
 						"views:components.serverConfigs.selfRegistration.form.callbackURLRegex.label"
 					) }
-					name="SelfRegistration.CallbackRegex"
+					name={ CALLBACK_REGEX }
 					placeholder={ t(
 						"views:components.serverConfigs.selfRegistration.form.callbackURLRegex.placeholder"
 					) }
