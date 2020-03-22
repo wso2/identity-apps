@@ -23,12 +23,33 @@ import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";
 import { GlobalConfig } from "./configs";
 import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
+import { I18n, I18nInstanceInitException, isLanguageSupported } from "@wso2is/i18n";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(GlobalConfig);
 
 // Set up the Http client.
 HttpUtils.setupHttpClient(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
+
+// Set up the i18n module.
+I18n.init({
+    ...GlobalConfig?.i18nModuleOptions?.initOptions,
+    debug: GlobalConfig?.debug
+    },
+    GlobalConfig?.i18nModuleOptions?.overrideOptions,
+    GlobalConfig?.i18nModuleOptions?.langAutoDetectEnabled,
+    GlobalConfig?.i18nModuleOptions?.xhrBackendPluginEnabled)
+    .then(() => {
+        // Fetch the meta file to get the supported languages.
+        fetch(`/${ GlobalConfig.i18nModuleOptions.resourcePath }/meta.json`)
+            .then((response) => response.json())
+            .then((response) => {
+                isLanguageSupported(I18n.instance.language, null, response);
+            })
+    })
+    .catch((error) => {
+        throw new I18nInstanceInitException(error);
+    });
 
 ReactDOM.render(
     (
