@@ -19,14 +19,32 @@
 import i18next, { InitOptions, Module, TFunction, i18n as i18nInterface } from "i18next";
 import { UnsupportedI18nFrameworkException } from "./exceptions";
 import { generateI18nOptions } from "./helpers";
+import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import XHR from "i18next-xhr-backend";
-import { initReactI18next } from "react-i18next";
 
+/**
+ * Supported list of i18n frameworks.
+ */
 export enum SupportedI18nFrameworks {
     REACT = "react"
 }
 
+/**
+ * I18n class to initialize the `i18next` library.
+ *
+ * @example
+ * Example usage.
+ * ```
+ * import { I18n } from "@wso2is/i18n";
+ *
+ * I18n.init(...params);
+ *
+ * // Get the instance
+ * I18n.instance;
+ *
+ * ```
+ */
 export class I18n {
 
     public static instance: i18nInterface = i18next;
@@ -89,6 +107,6 @@ export class I18n {
             throw new UnsupportedI18nFrameworkException(framework);
         }
 
-        return this.instance.init(generateI18nOptions(options, override, this.debug))
+        return this.instance.init(generateI18nOptions(options, override, useBackend, this.debug))
     }
 }
