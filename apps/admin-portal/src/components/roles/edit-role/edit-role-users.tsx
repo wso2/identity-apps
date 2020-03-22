@@ -22,7 +22,6 @@ import {
     RolesInterface,     
     AlertLevels,
     AlertInterface,
-    CreateRoleInterface,
     CreateRoleMemberInterface,
     PatchRoleData
 } from "../../../models";
@@ -30,7 +29,6 @@ import { updateRoleDetails } from "../../../api";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
-import { values } from "lodash";
 
 interface RoleUserDetailsProps {
     roleObject: RolesInterface;

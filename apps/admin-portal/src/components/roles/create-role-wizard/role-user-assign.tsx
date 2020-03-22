@@ -234,7 +234,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         </Grid.Row>
                     </Grid.Column>
                 </Grid.Row>
-                {isEdit && 
+                { isEdit && 
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Button primary type="submit" size="small" className="form-button">
