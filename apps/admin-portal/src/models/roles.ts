@@ -60,7 +60,7 @@ export interface RoleListInterface {
  */
 export interface CreateRoleInterface {
     schemas?: string[];
-    displayName: string;
+    displayName?: string;
     members?: CreateRoleMemberInterface[];
 }
 
@@ -87,4 +87,14 @@ export interface SearchRoleInterface {
     schemas: string[];
     startIndex: number;
     filter: string;
+}
+
+export interface PatchRoleData {
+    schemas: string[];
+    Operations: ScimOperationsInterface[];
+}
+
+export interface ScimOperationsInterface {
+    op: string;
+    value: any;
 }

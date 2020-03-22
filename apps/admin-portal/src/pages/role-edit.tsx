@@ -39,6 +39,10 @@ export const RoleEditPage: FunctionComponent<any> = (props: any): ReactElement =
         })
     }
 
+    const onRoleUpdate = (): void => {
+        getRoleDetails(roleId);
+    }
+
     /**
      * Get Role data from URL id
      */
@@ -64,7 +68,7 @@ export const RoleEditPage: FunctionComponent<any> = (props: any): ReactElement =
             titleTextAlign="left"
             bottomMargin={ false }
         >
-            <EditRole roleObject={ roleObject } roleId={ roleId } />
+            <EditRole roleObject={ roleObject } roleId={ roleId } onRoleUpdate={ onRoleUpdate } />
         </PageLayout>
     );
 }
