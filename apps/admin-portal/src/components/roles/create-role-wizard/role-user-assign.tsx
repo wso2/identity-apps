@@ -54,16 +54,18 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
             .then((response) => {
                 setUsersList(response.Resources);
 
-                if (assignedUsers && assignedUsers.length != 0) {
+                if (assignedUsers && assignedUsers.length !== 0) {
                     const selectedUserList: UserBasicInterface[] = [];
-                    response.Resources.forEach(user => {
-                        assignedUsers.forEach(assignedUser => {
-                            if (user.id === assignedUser.value) {
-                                selectedUserList.push(user);
-                            }
-                        })
-                    })
-                    setTempUserList(selectedUserList);
+                    if (response.Resources && response.Resources instanceof Array ) {
+                        response.Resources.forEach(user => {
+                            assignedUsers.forEach(assignedUser => {
+                                if (user.id === assignedUser.value) {
+                                    selectedUserList.push(user);
+                                }
+                            });
+                        });
+                        setTempUserList(selectedUserList);
+                    }
                 }
             });
     };

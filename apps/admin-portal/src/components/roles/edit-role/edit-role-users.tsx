@@ -23,7 +23,7 @@ import {
     AlertLevels,
     AlertInterface,
     CreateRoleMemberInterface,
-    PatchRoleData
+    PatchRoleDataInterface
 } from "../../../models";
 import { updateRoleDetails } from "../../../api";
 import { useTranslation } from "react-i18next";
@@ -35,7 +35,9 @@ interface RoleUserDetailsProps {
     onRoleUpdate: () => void;
 }
 
-export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (props: RoleUserDetailsProps): ReactElement => {
+export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
+    props: RoleUserDetailsProps
+): ReactElement => {
     const {
         roleObject,
         onRoleUpdate
@@ -65,7 +67,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (props: 
             })
         });
 
-        const roleData: PatchRoleData = {
+        const roleData: PatchRoleDataInterface = {
             schemas: [
                 "urn:ietf:params:scim:api:messages:2.0:PatchOp"
             ],

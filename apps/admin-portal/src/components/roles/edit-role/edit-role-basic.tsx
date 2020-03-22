@@ -22,7 +22,7 @@ import { Field, Forms } from "@wso2is/forms"
 import { useTranslation } from "react-i18next";
 import { DangerZoneGroup, DangerZone } from "@wso2is/react-components";
 import { deleteSelectedRole, getRoleById, updateRoleDetails } from "../../../api";
-import { AlertLevels, AlertInterface, RolesInterface, CreateRoleInterface, PatchRoleData } from "../../../models";
+import { AlertLevels, AlertInterface, RolesInterface, CreateRoleInterface, PatchRoleDataInterface } from "../../../models";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
 import { history } from "../../../helpers";
@@ -85,7 +85,7 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
      * @param values Form values which will be used to update the role
      */
     const updateRoleName = (values: any): void => {
-        const roleData: PatchRoleData = {
+        const roleData: PatchRoleDataInterface = {
             schemas: [
                 "urn:ietf:params:scim:api:messages:2.0:PatchOp"
             ],
@@ -97,28 +97,29 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             }]
         }
 
-        updateRoleDetails(roleObject.id, roleData).then(response => {
-            onRoleUpdate();
-            handleAlerts({
-                description: t(
-                    "views:components.roles.notifications.updateRole.success.description"
-                ),
-                level: AlertLevels.SUCCESS,
-                message: t(
-                    "views:components.roles.notifications.updateRole.success.message"
-                )
+        updateRoleDetails(roleObject.id, roleData)
+            .then(response => {
+                onRoleUpdate();
+                handleAlerts({
+                    description: t(
+                        "views:components.roles.notifications.updateRole.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "views:components.roles.notifications.updateRole.success.message"
+                    )
+                });
+            }).catch(error => {
+                handleAlerts({
+                    description: t(
+                        "views:components.roles.notifications.updateRole.error.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.roles.notifications.updateRole.error.message"
+                    )
+                });
             });
-        }).catch(error => {
-            handleAlerts({
-                description: t(
-                    "views:components.roles.notifications.updateRole.error.description"
-                ),
-                level: AlertLevels.ERROR,
-                message: t(
-                    "views:components.roles.notifications.updateRole.error.message"
-                )
-            });
-        });
     }
 
     return (

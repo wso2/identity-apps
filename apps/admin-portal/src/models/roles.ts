@@ -89,7 +89,7 @@ export interface SearchRoleInterface {
     filter: string;
 }
 
-export interface PatchRoleData {
+export interface PatchRoleDataInterface {
     schemas: string[];
     Operations: ScimOperationsInterface[];
 }

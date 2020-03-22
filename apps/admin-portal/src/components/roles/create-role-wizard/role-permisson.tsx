@@ -117,13 +117,14 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         setPermissionsLoading(true);
 
         if (roleObject) {
-            getPermissionsPerRole(roleObject.id).then(response => {
-                if (response.status === 200) {
-                    getPermissions(response.data);
-                }
-            }).catch(error => {
-                //TODO: Handle Error
-            })
+            getPermissionsPerRole(roleObject.id)
+                .then(response => {
+                    if (response.status === 200) {
+                        getPermissions(response.data);
+                    }
+                }).catch(error => {
+                    //TODO: Handle Error
+                })
         } else {
             getPermissions();
         }
