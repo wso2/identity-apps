@@ -68,6 +68,13 @@ export class I18n {
             this.instance.use(XHR);
         }
 
+        // Iterate plugins array and add them to the instance.
+        if (plugins && plugins instanceof Array && plugins.length > 0) {
+            for (const plugin of plugins) {
+                this.instance.use(plugin);
+            }
+        }
+
         // Activate the corresponding i18n framework.
         if (framework === SupportedI18nFrameworks.REACT) {
             this.instance.use(initReactI18next);
