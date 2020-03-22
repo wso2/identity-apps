@@ -37,7 +37,6 @@
         "@types/jest": "*",
         "@types/node": "*",
         "@types/lodash": "*",
-        "chalk": "*",
         "i18next": "*",
         "i18next-browser-languagedetector": "*",
         "i18next-xhr-backend": "*",

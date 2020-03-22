@@ -18,7 +18,6 @@
 
 const path = require("path");
 const fs = require("fs-extra");
-const chalk = require("chalk");
 const { execSync } = require("child_process");
 
 // eslint-disable-next-line no-console
@@ -37,17 +36,16 @@ const translationsPath = path.join(dist, "src", TRANSLATIONS_FOLDER_NAME);
 // Path for the directory to store final transpiled JSON files.
 const outputPath = path.join(dist, OUTPUT_DIR_NAME);
 
-log(chalk.greenBright.bold("Running ", chalk.yellowBright("@wso2is/i18n"), " module's post build script."));
+log("Running @wso2is/i18n module's post build script.");
 
 // Check if the `dist` and the `translations` folder exists and if not terminate the script.
 // If the folders doesn't exist that means the build hasn't been performed.
 if (!fs.existsSync(dist) || !fs.existsSync(translationsPath)) {
 
-    log(chalk.whiteBright.bgRed("\nERROR") + " in " +
-        chalk.yellowBright("@wso2is/i18") + " module");
+    log("\nERROR in @wso2is/i18 module");
 
-    log(chalk.redBright("\nCould not locate the i18 translation build artifacts." +
-        "Please execute the build command before running this script."));
+    log("\nCould not locate the i18 translation build artifacts." +
+        "Please execute the build command before running this script.");
 
     // Terminate the script.
     process.exit();
@@ -55,7 +53,7 @@ if (!fs.existsSync(dist) || !fs.existsSync(translationsPath)) {
 
 // If the bundle folder exists, clean it first.
 if (fs.existsSync(outputPath)) {
-    log(chalk.cyanBright("\nBundle already exists. Cleaning it first......"));
+    log("\nBundle already exists. Cleaning it first......");
     execSync("npm run clean:bundle");
 }
 
@@ -77,8 +75,7 @@ for (const value of Object.values(translations)) {
 
     if (!value || !value.meta || !value.meta.code || !value.resources) {
 
-        log(chalk.whiteBright.bgYellow("\nWARNING") +
-            chalk.yellowBright(" - Could not find the relevant locale meta or resources for the language"));
+        log("\nWARNING - Could not find the relevant locale meta or resources for the language");
 
         break;
     }
@@ -86,7 +83,7 @@ for (const value of Object.values(translations)) {
     // Create the language directories
     createDirectory(langDirPath, true);
 
-    log(chalk.blueBright.bold("\nCreating a directory for the language - " + value.meta.name + "\n"));
+    log("\nCreating a directory for the language - " + value.meta.name + "\n");
 
     // Iterate through the resources object to extract the sub folders.
     for (const [objKey, objValue] of Object.entries(value.resources)) {
@@ -94,7 +91,7 @@ for (const value of Object.values(translations)) {
 
         createDirectory(subFolderPath, true);
 
-        log(chalk.magentaBright.bold("Creating " + objKey + " sub folder to store relevant namespace resources."));
+        log("Creating " + objKey + " sub folder to store relevant namespace resources.");
 
         // Extract and create the JSON files from the namespaces.
         for (const [nsObjKey, nsObjValue] of Object.entries(objValue)) {
@@ -103,7 +100,7 @@ for (const value of Object.values(translations)) {
 
             createFile(filePath, JSON.stringify(nsObjValue, undefined, 4), null, true);
 
-            log(chalk.whiteBright.bold("Generating the JSON - " + fileName));
+            log("Generating the JSON - " + fileName);
 
             resourcePaths = {
                 ...resourcePaths,
@@ -124,9 +121,9 @@ for (const value of Object.values(translations)) {
 createFile(path.join(outputPath, META_FILE_NAME),
     JSON.stringify(metaFileContent, undefined, 4), null, true);
 
-log(chalk.cyanBright.bold("\nCreated the locale meta file."));
+log("\nCreated the locale meta file.");
 
-log(chalk.greenBright.bold("\nSuccessfully generated the locale bundle."));
+log("\nSuccessfully generated the locale bundle.");
 
 // Function to create directories.
 function createDirectory(dirPath, checkIfExists) {
