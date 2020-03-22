@@ -23,5 +23,5 @@ export const meta: LocaleMeta = {
     code: "si-LK",
     flag: "lk",
     name: "සිංහල (Sri Lanka)",
-    namespaces: [ I18nModuleConstants.DEFAULT_NAMESPACE ]
+    namespaces: [ I18nModuleConstants.COMMON_NAMESPACE ]
 };

@@ -23,5 +23,5 @@ export const meta: LocaleMeta = {
     code: "en-US",
     flag: "us",
     name: "English (United States)",
-    namespaces: [ I18nModuleConstants.DEFAULT_NAMESPACE, I18nModuleConstants.DEV_PORTAL_NAMESPACE ]
+    namespaces: [ I18nModuleConstants.COMMON_NAMESPACE, I18nModuleConstants.DEV_PORTAL_NAMESPACE ]
 };

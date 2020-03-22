@@ -43,7 +43,7 @@ describe("If default supported language retrieval helper function", () => {
 describe("If default supported namespaces retrieval helper function", () => {
 
     const DEFAULT_SUPPORTED_NAMESPACES = [
-        I18nModuleConstants.DEFAULT_NAMESPACE,
+        I18nModuleConstants.COMMON_NAMESPACE,
         I18nModuleConstants.DEV_PORTAL_NAMESPACE
     ];
 
@@ -74,9 +74,9 @@ describe("If supported language checker helper function", () => {
             "code": "en-US",
             "flag": "si",
             "name": "",
-            "namespaces": [ I18nModuleConstants.DEFAULT_NAMESPACE ],
+            "namespaces": [ I18nModuleConstants.COMMON_NAMESPACE ],
             "paths": {
-                [ I18nModuleConstants.DEFAULT_NAMESPACE ]: "/path"
+                [ I18nModuleConstants.COMMON_NAMESPACE ]: "/path"
             }
         }
     };

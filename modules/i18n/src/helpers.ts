@@ -36,7 +36,7 @@ export const generateI18nOptions = (options: InitOptions, override: boolean, use
     const DEFAULT_INIT_OPTIONS: InitOptions = {
         contextSeparator: "_",
         debug: false,
-        defaultNS: I18nModuleConstants.DEFAULT_NAMESPACE,
+        defaultNS: I18nModuleConstants.COMMON_NAMESPACE,
         fallbackLng: I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE,
         interpolation: {
             escapeValue: false

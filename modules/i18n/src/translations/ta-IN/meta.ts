@@ -23,5 +23,5 @@ export const meta: LocaleMeta = {
     code: "ta-IN",
     flag: "in",
     name: "தமிழ் (India)",
-    namespaces: [ I18nModuleConstants.DEFAULT_NAMESPACE ]
+    namespaces: [ I18nModuleConstants.COMMON_NAMESPACE ]
 };

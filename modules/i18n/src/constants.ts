@@ -39,12 +39,12 @@ export class I18nModuleConstants {
     public static readonly MODULE_NAME: string = "@wso2is/i18n";
 
     /**
-     * Default namespace.
+     * Common namespace.
      * @constant
      * @type {string}
      * @default
      */
-    public static readonly DEFAULT_NAMESPACE: string = "common";
+    public static readonly COMMON_NAMESPACE: string = "common";
 
     /**
      * Dev portal namespace.
