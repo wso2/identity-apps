@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { ApplicationConstants } from "../constants";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+import { I18nConstants } from "../constants/i18n-constants";
 
 interface RuntimeConfigInterface {
     appBaseName?: string;
@@ -58,22 +58,22 @@ export const GlobalConfig: RuntimeConfigInterface = {
     i18nModuleOptions: {
         initOptions: RUNTIME_CONFIG?.i18nModuleOptions?.initOptions
             ? RUNTIME_CONFIG.i18nModuleOptions.initOptions
-            : ApplicationConstants.I18N_MODULE_INIT_OPTIONS,
+            : I18nConstants.MODULE_INIT_OPTIONS,
         langAutoDetectEnabled: RUNTIME_CONFIG?.i18nModuleOptions?.langAutoDetectEnabled
             ? RUNTIME_CONFIG.i18nModuleOptions.langAutoDetectEnabled
-            : ApplicationConstants.I18N_LANG_AUTO_DETECT_ENABLED,
+            : I18nConstants.LANG_AUTO_DETECT_ENABLED,
         namespaceDirectories: RUNTIME_CONFIG?.i18nModuleOptions?.namespaceDirectories
             ? RUNTIME_CONFIG?.i18nModuleOptions?.namespaceDirectories
-            : ApplicationConstants.I18N_BUNDLE_NAMESPACE_DIRECTORIES,
+            : I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
         overrideOptions: RUNTIME_CONFIG?.i18nModuleOptions?.overrideOptions
             ? RUNTIME_CONFIG.i18nModuleOptions.overrideOptions
-            : ApplicationConstants.I18N_INIT_OPTIONS_OVERRIDE,
+            : I18nConstants.INIT_OPTIONS_OVERRIDE,
         resourcePath: RUNTIME_CONFIG?.i18nModuleOptions?.resourcePath
             ? RUNTIME_CONFIG.i18nModuleOptions.resourcePath
             : I18N_RESOURCE_PATH,
         xhrBackendPluginEnabled: RUNTIME_CONFIG?.i18nModuleOptions?.xhrBackendPluginEnabled
             ? RUNTIME_CONFIG.i18nModuleOptions.xhrBackendPluginEnabled
-            : ApplicationConstants.I18N_XHR_BACKEND_PLUGIN_ENABLED
+            : I18nConstants.XHR_BACKEND_PLUGIN_ENABLED
     },
     loginCallbackUrl: (RUNTIME_CONFIG) ?
         (RUNTIME_CONFIG.clientHost || CLIENT_HOST_DEFAULT) + (RUNTIME_CONFIG.loginCallbackUrl || LOGIN_CALLBACK_URL) :
