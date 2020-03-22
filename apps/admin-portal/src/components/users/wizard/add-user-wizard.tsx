@@ -183,34 +183,34 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     if (!error.response || error.response.status === 401) {
                         dispatch(addAlert({
                             description: t(
-                                "views:components.users.notifications.addUser.error.description"
+                                "devPortal:components.users.notifications.addUser.error.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "views:components.users.notifications.addUser.error.message"
+                                "devPortal:components.users.notifications.addUser.error.message"
                             )
                         }));
                     } else if (error.response && error.response.data && error.response.data.detail) {
 
                         dispatch(addAlert({
                             description: t(
-                                "views:components.users.notifications.addUser.error.description",
+                                "devPortal:components.users.notifications.addUser.error.description",
                                 { description: error.response.data.detail }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "views:components.users.notifications.addUser.error.message"
+                                "devPortal:components.users.notifications.addUser.error.message"
                             )
                         }));
                     } else {
                         // Generic error message
                         dispatch(addAlert({
                             description: t(
-                                "views:components.users.notifications.addUser.genericError.description"
+                                "devPortal:components.users.notifications.addUser.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "views:components.users.notifications.addUser.genericError.message"
+                                "devPortal:components.users.notifications.addUser.genericError.message"
                             )
                         }));
                     }
@@ -270,11 +270,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             .then((response) => {
                 dispatch(addAlert({
                     description: t(
-                        "views:components.users.notifications.addUser.success.description"
+                        "devPortal:components.users.notifications.addUser.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "views:components.users.notifications.addUser.success.message"
+                        "devPortal:components.users.notifications.addUser.success.message"
                     )
                 }));
 
@@ -291,34 +291,34 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 if (!error.response || error.response.status === 401) {
                     dispatch(addAlert({
                         description: t(
-                            "views:components.users.notifications.addUser.error.description"
+                            "devPortal:components.users.notifications.addUser.error.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.users.notifications.addUser.error.message"
+                            "devPortal:components.users.notifications.addUser.error.message"
                         )
                     }));
                 } else if (error.response && error.response.data && error.response.data.detail) {
 
                     dispatch(addAlert({
                         description: t(
-                            "views:components.users.notifications.addUser.error.description",
+                            "devPortal:components.users.notifications.addUser.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.users.notifications.addUser.error.message"
+                            "devPortal:components.users.notifications.addUser.error.message"
                         )
                     }));
                 } else {
                     // Generic error message
                     dispatch(addAlert({
                         description: t(
-                            "views:components.users.notifications.addUser.genericError.description"
+                            "devPortal:components.users.notifications.addUser.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "views:components.users.notifications.addUser.genericError.message"
+                            "devPortal:components.users.notifications.addUser.genericError.message"
                         )
                     }));
                 }

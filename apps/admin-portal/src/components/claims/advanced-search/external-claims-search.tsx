@@ -145,16 +145,16 @@ export const ExternalClaimsSearch: FunctionComponent<ExternalClaimsSearchPropsIn
     return (
         <AdvancedSearch
             aligned="left"
-            clearButtonPopupLabel={ t("views:components.applications.search.popups.clear") }
+            clearButtonPopupLabel={ t("devPortal:components.applications.search.popups.clear") }
             defaultSearchStrategy={ DEFAULT_SEARCH_STRATEGY }
-            dropdownTriggerPopupLabel={ t("views:components.applications.search.popups.dropdown") }
-            hintActionKeys={ t("views:components.applications.search.hints.querySearch.actionKeys") }
-            hintLabel={ t("views:components.applications.search.hints.querySearch.label") }
+            dropdownTriggerPopupLabel={ t("devPortal:components.applications.search.popups.dropdown") }
+            hintActionKeys={ t("devPortal:components.applications.search.hints.querySearch.actionKeys") }
+            hintLabel={ t("devPortal:components.applications.search.hints.querySearch.label") }
             onExternalSearchQueryClear={ handleExternalSearchQueryClear }
             onSearchQuerySubmit={ handleSearchQuerySubmit }
-            placeholder={ t("views:components.applications.search.placeholder") }
+            placeholder={ t("devPortal:components.applications.search.placeholder") }
             resetSubmittedState={ handleResetSubmittedState }
-            searchOptionsHeader={ t("views:components.applications.search.options.header") }
+            searchOptionsHeader={ t("devPortal:components.applications.search.options.header") }
             externalSearchQuery={ externalSearchQuery }
             submitted={ isFormSubmitted }
         >
@@ -170,13 +170,13 @@ export const ExternalClaimsSearch: FunctionComponent<ExternalClaimsSearchPropsIn
                                         value: attribute.value
                                     };
                                 }) }
-                                label={ t("views:components.applications.search.forms.searchForm.inputs" +
+                                label={ t("devPortal:components.applications.search.forms.searchForm.inputs" +
                                     ".filerAttribute.label") }
                                 name={ FILTER_ATTRIBUTE_FIELD_IDENTIFIER }
-                                placeholder={ t("views:components.applications.search.forms.searchForm.inputs" +
+                                placeholder={ t("devPortal:components.applications.search.forms.searchForm.inputs" +
                                     ".filerAttribute.placeholder") }
                                 required={ true }
-                                requiredErrorMessage={ t("views:components.applications.search.forms.searchForm" +
+                                requiredErrorMessage={ t("devPortal:components.applications.search.forms.searchForm" +
                                     ".inputs.filerAttribute.validations.empty") }
                                 type="dropdown"
                                 width={ 16 }
@@ -192,13 +192,13 @@ export const ExternalClaimsSearch: FunctionComponent<ExternalClaimsSearchPropsIn
                                                     value: condition.value
                                                 };
                                             }) }
-                                            label={ t("views:components.applications.search.forms.searchForm.inputs" +
-                                                ".filterCondition.label") }
+                                            label={ t("devPortal:components.applications.search.forms.searchForm" +
+                                                ".inputs.filterCondition.label") }
                                             name={ FILTER_CONDITION_FIELD_IDENTIFIER }
-                                            placeholder={ t("views:components.applications.search.forms." +
+                                            placeholder={ t("devPortal:components.applications.search.forms." +
                                                 "searchForm.inputs.filterCondition.placeholder") }
                                             required={ true }
-                                            requiredErrorMessage={ t("views:components.applications.search.forms" +
+                                            requiredErrorMessage={ t("devPortal:components.applications.search.forms" +
                                                 ".searchForm.inputs.filterCondition.validations.empty") }
                                             type="dropdown"
                                             width={ 16 }
@@ -206,13 +206,13 @@ export const ExternalClaimsSearch: FunctionComponent<ExternalClaimsSearchPropsIn
                                     </Grid.Column>
                                     <Grid.Column width={ 8 }>
                                         <Field
-                                            label={ t("views:components.applications.search.forms.searchForm.inputs" +
-                                                ".filterValue.label") }
+                                            label={ t("devPortal:components.applications.search.forms.searchForm" +
+                                                ".inputs.filterValue.label") }
                                             name={ FILTER_VALUES_FIELD_IDENTIFIER }
-                                            placeholder={ t("views:components.applications.search.forms." +
+                                            placeholder={ t("devPortal:components.applications.search.forms." +
                                                 "searchForm.inputs.filterValue.placeholder") }
                                             required={ true }
-                                            requiredErrorMessage={ t("views:components.applications.search." +
+                                            requiredErrorMessage={ t("devPortal:components.applications.search." +
                                                 "forms.searchForm.inputs.filterValue.validations.empty") }
                                             type="text"
                                             width={ 16 }

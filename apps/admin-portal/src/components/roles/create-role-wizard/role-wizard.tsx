@@ -146,43 +146,43 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 updatePermissionForRole(createdRoleId, permData).then(() => {
                     dispatch(addAlert({
                         description: t(
-                            "views:components.roles.notifications.createRole.success.description"
+                            "devPortal:components.roles.notifications.createRole.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "views:components.roles.notifications.createRole.success.message"
+                            "devPortal:components.roles.notifications.createRole.success.message"
                         )
                     }));
                 }).catch(error => {
                     if (!error.response || error.response.status === 401) {
                         dispatch(addAlert({
                             description: t(
-                                "views:components.roles.notifications.createPermission.error.description"
+                                "devPortal:components.roles.notifications.createPermission.error.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "views:components.roles.notifications.createPermission.error.message"
+                                "devPortal:components.roles.notifications.createPermission.error.message"
                             )
                         }));
                     } else if (error.response && error.response.data.detail) {
                         dispatch(addAlert({
                             description: t(
-                                "views:components.roles.notifications.createPermission.error.description",
+                                "devPortal:components.roles.notifications.createPermission.error.description",
                                 { description: error.response.data.detail }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "views:components.roles.notifications.createPermission.error.message"
+                                "devPortal:components.roles.notifications.createPermission.error.message"
                             )
                         }));
                     } else {
                         dispatch(addAlert({
                             description: t(
-                                "views:components.roles.notifications.createPermission.genericError.description"
+                                "devPortal:components.roles.notifications.createPermission.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "views:components.roles.notifications.createPermission.genericError.message"
+                                "devPortal:components.roles.notifications.createPermission.genericError.message"
                             )
                         }));
                     }
@@ -194,32 +194,32 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             if (!error.response || error.response.status === 401) {
                 dispatch(addAlert({
                     description: t(
-                        "views:components.roles.notifications.createRole.error.description"
+                        "devPortal:components.roles.notifications.createRole.error.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "views:components.roles.notifications.createRole.error.message"
+                        "devPortal:components.roles.notifications.createRole.error.message"
                     )
                 }));
             } else if (error.response && error.response.data.detail) {
                 dispatch(addAlert({
                     description: t(
-                        "views:components.roles.notifications.createRole.error.description",
+                        "devPortal:components.roles.notifications.createRole.error.description",
                         { description: error.response.data.detail }
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "views:components.roles.notifications.createRole.error.message"
+                        "devPortal:components.roles.notifications.createRole.error.message"
                     )
                 }));
             } else {
                 dispatch(addAlert({
                     description: t(
-                        "views:components.roles.notifications.createRole.genericError.description"
+                        "devPortal:components.roles.notifications.createRole.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "views:components.roles.notifications.createRole.genericError.message"
+                        "devPortal:components.roles.notifications.createRole.genericError.message"
                     )
                 }));
             }

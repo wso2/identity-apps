@@ -49,43 +49,43 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
         updatePermissionForRole(role, updatedPerms).then(() => {
             dispatch(addAlert({
                 description: t(
-                    "views:components.roles.notifications.updateRole.success.description"
+                    "devPortal:components.roles.notifications.updateRole.success.description"
                 ),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "views:components.roles.notifications.updateRole.success.message"
+                    "devPortal:components.roles.notifications.updateRole.success.message"
                 )
             }));
         }).catch(error => {
             if (!error.response || error.response.status === 401) {
                 dispatch(addAlert({
                     description: t(
-                        "views:components.roles.notifications.updateRole.error.description"
+                        "devPortal:components.roles.notifications.updateRole.error.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "views:components.roles.notifications.updateRole.error.message"
+                        "devPortal:components.roles.notifications.updateRole.error.message"
                     )
                 }));
             } else if (error.response && error.response.data.detail) {
                 dispatch(addAlert({
                     description: t(
-                        "views:components.roles.notifications.updateRole.error.description",
+                        "devPortal:components.roles.notifications.updateRole.error.description",
                         { description: error.response.data.detail }
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "views:components.roles.notifications.updateRole.error.message"
+                        "devPortal:components.roles.notifications.updateRole.error.message"
                     )
                 }));
             } else {
                 dispatch(addAlert({
                     description: t(
-                        "views:components.roles.notifications.updateRole.genericError.description"
+                        "devPortal:components.roles.notifications.updateRole.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "views:components.roles.notifications.updateRole.genericError.message"
+                        "devPortal:components.roles.notifications.updateRole.genericError.message"
                     )
                 }));
             }
