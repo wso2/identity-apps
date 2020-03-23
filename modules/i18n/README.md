@@ -17,18 +17,6 @@ npm run build
 
 ### Initialize the module.
 
-Init function arguments: 
-
-| Parameter                 | Type                       | Default                           | Description                                       |   
-| :------------------------ |:--------------------------:| :---------------------------------| :-------------------------------------------------|
-| options 	                | i18next.InitOptions        | undefined                         | Passed in init options.
-| override                  | boolean                    | false                             | Should the passed in options replace the default.
-| autoDetect                | boolean                    | false                             | If autodetect plugin should be used or not.
-| useBackend                | boolean                    | false                             | If XHR back end plugin should be used or not.
-| debug                     | boolean                    | false                             | If debug is enabled.
-| framework                 | SupportedI18nFrameworks    | SupportedI18nFrameworks.REACT     | The framework to use.
-| plugins                   | i18next.Module[]           | undefined                         | Other i18next plugins to use.
-
 ```tsx
 import { I18n } from "@wso2is/i18n";
 
@@ -41,6 +29,18 @@ I18n.init(options, override, true, true)
     });
 
 ```
+
+Init function arguments: 
+
+| Parameter                 | Type                       | Default                           | Description                                       |   
+| :------------------------ |:--------------------------:| :---------------------------------| :-------------------------------------------------|
+| options 	                | i18next.InitOptions        | undefined                         | Passed in init options.
+| override                  | boolean                    | false                             | Should the passed in options replace the default.
+| autoDetect                | boolean                    | false                             | If autodetect plugin should be used or not.
+| useBackend                | boolean                    | false                             | If XHR back end plugin should be used or not.
+| debug                     | boolean                    | false                             | If debug is enabled.
+| framework                 | SupportedI18nFrameworks    | SupportedI18nFrameworks.REACT     | The framework to use.
+| plugins                   | i18next.Module[]           | undefined                         | Other i18next plugins to use.
 
 ### Get the instance.
 
