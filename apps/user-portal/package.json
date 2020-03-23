@@ -34,6 +34,7 @@
     },
     "peerDependencies": {
         "axios": "*",
+        "fork-ts-checker-webpack-plugin": "*",
         "history": "*",
         "i18next": "*",
         "i18next-browser-languagedetector": "*",

@@ -107,12 +107,3 @@ export const onHttpRequestError = (error: any): null => {
 export const onHttpRequestFinish = (): void => {
     store.dispatch(hideGlobalLoader());
 };
-
-/**
- * Set up the http client by registering the callback functions.
- */
-export const setupHttpClient = (): void => {
-    const httpClient = AxiosHttpClient.getInstance();
-    httpClient.init(true, onHttpRequestStart, onHttpRequestSuccess, onHttpRequestError, onHttpRequestFinish);
-
-};
