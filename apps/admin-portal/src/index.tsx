@@ -23,7 +23,7 @@ import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";
 import { GlobalConfig } from "./configs";
 import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
-import { I18n, I18nInstanceInitException, isLanguageSupported } from "@wso2is/i18n";
+import { I18n, I18nInstanceInitException, I18nModuleConstants, isLanguageSupported } from "@wso2is/i18n";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(GlobalConfig);
@@ -44,7 +44,11 @@ I18n.init({
         fetch(`/${ GlobalConfig.i18nModuleOptions.resourcePath }/meta.json`)
             .then((response) => response.json())
             .then((response) => {
-                isLanguageSupported(I18n.instance.language, null, response);
+                const isSupported = isLanguageSupported(I18n.instance.language, null, response);
+
+                if (!isSupported) {
+                    I18n.instance.changeLanguage(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE);
+                }
             })
     })
     .catch((error) => {
