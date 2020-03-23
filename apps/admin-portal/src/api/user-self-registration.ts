@@ -29,7 +29,7 @@ const httpClient = AxiosHttpClient.getInstance();
 /**
  * Retrieve self sign up configurations.
  *
- * @returns {Promise<BasicProfileInterface>} a promise containing the configurations.
+ * @returns {Promise<any>} a promise containing the configurations.
  */
 export const getSelfSignUpConfigurations = (): Promise<any> => {
     const requestConfig = {
@@ -55,7 +55,7 @@ export const getSelfSignUpConfigurations = (): Promise<any> => {
  *
  * @param data request payload
  *
- * @returns {Promise<BasicProfileInterface>} a promise containing the response.
+ * @returns {Promise<any>} a promise containing the response.
  */
 export const updateSelfSignUpConfigurations = (data: object): Promise<any> => {
     const requestConfig = {

@@ -18,15 +18,16 @@
 
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { SettingsSectionIcons } from "../../configs";
-import { AlertInterface, AlertLevels } from "../../models";
+import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { EditSection, Hint, Section } from "@wso2is/react-components";
 import { useTranslation } from "react-i18next";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import { getSelfSignUpConfigurations, updateSelfSignUpConfigurations } from "../../api/user-self-registration";
 import { SelfSignUpConfigurationsInterface } from "../../models/server-configurations";
-import { addAlert } from "../../store/actions";
+import { addAlert } from "@wso2is/core/store";
 import { useDispatch } from "react-redux";
+import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
 
 /**
  * Constant to store the self registration from identifier.
@@ -40,17 +41,6 @@ const USER_SELF_REGISTRATION_FORM_IDENTIFIER = "userSelfRegistrationForm";
 interface UserSelfRegistrationProps {
 	onAlertFired: (alert: AlertInterface) => void;
 }
-
-/**
- * Self registration API Key constants.
- */
-const SELF_REGISTRATION_ENABLE = "SelfRegistration.Enable";
-const ACCOUNT_LOCK_ON_CREATION = "SelfRegistration.LockOnCreation";
-const NOTIFICATION_INTERNALLY_MANAGED = "SelfRegistration.Notification.InternallyManage";
-const RE_CAPTCHA = "SelfRegistration.ReCaptcha";
-const VERIFICATION_CODE_EXPIRY_TIME = "SelfRegistration.VerificationCode.ExpiryTime";
-const SMS_OTP_EXPIRY_TIME = "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime";
-const CALLBACK_REGEX = "SelfRegistration.CallbackRegex";
 
 /**
  * User Self Registration component.
@@ -119,32 +109,36 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 			"operation": "UPDATE",
 			"properties": [
 				{
-					"name": SELF_REGISTRATION_ENABLE,
-					"value": selfSignUpConfigs.checkboxValues.includes(SELF_REGISTRATION_ENABLE) ? "true" : "false"
+					"name": ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
+					"value": selfSignUpConfigs.checkboxValues.includes(
+						ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE) ? "true" : "false"
 				},
 				{
-					"name": ACCOUNT_LOCK_ON_CREATION,
-					"value": selfSignUpConfigs.checkboxValues.includes(ACCOUNT_LOCK_ON_CREATION) ? "true" : "false"
+					"name": ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION,
+					"value": selfSignUpConfigs.checkboxValues.includes(
+						ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) ? "true" : "false"
 				},
 				{
-					"name": NOTIFICATION_INTERNALLY_MANAGED,
-					"value": selfSignUpConfigs.checkboxValues.includes(NOTIFICATION_INTERNALLY_MANAGED) ?
+					"name": ServerConfigurationsConstants.NOTIFICATION_INTERNALLY_MANAGED,
+					"value": selfSignUpConfigs.checkboxValues.includes(
+						ServerConfigurationsConstants.NOTIFICATION_INTERNALLY_MANAGED) ?
 						"true" : "false"
 				},
 				{
-					"name": RE_CAPTCHA,
-					"value": selfSignUpConfigs.checkboxValues.includes(RE_CAPTCHA) ? "true" : "false"
+					"name": ServerConfigurationsConstants.RE_CAPTCHA,
+					"value": selfSignUpConfigs.checkboxValues.includes(
+						ServerConfigurationsConstants.RE_CAPTCHA) ? "true" : "false"
 				},
 				{
-					"name": VERIFICATION_CODE_EXPIRY_TIME,
+					"name": ServerConfigurationsConstants.VERIFICATION_CODE_EXPIRY_TIME,
 					"value": selfSignUpConfigs.verificationCodeExpiryTime
 				},
 				{
-					"name": SMS_OTP_EXPIRY_TIME,
+					"name": ServerConfigurationsConstants.SMS_OTP_EXPIRY_TIME,
 					"value": selfSignUpConfigs.smsOTPExpiryTime
 				},
 				{
-					"name": CALLBACK_REGEX,
+					"name": ServerConfigurationsConstants.CALLBACK_REGEX,
 					"value": selfSignUpConfigs.callbackRegex
 				},
 			]
@@ -228,11 +222,11 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 				const configs = {
 					checkboxValues: checkboxValues,
 					verificationCodeExpiryTime: response.properties.find(
-						property => property.name == VERIFICATION_CODE_EXPIRY_TIME).value,
+						property => property.name == ServerConfigurationsConstants.VERIFICATION_CODE_EXPIRY_TIME).value,
 					smsOTPExpiryTime: response.properties.find(
-						property => property.name == SMS_OTP_EXPIRY_TIME).value,
+						property => property.name == ServerConfigurationsConstants.SMS_OTP_EXPIRY_TIME).value,
 					callbackRegex: response.properties.find(
-						property => property.name == CALLBACK_REGEX).value
+						property => property.name == ServerConfigurationsConstants.CALLBACK_REGEX).value
 				};
 				setSelfSignUpConfigs(configs);
 			});
@@ -247,17 +241,18 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 	const getSelfRegistrationCheckboxValues = (data) => {
 		const values = [];
 		data.properties.map((property => {
-			if (property.name === SELF_REGISTRATION_ENABLE) {
-				property.value === "true" ? values.push(SELF_REGISTRATION_ENABLE) : "";
+			if (property.name === ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE) {
+				property.value === "true" ? values.push(ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE) : "";
 			}
-			if (property.name === ACCOUNT_LOCK_ON_CREATION) {
-				property.value === "true" ? values.push(ACCOUNT_LOCK_ON_CREATION) : "";
+			if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
+				property.value === "true" ? values.push(ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) : "";
 			}
-			if (property.name === NOTIFICATION_INTERNALLY_MANAGED) {
-				property.value === "true" ? values.push(NOTIFICATION_INTERNALLY_MANAGED) : "";
+			if (property.name === ServerConfigurationsConstants.NOTIFICATION_INTERNALLY_MANAGED) {
+				property.value === "true" ? values.push(
+					ServerConfigurationsConstants.NOTIFICATION_INTERNALLY_MANAGED) : "";
 			}
-			if (property.name === RE_CAPTCHA) {
-				property.value === "true" ? values.push(RE_CAPTCHA) : "";
+			if (property.name === ServerConfigurationsConstants.RE_CAPTCHA) {
+				property.value === "true" ? values.push(ServerConfigurationsConstants.RE_CAPTCHA) : "";
 			}
 		}));
 		return values;
@@ -284,12 +279,11 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 	);
 
 	const getFormValues = (values) => {
-		console.log(values);
 		return {
 			checkboxValues: values.get("SelfRegistrationCheckBoxes"),
-			verificationCodeExpiryTime: values.get(VERIFICATION_CODE_EXPIRY_TIME),
-			smsOTPExpiryTime: values.get(SMS_OTP_EXPIRY_TIME),
-			callbackRegex: values.get(CALLBACK_REGEX)
+			verificationCodeExpiryTime: values.get(ServerConfigurationsConstants.VERIFICATION_CODE_EXPIRY_TIME),
+			smsOTPExpiryTime: values.get(ServerConfigurationsConstants.SMS_OTP_EXPIRY_TIME),
+			callbackRegex: values.get(ServerConfigurationsConstants.CALLBACK_REGEX)
 		}
 	};
 
@@ -310,21 +304,21 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 					children={ [
 						{
 							label: t("views:components.serverConfigs.selfRegistration.form.enable.label"),
-							value: SELF_REGISTRATION_ENABLE
+							value: ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE
 						},
 						{
 							label: t("views:components.serverConfigs.selfRegistration.form." +
 								"enableAccountLockOnCreation.label"),
-							value: ACCOUNT_LOCK_ON_CREATION
+							value: ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION
 						},
 						{
 							label: t("views:components.serverConfigs.selfRegistration.form." +
 								"internalNotificationManagement.label"),
-							value: NOTIFICATION_INTERNALLY_MANAGED
+							value: ServerConfigurationsConstants.NOTIFICATION_INTERNALLY_MANAGED
 						},
 						{
 							label: t("views:components.serverConfigs.selfRegistration.form.enableReCaptcha.label"),
-							value: RE_CAPTCHA
+							value: ServerConfigurationsConstants.RE_CAPTCHA
 						}
 					] }
 					value={ selfSignUpConfigs.checkboxValues }
@@ -333,7 +327,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 					label={ t(
 						"views:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime.label"
 					) }
-					name={ VERIFICATION_CODE_EXPIRY_TIME }
+					name={ ServerConfigurationsConstants.VERIFICATION_CODE_EXPIRY_TIME }
 					placeholder={ t(
 						"views:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime.placeholder"
 					) }
@@ -353,7 +347,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 					label={ t(
 						"views:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.label"
 					) }
-					name={ SMS_OTP_EXPIRY_TIME }
+					name={ ServerConfigurationsConstants.SMS_OTP_EXPIRY_TIME }
 					placeholder={ t(
 						"views:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.placeholder"
 					) }
@@ -372,7 +366,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 					label={ t(
 						"views:components.serverConfigs.selfRegistration.form.callbackURLRegex.label"
 					) }
-					name={ CALLBACK_REGEX }
+					name={ ServerConfigurationsConstants.CALLBACK_REGEX }
 					placeholder={ t(
 						"views:components.serverConfigs.selfRegistration.form.callbackURLRegex.placeholder"
 					) }
@@ -385,16 +379,25 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 					width={ 9 }
 				/>
 				<Field
+					name=""
+					required={ false }
+					requiredErrorMessage=""
 					hidden={ true }
 					type="divider"
 				/>
 				<Form.Group>
 					<Field
+						name=""
+						required={ false }
+						requiredErrorMessage=""
 						size="small"
 						type="submit"
 						value={ t("common:submit").toString() }
 					/>
 					<Field
+						name=""
+						required={ false }
+						requiredErrorMessage=""
 						className="link-button"
 						onClick={ () => {
 							hideFormEditView(USER_SELF_REGISTRATION_FORM_IDENTIFIER);

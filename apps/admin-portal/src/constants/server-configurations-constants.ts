@@ -16,18 +16,41 @@
  * under the License.
  */
 
-/**
- * UUID of the identity governance account management policies category.
- *
- * @constant
- * @type {string}
- */
-export const IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID = "QWNjb3VudCBNYW5hZ2VtZW50IFBvbGljaWVz";
+export class ServerConfigurationsConstants {
 
-/**
- * UUID of the identity governance self sign up connector.
- *
- * @constant
- * @type {string}
- */
-export const SELF_SIGN_UP_CONNECTOR_ID = "c2VsZi1zaWduLXVw";
+	/**
+	 * Private constructor to avoid object instantiation from outside the class.
+	 *
+	 * @hideconstructor
+	 */
+	/* eslint-disable @typescript-eslint/no-empty-function */
+	private constructor() { }
+
+	/**
+	 * UUID of the identity governance account management policies category.
+	 *
+	 * @constant
+	 * @type {string}
+	 */
+	public static readonly IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID: string =
+		"QWNjb3VudCBNYW5hZ2VtZW50IFBvbGljaWVz";
+
+	/**
+	 * UUID of the identity governance self sign up connector.
+	 *
+	 * @constant
+	 * @type {string}
+	 */
+	public static readonly SELF_SIGN_UP_CONNECTOR_ID: string = "c2VsZi1zaWduLXVw";
+
+	/**
+	 * Self registration API Key constants.
+	 */
+	public static readonly SELF_REGISTRATION_ENABLE: string = "SelfRegistration.Enable";
+	public static readonly ACCOUNT_LOCK_ON_CREATION: string = "SelfRegistration.LockOnCreation";
+	public static readonly NOTIFICATION_INTERNALLY_MANAGED: string = "SelfRegistration.Notification.InternallyManage";
+	public static readonly RE_CAPTCHA: string = "SelfRegistration.ReCaptcha";
+	public static readonly VERIFICATION_CODE_EXPIRY_TIME: string = "SelfRegistration.VerificationCode.ExpiryTime";
+	public static readonly SMS_OTP_EXPIRY_TIME: string = "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime";
+	public static readonly CALLBACK_REGEX: string = "SelfRegistration.CallbackRegex";
+}
