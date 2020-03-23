@@ -27,3 +27,4 @@ export * from "./users/users-search";
 export * from "./users/users-list";
 export * from "./claims";
 export * from "./user-stores";
+export * from "./server-configurations";

@@ -44,11 +44,12 @@ export class ServerConfigurationsConstants {
 	public static readonly SELF_SIGN_UP_CONNECTOR_ID: string = "c2VsZi1zaWduLXVw";
 
 	/**
-	 * Self registration API Key constants.
+	 * Self registration API Keywords constants.
 	 */
 	public static readonly SELF_REGISTRATION_ENABLE: string = "SelfRegistration.Enable";
 	public static readonly ACCOUNT_LOCK_ON_CREATION: string = "SelfRegistration.LockOnCreation";
-	public static readonly NOTIFICATION_INTERNALLY_MANAGED: string = "SelfRegistration.Notification.InternallyManage";
+	public static readonly SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED: string =
+		"SelfRegistration.Notification.InternallyManage";
 	public static readonly RE_CAPTCHA: string = "SelfRegistration.ReCaptcha";
 	public static readonly VERIFICATION_CODE_EXPIRY_TIME: string = "SelfRegistration.VerificationCode.ExpiryTime";
 	public static readonly SMS_OTP_EXPIRY_TIME: string = "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime";

@@ -22,10 +22,7 @@ import { PageLayout } from "../layouts";
 import { Grid } from "semantic-ui-react";
 import { AlertInterface } from "../../../user-portal/src/models";
 import { addAlert } from "../../../user-portal/src/store/actions";
-import {
-	AccountRecovery,
-	UserSelfRegistration
-} from "../components/serverConfigurations";
+import { AccountRecovery, UserSelfRegistration } from "../components";
 
 /**
  * Governance Features page.

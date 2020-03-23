@@ -119,9 +119,9 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 						ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) ? "true" : "false"
 				},
 				{
-					"name": ServerConfigurationsConstants.NOTIFICATION_INTERNALLY_MANAGED,
+					"name": ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED,
 					"value": selfSignUpConfigs.checkboxValues.includes(
-						ServerConfigurationsConstants.NOTIFICATION_INTERNALLY_MANAGED) ?
+						ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED) ?
 						"true" : "false"
 				},
 				{
@@ -247,9 +247,9 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 			if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
 				property.value === "true" ? values.push(ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) : "";
 			}
-			if (property.name === ServerConfigurationsConstants.NOTIFICATION_INTERNALLY_MANAGED) {
+			if (property.name === ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED) {
 				property.value === "true" ? values.push(
-					ServerConfigurationsConstants.NOTIFICATION_INTERNALLY_MANAGED) : "";
+					ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED) : "";
 			}
 			if (property.name === ServerConfigurationsConstants.RE_CAPTCHA) {
 				property.value === "true" ? values.push(ServerConfigurationsConstants.RE_CAPTCHA) : "";
@@ -314,7 +314,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 						{
 							label: t("views:components.serverConfigs.selfRegistration.form." +
 								"internalNotificationManagement.label"),
-							value: ServerConfigurationsConstants.NOTIFICATION_INTERNALLY_MANAGED
+							value: ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED
 						},
 						{
 							label: t("views:components.serverConfigs.selfRegistration.form.enableReCaptcha.label"),
