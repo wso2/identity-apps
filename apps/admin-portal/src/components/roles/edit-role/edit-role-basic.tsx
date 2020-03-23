@@ -22,7 +22,7 @@ import { Field, Forms } from "@wso2is/forms"
 import { useTranslation } from "react-i18next";
 import { DangerZoneGroup, DangerZone } from "@wso2is/react-components";
 import { deleteSelectedRole, getRoleById, updateRoleDetails } from "../../../api";
-import { AlertLevels, AlertInterface, RolesInterface, CreateRoleInterface } from "../../../models";
+import { AlertLevels, AlertInterface, RolesInterface, CreateRoleInterface, PatchRoleDataInterface } from "../../../models";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
 import { history } from "../../../helpers";
@@ -33,7 +33,7 @@ import { ROLE_VIEW_PATH } from "../../../constants";
  */
 interface BasicRoleProps {
     roleObject: RolesInterface;
-    roleId: string;
+    onRoleUpdate: () => void;
 }
 
 /**
@@ -47,7 +47,7 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
 
     const {
         roleObject,
-        roleId
+        onRoleUpdate
     } = props;
 
     /**
@@ -68,11 +68,11 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         deleteSelectedRole(id).then(() => {
             handleAlerts({
                 description: t(
-                    "devPortal:components.roles.notifications.deleteRole.success.description"
+                    "views:components.roles.notifications.deleteRole.success.description"
                 ),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "devPortal:components.roles.notifications.deleteRole.success.message"
+                    "views:components.roles.notifications.deleteRole.success.message"
                 )
             });
             history.push(ROLE_VIEW_PATH);
@@ -85,31 +85,41 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
      * @param values Form values which will be used to update the role
      */
     const updateRoleName = (values: any): void => {
-        const roleData: CreateRoleInterface = {
-            displayName: values.get("rolename")
+        const roleData: PatchRoleDataInterface = {
+            schemas: [
+                "urn:ietf:params:scim:api:messages:2.0:PatchOp"
+            ],
+            Operations: [{
+                "op": "replace",
+                "value": {
+                    "displayName": values.get("rolename")
+                }
+            }]
         }
 
-        updateRoleDetails(roleId, roleData).then(response => {
-            handleAlerts({
-                description: t(
-                    "devPortal:components.roles.notifications.updateRole.success.description"
-                ),
-                level: AlertLevels.SUCCESS,
-                message: t(
-                    "devPortal:components.roles.notifications.updateRole.success.message"
-                )
+        updateRoleDetails(roleObject.id, roleData)
+            .then(response => {
+                onRoleUpdate();
+                handleAlerts({
+                    description: t(
+                        "views:components.roles.notifications.updateRole.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "views:components.roles.notifications.updateRole.success.message"
+                    )
+                });
+            }).catch(error => {
+                handleAlerts({
+                    description: t(
+                        "views:components.roles.notifications.updateRole.error.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "views:components.roles.notifications.updateRole.error.message"
+                    )
+                });
             });
-        }).catch(error => {
-            handleAlerts({
-                description: t(
-                    "devPortal:components.roles.notifications.updateRole.error.description"
-                ),
-                level: AlertLevels.ERROR,
-                message: t(
-                    "devPortal:components.roles.notifications.updateRole.error.message"
-                )
-            });
-        })
     }
 
     return (
@@ -124,7 +134,7 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                             <Field
                                 name={ "rolename" }
-                                label={ t("devPortal:components.roles.edit.basics.fields.roleName") }
+                                label={ t("views:components.roles.edit.basics.fields.roleName") }
                                 required={ true }
                                 requiredErrorMessage={ "Role name is required" }
                                 placeholder={ "Enter your role name" }
@@ -148,7 +158,7 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                     actionTitle="Delete Role"
                     header="Delete this role"
                     subheader="This action is irreversible. Please proceed with caution."
-                    onActionClick={ () => handleOnDelete(roleId) }
+                    onActionClick={ () => handleOnDelete(roleObject.id) }
                 />
             </DangerZoneGroup>
         </>

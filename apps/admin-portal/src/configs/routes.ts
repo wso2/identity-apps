@@ -37,7 +37,8 @@ import {
     ClaimDialectsPage,
     LocalClaimsEditPage,
     UserStores,
-    IdentityProviderEditPage
+    IdentityProviderEditPage,
+    ServerConfigurationsPage
 } from "../pages";
 import {
     USER_STORES_PATH,
@@ -243,6 +244,16 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         path: USER_STORES_PATH,
         protected: true,
         showOnSidePanel: true
+    },
+    {
+        component: ServerConfigurationsPage,
+        exact: true,
+        icon: "userStore",
+        id: "serverConfigurations",
+        name: "Server Configurations",
+        path: "/server-configurations",
+        protected: true,
+        showOnSidePanel: true,
     },
     {
         component: PrivacyPage,

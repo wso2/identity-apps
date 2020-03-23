@@ -280,6 +280,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     },{
         content: (
             <AddRoleUsers
+                isEdit={ false }
                 triggerSubmit={ submitRoleUserList }
                 onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.USER_LIST) }
             />
