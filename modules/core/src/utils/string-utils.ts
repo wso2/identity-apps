@@ -94,4 +94,28 @@ export class StringUtils {
 
         return true;
     }
+
+    /**
+     * Removes leading and trailing slashes from a path.
+     *
+     * @example
+     * // returns "admin-portal"
+     * removeSlashesFromPath("/admin-portal/");
+     *
+     * @param {string} path - Raw path.
+     * @param {boolean} leading - Leading slashes should be removed or not.
+     * @param {boolean} trailing - Trailing slashes should be removed or not.
+     * @return {string} Modified path.
+     */
+    public static removeSlashesFromPath(path: string, leading = true, trailing = true): string {
+        if (leading && trailing) {
+            return path.replace(/^\/+|\/+$/g, "");
+        } else if (leading) {
+            return path.replace(/^\/+/g, "");
+        } else if (trailing) {
+            return path.replace(/\/+$/g, "");
+        }
+
+        return path;
+    }
 }
