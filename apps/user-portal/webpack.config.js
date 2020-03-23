@@ -22,6 +22,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TaserJSPlugin = require("terser-webpack-plugin");
 const WriteFilePlugin = require("write-file-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 module.exports = (env) => {
     const basename = "user-portal";
@@ -197,6 +198,7 @@ module.exports = (env) => {
             fs: "empty"
         },
         plugins: [
+            new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
             new WriteFilePlugin({
                 // Exclude hot-update files
                 test: /^(?!.*(hot-update)).*/
