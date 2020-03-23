@@ -406,6 +406,149 @@ export interface Views {
                 createPermission: Notification;
             };
         };
+        serverConfigs: {
+            selfRegistration: {
+                actionTitles: {
+                    config: string;
+                };
+                description: string;
+                heading: string;
+                confirmation: {
+                    heading: string;
+                    message: string;
+                };
+                notifications: {
+                    updateConfigurations: Notification;
+                };
+                form: {
+                    enable: {
+                        label: string;
+                    };
+                    enableAccountLockOnCreation: {
+                        label: string;
+                    };
+                    internalNotificationManagement: {
+                        label: string;
+                    };
+                    enableReCaptcha: {
+                        label: string;
+                    };
+                    verificationLinkExpiryTime: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                        };
+                    };
+                    smsOTPExpiryTime: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                        };
+                    };
+                    callbackURLRegex: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                        };
+                    };
+                };
+            };
+            accountRecovery: {
+                actionTitles: {
+                    config: string;
+                };
+                description: string;
+                heading: string;
+                usernameRecovery: {
+                    actionTitles: {
+                        config: string;
+                    };
+                    description: string;
+                    heading: string;
+                    form: {
+                        enable: {
+                            label: string;
+                        };
+                        enableReCaptcha: {
+                            label: string;
+                        };
+                    };
+                };
+                passwordRecovery: {
+                    actionTitles: {
+                        config: string;
+                    };
+                    description: string;
+                    heading: string;
+                    form: {
+                        enableNotificationBasedRecovery: {
+                            label: string;
+                        };
+                        enableReCaptchaBasedRecovery: {
+                            label: string;
+                        };
+                        enableSecurityQuestionBasedRecovery: {
+                            label: string;
+                        };
+                        noOfQuestionsRequired: {
+                            label: string;
+                            hint: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        enableReCaptchaForSecurityQuestionBasedRecovery: {
+                            label: string;
+                            hint: string;
+                        };
+                    };
+                };
+                otherSettings: {
+                    form: {
+                        reCaptchaMaxFailedAttempts: {
+                            label: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        enableInternalNotificationManagement: {
+                            label: string;
+                            hint: string;
+                        };
+                        notifyRecoverySuccess: {
+                            label: string;
+                        };
+                        notifyQuestionRecoveryStart: {
+                            label: string;
+                        };
+                        recoveryLinkExpiryTime: {
+                            label: string;
+                            hint: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        smsOTPExpiryTime: {
+                            label: string;
+                            hint: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        recoveryCallbackURLRegex: {
+                            label: string;
+                            hint: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                    };
+                };
+            };
+        };
         footer: {
             copyright: string;
         };

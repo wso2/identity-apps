@@ -34,3 +34,4 @@ export * from "./identity-provider-edit";
 export * from "./identity-provider-template";
 export * from "./user-stores";
 export * from "./role-edit";
+export * from "./server-configurations";

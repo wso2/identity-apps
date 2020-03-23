@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,15 +16,5 @@
  * under the License.
  */
 
-export * from "./applications";
-export * from "./identityProviders";
-export * from "./page-header";
-export * from "./notification";
-export * from "./protected-route";
-export * from "./ui";
-export * from "./shared/icon";
-export * from "./users/users-search";
-export * from "./users/users-list";
-export * from "./claims";
-export * from "./user-stores";
-export * from "./server-configurations";
+export * from "./user-self-registration";
+export * from "./account-recovery";
