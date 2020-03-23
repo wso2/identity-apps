@@ -1,7 +1,7 @@
 {
     "name": "@wso2is/i18n",
-    "version": "1.0.97",
-    "description": "This module contains the configs and common namespaces required to make an identity app available in multiple languages.",
+    "version": "1.0.102",
+    "description": "This module contains the configs, helpers and translations required to make an identity app available in multiple languages.",
     "keywords": [
         "WSO2",
         "WSO2 IS",
