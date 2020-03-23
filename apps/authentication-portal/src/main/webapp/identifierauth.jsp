@@ -54,16 +54,29 @@
         if (usernameUserInput) {
             var usernameUserInputValue = usernameUserInput.value.trim();
 
-            if (!getParameterByName("isSaaSApp") || tenantName) {
+            if ((getParameterByName("isSaaSApp") === "false") && tenantName) {
 
                 if ((!isEmailUsernameEnabled) && (usernameUserInputValue.split("@").length > 1)) {
-                    userName.value = usernameUserInputValue;
+                    var errorMessage = document.getElementById("error-msg");
+
+                    errorMessage.innerHTML = 
+                        "Invalid Username. Username shouldn't have '@' or any other special characters.";
+                    errorMessage.hidden = false;
+
+                    return;
                 }
-                else {
-                    userName.value = usernameUserInputValue + "@" + tenantName;
+
+                if (isEmailUsernameEnabled && (usernameUserInputValue.split("@").length <= 1)) {
+                    var errorMessage = document.getElementById("error-msg");
+
+                    errorMessage.innerHTML = "Invalid Username. Username has to be an email address.";
+                    errorMessage.hidden = false;
+
+                    return;
                 }
-            }
-            else {
+                
+                userName.value = usernameUserInputValue + "@" + tenantName;
+            } else {
                 userName.value = usernameUserInputValue;
             }
         }
