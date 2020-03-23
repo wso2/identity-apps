@@ -2,15 +2,34 @@
 
 This module contains the configs, helpers and translations required to make an identity app available in multiple languages.
 
+Implemented on top of [i18next](https://www.i18next.com/) library.
+
 ## Install
 Add following dependency in your package.json file.
 `"@wso2is/i18n": "<VERSION>"`
+
+## Build
+```bash
+npm run build
+```
 
 ## Usage
 
 ### Initialize the module.
 
-```jsx
+Init function arguments: 
+
+| Parameter                 | Type                       | Default                           | Description                                       |   
+| :------------------------ |:--------------------------:| :---------------------------------| :-------------------------------------------------|
+| options 	                | i18next.InitOptions        | undefined                         | Passed in init options.
+| override                  | boolean                    | false                             | Should the passed in options replace the default.
+| autoDetect                | boolean                    | false                             | If autodetect plugin should be used or not.
+| useBackend                | boolean                    | false                             | If XHR back end plugin should be used or not.
+| debug                     | boolean                    | false                             | If debug is enabled.
+| framework                 | SupportedI18nFrameworks    | SupportedI18nFrameworks.REACT     | The framework to use.
+| plugins                   | i18next.Module[]           | undefined                         | Other i18next plugins to use.
+
+```tsx
 import { I18n } from "@wso2is/i18n";
 
 I18n.init(options, override, true, true)
@@ -25,11 +44,73 @@ I18n.init(options, override, true, true)
 
 ### Get the instance.
 
-```jsx
+```ts
 import { I18n } from "@wso2is/i18n";
 
-I18n.instance
+const i18n = I18n.instance;
 ```
+
+### Use in the provider
+
+```tsx
+import { I18nextProvider } from "react-i18next";
+import { I18n } from "@wso2is/i18n";
+
+return (
+    <I18nextProvider i18n={ I18n.instance }>
+        ...
+    </I18nextProvider>
+)
+```
+
+### Adding a new language to the module.
+1. Create a folder preferably with the language's ISO code inside `src/translations`. ex: `en-GB`
+2. Create a `portals` folder and implement the common, user portal, dev portal, etc. namespaces.
+3. Create other folders such as `docs`, etc. and place the necessary translations.
+4. Create a `meta.ts` file and add all the necessary metadata regarding the language bundle.
+```ts
+import { LocaleMeta } from "../../models";
+
+export const meta: LocaleMeta = {
+    code: "en-GB",
+    flag: "gb",
+    name: "English (United Kingdom)",
+    namespaces: [ "common", "devPortal", "userPortal" ]
+};
+```
+5. Export the bundle from the index.
+```ts
+import * as portals from "./portals";
+import { LocaleBundle } from "../../models";
+import { meta } from "./meta";
+
+export const EN_GB: LocaleBundle = {
+    meta,
+    resources: {
+        portals
+    }
+};
+
+```
+
+### Adding a new language during runtime.
+1. Create a folder preferably with the language's ISO code inside the distribution directory. ex: For Dev Portal, the i18n bundle will be saved under `resources/i18n`. Create a folder `fr` to store french language the translations.
+2. Copy the translated JSON files.
+3. Update the `meta.json` file.
+```json
+{
+    "fr": {
+        "code": "fr",
+        "flag": "fr",
+        "name": "French (France)",
+        "namespaces": ["common", "devPortal"],
+        "paths": {
+            "devPortal": "fr/portals/devPortal.json",
+            "common": "fr/portals/common.json"
+        }
+    }
+}
+``` 
 
 ## License
 
