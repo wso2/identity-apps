@@ -17,7 +17,7 @@
  */
 
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { I18nConstants } from "../constants/i18n-constants";
+import { I18nConstants } from "../constants";
 
 interface RuntimeConfigInterface {
     appBaseName?: string;

@@ -18,6 +18,7 @@
 
 export * from "./application-constants";
 export * from "./application-management";
+export * from "./i18n-constants";
 export * from "./identity-provider-constants";
 export * from "./token-constants";
 export * from "./ui-constants";
