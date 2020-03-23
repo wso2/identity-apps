@@ -177,14 +177,17 @@ const createSampleTheme = () => {
                 const files = fs.readdirSync(path.join(defaultThemePath, folder));
 
                 files.map((file) => {
-                    const fileNameSplit = file.split(".");
-                    const content = "/*******************************\n" +
-                        `     ${titleCase(fileNameSplit[0], "-")} ${titleCase(fileNameSplit[1], " ")}\n` +  
-                        "********************************\n";
 
-                    fs.writeFileSync(path.join(folderPath, file), content, (error) => {
-                        console.error(error);
-                    });
+                    if (file !== ".DS_Store") {
+                        const fileNameSplit = file.split(".");
+                        const content = "/*******************************\n" +
+                            `     ${titleCase(fileNameSplit[0], "-")} ${titleCase(fileNameSplit[1], 
+                                " ")}\n` + "********************************\n";
+
+                        fs.writeFileSync(path.join(folderPath, file), content, (error) => {
+                            console.error(error);
+                        });
+                    }
                 });
             }
         }
