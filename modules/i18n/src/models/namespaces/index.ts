@@ -17,3 +17,4 @@
  */
 
 export * from "./common-ns";
+export * from "./dev-portal-ns";

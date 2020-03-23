@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { DevPortalNS } from "../../../models/namespaces/dev-portal-ns";
+import { DevPortalNS } from "../../../models";
 
 export const devPortal: DevPortalNS = {
     components: {
