@@ -16,13 +16,13 @@
  * under the License
  */
 
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react"
+import React, { FunctionComponent, ReactElement } from "react"
 import { Grid, Divider, Button } from "semantic-ui-react"
 import { Field, Forms } from "@wso2is/forms"
 import { useTranslation } from "react-i18next";
 import { DangerZoneGroup, DangerZone } from "@wso2is/react-components";
-import { deleteSelectedRole, getRoleById, updateRoleDetails } from "../../../api";
-import { AlertLevels, AlertInterface, RolesInterface, CreateRoleInterface, PatchRoleDataInterface } from "../../../models";
+import { deleteSelectedRole, updateRoleDetails } from "../../../api";
+import { AlertLevels, AlertInterface, RolesInterface, PatchRoleDataInterface } from "../../../models";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
 import { history } from "../../../helpers";
@@ -68,11 +68,11 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         deleteSelectedRole(id).then(() => {
             handleAlerts({
                 description: t(
-                    "views:components.roles.notifications.deleteRole.success.description"
+                    "devPortal:components.roles.notifications.deleteRole.success.description"
                 ),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "views:components.roles.notifications.deleteRole.success.message"
+                    "devPortal:components.roles.notifications.deleteRole.success.message"
                 )
             });
             history.push(ROLE_VIEW_PATH);
@@ -95,32 +95,32 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                     "displayName": values.get("rolename")
                 }
             }]
-        }
+        };
 
         updateRoleDetails(roleObject.id, roleData)
             .then(response => {
                 onRoleUpdate();
                 handleAlerts({
                     description: t(
-                        "views:components.roles.notifications.updateRole.success.description"
+                        "devPortal:components.roles.notifications.updateRole.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "views:components.roles.notifications.updateRole.success.message"
+                        "devPortal:components.roles.notifications.updateRole.success.message"
                     )
                 });
             }).catch(error => {
                 handleAlerts({
                     description: t(
-                        "views:components.roles.notifications.updateRole.error.description"
+                        "devPortal:components.roles.notifications.updateRole.error.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "views:components.roles.notifications.updateRole.error.message"
+                        "devPortal:components.roles.notifications.updateRole.error.message"
                     )
                 });
             });
-    }
+    };
 
     return (
         <>
@@ -134,7 +134,7 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                             <Field
                                 name={ "rolename" }
-                                label={ t("views:components.roles.edit.basics.fields.roleName") }
+                                label={ t("devPortal:components.roles.edit.basics.fields.roleName") }
                                 required={ true }
                                 requiredErrorMessage={ "Role name is required" }
                                 placeholder={ "Enter your role name" }
@@ -163,4 +163,4 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             </DangerZoneGroup>
         </>
     )
-}
+};
