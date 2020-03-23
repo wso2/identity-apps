@@ -1,9 +1,6 @@
 # Compiled class file
 *.class
 
-# Log file
-*.log
-
 # BlueJ files
 *.ctxt
 
@@ -93,15 +90,10 @@ typings/
 # project build folders & files
 .project
 .repository/
-modules/theme/dist
+modules/*/dist
 modules/theme/src/semantic-ui-core/default
 modules/theme/src/semantic-ui-core/definitions
 modules/theme/src/themes/sample
-modules/http/dist
-modules/validation/dist
-modules/forms/dist
-modules/core/dist
-modules/react-components/dist
 modules/react-components/storybook-static
 modules/react-components/.cache
 target/

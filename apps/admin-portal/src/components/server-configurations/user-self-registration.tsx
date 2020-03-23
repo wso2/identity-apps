@@ -154,12 +154,12 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 			.then(() => {
 				dispatch(addAlert({
 					description: t(
-						"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
+						"devPortal:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
 						"success.description"
 					),
 					level: AlertLevels.SUCCESS,
 					message: t(
-						"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
+						"devPortal:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
 						"success.message"
 					)
 				}));
@@ -172,12 +172,12 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 				if (!error.response || error.response.status === 401) {
 					dispatch(addAlert({
 						description: t(
-							"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
+							"devPortal:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
 							"error.description"
 						),
 						level: AlertLevels.ERROR,
 						message: t(
-							"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
+							"devPortal:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
 							"error.message"
 						)
 					}));
@@ -185,13 +185,13 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 
 					dispatch(addAlert({
 						description: t(
-							"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
+							"devPortal:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
 							"error.description",
 							{description: error.response.data.detail}
 						),
 						level: AlertLevels.ERROR,
 						message: t(
-							"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
+							"devPortal:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
 							"error.message"
 						)
 					}));
@@ -199,12 +199,12 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 					// Generic error message
 					dispatch(addAlert({
 						description: t(
-							"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
+							"devPortal:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
 							"genericError.description"
 						),
 						level: AlertLevels.ERROR,
 						message: t(
-							"views:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
+							"devPortal:components.serverConfigs.selfRegistration.notifications.updateConfigurations." +
 							"genericError.message"
 						)
 					}));
@@ -262,10 +262,10 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		<Modal size="mini" open={ showConfirmationModal } onClose={ handleConfirmationModalClose } dimmer="blurring">
 			<Modal.Content>
 				<Container>
-					<h3>{ t("views:components.serverConfigs.selfRegistration.confirmation.heading") }</h3>
+					<h3>{ t("devPortal:components.serverConfigs.selfRegistration.confirmation.heading") }</h3>
 				</Container>
 				<Divider hidden={ true }/>
-				<p>{ t("views:components.serverConfigs.selfRegistration.confirmation.message") }</p>
+				<p>{ t("devPortal:components.serverConfigs.selfRegistration.confirmation.message") }</p>
 			</Modal.Content>
 			<Modal.Actions>
 				<Button className="link-button" onClick={ handleConfirmationModalClose }>
@@ -303,21 +303,21 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 					type="checkbox"
 					children={ [
 						{
-							label: t("views:components.serverConfigs.selfRegistration.form.enable.label"),
+							label: t("devPortal:components.serverConfigs.selfRegistration.form.enable.label"),
 							value: ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE
 						},
 						{
-							label: t("views:components.serverConfigs.selfRegistration.form." +
+							label: t("devPortal:components.serverConfigs.selfRegistration.form." +
 								"enableAccountLockOnCreation.label"),
 							value: ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION
 						},
 						{
-							label: t("views:components.serverConfigs.selfRegistration.form." +
+							label: t("devPortal:components.serverConfigs.selfRegistration.form." +
 								"internalNotificationManagement.label"),
 							value: ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED
 						},
 						{
-							label: t("views:components.serverConfigs.selfRegistration.form.enableReCaptcha.label"),
+							label: t("devPortal:components.serverConfigs.selfRegistration.form.enableReCaptcha.label"),
 							value: ServerConfigurationsConstants.RE_CAPTCHA
 						}
 					] }
@@ -325,15 +325,16 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 				/>
 				<Field
 					label={ t(
-						"views:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime.label"
+						"devPortal:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime.label"
 					) }
 					name={ ServerConfigurationsConstants.VERIFICATION_CODE_EXPIRY_TIME }
-					placeholder={ t(
-						"views:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime.placeholder"
-					) }
+					placeholder={
+						t("devPortal:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime" +
+							".placeholder")
+					}
 					required={ true }
 					requiredErrorMessage={ t(
-						"views:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime." +
+						"devPortal:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime." +
 						"validations.empty"
 					) }
 					type="number"
@@ -341,38 +342,41 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 					width={ 9 }
 				/>
 				<Hint>
-					{ t("views:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime.placeholder") }
+					{
+						t("devPortal:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime" +
+							".placeholder")
+					}
 				</Hint>
 				<Field
 					label={ t(
-						"views:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.label"
+						"devPortal:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.label"
 					) }
 					name={ ServerConfigurationsConstants.SMS_OTP_EXPIRY_TIME }
 					placeholder={ t(
-						"views:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.placeholder"
+						"devPortal:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.placeholder"
 					) }
 					required={ true }
 					requiredErrorMessage={ t(
-						"views:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.validations.empty"
+						"devPortal:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.validations.empty"
 					) }
 					type="number"
 					value={ selfSignUpConfigs.smsOTPExpiryTime }
 					width={ 9 }
 				/>
 				<Hint>
-					{ t("views:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.placeholder") }
+					{ t("devPortal:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.placeholder") }
 				</Hint>
 				<Field
 					label={ t(
-						"views:components.serverConfigs.selfRegistration.form.callbackURLRegex.label"
+						"devPortal:components.serverConfigs.selfRegistration.form.callbackURLRegex.label"
 					) }
 					name={ ServerConfigurationsConstants.CALLBACK_REGEX }
 					placeholder={ t(
-						"views:components.serverConfigs.selfRegistration.form.callbackURLRegex.placeholder"
+						"devPortal:components.serverConfigs.selfRegistration.form.callbackURLRegex.placeholder"
 					) }
 					required={ true }
 					requiredErrorMessage={ t(
-						"views:components.serverConfigs.selfRegistration.form.callbackURLRegex.validations.empty"
+						"devPortal:components.serverConfigs.selfRegistration.form.callbackURLRegex.validations.empty"
 					) }
 					type="text"
 					value={ selfSignUpConfigs.callbackRegex }
@@ -414,15 +418,15 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 
 	return (
 		<Section
-			description={ t("views:components.serverConfigs.selfRegistration.description") }
-			header={ t("views:components.serverConfigs.selfRegistration.heading") }
+			description={ t("devPortal:components.serverConfigs.selfRegistration.description") }
+			header={ t("devPortal:components.serverConfigs.selfRegistration.heading") }
 			icon={ SettingsSectionIcons.federatedAssociations }
 			iconMini={ SettingsSectionIcons.federatedAssociationsMini }
 			iconSize="auto"
 			iconStyle="colored"
 			iconFloated="right"
 			onPrimaryActionClick={ () => showFormEditView(USER_SELF_REGISTRATION_FORM_IDENTIFIER) }
-			primaryAction={ t("views:components.serverConfigs.selfRegistration.actionTitles.config") }
+			primaryAction={ t("devPortal:components.serverConfigs.selfRegistration.actionTitles.config") }
 			primaryActionIcon="key"
 		>
 			{ showUserSelfRegistrationView }

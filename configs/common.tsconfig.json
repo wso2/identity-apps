@@ -16,6 +16,7 @@
     "exclude": [
         "node_modules", 
         "test-configs",
-        "src/**/tests/*"
+        "src/**/tests/*",
+        "**/*.test.ts"
     ]
 }

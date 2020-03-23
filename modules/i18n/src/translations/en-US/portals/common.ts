@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { Common } from "../../models";
+import { CommonNS } from "../../../models";
 
-export const common: Common = {
+export const common: CommonNS = {
     access: "Access",
     active: "Active",
     add: "Add",
@@ -49,7 +49,6 @@ export const common: Common = {
     goBackHome: "Go back home",
     help: "Help",
     hidePassword: "Hide password",
-    identityProviders: "Identity Providers",
     initiator: "Initiator",
     ipAddress: "ip address",
     lastAccessed: "Last accessed",
@@ -57,11 +56,11 @@ export const common: Common = {
     loginTime: "Login time",
     logout: "Logout",
     more: "More",
-    myAccount: "My Account",
     name: "Name",
     operatingSystem: "Operating System",
     operations: "Operations",
     overview: "Overview",
+    personalInfo: "Personal Info",
     priority: "Priority",
     privacy: "Privacy",
     properties: "Properties",
@@ -72,11 +71,13 @@ export const common: Common = {
     removeAll: "Remove all",
     reserved: "Reserved",
     resetFilters: "Reset filters",
+    retry: "Retry",
     revoke: "Revoke",
     revokeAll: "Revoke all",
     save: "Save",
     search: "Search",
     security: "Security",
+    showAll: "Show all",
     showLess: "Show less",
     showMore: "Show more",
     showPassword: "Show password",

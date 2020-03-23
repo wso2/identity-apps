@@ -25,6 +25,7 @@
         "@wso2is/core": "^1.0.102",
         "@wso2is/forms": "^1.0.102",
         "@wso2is/http": "^1.0.102",
+        "@wso2is/i18n": "^1.0.102",
         "@wso2is/react-components": "^1.0.102",
         "@wso2is/theme": "^1.0.102",
         "@wso2is/validation": "^1.0.102"
@@ -41,7 +42,6 @@
         "fork-ts-checker-webpack-plugin": "*",
         "history": "*",
         "i18next": "*",
-        "i18next-browser-languagedetector": "*",
         "lodash": "*",
         "log": "*",
         "react-beautiful-dnd": "*",

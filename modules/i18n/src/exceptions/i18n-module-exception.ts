@@ -16,4 +16,20 @@
  * under the License.
  */
 
-export * from "./language-switcher";
+import { IdentityAppsModuleException } from "@wso2is/core/exceptions";
+import { I18nModuleConstants } from "../constants";
+
+/**
+ * Base exception class for all i18n module exceptions.
+ */
+export class I18nModuleException extends IdentityAppsModuleException {
+
+    /**
+     * Constructor.
+     * @param {string} message - Message for the exception.
+     * @param {any} stack - Stack trace for the error.
+     */
+    constructor(message?: string, stack?: any) {
+        super(message, stack, I18nModuleConstants.MODULE_NAME);
+    }
+}

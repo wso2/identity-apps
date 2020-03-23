@@ -144,11 +144,11 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
             .then(() => {
                 onAlertFired({
                     description: t(
-                        "views:components.users.notifications.deleteUser.success.description"
+                        "devPortal:components.users.notifications.deleteUser.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "views:components.users.notifications.deleteUser.success.message"
+                        "devPortal:components.users.notifications.deleteUser.success.message"
                     )
                 });
                 history.push("/users");
@@ -215,11 +215,11 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
         updateUserInfo(user.id, data).then((response) => {
             onAlertFired({
                     description: t(
-                        "views:components.user.profile.notifications.updateProfileInfo.success.description"
+                        "devPortal:components.user.profile.notifications.updateProfileInfo.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "views:components.user.profile.notifications.updateProfileInfo.success.message"
+                        "devPortal:components.user.profile.notifications.updateProfileInfo.success.message"
                     )
                 });
             handleUserUpdate(user.id);
@@ -232,7 +232,7 @@ export const UserProfile: FunctionComponent<ProfileProps> = (props: ProfileProps
      * @param {Profile Schema} schema
      */
     const generateProfileEditForm = (schema: ProfileSchema, key: number): JSX.Element => {
-        const fieldName = t("views:components.user.profile.fields." +
+        const fieldName = t("devPortal:components.user.profile.fields." +
             schema.name.replace(".", "_"), { defaultValue: schema.displayName }
         );
 

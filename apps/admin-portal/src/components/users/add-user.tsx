@@ -115,16 +115,16 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             <Field
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
-                                    "views:components.user.forms.addUserForm.inputs.newPassword.label"
+                                    "devPortal:components.user.forms.addUserForm.inputs.newPassword.label"
                                 ) }
                                 name="newPassword"
                                 placeholder={ t(
-                                    "views:components.user.forms.addUserForm.inputs." +
+                                    "devPortal:components.user.forms.addUserForm.inputs." +
                                     "newPassword.placeholder"
                                 ) }
                                 required={ true }
                                 requiredErrorMessage={ t(
-                                    "views:components.user.forms.addUserForm." +
+                                    "devPortal:components.user.forms.addUserForm." +
                                     "inputs.newPassword.validations.empty"
                                 ) }
                                 showPassword={ t("common:showPassword") }
@@ -136,16 +136,16 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             <Field
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
-                                    "views:components.user.forms.addUserForm.inputs.confirmPassword.label"
+                                    "devPortal:components.user.forms.addUserForm.inputs.confirmPassword.label"
                                 ) }
                                 name="confirmPassword"
                                 placeholder={ t(
-                                    "views:components.user.forms.addUserForm.inputs." +
+                                    "devPortal:components.user.forms.addUserForm.inputs." +
                                     "confirmPassword.placeholder"
                                 ) }
                                 required={ true }
                                 requiredErrorMessage={ t(
-                                    "views:components.user.forms.addUserForm." +
+                                    "devPortal:components.user.forms.addUserForm." +
                                     "inputs.confirmPassword.validations.empty"
                                 ) }
                                 showPassword={ t("common:showPassword") }
@@ -155,7 +155,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                     if (formValues.get("newPassword") !== value) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(
-                                            t("views:components.user.forms.addUserForm.inputs" +
+                                            t("devPortal:components.user.forms.addUserForm.inputs" +
                                                 ".confirmPassword.validations.mismatch"));
                                     }
                                 } }
@@ -199,12 +199,12 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         <Field
                             type="dropdown"
                             label={ t(
-                                "views:components.user.forms.addUserForm.inputs.domain.label"
+                                "devPortal:components.user.forms.addUserForm.inputs.domain.label"
                             ) }
                             name="domain"
                             children={ userStoreOptions }
                             requiredErrorMessage={ t(
-                                "views:components.user.forms.addUserForm.inputs.domain.validations.empty"
+                                "devPortal:components.user.forms.addUserForm.inputs.domain.validations.empty"
                             ) }
                             required={ true }
                             value={ initialValues?.domain ? initialValues?.domain : userStoreOptions[0]?.value }
@@ -213,16 +213,16 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             label={ t(
-                                "views:components.user.forms.addUserForm.inputs.username.label"
+                                "devPortal:components.user.forms.addUserForm.inputs.username.label"
                             ) }
                             name="userName"
                             placeholder={ t(
-                                "views:components.user.forms.addUserForm.inputs." +
+                                "devPortal:components.user.forms.addUserForm.inputs." +
                                 "username.placeholder"
                             ) }
                             required={ true }
                             requiredErrorMessage={ t(
-                                "views:components.user.forms.addUserForm." +
+                                "devPortal:components.user.forms.addUserForm." +
                                 "inputs.username.validations.empty"
                             ) }
                             type="text"
@@ -234,16 +234,16 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             label={ t(
-                                "views:components.user.forms.addUserForm.inputs.firstName.label"
+                                "devPortal:components.user.forms.addUserForm.inputs.firstName.label"
                             ) }
                             name="firstName"
                             placeholder={ t(
-                                "views:components.user.forms.addUserForm.inputs." +
+                                "devPortal:components.user.forms.addUserForm.inputs." +
                                 "firstName.placeholder"
                             ) }
                             required={ true }
                             requiredErrorMessage={ t(
-                                "views:components.user.forms.addUserForm." +
+                                "devPortal:components.user.forms.addUserForm." +
                                 "inputs.firstName.validations.empty"
                             ) }
                             type="text"
@@ -253,16 +253,16 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             label={ t(
-                                "views:components.user.forms.addUserForm.inputs.lastName.label"
+                                "devPortal:components.user.forms.addUserForm.inputs.lastName.label"
                             ) }
                             name="lastName"
                             placeholder={ t(
-                                "views:components.user.forms.addUserForm.inputs." +
+                                "devPortal:components.user.forms.addUserForm.inputs." +
                                 "lastName.placeholder"
                             ) }
                             required={ true }
                             requiredErrorMessage={ t(
-                                "views:components.user.forms.addUserForm." +
+                                "devPortal:components.user.forms.addUserForm." +
                                 "inputs.lastName.validations.empty"
                             ) }
                             type="text"
@@ -276,19 +276,19 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             label="Email address"
                             name="email"
                             placeholder={ t(
-                                "views:components.user.forms.addUserForm.inputs." +
+                                "devPortal:components.user.forms.addUserForm.inputs." +
                                 "email.placeholder"
                             ) }
                             required={ true }
                             requiredErrorMessage={ t(
-                                "views:components.user.forms.addUserForm.inputs.email.validations.empty"
+                                "devPortal:components.user.forms.addUserForm.inputs.email.validations.empty"
                             ) }
                             validation={ (value: string, validation: Validation) => {
                                 if (!FormValidation.email(value)) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
                                         t(
-                                            "views:components.user.forms.addUserForm.inputs.email." +
+                                            "devPortal:components.user.forms.addUserForm.inputs.email." +
                                             "validations.invalid"
                                         ).toString()
                                     );

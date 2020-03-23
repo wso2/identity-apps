@@ -15,10 +15,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { DevPortalNS } from "../../../models";
 
-import { Views } from "../../models";
-
-export const views: Views = {
+export const devPortal: DevPortalNS = {
     components: {
         applications: {
             notifications: {

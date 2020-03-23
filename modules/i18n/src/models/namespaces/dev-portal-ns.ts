@@ -16,86 +16,12 @@
  * under the License.
  */
 
-/**
- * Model for the common namespace
- */
-export interface Common {
-    access: string;
-    active: string;
-    add: string;
-    all: string;
-    applicationName: string;
-    applications: string;
-    approvalStatus: string;
-    approve: string;
-    assignees: string;
-    browser: string;
-    cancel: string;
-    challengeQuestionNumber: string;
-    change: string;
-    claim: string;
-    completed: string;
-    configure: string;
-    contains: string;
-    continue: string;
-    createdOn: string;
-    dangerZone: string;
-    delete: string;
-    description: string;
-    deviceModel: string;
-    edit: string;
-    endsWith: string;
-    equals: string;
-    filter: string;
-    goBackHome: string;
-    help: string;
-    hidePassword: string;
-    identityProviders: string;
-    initiator: string;
-    ipAddress: string;
-    lastAccessed: string;
-    lastSeen: string;
-    loginTime: string;
-    logout: string;
-    more: string;
-    myAccount: string;
-    name: string;
-    operatingSystem: string;
-    operations: string;
-    overview: string;
-    priority: string;
-    privacy: string;
-    properties: string;
-    ready: string;
-    removeAll: string;
-    reject: string;
-    release: string;
-    remove: string;
-    reserved: string;
-    resetFilters: string;
-    revoke: string;
-    revokeAll: string;
-    save: string;
-    search: string;
-    security: string;
-    showLess: string;
-    showMore: string;
-    showPassword: string;
-    startsWith: string;
-    submit: string;
-    switch: string;
-    terminate: string;
-    terminateAll: string;
-    terminateSession: string;
-    type: string;
-    update: string;
-    user: string;
-}
+import { Page, Placeholder, Notification } from "../common";
 
 /**
- * Model for the views namespace
+ * Model for the dev portal namespace
  */
-export interface Views {
+export interface DevPortalNS {
     components: {
         applications: {
             notifications: {
@@ -714,54 +640,4 @@ export interface Views {
         loginError: Placeholder;
         underConstruction: Placeholder;
     };
-}
-
-/**
- * Model for danger zones.
- */
-interface DangerZone {
-    actionTitle: string;
-    header: string;
-    subheader: string;
-}
-
-/**
- * Model for pages
- */
-interface Page {
-    title: string;
-    subTitle: string;
-}
-
-/**
- * Model for notification set
- */
-interface Notification {
-    error: NotificationItem;
-    genericError: NotificationItem;
-    success: NotificationItem;
-}
-
-/**
- * Model for notification
- */
-interface NotificationItem {
-    message: string;
-    description: string;
-}
-
-/**
- * Model for placeholder.
- */
-interface Placeholder {
-    action?: string;
-    title: string;
-    subtitles: string | PlaceholderSubtitle;
-}
-
-/**
- * Model for placeholder subtitle.
- */
-interface PlaceholderSubtitle {
-    [key: number]: string;
 }

@@ -44,7 +44,7 @@ export const LanguageSwitcherDropdown: React.FunctionComponent<LanguageSwitcherD
     const { direction, className, language, changeLanguage, upward, supportedLanguages } = props;
 
     const LanguageSwitcherTrigger = () => (
-        <span className="dropdown-trigger link">{ supportedLanguages[language].name }</span>
+        <span className="dropdown-trigger link">{ supportedLanguages[language]?.name }</span>
     );
 
     return (
@@ -58,10 +58,10 @@ export const LanguageSwitcherDropdown: React.FunctionComponent<LanguageSwitcherD
         >
             <Dropdown.Menu>
                 {
-                    Object.keys(supportedLanguages).map((lang, index) => (
-                        <Dropdown.Item key={ index } onClick={ changeLanguage } value={ lang }>
-                            <Flag name={ supportedLanguages[lang].flag as FlagNameValues } />
-                             { supportedLanguages[lang].name }
+                    Object.values(supportedLanguages).map((lang, index) => (
+                        <Dropdown.Item key={ index } onClick={ changeLanguage } value={ lang?.code }>
+                            <Flag name={ lang?.flag as FlagNameValues } />
+                             { lang?.name }
                         </Dropdown.Item>
                     ))
                 }

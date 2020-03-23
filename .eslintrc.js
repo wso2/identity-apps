@@ -11,6 +11,7 @@ module.exports = {
     },
     env: {
         browser: true,
+        jest: true,
         node: true,
         es6: true
     },
@@ -26,7 +27,10 @@ module.exports = {
                 spacing: { objectLiterals: "always" }
             }
         ],
-        "react/no-children-prop": 0
+        "react/no-children-prop": 0,
+        "sort-keys": ["warn", "asc", {"caseSensitive": true, "natural": false, "minKeys": 2}],
+        "object-curly-spacing": ["warn", "always"],
+        "no-console": "warn",
     },
     overrides: [
         {
