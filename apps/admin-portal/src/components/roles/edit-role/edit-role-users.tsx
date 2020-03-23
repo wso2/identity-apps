@@ -55,7 +55,6 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
         dispatch(addAlert(alert));
     };
 
-
     const onUserUpdate = (userList: any) => {
         const selectedUsers = userList.users;
         const newUsers: CreateRoleMemberInterface[] = [];
