@@ -286,7 +286,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
     const handleLanguageSwitch = (language: string): void => {
         I18n.instance.changeLanguage(language)
             .catch((error) => {
-                throw new LanguageChangeException(error)
+                throw new LanguageChangeException(language, error)
             })
     };
 
