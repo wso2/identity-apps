@@ -19,11 +19,18 @@
 import { ContextUtils, HttpUtils } from "@wso2is/core/utils";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import axios from "axios";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";
 import { GlobalConfig } from "./configs";
 import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
-import { I18n, I18nInstanceInitException, I18nModuleConstants, isLanguageSupported } from "@wso2is/i18n";
+import {
+    I18n,
+    I18nInstanceInitException,
+    I18nModuleConstants,
+    isLanguageSupported,
+    LanguageChangeException
+} from "@wso2is/i18n";
 import { store } from "./store";
 import { setSupportedI18nLanguages } from "./store/actions";
 
@@ -43,16 +50,18 @@ I18n.init({
     GlobalConfig?.i18nModuleOptions?.xhrBackendPluginEnabled)
     .then(() => {
         // Fetch the meta file to get the supported languages.
-        fetch(`/${ GlobalConfig.i18nModuleOptions.resourcePath }/meta.json`)
-            .then((response) => response.json())
+        axios.get(`/${ GlobalConfig.i18nModuleOptions.resourcePath }/meta.json`)
             .then((response) => {
                 // Set the supported languages in redux store.
-                store.dispatch(setSupportedI18nLanguages(response));
+                store.dispatch(setSupportedI18nLanguages(response?.data));
 
-                const isSupported = isLanguageSupported(I18n.instance.language, null, response);
+                const isSupported = isLanguageSupported(I18n.instance.language, null, response?.data);
 
                 if (!isSupported) {
-                    I18n.instance.changeLanguage(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE);
+                    I18n.instance.changeLanguage(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE)
+                        .catch((error) => {
+                            throw new LanguageChangeException(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE, error)
+                        })
                 }
             })
     })
