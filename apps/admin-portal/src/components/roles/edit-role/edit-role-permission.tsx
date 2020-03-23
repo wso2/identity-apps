@@ -20,7 +20,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { PermissionList } from "../create-role-wizard/role-permisson";
 import { updatePermissionForRole } from "../../../api";
 import { addAlert } from "../../../store/actions";
-import { AlertLevels } from "../../../models";
+import { AlertLevels, RolesInterface } from "../../../models";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 
@@ -28,7 +28,8 @@ import { useDispatch } from "react-redux";
  * Interface to capture permission edit props.
  */
 interface RolePermissionDetailProps {
-    role: string;
+    roleObject: RolesInterface;
+    onRoleUpdate: () => void;
 }
 
 /**
@@ -42,11 +43,12 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
     const dispatch = useDispatch();
 
     const {
-        role
+        roleObject,
+        onRoleUpdate
     } = props;
     
     const onPermissionUpdate = (updatedPerms: string[]) => {
-        updatePermissionForRole(role, updatedPerms).then(() => {
+        updatePermissionForRole(roleObject.id, updatedPerms).then(() => {
             dispatch(addAlert({
                 description: t(
                     "views:components.roles.notifications.updateRole.success.description"
@@ -56,6 +58,7 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
                     "views:components.roles.notifications.updateRole.success.message"
                 )
             }));
+            onRoleUpdate();
         }).catch(error => {
             if (!error.response || error.response.status === 401) {
                 dispatch(addAlert({
@@ -93,6 +96,6 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
     }
     
     return (
-        <PermissionList onSubmit={ onPermissionUpdate } role={ role } />
+        <PermissionList onSubmit={ onPermissionUpdate } roleObject={ roleObject } />
     )
 }

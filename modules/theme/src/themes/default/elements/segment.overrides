@@ -123,6 +123,7 @@
             margin-left: @assignedRolesListLabelMarginLeft;
             display: inline-flex;
             align-items: center;
+            vertical-align: top;
 
             .user-avatar {
                 margin: 0px 5px 0px 0px !important;
