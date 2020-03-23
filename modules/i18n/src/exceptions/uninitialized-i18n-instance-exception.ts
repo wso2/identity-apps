@@ -16,13 +16,12 @@
  * under the License.
  */
 
-import { IdentityAppsModuleException } from "@wso2is/core/exceptions";
-import { I18nModuleConstants } from "../constants";
+import { I18nModuleException } from "./i18n-module-exception";
 
 /**
  * Exception class to handle un-initialized i18n instance.
  */
-export class UninitializedI18nInstanceException extends IdentityAppsModuleException {
+export class UninitializedI18nInstanceException extends I18nModuleException {
 
     public framework: string;
 
@@ -31,6 +30,6 @@ export class UninitializedI18nInstanceException extends IdentityAppsModuleExcept
      * @param {any} stack - Stack trace.
      */
     constructor(stack?: any) {
-        super("The i18n module is not initialized.", stack, I18nModuleConstants.MODULE_NAME);
+        super("The i18n module is not initialized.", stack);
     }
 }

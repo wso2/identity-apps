@@ -17,6 +17,7 @@
  */
 
 export * from "./i18n-instance-init-exception";
+export * from "./i18n-module-exception";
 export * from "./language-change-exception";
 export * from "./uninitialized-i18n-instance-exception";
 export * from "./unsupported-i18n-framework-exception";

@@ -16,13 +16,12 @@
  * under the License.
  */
 
-import { IdentityAppsModuleException } from "@wso2is/core/exceptions";
-import { I18nModuleConstants } from "../constants";
+import { I18nModuleException } from "./i18n-module-exception";
 
 /**
  * Exception class to handle unsupported i18n frameworks on module initialization.
  */
-export class UnsupportedI18nFrameworkException extends IdentityAppsModuleException {
+export class UnsupportedI18nFrameworkException extends I18nModuleException {
 
     public framework: string;
 
@@ -32,8 +31,7 @@ export class UnsupportedI18nFrameworkException extends IdentityAppsModuleExcepti
      * @param {any} stack - Stack trace.
      */
     constructor(framework?: any, stack?: any) {
-        super(`The requested i18n framework (${ framework }) is currently not supported`, stack,
-            I18nModuleConstants.MODULE_NAME);
+        super(`The requested i18n framework (${ framework }) is currently not supported`, stack);
         this.framework = framework;
     }
 }

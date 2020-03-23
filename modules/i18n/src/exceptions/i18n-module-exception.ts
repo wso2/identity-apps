@@ -16,19 +16,20 @@
  * under the License.
  */
 
-import { I18nModuleException } from "./i18n-module-exception";
+import { IdentityAppsModuleException } from "@wso2is/core/exceptions";
+import { I18nModuleConstants } from "../constants";
 
 /**
- * Exception class to handle i18n language change exceptions.
+ * Base exception class for all i18n module exceptions.
  */
-export class LanguageChangeException extends I18nModuleException {
+export class I18nModuleException extends IdentityAppsModuleException {
 
     /**
      * Constructor.
-     * @param {string} language - Attempted language.
-     * @param {any} stack - Stack trace.
+     * @param {string} message - Message for the exception.
+     * @param {any} stack - Stack trace for the error.
      */
-    constructor(language: string, stack?: any) {
-        super(`Failed to change the language to ${ language }`, stack);
+    constructor(message?: string, stack?: any) {
+        super(message, stack, I18nModuleConstants.MODULE_NAME);
     }
 }

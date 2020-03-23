@@ -16,19 +16,18 @@
  * under the License.
  */
 
-import { IdentityAppsModuleException } from "@wso2is/core/exceptions";
-import { I18nModuleConstants } from "../constants";
+import { I18nModuleException } from "./i18n-module-exception";
 
 /**
  * Exception class to handle i18n instance init failure.
  */
-export class I18nInstanceInitException extends IdentityAppsModuleException {
+export class I18nInstanceInitException extends I18nModuleException {
 
     /**
      * Constructor.
      * @param {any} stack - Stack trace.
      */
     constructor(stack?: any) {
-        super("Failed to initialize the i18n instance", stack, I18nModuleConstants.MODULE_NAME);
+        super("Failed to initialize the i18n instance", stack);
     }
 }
