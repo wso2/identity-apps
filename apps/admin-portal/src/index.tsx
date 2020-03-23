@@ -24,6 +24,8 @@ import { App } from "./app";
 import { GlobalConfig } from "./configs";
 import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
 import { I18n, I18nInstanceInitException, I18nModuleConstants, isLanguageSupported } from "@wso2is/i18n";
+import { store } from "./store";
+import { setSupportedI18nLanguages } from "./store/actions";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(GlobalConfig);
@@ -44,6 +46,9 @@ I18n.init({
         fetch(`/${ GlobalConfig.i18nModuleOptions.resourcePath }/meta.json`)
             .then((response) => response.json())
             .then((response) => {
+                // Set the supported languages in redux store.
+                store.dispatch(setSupportedI18nLanguages(response));
+
                 const isSupported = isLanguageSupported(I18n.instance.language, null, response);
 
                 if (!isSupported) {
