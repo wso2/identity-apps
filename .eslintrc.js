@@ -80,7 +80,7 @@ module.exports = {
                         variables: false,
                         typedefs: false
                     }
-                ],
+                ]
             }
         }
     ]
