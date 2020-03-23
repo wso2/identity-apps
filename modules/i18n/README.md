@@ -13,6 +13,11 @@ Add following dependency in your package.json file.
 npm run build
 ```
 
+## Running Tests
+```bash
+npm run test
+```
+
 ## Usage
 
 ### Initialize the module.
