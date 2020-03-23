@@ -39,7 +39,10 @@
     String username = request.getParameter("username");
     String confirmationKey = request.getParameter("confirmationKey");
     String callback = request.getParameter("callback");
-    String tenantDomain = request.getParameter("tenantDomain").trim();
+    String tenantDomain = StringUtils.EMPTY;
+    if(StringUtils.isNotBlank(request.getParameter("tenantDomain"))){
+        tenantDomain = request.getParameter("tenantDomain").trim();
+    }
     boolean isUserPortalURL = false;
 
     if (StringUtils.isBlank(callback)) {
