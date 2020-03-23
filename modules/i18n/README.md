@@ -69,7 +69,7 @@ return (
 ```
 
 ### Adding a new language to the module.
-1. Create a folder preferably with the language's ISO code inside `src/translations`. ex: `en-GB`
+1. Create a folder with the language's ISO code inside `src/translations`. ex: `en-GB`
 2. Create a `portals` folder and implement the common, user portal, dev portal, etc. namespaces.
 3. Create other folders such as `docs`, etc. and place the necessary translations.
 4. Create a `meta.ts` file and add all the necessary metadata regarding the language bundle.
@@ -99,7 +99,7 @@ export const EN_GB: LocaleBundle = {
 ```
 
 ### Adding a new language during runtime.
-1. Create a folder preferably with the language's ISO code inside the distribution directory. ex: For Dev Portal, the i18n bundle will be saved under `resources/i18n`. Create a folder `fr` to store french language the translations.
+1. Create a folder with the language's ISO code inside the distribution directory. ex: For Dev Portal, the i18n bundle will be saved under `resources/i18n`. Create a folder `fr` to store french language the translations.
 2. Copy the translated JSON files.
 3. Update the `meta.json` file.
 ```json
