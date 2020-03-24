@@ -20,6 +20,7 @@ import * as translations from "./translations";
 import { I18nModuleOptionsInterface, SupportedLanguagesMeta } from "./models";
 import { InitOptions, Resource } from "i18next";
 import { I18nModuleConstants } from "./constants";
+import { StringUtils } from "@wso2is/core/utils";
 
 /**
  * Generate the i18n options.
@@ -161,16 +162,20 @@ export const isLanguageSupported = (detectedLanguage: string, supportedLanguages
  *
  * @param {string[]} language - Language code.
  * @param {string[]} namespace - Namespace.
+ * @param {string} appBaseName - Application basename under which the distribution files are placed.
  * @param {I18nModuleOptionsInterface} i18nBundleOptions - I18n module options.
  * @return {string} Resolved path.
  */
-export const generateBackendPaths = (language: string[], namespace: string[],
+export const generateBackendPaths = (language: string[], namespace: string[], appBaseName: string,
                                      i18nBundleOptions: I18nModuleOptionsInterface): string => {
 
+    const fullResourcePath = `${ StringUtils.removeSlashesFromPath(appBaseName) }/${
+        StringUtils.removeSlashesFromPath(i18nBundleOptions.resourcePath) }`;
+
     if (i18nBundleOptions.namespaceDirectories.has(namespace[0])) {
-        return `/${ i18nBundleOptions.resourcePath }/${ language[0] }/${
-            i18nBundleOptions.namespaceDirectories.get(namespace[0]) }/${ namespace[0] }.json`;
+        return `/${ fullResourcePath }/${ language[0] }/${ i18nBundleOptions.namespaceDirectories.get(namespace[0]) }/${
+            namespace[0] }.json`;
     }
 
-    return `/${ i18nBundleOptions.resourcePath }/${ language[0] }/${ namespace[0] }.json`;
+    return `/${ fullResourcePath }/${ language[0] }/${ namespace[0] }.json`;
 };

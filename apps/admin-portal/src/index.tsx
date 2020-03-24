@@ -33,6 +33,7 @@ import {
 } from "@wso2is/i18n";
 import { store } from "./store";
 import { setSupportedI18nLanguages } from "./store/actions";
+import { StringUtils } from "@wso2is/core/utils";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(GlobalConfig);
@@ -49,8 +50,12 @@ I18n.init({
     GlobalConfig?.i18nModuleOptions?.langAutoDetectEnabled,
     GlobalConfig?.i18nModuleOptions?.xhrBackendPluginEnabled)
     .then(() => {
+
+        const metaPath = `/${ StringUtils.removeSlashesFromPath(GlobalConfig.appBaseName) }/${
+            StringUtils.removeSlashesFromPath(GlobalConfig.i18nModuleOptions.resourcePath) }/meta.json`;
+
         // Fetch the meta file to get the supported languages.
-        axios.get(`/${ GlobalConfig.i18nModuleOptions.resourcePath }/meta.json`)
+        axios.get(metaPath)
             .then((response) => {
                 // Set the supported languages in redux store.
                 store.dispatch(setSupportedI18nLanguages(response?.data));

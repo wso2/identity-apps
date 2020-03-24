@@ -60,7 +60,7 @@ export class I18nConstants {
     public static readonly MODULE_INIT_OPTIONS: I18nModuleInitOptions = {
         backend: {
             loadPath: (language, namespace) => generateBackendPaths(
-                language, namespace, GlobalConfig?.i18nModuleOptions
+                language, namespace, GlobalConfig?.appBaseName, GlobalConfig?.i18nModuleOptions
             )
         },
         ns: [ I18nConstants.COMMON_NAMESPACE, I18nConstants.PORTAL_NAMESPACE ]
