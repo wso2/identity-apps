@@ -49,3 +49,6 @@
 
 /* List Item Border Radius */
 @userRolesListItemBorderRadius: 0.5em;
+
+/* Role List Icon wrapper */
+@roleListWrapperColor: #e8e8e8;
