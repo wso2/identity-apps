@@ -17,6 +17,7 @@
  */
 
 import { ContextUtils, HttpUtils } from "@wso2is/core/utils";
+import { ThemeProvider } from "@wso2is/react-components";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import axios from "axios";
@@ -76,9 +77,11 @@ I18n.init({
 
 ReactDOM.render(
     (
-        <BrowserRouter>
-            <App/>
-        </BrowserRouter>
+        <ThemeProvider>
+            <BrowserRouter>
+                <App/>
+            </BrowserRouter>
+        </ThemeProvider>
     ),
     document.getElementById("root")
 );

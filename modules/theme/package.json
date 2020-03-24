@@ -30,6 +30,8 @@
     "peerDependencies": {
         "fs-extra": "*",
         "less": "*",
+        "less-to-json": "*",
+        "merge-files": "*",
         "semantic-ui-css": "*",
         "semantic-ui-less": "*"
     }

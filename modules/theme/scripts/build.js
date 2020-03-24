@@ -24,6 +24,8 @@ const path = require("path");
 const fs = require("fs-extra");
 const CleanCSS = require("clean-css");
 const replace = require("replace");
+const lessToJson = require("less-to-json");
+const mergeFiles = require("merge-files");
 
 const srcDir = path.join(__dirname, "..", "src");
 const distDir = path.join(__dirname, "..", "dist");
@@ -37,6 +39,36 @@ const semanticUILessModuleDir = path.join(lessNpmModuleDir, "..", "semantic-ui-l
 
 const SAMPLE_THEME_NAME = "sample";
 const DEFAULT_THEME_NAME = "default";
+
+/*
+ * Generate Default Site Variables JSON files
+ */
+const createVariablesLessJson = async () => {
+    const exportJsFileName = "theme-variables.json";
+    const exportMergeLessFileName = "theme-variables.less";
+
+    const exportMergeLessFile = path.join(distDir, exportMergeLessFileName);
+    const exportJsFile = path.join(distDir, exportJsFileName);
+
+    const semanticUISiteVariablesFile = 
+        path.join(semanticUICorePath, DEFAULT_THEME_NAME, "globals", "site.variables");
+    const themeCoreSiteVariablesFile = path.join(themesDir, DEFAULT_THEME_NAME, "globals", "site.variables");
+
+    const inputPathList = [ semanticUISiteVariablesFile, themeCoreSiteVariablesFile ];
+
+    await mergeFiles(inputPathList, exportMergeLessFile);
+
+    const variablesJson =  lessToJson(exportMergeLessFile);
+
+    fs.writeFileSync(exportJsFile, JSON.stringify(variablesJson, null, 4), (error) => {
+        console.error(exportJsFileName + " generation failed.");
+        console.error(error);
+    });
+
+    console.log(exportJsFileName + " generated.");
+
+    console.log("build finished.");
+};
 
 /*
  * Export compiled theme string to files
@@ -124,7 +156,7 @@ const generateThemes = () => {
     });
 
     Promise.all(fileWritePromises).then(() => {
-        console.log("Task Done.");
+        createVariablesLessJson();
     }).catch((error) => {
         console.error(error);
     });
@@ -168,7 +200,6 @@ const createSampleTheme = () => {
             if (folder === "assets") {
                 const assetsFolderPath = path.join(defaultThemePath, folder);
 
-                // fs.ensureDirSync(assetsFolderPath);
                 fs.copySync(path.join(assetsFolderPath), folderPath);
             }
             else {

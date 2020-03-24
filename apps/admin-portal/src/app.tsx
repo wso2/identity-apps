@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import React, { useEffect, useState, Suspense } from "react";
+import React, { useContext, useEffect, useState, Suspense } from "react";
+import { ThemeContext } from "@wso2is/react-components";
 import { I18nextProvider } from "react-i18next";
 import { Provider } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
@@ -28,6 +29,7 @@ import { store } from "./store";
 import { getAppConfig } from "./utils";
 import { ContentLoader } from "@wso2is/react-components";
 import { I18n } from "@wso2is/i18n";
+import { Helmet } from "react-helmet";
 
 /**
  * Main App component.
@@ -37,6 +39,8 @@ import { I18n } from "@wso2is/i18n";
 export const App = (): JSX.Element => {
 
     const [appConfig, setAppConfig] = useState<AppConfigInterface>(null);
+
+    const { state } = useContext(ThemeContext);
 
     /**
      * Obtain app.config.json from the server root when the app mounts.
@@ -53,6 +57,20 @@ export const App = (): JSX.Element => {
                 <I18nextProvider i18n={ I18n.instance }>
                     <Provider store={ store }>
                         <AppConfig.Provider value={ appConfig }>
+                            <Helmet defer={ false }>
+                                { state.css !== "" &&
+                                    <style type="text/css">
+                                        { state.css }
+                                    </style>
+                                }
+                                { state.css === "" &&
+                                    <link
+                                        href={ `/libs/themes/${state.theme}/theme.min.css` }
+                                        rel="stylesheet"
+                                        type="text/css"
+                                    />
+                                }
+                            </Helmet>
                             <Suspense fallback={ <ContentLoader dimmer /> }>
                                 <Switch>
                                     <Redirect exact={ true } path="/" to={ GlobalConfig.appLoginPath }/>

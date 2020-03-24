@@ -44,6 +44,7 @@ import { AppState } from "../store";
 import { filterRoutes } from "../utils";
 import { BaseLayout } from "./base";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
+import { ThemeContext } from "@wso2is/react-components";
 
 /**
  * Dashboard layout Prop types.
@@ -63,6 +64,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
 ): ReactElement => {
 
     const { fluid } = props;
+    const { state } = useContext(ThemeContext);
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -301,8 +303,16 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     brand={ (
                         <ProductBrand
                             style={ { marginTop: 0 } }
-                            logo={ <Logo image={ LogoImage }  /> }
-                            name={ ContextUtils.getRuntimeConfig().applicationName }
+                            logo={  state.logo && state.logo !== "" ?
+                                <img src={ state.logo } style={ { maxHeight: 25 } } />
+                                :
+                                <Logo image={ LogoImage } />
+                            }
+                            name={ state.productName && state.productName !== "" ?
+                                state.productName
+                                :
+                                ContextUtils.getRuntimeConfig().applicationName
+                            }
                         />
                     ) }
                     brandLink={ ContextUtils.getRuntimeConfig().appHomePath }
@@ -357,7 +367,9 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     currentLanguage={ I18n.instance?.language }
                     supportedLanguages={ supportedI18nLanguages }
                     onLanguageChange={ handleLanguageSwitch }
-                    copyright={
+                    copyright={ state.copyrightText && state.copyrightText !== "" ?
+                        state.copyrightText
+                        :
                         ContextUtils.getRuntimeConfig().copyrightText
                             ? ContextUtils.getRuntimeConfig().copyrightText
                             : null
