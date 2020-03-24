@@ -223,13 +223,19 @@
          TreeView Component
  TODO : Revist the styling in the component
  *****************************************/
+.permissions-edit-container {
+    .treeview-container {
+        max-height: 30em;
+        overflow: auto;
+    }
+}
  .treeview * {
      box-sizing: border-box;
      -webkit-box-sizing: border-box;
  }
 
  .treeview-container {
-     padding: 1em 0;
+    margin: 1em 0;
 
      .treeview {
          font-size: 100%;
@@ -378,11 +384,11 @@
 
              input {
                  &:checked+.checkbox {
-                     border-color: @checkboxfill;
+                     border-color: @primaryColor;
 
                      svg {
                          path {
-                             fill: @checkboxfill;
+                             fill: @primaryColor;
                          }
 
                          polyline {
@@ -424,7 +430,7 @@
                          stroke-linecap: round;
                          stroke-linejoin: round;
                          stroke-width: 2;
-                         stroke: @checkboxfill;
+                         stroke: @primaryColor;
                          transition: all 0.6s ease;
                      }
 
