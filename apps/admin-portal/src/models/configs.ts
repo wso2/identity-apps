@@ -16,10 +16,14 @@
  * under the License.
  */
 
- /**
-  * Model of  application configuration
-  */
+/**
+ * Model of  application configuration
+ */
 export interface AppConfigInterface {
     applications: boolean;
+    claims: boolean;
+    identityProviders: boolean;
+    serverConfigurations: boolean;
+    userStores: boolean;
     usersAndRoles: boolean;
 }
