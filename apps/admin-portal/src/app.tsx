@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { useEffect, useState, Suspense } from "react";
+import React, { useEffect, useState, Suspense, ReactElement } from "react";
 import { I18nextProvider } from "react-i18next";
 import { Provider } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
@@ -25,26 +25,28 @@ import { baseRoutes, GlobalConfig } from "./configs";
 import { AppConfig, history } from "./helpers";
 import { AppConfigInterface } from "./models";
 import { store } from "./store";
-import { getAppConfig } from "./utils";
 import { ContentLoader } from "@wso2is/react-components";
 import { I18n } from "@wso2is/i18n";
+import { getAppConfig } from "@wso2is/core/api";
+import { ApplicationConstants } from "./constants";
 
 /**
  * Main App component.
  *
  * @return {JSX.Element}
  */
-export const App = (): JSX.Element => {
+export const App = (): ReactElement => {
 
-    const [appConfig, setAppConfig] = useState<AppConfigInterface>(null);
+    const [ appConfig, setAppConfig ] = useState<AppConfigInterface>(null);
 
     /**
      * Obtain app.config.json from the server root when the app mounts.
      */
     useEffect(() => {
-        getAppConfig().then((appConfigModule) => {
-            setAppConfig(appConfigModule);
-        });
+        getAppConfig<AppConfigInterface>(ApplicationConstants.APP_CONFIG_FILE_NAME, APP_BASENAME)
+            .then((response) => {
+                setAppConfig(response);
+            });
     }, []);
 
     return (
