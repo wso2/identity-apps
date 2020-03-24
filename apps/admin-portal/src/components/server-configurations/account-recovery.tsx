@@ -246,53 +246,44 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 			});
 	};
 
-	const getUsernameRecoveryCheckBoxes = (data) => {
+	/**
+	 * Loop through API response and extract check box values.
+	 *
+	 * @param data API response data.
+	 * @param checkBoxes Names of the checkboxes as an array.
+	 */
+	const getCheckBoxes = (data, checkBoxes) => {
 		const values = [];
-		data.properties.map((property => {
-			if (property.name === ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE) {
-				property.value === "true" ?
-					values.push(ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE) : "";
-			}
-			if (property.name === ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA) {
-				property.value === "true" ?
-					values.push(ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA) : "";
-			}
-		}));
+		checkBoxes.map(checkBox => {
+			data.properties.map((property => {
+				if (property.name === checkBox) {
+					property.value === "true" ? values.push(checkBox) : "";
+				}
+			}))
+		});
 		return values;
+	};
+
+	const getUsernameRecoveryCheckBoxes = (data) => {
+		return getCheckBoxes(data, [
+			ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE,
+			ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA
+		]);
 	};
 
 	const getPasswordRecoveryCheckBoxes = (data) => {
-		const values = [];
-		data.properties.map((property => {
-			if (property.name === ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE) {
-				property.value === "true" ?
-					values.push(ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE) : "";
-			}
-			if (property.name === ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA) {
-				property.value === "true" ?
-					values.push(ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA) : "";
-			}
-			if (property.name === ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE) {
-				property.value === "true" ?
-					values.push(ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE) : "";
-			}
-		}));
-		return values;
+		return getCheckBoxes(data, [
+			ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE,
+			ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA,
+			ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE
+		]);
 	};
 
 	const getNotificationCheckBoxes = (data) => {
-		const values = [];
-		data.properties.map((property => {
-			if (property.name === ServerConfigurationsConstants.NOTIFY_SUCCESS) {
-				property.value === "true" ?
-					values.push(ServerConfigurationsConstants.NOTIFY_SUCCESS) : "";
-			}
-			if (property.name === ServerConfigurationsConstants.NOTIFY_RECOVERY_START) {
-				property.value === "true" ?
-					values.push(ServerConfigurationsConstants.NOTIFY_RECOVERY_START) : "";
-			}
-		}));
-		return values;
+		return getCheckBoxes(data, [
+			ServerConfigurationsConstants.NOTIFY_SUCCESS,
+			ServerConfigurationsConstants.NOTIFY_RECOVERY_START
+		]);
 	};
 
 	const getEnablePasswordReCaptcha = (data) => {
@@ -398,7 +389,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		</Modal>
 	);
 
-	const showUseraccountRecoveryView = editingForm[ACCOUNT_RECOVERY_FORM_IDENTIFIER] ? (
+	const showUserAccountRecoveryView = editingForm[ACCOUNT_RECOVERY_FORM_IDENTIFIER] ? (
 		<EditSection>
 			<Forms
 				onSubmit={ (values) => {
@@ -696,7 +687,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 			primaryAction={ t("views:components.serverConfigs.accountRecovery.actionTitles.config") }
 			primaryActionIcon="key"
 		>
-			{ showUseraccountRecoveryView }
+			{ showUserAccountRecoveryView }
 			{ confirmationModal }
 		</Section>
 	);
