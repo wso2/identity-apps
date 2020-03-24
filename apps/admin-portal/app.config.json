@@ -1,4 +1,8 @@
 {
     "applications": true,
+    "claims": true,
+    "identityProviders": true,
+    "serverConfigurations": true,
+    "userStores": true,
     "usersAndRoles": true
 }
