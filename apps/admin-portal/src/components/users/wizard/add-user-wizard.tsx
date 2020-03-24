@@ -22,7 +22,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { addUser, addUserRole, getGroupsList } from "../../../api";
+import { addUser, addUserRole, getRoleList } from "../../../api";
 import { ApplicationWizardStepIcons } from "../../../configs";
 import { AlertLevels } from "../../../models";
 import { addAlert } from "../../../store/actions";
@@ -89,14 +89,14 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ initialRoleList, setInitialRoleList ] = useState([]);
 
     const getRolesList = (domain: string) => {
-        getGroupsList(domain)
+        getRoleList(domain)
             .then((response) => {
                 setRoleList(response.data.Resources);
             });
     };
 
     const getRoleListForDomain = (domain: string) => {
-        getGroupsList(domain)
+        getRoleList(domain)
             .then((response) => {
                 setRoleList([ ...roleList, ...response.data.Resources ]);
                 setInitialRoleList([ ...roleList, ...response.data.Resources ]);

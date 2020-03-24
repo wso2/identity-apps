@@ -21,7 +21,7 @@ import { AlertInterface, BasicProfileInterface } from "../../models";
 import { useTranslation } from "react-i18next";
 import { EmptyPlaceholder, Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { Button, Grid, Icon, Input, Label, List, Modal, Popup, Segment } from "semantic-ui-react";
-import { getGroupsList, updateUserRoles } from "../../api";
+import { getRoleList, updateUserRoles } from "../../api";
 import _ from "lodash";
 import { AlertLevels } from "@wso2is/core/dist/src/models";
 import { EmptyPlaceholderIllustrations } from "../../configs";
@@ -99,7 +99,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
 
     const getRolesList = (domain: string) => {
         setSelectedDomain(domain);
-        getGroupsList(domain)
+        getRoleList(domain)
             .then((response) => {
                 removeExistingRoles(domain, response.data.Resources);
                 setAddNewRoleModalView(true);
