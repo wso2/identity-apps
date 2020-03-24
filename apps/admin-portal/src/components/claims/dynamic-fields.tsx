@@ -131,7 +131,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                 >
                                     <Grid>
                                         < Grid.Row columns={ 3 } verticalAlign="top">
-                                            <Grid.Column width={ 7 }>
+                                            <Grid.Column width={ 6 }>
                                                 {keyType === "dropdown"
                                                     ? (
                                                         <Field
@@ -200,7 +200,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                     name="value"
                                                 />
                                             </Grid.Column>
-                                            <Grid.Column width={ 3 } verticalAlign="middle">
+                                            <Grid.Column width={ 4 } verticalAlign="middle">
                                                 <Popup
                                                     trigger={ (
                                                         <Icon
