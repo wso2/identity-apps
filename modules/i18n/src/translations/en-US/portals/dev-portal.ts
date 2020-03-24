@@ -688,79 +688,16 @@ export const devPortal: DevPortalNS = {
             }
         },
         serverConfigs: {
-            selfRegistration: {
-                actionTitles: {
-                    config: "Configure"
-                },
-                description: "Configure how the User Self Registration should happen with your users.",
-                heading: "User Self Registration",
-                confirmation: {
-                    heading: "Confirmation",
-                    message: "Do you wish to save the configurations related to user self registration?"
-                },
-                notifications: {
-                    updateConfigurations: {
-                        error: {
-                            description: "An error occurred while updating the self sign up configurations.",
-                            message: "Error updating the configurations"
-                        },
-                        genericError: {
-                            description: "Couldn't update the self sign up configurations.",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "Successfully updated the self sign up configurations.",
-                            message: "Configurations updated successfully"
-                        }
-                    }
-                },
-                form: {
-                    enable: {
-                        label: "Enable User Self Registration",
-                    },
-                    enableAccountLockOnCreation: {
-                        label: "Enable Account Lock On Creation"
-                    },
-                    internalNotificationManagement: {
-                        label: "Internal Notification Management"
-                    },
-                    enableReCaptcha: {
-                        label: "Enable reCaptcha"
-                    },
-                    verificationLinkExpiryTime: {
-                        label: "User self registration verification link expiry time",
-                        placeholder: "Set the number of minutes for the self registration " +
-                            "verification e-mail would be valid.",
-                        validations: {
-                            empty: "User self registration verification link expiry time is required."
-                        }
-                    },
-                    smsOTPExpiryTime: {
-                        label: "User self registration SMS OTP expiry time",
-                        placeholder: "Set the number of minutes that the SMS OTP would be valid.",
-                        validations: {
-                            empty: "User self registration SMS OTP expiry time is required."
-                        }
-                    },
-                    callbackURLRegex: {
-                        label: "User self registration callback URL regex",
-                        placeholder: "User self registration callback URL regex.",
-                        validations: {
-                            empty: "User self registration callback URL regex is required."
-                        }
-                    }
-                }
-            },
             accountRecovery: {
                 actionTitles: {
                     config: "Configure"
                 },
-                description: "Configure how account recovery should happen with your users.",
-                heading: "Account Recovery",
                 confirmation: {
                     heading: "Confirmation",
                     message: "Do you wish to save the configurations related to user account recovery?"
                 },
+                description: "Configure how account recovery should happen with your users.",
+                heading: "Account Recovery",
                 notifications: {
                     updateConfigurations: {
                         error: {
@@ -777,56 +714,21 @@ export const devPortal: DevPortalNS = {
                         }
                     }
                 },
-                usernameRecovery: {
-                    actionTitles: {
-                        config: "Configure"
-                    },
-                    description: "Configure how username recovery should happen with your users.",
-                    heading: "Username Recovery",
-                    form: {
-                        enable: {
-                            label: "Enable Username Recovery"
-                        },
-                        enableReCaptcha: {
-                            label: "Enable reCaptcha for Username Recovery"
-                        }
-                    }
-                },
-                passwordRecovery: {
-                    actionTitles: {
-                        config: "Configure"
-                    },
-                    description: "Configure how password recovery should happen with your users.",
-                    heading: "Password Recovery",
-                    form: {
-                        enableNotificationBasedRecovery: {
-                            label: "Enable Notification Based Password Recovery"
-                        },
-                        enableReCaptchaBasedRecovery: {
-                            label: "Enable reCaptcha for Password Recovery"
-                        },
-                        enableSecurityQuestionBasedRecovery: {
-                            label: "Enable Security Question Based Password Recovery"
-                        },
-                        noOfQuestionsRequired: {
-                            label: "Number Of Questions Required For Password Recovery",
-                            hint: "The user will have to successfully answer this number of security questions to " +
-                                "recover the password.",
-                            validations: {
-                                empty: "Number Of Questions Required For Password Recovery is required."
-                            }
-                        },
-                        enableReCaptchaForSecurityQuestionBasedRecovery: {
-                            label: "Enable reCaptcha for Security Questions Based Password Recovery",
-                            hint: "Show captcha for challenge question based password recovery"
-                        },
-                    }
-                },
                 otherSettings: {
                     form: {
                         enableForcedChallengeQuestions: {
-                            label: "Enable forced challenge questions",
-                            hint: "Force users to provide answers to challenge questions during sign in"
+                            hint: "Force users to provide answers to challenge questions during sign in",
+                            label: "Enable forced challenge questions"
+                        },
+                        enableInternalNotificationManagement: {
+                            hint: "Set false if the client application handles notification sending",
+                            label: "Enable Internal Notification Management"
+                        },
+                        notifyQuestionRecoveryStart: {
+                            label: "Notify when Questions Based Recovery Starts"
+                        },
+                        notifyRecoverySuccess: {
+                            label: "Notify when Recovery Success"
                         },
                         reCaptchaMaxFailedAttempts: {
                             label: "Max Failed Attempts for ReCaptcha",
@@ -834,37 +736,135 @@ export const devPortal: DevPortalNS = {
                                 empty: "Max Failed Attempts for ReCaptcha is required."
                             }
                         },
-                        enableInternalNotificationManagement: {
-                            label: "Enable Internal Notification Management",
-                            hint: "Set false if the client application handles notification sending"
-                        },
-                        notifyRecoverySuccess: {
-                            label: "Notify when Recovery Success"
-                        },
-                        notifyQuestionRecoveryStart: {
-                            label: "Notify when Questions Based Recovery Starts"
-                        },
                         recoveryLinkExpiryTime: {
-                            label: "Recovery Link Expiry Time",
                             hint: "Specify the time to expire the recovery link in minutes.",
-                            validations: {
-                                empty: "Number Of Questions Required For Password Recovery is required."
-                            }
-                        },
-                        smsOTPExpiryTime: {
-                            label: "SMS OTP Expiry Time",
-                            hint: "Specify the time to expire the SMS OTP in minutes.",
+                            label: "Recovery Link Expiry Time",
                             validations: {
                                 empty: "Number Of Questions Required For Password Recovery is required."
                             }
                         },
                         recoveryCallbackURLRegex: {
-                            label: "Recovery callback URL regex",
                             hint: "TODO",
+                            label: "Recovery callback URL regex",
                             validations: {
                                 empty: "Recovery callback URL regex is required."
                             }
                         },
+                        smsOTPExpiryTime: {
+                            hint: "Specify the time to expire the SMS OTP in minutes.",
+                            label: "SMS OTP Expiry Time",
+                            validations: {
+                                empty: "Number Of Questions Required For Password Recovery is required."
+                            }
+                        },
+                    }
+                },
+                passwordRecovery: {
+                    actionTitles: {
+                        config: "Configure"
+                    },
+                    description: "Configure how password recovery should happen with your users.",
+                    form: {
+                        enableNotificationBasedRecovery: {
+                            label: "Enable Notification Based Password Recovery"
+                        },
+                        enableReCaptchaBasedRecovery: {
+                            label: "Enable reCaptcha for Password Recovery"
+                        },
+                        enableReCaptchaForSecurityQuestionBasedRecovery: {
+                            hint: "Show captcha for challenge question based password recovery",
+                            label: "Enable reCaptcha for Security Questions Based Password Recovery"
+                        },
+                        enableSecurityQuestionBasedRecovery: {
+                            label: "Enable Security Question Based Password Recovery"
+                        },
+                        noOfQuestionsRequired: {
+                            hint: "The user will have to successfully answer this number of security questions to " +
+                                "recover the password.",
+                            label: "Number Of Questions Required For Password Recovery",
+                            validations: {
+                                empty: "Number Of Questions Required For Password Recovery is required."
+                            }
+                        },
+                    },
+                    heading: "Password Recovery"
+                },
+                usernameRecovery: {
+                    actionTitles: {
+                        config: "Configure"
+                    },
+                    description: "Configure how username recovery should happen with your users.",
+                    form: {
+                        enable: {
+                            label: "Enable Username Recovery"
+                        },
+                        enableReCaptcha: {
+                            label: "Enable reCaptcha for Username Recovery"
+                        }
+                    },
+                    heading: "Username Recovery"
+                }
+            },
+            selfRegistration: {
+                actionTitles: {
+                    config: "Configure"
+                },
+                confirmation: {
+                    heading: "Confirmation",
+                    message: "Do you wish to save the configurations related to user self registration?"
+                },
+                description: "Configure how the User Self Registration should happen with your users.",
+                form: {
+                    callbackURLRegex: {
+                        label: "User self registration callback URL regex",
+                        placeholder: "User self registration callback URL regex.",
+                        validations: {
+                            empty: "User self registration callback URL regex is required."
+                        }
+                    },
+                    enable: {
+                        label: "Enable User Self Registration",
+                    },
+                    enableAccountLockOnCreation: {
+                        label: "Enable Account Lock On Creation"
+                    },
+                    enableReCaptcha: {
+                        label: "Enable reCaptcha"
+                    },
+                    internalNotificationManagement: {
+                        label: "Internal Notification Management"
+                    },
+                    smsOTPExpiryTime: {
+                        label: "User self registration SMS OTP expiry time",
+                        placeholder: "Set the number of minutes that the SMS OTP would be valid.",
+                        validations: {
+                            empty: "User self registration SMS OTP expiry time is required."
+                        }
+                    },
+                    verificationLinkExpiryTime: {
+                        label: "User self registration verification link expiry time",
+                        placeholder: "Set the number of minutes for the self registration " +
+                            "verification e-mail would be valid.",
+                        validations: {
+                            empty: "User self registration verification link expiry time is required."
+                        }
+                    }
+                },
+                heading: "User Self Registration",
+                notifications: {
+                    updateConfigurations: {
+                        error: {
+                            description: "An error occurred while updating the self sign up configurations.",
+                            message: "Error updating the configurations"
+                        },
+                        genericError: {
+                            description: "Couldn't update the self sign up configurations.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the self sign up configurations.",
+                            message: "Configurations updated successfully"
+                        }
                     }
                 }
             }
