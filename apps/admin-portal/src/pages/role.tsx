@@ -242,7 +242,7 @@ export const RolesPage = (): ReactElement => {
                         onChange={ handleDomainChange }
                     />
                 }
-                showPagination={ roleList?.totalResults >= DEFAULT_ROLE_LIST_ITEM_LIMIT }
+                showPagination={ true }
                 totalPages={ Math.ceil(roleList?.totalResults / listItemLimit) }
                 totalListSize={ roleList?.totalResults }
             >
