@@ -40,16 +40,16 @@ export const UnderConstruction = (): JSX.Element => {
                         as={ Link }
                         to={ GlobalConfig.appHomePath }
                     >
-                        { t("views:placeholders.underConstruction.action") }
+                        { t("devPortal:placeholders.underConstruction.action") }
                     </Button>
                 ) }
                 image={ EmptyPlaceholderIllustrations.alert }
                 imageSize="tiny"
                 subtitle={ [
-                    t("views:placeholders.underConstruction.subtitles.0"),
-                    t("views:placeholders.underConstruction.subtitles.1")
+                    t("devPortal:placeholders.underConstruction.subtitles.0"),
+                    t("devPortal:placeholders.underConstruction.subtitles.1")
                 ] }
-                title={ t("views:placeholders.underConstruction.title") }
+                title={ t("devPortal:placeholders.underConstruction.title") }
             />
         </ErrorPageLayout>
     );

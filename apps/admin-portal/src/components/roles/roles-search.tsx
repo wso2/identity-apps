@@ -121,16 +121,16 @@ export const RoleSearch: FunctionComponent<RoleSearchProps> = (props: RoleSearch
     return (
         <AdvancedSearch
             aligned="left"
-            clearButtonPopupLabel={ t("views:components.users.search.popups.clear") }
+            clearButtonPopupLabel={ t("devPortal:components.users.search.popups.clear") }
             defaultSearchStrategy={ DEFAULT_SEARCH_STRATEGY }
-            dropdownTriggerPopupLabel={ t("views:components.users.search.popups.dropdown") }
-            hintActionKeys={ t("views:components.users.search.hints.querySearch.actionKeys") }
-            hintLabel={ t("views:components.users.search.hints.querySearch.label") }
+            dropdownTriggerPopupLabel={ t("devPortal:components.users.search.popups.dropdown") }
+            hintActionKeys={ t("devPortal:components.users.search.hints.querySearch.actionKeys") }
+            hintLabel={ t("devPortal:components.users.search.hints.querySearch.label") }
             onExternalSearchQueryClear={ handleExternalSearchQueryClear }
             onSearchQuerySubmit={ handleSearchQuerySubmit }
-            placeholder={ t("views:components.users.search.placeholder") }
+            placeholder={ t("devPortal:components.users.search.placeholder") }
             resetSubmittedState={ handleResetSubmittedState }
-            searchOptionsHeader={ t("views:components.users.search.options.header") }
+            searchOptionsHeader={ t("devPortal:components.users.search.options.header") }
             externalSearchQuery={ externalSearchQuery }
             submitted={ isFormSubmitted }
         >
@@ -149,13 +149,13 @@ export const RoleSearch: FunctionComponent<RoleSearchProps> = (props: RoleSearch
                                                     value: condition.value
                                                 };
                                             }) }
-                                            label={ t("views:components.users.search.forms.searchForm.inputs" +
+                                            label={ t("devPortal:components.users.search.forms.searchForm.inputs" +
                                                 ".filterCondition.label") }
                                             name={ FILTER_CONDITION_FIELD_IDENTIFIER }
-                                            placeholder={ t("views:components.users.search.forms." +
+                                            placeholder={ t("devPortal:components.users.search.forms." +
                                                 "searchForm.inputs.filterCondition.placeholder") }
                                             required={ true }
-                                            requiredErrorMessage={ t("views:components.users.search.forms" +
+                                            requiredErrorMessage={ t("devPortal:components.users.search.forms" +
                                                 ".searchForm.inputs.filterCondition.validations.empty") }
                                             type="dropdown"
                                             width={ 16 }
@@ -163,13 +163,13 @@ export const RoleSearch: FunctionComponent<RoleSearchProps> = (props: RoleSearch
                                     </Grid.Column>
                                     <Grid.Column width={ 8 }>
                                         <Field
-                                            label={ t("views:components.users.search.forms.searchForm.inputs" +
+                                            label={ t("devPortal:components.users.search.forms.searchForm.inputs" +
                                                 ".filterValue.label") }
                                             name={ FILTER_VALUES_FIELD_IDENTIFIER }
-                                            placeholder={ t("views:components.users.search.forms." +
+                                            placeholder={ t("devPortal:components.users.search.forms." +
                                                 "searchForm.inputs.filterValue.placeholder") }
                                             required={ true }
-                                            requiredErrorMessage={ t("views:components.users.search." +
+                                            requiredErrorMessage={ t("devPortal:components.users.search." +
                                                 "forms.searchForm.inputs.filterValue.validations.empty") }
                                             type="text"
                                             width={ 16 }

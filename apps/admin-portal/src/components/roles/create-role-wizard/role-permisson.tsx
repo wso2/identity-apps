@@ -24,6 +24,7 @@ import { Forms } from "@wso2is/forms";
 import { addPath } from "../role-utils";
 import { Segment, Button, Grid } from "semantic-ui-react";
 import _ from "lodash";
+import { RolesInterface } from "../../../models";
 
 /**
  * Interface to capture permission list props
@@ -31,7 +32,7 @@ import _ from "lodash";
 interface PermissionListProp {
     triggerSubmit?: boolean;
     onSubmit?: (permissions: any) => void;
-    role?: string;
+    roleObject?: RolesInterface;
 }
 
 /**
@@ -50,7 +51,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     const {
         triggerSubmit,
         onSubmit,
-        role
+        roleObject
     } = props;
 
     /**
@@ -115,14 +116,15 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     useEffect(() => {
         setPermissionsLoading(true);
 
-        if (role) {
-            getPermissionsPerRole(role).then(response => {
-                if (response.status === 200) {
-                    getPermissions(response.data);
-                }
-            }).catch(error => {
-                //TODO: Handle Error
-            })
+        if (roleObject) {
+            getPermissionsPerRole(roleObject.id)
+                .then(response => {
+                    if (response.status === 200) {
+                        getPermissions(response.data);
+                    }
+                }).catch(error => {
+                    //TODO: Handle Error
+                })
         } else {
             getPermissions();
         }
@@ -169,25 +171,26 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
 
     return (
         <Segment padded clearing loading={ permissionsLoading }>
-            <Button.Group size="tiny" vertical labeled icon>
-                <Button 
-                    onClick={ () => {
-                        const collapsedState = _.cloneDeep(permissionTree);
-                        collapsedState[0].isExpanded = collapseAll;
-                        setPermissionTree(collapsedState);
-                        setCollapseAll(!collapseAll);
-                    } } 
-                    icon={ collapseAll? "compress" : "expand" } 
-                    content={ collapseAll? "Expand All" : "Collapse All" } 
-                />
-            </Button.Group>
-            
+            { !permissionsLoading &&
+                <Button.Group size="tiny" vertical labeled icon>
+                    <Button 
+                        onClick={ () => {
+                            const collapsedState = _.cloneDeep(permissionTree);
+                            collapsedState[0].isExpanded = collapseAll;
+                            setPermissionTree(collapsedState);
+                            setCollapseAll(!collapseAll);
+                        } } 
+                        icon={ collapseAll? "compress" : "expand" } 
+                        content={ collapseAll? "Expand All" : "Collapse All" } 
+                    />
+                </Button.Group>
+            }
             <Forms submitState={ triggerSubmit } onSubmit={ () => {
                 onSubmit(selectedPermissions);
             } }>
                 {
                     !permissionsLoading ? 
-                        <div className="super-treeview-container">
+                        <div className="treeview-container">
                             <TreeView
                                 data={ permissionTree }
                                 keywordLabel= "label"
@@ -198,7 +201,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                             /> 
                         </div> : <div></div>
                 }
-                {permissionsOfRole && permissionsOfRole.length && 
+                { permissionsOfRole && permissionsOfRole.length && 
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Button primary type="submit" size="small" className="form-button">

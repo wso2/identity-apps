@@ -18,7 +18,7 @@
 
 import { AxiosHttpClient } from "@wso2is/http";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
-import { HttpMethods, CreateRoleInterface, SearchRoleInterface } from "../models";
+import { HttpMethods, CreateRoleInterface, SearchRoleInterface, PatchRoleDataInterface } from "../models";
 
 /**
  * Initialize an axios Http client.
@@ -82,14 +82,14 @@ export const getRoleById = (roleId: string): Promise<any> => {
  * @param roleId role id to update role details
  * @param roleData Data that needs to be updated.
  */
-export const updateRoleDetails = (roleId: string, roleData: any): Promise<any> => {
+export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterface): Promise<any> => {
     const requestConfig = {
         data: roleData,
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
-        method: HttpMethods.PUT,
+        method: HttpMethods.PATCH,
         url: ServiceResourcesEndpoint.groups + "/" + roleId
     };
 

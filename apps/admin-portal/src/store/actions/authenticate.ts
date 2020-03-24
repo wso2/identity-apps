@@ -27,7 +27,7 @@ import {
 import _ from "lodash";
 import { getProfileSchemas } from "../../api";
 import { getProfileInfo } from "@wso2is/core/api";
-import { GlobalConfig, i18n, ServiceResourcesEndpoint } from "../../configs";
+import { GlobalConfig, ServiceResourcesEndpoint } from "../../configs";
 import { history } from "../../helpers";
 import { AlertLevels, ProfileSchema } from "../../models";
 import { store } from "../index";
@@ -35,6 +35,7 @@ import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
 import { authenticateActionTypes, AuthAction } from "./types";
 import { SYSTEM_SCOPE } from "../../constants";
+import { I18n } from "@wso2is/i18n";
 
 /**
  * Dispatches an action of type `SET_SIGN_IN`.
@@ -115,12 +116,12 @@ export const getProfileInformation = () => (dispatch): void => {
 
             dispatch(
                 addAlert({
-                    description: i18n.t(
-                        "views:components.user.profile.notifications.getProfileInfo.genericError.description"
+                    description: I18n.instance.t(
+                        "devPortal:components.user.profile.notifications.getProfileInfo.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
-                    message: i18n.t(
-                        "views:components.user.profile.notifications.getProfileInfo.genericError.message"
+                    message: I18n.instance.t(
+                        "devPortal:components.user.profile.notifications.getProfileInfo.genericError.message"
                     )
                 })
             );
@@ -129,13 +130,13 @@ export const getProfileInformation = () => (dispatch): void => {
             if (error.response && error.response.data && error.response.data.detail) {
                 dispatch(
                     addAlert({
-                        description: i18n.t(
-                            "views:components.user.profile.notifications.getProfileInfo.error.description",
+                        description: I18n.instance.t(
+                            "devPortal:components.user.profile.notifications.getProfileInfo.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
-                        message: i18n.t(
-                            "views:components.user.profile.notifications.getProfileInfo.error.message"
+                        message: I18n.instance.t(
+                            "devPortal:components.user.profile.notifications.getProfileInfo.error.message"
                         )
                     })
                 );
@@ -145,12 +146,12 @@ export const getProfileInformation = () => (dispatch): void => {
 
             dispatch(
                 addAlert({
-                    description: i18n.t(
-                        "views:components.user.profile.notifications.getProfileInfo.genericError.description"
+                    description: I18n.instance.t(
+                        "devPortal:components.user.profile.notifications.getProfileInfo.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
-                    message: i18n.t(
-                        "views:components.user.profile.notifications.getProfileInfo.genericError.message"
+                    message: I18n.instance.t(
+                        "devPortal:components.user.profile.notifications.getProfileInfo.genericError.message"
                     )
                 })
             );

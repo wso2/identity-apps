@@ -43,6 +43,7 @@ import { AppConfigInterface } from "../models";
 import { AppState } from "../store";
 import { filterRoutes } from "../utils";
 import { BaseLayout } from "./base";
+import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
 
 /**
  * Dashboard layout Prop types.
@@ -67,6 +68,8 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
 
     const profileDetails: AuthReducerStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
+    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
+        (state: AppState) => state.global.supportedI18nLanguages);
 
     const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(routes[0]);
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
@@ -276,6 +279,17 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
         setFooterHeight(document.getElementById("app-footer").offsetHeight);
     }, []);
 
+    /**
+     * Handles language switch action.
+     * @param {string} language - Selected language.
+     */
+    const handleLanguageSwitch = (language: string): void => {
+        I18n.instance.changeLanguage(language)
+            .catch((error) => {
+                throw new LanguageChangeException(language, error)
+            })
+    };
+
     return (
         <BaseLayout>
             <Responsive
@@ -339,6 +353,10 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     </Switch>
                 </SidePanel>
                 <Footer
+                    showLanguageSwitcher
+                    currentLanguage={ I18n.instance?.language }
+                    supportedLanguages={ supportedI18nLanguages }
+                    onLanguageChange={ handleLanguageSwitch }
                     copyright={
                         ContextUtils.getRuntimeConfig().copyrightText
                             ? ContextUtils.getRuntimeConfig().copyrightText

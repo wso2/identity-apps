@@ -22,9 +22,11 @@ import {
     GlobalActionTypes,
     HideGlobalLoaderAction,
     InitializeAlertSystemAction,
+    SetSupportedI18nLanguagesActionInterface,
     ShowGlobalLoaderAction,
     ToggleApplicationsPageVisibilityAction
 } from "./types";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
 
 /**
  * Show global loader action.
@@ -73,4 +75,17 @@ export const initializeAlertSystem = (alertSystem: any): InitializeAlertSystemAc
 export const addAlert = (alert: AlertInterface): AddAlertAction => ({
     payload: alert,
     type: GlobalActionTypes.ADD_ALERT
+});
+
+/**
+ * Redux action to set the supported i18n languages.
+ *
+ * @param {SupportedLanguagesMeta} languages - Supported i18n languages.
+ * @return {SetSupportedI18nLanguagesActionInterface} An action of type `SET_SUPPORTED_I18N_LANGUAGES`
+ */
+export const setSupportedI18nLanguages = (
+    languages: SupportedLanguagesMeta
+): SetSupportedI18nLanguagesActionInterface => ({
+    payload: languages,
+    type: GlobalActionTypes.SET_SUPPORTED_I18N_LANGUAGES
 });

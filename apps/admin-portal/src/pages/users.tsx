@@ -171,15 +171,15 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                             className="link-button"
                             onClick={ () => getList(listItemLimit, listOffset, null, null, null) }
                         >
-                            { t("views:placeholders.emptySearchResult.action") }
+                            { t("devPortal:placeholders.emptySearchResult.action") }
                         </Button>
                     ) }
                     image={ EmptyPlaceholderIllustrations.search }
-                    title={ t("views:placeholders.emptySearchResult.title") }
+                    title={ t("devPortal:placeholders.emptySearchResult.title") }
                     subtitle={ [
-                        t("views:placeholders.emptySearchResult.subtitles.0",
+                        t("devPortal:placeholders.emptySearchResult.subtitles.0",
                             { query: searchQuery }),
-                        t("views:placeholders.emptySearchResult.subtitles.1"),
+                        t("devPortal:placeholders.emptySearchResult.subtitles.1"),
                     ] }
                 />
             );
@@ -243,11 +243,11 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
             .then(() => {
                 handleAlerts({
                     description: t(
-                        "views:components.users.notifications.deleteUser.success.description"
+                        "devPortal:components.users.notifications.deleteUser.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "views:components.users.notifications.deleteUser.success.message"
+                        "devPortal:components.users.notifications.deleteUser.success.message"
                     )
                 });
                 setListUpdated(true);

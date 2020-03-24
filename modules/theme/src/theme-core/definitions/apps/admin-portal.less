@@ -227,242 +227,246 @@
      box-sizing: border-box;
      -webkit-box-sizing: border-box;
  }
- 
- .treeview {
-     font-size: 100%;
- 
-     & > div {
-         & > .treeview-no-children-transition {
-             transition-property: all;
-         }
- 
-         & > .treeview-no-children-transition-enter {
-             opacity: 0;
-             height: 0;
-             overflow: hidden;
- 
-             &.treeview-no-children-transition-enter-active {
-                 opacity: 1;
+
+ .treeview-container {
+     padding: 1em 0;
+
+     .treeview {
+         font-size: 100%;
+
+         & > div {
+             & > .treeview-no-children-transition {
+                 transition-property: all;
+             }
+
+             & > .treeview-no-children-transition-enter {
+                 opacity: 0;
                  height: 0;
+                 overflow: hidden;
+
+                 &.treeview-no-children-transition-enter-active {
+                     opacity: 1;
+                     height: 0;
+                 }
              }
-         }
- 
-         & >.treeview-no-children {
-             overflow: hidden;
- 
-             >.treeview-no-children-content {
-                 margin: 2px 0;
-             }
-         }
- 
-         & > .treeview-node {
-             overflow: hidden;
-             padding: 2px 5px;
- 
-             & > .treeview-children-container {
-                 margin-left: 8px;
-                 padding-left: 20px;
-                 border-left: 1px solid @treeview-tree-stem-color;
- 
-                 >.treeview-loading {
-                     padding: 0 3px;
+
+             & >.treeview-no-children {
+                 overflow: hidden;
+
+                 >.treeview-no-children-content {
                      margin: 2px 0;
                  }
              }
- 
-             & > .treeview-node-content {
-                 padding: 0 3px;
-                 margin: 2px 0;
- 
-                 & > label {
-                     vertical-align: top;
-                     text-overflow: ellipsis;
-                     width: calc(100% - 55px);
-                     overflow: hidden;
-                     white-space: nowrap;
-                     display: inline-block;
-                     margin: 0;
-                     font-weight: normal;
-                     font-size: 100%;
+
+             & > .treeview-node {
+                 overflow: hidden;
+                 padding: 2px 5px;
+
+                 & > .treeview-children-container {
+                     margin-left: 8px;
+                     padding-left: 20px;
+                     border-left: 1px solid @treeview-tree-stem-color;
+
+                     >.treeview-loading {
+                         padding: 0 3px;
+                         margin: 2px 0;
+                     }
                  }
- 
-                 & > input[type=checkbox] {
-                     float: left;
-                     margin: 4px 5px 0 0;
-                     line-height: normal;
-                 }
- 
-                 & > .delete-btn {
-                     float: right;
-                     cursor: pointer;
+
+                 & > .treeview-node-content {
+                     padding: 0 3px;
+                     margin: 2px 0;
+
+                     & > label {
+                         vertical-align: top;
+                         text-overflow: ellipsis;
+                         width: calc(100% - 55px);
+                         overflow: hidden;
+                         white-space: nowrap;
+                         display: inline-block;
+                         margin: 0;
+                         font-weight: normal;
+                         font-size: 100%;
+                     }
+
+                     & > input[type=checkbox] {
+                         float: left;
+                         margin: 4px 5px 0 0;
+                         line-height: normal;
+                     }
+
+                     & > .delete-btn {
+                         float: right;
+                         cursor: pointer;
+                     }
                  }
              }
-         }
- 
-         & > .treeview-node-transition {
-             transition-property: all;
-         }
- 
-         & > .treeview-node-transition-enter {
-             opacity: 0;
- 
-             &.treeview-node-transition-enter-active {
-                 opacity: 1;
+
+             & > .treeview-node-transition {
+                 transition-property: all;
              }
-         }
- 
-         & > .treeview-node-transition-exit {
-             opacity: 1;
- 
-             &.treeview-node-transition-exit-active {
+
+             & > .treeview-node-transition-enter {
                  opacity: 0;
-                 background-color: red;
+
+                 &.treeview-node-transition-enter-active {
+                     opacity: 1;
+                 }
+             }
+
+             & > .treeview-node-transition-exit {
+                 opacity: 1;
+
+                 &.treeview-node-transition-exit-active {
+                     opacity: 0;
+                     background-color: red;
+                 }
              }
          }
-     }
- 
-     .tree-arrow {
-         cursor: pointer;
-         display: inline-block;
-         height: 18px;
-         position: relative;
-         top: 4px;
-         width: 18px;
-     
-         span {
-             -webkit-transition: all 0.2s ease;
-             background-color: #bfbfbf;
+
+         .tree-arrow {
+             cursor: pointer;
              display: inline-block;
-             height: 0.1rem;
-             position: absolute;
-             top: 0.5rem;
-             transition: all 0.2s ease;
-             width: 0.75rem;
-     
-             &:first-of-type {
-                 -webkit-transform: rotate(45deg);
-                 left: 0;
-                 transform: rotate(45deg);
-             }
-     
-             &:last-of-type {
-                 -webkit-transform: rotate(-45deg);
-                 right: 0;
-                 transform: rotate(-45deg);
-             }
-         }
-     }
- 
-     .tree-arrow.active {
-         span {
-     
-             &:first-of-type {
-                 -webkit-transform: rotate(-45deg);
-                 transform: rotate(-45deg);
-             }
-     
-             &:last-of-type {
-                 -webkit-transform: rotate(45deg);
-                 transform: rotate(45deg);
-             }
-         }
-     }
-     
-     .tree-label {
-         cursor: pointer;
-         margin-bottom: 0;
-         user-select: none;
-     
-         input {
-             &:checked+.checkbox {
-                 border-color: @checkboxfill;
-     
-                 svg {
-                     path {
-                         fill: @checkboxfill;
-                     }
-     
-                     polyline {
-                         stroke-dashoffset: 0;
-                     }
-                 }
-             }
-         }
-     
-         &:hover {
-             .checkbox {
-                 svg {
-                     path {
-                         stroke-dashoffset: 0;
-                     }
-                 }
-             }
-         }
-     
-         .checkbox {
-             border-radius: 3px;
-             border: 2px solid #C8CCD4;
-             float: left;
-             height: 17px;
-             margin-right: 5px;
+             height: 18px;
              position: relative;
-             top: 2px;
-             width: 17px;
-     
-             svg {
-                 left: -2px;
+             top: 4px;
+             width: 18px;
+
+             span {
+                 -webkit-transition: all 0.2s ease;
+                 background-color: #bfbfbf;
+                 display: inline-block;
+                 height: 0.1rem;
                  position: absolute;
-                 top: -2px;
-     
-                 path {
-                     fill: none;
-                     stroke-dasharray: 71px;
-                     stroke-dashoffset: 71px;
-                     stroke-linecap: round;
-                     stroke-linejoin: round;
-                     stroke-width: 2;
-                     stroke: @checkboxfill;
-                     transition: all 0.6s ease;
+                 top: 0.5rem;
+                 transition: all 0.2s ease;
+                 width: 0.75rem;
+
+                 &:first-of-type {
+                     -webkit-transform: rotate(45deg);
+                     left: 0;
+                     transform: rotate(45deg);
                  }
-     
-                 polyline {
-                     fill: none;
-                     stroke-dasharray: 18px;
-                     stroke-dashoffset: 18px;
-                     stroke-linecap: round;
-                     stroke-linejoin: round;
-                     stroke-width: 2;
-                     stroke: #ffffff;
-                     transition: all 0.3s ease;
+
+                 &:last-of-type {
+                     -webkit-transform: rotate(-45deg);
+                     right: 0;
+                     transform: rotate(-45deg);
                  }
              }
          }
+
+         .tree-arrow.active {
+             span {
+
+                 &:first-of-type {
+                     -webkit-transform: rotate(-45deg);
+                     transform: rotate(-45deg);
+                 }
+
+                 &:last-of-type {
+                     -webkit-transform: rotate(45deg);
+                     transform: rotate(45deg);
+                 }
+             }
+         }
+
+         .tree-label {
+             cursor: pointer;
+             margin-bottom: 0;
+             user-select: none;
+
+             input {
+                 &:checked+.checkbox {
+                     border-color: @checkboxfill;
+
+                     svg {
+                         path {
+                             fill: @checkboxfill;
+                         }
+
+                         polyline {
+                             stroke-dashoffset: 0;
+                         }
+                     }
+                 }
+             }
+
+             &:hover {
+                 .checkbox {
+                     svg {
+                         path {
+                             stroke-dashoffset: 0;
+                         }
+                     }
+                 }
+             }
+
+             .checkbox {
+                 border-radius: 3px;
+                 border: 2px solid #C8CCD4;
+                 float: left;
+                 height: 17px;
+                 margin-right: 5px;
+                 position: relative;
+                 top: 2px;
+                 width: 17px;
+
+                 svg {
+                     left: -2px;
+                     position: absolute;
+                     top: -2px;
+
+                     path {
+                         fill: none;
+                         stroke-dasharray: 71px;
+                         stroke-dashoffset: 71px;
+                         stroke-linecap: round;
+                         stroke-linejoin: round;
+                         stroke-width: 2;
+                         stroke: @checkboxfill;
+                         transition: all 0.6s ease;
+                     }
+
+                     polyline {
+                         fill: none;
+                         stroke-dasharray: 18px;
+                         stroke-dashoffset: 18px;
+                         stroke-linecap: round;
+                         stroke-linejoin: round;
+                         stroke-width: 2;
+                         stroke: #ffffff;
+                         transition: all 0.3s ease;
+                     }
+                 }
+             }
+         }
+
+         .tree-label > span {
+             pointer-events: none;
+             vertical-align: middle;
+         }
+
+         .invisible {
+             height: 0;
+             opacity: 0;
+             position: absolute;
+             width: 0;
+             z-index: -1;
+         }
+
+         .no-child {
+             padding-left: 23px !important;
+         }
+
+         .tree-arrow-wrap {
+             cursor: pointer;
+             float: left;
+             margin-left: -3px;
+             margin-right: 5px;
+         }
+
      }
-     
-     .tree-label > span {
-         pointer-events: none;
-         vertical-align: middle;
-     }
-     
-     .invisible {
-         height: 0;
-         opacity: 0;
-         position: absolute;
-         width: 0;
-         z-index: -1;
-     }
- 
-     .no-child {
-         padding-left: 23px !important;
-     }
- 
-     .tree-arrow-wrap {
-         cursor: pointer;
-         float: left;
-         margin-left: -3px;
-         margin-right: 5px;
-     }
-     
  }
  
  .empty-placeholder-center {
