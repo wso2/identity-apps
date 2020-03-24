@@ -21,6 +21,7 @@ export * from "./authenticate-utils";
 export * from "./context-utils";
 export * from "./encode-decode-utils";
 export * from "./http-utils";
+export * from "./route-utils";
 export * from "./search-utils";
 export * from "./storage-utils";
 export * from "./string-utils";
