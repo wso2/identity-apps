@@ -61,7 +61,7 @@
       Input Color Picker
 *******************************/
 
-.ui.input.labled.react-color {
+.ui.input.labeled.react-color {
     > .ui.label {
         border: @border;
     }
