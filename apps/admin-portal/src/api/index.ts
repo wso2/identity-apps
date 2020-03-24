@@ -25,3 +25,4 @@ export * from "./application";
 export * from "./identity-provider";
 export * from "./claims";
 export * from "./user-stores";
+export * from "./server-configurations"

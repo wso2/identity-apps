@@ -23,7 +23,7 @@ import { EditSection, Hint, Section } from "@wso2is/react-components";
 import { useTranslation } from "react-i18next";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
-import { getSelfSignUpConfigurations, updateSelfSignUpConfigurations } from "../../api/server-configurations";
+import { getSelfSignUpConfigurations, updateSelfSignUpConfigurations } from "../../api";
 import { SelfSignUpConfigurationsInterface } from "../../models/server-configurations";
 import { addAlert } from "@wso2is/core/store";
 import { useDispatch } from "react-redux";

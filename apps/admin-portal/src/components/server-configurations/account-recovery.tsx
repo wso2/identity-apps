@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
-import { getAccountRecoveryConfigurations, updateAccountRecoveryConfigurations } from "../../api/server-configurations";
+import { getAccountRecoveryConfigurations, updateAccountRecoveryConfigurations } from "../../api";
 import { AccountRecoveryConfigurationsInterface } from "../../models/server-configurations";
 
 /**
