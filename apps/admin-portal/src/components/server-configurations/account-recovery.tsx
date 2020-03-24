@@ -323,7 +323,6 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 	};
 
 	const getFormValues = (values) => {
-		console.log(values)
 		return {
 			usernameRecoveryCheckBoxes: values.get("UsernameRecoveryCheckBoxes"),
 			passwordRecoveryCheckBoxes: values.get("PasswordRecoveryCheckBoxes"),

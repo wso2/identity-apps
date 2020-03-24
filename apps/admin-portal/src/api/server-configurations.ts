@@ -26,19 +26,14 @@ import { HttpMethods } from "../models";
  */
 const httpClient = AxiosHttpClient.getInstance();
 
-/**
- * Retrieve self sign up configurations.
- *
- * @returns {Promise<any>} a promise containing the configurations.
- */
-export const getSelfSignUpConfigurations = (): Promise<any> => {
+export const getConfigurations = (url: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.selfSignUp
+        url: url
     };
 
     return httpClient.request(requestConfig)
@@ -48,6 +43,35 @@ export const getSelfSignUpConfigurations = (): Promise<any> => {
         .catch((error) => {
             return Promise.reject(error);
         });
+};
+
+export const updateConfigurations = (data: object, url: string): Promise<any> => {
+    const requestConfig = {
+        data,
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: url
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Retrieve self sign up configurations.
+ *
+ * @returns {Promise<any>} a promise containing the configurations.
+ */
+export const getSelfSignUpConfigurations = (): Promise<any> => {
+    return getConfigurations(ServiceResourcesEndpoint.selfSignUp);
 };
 
 /**
@@ -58,23 +82,7 @@ export const getSelfSignUpConfigurations = (): Promise<any> => {
  * @returns {Promise<any>} a promise containing the response.
  */
 export const updateSelfSignUpConfigurations = (data: object): Promise<any> => {
-    const requestConfig = {
-        data,
-        headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.PATCH,
-        url: ServiceResourcesEndpoint.selfSignUp
-    };
-
-    return httpClient.request(requestConfig)
-        .then((response) => {
-            return Promise.resolve(response);
-        })
-        .catch((error) => {
-            return Promise.reject(error);
-        });
+    return updateConfigurations(data, ServiceResourcesEndpoint.selfSignUp);
 };
 
 /**
@@ -83,23 +91,7 @@ export const updateSelfSignUpConfigurations = (data: object): Promise<any> => {
  * @returns {Promise<any>} a promise containing the configurations.
  */
 export const getAccountRecoveryConfigurations = (): Promise<any> => {
-    const requestConfig = {
-        headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.accountRecovery
-    };
-
-    return httpClient.request(requestConfig)
-        .then((response) => {
-            console.log(response.data);
-            return Promise.resolve(response.data);
-        })
-        .catch((error) => {
-            return Promise.reject(error);
-        });
+    return getConfigurations(ServiceResourcesEndpoint.accountRecovery);
 };
 
 /**
@@ -110,22 +102,5 @@ export const getAccountRecoveryConfigurations = (): Promise<any> => {
  * @returns {Promise<any>} a promise containing the response.
  */
 export const updateAccountRecoveryConfigurations = (data: object): Promise<any> => {
-    console.log(data);
-    const requestConfig = {
-        data,
-        headers: {
-            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.PATCH,
-        url: ServiceResourcesEndpoint.accountRecovery
-    };
-
-    return httpClient.request(requestConfig)
-        .then((response) => {
-            return Promise.resolve(response);
-        })
-        .catch((error) => {
-            return Promise.reject(error);
-        });
+    return updateConfigurations(data, ServiceResourcesEndpoint.accountRecovery);
 };
