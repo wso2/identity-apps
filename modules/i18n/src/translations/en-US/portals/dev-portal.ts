@@ -744,7 +744,7 @@ export const devPortal: DevPortalNS = {
                             }
                         },
                         recoveryCallbackURLRegex: {
-                            hint: "TODO",
+                            hint: "Callback URL regex for the recovery.",
                             label: "Recovery callback URL regex",
                             validations: {
                                 empty: "Recovery callback URL regex is required."

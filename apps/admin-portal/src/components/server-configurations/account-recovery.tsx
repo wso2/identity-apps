@@ -55,6 +55,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 	});
 
 	const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+	const [notificationInternallyManaged, setNotificationInternallyManaged] = useState(false);
 	const [accountRecoveryConfigs, setAccountRecoveryConfigs] = useState<AccountRecoveryConfigurationsInterface>({});
 	const [reset] = useTrigger();
 
@@ -188,12 +189,12 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 			.then(() => {
 				dispatch(addAlert({
 					description: t(
-						"views:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
+						"devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
 						"success.description"
 					),
 					level: AlertLevels.SUCCESS,
 					message: t(
-						"views:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
+						"devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
 						"success.message"
 					)
 				}));
@@ -206,12 +207,12 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 				if (!error.response || error.response.status === 401) {
 					dispatch(addAlert({
 						description: t(
-							"views:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
+							"devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
 							"error.description"
 						),
 						level: AlertLevels.ERROR,
 						message: t(
-							"views:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
+							"devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
 							"error.message"
 						)
 					}));
@@ -219,13 +220,13 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 
 					dispatch(addAlert({
 						description: t(
-							"views:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
+							"devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
 							"error.description",
-							{description: error.response.data.detail}
+							{ description: error.response.data.detail }
 						),
 						level: AlertLevels.ERROR,
 						message: t(
-							"views:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
+							"devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
 							"error.message"
 						)
 					}));
@@ -233,12 +234,12 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 					// Generic error message
 					dispatch(addAlert({
 						description: t(
-							"views:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
+							"devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
 							"genericError.description"
 						),
 						level: AlertLevels.ERROR,
 						message: t(
-							"views:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
+							"devPortal:components.serverConfigs.accountRecovery.notifications.updateConfigurations." +
 							"genericError.message"
 						)
 					}));
@@ -292,7 +293,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 				ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_RE_CAPTCHA_ENABLE).value;
 		return element === "true" ?
 			[ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_RE_CAPTCHA_ENABLE] :
-			[""]
+			[]
 	};
 
 	const getNotificationInternallyManaged = (data) => {
@@ -301,7 +302,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 				ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED).value;
 		return element === "true" ?
 			[ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED] :
-			[""]
+			[]
 	};
 
 	const getEnableForcedChallengeQuestions = (data) => {
@@ -310,32 +311,32 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 				ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_FORCED_ENABLE).value;
 		return element === "true" ?
 			[ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_FORCED_ENABLE] :
-			[""]
+			[]
 	};
 
 	const getFormValues = (values) => {
 		return {
-			usernameRecoveryCheckBoxes: values.get("UsernameRecoveryCheckBoxes"),
-			passwordRecoveryCheckBoxes: values.get("PasswordRecoveryCheckBoxes"),
-			passwordRecoveryMinAnswers: values.get(
-				ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_MIN_ANSWERS),
-			enablePasswordReCaptcha: values.get(
-				ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_RE_CAPTCHA_ENABLE),
+			callbackRegex: values.get(ServerConfigurationsConstants.RECOVERY_CALLBACK_REGEX),
 			enableForcedChallengeQuestions: values.get(
 				ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_FORCED_ENABLE),
-			reCaptchaMaxFailedAttempts: values.get(
-				ServerConfigurationsConstants.RE_CAPTCHA_MAX_FAILED_ATTEMPTS
-			),
+			enablePasswordReCaptcha: values.get(
+				ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_RE_CAPTCHA_ENABLE),
+			notificationCheckBoxes: values.get("NotificationCheckBoxes"),
 			notificationInternallyManaged: values.get(
 				ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED
 			),
-			notificationCheckBoxes: values.get("NotificationCheckBoxes"),
+			passwordRecoveryCheckBoxes: values.get("PasswordRecoveryCheckBoxes"),
+			passwordRecoveryMinAnswers: values.get(
+				ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_MIN_ANSWERS),
+			reCaptchaMaxFailedAttempts: values.get(
+				ServerConfigurationsConstants.RE_CAPTCHA_MAX_FAILED_ATTEMPTS
+			),
 
 			recoveryLinkExpiryTime: values.get(
 				ServerConfigurationsConstants.RECOVERY_LINK_EXPIRY_TIME
 			),
 			smsOTPExpiryTime: values.get(ServerConfigurationsConstants.RECOVERY_SMS_EXPIRY_TIME),
-			callbackRegex: values.get(ServerConfigurationsConstants.RECOVERY_CALLBACK_REGEX),
+			usernameRecoveryCheckBoxes: values.get("UsernameRecoveryCheckBoxes"),
 		}
 	};
 
@@ -346,24 +347,24 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		getAccountRecoveryConfigurations()
 			.then((response) => {
 				const configs = {
-					usernameRecoveryCheckBoxes: getUsernameRecoveryCheckBoxes(response),
+					callbackRegex: response.properties.find(
+						property => property.name == ServerConfigurationsConstants.RECOVERY_CALLBACK_REGEX).value,
+					enableForcedChallengeQuestions: getEnableForcedChallengeQuestions(response),
+					enablePasswordReCaptcha: getEnablePasswordReCaptcha(response),
+					notificationCheckBoxes: getNotificationCheckBoxes(response),
+					notificationInternallyManaged: getNotificationInternallyManaged(response),
 					passwordRecoveryCheckBoxes: getPasswordRecoveryCheckBoxes(response),
 					passwordRecoveryMinAnswers: response.properties.find(
 						property => property.name ==
 							ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_MIN_ANSWERS).value,
-					enablePasswordReCaptcha: getEnablePasswordReCaptcha(response),
-					enableForcedChallengeQuestions: getEnableForcedChallengeQuestions(response),
 					reCaptchaMaxFailedAttempts: response.properties.find(
 						property => property.name ==
 							ServerConfigurationsConstants.RE_CAPTCHA_MAX_FAILED_ATTEMPTS).value,
-					notificationInternallyManaged: getNotificationInternallyManaged(response),
-					notificationCheckBoxes: getNotificationCheckBoxes(response),
 					recoveryLinkExpiryTime: response.properties.find(
 						property => property.name == ServerConfigurationsConstants.RECOVERY_LINK_EXPIRY_TIME).value,
 					smsOTPExpiryTime: response.properties.find(
 						property => property.name == ServerConfigurationsConstants.RECOVERY_SMS_EXPIRY_TIME).value,
-					callbackRegex: response.properties.find(
-						property => property.name == ServerConfigurationsConstants.RECOVERY_CALLBACK_REGEX).value
+					usernameRecoveryCheckBoxes: getUsernameRecoveryCheckBoxes(response)
 				};
 				setAccountRecoveryConfigs(configs);
 			});
@@ -373,10 +374,10 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		<Modal size="mini" open={ showConfirmationModal } onClose={ handleConfirmationModalClose } dimmer="blurring">
 			<Modal.Content>
 				<Container>
-					<h3>{ t("devPortal:components.serverConfigs.selfRegistration.confirmation.heading") }</h3>
+					<h3>{ t("devPortal:components.serverConfigs.accountRecovery.confirmation.heading") }</h3>
 				</Container>
 				<Divider hidden={ true }/>
-				<p>{ t("devPortal:components.serverConfigs.selfRegistration.confirmation.message") }</p>
+				<p>{ t("devPortal:components.serverConfigs.accountRecovery.confirmation.message") }</p>
 			</Modal.Content>
 			<Modal.Actions>
 				<Button className="link-button" onClick={ handleConfirmationModalClose }>
@@ -507,7 +508,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 					type="checkbox"
 					children={ [
 						{
-							label: t("views:components.serverConfigs.accountRecovery.otherSettings." +
+							label: t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
 								"form.enableForcedChallengeQuestions.label"),
 							value: ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_FORCED_ENABLE
 						}
@@ -515,7 +516,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 					value={ accountRecoveryConfigs.enableForcedChallengeQuestions }
 				/>
 				<Hint>
-					{ t("views:components.serverConfigs.accountRecovery.otherSettings." +
+					{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
 						"form.enableForcedChallengeQuestions.hint") }
 				</Hint>
 				<Field
@@ -548,7 +549,15 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 					] }
 					listen={
 						(values) => {
-							setAccountRecoveryConfigs(getFormValues(values));
+							console.log(values.get(
+								ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED))
+							if (values.get(
+								ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED).
+								length > 0) {
+								setNotificationInternallyManaged(true);
+							} else {
+								setNotificationInternallyManaged(false);
+							}
 						}
 					}
 					value={ accountRecoveryConfigs.notificationInternallyManaged }
@@ -574,8 +583,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 							value: ServerConfigurationsConstants.NOTIFY_RECOVERY_START
 						}
 					] }
-					disabled={ !accountRecoveryConfigs.notificationInternallyManaged.includes(
-						ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED) }
+					disabled={ notificationInternallyManaged }
 					value={ accountRecoveryConfigs.notificationCheckBoxes }
 				/>
 				<Field
@@ -590,12 +598,10 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 					) }
 					type="number"
 					value={ accountRecoveryConfigs.recoveryLinkExpiryTime }
-					disabled={ !accountRecoveryConfigs.notificationInternallyManaged.includes(
-						ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED) }
+					disabled={ notificationInternallyManaged }
 					width={ 9 }
 				/>
-				<Hint disabled={ !accountRecoveryConfigs.notificationInternallyManaged.includes(
-					ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED) }>
+				<Hint disabled={ notificationInternallyManaged }>
 					{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
 						"form.recoveryLinkExpiryTime.hint") }
 				</Hint>
@@ -613,12 +619,10 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 					) }
 					type="number"
 					value={ accountRecoveryConfigs.smsOTPExpiryTime }
-					disabled={ !accountRecoveryConfigs.notificationInternallyManaged.includes(
-						ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED) }
+					disabled={ notificationInternallyManaged }
 					width={ 9 }
 				/>
-				<Hint disabled={ !accountRecoveryConfigs.notificationInternallyManaged.includes(
-					ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED) }>
+				<Hint disabled={ notificationInternallyManaged }>
 					{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
 						"form.smsOTPExpiryTime.hint") }
 				</Hint>
@@ -636,11 +640,10 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 					) }
 					type="text"
 					value={ accountRecoveryConfigs.callbackRegex }
-					disabled={ !accountRecoveryConfigs.notificationInternallyManaged.includes(
-						ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED) }
+					disabled={ notificationInternallyManaged }
 					width={ 9 }
 				/>
-				<Hint>
+				<Hint disabled={ notificationInternallyManaged }>
 					{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
 						"form.recoveryCallbackURLRegex.hint") }
 				</Hint>
