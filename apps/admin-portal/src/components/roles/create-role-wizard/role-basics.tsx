@@ -27,6 +27,7 @@ import { CreateRoleFormData } from "../../../models";
 interface RoleBasicProps {
     dummyProp?: string;
     triggerSubmit: boolean;
+    initialValues: any;
     onSubmit: (values: any) => void;
 }
 
@@ -39,7 +40,8 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
     const {
         onSubmit,
-        triggerSubmit
+        triggerSubmit,
+        initialValues
     } = props;
 
     /**
@@ -52,7 +54,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      *        to the dropdown.
     */
     const roleDomains = [{
-        key: 'p', text: 'Primary', value: 'primary',
+        key: -1, text: "Primary", value: "primary",
     }];
 
     /**
@@ -86,6 +88,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                             requiredErrorMessage="Select Domain"
                             required={ true }
                             element={ <div></div> }
+                            value={ initialValues?.domain ? initialValues?.domain : roleDomains[0].value }
                         />
                     </GridColumn>
                     <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -96,6 +99,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                             placeholder="Enter Role Name"
                             required={ true }
                             requiredErrorMessage="Role Name is required to proceed."
+                            value={ initialValues && initialValues.roleName }
                         />
                     </GridColumn>
                 </GridRow>

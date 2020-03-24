@@ -17,12 +17,12 @@
  */
 
 import React, { FunctionComponent, ReactElement, useEffect, useState} from "react";
-import { getPermissionList, getPermissionsPerRole } from "../../../api";
+import { getPermissionList, getPermissionsForRole } from "../../../api";
 import { Permission } from "../../../models/permission";
 import { TreeView } from "@wso2is/react-components";
 import { Forms } from "@wso2is/forms";
 import { addPath } from "../role-utils";
-import { Segment, Button, Grid } from "semantic-ui-react";
+import { Segment, Button, Grid, Loader } from "semantic-ui-react";
 import _ from "lodash";
 import { RolesInterface } from "../../../models";
 
@@ -33,6 +33,8 @@ interface PermissionListProp {
     triggerSubmit?: boolean;
     onSubmit?: (permissions: any) => void;
     roleObject?: RolesInterface;
+    isEdit: boolean;
+    initialValues?: Permission[];
 }
 
 /**
@@ -42,93 +44,119 @@ interface PermissionListProp {
  */
 export const PermissionList: FunctionComponent<PermissionListProp> = (props: PermissionListProp): ReactElement => {
 
-    const [ permissionTree, setPermissionTree ] = useState([]);
-    const [ selectedPermissions, setSelectedPermissions ] = useState([]);
-    const [ permissionsOfRole, setPermissionsOfRole ] = useState([]);
-    const [ permissionsLoading, setPermissionsLoading ] = useState(Boolean);
-    const [ collapseAll, setCollapseAll ] = useState(Boolean);
-
     const {
         triggerSubmit,
         onSubmit,
-        roleObject
+        roleObject,
+        isEdit,
+        initialValues
     } = props;
 
-    /**
-     * Util method to check permissions already in the selected role.
-     * 
-     * @param permissionList - Permissions which are available in the selected role
-     * @param nodes - Permmission Node List
-     * @param isParentChecked - Check whether parent is selected
-     */
-    const checkRolePermissions = (permissionList: string[], nodes: any, isParentChecked: boolean): void  => {
-        nodes.forEach(node => {
-            if (permissionList.includes(node.fullPath)) {
-                node.isChecked = true;
-                if(node.children){
-                    checkRolePermissions(permissionList, node.children, true);
-                }
-            } else if (isParentChecked) {
-                node.isChecked = true;
-                if(node.children){
-                    checkRolePermissions(permissionList, node.children, true);
-                }
-            } else {
-                if(node.children){
-                    checkRolePermissions(permissionList, node.children, false);
-                }
-            }
-        });
-    }
+    const [ permissionTree, setPermissionTree ] = useState<Permission[]>([]);
+    const [ availablePermissionsInRole, setAvailablePermissionsInRole ] = useState<Permission[]>([]);
+    const [ checkedPermissions, setCheckedPermissions ] = useState<Permission[]>([]);
+    const [ isPermissionsLoading, setIsPermissionsLoading ] = useState<boolean>(true);
+    const [ collapseTree, setCollapseTree ] = useState<boolean>(false);
+
+    /*
+    
+    
+    */
 
     /**
-     * Will retrieve All permissions to map the tree. If
-     * `rolepermissions` is available, will add checks for the existing
-     * permission list.
-     * 
-     * @param rolePermissions 
+     * Retrieve permissions for a given role if in Role edit mode.
      */
-    const getPermissions = (rolePermissions?: string[]): void => {
-        getPermissionList().then((response)=> {
-            if (response.status === 200) {
-                const permList = response.data;
-                let permTree: Permission[] = [];
-
-                permTree = permList.reduce((arr, path) => addPath(
-                    path, path.resourcePath.replace(/^\/|\/$/g, "").split('/'), arr,
-                ),[]);
-
-                if (rolePermissions) {
-                    checkRolePermissions(rolePermissions, permTree, false);
-                    setPermissionsOfRole(rolePermissions);
-                    setSelectedPermissions(rolePermissions)
-                }
-
-                setPermissionTree(permTree);
-                setPermissionsLoading(false);
-            }
-        }).catch(error => {
-            //TODO handle error
-        });
-
-    }
-
     useEffect(() => {
-        setPermissionsLoading(true);
-
-        if (roleObject) {
-            getPermissionsPerRole(roleObject.id)
+        if (isEdit && roleObject) {
+            getPermissionsForRole(roleObject.id)
                 .then(response => {
-                    if (response.status === 200) {
-                        getPermissions(response.data);
+                    if (response.status === 200 && response.data instanceof Array) {
+                        const permissionsArray: Permission[] = [];
+                        response.data.forEach(permission => {
+                            permissionsArray.push({
+                                id: permission,
+                                isChecked: false,
+                                fullPath: permission,
+                                name: permission,
+                                isExpanded: true
+                            })
+                        })
+                        setAvailablePermissionsInRole(permissionsArray);
+                        getAllPermissions();
                     }
-                }).catch(error => {
-                    //TODO: Handle Error
+                })
+                .catch(error => {
+                    //Handle Role Retrieval Properly
                 })
         } else {
-            getPermissions();
+            getAllPermissions();
         }
-    },[]);
+    }, [availablePermissionsInRole.toString()])
+
+        /**
+     * Retrieve all permissions to render permissions tree.
+     */
+    const getAllPermissions = (): void => {
+        getPermissionList()
+            .then(response => {
+                if (response.status === 200 && response.data && response.data instanceof Array) {
+                    const permissionStringArray = response.data;
+                    let permissionTree: Permission[] = [];
+
+                    permissionTree = permissionStringArray.reduce((arr, path) => addPath(
+                        path, path.resourcePath.replace(/^\/|\/$/g, "").split('/'), arr,
+                    ),[]);
+
+                    //Retrieved permissions of Role in edit mode
+                    if (availablePermissionsInRole.length !== 0) {
+                        setCheckedPermissions(availablePermissionsInRole);
+                        setCheckedStateForNodesInPermissionTree(availablePermissionsInRole, permissionTree, false);
+                    }
+
+                    //temporary selected roles in roles create wizard
+                    if (initialValues && initialValues.length !== 0) {
+                        setCheckedPermissions(initialValues);
+                        setCheckedStateForNodesInPermissionTree(initialValues, permissionTree, false);
+                    }
+
+                    //Set loading flag false
+                    setIsPermissionsLoading(false);
+                    setPermissionTree(permissionTree);
+                }
+            })
+            .catch(error => {
+                //Handle Permission Retrieval Properly
+            })
+    }
+
+    /**
+     * Util method to change checked state in permission tree according to the selected permissions
+     * array.
+     * 
+     * @param selectedPermissions permissions already selected in the component
+     * @param permissionNodes permission tree
+     * @param isParentChecked state whether the parent node is checked
+     */
+    const setCheckedStateForNodesInPermissionTree = (selectedPermissions: Permission[],
+        permissionNodes: Permission[], isParentChecked: boolean): void => {
+            permissionNodes.forEach(treeNode => {
+                if (selectedPermissions.some(selectedPermission => selectedPermission.fullPath === treeNode.fullPath)) {
+                    treeNode.isChecked = true;
+                    if (treeNode.children) {
+                        setCheckedStateForNodesInPermissionTree(selectedPermissions, treeNode.children, true);
+                    }
+                } else if (isParentChecked) {
+                    treeNode.isChecked = true;
+                    if (treeNode.children) {
+                        setCheckedStateForNodesInPermissionTree(selectedPermissions, treeNode.children, true);
+                    }
+                } else {
+                    if (treeNode.children) {
+                        setCheckedStateForNodesInPermissionTree(selectedPermissions, treeNode.children, false);
+                    }
+                }
+            })
+    }
 
     /**
      * A util method which will check all the child elements.
@@ -155,41 +183,33 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         markChildrenAsChecked(nodeData, checkState);
 
         if (nodeData[0].isChecked) {
-            if (permissionsOfRole.length > 0) {
-                setSelectedPermissions([...selectedPermissions, nodeData[0].fullPath]);
-            } else {
-                setSelectedPermissions([...selectedPermissions, nodeData[0]]);
-            }
+            setCheckedPermissions([...checkedPermissions, nodeData[0]])
         } else {
-            if (permissionsOfRole.length > 0) {
-                setSelectedPermissions(selectedPermissions.filter(item => item !== nodeData[0].fullPath));
-            } else {
-                setSelectedPermissions(selectedPermissions.filter(item => item.fullPath !== nodeData[0].fullPath));
-            }
+            setCheckedPermissions(checkedPermissions.filter(item => item.fullPath !== nodeData[0].fullPath));
         }
     }
 
     return (
-        <Segment padded clearing loading={ permissionsLoading }>
-            { !permissionsLoading &&
+        <Segment basic loading={ isPermissionsLoading }>
+            { !isPermissionsLoading && 
                 <Button.Group size="tiny" vertical labeled icon>
                     <Button 
                         onClick={ () => {
                             const collapsedState = _.cloneDeep(permissionTree);
-                            collapsedState[0].isExpanded = collapseAll;
+                            collapsedState[0].isExpanded = collapseTree;
                             setPermissionTree(collapsedState);
-                            setCollapseAll(!collapseAll);
+                            setCollapseTree(!collapseTree);
                         } } 
-                        icon={ collapseAll? "compress" : "expand" } 
-                        content={ collapseAll? "Expand All" : "Collapse All" } 
+                        icon={ collapseTree? "expand" : "compress" } 
+                        content={ collapseTree? "Expand All" : "Collapse All" } 
                     />
                 </Button.Group>
             }
             <Forms submitState={ triggerSubmit } onSubmit={ () => {
-                onSubmit(selectedPermissions);
+                onSubmit(checkedPermissions);
             } }>
                 {
-                    !permissionsLoading ? 
+                    !isPermissionsLoading ? 
                         <div className="treeview-container">
                             <TreeView
                                 data={ permissionTree }
@@ -199,9 +219,10 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                                 onUpdateCb={ updatedData => setPermissionTree(updatedData) }
                                 onCheckToggleCb={ handlePermssionCheck }
                             /> 
-                        </div> : <div></div>
+                        </div> : 
+                        <Loader active />
                 }
-                { permissionsOfRole && permissionsOfRole.length && 
+                { isEdit && !isPermissionsLoading &&
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Button primary type="submit" size="small" className="form-button">
@@ -211,7 +232,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                     </Grid.Row>
                 }
             </Forms>
-            
         </Segment>
-    );
+    )
+
 }
