@@ -39,7 +39,8 @@ export const addPath = (permObj: PermissionObject, pathcomponents: string[],
             fullPath: permObj.resourcePath,
             isExpanded: true,
             isChecked: false,
-            name: component
+            name: component,
+            id: permObj.resourcePath
         }
         permissionTreeArray.push(comp)
     }
