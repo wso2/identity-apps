@@ -32,7 +32,7 @@ const httpClient = AxiosHttpClient.getInstance();
  * @returns {Promise<BasicProfileInterface>} a promise containing the user list.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const getRoleList = (domain: string): Promise<any> => {
+export const getRolesList = (domain: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
@@ -130,7 +130,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
  * @returns {Promise<any>} a promise containing the status of the delete.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const deleteRoleByIde = (roleId: string): Promise<any> => {
+export const deleteRoleById = (roleId: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,

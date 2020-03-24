@@ -21,7 +21,7 @@ import { AlertInterface, BasicProfileInterface } from "../../models";
 import { useTranslation } from "react-i18next";
 import { EmptyPlaceholder, Heading, Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { Button, Grid, Icon, Input, Label, List, Modal, Popup, Segment } from "semantic-ui-react";
-import { getRoleList, updateUserRoles } from "../../api";
+import { getRolesList, updateUserRoles } from "../../api";
 import _ from "lodash";
 import { AlertLevels } from "@wso2is/core/dist/src/models";
 import { EmptyPlaceholderIllustrations } from "../../configs";
@@ -97,9 +97,9 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             setInitialRoleList(roleListCopy);
     };
 
-    const getRolesList = (domain: string) => {
+    const getRoles = (domain: string) => {
         setSelectedDomain(domain);
-        getRoleList(domain)
+        getRolesList(domain)
             .then((response) => {
                 removeExistingRoles(domain, response.data.Resources);
                 setAddNewRoleModalView(true);
@@ -535,7 +535,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             name="plus"
                                         />
                                         <Icon
-                                            onClick={ () => getRolesList(RoleTypes.PRIMARY) }
+                                            onClick={ () => getRoles(RoleTypes.PRIMARY) }
                                             className="floated right"
                                             color="grey"
                                             name="pencil alternate"
@@ -578,7 +578,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                         <PrimaryButton
                                             size="mini"
                                             style={ { padding: "0.7em"} }
-                                            onClick={ () => getRolesList(RoleTypes.PRIMARY) }
+                                            onClick={ () => getRoles(RoleTypes.PRIMARY) }
                                         >
                                             <Icon name="plus"/>
                                             Assign new role
@@ -605,7 +605,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             name="plus"
                                         />
                                         <Icon
-                                            onClick={ () => getRolesList(RoleTypes.APPLICATION) }
+                                            onClick={ () => getRoles(RoleTypes.APPLICATION) }
                                             className="floated right"
                                             color="grey"
                                             name="pencil alternate"
@@ -639,7 +639,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             <PrimaryButton
                                                 size="mini"
                                                 style={ { padding: "0.7em"} }
-                                                onClick={ () => getRolesList(RoleTypes.APPLICATION) }
+                                                onClick={ () => getRoles(RoleTypes.APPLICATION) }
                                             >
                                                 <Icon name="plus"/>
                                                 Assign new role
@@ -664,7 +664,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                         name="plus"
                                     />
                                     <Icon
-                                        onClick={ () => getRolesList(RoleTypes.INTERNAL) }
+                                        onClick={ () => getRoles(RoleTypes.INTERNAL) }
                                         className="floated right"
                                         color="grey"
                                         name="pencil alternate"

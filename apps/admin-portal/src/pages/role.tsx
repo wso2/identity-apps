@@ -20,7 +20,7 @@ import { AlertInterface, AlertLevels, RoleListInterface, SearchRoleInterface, Ro
 import { DropdownProps, Icon, PaginationProps, DropdownItemProps, Dropdown } from "semantic-ui-react";
 import { ListLayout, PageLayout } from "../layouts";
 import React, { ReactElement, useEffect, useState, SyntheticEvent } from "react";
-import { deleteRoleByIde, getRoleList, searchRoleList, getUserStoreList } from "../api";
+import { deleteRoleById, getRolesList, searchRoleList, getUserStoreList } from "../api";
 
 import { CreateRoleWizard } from "../components/roles/create-role-wizard";
 import { DEFAULT_ROLE_LIST_ITEM_LIMIT } from "../constants";
@@ -73,11 +73,11 @@ export const RolesPage = (): ReactElement => {
     }, []);
 
     useEffect(() => {
-        getRolesList();
+        getRoles();
     },[ listOffset, listItemLimit ]);
 
     useEffect(() => {
-        getRolesList();
+        getRoles();
         setListUpdated(false);
     }, [ isListUpdated ]);
 
@@ -86,11 +86,11 @@ export const RolesPage = (): ReactElement => {
     }, []);
 
     useEffect(() => {
-        getRolesList();
+        getRoles();
     }, [ userStore ]);
 
-    const getRolesList = () => {
-        getRoleList(userStore).then((response)=> {
+    const getRoles = () => {
+        getRolesList(userStore).then((response)=> {
             if (response.status === 200) {
                 setRoleList(response.data);
             }
@@ -182,7 +182,7 @@ export const RolesPage = (): ReactElement => {
      * @param id - Role ID which needs to be deleted
      */
     const handleOnDelete = (role: RolesInterface): void => {
-        deleteRoleByIde(role.id).then(() => {
+        deleteRoleById(role.id).then(() => {
             handleAlerts({
                 description: t(
                     "devPortal:components.roles.notifications.deleteRole.success.description"
@@ -204,7 +204,7 @@ export const RolesPage = (): ReactElement => {
      */
     const handleUserFilter = (query: string): void => {
         if (query === null || query === "displayName sw ") {
-            getRolesList();
+            getRoles();
             return;
         }
 

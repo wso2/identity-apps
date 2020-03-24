@@ -21,7 +21,7 @@ import { Grid, Divider, Button } from "semantic-ui-react"
 import { Field, Forms } from "@wso2is/forms"
 import { useTranslation } from "react-i18next";
 import { DangerZoneGroup, DangerZone, ConfirmationModal } from "@wso2is/react-components";
-import { deleteRoleByIde, updateRoleDetails } from "../../../api";
+import { deleteRoleById, updateRoleDetails } from "../../../api";
 import { AlertLevels, AlertInterface, RolesInterface, PatchRoleDataInterface } from "../../../models";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
@@ -67,7 +67,7 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
      * @param id - Role ID which needs to be deleted
      */
     const handleOnDelete = (id: string): void => {
-        deleteRoleByIde(id).then(() => {
+        deleteRoleById(id).then(() => {
             handleAlerts({
                 description: t(
                     "devPortal:components.roles.notifications.deleteRole.success.description"

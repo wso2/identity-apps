@@ -23,7 +23,7 @@ import { Divider, Grid } from "semantic-ui-react";
 import { DynamicField } from "../../claims"
 import { Heading } from "@wso2is/react-components";
 import { RoleListInterface, RoleMappingInterface, RolesInterface } from "../../../models";
-import { getRoleList } from "../../../api";
+import { getRolesList } from "../../../api";
 import { useDispatch } from "react-redux";
 
 interface RoleMappingPropsInterface {
@@ -68,7 +68,7 @@ export const RoleMapping = (props: RoleMappingPropsInterface): React.ReactElemen
     };
 
     useEffect(() => {
-        getRoleList(null)
+        getRolesList(null)
             .then((response) => {
                 if (response.status === 200) {
                     const allRole: RoleListInterface = response.data;
