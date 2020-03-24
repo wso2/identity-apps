@@ -41,7 +41,7 @@ export const RoleEditPage: FunctionComponent<any> = (props: any): ReactElement =
 
     const onRoleUpdate = (): void => {
         getRoleDetails(roleId);
-    }
+    };
 
     /**
      * Get Role data from URL id

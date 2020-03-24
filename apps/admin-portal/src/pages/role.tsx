@@ -185,11 +185,11 @@ export const RolesPage = (): ReactElement => {
         deleteRoleByIde(role.id).then(() => {
             handleAlerts({
                 description: t(
-                    "views:components.roles.notifications.deleteRole.success.description"
+                    "devPortal:components.roles.notifications.deleteRole.success.description"
                 ),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "views:components.roles.notifications.deleteRole.success.message"
+                    "devPortal:components.roles.notifications.deleteRole.success.message"
                 )
             });
             setListUpdated(true);

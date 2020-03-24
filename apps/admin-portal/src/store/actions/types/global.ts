@@ -17,6 +17,7 @@
  */
 
 import { AlertInterface } from "../../../models";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
 
 /**
  * Global action types.
@@ -26,7 +27,8 @@ export enum GlobalActionTypes {
     HIDE_GLOBAL_LOADER = "HIDE_GLOBAL_LOADER",
     TOGGLE_APPLICATIONS_PAGE_VISIBILITY = "TOGGLE_APPLICATIONS_PAGE_VISIBILITY",
     INITIALIZE_ALERT_SYSTEM = "INITIALIZE_ALERT_SYSTEM",
-    ADD_ALERT = "ADD_ALERT"
+    ADD_ALERT = "ADD_ALERT",
+    SET_SUPPORTED_I18N_LANGUAGES = "SET_SUPPORTED_I18N_LANGUAGES"
 }
 
 /**
@@ -76,10 +78,19 @@ export interface AddAlertAction extends GlobalBaseAction {
 }
 
 /**
+ * Set supported i18n languages action interface.
+ */
+export interface SetSupportedI18nLanguagesActionInterface extends GlobalBaseAction {
+    payload: SupportedLanguagesMeta;
+    type: GlobalActionTypes.SET_SUPPORTED_I18N_LANGUAGES;
+}
+
+/**
  * Export action interfaces.
  */
 export type GlobalActions = ShowGlobalLoaderAction
     | HideGlobalLoaderAction
     | ToggleApplicationsPageVisibilityAction
     | InitializeAlertSystemAction
-    | AddAlertAction;
+    | AddAlertAction
+    | SetSupportedI18nLanguagesActionInterface;
