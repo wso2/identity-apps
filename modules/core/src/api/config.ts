@@ -19,6 +19,7 @@
 import axios from "axios";
 import { IdentityAppsApiException } from "../exceptions";
 import { AppConstants } from "../constants";
+import { StringUtils } from "../utils";
 
 /**
  * Fetches the application config file.
@@ -30,7 +31,7 @@ import { AppConstants } from "../constants";
 export const getAppConfig = <T>(configFileName = AppConstants.DEFAULT_APP_CONFIG_FILE_NAME,
                                 appBaseName: string): Promise<T> => {
 
-    return axios.get(`/${ appBaseName }/${ configFileName }`)
+    return axios.get(`/${ StringUtils.removeSlashesFromPath(appBaseName) }/${ configFileName }`)
         .then((response) => {
             return Promise.resolve(response.data as T);
         })
