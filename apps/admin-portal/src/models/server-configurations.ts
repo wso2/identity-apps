@@ -17,11 +17,27 @@
  */
 
 /**
- *  Captures the basic details in the applications.
+ *  Captures the configurations related to user self sign up.
  */
 export interface SelfSignUpConfigurationsInterface {
 	checkboxValues?: string[];
 	verificationCodeExpiryTime?: string;
+	smsOTPExpiryTime?: string;
+	callbackRegex?: string;
+}
+
+/**
+ *  Captures the configurations related to user account recovery.
+ */
+export interface AccountRecoveryConfigurationsInterface {
+	usernameRecoveryCheckBoxes?: string[];
+	passwordRecoveryCheckBoxes?: string[];
+	passwordRecoveryMinAnswers?: string;
+	enablePasswordReCaptcha?: string;
+	reCaptchaMaxFailedAttempts?: string;
+	notificationInternallyManaged?: string;
+	notificationCheckBoxes?: string[];
+	recoveryLinkExpiryTime?: string;
 	smsOTPExpiryTime?: string;
 	callbackRegex?: string;
 }

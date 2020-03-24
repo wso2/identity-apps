@@ -76,3 +76,27 @@ export const updateSelfSignUpConfigurations = (data: object): Promise<any> => {
             return Promise.reject(error);
         });
 };
+
+/**
+ * Retrieve account recovery configurations.
+ *
+ * @returns {Promise<any>} a promise containing the configurations.
+ */
+export const getAccountRecoveryConfigurations = (): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: ServiceResourcesEndpoint.accountRecovery
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+};

@@ -16,13 +16,16 @@
  * under the License.
  */
 
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { SettingsSectionIcons } from "../../configs";
 import { AlertInterface } from "../../models";
 import { EditSection, Hint, Section } from "@wso2is/react-components";
 import { useTranslation } from "react-i18next";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
+import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
+import { getAccountRecoveryConfigurations } from "../../api/server-configurations";
+import { AccountRecoveryConfigurationsInterface } from "../../models/server-configurations";
 
 /**
  * Constant to store the self registration from identifier.
@@ -49,17 +52,14 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		[ACCOUNT_RECOVERY_FORM_IDENTIFIER]: false
 	});
 
-	const [isSecQuestionBasedRecoveryEnabled, setSecQuestionBasedRecoveryEnabled] = useState(false);
-	const [isNotificationInternallyManaged, setNotificationInternallyManaged] = useState(false);
 	const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+	const [accountRecoveryConfigs, setAccountRecoveryConfigs] = useState<AccountRecoveryConfigurationsInterface>({});
 	const [reset] = useTrigger();
 
 	const {t} = useTranslation();
 
 	/**
 	 * Handles the `onSubmit` event of the forms.
-	 *
-	 * @param {string} formName - Name of the form
 	 */
 	const handleSubmit = (): void => {
 		setShowConfirmationModal(true);
@@ -99,9 +99,129 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 	/**
 	 * Calls the API and updates the user password.
 	 */
-	const saveSelfRegistrationConfigs = () => {
+	const saveAccountRecoveryConfigs = () => {
 		// Todo Implement method.
 	};
+
+	const getUsernameRecoveryCheckBoxes = (data) => {
+		const values = [];
+		data.properties.map((property => {
+			if (property.name === ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE) {
+				property.value === "true" ?
+					values.push(ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE) : "";
+			}
+			if (property.name === ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA) {
+				property.value === "true" ?
+					values.push(ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA) : "";
+			}
+		}));
+		return values;
+	};
+
+	const getPasswordRecoveryCheckBoxes = (data) => {
+		const values = [];
+		data.properties.map((property => {
+			if (property.name === ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE) {
+				property.value === "true" ?
+					values.push(ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE) : "";
+			}
+			if (property.name === ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA) {
+				property.value === "true" ?
+					values.push(ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA) : "";
+			}
+			if (property.name === ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE) {
+				property.value === "true" ?
+					values.push(ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE) : "";
+			}
+		}));
+		return values;
+	};
+
+	const getNotificationCheckBoxes = (data) => {
+		const values = [];
+		data.properties.map((property => {
+			if (property.name === ServerConfigurationsConstants.NOTIFY_SUCCESS) {
+				property.value === "true" ?
+					values.push(ServerConfigurationsConstants.NOTIFY_SUCCESS) : "";
+			}
+			if (property.name === ServerConfigurationsConstants.NOTIFY_RECOVERY_START) {
+				property.value === "true" ?
+					values.push(ServerConfigurationsConstants.NOTIFY_RECOVERY_START) : "";
+			}
+		}));
+		return values;
+	};
+
+	const getEnablePasswordReCaptcha = (data) => {
+		const element = data.properties.find(
+			property => property.name ==
+				ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_RE_CAPTCHA_ENABLE).value;
+		return element === "true" ?
+			ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_RE_CAPTCHA_ENABLE :
+			""
+	};
+
+	const getNotificationInternallyManaged = (data) => {
+		const element = data.properties.find(
+			property => property.name ==
+				ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED).value;
+		return element === "true" ?
+			ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED :
+			""
+	};
+
+	const getFormValues = (values) => {
+		return {
+			usernameRecoveryCheckBoxes: values.get("UsernameRecoveryCheckBoxes"),
+			passwordRecoveryCheckBoxes: values.get("PasswordRecoveryCheckBoxes"),
+			passwordRecoveryMinAnswers: values.get(
+				ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_MIN_ANSWERS),
+			enablePasswordReCaptcha: values.get(
+				ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_RE_CAPTCHA_ENABLE),
+			reCaptchaMaxFailedAttempts: values.get(
+				ServerConfigurationsConstants.RE_CAPTCHA_MAX_FAILED_ATTEMPTS
+			),
+			notificationInternallyManaged: values.get(
+				ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED
+			),
+			notificationCheckBoxes: values.get("NotificationCheckBoxes"),
+
+			recoveryLinkExpiryTime: values.get(
+				ServerConfigurationsConstants.RECOVERY_LINK_EXPIRY_TIME
+			),
+			smsOTPExpiryTime: values.get(ServerConfigurationsConstants.RECOVERY_SMS_EXPIRY_TIME),
+			callbackRegex: values.get(ServerConfigurationsConstants.RECOVERY_CALLBACK_REGEX),
+		}
+	};
+
+	/**
+	 * Load account recovery configurations from the API, on page load.
+	 */
+	useEffect(() => {
+		getAccountRecoveryConfigurations()
+			.then((response) => {
+				const configs = {
+					usernameRecoveryCheckBoxes: getUsernameRecoveryCheckBoxes(response),
+					passwordRecoveryCheckBoxes: getPasswordRecoveryCheckBoxes(response),
+					passwordRecoveryMinAnswers: response.properties.find(
+						property => property.name ==
+							ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_MIN_ANSWERS).value,
+					enablePasswordReCaptcha: getEnablePasswordReCaptcha(response),
+					reCaptchaMaxFailedAttempts: response.properties.find(
+						property => property.name ==
+							ServerConfigurationsConstants.RE_CAPTCHA_MAX_FAILED_ATTEMPTS).value,
+					notificationInternallyManaged: getNotificationInternallyManaged(response),
+					notificationCheckBoxes: getNotificationCheckBoxes(response),
+					recoveryLinkExpiryTime: response.properties.find(
+						property => property.name == ServerConfigurationsConstants.RECOVERY_LINK_EXPIRY_TIME).value,
+					smsOTPExpiryTime: response.properties.find(
+						property => property.name == ServerConfigurationsConstants.RECOVERY_SMS_EXPIRY_TIME).value,
+					callbackRegex: response.properties.find(
+						property => property.name == ServerConfigurationsConstants.RECOVERY_CALLBACK_REGEX).value
+				};
+				setAccountRecoveryConfigs(configs);
+			});
+	}, []);
 
 	const confirmationModal = (
 		<Modal size="mini" open={ showConfirmationModal } onClose={ handleConfirmationModalClose } dimmer="blurring">
@@ -116,7 +236,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 				<Button className="link-button" onClick={ handleConfirmationModalClose }>
 					{ t("common:cancel") }
 				</Button>
-				<Button primary={ true } onClick={ saveSelfRegistrationConfigs }>
+				<Button primary={ true } onClick={ saveAccountRecoveryConfigs }>
 					{ t("common:continue") }
 				</Button>
 			</Modal.Actions>
@@ -126,15 +246,15 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 	const showUserSelfRegistrationView = editingForm[ACCOUNT_RECOVERY_FORM_IDENTIFIER] ? (
 		<EditSection>
 			<Forms
-				onSubmit={ (value) => {
-					// Todo complete method
+				onSubmit={ (values) => {
+					setAccountRecoveryConfigs(getFormValues(values));
 					handleSubmit();
 				} }
 				resetState={ reset }
 			>
 				<h4>Username Recovery</h4>
 				<Field
-					name="UsernameRecoveryOptions"
+					name="UsernameRecoveryCheckBoxes"
 					required={ false }
 					requiredErrorMessage=""
 					type="checkbox"
@@ -142,19 +262,19 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						{
 							label: t("views:components.serverConfigs.accountRecovery.usernameRecovery." +
 								"form.enable.label"),
-							value: "enableUsernameRecovery"
+							value: ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE
 						},
 						{
 							label: t("views:components.serverConfigs.accountRecovery.usernameRecovery." +
 								"form.enableReCaptcha.label"),
-							value: "enableReCaptchaForUsernameRecovery"
+							value: ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA
 						}
 					] }
-					value={ [] }
+					value={ accountRecoveryConfigs.usernameRecoveryCheckBoxes }
 				/>
 				<h4>Password Recovery</h4>
 				<Field
-					name="PasswordRecoveryOptions"
+					name="PasswordRecoveryCheckBoxes"
 					required={ false }
 					requiredErrorMessage=""
 					type="checkbox"
@@ -162,34 +282,32 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						{
 							label: t("views:components.serverConfigs.accountRecovery.passwordRecovery." +
 								"form.enableNotificationBasedRecovery.label"),
-							value: "enableNotificationBasedRecovery"
+							value: ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE
 						},
 						{
 							label: t("views:components.serverConfigs.accountRecovery.passwordRecovery." +
 								"form.enableReCaptchaBasedRecovery.label"),
-							value: "enableReCaptchaBasedRecovery"
+							value: ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA
 						},
 						{
 							label: t("views:components.serverConfigs.accountRecovery.passwordRecovery." +
 								"form.enableSecurityQuestionBasedRecovery.label"),
-							value: "enableSecurityQuestionBasedRecovery"
+							value: ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE
 						}
 					] }
 					listen={
 						(values) => {
-							setSecQuestionBasedRecoveryEnabled(
-								values.get("PasswordRecoveryOptions").includes("enableSecurityQuestionBasedRecovery")
-							);
+							setAccountRecoveryConfigs(getFormValues(values));
 						}
 					}
-					value={ [] }
+					value={ accountRecoveryConfigs.passwordRecoveryCheckBoxes }
 				/>
 				<Field
 					label={ t(
 						"views:components.serverConfigs.accountRecovery.passwordRecovery." +
 						"form.noOfQuestionsRequired.label"
 					) }
-					name="NoOfQuestionsRequired"
+					name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_MIN_ANSWERS }
 					placeholder=""
 					required={ true }
 					requiredErrorMessage={ t(
@@ -197,16 +315,18 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						"form.noOfQuestionsRequired.validations.empty"
 					) }
 					type="number"
-					value="2"
-					disabled={ !isSecQuestionBasedRecoveryEnabled }
+					value={ accountRecoveryConfigs.passwordRecoveryMinAnswers }
+					disabled={ !accountRecoveryConfigs.passwordRecoveryCheckBoxes.includes(
+						ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE) }
 					width={ 9 }
 				/>
-				<Hint disabled={ !isSecQuestionBasedRecoveryEnabled }>
+				<Hint disabled={ !accountRecoveryConfigs.passwordRecoveryCheckBoxes.includes(
+					ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE) }>
 					{ t("views:components.serverConfigs.accountRecovery.passwordRecovery." +
 						"form.noOfQuestionsRequired.hint") }
 				</Hint>
 				<Field
-					name="EnableReCaptchaForSecurityQuestionBasedRecovery"
+					name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_RE_CAPTCHA_ENABLE }
 					required={ false }
 					requiredErrorMessage=""
 					type="checkbox"
@@ -214,13 +334,15 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						{
 							label: t("views:components.serverConfigs.accountRecovery.passwordRecovery." +
 								"form.enableReCaptchaForSecurityQuestionBasedRecovery.label"),
-							value: "enableReCaptchaForSecurityQuestionBasedRecovery"
+							value: ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_RE_CAPTCHA_ENABLE
 						}
 					] }
-					disabled={ !isSecQuestionBasedRecoveryEnabled }
-					value={ ["enableReCaptchaForSecurityQuestionBasedRecovery"] }
+					disabled={ !accountRecoveryConfigs.passwordRecoveryCheckBoxes.includes(
+						ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE) }
+					value={ [accountRecoveryConfigs.enablePasswordReCaptcha] }
 				/>
-				<Hint disabled={ !isSecQuestionBasedRecoveryEnabled }>
+				<Hint disabled={ !accountRecoveryConfigs.passwordRecoveryCheckBoxes.includes(
+					ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE) }>
 					{ t("views:components.serverConfigs.accountRecovery.passwordRecovery." +
 						"form.enableReCaptchaForSecurityQuestionBasedRecovery.hint") }
 				</Hint>
@@ -237,7 +359,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						"views:components.serverConfigs.accountRecovery.otherSettings." +
 						"form.reCaptchaMaxFailedAttempts.label"
 					) }
-					name="NoOfQuestionsRequired"
+					name={ ServerConfigurationsConstants.RE_CAPTCHA_MAX_FAILED_ATTEMPTS }
 					placeholder=""
 					required={ true }
 					requiredErrorMessage={ t(
@@ -245,11 +367,11 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						"form.reCaptchaMaxFailedAttempts.validations.empty"
 					) }
 					type="number"
-					value="2"
+					value={ accountRecoveryConfigs.reCaptchaMaxFailedAttempts }
 					width={ 9 }
 				/>
 				<Field
-					name="EnableInternalNotificationManagement"
+					name={ ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED }
 					required={ false }
 					requiredErrorMessage=""
 					type="checkbox"
@@ -257,25 +379,22 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						{
 							label: t("views:components.serverConfigs.accountRecovery.otherSettings." +
 								"form.enableInternalNotificationManagement.label"),
-							value: "enableInternalNotificationManagement"
+							value: ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED
 						}
 					] }
 					listen={
 						(values) => {
-							setNotificationInternallyManaged(
-								values.get("EnableInternalNotificationManagement").
-								includes("enableInternalNotificationManagement")
-							);
+							setAccountRecoveryConfigs(getFormValues(values));
 						}
 					}
-					value={ [] }
+					value={ [accountRecoveryConfigs.notificationInternallyManaged] }
 				/>
 				<Hint>
 					{ t("views:components.serverConfigs.accountRecovery.otherSettings." +
 						"form.enableInternalNotificationManagement.hint") }
 				</Hint>
 				<Field
-					name="NotifyRecoverySuccess"
+					name="NotificationCheckBoxes"
 					required={ false }
 					requiredErrorMessage=""
 					type="checkbox"
@@ -283,21 +402,22 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						{
 							label: t("views:components.serverConfigs.accountRecovery.otherSettings." +
 								"form.notifyRecoverySuccess.label"),
-							value: "notifyRecoverySuccess"
+							value: ServerConfigurationsConstants.NOTIFY_SUCCESS
 						},
 						{
 							label: t("views:components.serverConfigs.accountRecovery.otherSettings." +
 								"form.notifyQuestionRecoveryStart.label"),
-							value: "notifyQuestionRecoveryStart"
+							value: ServerConfigurationsConstants.NOTIFY_RECOVERY_START
 						}
 					] }
-					disabled={ !isNotificationInternallyManaged }
-					value={ [] }
+					disabled={ !accountRecoveryConfigs.notificationInternallyManaged.includes(
+						ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED) }
+					value={ accountRecoveryConfigs.notificationCheckBoxes }
 				/>
 				<Field
 					label={ t("views:components.serverConfigs.accountRecovery.otherSettings." +
 						"form.recoveryLinkExpiryTime.label") }
-					name="RecoveryLinkExpiryTime"
+					name={ ServerConfigurationsConstants.RECOVERY_LINK_EXPIRY_TIME }
 					placeholder=""
 					required={ true }
 					requiredErrorMessage={ t(
@@ -305,11 +425,13 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						"form.recoveryLinkExpiryTime.validations.empty"
 					) }
 					type="number"
-					value="1440"
-					disabled={ !isNotificationInternallyManaged }
+					value={ accountRecoveryConfigs.recoveryLinkExpiryTime }
+					disabled={ !accountRecoveryConfigs.notificationInternallyManaged.includes(
+						ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED) }
 					width={ 9 }
 				/>
-				<Hint disabled={ !isNotificationInternallyManaged }>
+				<Hint disabled={ !accountRecoveryConfigs.notificationInternallyManaged.includes(
+					ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED) }>
 					{ t("views:components.serverConfigs.accountRecovery.otherSettings." +
 						"form.recoveryLinkExpiryTime.hint") }
 				</Hint>
@@ -318,7 +440,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						"views:components.serverConfigs.accountRecovery.otherSettings." +
 						"form.smsOTPExpiryTime.label"
 					) }
-					name="SMSOTPExpiryTime"
+					name={ ServerConfigurationsConstants.RECOVERY_SMS_EXPIRY_TIME }
 					placeholder=""
 					required={ true }
 					requiredErrorMessage={ t(
@@ -326,11 +448,13 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						"form.smsOTPExpiryTime.validations.empty"
 					) }
 					type="number"
-					value="5"
-					disabled={ !isNotificationInternallyManaged }
+					value={ accountRecoveryConfigs.smsOTPExpiryTime }
+					disabled={ !accountRecoveryConfigs.notificationInternallyManaged.includes(
+						ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED) }
 					width={ 9 }
 				/>
-				<Hint disabled={ !isNotificationInternallyManaged }>
+				<Hint disabled={ !accountRecoveryConfigs.notificationInternallyManaged.includes(
+					ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED) }>
 					{ t("views:components.serverConfigs.accountRecovery.otherSettings." +
 						"form.smsOTPExpiryTime.hint") }
 				</Hint>
@@ -339,7 +463,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						"views:components.serverConfigs.accountRecovery.otherSettings." +
 						"form.recoveryCallbackURLRegex.label"
 					) }
-					name="RecoveryCallbackURLRegex"
+					name={ ServerConfigurationsConstants.RECOVERY_CALLBACK_REGEX }
 					placeholder=""
 					required={ true }
 					requiredErrorMessage={ t(
@@ -347,13 +471,11 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						"form.recoveryCallbackURLRegex.validations.empty"
 					) }
 					type="text"
-					value=".*"
+					value={ accountRecoveryConfigs.callbackRegex }
+					disabled={ !accountRecoveryConfigs.notificationInternallyManaged.includes(
+						ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED) }
 					width={ 9 }
 				/>
-				<Hint>
-					{ t("views:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.recoveryCallbackURLRegex.hint") }
-				</Hint>
 				<Field
 					name=""
 					required={ false }
