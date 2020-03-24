@@ -58,11 +58,6 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     const [ isPermissionsLoading, setIsPermissionsLoading ] = useState<boolean>(true);
     const [ collapseTree, setCollapseTree ] = useState<boolean>(false);
 
-    /*
-    
-    
-    */
-
     /**
      * Retrieve permissions for a given role if in Role edit mode.
      */
@@ -93,7 +88,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         }
     }, [availablePermissionsInRole.toString()])
 
-        /**
+    /**
      * Retrieve all permissions to render permissions tree.
      */
     const getAllPermissions = (): void => {

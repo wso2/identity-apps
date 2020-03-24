@@ -107,11 +107,12 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     >
                         <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
                         <ConfirmationModal.Message attached warning>
-                            This action is irreversible and will permanently delete the user.
+                            This action is irreversible and will permanently delete the selected role.
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            If you delete this user, the user will not be able to login to the developer portal or any
-                            other application the user was subscribed before. Please proceed with caution.
+                            If you delete this role, the permissions attached to it will be deleted and the users 
+                            attached to it will no longer be able to perform intended actions which were previously
+                            allowed. Please proceed with caution.
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
             }
