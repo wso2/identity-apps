@@ -33,9 +33,10 @@ export interface AccountRecoveryConfigurationsInterface {
 	usernameRecoveryCheckBoxes?: string[];
 	passwordRecoveryCheckBoxes?: string[];
 	passwordRecoveryMinAnswers?: string;
-	enablePasswordReCaptcha?: string;
+	enablePasswordReCaptcha?: string[];
+	enableForcedChallengeQuestions?: string[];
 	reCaptchaMaxFailedAttempts?: string;
-	notificationInternallyManaged?: string;
+	notificationInternallyManaged?: string[];
 	notificationCheckBoxes?: string[];
 	recoveryLinkExpiryTime?: string;
 	smsOTPExpiryTime?: string;

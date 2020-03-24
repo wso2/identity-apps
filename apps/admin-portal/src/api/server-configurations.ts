@@ -94,7 +94,36 @@ export const getAccountRecoveryConfigurations = (): Promise<any> => {
 
     return httpClient.request(requestConfig)
         .then((response) => {
+            console.log(response.data);
             return Promise.resolve(response.data);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Update account recovery configurations.
+ *
+ * @param data request payload
+ *
+ * @returns {Promise<any>} a promise containing the response.
+ */
+export const updateAccountRecoveryConfigurations = (data: object): Promise<any> => {
+    console.log(data);
+    const requestConfig = {
+        data,
+        headers: {
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: ServiceResourcesEndpoint.accountRecovery
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
         })
         .catch((error) => {
             return Promise.reject(error);

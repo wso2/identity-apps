@@ -462,6 +462,13 @@ export interface Views {
                 };
                 description: string;
                 heading: string;
+                confirmation: {
+                    heading: string;
+                    message: string;
+                };
+                notifications: {
+                    updateConfigurations: Notification;
+                };
                 usernameRecovery: {
                     actionTitles: {
                         config: string;
@@ -508,6 +515,10 @@ export interface Views {
                 };
                 otherSettings: {
                     form: {
+                        enableForcedChallengeQuestions: {
+                            label: string;
+                            hint: string;
+                        };
                         reCaptchaMaxFailedAttempts: {
                             label: string;
                             validations: {

@@ -730,7 +730,8 @@ export const views: Views = {
                     },
                     verificationLinkExpiryTime: {
                         label: "User self registration verification link expiry time",
-                        placeholder: "Set the number of minutes for the self registration verification e-mail would be valid.",
+                        placeholder: "Set the number of minutes for the self registration " +
+                            "verification e-mail would be valid.",
                         validations: {
                             empty: "User self registration verification link expiry time is required."
                         }
@@ -757,6 +758,26 @@ export const views: Views = {
                 },
                 description: "Configure how account recovery should happen with your users.",
                 heading: "Account Recovery",
+                confirmation: {
+                    heading: "Confirmation",
+                    message: "Do you wish to save the configurations related to user account recovery?"
+                },
+                notifications: {
+                    updateConfigurations: {
+                        error: {
+                            description: "An error occurred while updating the account recovery configurations.",
+                            message: "Error updating the configurations"
+                        },
+                        genericError: {
+                            description: "Couldn't update the account recovery configurations.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the account recovery configurations.",
+                            message: "Configurations updated successfully"
+                        }
+                    }
+                },
                 usernameRecovery: {
                     actionTitles: {
                         config: "Configure"
@@ -790,7 +811,8 @@ export const views: Views = {
                         },
                         noOfQuestionsRequired: {
                             label: "Number Of Questions Required For Password Recovery",
-                            hint: "The user will have to successfully answer this number of security questions to recover the password.",
+                            hint: "The user will have to successfully answer this number of security questions to " +
+                                "recover the password.",
                             validations: {
                                 empty: "Number Of Questions Required For Password Recovery is required."
                             }
@@ -803,6 +825,10 @@ export const views: Views = {
                 },
                 otherSettings: {
                     form: {
+                        enableForcedChallengeQuestions: {
+                            label: "Enable forced challenge questions",
+                            hint: "Force users to provide answers to challenge questions during sign in"
+                        },
                         reCaptchaMaxFailedAttempts: {
                             label: "Max Failed Attempts for ReCaptcha",
                             validations: {
