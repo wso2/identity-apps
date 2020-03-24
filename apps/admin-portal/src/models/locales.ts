@@ -405,6 +405,50 @@ export interface Views {
                 createRole: Notification;
                 createPermission: Notification;
             };
+            search: {
+                forms: {
+                    searchForm: {
+                        inputs: {
+                            filerAttribute: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            filterCondition: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                            filterValue: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    empty: string;
+                                };
+                            };
+                        };
+                    };
+                };
+                hints: {
+                    querySearch: {
+                        actionKeys: string;
+                        label: string;
+                    };
+                };
+                options: {
+                    header: string;
+                };
+                placeholder: string;
+                popups: {
+                    clear: string;
+                    dropdown: string;
+                };
+                resultsIndicator: string;
+            };
         };
         footer: {
             copyright: string;
