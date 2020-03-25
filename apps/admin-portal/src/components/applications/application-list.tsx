@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AppAvatar, ConfirmationModal, ResourceList, ResourceListActionInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
@@ -25,7 +25,7 @@ import { history } from "../../helpers";
 // TODO: Importing `deleteApplication` before `history` import throws `appBaseName` undefined error.
 // tslint:disable-next-line:ordered-imports
 import { deleteApplication } from "../../api";
-import { ApplicationListInterface, ApplicationListItemInterface, CRUDPermissionsInterface } from "../../models";
+import { ApplicationListInterface, ApplicationListItemInterface } from "../../models";
 import { GlobalConfig } from "../../configs";
 
 /**

@@ -19,12 +19,11 @@
 import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import {
     ApplicationInterface,
     ApplicationsSubFeaturesConfigInterface,
     AuthProtocolMetaListItemInterface,
-    CRUDPermissionsInterface,
     SupportedAuthProtocolTypes
 } from "../../models";
 import { AdvanceSettings } from "./advance-application";

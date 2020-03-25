@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { addAlert } from "@wso2is/core/store";
@@ -29,7 +29,6 @@ import {
     ClaimConfigurationInterface,
     ClaimDialect,
     ClaimMappingInterface,
-    CRUDPermissionsInterface,
     ExternalClaim,
     RoleConfigInterface,
     RoleMappingInterface,

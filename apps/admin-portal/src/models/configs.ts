@@ -16,44 +16,10 @@
  * under the License.
  */
 
-/**
- * CRUD permissions interface.
- */
-export interface CRUDPermissionsInterface {
-    /**
-     * Create permission.
-     */
-    create: boolean;
-    /**
-     * Read permission.
-     */
-    read: boolean;
-    /**
-     * Update permission.
-     */
-    update: boolean;
-    /**
-     * Delete permission.
-     */
-    delete: boolean;
-}
+import { FeatureConfigInterface } from "@wso2is/core/models";
 
 /**
- * Common config interface for high level features.
- */
-interface FeatureConfigInterface<T = {}> {
-    /**
-     * CRUD permissions for the feature.
-     */
-    permissions: CRUDPermissionsInterface;
-    /**
-     * Sub features.
-     */
-    subFeatures?: T;
-}
-
-/**
- * Sub features in applications feature.
+ * Application management features.
  */
 export interface ApplicationsSubFeaturesConfigInterface {
     /**

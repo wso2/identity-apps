@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LinkButton, PrimaryButton, EmptyPlaceholder } from "@wso2is/react-components";
 import _ from "lodash";
@@ -35,7 +35,7 @@ import { getApplicationList } from "../api";
 import { ApplicationList, ApplicationSearch } from "../components";
 import { AppConfig, history } from "../helpers";
 import { ListLayout, PageLayout } from "../layouts";
-import { AppConfigInterface, ApplicationListInterface, CRUDPermissionsInterface } from "../models";
+import { AppConfigInterface, ApplicationListInterface } from "../models";
 import { ApplicationConstants, ApplicationManagementConstants } from "../constants";
 import { EmptyPlaceholderIllustrations } from "../configs";
 

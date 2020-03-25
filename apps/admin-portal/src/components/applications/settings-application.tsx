@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, Heading, Hint, SelectionCard } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
@@ -24,7 +24,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAuthProtocolMetadata, updateAuthProtocolConfig } from "../../api";
 import {
     AuthProtocolMetaListItemInterface,
-    CRUDPermissionsInterface,
     InboundProtocolListItemInterface,
     SupportedAuthProtocolMetaTypes,
     SupportedAuthProtocolTypes

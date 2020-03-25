@@ -21,15 +21,14 @@ import { StepBasedFlow } from "./step-based-flow";
 import {
     AdaptiveAuthTemplateInterface,
     AuthenticationSequenceInterface,
-    AuthenticationStepInterface,
-    CRUDPermissionsInterface
+    AuthenticationStepInterface
 } from "../../../models";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { Divider } from "semantic-ui-react";
 import { updateAuthenticationSequence } from "../../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { PrimaryButton } from "@wso2is/react-components";
 
 /**

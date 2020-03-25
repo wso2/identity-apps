@@ -16,9 +16,42 @@
  * under the License.
  */
 
-export * from "./configs";
-export * from "./global";
-export * from "./http";
-export * from "./profile";
-export * from "./reducer-state";
-export * from "./route";
+/**
+ * CRUD permissions interface.
+ */
+export interface CRUDPermissionsInterface {
+    /**
+     * Create permission.
+     */
+    create: boolean;
+    /**
+     * Read permission.
+     */
+    read: boolean;
+    /**
+     * Update permission.
+     */
+    update: boolean;
+    /**
+     * Delete permission.
+     */
+    delete: boolean;
+}
+
+/**
+ * Common config interface for features.
+ */
+export interface FeatureConfigInterface<T = {}> {
+    /**
+     * If the feature is enabled or not.
+     */
+    enabled: boolean;
+    /**
+     * CRUD permissions for the feature.
+     */
+    permissions?: CRUDPermissionsInterface;
+    /**
+     * Sub features.
+     */
+    features?: T;
+}

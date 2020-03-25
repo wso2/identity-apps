@@ -27,13 +27,12 @@ import {
     AppConfigInterface,
     ApplicationInterface,
     ApplicationsSubFeaturesConfigInterface,
-    CRUDPermissionsInterface,
     emptyApplication
 } from "../models";
 import { ApplicationConstants, ApplicationManagementConstants } from "../constants";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 
 /**
  * Application Edit page.

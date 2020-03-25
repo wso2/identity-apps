@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useDispatch } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { updateAdvanceConfigurations } from "../../api";
-import { AdvancedConfigurationsInterface, CRUDPermissionsInterface } from "../../models";
+import { AdvancedConfigurationsInterface } from "../../models";
 import { AdvanceConfigurationsForm } from "./forms";
 
 /**

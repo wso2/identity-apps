@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteApplication, updateApplicationDetails } from "../../api";
 import { GlobalConfig } from "../../configs";
-import { ApplicationInterface, CRUDPermissionsInterface } from "../../models";
+import { ApplicationInterface } from "../../models";
 import { GeneralDetailsForm } from "./forms";
 
 /**
