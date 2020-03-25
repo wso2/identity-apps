@@ -19,7 +19,7 @@
 /**
  * CRUD permissions interface.
  */
-interface CRUDPermissionsInterface {
+export interface CRUDPermissionsInterface {
     /**
      * Create permission.
      */
@@ -55,7 +55,7 @@ interface FeatureConfigInterface<T = {}> {
 /**
  * Sub features in applications feature.
  */
-interface ApplicationsSubFeaturesConfigInterface {
+export interface ApplicationsSubFeaturesConfigInterface {
     /**
      * Application general settings configuration feature.
      */
