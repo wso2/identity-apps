@@ -25,8 +25,8 @@ import { AppConfig, history } from "../helpers";
 import { PageLayout } from "../layouts";
 import {
     AppConfigInterface,
+    ApplicationEditFeaturesConfigInterface,
     ApplicationInterface,
-    ApplicationsSubFeaturesConfigInterface,
     emptyApplication
 } from "../models";
 import { ApplicationConstants, ApplicationManagementConstants } from "../constants";
@@ -48,7 +48,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
     const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(false);
     const [ permissions, setPermissions ] = useState<CRUDPermissionsInterface>(undefined);
-    const [ features, setFeatures ] = useState<ApplicationsSubFeaturesConfigInterface>(undefined);
+    const [ features, setFeatures ] = useState<ApplicationEditFeaturesConfigInterface>(undefined);
 
     /**
      * Use effect for the initial component load.
@@ -69,7 +69,7 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
         }
 
         setPermissions(_.get(appConfig, ApplicationManagementConstants.CRUD_PERMISSIONS_APP_CONFIG_KEY));
-        setFeatures(_.get(appConfig, ApplicationManagementConstants.SUB_FEATURES_APP_CONFIG_KEY));
+        setFeatures(_.get(appConfig, ApplicationManagementConstants.EDIT_FEATURES_APP_CONFIG_KEY));
     }, [ appConfig ]);
 
     /**

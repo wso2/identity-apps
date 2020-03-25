@@ -22,7 +22,7 @@ import { addAlert } from "@wso2is/core/store";
 import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import {
     ApplicationInterface,
-    ApplicationsSubFeaturesConfigInterface,
+    ApplicationEditFeaturesConfigInterface,
     AuthProtocolMetaListItemInterface,
     SupportedAuthProtocolTypes
 } from "../../models";
@@ -47,9 +47,9 @@ interface EditApplicationPropsInterface {
      */
     application: ApplicationInterface;
     /**
-     * Sub features.
+     * Set of edit features.
      */
-    features?: ApplicationsSubFeaturesConfigInterface;
+    features?: ApplicationEditFeaturesConfigInterface;
     /**
      * Is the data still loading.
      */
@@ -96,6 +96,23 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ selectedInboundProtocolConfig, setSelectedInboundProtocolConfig ] = useState<any>(undefined);
     const [ showProtocolSelection, setShowProtocolSelection ] = useState<boolean>(true);
     const [ isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading ] = useState<boolean>(false);
+
+    /**
+     * Called on `availableInboundProtocols` prop update.
+     */
+    useEffect(() => {
+        if (!_.isEmpty(availableInboundProtocols) && application?.id) {
+            findConfiguredInboundProtocol(application.id);
+            return;
+        }
+
+        setInboundProtocolsRequestLoading(true);
+
+        ApplicationManagementUtils.getInboundProtocols(InboundProtocolsMeta, false)
+            .finally(() => {
+                setInboundProtocolsRequestLoading(false);
+            });
+    }, [ availableInboundProtocols ]);
 
     /**
      * Finds the configured inbound protocol.
@@ -151,20 +168,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
         }
     };
-
-    useEffect(() => {
-        if (!_.isEmpty(availableInboundProtocols) && application?.id) {
-            findConfiguredInboundProtocol(application.id);
-            return;
-        }
-
-        setInboundProtocolsRequestLoading(true);
-
-        ApplicationManagementUtils.getInboundProtocols(InboundProtocolsMeta, false)
-            .finally(() => {
-                setInboundProtocolsRequestLoading(false);
-            });
-    }, [availableInboundProtocols]);
 
     const GeneralApplicationSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane attached={ false }>
@@ -244,31 +247,37 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         const panes: any[] = [];
 
         if (features) {
-            if (features.generalSettings === true || features.generalSettings === undefined) {
+            if (features.generalSettings === undefined || features.generalSettings.enabled !== false) {
+
                 panes.push({
                     menuItem: "General",
                     render: GeneralApplicationSettingsTabPane
                 });
             }
-            if (features.accessConfiguration === true || features.accessConfiguration === undefined) {
+            if (features.accessConfiguration === undefined || features.accessConfiguration.enabled !== false) {
+
                 panes.push({
                     menuItem: "Access",
                     render: ApplicationSettingsTabPane
                 });
             }
-            if (features.attributeMapping === true || features.attributeMapping === undefined) {
+            if (features.attributeMapping === undefined || features.attributeMapping.enabled !== false) {
+
                 panes.push({
                     menuItem: "Attribute",
                     render: AttributeSettingTabPane
                 });
             }
-            if (features.signOnMethodConfiguration === true || features.signOnMethodConfiguration === undefined) {
+            if (features.signOnMethodConfiguration === undefined
+                || features.signOnMethodConfiguration.enabled !== false) {
+
                 panes.push({
                     menuItem: "Sign-on Method",
                     render: SignOnMethodsTabPane,
                 });
             }
-            if (features.advanceSettings === true || features.advanceSettings === undefined) {
+            if (features.advanceSettings === undefined || features.advanceSettings.enabled !== false) {
+
                 panes.push({
                     menuItem: "Advance",
                     render: AdvancedSettingsTabPane,

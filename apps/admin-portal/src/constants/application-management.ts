@@ -59,10 +59,10 @@ export class ApplicationManagementConstants {
     public static readonly CRUD_PERMISSIONS_APP_CONFIG_KEY: string = "applications.permissions";
 
     /**
-     * Key to access the application management sub features
+     * Key to access the application management features.
      * @constant
      * @type {string}
      * @default
      */
-    public static readonly SUB_FEATURES_APP_CONFIG_KEY: string = "applications.subFeatures";
+    public static readonly EDIT_FEATURES_APP_CONFIG_KEY: string = "applications.features.edit";
 }

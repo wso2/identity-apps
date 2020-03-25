@@ -19,39 +19,13 @@
 import { FeatureConfigInterface } from "@wso2is/core/models";
 
 /**
- * Application management features.
- */
-export interface ApplicationsSubFeaturesConfigInterface {
-    /**
-     * Application general settings configuration feature.
-     */
-    generalSettings: boolean;
-    /**
-     * Application access configuration feature.
-     */
-    accessConfiguration: boolean;
-    /**
-     * Application attribute mapping feature.
-     */
-    attributeMapping: boolean;
-    /**
-     * Application sign on methods feature.
-     */
-    signOnMethodConfiguration: boolean;
-    /**
-     * Advance settings feature.
-     */
-    advanceSettings: boolean;
-}
-
-/**
  * Application configuration interface.
  */
 export interface AppConfigInterface {
     /**
      * Application management feature.
      */
-    applications: FeatureConfigInterface<ApplicationsSubFeaturesConfigInterface>;
+    applications: FeatureConfigInterface<ApplicationManagementFeaturesConfigInterface>;
     /**
      * Claim management feature.
      */
@@ -76,4 +50,40 @@ export interface AppConfigInterface {
      * Role management feature.
      */
     roles: FeatureConfigInterface;
+}
+
+/**
+ * Application management features interface.
+ */
+export interface ApplicationManagementFeaturesConfigInterface {
+    /**
+     * Application edit feature config.
+     */
+    edit: ApplicationEditFeaturesConfigInterface;
+}
+
+/**
+ * Application edit config features.
+ */
+export interface ApplicationEditFeaturesConfigInterface {
+    /**
+     * Application general settings configuration feature.
+     */
+    generalSettings: FeatureConfigInterface;
+    /**
+     * Application access configuration feature.
+     */
+    accessConfiguration: FeatureConfigInterface;
+    /**
+     * Application attribute mapping feature.
+     */
+    attributeMapping: FeatureConfigInterface;
+    /**
+     * Application sign on methods feature.
+     */
+    signOnMethodConfiguration: FeatureConfigInterface;
+    /**
+     * Advance settings feature.
+     */
+    advanceSettings: FeatureConfigInterface;
 }

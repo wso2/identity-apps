@@ -1,20 +1,34 @@
 {
     "applications": {
+        "enabled": true,
         "permissions": {
             "create": true,
             "read": true,
             "update": true,
             "delete": true
         },
-        "subFeatures": {
-            "generalSettings": true,
-            "accessConfiguration": true,
-            "attributeMapping": true,
-            "signOnMethodConfiguration": true,
-            "advanceSettings": true
+        "features": {
+            "edit": {
+                "generalSettings": {
+                    "enabled": true
+                },
+                "accessConfiguration": {
+                    "enabled": true
+                },
+                "attributeMapping": {
+                    "enabled": true
+                },
+                "signOnMethodConfiguration": {
+                    "enabled": true
+                },
+                "advanceSettings": {
+                    "enabled": true
+                }
+            }
         }
     },
     "claims": {
+        "enabled": true,
         "permissions": {
             "create": true,
             "read": true,
@@ -23,6 +37,7 @@
         }
     },
     "identityProviders": {
+        "enabled": true,
         "permissions": {
             "create": true,
             "read": true,
@@ -31,6 +46,7 @@
         }
     },
     "serverConfigurations": {
+        "enabled": true,
         "permissions": {
             "create": true,
             "read": true,
@@ -39,6 +55,7 @@
         }
     },
     "userStores": {
+        "enabled": true,
         "permissions": {
             "create": true,
             "read": true,
@@ -47,6 +64,7 @@
         }
     },
     "users": {
+        "enabled": true,
         "permissions": {
             "create": true,
             "read": true,
@@ -55,6 +73,7 @@
         }
     },
     "roles": {
+        "enabled": true,
         "permissions": {
             "create": true,
             "read": true,
