@@ -46,6 +46,9 @@ export const App = (): ReactElement => {
         getAppConfig<AppConfigInterface>(ApplicationConstants.APP_CONFIG_FILE_NAME, APP_BASENAME)
             .then((response) => {
                 setAppConfig(response);
+            })
+            .catch(() => {
+                // TODO: Log the error here.
             });
     }, []);
 
