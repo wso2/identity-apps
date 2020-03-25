@@ -50,12 +50,12 @@
         var tenantName = getParameterByName("tenantDomain");
         var userName = document.getElementById("username");
         var usernameUserInput = document.getElementById("usernameUserInput");
-        var isSaaSApp = JSON.parse(getParameterByName("isSaaSApp").toLowerCase());
 
         if (usernameUserInput) {
             var usernameUserInputValue = usernameUserInput.value.trim();
 
-            if (!isSaaSApp && tenantName) {
+            if (getParameterByName("isSaaSApp") && (getParameterByName("isSaaSApp") === "false") &&
+                tenantName) {
 
                 if ((!isEmailUsernameEnabled) && (usernameUserInputValue.split("@").length > 1)) {
                     var errorMessage = document.getElementById("error-msg");
