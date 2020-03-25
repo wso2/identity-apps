@@ -119,7 +119,6 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                                                     onSortOrderChange(!isAscending);
                                                                 } }
                                                                 className="left-aligned-action"
-                                                                primary
                                                             >
                                                                 <Icon
                                                                     name={
