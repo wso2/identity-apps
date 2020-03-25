@@ -17,7 +17,7 @@
  */
 
 import React, { createContext, Dispatch, useReducer } from "react"; 
-import { Theme } from "@wso2is/theme";
+import { Theme, Themes } from "@wso2is/theme";
 
 /*
  * Themes index less file.
@@ -27,7 +27,16 @@ const ThemeLess = (theme) => { return `themes-less/themes/${theme}/index.less` }
 /*
  * Theme options type.
  */
-type ThemeTypes = "dark" | "default";
+const themes = Themes as Themes; // Convert Themes array to string literal
+type ThemeTypes = typeof themes[number];
+
+/*
+ * Theme compile options interface.
+ */
+interface ThemeCompileOptionsInterface {
+    "@primaryColor"?: string;
+    "@pageBackground"?: string;
+}
 
 /*
  * ThemeContext state interface.
@@ -38,15 +47,8 @@ interface ThemeContextState {
     css: string;
     logo: string;
     productName: string;
+    styles: ThemeCompileOptionsInterface;
     theme: ThemeTypes;
-}
-
-/*
- * Theme compile options interface.
- */
-export interface ThemeCompileOptionsInterface {
-    "@primaryColor"?: string;
-    "@pageBackground"?: string;
 }
 
 /*
@@ -54,12 +56,13 @@ export interface ThemeCompileOptionsInterface {
  */
 interface ThemeContextInterface {
     dispatch: ({type}: {type: string}) => void;
-    compile: (type: ThemeCompileOptionsInterface) => void;
-    setAppName: (type: string) => void;
-    setCopyrightText: (type: string) => void;
-    setLogo: (type: string) => void;
-    setProductName: (type: string) => void;
-    setTheme: (type: ThemeTypes) => void;
+    compile: (options: ThemeCompileOptionsInterface) => void;
+    setAppName: (name: string) => void;
+    setCopyrightText: (text: string) => void;
+    setLogo: (url: string) => void;
+    setProductName: (name: string) => void;
+    setStyles: (styles: ThemeCompileOptionsInterface) => void;
+    setTheme: (theme: ThemeTypes) => void;
     state: ThemeContextState;
 }
 
@@ -67,11 +70,12 @@ interface ThemeContextInterface {
  * Initial theme context state.
  */
 const themeInitialState: ThemeContextState = {
-    appName: "Identity Server",
-    copyrightText: "WSO2 Identity Server © 2020",
+    appName: "",
+    copyrightText: "",
     css: "",
     logo: "",
     productName: "",
+    styles: {},
     theme: "default"
 }
 
@@ -81,10 +85,11 @@ const themeInitialState: ThemeContextState = {
 const themeContextReducerActions = {
     SET_APP_NAME: "SET_APP_NAME",
     SET_COPYRIGHT_TEXT: "SET_COPYRIGHT_TEXT",
+    SET_CSS: "SET_CSS",
     SET_LOGO_URL: "SET_LOGO_URL",
     SET_PRODUCT_NAME: "SET_PRODUCT_NAME",
-    TOGGLE_STYLESHEETS: "TOGGLE",
-    UPDATE_CUSTOM_CSS: "UPDATE"
+    SET_STYLES: "SET_PRODUCT_NAME",
+    SET_THEME: "SET_THEME"
 };
 
 /**
@@ -94,7 +99,12 @@ const themeContextReducerActions = {
  */
 const setCSS = (styles: string) => ({
     payload: styles,
-    type: themeContextReducerActions.UPDATE_CUSTOM_CSS
+    type: themeContextReducerActions.SET_CSS
+});
+
+const setStyles = (styles: ThemeCompileOptionsInterface) => ({
+    payload: styles,
+    type: themeContextReducerActions.SET_STYLES
 });
 
 /**
@@ -144,7 +154,7 @@ const setProductName = (name: string) => ({
  */
 const setTheme = (theme: ThemeTypes) => ({
     payload: theme,
-    type: themeContextReducerActions.TOGGLE_STYLESHEETS
+    type: themeContextReducerActions.SET_THEME
 });
 
 /**
@@ -166,6 +176,11 @@ const themeContextReducer = (state = themeInitialState, action) => {
                 ...state,
                 copyrightText: action.payload
             };
+        case themeContextReducerActions.SET_STYLES:
+            return {
+                ...state,
+                styles: action.payload
+            };
         case themeContextReducerActions.SET_LOGO_URL:
             return {
                 ...state,
@@ -176,12 +191,12 @@ const themeContextReducer = (state = themeInitialState, action) => {
                 ...state,
                 productName: action.payload
             };
-        case themeContextReducerActions.TOGGLE_STYLESHEETS:
+        case themeContextReducerActions.SET_THEME:
             return {
                 ...state,
                 theme: action.payload
             };
-        case themeContextReducerActions.UPDATE_CUSTOM_CSS:
+        case themeContextReducerActions.SET_CSS:
             return {
                 ...state,
                 css: action.payload
@@ -201,6 +216,7 @@ const themeContextReducer = (state = themeInitialState, action) => {
 const handleCompileTheme = (dispatch, state, options: ThemeCompileOptionsInterface) => {
     Theme.compile(ThemeLess(state.theme), { modifyVars: options })
         .then((styles) => {
+            dispatch(setStyles(options));
             dispatch(setCSS(styles));
         });
 };
@@ -245,6 +261,10 @@ const handleProductName = (dispatch, name: string) => {
     dispatch(setProductName(name));
 };
 
+const handleStyles = (dispatch, styles: ThemeCompileOptionsInterface) => {
+    dispatch(setStyles(styles));
+};
+
 /**
  * Theme toggle method.
  * 
@@ -265,6 +285,7 @@ export const ThemeContext = createContext<ThemeContextInterface>({
     setCopyrightText: () => { return; },
     setLogo: () => { return; },
     setProductName: () => { return; },
+    setStyles: () => { return; },
     setTheme: () => { return; },
     state: themeInitialState
 });
@@ -284,6 +305,7 @@ export const ThemeProvider = ({ children }) => {
     const setCopyrightText = (text: string) => { handleSetCopyrightText(dispatch, text); };
     const setLogo = (url: string) => { handleSetLogo(dispatch, url); };
     const setProductName = (name: string) => { handleProductName(dispatch, name); };
+    const setStyles = (styles: ThemeCompileOptionsInterface) => { handleStyles(dispatch, styles); };
     const setTheme = (theme: ThemeTypes) => { handleThemeToggle(dispatch, theme); };
 
     /**
@@ -297,6 +319,7 @@ export const ThemeProvider = ({ children }) => {
             setCopyrightText,
             setLogo,
             setProductName,
+            setStyles,
             setTheme,
             state
         } }>

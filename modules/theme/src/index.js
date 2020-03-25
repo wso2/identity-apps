@@ -23,6 +23,10 @@ export * from "./theme";
  * Export default theme variables
  */
 export const defaultThemeVariables = require("../dist/theme-variables.json");
+export const Themes = [
+    "dark",
+    "default"
+];
 
 // Icons
 export const AlertIcon = require("../dist/lib/themes/default/assets/images/icons/alert-icon.svg");

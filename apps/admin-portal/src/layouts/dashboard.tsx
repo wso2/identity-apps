@@ -34,7 +34,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { Button, Responsive } from "semantic-ui-react";
+import { Button, Image, Responsive } from "semantic-ui-react";
 import { ProtectedRoute } from "../components";
 import { GlobalConfig, LogoImage, routes, SidePanelIcons, SidePanelMiscIcons } from "../configs";
 import { UIConstants } from "../constants";
@@ -304,7 +304,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                         <ProductBrand
                             style={ { marginTop: 0 } }
                             logo={  state.logo && state.logo !== "" ?
-                                <img src={ state.logo } style={ { maxHeight: 25 } } />
+                                <Image src={ state.logo } style={ { maxHeight: 25 } } />
                                 :
                                 <Logo image={ LogoImage } />
                             }

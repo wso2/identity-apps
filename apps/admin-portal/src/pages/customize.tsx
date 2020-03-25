@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { Button, Divider, Form, Grid, Header, Label } from "semantic-ui-react";
+import { Button, Card, Divider, Form, Grid, Header, Image, Label } from "semantic-ui-react";
+import { defaultThemeVariables, Themes } from "@wso2is/theme";
 import React, { ReactElement, useContext, useState } from "react";
 import { RGBColor, SketchPicker } from "react-color";
-import { defaultThemeVariables } from "@wso2is/theme";
 import { ThemeContext } from "@wso2is/react-components";
 
 /**
@@ -120,7 +120,7 @@ const ColorPicker: React.FunctionComponent<ColorPickerProps> = ({
             { value.displayColorPicker ? 
                 <div className="ui react-color-popover">
                     <div className="ui react-color-cover" onClick={ handleClose } />
-                    <SketchPicker color={ hexToRGB(inputColor) } onChange={ handleChange } />
+                    <SketchPicker color={ hexToRGB(inputColor) } onChangeComplete={ handleChange } />
                 </div>
                 : null
             }
@@ -131,10 +131,6 @@ const ColorPicker: React.FunctionComponent<ColorPickerProps> = ({
 const CSSForm = (): ReactElement => {
     const [ themeOptions, setThemeOptions ] = useState({});
     const { compile } = useContext(ThemeContext);
-
-    const handleColorInputChange = (input, value) => {
-        setThemeOptions({...themeOptions, ["@" + input]: value });
-    };
 
     /**
      * Style Variable Input ReactHook.
@@ -151,7 +147,6 @@ const CSSForm = (): ReactElement => {
 
         const handleChange = (e) => {
             setValue(e.target.value);
-            handleColorInputChange(input, value);
         };
 
         const inputProps = {
@@ -163,6 +158,7 @@ const CSSForm = (): ReactElement => {
 
         const handleColorPickerOnChange = (hexValue: string) => {
             setValue(hexValue);
+            setThemeOptions({...themeOptions, [`@${input}`]: value });
         };
 
         const colorChildren = () => {
@@ -190,8 +186,8 @@ const CSSForm = (): ReactElement => {
     const primaryColor = useStyleInput(defaultThemeVariables["primaryColor"], "primaryColor", "color");
     const pageBackground = useStyleInput(defaultThemeVariables["pageBackground"], "pageBackground", "color");
 
-    const handleCompileTheme = async () => {
-        await compile(themeOptions);
+    const handleCompileTheme = () => {
+        compile(themeOptions);
     };
 
     return (
@@ -231,13 +227,8 @@ export const CustomizePage = (): ReactElement => {
 
     const { setAppName, setCopyrightText, setLogo, setProductName, setTheme, state } = useContext(ThemeContext);
 
-    const handleToggleTheme = () => {
-        if (state.theme === "dark") {
-            setTheme("default");
-        }
-        else {
-            setTheme("dark");
-        }
+    const handleThemeSelect = (theme) => {
+        setTheme(theme);
     };
 
     const handleProductNameChange = (e) => {
@@ -259,27 +250,40 @@ export const CustomizePage = (): ReactElement => {
     return (
         <>
             <Header className="page-header" as="h1">
-                Customize Application
+                Application Appearance Settings
                 <Header.Subheader className="sub-header">
-                    Use below fields to customize the theme
+                    Use below fields to change appearance of the application.
                 </Header.Subheader>
             </Header>
 
             <Divider hidden />
 
-            <Header as="h3" className="sub-header">Change base theme</Header>
+            <Header as="h3" className="sub-header">Theme</Header>
             <Divider />
 
-            <Button onClick={ () => handleToggleTheme() }>Toggle Theme</Button>
+            <Card.Group itemsPerRow={ 9 }>
+                { 
+                    Themes.map((theme, index) => {
+                        return (
+                            <Card key={ index } link onClick={ () => handleThemeSelect(theme) }>
+                                <Image src={ `themes-less/themes/${theme}/preview.jpg` } wrapped ui={ false } />
+                                <Card.Content>
+                                    <Card.Header>{ theme }</Card.Header>
+                                </Card.Content>
+                            </Card>
+                        );
+                    })
+                }
+            </Card.Group>
 
             <Divider hidden />
 
-            <Header as="h3" className="sub-header">Change theme colors</Header>
+            <Header as="h3" className="sub-header">Theme colors</Header>
             <Divider />
 
             <CSSForm />
 
-            <Header as="h3" className="sub-header">Change product details</Header>
+            <Header as="h3" className="sub-header">Customize application identity</Header>
             <Divider />
 
             <Form>
