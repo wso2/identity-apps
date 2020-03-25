@@ -17,7 +17,7 @@
  */
 
 import { SearchUtils } from "@wso2is/core/utils";
-import { Field, Forms } from "@wso2is/forms";
+import { Field, Forms, FormValue } from "@wso2is/forms";
 import { AdvancedSearch } from "@wso2is/react-components";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -68,6 +68,7 @@ export const ExternalClaimsSearch: FunctionComponent<ExternalClaimsSearchPropsIn
 
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
     const [externalSearchQuery, setExternalSearchQuery] = useState("");
+    const [filterAttribute, setFilterAttribute] = useState("claimURI");
 
     const { t } = useTranslation();
 
@@ -176,6 +177,11 @@ export const ExternalClaimsSearch: FunctionComponent<ExternalClaimsSearchPropsIn
                                 placeholder={ t("devPortal:components.applications.search.forms.searchForm.inputs" +
                                     ".filerAttribute.placeholder") }
                                 required={ true }
+                                listen={ (values: Map<string, FormValue>) => {
+                                    setFilterAttribute(
+                                        values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER).toString()
+                                    );
+                                } }
                                 requiredErrorMessage={ t("devPortal:components.applications.search.forms.searchForm" +
                                     ".inputs.filerAttribute.validations.empty") }
                                 type="dropdown"
@@ -211,8 +217,11 @@ export const ExternalClaimsSearch: FunctionComponent<ExternalClaimsSearchPropsIn
                                             label={ t("devPortal:components.applications.search.forms.searchForm" +
                                                 ".inputs.filterValue.label") }
                                             name={ FILTER_VALUES_FIELD_IDENTIFIER }
-                                            placeholder={ t("devPortal:components.applications.search.forms." +
-                                                "searchForm.inputs.filterValue.placeholder") }
+                                            placeholder={ 
+                                                filterAttribute === "claimURI"
+                                                    ? "E.g. http://axschema.org/namePerson/last"
+                                                    : "E.g. http://wso2.org/claims/lastname"
+                                            }
                                             required={ true }
                                             requiredErrorMessage={ t("devPortal:components.applications.search." +
                                                 "forms.searchForm.inputs.filterValue.validations.empty") }

@@ -210,8 +210,7 @@ export const DialectSearch: FunctionComponent<DialectSearchPropsInterface> = (
                                             label={ t("devPortal:components.applications.search.forms.searchForm" +
                                                 ".inputs.filterValue.label") }
                                             name={ FILTER_VALUES_FIELD_IDENTIFIER }
-                                            placeholder={ t("devPortal:components.applications.search.forms." +
-                                                "searchForm.inputs.filterValue.placeholder") }
+                                            placeholder="E.g. http://wso2.org/oidc/claim"
                                             required={ true }
                                             requiredErrorMessage={ t("devPortal:components.applications.search." +
                                                 "forms.searchForm.inputs.filterValue.validations.empty") }
