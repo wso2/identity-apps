@@ -57,6 +57,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     const [ checkedPermissions, setCheckedPermissions ] = useState<Permission[]>([]);
     const [ isPermissionsLoading, setIsPermissionsLoading ] = useState<boolean>(true);
     const [ collapseTree, setCollapseTree ] = useState<boolean>(false);
+    const [ isAllChecked, setIsAllChecked ] = useState<boolean>(false);
 
     /**
      * Retrieve permissions for a given role if in Role edit mode.
@@ -67,7 +68,8 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                 .then(response => {
                     if (response.status === 200 && response.data instanceof Array) {
                         const permissionsArray: Permission[] = [];
-                        response.data.forEach(permission => {
+                        const permissions = response.data;
+                        permissions.forEach(permission => {
                             permissionsArray.push({
                                 id: permission,
                                 isChecked: false,
@@ -125,6 +127,19 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     }
 
     /**
+     * Util method to set check all if the root element is available in the 
+     * selected roles list.
+     * 
+     * @param rolePermissions permissions which are already in the role
+     * @param treeNode permissions tree
+     */
+    const isAllPermissionsChecked = (rolePermissions: Permission[], treeNode: Permission[]) => {
+        return _.findIndex(rolePermissions, (rolePermission: Permission) => {
+            return rolePermission.fullPath === treeNode[0].fullPath
+        })
+    }
+
+    /**
      * Util method to change checked state in permission tree according to the selected permissions
      * array.
      * 
@@ -134,6 +149,9 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
      */
     const setCheckedStateForNodesInPermissionTree = (selectedPermissions: Permission[],
         permissionNodes: Permission[], isParentChecked: boolean): void => {
+            if (isAllPermissionsChecked(selectedPermissions, permissionNodes)) {
+                setIsAllChecked(true);
+            }
             permissionNodes.forEach(treeNode => {
                 if (selectedPermissions.some(selectedPermission => selectedPermission.fullPath === treeNode.fullPath)) {
                     treeNode.isChecked = true;
@@ -187,18 +205,41 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     return (
         <Segment basic>
             { !isPermissionsLoading && 
-                <Button.Group size="tiny" vertical labeled icon>
-                    <Button 
-                        onClick={ () => {
-                            const collapsedState = _.cloneDeep(permissionTree);
-                            collapsedState[0].isExpanded = collapseTree;
-                            setPermissionTree(collapsedState);
-                            setCollapseTree(!collapseTree);
-                        } } 
-                        icon={ collapseTree? "expand" : "compress" } 
-                        content={ collapseTree? "Expand All" : "Collapse All" } 
-                    />
-                </Button.Group>
+                <div className="action-container">
+                        <Button 
+                            basic
+                            compact
+                            size="tiny"
+                            onClick={ () => {
+                                const collapsedState = _.cloneDeep(permissionTree);
+                                collapsedState[0].isExpanded = collapseTree;
+                                setPermissionTree(collapsedState);
+                                setCollapseTree(!collapseTree);
+                            } } 
+                            icon={ collapseTree? "expand" : "compress" } 
+                            content={ collapseTree? "Expand All" : "Collapse All" } 
+                        />
+                        <Button 
+                            basic
+                            compact
+                            size="tiny"
+                            onClick={ () => {
+                                const checkedState: Permission[] = _.cloneDeep(permissionTree);
+                                markChildrenAsChecked(checkedState, !isAllChecked);
+                                setPermissionTree(checkedState);
+                                if (checkedState[0].isChecked) {
+                                    setCheckedPermissions([...checkedPermissions, checkedState[0]])
+                                } else {
+                                    setCheckedPermissions(checkedPermissions.filter(item => { 
+                                        item.fullPath !== checkedState[0].fullPath
+                                    }));
+                                }
+                                setIsAllChecked(!isAllChecked)
+                            } }
+                            icon={ isAllChecked? "square outline" : "check square outline" } 
+                            content={ isAllChecked? "Uncheck All" : "Check All" } 
+                        />
+                </div>
             }
             <Forms submitState={ triggerSubmit } onSubmit={ () => {
                 onSubmit(checkedPermissions);
