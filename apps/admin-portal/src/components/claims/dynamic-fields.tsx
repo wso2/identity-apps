@@ -17,7 +17,7 @@
 */
 
 import React, { useState, useEffect, useRef } from "react";
-import { Grid, Label, Icon, Popup } from "semantic-ui-react";
+import { Grid, Label, Icon, Popup, Button, List, Divider } from "semantic-ui-react";
 import { Forms, Field, useTrigger, FormValue, Validation } from "@wso2is/forms";
 
 export interface KeyValue {
@@ -104,352 +104,339 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
     }, [updateMapIndex]);
 
     return (
-        <Grid>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column width={ 16 }>
-                    {
-                        keyData?.length !== fields?.size
-                            ? (
-                                <Forms
-                                    onSubmit={ (values: Map<string, FormValue>) => {
-                                        const tempFields = new Map<number, KeyValue>(fields);
-                                        const newIndex: number = tempFields.size > 0
-                                            ? Array.from(tempFields.keys())[tempFields.size - 1] + 1
-                                            : 0;
-                                        tempFields.set(newIndex, {
-                                            key: values.get("key").toString(),
-                                            value: values.get("value").toString()
-                                        });
-                                        setFields(tempFields);
-                                        if (listen) {
-                                            listen(Array.from(tempFields.values()));
-                                        }
-                                        setReset();
-                                    } }
-                                    submitState={ add }
-                                    resetState={ reset }
-                                >
-                                    <Grid>
-                                        < Grid.Row columns={ 3 } verticalAlign="top">
-                                            <Grid.Column width={ 6 }>
-                                                {keyType === "dropdown"
-                                                    ? (
-                                                        <Field
-                                                            type={ keyType }
-                                                            placeholder=""
-                                                            required={ requiredField }
-                                                            requiredErrorMessage={ keyRequiredMessage }
-                                                            label={ keyName }
-                                                            name="key"
-                                                            fluid
-                                                            children={
-                                                                keyType === "dropdown"
-                                                                    ? (
-                                                                        keyData?.map((key: KeyData) => {
-                                                                            return {
-                                                                                text: key.value,
-                                                                                value: key.value,
-                                                                                key: key.id
-                                                                            }
-                                                                        })
-                                                                    )
-                                                                    : []
-                                                            }
-                                                            displayErrorOn="blur"
-                                                            validation={
-                                                                (
-                                                                    value: string,
-                                                                    validation: Validation
-                                                                ) => {
-                                                                    let isSameUserStore = false;
-                                                                    for (const mapping of fields) {
-                                                                        if (mapping[1].key === value) {
-                                                                            isSameUserStore = true;
-                                                                            break;
-                                                                        }
+        <>
+            {
+                keyData?.length !== fields?.size
+                    ? (
+                        <>
+                            <Forms
+                                onSubmit={ (values: Map<string, FormValue>) => {
+                                    const tempFields = new Map<number, KeyValue>(fields);
+                                    const newIndex: number = tempFields.size > 0
+                                        ? Array.from(tempFields.keys())[tempFields.size - 1] + 1
+                                        : 0;
+                                    tempFields.set(newIndex, {
+                                        key: values.get("key").toString(),
+                                        value: values.get("value").toString()
+                                    });
+                                    setFields(tempFields);
+                                    if (listen) {
+                                        listen(Array.from(tempFields.values()));
+                                    }
+                                    setReset();
+                                } }
+                                submitState={ add }
+                                resetState={ reset }
+                            >
+                                <List className="dynamic-field">
+                                    <List.Item>
+                                        {keyType === "dropdown"
+                                            ? (
+                                                <Field
+                                                    type={ keyType }
+                                                    placeholder={ `Enter a ${keyName}` }
+                                                    required={ requiredField }
+                                                    requiredErrorMessage={ keyRequiredMessage }
+                                                    name="key"
+                                                    fluid
+                                                    children={
+                                                        keyType === "dropdown"
+                                                            ? (
+                                                                keyData?.map((key: KeyData) => {
+                                                                    return {
+                                                                        text: key.value,
+                                                                        value: key.value,
+                                                                        key: key.id
                                                                     }
-                                                                    if (isSameUserStore) {
-                                                                        validation.isValid = false;
-                                                                        validation.errorMessages.push(
-                                                                            duplicateKeyErrorMsg
-                                                                        )
-                                                                    }
+                                                                })
+                                                            )
+                                                            : []
+                                                    }
+                                                    displayErrorOn="blur"
+                                                    validation={
+                                                        (
+                                                            value: string,
+                                                            validation: Validation
+                                                        ) => {
+                                                            let isSameUserStore = false;
+                                                            for (const mapping of fields) {
+                                                                if (mapping[1].key === value) {
+                                                                    isSameUserStore = true;
+                                                                    break;
                                                                 }
                                                             }
+                                                            if (isSameUserStore) {
+                                                                validation.isValid = false;
+                                                                validation.errorMessages.push(
+                                                                    duplicateKeyErrorMsg
+                                                                )
+                                                            }
+                                                        }
+                                                    }
+                                                />
+                                            )
+                                            : (
+                                                < Field
+                                                    type={ keyType }
+                                                    placeholder={ `Enter a ${keyName}` }
+                                                    required={ requiredField }
+                                                    requiredErrorMessage={ keyRequiredMessage }
+                                                    name="key"
+                                                />
+                                            )
+                                        }
+                                    </List.Item>
+                                    <List.Item>
+                                        <Field
+                                            type="text"
+                                            placeholder={ `Enter a ${valueName}` }
+                                            required={ requiredField }
+                                            requiredErrorMessage={ valueRequiredErrorMessage }
+                                            name="value"
+                                        />
+                                    </List.Item>
+                                    <List.Item>
+                                        <Popup
+                                            trigger={ (
+                                                <Button
+                                                    type="button"
+                                                    className="list-icon"
+                                                    size="small"
+                                                    icon="add"
+                                                    onClick={ () => {
+                                                        setAdd();
+                                                    } }
+                                                />
+                                            ) }
+                                            position="top center"
+                                            content="Add"
+                                            inverted
+                                        />
+                                    </List.Item>
+                                </List>
+                            </Forms>
+                            <Divider hidden />
+                        </>
+                    )
+                    : null
+            }
+
+            {
+                fields
+                    ? (
+                        <Forms
+                            onSubmit={ (values: Map<string, FormValue>) => {
+                                const tempFields = new Map(fields);
+                                tempFields.set(updateMapIndex, {
+                                    key: values.get("editKey").toString(),
+                                    value: values.get("editValue").toString()
+                                });
+
+                                setFields(tempFields);
+                                setEditIndex(null);
+                                setUpdateMapIndex(null);
+                            }
+                            }
+                            submitState={ updateTrigger }
+                        >
+
+                            {
+                                Array.from(fields).map(([mapIndex, field], index: number) => {
+                                    return (
+                                        <List className="dynamic-field" key={ index }>
+                                            <List.Item>
+                                                {editIndex === index
+                                                    ? (
+                                                        keyType === "dropdown"
+                                                            ? (
+                                                                <Field
+                                                                    type={ keyType }
+                                                                    placeholder={ `Enter a ${keyName}` }
+                                                                    required={ requiredField }
+                                                                    requiredErrorMessage={
+                                                                        keyRequiredMessage
+                                                                    }
+                                                                    name={ "editKey" }
+                                                                    children={
+                                                                        keyType === "dropdown"
+                                                                            ? (
+                                                                                keyData?.map(
+                                                                                    (key: KeyData) => {
+                                                                                        return {
+                                                                                            text: key.value,
+                                                                                            value: key.value,
+                                                                                            key: key.id
+                                                                                        }
+                                                                                    })
+                                                                            )
+                                                                            : []
+                                                                    }
+                                                                    value={ editKey }
+                                                                    displayErrorOn="blur"
+                                                                    validation={
+                                                                        (
+                                                                            value: string,
+                                                                            validation: Validation
+                                                                        ) => {
+                                                                            let isSameUserStore = false;
+                                                                            for (const mapping of fields) {
+                                                                                if (
+                                                                                    mapping[1].key === value
+                                                                                    && mapping[1] !== field
+                                                                                ) {
+                                                                                    isSameUserStore = true;
+                                                                                    break;
+                                                                                }
+                                                                            }
+                                                                            if (isSameUserStore) {
+                                                                                validation.isValid = false;
+                                                                                validation
+                                                                                    .errorMessages
+                                                                                    .push(
+                                                                                        duplicateKeyErrorMsg
+                                                                                    )
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                />
+                                                            )
+                                                            : (
+                                                                <Field
+                                                                    type={ keyType }
+                                                                    placeholder={ `Enter a ${keyName}` }
+                                                                    required={ requiredField }
+                                                                    requiredErrorMessage={
+                                                                        valueRequiredErrorMessage
+                                                                    }
+                                                                    name={ "editKey" }
+                                                                    value={ editKey }
+                                                                />
+                                                            )
+                                                    )
+                                                    : (
+                                                        <Label
+                                                            size="large"
+                                                            className="properties-label"
+                                                        >
+                                                            {field.key}
+                                                        </Label>
+                                                    )
+                                                }
+                                            </List.Item>
+                                            <List.Item>
+                                                {editIndex === index
+                                                    ? (
+                                                        <Field
+                                                            name={ "editValue" }
+                                                            required={ true }
+                                                            requiredErrorMessage=""
+                                                            type="text"
+                                                            value={ editValue }
+                                                            placeholder={ `Enter a ${valueName}` }
                                                         />
                                                     )
                                                     : (
-                                                        < Field
-                                                            type={ keyType }
-                                                            placeholder=""
-                                                            required={ requiredField }
-                                                            label={ keyName }
-                                                            requiredErrorMessage={ keyRequiredMessage }
-                                                            name="key"
+                                                        <Label
+                                                            size="large"
+                                                            className="properties-label">
+                                                            {field.value}
+                                                        </Label>
+                                                    )
+                                                }
+                                            </List.Item>
+                                            <List.Item>
+                                                {editIndex === index
+                                                    ? (
+                                                        <Popup
+                                                            trigger={ (
+                                                                <Button
+                                                                    type="button"
+                                                                    className="list-icon"
+                                                                    size="small"
+                                                                    icon="checkmark"
+                                                                    onClick={ () => {
+                                                                        setUpdateMapIndex(mapIndex);
+                                                                    } }
+                                                                />
+                                                            ) }
+                                                            position="top center"
+                                                            content="Update"
+                                                            inverted
+                                                        />
+                                                    )
+                                                    : (
+                                                        <Popup
+                                                            trigger={ (
+                                                                <Button
+                                                                    type="button"
+                                                                    className="list-icon"
+                                                                    size="small"
+                                                                    icon="pencil"
+                                                                    onClick={ () => {
+                                                                        setEditIndex(index);
+                                                                        setEditKey(field.key);
+                                                                        setEditValue(field.value);
+                                                                    } }
+                                                                />
+                                                            ) }
+                                                            position="top center"
+                                                            content="Edit"
+                                                            inverted
                                                         />
                                                     )
                                                 }
-                                            </Grid.Column>
-                                            <Grid.Column width={ 6 }>
-                                                <Field
-                                                    type="text"
-                                                    placeholder=""
-                                                    required={ requiredField }
-                                                    label={ valueName }
-                                                    requiredErrorMessage={ valueRequiredErrorMessage }
-                                                    name="value"
-                                                />
-                                            </Grid.Column>
-                                            <Grid.Column width={ 4 } verticalAlign="middle">
+                                                {editIndex === index
+                                                    ? (
+                                                        <Popup
+                                                            trigger={ (
+                                                                <Button
+                                                                    type="button"
+                                                                    className="list-icon"
+                                                                    size="small"
+                                                                    icon="close"
+                                                                    onClick={ () => {
+                                                                        setEditIndex(null);
+                                                                    } }
+                                                                />
+                                                            ) }
+                                                            position="top center"
+                                                            content="Cancel"
+                                                            inverted
+                                                        />
+                                                    )
+                                                    : null
+                                                }
                                                 <Popup
                                                     trigger={ (
-                                                        <Icon
-                                                            link
+                                                        <Button
+                                                            type="button"
                                                             className="list-icon"
                                                             size="small"
-                                                            color="grey"
-                                                            name="add"
+                                                            icon="trash"
                                                             onClick={ () => {
-                                                                setAdd();
+                                                                setEditIndex(null);
+                                                                const tempFields = new Map(fields);
+                                                                tempFields.delete(mapIndex);
+                                                                setFields(tempFields);
                                                             } }
                                                         />
                                                     ) }
                                                     position="top center"
-                                                    content="Add"
+                                                    content="Delete"
                                                     inverted
                                                 />
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    </Grid>
-                                </Forms>
-                            )
-                            : null
-                    }
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column width={ 16 }>
-                    {
-                        fields
-                            ? (
-                                <Forms
-                                    onSubmit={ (values: Map<string, FormValue>) => {
-                                        const tempFields = new Map(fields);
-                                        tempFields.set(updateMapIndex, {
-                                            key: values.get("editKey").toString(),
-                                            value: values.get("editValue").toString()
-                                        });
+                                            </List.Item>
+                                        </List>
 
-                                        setFields(tempFields);
-                                        setEditIndex(null);
-                                        setUpdateMapIndex(null);
-                                    }
-                                    }
-                                    submitState={ updateTrigger }
-                                >
-                                    <Grid>
-                                        {
-                                            Array.from(fields).map(([mapIndex, field], index: number) => {
-                                                return (
-                                                    <Grid.Row key={ index } columns={ 3 } verticalAlign="top">
-                                                        <Grid.Column width={ 6 }>
-                                                            {editIndex === index
-                                                                ? (
-                                                                    keyType === "dropdown"
-                                                                        ? (
-                                                                            <Field
-                                                                                type={ keyType }
-                                                                                placeholder=""
-                                                                                required={ requiredField }
-                                                                                requiredErrorMessage={
-                                                                                    keyRequiredMessage
-                                                                                }
-                                                                                name={ "editKey" }
-                                                                                children={
-                                                                                    keyType === "dropdown"
-                                                                                        ? (
-                                                                                            keyData?.map(
-                                                                                                (key: KeyData) => {
-                                                                                                    return {
-                                                                                                        text: key.value,
-                                                                                                        value: key.value,
-                                                                                                        key: key.id
-                                                                                                    }
-                                                                                                })
-                                                                                        )
-                                                                                        : []
-                                                                                }
-                                                                                value={ editKey }
-                                                                                displayErrorOn="blur"
-                                                                                validation={
-                                                                                    (
-                                                                                        value: string,
-                                                                                        validation: Validation
-                                                                                    ) => {
-                                                                                        let isSameUserStore = false;
-                                                                                        for (const mapping of fields) {
-                                                                                            if (
-                                                                                                mapping[1].key === value
-                                                                                                && mapping[1] !== field
-                                                                                            ) {
-                                                                                                isSameUserStore = true;
-                                                                                                break;
-                                                                                            }
-                                                                                        }
-                                                                                        if (isSameUserStore) {
-                                                                                            validation.isValid = false;
-                                                                                            validation
-                                                                                                .errorMessages
-                                                                                                .push(
-                                                                                                    duplicateKeyErrorMsg
-                                                                                                )
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            />
-                                                                        )
-                                                                        : (
-                                                                            <Field
-                                                                                type={ keyType }
-                                                                                placeholder=""
-                                                                                required={ requiredField }
-                                                                                requiredErrorMessage={
-                                                                                    valueRequiredErrorMessage
-                                                                                }
-                                                                                name={ "editKey" }
-                                                                                value={ editKey }
-                                                                            />
-                                                                        )
-                                                                )
-                                                                : (
-                                                                    <Label
-                                                                        size="large"
-                                                                        className="properties-label"
-                                                                    >
-                                                                        {field.key}
-                                                                    </Label>
-                                                                )
-                                                            }
-                                                        </Grid.Column>
-                                                        <Grid.Column width={ 6 }>
-                                                            {editIndex === index
-                                                                ? (
-                                                                    <Field
-                                                                        name={ "editValue" }
-                                                                        required={ true }
-                                                                        requiredErrorMessage=""
-                                                                        type="text"
-                                                                        value={ editValue }
-                                                                        placeholder=""
-                                                                    />
-                                                                )
-                                                                : (
-                                                                    <Label
-                                                                        size="large"
-                                                                        className="properties-label">
-                                                                        {field.value}
-                                                                    </Label>
-                                                                )
-                                                            }
-                                                        </Grid.Column>
-                                                        <Grid.Column width={ 4 } verticalAlign="middle">
-                                                            {editIndex === index
-                                                                ? (
-                                                                    <Popup
-                                                                        trigger={ (
-                                                                            <Icon
-                                                                                link
-                                                                                className="list-icon"
-                                                                                size="small"
-                                                                                color="grey"
-                                                                                name="checkmark"
-                                                                                onClick={ () => {
-                                                                                    setUpdateMapIndex(mapIndex);
-                                                                                } }
-                                                                            />
-                                                                        ) }
-                                                                        position="top center"
-                                                                        content="Update"
-                                                                        inverted
-                                                                    />
-                                                                )
-                                                                : (
-                                                                    <Popup
-                                                                        trigger={ (
-                                                                            <Icon
-                                                                                link
-                                                                                className="list-icon"
-                                                                                size="small"
-                                                                                color="grey"
-                                                                                name="pencil"
-                                                                                onClick={ () => {
-                                                                                    setEditIndex(index);
-                                                                                    setEditKey(field.key);
-                                                                                    setEditValue(field.value);
-                                                                                } }
-                                                                            />
-                                                                        ) }
-                                                                        position="top center"
-                                                                        content="Edit"
-                                                                        inverted
-                                                                    />
-                                                                )
-                                                            }
-                                                            {editIndex === index
-                                                                ? (
-                                                                    <Popup
-                                                                        trigger={ (
-                                                                            <Icon
-                                                                                link
-                                                                                className="list-icon"
-                                                                                size="small"
-                                                                                color="grey"
-                                                                                name="close"
-                                                                                onClick={ () => {
-                                                                                    setEditIndex(null);
-                                                                                } }
-                                                                            />
-                                                                        ) }
-                                                                        position="top center"
-                                                                        content="Cancel"
-                                                                        inverted
-                                                                    />
-                                                                )
-                                                                : null
-                                                            }
-                                                            <Popup
-                                                                trigger={ (
-                                                                    <Icon
-                                                                        link
-                                                                        className="list-icon"
-                                                                        size="small"
-                                                                        color="grey"
-                                                                        name="trash"
-                                                                        onClick={ () => {
-                                                                            setEditIndex(null);
-                                                                            const tempFields = new Map(fields);
-                                                                            tempFields.delete(mapIndex);
-                                                                            setFields(tempFields);
-                                                                        } }
-                                                                    />
-                                                                ) }
-                                                                position="top center"
-                                                                content="Delete"
-                                                                inverted
-                                                            />
-                                                        </Grid.Column>
-                                                    </Grid.Row>
-                                                )
-                                            })
-                                        }
-                                    </Grid>
-                                </Forms>
-                            )
-                            : null
-                    }
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
+                                    )
+                                })
+
+                            }
+                        </Forms>
+                    )
+                    : null
+            }
+        </>
     )
 };
 
