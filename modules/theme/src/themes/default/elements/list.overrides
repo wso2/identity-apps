@@ -311,7 +311,7 @@
             display: flex;
             border: @menuBorder;
             padding: 0;
-
+            width: calc( (100% - @dynamicFieldButtons) / 2 );
             .label {
                 border-radius: unset;
             }
@@ -354,7 +354,7 @@
         .item:nth-child(3) {
             justify-content: stretch;
             overflow: hidden;
-            width: 108px;
+            width: @dynamicFieldButtons;
             flex-shrink: 0;
             flex-grow: 0;
             border: none;

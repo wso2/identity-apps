@@ -64,3 +64,4 @@
 @menuBorder: @menuBorderWidth solid @menuBorderColor;
 @menuBoxShadow: @raisedShadow;
 @menuBorderRadius: @borderRadius;
+@dynamicFieldButtons: 108px;
