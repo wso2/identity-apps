@@ -21,13 +21,15 @@ import { SettingsSectionIcons } from "../../configs";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { EditSection, Hint, Section } from "@wso2is/react-components";
 import { useTranslation } from "react-i18next";
-import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
+import { Button, Container, Divider, Form, Grid, Modal } from "semantic-ui-react";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import { getSelfSignUpConfigurations, updateSelfSignUpConfigurations } from "../../api";
 import { SelfSignUpConfigurationsInterface } from "../../models/server-configurations";
 import { addAlert } from "@wso2is/core/store";
 import { useDispatch } from "react-redux";
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
+//todo need to fix the import
+import { SettingsSection } from "../../../../user-portal/src/components/shared";
 
 /**
  * Constant to store the self registration from identifier.
@@ -284,117 +286,132 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 				} }
 				resetState={ reset }
 			>
-				<Field
-					name="SelfRegistrationCheckBoxes"
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.selfRegistration.form.enable.label"),
-							value: ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE
-						},
-						{
-							label: t("devPortal:components.serverConfigs.selfRegistration.form." +
-								"enableAccountLockOnCreation.label"),
-							value: ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION
-						},
-						{
-							label: t("devPortal:components.serverConfigs.selfRegistration.form." +
-								"internalNotificationManagement.label"),
-							value: ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED
-						},
-						{
-							label: t("devPortal:components.serverConfigs.selfRegistration.form.enableReCaptcha.label"),
-							value: ServerConfigurationsConstants.RE_CAPTCHA
-						}
-					] }
-					value={ selfSignUpConfigs.checkboxValues }
-				/>
-				<Field
-					label={ t("devPortal:components.serverConfigs.selfRegistration.form." +
-						"verificationLinkExpiryTime.label") }
-					name={ ServerConfigurationsConstants.VERIFICATION_CODE_EXPIRY_TIME }
-					placeholder={
-						t("devPortal:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime" +
-							".placeholder")
-					}
-					required={ true }
-					requiredErrorMessage={ t("devPortal:components.serverConfigs.selfRegistration.form." +
-						"verificationLinkExpiryTime.validations.empty") }
-					type="number"
-					value={ selfSignUpConfigs.verificationCodeExpiryTime }
-					width={ 5 }
-				/>
-				<Hint>
-					{
-						t("devPortal:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime" +
-							".hint")
-					}
-				</Hint>
-				<Field
-					label={ t("devPortal:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.label") }
-					name={ ServerConfigurationsConstants.SMS_OTP_EXPIRY_TIME }
-					placeholder={ t("devPortal:components.serverConfigs.selfRegistration.form." +
-						"smsOTPExpiryTime.placeholder") }
-					required={ true }
-					requiredErrorMessage={ t("devPortal:components.serverConfigs.selfRegistration.form." +
-						"smsOTPExpiryTime.validations.empty") }
-					type="number"
-					value={ selfSignUpConfigs.smsOTPExpiryTime }
-					width={ 5 }
-				/>
-				<Hint>
-					{ t("devPortal:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.hint") }
-				</Hint>
-				<Field
-					label={ t("devPortal:components.serverConfigs.selfRegistration.form.callbackURLRegex.label") }
-					name={ ServerConfigurationsConstants.CALLBACK_REGEX }
-					placeholder={ t("devPortal:components.serverConfigs.selfRegistration.form." +
-						"callbackURLRegex.placeholder") }
-					required={ true }
-					requiredErrorMessage={ t("devPortal:components.serverConfigs.selfRegistration.form." +
-						"callbackURLRegex.validations.empty") }
-					type="text"
-					value={ selfSignUpConfigs.callbackRegex }
-					width={ 9 }
-				/>
-				<Field
-					name=""
-					required={ false }
-					requiredErrorMessage=""
-					hidden={ true }
-					type="divider"
-				/>
-				<Form.Group>
-					<Field
-						name=""
-						required={ false }
-						requiredErrorMessage=""
-						size="small"
-						type="submit"
-						value={ t("common:submit").toString() }
-					/>
-					<Field
-						name=""
-						required={ false }
-						requiredErrorMessage=""
-						className="link-button"
-						onClick={ () => {
-							hideFormEditView(USER_SELF_REGISTRATION_FORM_IDENTIFIER);
-						} }
-						size="small"
-						type="button"
-						value={ t("common:cancel").toString() }
-					/>
-				</Form.Group>
-
+				<Grid>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Field
+								name="SelfRegistrationCheckBoxes"
+								required={ false }
+								requiredErrorMessage=""
+								type="checkbox"
+								children={ [
+									{
+										label: t("devPortal:components.serverConfigs.selfRegistration.form." +
+											"enable.label"),
+										value: ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE
+									},
+									{
+										label: t("devPortal:components.serverConfigs.selfRegistration.form." +
+											"enableAccountLockOnCreation.label"),
+										value: ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION
+									},
+									{
+										label: t("devPortal:components.serverConfigs.selfRegistration.form." +
+											"internalNotificationManagement.label"),
+										value: ServerConfigurationsConstants.
+											SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED
+									},
+									{
+										label: t("devPortal:components.serverConfigs.selfRegistration.form." +
+											"enableReCaptcha.label"),
+										value: ServerConfigurationsConstants.RE_CAPTCHA
+									}
+								] }
+								value={ selfSignUpConfigs.checkboxValues }
+							/>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Field
+								label={ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"verificationLinkExpiryTime.label") }
+								name={ ServerConfigurationsConstants.VERIFICATION_CODE_EXPIRY_TIME }
+								placeholder={ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"verificationLinkExpiryTime.placeholder") }
+								required={ true }
+								requiredErrorMessage={ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"verificationLinkExpiryTime.validations.empty") }
+								type="number"
+								value={ selfSignUpConfigs.verificationCodeExpiryTime }
+								width={ 4 }
+							/>
+							<Hint>
+								{ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"verificationLinkExpiryTime.hint") }
+							</Hint>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Field
+								label={ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"smsOTPExpiryTime.label") }
+								name={ ServerConfigurationsConstants.SMS_OTP_EXPIRY_TIME }
+								placeholder={ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"smsOTPExpiryTime.placeholder") }
+								required={ true }
+								requiredErrorMessage={ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"smsOTPExpiryTime.validations.empty") }
+								type="number"
+								value={ selfSignUpConfigs.smsOTPExpiryTime }
+								width={ 4 }
+							/>
+							<Hint>
+								{ t("devPortal:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.hint") }
+							</Hint>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Field
+								label={ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"callbackURLRegex.label") }
+								name={ ServerConfigurationsConstants.CALLBACK_REGEX }
+								placeholder={ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"callbackURLRegex.placeholder") }
+								required={ true }
+								requiredErrorMessage={ t("devPortal:components.serverConfigs.selfRegistration.form." +
+									"callbackURLRegex.validations.empty") }
+								type="text"
+								value={ selfSignUpConfigs.callbackRegex }
+								width={ 9 }
+							/>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Form.Group>
+								<Field
+									name=""
+									required={ false }
+									requiredErrorMessage=""
+									size="small"
+									type="submit"
+									value={ t("common:save").toString() }
+								/>
+								<Field
+									name=""
+									required={ false }
+									requiredErrorMessage=""
+									className="link-button"
+									onClick={ () => {
+										hideFormEditView(USER_SELF_REGISTRATION_FORM_IDENTIFIER);
+									} }
+									size="small"
+									type="button"
+									value={ t("common:cancel").toString() }
+								/>
+							</Form.Group>
+						</Grid.Column>
+					</Grid.Row>
+				</Grid>
 			</Forms>
 		</EditSection>
 	) : null;
 
 	return (
-		<Section
+		<SettingsSection
 			description={ t("devPortal:components.serverConfigs.selfRegistration.description") }
 			header={ t("devPortal:components.serverConfigs.selfRegistration.heading") }
 			icon={ SettingsSectionIcons.federatedAssociations }
@@ -409,6 +426,6 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		>
 			{ showUserSelfRegistrationView }
 			{ confirmationModal }
-		</Section>
+		</SettingsSection>
 	);
 };

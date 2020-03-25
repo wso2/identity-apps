@@ -24,7 +24,7 @@ import { useDispatch } from "react-redux";
 import { EditSection, Hint, Section } from "@wso2is/react-components";
 import { useTranslation } from "react-i18next";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
-import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
+import { Button, Container, Divider, Form, Grid, Modal } from "semantic-ui-react";
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
 import { getAccountRecoveryConfigurations, updateAccountRecoveryConfigurations } from "../../api";
 import { AccountRecoveryConfigurationsInterface } from "../../models/server-configurations";
@@ -404,269 +404,310 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 				} }
 				resetState={ reset }
 			>
-				<h4>Username Recovery</h4>
-				<Field
-					name="UsernameRecoveryCheckBoxes"
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.accountRecovery.usernameRecovery." +
-								"form.enable.label"),
-							value: ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE
-						},
-						{
-							label: t("devPortal:components.serverConfigs.accountRecovery.usernameRecovery." +
-								"form.enableReCaptcha.label"),
-							value: ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA
-						}
-					] }
-					value={ accountRecoveryConfigs.usernameRecoveryCheckBoxes }
-				/>
-				<h4>Password Recovery</h4>
-				<Field
-					name="PasswordRecoveryCheckBoxes"
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.accountRecovery.passwordRecovery." +
-								"form.enableNotificationBasedRecovery.label"),
-							value: ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE
-						},
-						{
-							label: t("devPortal:components.serverConfigs.accountRecovery.passwordRecovery." +
-								"form.enableReCaptchaBasedRecovery.label"),
-							value: ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA
-						},
-						{
-							label: t("devPortal:components.serverConfigs.accountRecovery.passwordRecovery." +
-								"form.enableSecurityQuestionBasedRecovery.label"),
-							value: ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE
-						}
-					] }
-					listen={
-						(values) => {
-							setAccountRecoveryConfigs(getFormValues(values));
-						}
-					}
-					value={ accountRecoveryConfigs.passwordRecoveryCheckBoxes }
-				/>
-				<Field
-					label={ t("devPortal:components.serverConfigs.accountRecovery.passwordRecovery." +
-						"form.noOfQuestionsRequired.label") }
-					name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_MIN_ANSWERS }
-					placeholder={ t("devPortal:components.serverConfigs.accountRecovery.passwordRecovery." +
-						"form.noOfQuestionsRequired.placeholder") }
-					required={ true }
-					requiredErrorMessage={ t("devPortal:components.serverConfigs.accountRecovery." +
-						"passwordRecovery.form.noOfQuestionsRequired.validations.empty") }
-					type="number"
-					value={ accountRecoveryConfigs.passwordRecoveryMinAnswers }
-					hidden={ !accountRecoveryConfigs.passwordRecoveryCheckBoxes.includes(
-						ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE) }
-					width={ 5 }
-				/>
-				<Hint hidden={ !accountRecoveryConfigs.passwordRecoveryCheckBoxes.includes(
-					ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE) }>
-					{ t("devPortal:components.serverConfigs.accountRecovery.passwordRecovery." +
-						"form.noOfQuestionsRequired.hint") }
-				</Hint>
-				<Field
-					name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_RE_CAPTCHA_ENABLE }
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.accountRecovery.passwordRecovery." +
-								"form.enableReCaptchaForSecurityQuestionBasedRecovery.label"),
-							value: ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_RE_CAPTCHA_ENABLE
-						}
-					] }
-					hidden={ !accountRecoveryConfigs.passwordRecoveryCheckBoxes.includes(
-						ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE) }
-					value={ accountRecoveryConfigs.enablePasswordReCaptcha }
-				/>
-				<Hint hidden={ !accountRecoveryConfigs.passwordRecoveryCheckBoxes.includes(
-					ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE) }>
-					{ t("devPortal:components.serverConfigs.accountRecovery.passwordRecovery." +
-						"form.enableReCaptchaForSecurityQuestionBasedRecovery.hint") }
-				</Hint>
-				<Field
-					name=""
-					required={ false }
-					requiredErrorMessage=""
-					hidden={ true }
-					type="divider"
-				/>
-				<h4>Other Settings</h4>
-				<Field
-					name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_FORCED_ENABLE }
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-								"form.enableForcedChallengeQuestions.label"),
-							value: ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_FORCED_ENABLE
-						}
-					] }
-					value={ accountRecoveryConfigs.enableForcedChallengeQuestions }
-				/>
-				<Hint>
-					{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.enableForcedChallengeQuestions.hint") }
-				</Hint>
-				<Field
-					label={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.reCaptchaMaxFailedAttempts.label") }
-					name={ ServerConfigurationsConstants.RE_CAPTCHA_MAX_FAILED_ATTEMPTS }
-					placeholder={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.reCaptchaMaxFailedAttempts.placeholder") }
-					required={ true }
-					requiredErrorMessage={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.reCaptchaMaxFailedAttempts.validations.empty") }
-					type="number"
-					value={ accountRecoveryConfigs.reCaptchaMaxFailedAttempts }
-					width={ 5 }
-				/>
-				<Field
-					name={ ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED }
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-								"form.enableInternalNotificationManagement.label"),
-							value: ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED
-						}
-					] }
-					listen={
-						(values) => {
-							if (values.get(
-								ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED).
-								length > 0) {
-								setNotificationInternallyManaged(false);
-							} else {
-								setNotificationInternallyManaged(true);
-							}
-						}
-					}
-					value={ accountRecoveryConfigs.notificationInternallyManaged }
-				/>
-				<Hint>
-					{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.enableInternalNotificationManagement.hint") }
-				</Hint>
-				<Field
-					name="NotificationCheckBoxes"
-					required={ false }
-					requiredErrorMessage=""
-					type="checkbox"
-					children={ [
-						{
-							label: t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-								"form.notifyRecoverySuccess.label"),
-							value: ServerConfigurationsConstants.NOTIFY_SUCCESS
-						},
-						{
-							label: t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-								"form.notifyQuestionRecoveryStart.label"),
-							value: ServerConfigurationsConstants.NOTIFY_RECOVERY_START
-						}
-					] }
-					hidden={ notificationInternallyManaged }
-					value={ accountRecoveryConfigs.notificationCheckBoxes }
-				/>
-				<Field
-					label={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.recoveryLinkExpiryTime.label") }
-					name={ ServerConfigurationsConstants.RECOVERY_LINK_EXPIRY_TIME }
-					placeholder={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.recoveryLinkExpiryTime.placeholder") }
-					required={ true }
-					requiredErrorMessage={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.recoveryLinkExpiryTime.validations.empty") }
-					type="number"
-					value={ accountRecoveryConfigs.recoveryLinkExpiryTime }
-					disabled={ notificationInternallyManaged }
-					width={ 5 }
-				/>
-				<Hint hidden={ notificationInternallyManaged }>
-					{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.recoveryLinkExpiryTime.hint") }
-				</Hint>
-				<Field
-					label={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.smsOTPExpiryTime.label") }
-					name={ ServerConfigurationsConstants.RECOVERY_SMS_EXPIRY_TIME }
-					placeholder={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.smsOTPExpiryTime.placeholder") }
-					required={ true }
-					requiredErrorMessage={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.smsOTPExpiryTime.validations.empty") }
-					type="number"
-					value={ accountRecoveryConfigs.smsOTPExpiryTime }
-					hidden={ notificationInternallyManaged }
-					width={ 5 }
-				/>
-				<Hint hidden={ notificationInternallyManaged }>
-					{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.smsOTPExpiryTime.hint") }
-				</Hint>
-				<Field
-					label={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.recoveryCallbackURLRegex.label") }
-					name={ ServerConfigurationsConstants.RECOVERY_CALLBACK_REGEX }
-					placeholder={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.recoveryCallbackURLRegex.placeholder") }
-					required={ true }
-					requiredErrorMessage={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.recoveryCallbackURLRegex.validations.empty") }
-					type="text"
-					value={ accountRecoveryConfigs.callbackRegex }
-					hidden={ notificationInternallyManaged }
-					width={ 9 }
-				/>
-				<Hint hidden={ notificationInternallyManaged }>
-					{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.recoveryCallbackURLRegex.hint") }
-				</Hint>
-				<Field
-					name=""
-					required={ false }
-					requiredErrorMessage=""
-					hidden={ true }
-					type="divider"
-				/>
-				<Form.Group>
-					<Field
-						name=""
-						required={ false }
-						requiredErrorMessage=""
-						size="small"
-						type="submit"
-						value={ t("common:submit").toString() }
-					/>
-					<Field
-						name=""
-						required={ false }
-						requiredErrorMessage=""
-						className="link-button"
-						onClick={ () => {
-							hideFormEditView(ACCOUNT_RECOVERY_FORM_IDENTIFIER);
-						} }
-						size="small"
-						type="button"
-						value={ t("common:cancel").toString() }
-					/>
-				</Form.Group>
-
+				<Grid>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<h4>Username Recovery</h4>
+							<Field
+								name="UsernameRecoveryCheckBoxes"
+								required={ false }
+								requiredErrorMessage=""
+								type="checkbox"
+								children={ [
+									{
+										label: t("devPortal:components.serverConfigs.accountRecovery." +
+											"usernameRecovery.form.enable.label"),
+										value: ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE
+									},
+									{
+										label: t("devPortal:components.serverConfigs.accountRecovery." +
+											"usernameRecovery.form.enableReCaptcha.label"),
+										value: ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA
+									}
+								] }
+								value={ accountRecoveryConfigs.usernameRecoveryCheckBoxes }
+							/>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<h4>Password Recovery</h4>
+							<Field
+								name="PasswordRecoveryCheckBoxes"
+								required={ false }
+								requiredErrorMessage=""
+								type="checkbox"
+								children={ [
+									{
+										label: t("devPortal:components.serverConfigs.accountRecovery." +
+											"passwordRecovery.form.enableNotificationBasedRecovery.label"),
+										value: ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE
+									},
+									{
+										label: t("devPortal:components.serverConfigs.accountRecovery." +
+											"passwordRecovery.form.enableReCaptchaBasedRecovery.label"),
+										value: ServerConfigurationsConstants.
+											PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA
+									},
+									{
+										label: t("devPortal:components.serverConfigs.accountRecovery." +
+											"passwordRecovery.form.enableSecurityQuestionBasedRecovery.label"),
+										value: ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE
+									}
+								] }
+								listen={
+									(values) => {
+										setAccountRecoveryConfigs(getFormValues(values));
+									}
+								}
+								value={ accountRecoveryConfigs.passwordRecoveryCheckBoxes }
+								hidden={ true }
+							/>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Field
+								label={ t("devPortal:components.serverConfigs.accountRecovery." +
+									"passwordRecovery.form.noOfQuestionsRequired.label") }
+								name={ ServerConfigurationsConstants.
+									PASSWORD_RECOVERY_QUESTION_BASED_MIN_ANSWERS }
+								placeholder={ t("devPortal:components.serverConfigs.accountRecovery." +
+									"passwordRecovery.form.noOfQuestionsRequired.placeholder") }
+								required={ true }
+								requiredErrorMessage={ t("devPortal:components.serverConfigs." +
+									"accountRecovery.passwordRecovery.form.noOfQuestionsRequired." +
+									"validations.empty") }
+								type="number"
+								value={ accountRecoveryConfigs.passwordRecoveryMinAnswers }
+								width={ 5 }
+							/>
+							<Hint>
+								{ t("devPortal:components.serverConfigs.accountRecovery.passwordRecovery." +
+									"form.noOfQuestionsRequired.hint") }
+							</Hint>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Field
+								name={ ServerConfigurationsConstants.
+									PASSWORD_RECOVERY_QUESTION_BASED_RE_CAPTCHA_ENABLE }
+								required={ false }
+								requiredErrorMessage=""
+								type="checkbox"
+								children={ [
+									{
+										label: t("devPortal:components.serverConfigs.accountRecovery." +
+											"passwordRecovery.form." +
+											"enableReCaptchaForSecurityQuestionBasedRecovery.label"),
+										value: ServerConfigurationsConstants.
+											PASSWORD_RECOVERY_QUESTION_BASED_RE_CAPTCHA_ENABLE
+									}
+								] }
+								value={ accountRecoveryConfigs.enablePasswordReCaptcha }
+							/>
+							<Hint>
+								{ t("devPortal:components.serverConfigs.accountRecovery.passwordRecovery." +
+									"form.enableReCaptchaForSecurityQuestionBasedRecovery.hint") }
+							</Hint>
+							<Field
+								name=""
+								required={ false }
+								requiredErrorMessage=""
+								hidden={ true }
+								type="divider"
+							/>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<h4>Other Settings</h4>
+							<Field
+								name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_FORCED_ENABLE }
+								required={ false }
+								requiredErrorMessage=""
+								type="checkbox"
+								children={ [
+									{
+										label: t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+											"form.enableForcedChallengeQuestions.label"),
+										value: ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_FORCED_ENABLE
+									}
+								] }
+								value={ accountRecoveryConfigs.enableForcedChallengeQuestions }
+							/>
+							<Hint>
+								{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+									"form.enableForcedChallengeQuestions.hint") }
+							</Hint>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Field
+								label={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+									"form.reCaptchaMaxFailedAttempts.label") }
+								name={ ServerConfigurationsConstants.RE_CAPTCHA_MAX_FAILED_ATTEMPTS }
+								placeholder={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+									"form.reCaptchaMaxFailedAttempts.placeholder") }
+								required={ true }
+								requiredErrorMessage={ t("devPortal:components.serverConfigs.accountRecovery." +
+									"otherSettings.form.reCaptchaMaxFailedAttempts.validations.empty") }
+								type="number"
+								value={ accountRecoveryConfigs.reCaptchaMaxFailedAttempts }
+								width={ 5 }
+							/>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Field
+								name={ ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED }
+								required={ false }
+								requiredErrorMessage=""
+								type="checkbox"
+								children={ [
+									{
+										label: t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+											"form.enableInternalNotificationManagement.label"),
+										value: ServerConfigurationsConstants.
+											ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED
+									}
+								] }
+								listen={
+									(values) => {
+										if (values.get(
+											ServerConfigurationsConstants.
+												ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED).length > 0) {
+											setNotificationInternallyManaged(false);
+										} else {
+											setNotificationInternallyManaged(true);
+										}
+									}
+								}
+								value={ accountRecoveryConfigs.notificationInternallyManaged }
+							/>
+							<Hint>
+								{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+									"form.enableInternalNotificationManagement.hint") }
+							</Hint>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Field
+								name="NotificationCheckBoxes"
+								required={ false }
+								requiredErrorMessage=""
+								type="checkbox"
+								children={ [
+									{
+										label: t("devPortal:components.serverConfigs.accountRecovery." +
+											"otherSettings.form.notifyRecoverySuccess.label"),
+										value: ServerConfigurationsConstants.NOTIFY_SUCCESS
+									},
+									{
+										label: t("devPortal:components.serverConfigs.accountRecovery." +
+											"otherSettings.form.notifyQuestionRecoveryStart.label"),
+										value: ServerConfigurationsConstants.NOTIFY_RECOVERY_START
+									}
+								] }
+								value={ accountRecoveryConfigs.notificationCheckBoxes }
+							/>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Field
+								label={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+									"form.recoveryLinkExpiryTime.label") }
+								name={ ServerConfigurationsConstants.RECOVERY_LINK_EXPIRY_TIME }
+								placeholder={ t("devPortal:components.serverConfigs.accountRecovery." +
+									"otherSettings.form.recoveryLinkExpiryTime.placeholder") }
+								required={ true }
+								requiredErrorMessage={ t("devPortal:components.serverConfigs.accountRecovery." +
+									"otherSettings.form.recoveryLinkExpiryTime.validations.empty") }
+								type="number"
+								value={ accountRecoveryConfigs.recoveryLinkExpiryTime }
+								width={ 5 }
+								hidden={ true }
+							/>
+							<Hint>
+								{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+									"form.recoveryLinkExpiryTime.hint") }
+							</Hint>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Field
+								label={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+									"form.smsOTPExpiryTime.label") }
+								name={ ServerConfigurationsConstants.RECOVERY_SMS_EXPIRY_TIME }
+								placeholder={ t("devPortal:components.serverConfigs.accountRecovery." +
+									"otherSettings.form.smsOTPExpiryTime.placeholder") }
+								required={ true }
+								requiredErrorMessage={ t("devPortal:components.serverConfigs.accountRecovery." +
+									"otherSettings.form.smsOTPExpiryTime.validations.empty") }
+								type="number"
+								value={ accountRecoveryConfigs.smsOTPExpiryTime }
+								width={ 5 }
+							/>
+							<Hint>
+								{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+									"form.smsOTPExpiryTime.hint") }
+							</Hint>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Field
+								label={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+									"form.recoveryCallbackURLRegex.label") }
+								name={ ServerConfigurationsConstants.RECOVERY_CALLBACK_REGEX }
+								placeholder={ t("devPortal:components.serverConfigs.accountRecovery." +
+									"otherSettings.form.recoveryCallbackURLRegex.placeholder") }
+								required={ true }
+								requiredErrorMessage={ t("devPortal:components.serverConfigs.accountRecovery." +
+									"otherSettings.form.recoveryCallbackURLRegex.validations.empty") }
+								type="text"
+								value={ accountRecoveryConfigs.callbackRegex }
+								width={ 9 }
+							/>
+							<Hint>
+								{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+									"form.recoveryCallbackURLRegex.hint") }
+							</Hint>
+						</Grid.Column>
+					</Grid.Row>
+					<Grid.Row columns={ 1 }>
+						<Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+							<Form.Group>
+								<Field
+									name=""
+									required={ false }
+									requiredErrorMessage=""
+									size="small"
+									type="submit"
+									value={ t("common:save").toString() }
+								/>
+								<Field
+									name=""
+									required={ false }
+									requiredErrorMessage=""
+									className="link-button"
+									onClick={ () => {
+										hideFormEditView(ACCOUNT_RECOVERY_FORM_IDENTIFIER);
+									} }
+									size="small"
+									type="button"
+									value={ t("common:cancel").toString() }
+								/>
+							</Form.Group>
+						</Grid.Column>
+					</Grid.Row>
+				</Grid>
 			</Forms>
 		</EditSection>
 	) : null;
@@ -683,6 +724,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 			onPrimaryActionClick={ () => showFormEditView(ACCOUNT_RECOVERY_FORM_IDENTIFIER) }
 			primaryAction={ t("devPortal:components.serverConfigs.accountRecovery.actionTitles.config") }
 			primaryActionIcon="key"
+			showActionBar={ !editingForm[ACCOUNT_RECOVERY_FORM_IDENTIFIER] }
 		>
 			{ showUserAccountRecoveryView }
 			{ confirmationModal }
