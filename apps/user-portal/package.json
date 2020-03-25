@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/user-portal",
-    "version": "1.0.105",
+    "version": "1.0.106",
     "description": "WSO2 Identity Server User Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -21,12 +21,12 @@
         "clean": "rm -rf build"
     },
     "dependencies": {
-        "@wso2is/authentication": "^1.0.105",
-        "@wso2is/core": "^1.0.105",
-        "@wso2is/forms": "^1.0.105",
-        "@wso2is/http": "^1.0.105",
-        "@wso2is/theme": "^1.0.105",
-        "@wso2is/validation": "^1.0.105",
+        "@wso2is/authentication": "^1.0.106",
+        "@wso2is/core": "^1.0.106",
+        "@wso2is/forms": "^1.0.106",
+        "@wso2is/http": "^1.0.106",
+        "@wso2is/theme": "^1.0.106",
+        "@wso2is/validation": "^1.0.106",
         "qrcode.react": "^1.0.0"
     },
     "devDependencies": {
