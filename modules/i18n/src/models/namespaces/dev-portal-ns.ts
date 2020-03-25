@@ -429,6 +429,7 @@ export interface DevPortalNS {
                         noOfQuestionsRequired: {
                             label: string;
                             hint: string;
+                            placeholder: string;
                             validations: {
                                 empty: string;
                             };
@@ -447,6 +448,7 @@ export interface DevPortalNS {
                         };
                         reCaptchaMaxFailedAttempts: {
                             label: string;
+                            placeholder: string;
                             validations: {
                                 empty: string;
                             };
@@ -464,6 +466,7 @@ export interface DevPortalNS {
                         recoveryLinkExpiryTime: {
                             label: string;
                             hint: string;
+                            placeholder: string;
                             validations: {
                                 empty: string;
                             };
@@ -471,6 +474,7 @@ export interface DevPortalNS {
                         smsOTPExpiryTime: {
                             label: string;
                             hint: string;
+                            placeholder: string;
                             validations: {
                                 empty: string;
                             };
@@ -478,6 +482,7 @@ export interface DevPortalNS {
                         recoveryCallbackURLRegex: {
                             label: string;
                             hint: string;
+                            placeholder: string;
                             validations: {
                                 empty: string;
                             };

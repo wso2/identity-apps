@@ -722,39 +722,43 @@ export const devPortal: DevPortalNS = {
                         },
                         enableInternalNotificationManagement: {
                             hint: "Set false if the client application handles notification sending",
-                            label: "Enable Internal Notification Management"
+                            label: "Enable internal notification management"
                         },
                         notifyQuestionRecoveryStart: {
-                            label: "Notify when Questions Based Recovery Starts"
+                            label: "Notify when questions based recovery starts"
                         },
                         notifyRecoverySuccess: {
-                            label: "Notify when Recovery Success"
+                            label: "Notify when recovery success"
                         },
                         reCaptchaMaxFailedAttempts: {
-                            label: "Max Failed Attempts for ReCaptcha",
+                            label: "Max failed attempts for reCaptcha",
+                            placeholder: "2",
                             validations: {
-                                empty: "Max Failed Attempts for ReCaptcha is required."
-                            }
-                        },
-                        recoveryLinkExpiryTime: {
-                            hint: "Specify the time to expire the recovery link in minutes.",
-                            label: "Recovery Link Expiry Time",
-                            validations: {
-                                empty: "Number Of Questions Required For Password Recovery is required."
+                                empty: "Max failed attempts for reCaptcha is required."
                             }
                         },
                         recoveryCallbackURLRegex: {
                             hint: "Callback URL regex for the recovery.",
                             label: "Recovery callback URL regex",
+                            placeholder: ".*",
                             validations: {
                                 empty: "Recovery callback URL regex is required."
                             }
                         },
+                        recoveryLinkExpiryTime: {
+                            hint: "Specify the time to expire the recovery link in minutes.",
+                            label: "Recovery link expiry time",
+                            placeholder: "1440",
+                            validations: {
+                                empty: "Number of questions required for password recovery is required."
+                            }
+                        },
                         smsOTPExpiryTime: {
                             hint: "Specify the time to expire the SMS OTP in minutes.",
-                            label: "SMS OTP Expiry Time",
+                            label: "SMS OTP expiry time",
+                            placeholder: "1",
                             validations: {
-                                empty: "Number Of Questions Required For Password Recovery is required."
+                                empty: "Number of questions required for password recovery is required."
                             }
                         },
                     }
@@ -766,24 +770,25 @@ export const devPortal: DevPortalNS = {
                     description: "Configure how password recovery should happen with your users.",
                     form: {
                         enableNotificationBasedRecovery: {
-                            label: "Enable Notification Based Password Recovery"
+                            label: "Enable notification based password recovery"
                         },
                         enableReCaptchaBasedRecovery: {
-                            label: "Enable reCaptcha for Password Recovery"
+                            label: "Enable reCaptcha for password recovery"
                         },
                         enableReCaptchaForSecurityQuestionBasedRecovery: {
                             hint: "Show captcha for challenge question based password recovery",
-                            label: "Enable reCaptcha for Security Questions Based Password Recovery"
+                            label: "Enable reCaptcha for security questions based password recovery"
                         },
                         enableSecurityQuestionBasedRecovery: {
-                            label: "Enable Security Question Based Password Recovery"
+                            label: "Enable security question based password recovery"
                         },
                         noOfQuestionsRequired: {
                             hint: "The user will have to successfully answer this number of security questions to " +
                                 "recover the password.",
-                            label: "Number Of Questions Required For Password Recovery",
+                            label: "Number of questions required for password recovery",
+                            placeholder: "2",
                             validations: {
-                                empty: "Number Of Questions Required For Password Recovery is required."
+                                empty: "Number of questions required for password recovery is required."
                             }
                         },
                     },
@@ -796,10 +801,10 @@ export const devPortal: DevPortalNS = {
                     description: "Configure how username recovery should happen with your users.",
                     form: {
                         enable: {
-                            label: "Enable Username Recovery"
+                            label: "Enable username recovery"
                         },
                         enableReCaptcha: {
-                            label: "Enable reCaptcha for Username Recovery"
+                            label: "Enable reCaptcha for username recovery"
                         }
                     },
                     heading: "Username Recovery"
@@ -813,38 +818,37 @@ export const devPortal: DevPortalNS = {
                     heading: "Confirmation",
                     message: "Do you wish to save the configurations related to user self registration?"
                 },
-                description: "Configure how the User Self Registration should happen with your users.",
+                description: "Configure how the user self registration should happen with your users.",
                 form: {
                     callbackURLRegex: {
                         label: "User self registration callback URL regex",
-                        placeholder: "User self registration callback URL regex.",
+                        placeholder: "https://localhost:9443/authenticationendpoint/login.do",
                         validations: {
                             empty: "User self registration callback URL regex is required."
                         }
                     },
                     enable: {
-                        label: "Enable User Self Registration",
+                        label: "Enable user self registration",
                     },
                     enableAccountLockOnCreation: {
-                        label: "Enable Account Lock On Creation"
+                        label: "Enable account lock on creation"
                     },
                     enableReCaptcha: {
                         label: "Enable reCaptcha"
                     },
                     internalNotificationManagement: {
-                        label: "Internal Notification Management"
+                        label: "Internal notification management"
                     },
                     smsOTPExpiryTime: {
                         label: "User self registration SMS OTP expiry time",
-                        placeholder: "Set the number of minutes that the SMS OTP would be valid.",
+                        placeholder: "1",
                         validations: {
                             empty: "User self registration SMS OTP expiry time is required."
                         }
                     },
                     verificationLinkExpiryTime: {
                         label: "User self registration verification link expiry time",
-                        placeholder: "Set the number of minutes for the self registration " +
-                            "verification e-mail would be valid.",
+                        placeholder: "1440",
                         validations: {
                             empty: "User self registration verification link expiry time is required."
                         }

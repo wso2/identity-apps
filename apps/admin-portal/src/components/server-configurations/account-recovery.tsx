@@ -367,6 +367,11 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 					usernameRecoveryCheckBoxes: getUsernameRecoveryCheckBoxes(response)
 				};
 				setAccountRecoveryConfigs(configs);
+				if (configs.notificationInternallyManaged.length > 0) {
+					setNotificationInternallyManaged(false);
+				} else {
+					setNotificationInternallyManaged(true);
+				}
 			});
 	}, []);
 
@@ -450,17 +455,14 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 					value={ accountRecoveryConfigs.passwordRecoveryCheckBoxes }
 				/>
 				<Field
-					label={ t(
-						"devPortal:components.serverConfigs.accountRecovery.passwordRecovery." +
-						"form.noOfQuestionsRequired.label"
-					) }
+					label={ t("devPortal:components.serverConfigs.accountRecovery.passwordRecovery." +
+						"form.noOfQuestionsRequired.label") }
 					name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_MIN_ANSWERS }
-					placeholder=""
+					placeholder={ t("devPortal:components.serverConfigs.accountRecovery.passwordRecovery." +
+						"form.noOfQuestionsRequired.placeholder") }
 					required={ true }
-					requiredErrorMessage={ t(
-						"devPortal:components.serverConfigs.accountRecovery.passwordRecovery." +
-						"form.noOfQuestionsRequired.validations.empty"
-					) }
+					requiredErrorMessage={ t("devPortal:components.serverConfigs.accountRecovery." +
+						"passwordRecovery.form.noOfQuestionsRequired.validations.empty") }
 					type="number"
 					value={ accountRecoveryConfigs.passwordRecoveryMinAnswers }
 					disabled={ !accountRecoveryConfigs.passwordRecoveryCheckBoxes.includes(
@@ -520,17 +522,14 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						"form.enableForcedChallengeQuestions.hint") }
 				</Hint>
 				<Field
-					label={ t(
-						"devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.reCaptchaMaxFailedAttempts.label"
-					) }
+					label={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+						"form.reCaptchaMaxFailedAttempts.label") }
 					name={ ServerConfigurationsConstants.RE_CAPTCHA_MAX_FAILED_ATTEMPTS }
-					placeholder=""
+					placeholder={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+						"form.reCaptchaMaxFailedAttempts.placeholder") }
 					required={ true }
-					requiredErrorMessage={ t(
-						"devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.reCaptchaMaxFailedAttempts.validations.empty"
-					) }
+					requiredErrorMessage={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+						"form.reCaptchaMaxFailedAttempts.validations.empty") }
 					type="number"
 					value={ accountRecoveryConfigs.reCaptchaMaxFailedAttempts }
 					width={ 9 }
@@ -549,14 +548,12 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 					] }
 					listen={
 						(values) => {
-							console.log(values.get(
-								ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED))
 							if (values.get(
 								ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED).
 								length > 0) {
-								setNotificationInternallyManaged(true);
-							} else {
 								setNotificationInternallyManaged(false);
+							} else {
+								setNotificationInternallyManaged(true);
 							}
 						}
 					}
@@ -590,12 +587,11 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 					label={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
 						"form.recoveryLinkExpiryTime.label") }
 					name={ ServerConfigurationsConstants.RECOVERY_LINK_EXPIRY_TIME }
-					placeholder=""
+					placeholder={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+						"form.recoveryLinkExpiryTime.placeholder") }
 					required={ true }
-					requiredErrorMessage={ t(
-						"devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.recoveryLinkExpiryTime.validations.empty"
-					) }
+					requiredErrorMessage={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+						"form.recoveryLinkExpiryTime.validations.empty") }
 					type="number"
 					value={ accountRecoveryConfigs.recoveryLinkExpiryTime }
 					disabled={ notificationInternallyManaged }
@@ -606,17 +602,14 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						"form.recoveryLinkExpiryTime.hint") }
 				</Hint>
 				<Field
-					label={ t(
-						"devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.smsOTPExpiryTime.label"
-					) }
+					label={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+						"form.smsOTPExpiryTime.label") }
 					name={ ServerConfigurationsConstants.RECOVERY_SMS_EXPIRY_TIME }
-					placeholder=""
+					placeholder={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+						"form.smsOTPExpiryTime.placeholder") }
 					required={ true }
-					requiredErrorMessage={ t(
-						"devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.smsOTPExpiryTime.validations.empty"
-					) }
+					requiredErrorMessage={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+						"form.smsOTPExpiryTime.validations.empty") }
 					type="number"
 					value={ accountRecoveryConfigs.smsOTPExpiryTime }
 					disabled={ notificationInternallyManaged }
@@ -627,17 +620,14 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						"form.smsOTPExpiryTime.hint") }
 				</Hint>
 				<Field
-					label={ t(
-						"devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.recoveryCallbackURLRegex.label"
-					) }
+					label={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+						"form.recoveryCallbackURLRegex.label") }
 					name={ ServerConfigurationsConstants.RECOVERY_CALLBACK_REGEX }
-					placeholder=""
+					placeholder={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+						"form.recoveryCallbackURLRegex.placeholder") }
 					required={ true }
-					requiredErrorMessage={ t(
-						"devPortal:components.serverConfigs.accountRecovery.otherSettings." +
-						"form.recoveryCallbackURLRegex.validations.empty"
-					) }
+					requiredErrorMessage={ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
+						"form.recoveryCallbackURLRegex.validations.empty") }
 					type="text"
 					value={ accountRecoveryConfigs.callbackRegex }
 					disabled={ notificationInternallyManaged }
