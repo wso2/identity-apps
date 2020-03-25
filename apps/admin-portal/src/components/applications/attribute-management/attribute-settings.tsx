@@ -29,6 +29,7 @@ import {
     ClaimConfigurationInterface,
     ClaimDialect,
     ClaimMappingInterface,
+    CRUDPermissionsInterface,
     ExternalClaim,
     RoleConfigInterface,
     RoleMappingInterface,
@@ -85,6 +86,10 @@ interface AttributeSelectionPropsInterface {
      * Selected inbound protocol.
      */
     selectedInboundProtocol: AuthProtocolMetaListItemInterface;
+    /**
+     * CRUD permissions,
+     */
+    permissions?: CRUDPermissionsInterface;
 }
 
 export const getLocalDialectURI = (): string => {

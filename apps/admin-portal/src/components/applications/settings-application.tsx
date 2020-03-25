@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAuthProtocolMetadata, updateAuthProtocolConfig } from "../../api";
 import {
     AuthProtocolMetaListItemInterface,
+    CRUDPermissionsInterface,
     InboundProtocolListItemInterface,
     SupportedAuthProtocolMetaTypes,
     SupportedAuthProtocolTypes
@@ -74,6 +75,10 @@ interface ApplicationSettingsPropsInterface {
      *  Is inbound protocol config request is still loading.
      */
     isInboundProtocolConfigRequestLoading: boolean;
+    /**
+     * CRUD permissions,
+     */
+    permissions?: CRUDPermissionsInterface;
 }
 
 /**

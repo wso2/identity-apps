@@ -196,6 +196,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 selectedInboundProtocolConfig={ selectedInboundProtocolConfig }
                 setSelectedInboundProtocol={ setSelectedInboundProtocol }
                 showProtocolSelection={ showProtocolSelection }
+                permissions={ permissions }
             />
         </ResourceTab.Pane>
     );
@@ -206,6 +207,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 appId={ application.id }
                 claimConfigurations={ application.claimConfiguration }
                 selectedInboundProtocol={ selectedInboundProtocol }
+                permissions={ permissions }
             />
         </ResourceTab.Pane>
     );
@@ -218,6 +220,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 authenticationSequence={ application.authenticationSequence }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
+                permissions={ permissions }
             />
         </ResourceTab.Pane>
     );

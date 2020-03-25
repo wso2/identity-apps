@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useDispatch } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { updateAdvanceConfigurations } from "../../api";
-import { AdvancedConfigurationsInterface } from "../../models";
+import { AdvancedConfigurationsInterface, CRUDPermissionsInterface } from "../../models";
 import { AdvanceConfigurationsForm } from "./forms";
 
 /**
@@ -42,6 +42,10 @@ interface AdvanceSettingsPropsInterface {
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * CRUD permissions,
+     */
+    permissions?: CRUDPermissionsInterface;
 }
 
 /**

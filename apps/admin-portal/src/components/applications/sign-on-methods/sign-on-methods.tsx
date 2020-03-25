@@ -21,7 +21,8 @@ import { StepBasedFlow } from "./step-based-flow";
 import {
     AdaptiveAuthTemplateInterface,
     AuthenticationSequenceInterface,
-    AuthenticationStepInterface
+    AuthenticationStepInterface,
+    CRUDPermissionsInterface
 } from "../../../models";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { Divider } from "semantic-ui-react";
@@ -51,6 +52,10 @@ interface SignOnMethodsPropsInterface {
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * CRUD permissions,
+     */
+    permissions?: CRUDPermissionsInterface;
 }
 
 /**
