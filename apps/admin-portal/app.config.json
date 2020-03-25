@@ -46,6 +46,14 @@
             "delete": true
         }
     },
+    "users": {
+        "permissions": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true
+        }
+    },
     "roles": {
         "permissions": {
             "create": true,
