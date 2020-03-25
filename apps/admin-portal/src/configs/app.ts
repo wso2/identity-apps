@@ -46,6 +46,7 @@ interface ServiceResourcesType {
     revoke: string;
     wellKnown: string;
     selfSignUp: string;
+    accountRecovery: string;
 }
 
 export const ServiceResourcesEndpoint: ServiceResourcesType = {
@@ -76,5 +77,8 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     wellKnown: `${GlobalConfig.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`,
     selfSignUp: `${GlobalConfig.serverHost}/api/server/v1/identity-governance/${
         ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID}/connectors/${
-        ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID}`
+        ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID}`,
+    accountRecovery: `${GlobalConfig.serverHost}/api/server/v1/identity-governance/${
+        ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID}/connectors/${
+        ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID}`
 };

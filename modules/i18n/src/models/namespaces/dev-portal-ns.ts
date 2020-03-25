@@ -388,6 +388,13 @@ export interface DevPortalNS {
                 };
                 description: string;
                 heading: string;
+                confirmation: {
+                    heading: string;
+                    message: string;
+                };
+                notifications: {
+                    updateConfigurations: Notification;
+                };
                 usernameRecovery: {
                     actionTitles: {
                         config: string;
@@ -422,6 +429,7 @@ export interface DevPortalNS {
                         noOfQuestionsRequired: {
                             label: string;
                             hint: string;
+                            placeholder: string;
                             validations: {
                                 empty: string;
                             };
@@ -434,8 +442,13 @@ export interface DevPortalNS {
                 };
                 otherSettings: {
                     form: {
+                        enableForcedChallengeQuestions: {
+                            label: string;
+                            hint: string;
+                        };
                         reCaptchaMaxFailedAttempts: {
                             label: string;
+                            placeholder: string;
                             validations: {
                                 empty: string;
                             };
@@ -453,6 +466,7 @@ export interface DevPortalNS {
                         recoveryLinkExpiryTime: {
                             label: string;
                             hint: string;
+                            placeholder: string;
                             validations: {
                                 empty: string;
                             };
@@ -460,6 +474,7 @@ export interface DevPortalNS {
                         smsOTPExpiryTime: {
                             label: string;
                             hint: string;
+                            placeholder: string;
                             validations: {
                                 empty: string;
                             };
@@ -467,6 +482,7 @@ export interface DevPortalNS {
                         recoveryCallbackURLRegex: {
                             label: string;
                             hint: string;
+                            placeholder: string;
                             validations: {
                                 empty: string;
                             };
