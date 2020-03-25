@@ -39,5 +39,9 @@
         >.text {
             opacity: 0.45;
         }
+
+        .dropdown.icon {
+            display: none; 
+        }
     }
 }
