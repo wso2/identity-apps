@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteApplication, updateApplicationDetails } from "../../api";
 import { GlobalConfig } from "../../configs";
-import { ApplicationInterface } from "../../models";
+import { ApplicationInterface, CRUDPermissionsInterface } from "../../models";
 import { GeneralDetailsForm } from "./forms";
 
 /**
@@ -66,6 +66,10 @@ interface GeneralApplicationSettingsInterface {
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * CRUD permissions,
+     */
+    permissions?: CRUDPermissionsInterface;
 }
 
 /**
@@ -87,7 +91,8 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         accessUrl,
         isLoading,
         onDelete,
-        onUpdate
+        onUpdate,
+        permissions
     } = props;
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
@@ -176,16 +181,20 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         imageUrl={ imageUrl }
                         accessUrl={ accessUrl }
                     />
-                    { !(GlobalConfig.doNotDeleteApplications.includes(name)) && (
-                        <DangerZoneGroup sectionHeader="Danger Zone">
-                            <DangerZone
-                                actionTitle="Delete application"
-                                header="Delete the application"
-                                subheader="This action is irreversible. Please proceed with caution."
-                                onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
-                            />
-                        </DangerZoneGroup>
-                    ) }
+                    {
+                        (permissions && permissions.delete === false)
+                            ? null
+                            : !GlobalConfig.doNotDeleteApplications.includes(name) && (
+                                <DangerZoneGroup sectionHeader="Danger Zone">
+                                    <DangerZone
+                                        actionTitle="Delete application"
+                                        header="Delete the application"
+                                        subheader="This action is irreversible. Please proceed with caution."
+                                        onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
+                                    />
+                                </DangerZoneGroup>
+                            )
+                    }
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="warning"

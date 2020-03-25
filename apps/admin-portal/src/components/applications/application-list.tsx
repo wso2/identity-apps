@@ -18,14 +18,14 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AppAvatar, ConfirmationModal, ResourceList } from "@wso2is/react-components";
+import { AppAvatar, ConfirmationModal, ResourceList, ResourceListActionInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useDispatch } from "react-redux";
 import { history } from "../../helpers";
 // TODO: Importing `deleteApplication` before `history` import throws `appBaseName` undefined error.
 // tslint:disable-next-line:ordered-imports
 import { deleteApplication } from "../../api";
-import { ApplicationListInterface, ApplicationListItemInterface } from "../../models";
+import { ApplicationListInterface, ApplicationListItemInterface, CRUDPermissionsInterface } from "../../models";
 import { GlobalConfig } from "../../configs";
 
 /**
@@ -33,8 +33,18 @@ import { GlobalConfig } from "../../configs";
  * Proptypes for the applications list component.
  */
 interface ApplicationListPropsInterface {
+    /**
+     * Application list.
+     */
     list: ApplicationListInterface;
+    /**
+     * On application delete callback.
+     */
     onApplicationDelete: () => void;
+    /**
+     * CRUD permissions,
+     */
+    permissions?: CRUDPermissionsInterface;
 }
 
 /**
@@ -49,7 +59,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
     const {
         list,
-        onApplicationDelete
+        onApplicationDelete,
+        permissions
     } = props;
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
@@ -102,34 +113,51 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             });
     };
 
+    /**
+     * Resolves list item actions based on the app config.
+     *
+     * @param {ApplicationListItemInterface} app - Application derails.
+     * @return {ResourceListActionInterface[]} Resolved list actions.
+     */
+    const resolveListActions = (app: ApplicationListItemInterface): ResourceListActionInterface[]  => {
+        const actions: ResourceListActionInterface[] = [
+            {
+                icon: "pencil alternate",
+                onClick: (): void => handleApplicationEdit(app.id),
+                popupText: "edit",
+                type: "button"
+            }
+        ];
+
+        if (permissions && permissions.delete === false) {
+            return actions;
+        }
+
+        actions.push({
+            hidden: GlobalConfig.doNotDeleteApplications.includes(app.name),
+            icon: "trash alternate",
+            onClick: (): void => {
+                setShowDeleteConfirmationModal(true);
+                setDeletingApplication(app);
+            },
+            popupText: "delete",
+            type: "button"
+        });
+
+        return actions;
+    };
+
     return (
         <>
             <ResourceList className="applications-list">
                 {
-                    list.applications.map((app, index) => {
+                    list.applications.map((app: ApplicationListItemInterface, index: number) => {
                         // TODO Remove this check and move the logic to backend.
                         if ("wso2carbon-local-sp" !== app.name) {
                             return (
                                 <ResourceList.Item
                                     key={ index }
-                                    actions={ [
-                                        {
-                                            icon: "pencil alternate",
-                                            onClick: (): void => handleApplicationEdit(app.id),
-                                            popupText: "edit",
-                                            type: "button"
-                                        },
-                                        {
-                                            hidden: GlobalConfig.doNotDeleteApplications.includes(app.name),
-                                            icon: "trash alternate",
-                                            onClick: (): void => {
-                                                setShowDeleteConfirmationModal(true);
-                                                setDeletingApplication(app);
-                                            },
-                                            popupText: "delete",
-                                            type: "dropdown"
-                                        }
-                                    ] }
+                                    actions={ resolveListActions(app) }
                                     actionsFloated="right"
                                     avatar={ (
                                         <AppAvatar

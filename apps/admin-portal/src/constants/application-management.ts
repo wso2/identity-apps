@@ -48,5 +48,21 @@ export class ApplicationManagementConstants {
         "var onLoginRequest = function(context) {",
         "};",
         ""
-    ]
+    ];
+
+    /**
+     * Key to access the application management CRUD operation permissions in the app config file.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly CRUD_PERMISSIONS_APP_CONFIG_KEY: string = "applications.permissions";
+
+    /**
+     * Key to access the application management sub features
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly SUB_FEATURES_APP_CONFIG_KEY: string = "applications.subFeatures";
 }
