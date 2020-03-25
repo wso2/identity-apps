@@ -209,13 +209,18 @@ const createSampleTheme = () => {
 
                 files.map((file) => {
                     const fileNameSplit = file.split(".");
-                    const content = "/*******************************\n" +
-                        `     ${titleCase(fileNameSplit[0], "-")} ${titleCase(fileNameSplit[1], " ")}\n` +
-                        "********************************\n";
 
-                    fs.writeFileSync(path.join(folderPath, file), content, (error) => {
-                        console.error(error);
-                    });
+                    if (fileNameSplit.length > 0 &&
+                        (fileNameSplit[1] === "variables" || fileNameSplit[1] === "overrides")) {
+
+                        const content = "/*******************************\n" +
+                            `     ${titleCase(fileNameSplit[0], "-")} ${titleCase(fileNameSplit[1], " ")}\n` +
+                            "********************************\n";
+
+                        fs.writeFileSync(path.join(folderPath, file), content, (error) => {
+                            console.error(error);
+                        });
+                    }
                 });
             }
         }
