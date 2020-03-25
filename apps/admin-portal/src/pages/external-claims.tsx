@@ -57,6 +57,7 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
     const [filteredClaims, setFilteredClaims] = useState<ExternalClaim[]>(null);
     const [sortBy, setSortBy] = useState(SORT_BY[0]);
     const [sortOrder, setSortOrder] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -64,10 +65,13 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
 
     useEffect(() => {
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
+        setIsLoading(true);
 
         getADialect(dialectID).then(response => {
             setDialect(response);
+            setIsLoading(false);
         }).catch(error => {
+            setIsLoading(false);
             dispatch(addAlert(
                 {
                     description: error?.description || "There was an error while fetching local dialect",
@@ -209,7 +213,7 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                             />
                         </ListLayout>
                     )
-                    : (
+                    : !isLoading && (
                         <EmptyPlaceholder
                             action={
                                 <PrimaryButton
