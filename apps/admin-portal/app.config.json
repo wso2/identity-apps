@@ -1,8 +1,57 @@
 {
-    "applications": true,
-    "claims": true,
-    "identityProviders": true,
-    "serverConfigurations": true,
-    "userStores": true,
-    "usersAndRoles": true
+    "applications": {
+        "permissions": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true
+        },
+        "subFeatures": {
+            "generalSettings": true,
+            "accessConfiguration": true,
+            "attributeMapping": true,
+            "signOnMethodConfiguration": true,
+            "advanceSettings": true
+        }
+    },
+    "claims": {
+        "permissions": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true
+        }
+    },
+    "identityProviders": {
+        "permissions": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true
+        }
+    },
+    "serverConfigurations": {
+        "permissions": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true
+        }
+    },
+    "userStores": {
+        "permissions": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true
+        }
+    },
+    "roles": {
+        "permissions": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true
+        }
+    }
 }
