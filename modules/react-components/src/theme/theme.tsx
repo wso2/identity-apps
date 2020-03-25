@@ -55,10 +55,11 @@ interface ThemeContextState {
  * ThemeContext interface.
  */
 interface ThemeContextInterface {
-    dispatch: ({type}: {type: string}) => void;
+    dispatch: ({ type }: {type: string}) => void;
     compile: (options: ThemeCompileOptionsInterface) => void;
     setAppName: (name: string) => void;
     setCopyrightText: (text: string) => void;
+    setCSS: (css: string) => void;
     setLogo: (url: string) => void;
     setProductName: (name: string) => void;
     setStyles: (styles: ThemeCompileOptionsInterface) => void;
@@ -95,13 +96,18 @@ const themeContextReducerActions = {
 /**
  * Set Theme CSS reducer action.
  *
- * @param {string} styles - Compiled CSS string.
+ * @param {string} css - Compiled CSS string.
  */
-const setCSS = (styles: string) => ({
-    payload: styles,
+const setCSS = (css: string) => ({
+    payload: css,
     type: themeContextReducerActions.SET_CSS
 });
 
+/**
+ * Set User Defined LESS variable values.
+ *
+ * @param {ThemeCompileOptionsInterface} styles - LESS ModifyVars
+ */
 const setStyles = (styles: ThemeCompileOptionsInterface) => ({
     payload: styles,
     type: themeContextReducerActions.SET_STYLES
@@ -207,7 +213,7 @@ const themeContextReducer = (state = themeInitialState, action) => {
 };
 
 /**
- * Theme toggle method.
+ * Theme compile method.
  * 
  * @param {any} dispatch - `dispatch` function from ReactContext.
  * @param {any} state - ThemeContext state.
@@ -225,10 +231,20 @@ const handleCompileTheme = (dispatch, state, options: ThemeCompileOptionsInterfa
  * Set Application Name method.
  * 
  * @param {any} dispatch - `dispatch` function from ReactContext.
- * @param {string} name - application name.
+ * @param {string} name - Application name.
  */
 const handleSetAppName = (dispatch, name: string) => {
     dispatch(setAppName(name));
+};
+
+/**
+ * Set CSS string method.
+ *
+ * @param {any} dispatch - `dispatch` function from ReactContext.
+ * @param {string} css - Compiled CSS string.
+ */
+const handleCSS = (dispatch, css: string) => {
+    dispatch(setCSS(css));
 };
 
 /**
@@ -261,6 +277,12 @@ const handleProductName = (dispatch, name: string) => {
     dispatch(setProductName(name));
 };
 
+/**
+ * Set LESS style configuration method.
+ * 
+ * @param {any} dispatch - `dispatch` function from ReactContext.
+ * @param {string} styles - LESS ModifyVars object.
+ */
 const handleStyles = (dispatch, styles: ThemeCompileOptionsInterface) => {
     dispatch(setStyles(styles));
 };
@@ -282,6 +304,7 @@ export const ThemeContext = createContext<ThemeContextInterface>({
     compile: () => { return; },
     dispatch: (() => 0) as Dispatch<any>,
     setAppName: () => { return; },
+    setCSS: () => { return; },
     setCopyrightText: () => { return; },
     setLogo: () => { return; },
     setProductName: () => { return; },
@@ -302,6 +325,7 @@ export const ThemeProvider = ({ children }) => {
     const compile = (options?: ThemeCompileOptionsInterface) => { handleCompileTheme(dispatch, state, options); };
 
     const setAppName = (name: string) => { handleSetAppName(dispatch, name); };
+    const setCSS = (css: string) => { handleCSS(dispatch, css); };
     const setCopyrightText = (text: string) => { handleSetCopyrightText(dispatch, text); };
     const setLogo = (url: string) => { handleSetLogo(dispatch, url); };
     const setProductName = (name: string) => { handleProductName(dispatch, name); };
@@ -316,6 +340,7 @@ export const ThemeProvider = ({ children }) => {
             compile,
             dispatch,
             setAppName,
+            setCSS,
             setCopyrightText,
             setLogo,
             setProductName,

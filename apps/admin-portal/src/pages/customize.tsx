@@ -55,6 +55,7 @@ interface ColorPickerProps {
  * ColorPicker ReactComponent.
  *
  * @param {RGBColor} { inputColor } - Input color.
+ * @param {(hexValue: string) => void} { inputOnChangeHandler } - Input value change handler
  * 
  * @returns {ReactElement}
  */
@@ -128,6 +129,11 @@ const ColorPicker: React.FunctionComponent<ColorPickerProps> = ({
     );
 };
 
+/**
+ * Theme style input form
+ *
+ * @returns {ReactElement}
+ */
 const CSSForm = (): ReactElement => {
     const [ themeOptions, setThemeOptions ] = useState({});
     const { compile } = useContext(ThemeContext);
