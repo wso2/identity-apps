@@ -77,7 +77,7 @@ export const EditMappedAttributesLocalClaims = (
     return (
         <Grid>
             <Grid.Row columns={ 1 }>
-                <Grid.Column tablet={ 16 } computer={ 14 } largeScreen={ 8 } mobile={ 16 }>
+                <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
                     <Hint>
                         Corresponding attribute name from the underlying user store
                         which is mapped to the Claim URI value
