@@ -25,10 +25,25 @@ import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
 import { CopyInputField, Hint } from "@wso2is/react-components";
 
+/**
+ * Prop types for `EditBasicDetailsLocalClaims` component
+ */
 interface EditBasicDetailsLocalClaimsPropsInterface {
+    /**
+     * The claim to be edited
+     */
     claim: Claim;
+    /**
+     * The function to be called to initiate an update
+     */
     update: () => void;
 }
+
+/**
+ * This component renders the Basic Details pane of the edit local claim screen
+ * @param {EditBasicDetailsLocalClaimsPropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const EditBasicDetailsLocalClaims = (
     props: EditBasicDetailsLocalClaimsPropsInterface
 ): React.ReactElement => {

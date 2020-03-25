@@ -26,10 +26,27 @@ import { addAlert } from "../../../store/actions";
 import { DynamicField, KeyValue } from "../dynamic-fields";
 import { PrimaryButton, Hint } from "@wso2is/react-components";
 
+/**
+ * Prop types of `EditMappedAttributesLocalClaims` component
+ */
 interface EditMappedAttributesLocalClaimsPropsInterface {
+    /**
+     * Claim to be edited
+     */
     claim: Claim;
+    /**
+     * Called to initiate an update
+     */
     update: () => void;
 }
+
+/**
+ * This component renders the Mapped Attribute pane of 
+ * the edit local claim screen
+ * 
+ * @param {EditMappedAttributesLocalClaimsPropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const EditMappedAttributesLocalClaims = (
     props: EditMappedAttributesLocalClaimsPropsInterface
 ): React.ReactElement => {

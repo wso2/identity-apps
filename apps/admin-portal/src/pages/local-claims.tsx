@@ -31,8 +31,15 @@ import { addAlert } from "../store/actions";
 import { history } from "../helpers";
 import { filterList, sortList } from "../utils";
 
+/**
+ * This returns the list of local claims
+ * @return {React.ReactElement}
+ */
 export const LocalClaimsPage = (): React.ReactElement => {
 
+    /**
+     * Sets the attributes by which the list can be sorted
+     */
     const SORT_BY = [
         {
             text: "Name",
@@ -57,6 +64,13 @@ export const LocalClaimsPage = (): React.ReactElement => {
 
     const dispatch = useDispatch();
 
+    /**
+    * Fetches all the local claims
+    * @param {number} limit
+    * @param {number} offset
+    * @param {string} sort
+    * @param {string} filter
+    */
     const getLocalClaims = (limit?: number, sort?: string, offset?: number, filter?: string) => {
         const params: ClaimsGetParams = {
             limit: limit || null,
@@ -99,22 +113,48 @@ export const LocalClaimsPage = (): React.ReactElement => {
         });
     }, []);
 
+    /**
+    * This slices a portion of the list to display
+    * @param {ClaimDialect[]} list
+    * @param {number} limit
+    * @param {number} offset
+    * @return {ClaimDialect[]} Paginated List
+    */
     const paginate = (list: Claim[], limit: number, offset: number): Claim[] => {
         return list?.slice(offset, offset + limit);
     };
 
+    /**
+    * Handles change in the number of items to show
+    * @param {React.MouseEvent<HTMLAnchorElement>} event
+    * @param {data} data
+    */
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
     };
 
+    /**
+    * Paginates
+    * @param {React.MouseEvent<HTMLAnchorElement>} event
+    * @param {PaginationProps} data
+    */
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         setOffset((data.activePage as number - 1) * listItemLimit);
     };
 
+    /**
+    * Handle sort strategy change
+    * @param {React.SyntheticEvent<HTMLElement>} event
+    * @param {DropdownProps} data
+    */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
         setSortBy(SORT_BY.filter(option => option.value === data.value)[0]);
     };
 
+    /**
+    * Handles sort order change
+    * @param {boolean} isAscending
+    */
     const handleSortOrderChange = (isAscending: boolean) => {
         setSortOrder(isAscending);
     };
@@ -126,7 +166,6 @@ export const LocalClaimsPage = (): React.ReactElement => {
                     ? <AddLocalClaims
                         open={ openModal }
                         onClose={ () => { setOpenModal(false) } }
-                        claimID={ null }
                         update={ getLocalClaims }
                         claimURIBase={ claimURIBase }
                     />

@@ -20,31 +20,81 @@ import React, { useState, useEffect, useRef } from "react";
 import { Grid, Label, Icon, Popup, Button, List, Divider } from "semantic-ui-react";
 import { Forms, Field, useTrigger, FormValue, Validation } from "@wso2is/forms";
 
+/**
+ * Type of key-value object
+ */
 export interface KeyValue {
     key: string;
     value: string;
 }
 
+/**
+ * Type of key object passed to a dropdown
+ */
 interface KeyData {
     id: string;
     value: string;
 }
 
+/**
+ * Prop types of `DynamicField` component
+ */
 interface DynamicFieldPropsInterface {
+    /**
+     * An array of  key-value pairs
+     */
     data: KeyValue[];
+    /**
+     * The type of the key
+     */
     keyType: "text" | "dropdown";
+    /**
+     * An array of Key data to be passed into a dropdown
+     */
     keyData?: KeyData[];
+    /**
+     * Triggers submit
+     */
     submit: boolean;
+    /**
+     * The name of the key
+     */
     keyName: string;
+    /**
+     * The name of the value
+     */
     valueName: string;
+    /**
+     * Error message to be shown when the key is empty
+     */
     keyRequiredMessage: string;
+    /**
+     * Error message to be shown when the value is empty
+     */
     valueRequiredErrorMessage: string;
+    /**
+     * Sets if the key value pair is required or not
+     */
     requiredField: boolean;
+    /**
+     * Error message to be shown when the same key is chosen twice
+     */
     duplicateKeyErrorMsg?: string;
+    /**
+     * A listener that is called when a key-value pair is added
+     */
     listen?: (data: KeyValue[]) => void;
+    /**
+     * Called to initiate an update
+     */
     update: (data: KeyValue[]) => void;
 }
 
+/**
+ * This displays a key-value pair of fields that can be dynamically added or removed
+ * @param {DynamicFieldPropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElement => {
 
     const {
@@ -74,6 +124,9 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
     const [reset, setReset] = useTrigger();
     const [updateTrigger, setUpdateTrigger] = useTrigger();
 
+    /**
+     * Resets edit states when when editIndex becomes null
+     */
     useEffect(() => {
         if (editIndex === null) {
             setEditKey("");
@@ -81,6 +134,9 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
         }
     }, [editIndex]);
 
+    /**
+     * Pushes the existing pairs to the state
+     */
     useEffect(() => {
         const tempFields = new Map<number, KeyValue>();
         data?.forEach((field, index) => {
@@ -89,6 +145,9 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
         setFields(tempFields);
     }, []);
 
+    /**
+     * Prevent submit from being triggered during initial render
+     */
     useEffect(() => {
         if (initRender.current) {
             initRender.current = false;
@@ -97,6 +156,9 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
         }
     }, [submit]);
 
+    /**
+     * Triggers an update when the index of the pair to be updated is set
+     */
     useEffect(() => {
         if (updateMapIndex !== null) {
             setUpdateTrigger();

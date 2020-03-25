@@ -26,10 +26,25 @@ import { addAlert } from "../../../store/actions";
 import { DynamicField } from "../dynamic-fields";
 import { PrimaryButton, Hint } from "@wso2is/react-components";
 
+/**
+ * Prop types for `EditAdditionalPropertiesLocalClaims` component
+ */
 interface EditAdditionalPropertiesLocalClaimsPropsInterface {
+    /**
+     * The Local claim to be edited
+     */
     claim: Claim;
+    /**
+     * The function to be called to initiate an update
+     */
     update: () => void;
 }
+
+/**
+ * This component renders the additional properties pane
+ * @param {EditAdditionalPropertiesLocalClaimsPropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const EditAdditionalPropertiesLocalClaims = (
     props: EditAdditionalPropertiesLocalClaimsPropsInterface
 ): React.ReactElement => {

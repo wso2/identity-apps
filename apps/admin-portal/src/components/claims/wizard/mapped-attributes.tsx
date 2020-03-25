@@ -22,11 +22,29 @@ import { getUserStoreList } from "../../../api";
 import { DynamicField, KeyValue } from "..";
 import { Hint } from "@wso2is/react-components";
 
+/**
+ * Prop types of `MappedAttributes` component
+ */
 interface MappedAttributesPropsInterface {
+    /**
+     * Trigger submit
+     */
     submitState: boolean;
+    /**
+     * Handles update
+     */
     onSubmit: (data: any, values: KeyValue[]) => void;
+    /**
+     * The key values to be stored
+     */
     values: KeyValue[];
 }
+
+/**
+ * This component renders the Mapped Attributes step of the wizard
+ * @param {MappedAttributesPropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const MappedAttributes = (props: MappedAttributesPropsInterface): React.ReactElement => {
 
     const { onSubmit, submitState, values } = props;

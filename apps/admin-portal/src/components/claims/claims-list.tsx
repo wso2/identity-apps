@@ -29,19 +29,46 @@ import { EDIT_LOCAL_CLAIMS_PATH, EXTERNAL_CLAIMS_PATH } from "../../constants";
 import { ClaimsAvatarBackground } from ".";
 import { Image } from "semantic-ui-react";
 
+/**
+ * Enum containing the list types
+ */
 export enum ListType {
     LOCAL,
     EXTERNAL,
     DIALECT
 }
 
+/**
+ * Prop types of `ClaimsList` component
+ */
 interface ClaimsListPropsInterface {
+    /**
+     * The array containing claims/external claims/claim dialects
+     */
     list: Claim[] | ExternalClaim[] | ClaimDialect[];
+    /**
+     * Sets if the list is to contain local claims
+     */
     localClaim: ListType;
+    /**
+     * Opens the edit modal
+     */
     openEdit?: (id: string) => void;
+    /**
+     * Called to initiate update
+     */
     update: () => void;
+    /**
+     * The dialect ID of claims
+     */
     dialectID?: string;
 }
+
+/**
+ * This component renders claims/dialects list
+ * @param {ClaimsListPropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement => {
 
     const { list, localClaim, openEdit, update, dialectID } = props;
@@ -60,11 +87,21 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         copyButton.current.push(copyButton.current[index] || React.createRef())
     });
 
+    /**
+     * This checks if the list data is a local claim
+     * @param {Claim[] | ExternalClaim[] | ClaimDialect[]} toBeDetermined Type to be checked
+     * @return {boolean} `true` if the data is a local claim
+     */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const isLocalClaim = (toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[]): toBeDetermined is Claim[] => {
         return localClaim === ListType.LOCAL;
     }
 
+    /**
+     * This checks if the list data is a dialect
+     * @param {Claim[] | ExternalClaim[] | ClaimDialect[]} toBeDetermined
+     * @return {boolean} `true` if the data is a dialect 
+     */
     const isDialect = (
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[]
@@ -72,6 +109,11 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         return localClaim === ListType.DIALECT
     }
 
+    /**
+     * This displays the input content within a `List` content
+     * @param {any} content 
+     * @return {React.ReactElement}
+     */
     const listContent = (content: any): React.ReactElement => (
         <List.Content>
             <List.Description className="list-item-meta">
@@ -80,12 +122,19 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         </List.Content>
     );
 
+    /**
+     * This closes the delete confirmation modal
+     */
     const closeDeleteConfirm = () => {
         setDeleteConfirm(false);
         setDeleteID(null);
         setDeleteType(null);
     }
 
+    /**
+     * This deletes a local claim
+     * @param {string} id 
+     */
     const deleteLocalClaim = (id: string) => {
         deleteAClaim(id).then(() => {
             update();
@@ -108,6 +157,11 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         })
     };
 
+    /**
+     * This deletes an external claim
+     * @param {string} dialectID 
+     * @param {string} claimID 
+     */
     const deleteExternalClaim = (dialectID: string, claimID: string) => {
         deleteAnExternalClaim(dialectID, claimID).then(() => {
             update();
@@ -130,6 +184,10 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         })
     };
 
+    /**
+     * This deletes a dialect
+     * @param {string} dialectID 
+     */
     const deleteDialect = (dialectID: string) => {
         deleteADialect(dialectID).then(() => {
             update();
@@ -152,6 +210,10 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         })
     };
 
+    /**
+     * This shows the delete confirmation modal
+     * @return {React.ReactElement} Modal
+     */
     const showDeleteConfirm = (): React.ReactElement => {
         return (
             <Modal
@@ -198,17 +260,32 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         )
     };
 
+    /**
+     * This initiates the delete process
+     * @param {ListType} type 
+     * @param {string} id 
+     */
     const initDelete = (type: ListType, id: string) => {
         setDeleteType(type);
         setDeleteID(id);
         setDeleteConfirm(true);
     };
 
+    /**
+     * This generates the first letter of a dialect
+     * @param {string} name 
+     * @return {string} The first letter of a dialect
+     */
     const generateDialectLetter = (name: string): string => {
         const stringArray = name.replace("http://", "").split("/");
         return stringArray[0][0].toLocaleUpperCase();
     }
 
+    /**
+     * This generates the first letter of a claim
+     * @param {string} name 
+     * @return {string} The first letter of a claim
+     */
     const generateClaimLetter = (name: string): string => {
         const stringArray = name.replace("http://", "").split("/");
         return stringArray[stringArray.length - 1][0].toLocaleUpperCase();

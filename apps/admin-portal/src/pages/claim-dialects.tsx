@@ -31,8 +31,15 @@ import { addAlert } from "../store/actions";
 import { filterList, sortList } from "../utils";
 import { history } from "../helpers";
 
+/**
+ * This displays a list fo claim dialects
+ * @return {React.ReactElement}
+ */
 export const ClaimDialectsPage = (): React.ReactElement => {
 
+    /**
+     * Sets the attributes by which the list can be sorted
+     */
     const SORT_BY = [
         {
             key: 0,
@@ -53,6 +60,13 @@ export const ClaimDialectsPage = (): React.ReactElement => {
 
     const dispatch = useDispatch();
 
+    /**
+     * Fetches all the dialects
+     * @param {number} limit 
+     * @param {number} offset 
+     * @param {string} sort 
+     * @param {string} filter 
+     */
     const getDialect = (limit?: number, offset?: number, sort?: string, filter?: string, ) => {
         getDialects({
             limit, offset, sort, filter
@@ -86,22 +100,48 @@ export const ClaimDialectsPage = (): React.ReactElement => {
         setFilteredDialects(sortList(filteredDialects, sortBy.value, sortOrder));
     }, [sortBy, sortOrder]);
 
+    /**
+     * This slices a portion of the list to display
+     * @param {ClaimDialect[]} list
+     * @param {number} limit 
+     * @param {number} offset 
+     * @return {ClaimDialect[]} Paginated List
+     */
     const paginate = (list: ClaimDialect[], limit: number, offset: number): ClaimDialect[] => {
         return list?.slice(offset, offset + limit);
     };
 
+    /**
+     * Handles change in the number of items to show
+     * @param {React.MouseEvent<HTMLAnchorElement>} event
+     * @param {data} data
+     */
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
     };
 
+    /**
+     * Paginates
+     * @param {React.MouseEvent<HTMLAnchorElement>} event
+     * @param {PaginationProps} data
+     */
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         setOffset((data.activePage as number - 1) * listItemLimit);
     };
 
+    /**
+     * Handle sort strategy change
+     * @param {React.SyntheticEvent<HTMLElement>} event
+     * @param {DropdownProps} data 
+     */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
         setSortBy(SORT_BY.filter(option => option.value === data.value)[0]);
     };
 
+    /**
+     * Handles sort order change
+     * @param {boolean} isAscending 
+     */
     const handleSortOrderChange = (isAscending: boolean) => {
         setSortOrder(isAscending);
     };
@@ -224,5 +264,4 @@ export const ClaimDialectsPage = (): React.ReactElement => {
             </PageLayout>
         </>
     );
-
 };

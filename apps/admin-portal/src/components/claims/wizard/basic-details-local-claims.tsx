@@ -21,12 +21,33 @@ import { Forms, FormValue, Field } from "@wso2is/forms";
 import { Grid, Label, Divider } from "semantic-ui-react";
 import { Hint } from "@wso2is/react-components";
 
+/**
+ * Prop types of `BasicDetailsLocalClaims` component
+ */
 interface BasicDetailsLocalClaimsPropsInterface {
+    /**
+     * Triggers submit
+     */
     submitState: boolean;
+    /**
+     * Called to initiate update
+     */
     onSubmit: (data: any, values: Map<string, FormValue>) => void;
+    /**
+     * Form Values to be saved 
+     */
     values: Map<string, FormValue>;
+    /**
+     * The base claim URI string
+     */
     claimURIBase: string;
 }
+
+/**
+ * This component renders the basic details step of the add local claim wizard
+ * @param {BasicDetailsLocalClaimsPropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInterface): React.ReactElement => {
 
     const { submitState, onSubmit, values, claimURIBase } = props;
@@ -118,7 +139,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             value={ values?.get("displayOrder")?.toString() ?? "0" }
                         />
                         <Hint>
-                            Integer value to specify the order in which the claim is displayed among other claims under the same dialect
+                            Integer value to specify the order in which the claim is displayed among 
+                            other claims under the same dialect
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -137,7 +159,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             value={ values?.get("supportedByDefault") as string[] }
                         />
                         <Hint>
-                            Specifies if the claim will be prompted during user registration and displayed on the user profile
+                            Specifies if the claim will be prompted during user registration 
+                            and displayed on the user profile
                         </Hint>
                         <Divider hidden/>
                         <Field
