@@ -32,6 +32,7 @@ interface AddRoleUserProps {
     onSubmit?: (values: any) => void;
     assignedUsers?: RolesMemberInterface[];
     isEdit: boolean;
+    initialValues?: UserBasicInterface[];
 }
 
 export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRoleUserProps): ReactElement => {
@@ -39,7 +40,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         triggerSubmit,
         onSubmit,
         assignedUsers,
-        isEdit
+        isEdit,
+        initialValues
     } = props;
 
     const [ tempUserList, setTempUserList ] = useState([]);
@@ -60,6 +62,20 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         response.Resources.forEach(user => {
                             assignedUsers.forEach(assignedUser => {
                                 if (user.id === assignedUser.value) {
+                                    selectedUserList.push(user);
+                                }
+                            });
+                        });
+                        setTempUserList(selectedUserList);
+                    }
+                }
+
+                if (initialValues && initialValues instanceof Array) {
+                    const selectedUserList: UserBasicInterface[] = [];
+                    if (response.Resources && response.Resources instanceof Array ) {
+                        response.Resources.forEach(user => {
+                            initialValues.forEach(assignedUser => {
+                                if (user.id === assignedUser.id) {
                                     selectedUserList.push(user);
                                 }
                             });
@@ -147,7 +163,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     return (
         <Forms
             onSubmit={ () => {
-                onSubmit({ users: tempUserList });
+                onSubmit(tempUserList);
             } }
             submitState={ triggerSubmit }
         >

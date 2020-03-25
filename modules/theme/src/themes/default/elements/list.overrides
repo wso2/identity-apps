@@ -258,3 +258,36 @@
         }
     }
 }
+
+/*******************************
+    Role Management Variation
+*******************************/
+.ui.list {
+    &.roles-list {
+        > .resource-list-item {
+            padding: @userRolesListPadding;
+            margin: @userRolesListMargin;
+            color: @userRolesListItemFontColor;
+
+            .user-image {
+                width: inherit;
+            }
+
+            .wrapper{ 
+                background-color: @roleListWrapperColor;
+            }
+
+            .list-item-name {
+                display: inline-block;
+                margin-left: 0.5em;
+            }
+
+            i {
+                visibility: visible;
+                padding-right: @userRolesListIconPaddingRight;
+                float: right;
+            }
+        }
+
+    }
+}

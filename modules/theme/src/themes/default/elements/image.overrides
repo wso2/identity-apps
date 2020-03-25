@@ -355,13 +355,20 @@
     }
     &.circular.user-image {
         .wrapper {
-            height: 0;
-            padding: 100% 0 0 0;
-            position: relative;
+            overflow: hidden;
+            background: @dustyGray;
             overflow: hidden;
             display: flex;
+            height: 3.2em;
+            width: 3.2em;
             justify-content: center;
-            background: @dustyGray;
+            align-items: center;
+
+            i {
+                display: flex;
+                align-items: center;
+                margin: 0px;
+            }
 
             .edit-icon {
                 margin-left: unset !important;
@@ -373,6 +380,7 @@
                 height: 100%;
                 width: auto;
                 max-width: max-content;
+                left: 0;
             }
         }
     }

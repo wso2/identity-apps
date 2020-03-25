@@ -17,5 +17,3 @@
  *
  */
 
- @treeview-tree-stem-color: #f3f3f3;
- @checkboxfill: #20c2e0;

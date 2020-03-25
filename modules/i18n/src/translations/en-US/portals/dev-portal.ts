@@ -685,6 +685,50 @@ export const devPortal: DevPortalNS = {
                         message: "Role created successfully."
                     }
                 }
+            },
+            search: {
+                forms: {
+                    searchForm: {
+                        inputs: {
+                            filerAttribute: {
+                                label: "Filter attribute",
+                                placeholder: "E.g. role name.",
+                                validations: {
+                                    empty: "Filter attribute is a required field"
+                                }
+                            },
+                            filterCondition: {
+                                label: "Filter condition",
+                                placeholder: "E.g. Starts with etc.",
+                                validations: {
+                                    empty: "Filter condition is a required field"
+                                }
+                            },
+                            filterValue: {
+                                label: "Filter value",
+                                placeholder: "Enter value to search",
+                                validations: {
+                                    empty: "Filter value is a required field"
+                                }
+                            },
+                        }
+                    }
+                },
+                hints: {
+                    querySearch: {
+                        actionKeys: "Shift + Enter",
+                        label: "To search as a query"
+                    }
+                },
+                options: {
+                    header: "Advanced search",
+                },
+                placeholder: "Search by role name",
+                popups: {
+                    clear: "clear search",
+                    dropdown: "show options"
+                },
+                resultsIndicator: "Showing results for the query \"{{query}}\""
             }
         },
         serverConfigs: {

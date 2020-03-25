@@ -18,11 +18,12 @@
 
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react"
 import { PermissionList } from "../create-role-wizard/role-permisson";
-import { updatePermissionForRole } from "../../../api";
+import { updateRolePermissions } from "../../../api";
 import { addAlert } from "../../../store/actions";
 import { AlertLevels, RolesInterface } from "../../../models";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Permission } from "../../../models/permission";
 
 /**
  * Interface to capture permission edit props.
@@ -47,55 +48,59 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
         onRoleUpdate
     } = props;
     
-    const onPermissionUpdate = (updatedPerms: string[]) => {
-        updatePermissionForRole(roleObject.id, updatedPerms).then(() => {
-            dispatch(addAlert({
-                description: t(
-                    "devPortal:components.roles.notifications.updateRole.success.description"
-                ),
-                level: AlertLevels.SUCCESS,
-                message: t(
-                    "devPortal:components.roles.notifications.updateRole.success.message"
-                )
-            }));
-            onRoleUpdate();
-        }).catch(error => {
-            if (!error.response || error.response.status === 401) {
+    const onPermissionUpdate = (updatedPerms: Permission[]) => {
+        updateRolePermissions(roleObject.id, updatedPerms.map(permissionsObject => permissionsObject.fullPath))
+            .then(() => {
                 dispatch(addAlert({
                     description: t(
-                        "devPortal:components.roles.notifications.updateRole.error.description"
+                        "devPortal:components.roles.notifications.updateRole.success.description"
                     ),
-                    level: AlertLevels.ERROR,
+                    level: AlertLevels.SUCCESS,
                     message: t(
-                        "devPortal:components.roles.notifications.updateRole.error.message"
+                        "devPortal:components.roles.notifications.updateRole.success.message"
                     )
                 }));
-            } else if (error.response && error.response.data.detail) {
-                dispatch(addAlert({
-                    description: t(
-                        "devPortal:components.roles.notifications.updateRole.error.description",
-                        { description: error.response.data.detail }
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t(
-                        "devPortal:components.roles.notifications.updateRole.error.message"
-                    )
-                }));
-            } else {
-                dispatch(addAlert({
-                    description: t(
-                        "devPortal:components.roles.notifications.updateRole.genericError.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t(
-                        "devPortal:components.roles.notifications.updateRole.genericError.message"
-                    )
-                }));
-            }
-        })
+                onRoleUpdate();
+            })
+            .catch(error => {
+                if (!error.response || error.response.status === 401) {
+                    dispatch(addAlert({
+                        description: t(
+                            "devPortal:components.roles.notifications.updateRole.error.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "devPortal:components.roles.notifications.updateRole.error.message"
+                        )
+                    }));
+                } else if (error.response && error.response.data.detail) {
+                    dispatch(addAlert({
+                        description: t(
+                            "devPortal:components.roles.notifications.updateRole.error.description",
+                            { description: error.response.data.detail }
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "devPortal:components.roles.notifications.updateRole.error.message"
+                        )
+                    }));
+                } else {
+                    dispatch(addAlert({
+                        description: t(
+                            "devPortal:components.roles.notifications.updateRole.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "devPortal:components.roles.notifications.updateRole.genericError.message"
+                        )
+                    }));
+                }
+            })
     }
     
     return (
-        <PermissionList onSubmit={ onPermissionUpdate } roleObject={ roleObject } />
+        <div className="permissions-edit-container">
+            <PermissionList isEdit onSubmit={ onPermissionUpdate } roleObject={ roleObject } />
+        </div>
     )
 }
