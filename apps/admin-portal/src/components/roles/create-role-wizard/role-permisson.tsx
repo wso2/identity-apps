@@ -19,10 +19,10 @@
 import React, { FunctionComponent, ReactElement, useEffect, useState} from "react";
 import { getPermissionList, getPermissionsForRole } from "../../../api";
 import { Permission } from "../../../models/permission";
-import { TreeView } from "@wso2is/react-components";
+import { TreeView, ContentLoader } from "@wso2is/react-components";
 import { Forms } from "@wso2is/forms";
 import { addPath } from "../role-utils";
-import { Segment, Button, Grid, Loader } from "semantic-ui-react";
+import { Segment, Button, Grid } from "semantic-ui-react";
 import _ from "lodash";
 import { RolesInterface } from "../../../models";
 
@@ -185,7 +185,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     }
 
     return (
-        <Segment basic loading={ isPermissionsLoading }>
+        <Segment basic>
             { !isPermissionsLoading && 
                 <Button.Group size="tiny" vertical labeled icon>
                     <Button 
@@ -215,7 +215,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                                 onCheckToggleCb={ handlePermssionCheck }
                             /> 
                         </div> : 
-                        <Loader active />
+                        <ContentLoader active />
                 }
                 { isEdit && !isPermissionsLoading &&
                     <Grid.Row columns={ 1 }>
