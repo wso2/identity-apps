@@ -324,12 +324,12 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 						"verificationLinkExpiryTime.validations.empty") }
 					type="number"
 					value={ selfSignUpConfigs.verificationCodeExpiryTime }
-					width={ 9 }
+					width={ 5 }
 				/>
 				<Hint>
 					{
 						t("devPortal:components.serverConfigs.selfRegistration.form.verificationLinkExpiryTime" +
-							".placeholder")
+							".hint")
 					}
 				</Hint>
 				<Field
@@ -342,10 +342,10 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 						"smsOTPExpiryTime.validations.empty") }
 					type="number"
 					value={ selfSignUpConfigs.smsOTPExpiryTime }
-					width={ 9 }
+					width={ 5 }
 				/>
 				<Hint>
-					{ t("devPortal:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.placeholder") }
+					{ t("devPortal:components.serverConfigs.selfRegistration.form.smsOTPExpiryTime.hint") }
 				</Hint>
 				<Field
 					label={ t("devPortal:components.serverConfigs.selfRegistration.form.callbackURLRegex.label") }
@@ -405,6 +405,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 			onPrimaryActionClick={ () => showFormEditView(USER_SELF_REGISTRATION_FORM_IDENTIFIER) }
 			primaryAction={ t("devPortal:components.serverConfigs.selfRegistration.actionTitles.config") }
 			primaryActionIcon="key"
+			showActionBar={ !editingForm[USER_SELF_REGISTRATION_FORM_IDENTIFIER] }
 		>
 			{ showUserSelfRegistrationView }
 			{ confirmationModal }

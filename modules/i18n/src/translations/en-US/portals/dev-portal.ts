@@ -884,6 +884,7 @@ export const devPortal: DevPortalNS = {
                         label: "Internal notification management"
                     },
                     smsOTPExpiryTime: {
+                        hint: "Specify the expiry time in minutes for the SMS OTP.",
                         label: "User self registration SMS OTP expiry time",
                         placeholder: "1",
                         validations: {
@@ -891,6 +892,7 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     verificationLinkExpiryTime: {
+                        hint: "Specify the expiry time in minutes for the verification link.",
                         label: "User self registration verification link expiry time",
                         placeholder: "1440",
                         validations: {

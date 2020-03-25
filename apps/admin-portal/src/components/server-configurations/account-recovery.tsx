@@ -467,7 +467,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 					value={ accountRecoveryConfigs.passwordRecoveryMinAnswers }
 					hidden={ !accountRecoveryConfigs.passwordRecoveryCheckBoxes.includes(
 						ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE) }
-					width={ 9 }
+					width={ 5 }
 				/>
 				<Hint hidden={ !accountRecoveryConfigs.passwordRecoveryCheckBoxes.includes(
 					ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE) }>
@@ -532,7 +532,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						"form.reCaptchaMaxFailedAttempts.validations.empty") }
 					type="number"
 					value={ accountRecoveryConfigs.reCaptchaMaxFailedAttempts }
-					width={ 9 }
+					width={ 5 }
 				/>
 				<Field
 					name={ ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED }
@@ -594,8 +594,8 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						"form.recoveryLinkExpiryTime.validations.empty") }
 					type="number"
 					value={ accountRecoveryConfigs.recoveryLinkExpiryTime }
-					hidden={ notificationInternallyManaged }
-					width={ 9 }
+					disabled={ notificationInternallyManaged }
+					width={ 5 }
 				/>
 				<Hint hidden={ notificationInternallyManaged }>
 					{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
@@ -613,7 +613,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 					type="number"
 					value={ accountRecoveryConfigs.smsOTPExpiryTime }
 					hidden={ notificationInternallyManaged }
-					width={ 9 }
+					width={ 5 }
 				/>
 				<Hint hidden={ notificationInternallyManaged }>
 					{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +

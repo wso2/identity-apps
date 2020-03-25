@@ -404,6 +404,7 @@ export interface DevPortalNS {
                         label: string;
                     };
                     verificationLinkExpiryTime: {
+                        hint: string;
                         label: string;
                         placeholder: string;
                         validations: {
@@ -411,6 +412,7 @@ export interface DevPortalNS {
                         };
                     };
                     smsOTPExpiryTime: {
+                        hint: string;
                         label: string;
                         placeholder: string;
                         validations: {
