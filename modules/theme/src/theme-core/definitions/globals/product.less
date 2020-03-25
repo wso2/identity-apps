@@ -1002,8 +1002,37 @@ body {
         margin: 0;
         border-radius: unset;
         border-top-right-radius: @menuBorderRadius - 1;
-        border-bottom-right-radius: @menuBorderRadius - 1 ;
+        border-bottom-right-radius: @menuBorderRadius - 1;
     }
+}
+
+/*****************************************
+        Claims Avatar Background
+*****************************************/
+
+.claims-avatar-background {
+    .fill {
+        &.primary{
+            fill: @primaryColor;
+        }
+        
+        &.secondary {
+            fill: @dustyGray;
+        }
+    }
+}
+
+.claims-letter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: white;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
 }
 
 /**
