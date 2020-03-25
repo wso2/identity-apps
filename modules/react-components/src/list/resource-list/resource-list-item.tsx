@@ -35,11 +35,11 @@ import {
 /**
  * Proptypes for the resource list item component.
  */
-interface ResourceListItemPropsInterface extends ListItemProps {
+export interface ResourceListItemPropsInterface extends ListItemProps {
     /**
      * List items actions.
      */
-    actions?: ResourceListAction[];
+    actions?: ResourceListActionInterface[];
     /**
      * Action panel float direction.
      */
@@ -82,7 +82,7 @@ interface ResourceListItemPropsInterface extends ListItemProps {
 /**
  * Resource list action interface.
  */
-interface ResourceListAction {
+export interface ResourceListActionInterface {
     disabled?: boolean;
     hidden?: boolean;
     icon: SemanticICONS;
