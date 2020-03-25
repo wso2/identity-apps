@@ -16,4 +16,4 @@
   ~ under the License.
   --%>
 
-<script src="libs/theme/semantic.min.js"></script>
+<script src="libs/themes/default/semantic.min.js"></script>
