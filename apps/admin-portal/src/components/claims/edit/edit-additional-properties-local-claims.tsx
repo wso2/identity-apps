@@ -24,7 +24,7 @@ import { updateAClaim } from "../../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
 import { DynamicField } from "../dynamic-fields";
-import { PrimaryButton } from "@wso2is/react-components";
+import { PrimaryButton, Hint } from "@wso2is/react-components";
 
 interface EditAdditionalPropertiesLocalClaimsPropsInterface {
     claim: Claim;
@@ -43,7 +43,10 @@ export const EditAdditionalPropertiesLocalClaims = (
     return (
         <Grid>
             <Grid.Row columns={ 1 }>
-                <Grid.Column tablet={ 16 } computer={ 6 } mobile={ 16 }>
+                <Grid.Column tablet={ 16 } computer={ 14 } largeScreen={ 8 } mobile={ 16 }>
+                    <Hint>
+                        Used when writing an extension using current claims
+                    </Hint>
                     <DynamicField
                         data={ claim.properties }
                         keyType="text"

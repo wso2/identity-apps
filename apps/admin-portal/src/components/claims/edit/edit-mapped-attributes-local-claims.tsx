@@ -24,7 +24,7 @@ import { getUserStoreList, updateAClaim } from "../../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
 import { DynamicField, KeyValue } from "../dynamic-fields";
-import { PrimaryButton } from "@wso2is/react-components";
+import { PrimaryButton, Hint } from "@wso2is/react-components";
 
 interface EditMappedAttributesLocalClaimsPropsInterface {
     claim: Claim;
@@ -60,7 +60,11 @@ export const EditMappedAttributesLocalClaims = (
     return (
         <Grid>
             <Grid.Row columns={ 1 }>
-                <Grid.Column tablet={ 16 } computer={ 6 } mobile={ 16 }>
+                <Grid.Column tablet={ 16 } computer={ 14 } largeScreen={ 8 } mobile={ 16 }>
+                    <Hint>
+                        Corresponding attribute name from the underlying user store
+                        which is mapped to the Claim URI value
+                    </Hint>
                     <DynamicField
                         data={
                             claim.attributeMapping.map(attribute => {
