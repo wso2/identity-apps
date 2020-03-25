@@ -20,15 +20,16 @@ import React, { useEffect, useState } from "react";
 import { PageLayout } from "../layouts";
 import { ListLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
-import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
-import { ClaimsList, ListType } from "../components";
+import { Icon, DropdownProps, PaginationProps, Segment, Divider, List, Image, Grid, Popup } from "semantic-ui-react";
+import { ClaimsList, ListType, ClaimsAvatarBackground } from "../components";
 import { ClaimDialect, AlertLevels } from "../models";
 import { getDialects } from "../api";
-import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
+import { DEFAULT_USER_LIST_ITEM_LIMIT, LOCAL_CLAIMS_PATH } from "../constants";
 import { AddEditDialect, DialectSearch } from "../components";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
 import { filterList, sortList } from "../utils";
+import { history } from "../helpers";
 
 export const ClaimDialectsPage = (): React.ReactElement => {
 
@@ -48,6 +49,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
     const [filteredDialects, setFilteredDialects] = useState<ClaimDialect[]>(null);
     const [sortBy, setSortBy] = useState(SORT_BY[0]);
     const [sortOrder, setSortOrder] = useState(true);
+    const [localURI, setLocalURI] = useState("");
 
     const dispatch = useDispatch();
 
@@ -56,6 +58,9 @@ export const ClaimDialectsPage = (): React.ReactElement => {
             limit, offset, sort, filter
         }).then((response: ClaimDialect[]) => {
             const filteredDialect: ClaimDialect[] = response.filter((claim: ClaimDialect) => {
+                if (claim.id === "local") {
+                    setLocalURI(claim.dialectURI);
+                }
                 return claim.id !== "local";
             });
 
@@ -118,12 +123,59 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                 description="View, edit and add Claim Dialects"
                 showBottomDivider={ true }
             >
+                <Segment>
+                    <List>
+                        <List.Item>
+                            <Grid>
+                                <Grid.Row columns={ 2 }>
+                                    <Grid.Column width={ 12 }>
+                                        <Image
+                                            floated="left"
+                                            verticalAlign="middle"
+                                            rounded
+                                            centered
+                                            size="mini"
+                                        >
+                                            <ClaimsAvatarBackground primary/>
+                                            <span className="claims-letter">
+                                                L
+                                            </span>
+                                        </Image>
+                                        <List.Header>
+                                            Local Dialect
+                                        </List.Header>
+                                        <List.Description>
+                                            { localURI }
+                                        </List.Description>
+                                    </Grid.Column>
+                                    <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
+                                        <Popup
+                                            inverted
+                                            trigger={
+                                                <Icon
+                                                    link
+                                                    name="arrow right"
+                                                    onClick={ () => {
+                                                        history.push(LOCAL_CLAIMS_PATH);
+                                                    } }
+                                                />
+                                            }
+                                            position="top center"
+                                            content="View local claims"
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </List.Item>
+                    </List>
+                </Segment>
+                <Divider hidden />
                 <ListLayout
                     advancedSearch={
                         <DialectSearch onFilter={ (query) => {
                             // TODO: getDialect(null, null, null, query);
                             try {
-                                const filteredDialects = filterList(dialects, query,sortBy.value, sortOrder);
+                                const filteredDialects = filterList(dialects, query, sortBy.value, sortOrder);
                                 setFilteredDialects(filteredDialects);
                             } catch (error) {
                                 dispatch(addAlert({
