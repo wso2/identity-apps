@@ -43,7 +43,7 @@ export const App = (): ReactElement => {
      * Obtain app.config.json from the server root when the app mounts.
      */
     useEffect(() => {
-        getAppConfig<AppConfigInterface>(ApplicationConstants.APP_CONFIG_FILE_NAME, APP_BASENAME)
+        getAppConfig<AppConfigInterface>(ApplicationConstants.APP_CONFIG_FILE_NAME, GlobalConfig.appBaseName)
             .then((response) => {
                 setAppConfig(response);
             })
