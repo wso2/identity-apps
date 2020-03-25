@@ -95,7 +95,7 @@
 @stepMinWidth: 110px;
 
 /*-------------------
-        Steps
+      Sort List
 --------------------*/
 
 @borderRadius: @defaultBorderRadius;
