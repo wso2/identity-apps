@@ -29,7 +29,8 @@ import {
     isRadioField,
     isResetField,
     isSubmitField,
-    isTextField
+    isTextField,
+    isToggleField
 } from "../helpers";
 import { FormField, FormValue, RadioChild } from "../models";
 import { filterPassedProps } from "../utils";
@@ -44,6 +45,7 @@ interface InnerFieldPropsInterface {
         checkError: (inputField: FormField) => { isError: boolean; errorMessages: string[] };
         handleBlur: (event: React.KeyboardEvent, name: string) => void;
         handleChange: (value: string, name: string) => void;
+        handleToggle: (name: string) => void;
         handleChangeCheckBox: (value: string, name: string) => void;
         handleReset: (event: React.MouseEvent) => void;
         form: Map<string, FormValue>;
@@ -65,7 +67,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
 
     const filteredProps = filterPassedProps(passedProps);
 
-    const { checkError, handleBlur, handleChange, handleChangeCheckBox, handleReset, form } = formProps;
+    const { checkError, handleBlur, handleChange, handleToggle, handleChangeCheckBox, handleReset, form } = formProps;
 
     const formFieldClasses = classNames({
         hidden: formField.hidden
@@ -90,7 +92,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                             isError
                                 ? {
                                     content: errorMessages.map((errorMessage, index) => {
-                                        return <p key={ index }>{ errorMessage }</p>;
+                                        return <p key={ index }>{errorMessage}</p>;
                                     })
                                 }
                                 : false
@@ -123,7 +125,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                             isError
                                 ? {
                                     content: errorMessages.map((errorMessage: string, index: number) => {
-                                        return <p key={ index }>{ errorMessage }</p>;
+                                        return <p key={ index }>{errorMessage}</p>;
                                     })
                                 }
                                 : false
@@ -154,7 +156,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                             isError
                                 ? {
                                     content: errorMessages.map((errorMessage: string, index: number) => {
-                                        return <p key={ index }>{ errorMessage }</p>;
+                                        return <p key={ index }>{errorMessage}</p>;
                                     })
                                 }
                                 : false
@@ -179,8 +181,8 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
         } else if (isRadioField(inputField)) {
             return (
                 <Form.Group grouped={ true }>
-                    { inputField.label !== "" ? <label>{ inputField.label }</label> : null }
-                    { inputField.children.map((radio: RadioChild, index: number) => {
+                    {inputField.label !== "" ? <label>{inputField.label}</label> : null}
+                    {inputField.children.map((radio: RadioChild, index: number) => {
                         return (
                             <Form.Field key={ index }>
                                 <Radio
@@ -201,7 +203,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                                 />
                             </Form.Field>
                         );
-                    }) }
+                    })}
                 </Form.Group>
             );
         } else if (isDropdownField(inputField)) {
@@ -223,7 +225,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                         isError
                             ? {
                                 content: errorMessages.map((errorMessage: string, index: number) => {
-                                    return <p key={ index }>{ errorMessage }</p>;
+                                    return <p key={ index }>{errorMessage}</p>;
                                 })
                             }
                             : false
@@ -238,14 +240,14 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
             return (
                 <Form.Group grouped={ true }>
                     <label>
-                        { inputField.label }
+                        {inputField.label}
                         {
                             inputField.label && inputField.required
                                 ? <span className="ui text color red">*</span>
                                 : null
                         }
                     </label>
-                    { inputField.children.map((checkbox, index) => {
+                    {inputField.children.map((checkbox, index) => {
                         return (
                             <Form.Field key={ index }>
                                 <Form.Checkbox
@@ -269,7 +271,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                                                 ? {
                                                     content: errorMessages.map(
                                                         (errorMessage: string, indexError: number) => {
-                                                            return <p key={ indexError }>{ errorMessage }</p>;
+                                                            return <p key={ indexError }>{errorMessage}</p>;
                                                         }
                                                     ),
                                                     pointing: "left"
@@ -284,10 +286,45 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                                 />
                             </Form.Field>
                         );
-                    }) }
+                    })}
                 </Form.Group>
             );
-        } else if (isSubmitField(inputField)) {
+        } else if (isToggleField(inputField)) {
+            return (
+                <Form.Checkbox
+                    { ...filteredProps }
+                    label={ inputField.label }
+                    name={ inputField.name }
+                    value={ inputField.value }
+                    checked={
+                        form.get(inputField.name) === "true"
+                    }
+                    onChange={ () => {
+                        handleToggle(inputField.name);
+                    } }
+                    onBlur={ (event: React.KeyboardEvent) => {
+                        handleBlur(event, inputField.name);
+                    } }
+                    error={
+                        isError
+                            ? {
+                                content: errorMessages.map(
+                                    (errorMessage: string, indexError: number) => {
+                                        return <p key={ indexError }>{errorMessage}</p>;
+                                    }
+                                ),
+                                pointing: "left"
+                            }
+                            : false
+                    }
+                    autoFocus={ inputField.autoFocus || false }
+                    readOnly={ inputField.readOnly }
+                    disabled={ inputField.disabled }
+                    defaultChecked={ inputField.defaultChecked }
+                />
+            );
+        }
+        else if (isSubmitField(inputField)) {
             return (
                 <Button
                     { ...filteredProps }
@@ -297,7 +334,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                     type={ inputField.type }
                     disabled={ inputField.disabled ? inputField.disabled(form) : false }
                 >
-                    { inputField.value }
+                    {inputField.value}
                 </Button>
             );
         } else if (isResetField(inputField)) {
@@ -309,7 +346,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                     onClick={ handleReset }
                     disabled={ inputField.disabled ? inputField.disabled(form) : false }
                 >
-                    { inputField.value }
+                    {inputField.value}
                 </Button>
             );
         } else if (isButtonField(inputField)) {
@@ -324,7 +361,7 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
                     } }
                     disabled={ inputField.disabled ? inputField.disabled(form) : false }
                 >
-                    { inputField.value }
+                    {inputField.value}
                 </Button>
             );
         } else if (isDivider(inputField)) {
