@@ -16,12 +16,12 @@
  * under the License
  */
 
-import React, { FunctionComponent, ReactElement } from "react"
+import React, { FunctionComponent, ReactElement, useState } from "react"
 import { Grid, Divider, Button } from "semantic-ui-react"
 import { Field, Forms } from "@wso2is/forms"
 import { useTranslation } from "react-i18next";
-import { DangerZoneGroup, DangerZone } from "@wso2is/react-components";
-import { deleteSelectedRole, updateRoleDetails } from "../../../api";
+import { DangerZoneGroup, DangerZone, ConfirmationModal } from "@wso2is/react-components";
+import { deleteRoleById, updateRoleDetails } from "../../../api";
 import { AlertLevels, AlertInterface, RolesInterface, PatchRoleDataInterface } from "../../../models";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
@@ -50,6 +50,8 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         onRoleUpdate
     } = props;
 
+    const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false)
+
     /**
      * Dispatches the alert object to the redux store.
      *
@@ -65,7 +67,7 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
      * @param id - Role ID which needs to be deleted
      */
     const handleOnDelete = (id: string): void => {
-        deleteSelectedRole(id).then(() => {
+        deleteRoleById(id).then(() => {
             handleAlerts({
                 description: t(
                     "devPortal:components.roles.notifications.deleteRole.success.description"
@@ -158,9 +160,34 @@ export const BaiscRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                     actionTitle="Delete Role"
                     header="Delete this role"
                     subheader="This action is irreversible. Please proceed with caution."
-                    onActionClick={ () => handleOnDelete(roleObject.id) }
+                    onActionClick={ () => setShowDeleteConfirmationModal(!showRoleDeleteConfirmation) }
                 />
-            </DangerZoneGroup>
+            </DangerZoneGroup> 
+            {
+                showRoleDeleteConfirmation && 
+                    <ConfirmationModal
+                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                        type="warning"
+                        open={ showRoleDeleteConfirmation }
+                        assertion={ roleObject.displayName }
+                        assertionHint={ <p>Please type <strong>{ roleObject.displayName }</strong> to confirm.</p> }
+                        assertionType="input"
+                        primaryAction="Confirm"
+                        secondaryAction="Cancel"
+                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                        onPrimaryActionClick={ (): void => handleOnDelete(roleObject.id) }
+                    >
+                        <ConfirmationModal.Header>Are you sure?</ConfirmationModal.Header>
+                        <ConfirmationModal.Message attached warning>
+                            This action is irreversible and will permanently delete the selected role.
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                            If you delete this role, the permissions attached to it will be deleted and the users 
+                            attached to it will no longer be able to perform intended actions which were previously
+                            allowed. Please proceed with caution.
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+            }
         </>
     )
 };

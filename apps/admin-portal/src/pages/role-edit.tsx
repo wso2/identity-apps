@@ -60,7 +60,7 @@ export const RoleEditPage: FunctionComponent<any> = (props: any): ReactElement =
     
     return (
         <PageLayout
-            title={ "Edit Role" }
+            title={ roleObject && roleObject.displayName ? roleObject.displayName : "Edit Role" }
             backButton={ {
                 onClick: handleBackButtonClick,
                 text: "Go back to roles"

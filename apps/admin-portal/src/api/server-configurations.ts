@@ -26,19 +26,14 @@ import { HttpMethods } from "../models";
  */
 const httpClient = AxiosHttpClient.getInstance();
 
-/**
- * Retrieve self sign up configurations.
- *
- * @returns {Promise<any>} a promise containing the configurations.
- */
-export const getSelfSignUpConfigurations = (): Promise<any> => {
+export const getConfigurations = (url: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: ServiceResourcesEndpoint.selfSignUp
+        url: url
     };
 
     return httpClient.request(requestConfig)
@@ -50,14 +45,7 @@ export const getSelfSignUpConfigurations = (): Promise<any> => {
         });
 };
 
-/**
- * Update self sign up configurations.
- *
- * @param data request payload
- *
- * @returns {Promise<any>} a promise containing the response.
- */
-export const updateSelfSignUpConfigurations = (data: object): Promise<any> => {
+export const updateConfigurations = (data: object, url: string): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
@@ -65,7 +53,7 @@ export const updateSelfSignUpConfigurations = (data: object): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: ServiceResourcesEndpoint.selfSignUp
+        url: url
     };
 
     return httpClient.request(requestConfig)
@@ -75,4 +63,44 @@ export const updateSelfSignUpConfigurations = (data: object): Promise<any> => {
         .catch((error) => {
             return Promise.reject(error);
         });
+};
+
+/**
+ * Retrieve self sign up configurations.
+ *
+ * @returns {Promise<any>} a promise containing the configurations.
+ */
+export const getSelfSignUpConfigurations = (): Promise<any> => {
+    return getConfigurations(ServiceResourcesEndpoint.selfSignUp);
+};
+
+/**
+ * Update self sign up configurations.
+ *
+ * @param data request payload
+ *
+ * @returns {Promise<any>} a promise containing the response.
+ */
+export const updateSelfSignUpConfigurations = (data: object): Promise<any> => {
+    return updateConfigurations(data, ServiceResourcesEndpoint.selfSignUp);
+};
+
+/**
+ * Retrieve account recovery configurations.
+ *
+ * @returns {Promise<any>} a promise containing the configurations.
+ */
+export const getAccountRecoveryConfigurations = (): Promise<any> => {
+    return getConfigurations(ServiceResourcesEndpoint.accountRecovery);
+};
+
+/**
+ * Update account recovery configurations.
+ *
+ * @param data request payload
+ *
+ * @returns {Promise<any>} a promise containing the response.
+ */
+export const updateAccountRecoveryConfigurations = (data: object): Promise<any> => {
+    return updateConfigurations(data, ServiceResourcesEndpoint.accountRecovery);
 };

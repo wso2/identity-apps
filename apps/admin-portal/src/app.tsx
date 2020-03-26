@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import React, { useEffect, useState, Suspense, ReactElement } from "react";
+import React, { useContext, useEffect, useState, Suspense, ReactElement } from "react";
+import { ThemeContext } from "@wso2is/react-components";
 import { I18nextProvider } from "react-i18next";
 import { Provider } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
@@ -29,15 +30,18 @@ import { ContentLoader } from "@wso2is/react-components";
 import { I18n } from "@wso2is/i18n";
 import { getAppConfig } from "@wso2is/core/api";
 import { ApplicationConstants } from "./constants";
+import { Helmet } from "react-helmet";
 
 /**
  * Main App component.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
 export const App = (): ReactElement => {
 
     const [ appConfig, setAppConfig ] = useState<AppConfigInterface>(null);
+
+    const { state } = useContext(ThemeContext);
 
     /**
      * Obtain app.config.json from the server root when the app mounts.
@@ -63,6 +67,16 @@ export const App = (): ReactElement => {
                 <I18nextProvider i18n={ I18n.instance }>
                     <Provider store={ store }>
                         <AppConfig.Provider value={ appConfig }>
+                            <Helmet defer={ false }>
+                                <link
+                                    href={ `/libs/themes/${state.theme}/theme.min.css` }
+                                    rel="stylesheet"
+                                    type="text/css"
+                                />
+                                <style type="text/css">
+                                    { state.css }
+                                </style>
+                            </Helmet>
                             <Suspense fallback={ <ContentLoader dimmer /> }>
                                 <Switch>
                                     <Redirect exact={ true } path="/" to={ GlobalConfig.appLoginPath }/>

@@ -32,7 +32,7 @@ const httpClient = AxiosHttpClient.getInstance();
  * @returns {Promise<BasicProfileInterface>} a promise containing the user list.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const getGroupsList = (domain: string): Promise<any> => {
+export const getRolesList = (domain: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
@@ -130,7 +130,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
  * @returns {Promise<any>} a promise containing the status of the delete.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const deleteSelectedRole = (roleId: string): Promise<any> => {
+export const deleteRoleById = (roleId: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,
@@ -176,7 +176,7 @@ export const createRole = (data: CreateRoleInterface): Promise<any> => {
  * @param roleId - ID of the role which needs to be updated
  * @param data - Permission data of the role
  */
-export const updatePermissionForRole = (roleId: string, data: any): Promise<any> => {
+export const updateRolePermissions = (roleId: string, data: any): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
@@ -221,7 +221,7 @@ export const getPermissionList = (): Promise<any> => {
  * 
  * @param roleId Role Id to retrieve relevent permissions
  */
-export const getPermissionsPerRole = (roleId: string): Promise<any> => {
+export const getPermissionsForRole = (roleId: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": GlobalConfig.clientHost,

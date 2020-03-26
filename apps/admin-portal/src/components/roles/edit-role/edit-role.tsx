@@ -17,9 +17,7 @@
  */
 
 import React, { FunctionComponent, ReactElement } from "react";
-import { useDispatch } from "react-redux";
-import { AlertInterface, RolesInterface } from "../../../models";
-import { addAlert } from "../../../store/actions";
+import { RolesInterface } from "../../../models";
 import { ResourceTab } from "@wso2is/react-components";
 import { BaiscRoleDetails } from "./edit-role-basic";
 import { RolePermissionDetails } from "./edit-role-permission";

@@ -17,4 +17,4 @@
 --%>
 
 <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>
-<script src="libs/theme/semantic.min.js"></script>
+<script src="libs/themes/default/semantic.min.js"></script>

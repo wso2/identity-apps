@@ -23,6 +23,7 @@ import {
     ApplicationEditPage,
     ApplicationsPage,
     ApplicationTemplateSelectPage,
+    CustomizePage,
     HomePage,
     IdentityProvidersPage,
     IdentityProviderTemplateSelectPage,
@@ -253,7 +254,16 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         name: "Server Configurations",
         path: "/server-configurations",
         protected: true,
-        showOnSidePanel: true,
+        showOnSidePanel: true
+    },
+    {
+        component: CustomizePage,
+        icon: "overview",
+        id: "customize",
+        name: "Customize",
+        path: "/customize",
+        protected: true,
+        showOnSidePanel: false
     },
     {
         component: PrivacyPage,

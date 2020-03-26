@@ -54,11 +54,11 @@ interface TreeViewProps {
  * Interface to contain Tree node data
  */
 interface TreeNode {
-    id: number;
+    id: string;
     name: string;
     isExpanded: boolean;
     isChecked: boolean;
-    children: TreeNode[];
+    children?: TreeNode[];
 }
 
 /**
@@ -175,7 +175,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
         if (isCheckable(node, depth)) {
             return (
-                <label htmlFor={ node.name } className="tree-label">
+                <label htmlFor={ node.id } className="tree-label">
                     <input
                         type="checkbox"
                         name={ node[keywordLabel] }
@@ -184,7 +184,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                             handleCheckToggle(node, e);
                         } }
                         checked={ !!node.isChecked }
-                        id={ node.name }
+                        id={ node.id }
                     />
                     <div className="checkbox">
                         <svg width="17px" height="17px" viewBox="0 0 20 20">

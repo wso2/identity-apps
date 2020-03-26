@@ -685,19 +685,220 @@ export const devPortal: DevPortalNS = {
                         message: "Role created successfully."
                     }
                 }
+            },
+            search: {
+                forms: {
+                    searchForm: {
+                        inputs: {
+                            filerAttribute: {
+                                label: "Filter attribute",
+                                placeholder: "E.g. role name.",
+                                validations: {
+                                    empty: "Filter attribute is a required field"
+                                }
+                            },
+                            filterCondition: {
+                                label: "Filter condition",
+                                placeholder: "E.g. Starts with etc.",
+                                validations: {
+                                    empty: "Filter condition is a required field"
+                                }
+                            },
+                            filterValue: {
+                                label: "Filter value",
+                                placeholder: "Enter value to search",
+                                validations: {
+                                    empty: "Filter value is a required field"
+                                }
+                            },
+                        }
+                    }
+                },
+                hints: {
+                    querySearch: {
+                        actionKeys: "Shift + Enter",
+                        label: "To search as a query"
+                    }
+                },
+                options: {
+                    header: "Advanced search",
+                },
+                placeholder: "Search by role name",
+                popups: {
+                    clear: "clear search",
+                    dropdown: "show options"
+                },
+                resultsIndicator: "Showing results for the query \"{{query}}\""
             }
         },
         serverConfigs: {
+            accountRecovery: {
+                actionTitles: {
+                    config: "Configure"
+                },
+                confirmation: {
+                    heading: "Confirmation",
+                    message: "Do you wish to save the configurations related to user account recovery?"
+                },
+                description: "Configure how account recovery should happen with your users.",
+                heading: "Account Recovery",
+                notifications: {
+                    updateConfigurations: {
+                        error: {
+                            description: "An error occurred while updating the account recovery configurations.",
+                            message: "Error updating the configurations"
+                        },
+                        genericError: {
+                            description: "Couldn't update the account recovery configurations.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the account recovery configurations.",
+                            message: "Configurations updated successfully"
+                        }
+                    }
+                },
+                otherSettings: {
+                    form: {
+                        enableForcedChallengeQuestions: {
+                            hint: "Force users to provide answers to challenge questions during sign in",
+                            label: "Enable forced challenge questions"
+                        },
+                        enableInternalNotificationManagement: {
+                            hint: "Set false if the client application handles notification sending",
+                            label: "Enable internal notification management"
+                        },
+                        notifyQuestionRecoveryStart: {
+                            label: "Notify when questions based recovery starts"
+                        },
+                        notifyRecoverySuccess: {
+                            label: "Notify when recovery success"
+                        },
+                        reCaptchaMaxFailedAttempts: {
+                            label: "Max failed attempts for reCaptcha",
+                            placeholder: "2",
+                            validations: {
+                                empty: "Max failed attempts for reCaptcha is required."
+                            }
+                        },
+                        recoveryCallbackURLRegex: {
+                            hint: "Callback URL regex for the recovery.",
+                            label: "Recovery callback URL regex",
+                            placeholder: ".*",
+                            validations: {
+                                empty: "Recovery callback URL regex is required."
+                            }
+                        },
+                        recoveryLinkExpiryTime: {
+                            hint: "Specify the time to expire the recovery link in minutes.",
+                            label: "Recovery link expiry time",
+                            placeholder: "1440",
+                            validations: {
+                                empty: "Number of questions required for password recovery is required."
+                            }
+                        },
+                        smsOTPExpiryTime: {
+                            hint: "Specify the time to expire the SMS OTP in minutes.",
+                            label: "SMS OTP expiry time",
+                            placeholder: "1",
+                            validations: {
+                                empty: "Number of questions required for password recovery is required."
+                            }
+                        },
+                    }
+                },
+                passwordRecovery: {
+                    actionTitles: {
+                        config: "Configure"
+                    },
+                    description: "Configure how password recovery should happen with your users.",
+                    form: {
+                        enableNotificationBasedRecovery: {
+                            label: "Enable notification based password recovery"
+                        },
+                        enableReCaptchaBasedRecovery: {
+                            label: "Enable reCaptcha for password recovery"
+                        },
+                        enableReCaptchaForSecurityQuestionBasedRecovery: {
+                            hint: "Show captcha for challenge question based password recovery",
+                            label: "Enable reCaptcha for security questions based password recovery"
+                        },
+                        enableSecurityQuestionBasedRecovery: {
+                            label: "Enable security question based password recovery"
+                        },
+                        noOfQuestionsRequired: {
+                            hint: "The user will have to successfully answer this number of security questions to " +
+                                "recover the password.",
+                            label: "Number of questions required for password recovery",
+                            placeholder: "2",
+                            validations: {
+                                empty: "Number of questions required for password recovery is required."
+                            }
+                        },
+                    },
+                    heading: "Password Recovery"
+                },
+                usernameRecovery: {
+                    actionTitles: {
+                        config: "Configure"
+                    },
+                    description: "Configure how username recovery should happen with your users.",
+                    form: {
+                        enable: {
+                            label: "Enable username recovery"
+                        },
+                        enableReCaptcha: {
+                            label: "Enable reCaptcha for username recovery"
+                        }
+                    },
+                    heading: "Username Recovery"
+                }
+            },
             selfRegistration: {
                 actionTitles: {
                     config: "Configure"
                 },
-                description: "Configure how the User Self Registration should happen with your users.",
-                heading: "User Self Registration",
                 confirmation: {
                     heading: "Confirmation",
                     message: "Do you wish to save the configurations related to user self registration?"
                 },
+                description: "Configure how the user self registration should happen with your users.",
+                form: {
+                    callbackURLRegex: {
+                        label: "User self registration callback URL regex",
+                        placeholder: "https://localhost:9443/authenticationendpoint/login.do",
+                        validations: {
+                            empty: "User self registration callback URL regex is required."
+                        }
+                    },
+                    enable: {
+                        label: "Enable user self registration",
+                    },
+                    enableAccountLockOnCreation: {
+                        label: "Enable account lock on creation"
+                    },
+                    enableReCaptcha: {
+                        label: "Enable reCaptcha"
+                    },
+                    internalNotificationManagement: {
+                        label: "Internal notification management"
+                    },
+                    smsOTPExpiryTime: {
+                        label: "User self registration SMS OTP expiry time",
+                        placeholder: "1",
+                        validations: {
+                            empty: "User self registration SMS OTP expiry time is required."
+                        }
+                    },
+                    verificationLinkExpiryTime: {
+                        label: "User self registration verification link expiry time",
+                        placeholder: "1440",
+                        validations: {
+                            empty: "User self registration verification link expiry time is required."
+                        }
+                    }
+                },
+                heading: "User Self Registration",
                 notifications: {
                     updateConfigurations: {
                         error: {
@@ -712,133 +913,6 @@ export const devPortal: DevPortalNS = {
                             description: "Successfully updated the self sign up configurations.",
                             message: "Configurations updated successfully"
                         }
-                    }
-                },
-                form: {
-                    enable: {
-                        label: "Enable User Self Registration",
-                    },
-                    enableAccountLockOnCreation: {
-                        label: "Enable Account Lock On Creation"
-                    },
-                    internalNotificationManagement: {
-                        label: "Internal Notification Management"
-                    },
-                    enableReCaptcha: {
-                        label: "Enable reCaptcha"
-                    },
-                    verificationLinkExpiryTime: {
-                        label: "User self registration verification link expiry time",
-                        placeholder: "Set the number of minutes for the self registration verification e-mail would be valid.",
-                        validations: {
-                            empty: "User self registration verification link expiry time is required."
-                        }
-                    },
-                    smsOTPExpiryTime: {
-                        label: "User self registration SMS OTP expiry time",
-                        placeholder: "Set the number of minutes that the SMS OTP would be valid.",
-                        validations: {
-                            empty: "User self registration SMS OTP expiry time is required."
-                        }
-                    },
-                    callbackURLRegex: {
-                        label: "User self registration callback URL regex",
-                        placeholder: "User self registration callback URL regex.",
-                        validations: {
-                            empty: "User self registration callback URL regex is required."
-                        }
-                    }
-                }
-            },
-            accountRecovery: {
-                actionTitles: {
-                    config: "Configure"
-                },
-                description: "Configure how account recovery should happen with your users.",
-                heading: "Account Recovery",
-                usernameRecovery: {
-                    actionTitles: {
-                        config: "Configure"
-                    },
-                    description: "Configure how username recovery should happen with your users.",
-                    heading: "Username Recovery",
-                    form: {
-                        enable: {
-                            label: "Enable Username Recovery"
-                        },
-                        enableReCaptcha: {
-                            label: "Enable reCaptcha for Username Recovery"
-                        }
-                    }
-                },
-                passwordRecovery: {
-                    actionTitles: {
-                        config: "Configure"
-                    },
-                    description: "Configure how password recovery should happen with your users.",
-                    heading: "Password Recovery",
-                    form: {
-                        enableNotificationBasedRecovery: {
-                            label: "Enable Notification Based Password Recovery"
-                        },
-                        enableReCaptchaBasedRecovery: {
-                            label: "Enable reCaptcha for Password Recovery"
-                        },
-                        enableSecurityQuestionBasedRecovery: {
-                            label: "Enable Security Question Based Password Recovery"
-                        },
-                        noOfQuestionsRequired: {
-                            label: "Number Of Questions Required For Password Recovery",
-                            hint: "The user will have to successfully answer this number of security questions to recover the password.",
-                            validations: {
-                                empty: "Number Of Questions Required For Password Recovery is required."
-                            }
-                        },
-                        enableReCaptchaForSecurityQuestionBasedRecovery: {
-                            label: "Enable reCaptcha for Security Questions Based Password Recovery",
-                            hint: "Show captcha for challenge question based password recovery"
-                        },
-                    }
-                },
-                otherSettings: {
-                    form: {
-                        reCaptchaMaxFailedAttempts: {
-                            label: "Max Failed Attempts for ReCaptcha",
-                            validations: {
-                                empty: "Max Failed Attempts for ReCaptcha is required."
-                            }
-                        },
-                        enableInternalNotificationManagement: {
-                            label: "Enable Internal Notification Management",
-                            hint: "Set false if the client application handles notification sending"
-                        },
-                        notifyRecoverySuccess: {
-                            label: "Notify when Recovery Success"
-                        },
-                        notifyQuestionRecoveryStart: {
-                            label: "Notify when Questions Based Recovery Starts"
-                        },
-                        recoveryLinkExpiryTime: {
-                            label: "Recovery Link Expiry Time",
-                            hint: "Specify the time to expire the recovery link in minutes.",
-                            validations: {
-                                empty: "Number Of Questions Required For Password Recovery is required."
-                            }
-                        },
-                        smsOTPExpiryTime: {
-                            label: "SMS OTP Expiry Time",
-                            hint: "Specify the time to expire the SMS OTP in minutes.",
-                            validations: {
-                                empty: "Number Of Questions Required For Password Recovery is required."
-                            }
-                        },
-                        recoveryCallbackURLRegex: {
-                            label: "Recovery callback URL regex",
-                            hint: "TODO",
-                            validations: {
-                                empty: "Recovery callback URL regex is required."
-                            }
-                        },
                     }
                 }
             }

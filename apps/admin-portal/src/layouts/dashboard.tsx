@@ -34,7 +34,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { Button, Responsive } from "semantic-ui-react";
+import { Button, Image, Responsive } from "semantic-ui-react";
 import { ProtectedRoute } from "../components";
 import { GlobalConfig, LogoImage, routes, SidePanelIcons, SidePanelMiscIcons } from "../configs";
 import { UIConstants } from "../constants";
@@ -44,6 +44,7 @@ import { AppState } from "../store";
 import { BaseLayout } from "./base";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
 import { RouteUtils } from "@wso2is/core/utils";
+import { ThemeContext } from "@wso2is/react-components";
 
 /**
  * Dashboard layout Prop types.
@@ -63,6 +64,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
 ): ReactElement => {
 
     const { fluid } = props;
+    const { state } = useContext(ThemeContext);
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -305,8 +307,16 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     brand={ (
                         <ProductBrand
                             style={ { marginTop: 0 } }
-                            logo={ <Logo image={ LogoImage }  /> }
-                            name={ ContextUtils.getRuntimeConfig().applicationName }
+                            logo={  state.logo && state.logo !== "" ?
+                                <Image src={ state.logo } style={ { maxHeight: 25 } } />
+                                :
+                                <Logo image={ LogoImage } />
+                            }
+                            name={ state.productName && state.productName !== "" ?
+                                state.productName
+                                :
+                                ContextUtils.getRuntimeConfig().applicationName
+                            }
                         />
                     ) }
                     brandLink={ ContextUtils.getRuntimeConfig().appHomePath }
@@ -361,7 +371,9 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     currentLanguage={ I18n.instance?.language }
                     supportedLanguages={ supportedI18nLanguages }
                     onLanguageChange={ handleLanguageSwitch }
-                    copyright={
+                    copyright={ state.copyrightText && state.copyrightText !== "" ?
+                        state.copyrightText
+                        :
                         ContextUtils.getRuntimeConfig().copyrightText
                             ? ContextUtils.getRuntimeConfig().copyrightText
                             : null

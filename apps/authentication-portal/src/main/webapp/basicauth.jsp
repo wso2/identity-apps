@@ -71,20 +71,41 @@
                     var tenantName = getParameterByName("tenantDomain");
                     var userName = document.getElementById("username");
                     var usernameUserInput = document.getElementById("usernameUserInput");
+                    var isSaaSApp = JSON.parse(getParameterByName("isSaaSApp").toLowerCase());
 
                     if (usernameUserInput) {
                         var usernameUserInputValue = usernameUserInput.value.trim();
 
-                        if (!getParameterByName("isSaaSApp") && tenantName) {
+                        // TODO: Check `isSaasApp` scenario is needed
+                        if (tenantName) {
 
-                            if ((!isEmailUsernameEnabled) && (usernameUserInputValue.split("@").length > 1)) {
-                                userName.value = usernameUserInputValue;
+                            if (isEmailUsernameEnabled) {
+
+                                if (usernameUserInputValue.split("@").length <= 1) {
+                                    var errorMessage = document.getElementById("error-msg");
+
+                                    errorMessage.innerHTML = "Invalid Username. Username has to be an email address.";
+                                    errorMessage.style.display = "block";
+
+                                    return;
+                                }
+
+                                if (usernameUserInputValue.split("@").length === 2) {
+                                    userName.value = usernameUserInputValue + "@" + tenantName;
+                                }
+                                else {
+                                    userName.value = usernameUserInputValue;
+                                }
+                            } else {
+                                if (usernameUserInputValue.split("@").length > 1) {
+                                    userName.value = usernameUserInputValue;
+                                } else {
+                                    userName.value = usernameUserInputValue + "@" + tenantName;
+                                }
+
                             }
-                            else {
-                                userName.value = usernameUserInputValue + "@" + tenantName;
-                            }
-                        }
-                        else {
+                            
+                        } else {
                             userName.value = usernameUserInputValue;
                         }
                     }
@@ -192,6 +213,8 @@
     <div class="ui visible negative message" id="error-msg">
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "unauthorized.to.login")%>
     </div>
+    <% } else { %>
+        <div class="ui visible negative message" style="display: none;" id="error-msg"></div>
     <% } %>
 
     <% if (!isIdentifierFirstLogin(inputType)) { %>
@@ -346,8 +369,7 @@
         </div>
         <div class="column mobile center aligned tablet right aligned computer right aligned buttons tablet no-margin-right-last-child computer no-margin-right-last-child">
             <button
-                type="submit"
-                onclick="submitCredentials(event)"    
+                type="submit"   
                 class="ui primary large button"
                 tabindex="4"
                 role="button">
