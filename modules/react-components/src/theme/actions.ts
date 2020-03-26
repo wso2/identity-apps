@@ -28,7 +28,7 @@ export enum ThemeContextReducerActionTypes {
     SET_CSS = "SET_CSS",
     SET_LOGO_URL = "SET_LOGO_URL",
     SET_PRODUCT_NAME = "SET_PRODUCT_NAME",
-    SET_STYLES = "SET_PRODUCT_NAME",
+    SET_STYLES = "SET_STYLES",
     SET_THEME = "SET_THEME"
 }
 
