@@ -734,7 +734,7 @@ export const devPortal: DevPortalNS = {
         serverConfigs: {
             accountRecovery: {
                 actionTitles: {
-                    config: "Configure"
+                    config: "Advanced Configurations"
                 },
                 confirmation: {
                     heading: "Confirmation",
@@ -804,7 +804,7 @@ export const devPortal: DevPortalNS = {
                             validations: {
                                 empty: "Number of questions required for password recovery is required."
                             }
-                        },
+                        }
                     }
                 },
                 passwordRecovery: {
@@ -834,7 +834,7 @@ export const devPortal: DevPortalNS = {
                             validations: {
                                 empty: "Number of questions required for password recovery is required."
                             }
-                        },
+                        }
                     },
                     heading: "Password Recovery"
                 },
@@ -856,7 +856,7 @@ export const devPortal: DevPortalNS = {
             },
             selfRegistration: {
                 actionTitles: {
-                    config: "Configure"
+                    config: "Advanced Configurations"
                 },
                 confirmation: {
                     heading: "Confirmation",
@@ -872,7 +872,7 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     enable: {
-                        label: "Enable user self registration",
+                        label: "Enable user self registration"
                     },
                     enableAccountLockOnCreation: {
                         label: "Enable account lock on creation"
@@ -902,6 +902,12 @@ export const devPortal: DevPortalNS = {
                 },
                 heading: "User Self Registration",
                 notifications: {
+                    updateAccountLockOnCreation: {
+                        success: {
+                            description: "Successfully updated self registration account lock on creation status.",
+                            message: "Configurations updated successfully"
+                        }
+                    },
                     updateConfigurations: {
                         error: {
                             description: "An error occurred while updating the self sign up configurations.",
@@ -913,6 +919,25 @@ export const devPortal: DevPortalNS = {
                         },
                         success: {
                             description: "Successfully updated the self sign up configurations.",
+                            message: "Configurations updated successfully"
+                        }
+                    },
+                    updateEnable: {
+                        success: {
+                            description: "Successfully updated self registration enabled status.",
+                            message: "Configurations updated successfully"
+                        }
+                    },
+                    updateInternalNotificationManagement: {
+                        success: {
+                            description: "Successfully updated self registration internal notification " +
+                                "management status.",
+                            message: "Configurations updated successfully"
+                        }
+                    },
+                    updateReCaptcha: {
+                        success: {
+                            description: "Successfully updated self registration enable reCaptcha status.",
                             message: "Configurations updated successfully"
                         }
                     }

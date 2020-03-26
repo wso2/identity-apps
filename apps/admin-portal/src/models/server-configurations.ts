@@ -20,7 +20,10 @@
  *  Captures the configurations related to user self sign up.
  */
 export interface SelfSignUpConfigurationsInterface {
-	checkboxValues?: string[];
+	enable?: string[];
+	accountLockOnCreation?: string[];
+	internalNotificationManagement?: string[];
+	reCaptcha?: string[];
 	verificationCodeExpiryTime?: string;
 	smsOTPExpiryTime?: string;
 	callbackRegex?: string;

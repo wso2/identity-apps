@@ -389,6 +389,30 @@ export interface DevPortalNS {
                 };
                 notifications: {
                     updateConfigurations: Notification;
+                    updateEnable: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    updateAccountLockOnCreation: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    updateInternalNotificationManagement: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    updateReCaptcha: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
                 };
                 form: {
                     enable: {
