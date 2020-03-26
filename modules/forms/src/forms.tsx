@@ -19,7 +19,7 @@
 import React, { useEffect, useState } from "react";
 import { Form } from "semantic-ui-react";
 import { Field, GroupFields, InnerField, InnerGroupFields } from "./components";
-import { isCheckBoxField, isDropdownField, isInputField, isRadioField, isTextField } from "./helpers";
+import { isCheckBoxField, isDropdownField, isInputField, isRadioField, isTextField, isToggleField } from "./helpers";
 import { Error, FormField, FormValue, Validation } from "./models";
 import { useNonInitialEffect } from "./utils";
 
@@ -112,6 +112,24 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
         };
 
         /**
+         * This toggles the boolean value
+         * @param {string} name Field name
+         */
+        const handleToggle = (name: string) => {
+            const tempForm: Map<string, FormValue> = new Map(form);
+            const tempTouchedFields: Map<string, boolean> = new Map(touchedFields);
+
+
+            tempForm.set(name, tempForm.get(name)==="true"?"false":"true");
+            tempTouchedFields.set(name, true);
+            listener(name, tempForm);
+            propagateOnChange(tempForm);
+            setForm(tempForm);
+            setIsPure(false);
+            setTouchedFields(tempTouchedFields);
+        };
+
+        /**
          * Handler for the onChange event of checkboxes
          * @param value
          * @param name
@@ -152,14 +170,19 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             const inputField: FormField = formFields.find((formField) => {
                 return isInputField(formField) && formField.name === name;
             });
+            const value = form.get(name);
 
             if (isInputField(inputField) && !isRadioField(inputField) && inputField.required) {
-                if (!isCheckBoxField(inputField)) {
-                    form.get(name) !== null && form.get(name) !== ""
+                if (!isCheckBoxField(inputField) && !isToggleField(inputField)) {
+                    value !== null && value !== ""
+                        ? requiredFieldsParam.set(name, true)
+                        : requiredFieldsParam.set(name, false);
+                } else if (isToggleField(inputField)) {
+                    value !== null && value !== "false"
                         ? requiredFieldsParam.set(name, true)
                         : requiredFieldsParam.set(name, false);
                 } else {
-                    form.get(name) !== null && form.get(name).length > 0
+                    value !== null && value.length > 0
                         ? requiredFieldsParam.set(name, true)
                         : requiredFieldsParam.set(name, false);
                 }
@@ -224,11 +247,16 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                  *                          -> Then:
                  *                              Assign the default value to the corresponding FormValue key
                  *                          -> Else:
-                 *                              Check if the the element is checkbox
+                 *                              Check if the  element is checkbox
                  *                                  -> Then:
                  *                                      Assign an empty array to the corresponding FormValue key
                  *                                  -> Else:
-                 *                                      Assign an empty string value to the corresponding FormValue key
+                 *                                          Check if the element is a toggle
+                 *                                              -> Then:
+                 *                                                  Assign false
+                 *                                              -> Else:
+                 *                                                  Assign an empty string value to the 
+                 *                                                  corresponding FormValue key
                  */
                 if (isInputField(inputField)) {
                     if (!touchedFields.get(inputField.name) || isReset) {
@@ -238,14 +266,17 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                                 ? tempForm.set(inputField.name, inputField.default)
                                 : isCheckBoxField(inputField)
                                     ? tempForm.set(inputField.name, [])
-                                    : tempForm.set(inputField.name, "");
+                                    : isToggleField(inputField)
+                                        ? tempForm.set(inputField.name, "false")
+                                        : tempForm.set(inputField.name, "");
                     }
 
                     /**
                      * {
                      *      {
                      *          Check if the field value is not empty AND
-                     *          (the field doesn't already exist/the value is empty OR the array's length is 0 )
+                     *          (the field doesn't already exist
+                     *              /the value is empty OR the array's length is 0 OR boolean value is false )
                      *      } OR
                      *      the reset button has been clicked
                      * } AND
@@ -256,10 +287,12 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                      * Else: Set required to true
                      *
                      */
+
+                    const value = tempForm.get(inputField.name);
                     (
                         (
                             !inputField.value
-                            && (!tempForm.get(inputField.name) || !(tempForm.get(inputField.name).length > 0))
+                            && (!value || !(value.length > 0))
                         )
                         || isReset
                     )
@@ -473,6 +506,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                                 form,
                                 handleBlur,
                                 handleChange,
+                                handleToggle,
                                 handleChangeCheckBox,
                                 handleReset
                             },
@@ -497,7 +531,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             });
         };
 
-        const mutatedChildren: React.ReactElement[] = children?[...parseChildren(children, formFields)]:null;
+        const mutatedChildren: React.ReactElement[] = children ? [...parseChildren(children, formFields)] : null;
 
         return <Form onSubmit={ handleSubmit }>{mutatedChildren}</Form>;
     };
