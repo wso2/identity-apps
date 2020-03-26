@@ -25,11 +25,29 @@ import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
 import { PrimaryButton } from "@wso2is/react-components";
 
+/**
+ * Prop types of `EditBasicDetailsUserStore` component
+ */
 interface EditBasicDetailsUserStorePropsInterface{
+    /**
+     * User store to be edited
+     */
     userStore: UserStore;
+    /**
+     * Initiates an update
+     */
     update: () => void;
+    /**
+     * user store id
+     */
     id: string;
 }
+
+/**
+ * This renders the edit basic details pane
+ * @param {EditBasicDetailsUserStorePropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const EditBasicDetailsUserStore = (
     props: EditBasicDetailsUserStorePropsInterface
 ): React.ReactElement => {
@@ -38,8 +56,7 @@ export const EditBasicDetailsUserStore = (
 
     const [submit, setSubmit] = useTrigger();
 
-    const dispatch = useDispatch();
-
+    const dispatch = useDispatch(); 
 
     return (
         <Forms
@@ -89,7 +106,6 @@ export const EditBasicDetailsUserStore = (
                             value={ userStore?.description }
                         />
                         <Field
-                            search={ true }
                             label="Type"
                             name="type"
                             type="text"
