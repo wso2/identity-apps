@@ -17,10 +17,10 @@
  */
 
 import { Button, Card, Divider, Form, Grid, Header, Image, Label } from "semantic-ui-react";
+import { ColorResult, RGBColor, SketchPicker } from "react-color";
 import { defaultThemeVariables, Themes } from "@wso2is/theme";
-import React, { ReactElement, useContext, useState } from "react";
-import { RGBColor, SketchPicker } from "react-color";
-import { ThemeContext } from "@wso2is/react-components";
+import React, { ChangeEvent, ReactElement, useContext, useState } from "react";
+import { ThemeContext, ThemeTypes } from "@wso2is/react-components";
 
 /**
  * Util method to convert hex color code string to RGBA color object.
@@ -28,7 +28,7 @@ import { ThemeContext } from "@wso2is/react-components";
  * @param {string} hex - Color code. E.g. "#000000"
  * @param {number} [alpha] - Alpha (opacity) value. E.g. 0-1
  * 
- * @returns {object} RGBA color value
+ * @returns {RGBColor} RGBA color value.
  */
 const hexToRGB = (hex: string, alpha?: number): RGBColor => {
     return {
@@ -42,9 +42,9 @@ const hexToRGB = (hex: string, alpha?: number): RGBColor => {
 /**
  * ColorPicker Component Interface.
  *
- * @interface ColorPickerProps.
+ * @interface ColorPickerInterface.
  */
-interface ColorPickerProps {
+interface ColorPickerInterface {
     inputColor: string;
     inputOnChangeHandler: (hexValue: string) => void;
     name: string;
@@ -55,11 +55,11 @@ interface ColorPickerProps {
  * ColorPicker ReactComponent.
  *
  * @param {RGBColor} { inputColor } - Input color.
- * @param {(hexValue: string) => void} { inputOnChangeHandler } - Input value change handler
+ * @param {(hexValue: string) => void} { inputOnChangeHandler } - Input value change handler.
  * 
- * @returns {ReactElement}
+ * @returns {ReactElement} - Color Picker component.
  */
-const ColorPicker: React.FunctionComponent<ColorPickerProps> = ({
+const ColorPicker: React.FunctionComponent<ColorPickerInterface> = ({
     inputColor,
     inputOnChangeHandler
 }): ReactElement => {
@@ -72,15 +72,26 @@ const ColorPicker: React.FunctionComponent<ColorPickerProps> = ({
         displayColorPicker: false
     });
 
+    /**
+     * Method to show ColorPicker component onClick.
+     */ 
     const handleClick = () => {
         setValue({ ...value, displayColorPicker: !value.displayColorPicker });
     };
 
+    /**
+     * Method to hide ColorPicker component onOutsideClick.
+     */
     const handleClose = () => {
         setValue({ ...value, displayColorPicker: false });
     };
 
-    const handleChange = (color) => {
+    /**
+     * Method to update the state with the selected color from ColorPicker component.
+     *
+     * @param {ColorResult} color - Color object returning from the ColorPicker component.
+     */
+    const handleChange = (color: ColorResult) => {
         setValue({
             ...value,
             color: {
@@ -89,10 +100,16 @@ const ColorPicker: React.FunctionComponent<ColorPickerProps> = ({
                 rgb: color.rgb
             }
         });
+
         inputOnChangeHandler(color.hex);
     };
 
-    const handleInputChange = (e) => {
+    /**
+     * Method to update the state with user given color input.
+     *
+     * @param {any} e - Input element onChange event.
+     */
+    const handleInputChange = (e: any) => {
         setValue({
             ...value,
             color: {
@@ -101,6 +118,7 @@ const ColorPicker: React.FunctionComponent<ColorPickerProps> = ({
                 rgb: hexToRGB(e.target.value)
             }
         });
+
         inputOnChangeHandler(e.target.value);
     };
 
@@ -117,7 +135,7 @@ const ColorPicker: React.FunctionComponent<ColorPickerProps> = ({
                 onClick={ handleClick }
             >
             </Label>
-            <input value={ value.color.hex } onChange={ (e) => { handleInputChange(e) } } />
+            <input value={ value.color.hex } onChange={ handleInputChange } />
             { value.displayColorPicker ? 
                 <div className="ui react-color-popover">
                     <div className="ui react-color-cover" onClick={ handleClose } />
@@ -130,9 +148,9 @@ const ColorPicker: React.FunctionComponent<ColorPickerProps> = ({
 };
 
 /**
- * Theme style input form
+ * Theme style input form.
  *
- * @returns {ReactElement}
+ * @returns {ReactElement} - Style edit form component.
  */
 const CSSForm = (): ReactElement => {
     const [ themeOptions, setThemeOptions ] = useState({});
@@ -151,7 +169,12 @@ const CSSForm = (): ReactElement => {
 
         const [ value, setValue ] = useState(initialValue);
 
-        const handleChange = (e) => {
+        /**
+         * Update state with input onChange value
+         *
+         * @param {any} e - onChange event
+         */
+        const handleChange = (e: any) => {
             setValue(e.target.value);
         };
 
@@ -162,21 +185,24 @@ const CSSForm = (): ReactElement => {
             value
         };
 
+        /**
+         * Update state with ColorPicker on change
+         *
+         * @param {string} hexValue
+         */
         const handleColorPickerOnChange = (hexValue: string) => {
             setValue(hexValue);
-            setThemeOptions({...themeOptions, [`@${input}`]: value });
+            setThemeOptions({ ...themeOptions, [`@${input}`]: value });
         };
 
         const colorChildren = () => {
             return (
-                <>
-                    <ColorPicker
-                        name={ input }
-                        placeholder={ "E.g. " + initialValue }
-                        inputColor={ value }
-                        inputOnChangeHandler={ handleColorPickerOnChange }
-                    />
-                </>
+                <ColorPicker
+                    name={ input }
+                    placeholder={ "E.g. " + initialValue }
+                    inputColor={ value }
+                    inputOnChangeHandler={ handleColorPickerOnChange }
+                />
             );
         };
 
@@ -227,30 +253,60 @@ const CSSForm = (): ReactElement => {
 /**
  * Customize Page.
  *
- * @return {ReactElement}
+ * @return {ReactElement} - Customize page.
  */
 export const CustomizePage = (): ReactElement => {
 
     const { setAppName, setCopyrightText, setLogo, setProductName, setTheme, state } = useContext(ThemeContext);
 
-    const handleThemeSelect = (theme) => {
+
+    /**
+     * Application Theme change state update method.
+     *
+     * @param {ThemeTypes} theme.
+     */
+    const handleThemeSelect = (theme: ThemeTypes) => {
         setTheme(theme);
     };
 
-    const handleProductNameChange = (e) => {
-        setProductName(e.target.value);
+    /**
+     * Product Name change state update method.
+     *
+     * @param {ChangeEvent} e - Input onChange event.
+     * @param {{ value: string }} { value } - User input value.
+     */
+    const handleProductNameChange = (e: ChangeEvent, { value }: { value: string }) => {
+        setProductName(value);
     };
 
-    const handleLogoChange = (e) => {
-        setLogo(e.target.value);
+    /**
+     * Product Logo change state update method.
+     *
+     * @param {ChangeEvent} e - Input onChange event.
+     * @param {{ value: string }} { value } - User input value.
+     */
+    const handleLogoChange = (e: ChangeEvent, { value }: { value: string }) => {
+        setLogo(value);
     };
 
-    const handleCopyrightTextChange = (e) => {
-        setCopyrightText(e.target.value);
+    /**
+     * Application Copyright Text change state update method.
+     *
+     * @param {ChangeEvent} e - Input onChange event.
+     * @param {{ value: string }} { value } - User input value.
+     */
+    const handleCopyrightTextChange = (e: ChangeEvent, { value }: { value: string }) => {
+        setCopyrightText(value);
     };
 
-    const handleAppNameChange = (e) => {
-        setAppName(e.target.value);
+    /**
+     * Application Name change state update method.
+     *
+     * @param {ChangeEvent} e - Input onChange event.
+     * @param {{ value: string }} { value } - User input value.
+     */
+    const handleAppNameChange = (e: ChangeEvent, { value }: { value: string }) => {
+        setAppName(value);
     };
 
     return (
@@ -300,7 +356,7 @@ export const CustomizePage = (): ReactElement => {
                             <Grid.Column>
                                 <Form.Input
                                     value={ state.appName }
-                                    onChange={ (e) => handleAppNameChange(e) }
+                                    onChange={ handleAppNameChange }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -313,7 +369,7 @@ export const CustomizePage = (): ReactElement => {
                             <Grid.Column>
                                 <Form.Input
                                     value={ state.productName }
-                                    onChange={ (e) => handleProductNameChange(e) }
+                                    onChange={ handleProductNameChange }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -326,7 +382,7 @@ export const CustomizePage = (): ReactElement => {
                             <Grid.Column>
                                 <Form.Input
                                     value={ state.logo }
-                                    onChange={ (e) => handleLogoChange(e) }
+                                    onChange={ handleLogoChange }
                                 />
                             </Grid.Column>
                             { state.logo && state.logo !== "" &&
@@ -344,7 +400,7 @@ export const CustomizePage = (): ReactElement => {
                             <Grid.Column>
                                 <Form.Input
                                     value={ state.copyrightText }
-                                    onChange={ (e) => handleCopyrightTextChange(e) }
+                                    onChange={ handleCopyrightTextChange }
                                 />
                             </Grid.Column>
                         </Grid.Row>
