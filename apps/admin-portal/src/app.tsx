@@ -57,19 +57,15 @@ export const App = (): JSX.Element => {
                 <I18nextProvider i18n={ I18n.instance }>
                     <Provider store={ store }>
                         <AppConfig.Provider value={ appConfig }>
-                            <Helmet defer={ false }>
-                                { state.css !== "" &&
-                                    <style type="text/css">
-                                        { state.css }
-                                    </style>
-                                }
-                                { state.css === "" &&
-                                    <link
-                                        href={ `/libs/themes/${state.theme}/theme.min.css` }
-                                        rel="stylesheet"
-                                        type="text/css"
-                                    />
-                                }
+                            <Helmet defer={ false }>   
+                                <link
+                                    href={ `/libs/themes/${state.theme}/theme.min.css` }
+                                    rel="stylesheet"
+                                    type="text/css"
+                                />
+                                <style type="text/css">
+                                    { state.css }
+                                </style>
                             </Helmet>
                             <Suspense fallback={ <ContentLoader dimmer /> }>
                                 <Switch>
