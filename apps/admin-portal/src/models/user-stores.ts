@@ -16,6 +16,9 @@
  * under the License.
  */
 
+ /**
+  * Type of query param objects
+  */
 export interface QueryParams {
     limit: number;
     offset: number;
@@ -23,6 +26,9 @@ export interface QueryParams {
     sort: string;
 }
 
+/**
+ * Type of object returned in a user store list
+ */
 export interface UserStoreListItem {
     id: string;
     name: string;
@@ -30,11 +36,17 @@ export interface UserStoreListItem {
     self: string;
 }
 
+/**
+ * Type of a user store property
+ */
 export interface UserStoreProperty {
     name: string;
     value: string;
 }
 
+/**
+ * Type of object that is used to add or update a user store
+ */
 export interface UserStorePostData {
     typeId: string;
     description: string;
@@ -42,6 +54,9 @@ export interface UserStorePostData {
     properties: UserStoreProperty[];
 }
 
+/**
+ * User Store object returned by retrieval 
+ */
 export interface UserStore {
     typeName: string;
     typeId: string;
@@ -51,6 +66,9 @@ export interface UserStore {
     properties: UserStoreProperty[];
 }
 
+/**
+ * Type of object passed to Test a JDBC connection
+ */
 export interface TestConnection{
     driverName: string;
     connectionURL: string;
@@ -58,18 +76,27 @@ export interface TestConnection{
     connectionPassword: string;
 }
 
+/**
+ * Type of object return by Types list endpoint
+ */
 export interface TypeResponse{
     typeId: string;
     typeName: string;
     className: string;
 }
 
+/**
+ * The type of properties object in Type object
+ */
 export interface TypeProperty{
     name: string;
     defaultValue: string;
     description: string;
 }
 
+/**
+ * The type of object returned by the type meta endpoint
+ */
 export interface Type{
     name: string;
     typeName: string;
