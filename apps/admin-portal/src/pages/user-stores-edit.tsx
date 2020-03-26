@@ -18,14 +18,14 @@
 
 import React, { useEffect, useState } from "react"
 import { PageLayout } from "../layouts"
-import { getAUserStore } from "../api";
-import { AlertLevels, UserStore } from "../models";
+import { getAUserStore, getAType } from "../api";
+import { AlertLevels, UserStore, Type } from "../models";
 import { ResourceTab } from "@wso2is/react-components";
 import {
     EditBasicDetailsUserStore,
-    EditConnectionDetails,
-    EditAdvancedProperties,
-    EditOptionalProperties
+    MemoEditConnectionDetails,
+    MemoEditAdvancedProperties,
+    MemoEditOptionalProperties
 } from "../components";
 import { history } from "../helpers";
 import { useDispatch } from "react-redux";
@@ -41,6 +41,7 @@ export const UserStoresEditPage = (props): React.ReactElement => {
     const userStoreId = props.match.params.id;
 
     const [userStore, setUserStore] = useState<UserStore>(null);
+    const [type, setType] = useState<Type>(null);
 
     const dispatch = useDispatch();
 
@@ -65,6 +66,20 @@ export const UserStoresEditPage = (props): React.ReactElement => {
         getUserStore();
     }, []);
 
+    useEffect(() => {
+        if (userStore) {
+            getAType(userStore?.typeId, null).then((response) => {
+                setType(response);
+            }).catch(error => {
+                dispatch(addAlert({
+                    message: error?.message || "Something went wrong",
+                    description: error?.description || "An error occurred while fetching the type meta data.",
+                    level: AlertLevels.ERROR
+                }));
+            });
+        }
+    }, [userStore]);
+
     /**
      * The tab panes
      */
@@ -82,27 +97,33 @@ export const UserStoresEditPage = (props): React.ReactElement => {
         {
             menuItem: "Connection Details",
             render: () => (
-                <EditConnectionDetails
+                <MemoEditConnectionDetails
                     userStore={ userStore }
                     update={ getUserStore }
+                    type={ type }
+                    id={ userStoreId }
                 />
             )
         },
         {
             menuItem: "Advanced Properties",
             render: () => (
-                <EditAdvancedProperties
+                <MemoEditAdvancedProperties
                     userStore={ userStore }
                     update={ getUserStore }
+                    type={ type }
+                    id={ userStoreId }
                 />
             )
         },
         {
             menuItem: "Optional Properties",
             render: () => (
-                <EditOptionalProperties
+                <MemoEditOptionalProperties
                     userStore={ userStore }
                     update={ getUserStore }
+                    type={ type }
+                    id={ userStoreId }
                 />
             )
         }
