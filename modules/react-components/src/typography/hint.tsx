@@ -40,6 +40,10 @@ interface HintPropsInterface {
      * Icon to be displayed
      */
     icon?: SemanticICONS;
+    /**
+     * Hides the component.
+     */
+    hidden?: boolean;
 }
 
 /**
@@ -57,6 +61,7 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
         className,
         compact,
         disabled,
+        hidden,
         icon
     } = props;
 
@@ -64,7 +69,8 @@ export const Hint: React.FunctionComponent<PropsWithChildren<HintPropsInterface>
         "ui-hint",
         {
             compact,
-            disabled
+            disabled,
+            hidden
         },
         className
     );

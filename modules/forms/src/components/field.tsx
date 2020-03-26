@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import classNames from "classnames";
 import React from "react";
 import { Button, Divider, Form, Radio } from "semantic-ui-react";
 import {
@@ -65,6 +66,10 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
     const filteredProps = filterPassedProps(passedProps);
 
     const { checkError, handleBlur, handleChange, handleChangeCheckBox, handleReset, form } = formProps;
+
+    const formFieldClasses = classNames({
+        hidden: formField.hidden
+    }, formField.className);
 
     /**
      * Generates a semantic Form element
@@ -329,6 +334,6 @@ export const InnerField = (props: InnerFieldPropsInterface): JSX.Element => {
         }
     };
     return (
-        <Form.Field>{ formFieldGenerator(formField) }</Form.Field>
+        <Form.Field className={ formFieldClasses }>{ formFieldGenerator(formField) }</Form.Field>
     );
 };

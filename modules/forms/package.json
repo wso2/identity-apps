@@ -28,6 +28,9 @@
         "rimraf": "^3.0.2",
         "run-script-os": "^1.0.7"
     },
+    "peerDependencies": {
+        "classnames": "*"
+    },
     "author": "WSO2",
     "license": "Apache-2.0"
 }

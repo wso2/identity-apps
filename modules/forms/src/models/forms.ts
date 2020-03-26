@@ -57,6 +57,7 @@ export interface Error {
  * The generic interface for all input fields
  */
 interface FormFieldModel {
+    className?: string;
     name: string;
     label?: string | React.ReactElement;
     listen?: (values: Map<string, FormValue>) => void;
@@ -64,6 +65,7 @@ interface FormFieldModel {
     readOnly?: boolean;
     disabled?: boolean;
     displayErrorOn?: "blur" | "submit";
+    hidden?: boolean;
 }
 
 /**

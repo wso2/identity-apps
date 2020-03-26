@@ -465,11 +465,11 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						"passwordRecovery.form.noOfQuestionsRequired.validations.empty") }
 					type="number"
 					value={ accountRecoveryConfigs.passwordRecoveryMinAnswers }
-					disabled={ !accountRecoveryConfigs.passwordRecoveryCheckBoxes.includes(
+					hidden={ !accountRecoveryConfigs.passwordRecoveryCheckBoxes.includes(
 						ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE) }
 					width={ 9 }
 				/>
-				<Hint disabled={ !accountRecoveryConfigs.passwordRecoveryCheckBoxes.includes(
+				<Hint hidden={ !accountRecoveryConfigs.passwordRecoveryCheckBoxes.includes(
 					ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE) }>
 					{ t("devPortal:components.serverConfigs.accountRecovery.passwordRecovery." +
 						"form.noOfQuestionsRequired.hint") }
@@ -486,11 +486,11 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 							value: ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_RE_CAPTCHA_ENABLE
 						}
 					] }
-					disabled={ !accountRecoveryConfigs.passwordRecoveryCheckBoxes.includes(
+					hidden={ !accountRecoveryConfigs.passwordRecoveryCheckBoxes.includes(
 						ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE) }
 					value={ accountRecoveryConfigs.enablePasswordReCaptcha }
 				/>
-				<Hint disabled={ !accountRecoveryConfigs.passwordRecoveryCheckBoxes.includes(
+				<Hint hidden={ !accountRecoveryConfigs.passwordRecoveryCheckBoxes.includes(
 					ServerConfigurationsConstants.PASSWORD_RECOVERY_QUESTION_BASED_ENABLE) }>
 					{ t("devPortal:components.serverConfigs.accountRecovery.passwordRecovery." +
 						"form.enableReCaptchaForSecurityQuestionBasedRecovery.hint") }
@@ -580,7 +580,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 							value: ServerConfigurationsConstants.NOTIFY_RECOVERY_START
 						}
 					] }
-					disabled={ notificationInternallyManaged }
+					hidden={ notificationInternallyManaged }
 					value={ accountRecoveryConfigs.notificationCheckBoxes }
 				/>
 				<Field
@@ -594,10 +594,10 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						"form.recoveryLinkExpiryTime.validations.empty") }
 					type="number"
 					value={ accountRecoveryConfigs.recoveryLinkExpiryTime }
-					disabled={ notificationInternallyManaged }
+					hidden={ notificationInternallyManaged }
 					width={ 9 }
 				/>
-				<Hint disabled={ notificationInternallyManaged }>
+				<Hint hidden={ notificationInternallyManaged }>
 					{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
 						"form.recoveryLinkExpiryTime.hint") }
 				</Hint>
@@ -612,10 +612,10 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						"form.smsOTPExpiryTime.validations.empty") }
 					type="number"
 					value={ accountRecoveryConfigs.smsOTPExpiryTime }
-					disabled={ notificationInternallyManaged }
+					hidden={ notificationInternallyManaged }
 					width={ 9 }
 				/>
-				<Hint disabled={ notificationInternallyManaged }>
+				<Hint hidden={ notificationInternallyManaged }>
 					{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
 						"form.smsOTPExpiryTime.hint") }
 				</Hint>
@@ -630,10 +630,10 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 						"form.recoveryCallbackURLRegex.validations.empty") }
 					type="text"
 					value={ accountRecoveryConfigs.callbackRegex }
-					disabled={ notificationInternallyManaged }
+					hidden={ notificationInternallyManaged }
 					width={ 9 }
 				/>
-				<Hint disabled={ notificationInternallyManaged }>
+				<Hint hidden={ notificationInternallyManaged }>
 					{ t("devPortal:components.serverConfigs.accountRecovery.otherSettings." +
 						"form.recoveryCallbackURLRegex.hint") }
 				</Hint>
