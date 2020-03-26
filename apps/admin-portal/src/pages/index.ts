@@ -17,6 +17,7 @@
  */
 
 export * from "./applications";
+export * from "./customize";
 export * from "./errors";
 export * from "./home";
 export * from "./privacy";

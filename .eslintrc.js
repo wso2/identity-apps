@@ -19,10 +19,19 @@ module.exports = {
         "eol-last": "error",
         "quotes": ["warn", "double"],
         "max-len": ["warn", { "code": 120 }],
+        "sort-keys": ["warn", "asc"],
+        "comma-dangle": ["warn", "never"],
+        "sort-imports": ["warn", {
+            "ignoreCase": true,
+            "ignoreDeclarationSort": false,
+            "ignoreMemberSort": false,
+            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+        }],
         "react/jsx-curly-spacing": [
-            2,
-            "always",
+            "warn",
             {
+                when: "never",
+                children: { "when": "always" },
                 allowMultiline: true,
                 spacing: { objectLiterals: "always" }
             }
