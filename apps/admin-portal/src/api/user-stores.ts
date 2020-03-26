@@ -181,7 +181,7 @@ export const deleteUserStore = (id: string): Promise<any> => {
  * 
  * @return {Promise<any>} Response
  */
-export const patchUserStore = (id: string,path: string,value: string): Promise<any> => {
+export const patchUserStore = (id: string, data: PatchData[]): Promise<any> => {
     const requestConfig = {
         headers: {
             'Accept': 'application/json',
@@ -190,11 +190,7 @@ export const patchUserStore = (id: string,path: string,value: string): Promise<a
         },
         method: HttpMethods.PATCH,
         url: `${ServiceResourcesEndpoint.userStores}/${id}`,
-        data: {
-            operation: "REPLACE",
-            path,
-            value
-        }
+        data
     };
     return httpClient
         .request(requestConfig)
