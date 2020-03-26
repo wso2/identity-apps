@@ -24,12 +24,33 @@ import { getAType, testConnection } from "../../../api";
 import { addAlert } from "@wso2is/core/store";
 import { useDispatch } from "react-redux";
 
+/**
+ * Prop types of the `ConnectionDetails` component 
+ */
 interface ConnectionDetailsPropsInterface {
+    /**
+     * Trigger submit
+     */
     submitState: boolean;
+    /**
+     * Submits values
+     */
     onSubmit: (values: Map<string, FormValue>, type: Type) => void;
+    /**
+     * The saved values
+     */
     values: Map<string, FormValue>;
+    /**
+     * The type ID chosen by the user
+     */
     typeId: string;
 }
+
+/**
+ * This component renders the Connection Details step of the wizard
+ * @param {ConnectionDetailsPropsInterface} props
+ * @return {Promise<any>}
+ */
 export const ConnectionDetails = (
     props: ConnectionDetailsPropsInterface
 ): React.ReactElement => {

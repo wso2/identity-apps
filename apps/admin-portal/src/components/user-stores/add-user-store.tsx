@@ -28,11 +28,26 @@ import { addUserStore } from "../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../store/actions";
 
+/**
+ * Prop types of the `AddUserStore` component
+ */
 interface AddUserStoreProps {
+    /**
+     * Open modal
+     */
     open: boolean;
+    /**
+     * Called when the modal is closed
+     */
     onClose: () => void;
 
 }
+
+/**
+ * This component renders the Add User Store Wizard
+ * @param {AddUserStoreProps} props
+ * @return {React.ReactElement}
+ */
 export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
 
     const { open, onClose } = props;
@@ -48,6 +63,9 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
 
     const dispatch = useDispatch();
 
+    /**
+     * Adds the user store
+     */
     const handleSubmit = () => {
         addUserStore(userStore).then(() => {
             dispatch(addAlert({
@@ -70,11 +88,21 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
                 }))
             })
     };
+
+    /**
+     * This saves the Basic Details values
+     * @param {Map<string, FormValue>} values Basic Details Values to be submitted
+     */
     const onSubmitBasicDetails = (values: Map<string, FormValue>) => {
         setBasicDetailsData(values);
         setCurrentWizardStep(1);
     }
 
+    /**
+     * This saves the Connection Details values along with the te Type
+     * @param {Map<string, FormValue>} values Connection Details Values
+     * @param {Type} type 
+     */
     const onSubmitConnectionDetails = (values: Map<string, FormValue>, type: Type) => {
         setConnectionDetailsData(values);
         setType(type);
@@ -96,6 +124,9 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
         setCurrentWizardStep(2);
     }
 
+    /**
+     * This contains the wizard steps
+     */
     const STEPS = [
         {
             content: (
@@ -134,6 +165,9 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
         }
     ];
 
+    /**
+     * Moves to teh next step in the wizard
+     */
     const next = () => {
         switch (currentWizardStep) {
             case 0:
@@ -148,6 +182,9 @@ export const AddUserStore = (props: AddUserStoreProps): React.ReactElement => {
         }
     }
 
+    /**
+     * Moves to the previous step in the wizard
+     */
     const previous = () => {
         setCurrentWizardStep(currentWizardStep - 1);
     }

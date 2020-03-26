@@ -23,11 +23,29 @@ import { getTypes } from "../../../api";
 import { addAlert } from "@wso2is/core/store";
 import { useDispatch } from "react-redux";
 
+/**
+ * Prop types of `BasicDetailsUserStore` component
+ */
 interface BasicDetailsUserStorePropsInterface {
+    /**
+     * Trigger submit
+     */
     submitState: boolean;
+    /**
+     * Submits the values
+     */
     onSubmit: (values: Map<string, FormValue>) => void;
+    /**
+     * Saved values
+     */
     values: Map<string, FormValue>;
 }
+
+/**
+ * This component renders the Basic Details step of the wizard
+ * @param {BasicDetailsUserStorePropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const BasicDetailsUserStore = (
     props: BasicDetailsUserStorePropsInterface
 ): React.ReactElement => {

@@ -25,10 +25,25 @@ import { useDispatch } from "react-redux";
 import { addAlert } from "../../store/actions";
 import { history } from "../../helpers";
 
+/**
+ * Prop types of the `UserStoresList` component
+ */
 interface UserStoresListPropsInterface {
+    /**
+     * The user store list
+     */
     list: UserStoreListItem[];
+    /**
+     * Initiate an update
+     */
     update: () => void;
 }
+
+/**
+ * This component renders the User Store List
+ * @param {UserStoresListPropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const UserStoresList = (props: UserStoresListPropsInterface): React.ReactElement => {
 
     const { list, update } = props;
@@ -38,16 +53,27 @@ export const UserStoresList = (props: UserStoresListPropsInterface): React.React
 
     const dispatch = useDispatch();
 
+    /**
+     * Delete a user store
+     * @param {string} id user store id
+     */
     const initDelete = (id: string) => {
         setDeleteID(id);
         setDeleteConfirm(true);
     };
 
+    /**
+     * Closes the delete confirmation modal
+     */
     const closeDeleteConfirm = () => {
         setDeleteConfirm(false);
         setDeleteID(null);
     }
 
+    /**
+     * Shows the delete confirmation modal
+     * @return {React.ReactElement}
+     */
     const showDeleteConfirm = (): React.ReactElement => {
         return (
             <Modal

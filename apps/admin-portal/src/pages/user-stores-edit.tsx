@@ -31,6 +31,11 @@ import { history } from "../helpers";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
 
+/**
+ * This renders the user store edit page
+ * @param props 
+ * @return {React.ReactElement}
+ */
 export const UserStoresEditPage = (props): React.ReactElement => {
 
     const userStoreId = props.match.params.id;
@@ -39,6 +44,9 @@ export const UserStoresEditPage = (props): React.ReactElement => {
 
     const dispatch = useDispatch();
 
+    /**
+     * Fetches the suer store by its id
+     */
     const getUserStore = () => {
         getAUserStore(userStoreId).then(response => {
             setUserStore(response);
@@ -57,6 +65,9 @@ export const UserStoresEditPage = (props): React.ReactElement => {
         getUserStore();
     }, []);
 
+    /**
+     * The tab panes
+     */
     const panes = [
         {
             menuItem: "Basic Details",

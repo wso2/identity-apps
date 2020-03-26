@@ -21,15 +21,38 @@ import { Grid, } from "semantic-ui-react";
 import { FormValue } from "@wso2is/forms";
 import { UserStorePostData, TypeProperty, UserStoreProperty } from "../../../models";
 
+/**
+ * Prop types of the `SummaryUserStores` component
+ */
 interface SummaryUserStoresPropsInterface {
+    /**
+     * The complete data ready to be submitted
+     */
     data: UserStorePostData;
+    /**
+     * The connection properties
+     */
     properties: TypeProperty[];
+    /**
+     * The type of the user store
+     */
     type: string;
 }
+
+/**
+ * This component renders the Summary step of the wizard
+ * @param {SummaryUserStoresPropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): React.ReactElement => {
 
     const { data, properties, type } = props;
 
+    /**
+     * This generates a summary row
+     * @param {string} title 
+     * @param {string | number | React.ReactElement} description
+     */
     const generateSummaryLine = (
         title: string,
         description: string | number | React.ReactElement
