@@ -109,3 +109,14 @@ export interface Type{
         Advanced: TypeProperty[];
     };
 }
+
+/**
+ * Type of patch data 
+ */
+export interface PatchData {
+    operation: "REPLACE";
+    path: string;
+
+    value: string;
+    
+}
