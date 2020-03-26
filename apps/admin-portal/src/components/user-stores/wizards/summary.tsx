@@ -62,7 +62,7 @@ export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): React
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                     <div className="label">{title}</div>
                 </Grid.Column>
-                <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                     <div className="value url">{description}</div>
                 </Grid.Column>
             </Grid.Row>
@@ -82,15 +82,16 @@ export const SummaryUserStores = (props: SummaryUserStoresPropsInterface): React
             {type ? generateSummaryLine("User Store Type", type) : null}
             {
                 properties?.map((property: TypeProperty) => {
-
-                    return (
-                        generateSummaryLine(
-                            property.description.split("#")[0],
-                            data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
-                                return userStoreProperty.name === property.name
-                            }))[0].value
+                    if (property.name !== "password") {
+                        return (
+                            generateSummaryLine(
+                                property.description.split("#")[0],
+                                data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
+                                    return userStoreProperty.name === property.name
+                                }))[0].value
+                            )
                         )
-                    )
+                    }
                 })
             }
         </Grid>
