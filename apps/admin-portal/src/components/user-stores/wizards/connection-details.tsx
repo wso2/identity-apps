@@ -64,7 +64,7 @@ export const ConnectionDetails = (
     useEffect(() => {
         if (typeId !== null) {
             getAType(typeId, null).then(response => {
-                setType(response[0]);
+                setType(response);
             }).catch(error => {
                 dispatch(addAlert({
                     description: error?.description,
