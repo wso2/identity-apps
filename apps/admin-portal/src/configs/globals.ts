@@ -21,6 +21,7 @@ import { I18nConstants } from "../constants";
 
 interface RuntimeConfigInterface {
     appBaseName?: string;
+    appBaseNameWithoutTenant?: string;
     appHomePath?: string;
     appLoginPath?: string;
     applicationName?: string;
@@ -46,6 +47,9 @@ const RUNTIME_CONFIG: RuntimeConfigInterface = window["runConfig"];
 
 export const GlobalConfig: RuntimeConfigInterface = {
     appBaseName: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.appBaseName || APP_BASENAME) : APP_BASENAME,
+    appBaseNameWithoutTenant: (RUNTIME_CONFIG)
+        ? (RUNTIME_CONFIG.appBaseNameWithoutTenant || APP_BASENAME)
+        : APP_BASENAME,
     appHomePath: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.appHomePath || APP_HOME_PATH) : APP_HOME_PATH,
     appLoginPath: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.appLoginPath || APP_LOGIN_PATH) : APP_LOGIN_PATH,
     applicationName: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.applicationName || APP_NAME) : APP_NAME,
