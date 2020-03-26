@@ -43,7 +43,12 @@ export const App = (): ReactElement => {
      * Obtain app.config.json from the server root when the app mounts.
      */
     useEffect(() => {
-        getAppConfig<AppConfigInterface>(ApplicationConstants.APP_CONFIG_FILE_NAME, GlobalConfig.appBaseName)
+        // Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs
+        // will fail. Using `appBaseNameWithoutTenant` will create a path without the tenant. Therefore,
+        // `getAppConfig()` will look for the app config file in `https://localhost:9443/admin-portal` rather than
+        // looking it in `https://localhost:9443/t/wso2.com/admin-portal`.
+        getAppConfig<AppConfigInterface>(ApplicationConstants.APP_CONFIG_FILE_NAME,
+            GlobalConfig.appBaseNameWithoutTenant)
             .then((response) => {
                 setAppConfig(response);
             })

@@ -51,7 +51,11 @@ I18n.init({
     GlobalConfig?.i18nModuleOptions?.xhrBackendPluginEnabled)
     .then(() => {
 
-        const metaPath = `/${ StringUtils.removeSlashesFromPath(GlobalConfig.appBaseName) }/${
+        // Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs
+        // will fail. This constructs the path without the tenant, therefore it'll look for the file in
+        // `https://localhost:9443/admin-portal/resources/i18n/meta.json` rather than looking for the file in
+        // `https://localhost:9443/t/wso2.com/admin-portal/resources/i18n/meta.json`.
+        const metaPath = `/${ StringUtils.removeSlashesFromPath(GlobalConfig.appBaseNameWithoutTenant) }/${
             StringUtils.removeSlashesFromPath(GlobalConfig.i18nModuleOptions.resourcePath) }/meta.json`;
 
         // Fetch the meta file to get the supported languages.

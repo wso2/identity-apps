@@ -53,6 +53,13 @@ export class I18nConstants {
 
     /**
      * I18n init options.
+     *
+     * @remarks
+     * Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs will fail.
+     * Using `appBaseNameWithoutTenant` will create a path without the tenant. Therefore, `loadPath()` function will
+     * look for resource files in `https://localhost:9443/admin-portal/resources/i18n` rather than looking for the
+     * files in `https://localhost:9443/t/wso2.com/admin-portal/resources/i18n`.
+     *
      * @constant
      * @type {I18nModuleInitOptions}
      * @default
@@ -60,7 +67,7 @@ export class I18nConstants {
     public static readonly MODULE_INIT_OPTIONS: I18nModuleInitOptions = {
         backend: {
             loadPath: (language, namespace) => generateBackendPaths(
-                language, namespace, GlobalConfig?.appBaseName, GlobalConfig?.i18nModuleOptions
+                language, namespace, GlobalConfig?.appBaseNameWithoutTenant, GlobalConfig?.i18nModuleOptions
             )
         },
         ns: [ I18nConstants.COMMON_NAMESPACE, I18nConstants.PORTAL_NAMESPACE ]
