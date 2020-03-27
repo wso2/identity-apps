@@ -76,7 +76,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                     name={ role.displayName }
                                     size="small"
                                     image={ 
-                                        <Icon size="large" disabled name='users' />
+                                        <Icon size="large" name='users' />
                                     }
                                 />
                             ) }

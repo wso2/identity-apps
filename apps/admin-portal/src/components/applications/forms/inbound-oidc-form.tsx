@@ -17,11 +17,11 @@
  */
 
 import { Field, Forms, Validation } from "@wso2is/forms";
-import { Heading, Hint } from "@wso2is/react-components";
+import { CopyInputField, Heading, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Button, Divider, Grid } from "semantic-ui-react";
+import { Button, Divider, Form, Grid } from "semantic-ui-react";
 import {
     emptyOIDCConfig,
     MetadataPropertyInterface,
@@ -208,13 +208,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 mandatory: values.get("PKCE").includes("mandatory"),
                 supportPlainTransformAlgorithm: !!values.get("PKCE").includes("supportPlainTransformAlgorithm")
             },
-            publicClient: values.get("supportPublicClients").length > 1,
+            publicClient: values.get("supportPublicClients").length > 0,
             refreshToken: {
                 expiryInSeconds: parseInt(values.get("expiryInSeconds"), 10),
-                renewRefreshToken: values.get("RefreshToken").length > 1
+                renewRefreshToken: values.get("RefreshToken").length > 0
             },
             scopeValidators: values.get("scopeValidator"),
-            validateRequestObjectSignature: values.get("enableRequestObjectSignatureValidation").length > 1
+            validateRequestObjectSignature: values.get("enableRequestObjectSignatureValidation").length > 0
         };
 
         // If the app is newly created do not add `clientId` & `clientSecret`.
@@ -254,16 +254,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             initialValues.clientId && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                        <Field
-                                            name="clientId"
-                                            label="Client ID"
-                                            required={ false }
-                                            requiredErrorMessage=""
-                                            placeholder="Enter Client ID"
-                                            type="text"
-                                            value={ initialValues.clientId }
-                                            readOnly
-                                        />
+                                        <Form.Field>
+                                            <label>Client ID</label>
+                                            <CopyInputField value={ initialValues?.clientId } />
+                                        </Form.Field>
                                     </Grid.Column>
                                 </Grid.Row>
                             )
@@ -274,7 +268,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                         <Field
                                             name="clientSecret"
-                                            label="Client Secret"
+                                            label="Client secret"
                                             hidePassword="Hide secret"
                                             showPassword="Show secret"
                                             required={ false }
@@ -312,7 +306,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             labelName={ "Callback URL" }
                             required={ true }
                             value={ buildCallBackURLWithSeparator(initialValues.callbackURLs?.toString()) }
-                            placeholder={ "Enter callbackUrl" }
+                            placeholder={ "Enter callback URL" }
                             validationErrorMsg={ "Please add valid URL." }
                             validation={ (value: string) => {
                                 if (FormValidation.url(value)) {
@@ -329,7 +323,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     name="allowedOrigins"
-                                    label="Allowed Origins"
+                                    label="Allowed origins"
                                     validation={ (value: string, validation: Validation) => {
                                         if (!FormValidation.url(value)) {
                                             validation.isValid = false;
@@ -359,7 +353,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     value={ initialValues.publicClient ? ["supportPublicClients"] : [] }
                                     children={ [
                                         {
-                                            label: "Public Client",
+                                            label: "Public client",
                                             value: "supportPublicClients"
                                         }
                                     ] }
@@ -480,7 +474,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     value={ initialValues.refreshToken?.renewRefreshToken ? ["refreshToken"] : [] }
                                     children={ [
                                         {
-                                            label: "Renew Refresh Token",
+                                            label: "Renew refresh token",
                                             value: "refreshToken"
                                         },
                                     ] }
@@ -492,7 +486,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                 <Field
                                     name="expiryInSeconds"
-                                    label="Refresh Token Expiry Time"
+                                    label="Refresh token expiry time"
                                     required={ true }
                                     requiredErrorMessage="Please fill the refresh token expiry time"
                                     placeholder="Enter the refresh token expiry time"
@@ -595,7 +589,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                 <Field
                                     name="idExpiryInSeconds"
-                                    label="Id Token Expiry Time"
+                                    label="Id token expiry time"
                                     required={ true }
                                     requiredErrorMessage="Please fill the ID token expiry time"
                                     placeholder="Enter the ID token expiry time"
@@ -618,10 +612,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Divider hidden/>
                                 <Field
                                     name="backChannelLogoutUrl"
-                                    label="Back Channel Logout Url"
+                                    label="Back channel logout URL"
                                     required={ false }
-                                    requiredErrorMessage="Please fill the Back Channel Logout Url"
-                                    placeholder="Enter the Back Channel Logout Url"
+                                    requiredErrorMessage="Please fill the Back Channel Logout URL"
+                                    placeholder="Enter the Back Channel Logout URL"
                                     type="text"
                                     value={ initialValues.logout?.backChannelLogoutUrl }
                                 />
@@ -631,10 +625,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     name="frontChannelLogoutUrl"
-                                    label="Front Channel Logout Url"
+                                    label="Front channel logout URL"
                                     required={ false }
-                                    requiredErrorMessage="Please fill the Front Channel Logout Url"
-                                    placeholder="Enter the Front Channel Logout Url"
+                                    requiredErrorMessage="Please fill the Front Channel Logout URL"
+                                    placeholder="Enter the Front Channel Logout URL"
                                     type="text"
                                     value={ initialValues.logout?.frontChannelLogoutUrl }
                                 />
@@ -652,7 +646,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         ["EnableRequestObjectSignatureValidation"] : [] }
                                     children={ [
                                         {
-                                            label: "Enable Request Object Signature Validation",
+                                            label: "Enable request object signature validation",
                                             value: "EnableRequestObjectSignatureValidation"
                                         }
                                     ] }

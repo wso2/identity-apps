@@ -17,39 +17,41 @@
  *
  */
 
-import React from "react";
+import React, { ReactElement } from "react";
 import { Heading } from "../../../src";
 import { meta } from "./heading.stories.meta";
 
 export default {
     parameters: {
         component: Heading,
-        componentSubtitle: meta.description,
+        componentSubtitle: meta.description
     },
     title: "Components API/Components/Heading"
 };
 
 /**
  * Story to display the default heading.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Default = () => (
+export const DefaultHeading = (): ReactElement => (
     <Heading>Heading Default</Heading>
 );
 
-Default.story = {
+DefaultHeading.story = {
     parameters: {
         docs: {
-            storyDescription: meta.description,
-        },
+            storyDescription: meta.stories[ 0 ].description
+        }
     }
 };
 
 /**
  * Story to display page headings.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const PageHeadings = () => (
+export const PageHeadings = (): ReactElement => (
     <>
         <Heading as="h1">Heading H1</Heading>
         <Heading as="h2">Heading H2</Heading>
@@ -63,16 +65,17 @@ export const PageHeadings = () => (
 PageHeadings.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 1 ].description,
-        },
+            storyDescription: meta.stories[ 1 ].description
+        }
     }
 };
 
 /**
  * Story to display different heading sizes.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const HeadingSizes = () => (
+export const HeadingSizes = (): ReactElement => (
     <>
         <Heading size="huge">Heading Huge</Heading>
         <Heading size="large">Heading Large</Heading>
@@ -85,16 +88,17 @@ export const HeadingSizes = () => (
 HeadingSizes.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 2 ].description,
-        },
+            storyDescription: meta.stories[ 2 ].description
+        }
     }
 };
 
 /**
  * Story to display heading with ellipsis.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Ellipsis = () => (
+export const HeadingWithEllipsis = (): ReactElement => (
     <div style={ { width: "300px" } }>
         <Heading ellipsis>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
             labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
@@ -105,10 +109,10 @@ export const Ellipsis = () => (
     </div>
 );
 
-Ellipsis.story = {
+HeadingWithEllipsis.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 2 ].description,
-        },
+            storyDescription: meta.stories[ 3 ].description
+        }
     }
 };

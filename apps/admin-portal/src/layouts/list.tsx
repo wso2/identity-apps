@@ -20,7 +20,16 @@
 import { Pagination } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useState } from "react";
-import { Divider, DropdownItemProps, DropdownProps, Grid, PaginationProps, Dropdown, Popup, Icon } from "semantic-ui-react";
+import {
+    Button,
+    Divider,
+    Dropdown, DropdownItemProps,
+    DropdownProps,
+    Grid,
+    Icon,
+    PaginationProps,
+    Popup
+} from "semantic-ui-react";
 
 /**
  * List layout component Prop types.
@@ -82,51 +91,55 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                             <Grid>
                                 <Grid.Row>
                                     <Grid.Column width={ 8 }>
-                                        <div className="left-aligned-actions">
+                                        <div className="left-aligned actions">
                                             {
-                                                sortOptions && sortStrategy && onSortStrategyChange && (
-                                                    <>
-                                                        <Dropdown
-                                                            onChange={ onSortStrategyChange }
-                                                            options={ sortOptions }
-                                                            placeholder={ "Sort by" }
-                                                            selection
-                                                            value={ sortStrategy.value }
-                                                        />
-                                                        {
-                                                            onSortOrderChange
-                                                            && (
-                                                                <Popup
-                                                                    trigger={
-                                                                        <Icon
-                                                                            className="left-aligned-action"
-                                                                            name={
-                                                                                isAscending
-                                                                                    ? "sort amount down"
-                                                                                    : "sort amount up"
-                                                                            }
-                                                                            size="large"
-                                                                            onClick={ () => {
-                                                                                setIsAscending(!isAscending);
-                                                                                onSortOrderChange(!isAscending);
-                                                                            } }
-                                                                            link
-                                                                        />
-                                                                    }
-                                                                    content={
-                                                                        isAscending
-                                                                            ? "Sort in the descending order"
-                                                                            : "Sort in the ascending order"
-                                                                    }
-                                                                    inverted
-                                                                />
-                                                            )
+                                                sortOptions &&
+                                                sortStrategy &&
+                                                onSortStrategyChange &&
+                                                onSortOrderChange &&
+                                                <div className="sort-list">
+                                                    <Dropdown
+                                                        onChange={ onSortStrategyChange }
+                                                        options={ sortOptions }
+                                                        placeholder={ "Sort by" }
+                                                        selection
+                                                        value={
+                                                            sortOptions?.length === 1
+                                                                ? sortOptions[0].value
+                                                                : sortStrategy.value
                                                         }
-                                                    </>
-                                                )
+                                                        disabled={ sortOptions?.length === 1 }
+                                                    />
+                                                    <Popup
+                                                        trigger={
+                                                            <Button
+                                                                icon
+                                                                onClick={ () => {
+                                                                    setIsAscending(!isAscending);
+                                                                    onSortOrderChange(!isAscending);
+                                                                } }
+                                                                className="left-aligned-action"
+                                                            >
+                                                                <Icon
+                                                                    name={
+                                                                        isAscending
+                                                                            ? "sort amount down"
+                                                                            : "sort amount up"
+                                                                    }
+                                                                />
+                                                            </Button>
+                                                        }
+                                                        content={
+                                                            isAscending
+                                                                ? "Sort in the descending order"
+                                                                : "Sort in the ascending order"
+                                                        }
+                                                        inverted
+                                                    />
+                                                </div>
                                             }
                                         </div>
-                                        <div className="left-aligned-actions">
+                                        <div className="left aligned-actions">
                                             { leftActionPanel }
                                         </div>
                                     </Grid.Column>

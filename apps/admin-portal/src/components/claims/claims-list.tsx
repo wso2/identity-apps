@@ -16,30 +16,59 @@
 * under the License.
 */
 
-import React, { useState, useRef } from "react";
-import { ResourceList, LinkButton, PrimaryButton } from "@wso2is/react-components"
-import { Claim, ExternalClaim, ClaimDialect, AlertLevels } from "../../models";
+import React, { useRef, useState } from "react";
+import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components"
+import { AlertLevels, Claim, ClaimDialect, ExternalClaim } from "../../models";
 import { List, Modal } from "semantic-ui-react";
 import { history } from "../../helpers";
-import { deleteAClaim, deleteAnExternalClaim, deleteADialect } from "../../api";
+import { deleteAClaim, deleteADialect, deleteAnExternalClaim } from "../../api";
 import { useDispatch } from "react-redux";
-import { addAlert } from "../../store/actions";
+import { addAlert } from "@wso2is/core/store";
 import { CopyInputField } from "@wso2is/react-components";
-import { EDIT_LOCAL_CLAIMS_PATH, LOCAL_CLAIMS_PATH, EXTERNAL_CLAIMS_PATH } from "../../constants";
+import { EDIT_LOCAL_CLAIMS_PATH, EXTERNAL_CLAIMS_PATH } from "../../constants";
+import { ClaimsAvatarBackground } from ".";
+import { Image } from "semantic-ui-react";
 
+/**
+ * Enum containing the list types
+ */
 export enum ListType {
     LOCAL,
     EXTERNAL,
     DIALECT
 }
 
+/**
+ * Prop types of `ClaimsList` component
+ */
 interface ClaimsListPropsInterface {
+    /**
+     * The array containing claims/external claims/claim dialects
+     */
     list: Claim[] | ExternalClaim[] | ClaimDialect[];
+    /**
+     * Sets if the list is to contain local claims
+     */
     localClaim: ListType;
+    /**
+     * Opens the edit modal
+     */
     openEdit?: (id: string) => void;
+    /**
+     * Called to initiate update
+     */
     update: () => void;
+    /**
+     * The dialect ID of claims
+     */
     dialectID?: string;
 }
+
+/**
+ * This component renders claims/dialects list
+ * @param {ClaimsListPropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement => {
 
     const { list, localClaim, openEdit, update, dialectID } = props;
@@ -58,11 +87,21 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         copyButton.current.push(copyButton.current[index] || React.createRef())
     });
 
+    /**
+     * This checks if the list data is a local claim
+     * @param {Claim[] | ExternalClaim[] | ClaimDialect[]} toBeDetermined Type to be checked
+     * @return {boolean} `true` if the data is a local claim
+     */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const isLocalClaim = (toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[]): toBeDetermined is Claim[] => {
         return localClaim === ListType.LOCAL;
     }
 
+    /**
+     * This checks if the list data is a dialect
+     * @param {Claim[] | ExternalClaim[] | ClaimDialect[]} toBeDetermined
+     * @return {boolean} `true` if the data is a dialect 
+     */
     const isDialect = (
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[]
@@ -70,6 +109,11 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         return localClaim === ListType.DIALECT
     }
 
+    /**
+     * This displays the input content within a `List` content
+     * @param {any} content 
+     * @return {React.ReactElement}
+     */
     const listContent = (content: any): React.ReactElement => (
         <List.Content>
             <List.Description className="list-item-meta">
@@ -78,12 +122,19 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         </List.Content>
     );
 
+    /**
+     * This closes the delete confirmation modal
+     */
     const closeDeleteConfirm = () => {
         setDeleteConfirm(false);
         setDeleteID(null);
         setDeleteType(null);
     }
 
+    /**
+     * This deletes a local claim
+     * @param {string} id 
+     */
     const deleteLocalClaim = (id: string) => {
         deleteAClaim(id).then(() => {
             update();
@@ -106,6 +157,11 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         })
     };
 
+    /**
+     * This deletes an external claim
+     * @param {string} dialectID 
+     * @param {string} claimID 
+     */
     const deleteExternalClaim = (dialectID: string, claimID: string) => {
         deleteAnExternalClaim(dialectID, claimID).then(() => {
             update();
@@ -128,6 +184,10 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         })
     };
 
+    /**
+     * This deletes a dialect
+     * @param {string} dialectID 
+     */
     const deleteDialect = (dialectID: string) => {
         deleteADialect(dialectID).then(() => {
             update();
@@ -150,6 +210,10 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         })
     };
 
+    /**
+     * This shows the delete confirmation modal
+     * @return {React.ReactElement} Modal
+     */
     const showDeleteConfirm = (): React.ReactElement => {
         return (
             <Modal
@@ -196,11 +260,36 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
         )
     };
 
+    /**
+     * This initiates the delete process
+     * @param {ListType} type 
+     * @param {string} id 
+     */
     const initDelete = (type: ListType, id: string) => {
         setDeleteType(type);
         setDeleteID(id);
         setDeleteConfirm(true);
     };
+
+    /**
+     * This generates the first letter of a dialect
+     * @param {string} name 
+     * @return {string} The first letter of a dialect
+     */
+    const generateDialectLetter = (name: string): string => {
+        const stringArray = name.replace("http://", "").split("/");
+        return stringArray[0][0].toLocaleUpperCase();
+    }
+
+    /**
+     * This generates the first letter of a claim
+     * @param {string} name 
+     * @return {string} The first letter of a claim
+     */
+    const generateClaimLetter = (name: string): string => {
+        const stringArray = name.replace("http://", "").split("/");
+        return stringArray[stringArray.length - 1][0].toLocaleUpperCase();
+    }
 
     return (
         <>
@@ -228,13 +317,23 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                             type: "dropdown"
                                         }
                                     ] }
-                                    descriptionColumnWidth={ 4 }
-                                    metaColumnWidth={ 4 }
-                                    actionsColumnWidth={ 4 }
+                                    avatar={
+                                        <Image
+                                            floated="left"
+                                            verticalAlign="middle"
+                                            rounded
+                                            centered
+                                            size="mini"
+                                        >
+                                            <ClaimsAvatarBackground />
+                                            <span className="claims-letter">
+                                                { generateClaimLetter(claim.claimURI) }
+                                            </span>
+                                        </Image>
+                                    }
                                     actionsFloated="right"
                                     itemHeader={ claim.displayName }
                                     metaContent={ [
-                                        listContent(claim.description),
                                         listContent(
                                             <CopyInputField
                                                 value={ claim ? claim.claimURI : "" }
@@ -246,58 +345,53 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                             )
                         })
                         : isDialect(list)
-                            ? <>
-                                <ResourceList.Item
-                                    actions={ [
-                                        {
-                                            icon: "eye",
-                                            onClick: () => {
-                                                history.push(LOCAL_CLAIMS_PATH);
-                                            },
-                                            popupText: "View Local Claims",
-                                            type: "button"
+                            ? list?.map((dialect: ClaimDialect, index: number) => {
+                                return (
+                                    <ResourceList.Item
+                                        key={ index }
+                                        avatar={
+                                            <Image
+                                                floated="left"
+                                                verticalAlign="middle"
+                                                rounded
+                                                centered
+                                                size="mini"
+                                            >
+                                                <ClaimsAvatarBackground />
+                                                <span className="claims-letter">
+                                                    { generateDialectLetter(dialect.dialectURI) }
+                                                </span>
+                                            </Image>
                                         }
-                                    ] }
-                                    actionsFloated="right"
-                                    itemHeader={ "Local Dialect" }
-                                />
-                                {
-                                    list?.map((dialect: ClaimDialect, index: number) => {
-                                        return (
-                                            <ResourceList.Item
-                                                key={ index }
-                                                actions={ [
-                                                    {
-                                                        icon: "eye",
-                                                        onClick: () => {
-                                                            history.push(`${EXTERNAL_CLAIMS_PATH}/${dialect.id}`);
-                                                        },
-                                                        popupText: "View Claims belonging to this dialect",
-                                                        type: "button"
-                                                    },
-                                                    {
-                                                        icon: "pencil alternate",
-                                                        onClick: () => {
-                                                            openEdit(dialect.id);
-                                                        },
-                                                        popupText: "Edit",
-                                                        type: "button"
-                                                    },
-                                                    {
-                                                        icon: "trash alternate",
-                                                        onClick: () => { initDelete(ListType.DIALECT, dialect?.id) },
-                                                        popupText: "Delete",
-                                                        type: "dropdown"
-                                                    }
-                                                ] }
-                                                actionsFloated="right"
-                                                itemHeader={ dialect.dialectURI }
-                                            />
-                                        );
-                                    })
-
-                                }
-                            </>
+                                        actions={ [
+                                            {
+                                                icon: "arrow right",
+                                                onClick: () => {
+                                                    history.push(`${EXTERNAL_CLAIMS_PATH}/${dialect.id}`);
+                                                },
+                                                popupText: "View Claims belonging to this dialect",
+                                                type: "button"
+                                            },
+                                            {
+                                                icon: "pencil alternate",
+                                                onClick: () => {
+                                                    openEdit(dialect.id);
+                                                },
+                                                popupText: "Edit",
+                                                type: "button"
+                                            },
+                                            {
+                                                icon: "trash alternate",
+                                                onClick: () => { initDelete(ListType.DIALECT, dialect?.id) },
+                                                popupText: "Delete",
+                                                type: "dropdown"
+                                            }
+                                        ] }
+                                        actionsFloated="right"
+                                        itemHeader={ dialect.dialectURI }
+                                    />
+                                );
+                            })
                             : list?.map((claim: ExternalClaim, index: number) => {
                                 return (
                                     <ResourceList.Item
@@ -318,9 +412,23 @@ export const ClaimsList = (props: ClaimsListPropsInterface): React.ReactElement 
                                                 type: "dropdown"
                                             }
                                         ] }
+                                        avatar={
+                                            <Image
+                                                floated="left"
+                                                verticalAlign="middle"
+                                                rounded
+                                                centered
+                                                size="mini"
+                                            >
+                                                <ClaimsAvatarBackground />
+                                                <span className="claims-letter">
+                                                    { generateClaimLetter(claim.claimURI) }
+                                                </span>
+                                            </Image>
+                                        }
                                         actionsFloated="right"
                                         itemHeader={ claim.claimURI }
-                                        metaContent={ listContent(claim.mappedLocalClaimURI) }
+                                        itemDescription={ claim.mappedLocalClaimURI }
                                     />
                                 )
                             })

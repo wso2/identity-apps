@@ -16,28 +16,61 @@
  * under the License.
  */
 
-import classNames from "classnames";
-import React, { FunctionComponent } from "react";
 import { Card, CardProps } from "semantic-ui-react";
 import { GenericIcon, GenericIconSizes } from "../icon";
+import React, { FunctionComponent, ReactElement } from "react";
+import classNames from "classnames";
 
 /**
  * Proptypes for the selection card component.
  */
-interface SelectionCardPropsInterface {
+export interface SelectionCardPropsInterface {
     /**
      * Additional classes.
      */
     className?: string;
+    /**
+     * Card description.
+     */
     description?: string;
+    /**
+     * Is card disabled.
+     */
     disabled?: boolean;
+    /**
+     * Card header.
+     */
     header: string;
+    /**
+     * Id for the card.
+     */
     id?: string;
+    /**
+     * Image for the card.
+     */
     image?: any;
+    /**
+     * Side of the image.
+     */
     imageSize?: GenericIconSizes;
+    /**
+     * On click callback.
+     *
+     * @param {React.MouseEvent<HTMLAnchorElement>} event - On click event.
+     * @param {CardProps} data - Card data.
+     */
     onClick?: (event: React.MouseEvent<HTMLAnchorElement>, data: CardProps) => void;
+    /**
+     * If the card is selected.
+     */
     selected?: boolean;
+    /**
+     * Text alignment.
+     */
     textAlign?: "center" | "left" | "right";
+    /**
+     * If the card should be inline.
+     */
     inline?: boolean;
 }
 
@@ -45,12 +78,12 @@ interface SelectionCardPropsInterface {
  * Selection card component.
  *
  * @param {SelectionCardPropsInterface} props - Props injected to the components.
- * @return {JSX.Element}
- * @constructor
+ *
+ * @return {React.ReactElement}
  */
 export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
     props: SelectionCardPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         className,
@@ -69,10 +102,10 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
     const classes = classNames(
         "selection-card",
         {
-            ["with-image"]: image,
             disabled,
             inline,
-            selected
+            selected,
+            ["with-image"]: image
         },
         className
     );

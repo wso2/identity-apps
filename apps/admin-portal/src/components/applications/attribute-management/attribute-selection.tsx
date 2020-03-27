@@ -427,8 +427,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             </Grid.Row>
             <Grid.Row className="claim-list-row">
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 6 } className="claim-list-columnn" id="style-1">
-                    <Heading as="h6">Available Attributes</Heading>
-                    <Hint> Choose Attributes to be add to the token </Hint>
+                    <Heading as="h6">Available attributes</Heading>
+                    <Hint> Choose attributes to be add to the token </Hint>
                     <Input
                         icon="search"
                         placeholder="Search Attribute"
@@ -506,7 +506,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 { selectedDialect.localDialect ?
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 9 } className="claim-list-columnn selected"
                                  id="style-1" verticalAlign="middle">
-                        <Heading as="h6">Selected Attributes</Heading>
+                        <Heading as="h6">Selected attributes</Heading>
                         <Hint> These attributes can be present in the token </Hint>
                         <div className="claim-scrolling-list selected" id="claim-scroll">
                             { selectedClaims.length > 0 ?
@@ -544,7 +544,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     </Grid.Column> :
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 } className="claim-list-columnn selected"
                                  id="style-1">
-                        <Heading as="h6">Selected Attributes</Heading>
+                        <Heading as="h6">Selected attributes</Heading>
                         <Hint> These attributes can be present in the token </Hint>
                         <div className="claim-scrolling-list selected" id="claim-scroll">
                             { selectedExternalClaims.length > 0 ?

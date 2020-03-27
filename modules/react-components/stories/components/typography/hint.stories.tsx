@@ -17,46 +17,48 @@
  *
  */
 
-import React from "react";
+import React, { ReactElement } from "react";
 import { Hint } from "../../../src";
 import { meta } from "./hint.stories.meta";
 
 export default {
     parameters: {
         component: Hint,
-        componentSubtitle: meta.description,
+        componentSubtitle: meta.description
     },
     title: "Components API/Components/Hint"
 };
 
 /**
  * Story to display the default hint.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Default = () => (
+export const DefaultHint = (): ReactElement => (
     <Hint>This is a default hint</Hint>
 );
 
-Default.story = {
+DefaultHint.story = {
     parameters: {
         docs: {
-            storyDescription: meta.description,
-        },
+            storyDescription: meta.stories[ 0 ].description
+        }
     }
 };
 
 /**
  * Story to display a hint with an icon.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const WithIcon = () => (
+export const HintWithIcon = (): ReactElement => (
     <Hint icon="info circle">This is an example of a hint with an icon.</Hint>
 );
 
-WithIcon.story = {
+HintWithIcon.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 1 ].description,
-        },
+            storyDescription: meta.stories[ 1 ].description
+        }
     }
 };

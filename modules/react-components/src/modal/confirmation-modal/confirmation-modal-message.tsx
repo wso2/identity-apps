@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import classNames from "classnames";
-import React, { FunctionComponent, ReactElement } from "react";
 import { Message, MessageProps } from "semantic-ui-react";
+import React, { FunctionComponent, ReactElement } from "react";
+import classNames from "classnames";
 
 /**
  * Proptypes for the resource list item component.
  */
-interface ResourceListItemPropsInterface extends MessageProps {
+export interface ResourceListItemPropsInterface extends MessageProps {
     /**
      * If the message should be attached to the top.
      */
@@ -34,6 +34,7 @@ interface ResourceListItemPropsInterface extends MessageProps {
  * Confirmation modal actions component.
  *
  * @param {ResourceListItemPropsInterface} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
 export const ConfirmationModalMessage: FunctionComponent<ResourceListItemPropsInterface> = (

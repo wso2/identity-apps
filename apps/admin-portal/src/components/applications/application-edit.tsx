@@ -182,6 +182,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onDelete={ onDelete }
                 onUpdate={ onUpdate }
                 permissions={ permissions }
+                showRegenerate={ selectedInboundProtocol?.id === SupportedAuthProtocolTypes.OIDC }
+                // TODO we need check whether application is active or not as well.
+                showRevoke={ selectedInboundProtocol?.id === SupportedAuthProtocolTypes.OIDC }
             />
         </ResourceTab.Pane>
     );
@@ -264,7 +267,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (features.attributeMapping === undefined || features.attributeMapping.enabled !== false) {
 
                 panes.push({
-                    menuItem: "Attribute",
+                    menuItem: "Attributes",
                     render: AttributeSettingTabPane
                 });
             }
@@ -279,7 +282,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (features.advanceSettings === undefined || features.advanceSettings.enabled !== false) {
 
                 panes.push({
-                    menuItem: "Advance",
+                    menuItem: "Advanced",
                     render: AdvancedSettingsTabPane,
                 });
             }

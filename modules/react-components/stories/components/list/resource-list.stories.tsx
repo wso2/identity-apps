@@ -17,16 +17,16 @@
  *
  */
 
-import React, { ReactElement } from "react";
-import { ResourceList, AppAvatar } from "../../../src";
+import { AppAvatar, ResourceList } from "../../../src";
 import { APPLICATIONS_LIST, meta } from "./resource-list.stories.meta";
+import React, { ReactElement } from "react";
 import { action } from "@storybook/addon-actions";
 import { Label } from "semantic-ui-react";
 
 export default {
     parameters: {
         component: ResourceList,
-        componentSubtitle: meta.description,
+        componentSubtitle: meta.description
     },
     title: "Components API/Components/Resource List"
 };
@@ -85,7 +85,7 @@ export const Default = (): ReactElement => (
 Default.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 0 ].description,
-        },
+            storyDescription: meta.stories[ 0 ].description
+        }
     }
 };

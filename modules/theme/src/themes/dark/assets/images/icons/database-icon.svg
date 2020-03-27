@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" class="icon" id="database-icon" viewBox="0 0 64 64" width="14" height="14">
+    <g id="Database-3">
+        <path class="path fill primary" d="M18.152,18.885c-1.4-.251-2.695-.544-3.854-.871a1,1,0,1,0-.542,1.925c1.221.344,2.58.652,4.042.915a1.078,1.078,0,0,0,.178.015,1,1,0,0,0,.176-1.984Z" />
+        <path class="path fill secondary" d="M22.062,19.457a1,1,0,1,0-.229,1.986A89.287,89.287,0,0,0,32,22a89.366,89.366,0,0,0,10.141-.554,1,1,0,1,0-.228-1.986A87.455,87.455,0,0,1,32,20,87.345,87.345,0,0,1,22.062,19.457Z" />
+        <path class="path fill secondary" d="M22.062,35.457a1,1,0,1,0-.229,1.986A89.287,89.287,0,0,0,32,38a89.366,89.366,0,0,0,10.141-.554,1,1,0,1,0-.228-1.986A87.455,87.455,0,0,1,32,36,87.345,87.345,0,0,1,22.062,35.457Z" />
+        <path class="path fill secondary" d="M41.913,51.46A87.455,87.455,0,0,1,32,52a87.345,87.345,0,0,1-9.938-.543,1,1,0,1,0-.229,1.986A89.287,89.287,0,0,0,32,54a89.366,89.366,0,0,0,10.141-.554,1,1,0,1,0-.228-1.986Z" />
+        <path class="path fill primary" d="M18.152,34.885c-1.4-.251-2.695-.544-3.854-.871a1,1,0,1,0-.542,1.925c1.221.344,2.58.652,4.042.915a1.078,1.078,0,0,0,.178.015,1,1,0,0,0,.176-1.984Z" />
+        <path class="path fill primary" d="M18.152,50.885c-1.4-.251-2.695-.544-3.854-.871a1,1,0,1,0-.542,1.925c1.221.344,2.58.652,4.042.915a1.078,1.078,0,0,0,.178.015,1,1,0,0,0,.176-1.984Z" />
+        <path class="path fill primary" d="M49.135,3.186A109.613,109.613,0,0,0,32,2,109.613,109.613,0,0,0,14.865,3.186C7.894,4.347,7,5.834,7,7V55c0,4.6,12.577,7,25,7s25-2.4,25-7V7C57,5.834,56.106,4.347,49.135,3.186ZM55,39c0,2.039-8.96,5-23,5S9,41.039,9,39V26.815C13.519,29.523,24.7,30,32,30s18.481-.477,23-3.185Zm0-15c0,1.661-7.136,4-23,4S9,25.661,9,24V10.815C13.519,13.523,24.7,14,32,14s18.481-.477,23-3.185ZM9,7.076C9.741,6.015,17.321,4,32,4S54.259,6.015,55,7.076V8c0,1.661-7.136,4-23,4S9,9.661,9,8ZM32,60C17.96,60,9,57.039,9,55V41.924C13.029,44.609,22.556,46,32,46s18.971-1.391,23-4.076V55C55,57.039,46.04,60,32,60Z" />
+    </g>
+</svg>
