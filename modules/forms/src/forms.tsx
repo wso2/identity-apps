@@ -304,14 +304,14 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             const leanTouchedFields = removeRedundant(tempTouchedFields, formFieldNames);
 
             /**
-             * Touched and required should not change if it is a reset
+             * Touched should not change if it is a reset
              */
             if (!isReset) {
-                setRequiredFields(leanRequiredFields);
                 setTouchedFields(leanTouchedFields);
             }
             setForm(leanForm);
             setValidFields(leanValidFields);
+            setRequiredFields(leanRequiredFields);
         };
 
         /**
