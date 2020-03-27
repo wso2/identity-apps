@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/theme",
-    "version": "1.0.113",
+    "version": "1.0.130",
     "description": "Theme for web components of WSO2 Identity Server Webapps.",
     "keywords": [
         "WSO2",
@@ -24,6 +24,7 @@
         "@babel/register": "^7.8.6",
         "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
         "clean-css": "^4.2.1",
+        "less-plugin-rewrite-variable": "0.1.0",
         "replace": "^1.1.5",
         "rimraf": "^3.0.2"
     },

@@ -42,6 +42,7 @@ export const common: CommonNS = {
     delete: "அழி",
     description: "விபரம்",
     deviceModel: "கருவி மாதிரி",
+    done: "நிறைவு செய்",
     edit: "திருத்து",
     endsWith: "முடிவடைவது",
     equals: "சமன்",
@@ -49,6 +50,7 @@ export const common: CommonNS = {
     goBackHome: "முகப்புக்கு செல்",
     help: "உதவி",
     hidePassword: "கடவுச்சொல்லை மறை",
+    identityProviders: "அடையாள வழங்குநர்கள்",
     initiator: "கருத்தா",
     ipAddress: "ip முகவரி",
     lastAccessed: "இறுதி அணுகல்",
@@ -56,6 +58,7 @@ export const common: CommonNS = {
     loginTime: "நுழைந்த நேரம்",
     logout: "வெளியேறு",
     more: "மேலும்",
+    myAccount: "என் கணக்கு",
     name: "பெயர்",
     operatingSystem: "இயங்கு தளம்",
     operations: "செயற்பாடுகள்",
@@ -89,5 +92,6 @@ export const common: CommonNS = {
     terminateSession: "அமர்வை முடி",
     type: "வகை",
     update: "புதுப்பி",
-    user: "பயனர்"
+    user: "பயனர்",
+    verify: "உறுதி செய்"
 };

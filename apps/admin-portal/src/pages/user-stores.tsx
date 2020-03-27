@@ -16,29 +16,64 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
-import { PageLayout } from "../layouts";
-import { ListLayout } from "../layouts";
-import { PrimaryButton, EmptyPlaceholder } from "@wso2is/react-components";
-import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
-import { UserStoresSearch } from "../components";
-import { AlertLevels, QueryParams, UserStoreListItem } from "../models";
-import { getUserStores } from "../api";
-import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
+import { EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { addAlert } from "../store/actions";
-import { UserStoresList } from "../components";
+import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { getUserStores } from "../api";
+import { AddUserStore, UserStoresList, UserStoresSearch } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
+import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
+import { ListLayout, PageLayout } from "../layouts";
+import { AlertLevels, AppConfigInterface, QueryParams, UserStoreListItem } from "../models";
+import { addAlert } from "../store/actions";
+import { filterList, sortList } from "../utils";
+import { AppConfig } from "../helpers";
 
+/**
+ * This renders the User Stores page.
+ *
+ * @return {React.ReactElement}
+ */
 export const UserStores = (): React.ReactElement => {
+
+    /**
+     * Sets the attributes by which the list can be sorted.
+     */
+    const SORT_BY = [
+        {
+            key: 0,
+            text: "Name",
+            value: "name"
+        },
+        {
+            key: 1,
+            text: "Description",
+            value: "description"
+        }
+    ];
 
     const [userStores, setUserStores] = useState<UserStoreListItem[]>(null);
     const [offset, setOffset] = useState(0);
     const [listItemLimit, setListItemLimit] = useState<number>(0);
     const [openModal, setOpenModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [filteredUserStores, setFilteredUserStores] = useState<UserStoreListItem[]>(null);
+    const [sortBy, setSortBy] = useState(SORT_BY[0]);
+    const [sortOrder, setSortOrder] = useState(true);
 
     const dispatch = useDispatch();
 
+    const appConfig: AppConfigInterface = useContext(AppConfig);
+
+    /**
+     * Fetches all user stores.
+     *
+     * @param {number} limit.
+     * @param {string} sort.
+     * @param {number} offset.
+     * @param {string} filter.
+     */
     const fetchUserStores = (limit?: number, sort?: string, offset?: number, filter?: string) => {
         const params: QueryParams = {
             limit: limit || null,
@@ -46,10 +81,13 @@ export const UserStores = (): React.ReactElement => {
             offset: offset || null,
             filter: filter || null
         };
-
+        setIsLoading(true);
         getUserStores(params).then(response => {
             setUserStores(response);
+            setFilteredUserStores(response);
+            setIsLoading(false);
         }).catch(error => {
+            setIsLoading(false);
             dispatch(addAlert(
                 {
                     description: error?.description || "An error occurred while fetching user stores",
@@ -65,82 +103,142 @@ export const UserStores = (): React.ReactElement => {
         fetchUserStores(null, null, null, null);
     }, []);
 
+    useEffect(() => {
+        setFilteredUserStores((sortList(filteredUserStores, sortBy.value, sortOrder)));
+    }, [sortBy, sortOrder]);
+
+    /**
+     * This slices and returns a portion of the list.
+     *
+     * @param {number} list.
+     * @param {number} limit.
+     * @param {number} offset.
+     *
+     * @return {UserStoreListItem[]} Paginated list.
+     */
     const paginate = (list: UserStoreListItem[], limit: number, offset: number): UserStoreListItem[] => {
         return list?.slice(offset, offset + limit);
     };
 
+    /**
+     * Handles the change in the number of items to display.
+     *
+     * @param {React.MouseEvent<HTMLAnchorElement>} event.
+     * @param {DropdownProps} data.
+     */
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
     };
 
+    /**
+     * This paginates.
+     *
+     * @param {React.MouseEvent<HTMLAnchorElement>} event.
+     * @param {PaginationProps} data.
+     */
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         setOffset((data.activePage as number - 1) * listItemLimit);
     };
 
+    /**
+     * Handles sort order change.
+     *
+     * @param {boolean} isAscending.
+     */
+    const handleSortOrderChange = (isAscending: boolean) => {
+        setSortOrder(isAscending);
+    };
+
+    /**
+     * Handle sort strategy change.
+     *
+     * @param {React.SyntheticEvent<HTMLElement>} event.
+     * @param {DropdownProps} data.
+     */
+    const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
+        setSortBy(SORT_BY.filter(option => option.value === data.value)[0]);
+    };
+
     return (
         <>
+            {
+                openModal
+                    && (
+                        <AddUserStore
+                            open={ openModal }
+                            onClose={ () => {
+                                setOpenModal(false)
+                            } }
+                        />
+                    )
+            }
             <PageLayout
                 title="User Stores"
                 description="View, edit and add User Stores"
                 showBottomDivider={ true }
             >
                 {
-                    userStores?.length > 0
+                    filteredUserStores?.length > 0
                         ? (<ListLayout
-                            advancedSearch={
-                                <UserStoresSearch
-                                    onFilter={ (query) => {
-                                        fetchUserStores(null, null, null, query);
-                                    } }
-                                />
-                            }
-                            currentListSize={ listItemLimit }
-                            listItemLimit={ listItemLimit }
-                            onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                            onPageChange={ handlePaginationChange }
-                            onSortStrategyChange={ null }
-                            rightActionPanel={
-                                (
-                                    <PrimaryButton
-                                        onClick={ () => {
-                                            setOpenModal(true);
+                                advancedSearch={
+                                    <UserStoresSearch
+                                        onFilter={ (query) => {
+                                            // TODO: Implement once the API is ready
+                                            //  fetchUserStores(null, null, null, query);
+                                            setFilteredUserStores(
+                                                filterList(userStores, query, "name", true)
+                                            );
+
                                         } }
-                                    >
-                                        <Icon name="add" />Add a User Store
-                                    </PrimaryButton>
-                                )
-                            }
-                            leftActionPanel={ null }
-                            showPagination={ true }
-                            sortOptions={ null }
-                            sortStrategy={ null }
-                            totalPages={ Math.ceil(userStores?.length / listItemLimit) }
-                            totalListSize={ userStores?.length }
-                        >
-                            <UserStoresList
-                                list={ paginate(userStores, listItemLimit, offset) }
-                                openEdit={ () => { setOpenModal(true) } }
-                                update={ fetchUserStores }
-                            />
-                        </ListLayout>
-                        )
-                        : (
-                            <EmptyPlaceholder
-                                action={
-                                    <PrimaryButton
-                                        onClick={ () => {
-                                            setOpenModal(true);
-                                        } }
-                                    >
-                                        <Icon name="add" /> Add a User Store
-                                </PrimaryButton>
+                                    />
                                 }
-                                title="Create a User Store"
-                                subtitle={ ["Currently, there are no User Stores available."] }
-                                image={ EmptyPlaceholderIllustrations.emptyList }
-                                imageSize="tiny"
-                            />
+                                currentListSize={ listItemLimit }
+                                listItemLimit={ listItemLimit }
+                                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                                onPageChange={ handlePaginationChange }
+                                onSortStrategyChange={ handleSortStrategyChange }
+                                onSortOrderChange={ handleSortOrderChange }
+                                rightActionPanel={
+                                   appConfig?.userStores?.permissions?.create &&  (
+                                        <PrimaryButton
+                                            onClick={ () => {
+                                                setOpenModal(true);
+                                            } }
+                                        >
+                                            <Icon name="add"/>Add a User Store
+                                        </PrimaryButton>
+                                    )
+                                }
+                                leftActionPanel={ null }
+                                showPagination={ true }
+                                sortOptions={ SORT_BY }
+                                sortStrategy={ sortBy }
+                                totalPages={ Math.ceil(filteredUserStores?.length / listItemLimit) }
+                                totalListSize={ filteredUserStores?.length }
+                            >
+                                <UserStoresList
+                                    list={ paginate(filteredUserStores, listItemLimit, offset) }
+                                    update={ fetchUserStores }
+                                />
+                            </ListLayout>
                         )
+                        : !isLoading && (
+                        <EmptyPlaceholder
+                            action={
+                                <PrimaryButton
+                                    onClick={ () => {
+                                        setOpenModal(true);
+                                    } }
+                                >
+                                    <Icon name="add"/> Add a User Store
+                                </PrimaryButton>
+                            }
+                            title="Create a User Store"
+                            subtitle={ ["Currently, there are no User Stores available."] }
+                            image={ EmptyPlaceholderIllustrations.emptyList }
+                            imageSize="tiny"
+                        />
+                    )
                 }
             </PageLayout>
         </>

@@ -17,57 +17,59 @@
  *
  */
 
-import { action } from "@storybook/addon-actions";
 import { GravatarLogo, ReactLogo } from "@wso2is/theme";
-import React from "react";
 import { LabeledCard, SelectionCard } from "../../../src";
+import React, { ReactElement } from "react";
+import { action } from "@storybook/addon-actions";
 import { meta } from "./card.stories.meta";
 
 export default {
     parameters: {
         component: SelectionCard,
-        componentSubtitle: meta.description,
+        componentSubtitle: meta.description
     },
     title: "Components API/Components/Card"
 };
 
 /**
  * Story to display selection card
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Selection = () => (
-        <SelectionCard
-            id="1"
-            image={ GravatarLogo }
-            header="Header"
-            description="This is a description."
-            onClick={ action("Clicked on the card.") }
-        />
+export const SelectionVariation = (): ReactElement => (
+    <SelectionCard
+        id="1"
+        image={ GravatarLogo }
+        header="Header"
+        description="This is a description."
+        onClick={ action("Clicked on the card.") }
+    />
 );
 
-Selection.story = {
+SelectionVariation.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 1 ].description,
-        },
+            storyDescription: meta.stories[ 1 ].description
+        }
     }
 };
 
 /**
  * Story to display labeled card
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Labeled = () => (
+export const LabeledCardVariation = (): ReactElement => (
     <LabeledCard
         label="React"
         image={ ReactLogo }
     />
 );
 
-Labeled.story = {
+LabeledCardVariation.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 2 ].description,
-        },
+            storyDescription: meta.stories[ 2 ].description
+        }
     }
 };

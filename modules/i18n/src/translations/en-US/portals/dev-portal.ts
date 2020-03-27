@@ -87,7 +87,7 @@ export const devPortal: DevPortalNS = {
                 placeholder: "Search by name",
                 popups: {
                     clear: "clear search",
-                    dropdown: "show options"
+                    dropdown: "Show options"
                 },
                 resultsIndicator: 'Showing results for the query "{{query}}"'
             }
@@ -614,8 +614,8 @@ export const devPortal: DevPortalNS = {
                 },
                 placeholder: "Search by  user name",
                 popups: {
-                    clear: "clear search",
-                    dropdown: "show options"
+                    clear: "Clear search",
+                    dropdown: "Show options"
                 },
                 resultsIndicator: "Showing results for the query \"{{query}}\""
             }
@@ -660,7 +660,7 @@ export const devPortal: DevPortalNS = {
                 createRole: {
                     error: {
                         description: "{{description}}",
-                        message: "Error occured while creating the role."
+                        message: "Error occurred while creating the role."
                     },
                     genericError: {
                         description: "Couldn't create the role.",
@@ -674,7 +674,7 @@ export const devPortal: DevPortalNS = {
                 createPermission: {
                     error: {
                         description: "{{description}}",
-                        message: "Error occured while adding permission to role."
+                        message: "Error occurred while adding permission to role."
                     },
                     genericError: {
                         description: "Couldn't add permissions to role.",
@@ -691,21 +691,21 @@ export const devPortal: DevPortalNS = {
                     searchForm: {
                         inputs: {
                             filerAttribute: {
-                                label: "Filter attribute",
+                                label: "Filter Attribute",
                                 placeholder: "E.g. role name.",
                                 validations: {
                                     empty: "Filter attribute is a required field"
                                 }
                             },
                             filterCondition: {
-                                label: "Filter condition",
+                                label: "Filter Condition",
                                 placeholder: "E.g. Starts with etc.",
                                 validations: {
                                     empty: "Filter condition is a required field"
                                 }
                             },
                             filterValue: {
-                                label: "Filter value",
+                                label: "Filter Value",
                                 placeholder: "Enter value to search",
                                 validations: {
                                     empty: "Filter value is a required field"
@@ -721,12 +721,12 @@ export const devPortal: DevPortalNS = {
                     }
                 },
                 options: {
-                    header: "Advanced search",
+                    header: "Advanced Search",
                 },
                 placeholder: "Search by role name",
                 popups: {
-                    clear: "clear search",
-                    dropdown: "show options"
+                    clear: "Clear search",
+                    dropdown: "Show options"
                 },
                 resultsIndicator: "Showing results for the query \"{{query}}\""
             }
@@ -734,7 +734,7 @@ export const devPortal: DevPortalNS = {
         serverConfigs: {
             accountRecovery: {
                 actionTitles: {
-                    config: "Configure"
+                    config: "Advanced Configurations"
                 },
                 confirmation: {
                     heading: "Confirmation",
@@ -755,6 +755,26 @@ export const devPortal: DevPortalNS = {
                         success: {
                             description: "Successfully updated the account recovery configurations.",
                             message: "Configurations updated successfully"
+                        }
+                    },
+                    updateEnableNotificationPasswordRecovery: {
+                        success: {
+                            description: "Successfully updated notification based password recovery status.",
+                        }
+                    },
+                    updateEnableUsernameRecovery: {
+                        success: {
+                            description: "Successfully updated username recovery status.",
+                        }
+                    },
+                    updateNotificationPasswordRecoveryReCaptcha: {
+                        success: {
+                            description: "Successfully configured reCaptcha for notification based password recovery.",
+                        }
+                    },
+                    updateUsernameRecoveryReCaptcha: {
+                        success: {
+                            description: "Successfully configured reCaptcha for username recovery.",
                         }
                     }
                 },
@@ -804,7 +824,7 @@ export const devPortal: DevPortalNS = {
                             validations: {
                                 empty: "Number of questions required for password recovery is required."
                             }
-                        },
+                        }
                     }
                 },
                 passwordRecovery: {
@@ -816,8 +836,8 @@ export const devPortal: DevPortalNS = {
                         enableNotificationBasedRecovery: {
                             label: "Enable notification based password recovery"
                         },
-                        enableReCaptchaBasedRecovery: {
-                            label: "Enable reCaptcha for password recovery"
+                        enableReCaptchaForNotificationBasedRecovery: {
+                            label: "Enable reCaptcha for notification based password recovery"
                         },
                         enableReCaptchaForSecurityQuestionBasedRecovery: {
                             hint: "Show captcha for challenge question based password recovery",
@@ -834,7 +854,7 @@ export const devPortal: DevPortalNS = {
                             validations: {
                                 empty: "Number of questions required for password recovery is required."
                             }
-                        },
+                        }
                     },
                     heading: "Password Recovery"
                 },
@@ -856,7 +876,7 @@ export const devPortal: DevPortalNS = {
             },
             selfRegistration: {
                 actionTitles: {
-                    config: "Configure"
+                    config: "Advanced Configurations"
                 },
                 confirmation: {
                     heading: "Confirmation",
@@ -872,7 +892,7 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     enable: {
-                        label: "Enable user self registration",
+                        label: "Enable user self registration"
                     },
                     enableAccountLockOnCreation: {
                         label: "Enable account lock on creation"
@@ -884,6 +904,7 @@ export const devPortal: DevPortalNS = {
                         label: "Internal notification management"
                     },
                     smsOTPExpiryTime: {
+                        hint: "Specify the expiry time in minutes for the SMS OTP.",
                         label: "User self registration SMS OTP expiry time",
                         placeholder: "1",
                         validations: {
@@ -891,6 +912,7 @@ export const devPortal: DevPortalNS = {
                         }
                     },
                     verificationLinkExpiryTime: {
+                        hint: "Specify the expiry time in minutes for the verification link.",
                         label: "User self registration verification link expiry time",
                         placeholder: "1440",
                         validations: {
@@ -900,6 +922,11 @@ export const devPortal: DevPortalNS = {
                 },
                 heading: "User Self Registration",
                 notifications: {
+                    updateAccountLockOnCreation: {
+                        success: {
+                            description: "Successfully updated self registration account lock on creation status.",
+                        }
+                    },
                     updateConfigurations: {
                         error: {
                             description: "An error occurred while updating the self sign up configurations.",
@@ -912,6 +939,22 @@ export const devPortal: DevPortalNS = {
                         success: {
                             description: "Successfully updated the self sign up configurations.",
                             message: "Configurations updated successfully"
+                        }
+                    },
+                    updateEnable: {
+                        success: {
+                            description: "Successfully updated self registration enabled status.",
+                        }
+                    },
+                    updateInternalNotificationManagement: {
+                        success: {
+                            description: "Successfully updated self registration internal notification " +
+                                "management status.",
+                        }
+                    },
+                    updateReCaptcha: {
+                        success: {
+                            description: "Successfully updated self registration enable reCaptcha status.",
                         }
                     }
                 }

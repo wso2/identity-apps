@@ -25,9 +25,9 @@ export const meta: StoryMetaInterface = {
     description: "Component to render steps.",
     stories: [
         {
-            description: "Default Steps.",
-            title: "Default",
+            description: "Steps component default appearance.",
+            title: "Default"
         }
     ],
-    title: `${ StoryCategories.COMPONENTS }/Steps`,
+    title: `${ StoryCategories.COMPONENTS }/Steps`
 };

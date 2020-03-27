@@ -25,26 +25,30 @@ export const meta: StoryMetaInterface = {
     description: "Avatar component to display app avatars.",
     stories: [
         {
+            description: "All variations of the App Avatar.",
+            title: "All variations"
+        },
+        {
             description: "Avatar with application name initials.",
-            title: "Initials",
+            title: "With Initials"
         },
         {
-            description: "Avatar from image.",
-            title: "From Image",
+            description: "App Avatar resolved from an image.",
+            title: "With Image"
         },
         {
-            description: "Avatar to display loading status.",
-            title: "Placeholder",
+            description: "App Avatar to display loading status.",
+            title: "Placeholder"
         },
         {
             description: "Different app avatar sizes. `mini`, `little`, `tiny` and `small` are displayed here." +
                 "All the other `Semantic UI` sizes are also supported.",
-            title: "Sizes",
+            title: "Different sizes"
         },
         {
             description: "Play around with different props to dynamically interact with the app avatar component.",
             title: "Playground"
         }
     ],
-    title: `${ StoryCategories.COMPONENTS }/App Avatar`,
+    title: `${ StoryCategories.COMPONENTS }/App Avatar`
 };

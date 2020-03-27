@@ -19,7 +19,6 @@
 import { AppAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { getIdentityProviderDetail } from "../api";
-import { EditApplication } from "../components";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import { emptyIdentityProvider, IdentityProviderInterface } from "../models";
@@ -27,7 +26,7 @@ import { IdentityProviderConstants } from "../constants";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
-import { EditIdentityProvider } from "../components/identityProviders/identity-provider-edit";
+import { EditIdentityProvider } from "../components";
 
 /**
  * Identity Provider Edit page.
