@@ -68,8 +68,8 @@ export const ServiceResourcesEndpoint: ServiceResourcesType = {
     revoke: `${GlobalConfig.serverHost}/oauth2/revoke`,
     sessions: `${GlobalConfig.serverHost}/api/users/v1/me/sessions`,
     token: `${GlobalConfig.serverHost}/oauth2/token`,
-    totp: `${GlobalConfig.serverHost}/t/${GlobalConfig.tenant}/api/users/v1/me/totp`,
-    totpSecret: `${GlobalConfig.serverHost}/t/${GlobalConfig.tenantPath}/api/users/v1/me/totp/secret`,
+    totp: `${GlobalConfig.serverHost}/api/users/v1/me/totp`,
+    totpSecret: `${GlobalConfig.serverHost}/api/users/v1/me/totp/secret`,
     user: `${GlobalConfig.serverHost}/api/identity/user/v1.0/me`,
     wellKnown: `${GlobalConfig.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
 };
