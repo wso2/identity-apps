@@ -311,6 +311,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 							saveSelfRegistrationConfigs(ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE, value);
 						}
 					}
+					toggle
 				/>
 				<Field
 					name={ ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION }
@@ -332,6 +333,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 							saveSelfRegistrationConfigs(ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION, value);
 						}
 					}
+					toggle
 				/>
 				<Field
 					name={ ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED }
@@ -355,6 +357,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 									SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED, value);
 						}
 					}
+					toggle
 				/>
 				<Field
 					name={ ServerConfigurationsConstants.RE_CAPTCHA }
@@ -376,6 +379,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 							saveSelfRegistrationConfigs(ServerConfigurationsConstants.RE_CAPTCHA, value);
 						}
 					}
+					toggle
 				/>
 			</Forms>
 		</EditSection>

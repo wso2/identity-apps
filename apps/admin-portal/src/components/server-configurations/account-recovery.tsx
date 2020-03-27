@@ -408,6 +408,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 							saveAccountRecoveryConfigs(ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE, value);
 						}
 					}
+					toggle
 				/>
 				<Field
 					name={ ServerConfigurationsConstants.USERNAME_RECOVERY_RE_CAPTCHA }
@@ -430,6 +431,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 								value);
 						}
 					}
+					toggle
 				/>
 				<Field
 					name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE }
@@ -452,6 +454,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 								PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE, value);
 						}
 					}
+					toggle
 				/>
 				<Field
 					name={ ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA }
@@ -474,6 +477,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 								PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA, value);
 						}
 					}
+					toggle
 				/>
 			</Forms>
 		</EditSection>
