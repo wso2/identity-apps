@@ -374,7 +374,8 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 					value={ selfSignUpConfigs.reCaptcha }
 					listen={
 						(values) => {
-							const value = values.get(ServerConfigurationsConstants.RE_CAPTCHA).length > 0
+							const value = (values.get(ServerConfigurationsConstants.RE_CAPTCHA) &&
+								values.get(ServerConfigurationsConstants.RE_CAPTCHA).length > 0)
 								? "true" : "false";
 							saveSelfRegistrationConfigs(ServerConfigurationsConstants.RE_CAPTCHA, value);
 						}
@@ -385,7 +386,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		</EditSection>
 	);
 
-	const showUserSelfRegistrationView = editingForm[USER_SELF_REGISTRATION_FORM_IDENTIFIER] ? (
+	const showUserSelfRegistrationView = editingForm[USER_SELF_REGISTRATION_FORM_IDENTIFIER] && (
 		<EditSection>
 			<Forms
 				onSubmit={ (values) => {
@@ -482,7 +483,7 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 				</Grid>
 			</Forms>
 		</EditSection>
-	) : null;
+	);
 
 	return (
 		<Section

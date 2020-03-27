@@ -140,7 +140,6 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 				if (!error.response || error.response.status === 401) {
 					dispatch(addAlert(errorMessage));
 				} else if (error.response && error.response.data && error.response.data.detail) {
-
 					dispatch(addAlert(errorMessage));
 				} else {
 					// Generic error message
@@ -483,7 +482,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 		</EditSection>
 	);
 
-	const showUserAccountRecoveryView = editingForm[ACCOUNT_RECOVERY_FORM_IDENTIFIER] ? (
+	const showUserAccountRecoveryView = editingForm[ACCOUNT_RECOVERY_FORM_IDENTIFIER] && (
 		<EditSection>
 			<Forms
 				onSubmit={ (values) => {
@@ -758,7 +757,7 @@ export const AccountRecovery: FunctionComponent<AccountRecoveryProps> = (props: 
 				</Grid>
 			</Forms>
 		</EditSection>
-	) : null;
+	);
 
 	return (
 		<Section
