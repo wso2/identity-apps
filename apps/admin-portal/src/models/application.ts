@@ -252,20 +252,29 @@ interface AuthProtocolMetaInterface {
  *  Application template list item interface.
  */
 export interface ApplicationTemplateListItemInterface {
+    id: string;
+    name: string;
     description: string;
-    displayName: string;
-    id: SupportedQuickStartTemplateTypes;
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    image: any;
-    protocols: SupportedAuthProtocolTypes[];
-    technologies: ApplicationTemplateTechnology[];
+    image: string;
+    authenticationProtocol: string;
+    types: string[];
+    category: string;
+    displayOrder: number;
+    self?: string;
 }
 
 /**
- *  Application templates interface.
+ *  Application template list interface.
  */
-export interface ApplicationTemplatesInterface {
-    [ key: string ]: ApplicationTemplateListItemInterface[];
+export interface ApplicationTemplateListInterface {
+    templates: ApplicationTemplateListItemInterface[];
+}
+
+/**
+ *  Contains Application template data.
+ */
+export interface ApplicationTemplate extends ApplicationTemplateListItemInterface {
+    application: MainApplicationInterface;
 }
 
 /**
