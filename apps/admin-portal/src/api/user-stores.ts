@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { QueryParams, HttpMethods, UserStorePostData, TestConnection } from "../models";
+import { QueryParams, HttpMethods, UserStorePostData, TestConnection, PatchData } from "../models";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { AxiosHttpClient } from "@wso2is/http";
 

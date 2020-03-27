@@ -114,9 +114,7 @@ export interface Type{
  * Type of patch data 
  */
 export interface PatchData {
-    operation: "REPLACE";
+    operation: string;
     path: string;
-
     value: string;
-    
 }
