@@ -17,44 +17,46 @@
  *
  */
 
-import { withKnobs, select } from "@storybook/addon-knobs";
-import * as React from "react";
-import { CodeEditor } from "../../../src";
 import { meta, SampleJSCodeSnippet, SampleJSONSnippet, SampleTSCodeSnippet } from "./code-editor.stories.meta";
+import React, { ReactElement } from "react";
+import { select, withKnobs } from "@storybook/addon-knobs";
+import { CodeEditor } from "../../../src";
 
 export default {
     decorators: [ withKnobs ],
     parameters: {
         component: CodeEditor,
-        componentSubtitle: meta.description,
+        componentSubtitle: meta.description
     },
     title: "Components API/Components/Code Editor"
 };
 
 /**
  * Story to display the default code editor.
+ *
  * @return {React.ReactElement}
  */
-export const Default = (): React.ReactElement => (
+export const DefaultCodeEditor = (): ReactElement => (
     <CodeEditor
         language="javascript"
         sourceCode={ SampleJSCodeSnippet }
     />
 );
 
-Default.story = {
+DefaultCodeEditor.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 0 ].description,
-        },
+            storyDescription: meta.stories[ 0 ].description
+        }
     }
 };
 
 /**
  * Story to display a code editor with linting.
+ *
  * @return {React.ReactElement}
  */
-export const EditorWithLinting = (): React.ReactElement => (
+export const EditorWithLinting = (): ReactElement => (
     <CodeEditor
         language="javascript"
         lint={ true }
@@ -65,16 +67,17 @@ export const EditorWithLinting = (): React.ReactElement => (
 EditorWithLinting.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 1 ].description,
-        },
+            storyDescription: meta.stories[ 1 ].description
+        }
     }
 };
 
 /**
  * Story to display a readonly code editor.
+ *
  * @return {React.ReactElement}
  */
-export const ReadOnlyEditor = (): React.ReactElement => (
+export const ReadOnlyEditor = (): ReactElement => (
     <CodeEditor
         language="javascript"
         readOnly={ true }
@@ -85,20 +88,21 @@ export const ReadOnlyEditor = (): React.ReactElement => (
 ReadOnlyEditor.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 2 ].description,
-        },
+            storyDescription: meta.stories[ 2 ].description
+        }
     }
 };
 
 /**
  * Story to display a smart code editor.
+ *
  * @return {React.ReactElement}
  */
-export const SmartEditor = (): React.ReactElement => (
+export const SmartEditor = (): ReactElement => (
     <CodeEditor
         language="javascript"
         smart={ true }
-        linting={ true }
+        lint={ true }
         sourceCode={ SampleJSCodeSnippet }
     />
 );
@@ -106,16 +110,17 @@ export const SmartEditor = (): React.ReactElement => (
 SmartEditor.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 3 ].description,
-        },
+            storyDescription: meta.stories[ 3 ].description
+        }
     }
 };
 
 /**
  * Story to display a JSON code editor.
+ *
  * @return {React.ReactElement}
  */
-export const JSONEditor = (): React.ReactElement => (
+export const JSONEditor = (): ReactElement => (
     <CodeEditor
         language="json"
         smart={ true }
@@ -127,16 +132,17 @@ export const JSONEditor = (): React.ReactElement => (
 JSONEditor.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 4 ].description,
-        },
+            storyDescription: meta.stories[ 4 ].description
+        }
     }
 };
 
 /**
  * Story to display a Typescript code editor.
+ *
  * @return {React.ReactElement}
  */
-export const TypescriptEditor = (): React.ReactElement => (
+export const TypescriptEditor = (): ReactElement => (
     <CodeEditor
         language="typescript"
         smart={ true }
@@ -147,16 +153,17 @@ export const TypescriptEditor = (): React.ReactElement => (
 TypescriptEditor.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 5 ].description,
-        },
+            storyDescription: meta.stories[ 5 ].description
+        }
     }
 };
 
 /**
  * Story to display the code editor themes.
+ *
  * @return {React.ReactElement}
  */
-export const Themes = (): React.ReactElement => (
+export const CodeEditorThemes = (): ReactElement => (
     <CodeEditor
         language="javascript"
         smart={ true }
@@ -166,10 +173,10 @@ export const Themes = (): React.ReactElement => (
     />
 );
 
-Themes.story = {
+CodeEditorThemes.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 6 ].description,
-        },
+            storyDescription: meta.stories[ 6 ].description
+        }
     }
 };

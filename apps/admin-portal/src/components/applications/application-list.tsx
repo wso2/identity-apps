@@ -124,7 +124,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             {
                 icon: "pencil alternate",
                 onClick: (): void => handleApplicationEdit(app.id),
-                popupText: "edit",
+                popupText: "Edit",
                 type: "button"
             }
         ];
@@ -140,7 +140,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 setShowDeleteConfirmationModal(true);
                 setDeletingApplication(app);
             },
-            popupText: "delete",
+            popupText: "Delete",
             type: "button"
         });
 

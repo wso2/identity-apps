@@ -24,6 +24,7 @@ import {
     ApplicationsPage,
     ApplicationTemplateSelectPage,
     CustomizePage,
+    GroupsPage,
     HomePage,
     IdentityProvidersPage,
     IdentityProviderTemplateSelectPage,
@@ -38,6 +39,7 @@ import {
     ClaimDialectsPage,
     LocalClaimsEditPage,
     UserStores,
+    UserStoresEditPage,
     IdentityProviderEditPage,
     ServerConfigurationsPage
 } from "../pages";
@@ -155,6 +157,17 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: true
             },
             {
+                component: GroupsPage,
+                exact: true,
+                icon: "childIcon",
+                id: "userGroups",
+                level: 2,
+                name: "User Groups",
+                path: "/groups",
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
                 component: RolesPage,
                 exact: true,
                 icon: "childIcon",
@@ -173,7 +186,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 name: "Role-Edit",
                 path: "/roles/:id",
                 protected: true,
-                showOnSidePanel: false,
+                showOnSidePanel: false
             },
             {
                 component: UserEditPage,
@@ -219,7 +232,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         component: ClaimDialectsPage,
         exact: true,
         icon: "claims",
-        id: "claims",
+        id: "claimDialects",
         level: 2,
         name: "Claim Dialects",
         path: CLAIM_DIALECTS_PATH,
@@ -247,9 +260,18 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        component: UserStoresEditPage,
+        icon: "userStore",
+        id: "edit-user-store",
+        name: "Edit User Store",
+        path: "/edit-user-store/:id",
+        protected: true,
+        showOnSidePanel: false
+    },
+    {
         component: ServerConfigurationsPage,
         exact: true,
-        icon: "userStore",
+        icon: "serverConfigurations",
         id: "serverConfigurations",
         name: "Server Configurations",
         path: "/server-configurations",

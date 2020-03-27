@@ -63,5 +63,6 @@ export class IdentityProviderConstants {
      */
     public static readonly PATHS: Map<string, string> = new Map<string, string>()
         .set("IDENTITY_PROVIDERS", "/identity-providers")
-        .set("IDENTITY_PROVIDER_TEMPLATES", "/identity-providers/templates");
+        .set("IDENTITY_PROVIDER_TEMPLATES", "/identity-providers/templates")
+        .set("IDENTITY_PROVIDER_EDIT", "/identity-providers/:id");
 }

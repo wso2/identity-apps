@@ -41,6 +41,7 @@ import { CreateRoleSummary } from "./role-sumary";
 interface CreateRoleProps {
     closeWizard: () => void;
     updateList: () => void;
+    isAddGroup: boolean;
     initStep?: number;
 }
 
@@ -73,7 +74,8 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     const {
         closeWizard,
         initStep,
-        updateList
+        updateList,
+        isAddGroup
     } = props;
 
     const { t } = useTranslation();
@@ -123,7 +125,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             "schemas": [
                 "urn:ietf:params:scim:schemas:core:2.0:Group"
             ],
-            "displayName": basicData.BasicDetails.roleName,
+            "displayName": basicData.BasicDetails.domain + "/" + basicData.BasicDetails.roleName,
             "members" : members
         }
 
@@ -262,6 +264,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     const WIZARD_STEPS = [{
         content: (
             <RoleBasics
+                isAddGroup={ isAddGroup }
                 triggerSubmit={ submitGeneralSettings }
                 initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
                 onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
@@ -340,7 +343,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         >
             <Modal.Header className="wizard-header">
                 Create Role
-                <Heading as="h6">Create a new role in the system with specific permissions</Heading>
+                <Heading as="h6">Create a New Role in the System with Specific Permissions.</Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group header="Fill the following mandatory details of the new role." current={ currentStep }>

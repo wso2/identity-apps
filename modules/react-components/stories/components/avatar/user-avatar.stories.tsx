@@ -17,26 +17,27 @@
  *
  */
 
-import { action } from "@storybook/addon-actions";
 import { boolean, radios, select, text } from "@storybook/addon-knobs";
+import { action } from "@storybook/addon-actions";
+import React, { ReactElement } from "react";
 import { UIConstants } from "@wso2is/core/constants";
-import React from "react";
-import { UserAvatar } from "../../../src";
 import { meta } from "./user-avatar.stories.meta";
+import { UserAvatar } from "../../../src";
 
 export default {
     parameters: {
         component: UserAvatar,
-        componentSubtitle: meta.description,
+        componentSubtitle: meta.description
     },
     title: "Components API/Components/User Avatar"
 };
 
 /**
  * Story to display all the user avatar variations.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const All = () => {
+export const AllUserAvatarVariations = (): ReactElement => {
     return (
         <>
             <UserAvatar
@@ -86,40 +87,40 @@ export const All = () => {
     );
 };
 
-All.story = {
+AllUserAvatarVariations.story = {
     parameters: {
         docs: {
-            storyDescription: meta.description,
-        },
+            storyDescription: meta.stories[ 0 ].description
+        }
     }
 };
 
 /**
  * Story to display the default user avatar variation.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Default = () => (
-    <>
-        <UserAvatar
-            spaced="right"
-            size="tiny"
-        />
-    </>
+export const DefaultUserAvatar = (): ReactElement => (
+    <UserAvatar
+        spaced="right"
+        size="tiny"
+    />
 );
 
-Default.story = {
+DefaultUserAvatar.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 0 ].description,
-        },
+            storyDescription: meta.stories[ 1 ].description
+        }
     }
 };
 
 /**
  * Story to display the user avatar with initials.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Initials = () => (
+export const UserAvatarWithInitials = (): ReactElement => (
     <>
         <UserAvatar
             spaced="right"
@@ -135,135 +136,132 @@ export const Initials = () => (
     </>
 );
 
-Initials.story = {
+UserAvatarWithInitials.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 1 ].description,
-        },
+            storyDescription: meta.stories[ 2 ].description
+        }
     }
 };
 
 /**
  * Story to display the user avatar from image.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Image = () => (
-    <>
-        <UserAvatar
-            spaced="right"
-            size="tiny"
-            image="https://avatars3.githubusercontent.com/u/25959096?s=460&v=4"
-        />
-    </>
+export const UserAvatarWithImage = (): ReactElement => (
+    <UserAvatar
+        spaced="right"
+        size="tiny"
+        image="https://avatars3.githubusercontent.com/u/25959096?s=460&v=4"
+    />
 );
 
-Image.story = {
+UserAvatarWithImage.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 2 ].description,
-        },
+            storyDescription: meta.stories[ 3 ].description
+        }
     }
 };
 
 /**
  * Story to display the user avatar with gravatar URL.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Gravatar = () => (
-    <>
-        <UserAvatar
-            spaced="right"
-            size="tiny"
-            gravatarInfoPopoverText={ (
-                <div>
-                    This image has been retrieved from
-                    { " " }
-                    <a href={ UIConstants.GRAVATAR_URL } rel="noopener noreferrer" target="_blank" >Gravatar</a>
-                    { " " }
-                    service.
-                </div>
-            ) }
-            showGravatarLabel={ true }
-            profileInfo={ {
-                emails: [ "brion@wso2.com" ],
-                name: {
-                    familyName: "Silva",
-                    givenName: "Brion"
-                },
-                profileUrl: "https://www.gravatar.com/avatar/422ec35ee753b1a54c54f45ce5a34caf",
-                userName: "brion"
-            } }
-        />
-    </>
+export const UserAvatarWithGravatar = (): ReactElement => (
+    <UserAvatar
+        spaced="right"
+        size="tiny"
+        gravatarInfoPopoverText={ (
+            <div>
+                This image has been retrieved from
+                { " " }
+                <a href={ UIConstants.GRAVATAR_URL } rel="noopener noreferrer" target="_blank">Gravatar</a>
+                { " " }
+                service.
+            </div>
+        ) }
+        showGravatarLabel={ true }
+        profileInfo={ {
+            emails: [ "brion@wso2.com" ],
+            name: {
+                familyName: "Silva",
+                givenName: "Brion"
+            },
+            profileUrl: "https://www.gravatar.com/avatar/422ec35ee753b1a54c54f45ce5a34caf",
+            userName: "brion"
+        } }
+    />
 );
 
-Gravatar.story = {
+UserAvatarWithGravatar.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 3 ].description,
-        },
+            storyDescription: meta.stories[ 4 ].description
+        }
     }
 };
 
 /**
  * Story to display the user avatar loading status.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Placeholder = () => (
-    <>
-        <UserAvatar
-            isLoading={ true }
-            spaced="right"
-            size="tiny"
-        />
-    </>
+export const UserAvatarPlaceholder = (): ReactElement => (
+    <UserAvatar
+        isLoading={ true }
+        spaced="right"
+        size="tiny"
+    />
 );
 
-Placeholder.story = {
+UserAvatarPlaceholder.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 4 ].description,
-        },
+            storyDescription: meta.stories[ 5 ].description
+        }
     }
 };
 
 /**
  * Story to display the editable user avatar.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Editable = () => (
-    <>
-        <UserAvatar
-            spaced="right"
-            size="tiny"
-            profileInfo={ {
-                emails: [ "brion@wso2.com" ],
-                name: {
-                    familyName: "Silva",
-                    givenName: "Brion"
-                },
-                profileUrl: "https://avatars3.githubusercontent.com/u/25959096?s=460&v=4",
-                userName: "brion"
-            } }
-            isEditable={ true }
-            onEditAvatarClicked={ action("Edit avatar button clicked") }
-        />
-    </>
+export const EditableUserAvatar = (): ReactElement => (
+    <UserAvatar
+        spaced="right"
+        size="tiny"
+        profileInfo={ {
+            emails: [ "brion@wso2.com" ],
+            name: {
+                familyName: "Silva",
+                givenName: "Brion"
+            },
+            profileUrl: "https://avatars3.githubusercontent.com/u/25959096?s=460&v=4",
+            userName: "brion"
+        } }
+        isEditable={ true }
+        onEditAvatarClicked={ action("Edit avatar button clicked") }
+    />
 );
 
-Editable.story = {
+EditableUserAvatar.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 5 ].description,
-        },
+            storyDescription: meta.stories[ 6 ].description
+        }
     }
 };
 
 /**
  * Story to display the user avatar sizes.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Sizes = () => (
+export const UserAvatarSizes = (): ReactElement => (
     <>
         <UserAvatar
             spaced="right"
@@ -288,53 +286,52 @@ export const Sizes = () => (
     </>
 );
 
-Sizes.story = {
+UserAvatarSizes.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 6 ].description,
-        },
+            storyDescription: meta.stories[ 7 ].description
+        }
     }
 };
 
 /**
  * Story to enable user to dynamically interact with the avatar component.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Playground = () => (
-    <>
-        <UserAvatar
-            name={ text("User's name", "Brion Silva") }
-            // tslint:disable:object-literal-sort-keys
-            size={ select(
-                "Size",
-                {
-                    Mini: "mini",
-                    Little: "little",
-                    Tiny: "tiny",
-                    Small: "small",
-                    Medium: "medium",
-                    Large: "large",
-                    Big: "big",
-                    Huge: "huge",
-                    Massive: "massive"
-                },
-                "tiny"
-            ) }
-            avatarInitialsLimit={
-                select("Avatar initials count", { One: 1, Two: 2 }, 1)
-            }
-            image={ text("Image URL", null) }
-            isLoading={ boolean("Loading", false) }
-            // tslint:enable:object-literal-sort-keys
-            spaced={ radios("Spaced", { Right: "right", Left: "left" }, "right") }
-        />
-    </>
+/* eslint-disable sort-keys */
+export const UserAvatarPlayground = (): ReactElement => (
+    <UserAvatar
+        name={ text("User's name", "Brion Silva") }
+        size={ select(
+            "Size",
+            {
+                Mini: "mini",
+                Little: "little",
+                Tiny: "tiny",
+                Small: "small",
+                Medium: "medium",
+                Large: "large",
+                Big: "big",
+                Huge: "huge",
+                Massive: "massive"
+            },
+            "tiny"
+        ) }
+        avatarInitialsLimit={
+            select("Avatar initials count", { One: 1, Two: 2 }, 1)
+        }
+        image={ text("Image URL", null) }
+        isLoading={ boolean("Loading", false) }
+        spaced={ radios("Spaced", { Right: "right", Left: "left" }, "right") }
+    />
 );
+/* eslint-enable sort-keys */
 
-Playground.story = {
+UserAvatarPlayground.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 7 ].description,
-        },
+            storyDescription: meta.stories[ 8 ].description
+        }
     }
 };

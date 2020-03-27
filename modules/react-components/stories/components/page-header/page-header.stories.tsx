@@ -17,23 +17,24 @@
  *
  */
 
-import React from "react";
 import { AppAvatar, PageHeader } from "../../../src";
+import React, { ReactElement } from "react";
 import { meta } from "./page-header.stories.meta";
 
 export default {
     parameters: {
         component: PageHeader,
-        componentSubtitle: meta.description,
+        componentSubtitle: meta.description
     },
     title: "Components API/Components/Page Header"
 };
 
 /**
  * Story to display a default section.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Default = () => (
+export const DefaultPageHeader = (): ReactElement => (
     <PageHeader
         title="Header"
         description="A clear description for the page header"
@@ -45,17 +46,17 @@ export const Default = () => (
             />
         ) }
         backButton={ {
-            text: "Go back to list",
-            onClick: null
+            onClick: null,
+            text: "Go back to list"
         } }
         titleTextAlign="left"
     />
 );
 
-Default.story = {
+DefaultPageHeader.story = {
     parameters: {
         docs: {
-            storyDescription: meta.description,
-        },
+            storyDescription: meta.stories[ 0 ].description
+        }
     }
 };

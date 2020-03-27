@@ -25,7 +25,7 @@ export const meta: StoryMetaInterface = {
     stories: [
         {
             description: "Default button",
-            title: "Default Button",
+            title: "Default Button"
         },
         {
             description: "Button with product primary color.",
@@ -48,5 +48,5 @@ export const meta: StoryMetaInterface = {
             title: "Icon Button"
         }
     ],
-    title: StoryCategories.COMPONENTS + "/Button",
+    title: StoryCategories.COMPONENTS + "/Button"
 };

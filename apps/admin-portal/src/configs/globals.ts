@@ -31,6 +31,7 @@ interface RuntimeConfigInterface {
     copyrightText?: string;
     debug?: boolean;
     doNotDeleteApplications?: string[];
+    doNotDeleteIdentityProviders?: string[];
     i18nModuleOptions?: I18nModuleOptionsInterface;
     loginCallbackUrl?: string;
     serverHost?: string;
@@ -59,6 +60,7 @@ export const GlobalConfig: RuntimeConfigInterface = {
     copyrightText: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.copyrightText || COPYRIGHT_TEXT_DEFAULT) : COPYRIGHT_TEXT_DEFAULT,
     debug: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.debug || DEBUG_MODE) : DEBUG_MODE,
     doNotDeleteApplications: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.doNotDeleteApplications || []) : [],
+    doNotDeleteIdentityProviders: (RUNTIME_CONFIG) ? (RUNTIME_CONFIG.doNotDeleteIdentityProviders || []) : [],
     i18nModuleOptions: {
         initOptions: RUNTIME_CONFIG?.i18nModuleOptions?.initOptions
             ? RUNTIME_CONFIG.i18nModuleOptions.initOptions

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import classNames from "classnames";
+import { Button, Checkbox, Icon, Input, Modal, ModalProps } from "semantic-ui-react";
 import React, {
     ChangeEvent,
     FunctionComponent,
@@ -26,10 +26,10 @@ import React, {
     useEffect,
     useState
 } from "react";
-import { Button, Checkbox, Icon, Input, Modal, ModalProps } from "semantic-ui-react";
+import classNames from "classnames";
 import { ConfirmationModalContent } from "./confirmation-modal-content";
-import { ConfirmationModalHeader } from "./confirmation-modal-header";
 import { ConfirmationModalDescription } from "./confirmation-modal-description";
+import { ConfirmationModalHeader } from "./confirmation-modal-header";
 import { ConfirmationModalMessage } from "./confirmation-modal-message";
 import { LinkButton } from "../../button";
 
@@ -84,7 +84,7 @@ export interface ConfirmationModalPropsInterface extends ModalProps {
 /**
  * Interface for the confirmation modal sub component.
  */
-interface ConfirmationModalSubComponentsInterface {
+export interface ConfirmationModalSubComponentsInterface {
     Header: typeof ConfirmationModalHeader;
     Content: typeof ConfirmationModalContent;
     Description: typeof ConfirmationModalDescription;
@@ -95,6 +95,7 @@ interface ConfirmationModalSubComponentsInterface {
  * Confirmation modal component.
  *
  * @param {ConfirmationModalPropsInterface} props - Props injected to the component.
+ *
  * @return {React.ReactElement}
  */
 export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterface> &
@@ -141,6 +142,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
      * Resolves the animated icon.
      *
      * @param {string} type - Type of the modal.
+     *
      * @return {React.ReactElement}
      */
     const resolveIcon = (type: string): ReactElement => {
@@ -235,6 +237,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
      * Resolves the assertion input.
      *
      * @param {"input" | "checkbox"} type - Type of the assertion.
+     *
      * @return {React.ReactElement}
      */
     const resolveAssertionInput = (type: "input" | "checkbox"): ReactElement => {
@@ -321,9 +324,9 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
  * Default proptypes for the settings section component.
  */
 ConfirmationModal.defaultProps = {
-    textAlign: "left",
     dimmer: "blurring",
-    size: "tiny"
+    size: "tiny",
+    textAlign: "left"
 };
 
 ConfirmationModal.Header = ConfirmationModalHeader;

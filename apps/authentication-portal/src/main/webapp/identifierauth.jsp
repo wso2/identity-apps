@@ -47,36 +47,43 @@
 <script>
     function submitIdentifier () {
         var isEmailUsernameEnabled = JSON.parse("<%= isEmailUsernameEnabled %>");
+        var isSaaSApp = JSON.parse(getParameterByName("isSaaSApp").toLowerCase());
         var tenantName = getParameterByName("tenantDomain");
+
         var userName = document.getElementById("username");
         var usernameUserInput = document.getElementById("usernameUserInput");
-        var isSaaSApp = JSON.parse(getParameterByName("isSaaSApp").toLowerCase());
 
         if (usernameUserInput) {
             var usernameUserInputValue = usernameUserInput.value.trim();
 
-            if (!isSaaSApp && tenantName) {
+            if (tenantName && tenantName !== "null") {
 
-                if ((!isEmailUsernameEnabled) && (usernameUserInputValue.split("@").length > 1)) {
-                    var errorMessage = document.getElementById("error-msg");
+                if (isEmailUsernameEnabled) {
 
-                    errorMessage.innerHTML = 
-                        "Invalid Username. Username shouldn't have '@' or any other special characters.";
-                    errorMessage.hidden = false;
+                    if (usernameUserInputValue.split("@").length <= 1) {
+                        var errorMessage = document.getElementById("error-msg");
 
-                    return;
-                }
+                        errorMessage.innerHTML = "Invalid Username. Username has to be an email address.";
+                        errorMessage.style.display = "block";
 
-                if (isEmailUsernameEnabled && (usernameUserInputValue.split("@").length <= 1)) {
-                    var errorMessage = document.getElementById("error-msg");
+                        return;
+                    }
 
-                    errorMessage.innerHTML = "Invalid Username. Username has to be an email address.";
-                    errorMessage.hidden = false;
+                    if (usernameUserInputValue.split("@").length === 2) {
+                        userName.value = usernameUserInputValue + "@" + tenantName;
+                    }
+                    else {
+                        userName.value = usernameUserInputValue;
+                    }
+                } else {
+                    if (usernameUserInputValue.split("@").length > 1) {
+                        userName.value = usernameUserInputValue;
+                    } else {
+                        userName.value = usernameUserInputValue + "@" + tenantName;
+                    }
 
-                    return;
                 }
                 
-                userName.value = usernameUserInputValue + "@" + tenantName;
             } else {
                 userName.value = usernameUserInputValue;
             }
@@ -100,10 +107,12 @@
     <div class="ui visible negative message" id="error-msg">
         <%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %>
     </div>
-    <% } else if((Boolean.TRUE.toString()).equals(request.getParameter("authz_failure"))) { %>
+    <% } else if ((Boolean.TRUE.toString()).equals(request.getParameter("authz_failure"))) { %>
     <div class="ui visible negative message" id="error-msg">
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "unauthorized.to.login")%>
     </div>
+    <% } else { %>
+        <div class="ui visible negative message" style="display: none;" id="error-msg"></div>
     <% } %>
     
     <div class="field">

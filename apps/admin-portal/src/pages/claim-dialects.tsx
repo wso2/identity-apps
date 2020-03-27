@@ -16,22 +16,29 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
-import { PageLayout } from "../layouts";
-import { ListLayout } from "../layouts";
+import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
-import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
-import { ClaimsList, ListType } from "../components";
-import { ClaimDialect, AlertLevels } from "../models";
-import { getDialects } from "../api";
-import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
-import { AddEditDialect, DialectSearch } from "../components";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { addAlert } from "../store/actions";
+import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
+import { getDialects } from "../api";
+import { AddEditDialect, ClaimsAvatarBackground, ClaimsList, DialectSearch, ListType } from "../components";
+import { DEFAULT_USER_LIST_ITEM_LIMIT, LOCAL_CLAIMS_PATH } from "../constants";
+import { AppConfig, history } from "../helpers";
+import { ListLayout, PageLayout } from "../layouts";
+import { AlertLevels, AppConfigInterface, ClaimDialect } from "../models";
 import { filterList, sortList } from "../utils";
 
+/**
+ * This displays a list fo claim dialects.
+ *
+ * @return {React.ReactElement}
+ */
 export const ClaimDialectsPage = (): React.ReactElement => {
 
+    /**
+     * Sets the attributes by which the list can be sorted.
+     */
     const SORT_BY = [
         {
             key: 0,
@@ -48,14 +55,28 @@ export const ClaimDialectsPage = (): React.ReactElement => {
     const [filteredDialects, setFilteredDialects] = useState<ClaimDialect[]>(null);
     const [sortBy, setSortBy] = useState(SORT_BY[0]);
     const [sortOrder, setSortOrder] = useState(true);
+    const [localURI, setLocalURI] = useState("");
+
+    const appConfig: AppConfigInterface = useContext(AppConfig);
 
     const dispatch = useDispatch();
 
-    const getDialect = (limit?: number, offset?: number, sort?: string, filter?: string, ) => {
+    /**
+     * Fetches all the dialects.
+     *
+     * @param {number} limit.
+     * @param {number} offset.
+     * @param {string} sort.
+     * @param {string} filter.
+     */
+    const getDialect = (limit?: number, offset?: number, sort?: string, filter?: string): void => {
         getDialects({
             limit, offset, sort, filter
         }).then((response: ClaimDialect[]) => {
             const filteredDialect: ClaimDialect[] = response.filter((claim: ClaimDialect) => {
+                if (claim.id === "local") {
+                    setLocalURI(claim.dialectURI);
+                }
                 return claim.id !== "local";
             });
 
@@ -70,7 +91,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                 }
             ));
         })
-    }
+    };
 
     useEffect(() => {
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
@@ -81,22 +102,54 @@ export const ClaimDialectsPage = (): React.ReactElement => {
         setFilteredDialects(sortList(filteredDialects, sortBy.value, sortOrder));
     }, [sortBy, sortOrder]);
 
+    /**
+     * This slices a portion of the list to display.
+     *
+     * @param {ClaimDialect[]} list.
+     * @param {number} limit.
+     * @param {number} offset.
+     *
+     * @return {ClaimDialect[]} Paginated List.
+     */
     const paginate = (list: ClaimDialect[], limit: number, offset: number): ClaimDialect[] => {
         return list?.slice(offset, offset + limit);
     };
 
-    const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+    /**
+     * Handles change in the number of items to show.
+     *
+     * @param {React.MouseEvent<HTMLAnchorElement>} event.
+     * @param {data} data.
+     */
+    const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
         setListItemLimit(data.value as number);
     };
 
+    /**
+     * Paginates.
+     *
+     * @param {React.MouseEvent<HTMLAnchorElement>} event.
+     * @param {PaginationProps} data.
+     */
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         setOffset((data.activePage as number - 1) * listItemLimit);
     };
 
+    /**
+     * Handle sort strategy change.
+     *
+     * @param {React.SyntheticEvent<HTMLElement>} event.
+     * @param {DropdownProps} data.
+     */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
         setSortBy(SORT_BY.filter(option => option.value === data.value)[0]);
     };
 
+    /**
+     * Handles sort order change.
+     *
+     * @param {boolean} isAscending.
+     */
     const handleSortOrderChange = (isAscending: boolean) => {
         setSortOrder(isAscending);
     };
@@ -118,21 +171,73 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                 description="View, edit and add Claim Dialects"
                 showBottomDivider={ true }
             >
+                {
+                    appConfig?.claimDialects?.features?.localClaims?.permissions?.read &&
+                    (
+                        <Segment>
+                            <List>
+                                <List.Item>
+                                    <Grid>
+                                        <Grid.Row columns={ 2 }>
+                                            <Grid.Column width={ 12 }>
+                                                <Image
+                                                    floated="left"
+                                                    verticalAlign="middle"
+                                                    rounded
+                                                    centered
+                                                    size="mini"
+                                                >
+                                                    <ClaimsAvatarBackground primary/>
+                                                    <span className="claims-letter">
+                                                L
+                                            </span>
+                                                </Image>
+                                                <List.Header>
+                                                    Local Dialect
+                                                </List.Header>
+                                                <List.Description>
+                                                    {localURI}
+                                                </List.Description>
+                                            </Grid.Column>
+                                            <Grid.Column width={ 4 } verticalAlign="middle" textAlign="right">
+                                                <Popup
+                                                    inverted
+                                                    trigger={
+                                                        <Icon
+                                                            link
+                                                            name="arrow right"
+                                                            onClick={ () => {
+                                                                history.push(LOCAL_CLAIMS_PATH);
+                                                            } }
+                                                        />
+                                                    }
+                                                    position="top center"
+                                                    content="View local claims"
+                                                />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                </List.Item>
+                            </List>
+                        </Segment>
+                    )
+                }
+                <Divider hidden/>
                 <ListLayout
                     advancedSearch={
                         <DialectSearch onFilter={ (query) => {
                             // TODO: getDialect(null, null, null, query);
                             try {
-                                const filteredDialects = filterList(dialects, query,sortBy.value, sortOrder);
+                                const filteredDialects = filterList(dialects, query, sortBy.value, sortOrder);
                                 setFilteredDialects(filteredDialects);
                             } catch (error) {
                                 dispatch(addAlert({
                                     message: "Filter query format incorrect",
-                                    description: error,
+                                    description: error.message,
                                     level: AlertLevels.ERROR
                                 }));
                             }
-                        } } />
+                        } }/>
                     }
                     currentListSize={ listItemLimit }
                     listItemLimit={ listItemLimit }
@@ -141,13 +246,13 @@ export const ClaimDialectsPage = (): React.ReactElement => {
                     onSortStrategyChange={ handleSortStrategyChange }
                     onSortOrderChange={ handleSortOrderChange }
                     rightActionPanel={
-                        (
+                        appConfig?.claimDialects?.permissions?.create && (
                             <PrimaryButton
                                 onClick={ () => {
                                     setAddEditClaim(true);
                                 } }
                             >
-                                <Icon name="add" />Add a dialect
+                                <Icon name="add"/>Add a dialect
                             </PrimaryButton>
                         )
                     }
@@ -172,5 +277,4 @@ export const ClaimDialectsPage = (): React.ReactElement => {
             </PageLayout>
         </>
     );
-
 };

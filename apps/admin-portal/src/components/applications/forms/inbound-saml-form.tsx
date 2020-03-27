@@ -18,14 +18,14 @@
 
 import { Field, Forms, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Button, Divider, Grid } from "semantic-ui-react";
+import { Button, Divider, Form, Grid } from "semantic-ui-react";
 import {
     LogoutMethods,
     MetadataPropertyInterface,
     SAML2ServiceProviderInterface,
     SAMLMetaDataInterface
 } from "../../../models";
-import { Heading, Hint } from "@wso2is/react-components";
+import { CopyInputField, Heading, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { URLInputComponent } from "../components";
 import { isEmpty } from "lodash";
@@ -180,16 +180,24 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                     <Grid>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    name="issuer"
-                                    label="Issuer"
-                                    required={ true }
-                                    requiredErrorMessage="Please provide the issuer"
-                                    type="text"
-                                    placeholder={ "Enter the issuer name" }
-                                    value={ initialValues?.issuer }
-                                    readOnly={ !isEmpty(initialValues?.issuer) }
-                                />
+                                {
+                                    initialValues?.issuer ?
+                                        <Form.Field>
+                                            <div className={ "required field" }>
+                                                <label>Issuer</label>
+                                            </div>
+                                            <CopyInputField value={ initialValues?.issuer }/>
+                                        </Form.Field> :
+                                        <Field
+                                            name="issuer"
+                                            label="Issuer"
+                                            required={ true }
+                                            requiredErrorMessage="Please provide the issuer"
+                                            type="text"
+                                            placeholder={ "Enter the issuer name" }
+                                            value={ initialValues?.issuer }
+                                        />
+                                }
                                 <Hint>
                                     This specifies the issuer. This is the &quot;saml:Issuer&quot; element that contains
                                     the unique identifier of the Application. This is also the issuer value
@@ -201,7 +209,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     name="applicationQualifier"
-                                    label="Application Qualifier"
+                                    label="Application qualifier"
                                     required={ false }
                                     requiredErrorMessage="This is needed"
                                     type="text"
@@ -219,9 +227,9 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <URLInputComponent
                             urlState={ assertionConsumerUrls }
                             setURLState={ setAssertionConsumerUrls }
-                            labelName={ "Assertion Consumer URLs" }
+                            labelName={ "Assertion consumer URLs" }
                             value={ initialValues?.assertionConsumerUrls.toString() }
-                            placeholder={ "Enter url " }
+                            placeholder={ "Enter URL " }
                             validationErrorMsg={ "Please add valid URL" }
                             validation={ (value: string) => {
                                 if (FormValidation.url(value)) {
@@ -239,7 +247,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
-                                    label="Default Assertion consumer Url"
+                                    label="Default assertion consumer URL"
                                     name="defaultAssertionConsumerUrl"
                                     type="dropdown"
                                     required={ true }
@@ -260,7 +268,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
-                                    label="Idp EntityId Alias"
+                                    label="Idp entityId alias"
                                     name="idpEntityIdAlias"
                                     placeholder={ "Enter alias" }
                                     type="text"
@@ -306,7 +314,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     }
                                     children={ [
                                         {
-                                            label: "Enable Request Signature Validation",
+                                            label: "Enable request signature validation",
                                             value: "enableSignatureValidation"
                                         },
                                     ] }
@@ -321,7 +329,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
-                                    label="Request Validation Certificate Alias"
+                                    label="Request validation certificate alias"
                                     name="signatureValidationCertAlias"
                                     type="dropdown"
                                     required={ false }
@@ -349,7 +357,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 <Divider hidden/>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                     <Field
-                                        label="Digest Algorithm"
+                                        label="Digest algorithm"
                                         name="digestAlgorithm"
                                         type="dropdown"
                                         required={ false }
@@ -365,7 +373,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
-                                    label="Signing Algorithm"
+                                    label="Signing algorithm"
                                     name="signingAlgorithm"
                                     type="dropdown"
                                     required={ false }
@@ -387,7 +395,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     value={ initialValues?.responseSigning.enabled ? ["enabled"] : [] }
                                     children={ [
                                         {
-                                            label: "Sign SAML Responses",
+                                            label: "Sign SAML responses",
                                             value: "enabled"
                                         },
                                     ] }
@@ -438,7 +446,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             ["enableSignatureValidationForArtifactBinding"] : [] }
                                     children={ [
                                         {
-                                            label: "Enable Signature Validation For ArtifactBinding",
+                                            label: "Enable signature validation for artifact binding",
                                             value: "enableSignatureValidationForArtifactBinding"
                                         },
                                     ] }
@@ -463,7 +471,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     }
                                     children={ [
                                         {
-                                            label: "Enable IdP Initiated SSO",
+                                            label: "Enable idP initiated SSO",
                                             value: "enableIdPInitiatedSSO"
                                         },
                                     ] }
@@ -475,9 +483,9 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 <Heading as="h6">Assertion</Heading>
                                 <Divider hidden/>
                                 <Field
-                                    label="NameID format"
+                                    label="Name ID format"
                                     name="nameIdFormat"
-                                    placeholder={ "Enter name Id format" }
+                                    placeholder={ "Enter name ID format" }
                                     type="text"
                                     default={ metadata?.certificateAlias }
                                     required={ false }
@@ -558,7 +566,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
-                                    label="Assertion Encryption Algorithm"
+                                    label="Assertion encryption algorithm"
                                     name="assertionEncryptionAlgorithm"
                                     type="dropdown"
                                     required={ false }
@@ -576,7 +584,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
-                                    label="Key Encryption Algorithm"
+                                    label="Key encryption algorithm"
                                     name="keyEncryptionAlgorithm"
                                     type="dropdown"
                                     required={ false }
@@ -645,7 +653,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     }
                                     children={ [
                                         {
-                                            label: "Always Include Attributes in Response",
+                                            label: "Always include attributes in response",
                                             value: "alwaysIncludeAttributesInResponse"
                                         },
                                     ] }
@@ -660,9 +668,9 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
-                                    label="Attribute Consuming ServiceIndex"
+                                    label="Attribute consuming service index"
                                     name="attributeConsumingServiceIndex"
-                                    placeholder={ "Enter attribute consuming serviceIndex" }
+                                    placeholder={ "Enter attribute consuming service index" }
                                     type="text"
                                     required={ false }
                                     disabled={ !isAttributeProfileEnabled }
@@ -746,7 +754,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     name="singleLogoutResponseUrl"
-                                    label="Single Logout Response Url"
+                                    label="Single logout response URL"
                                     validation={ (value: string, validation: Validation) => {
                                         if (!FormValidation.url(value)) {
                                             validation.isValid = false;
@@ -755,7 +763,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     } }
                                     required={ false }
                                     requiredErrorMessage="this is not needed"
-                                    placeholder="Enter single logout response url"
+                                    placeholder="Enter single logout response URL"
                                     disabled={ !isSingleLogoutProfileEnabled }
                                     type="text"
                                     value={ initialValues?.singleLogoutProfile.logoutResponseUrl }
@@ -766,7 +774,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     name="singleLogoutRequestUrl"
-                                    label="Single Logout Request Url"
+                                    label="Single logout request URL"
                                     validation={ (value: string, validation: Validation) => {
                                         if (!FormValidation.url(value)) {
                                             validation.isValid = false;
@@ -775,7 +783,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     } }
                                     required={ false }
                                     requiredErrorMessage="this is not needed"
-                                    placeholder="Enter single logout request url"
+                                    placeholder="Enter single logout request URL"
                                     disabled={ !isSingleLogoutProfileEnabled }
                                     type="text"
                                     value={ initialValues?.singleLogoutProfile.logoutRequestUrl }
@@ -822,7 +830,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <URLInputComponent
                             urlState={ returnToURLS }
                             setURLState={ setReturnToURLS }
-                            labelName={ "Return to URLS" }
+                            labelName={ "Return to URLs" }
                             value={
                                 initialValues?.singleLogoutProfile.idpInitiatedSingleLogout.returnToUrls.toString()
                             }
@@ -861,7 +869,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     type="checkbox"
                                     children={ [
                                         {
-                                            label: "Enable Assertion QueryProfile",
+                                            label: "Enable assertion query profile",
                                             value: "enableAssertionQueryProfile"
                                         },
                                     ] }

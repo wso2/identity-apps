@@ -26,7 +26,11 @@ export const meta: StoryMetaInterface = {
     stories: [
         {
             description: "A single danger zone action.",
-            title: "Default",
+            title: "Default"
+        },
+        {
+            description: "A single danger zone action.",
+            title: "Default"
         },
         {
             description: "Group of danger zone actions.",
@@ -37,5 +41,5 @@ export const meta: StoryMetaInterface = {
             title: "Playground"
         }
     ],
-    title: `${ StoryCategories.COMPONENTS }/Danger Zone`,
+    title: `${ StoryCategories.COMPONENTS }/Danger Zone`
 };

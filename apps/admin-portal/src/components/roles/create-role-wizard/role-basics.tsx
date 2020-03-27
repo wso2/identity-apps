@@ -20,6 +20,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { Forms, Field } from "@wso2is/forms";
 import { Grid, GridRow, GridColumn } from "semantic-ui-react";
 import { CreateRoleFormData } from "../../../models";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../../constants";
 
 /**
  * Interface to capture role basics props.
@@ -28,6 +29,7 @@ interface RoleBasicProps {
     dummyProp?: string;
     triggerSubmit: boolean;
     initialValues: any;
+    isAddGroup: boolean;
     onSubmit: (values: any) => void;
 }
 
@@ -41,7 +43,8 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const {
         onSubmit,
         triggerSubmit,
-        initialValues
+        initialValues,
+        isAddGroup
     } = props;
 
     /**
@@ -53,8 +56,14 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      * TODO : Discuss and add or remove the Hybrid domains 
      *        to the dropdown.
     */
+    const groupDomains = [{
+        key: -1, text: PRIMARY_DOMAIN, value: PRIMARY_DOMAIN,
+    }];
+
     const roleDomains = [{
-        key: -1, text: "Primary", value: "primary",
+        key: -1, text: APPLICATION_DOMAIN, value: APPLICATION_DOMAIN
+    },{
+        key: 0, text: INTERNAL_DOMAIN, value: INTERNAL_DOMAIN,
     }];
 
     /**
@@ -83,12 +92,16 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                             type="dropdown"
                             label="Domain"
                             name="domain"
-                            children={ roleDomains }
+                            children={ isAddGroup ? groupDomains : roleDomains }
                             placeholder="Domain"
                             requiredErrorMessage="Select Domain"
                             required={ true }
                             element={ <div></div> }
-                            value={ initialValues?.domain ? initialValues?.domain : roleDomains[0].value }
+                            value={ initialValues?.domain ? 
+                                    initialValues?.domain : 
+                                        isAddGroup ? 
+                                            groupDomains[0].value : roleDomains[0].value 
+                            }
                         />
                     </GridColumn>
                     <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>

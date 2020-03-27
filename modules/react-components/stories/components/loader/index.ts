@@ -17,4 +17,5 @@
  *
  */
 
-export * from "./global-loader";
+export * from "./content-loader.stories";
+export * from "./top-loading-bar.stories";

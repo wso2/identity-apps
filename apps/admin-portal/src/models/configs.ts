@@ -27,9 +27,9 @@ export interface AppConfigInterface {
      */
     applications: FeatureConfigInterface<ApplicationManagementFeaturesConfigInterface>;
     /**
-     * Claim management feature.
+     * Claims management feature.
      */
-    claims: FeatureConfigInterface;
+    claimDialects: FeatureConfigInterface<ClaimDialectsConfigInterface>;
     /**
      * Identity provider management feature.
      */
@@ -86,4 +86,18 @@ export interface ApplicationEditFeaturesConfigInterface {
      * Advance settings feature.
      */
     advanceSettings: FeatureConfigInterface;
+}
+
+/**
+ * Claim Dialects configs.
+ */
+export interface ClaimDialectsConfigInterface {
+    /**
+     * Local claims configuration feature.
+     */
+    localClaims: FeatureConfigInterface;
+    /**
+     * External claims configuration feature.
+     */
+    externalClaims: FeatureConfigInterface;
 }
