@@ -18,15 +18,36 @@
 
 import React, { useState } from "react";
 import { Forms, FormValue, Field } from "@wso2is/forms";
-import { Grid, Label } from "semantic-ui-react";
+import { Grid, Label, Divider } from "semantic-ui-react";
 import { Hint } from "@wso2is/react-components";
 
+/**
+ * Prop types of `BasicDetailsLocalClaims` component
+ */
 interface BasicDetailsLocalClaimsPropsInterface {
+    /**
+     * Triggers submit
+     */
     submitState: boolean;
+    /**
+     * Called to initiate update
+     */
     onSubmit: (data: any, values: Map<string, FormValue>) => void;
+    /**
+     * Form Values to be saved 
+     */
     values: Map<string, FormValue>;
+    /**
+     * The base claim URI string
+     */
     claimURIBase: string;
 }
+
+/**
+ * This component renders the basic details step of the add local claim wizard
+ * @param {BasicDetailsLocalClaimsPropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInterface): React.ReactElement => {
 
     const { submitState, onSubmit, values, claimURIBase } = props;
@@ -62,6 +83,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             placeholder="Enter a name for the claim"
                             value={ values?.get("name")?.toString() }
                         />
+                        <Hint>
+                            Name of the claim displayed on the profile page and the self-registration page
+                        </Hint>
+                        <Divider hidden/>
                         <Field
                             type="textarea"
                             name="description"
@@ -71,6 +96,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             placeholder="Enter a description"
                             value={ values?.get("description")?.toString() }
                         />
+                        <Divider hidden />
                         <Field
                             type="text"
                             name="claimURI"
@@ -84,6 +110,9 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             } }
                         />
                         {claimID ? <Label><em>Claim URI</em>: {claimURIBase + "/" + claimID}</Label> : null}
+                        <Hint>
+                            A unique ID for the claim. The ID will be appended to the dialect URI to create a claim URI
+                        </Hint>
                     </Grid.Column>
                     <Grid.Column>
                         <Field
@@ -95,6 +124,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             placeholder="Regular expression to validate the claim"
                             value={ values?.get("regularExpression")?.toString() }
                         />
+                        <Hint>
+                            Regular Expression used to validate inputs
+                        </Hint>
+                        <Divider hidden />
                         <Field
                             type="number"
                             min="0"
@@ -105,6 +138,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             placeholder="Enter the display order"
                             value={ values?.get("displayOrder")?.toString() ?? "0" }
                         />
+                        <Hint>
+                            Integer value to specify the order in which the claim is displayed among 
+                            other claims under the same dialect
+                        </Hint>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
@@ -122,9 +159,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             value={ values?.get("supportedByDefault") as string[] }
                         />
                         <Hint>
-                            This displays this claim on the Profile page in the User Portal and prompted during
-                            user registration.
+                            Specifies if the claim will be prompted during user registration 
+                            and displayed on the user profile
                         </Hint>
+                        <Divider hidden/>
                         <Field
                             type="checkbox"
                             name="required"
@@ -137,8 +175,9 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             value={ values?.get("required") as string[] }
                         />
                         <Hint>
-                            This makes the claim mandatory to be filled by the user.
+                            Specifies if the claim is required for user registration
                         </Hint>
+                        <Divider hidden />
                         <Field
                             type="checkbox"
                             name="readOnly"
@@ -151,7 +190,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             value={ values?.get("readOnly") as string[] }
                         />
                         <Hint>
-                            This makes the claim read only.
+                            Specifies if the claim is read-only
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

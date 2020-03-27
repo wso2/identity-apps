@@ -33,10 +33,10 @@ export const filterList = <T extends unknown>(
     } else {
         const filterBy = queryElements[0];
         const filterMethod = queryElements[1];
-        const filterString = queryElements[2];
+        const filterString = queryElements[2]?.toLowerCase();
 
         const filteredList: T[] = list.filter((element: T) => {
-            const key: string = element[filterBy];
+            const key: string = element[filterBy]?.toLowerCase();
             if (key) {
                 switch (filterMethod) {
                     case "eq":
