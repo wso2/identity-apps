@@ -34,6 +34,7 @@ interface URLInputComponentInterface {
     setShowError?: any;
     required?: boolean;
     disabled?: boolean;
+    hideComponent?: boolean;
 }
 
 /**
@@ -54,7 +55,8 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
         value,
         hint,
         required,
-        disabled
+        disabled,
+        hideComponent
     } = props;
 
     const [changeUrl, setChangeUrl] = useState("");
@@ -62,6 +64,7 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
     const [validURL, setValidURL] = useState(true);
     const [duplicateURL, setDuplicateURL] = useState(false);
     const [keepFocus, setKeepFocus] = useState(false);
+    const [hideEntireComponent, setHideEntireComponent] = useState(false);
 
     /**
      * Add URL to the URL list.
@@ -166,33 +169,36 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
         setURLState(urlsAfterRemoved);
     };
 
-    useEffect(
-        () => {
-            setURLState(value);
-        }
-        , [value]);
+    useEffect(() => {
+        setURLState(value);
+    }, [value]);
 
-    useEffect(
-        () => {
-            if (showError) {
-                setValidURL(false);
-                setShowError(false);
+    useEffect(() => {
+        if (showError) {
+            setValidURL(false);
+            setShowError(false);
+        }
+    }, [showError]);
+
+    useEffect(() => {
+            if (hideComponent) {
+                setHideEntireComponent(hideComponent);
             }
-        }
-        , [showError]);
+        }, [hideComponent]
+    );
 
-    return (
+    return (!hideEntireComponent &&
         <>
             <Grid.Row columns={ 1 } className={ "urlComponentLabelRow" }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                     {
                         required ? (
                             <div className={ "required field" }>
-                                <label>{labelName}</label>
+                                <label>{ labelName }</label>
                             </div>
                         ) : (
-                                <label>{labelName}</label>
-                            )
+                            <label>{ labelName }</label>
+                        )
                     }
                 </Grid.Column>
             </Grid.Row>
@@ -232,7 +238,7 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                         !validURL &&
                         (
                             <Label basic color="red" pointing>
-                                {validationErrorMsg}
+                                { validationErrorMsg }
                             </Label>
                         )
                     }
@@ -258,20 +264,20 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                                     color="grey"
                                     onClick={ () => onPredictClick(predict) }
                                 >
-                                    {predict}
+                                    { predict }
                                 </Label>
                             );
                         })
                     }
                 </Grid.Column>
             </Grid.Row>
-            {urlState && urlState.split(",").map((url) => {
+            { urlState && urlState.split(",").map((url) => {
                 if (url !== "") {
                     return (
                         <Grid.Row key={ url } className={ "urlComponentTagRow" }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Label>
-                                    {url}
+                                    { url }
                                     <Icon
                                         name="delete"
                                         onClick={ () => removeValue(url) }
@@ -281,12 +287,12 @@ export const URLInputComponent: FunctionComponent<URLInputComponentInterface> = 
                         </Grid.Row>
                     );
                 }
-            })}
-            {hint && (
+            }) }
+            { hint && (
                 <Grid.Row className={ "urlComponentTagRow" }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Hint>
-                            {hint}
+                            { hint }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
