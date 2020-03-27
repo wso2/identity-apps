@@ -28,6 +28,7 @@ import { Divider, Grid } from "semantic-ui-react";
 interface GeneralSettingsWizardFormPropsInterface {
     initialValues: any;
     triggerSubmit: boolean;
+    templateValues: any;
     onSubmit: (values: any) => void;
 }
 
@@ -43,6 +44,7 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
 
     const {
         initialValues,
+        templateValues,
         triggerSubmit,
         onSubmit
     } = props;
@@ -96,7 +98,7 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                             requiredErrorMessage=""
                             placeholder="Enter a description for the application"
                             type="textarea"
-                            value={ initialValues?.description }
+                            value={ initialValues ? initialValues?.description : templateValues?.description }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -114,7 +116,7 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                                     validation.errorMessages.push("The URL you entered is invalid");
                                 }
                             } }
-                            value={ initialValues?.imageUrl  }
+                            value={ initialValues ? initialValues?.imageUrl : templateValues?.imageUrl }
                             type="text"
                         />
                     </Grid.Column>
@@ -141,9 +143,11 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                                     }
                                 ] }
                                 value={
-                                    initialValues?.advancedConfigurations?.discoverableByEndUsers
-                                        ? [ "discoverableByEndUsers" ]
-                                        : []
+                                    initialValues ?
+                                        initialValues?.advancedConfigurations?.discoverableByEndUsers
+                                            ? ["discoverableByEndUsers"] : []
+                                        : templateValues?.advancedConfigurations?.discoverableByEndUsers
+                                        ? ["discoverableByEndUsers"] : []
                                 }
                             />
                             <Hint>
@@ -164,7 +168,7 @@ export const GeneralSettingsWizardForm: FunctionComponent<GeneralSettingsWizardF
                                 } }
                                 placeholder="Enter access url for the application login page"
                                 type="text"
-                                value={ initialValues?.accessUrl }
+                                value={ initialValues ? initialValues?.accessUrl : templateValues?.accessUrl }
                             />
                         </Grid.Column>
                     </Grid.Column>

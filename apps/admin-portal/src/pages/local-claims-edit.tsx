@@ -31,6 +31,11 @@ import { useDispatch } from "react-redux";
 import { addAlert } from "../store/actions";
 import { LOCAL_CLAIMS_PATH } from "../constants";
 
+/**
+ * This renders the edit local claims page
+ * @param props 
+ * @return {React.ReactElement}
+ */
 export const LocalClaimsEditPage = (props): React.ReactElement => {
 
     const claimID = props.match.params.id;
@@ -39,6 +44,9 @@ export const LocalClaimsEditPage = (props): React.ReactElement => {
 
     const dispatch = useDispatch();
 
+    /**
+     * Fetches the local claim
+     */
     const getClaim = () => {
         getAClaim(claimID).then(response => {
             setClaim(response);
@@ -57,6 +65,9 @@ export const LocalClaimsEditPage = (props): React.ReactElement => {
         getClaim();
     }, []);
 
+    /**
+     * Contains the data of the panes
+     */
     const panes = [
         {
             menuItem: "Basic Details",

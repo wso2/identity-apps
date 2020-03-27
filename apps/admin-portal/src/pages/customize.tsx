@@ -18,7 +18,7 @@
 
 import { Button, Card, Divider, Form, Grid, Header, Image, Label } from "semantic-ui-react";
 import { ColorResult, RGBColor, SketchPicker } from "react-color";
-import { defaultThemeVariables, Themes } from "@wso2is/theme";
+import { defaultThemeVariables, Theme, ThemeLessIndex, Themes } from "@wso2is/theme";
 import React, { ChangeEvent, ReactElement, useContext, useState } from "react";
 import { ThemeContext, ThemeTypes } from "@wso2is/react-components";
 
@@ -154,7 +154,7 @@ const ColorPicker: React.FunctionComponent<ColorPickerInterface> = ({
  */
 const CSSForm = (): ReactElement => {
     const [ themeOptions, setThemeOptions ] = useState({});
-    const { compile } = useContext(ThemeContext);
+    const { setCSS } = useContext(ThemeContext);
 
     /**
      * Style Variable Input ReactHook.
@@ -216,10 +216,14 @@ const CSSForm = (): ReactElement => {
     };
     
     const primaryColor = useStyleInput(defaultThemeVariables["primaryColor"], "primaryColor", "color");
+    const textColor = useStyleInput(defaultThemeVariables["textColor"], "textColor", "color");
     const pageBackground = useStyleInput(defaultThemeVariables["pageBackground"], "pageBackground", "color");
 
     const handleCompileTheme = () => {
-        compile(themeOptions);
+        Theme.compile(ThemeLessIndex("default"), { modifyVars: themeOptions })
+            .then((styles) => {
+                setCSS(styles);
+            });
     };
 
     return (
@@ -230,6 +234,16 @@ const CSSForm = (): ReactElement => {
                     <Grid.Row>
                         <Grid.Column>
                             <Form.Input { ...primaryColor } />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Form.Field>
+            <Form.Field>
+                <label>App Text Color</label>
+                <Grid columns={ 12 }>
+                    <Grid.Row>
+                        <Grid.Column>
+                            <Form.Input { ...textColor } />
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

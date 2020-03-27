@@ -21,22 +21,18 @@ import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-    getFederatedAuthenticatorDetails,
-    getFederatedAuthenticatorMeta,
-    updateFederatedAuthenticator
-} from "../../api";
+import { getFederatedAuthenticatorDetails, getFederatedAuthenticatorMeta, updateFederatedAuthenticator } from "../../api";
 import {
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
     FederatedAuthenticatorMetaInterface,
-    SupportedAuthProtocolTypes
+    SupportedAuthenticators
 } from "../../models";
-import { AuthenticatorFormFactory } from "./forms/authenticator-form-factory";
+import { AuthenticatorFormFactory } from "./forms";
 import { Divider } from "semantic-ui-react";
 
 /**
- * Proptypes for the applications settings component.
+ * Proptypes for the identity providers settings component.
  */
 interface IdentityProviderSettingsPropsInterface {
     /**
@@ -78,7 +74,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const dispatch = useDispatch();
 
     const [ authenticatorMeta, setAuthenticatorMeta ] = useState<FederatedAuthenticatorMetaInterface>({
-        name: "",
+        name: SupportedAuthenticators.NONE,
         displayName: "",
         authenticatorId: "",
         properties: []
@@ -181,24 +177,21 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 <div className="inbound-protocols-section">
                     {
                         (
-                        <>
-                            <Heading as="h4">{ authenticatorDetails?.name }</Heading>
-                            {
-                                federatedAuthenticators.defaultAuthenticatorId ?
-                                            <AuthenticatorFormFactory
-                                                metadata={ authenticatorMeta }
-                                                initialValues={ authenticatorDetails
-                                                }
-                                                onSubmit={ handleInboundConfigFormSubmit }
-                                                type={ SupportedAuthProtocolTypes.OIDC }
-                                            />
-
-
-                                    : null
-                            }
-                            <Divider hidden/>
-                        </>
-                    )}
+                            <>
+                                <Heading as="h4">{authenticatorDetails?.name}</Heading>
+                                {
+                                    federatedAuthenticators.defaultAuthenticatorId ?
+                                        <AuthenticatorFormFactory
+                                            metadata={ authenticatorMeta }
+                                            initialValues={ authenticatorDetails }
+                                            onSubmit={ handleInboundConfigFormSubmit }
+                                            type={ authenticatorMeta?.name }
+                                        />
+                                        : null
+                                }
+                                <Divider hidden/>
+                            </>
+                        )}
                 </div>
             )
             : <ContentLoader/>

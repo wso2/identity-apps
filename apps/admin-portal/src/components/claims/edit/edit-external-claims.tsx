@@ -25,13 +25,37 @@ import { Forms, Field, FormValue, useTrigger } from "@wso2is/forms";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
 
+/**
+ * Prop types of `EditExternalClaims` component
+ */
 interface EditExternalClaimsPropsInterface {
+    /**
+     * Opens the modal
+     */
     open: boolean;
+    /**
+     * Called when the modal is closed
+     */
     onClose: () => void;
+    /**
+     * The claim ID to be edited
+     */
     claimID: string;
+    /**
+     * The ID of the dialect the claim belongs to
+     */
     dialectID: string;
+    /**
+     * Called to initiate an update
+     */
     update: () => void;
 }
+
+/**
+ * This component renders the edit external claim modal
+ * @param {EditExternalClaimsPropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const EditExternalClaims = (props: EditExternalClaimsPropsInterface): React.ReactElement => {
 
     const { open, onClose, claimID, update, dialectID } = props;

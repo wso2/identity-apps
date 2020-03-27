@@ -16,18 +16,20 @@
  * under the License.
  */
 
-import React, {FunctionComponent, ReactElement} from "react";
-import { SupportedAuthProtocolTypes } from "../../../models";
-import { OIDCAuthenticatorForm } from "./oidc-authenticator-form";
+import React, { FunctionComponent, ReactElement } from "react";
+import { FederatedAuthenticatorListItemInterface, FederatedAuthenticatorMetaInterface } from "../../../models";
+import { CommonAuthenticatorForm } from "./authenticators";
 
 /**
  * Proptypes for the inbound form factory component.
  */
 interface AuthenticatorFormFactoryInterface {
-    metadata: any;
-    initialValues: any;
-    onSubmit: (values: any) => void;
-    type: SupportedAuthProtocolTypes;
+    metadata?: FederatedAuthenticatorMetaInterface;
+    initialValues: FederatedAuthenticatorListItemInterface;
+    onSubmit: (values: FederatedAuthenticatorListItemInterface) => void;
+    type: string;
+    triggerSubmit?: boolean;
+    enableSubmitButton?: boolean;
 }
 
 /**
@@ -44,13 +46,18 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         metadata,
         initialValues,
         onSubmit,
-        type
+        type,
+        triggerSubmit,
+        enableSubmitButton
     } = props;
 
     switch (type) {
-        case SupportedAuthProtocolTypes.OIDC:
-            return <OIDCAuthenticatorForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit } />;
         default:
-            return null;
+            return <CommonAuthenticatorForm initialValues={ initialValues } metadata={ metadata } onSubmit={ onSubmit }
+                                            triggerSubmit={ triggerSubmit } enableSubmitButton={ enableSubmitButton }/>;
     }
+};
+
+AuthenticatorFormFactory.defaultProps = {
+    enableSubmitButton: true
 };

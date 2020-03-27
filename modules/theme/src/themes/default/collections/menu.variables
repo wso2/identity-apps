@@ -21,6 +21,10 @@
             Menu
 *******************************/
 
+@background: @pageBackground;
+@verticalBackground: @pageBackground;
+@sidePanelDefaultFontColor: @textColor;
+
 /*-------------------
       App Footer
 --------------------*/
