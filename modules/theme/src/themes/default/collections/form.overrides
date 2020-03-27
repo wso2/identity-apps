@@ -11,5 +11,13 @@
         &.hidden {
             display: none;
         }
+
+        &.disabled {
+            opacity: 1;
+
+            >label {
+                opacity: 1;
+            }
+        }
     }
 }
