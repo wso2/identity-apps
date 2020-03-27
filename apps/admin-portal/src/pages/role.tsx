@@ -23,7 +23,7 @@ import React, { ReactElement, useEffect, useState, SyntheticEvent } from "react"
 import { deleteRoleById, getRolesList, searchRoleList, getUserStoreList } from "../api";
 
 import { CreateRoleWizard } from "../components/roles/create-role-wizard";
-import { DEFAULT_ROLE_LIST_ITEM_LIMIT } from "../constants";
+import { DEFAULT_ROLE_LIST_ITEM_LIMIT, APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../constants";
 import { PrimaryButton } from "@wso2is/react-components";
 import { RoleList, RoleSearch } from "../components/roles";
 import { addAlert } from "../store/actions";
@@ -92,6 +92,15 @@ export const RolesPage = (): ReactElement => {
     const getRoles = () => {
         getRolesList(userStore).then((response)=> {
             if (response.status === 200) {
+                const roleResources = response.data.Resources
+
+                if (roleResources && roleResources instanceof Array) {
+                    const updatedResources = roleResources.filter((role: RolesInterface) => {
+                        return role.displayName.includes(APPLICATION_DOMAIN) || 
+                                role.displayName.includes(INTERNAL_DOMAIN);
+                    })
+                    response.data.Resources = updatedResources;
+                }
                 setRoleList(response.data);
             }
         });
@@ -120,7 +129,6 @@ export const RolesPage = (): ReactElement => {
                         storeOptions.push(storeOption);
                     }
                 );
-                console.log(storeOption);
                 setUserStoresList(storeOptions);
             });
 
@@ -214,7 +222,7 @@ export const RolesPage = (): ReactElement => {
     return (
         <PageLayout
             title="Roles"
-            description="Create and manage roles, assign permissions for roles."
+            description="Create and Manage Roles, Assign Permissions for Roles."
             showBottomDivider={ true } 
         >
             <ListLayout
@@ -233,15 +241,6 @@ export const RolesPage = (): ReactElement => {
                         </PrimaryButton>
                     )
                 }
-                leftActionPanel={
-                    <Dropdown
-                        selection
-                        options={ userStoreOptions && userStoreOptions }
-                        placeholder="Select user store"
-                        value={ userStore && userStore }
-                        onChange={ handleDomainChange }
-                    />
-                }
                 showPagination={ true }
                 totalPages={ Math.ceil(roleList?.totalResults / listItemLimit) }
                 totalListSize={ roleList?.totalResults }
@@ -253,6 +252,7 @@ export const RolesPage = (): ReactElement => {
                 {
                     showWizard && (
                         <CreateRoleWizard
+                            isAddGroup={ false }
                             closeWizard={ () => setShowWizard(false) }
                             updateList={ () => setListUpdated(true) }
                         />

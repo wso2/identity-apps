@@ -218,12 +218,12 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
     const handleUserFilter = (query: string): void => {
         const attributes = generateAttributesString(userListMetaContent.values());
         if (query === "userName sw ") {
-            getList(null, null, null, attributes, userStore);
+            getList(listItemLimit, listOffset, null, attributes, userStore);
             return;
         }
 
         setSearchQuery(query);
-        getList(null, null, query, attributes, userStore);
+        getList(listItemLimit, listOffset, query, attributes, userStore);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
@@ -296,9 +296,8 @@ export const UsersPage: React.FunctionComponent<any> = (): ReactElement => {
                             <Dropdown
                                 selection
                                 options={ userStoreOptions && userStoreOptions }
-                                placeholder="Select user store"
-                                value={ userStore && userStore }
                                 onChange={ handleDomainChange }
+                                defaultValue="primary"
                             />
                         </>
                     )

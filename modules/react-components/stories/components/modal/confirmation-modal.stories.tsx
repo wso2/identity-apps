@@ -17,26 +17,27 @@
  *
  */
 
-import { action } from "@storybook/addon-actions";
-import * as React from "react";
 import { ConfirmationModal, Heading } from "../../../src";
+import React, { ReactElement } from "react";
+import { action } from "@storybook/addon-actions";
+import { Button } from "semantic-ui-react";
 import { meta } from "./confirmation-modal.stories.meta";
 import { useState } from "react";
-import { Button } from "semantic-ui-react";
 
 export default {
     parameters: {
         component: ConfirmationModal,
-        componentSubtitle: meta.description,
+        componentSubtitle: meta.description
     },
     title: "Components API/Components/Confirmation Modal"
 };
 
 /**
- * Story to display the default confirmation modal.
+ * Story to display the all the confirmation modal variations.
+ *
  * @return {React.ReactElement}
  */
-export const Default = (): React.ReactElement => {
+export const AllConfirmationModalVariations = (): ReactElement => {
 
     const [ open, setOpen ] = useState<boolean>(false);
     const [ type, setType ] = useState<"positive" | "negative" | "warning" | "info">(undefined);
@@ -90,19 +91,20 @@ export const Default = (): React.ReactElement => {
     )
 };
 
-Default.story = {
+AllConfirmationModalVariations.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 0 ].description,
-        },
+            storyDescription: meta.stories[ 0 ].description
+        }
     }
 };
 
 /**
  * Story to display the text input assertion confirmation modal.
+ *
  * @return {React.ReactElement}
  */
-export const TextInputAssertion = (): React.ReactElement => {
+export const TextInputAssertion = (): ReactElement => {
 
     const [ open, setOpen ] = useState<boolean>(false);
     const [ type, setType ] = useState<"positive" | "negative" | "warning" | "info">(undefined);
@@ -162,16 +164,17 @@ export const TextInputAssertion = (): React.ReactElement => {
 TextInputAssertion.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 1 ].description,
-        },
+            storyDescription: meta.stories[ 1 ].description
+        }
     }
 };
 
 /**
  * Story to display the checkbox assertion confirmation modal.
+ *
  * @return {React.ReactElement}
  */
-export const CheckboxAssertion = (): React.ReactElement => {
+export const CheckboxAssertion = (): ReactElement => {
 
     const [ open, setOpen ] = useState<boolean>(false);
     const [ type, setType ] = useState<"positive" | "negative" | "warning" | "info">(undefined);
@@ -231,16 +234,17 @@ export const CheckboxAssertion = (): React.ReactElement => {
 CheckboxAssertion.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 2 ].description,
-        },
+            storyDescription: meta.stories[ 2 ].description
+        }
     }
 };
 
 /**
  * Story to display the animated confirmation modal.
+ *
  * @return {React.ReactElement}
  */
-export const Animated = (): React.ReactElement => {
+export const Animated = (): ReactElement => {
 
     const [ open, setOpen ] = useState<boolean>(false);
     const [ type, setType ] = useState<"positive" | "negative" | "warning" | "info">(undefined);
@@ -292,7 +296,7 @@ export const Animated = (): React.ReactElement => {
 Animated.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 3 ].description,
-        },
+            storyDescription: meta.stories[ 3 ].description
+        }
     }
 };

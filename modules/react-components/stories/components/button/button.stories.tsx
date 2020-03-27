@@ -16,113 +16,119 @@
  * under the License.
  */
 
-import { withKnobs } from "@storybook/addon-knobs";
-import { UserIcon } from "@wso2is/theme";
-import React from "react";
 import { Button, DangerButton, IconButton, LinkButton, PrimaryButton, SecondaryButton } from "../../../src";
+import React, { ReactElement } from "react";
 import { meta } from "./button.stories.meta";
+import { UserIcon } from "@wso2is/theme";
+import { withKnobs } from "@storybook/addon-knobs";
 
 export default {
     decorators: [ withKnobs ],
     parameters: {
         component: Button,
-        componentSubtitle: meta.description,
+        componentSubtitle: meta.description
     },
     title: "Components API/Components/Button"
 };
 
 /**
  * Story to display the default button.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Default = () => (
+export const DefaultButtonVariation = (): ReactElement => (
     <Button>Default Button</Button>
 );
 
-Default.story = {
+DefaultButtonVariation.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 0 ].description,
-        },
+            storyDescription: meta.stories[ 0 ].description
+        }
     }
 };
 
 /**
  * Story to display the primary button.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Primary = () => (
+export const PrimaryButtonVariation = (): ReactElement => (
     <PrimaryButton>Primary Button</PrimaryButton>
 );
 
-Primary.story = {
+PrimaryButtonVariation.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 1 ].description,
-        },
+            storyDescription: meta.stories[ 1 ].description
+        }
     }
 };
 
 /**
  * Story to display the secondary button.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Secondary = () => (
+export const SecondaryButtonVariation = (): ReactElement => (
     <SecondaryButton>Secondary Button</SecondaryButton>
 );
 
-Secondary.story = {
+SecondaryButtonVariation.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 2 ].description,
-        },
+            storyDescription: meta.stories[ 2 ].description
+        }
     }
 };
 
 /**
  * Story to display the link button.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Link = () => (
+export const LinkButtonVariation = (): ReactElement => (
     <LinkButton>Link Button</LinkButton>
 );
 
-Link.story = {
+LinkButtonVariation.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 3 ].description,
-        },
+            storyDescription: meta.stories[ 3 ].description
+        }
     }
 };
 
 /**
  * Story to display the danger button.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Danger = () => (
+export const DangerButtonVariation = (): ReactElement => (
     <DangerButton>Danger Button</DangerButton>
 );
 
-Danger.story = {
+DangerButtonVariation.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 4 ].description,
-        },
+            storyDescription: meta.stories[ 4 ].description
+        }
     }
 };
 
 /**
  * Story to display the icon button.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Icon = () => (
+export const IconButtonVariation = (): ReactElement => (
     <IconButton customIcon={ UserIcon }>Icon Button</IconButton>
 );
 
-Icon.story = {
+IconButtonVariation.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 5 ].description,
-        },
+            storyDescription: meta.stories[ 5 ].description
+        }
     }
 };

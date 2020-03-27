@@ -20,12 +20,31 @@ import React, { useState, useEffect } from "react";
 import { Grid, Message } from "semantic-ui-react";
 import { getUserStoreList } from "../../../api";
 import { DynamicField, KeyValue } from "..";
+import { Hint } from "@wso2is/react-components";
 
+/**
+ * Prop types of `MappedAttributes` component
+ */
 interface MappedAttributesPropsInterface {
+    /**
+     * Trigger submit
+     */
     submitState: boolean;
+    /**
+     * Handles update
+     */
     onSubmit: (data: any, values: KeyValue[]) => void;
+    /**
+     * The key values to be stored
+     */
     values: KeyValue[];
 }
+
+/**
+ * This component renders the Mapped Attributes step of the wizard
+ * @param {MappedAttributesPropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const MappedAttributes = (props: MappedAttributesPropsInterface): React.ReactElement => {
 
     const { onSubmit, submitState, values } = props;
@@ -51,6 +70,10 @@ export const MappedAttributes = (props: MappedAttributesPropsInterface): React.R
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 16 }>
                     <h5>Map Attributes</h5>
+                    <Hint>
+                        Corresponding attribute name from the underlying user store 
+                        which is mapped to the Claim URI value
+                    </Hint>
                     <DynamicField
                         data={ values }
                         keyType="dropdown"

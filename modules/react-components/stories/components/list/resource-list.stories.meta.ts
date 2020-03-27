@@ -26,12 +26,13 @@ export const meta: StoryMetaInterface = {
     stories: [
         {
             description: "Default list view.",
-            title: "Default",
+            title: "Default"
         }
     ],
-    title: `${ StoryCategories.COMPONENTS }/Resource List`,
+    title: `${ StoryCategories.COMPONENTS }/Resource List`
 };
 
+/* eslint-disable sort-keys */
 export const APPLICATIONS_LIST = [
     {
         "name": "Facebook",
@@ -101,3 +102,4 @@ export const APPLICATIONS_LIST = [
         "accessUrl": "https://www.google.com/drive/"
     }
 ];
+/* eslint-enable sort-keys */

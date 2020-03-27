@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import classNames from "classnames";
 import React, { FunctionComponent } from "react";
 import { Tab, TabProps } from "semantic-ui-react";
+import classNames from "classnames";
 import { ResourceTabPane } from "./resource-tab-pane";
 
 /**
  * Interface for the resource tab sub components.
  */
-interface ResourceTabSubComponentsInterface {
+export interface ResourceTabSubComponentsInterface {
     Pane: typeof ResourceTabPane;
 }
 
@@ -32,6 +32,7 @@ interface ResourceTabSubComponentsInterface {
  * Resource tab component.
  *
  * @param {TabProps} props - Props injected to the component.
+ *
  * @return {JSX.Element}
  */
 export const ResourceTab: FunctionComponent<TabProps> & ResourceTabSubComponentsInterface = (
@@ -52,7 +53,7 @@ export const ResourceTab: FunctionComponent<TabProps> & ResourceTabSubComponents
     return (
         <Tab
             className={ classes }
-            menu={ { secondary: true, pointing: true } }
+            menu={ { pointing: true, secondary: true } }
             panes={ panes }
             { ...rest }
         />

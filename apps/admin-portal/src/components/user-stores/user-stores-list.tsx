@@ -16,48 +16,154 @@
 * under the License.
 */
 
-import React from "react";
-import { ResourceList } from "@wso2is/react-components";
-import { UserStoreListItem } from "../../models";
+import React, { useContext, useState } from "react";
+import { ResourceList, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { UserStoreListItem, AlertLevels, AppConfigInterface } from "../../models";
+import { Modal } from "semantic-ui-react";
+import { deleteUserStore } from "../../api";
+import { useDispatch } from "react-redux";
+import { addAlert } from "../../store/actions";
+import { AppConfig, history } from "../../helpers";
 
+/**
+ * Prop types of the `UserStoresList` component
+ */
 interface UserStoresListPropsInterface {
+    /**
+     * The user store list
+     */
     list: UserStoreListItem[];
-    openEdit: (id: string) => void;
+    /**
+     * Initiate an update
+     */
     update: () => void;
 }
+
+/**
+ * This component renders the User Store List
+ * @param {UserStoresListPropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const UserStoresList = (props: UserStoresListPropsInterface): React.ReactElement => {
 
-    const { list, openEdit, update } = props;
+    const { list, update } = props;
+
+    const [deleteConfirm, setDeleteConfirm] = useState(false);
+    const [deleteID, setDeleteID] = useState<string>(null);
+
+    const dispatch = useDispatch();
+
+    const appConfig: AppConfigInterface = useContext(AppConfig);
+
+    /**
+     * Delete a user store
+     * @param {string} id user store id
+     */
+    const initDelete = (id: string) => {
+        setDeleteID(id);
+        setDeleteConfirm(true);
+    };
+
+    /**
+     * Closes the delete confirmation modal
+     */
+    const closeDeleteConfirm = () => {
+        setDeleteConfirm(false);
+        setDeleteID(null);
+    };
+
+    /**
+     * Shows the delete confirmation modal
+     * @return {React.ReactElement}
+     */
+    const showDeleteConfirm = (): React.ReactElement => {
+        return (
+            <Modal
+                open={ deleteConfirm }
+                onClose={ closeDeleteConfirm }
+                size="mini"
+                dimmer="blurring"
+            >
+                <Modal.Header>
+                    Confirm Delete
+                </Modal.Header>
+                <Modal.Content>
+                    This will completely remove the user store and the data in it.
+                    Do you want to continue deleting it?
+                </Modal.Content>
+                <Modal.Actions>
+                    <LinkButton onClick={ closeDeleteConfirm }>
+                        Cancel
+                    </LinkButton>
+                    <PrimaryButton onClick={ () => {
+
+                        deleteUserStore(deleteID)
+                            .then(() => {
+                                dispatch(addAlert({
+                                    message: "User Store deleted successfully!",
+                                    description: "The user store has been deleted successfully!",
+                                    level: AlertLevels.SUCCESS
+                                }));
+                                dispatch(addAlert({
+                                    message: "Updating User Store list takes time",
+                                    description: "It may take a while for the user store list to be updated. " +
+                                        "Refresh in a few seconds to get the updated user store list.",
+                                    level: AlertLevels.WARNING
+                                }));
+                                update();
+                                closeDeleteConfirm();
+                            })
+                            .catch(error => {
+                                dispatch(addAlert({
+                                    message: error?.message ?? "Something went wrong!",
+                                    description: error?.description ?? "There was an error while deleting the user store",
+                                    level: AlertLevels.ERROR
+                                }));
+                                closeDeleteConfirm();
+                            });
+
+                    } }>
+                        Delete
+                    </PrimaryButton>
+                </Modal.Actions>
+            </Modal>
+        )
+    };
+
     return (
-        <ResourceList>
-            {
-                list?.map((userStore: UserStoreListItem, index: number) => {
-                    return (
-                        <ResourceList.Item
-                            key={ index }
-                            actions={ [
-                                {
-                                    icon: "pencil alternate",
-                                    onClick: () => {
-                                        openEdit(userStore.id);
+        <>
+            {showDeleteConfirm()}
+            <ResourceList>
+                {
+                    appConfig?.userStores?.permissions?.read
+                    && list?.map((userStore: UserStoreListItem, index: number) => {
+                        return (
+                            <ResourceList.Item
+                                key={ index }
+                                actions={ [
+                                    appConfig?.userStores?.permissions?.update && {
+                                        icon: "pencil alternate",
+                                        onClick: () => {
+                                            history.push("/edit-user-store/"+userStore?.id);
+                                        },
+                                        popupText: "Edit",
+                                        type: "button"
                                     },
-                                    popupText: "Edit",
-                                    type: "button"
-                                },
-                                {
-                                    icon: "trash alternate",
-                                    onClick: () => {update()},
-                                    popupText: "Delete",
-                                    type: "dropdown"
-                                }
-                            ] }
-                            actionsFloated="right"
-                            itemHeader={ userStore.name }
-                            metaContent={ userStore.description }
-                        />
-                    )
-                })
-            }
-        </ResourceList>
+                                    appConfig?.userStores?.permissions?.delete && {
+                                        icon: "trash alternate",
+                                        onClick: () => { initDelete(userStore?.id) },
+                                        popupText: "Delete",
+                                        type: "dropdown"
+                                    }
+                                ] }
+                                actionsFloated="right"
+                                itemHeader={ userStore.name }
+                                metaContent={ userStore.description }
+                            />
+                        )
+                    })
+                }
+            </ResourceList>
+        </>
     )
-}
+};

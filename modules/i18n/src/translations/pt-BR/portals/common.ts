@@ -42,6 +42,7 @@ export const common: CommonNS = {
     delete: "Excluir",
     description: "Descrição",
     deviceModel: "Modelo do dispositivo",
+    done: "Feito",
     edit: "Editar",
     endsWith: "Termina com",
     equals: "É igual a",
@@ -49,6 +50,7 @@ export const common: CommonNS = {
     goBackHome: "Volto para casa",
     help: "Socorro",
     hidePassword: "Esconder a senha",
+    identityProviders: "Fornecedor de identidade",
     initiator: "Iniciador",
     ipAddress: "endereço de IP",
     lastAccessed: "Último acesso",
@@ -56,6 +58,7 @@ export const common: CommonNS = {
     loginTime: "Hora de início de sessão",
     logout: "Sair",
     more: "Mais",
+    myAccount: "Minha conta",
     name: "Nome",
     operatingSystem: "Sistema operacional",
     operations: "Operações",
@@ -89,5 +92,6 @@ export const common: CommonNS = {
     terminateSession: "Encerrar sessão",
     type: "Tipo",
     update: "Atualizar",
-    user: "Do utilizador"
+    user: "Do utilizador",
+    verify: "Verificar"
 };

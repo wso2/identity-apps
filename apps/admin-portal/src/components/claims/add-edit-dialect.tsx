@@ -23,15 +23,39 @@ import { LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { getADialect, updateADialect, addDialect } from "../../api";
 import { ClaimDialect, AlertLevels } from "../../models";
 import { useDispatch } from "react-redux";
-import { addAlert } from "../../store/actions";
+import { addAlert } from "@wso2is/core/store";
 
+/**
+ * Prop types of `AddEditDialect` component
+ */
 interface AddEditDialectPropsInterface {
+    /**
+     * Open Modal
+     */
     open: boolean;
+    /**
+     * Called when the modal is closed
+     */
     onClose: () => void;
+    /**
+     * Called to initiate an update
+     */
     update: () => void;
+    /**
+     * Set if this is edit or add
+     */
     edit: boolean;
+    /**
+     * The dialect ID to be edited
+     */
     dialectID?: string;
 }
+
+/**
+ * This component renders the add/edit dialect modal
+ * @param {AddEditDialectPropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const AddEditDialect = (props: AddEditDialectPropsInterface): React.ReactElement => {
 
     const [dialect, setDialect] = useState<ClaimDialect>(null);

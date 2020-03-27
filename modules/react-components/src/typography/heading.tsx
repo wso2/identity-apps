@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import classNames from "classnames";
-import React from "react";
 import { Header, HeaderProps } from "semantic-ui-react";
+import React, { ReactElement } from "react";
+import classNames from "classnames";
 
 /**
  * Heading component prop types.
  */
-interface HeadingPropsInterface extends HeaderProps {
+export interface HeadingPropsInterface extends HeaderProps {
     /**
      * Determines if the hint is in the disabled state.
      */
@@ -50,11 +50,12 @@ interface HeadingPropsInterface extends HeaderProps {
  * Heading component.
  *
  * @param {HeadingPropsInterface} props - Props injected to the component.
- * @return {JSX.Element}
+ *
+ * @return {React.ReactElement}
  */
 export const Heading: React.FunctionComponent<HeadingPropsInterface> = (
     props: HeadingPropsInterface
-): JSX.Element => {
+): ReactElement => {
 
     const {
         bold,
@@ -70,10 +71,10 @@ export const Heading: React.FunctionComponent<HeadingPropsInterface> = (
         "heading",
         {
             bold,
-            ellipsis,
+            compact,
             disabled,
-            [ "subheading" ]: subHeading,
-            compact
+            ellipsis,
+            [ "subheading" ]: subHeading
         }
         , className
     );

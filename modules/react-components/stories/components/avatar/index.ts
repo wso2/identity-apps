@@ -17,4 +17,5 @@
  *
  */
 
+export * from "./app-avatar.stories";
 export * from "./user-avatar.stories";

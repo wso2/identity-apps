@@ -17,25 +17,26 @@
  *
  */
 
-import { action } from "@storybook/addon-actions";
-import { text } from "@storybook/addon-knobs";
-import React from "react";
 import { DangerZone, DangerZoneGroup } from "../../../src";
+import React, { ReactElement } from "react";
+import { action } from "@storybook/addon-actions";
 import { meta } from "./danger-zone.stories.meta";
+import { text } from "@storybook/addon-knobs";
 
 export default {
     parameters: {
         component: DangerZone,
-        componentSubtitle: meta.description,
+        componentSubtitle: meta.description
     },
     title: "Components API/Components/Danger Zone"
 };
 
 /**
  * Story to display a danger zone action.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Default = () => (
+export const DefaultDangerZone = (): ReactElement => (
     <DangerZoneGroup sectionHeader="Danger Zone">
         <DangerZone
             actionTitle="Revoke"
@@ -46,19 +47,20 @@ export const Default = () => (
     </DangerZoneGroup>
 );
 
-Default.story = {
+DefaultDangerZone.story = {
     parameters: {
         docs: {
-            storyDescription: meta.description,
-        },
+            storyDescription: meta.stories[ 0 ].description
+        }
     }
 };
 
 /**
  * Story to display a single danger zone action.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Single = () => (
+export const SingleDangerZone = (): ReactElement => (
     <DangerZoneGroup sectionHeader="Danger Zone">
         <DangerZone
             actionTitle="Revoke"
@@ -69,19 +71,20 @@ export const Single = () => (
     </DangerZoneGroup>
 );
 
-Single.story = {
+SingleDangerZone.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 0 ].description,
-        },
+            storyDescription: meta.stories[ 1 ].description
+        }
     }
 };
 
 /**
  * Story to display group of danger zone actions.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Group = () => (
+export const GroupOfDangerZones = (): ReactElement => (
     <DangerZoneGroup sectionHeader="Danger Zone">
         <DangerZone
             actionTitle="Revoke"
@@ -98,19 +101,20 @@ export const Group = () => (
     </DangerZoneGroup>
 );
 
-Group.story = {
+GroupOfDangerZones.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 1 ].description,
-        },
+            storyDescription: meta.stories[ 2 ].description
+        }
     }
 };
 
 /**
  * Story to enable user to dynamically interact with the component.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Playground = () => (
+export const DangerZonePlayground = (): ReactElement => (
     <DangerZoneGroup sectionHeader={ text("Section heading", "Danger Zone") }>
         <DangerZone
             actionTitle={ text("Action title", "Revoke") }
@@ -121,10 +125,10 @@ export const Playground = () => (
     </DangerZoneGroup>
 );
 
-Playground.story = {
+DangerZonePlayground.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 2 ].description,
-        },
+            storyDescription: meta.stories[ 3 ].description
+        }
     }
 };
