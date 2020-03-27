@@ -18,14 +18,14 @@
 
 import { Field, Forms, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Button, Divider, Grid } from "semantic-ui-react";
+import { Button, Divider, Form, Grid } from "semantic-ui-react";
 import {
     LogoutMethods,
     MetadataPropertyInterface,
     SAML2ServiceProviderInterface,
     SAMLMetaDataInterface
 } from "../../../models";
-import { Heading, Hint } from "@wso2is/react-components";
+import { CopyInputField, Heading, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { URLInputComponent } from "../components";
 import { isEmpty } from "lodash";
@@ -180,16 +180,24 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                     <Grid>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    name="issuer"
-                                    label="Issuer"
-                                    required={ true }
-                                    requiredErrorMessage="Please provide the issuer"
-                                    type="text"
-                                    placeholder={ "Enter the issuer name" }
-                                    value={ initialValues?.issuer }
-                                    readOnly={ !isEmpty(initialValues?.issuer) }
-                                />
+                                {
+                                    initialValues?.issuer ?
+                                        <Form.Field>
+                                            <div className={ "required field" }>
+                                                <label>Issuer</label>
+                                            </div>
+                                            <CopyInputField value={ initialValues?.issuer }/>
+                                        </Form.Field> :
+                                        <Field
+                                            name="issuer"
+                                            label="Issuer"
+                                            required={ true }
+                                            requiredErrorMessage="Please provide the issuer"
+                                            type="text"
+                                            placeholder={ "Enter the issuer name" }
+                                            value={ initialValues?.issuer }
+                                        />
+                                }
                                 <Hint>
                                     This specifies the issuer. This is the &quot;saml:Issuer&quot; element that contains
                                     the unique identifier of the Application. This is also the issuer value

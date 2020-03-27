@@ -35,6 +35,34 @@ import {
 const httpClient = AxiosHttpClient.getInstance();
 
 /**
+ * Creates Identity Provider.
+ *
+ * @param identityProvider Identity provider settings data.
+ */
+export const createIdentityProvider = (identityProvider: object): Promise<any> => {
+    const requestConfig = {
+        data: identityProvider,
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: ServiceResourcesEndpoint.identityProviders
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if ((response.status !== 201)) {
+                return Promise.reject(new Error("Failed to create the application."));
+            }
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
  * Gets the IdP list with limit and offset.
  *
  * @param {number} limit - Maximum Limit of the IdP List.
@@ -257,6 +285,66 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get federated authenticator meta details for: " + id));
             }
+            return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Get federated authenticator details.
+ *
+ * @return {Promise<any>} A promise containing the response.
+ */
+export const getFederatedAuthenticatorsList = (): Promise<any> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: ServiceResourcesEndpoint.identityProviders + "/meta/federated-authenticators"
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to get federated authenticators list"));
+            }
+            return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Get federated authenticator metadata.
+ *
+ * @param idpId ID of the Identity Provider.
+ * @param authenticatorId ID of the Federated Authenticator.
+ * @return {Promise<any>} A promise containing the response.
+ */
+export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Promise<any> => {
+
+    const requestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: ServiceResourcesEndpoint.identityProviders + "/meta/federated-authenticators/" + authenticatorId
+    };
+
+    return httpClient.request(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to get federated authenticator metadata for: "
+                    + authenticatorId));
+            }
+
             return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
         }).catch((error) => {
             return Promise.reject(error);

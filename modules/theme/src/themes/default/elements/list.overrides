@@ -291,3 +291,86 @@
 
     }
 }
+
+/*******************************
+        Dynamic Fields
+*******************************/
+
+.ui.list {
+    &.dynamic-field {
+        display: flex;
+        justify-content: flex-start;
+
+        input {
+            border: none !important;
+        }
+
+        .item {
+            flex-shrink: 1;
+            flex-grow: 1;
+            display: flex;
+            border: @menuBorder;
+            padding: 0;
+            width: calc( (100% - @dynamicFieldButtons) / 2 );
+            .label {
+                border-radius: unset;
+            }
+
+            .field {
+                width: 100%;
+
+                .error.field {
+                    position: relative;
+
+                    .ui.pointing.above.prompt.label {
+                        position: absolute;
+                        top: 36px;
+                        left: 0;
+                        z-index: 99;
+                    }
+                }
+            }
+
+            .ui.selection {
+                border: none;
+
+                .item {
+                    width: 100%;
+                }
+            }
+        }
+
+        .item:nth-child(1) {
+            border-top-left-radius: @menuBorderRadius;
+            border-bottom-left-radius: @menuBorderRadius;
+       
+        }
+
+        .item:nth-child(2) {
+            border-left: none;
+            border-right: none;
+        }
+
+        .item:nth-child(3) {
+            justify-content: stretch;
+            overflow: hidden;
+            width: @dynamicFieldButtons;
+            flex-shrink: 0;
+            flex-grow: 0;
+            border: none;
+            
+            button {
+                border-radius: unset;
+                margin: 0;
+                border-left: none;
+                border-right: none;
+            }
+
+            button:last-child {
+                border-left: none;
+                border-top-right-radius: @menuBorderRadius;
+                border-bottom-right-radius: @menuBorderRadius;
+            }
+        }
+    }
+}

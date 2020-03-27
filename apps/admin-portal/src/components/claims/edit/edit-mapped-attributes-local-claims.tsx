@@ -16,20 +16,37 @@
 * under the License.
 */
 
-import React, { useState, useEffect } from "react";
-import { Claim, AlertLevels } from "../../../models";
+import React, { useEffect, useState } from "react";
+import { AlertLevels, Claim } from "../../../models";
 import { Grid, Message } from "semantic-ui-react";
 import { useTrigger } from "@wso2is/forms";
 import { getUserStoreList, updateAClaim } from "../../../api";
 import { useDispatch } from "react-redux";
-import { addAlert } from "../../../store/actions";
+import { addAlert } from "@wso2is/core/store";
 import { DynamicField, KeyValue } from "../dynamic-fields";
-import { PrimaryButton } from "@wso2is/react-components";
+import { Hint, PrimaryButton } from "@wso2is/react-components";
 
+/**
+ * Prop types of `EditMappedAttributesLocalClaims` component
+ */
 interface EditMappedAttributesLocalClaimsPropsInterface {
+    /**
+     * Claim to be edited
+     */
     claim: Claim;
+    /**
+     * Called to initiate an update
+     */
     update: () => void;
 }
+
+/**
+ * This component renders the Mapped Attribute pane of 
+ * the edit local claim screen
+ * 
+ * @param {EditMappedAttributesLocalClaimsPropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const EditMappedAttributesLocalClaims = (
     props: EditMappedAttributesLocalClaimsPropsInterface
 ): React.ReactElement => {
@@ -60,7 +77,11 @@ export const EditMappedAttributesLocalClaims = (
     return (
         <Grid>
             <Grid.Row columns={ 1 }>
-                <Grid.Column tablet={ 16 } computer={ 6 } mobile={ 16 }>
+                <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
+                    <Hint>
+                        Corresponding attribute name from the underlying user store
+                        which is mapped to the Claim URI value
+                    </Hint>
                     <DynamicField
                         data={
                             claim.attributeMapping.map(attribute => {
@@ -101,7 +122,7 @@ export const EditMappedAttributesLocalClaims = (
                                             mappedAttribute: mapping.value,
                                             userstore: mapping.key
                                         }
-                                    }),
+                                    })
                                 }
                                 updateAClaim(claim.id, submitData).then(() => {
                                     dispatch(addAlert(

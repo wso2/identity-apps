@@ -3,7 +3,7 @@
 *******************************/
 
 /*-------------------------------
-       Hidden Field
+      Hidden/Disable Field
 --------------------------------*/
 
 .ui.form {
@@ -11,5 +11,14 @@
         &.hidden {
             display: none;
         }
+
+        &.disabled {
+            opacity: 1;
+
+            >label {
+                opacity: 1;
+            }
+        }
     }
 }
+
