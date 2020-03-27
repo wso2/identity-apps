@@ -33,7 +33,9 @@ const httpClient = AxiosHttpClient.getInstance();
 
 /**
  * Fetches all user stores
+ * 
  * @param {QueryParams} params sort, filter, limit, attributes, offset
+ * 
  * @return {Promise<any>} response
  */
 export const getUserStores = (params: QueryParams): Promise<any> => {
@@ -64,6 +66,7 @@ export const getUserStores = (params: QueryParams): Promise<any> => {
 
 /**
  * Fetch types of user stores
+ * 
  * @return {Promise<any>} response
  */
 export const getTypes = (): Promise<any> => {
@@ -124,7 +127,9 @@ export const getAType = (id: string, params: QueryParams): Promise<any> => {
 
 /**
  * Gets a user store by its id
+ * 
  * @param {string} id User Store ID
+ * 
  * @return {Promise<any>} response
  */
 export const getAUserStore = (id: string): Promise<any> => {
@@ -153,6 +158,7 @@ export const getAUserStore = (id: string): Promise<any> => {
 
 /**
  * Deletes a User Store
+ * 
  * @param {string} id User Store ID
  * 
  * @return {Promise<any>} Response 
@@ -182,6 +188,7 @@ export const deleteUserStore = (id: string): Promise<any> => {
 
 /**
  * Patches a user store
+ * 
  * @param {string} id User Store ID
  * @param {string} path The path to patch
  * @param {string} value The data to be patched with
@@ -214,7 +221,9 @@ export const patchUserStore = (id: string, data: PatchData[]): Promise<any> => {
 
 /**
  * Adds a user store
+ * 
  * @param {UserStorePostData} data User Store Data
+ * 
  * @return {Promise<any>} Response
  */
 export const addUserStore = (data: UserStorePostData): Promise<any> => {
@@ -243,8 +252,11 @@ export const addUserStore = (data: UserStorePostData): Promise<any> => {
 
 /**
  * Updates a User Store
+ * 
  * @param {string} id User Store ID
  * @param {UserStorePostData} data Update Data
+ * 
+ * @return {Promise<any>} response
  */
 export const updateUserStore = (id: string,data: UserStorePostData): Promise<any> => {
     const requestConfig = {
@@ -272,7 +284,9 @@ export const updateUserStore = (id: string,data: UserStorePostData): Promise<any
 
 /**
  * Tests a JDBC connection
+ * 
  * @param {TestConnection} data Test Connection Data
+ * 
  * @return {Promise<any>} Response 
  */
 export const testConnection = (data: TestConnection): Promise<any> => {
