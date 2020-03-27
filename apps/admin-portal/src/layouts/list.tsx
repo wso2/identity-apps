@@ -21,14 +21,14 @@ import { Pagination } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useState } from "react";
 import {
+    Button,
     Divider,
-    DropdownItemProps,
-    DropdownProps, Grid,
-    PaginationProps,
-    Dropdown,
-    Popup,
+    Dropdown, DropdownItemProps,
+    DropdownProps,
+    Grid,
     Icon,
-    Button
+    PaginationProps,
+    Popup
 } from "semantic-ui-react";
 
 /**
@@ -140,13 +140,13 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                             }
                                         </div>
                                         <div className="left aligned-actions">
-                                            {leftActionPanel}
+                                            { leftActionPanel }
                                         </div>
                                     </Grid.Column>
                                     <Grid.Column width={ 8 }>
                                         <div className="actions right-aligned">
-                                            {advancedSearch}
-                                            {rightActionPanel}
+                                            { advancedSearch }
+                                            { rightActionPanel }
                                         </div>
                                     </Grid.Column>
                                 </Grid.Row>
@@ -157,7 +157,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                 )
             }
             <div className="list-container">
-                {children}
+                { children }
                 {
                     (showPagination && totalListSize)
                         ? (

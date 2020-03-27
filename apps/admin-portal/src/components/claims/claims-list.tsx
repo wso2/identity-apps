@@ -16,14 +16,14 @@
 * under the License.
 */
 
-import React, { useState, useRef } from "react";
-import { ResourceList, LinkButton, PrimaryButton } from "@wso2is/react-components"
-import { Claim, ExternalClaim, ClaimDialect, AlertLevels } from "../../models";
+import React, { useRef, useState } from "react";
+import { LinkButton, PrimaryButton, ResourceList } from "@wso2is/react-components"
+import { AlertLevels, Claim, ClaimDialect, ExternalClaim } from "../../models";
 import { List, Modal } from "semantic-ui-react";
 import { history } from "../../helpers";
-import { deleteAClaim, deleteAnExternalClaim, deleteADialect } from "../../api";
+import { deleteAClaim, deleteADialect, deleteAnExternalClaim } from "../../api";
 import { useDispatch } from "react-redux";
-import { addAlert } from "../../store/actions";
+import { addAlert } from "@wso2is/core/store";
 import { CopyInputField } from "@wso2is/react-components";
 import { EDIT_LOCAL_CLAIMS_PATH, EXTERNAL_CLAIMS_PATH } from "../../constants";
 import { ClaimsAvatarBackground } from ".";

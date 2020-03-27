@@ -17,12 +17,12 @@
 */
 
 import React from "react";
-import { Claim, AlertLevels } from "../../../models";
-import { Forms, Field } from "@wso2is/forms";
-import { Grid, Form, Divider } from "semantic-ui-react";
+import { AlertLevels, Claim } from "../../../models";
+import { Field, Forms } from "@wso2is/forms";
+import { Divider, Form, Grid } from "semantic-ui-react";
 import { updateAClaim } from "../../../api";
 import { useDispatch } from "react-redux";
-import { addAlert } from "../../../store/actions";
+import { addAlert } from "@wso2is/core/store";
 import { CopyInputField, Hint } from "@wso2is/react-components";
 
 /**
@@ -115,7 +115,7 @@ export const EditBasicDetailsLocalClaims = (
                             />
                             <Hint>
                                 Name of the claim displayed on the profile page and the self-registration page
-                        </Hint>
+                            </Hint>
                             <Divider hidden />
                             <Field
                                 type="textarea"
@@ -135,9 +135,7 @@ export const EditBasicDetailsLocalClaims = (
                                 placeholder="Regular expression to validate the claim"
                                 value={ claim?.regEx }
                             />
-                            <Hint>
-                                Regular Expression used to validate inputs
-                        </Hint>
+                            <Hint>Regular Expression used to validate inputs</Hint>
                             <Divider hidden />
                             <Field
                                 type="number"
@@ -150,7 +148,8 @@ export const EditBasicDetailsLocalClaims = (
                                 value={ claim?.displayOrder.toString() }
                             />
                             <Hint>
-                                Integer value to specify the order in which the claim is displayed among other claims under the same dialect
+                                Integer value to specify the order in which the claim is displayed among 
+                                other claims under the same dialect
                             </Hint>
                             <Divider hidden={ true } />
                             <Field

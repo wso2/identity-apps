@@ -19,12 +19,12 @@
 import React from "react";
 import { Grid } from "semantic-ui-react";
 import { useTrigger } from "@wso2is/forms";
-import { Claim, AlertLevels } from "../../../models";
+import { AlertLevels, Claim } from "../../../models";
 import { updateAClaim } from "../../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "../../../store/actions";
 import { DynamicField } from "../dynamic-fields";
-import { PrimaryButton, Hint } from "@wso2is/react-components";
+import { Hint, PrimaryButton } from "@wso2is/react-components";
 
 /**
  * Prop types for `EditAdditionalPropertiesLocalClaims` component
@@ -59,9 +59,7 @@ export const EditAdditionalPropertiesLocalClaims = (
         <Grid>
             <Grid.Row columns={ 1 }>
                 <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
-                    <Hint>
-                        Used when writing an extension using current claims
-                    </Hint>
+                    <Hint>Used when writing an extension using current claims</Hint>
                     <DynamicField
                         data={ claim.properties }
                         keyType="text"
@@ -83,7 +81,8 @@ export const EditAdditionalPropertiesLocalClaims = (
                             updateAClaim(claim.id, submitData).then(() => {
                                 dispatch(addAlert(
                                     {
-                                        description: "Additional Properties of this local claim have been updated successfully!",
+                                        description: "Additional Properties of this local claim have been " +
+                                            "updated successfully!",
                                         level: AlertLevels.SUCCESS,
                                         message: "Additional Properties updated successfully"
                                     }

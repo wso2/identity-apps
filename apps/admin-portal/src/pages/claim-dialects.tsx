@@ -20,14 +20,14 @@ import React, { useEffect, useState } from "react";
 import { PageLayout } from "../layouts";
 import { ListLayout } from "../layouts";
 import { PrimaryButton } from "@wso2is/react-components";
-import { Icon, DropdownProps, PaginationProps, Segment, Divider, List, Image, Grid, Popup } from "semantic-ui-react";
-import { ClaimsList, ListType, ClaimsAvatarBackground } from "../components";
-import { ClaimDialect, AlertLevels } from "../models";
+import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
+import { ClaimsAvatarBackground, ClaimsList, ListType } from "../components";
+import { AlertLevels, ClaimDialect } from "../models";
 import { getDialects } from "../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT, LOCAL_CLAIMS_PATH } from "../constants";
 import { AddEditDialect, DialectSearch } from "../components";
 import { useDispatch } from "react-redux";
-import { addAlert } from "../store/actions";
+import { addAlert } from "@wso2is/core/store";
 import { filterList, sortList } from "../utils";
 import { history } from "../helpers";
 
@@ -67,7 +67,7 @@ export const ClaimDialectsPage = (): React.ReactElement => {
      * @param {string} sort 
      * @param {string} filter 
      */
-    const getDialect = (limit?: number, offset?: number, sort?: string, filter?: string, ) => {
+    const getDialect = (limit?: number, offset?: number, sort?: string, filter?: string ) => {
         getDialects({
             limit, offset, sort, filter
         }).then((response: ClaimDialect[]) => {
