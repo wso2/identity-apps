@@ -44,3 +44,4 @@ export * from "./tab";
 export * from "./typography";
 export * from "./theme";
 export * from "./tree-view";
+export * from "./transfer";

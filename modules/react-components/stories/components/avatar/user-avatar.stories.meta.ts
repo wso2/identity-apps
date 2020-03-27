@@ -25,38 +25,42 @@ export const meta: StoryMetaInterface = {
     description: "Avatar component to display user avatars.",
     stories: [
         {
+            description: "Displays all the user avatar variations.",
+            title: "All variations"
+        },
+        {
             description: "Default user Avatar.",
-            title: "Default",
+            title: "Default"
         },
         {
             description: "Avatar with user's initials.",
-            title: "Initials",
+            title: "With Initials"
         },
         {
             description: "Avatar from image.",
-            title: "Profile Image",
+            title: "With Image"
         },
         {
             description: "Avatar from gravatar URL.",
-            title: "Gravatar",
+            title: "Gravatar"
         },
         {
             description: "Avatar to display loading status.",
-            title: "Placeholder",
+            title: "Placeholder"
         },
         {
             description: "Editable user avatar.",
-            title: "Editable",
+            title: "Editable"
         },
         {
             description: "Different user avatar sizes. `mini`, `little`, `tiny` and `small` are displayed here." +
                 "All the other `Semantic UI` sizes are also supported.",
-            title: "Sizes",
+            title: "Different sizes"
         },
         {
             description: "Play around with different props to dynamically interact with the user avatar component.",
             title: "Playground"
         }
     ],
-    title: `${ StoryCategories.COMPONENTS }/User Avatar`,
+    title: `${ StoryCategories.COMPONENTS }/User Avatar`
 };

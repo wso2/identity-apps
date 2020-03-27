@@ -19,6 +19,7 @@
 
 const less = require("less");
 const path = require("path");
+const RewriteVariablePlugin = require("less-plugin-rewrite-variable");
 
 export const Theme = {
     compile: (file, options) => {
@@ -33,10 +34,11 @@ export const Theme = {
                     compress: false,
                     env: "production",
                     filename: path.resolve(file),
+                    plugins: [ new RewriteVariablePlugin(options.modifyVars) ],
                     sourceMap: false
                 };
 
-                less.render(src, Object.assign(defaultOptions, options))
+                less.render(src, defaultOptions)
                     .then((data) => {
                         return resolve(data);
                     }, (error) => {
@@ -48,13 +50,14 @@ export const Theme = {
                     compress: true,
                     env: "development",
                     filename: path.resolve(file),
+                    plugins: [ new RewriteVariablePlugin(options.modifyVars) ],
                     sourceMap: false
                 };
 
                 fetch(file)
                     .then((resp) => resp.text())
                     .then((src) => {
-                        less.render(src, Object.assign(defaultOptions, options))
+                        less.render(src, defaultOptions)
                             .then((data) => {
                                 return resolve(data.css);
                             }, (error) => {

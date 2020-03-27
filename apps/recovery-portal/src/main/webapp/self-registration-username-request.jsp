@@ -33,7 +33,7 @@
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
     boolean skipSignUpEnableCheck = Boolean.parseBoolean(request.getParameter("skipsignupenablecheck"));
     String username = request.getParameter("username");
-    String tenantDomain = request.getParameter("TenantDomain");
+    String tenantDomain = request.getParameter("tenantDomain");
     User user = IdentityManagementServiceUtil.getInstance().getUser(username);
     Object errorCodeObj = request.getAttribute("errorCode");
     Object errorMsgObj = request.getAttribute("errorMsg");
@@ -192,38 +192,48 @@
                         console.warn("Prevented a possible double submit event");
                     } else {
                         e.preventDefault();
-
-                        var isSaaSApp = JSON.parse("<%= isSaaSApp %>");
-                        var tenantDomain = "<%= tenantDomain %>";
+                        
                         var isEmailUsernameEnabled = JSON.parse("<%= isEmailUsernameEnabled %>");
+                        var isSaaSApp = JSON.parse("<%= isSaaSApp %>");
+                        var tenantName = "<%= tenantDomain %>";
 
                         var userName = document.getElementById("username");
                         var usernameUserInput = document.getElementById("usernameUserInput");
-                        var usernameUserInputValue = usernameUserInput.value.trim();
 
-                        if ((tenantDomain !== "null") && !isSaaSApp) {
-                            if (!isEmailUsernameEnabled && (usernameUserInputValue.split("@").length >= 2)) {
-                                var errorMessage = document.getElementById("error-msg");
+                        if (usernameUserInput) {
+                            var usernameUserInputValue = usernameUserInput.value.trim();
 
-                                errorMessage.innerHTML = 
-                                    "Invalid Username. Username shouldn't have '@' or any other special characters.";
-                                errorMessage.hidden = false;
+                            if (tenantName !== "null") {
 
-                                return;
+                                if (isEmailUsernameEnabled) {
+
+                                    if (usernameUserInputValue.split("@").length <= 1) {
+                                        var errorMessage = document.getElementById("error-msg");
+
+                                        errorMessage.innerHTML = "Invalid Username. Username has to be an email address.";
+                                        errorMessage.style.display = "block";
+
+                                        return;
+                                    }
+
+                                    if (usernameUserInputValue.split("@").length === 2) {
+                                        userName.value = usernameUserInputValue + "@" + tenantName;
+                                    }
+                                    else {
+                                        userName.value = usernameUserInputValue;
+                                    }
+                                } else {
+                                    if (usernameUserInputValue.split("@").length > 1) {
+                                        userName.value = usernameUserInputValue;
+                                    } else {
+                                        userName.value = usernameUserInputValue + "@" + tenantName;
+                                    }
+
+                                }
+                                
+                            } else {
+                                userName.value = usernameUserInputValue;
                             }
-
-                            if (isEmailUsernameEnabled && (usernameUserInputValue.split("@").length <= 1)) {
-                                var errorMessage = document.getElementById("error-msg");
-
-                                errorMessage.innerHTML = "Invalid Username. Username has to be an email address.";
-                                errorMessage.hidden = false;
-
-                                return;
-                            }
-                            
-                            userName.value = usernameUserInputValue + "@" + tenantDomain;      
-                        } else {
-                            userName.value = usernameUserInputValue;
                         }
 
                         // Mark it so that the next submit can be ignored.

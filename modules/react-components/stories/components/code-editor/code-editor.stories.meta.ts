@@ -26,35 +26,35 @@ export const meta: StoryMetaInterface = {
     stories: [
         {
             description: "Default Javascript code editor.",
-            title: "Default Javascript Editor",
+            title: "Default Javascript Editor"
         },
         {
             description: "Code editor with Javascript linting",
-            title: "Editor With Javascript Linting",
+            title: "Editor With Javascript Linting"
         },
         {
             description: "Read-only code editor.",
-            title: "Read-only Editor",
+            title: "Read-only Editor"
         },
         {
             description: "Smart code editor with auto-completion, bracket matching etc. Press Ctrl+Space to get " +
                 "suggestions.",
-            title: "Smart Editor",
+            title: "Smart Editor"
         },
         {
             description: "Code editor for JSON.",
-            title: "JSON Editor",
+            title: "JSON Editor"
         },
         {
             description: "Code editor for Typescript.",
-            title: "Typescript Editor",
+            title: "Typescript Editor"
         },
         {
             description: "Code editor themes demo.",
-            title: "Themes",
+            title: "Themes"
         }
     ],
-    title: StoryCategories.COMPONENTS + "/Code Editor",
+    title: StoryCategories.COMPONENTS + "/Code Editor"
 };
 
 export const SampleJSCodeSnippet = [

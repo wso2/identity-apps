@@ -22,3 +22,4 @@ export * from "./edit";
 export * from "./add-edit-dialect";
 export * from "./advanced-search";
 export * from "./dynamic-fields";
+export * from "./claims-avatar-background";

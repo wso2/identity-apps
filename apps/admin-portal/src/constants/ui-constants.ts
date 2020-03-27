@@ -65,4 +65,11 @@ export class UIConstants {
      * @type {number}
      */
     public static readonly ALERT_DISMISS_INTERVAL: number = 5;
+
+    /**
+     * AJAX top loading bar height.
+     * @constant
+     * @type {number}
+     */
+    public static readonly AJAX_TOP_LOADING_BAR_HEIGHT: number = 3;
 }

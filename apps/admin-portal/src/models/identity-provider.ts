@@ -113,6 +113,14 @@ export interface FederatedAuthenticatorMetaInterface {
     properties?: FederatedAuthenticatorMetaPropertyInterface[];
 }
 
+export interface AuthenticatorFormPropsInterface {
+    metadata?: FederatedAuthenticatorMetaInterface;
+    initialValues: FederatedAuthenticatorListItemInterface;
+    onSubmit: (values: FederatedAuthenticatorListItemInterface) => void;
+    triggerSubmit?: boolean;
+    enableSubmitButton?: boolean;
+}
+
 /**
  * Captures the Identity provider details.
  */
@@ -127,6 +135,7 @@ export interface IdentityProviderResponseInterface {
 /**
  *  Captures IDPs name, logo and ID
  */
+
 /* eslint-disable @typescript-eslint/interface-name-prefix */
 export interface IDPNameInterface {
     authenticatorId: string;
@@ -135,17 +144,26 @@ export interface IDPNameInterface {
 }
 
 /**
+ *  Identity provider template list interface.
+ */
+export interface IdentityProviderTemplateListInterface {
+    templates: IdentityProviderTemplateListItemInterface[];
+}
+
+/**
  *  Identity provider template list item interface.
  */
 export interface IdentityProviderTemplateListItemInterface {
-    description: string;
-    displayName: string;
     id: SupportedQuickStartTemplates;
+    name: string;
+    description: string;
     /* eslint-disable @typescript-eslint/no-explicit-any */
     image: any;
-    authenticators: SupportedAuthenticators;
-    provisioningConnectors: SupportedProvisioningConnectors;
-    services: SupportedServicesInterface[];
+    category: string;
+    displayOrder: number;
+    // todo This is missing in the backend response.
+    services?: SupportedServicesInterface[];
+    idp: IdentityProviderInterface;
 }
 
 /**
@@ -157,7 +175,9 @@ export interface IdentityProviderTemplateListItemInterface {
 export enum SupportedQuickStartTemplates {
     FACEBOOK = "facebook",
     GOOGLE = "google",
-    TWITTER = "twitter"
+    TWITTER = "twitter",
+    OIDC = "oidc",
+    SAML = "saml"
 }
 
 /**
@@ -167,10 +187,12 @@ export enum SupportedQuickStartTemplates {
  * @enum {string}
  */
 export enum SupportedAuthenticators {
-    NONE ="none",
-    FACEBOOK = "facebook",
-    GOOGLE = "google",
-    TWITTER = "twitter"
+    NONE = "none",
+    FACEBOOK = "FacebookAuthenticator",
+    GOOGLE = "GoogleOIDCAuthenticator",
+    TWITTER = "TwitterAuthenticator",
+    OIDC = "OpenIDConnectAuthenticator",
+    SAML = "SAMLSSOAuthenticator",
 }
 
 /**
@@ -180,7 +202,7 @@ export enum SupportedAuthenticators {
  * @enum {string}
  */
 export enum SupportedProvisioningConnectors {
-    NONE ="none",
+    NONE = "none",
     GOOGLE = "google"
 }
 
@@ -208,7 +230,7 @@ export enum SupportedIdentityProviderTemplateCategories {
  *  Identity provider templates interface.
  */
 export interface IdentityProviderTemplatesInterface {
-    [ key: string ]: IdentityProviderTemplateListItemInterface[];
+    [key: string]: IdentityProviderTemplateListItemInterface[];
 }
 
 export const emptyIdentityProvider = (): IdentityProviderListItemInterface => ({
@@ -218,3 +240,17 @@ export const emptyIdentityProvider = (): IdentityProviderListItemInterface => ({
     isEnabled: false,
     name: ""
 });
+
+/**
+ * Interface for the identity provider reducer state.
+ */
+export interface IdentityProviderReducerStateInterface {
+    meta: IdentityProviderMetaInterface;
+}
+
+/**
+ * Interface for the identity provider meta for the redux store.
+ */
+interface IdentityProviderMetaInterface {
+    authenticators: FederatedAuthenticatorListItemInterface[];
+}

@@ -125,9 +125,9 @@ export const ResourceListItem: FunctionComponent<ResourceListItemPropsInterface>
                         ? (metaContent.length + 2) as StrictGridRowProps["columns"]
                         : 3
                 }>
-                    <Grid.Column width={ descriptionColumnWidth } verticalAlign="middle">
+                    <Grid.Column width={ descriptionColumnWidth } className="resource-item-column">
+                        { avatar }
                         <List.Content>
-                            { avatar }
                             <List.Header className="list-item-name">{ itemHeader }</List.Header>
                             { itemDescription && 
                                 <List.Description className="list-item-description">

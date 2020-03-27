@@ -16,12 +16,11 @@
  * under the License.
  */
 
-import React, { ReactElement } from "react";
-import { Button, Grid, Icon, Input, Label, List, Popup, Segment } from "semantic-ui-react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import _ from "lodash";
 import { Forms } from "@wso2is/forms";
-import { EmptyPlaceholder } from "@wso2is/react-components";
-import { EmptyPlaceholderIllustrations } from "../../configs";
+import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
+import { RolesInterface } from "../../models/roles";
 
 /**
  * Proptypes for the application consents list component.
@@ -39,7 +38,7 @@ interface AddUserRoleProps {
  *
  * @return {JSX.Element}
  */
-export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: AddUserRoleProps): ReactElement => {
+export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserRoleProps): ReactElement => {
 
     const {
         initialValues,
@@ -49,42 +48,39 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
         handleTempListChange
     } = props;
 
-    const handleRemoveRoleItem = (role: any) => {
-        const userRolesCopy = [ ...initialValues?.tempRoleList ];
-        userRolesCopy.splice(initialValues?.tempRoleList.indexOf(role), 1);
-        handleTempListChange(userRolesCopy);
+    const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesInterface[]>([]);
+    const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<RolesInterface[]>([]);
+    const [ isSelectUnassignedRolesAllRolesChecked, setIsSelectUnassignedAllRolesChecked ] = useState(false);
+    const [ isSelectAssignedAllRolesChecked, setIsSelectAssignedAllRolesChecked ] = useState(false);
 
-        // When a role is removed from the assigned list it is appended
-        // back to the initial list.
-        handleRoleListChange([ ...initialValues?.roleList, role]);
-    };
+    useEffect(() => {
+        if (isSelectAssignedAllRolesChecked) {
+            setCheckedAssignedListItems(initialValues?.tempRoleList);
+        } else {
+            setCheckedAssignedListItems([])
+        }
+    }, [ isSelectAssignedAllRolesChecked ]);
 
-    const addRole = (role: any) => {
-         if (!(initialValues?.tempRoleList.includes(role))) {
-             handleTempListChange([ ...initialValues?.tempRoleList, role ]);
-
-             // When a role is added to the assigned role list it is removed
-             // from the initial list.
-             const roleListCopy = [ ...initialValues?.roleList ];
-             roleListCopy.splice(initialValues?.roleList.indexOf(role), 1);
-             handleRoleListChange(roleListCopy);
-         }
-    };
+    useEffect(() => {
+        if (isSelectUnassignedRolesAllRolesChecked) {
+            setCheckedUnassignedListItems(initialValues?.roleList);
+        } else {
+            setCheckedUnassignedListItems([])
+        }
+    }, [ isSelectUnassignedRolesAllRolesChecked ]);
 
     /**
      * The following function enables the user to select all the roles at once.
      */
-    const handleSelectAll = () => {
-        handleTempListChange(initialValues.initialRoleList);
-        handleRoleListChange([]);
+    const selectAllUnAssignedList = () => {
+        setIsSelectUnassignedAllRolesChecked(!isSelectUnassignedRolesAllRolesChecked);
     };
 
     /**
      * The following function enables the user to deselect all the roles at once.
      */
-    const handleRemoveAll = () => {
-        handleRoleListChange(initialValues.initialRoleList);
-        handleTempListChange([]);
+    const selectAllAssignedList = () => {
+        setIsSelectAssignedAllRolesChecked(!isSelectAssignedAllRolesChecked);
     };
 
     const handleSearchFieldChange = (e, { value }) => {
@@ -106,6 +102,75 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
         }
     };
 
+    const addRoles = () => {
+        const addedRoles = [ ...initialValues.tempRoleList ];
+        if (checkedUnassignedListItems?.length > 0) {
+            checkedUnassignedListItems.map((role) => {
+                if (!(initialValues?.tempRoleList?.includes(role))) {
+                    addedRoles.push(role);
+                }
+            });
+        }
+        handleTempListChange(addedRoles);
+        handleRoleListChange(initialValues?.roleList.filter(x => !addedRoles?.includes(x)));
+        setIsSelectUnassignedAllRolesChecked(false);
+    };
+
+    const removeRoles = () => {
+        const removedRoles = [ ...initialValues?.roleList ];
+        if (checkedAssignedListItems?.length > 0) {
+            checkedAssignedListItems.map((role) => {
+                if (!(initialValues?.roleList?.includes(role))) {
+                    removedRoles.push(role);
+                }
+            });
+        }
+        handleRoleListChange(removedRoles);
+        handleTempListChange(initialValues?.tempRoleList?.filter(x => !removedRoles?.includes(x)));
+        setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedRoles?.includes(x)));
+        setIsSelectAssignedAllRolesChecked(false);
+    };
+
+    const handleUnassignedItemCheckboxChange = (role) => {
+        const checkedRoles = [ ...checkedUnassignedListItems ];
+
+        if (checkedRoles.includes(role)) {
+            checkedRoles.splice(checkedRoles.indexOf(role), 1);
+            setCheckedUnassignedListItems(checkedRoles);
+        } else {
+            checkedRoles.push(role);
+            setCheckedUnassignedListItems(checkedRoles);
+        }
+    };
+
+    const handleAssignedItemCheckboxChange = (role) => {
+        const checkedRoles = [ ...checkedAssignedListItems ];
+
+        if (checkedRoles.includes(role)) {
+            checkedRoles.splice(checkedRoles.indexOf(role), 1);
+            setCheckedAssignedListItems(checkedRoles);
+        } else {
+            checkedRoles.push(role);
+            setCheckedAssignedListItems(checkedRoles);
+        }
+    };
+
+    /**
+     * The following method handles creating a label for the list item.
+     *
+     * @param roleName: string
+     */
+    const createItemLabel = (roleName: string) => {
+        const role = roleName.split("/");
+        if (role.length > 0) {
+            if (role[0] == "Application") {
+                return { labelText: "Application", labelColor: null, name: "application-label" };
+            } else {
+                return { labelText: "Internal", labelColor: null, name: "internal-label" };
+            }
+        }
+    };
+
     return (
         <>
         <Forms
@@ -114,121 +179,63 @@ export const AddUserRole: React.FunctionComponent<AddUserRoleProps> = (props: Ad
             } }
             submitState={ triggerSubmit }
         >
-            <Grid>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column>
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <label>Roles list</label>
-                            </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Input
-                                    icon={ <Icon name="search"/> }
-                                    fluid
-                                    onChange={ handleSearchFieldChange }
+            <TransferComponent
+                addItems={ addRoles }
+                removeItems={ removeRoles }
+                handleListSearch={ handleSearchFieldChange }
+            >
+                <TransferList
+                    isListEmpty={ !(initialValues?.roleList?.length > 0) }
+                    listType="unselected"
+                    listHeaders={ [ "Name", "Type" ] }
+                    handleHeaderCheckboxChange={ selectAllUnAssignedList }
+                    isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
+                >
+                    {
+                        initialValues?.roleList?.map((role, index)=> {
+                            const roleName = role?.displayName?.split("/");
+                            return (
+                                <TransferListItem
+                                    handleItemChange={ () => handleUnassignedItemCheckboxChange(role) }
+                                    key={ index }
+                                    listItem={ roleName?.length > 0 ? roleName[1] : role?.displayName }
+                                    listItemId={ role.id }
+                                    listItemIndex={ index }
+                                    listItemTypeLabel={ createItemLabel(role?.displayName) }
+                                    isItemChecked={ checkedUnassignedListItems.includes(role) }
+                                    showSecondaryActions={ false }
                                 />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 2 }>
-                           <Grid.Column>
-                               <Segment className={ "user-role-list-segment" }>
-                                   {
-                                       !_.isEmpty(initialValues.roleList) ?
-                                           <List className={ "user-role-list" }>
-                                               { initialValues.roleList &&
-                                               initialValues.roleList.map((role, index) => {
-                                                   return (
-                                                       <List.Item
-                                                           key={ index }
-                                                           className={ "user-role-list-item" }
-                                                           onClick={ () => addRole(role) }
-                                                       >
-                                                           { role.displayName }
-                                                           <Icon name="add"/>
-                                                       </List.Item>
-                                                   )
-                                               })
-                                               }
-                                           </List>
-                                           : (
-                                               <div className={ "empty-placeholder-center" }>
-                                                   <EmptyPlaceholder
-                                                       image={ EmptyPlaceholderIllustrations.emptyList }
-                                                       imageSize="mini"
-                                                       title={ "The role list is empty" }
-                                                       subtitle={ [ "You have assigned all the roles to user." ] }
-                                                   />
-                                               </div>
-                                           )
-                                   }
-                               </Segment>
-                           </Grid.Column>
-                        </Grid.Row>
-                    </Grid.Column>
-                    <Grid.Column>
-                        <Grid.Row columns={ 1 } className={ "urlComponentLabelRow" }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <label>Assigned roles</label>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Segment className={ "user-assigned-roles-segment" }>
-                                        <Popup
-                                          trigger={
-                                              <Label className={ "info-label" }>
-                                                  Internal/everyone
-                                              <Icon
-                                                  name="info circle"
-                                                  inverted
-                                              />
-                                              </Label>
-                                          }
-                                          inverted
-                                          content="This role will be assigned to all the users by default."
-                                        />
-                                    {
-                                        initialValues.tempRoleList && initialValues.tempRoleList.map((role, index) => {
-                                            return (
-                                                <Label key={ index }>
-                                                    { role.displayName }
-                                                    <Icon
-                                                        name="delete"
-                                                        onClick={ () => handleRemoveRoleItem(role) }
-                                                    />
-                                                </Label>
-                                            );
-                                        })
-                                    }
-                                </Segment>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+                            )
+                        })
+                    }
+                </TransferList>
+                <TransferList
+                    isListEmpty={ !(initialValues?.tempRoleList?.length > 0) }
+                    listType="selected"
+                    listHeaders={ [ "Name", "Type" ] }
+                    handleHeaderCheckboxChange={ selectAllAssignedList }
+                    isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
+                >
+                    {
+                        initialValues?.tempRoleList?.map((role, index)=> {
+                            const roleName = role.displayName.split("/");
+                            return (
+                                <TransferListItem
+                                    handleItemChange={ () => handleAssignedItemCheckboxChange(role) }
+                                    key={ index }
+                                    listItem={ roleName?.length > 0 ? roleName[1] : role?.displayName }
+                                    listItemId={ role.id }
+                                    listItemIndex={ index }
+                                    listItemTypeLabel={ createItemLabel(role.displayName) }
+                                    isItemChecked={ checkedAssignedListItems.includes(role) }
+                                    showSecondaryActions={ false }
+                                />
+                            )
+                        })
+                    }
+                </TransferList>
+            </TransferComponent>
         </Forms>
-            <Grid>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column>
-                        <Button
-                            fluid
-                            onClick={ () => handleSelectAll() }
-                        >
-                            <Icon name="check circle outline"/>
-                            Add all
-                        </Button>
-                    </Grid.Column>
-                    <Grid.Column>
-                        <Button
-                            fluid
-                            onClick={ () => handleRemoveAll() }
-                        >
-                            <Icon name="times circle outline"/>
-                            Remove all
-                        </Button>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
         </>
     );
 };

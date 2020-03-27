@@ -54,7 +54,7 @@ export const APPLICATIONS_PAGE_PATH = "/applications";
  * @type {string}
  * @default
  */
-export const LOCAL_CLAIMS_PATH = "/local-dialect";
+export const LOCAL_CLAIMS_PATH = "/local-claims";
 
 /**
  * Path to the applications page.

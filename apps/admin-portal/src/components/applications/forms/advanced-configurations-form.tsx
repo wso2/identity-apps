@@ -83,7 +83,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             type="checkbox"
                             children={ [
                                 {
-                                    label: "SaaS Application",
+                                    label: "SaaS application",
                                     value: "saas"
                                 }
                             ] }
@@ -106,7 +106,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             type="checkbox"
                             children={ [
                                 {
-                                    label: "Skip Consent",
+                                    label: "Skip consent",
                                     value: "skipConsent"
                                 }
                             ] }
@@ -127,7 +127,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             type="checkbox"
                             children={ [
                                 {
-                                    label: "Return Authenticated IdP List",
+                                    label: "Return authenticated idP list",
                                     value: "returnAuthenticatedIdpList"
                                 }
                             ] }
@@ -149,7 +149,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             type="checkbox"
                             children={ [
                                 {
-                                    label: "Enable Authorization",
+                                    label: "Enable authorization",
                                     value: "enableAuthorization"
                                 }
                             ] }

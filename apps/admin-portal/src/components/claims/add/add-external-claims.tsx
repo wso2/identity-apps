@@ -23,14 +23,34 @@ import { LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { getAllLocalClaims, addExternalClaim } from "../../../api";
 import { Forms, Field, FormValue, useTrigger } from "@wso2is/forms";
 import { useDispatch } from "react-redux";
-import { addAlert } from "../../../store/actions";
+import { addAlert } from "@wso2is/core/store";
 
+/**
+ * Prop types for the `AddExternalClaims` component
+ */
 interface AddExternalClaimsPropsInterface {
+    /**
+     * Open the modal
+     */
     open: boolean;
+    /**
+     * Handler to be called when the modal is closed
+     */
     onClose: () => void;
+    /**
+     * Information about the claim dialect
+     */
     dialect: ClaimDialect;
+    /**
+     * Function to be called to initiate an update
+     */
     update: () => void;
 }
+/**
+ * A component that lets you add an external claim
+ * @param {AddExternalClaimsPropsInterface} props
+ * @return {React.ReactElement} Component
+ */
 export const AddExternalClaims = (props: AddExternalClaimsPropsInterface): React.ReactElement => {
 
     const { open, onClose, dialect, update } = props;
