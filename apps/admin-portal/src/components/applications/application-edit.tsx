@@ -19,8 +19,13 @@
 import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
-import { ApplicationInterface, AuthProtocolMetaListItemInterface, SupportedAuthProtocolTypes } from "../../models";
+import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
+import {
+    ApplicationInterface,
+    ApplicationEditFeaturesConfigInterface,
+    AuthProtocolMetaListItemInterface,
+    SupportedAuthProtocolTypes
+} from "../../models";
 import { AdvanceSettings } from "./advance-application";
 import { GeneralApplicationSettings } from "./general-application-settings";
 import { ApplicationSettings } from "./settings-application";
@@ -42,6 +47,10 @@ interface EditApplicationPropsInterface {
      */
     application: ApplicationInterface;
     /**
+     * Set of edit features.
+     */
+    features?: ApplicationEditFeaturesConfigInterface;
+    /**
      * Is the data still loading.
      */
     isLoading?: boolean;
@@ -53,7 +62,10 @@ interface EditApplicationPropsInterface {
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
-
+    /**
+     * CRUD permissions,
+     */
+    permissions?: CRUDPermissionsInterface;
 }
 
 /**
@@ -68,9 +80,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const {
         application,
+        features,
         isLoading,
         onDelete,
         onUpdate,
+        permissions
     } = props;
 
     const dispatch = useDispatch();
@@ -82,6 +96,23 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ selectedInboundProtocolConfig, setSelectedInboundProtocolConfig ] = useState<any>(undefined);
     const [ showProtocolSelection, setShowProtocolSelection ] = useState<boolean>(true);
     const [ isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading ] = useState<boolean>(false);
+
+    /**
+     * Called on `availableInboundProtocols` prop update.
+     */
+    useEffect(() => {
+        if (!_.isEmpty(availableInboundProtocols) && application?.id) {
+            findConfiguredInboundProtocol(application.id);
+            return;
+        }
+
+        setInboundProtocolsRequestLoading(true);
+
+        ApplicationManagementUtils.getInboundProtocols(InboundProtocolsMeta, false)
+            .finally(() => {
+                setInboundProtocolsRequestLoading(false);
+            });
+    }, [ availableInboundProtocols ]);
 
     /**
      * Finds the configured inbound protocol.
@@ -138,20 +169,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
     };
 
-    useEffect(() => {
-        if (!_.isEmpty(availableInboundProtocols) && application?.id) {
-            findConfiguredInboundProtocol(application.id);
-            return;
-        }
-
-        setInboundProtocolsRequestLoading(true);
-
-        ApplicationManagementUtils.getInboundProtocols(InboundProtocolsMeta, false)
-            .finally(() => {
-                setInboundProtocolsRequestLoading(false);
-            });
-    }, [availableInboundProtocols]);
-
     const GeneralApplicationSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane attached={ false }>
             <GeneralApplicationSettings
@@ -164,6 +181,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 isLoading={ isLoading }
                 onDelete={ onDelete }
                 onUpdate={ onUpdate }
+                permissions={ permissions }
             />
         </ResourceTab.Pane>
     );
@@ -180,6 +198,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 selectedInboundProtocolConfig={ selectedInboundProtocolConfig }
                 setSelectedInboundProtocol={ setSelectedInboundProtocol }
                 showProtocolSelection={ showProtocolSelection }
+                permissions={ permissions }
             />
         </ResourceTab.Pane>
     );
@@ -190,6 +209,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 appId={ application.id }
                 claimConfigurations={ application.claimConfiguration }
                 selectedInboundProtocol={ selectedInboundProtocol }
+                permissions={ permissions }
             />
         </ResourceTab.Pane>
     );
@@ -202,6 +222,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 authenticationSequence={ application.authenticationSequence }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
+                permissions={ permissions }
             />
         </ResourceTab.Pane>
     );
@@ -212,35 +233,84 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 appId={ application.id }
                 advancedConfigurations={ application.advancedConfigurations }
                 onUpdate={ onUpdate }
+                permissions={ permissions }
             />
         </ResourceTab.Pane>
     );
 
+    /**
+     * Resolves the tab panes based on the application config.
+     *
+     * @return {any[]} Resolved tab panes.
+     */
+    const resolveTabPanes = (): any[] => {
+        const panes: any[] = [];
+
+        if (features) {
+            if (features.generalSettings === undefined || features.generalSettings.enabled !== false) {
+
+                panes.push({
+                    menuItem: "General",
+                    render: GeneralApplicationSettingsTabPane
+                });
+            }
+            if (features.accessConfiguration === undefined || features.accessConfiguration.enabled !== false) {
+
+                panes.push({
+                    menuItem: "Access",
+                    render: ApplicationSettingsTabPane
+                });
+            }
+            if (features.attributeMapping === undefined || features.attributeMapping.enabled !== false) {
+
+                panes.push({
+                    menuItem: "Attribute",
+                    render: AttributeSettingTabPane
+                });
+            }
+            if (features.signOnMethodConfiguration === undefined
+                || features.signOnMethodConfiguration.enabled !== false) {
+
+                panes.push({
+                    menuItem: "Sign-on Method",
+                    render: SignOnMethodsTabPane,
+                });
+            }
+            if (features.advanceSettings === undefined || features.advanceSettings.enabled !== false) {
+
+                panes.push({
+                    menuItem: "Advance",
+                    render: AdvancedSettingsTabPane,
+                });
+            }
+
+            return panes;
+        }
+
+        return [
+            {
+                menuItem: "General",
+                render: GeneralApplicationSettingsTabPane
+            },
+            {
+                menuItem: "Access",
+                render: ApplicationSettingsTabPane
+            }, {
+                menuItem: "Attribute",
+                render: AttributeSettingTabPane
+            },
+            {
+                menuItem: "Sign-on Method",
+                render: SignOnMethodsTabPane,
+            },
+            {
+                menuItem: "Advance",
+                render: AdvancedSettingsTabPane,
+            },
+        ];
+    };
+
     return (
-        application && (
-            <ResourceTab
-                panes={ [
-                    {
-                        menuItem: "General",
-                        render: GeneralApplicationSettingsTabPane
-                    },
-                    {
-                        menuItem: "Access",
-                        render: ApplicationSettingsTabPane
-                    }, {
-                        menuItem: "Attribute",
-                        render: AttributeSettingTabPane
-                    },
-                    {
-                        menuItem: "Sign-on Method",
-                        render: SignOnMethodsTabPane,
-                    },
-                    {
-                        menuItem: "Advance",
-                        render: AdvancedSettingsTabPane,
-                    },
-                ] }
-            />
-        )
+        application && <ResourceTab panes={ resolveTabPanes() } />
     );
 };

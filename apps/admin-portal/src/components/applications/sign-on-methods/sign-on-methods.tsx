@@ -28,7 +28,7 @@ import { Divider } from "semantic-ui-react";
 import { updateAuthenticationSequence } from "../../../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { PrimaryButton } from "@wso2is/react-components";
 
 /**
@@ -51,6 +51,10 @@ interface SignOnMethodsPropsInterface {
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * CRUD permissions,
+     */
+    permissions?: CRUDPermissionsInterface;
 }
 
 /**

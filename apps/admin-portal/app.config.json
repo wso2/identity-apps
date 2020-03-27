@@ -1,4 +1,84 @@
 {
-    "applications": true,
-    "usersAndRoles": true
+    "applications": {
+        "enabled": true,
+        "permissions": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true
+        },
+        "features": {
+            "edit": {
+                "generalSettings": {
+                    "enabled": true
+                },
+                "accessConfiguration": {
+                    "enabled": true
+                },
+                "attributeMapping": {
+                    "enabled": true
+                },
+                "signOnMethodConfiguration": {
+                    "enabled": true
+                },
+                "advanceSettings": {
+                    "enabled": true
+                }
+            }
+        }
+    },
+    "claims": {
+        "enabled": true,
+        "permissions": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true
+        }
+    },
+    "identityProviders": {
+        "enabled": true,
+        "permissions": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true
+        }
+    },
+    "serverConfigurations": {
+        "enabled": true,
+        "permissions": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true
+        }
+    },
+    "userStores": {
+        "enabled": true,
+        "permissions": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true
+        }
+    },
+    "users": {
+        "enabled": true,
+        "permissions": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true
+        }
+    },
+    "roles": {
+        "enabled": true,
+        "permissions": {
+            "create": true,
+            "read": true,
+            "update": true,
+            "delete": true
+        }
+    }
 }

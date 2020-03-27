@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { addAlert } from "@wso2is/core/store";
@@ -85,6 +85,10 @@ interface AttributeSelectionPropsInterface {
      * Selected inbound protocol.
      */
     selectedInboundProtocol: AuthProtocolMetaListItemInterface;
+    /**
+     * CRUD permissions,
+     */
+    permissions?: CRUDPermissionsInterface;
 }
 
 export const getLocalDialectURI = (): string => {

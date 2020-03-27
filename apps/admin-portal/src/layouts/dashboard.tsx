@@ -41,9 +41,9 @@ import { UIConstants } from "../constants";
 import { AppConfig, history } from "../helpers";
 import { AppConfigInterface } from "../models";
 import { AppState } from "../store";
-import { filterRoutes } from "../utils";
 import { BaseLayout } from "./base";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
+import { RouteUtils } from "@wso2is/core/utils";
 import { ThemeContext } from "@wso2is/react-components";
 
 /**
@@ -73,6 +73,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages);
 
+    const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(routes);
     const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(routes[0]);
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
     const [ headerHeight, setHeaderHeight ] = useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
@@ -252,12 +253,15 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
             })
         };
 
-        recurse(filterRoutes(routes, appConfig));
+        recurse(filteredRoutes);
 
         return resolvedRoutes;
     };
 
     useEffect(() => {
+        // Filter the routes and get only the enabled routes defined in the app config.
+        setFilteredRoutes(RouteUtils.filterEnabledRoutes<AppConfigInterface>(routes, appConfig));
+
         if (_.isEmpty(profileDetails)) {
             dispatch(getProfileInfo(() => null));
         }
@@ -355,7 +359,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
                     icons={ SidePanelIcons }
-                    routes={ filterRoutes(routes, appConfig) }
+                    routes={ filteredRoutes }
                     selected={ selectedRoute }
                 >
                     <Switch>

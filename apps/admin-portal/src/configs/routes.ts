@@ -219,7 +219,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         component: ClaimDialectsPage,
         exact: true,
         icon: "claims",
-        id: "claimDialects",
+        id: "claims",
         level: 2,
         name: "Claim Dialects",
         path: CLAIM_DIALECTS_PATH,
@@ -240,7 +240,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: UserStores,
         icon: "userStore",
-        id: "user-stores",
+        id: "userStores",
         name: "User Stores",
         path: USER_STORES_PATH,
         protected: true,

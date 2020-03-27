@@ -16,17 +16,23 @@
  * under the License.
  */
 
+import _ from "lodash";
 import { AppAvatar } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useContext, useEffect, useState } from "react";
 import { getApplicationDetails } from "../api";
 import { EditApplication } from "../components";
-import { history } from "../helpers";
+import { AppConfig, history } from "../helpers";
 import { PageLayout } from "../layouts";
-import { ApplicationInterface, emptyApplication } from "../models";
-import { ApplicationConstants } from "../constants";
+import {
+    AppConfigInterface,
+    ApplicationEditFeaturesConfigInterface,
+    ApplicationInterface,
+    emptyApplication
+} from "../models";
+import { ApplicationConstants, ApplicationManagementConstants } from "../constants";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, CRUDPermissionsInterface } from "@wso2is/core/models";
 
 /**
  * Application Edit page.
@@ -35,10 +41,36 @@ import { AlertLevels } from "@wso2is/core/models";
  */
 export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
 
+    const dispatch = useDispatch();
+
+    const appConfig: AppConfigInterface = useContext(AppConfig);
+
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
     const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(false);
+    const [ permissions, setPermissions ] = useState<CRUDPermissionsInterface>(undefined);
+    const [ features, setFeatures ] = useState<ApplicationEditFeaturesConfigInterface>(undefined);
 
-    const dispatch = useDispatch();
+    /**
+     * Use effect for the initial component load.
+     */
+    useEffect(() => {
+        const path = history.location.pathname.split("/");
+        const id = path[ path.length - 1 ];
+
+        getApplication(id);
+    }, []);
+
+    /**
+     * Called when the app config value changes.
+     */
+    useEffect(() => {
+        if (!appConfig) {
+            return;
+        }
+
+        setPermissions(_.get(appConfig, ApplicationManagementConstants.CRUD_PERMISSIONS_APP_CONFIG_KEY));
+        setFeatures(_.get(appConfig, ApplicationManagementConstants.EDIT_FEATURES_APP_CONFIG_KEY));
+    }, [ appConfig ]);
 
     /**
      * Retrieves application details from the API.
@@ -97,16 +129,6 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
         getApplication(id);
     };
 
-    /**
-     * Use effect for the initial component load.
-     */
-    useEffect(() => {
-        const path = history.location.pathname.split("/");
-        const id = path[ path.length - 1 ];
-
-        getApplication(id);
-    }, []);
-
     return (
         <PageLayout
             title={ application.name }
@@ -129,9 +151,11 @@ export const ApplicationEditPage: FunctionComponent<{}> = (): ReactElement => {
         >
             <EditApplication
                 application={ application }
+                features={ features }
                 isLoading={ isApplicationRequestLoading }
                 onDelete={ handleApplicationDelete }
                 onUpdate={ handleApplicationUpdate }
+                permissions={ permissions }
             />
         </PageLayout>
     );

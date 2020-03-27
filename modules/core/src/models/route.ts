@@ -70,10 +70,11 @@ export interface RouteInterface {
 
 /**
  * Interface to handle child routes.
+ * TODO: Remover this interface.
  */
 export interface ChildRouteInterface extends RouteInterface {
     /**
      * Nesting level.
      */
-    level: number;
+    level?: number;
 }

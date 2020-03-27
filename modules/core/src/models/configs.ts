@@ -16,10 +16,42 @@
  * under the License.
  */
 
- /**
-  * Model of  application configuration
-  */
-export interface AppConfigInterface {
-    applications: boolean;
-    usersAndRoles: boolean;
+/**
+ * CRUD permissions interface.
+ */
+export interface CRUDPermissionsInterface {
+    /**
+     * Create permission.
+     */
+    create: boolean;
+    /**
+     * Read permission.
+     */
+    read: boolean;
+    /**
+     * Update permission.
+     */
+    update: boolean;
+    /**
+     * Delete permission.
+     */
+    delete: boolean;
+}
+
+/**
+ * Common config interface for features.
+ */
+export interface FeatureConfigInterface<T = {}> {
+    /**
+     * If the feature is enabled or not.
+     */
+    enabled: boolean;
+    /**
+     * CRUD permissions for the feature.
+     */
+    permissions?: CRUDPermissionsInterface;
+    /**
+     * Sub features.
+     */
+    features?: T;
 }
