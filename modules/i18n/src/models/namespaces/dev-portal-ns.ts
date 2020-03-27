@@ -392,25 +392,21 @@ export interface DevPortalNS {
                     updateEnable: {
                         success: {
                             description: string;
-                            message: string;
                         };
                     };
                     updateAccountLockOnCreation: {
                         success: {
                             description: string;
-                            message: string;
                         };
                     };
                     updateInternalNotificationManagement: {
                         success: {
                             description: string;
-                            message: string;
                         };
                     };
                     updateReCaptcha: {
                         success: {
                             description: string;
-                            message: string;
                         };
                     };
                 };
@@ -467,25 +463,21 @@ export interface DevPortalNS {
                     updateEnableUsernameRecovery: {
                         success: {
                             description: string;
-                            message: string;
                         };
                     };
                     updateUsernameRecoveryReCaptcha: {
                         success: {
                             description: string;
-                            message: string;
                         };
                     };
                     updateEnableNotificationPasswordRecovery: {
                         success: {
                             description: string;
-                            message: string;
                         };
                     };
                     updateNotificationPasswordRecoveryReCaptcha: {
                         success: {
                             description: string;
-                            message: string;
                         };
                     };
                 };

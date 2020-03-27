@@ -760,25 +760,21 @@ export const devPortal: DevPortalNS = {
                     updateEnableNotificationPasswordRecovery: {
                         success: {
                             description: "Successfully updated notification based password recovery status.",
-                            message: "Configurations updated successfully"
                         }
                     },
                     updateEnableUsernameRecovery: {
                         success: {
                             description: "Successfully updated username recovery status.",
-                            message: "Configurations updated successfully"
                         }
                     },
                     updateNotificationPasswordRecoveryReCaptcha: {
                         success: {
                             description: "Successfully configured reCaptcha for notification based password recovery.",
-                            message: "Configurations updated successfully"
                         }
                     },
                     updateUsernameRecoveryReCaptcha: {
                         success: {
                             description: "Successfully configured reCaptcha for username recovery.",
-                            message: "Configurations updated successfully"
                         }
                     }
                 },
@@ -929,7 +925,6 @@ export const devPortal: DevPortalNS = {
                     updateAccountLockOnCreation: {
                         success: {
                             description: "Successfully updated self registration account lock on creation status.",
-                            message: "Configurations updated successfully"
                         }
                     },
                     updateConfigurations: {
@@ -949,20 +944,17 @@ export const devPortal: DevPortalNS = {
                     updateEnable: {
                         success: {
                             description: "Successfully updated self registration enabled status.",
-                            message: "Configurations updated successfully"
                         }
                     },
                     updateInternalNotificationManagement: {
                         success: {
                             description: "Successfully updated self registration internal notification " +
                                 "management status.",
-                            message: "Configurations updated successfully"
                         }
                     },
                     updateReCaptcha: {
                         success: {
                             description: "Successfully updated self registration enable reCaptcha status.",
-                            message: "Configurations updated successfully"
                         }
                     }
                 }
