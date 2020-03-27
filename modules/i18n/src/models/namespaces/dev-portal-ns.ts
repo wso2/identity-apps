@@ -464,6 +464,30 @@ export interface DevPortalNS {
                 };
                 notifications: {
                     updateConfigurations: Notification;
+                    updateEnableUsernameRecovery: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    updateUsernameRecoveryReCaptcha: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    updateEnableNotificationPasswordRecovery: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    updateNotificationPasswordRecoveryReCaptcha: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
                 };
                 usernameRecovery: {
                     actionTitles: {
@@ -490,7 +514,7 @@ export interface DevPortalNS {
                         enableNotificationBasedRecovery: {
                             label: string;
                         };
-                        enableReCaptchaBasedRecovery: {
+                        enableReCaptchaForNotificationBasedRecovery: {
                             label: string;
                         };
                         enableSecurityQuestionBasedRecovery: {

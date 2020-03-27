@@ -235,23 +235,14 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 		getSelfSignUpConfigurations()
 			.then((response) => {
 				const configs = {
-					accountLockOnCreation: response.properties.find(
-						property => property.name == ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION).
-						value === "true" ? [ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION] : [],
+					accountLockOnCreation: extractArrayValue(response,
+						ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION),
 					callbackRegex: response.properties.find(
 						property => property.name == ServerConfigurationsConstants.CALLBACK_REGEX).value,
-					enable: response.properties.find(
-						property => property.name == ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE).
-						value === "true" ? [ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE] : [],
-					internalNotificationManagement: response.properties.find(
-						property => property.name ==
-							ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED).
-						value === "true" ?
-						[ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED] : [],
-					reCaptcha: response.properties.find(
-						property => property.name == ServerConfigurationsConstants.RE_CAPTCHA).
-						value === "true" ? [ServerConfigurationsConstants.RE_CAPTCHA] : [],
-
+					enable: extractArrayValue(response, ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE),
+					internalNotificationManagement: extractArrayValue(response,
+						ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED),
+					reCaptcha: extractArrayValue(response, ServerConfigurationsConstants.RE_CAPTCHA),
 					smsOTPExpiryTime: response.properties.find(
 						property => property.name == ServerConfigurationsConstants.SMS_OTP_EXPIRY_TIME).value,
 					verificationCodeExpiryTime: response.properties.find(
@@ -260,6 +251,10 @@ export const UserSelfRegistration: FunctionComponent<UserSelfRegistrationProps> 
 				setSelfSignUpConfigs(configs);
 			});
 	}, []);
+
+	const extractArrayValue = (response, key) => {
+		return response.properties.find(prop => prop.name === key).value === "true" ? [key] : [];
+	};
 
 	const confirmationModal = (
 		<Modal size="mini" open={ showConfirmationModal } onClose={ handleConfirmationModalClose } dimmer="blurring">

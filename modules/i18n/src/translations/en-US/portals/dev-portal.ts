@@ -756,6 +756,30 @@ export const devPortal: DevPortalNS = {
                             description: "Successfully updated the account recovery configurations.",
                             message: "Configurations updated successfully"
                         }
+                    },
+                    updateEnableNotificationPasswordRecovery: {
+                        success: {
+                            description: "Successfully updated notification based password recovery status.",
+                            message: "Configurations updated successfully"
+                        }
+                    },
+                    updateEnableUsernameRecovery: {
+                        success: {
+                            description: "Successfully updated username recovery status.",
+                            message: "Configurations updated successfully"
+                        }
+                    },
+                    updateNotificationPasswordRecoveryReCaptcha: {
+                        success: {
+                            description: "Successfully configured reCaptcha for notification based password recovery.",
+                            message: "Configurations updated successfully"
+                        }
+                    },
+                    updateUsernameRecoveryReCaptcha: {
+                        success: {
+                            description: "Successfully configured reCaptcha for username recovery.",
+                            message: "Configurations updated successfully"
+                        }
                     }
                 },
                 otherSettings: {
@@ -816,8 +840,8 @@ export const devPortal: DevPortalNS = {
                         enableNotificationBasedRecovery: {
                             label: "Enable notification based password recovery"
                         },
-                        enableReCaptchaBasedRecovery: {
-                            label: "Enable reCaptcha for password recovery"
+                        enableReCaptchaForNotificationBasedRecovery: {
+                            label: "Enable reCaptcha for notification based password recovery"
                         },
                         enableReCaptchaForSecurityQuestionBasedRecovery: {
                             hint: "Show captcha for challenge question based password recovery",
