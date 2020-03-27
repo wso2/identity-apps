@@ -214,7 +214,7 @@ export const DynamicField = (props: DynamicFieldPropsInterface): React.ReactElem
                                                             )
                                                             : []
                                                     }
-                                                    displayErrorOn="blur"
+                                                    displayErrorOn="submit"
                                                     validation={
                                                         (
                                                             value: string,
