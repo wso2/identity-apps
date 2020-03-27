@@ -28,7 +28,7 @@ import { PrimaryButton } from "@wso2is/react-components";
 /**
  * Prop types of `EditBasicDetailsUserStore` component
  */
-interface EditBasicDetailsUserStorePropsInterface{
+interface EditBasicDetailsUserStorePropsInterface {
     /**
      * User store to be edited
      */
@@ -56,37 +56,37 @@ export const EditBasicDetailsUserStore = (
 
     const [submit, setSubmit] = useTrigger();
 
-    const dispatch = useDispatch(); 
+    const dispatch = useDispatch();
 
     return (
-        <Forms
-            onSubmit={ (values: Map<string, FormValue>) => {
-                const data = { ...userStore };
-                data.description = values.get("description").toString();
-                data.name = values.get("name").toString();
-                delete data.typeName;
-                delete data.className;
-
-                updateUserStore(id, data).then(() => {
-                    dispatch(addAlert({
-                        message: "User Store updated successfully!",
-                        description: "The User Store has been updated successfully.",
-                        level: AlertLevels.SUCCESS
-                    }));
-                    update();
-                }).catch((error) => {
-                    dispatch(addAlert({
-                        message: error?.message ?? "Something went wrong",
-                        description: error?.description ?? "An error occurred while updating the User Store",
-                        level: AlertLevels.ERROR
-                    }));
-                });
-            } }
-            submitState={ submit }
-        >
         <Grid>
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 8 }>
+                    <Forms
+                        onSubmit={ (values: Map<string, FormValue>) => {
+                            const data = { ...userStore };
+                            data.description = values.get("description").toString();
+                            data.name = values.get("name").toString();
+                            delete data.typeName;
+                            delete data.className;
+
+                            updateUserStore(id, data).then(() => {
+                                dispatch(addAlert({
+                                    message: "User Store updated successfully!",
+                                    description: "The User Store has been updated successfully.",
+                                    level: AlertLevels.SUCCESS
+                                }));
+                                update();
+                            }).catch((error) => {
+                                dispatch(addAlert({
+                                    message: error?.message ?? "Something went wrong",
+                                    description: error?.description ?? "An error occurred while updating the User Store",
+                                    level: AlertLevels.ERROR
+                                }));
+                            });
+                        } }
+                        submitState={ submit }
+                    >
                         <Field
                             label="Name"
                             name="name"
@@ -109,21 +109,22 @@ export const EditBasicDetailsUserStore = (
                             label="Type"
                             name="type"
                             type="text"
-                            readOnly
+                            disabled
                             required={ false }
                             requiredErrorMessage="Select a Type"
                             value={ userStore?.typeName }
                         />
+                    </Forms>
+
                 </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 8 }>
-                        <PrimaryButton onClick={ ()=>{setSubmit()} }>
-                            Update
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column width={ 8 }>
+                    <PrimaryButton onClick={ () => { setSubmit() } }>
+                        Update
                         </PrimaryButton>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        </Forms>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
     )
 };
