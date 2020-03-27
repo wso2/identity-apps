@@ -16,20 +16,20 @@
  * under the License.
  */
 
-import { Field, Forms } from "@wso2is/forms";
+import { Field, Forms, FormValue } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { URLInputComponent } from "../components";
-import { isEmpty } from "lodash";
-import { FormValue } from "@wso2is/forms";
+import _ from "lodash";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
  */
 interface SAMLProtocolSettingsWizardFormPropsInterface {
     initialValues: any;
+    templateValues: any;
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
 }
@@ -46,16 +46,30 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
 
     const {
         initialValues,
+        templateValues,
         triggerSubmit,
         onSubmit
     } = props;
 
-    const [ assertionConsumerUrls, setAssertionConsumerUrls ] = useState("");
-    const [ showAssertionConsumerUrlError, setAssertionConsumerUrlError ] = useState(false);
+    const [assertionConsumerUrls, setAssertionConsumerUrls] = useState("");
+    const [showAssertionConsumerUrlError, setAssertionConsumerUrlError] = useState(false);
 
     useEffect(() => {
-        setAssertionConsumerUrls("");
-    }, []);
+        if (_.isEmpty(initialValues?.inboundProtocolConfiguration?.saml)) {
+            const tempAssertionConsumerUrls = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
+                .assertionConsumerUrls;
+            if (!_.isEmpty(tempAssertionConsumerUrls)) {
+                setAssertionConsumerUrls(tempAssertionConsumerUrls.toString())
+            } else {
+                setAssertionConsumerUrls("")
+            }
+        } else {
+            setAssertionConsumerUrls(
+                initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
+                    .assertionConsumerUrls?.toString()
+            )
+        }
+    }, [initialValues]);
 
     /**
      * Sanitizes and prepares the form values for submission.
@@ -76,11 +90,11 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
         };
     };
 
-    return (
+    return (templateValues &&
         <Forms
             onSubmit={ (values: Map<string, FormValue>): void => {
                 // check whether assertionConsumer url is empty or not
-                if (isEmpty(assertionConsumerUrls)) {
+                if (_.isEmpty(assertionConsumerUrls)) {
                     setAssertionConsumerUrlError(true);
                 } else {
                     onSubmit(getFormValues(values));
@@ -112,10 +126,6 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                     urlState={ assertionConsumerUrls }
                     setURLState={ setAssertionConsumerUrls }
                     labelName={ "Assertion Consumer URLs" }
-                    value={
-                        initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration.assertionConsumerUrls?.
-                        toString()
-                    }
                     placeholder={ "Enter url " }
                     validationErrorMsg={ "Please add valid URL" }
                     validation={ (value: string): boolean => {

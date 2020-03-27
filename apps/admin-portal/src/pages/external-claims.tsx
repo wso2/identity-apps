@@ -32,18 +32,26 @@ import { EmptyPlaceholder } from "../components/shared";
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { filterList, sortList } from "../utils";
 
+/**
+ * This lists the external claims
+ * @param props 
+ * @return {React.ReactElement}
+ */
 export const ExternalClaimsPage = (props): React.ReactElement => {
 
+    /**
+     * Attributes to sort the list by
+     */
     const SORT_BY = [
         {
             key: 0,
             text: "Claim URI",
-            value:"claimURI"
+            value: "claimURI"
         },
         {
             key: 1,
             text: "Mapped Local Claim URI",
-            value:"mappedLocalClaimURI"
+            value: "mappedLocalClaimURI"
         }
     ];
 
@@ -57,6 +65,7 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
     const [filteredClaims, setFilteredClaims] = useState<ExternalClaim[]>(null);
     const [sortBy, setSortBy] = useState(SORT_BY[0]);
     const [sortOrder, setSortOrder] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -64,10 +73,13 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
 
     useEffect(() => {
         setListItemLimit(DEFAULT_USER_LIST_ITEM_LIMIT);
+        setIsLoading(true);
 
         getADialect(dialectID).then(response => {
             setDialect(response);
+            setIsLoading(false);
         }).catch(error => {
+            setIsLoading(false);
             dispatch(addAlert(
                 {
                     description: error?.description || "There was an error while fetching local dialect",
@@ -79,6 +91,13 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
 
     }, []);
 
+    /**
+     * Fetch external claims
+     * @param {number} limit 
+     * @param {number} offset 
+     * @param {string} sort 
+     * @param {string} filter 
+     */
     const getExternalClaims = (limit?: number, offset?: number, sort?: string, filter?: string) => {
         dialectID && getAllExternalClaims(dialectID, { limit, offset, sort, filter }).then(response => {
             setClaims(response);
@@ -102,22 +121,49 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
         setFilteredClaims(sortList(filteredClaims, sortBy.value, sortOrder));
     }, [sortBy, sortOrder]);
 
+    /**
+     * Slices and returns a portion of the list
+     * @param {ExternalClaim[]} list
+     * @param {number} limit 
+     * @param {number} offset 
+     * 
+     * @return {ExternalClaim[]}
+     */
     const paginate = (list: ExternalClaim[], limit: number, offset: number): ExternalClaim[] => {
         return list?.slice(offset, offset + limit);
     };
 
+    /**
+     * Handles change in the number of items to show
+     * @param {React.MouseEvent<HTMLAnchorElement>} event
+     * @param {data} data
+     */
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
     };
 
+    /**
+    * Paginates
+    * @param {React.MouseEvent<HTMLAnchorElement>} event
+    * @param {PaginationProps} data
+    */
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         setOffset((data.activePage as number - 1) * listItemLimit);
     };
 
+    /**
+     * Handle sort strategy change
+     * @param {React.SyntheticEvent<HTMLElement>} event
+     * @param {DropdownProps} data
+     */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
         setSortBy(SORT_BY.filter(option => option.value === data.value)[0]);
     };
 
+    /**
+    * Handles sort order change
+    * @param {boolean} isAscending
+    */
     const handleSortOrderChange = (isAscending: boolean) => {
         setSortOrder(isAscending);
     };
@@ -169,7 +215,7 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                                 } catch (error) {
                                     dispatch(addAlert({
                                         message: "Filter query format incorrect",
-                                        description: error,
+                                        description: error?.message,
                                         level: AlertLevels.ERROR
                                     }));
                                 }
@@ -209,7 +255,7 @@ export const ExternalClaimsPage = (props): React.ReactElement => {
                             />
                         </ListLayout>
                     )
-                    : (
+                    : !isLoading && (
                         <EmptyPlaceholder
                             action={
                                 <PrimaryButton

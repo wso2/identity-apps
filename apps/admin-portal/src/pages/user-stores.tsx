@@ -21,7 +21,7 @@ import { PageLayout } from "../layouts";
 import { ListLayout } from "../layouts";
 import { PrimaryButton, EmptyPlaceholder } from "@wso2is/react-components";
 import { Icon, DropdownProps, PaginationProps } from "semantic-ui-react";
-import { UserStoresSearch } from "../components";
+import { UserStoresSearch, AddUserStore } from "../components";
 import { AlertLevels, QueryParams, UserStoreListItem } from "../models";
 import { getUserStores } from "../api";
 import { DEFAULT_USER_LIST_ITEM_LIMIT } from "../constants";
@@ -30,6 +30,10 @@ import { addAlert } from "../store/actions";
 import { UserStoresList } from "../components";
 import { EmptyPlaceholderIllustrations } from "../configs";
 
+/**
+ * This renders the User Stores page
+ * @return {React.ReactElement}
+ */
 export const UserStores = (): React.ReactElement => {
 
     const [userStores, setUserStores] = useState<UserStoreListItem[]>(null);
@@ -39,6 +43,13 @@ export const UserStores = (): React.ReactElement => {
 
     const dispatch = useDispatch();
 
+    /**
+     * Fetches all user stores
+     * @param {number} limit 
+     * @param {string} sort 
+     * @param {number} offset 
+     * @param {string} filter 
+     */
     const fetchUserStores = (limit?: number, sort?: string, offset?: number, filter?: string) => {
         const params: QueryParams = {
             limit: limit || null,
@@ -65,20 +76,46 @@ export const UserStores = (): React.ReactElement => {
         fetchUserStores(null, null, null, null);
     }, []);
 
+    /**
+     * This slices and returns a portion of the list
+     * @param {number} list 
+     * @param {number} limit 
+     * @param {number} offset 
+     * 
+     * @return {UserStoreListItem[]} Paginated list
+     */
     const paginate = (list: UserStoreListItem[], limit: number, offset: number): UserStoreListItem[] => {
         return list?.slice(offset, offset + limit);
     };
 
+    /**
+     * Handles the change in the number of items to display
+     * @param {React.MouseEvent<HTMLAnchorElement>} event
+     * @param {DropdownProps} data
+     */
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
     };
 
+    /**
+     * This paginates
+     * @param {React.MouseEvent<HTMLAnchorElement>} event
+     * @param {PaginationProps} data
+     */
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         setOffset((data.activePage as number - 1) * listItemLimit);
     };
 
     return (
         <>
+            {
+                openModal
+                    ? <AddUserStore
+                        open={ openModal }
+                        onClose={ ()=>{setOpenModal(false)} }
+                />
+                : null
+            }
             <PageLayout
                 title="User Stores"
                 description="View, edit and add User Stores"
@@ -119,7 +156,6 @@ export const UserStores = (): React.ReactElement => {
                         >
                             <UserStoresList
                                 list={ paginate(userStores, listItemLimit, offset) }
-                                openEdit={ () => { setOpenModal(true) } }
                                 update={ fetchUserStores }
                             />
                         </ListLayout>

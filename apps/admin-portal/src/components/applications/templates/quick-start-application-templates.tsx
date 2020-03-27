@@ -16,9 +16,13 @@
  * under the License.
  */
 
-import { ApplicationTemplateCard } from "@wso2is/react-components";
 import React, { FunctionComponent, SyntheticEvent } from "react";
 import { ApplicationTemplateListItemInterface } from "../../../models";
+// Importing the following from the `configs` index causes a circular dependency due to `GlobalConfig` being exported
+// from the index as well. TODO: Revert the import after this issue is fixed.
+import { EmptyPlaceholderIllustrations } from "../../../configs/ui";
+import { ApplicationTemplateCard } from "./application-template-card";
+import { EmptyPlaceholder } from "@wso2is/react-components";
 
 /**
  * Proptypes for the quick start templates component.
@@ -58,13 +62,19 @@ export const QuickStartApplicationTemplates: FunctionComponent<QuickStartApplica
                             key={ index }
                             description={ template.description }
                             image={ template.image }
-                            technologies={ template.technologies }
-                            name={ template.displayName }
+                            technologyTypes={ template.types }
+                            name={ template.name }
                             id={ template.id }
                             onClick={ onTemplateSelect }
                         />
                     ))
-                    : null
+                    :
+                    <EmptyPlaceholder
+                        image={ EmptyPlaceholderIllustrations.newList }
+                        imageSize="tiny"
+                        title={ "No Templates Available" }
+                        subtitle={ ["Please add templates to display"] }
+                    />
             }
         </>
     );

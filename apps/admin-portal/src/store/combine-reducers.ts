@@ -19,6 +19,7 @@
 import { combineReducers } from "redux";
 import { applicationReducer, authenticateReducer, globalReducer } from "./reducers";
 import { LoadersReducer } from "./reducers/loaders";
+import { identityProviderReducer } from "./reducers/identity-provider";
 
 /**
  * Combines all the reducers.
@@ -26,6 +27,7 @@ import { LoadersReducer } from "./reducers/loaders";
  * @type {Reducer<any>} Root reducer to be used when creating the store.
  */
 export const reducers = combineReducers({
+    identityProvider: identityProviderReducer,
     application: applicationReducer,
     authenticationInformation: authenticateReducer,
     global: globalReducer,

@@ -66,7 +66,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
         isFederationHub: identityProvider.isFederationHub,
         homeRealmIdentifier: identityProvider.homeRealmIdentifier,
         alias: identityProvider.alias,
-        certificate: identityProvider.certificate,
+        certificate: identityProvider.certificate
     };
 
     const GeneralIdentityProviderSettingsTabPane = (): ReactElement => (
@@ -119,8 +119,8 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
                     },
                     {
                         menuItem: "Advance",
-                        render: AdvancedSettingsTabPane,
-                    },
+                        render: AdvancedSettingsTabPane
+                    }
                 ] }
             />
         )
