@@ -16,8 +16,7 @@
 * under the License.
 */
 
-export * from "./user-stores-list";
-export * from "./advanced-search-user-stores";
-export * from "./add-user-store";
-export * from "./edit";
-export * from "./wizards";
+export * from "./edit-advanced-properties-user-store";
+export * from "./edit-basic-details-user-store";
+export * from "./edit-connection-details-user-store";
+export * from "./edit-optional-properties-user-store";

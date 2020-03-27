@@ -35,7 +35,8 @@ export type Type =
     | "reset"
     | "button"
     | "divider"
-    | "custom";
+    | "custom"
+    | "toggle";
 
 /**
  * Model of the Validation object passed into validation functions
@@ -136,6 +137,15 @@ export interface CheckboxField extends FormRequiredFieldModel {
     type: "checkbox";
     children: CheckboxChild[];
     value?: string[];
+    [extra: string]: any;
+}
+
+/**
+ * Toggle field model
+ */
+export interface ToggleField extends FormRequiredFieldModel {
+    type: "toggle";
+    value?: string;
     [extra: string]: any;
 }
 
@@ -241,7 +251,8 @@ export type FormField =
     | Reset
     | FormButton
     | FormDivider
-    | CustomField;
+    | CustomField
+    | ToggleField;
 
 /**
  * FormField value types

@@ -21,6 +21,11 @@ import { AddExternalClaim, Claim, ClaimsGetParams, HttpMethods } from "../models
 import { AxiosHttpClient } from "@wso2is/http";
 
 /**
+ * The error code that is returned when there is no item in the list
+ */
+const RESOURCE_NOT_FOUND_ERROR_CODE = "CMT-50017";
+
+/**
  * Get an axios instance.
  *
  * @type {AxiosHttpClientInstance}.
@@ -406,7 +411,9 @@ export const getAllExternalClaims = (dialectID: string, params: ClaimsGetParams)
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error?.response?.data);
+            if (error?.response?.data?.code !== RESOURCE_NOT_FOUND_ERROR_CODE) {
+                return Promise.reject(error?.response?.data);
+            }
         });
 };
 

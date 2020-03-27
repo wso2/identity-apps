@@ -206,7 +206,7 @@
            }
 
       }
-
+      
       .column {
           &.resource-item-column {
               display: flex;
@@ -217,9 +217,12 @@
                   flex-shrink: 0;
               }
           }
+          
+          &.overflow-wrap {
+              overflow-wrap: break-word;
+          }
       }
 }
-
 
 /*-----------------------------------
  Application Attribute mapping variation

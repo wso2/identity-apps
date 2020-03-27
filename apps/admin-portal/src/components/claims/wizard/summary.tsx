@@ -95,7 +95,7 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                     <div className="general-details">
                         <h3>{data.displayName}</h3>
-                        <div className="description">{data.displayName}</div>
+                        <div className="description">{data.description}</div>
                     </div>
                 </Grid.Column>
             </Grid.Row>
