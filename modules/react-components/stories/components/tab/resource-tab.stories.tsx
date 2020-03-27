@@ -17,35 +17,36 @@
  *
  */
 
-import React from "react";
-import { ResourceTab } from "../../../src";
+import React, { ReactElement } from "react";
 import { meta } from "./resource-tab.stories.meta";
+import { ResourceTab } from "../../../src";
 
 export default {
     parameters: {
         component: ResourceTab,
-        componentSubtitle: meta.description,
+        componentSubtitle: meta.description
     },
-    title: "Components API/Components/Tab"
+    title: "Components API/Components/Resource Tab"
 };
 
 /**
  * Story to display the default tabs.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Default = () => {
+export const DefaultResourceTab = (): ReactElement => {
     const panes = [
         {
             menuItem: "Tab 1",
-            render: () => <ResourceTab.Pane>Tab one content</ResourceTab.Pane>,
+            render: () => <ResourceTab.Pane>Tab one content</ResourceTab.Pane>
         },
         {
             menuItem: "Tab 2",
-            render: () => <ResourceTab.Pane>Tab two content</ResourceTab.Pane>,
+            render: () => <ResourceTab.Pane>Tab two content</ResourceTab.Pane>
         },
         {
             menuItem: "Tab 3",
-            render: () => <ResourceTab.Pane>Tab three content</ResourceTab.Pane>,
+            render: () => <ResourceTab.Pane>Tab three content</ResourceTab.Pane>
         }
     ];
 
@@ -54,10 +55,10 @@ export const Default = () => {
     );
 };
 
-Default.story = {
+DefaultResourceTab.story = {
     parameters: {
         docs: {
-            storyDescription: meta.description,
-        },
+            storyDescription: meta.stories[ 0 ].description
+        }
     }
 };

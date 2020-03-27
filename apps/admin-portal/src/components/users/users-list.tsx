@@ -148,7 +148,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 {
                                     icon: "pencil alternate",
                                     onClick: () => handleUserEdit(user.id),
-                                    popupText: "edit",
+                                    popupText: "Edit",
                                     type: "button"
                                 },
                                 {
@@ -158,7 +158,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                         setShowDeleteConfirmationModal(true);
                                         setDeletingUser(user);
                                     },
-                                    popupText: "delete user",
+                                    popupText: "Delete user",
                                     type: "button"
                                 }
                             ] }

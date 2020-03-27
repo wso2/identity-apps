@@ -17,26 +17,27 @@
  *
  */
 
+import React, { ReactElement } from "react";
 import { action } from "@storybook/addon-actions";
-import { SettigsSectionIconSet } from "@wso2is/theme";
-import React from "react";
-import { Section } from "../../../src";
-import { UserAvatar } from "../../../src";
 import { meta } from "./section.stories.meta";
+import { Section } from "../../../src";
+import { SettigsSectionIconSet } from "@wso2is/theme";
+import { UserAvatar } from "../../../src";
 
 export default {
     parameters: {
         component: Section,
-        componentSubtitle: meta.description,
+        componentSubtitle: meta.description
     },
     title: "Components API/Components/Section"
 };
 
 /**
  * Story to display a default section.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const Default = () => (
+export const DefaultSection = (): ReactElement => (
     <Section
         description="Manage and update your personal details like name, email, mobile number, organization, etc."
         header="Profile"
@@ -59,19 +60,20 @@ export const Default = () => (
     />
 );
 
-Default.story = {
+DefaultSection.story = {
     parameters: {
         docs: {
-            storyDescription: meta.description,
-        },
+            storyDescription: meta.description
+        }
     }
 };
 
 /**
  * Story to display a section with an action.
- * @return {any}
+ *
+ * @return {React.ReactElement}
  */
-export const SectionWithAction = () => (
+export const SectionWithAction = (): ReactElement => (
     <Section
         description="Download all your profile data including personal data, security questions, and consents."
         header="Export profile"
@@ -90,7 +92,7 @@ export const SectionWithAction = () => (
 SectionWithAction.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 0 ].description,
-        },
+            storyDescription: meta.stories[ 0 ].description
+        }
     }
 };

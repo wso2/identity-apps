@@ -67,17 +67,17 @@ export const App = (): ReactElement => {
                 <I18nextProvider i18n={ I18n.instance }>
                     <Provider store={ store }>
                         <AppConfig.Provider value={ appConfig }>
-                            <Helmet defer={ false }>
-                                <link
-                                    href={ `/libs/themes/${state.theme}/theme.min.css` }
-                                    rel="stylesheet"
-                                    type="text/css"
-                                />
-                                <style type="text/css">
-                                    { state.css }
-                                </style>
-                            </Helmet>
                             <Suspense fallback={ <ContentLoader dimmer /> }>
+                                <Helmet>
+                                    <link
+                                        href={ `/libs/themes/${state.theme}/theme.min.css` }
+                                        rel="stylesheet"
+                                        type="text/css"
+                                    />
+                                    <style type="text/css">
+                                        { state.css }
+                                    </style>
+                                </Helmet>
                                 <Switch>
                                     <Redirect exact={ true } path="/" to={ GlobalConfig.appLoginPath }/>
                                     {

@@ -17,17 +17,17 @@
  *
  */
 
-import React, { ReactElement, useState } from "react";
-import { SidePanel } from "../../../src";
-import { meta, ROUTES, ROUTES_WITH_CHILDREN } from "./side-panel.stories.meta";
-import { action } from "@storybook/addon-actions";
-import { SidePanelIconSet, CaretRightIcon } from "@wso2is/theme";
+import { CaretRightIcon, SidePanelIconSet } from "@wso2is/theme";
 import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
+import { meta, ROUTES, ROUTES_WITH_CHILDREN } from "./side-panel.stories.meta";
+import React, { ReactElement, useState } from "react";
+import { action } from "@storybook/addon-actions";
+import { SidePanel } from "../../../src";
 
 export default {
     parameters: {
         component: SidePanel,
-        componentSubtitle: meta.description,
+        componentSubtitle: meta.description
     },
     title: "Components API/Components/Side Panel"
 };
@@ -37,12 +37,12 @@ export default {
  *
  * @return {React.ReactElement}
  */
-export const Default = (): ReactElement => {
+export const DefaultSidePanel = (): ReactElement => {
 
     const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(ROUTES[0]);
 
     return (
-        <div style={ { width: "200px", margin: "1em 0" } }>
+        <div style={ { margin: "1em 0", width: "200px" } }>
             <SidePanel
                 caretIcon={ CaretRightIcon }
                 onSidePanelItemClick={ action("clicked on item") }
@@ -58,11 +58,11 @@ export const Default = (): ReactElement => {
     );
 };
 
-Default.story = {
+DefaultSidePanel.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 0 ].description,
-        },
+            storyDescription: meta.stories[ 0 ].description
+        }
     }
 };
 
@@ -82,7 +82,7 @@ export const WithChildren = (): ReactElement => {
     };
 
     return (
-        <div style={ { width: "200px", margin: "1em 0" } }>
+        <div style={ { margin: "1em 0", width: "200px" } }>
             <SidePanel
                 caretIcon={ CaretRightIcon }
                 onSidePanelItemClick={ handleSidePanelItemClick }
@@ -101,7 +101,7 @@ export const WithChildren = (): ReactElement => {
 WithChildren.story = {
     parameters: {
         docs: {
-            storyDescription: meta.stories[ 1 ].description,
-        },
+            storyDescription: meta.stories[ 1 ].description
+        }
     }
 };

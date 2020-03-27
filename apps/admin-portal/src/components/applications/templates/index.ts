@@ -17,4 +17,3 @@
  */
 
 export * from "./quick-start-application-templates";
-export * from "./quick-start-identity-provider-templates";

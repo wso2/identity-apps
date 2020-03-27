@@ -16,18 +16,22 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
-import { ApplicationCreateWizard, QuickStartApplicationTemplates } from "../components";
-import { ApplicationTemplateIllustrations, TechnologyLogos } from "../configs";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import { ApplicationCreateWizard, QuickStartApplicationTemplates, } from "../components";
+import { ApplicationTemplateIllustrations } from "../configs";
 import { history } from "../helpers";
 import { PageLayout } from "../layouts";
 import {
+    ApplicationTemplateListInterface,
     ApplicationTemplateListItemInterface,
-    ApplicationTemplatesInterface,
     SupportedApplicationTemplateCategories,
     SupportedAuthProtocolTypes,
     SupportedQuickStartTemplateTypes
 } from "../models";
+import { getApplicationList, getApplicationTemplateList } from "../api";
+import { useDispatch } from "react-redux";
 
 /**
  * Choose the application template from this page.
@@ -36,61 +40,43 @@ import {
  */
 export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactElement => {
 
-    const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(null);
+    const dispatch = useDispatch();
 
-    // TODO Remove this hard coded list and retrieve the template list from an endpoint.
-    // Quick start templates list.
-    const QUICK_START_APPLICATION_TEMPLATES: ApplicationTemplateListItemInterface[] = [
-        {
-            description: "Front end applications which uses APIs. Mostly written using scripting languages.",
-            displayName: "Single page application",
-            id: SupportedQuickStartTemplateTypes.SPA,
-            image: ApplicationTemplateIllustrations?.spa,
-            protocols: [ SupportedAuthProtocolTypes.OIDC ],
-            technologies: [
-                {
-                    displayName: "Angular",
-                    logo: TechnologyLogos.angular,
-                    name: "angular"
-                },
-                {
-                    displayName: "React",
-                    logo: TechnologyLogos.react,
-                    name: "react"
-                },
-                {
-                    displayName: "Vue",
-                    logo: TechnologyLogos.vue,
-                    name: "vuejs"
-                }
-            ]
-        },
-        {
-            description: "Regular web applications which uses redirections inside browsers.",
-            displayName: "Web application",
-            id: SupportedQuickStartTemplateTypes.OAUTH_WEB_APP,
-            image: ApplicationTemplateIllustrations?.webApp,
-            protocols: [ SupportedAuthProtocolTypes.OIDC, SupportedAuthProtocolTypes.SAML ],
-            technologies: [
-                {
-                    displayName: "Java",
-                    logo: TechnologyLogos.java,
-                    name: "java"
-                },
-                {
-                    displayName: ".NET",
-                    logo: TechnologyLogos.dotNet,
-                    name: "dotnet"
-                }
-            ]
-        }
-    ];
+    const [showWizard, setShowWizard] = useState<boolean>(false);
+    const [selectedTemplate, setSelectedTemplate] = useState<ApplicationTemplateListItemInterface>(null);
+    const [availableTemplates, setAvailableTemplates] = useState<ApplicationTemplateListItemInterface[]>([]);
 
-    // TODO Remove this hard coded list and retrieve the template list from an endpoint.
-    // Templates list.
-    const TEMPLATES: ApplicationTemplatesInterface = {
-        [ SupportedApplicationTemplateCategories.QUICK_START as string ]: QUICK_START_APPLICATION_TEMPLATES
+    /**
+     * Retrieve Application template list.
+     *
+     */
+    const getAppTemplateList = (): void => {
+
+        getApplicationTemplateList()
+            .then((response) => {
+                // TODO enable after displayByOrder is available.
+                // const templateList: ApplicationTemplateListInterface = response;
+                // sort templateList based on display Order
+                // templateList.templates.sort((a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
+                // setAvailableTemplates(templateList.templates);
+                setAvailableTemplates((response as ApplicationTemplateListInterface).templates);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Application Template List Fetch Error"
+                    }));
+
+                    return;
+                }
+                dispatch(addAlert({
+                    description: "An error occurred while retrieving application template list",
+                    level: AlertLevels.ERROR,
+                    message: "Retrieval Error"
+                }));
+            })
     };
 
     /**
@@ -105,16 +91,10 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
      *
      * @param {React.SyntheticEvent} e - Click event.
      * @param {string} id - Id of the template.
-     * @param {SupportedApplicationTemplateCategories} templateCategory - The category of the selected template.
      */
-    const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string },
-                                     templateCategory: SupportedApplicationTemplateCategories): void => {
+    const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
 
-        if (!Object.prototype.hasOwnProperty.call(TEMPLATES, templateCategory)) {
-            return;
-        }
-
-        const selected = TEMPLATES[templateCategory].find((template) => template.id === id);
+        const selected = availableTemplates.find((template) => template.id === id);
 
         if (!selected) {
             return;
@@ -123,6 +103,13 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
         setSelectedTemplate(selected);
         setShowWizard(true);
     };
+
+    /**
+     *  Get Application templates.
+     */
+    useEffect(() => {
+        getAppTemplateList();
+    }, []);
 
     return (
         <PageLayout
@@ -137,22 +124,24 @@ export const ApplicationTemplateSelectPage: FunctionComponent<{}> = (): ReactEle
             bottomMargin={ false }
             showBottomDivider
         >
+            { availableTemplates &&
             <div className="quick-start-templates">
                 <QuickStartApplicationTemplates
-                    templates={ TEMPLATES[ SupportedApplicationTemplateCategories.QUICK_START ] }
+                    templates={ availableTemplates }
                     onTemplateSelect={ (e, { id }) =>
-                        handleTemplateSelection(e, { id }, SupportedApplicationTemplateCategories.QUICK_START)
+                        handleTemplateSelection(e, { id })
                     }
                 />
             </div>
+            }
             { showWizard && (
-                    <ApplicationCreateWizard
-                        title={ selectedTemplate?.displayName }
-                        subTitle={ selectedTemplate?.description }
-                        closeWizard={ (): void => setShowWizard(false) }
-                        template={ selectedTemplate }
-                    />
-                ) }
+                <ApplicationCreateWizard
+                    title={ selectedTemplate?.name }
+                    subTitle={ selectedTemplate?.description }
+                    closeWizard={ (): void => setShowWizard(false) }
+                    template={ selectedTemplate }
+                />
+            ) }
         </PageLayout>
     );
 };

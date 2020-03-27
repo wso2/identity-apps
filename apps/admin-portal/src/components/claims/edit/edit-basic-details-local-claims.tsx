@@ -17,18 +17,33 @@
 */
 
 import React from "react";
-import { Claim, AlertLevels } from "../../../models";
-import { Forms, Field } from "@wso2is/forms";
-import { Grid, Form, Divider } from "semantic-ui-react";
+import { AlertLevels, Claim } from "../../../models";
+import { Field, Forms } from "@wso2is/forms";
+import { Divider, Form, Grid } from "semantic-ui-react";
 import { updateAClaim } from "../../../api";
 import { useDispatch } from "react-redux";
-import { addAlert } from "../../../store/actions";
+import { addAlert } from "@wso2is/core/store";
 import { CopyInputField, Hint } from "@wso2is/react-components";
 
+/**
+ * Prop types for `EditBasicDetailsLocalClaims` component
+ */
 interface EditBasicDetailsLocalClaimsPropsInterface {
+    /**
+     * The claim to be edited
+     */
     claim: Claim;
+    /**
+     * The function to be called to initiate an update
+     */
     update: () => void;
 }
+
+/**
+ * This component renders the Basic Details pane of the edit local claim screen
+ * @param {EditBasicDetailsLocalClaimsPropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const EditBasicDetailsLocalClaims = (
     props: EditBasicDetailsLocalClaimsPropsInterface
 ): React.ReactElement => {
@@ -41,7 +56,7 @@ export const EditBasicDetailsLocalClaims = (
         <>
             <Grid>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column tablet={ 16 } computer={ 6 } mobile={ 16 }>
+                    <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
                         <Form>
                             <Form.Field>
                                 <label>Claim URI</label>
@@ -88,7 +103,7 @@ export const EditBasicDetailsLocalClaims = (
             >
                 <Grid>
                     <Grid.Row columns={ 1 }>
-                        <Grid.Column tablet={ 16 } computer={ 6 } mobile={ 16 }>
+                        <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
                             <Field
                                 type="text"
                                 name="name"
@@ -98,8 +113,12 @@ export const EditBasicDetailsLocalClaims = (
                                 placeholder="Enter a name for the claim"
                                 value={ claim?.displayName }
                             />
+                            <Hint>
+                                Name of the claim displayed on the profile page and the self-registration page
+                            </Hint>
+                            <Divider hidden />
                             <Field
-                                type="text"
+                                type="textarea"
                                 name="description"
                                 label="Description"
                                 required={ true }
@@ -116,6 +135,8 @@ export const EditBasicDetailsLocalClaims = (
                                 placeholder="Regular expression to validate the claim"
                                 value={ claim?.regEx }
                             />
+                            <Hint>Regular Expression used to validate inputs</Hint>
+                            <Divider hidden />
                             <Field
                                 type="number"
                                 min="0"
@@ -126,6 +147,10 @@ export const EditBasicDetailsLocalClaims = (
                                 placeholder="Enter the display order"
                                 value={ claim?.displayOrder.toString() }
                             />
+                            <Hint>
+                                Integer value to specify the order in which the claim is displayed among 
+                                other claims under the same dialect
+                            </Hint>
                             <Divider hidden={ true } />
                             <Field
                                 type="checkbox"
@@ -136,9 +161,9 @@ export const EditBasicDetailsLocalClaims = (
                                 value={ claim?.supportedByDefault ? ["Support"] : [] }
                             />
                             <Hint>
-                                This displays this claim on the Profile page in the User Portal and prompted during
-                                user registration.
+                                Specifies if the claim will be prompted during user registration and displayed on the user profile
                             </Hint>
+                            <Divider hidden />
                             <Field
                                 type="checkbox"
                                 name="required"
@@ -148,8 +173,9 @@ export const EditBasicDetailsLocalClaims = (
                                 value={ claim?.required ? ["Required"] : [] }
                             />
                             <Hint>
-                                This makes the claim mandatory to be filled by the user.
+                                Specifies if the claim is required for user registration
                             </Hint>
+                            <Divider hidden />
                             <Field
                                 type="checkbox"
                                 name="readOnly"
@@ -159,7 +185,7 @@ export const EditBasicDetailsLocalClaims = (
                                 value={ claim?.readOnly ? ["ReadOnly"] : [] }
                             />
                             <Hint>
-                                This makes the claim read only.
+                                Specifies if the claim is read-only
                             </Hint>
                         </Grid.Column>
                     </Grid.Row>

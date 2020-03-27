@@ -21,7 +21,8 @@ import { Field, Forms } from "@wso2is/forms";
 import { AdvancedSearch } from "@wso2is/react-components";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Form, Grid } from "semantic-ui-react";
+import { Divider, Form, Grid } from "semantic-ui-react";
+import { AdvancedSearchIcons } from "../../../configs";
 
 /**
  * Filter attribute field identifier.
@@ -46,7 +47,7 @@ const FILTER_VALUES_FIELD_IDENTIFIER = "filerValues";
  * field value to this.
  * @type {string}
  */
-const DEFAULT_SEARCH_STRATEGY = "name co";
+const DEFAULT_SEARCH_STRATEGY = "dialectURI co";
 
 /**
  * Prop types for the application search component.
@@ -145,13 +146,14 @@ export const DialectSearch: FunctionComponent<DialectSearchPropsInterface> = (
         <AdvancedSearch
             aligned="left"
             clearButtonPopupLabel={ t("devPortal:components.applications.search.popups.clear") }
+            clearIcon={ AdvancedSearchIcons.clear }
             defaultSearchStrategy={ DEFAULT_SEARCH_STRATEGY }
             dropdownTriggerPopupLabel={ t("devPortal:components.applications.search.popups.dropdown") }
             hintActionKeys={ t("devPortal:components.applications.search.hints.querySearch.actionKeys") }
             hintLabel={ t("devPortal:components.applications.search.hints.querySearch.label") }
             onExternalSearchQueryClear={ handleExternalSearchQueryClear }
             onSearchQuerySubmit={ handleSearchQuerySubmit }
-            placeholder={ t("devPortal:components.applications.search.placeholder") }
+            placeholder={ "Search by Dialect URI" }
             resetSubmittedState={ handleResetSubmittedState }
             searchOptionsHeader={ t("devPortal:components.applications.search.options.header") }
             externalSearchQuery={ externalSearchQuery }
@@ -179,6 +181,8 @@ export const DialectSearch: FunctionComponent<DialectSearchPropsInterface> = (
                                     ".inputs.filerAttribute.validations.empty") }
                                 type="dropdown"
                                 width={ 16 }
+                                value={ filterAttributeOptions?.length === 1 ? filterAttributeOptions[0]?.value : null }
+                                disabled={ filterAttributeOptions?.length === 1 }
                             />
                             <Grid>
                                 <Grid.Row columns={ 2 }>
@@ -208,8 +212,7 @@ export const DialectSearch: FunctionComponent<DialectSearchPropsInterface> = (
                                             label={ t("devPortal:components.applications.search.forms.searchForm" +
                                                 ".inputs.filterValue.label") }
                                             name={ FILTER_VALUES_FIELD_IDENTIFIER }
-                                            placeholder={ t("devPortal:components.applications.search.forms." +
-                                                "searchForm.inputs.filterValue.placeholder") }
+                                            placeholder="E.g. http://wso2.org/oidc/claim"
                                             required={ true }
                                             requiredErrorMessage={ t("devPortal:components.applications.search." +
                                                 "forms.searchForm.inputs.filterValue.validations.empty") }
@@ -219,10 +222,7 @@ export const DialectSearch: FunctionComponent<DialectSearchPropsInterface> = (
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
-                            <Field
-                                hidden={ true }
-                                type="divider"
-                            />
+                            <Divider hidden />
                             <Form.Group inline={ true }>
                                 <Field
                                     size="small"

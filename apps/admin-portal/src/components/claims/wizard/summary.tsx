@@ -21,13 +21,31 @@ import { Claim, AttributeMapping } from "../../../models";
 import { Grid, Icon, Label, Form, Table } from "semantic-ui-react";
 import { CopyInputField } from "@wso2is/react-components";
 
+/**
+ * Prop types of `SummaryLocalClaims` component
+ */
 interface SummaryLocalClaimsPropsInterface {
+    /**
+     * The complete Claim data
+     */
     data: Claim;
 }
+
+/**
+ * This component renders the summary view of the wizard
+ * @param {SummaryLocalClaimsPropsInterface} props
+ * @return {React.ReactElement}
+ */
 export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): React.ReactElement => {
 
     const { data } = props;
 
+    /**
+     * This component returns a row of summary
+     * @param {string} title 
+     * @param {string | number | React.ReactElement} description
+     * @return {React.ReactElement} A row of summary 
+     */
     const generateSummaryLine = (
         title: string,
         description: string | number | React.ReactElement
@@ -44,6 +62,12 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
         )
     };
 
+    /**
+     * This components generates labels for boolean types
+     * @param {string} name 
+     * @param {boolean} boolean
+     * @return {React.ReactElement} 
+     */
     const generateLabels = (name: string, boolean: boolean): React.ReactElement => {
         return (
             <Label basic color={ boolean ? "olive" : "yellow" }>
@@ -53,6 +77,10 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
         )
     };
 
+    /**
+     * This returns the Claim URI in a copy field
+     * @return {React.ReactElement} Copy Field
+     */
     const showClaimURI = (): React.ReactElement => {
         return (
             <Form.Field>
@@ -67,7 +95,7 @@ export const SummaryLocalClaims = (props: SummaryLocalClaimsPropsInterface): Rea
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                     <div className="general-details">
                         <h3>{data.displayName}</h3>
-                        <div className="description">{data.displayName}</div>
+                        <div className="description">{data.description}</div>
                     </div>
                 </Grid.Column>
             </Grid.Row>
