@@ -21,7 +21,7 @@ import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { AxiosHttpClient } from "@wso2is/http";
 
 /**
- * The error code that is returned when there is no item in the list
+ * The error code that is returned when there is no item in the list.
  */
 const RESOURCE_NOT_FOUND_ERROR_CODE = "CMT-50017";
 
@@ -32,11 +32,11 @@ const RESOURCE_NOT_FOUND_ERROR_CODE = "CMT-50017";
 const httpClient = AxiosHttpClient.getInstance();
 
 /**
- * Fetches all user stores
+ * Fetches all user stores.
  * 
- * @param {QueryParams} params sort, filter, limit, attributes, offset
+ * @param {QueryParams} params sort, filter, limit, attributes, offset.
  * 
- * @return {Promise<any>} response
+ * @return {Promise<any>} response.
  */
 export const getUserStores = (params: QueryParams): Promise<any> => {
     const requestConfig = {
@@ -65,9 +65,9 @@ export const getUserStores = (params: QueryParams): Promise<any> => {
 };
 
 /**
- * Fetch types of user stores
+ * Fetch types of user stores.
  * 
- * @return {Promise<any>} response
+ * @return {Promise<any>} response.
  */
 export const getTypes = (): Promise<any> => {
     const requestConfig = {
@@ -93,12 +93,12 @@ export const getTypes = (): Promise<any> => {
 };
 
 /**
- * Gets the meta data of a type
+ * Gets the meta data of a type.
  * 
- * @param {string} id Type ID
- * @param {QueryParams} params limit, offset, filter, sort, attributes
+ * @param {string} id Type ID.
+ * @param {QueryParams} params limit, offset, filter, sort, attributes.
  * 
- * @return {Promise<any>}
+ * @return {Promise<any>} Response.
  */
 export const getAType = (id: string, params: QueryParams): Promise<any> => {
     const requestConfig = {
@@ -126,11 +126,11 @@ export const getAType = (id: string, params: QueryParams): Promise<any> => {
 };
 
 /**
- * Gets a user store by its id
+ * Gets a user store by its id.
  * 
- * @param {string} id User Store ID
+ * @param {string} id User Store ID.
  * 
- * @return {Promise<any>} response
+ * @return {Promise<any>} response.
  */
 export const getAUserStore = (id: string): Promise<any> => {
     const requestConfig = {
@@ -157,11 +157,11 @@ export const getAUserStore = (id: string): Promise<any> => {
 };
 
 /**
- * Deletes a User Store
+ * Deletes a User Store.
  * 
- * @param {string} id User Store ID
+ * @param {string} id User Store ID.
  * 
- * @return {Promise<any>} Response 
+ * @return {Promise<any>} Response.
  */
 export const deleteUserStore = (id: string): Promise<any> => {
     const requestConfig = {
@@ -187,11 +187,11 @@ export const deleteUserStore = (id: string): Promise<any> => {
 };
 
 /**
- * Patches a user store
+ * Patches a user store.
  * 
- * @param {string} id User Store ID
- * @param {string} path The path to patch
- * @param {string} value The data to be patched with
+ * @param {string} id User Store ID.
+ * @param {string} path The path to patch.
+ * @param {string} value The data to be patched with.
  * 
  * @return {Promise<any>} Response
  */
@@ -220,11 +220,11 @@ export const patchUserStore = (id: string, data: PatchData[]): Promise<any> => {
 };
 
 /**
- * Adds a user store
+ * Adds a user store.
  * 
- * @param {UserStorePostData} data User Store Data
+ * @param {UserStorePostData} data User Store Data.
  * 
- * @return {Promise<any>} Response
+ * @return {Promise<any>} Response.
  */
 export const addUserStore = (data: UserStorePostData): Promise<any> => {
     const requestConfig = {
@@ -251,12 +251,12 @@ export const addUserStore = (data: UserStorePostData): Promise<any> => {
 };
 
 /**
- * Updates a User Store
+ * Updates a User Store.
  * 
- * @param {string} id User Store ID
- * @param {UserStorePostData} data Update Data
+ * @param {string} id User Store ID.
+ * @param {UserStorePostData} data Update Data.
  * 
- * @return {Promise<any>} response
+ * @return {Promise<any>} response.
  */
 export const updateUserStore = (id: string,data: UserStorePostData): Promise<any> => {
     const requestConfig = {
@@ -283,11 +283,11 @@ export const updateUserStore = (id: string,data: UserStorePostData): Promise<any
 };
 
 /**
- * Tests a JDBC connection
+ * Tests a JDBC connection.
  * 
- * @param {TestConnection} data Test Connection Data
+ * @param {TestConnection} data Test Connection Data.
  * 
- * @return {Promise<any>} Response 
+ * @return {Promise<any>} Response.
  */
 export const testConnection = (data: TestConnection): Promise<any> => {
     const requestConfig = {
