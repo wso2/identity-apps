@@ -16,9 +16,14 @@
  * under the License.
  */
 
-import { QueryParams, HttpMethods, UserStorePostData, TestConnection, PatchData } from "../models";
+import { HttpMethods, PatchData, QueryParams, TestConnection, UserStorePostData } from "../models";
 import { GlobalConfig, ServiceResourcesEndpoint } from "../configs";
 import { AxiosHttpClient } from "@wso2is/http";
+
+/**
+ * The error code that is returned when there is no item in the list
+ */
+const RESOURCE_NOT_FOUND_ERROR_CODE = "CMT-50017";
 
 /**
  * Initialize an axios Http client.
@@ -51,7 +56,9 @@ export const getUserStores = (params: QueryParams): Promise<any> => {
             return Promise.resolve(response.data);
         })
         .catch((error) => {
-            return Promise.reject(error?.response?.data);
+            if (error?.response?.data?.code === RESOURCE_NOT_FOUND_ERROR_CODE) {
+                return Promise.reject(error?.response?.data);
+            }
         });
 };
 
@@ -62,9 +69,9 @@ export const getUserStores = (params: QueryParams): Promise<any> => {
 export const getTypes = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            'Accept': 'application/json',
-            'Access-Control-Allow-Origin': GlobalConfig.clientHost,
-            'Content-Type': 'application/json'
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
         url: `${ServiceResourcesEndpoint.userStores}/meta/types`
@@ -93,9 +100,9 @@ export const getTypes = (): Promise<any> => {
 export const getAType = (id: string, params: QueryParams): Promise<any> => {
     const requestConfig = {
         headers: {
-            'Accept': 'application/json',
-            'Access-Control-Allow-Origin': GlobalConfig.clientHost,
-            'Content-Type': 'application/json',
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json",
             params
         },
         method: HttpMethods.GET,
@@ -123,9 +130,9 @@ export const getAType = (id: string, params: QueryParams): Promise<any> => {
 export const getAUserStore = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            'Accept': 'application/json',
-            'Access-Control-Allow-Origin': GlobalConfig.clientHost,
-            'Content-Type': 'application/json'
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
         url: `${ServiceResourcesEndpoint.userStores}/${id}`
@@ -153,9 +160,9 @@ export const getAUserStore = (id: string): Promise<any> => {
 export const deleteUserStore = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            'Accept': 'application/json',
-            'Access-Control-Allow-Origin': GlobalConfig.clientHost,
-            'Content-Type': 'application/json'
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
         url: `${ServiceResourcesEndpoint.userStores}/${id}`
@@ -184,9 +191,9 @@ export const deleteUserStore = (id: string): Promise<any> => {
 export const patchUserStore = (id: string, data: PatchData[]): Promise<any> => {
     const requestConfig = {
         headers: {
-            'Accept': 'application/json',
-            'Access-Control-Allow-Origin': GlobalConfig.clientHost,
-            'Content-Type': 'application/json'
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
         url: `${ServiceResourcesEndpoint.userStores}/${id}`,
@@ -213,9 +220,9 @@ export const patchUserStore = (id: string, data: PatchData[]): Promise<any> => {
 export const addUserStore = (data: UserStorePostData): Promise<any> => {
     const requestConfig = {
         headers: {
-            'Accept': 'application/json',
-            'Access-Control-Allow-Origin': GlobalConfig.clientHost,
-            'Content-Type': 'application/json'
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
         url: `${ServiceResourcesEndpoint.userStores}`,
@@ -242,9 +249,9 @@ export const addUserStore = (data: UserStorePostData): Promise<any> => {
 export const updateUserStore = (id: string,data: UserStorePostData): Promise<any> => {
     const requestConfig = {
         headers: {
-            'Accept': 'application/json',
-            'Access-Control-Allow-Origin': GlobalConfig.clientHost,
-            'Content-Type': 'application/json'
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
         url: `${ServiceResourcesEndpoint.userStores}/${id}`,
@@ -271,9 +278,9 @@ export const updateUserStore = (id: string,data: UserStorePostData): Promise<any
 export const testConnection = (data: TestConnection): Promise<any> => {
     const requestConfig = {
         headers: {
-            'Accept': 'application/json',
-            'Access-Control-Allow-Origin': GlobalConfig.clientHost,
-            'Content-Type': 'application/json'
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": GlobalConfig.clientHost,
+            "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
         url: `${ServiceResourcesEndpoint.userStores}/test-connection`,
